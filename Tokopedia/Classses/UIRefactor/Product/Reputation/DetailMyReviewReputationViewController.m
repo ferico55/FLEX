@@ -45,7 +45,7 @@
 #define CTagListReputationReview 1
 #define CTagSkipReputationReview 2
 
-@interface DetailMyReviewReputationViewController ()<TokopediaNetworkManagerDelegate, LoadingViewDelegate, detailMyReviewReputationCell, UIAlertViewDelegate, ReportViewControllerDelegate, MyReviewReputationDelegate, CMPopTipViewDelegate, SmileyDelegate>
+@interface DetailMyReviewReputationViewController ()<TokopediaNetworkManagerDelegate, LoadingViewDelegate, detailMyReviewReputationCell, UIAlertViewDelegate, ReportViewControllerDelegate, MyReviewReputationDelegate, CMPopTipViewDelegate, SmileyDelegate, TTTAttributedLabelDelegate>
 
 @end
 
@@ -356,6 +356,10 @@
         n = 0;
     
     _detailMyInboxReputation.unassessed_reputation_review = _detailMyInboxReputation.viewModel.unassessed_reputation_review = [NSString stringWithFormat:@"%d", n];
+    
+    TTTAttributedLabel *tempLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width-(CPaddingTopBottom*4), 0)];
+    [self setPropertyLabelDesc:tempLabel];
+    [self initLabelDesc:tempLabel withText:tempDetailReputationReview.viewModel.review_message];
 }
 
 - (void)successGiveComment {
@@ -803,6 +807,7 @@
         [str addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:78/255.0f green:134/255.0f blue:38/255.0f alpha:1.0f] range:NSMakeRange(strDescription.length-strLihatSelengkapnya.length, strLihatSelengkapnya.length)];
         [str addAttribute:NSFontAttributeName value:lblDesc.font range:NSMakeRange(0, strDescription.length)];
         lblDesc.attributedText = str;
+        lblDesc.delegate = self;
         [lblDesc addLinkToURL:[NSURL URLWithString:@""] withRange:range];
     }
     else {
@@ -908,8 +913,7 @@
 #pragma mark - MyReviewReputationCell delegate
 - (void)actionInvoice:(id)sender {
     if(_detailMyInboxReputation.invoice_uri!=nil && _detailMyInboxReputation.invoice_uri.length>0) {
-        NavigateViewController *navigate = [NavigateViewController new];
-        [navigate navigateToInvoiceFromViewController:self withInvoiceURL:_detailMyInboxReputation.invoice_uri];
+        [NavigateViewController navigateToInvoiceFromViewController:self withInvoiceURL:_detailMyInboxReputation.invoice_uri];
     }
 }
 
@@ -1036,4 +1040,6 @@
 - (void)actionVote:(id)sender {
     [self dismissAllPopTipViews];
 }
+
+
 @end

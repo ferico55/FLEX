@@ -287,7 +287,9 @@
         [userImageView setImage:image];
 #pragma clang diagnostic pop
     } failure:nil];
-    [productReputationCell setLabelUser:(_detailReputaitonReview!=nil? _detailReputaitonReview.review_full_name:_reviewList.review_user_name) withUserLabel:(_detailReputaitonReview!=nil)?_detailReputaitonReview.review_user_label:_reviewList.review_user_label];
+    [productReputationCell setLabelUser:(_detailReputaitonReview!=nil? _detailReputaitonReview.review_full_name:_reviewList.review_user_name)
+                          withUserLabel:(_detailReputaitonReview!=nil)?_detailReputaitonReview.review_user_label:_reviewList.review_user_label];
+    
     [productReputationCell setPercentage:(_detailReputaitonReview!=nil? _detailReputaitonReview.review_user_reputation.positive_percentage:_reviewList.review_user_reputation.positive_percentage)];
     [productReputationCell setLabelDate:(_detailReputaitonReview!=nil? (_detailReputaitonReview.review_create_time?:@""):(_reviewList.review_create_time?:@""))];
     
@@ -325,15 +327,22 @@
     [productReputationCell setImageAkurasi:[(_detailReputaitonReview!=nil? _detailReputaitonReview.product_accuracy_point:_reviewList.review_rate_accuracy) intValue]];
     [productReputationCell setDescription:[NSString convertHTML:(_detailReputaitonReview!=nil? (_detailReputaitonReview.review_message?:@""):(_reviewList.review_message?:@""))]];
     
-    if(_strTotalDisLike != nil) {
+    if(_strTotalDisLike != nil || ![_strTotalDisLike isEqualToString:@""]) {
         [productReputationCell.getBtnLike setTitle:_strTotalLike forState:UIControlStateNormal];
         [productReputationCell.getBtnDisLike setTitle:_strTotalDisLike forState:UIControlStateNormal];
         [self setLikeDislikeActive:_strLikeStatus];
+    }else{
+        [productReputationCell.getBtnLike setTitle:_detailReputaitonReview.review_like_dislike.total_like forState:UIControlStateNormal];
+        [productReputationCell.getBtnDisLike setTitle:_detailReputaitonReview.review_like_dislike.total_dislike forState:UIControlStateNormal];
+        [self setLikeDislikeActive:_strLikeStatus];
+
     }
     
     [productReputationCell layoutSubviews];
-    productReputationCell.contentView.frame = CGRectMake(0, 0, productReputationCell.contentView.bounds.size.width, productReputationCell.contentView.bounds.size.height-CPaddingTopBottom-CPaddingTopBottom);
-    productReputationCell.getViewContent.frame = CGRectMake(productReputationCell.getViewContent.frame.origin.x, 0, productReputationCell.getViewContent.bounds.size.width, productReputationCell.getViewContent.bounds.size.height-CPaddingTopBottom);
+    //productReputationCell.contentView.frame = CGRectMake(0, 0, productReputationCell.contentView.bounds.size.width, productReputationCell.contentView.bounds.size.height-CPaddingTopBottom-CPaddingTopBottom);
+    productReputationCell.contentView.frame = CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, productReputationCell.contentView.bounds.size.height-CPaddingTopBottom-CPaddingTopBottom);
+    
+    productReputationCell.getViewContent.frame = CGRectMake(productReputationCell.getViewContent.frame.origin.x, 0, [[UIScreen mainScreen] bounds].size.width, productReputationCell.getViewContent.bounds.size.height-CPaddingTopBottom);
     
     if(isResizeSeparatorProduct)
         [productReputationCell.getViewSeparatorProduct setFrame:CGRectMake(0, productReputationCell.getViewSeparatorProduct.frame.origin.y+productReputationCell.getViewContent.frame.origin.y, ((AppDelegate *) [UIApplication sharedApplication].delegate).window.bounds.size.width, productReputationCell.getViewSeparatorProduct.bounds.size.height)];
@@ -528,7 +537,7 @@
     cell.getBtnTryAgain.hidden = !(_detailReputaitonReview!=nil? _detailReputaitonReview.review_response.failedSentMessage:_reviewList.review_response.failedSentMessage);
     
     //Set image
-    NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_detailReputaitonReview!=nil? _detailReputaitonReview.product_owner.user_img:_reviewList.review_product_owner.user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_detailReputaitonReview!=nil? _detailReputaitonReview.product_owner.shop_img:_reviewList.review_product_owner.user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     [cell.getImgProfile setImageWithURLRequest:userImageRequest placeholderImage:[UIImage imageNamed:@"icon_profile_picture.jpeg"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
@@ -539,13 +548,15 @@
     
 
     [cell setStar:_shopBadgeLevel.level withSet:_shopBadgeLevel.set];
-    [cell.getViewLabelUser setText:_detailReputaitonReview!=nil? _detailReputaitonReview.product_owner.shop_name:_reviewList.review_product_owner.user_name];
+    [cell.getViewLabelUser setText:_detailReputaitonReview!=nil? _detailReputaitonReview.product_owner.shop_name:_reviewList.review_shop_name];
     [cell.getViewLabelUser setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"Gotham Medium" size:13.0f]];
     [cell.getViewLabelUser setLabelBackground:(_detailReputaitonReview!=nil)?_detailReputaitonReview.product_owner.user_label:CPenjual];
     cell.getViewStar.tag = indexPath.row;
 
     [cell setNeedsUpdateConstraints];
     [cell updateConstraintsIfNeeded];
+    
+    [cell setBackgroundColor:[UIColor clearColor]];
     
     return cell;
 }
@@ -1051,9 +1062,12 @@
     LoginViewController *controller = [LoginViewController new];
     controller.delegate = self;
     controller.isPresentedViewController = YES;
-    controller.redirectViewController = self;
+    //controller.redirectViewController = self;
     navigationController.viewControllers = @[controller];
-    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+    //[self.navigationController presentViewController:navigationController animated:YES completion:nil];
+    
+    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Anda belum login."] delegate:self];
+    [alert show];
 }
 
 - (void)configureRestkit {

@@ -8,55 +8,43 @@
 
 #import "sortfiltershare.h"
 #import "SortViewController.h"
-#import "SortCell.h"
 #import "UIImage+ImageEffects.h"
 
-@interface SortViewController ()<UITableViewDataSource,UITableViewDelegate>
-{
-    NSArray *_sortarray;
-    NSMutableDictionary *_selectedsort;
-    NSInteger _type;
-}
-@property (weak, nonatomic) IBOutlet UITableView *table;
-@property (weak, nonatomic) IBOutlet UIButton *cancelButton;
+@interface SortViewController ()
+
+@property (strong, nonatomic) NSArray *sortValues;
 
 @end
 
 @implementation SortViewController
 
 #pragma mark - Initialization
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        self.navigationItem.title = kTKPDFILTER_TITLESORTKEY;
 
-    }
+- (id)initWithStyle:(UITableViewStyle)style {
+    self = [super initWithStyle:UITableViewStyleGrouped];
     return self;
 }
 
 #pragma mark - View Lifecylce
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    self.cancelButton.layer.cornerRadius = 5;
-    self.cancelButton.layer.borderColor = [UIColor whiteColor].CGColor;
-    self.cancelButton.layer.borderWidth = 1;
-}
-
-
 - (void) viewDidLoad
 {
     [super viewDidLoad];
 
-    [self.navigationController.navigationBar setTranslucent:NO];
-    self.navigationController.navigationBarHidden = NO;
-
     self.title = @"Urutkan";
     
-    _selectedsort = [NSMutableDictionary new];
+    self.tableView.backgroundColor = [UIColor colorWithRed:231.0/255.0 green:231.0/255.0 blue:231.0/255.0 alpha:1];
     
+    [self createDoneButton];
+    [self createCancelButton];
+
+    [self.navigationController.navigationBar setTranslucent:NO];
+    self.navigationController.navigationBarHidden = NO;
+    
+    [self setSortValues];
+}
+
+- (void)createCancelButton {
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
                                                                       style:UIBarButtonItemStyleBordered
                                                                      target:self
@@ -64,131 +52,140 @@
     barButtonItem.tag = 10;
     self.navigationItem.leftBarButtonItem = barButtonItem;
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+}
 
-    UIBarButtonItem *barbutton1;
-    barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Selesai"
-                                                  style:UIBarButtonItemStyleDone
-                                                 target:(self) action:@selector(tap:)];
-	[barbutton1 setTag:11];
-    self.navigationItem.rightBarButtonItem = barbutton1;
+- (void)createDoneButton {
+    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Selesai"
+                                                                        style:UIBarButtonItemStyleDone
+                                                                       target:(self)
+                                                                       action:@selector(tap:)];
+    doneButton.tag = 11;
+    self.navigationItem.rightBarButtonItem = doneButton;
+}
+
+- (void)setSortValues {
+    [TPAnalytics trackUserId];
     
-    // set table view datasource and delegate
-    _table.delegate = self;
-    _table.dataSource = self;
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    TAGContainer *container = appDelegate.container;
     
-    _type = [[_data objectForKey:kTKPDFILTER_DATAFILTERTYPEVIEWKEY] integerValue]?:0;
-    switch (_type) {
-        case 1:
-        case 2:
-        {   //product
-            _sortarray = kTKPDSORT_HOTLISTSORTARRAY;
+    NSString *arrayString = @"";
+    
+    switch (_sortType) {
+        case SortProductSearch:
+            arrayString = [container stringForKey:@"search_product"];
             break;
-        }
-        case 3:
-        {   //catalog
-            _sortarray = kTKPDSORT_SEARCHCATALOGSORTARRAY;
+
+        case SortHotlistDetail:
+            arrayString = [container stringForKey:@"hotlist"];
             break;
-        }
-        case 4:
-        {    //detail catalog
-            _sortarray = kTKPDSORT_SEARCHDETAILCATALOGSORTARRAY;
+
+        case SortCatalogSearch:
+            arrayString = [container stringForKey:@"search_catalog"];
             break;
-        }
-        case 5:
-        {    //shop
+
+        case SortCatalogDetailSeach:
+            arrayString = [container stringForKey:@"search_catalog_detail"];
             break;
-        }
-        case 6:
-        {   //shop product
-            _sortarray = kTKPDSORT_SEARCHPRODUCTSHOPSORTARRAY;
+
+        case SortProductShopSearch:
+            arrayString = [container stringForKey:@"search_product_shop"];
             break;
-        }
-        case 8:
-        {
-            _sortarray = kTKPDSORT_SHOP_MANAGE_PRODUCT_ARAY;
+
+        case SortManageProduct:
+            arrayString = [container stringForKey:@"manage_product"];
             break;
-        }
+            
+        case SortImageSearch:
+            arrayString = [container stringForKey:@"image_search"];
+
         default:
             break;
     }
-    NSIndexPath *indexpath = [_data objectForKey:kTKPDFILTER_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-    [_selectedsort setObject:indexpath forKey:kTKPDFILTER_DATAINDEXPATHKEY];
+    
+    _sortValues = [self arrayFromString:arrayString];
+}
+
+// Since GTM cannot save JSONArray data, Array is made within a string e.q : "[1, 2, 3]"
+- (NSArray *)arrayFromString:(NSString *)string {
+    NSMutableArray *array = [NSMutableArray new];
+    @try {
+        NSArray *keyValues = [string componentsSeparatedByString:@","];
+        for (NSString *keyValue in keyValues) {
+            NSArray *tmp = [keyValue componentsSeparatedByString:@":"];
+            [array addObject:@{tmp[0] : tmp[1]}];
+        }
+    }
+    @catch (NSException *exception) {
+        return array;
+    }
+    @finally {
+        return array;
+    }
 }
 
 #pragma mark - Memory Management
+
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
 }
 
 #pragma mark - View Action
--(IBAction)tap:(id)sender
+
+-(void)tap:(UIBarButtonItem *)button
 {
-    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
-        UIBarButtonItem *button = (UIBarButtonItem*)sender;
-        switch (button.tag) {
-            case 10:
-            {
-                //CANCEL
-                if (self.presentingViewController != nil) {
-                    if (self.navigationController.viewControllers.count > 1) {
-                        [self.navigationController popViewControllerAnimated:YES];
-                    } else {
-                        [self dismissViewControllerAnimated:YES completion:NULL];
-                    }
-                } else {
-                    [self.navigationController popViewControllerAnimated:YES];
-                }
-                break;
+    if (button.tag == 10) {
+        //CANCEL
+        if (self.presentingViewController != nil) {
+            if (self.navigationController.viewControllers.count > 1) {
+                [self.navigationController popViewControllerAnimated:YES];
+            } else {
+                [self dismissViewControllerAnimated:YES completion:NULL];
             }
-            case 11:
-            {
-                //DONE
-                NSIndexPath *indexPath = [_selectedsort objectForKey:kTKPDFILTER_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-                NSDictionary *orderdict = _sortarray[indexPath.row];
-                NSDictionary *userinfo = @{kTKPDFILTER_APIORDERBYKEY:[orderdict objectForKey:kTKPDFILTER_DATASORTVALUEKEY]?:@"", kTKPDFILTERSORT_DATAINDEXPATHKEY:indexPath?:0};
-                [_delegate SortViewController:self withUserInfo:userinfo];
-                if (self.presentingViewController != nil) {
-                    if (self.navigationController.viewControllers.count > 1) {
-                        [self.navigationController popViewControllerAnimated:YES];
-                    } else {
-                        [self dismissViewControllerAnimated:YES completion:NULL];
-                    }
-                } else {
-                    [self.navigationController popViewControllerAnimated:YES];
-                }
+        } else {
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+    } else if (button.tag == 11) {
+        //DONE
+        NSDictionary *orderDictionary = _sortValues[_selectedIndexPath.row];
+        NSString *sortValue = [[orderDictionary allValues] objectAtIndex:0];
+        [_delegate didSelectSort:sortValue atIndexPath:_selectedIndexPath];
+        if (self.presentingViewController != nil) {
+            if (self.navigationController.viewControllers.count > 1) {
+                [self.navigationController popViewControllerAnimated:YES];
+            } else {
+                [self dismissViewControllerAnimated:YES completion:NULL];
             }
+        } else {
+            [self.navigationController popViewControllerAnimated:YES];
         }
     }
 }
 
 #pragma mark - Table View Data Source
 
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return _sortarray.count;
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return _sortValues.count;
 }
 
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    UITableViewCell* cell = nil;
-        NSString *cellid = kTKPDSORTCELL_IDENTIFIER;
-		
-    cell = (SortCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@""];
     if (cell == nil) {
-        cell = [SortCell newcell];
-        
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@""];
+        cell.tintColor = [UIColor colorWithRed:255.0/255.0 green:87.0/255.0 blue:34.0/255.0 alpha:1];
     }
-    
-    if (_sortarray.count > indexPath.row) {
-        NSIndexPath *indexpath = [_selectedsort objectForKey:kTKPDFILTER_DATAINDEXPATHKEY];
-        if (indexPath.row != indexpath.row) {
-            ((SortCell*)cell).imageview.hidden = YES;
+    if (_sortValues.count > indexPath.row) {
+        NSDictionary *sort =  _sortValues[indexPath.row];
+        cell.textLabel.text = [[sort allKeys] objectAtIndex:0];
+        cell.textLabel.font = [UIFont fontWithName:@"GothamLight" size:15];
+        if (indexPath.row != _selectedIndexPath.row) {
+            cell.accessoryType = UITableViewCellAccessoryNone;
+        } else {
+            cell.accessoryType = UITableViewCellAccessoryCheckmark;
         }
-        else
-            ((SortCell*)cell).imageview.hidden = NO;
-        ((SortCell*)cell).data= @{kTKPDSORT_DATASORTKEY: _sortarray[indexPath.row],kTKPDFILTER_DATAINDEXPATHKEY:indexPath};
     }
-    
-    
 	return cell;
 }
 
@@ -196,13 +193,14 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [_selectedsort setObject:indexPath forKey:kTKPDFILTER_DATAINDEXPATHKEY];
-    [_table reloadData];
+    _selectedIndexPath = indexPath;
+    [self.tableView reloadData];
 }
 
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
+#pragma mark - Getter
 
+- (NSIndexPath *)selectedIndexPath {
+    return _selectedIndexPath?:[NSIndexPath indexPathForRow:0 inSection:0];
 }
 
 @end

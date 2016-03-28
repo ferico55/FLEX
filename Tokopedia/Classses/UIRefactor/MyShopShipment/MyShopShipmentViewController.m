@@ -360,7 +360,7 @@
     ShippingInfoShipments *shipment = [_shipments objectAtIndex:section];
     
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, tableView.sectionHeaderHeight)];
-    headerView.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1];
+    headerView.backgroundColor = [UIColor redColor];
     
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, self.view.frame.size.width, 40)];
     label.text = shipment.shipment_name;

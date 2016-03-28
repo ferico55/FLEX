@@ -7,8 +7,10 @@
 //
 
 #import "TKPHomeBannerStore.h"
-#import "Banner.h"
+#import "SliderObject.h"
 #import "TKPStoreManager.h"
+#import "MiniSlideObject.h"
+#import "MiniSlide.h"
 
 NSString static *const TKPAPIPageKey = @"page";
 NSString static *const TKPAPILimitKey = @"per_page";
@@ -26,21 +28,49 @@ NSInteger static const TKPSuccessStatusCode = 200;
 }
 
 
-- (void)fetchBannerWithCompletion:(void (^)(Banner *, NSError *))completion {
-    RKObjectManager *objectManager = [RKObjectManager sharedClient];
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[Banner mapping] method:RKRequestMethodPOST pathPattern:@"banner.pl" keyPath:@"" statusCodes:[NSIndexSet indexSetWithIndex:TKPSuccessStatusCode]];
+- (void)fetchBannerWithCompletion:(void (^)(NSArray<Slide*>*, NSError *))completion {
+    RKObjectManager *objectManager = [RKObjectManager sharedClient:@"https://mojito.tokopedia.com/api/v1"];
+
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[SliderObject mapping] method:RKRequestMethodGET pathPattern:@"slides" keyPath:@"" statusCodes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(200, 299)]];
     [objectManager addResponseDescriptor:responseDescriptor];
 
-    NSDictionary *parameters = [@{@"action" : @"get_banner"} encrypt];
-    RKObjectRequestOperation *operation = [objectManager appropriateObjectRequestOperationWithObject:nil method:RKRequestMethodPOST path:@"banner.pl" parameters:parameters];
+    NSDictionary *parameters = @{@"page[size]" : @"25", @"filter[device]" : @"16", @"filter[target]" : @"65535", @"filter[state]" : @"1"};
+    RKObjectRequestOperation *operation = [objectManager appropriateObjectRequestOperationWithObject:nil method:RKRequestMethodGET path:@"slides" parameters:[parameters autoParameters]];
 
     [operation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         NSDictionary *result = [mappingResult dictionary];
-        Banner *banner = result[@""];
+        SliderObject *banner = result[@""];
+
         if (completion != nil) {
-            completion(banner, nil);
+            completion(banner.data.slides, nil);
         }
 
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        if (completion != nil) {
+            completion(nil, error);
+        }
+    }];
+    
+    [self.storeManager.networkQueue addOperation:operation];
+}
+
+
+- (void)fetchMiniSlideWithCompletion:(void (^)(NSArray<MiniSlide *> *, NSError *))completion {
+    RKObjectManager *objectManager = [RKObjectManager sharedClient:@"https://mojito.tokopedia.com/api/v1"];
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[MiniSlideObject mapping] method:RKRequestMethodGET pathPattern:@"banners" keyPath:@"" statusCodes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(200, 299)]];
+    [objectManager addResponseDescriptor:responseDescriptor];
+    
+    NSDictionary *parameters = @{@"page[size]" : @"25", @"filter[device]" : IS_IPAD ? @"32" : @"16", @"filter[target]" : @"65535", @"filter[state]" : @"1"};
+    RKObjectRequestOperation *operation = [objectManager appropriateObjectRequestOperationWithObject:nil method:RKRequestMethodGET path:@"banners" parameters:[parameters autoParameters]];
+    
+    [operation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        NSDictionary *result = [mappingResult dictionary];
+        MiniSlideObject *banner = result[@""];
+        
+        if (completion != nil) {
+            completion(banner.data.banners, nil);
+        }
+        
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         if (completion != nil) {
             completion(nil, error);

@@ -220,12 +220,15 @@
             
             BankAccountFormList *list = _list[indexPath.row];
             ((GeneralList1GestureCell*)cell).textLabel.text = list.bank_account_name;
-            ((GeneralList1GestureCell*)cell).detailTextLabel.hidden = YES;
+            ((GeneralList1GestureCell*)cell).detailTextLabel.text = list.bank_name;
+//            ((GeneralList1GestureCell*)cell).imageView.image = list.ban
             ((GeneralList1GestureCell*)cell).indexpath = indexPath;
             
             if (indexPath.row == 0) {
-                ((GeneralList1GestureCell*)cell).detailTextLabel.text = @"Utama";
-                ((GeneralList1GestureCell*)cell).detailTextLabel.hidden = NO;
+                ((GeneralList1GestureCell*)cell).detailTextLabel.text = [NSString stringWithFormat:@"%@ (Utama)", list.bank_name];
+                ((GeneralList1GestureCell*)cell).detailTextLabel.textColor = [UIColor redColor];
+            } else {
+                ((GeneralList1GestureCell*)cell).detailTextLabel.textColor = [UIColor grayColor];
             }
             
         }

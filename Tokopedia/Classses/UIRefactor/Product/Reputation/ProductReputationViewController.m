@@ -32,12 +32,13 @@
 #import "TotalLikeDislike.h"
 #import "TokopediaNetworkManager.h"
 #import "ProductReputationSimpleCell.h"
+#import "HelpfulReviewRequest.h"
 #define CCellIdentifier @"cell"
 #define CTagGetProductReview 1
 
 static NSInteger userViewHeight = 70;
 
-@interface ProductReputationViewController ()<TTTAttributedLabelDelegate, UIActionSheetDelegate, TokopediaNetworkManagerDelegate, LoadingViewDelegate, LoginViewDelegate, ReportViewControllerDelegate>
+@interface ProductReputationViewController ()<TTTAttributedLabelDelegate, UIActionSheetDelegate, TokopediaNetworkManagerDelegate, LoadingViewDelegate, LoginViewDelegate, ReportViewControllerDelegate, HelpfulReviewRequestDelegate, ProductReputationSimpleDelegate>
 @end
 
 @implementation ProductReputationViewController
@@ -52,14 +53,18 @@ static NSInteger userViewHeight = 70;
     LoadingView *loadingView;
     NoResultView *noResultView;
     NSOperationQueue *_operationQueue, *operationQueueLikeDislike;
-    
+
     int page, filterStar;
     NSString *strUri;
     Review *review;
     NSMutableArray *arrList;
+    NSMutableArray<DetailReputationReview*> *helpfulReviews;
     NSDictionary *auth;
     NSMutableDictionary *loadingLikeDislike, *dictLikeDislike;
     TokopediaNetworkManager *tokopediaNetworkManager;
+    
+    HelpfulReviewRequest *helpfulReviewRequest;
+    BOOL isShowingMore, animationHasShown;
 }
 
 
@@ -86,7 +91,9 @@ static NSInteger userViewHeight = 70;
     UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
     auth = [_userManager getUserLoginData];
     [self setLoadingView:YES];
-    [[self getNetworkManager:CTagGetProductReview] doRequest];
+    helpfulReviewRequest = [HelpfulReviewRequest new];
+    helpfulReviewRequest.delegate = self;
+    [helpfulReviewRequest requestHelpfulReview:_strProductID];
     
     //Add gesture to view star
     viewStarOne.tag = 1;
@@ -94,6 +101,9 @@ static NSInteger userViewHeight = 70;
     viewStarThree.tag = 3;
     viewStarFour.tag = 4;
     viewStarFive.tag = 5;
+    
+    helpfulReviews = [[NSMutableArray alloc]init];
+    isShowingMore = NO;
 
     [viewStarOne addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(gestureViewStar:)]];
     [viewStarTwo addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(gestureViewStar:)]];
@@ -118,6 +128,13 @@ static NSInteger userViewHeight = 70;
     
     UINib *cellNib = [UINib nibWithNibName:@"ProductReputationSimpleCell" bundle:nil];
     [tableContent registerNib:cellNib forCellReuseIdentifier:@"ProductReputationSimpleCellIdentifier"];
+    
+    
+}
+
+-(void) viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    animationHasShown = NO;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -260,14 +277,74 @@ static NSInteger userViewHeight = 70;
 
 
 
-#pragma mark - UITableView Delegate and DataSource 
+#pragma mark - UITableView Delegate and DataSource
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    UIView *header;
+    if(filterStar == 0 && helpfulReviews.count >0 && section == 0){
+        header = _helpfulReviewHeader;
+    }
+    return header;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
+    UIView *footer;
+    if(filterStar == 0 && helpfulReviews.count >0 && section == 0){
+        footer = _helpfulReviewFooter;
+    }
+    return footer;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if(filterStar == 0 && helpfulReviews.count >0 && section == 0){
+        return 50;
+    }
+    return 10;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    if(filterStar == 0 && helpfulReviews.count >0 && section == 0){
+        return 10;
+    }
+    return 0;
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return (filterStar == 0 && helpfulReviews.count > 0) ? 2 : 1;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    DetailReputationReview *reputationDetail = arrList[indexPath.row];
+    if(filterStar == 0 && helpfulReviews.count > 0){
+        if(indexPath.section == 1){
+            return [self calculateCellHeightAtIndexPath:indexPath withArrayContent:arrList];
+        }else{
+            if(!isShowingMore && indexPath.row == 1){
+                //"load more" cell
+                if(helpfulReviews.count > 1){
+                    return 30;
+                }else{
+                    return 0;
+                }
+            }else if(isShowingMore && indexPath.row == helpfulReviews.count){
+                return 30;
+            }else{
+                return [self calculateCellHeightAtIndexPath:indexPath withArrayContent:helpfulReviews];
+            }
+            
+        }
+    }else{
+        return [self calculateCellHeightAtIndexPath:indexPath withArrayContent:arrList];
+    }
+    return 0;
+}
+
+- (CGFloat) calculateCellHeightAtIndexPath:(NSIndexPath*)indexPath withArrayContent:(NSMutableArray*)arr{
+    //don't auto calculate cell for performance in iOS 7
+    /*
+    DetailReputationReview *reputationDetail = arr[indexPath.row];
     UILabel *messageLabel = [[UILabel alloc] init];
     
     [messageLabel setText:reputationDetail.review_message];
@@ -281,34 +358,89 @@ static NSInteger userViewHeight = 70;
     
     CGFloat height = userViewHeight + 40 + messageLabel.frame.size.height ;
     return height;
-
+     */
+    
+    
+    return 160;
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    cell.backgroundColor = [UIColor clearColor];
     if(indexPath.row == arrList.count-1) {
         if(strUri!=nil && ![strUri isEqualToString:@"0"]) {
             [self setLoadingView:YES];
             [[self getNetworkManager:CTagGetProductReview] doRequest];
         }
     }
+    if(!animationHasShown && helpfulReviews.count > 0 && indexPath.section == 0 && ![self isLastCellInSectionZero:indexPath]){
+        [self animate:cell];
+        animationHasShown = YES;
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    ProductReputationSimpleCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ProductReputationSimpleCellIdentifier"];
-    
-    DetailReputationReview *reputationDetail = arrList[indexPath.row];
-    [cell setReputationModelView:reputationDetail.viewModel];
-    
-    if (![dictLikeDislike objectForKey:reputationDetail.review_id]) {
-        if(! [loadingLikeDislike objectForKey:reputationDetail.review_id]) {
-            [loadingLikeDislike setObject:reputationDetail.review_id forKey:reputationDetail.review_id];
-            [self performSelectorInBackground:@selector(actionGetLikeStatus:) withObject:@[reputationDetail, @(indexPath.row)]];
+    if(filterStar == 0 && helpfulReviews.count > 0){
+        if(indexPath.section == 1){
+            ProductReputationSimpleCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ProductReputationSimpleCellIdentifier"];
+            cell.isHelpful = NO;
+            cell.delegate = self;
+            cell.indexPath = indexPath;
+            
+            DetailReputationReview *reputationDetail = arrList[indexPath.row];
+            [cell setReputationModelView:reputationDetail.viewModel];
+            
+            if (![dictLikeDislike objectForKey:reputationDetail.review_id]) {
+                if(! [loadingLikeDislike objectForKey:reputationDetail.review_id]) {
+                    [loadingLikeDislike setObject:reputationDetail.review_id forKey:reputationDetail.review_id];
+                    [self performSelectorInBackground:@selector(actionGetLikeStatus:) withObject:@[reputationDetail, indexPath]];
+                }
+            }
+            return cell;
+        }else{
+            NSInteger limit = isShowingMore ? helpfulReviews.count : 1;
+            if(indexPath.row < limit){
+                ProductReputationSimpleCell *helpfulCell = [tableView dequeueReusableCellWithIdentifier:@"ProductReputationSimpleCellIdentifier"];
+                helpfulCell.isHelpful = YES;
+                helpfulCell.delegate = self;
+                helpfulCell.indexPath = indexPath;
+                
+                DetailReputationReview *reputationDetail = helpfulReviews[indexPath.row];
+                [helpfulCell setReputationModelView:reputationDetail.viewModel];
+                
+                CGRect newFrame = helpfulCell.leftBorderView.frame;
+                newFrame.size.width = helpfulCell.leftBorderView.frame.size.width;
+                newFrame.size.height = [self calculateCellHeightAtIndexPath:indexPath withArrayContent:helpfulReviews] - userViewHeight;
+                [helpfulCell.leftBorderView setFrame:newFrame];
+                
+                if (![dictLikeDislike objectForKey:reputationDetail.review_id]) {
+                    if(! [loadingLikeDislike objectForKey:reputationDetail.review_id]) {
+                        [loadingLikeDislike setObject:reputationDetail.review_id forKey:reputationDetail.review_id];
+                        [self performSelectorInBackground:@selector(actionGetLikeStatus:) withObject:@[reputationDetail, indexPath]];
+                    }
+                }
+                return helpfulCell;
+            }else{
+                return _helpfulReviewLoadMoreCell;
+            }
         }
+    }else{
+        ProductReputationSimpleCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ProductReputationSimpleCellIdentifier"];
+        cell.isHelpful = NO;
+        cell.delegate = self;
+        cell.indexPath = indexPath;
+        
+        DetailReputationReview *reputationDetail = arrList[indexPath.row];
+        [cell setReputationModelView:reputationDetail.viewModel];
+        
+        if (![dictLikeDislike objectForKey:reputationDetail.review_id]) {
+            if(! [loadingLikeDislike objectForKey:reputationDetail.review_id]) {
+                [loadingLikeDislike setObject:reputationDetail.review_id forKey:reputationDetail.review_id];
+                [self performSelectorInBackground:@selector(actionGetLikeStatus:) withObject:@[reputationDetail, indexPath]];
+            }
+        }
+
+        return cell;
     }
-    
-    return cell;
 }
 
 - (void)mappingAttribute:(DetailReputationReview *)reputationReview {
@@ -321,12 +453,44 @@ static NSInteger userViewHeight = 70;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    DetailReputationReview *detailReputationReview = arrList[indexPath.row];
-    [self redirectToProductDetailReputation:detailReputationReview withIndexPath:indexPath];
+    if(filterStar == 0 && helpfulReviews.count > 0){
+        if(indexPath.section == 1){
+            DetailReputationReview *detailReputationReview = arrList[indexPath.row];
+            [self redirectToProductDetailReputation:detailReputationReview withIndexPath:indexPath];
+        }else{
+            if([self isLastCellInSectionZero:indexPath]){
+                [self showMoreTapped:nil];
+            }else{
+                //will show most hr details when jerry team has already STP
+                DetailReputationReview *detailReputationReview = helpfulReviews[indexPath.row];
+                [self redirectToProductDetailReputation:detailReputationReview withIndexPath:indexPath];
+            }
+        }
+    }else{
+        DetailReputationReview *detailReputationReview = arrList[indexPath.row];
+        [self redirectToProductDetailReputation:detailReputationReview withIndexPath:indexPath];
+
+    }
+}
+
+- (BOOL) isLastCellInSectionZero:(NSIndexPath *)indexPath{
+    if (isShowingMore){
+        return indexPath.row == helpfulReviews.count ? YES : NO;
+    }else{
+        return indexPath.row == 1 ? YES : NO;
+    }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return arrList.count;
+    if(filterStar == 0 && helpfulReviews.count > 0){
+        if(section==1){
+            return arrList.count;
+        }else{
+            return isShowingMore ? helpfulReviews.count+1 : 2;
+        }
+    }else{
+        return arrList.count;
+    }
 }
 
 #pragma mark - TTTAttributeLabel Delegate
@@ -405,6 +569,9 @@ static NSInteger userViewHeight = 70;
     [arrList removeAllObjects];
     [tableContent reloadData];
     
+    if(helpfulReviews.count > 0){
+        [_middleMargin setHidden:NO];
+    }
     
     [self setLoadingView:YES];
     [[self getNetworkManager:CTagGetProductReview] doRequest];
@@ -422,6 +589,7 @@ static NSInteger userViewHeight = 70;
     [tableContent reloadData];
     btnFilter6Month.tag = 1;
     btnFilterAllTime.tag = 0;
+    animationHasShown = NO;
     
     [self setLoadingView:YES];
     [[self getNetworkManager:CTagGetProductReview] doRequest];
@@ -440,6 +608,7 @@ static NSInteger userViewHeight = 70;
     [tableContent reloadData];
     btnFilter6Month.tag = 0;
     btnFilterAllTime.tag = 1;
+    animationHasShown = NO;
     
     [self setLoadingView:YES];
     [[self getNetworkManager:CTagGetProductReview] doRequest];
@@ -472,6 +641,16 @@ static NSInteger userViewHeight = 70;
     [self dismissAllPopTipViews];
 }
 
+- (IBAction)showMoreTapped:(id)sender {
+    if(isShowingMore){
+        isShowingMore = NO;
+        [_buttonShowMore setTitle:@"tampilkan semua" forState:UIControlStateNormal];
+    }else{
+        isShowingMore = YES;
+        [_buttonShowMore setTitle:@"sembunyikan" forState:UIControlStateNormal];
+    }
+    [tableContent reloadData];
+}
 
 #pragma mark - Method
 - (void)unloadRequesting {
@@ -592,6 +771,7 @@ static NSInteger userViewHeight = 70;
             break;
     }
     
+    [_middleMargin setHidden:YES];
     
     //Load data
     [operationQueueLikeDislike cancelAllOperations];
@@ -639,9 +819,15 @@ static NSInteger userViewHeight = 70;
     LoginViewController *controller = [LoginViewController new];
     controller.delegate = self;
     controller.isPresentedViewController = YES;
-    controller.redirectViewController = self;
+    //controller.redirectViewController = self;
     navigationController.viewControllers = @[controller];
-    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+    
+    //prevent crash because of phone verif
+    //will fix this after revamp-review finished
+    //[self.navigationController presentViewController:navigationController animated:YES completion:nil];
+    
+    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Anda belum login."] delegate:self];
+    [alert show];
 }
 
 - (void)configureRestKitLikeDislike:(RKObjectManager *)objectManager {
@@ -792,6 +978,7 @@ static NSInteger userViewHeight = 70;
     
     dispatch_async(dispatch_get_main_queue(), ^(void){
         DetailReputationReview *list = (DetailReputationReview *)[arrayList firstObject];
+        NSIndexPath* indexPath = (NSIndexPath*) [arrayList lastObject];
         RKObjectManager *tempObjectManager = [self getObjectManagerTotalLike];
         NSDictionary *param = @{kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETLIKEDISLIKE,
                                 kTKPDDETAIL_REVIEWIDS : list.review_id,
@@ -801,7 +988,7 @@ static NSInteger userViewHeight = 70;
         
         NSTimer *timerLikeDislike = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(timeOutGetLikeDislike:) userInfo:list.review_id repeats:NO];
         [[NSRunLoop currentRunLoop] addTimer:timerLikeDislike forMode:NSRunLoopCommonModes];
-        [loadingLikeDislike setObject:@[tempRequest, [NSIndexPath indexPathForRow:[[arrayList lastObject] intValue] inSection:0], timerLikeDislike] forKey:list.review_id];
+        [loadingLikeDislike setObject:@[tempRequest, indexPath, timerLikeDislike] forKey:list.review_id];
         
         
         [tempRequest setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
@@ -816,7 +1003,7 @@ static NSInteger userViewHeight = 70;
             
             //Update UI
             if([loadingLikeDislike objectForKey:list.review_id])
-                [tableContent reloadRowsAtIndexPaths:@[[[loadingLikeDislike objectForKey:list.review_id] objectAtIndex:1]] withRowAnimation:UITableViewRowAnimationNone];
+                [tableContent reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
             [loadingLikeDislike removeObjectForKey:list.review_id];
         } failure:^(RKObjectRequestOperation *operation, NSError *error) {
             /** failure **/
@@ -1045,6 +1232,23 @@ static NSInteger userViewHeight = 70;
 //    }
 }
 
+
+- (void)animate:(UITableViewCell *)cell {
+    [@[cell] enumerateObjectsUsingBlock:^(UITableViewCell *cell, NSUInteger idx, BOOL *stop) {
+        [cell setFrame:CGRectMake([UIScreen mainScreen].bounds.size.width, cell.frame.origin.y, cell.frame.size.width, cell.frame.size.height)];
+        [UIView animateWithDuration:1
+                              delay:0
+             usingSpringWithDamping:0.7
+              initialSpringVelocity:0.2
+                            options:UIViewAnimationOptionCurveEaseOut
+                         animations:^
+         {
+             [cell setFrame:CGRectMake(0, cell.frame.origin.y, cell.frame.size.width, cell.frame.size.height)];
+         }
+                         completion:nil];
+    }];
+    
+}
 
 - (void)actionRate:(id)sender {
     DetailReputationReview *tempDetailReputationView = arrList[((UIView *) sender).tag];
@@ -1397,6 +1601,41 @@ static NSInteger userViewHeight = 70;
     [tableContent reloadData];
 }
 
+#pragma mark - HelpfulReviewRequestDelegate
+
+- (void) didReceiveHelpfulReview:(NSArray*)helpfulReview{
+    [[self getNetworkManager:CTagGetProductReview] doRequest];
+    
+    [helpfulReviews removeAllObjects];
+    [helpfulReviews addObjectsFromArray:helpfulReview];
+    
+    if(helpfulReviews.count == 0){
+        [_middleMargin setHidden:YES];
+    }
+    
+}
+
+- (void)showMoreDidTappedInIndexPath:(NSIndexPath*)indexPath{
+    if(filterStar == 0 && helpfulReviews.count > 0){
+        if(indexPath.section == 1){
+            DetailReputationReview *detailReputationReview = arrList[indexPath.row];
+            [self redirectToProductDetailReputation:detailReputationReview withIndexPath:indexPath];
+        }else{
+            if([self isLastCellInSectionZero:indexPath]){
+                [self showMoreTapped:nil];
+            }else{
+                //will show most hr details when jerry team has already STP
+                DetailReputationReview *detailReputationReview = helpfulReviews[indexPath.row];
+                [self redirectToProductDetailReputation:detailReputationReview withIndexPath:indexPath];
+            }
+        }
+    }else{
+        DetailReputationReview *detailReputationReview = arrList[indexPath.row];
+        [self redirectToProductDetailReputation:detailReputationReview withIndexPath:indexPath];
+        
+    }
+
+}
 
 
 #pragma mark - GTM

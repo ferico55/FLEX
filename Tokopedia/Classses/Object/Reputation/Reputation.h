@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "ReputationResult.h"
 
-@interface Reputation : NSObject
+@interface Reputation : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSArray *message_error;
 @property (nonatomic, strong) NSString *status;

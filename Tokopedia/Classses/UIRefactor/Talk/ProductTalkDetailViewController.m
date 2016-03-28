@@ -7,41 +7,23 @@
 //
 
 #define CHeightUserLabel 21
-#import "Tkpd.h"
+
 #import "ShopReputation.h"
 #import "CMPopTipView.h"
-#import "ReputationDetail.h"
 #import "ProductTalkDetailViewController.h"
 #import "TalkComment.h"
 #import "detail.h"
 #import "GeneralTalkCommentCell.h"
 #import "ProductTalkCommentAction.h"
-#import "TKPDSecureStorage.h"
-#import "URLCacheController.h"
-#import "HPGrowingTextView.h"
-#import "MGSwipeTableCell.h"
 #import "MGSwipeButton.h"
 #import "GeneralAction.h"
-#import "DetailProductViewController.h"
 #import "LoginViewController.h"
-#import "ShopBadgeLevel.h"
 
-#import "ProfileFavoriteShopViewController.h"
-#import "ProfileContactViewController.h"
-#import "TKPDTabProfileNavigationController.h"
-#import "TKPDTabInboxTalkNavigationController.h"
 #import "ReportViewController.h"
 #import "NavigateViewController.h"
-#import "UserAuthentificationManager.h"
-
-#import "ProductTalkViewController.h"
-#import "InboxTalkViewController.h"
-#import "UserContainerViewController.h"
 
 #import "SmileyAndMedal.h"
-#import "string_inbox_message.h"
 #import "stringrestkit.h"
-#import "string_more.h"
 #import "string_inbox_talk.h"
 
 #import "NavigationHelper.h"
@@ -52,8 +34,8 @@
     UITableViewDelegate,
     UIScrollViewDelegate,
     UISplitViewControllerDelegate,
+    UITextViewDelegate,
     MGSwipeTableCellDelegate,
-    HPGrowingTextViewDelegate,
     ReportViewControllerDelegate,
     LoginViewDelegate,
     GeneralTalkCommentCellDelegate,
@@ -94,7 +76,7 @@
     NSOperationQueue *_operationDeleteCommentQueue;
     TalkComment *_talkcomment;
 
-    HPGrowingTextView *_growingtextview;
+    IBOutlet RSKGrowingTextView *_growingtextview;
     
     NSTimeInterval _timeinterval;
     NSMutableDictionary *_auth;
@@ -119,16 +101,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *productNameLabel;
 @property (weak, nonatomic) IBOutlet UIButton *talkCommentButtonLarge;
 
--(void)cancel;
--(void)configureRestKit;
--(void)loadData;
--(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation*)operation;
--(void)requestfailure:(id)object;
--(void)requestprocess:(id)object;
--(void)requesttimeout;
--(void)configureSendCommentRestkit;
-- (void)configureDeleteCommentRestkit;
-
 @end
 
 @implementation ProductTalkDetailViewController
@@ -144,10 +116,11 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     
-    _marksOpenedTalksAsRead = NO;
+    
     
     if (self) {
         _isnodata = YES;
+        _marksOpenedTalksAsRead = NO;
         self.title = kTKPDTITLE_TALK;
     }
     
@@ -187,10 +160,8 @@
 #pragma mark - View Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    // Do any additional setup after loading the view from its nib.
-    CGRect screenRect = [[UIScreen mainScreen] bounds];
-    self.view.frame = screenRect;
+
+    [self adjustSendButtonAvailability];
     
     _list = [NSMutableArray new];
     _operationQueue = [NSOperationQueue new];
@@ -206,8 +177,7 @@
     TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
     NSDictionary* auth = [secureStorage keychainDictionary];
     _auth = [auth mutableCopy];
-    [_sendButton setEnabled:NO];
-    
+
     if(_marksOpenedTalksAsRead) {
         _urlPath = kTKPDINBOX_TALK_APIPATH;
         _urlAction = kTKPDDETAIL_APIGETINBOXDETAIL;
@@ -350,7 +320,7 @@
             } else {
                 if (_auth) {
                     if (list.comment_user_reputation == nil && list.comment_user_id != nil) {
-                        NSString *userId = [[_auth objectForKey:kTKPD_USERIDKEY] stringValue];
+                        NSString *userId = [_userManager getUserId];
                         BOOL usersComment = [list.comment_user_id isEqualToString:userId];
                         if (usersComment) {
                             UserAuthentificationManager *user = [UserAuthentificationManager new];
@@ -447,11 +417,6 @@
     return cell;
 }
 
-#pragma mark - Table View Delegate
--(void) scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-    [_growingtextview resignFirstResponder];
-}
-
 #pragma mark - Methods
 - (void)initPopUp:(NSString *)strText withSender:(id)sender withRangeDesc:(NSRange)range
 {
@@ -493,7 +458,11 @@
     } else {
         [_header setHidden:NO];
         if([_userManager isLogin]) {
-            [_talkInputView setHidden:NO];
+            if(![[_data objectForKey:@"talk_product_status"] isEqualToString:STATE_TALK_PRODUCT_DELETED] &&
+               ![[_data objectForKey:@"talk_product_status"] isEqualToString:STATE_TALK_PRODUCT_BANNED]
+               ) {
+                [_talkInputView setHidden:NO];
+            }
             [_sendButton setEnabled:NO];
         } else {
             [_talkInputView setHidden:YES];
@@ -584,37 +553,11 @@
 }
 
 - (void) initTalkInputView {
-    NSInteger width =self.view.frame.size.width - _sendButton.frame.size.width - 10 - ((UIViewController*)_masterViewController).view.frame.size.width;
-    _growingtextview = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(10, 10, width, 45)];
-    _growingtextview.isScrollable = NO;
-    _growingtextview.contentInset = UIEdgeInsetsMake(0, 5, 0, 5);
     _growingtextview.layer.borderWidth = 0.5f;
     _growingtextview.layer.borderColor = [UIColor lightGrayColor].CGColor;
-    _growingtextview.layer.cornerRadius = 5;
-    _growingtextview.layer.masksToBounds = YES;
-    
-    _growingtextview.minNumberOfLines = 1;
-    _growingtextview.maxNumberOfLines = 6;
-    // you can also set the maximum height in points with maxHeight
-    _growingtextview.maxHeight = 150.f;
 
-    //    _growingtextview.font = [UIFont fontWithName:@"GothamBook" size:13.0f];
-    _growingtextview.delegate = self;
-    _growingtextview.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
-    _growingtextview.backgroundColor = [UIColor whiteColor];
-    _growingtextview.placeholder = @"Kirim pesanmu di sini..";
-    
-    [_talkInputView addSubview:_growingtextview];
     _talkInputView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
 }
-
-
-#pragma mark - Life Cycle
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-}
-
 
 #pragma mark - Request and Mapping
 -(void) cancel {
@@ -715,7 +658,6 @@
     
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [_timer invalidate];
-        [_sendButton setEnabled:YES];
         _timer = nil;
         [_act stopAnimating];
         _table.hidden = NO;
@@ -882,7 +824,7 @@
         UIButton *btn = (UIButton *)sender;
         switch (btn.tag) {
             case 10: {
-                if([_growingtextview.text length] < 5) {
+                if([_growingtextview.text length] < 6) {
                     return;
                 }
                 NSInteger lastindexpathrow = [_list count];
@@ -893,13 +835,17 @@
                 if(_auth) {
                     
                     TalkCommentList *comment = [TalkCommentList new];
-                    comment.comment_user_id = [[_auth objectForKey:kTKPD_USERIDKEY] stringValue];
+                    comment.comment_user_id = [_userManager getUserId];
                     comment.comment_user_name = [_auth objectForKey:@"full_name"];
                     comment.comment_user_image = [_auth objectForKey:@"user_image"];
                     comment.comment_message =_growingtextview.text;
 
                     if ([_auth objectForKey:@"shop_id"]) {
-                        if ([[_data objectForKey:@"talk_shop_id"] isEqualToString:[[_auth objectForKey:@"shop_id"] stringValue]]) {
+                        //TODO: the UserAuthenticationManager actually returns shop id as NSNumber*,
+                        //so we need to get the string value of it. need to fix data type problem
+                        NSString* userShopId = [((NSNumber*)[_userManager getShopId]) stringValue];
+                        
+                        if ([[_data objectForKey:@"talk_shop_id"] isEqualToString:userShopId]) {
                             comment.comment_shop_name = [_auth objectForKey:@"shop_name"];
                             comment.comment_shop_image = [_auth objectForKey:@"shop_avatar"];
                             comment.comment_is_owner = @"1";
@@ -932,6 +878,7 @@
                         [self addProductCommentTalk];
                         
                         _growingtextview.text = nil;
+                        [self adjustSendButtonAvailability];
                         [_growingtextview resignFirstResponder];
                     } else {
                         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Sedang memuat komentar.."]
@@ -1027,7 +974,7 @@
         [_refreshControl endRefreshing];
         [_timer invalidate];
         _timer = nil;
-        
+
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         /** failure **/
         [self requestfailure:error];
@@ -1074,8 +1021,8 @@
             TalkCommentList *comment = _list[_list.count-1];
             comment.is_just_sent = NO;
             comment.comment_id = commentaction.result.comment_id;
-            comment.comment_user_id = [[_auth objectForKey:kTKPD_USERIDKEY] stringValue];
-
+            comment.comment_user_id = [_userManager getUserId];
+            
             if([dictCell objectForKey:@"-1"]) {
                 [dictCell removeObjectForKey:@"-1"];
             }
@@ -1096,18 +1043,6 @@
 
 - (void)requestactionfailure:(id)error {
     
-}
-
-#pragma mark - UITextView Delegate
-- (void)growingTextView:(HPGrowingTextView *)growingTextView willChangeHeight:(float)height
-{
-    float diff = (growingTextView.frame.size.height - height);
-    
-    CGRect r = _talkInputView.frame;
-    r.size.height -= diff;
-    r.origin.y += diff;
-    
-    _talkInputView.frame = r;
 }
 
 -(void) keyboardWillShow:(NSNotification *)note{
@@ -1467,15 +1402,6 @@
 
 }
 
-#pragma mark - GrowingTextView Delegate
-- (void)growingTextViewDidChange:(HPGrowingTextView *)growingTextView  {
-    if([growingTextView.text length] < 5) {
-        _sendButton.enabled = NO;
-    } else {
-        _sendButton.enabled = YES;
-    }
-}
-
 #pragma mark - Notification Delegate
 - (void)userDidLogin:(NSNotification*)notification {
     _userManager = [UserAuthentificationManager new];
@@ -1524,4 +1450,15 @@
 {
     return NO;
 }
+
+- (void)textViewDidChange:(UITextView *)textView {
+    [self adjustSendButtonAvailability];
+}
+
+- (void)adjustSendButtonAvailability {
+    NSString *text = [_growingtextview.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+
+    _sendButton.enabled = text.length > 5;
+}
+
 @end

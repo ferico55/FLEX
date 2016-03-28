@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -30,7 +30,7 @@
                 <outlet property="bankInformationLabel" destination="UlA-HK-VJM" id="hEu-MA-vdo"/>
                 <outlet property="bankNameButton" destination="uxK-Dt-HgQ" id="2mH-Ay-ivo"/>
                 <outlet property="container" destination="NqZ-n7-OkZ" id="6h3-Yo-OFA"/>
-                <outlet property="contentView" destination="iN0-l3-epB" id="DQc-UL-5eD"/>
+                <outlet property="contentView" destination="0mw-Mq-wBd" id="52g-0p-Jhh"/>
                 <outlet property="otpInformationLabel" destination="vpW-pM-MnP" id="lb2-ye-ZBg"/>
                 <outlet property="passwordTextField" destination="Wp0-pG-MDR" id="08h-zv-s2L"/>
                 <outlet property="sendOTPButton" destination="LFC-ke-dZO" id="qgj-WO-gsZ"/>
@@ -40,17 +40,19 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="P7a-74-Fcu">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NqZ-n7-OkZ">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                    <animations/>
                     <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="6PR-ea-NVw"/>
                     </connections>
                 </scrollView>
             </subviews>
+            <animations/>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="NqZ-n7-OkZ" firstAttribute="top" secondItem="P7a-74-Fcu" secondAttribute="top" id="Pbb-4Z-Pa9"/>
@@ -66,366 +68,413 @@
                 <action selector="gesture:" destination="-1" id="7v8-Ff-C90"/>
             </connections>
         </tapGestureRecognizer>
-        <view contentMode="scaleToFill" id="iN0-l3-epB">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+        <view contentMode="scaleToFill" id="0mw-Mq-wBd">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <view tag="7" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uwm-wv-N5P">
-                    <rect key="frame" x="0.0" y="25" width="320" height="44"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iN0-l3-epB">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                     <subviews>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Ne-Bv-eCD" userLabel="Border Top">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
-                            <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
+                        <view tag="7" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uwm-wv-N5P">
+                            <rect key="frame" x="0.0" y="25" width="600" height="44"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Ne-Bv-eCD" userLabel="Border Top">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="1"/>
+                                    <animations/>
+                                    <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="1" id="d23-vL-BFX"/>
+                                    </constraints>
+                                </view>
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nama Akun" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2S3-vQ-hCL">
+                                    <rect key="frame" x="15" y="0.0" width="120" height="44"/>
+                                    <animations/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="120" id="Wb6-zQ-Zfw"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                                    <color key="textColor" red="0.25882352941176467" green="0.25882352941176467" blue="0.25882352941176467" alpha="1" colorSpace="deviceRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hGu-iM-Ow3">
+                                    <rect key="frame" x="140" y="0.0" width="445" height="44"/>
+                                    <animations/>
+                                    <color key="textColor" red="0.45882352941176469" green="0.45882352941176469" blue="0.45882352941176469" alpha="1" colorSpace="calibratedRGB"/>
+                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                                    <textInputTraits key="textInputTraits"/>
+                                    <connections>
+                                        <outlet property="delegate" destination="-1" id="XUQ-Gk-Eni"/>
+                                    </connections>
+                                </textField>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8JS-ok-wrd" userLabel="Border Bottom">
+                                    <rect key="frame" x="0.0" y="43" width="600" height="1"/>
+                                    <animations/>
+                                    <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="1" id="6Ox-HG-EVg"/>
+                                    </constraints>
+                                </view>
+                            </subviews>
+                            <animations/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="1" id="d23-vL-BFX"/>
+                                <constraint firstAttribute="bottom" secondItem="hGu-iM-Ow3" secondAttribute="bottom" id="Aoz-JJ-yuw"/>
+                                <constraint firstItem="hGu-iM-Ow3" firstAttribute="top" secondItem="uwm-wv-N5P" secondAttribute="top" id="B0F-4r-WKC"/>
+                                <constraint firstItem="9Ne-Bv-eCD" firstAttribute="top" secondItem="uwm-wv-N5P" secondAttribute="top" id="BUC-aF-24N"/>
+                                <constraint firstItem="hGu-iM-Ow3" firstAttribute="leading" secondItem="2S3-vQ-hCL" secondAttribute="trailing" constant="5" id="Exe-fC-wog"/>
+                                <constraint firstItem="8JS-ok-wrd" firstAttribute="leading" secondItem="uwm-wv-N5P" secondAttribute="leading" id="SjZ-4I-4N8"/>
+                                <constraint firstAttribute="trailing" secondItem="8JS-ok-wrd" secondAttribute="trailing" id="afR-zX-W47"/>
+                                <constraint firstItem="2S3-vQ-hCL" firstAttribute="leading" secondItem="uwm-wv-N5P" secondAttribute="leading" constant="15" id="ass-Tm-eA3"/>
+                                <constraint firstAttribute="bottom" secondItem="2S3-vQ-hCL" secondAttribute="bottom" id="hmI-tK-SYU"/>
+                                <constraint firstAttribute="trailing" secondItem="hGu-iM-Ow3" secondAttribute="trailing" constant="15" id="kDP-Is-ef9"/>
+                                <constraint firstAttribute="bottom" secondItem="8JS-ok-wrd" secondAttribute="bottom" id="oxZ-kg-7FS"/>
+                                <constraint firstItem="2S3-vQ-hCL" firstAttribute="top" secondItem="uwm-wv-N5P" secondAttribute="top" id="sBY-QP-Iui"/>
+                                <constraint firstItem="9Ne-Bv-eCD" firstAttribute="leading" secondItem="uwm-wv-N5P" secondAttribute="leading" id="sQH-0n-IV8"/>
+                                <constraint firstAttribute="height" constant="44" id="v7V-VP-mOv"/>
+                                <constraint firstAttribute="trailing" secondItem="9Ne-Bv-eCD" secondAttribute="trailing" id="wCy-2X-vzW"/>
                             </constraints>
                         </view>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nama Akun" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2S3-vQ-hCL">
-                            <rect key="frame" x="15" y="0.0" width="120" height="44"/>
+                        <view tag="7" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AON-31-j3x">
+                            <rect key="frame" x="0.0" y="69" width="600" height="44"/>
+                            <subviews>
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nomor Rekening" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="12X-Go-nbk">
+                                    <rect key="frame" x="15" y="0.0" width="120" height="44"/>
+                                    <animations/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="120" id="W8X-pq-bWf"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                                    <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="deviceRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="89o-dU-p3k">
+                                    <rect key="frame" x="140" y="0.0" width="445" height="44"/>
+                                    <animations/>
+                                    <color key="textColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="calibratedRGB"/>
+                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                                    <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                    <connections>
+                                        <outlet property="delegate" destination="-1" id="iLL-Wk-uTD"/>
+                                    </connections>
+                                </textField>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="X4H-xd-WIg" userLabel="Border Bottom">
+                                    <rect key="frame" x="0.0" y="43" width="600" height="1"/>
+                                    <animations/>
+                                    <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="1" id="Hxq-Y2-cA4"/>
+                                    </constraints>
+                                </view>
+                            </subviews>
+                            <animations/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="120" id="Wb6-zQ-Zfw"/>
+                                <constraint firstItem="12X-Go-nbk" firstAttribute="top" secondItem="AON-31-j3x" secondAttribute="top" id="00e-MX-xUT"/>
+                                <constraint firstItem="89o-dU-p3k" firstAttribute="leading" secondItem="12X-Go-nbk" secondAttribute="trailing" constant="5" id="2hq-iN-rON"/>
+                                <constraint firstItem="89o-dU-p3k" firstAttribute="top" secondItem="AON-31-j3x" secondAttribute="top" id="2nx-5B-Cb5"/>
+                                <constraint firstAttribute="bottom" secondItem="X4H-xd-WIg" secondAttribute="bottom" id="U6G-E7-sHF"/>
+                                <constraint firstAttribute="height" constant="44" id="Y0l-Be-amf"/>
+                                <constraint firstItem="X4H-xd-WIg" firstAttribute="leading" secondItem="AON-31-j3x" secondAttribute="leading" id="YYJ-dq-G3O"/>
+                                <constraint firstAttribute="bottom" secondItem="89o-dU-p3k" secondAttribute="bottom" id="b9I-wb-crI"/>
+                                <constraint firstItem="12X-Go-nbk" firstAttribute="leading" secondItem="AON-31-j3x" secondAttribute="leading" constant="15" id="brJ-mP-6Ml"/>
+                                <constraint firstAttribute="trailing" secondItem="89o-dU-p3k" secondAttribute="trailing" constant="15" id="fih-xU-A0u"/>
+                                <constraint firstAttribute="bottom" secondItem="12X-Go-nbk" secondAttribute="bottom" id="oBB-I0-QoK"/>
+                                <constraint firstAttribute="trailing" secondItem="X4H-xd-WIg" secondAttribute="trailing" id="z4n-js-frX"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
-                            <color key="textColor" red="0.25882352941176467" green="0.25882352941176467" blue="0.25882352941176467" alpha="1" colorSpace="deviceRGB"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hGu-iM-Ow3">
-                            <rect key="frame" x="140" y="0.0" width="165" height="44"/>
+                        </view>
+                        <view tag="7" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0xi-vN-GwZ">
+                            <rect key="frame" x="0.0" y="113" width="600" height="44"/>
+                            <subviews>
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nama Bank" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j8w-7L-HaE">
+                                    <rect key="frame" x="15" y="0.0" width="120" height="44"/>
+                                    <animations/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="120" id="VE8-Mn-Vyp"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                                    <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="deviceRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uxK-Dt-HgQ">
+                                    <rect key="frame" x="140" y="0.0" width="425" height="44"/>
+                                    <animations/>
+                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                                    <state key="normal" title="Pilih Bank">
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="tap:" destination="-1" eventType="touchUpInside" id="l01-eF-0v0"/>
+                                    </connections>
+                                </button>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_arrow_right_grey.png" translatesAutoresizingMaskIntoConstraints="NO" id="nIn-GR-1iT">
+                                    <rect key="frame" x="570" y="14" width="15" height="15"/>
+                                    <animations/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="15" id="PMB-fw-GV4"/>
+                                        <constraint firstAttribute="height" constant="15" id="sDs-q2-vb7"/>
+                                    </constraints>
+                                </imageView>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="08t-oM-rbg" userLabel="Border Bottom">
+                                    <rect key="frame" x="0.0" y="43" width="600" height="1"/>
+                                    <animations/>
+                                    <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="1" id="sSc-xE-GXQ"/>
+                                    </constraints>
+                                </view>
+                            </subviews>
+                            <animations/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstItem="j8w-7L-HaE" firstAttribute="top" secondItem="0xi-vN-GwZ" secondAttribute="top" id="02b-8e-arX"/>
+                                <constraint firstItem="uxK-Dt-HgQ" firstAttribute="top" secondItem="0xi-vN-GwZ" secondAttribute="top" id="2PJ-0B-5Lk"/>
+                                <constraint firstAttribute="trailing" secondItem="nIn-GR-1iT" secondAttribute="trailing" constant="15" id="Ay9-BS-k37"/>
+                                <constraint firstItem="nIn-GR-1iT" firstAttribute="leading" secondItem="uxK-Dt-HgQ" secondAttribute="trailing" constant="5" id="BdE-e2-Pp9"/>
+                                <constraint firstAttribute="bottom" secondItem="j8w-7L-HaE" secondAttribute="bottom" id="Cz4-9T-b0c"/>
+                                <constraint firstItem="08t-oM-rbg" firstAttribute="leading" secondItem="0xi-vN-GwZ" secondAttribute="leading" id="Gxu-gf-Dfj"/>
+                                <constraint firstAttribute="trailing" secondItem="08t-oM-rbg" secondAttribute="trailing" id="L1N-Yy-A5w"/>
+                                <constraint firstAttribute="bottom" secondItem="08t-oM-rbg" secondAttribute="bottom" id="NKi-TP-TQY"/>
+                                <constraint firstAttribute="height" constant="44" id="b8e-vd-0CG"/>
+                                <constraint firstItem="j8w-7L-HaE" firstAttribute="leading" secondItem="0xi-vN-GwZ" secondAttribute="leading" constant="15" id="ect-JD-yik"/>
+                                <constraint firstItem="08t-oM-rbg" firstAttribute="top" secondItem="nIn-GR-1iT" secondAttribute="bottom" constant="14" id="iMG-xD-WeC"/>
+                                <constraint firstItem="uxK-Dt-HgQ" firstAttribute="leading" secondItem="j8w-7L-HaE" secondAttribute="trailing" constant="5" id="kFD-4E-ABm"/>
+                                <constraint firstItem="nIn-GR-1iT" firstAttribute="top" secondItem="0xi-vN-GwZ" secondAttribute="top" constant="14" id="tXX-Px-sO2"/>
+                                <constraint firstAttribute="bottom" secondItem="uxK-Dt-HgQ" secondAttribute="bottom" id="wnL-i5-5KU"/>
+                            </constraints>
+                        </view>
+                        <view tag="7" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cte-jq-rME">
+                            <rect key="frame" x="0.0" y="157" width="600" height="44"/>
+                            <subviews>
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cabang" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SGk-NA-Qc0">
+                                    <rect key="frame" x="15" y="0.0" width="120" height="44"/>
+                                    <animations/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="120" id="YfW-Pn-zvq"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                                    <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="deviceRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ab9-mj-3qj">
+                                    <rect key="frame" x="140" y="0.0" width="445" height="44"/>
+                                    <animations/>
+                                    <color key="textColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="calibratedRGB"/>
+                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                                    <textInputTraits key="textInputTraits"/>
+                                    <connections>
+                                        <outlet property="delegate" destination="-1" id="xA2-3p-Vyn"/>
+                                    </connections>
+                                </textField>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="k7g-Jc-uvq" userLabel="Border Bottom">
+                                    <rect key="frame" x="0.0" y="43" width="600" height="1"/>
+                                    <animations/>
+                                    <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="1" id="7jV-X2-Luw"/>
+                                    </constraints>
+                                </view>
+                            </subviews>
+                            <animations/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstItem="SGk-NA-Qc0" firstAttribute="top" secondItem="Cte-jq-rME" secondAttribute="top" id="639-KQ-L9x"/>
+                                <constraint firstAttribute="bottom" secondItem="Ab9-mj-3qj" secondAttribute="bottom" id="6Rc-ET-u0g"/>
+                                <constraint firstAttribute="trailing" secondItem="k7g-Jc-uvq" secondAttribute="trailing" id="ACh-im-xiK"/>
+                                <constraint firstAttribute="height" constant="44" id="IR1-tY-Qrf"/>
+                                <constraint firstAttribute="bottom" secondItem="k7g-Jc-uvq" secondAttribute="bottom" id="LoO-MY-nKm"/>
+                                <constraint firstAttribute="trailing" secondItem="Ab9-mj-3qj" secondAttribute="trailing" constant="15" id="Nom-6h-HlY"/>
+                                <constraint firstItem="SGk-NA-Qc0" firstAttribute="leading" secondItem="Cte-jq-rME" secondAttribute="leading" constant="15" id="WkE-Jw-Lyw"/>
+                                <constraint firstItem="Ab9-mj-3qj" firstAttribute="top" secondItem="Cte-jq-rME" secondAttribute="top" id="aCl-XO-qDX"/>
+                                <constraint firstAttribute="bottom" secondItem="SGk-NA-Qc0" secondAttribute="bottom" id="l4T-je-nJ2"/>
+                                <constraint firstItem="Ab9-mj-3qj" firstAttribute="leading" secondItem="SGk-NA-Qc0" secondAttribute="trailing" constant="5" id="mEU-Ps-21v"/>
+                                <constraint firstItem="k7g-Jc-uvq" firstAttribute="leading" secondItem="Cte-jq-rME" secondAttribute="leading" id="pLs-f4-Z2c"/>
+                            </constraints>
+                        </view>
+                        <view tag="7" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4KE-ga-PqR">
+                            <rect key="frame" x="0.0" y="417" width="600" height="44"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qxc-Yu-Hlu" userLabel="Border Top">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="1"/>
+                                    <animations/>
+                                    <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="1" id="cPa-gP-DCS"/>
+                                    </constraints>
+                                </view>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kfE-M9-0HJ" userLabel="Border Bottom">
+                                    <rect key="frame" x="0.0" y="43" width="600" height="1"/>
+                                    <animations/>
+                                    <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="1" id="FHR-LQ-A29"/>
+                                    </constraints>
+                                </view>
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Kode OTP" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="qQr-tN-a0x">
+                                    <rect key="frame" x="15" y="0.0" width="570" height="44"/>
+                                    <animations/>
+                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                                    <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                    <connections>
+                                        <outlet property="delegate" destination="-1" id="S3g-He-zfC"/>
+                                    </connections>
+                                </textField>
+                            </subviews>
+                            <animations/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="bottom" secondItem="kfE-M9-0HJ" secondAttribute="bottom" id="2hW-B4-Ulb"/>
+                                <constraint firstItem="qQr-tN-a0x" firstAttribute="top" secondItem="4KE-ga-PqR" secondAttribute="top" id="5Ph-aX-ZRc"/>
+                                <constraint firstItem="qxc-Yu-Hlu" firstAttribute="top" secondItem="4KE-ga-PqR" secondAttribute="top" id="CYA-Vw-TQv"/>
+                                <constraint firstItem="kfE-M9-0HJ" firstAttribute="leading" secondItem="4KE-ga-PqR" secondAttribute="leading" id="MJa-Cc-UPa"/>
+                                <constraint firstAttribute="height" constant="44" id="RD6-eG-CCT"/>
+                                <constraint firstItem="qxc-Yu-Hlu" firstAttribute="leading" secondItem="4KE-ga-PqR" secondAttribute="leading" id="XUc-pk-7Mw"/>
+                                <constraint firstAttribute="bottom" secondItem="qQr-tN-a0x" secondAttribute="bottom" id="Z0H-7H-7vC"/>
+                                <constraint firstAttribute="trailing" secondItem="qxc-Yu-Hlu" secondAttribute="trailing" id="aRN-64-PTZ"/>
+                                <constraint firstItem="qQr-tN-a0x" firstAttribute="leading" secondItem="4KE-ga-PqR" secondAttribute="leading" constant="15" id="eIU-uP-ONM"/>
+                                <constraint firstAttribute="trailing" secondItem="kfE-M9-0HJ" secondAttribute="trailing" id="xtr-ok-YJi"/>
+                                <constraint firstAttribute="trailing" secondItem="qQr-tN-a0x" secondAttribute="trailing" constant="15" id="zy1-sd-T3i"/>
+                            </constraints>
+                        </view>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Untuk bank selain BCA, isilah Kantor Cabang dengan kota dimana bank tersebut berada.Contoh : Pondok Indah - Jakarta Selatan" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UlA-HK-VJM">
+                            <rect key="frame" x="15" y="211" width="570" height="42"/>
+                            <animations/>
+                            <constraints>
+                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="42" id="eAf-Ab-Rkk"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                             <color key="textColor" red="0.45882352941176469" green="0.45882352941176469" blue="0.45882352941176469" alpha="1" colorSpace="calibratedRGB"/>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
-                            <textInputTraits key="textInputTraits"/>
-                            <connections>
-                                <outlet property="delegate" destination="-1" id="XUQ-Gk-Eni"/>
-                            </connections>
-                        </textField>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8JS-ok-wrd" userLabel="Border Bottom">
-                            <rect key="frame" x="0.0" y="43" width="320" height="1"/>
-                            <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="1" id="6Ox-HG-EVg"/>
-                            </constraints>
-                        </view>
-                    </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstAttribute="bottom" secondItem="hGu-iM-Ow3" secondAttribute="bottom" id="Aoz-JJ-yuw"/>
-                        <constraint firstItem="hGu-iM-Ow3" firstAttribute="top" secondItem="uwm-wv-N5P" secondAttribute="top" id="B0F-4r-WKC"/>
-                        <constraint firstItem="9Ne-Bv-eCD" firstAttribute="top" secondItem="uwm-wv-N5P" secondAttribute="top" id="BUC-aF-24N"/>
-                        <constraint firstItem="hGu-iM-Ow3" firstAttribute="leading" secondItem="2S3-vQ-hCL" secondAttribute="trailing" constant="5" id="Exe-fC-wog"/>
-                        <constraint firstItem="8JS-ok-wrd" firstAttribute="leading" secondItem="uwm-wv-N5P" secondAttribute="leading" id="SjZ-4I-4N8"/>
-                        <constraint firstAttribute="trailing" secondItem="8JS-ok-wrd" secondAttribute="trailing" id="afR-zX-W47"/>
-                        <constraint firstItem="2S3-vQ-hCL" firstAttribute="leading" secondItem="uwm-wv-N5P" secondAttribute="leading" constant="15" id="ass-Tm-eA3"/>
-                        <constraint firstAttribute="bottom" secondItem="2S3-vQ-hCL" secondAttribute="bottom" id="hmI-tK-SYU"/>
-                        <constraint firstAttribute="trailing" secondItem="hGu-iM-Ow3" secondAttribute="trailing" constant="15" id="kDP-Is-ef9"/>
-                        <constraint firstAttribute="bottom" secondItem="8JS-ok-wrd" secondAttribute="bottom" id="oxZ-kg-7FS"/>
-                        <constraint firstItem="2S3-vQ-hCL" firstAttribute="top" secondItem="uwm-wv-N5P" secondAttribute="top" id="sBY-QP-Iui"/>
-                        <constraint firstItem="9Ne-Bv-eCD" firstAttribute="leading" secondItem="uwm-wv-N5P" secondAttribute="leading" id="sQH-0n-IV8"/>
-                        <constraint firstAttribute="height" constant="44" id="v7V-VP-mOv"/>
-                        <constraint firstAttribute="trailing" secondItem="9Ne-Bv-eCD" secondAttribute="trailing" id="wCy-2X-vzW"/>
-                    </constraints>
-                </view>
-                <view tag="7" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AON-31-j3x">
-                    <rect key="frame" x="0.0" y="69" width="320" height="44"/>
-                    <subviews>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nomor Rekening" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="12X-Go-nbk">
-                            <rect key="frame" x="15" y="0.0" width="120" height="44"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="120" id="W8X-pq-bWf"/>
-                            </constraints>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
-                            <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="deviceRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="89o-dU-p3k">
-                            <rect key="frame" x="140" y="0.0" width="165" height="44"/>
-                            <color key="textColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="calibratedRGB"/>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
-                            <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
-                            <connections>
-                                <outlet property="delegate" destination="-1" id="iLL-Wk-uTD"/>
-                            </connections>
-                        </textField>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="X4H-xd-WIg" userLabel="Border Bottom">
-                            <rect key="frame" x="0.0" y="43" width="320" height="1"/>
-                            <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
+                        <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LFC-ke-dZO">
+                            <rect key="frame" x="15" y="283" width="570" height="44"/>
+                            <animations/>
+                            <color key="backgroundColor" red="1" green="0.59607843137254901" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="1" id="Hxq-Y2-cA4"/>
+                                <constraint firstAttribute="height" constant="44" id="OIG-Lu-gDE"/>
                             </constraints>
-                        </view>
-                    </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstItem="12X-Go-nbk" firstAttribute="top" secondItem="AON-31-j3x" secondAttribute="top" id="00e-MX-xUT"/>
-                        <constraint firstItem="89o-dU-p3k" firstAttribute="leading" secondItem="12X-Go-nbk" secondAttribute="trailing" constant="5" id="2hq-iN-rON"/>
-                        <constraint firstItem="89o-dU-p3k" firstAttribute="top" secondItem="AON-31-j3x" secondAttribute="top" id="2nx-5B-Cb5"/>
-                        <constraint firstAttribute="bottom" secondItem="X4H-xd-WIg" secondAttribute="bottom" id="U6G-E7-sHF"/>
-                        <constraint firstAttribute="height" constant="44" id="Y0l-Be-amf"/>
-                        <constraint firstItem="X4H-xd-WIg" firstAttribute="leading" secondItem="AON-31-j3x" secondAttribute="leading" id="YYJ-dq-G3O"/>
-                        <constraint firstAttribute="bottom" secondItem="89o-dU-p3k" secondAttribute="bottom" id="b9I-wb-crI"/>
-                        <constraint firstItem="12X-Go-nbk" firstAttribute="leading" secondItem="AON-31-j3x" secondAttribute="leading" constant="15" id="brJ-mP-6Ml"/>
-                        <constraint firstAttribute="trailing" secondItem="89o-dU-p3k" secondAttribute="trailing" constant="15" id="fih-xU-A0u"/>
-                        <constraint firstAttribute="bottom" secondItem="12X-Go-nbk" secondAttribute="bottom" id="oBB-I0-QoK"/>
-                        <constraint firstAttribute="trailing" secondItem="X4H-xd-WIg" secondAttribute="trailing" id="z4n-js-frX"/>
-                    </constraints>
-                </view>
-                <view tag="7" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0xi-vN-GwZ">
-                    <rect key="frame" x="0.0" y="113" width="320" height="44"/>
-                    <subviews>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nama Bank" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j8w-7L-HaE">
-                            <rect key="frame" x="15" y="0.0" width="120" height="44"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="120" id="VE8-Mn-Vyp"/>
-                            </constraints>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
-                            <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="deviceRGB"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uxK-Dt-HgQ">
-                            <rect key="frame" x="140" y="0.0" width="145" height="44"/>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
-                            <state key="normal" title="Pilih Bank">
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
+                            <state key="normal" title="Kirim OTP ke Email">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="l01-eF-0v0"/>
+                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="D9L-Zd-Hjs"/>
                             </connections>
                         </button>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_arrow_right_grey.png" translatesAutoresizingMaskIntoConstraints="NO" id="nIn-GR-1iT">
-                            <rect key="frame" x="290" y="14" width="15" height="15"/>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vpW-pM-MnP">
+                            <rect key="frame" x="15" y="337" width="570" height="50"/>
+                            <animations/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="15" id="PMB-fw-GV4"/>
-                                <constraint firstAttribute="height" constant="15" id="sDs-q2-vb7"/>
+                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="wlY-Iq-EgP"/>
                             </constraints>
-                        </imageView>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="08t-oM-rbg" userLabel="Border Bottom">
-                            <rect key="frame" x="0.0" y="43" width="320" height="1"/>
-                            <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="1" id="sSc-xE-GXQ"/>
-                            </constraints>
-                        </view>
-                    </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstItem="j8w-7L-HaE" firstAttribute="top" secondItem="0xi-vN-GwZ" secondAttribute="top" id="02b-8e-arX"/>
-                        <constraint firstItem="uxK-Dt-HgQ" firstAttribute="top" secondItem="0xi-vN-GwZ" secondAttribute="top" id="2PJ-0B-5Lk"/>
-                        <constraint firstAttribute="trailing" secondItem="nIn-GR-1iT" secondAttribute="trailing" constant="15" id="Ay9-BS-k37"/>
-                        <constraint firstItem="nIn-GR-1iT" firstAttribute="leading" secondItem="uxK-Dt-HgQ" secondAttribute="trailing" constant="5" id="BdE-e2-Pp9"/>
-                        <constraint firstAttribute="bottom" secondItem="j8w-7L-HaE" secondAttribute="bottom" id="Cz4-9T-b0c"/>
-                        <constraint firstItem="08t-oM-rbg" firstAttribute="leading" secondItem="0xi-vN-GwZ" secondAttribute="leading" id="Gxu-gf-Dfj"/>
-                        <constraint firstAttribute="trailing" secondItem="08t-oM-rbg" secondAttribute="trailing" id="L1N-Yy-A5w"/>
-                        <constraint firstAttribute="bottom" secondItem="08t-oM-rbg" secondAttribute="bottom" id="NKi-TP-TQY"/>
-                        <constraint firstAttribute="height" constant="44" id="b8e-vd-0CG"/>
-                        <constraint firstItem="j8w-7L-HaE" firstAttribute="leading" secondItem="0xi-vN-GwZ" secondAttribute="leading" constant="15" id="ect-JD-yik"/>
-                        <constraint firstItem="08t-oM-rbg" firstAttribute="top" secondItem="nIn-GR-1iT" secondAttribute="bottom" constant="14" id="iMG-xD-WeC"/>
-                        <constraint firstItem="uxK-Dt-HgQ" firstAttribute="leading" secondItem="j8w-7L-HaE" secondAttribute="trailing" constant="5" id="kFD-4E-ABm"/>
-                        <constraint firstItem="nIn-GR-1iT" firstAttribute="top" secondItem="0xi-vN-GwZ" secondAttribute="top" constant="14" id="tXX-Px-sO2"/>
-                        <constraint firstAttribute="bottom" secondItem="uxK-Dt-HgQ" secondAttribute="bottom" id="wnL-i5-5KU"/>
-                    </constraints>
-                </view>
-                <view tag="7" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cte-jq-rME">
-                    <rect key="frame" x="0.0" y="157" width="320" height="44"/>
-                    <subviews>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cabang" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SGk-NA-Qc0">
-                            <rect key="frame" x="15" y="0.0" width="120" height="44"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="120" id="YfW-Pn-zvq"/>
-                            </constraints>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
-                            <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="deviceRGB"/>
+                            <string key="text">Kode OTP (One Time Password) adalah kode verifikasi yang kami kirimkan melalui SMS atau email untuk memastikan penarikan dana benar dilakukan oleh pemilik akun</string>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                            <color key="textColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ab9-mj-3qj">
-                            <rect key="frame" x="140" y="0.0" width="165" height="44"/>
-                            <color key="textColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="calibratedRGB"/>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
-                            <textInputTraits key="textInputTraits"/>
-                            <connections>
-                                <outlet property="delegate" destination="-1" id="xA2-3p-Vyn"/>
-                            </connections>
-                        </textField>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="k7g-Jc-uvq" userLabel="Border Bottom">
-                            <rect key="frame" x="0.0" y="43" width="320" height="1"/>
-                            <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
+                        <view tag="7" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WTI-pj-GhU">
+                            <rect key="frame" x="0.0" y="486" width="600" height="44"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eST-q3-89u" userLabel="Border Top">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="1"/>
+                                    <animations/>
+                                    <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="1" id="KNn-Xi-Z9B"/>
+                                    </constraints>
+                                </view>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GUL-IM-2B8" userLabel="Border Bottom">
+                                    <rect key="frame" x="0.0" y="43" width="600" height="1"/>
+                                    <animations/>
+                                    <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="1" id="hdI-d7-h4D"/>
+                                    </constraints>
+                                </view>
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Kata Sandi Tokopedia" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Wp0-pG-MDR">
+                                    <rect key="frame" x="15" y="0.0" width="570" height="44"/>
+                                    <animations/>
+                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                                    <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
+                                    <connections>
+                                        <outlet property="delegate" destination="-1" id="eVJ-yx-CVj"/>
+                                    </connections>
+                                </textField>
+                            </subviews>
+                            <animations/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="1" id="7jV-X2-Luw"/>
+                                <constraint firstAttribute="trailing" secondItem="GUL-IM-2B8" secondAttribute="trailing" id="9JU-oU-FCe"/>
+                                <constraint firstAttribute="bottom" secondItem="GUL-IM-2B8" secondAttribute="bottom" id="9Ww-pq-oJV"/>
+                                <constraint firstItem="Wp0-pG-MDR" firstAttribute="top" secondItem="WTI-pj-GhU" secondAttribute="top" id="ER6-Tc-V6B"/>
+                                <constraint firstItem="GUL-IM-2B8" firstAttribute="leading" secondItem="WTI-pj-GhU" secondAttribute="leading" id="JiZ-12-k20"/>
+                                <constraint firstItem="Wp0-pG-MDR" firstAttribute="leading" secondItem="WTI-pj-GhU" secondAttribute="leading" constant="15" id="WV3-k5-JbM"/>
+                                <constraint firstAttribute="height" constant="44" id="X0H-3w-ygN"/>
+                                <constraint firstAttribute="trailing" secondItem="Wp0-pG-MDR" secondAttribute="trailing" constant="15" id="cTT-fk-SkP"/>
+                                <constraint firstItem="eST-q3-89u" firstAttribute="leading" secondItem="WTI-pj-GhU" secondAttribute="leading" id="cmy-kH-eJG"/>
+                                <constraint firstAttribute="bottom" secondItem="Wp0-pG-MDR" secondAttribute="bottom" id="jgz-4A-VtA"/>
+                                <constraint firstAttribute="trailing" secondItem="eST-q3-89u" secondAttribute="trailing" id="lJU-eC-6Nt"/>
+                                <constraint firstItem="eST-q3-89u" firstAttribute="top" secondItem="WTI-pj-GhU" secondAttribute="top" id="qEQ-J6-dz8"/>
                             </constraints>
                         </view>
                     </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    <animations/>
+                    <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+                    <gestureRecognizers/>
                     <constraints>
-                        <constraint firstItem="SGk-NA-Qc0" firstAttribute="top" secondItem="Cte-jq-rME" secondAttribute="top" id="639-KQ-L9x"/>
-                        <constraint firstAttribute="bottom" secondItem="Ab9-mj-3qj" secondAttribute="bottom" id="6Rc-ET-u0g"/>
-                        <constraint firstAttribute="trailing" secondItem="k7g-Jc-uvq" secondAttribute="trailing" id="ACh-im-xiK"/>
-                        <constraint firstAttribute="height" constant="44" id="IR1-tY-Qrf"/>
-                        <constraint firstAttribute="bottom" secondItem="k7g-Jc-uvq" secondAttribute="bottom" id="LoO-MY-nKm"/>
-                        <constraint firstAttribute="trailing" secondItem="Ab9-mj-3qj" secondAttribute="trailing" constant="15" id="Nom-6h-HlY"/>
-                        <constraint firstItem="SGk-NA-Qc0" firstAttribute="leading" secondItem="Cte-jq-rME" secondAttribute="leading" constant="15" id="WkE-Jw-Lyw"/>
-                        <constraint firstItem="Ab9-mj-3qj" firstAttribute="top" secondItem="Cte-jq-rME" secondAttribute="top" id="aCl-XO-qDX"/>
-                        <constraint firstAttribute="bottom" secondItem="SGk-NA-Qc0" secondAttribute="bottom" id="l4T-je-nJ2"/>
-                        <constraint firstItem="Ab9-mj-3qj" firstAttribute="leading" secondItem="SGk-NA-Qc0" secondAttribute="trailing" constant="5" id="mEU-Ps-21v"/>
-                        <constraint firstItem="k7g-Jc-uvq" firstAttribute="leading" secondItem="Cte-jq-rME" secondAttribute="leading" id="pLs-f4-Z2c"/>
-                    </constraints>
-                </view>
-                <view tag="7" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4KE-ga-PqR">
-                    <rect key="frame" x="0.0" y="417" width="320" height="44"/>
-                    <subviews>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qxc-Yu-Hlu" userLabel="Border Top">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
-                            <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="1" id="cPa-gP-DCS"/>
-                            </constraints>
-                        </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kfE-M9-0HJ" userLabel="Border Bottom">
-                            <rect key="frame" x="0.0" y="43" width="320" height="1"/>
-                            <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="1" id="FHR-LQ-A29"/>
-                            </constraints>
-                        </view>
-                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Kode OTP" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="qQr-tN-a0x">
-                            <rect key="frame" x="15" y="0.0" width="290" height="44"/>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
-                            <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
-                            <connections>
-                                <outlet property="delegate" destination="-1" id="S3g-He-zfC"/>
-                            </connections>
-                        </textField>
-                    </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstAttribute="bottom" secondItem="kfE-M9-0HJ" secondAttribute="bottom" id="2hW-B4-Ulb"/>
-                        <constraint firstItem="qQr-tN-a0x" firstAttribute="top" secondItem="4KE-ga-PqR" secondAttribute="top" id="5Ph-aX-ZRc"/>
-                        <constraint firstItem="qxc-Yu-Hlu" firstAttribute="top" secondItem="4KE-ga-PqR" secondAttribute="top" id="CYA-Vw-TQv"/>
-                        <constraint firstItem="kfE-M9-0HJ" firstAttribute="leading" secondItem="4KE-ga-PqR" secondAttribute="leading" id="MJa-Cc-UPa"/>
-                        <constraint firstAttribute="height" constant="44" id="RD6-eG-CCT"/>
-                        <constraint firstItem="qxc-Yu-Hlu" firstAttribute="leading" secondItem="4KE-ga-PqR" secondAttribute="leading" id="XUc-pk-7Mw"/>
-                        <constraint firstAttribute="bottom" secondItem="qQr-tN-a0x" secondAttribute="bottom" id="Z0H-7H-7vC"/>
-                        <constraint firstAttribute="trailing" secondItem="qxc-Yu-Hlu" secondAttribute="trailing" id="aRN-64-PTZ"/>
-                        <constraint firstItem="qQr-tN-a0x" firstAttribute="leading" secondItem="4KE-ga-PqR" secondAttribute="leading" constant="15" id="eIU-uP-ONM"/>
-                        <constraint firstAttribute="trailing" secondItem="kfE-M9-0HJ" secondAttribute="trailing" id="xtr-ok-YJi"/>
-                        <constraint firstAttribute="trailing" secondItem="qQr-tN-a0x" secondAttribute="trailing" constant="15" id="zy1-sd-T3i"/>
-                    </constraints>
-                </view>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Untuk bank selain BCA, isilah Kantor Cabang dengan kota dimana bank tersebut berada.Contoh : Pondok Indah - Jakarta Selatan" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UlA-HK-VJM">
-                    <rect key="frame" x="15" y="211" width="290" height="42"/>
-                    <constraints>
-                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="42" id="eAf-Ab-Rkk"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
-                    <color key="textColor" red="0.45882352941176469" green="0.45882352941176469" blue="0.45882352941176469" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LFC-ke-dZO">
-                    <rect key="frame" x="15" y="283" width="290" height="44"/>
-                    <color key="backgroundColor" red="1" green="0.59607843137254901" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="44" id="OIG-Lu-gDE"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
-                    <state key="normal" title="Kirim OTP ke Email">
-                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <connections>
-                        <action selector="tap:" destination="-1" eventType="touchUpInside" id="D9L-Zd-Hjs"/>
-                    </connections>
-                </button>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vpW-pM-MnP">
-                    <rect key="frame" x="15" y="337" width="290" height="50"/>
-                    <constraints>
-                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="wlY-Iq-EgP"/>
-                    </constraints>
-                    <string key="text">Kode OTP (One Time Password) adalah kode verifikasi yang kami kirimkan melalui SMS atau email untuk memastikan penarikan dana benar dilakukan oleh pemilik akun</string>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
-                    <color key="textColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <view tag="7" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WTI-pj-GhU">
-                    <rect key="frame" x="0.0" y="486" width="320" height="44"/>
-                    <subviews>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eST-q3-89u" userLabel="Border Top">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
-                            <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="1" id="KNn-Xi-Z9B"/>
-                            </constraints>
-                        </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GUL-IM-2B8" userLabel="Border Bottom">
-                            <rect key="frame" x="0.0" y="43" width="320" height="1"/>
-                            <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="1" id="hdI-d7-h4D"/>
-                            </constraints>
-                        </view>
-                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Kata Sandi Tokopedia" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Wp0-pG-MDR">
-                            <rect key="frame" x="15" y="0.0" width="290" height="44"/>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
-                            <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
-                            <connections>
-                                <outlet property="delegate" destination="-1" id="eVJ-yx-CVj"/>
-                            </connections>
-                        </textField>
-                    </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstAttribute="trailing" secondItem="GUL-IM-2B8" secondAttribute="trailing" id="9JU-oU-FCe"/>
-                        <constraint firstAttribute="bottom" secondItem="GUL-IM-2B8" secondAttribute="bottom" id="9Ww-pq-oJV"/>
-                        <constraint firstItem="Wp0-pG-MDR" firstAttribute="top" secondItem="WTI-pj-GhU" secondAttribute="top" id="ER6-Tc-V6B"/>
-                        <constraint firstItem="GUL-IM-2B8" firstAttribute="leading" secondItem="WTI-pj-GhU" secondAttribute="leading" id="JiZ-12-k20"/>
-                        <constraint firstItem="Wp0-pG-MDR" firstAttribute="leading" secondItem="WTI-pj-GhU" secondAttribute="leading" constant="15" id="WV3-k5-JbM"/>
-                        <constraint firstAttribute="height" constant="44" id="X0H-3w-ygN"/>
-                        <constraint firstAttribute="trailing" secondItem="Wp0-pG-MDR" secondAttribute="trailing" constant="15" id="cTT-fk-SkP"/>
-                        <constraint firstItem="eST-q3-89u" firstAttribute="leading" secondItem="WTI-pj-GhU" secondAttribute="leading" id="cmy-kH-eJG"/>
-                        <constraint firstAttribute="bottom" secondItem="Wp0-pG-MDR" secondAttribute="bottom" id="jgz-4A-VtA"/>
-                        <constraint firstAttribute="trailing" secondItem="eST-q3-89u" secondAttribute="trailing" id="lJU-eC-6Nt"/>
-                        <constraint firstItem="eST-q3-89u" firstAttribute="top" secondItem="WTI-pj-GhU" secondAttribute="top" id="qEQ-J6-dz8"/>
+                        <constraint firstItem="uwm-wv-N5P" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="25" id="2lU-RD-VJk"/>
+                        <constraint firstItem="WTI-pj-GhU" firstAttribute="top" secondItem="4KE-ga-PqR" secondAttribute="bottom" constant="25" id="3ij-c4-P9D"/>
+                        <constraint firstItem="vpW-pM-MnP" firstAttribute="top" secondItem="LFC-ke-dZO" secondAttribute="bottom" constant="10" id="43Q-ew-gsf"/>
+                        <constraint firstAttribute="trailing" secondItem="4KE-ga-PqR" secondAttribute="trailing" id="5BB-WX-eQR"/>
+                        <constraint firstItem="LFC-ke-dZO" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="6aR-rE-CZ9"/>
+                        <constraint firstAttribute="trailing" secondItem="uwm-wv-N5P" secondAttribute="trailing" id="9BJ-ck-TzV"/>
+                        <constraint firstAttribute="trailing" secondItem="WTI-pj-GhU" secondAttribute="trailing" id="Axx-Mf-G8h"/>
+                        <constraint firstItem="AON-31-j3x" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="CBd-PQ-AYs"/>
+                        <constraint firstItem="4KE-ga-PqR" firstAttribute="top" secondItem="vpW-pM-MnP" secondAttribute="bottom" constant="30" id="CTZ-SH-Uc8"/>
+                        <constraint firstItem="0xi-vN-GwZ" firstAttribute="top" secondItem="AON-31-j3x" secondAttribute="bottom" id="Q4y-Dr-qwi"/>
+                        <constraint firstItem="UlA-HK-VJM" firstAttribute="top" secondItem="Cte-jq-rME" secondAttribute="bottom" constant="10" id="Tgx-l7-kFo"/>
+                        <constraint firstItem="uwm-wv-N5P" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="UdQ-0R-j7E"/>
+                        <constraint firstItem="AON-31-j3x" firstAttribute="top" secondItem="uwm-wv-N5P" secondAttribute="bottom" id="VEU-YB-bPl"/>
+                        <constraint firstAttribute="trailing" secondItem="AON-31-j3x" secondAttribute="trailing" id="XL9-GZ-Zic"/>
+                        <constraint firstAttribute="trailing" secondItem="Cte-jq-rME" secondAttribute="trailing" id="eCL-l8-Ve9"/>
+                        <constraint firstAttribute="trailing" secondItem="vpW-pM-MnP" secondAttribute="trailing" constant="15" id="eYe-Vj-GQv"/>
+                        <constraint firstItem="0xi-vN-GwZ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="fuf-DZ-jsC"/>
+                        <constraint firstItem="WTI-pj-GhU" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="gTS-5n-2RV"/>
+                        <constraint firstItem="Cte-jq-rME" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="gZL-dZ-EM6"/>
+                        <constraint firstItem="Cte-jq-rME" firstAttribute="top" secondItem="0xi-vN-GwZ" secondAttribute="bottom" id="mjF-RH-jJr"/>
+                        <constraint firstAttribute="trailing" secondItem="LFC-ke-dZO" secondAttribute="trailing" constant="15" id="qk6-Q7-E8p"/>
+                        <constraint firstAttribute="trailing" secondItem="UlA-HK-VJM" secondAttribute="trailing" constant="15" id="rNP-GF-J4h"/>
+                        <constraint firstItem="vpW-pM-MnP" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="rXs-cW-4i3"/>
+                        <constraint firstItem="LFC-ke-dZO" firstAttribute="top" secondItem="UlA-HK-VJM" secondAttribute="bottom" constant="30" id="sk2-qg-gKw"/>
+                        <constraint firstItem="UlA-HK-VJM" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="yIq-rn-Mth"/>
+                        <constraint firstItem="4KE-ga-PqR" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="z9c-jM-Osh"/>
+                        <constraint firstAttribute="trailing" secondItem="0xi-vN-GwZ" secondAttribute="trailing" id="zp4-KY-PwX"/>
                     </constraints>
                 </view>
             </subviews>
+            <animations/>
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
-            <gestureRecognizers/>
             <constraints>
-                <constraint firstItem="uwm-wv-N5P" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="25" id="2lU-RD-VJk"/>
-                <constraint firstItem="WTI-pj-GhU" firstAttribute="top" secondItem="4KE-ga-PqR" secondAttribute="bottom" constant="25" id="3ij-c4-P9D"/>
-                <constraint firstItem="vpW-pM-MnP" firstAttribute="top" secondItem="LFC-ke-dZO" secondAttribute="bottom" constant="10" id="43Q-ew-gsf"/>
-                <constraint firstAttribute="trailing" secondItem="4KE-ga-PqR" secondAttribute="trailing" id="5BB-WX-eQR"/>
-                <constraint firstItem="LFC-ke-dZO" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="6aR-rE-CZ9"/>
-                <constraint firstAttribute="trailing" secondItem="uwm-wv-N5P" secondAttribute="trailing" id="9BJ-ck-TzV"/>
-                <constraint firstAttribute="trailing" secondItem="WTI-pj-GhU" secondAttribute="trailing" id="Axx-Mf-G8h"/>
-                <constraint firstItem="AON-31-j3x" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="CBd-PQ-AYs"/>
-                <constraint firstItem="4KE-ga-PqR" firstAttribute="top" secondItem="vpW-pM-MnP" secondAttribute="bottom" constant="30" id="CTZ-SH-Uc8"/>
-                <constraint firstItem="0xi-vN-GwZ" firstAttribute="top" secondItem="AON-31-j3x" secondAttribute="bottom" id="Q4y-Dr-qwi"/>
-                <constraint firstItem="UlA-HK-VJM" firstAttribute="top" secondItem="Cte-jq-rME" secondAttribute="bottom" constant="10" id="Tgx-l7-kFo"/>
-                <constraint firstItem="uwm-wv-N5P" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="UdQ-0R-j7E"/>
-                <constraint firstItem="AON-31-j3x" firstAttribute="top" secondItem="uwm-wv-N5P" secondAttribute="bottom" id="VEU-YB-bPl"/>
-                <constraint firstAttribute="trailing" secondItem="AON-31-j3x" secondAttribute="trailing" id="XL9-GZ-Zic"/>
-                <constraint firstAttribute="trailing" secondItem="Cte-jq-rME" secondAttribute="trailing" id="eCL-l8-Ve9"/>
-                <constraint firstAttribute="trailing" secondItem="vpW-pM-MnP" secondAttribute="trailing" constant="15" id="eYe-Vj-GQv"/>
-                <constraint firstItem="0xi-vN-GwZ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="fuf-DZ-jsC"/>
-                <constraint firstItem="WTI-pj-GhU" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="gTS-5n-2RV"/>
-                <constraint firstItem="Cte-jq-rME" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="gZL-dZ-EM6"/>
-                <constraint firstItem="Cte-jq-rME" firstAttribute="top" secondItem="0xi-vN-GwZ" secondAttribute="bottom" id="mjF-RH-jJr"/>
-                <constraint firstAttribute="trailing" secondItem="LFC-ke-dZO" secondAttribute="trailing" constant="15" id="qk6-Q7-E8p"/>
-                <constraint firstAttribute="trailing" secondItem="UlA-HK-VJM" secondAttribute="trailing" constant="15" id="rNP-GF-J4h"/>
-                <constraint firstItem="vpW-pM-MnP" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="rXs-cW-4i3"/>
-                <constraint firstItem="LFC-ke-dZO" firstAttribute="top" secondItem="UlA-HK-VJM" secondAttribute="bottom" constant="30" id="sk2-qg-gKw"/>
-                <constraint firstItem="UlA-HK-VJM" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="yIq-rn-Mth"/>
-                <constraint firstItem="4KE-ga-PqR" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="z9c-jM-Osh"/>
-                <constraint firstAttribute="trailing" secondItem="0xi-vN-GwZ" secondAttribute="trailing" id="zp4-KY-PwX"/>
+                <constraint firstAttribute="bottom" secondItem="iN0-l3-epB" secondAttribute="bottom" id="7d7-iZ-YdW">
+                    <variation key="heightClass=regular-widthClass=regular" constant="0.0"/>
+                </constraint>
+                <constraint firstItem="iN0-l3-epB" firstAttribute="top" secondItem="0mw-Mq-wBd" secondAttribute="top" id="7tS-dU-35i">
+                    <variation key="heightClass=regular-widthClass=regular" constant="0.0"/>
+                </constraint>
+                <constraint firstItem="iN0-l3-epB" firstAttribute="leading" secondItem="0mw-Mq-wBd" secondAttribute="leading" id="Bvn-N6-bWM">
+                    <variation key="heightClass=regular-widthClass=regular" constant="70"/>
+                </constraint>
+                <constraint firstAttribute="trailing" secondItem="iN0-l3-epB" secondAttribute="trailing" id="U1S-Yx-Wei">
+                    <variation key="heightClass=regular-widthClass=regular" constant="70"/>
+                </constraint>
             </constraints>
             <connections>
-                <outletCollection property="gestureRecognizers" destination="yLf-tS-J9a" appends="YES" id="g8u-eg-A4d"/>
+                <outletCollection property="gestureRecognizers" destination="yLf-tS-J9a" appends="YES" id="0xk-RB-q9R"/>
             </connections>
+            <point key="canvasLocation" x="728" y="245"/>
         </view>
     </objects>
     <resources>
         <image name="icon_arrow_right_grey.png" width="20" height="20"/>
     </resources>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
-    </simulatedMetricsContainer>
 </document>

@@ -71,6 +71,7 @@
         viewContentLoad.frame = CGRectMake(0, 0, viewContentAction.bounds.size.width, viewContentLoad.bounds.size.height);
         actLoading.frame = CGRectMake((viewContentLoad.bounds.size.width-actLoading.bounds.size.width)/2.0f, (viewContentLoad.bounds.size.height-actLoading.bounds.size.height)/2.0f, actLoading.bounds.size.width, actLoading.bounds.size.height);
     }
+    [btnChat setHidden:YES];
 }
 
 
@@ -234,7 +235,14 @@
 - (void)setDescription:(NSString *)strDescription
 {
     [_delegate initLabelDesc:lblDesc withText:strDescription];
-    lblDesc.frame = CGRectMake(imageProfile.frame.origin.x, CPaddingTopBottom + (isProductCell? imageProduct.frame.origin.y+imageProduct.bounds.size.height : imageProfile.frame.origin.y+imageProfile.bounds.size.height)+CPaddingTopBottom, (self.bounds.size.width-(viewContent.frame.origin.x*2))-(imageProfile.frame.origin.x*2), 0);
+    lblDesc.frame = CGRectMake(imageProfile.frame.origin.x,
+                               CPaddingTopBottom + (isProductCell
+                                                    ?
+                                                    imageProduct.frame.origin.y+imageProduct.bounds.size.height
+                                                    :
+                                                    imageProfile.frame.origin.y+imageProfile.bounds.size.height)+CPaddingTopBottom,
+                               viewContent.frame.size.width,
+                               0);
     CGSize tempSizeDesc = [lblDesc sizeThatFits:CGSizeMake(lblDesc.bounds.size.width, 9999)];
     CGRect tempLblRect = lblDesc.frame;
     tempLblRect.size.height = tempSizeDesc.height;

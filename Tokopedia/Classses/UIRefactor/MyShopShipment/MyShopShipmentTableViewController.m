@@ -127,6 +127,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *shipmentJNENotAvailableLabel;
 @property (weak, nonatomic) IBOutlet UITableViewCell *shipmentJNEMoreInfoCell;
 
+
 @property (weak, nonatomic) IBOutlet UILabel *shipmentTikiNameLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *shipmentTikiLogoImageView;
 @property (weak, nonatomic) IBOutlet UILabel *shipmentTikiRegulerLabel;
@@ -217,6 +218,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *pickupLocationLabel;
 @property (weak, nonatomic) IBOutlet UIView *pickupMapContainerView;
 @property (weak, nonatomic) IBOutlet UIImageView *pickupLocationImageView;
+
+@property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *weightCollection;
+@property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *notSupportedCellColleciton;
 
 @property (weak, nonatomic) IBOutlet UILabel *phoneNumberLabel;
 
@@ -1215,7 +1219,7 @@
         }
         [NavigateViewController navigateToMap:coordinate type:TypeEditPlace fromViewController:self];
         
-    } else if (indexPath.section == 4 && indexPath.row == 4) {
+    } else if (indexPath.section == 3 && indexPath.row == 4) {
         AlertInfoView *alert = [AlertInfoView newview];
         alert.text = @"Sistem AWB Otomatis";
         alert.detailText = @"Dengan menggunakan Sistem Kode Resi Otomatis, Anda tidak perlu lagi melakukan input nomor resi secara manual. Cukup cetak kode booking dan tunjukkan ke agen JNE yang mendukung, nomor resi akan otomatis masuk ke Tokopedia.";
@@ -1226,7 +1230,7 @@
         frame.size.height += (alert.detailTextLabel.frame.size.height-50);
         alert.frame = frame;
         
-    } else if (indexPath.section == 6 && indexPath.row == 1) {
+    } else if (indexPath.section == 5 && indexPath.row == 1) {
         AlertInfoView *alert = [AlertInfoView newview];
         alert.text = @"Sistem I-Drop";
         alert.detailText = @"I-Drop adalah kurir pengiriman kerja sama RPX dan Indomaret, nantinya barang yang Anda akan kirimkan menggunakan RPX bisa diantar ke Indomaret terdekat.";
@@ -1237,6 +1241,15 @@
         frame.size.height += (alert.detailTextLabel.frame.size.height-50);
         alert.frame = frame;
     }
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if([_weightCollection containsObject:cell]) {
+        [cell.contentView setBackgroundColor:[UIColor colorWithRed:(255.0/255.0) green:(249/255.0) blue:(196/255.0) alpha:1.0]];
+    } else if ([_notSupportedCellColleciton containsObject:cell]) {
+        [cell.contentView setBackgroundColor:[UIColor colorWithRed:(251.0/255.0) green:(227/255.0) blue:(228/255.0) alpha:1.0]];
+    }
+
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
@@ -1340,10 +1353,14 @@
     else if ([sender isEqual:_shipmentJNEAWBSwitch]) {
         if (sender.isOn) {
             _shipment.jne.jne_tiket = @"1";
-            [_shipment.auto_resi addObject:_JNE.shipment_id];
+            NSMutableArray *autoResi = [_shipment.auto_resi mutableCopy];
+            [autoResi addObject:_JNE.shipment_id];
+            _shipment.auto_resi = autoResi;
         } else {
             _shipment.jne.jne_tiket = @"0";
-            [_shipment.auto_resi removeObject:_JNE.shipment_id];
+            NSMutableArray *autoResi = [_shipment.auto_resi mutableCopy];
+            [autoResi removeObject:_JNE.shipment_id];
+            _shipment.auto_resi = autoResi;
         }
     }
     else if ([sender isEqual:_shipmentJNEMinimumWeightSwitch]) {
@@ -1921,7 +1938,7 @@
                        return;
                    }
                    if (response == nil|| response.results.count == 0) {
-                       self.pickupLocationLabel.text = [NSString stringWithFormat:@"Lokasi yang Dituju"];
+                       self.pickupLocationLabel.text = [NSString stringWithFormat:@"Tandai lokasi Anda"];
                    } else {
                        GMSAddress *placemark = [response results][0];
                        self.pickupLocationLabel.text = [self streetNameFromAddress:placemark];
@@ -1994,17 +2011,8 @@
 
 - (NSString *)streetNameFromAddress:(GMSAddress *)address {
     NSString *strSnippet = @"Tentukan Peta Lokasi";
-    if (address.lines.count > 0) {
-        strSnippet = address.lines[0];
-    } else {
-        if ([address.thoroughfare length] != 0) {
-            if ([strSnippet length] != 0) {
-                strSnippet = [NSString stringWithFormat:@"%@, %@",strSnippet,[address thoroughfare]];
-            } else {
-                strSnippet = address.thoroughfare;
-            }
-        }
-    }
+    TKPAddressStreet *tkpAddressStreet = [TKPAddressStreet new];
+    strSnippet = [tkpAddressStreet getStreetAddress:address.thoroughfare];
     return strSnippet;
 }
 
@@ -2279,8 +2287,8 @@
     }
 }
 
-- (void)setPos:(ShippingInfoShipments *)shipment {
-    _posIndonesia = shipment;
+- (void)setPosIndonesia:(ShippingInfoShipments *)posIndonesia {
+    _posIndonesia = posIndonesia;
     for (ShippingInfoShipmentPackage *package in _posIndonesia.shipment_package) {
         if ([package.sp_id isEqualToString:@"10"]) { // Pos Kilat Khusus
             _posPackageKhusus = package;
@@ -3110,7 +3118,7 @@
     else
         addressStreet = street;
     
-    self.pickupLocationLabel.text = [locationAddress isEqualToString:@""]?@"Lokasi yang Dituju":locationAddress;
+    self.pickupLocationLabel.text = [locationAddress isEqualToString:@""]?@"Tandai lokasi Anda":locationAddress;
     _shipment.shop_shipping.latitude = latitude;
     _shipment.shop_shipping.longitude = longitude;
 }

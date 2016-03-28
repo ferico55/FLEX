@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface ResolutionAttachment : NSObject
+@interface ResolutionAttachment : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *real_file_url;
 @property (nonatomic, strong) NSString *file_url;

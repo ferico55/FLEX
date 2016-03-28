@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
@@ -18,34 +18,10 @@
                 <outlet property="searchBar" destination="fYi-0l-G6g" id="DTk-Kt-SRA"/>
                 <outlet property="searchBarView" destination="mMR-Gb-1FO" id="dd9-e5-0Xd"/>
                 <outlet property="table" destination="YWE-3l-Kil" id="WOE-7v-Xvt"/>
-                <outlet property="view" destination="iN0-l3-epB" id="4z7-PM-53n"/>
+                <outlet property="view" destination="g9s-CR-OtF" id="vlL-5d-wCC"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="iN0-l3-epB">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-            <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" directionalLockEnabled="YES" alwaysBounceVertical="YES" delaysContentTouches="NO" canCancelContentTouches="NO" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="YWE-3l-Kil">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                    <animations/>
-                    <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                    <connections>
-                        <outlet property="dataSource" destination="-1" id="Rye-92-3rK"/>
-                        <outlet property="delegate" destination="-1" id="YiO-HX-eVW"/>
-                    </connections>
-                </tableView>
-            </subviews>
-            <animations/>
-            <constraints>
-                <constraint firstItem="YWE-3l-Kil" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="DyV-cF-U98"/>
-                <constraint firstAttribute="trailing" secondItem="YWE-3l-Kil" secondAttribute="trailing" id="HdM-Vf-gqE"/>
-                <constraint firstItem="YWE-3l-Kil" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="eCr-iC-q4H"/>
-                <constraint firstAttribute="bottom" secondItem="YWE-3l-Kil" secondAttribute="bottom" id="j2G-PU-n56"/>
-            </constraints>
-            <point key="canvasLocation" x="283" y="96"/>
-        </view>
         <view contentMode="scaleToFill" id="88r-31-OxA" userLabel="FooterView">
             <rect key="frame" x="0.0" y="0.0" width="320" height="34"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -159,12 +135,57 @@
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstItem="fYi-0l-G6g" firstAttribute="top" secondItem="mMR-Gb-1FO" secondAttribute="top" id="5dr-pO-SCv"/>
-                <constraint firstAttribute="trailing" secondItem="fYi-0l-G6g" secondAttribute="trailing" id="BVe-DL-FyP"/>
-                <constraint firstItem="fYi-0l-G6g" firstAttribute="leading" secondItem="mMR-Gb-1FO" secondAttribute="leading" id="Q0Q-Il-dNH"/>
+                <constraint firstAttribute="trailing" secondItem="fYi-0l-G6g" secondAttribute="trailing" id="BVe-DL-FyP">
+                    <variation key="heightClass=regular-widthClass=regular" constant="70"/>
+                </constraint>
+                <constraint firstItem="fYi-0l-G6g" firstAttribute="leading" secondItem="mMR-Gb-1FO" secondAttribute="leading" id="Q0Q-Il-dNH">
+                    <variation key="heightClass=regular-widthClass=regular" constant="70"/>
+                </constraint>
                 <constraint firstAttribute="bottom" secondItem="fYi-0l-G6g" secondAttribute="bottom" id="XZX-uB-Xw7"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="734" y="30"/>
+        </view>
+        <view contentMode="scaleToFill" id="g9s-CR-OtF">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iN0-l3-epB">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                    <subviews>
+                        <tableView clipsSubviews="YES" contentMode="scaleToFill" directionalLockEnabled="YES" alwaysBounceVertical="YES" delaysContentTouches="NO" canCancelContentTouches="NO" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="YWE-3l-Kil">
+                            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                            <animations/>
+                            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+                            <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <connections>
+                                <outlet property="dataSource" destination="-1" id="Rye-92-3rK"/>
+                                <outlet property="delegate" destination="-1" id="YiO-HX-eVW"/>
+                            </connections>
+                        </tableView>
+                    </subviews>
+                    <animations/>
+                    <constraints>
+                        <constraint firstItem="YWE-3l-Kil" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="DyV-cF-U98"/>
+                        <constraint firstAttribute="trailing" secondItem="YWE-3l-Kil" secondAttribute="trailing" id="HdM-Vf-gqE"/>
+                        <constraint firstItem="YWE-3l-Kil" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="eCr-iC-q4H"/>
+                        <constraint firstAttribute="bottom" secondItem="YWE-3l-Kil" secondAttribute="bottom" id="j2G-PU-n56"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <animations/>
+            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="iN0-l3-epB" firstAttribute="leading" secondItem="g9s-CR-OtF" secondAttribute="leading" id="T2l-h7-Xjt">
+                    <variation key="heightClass=regular-widthClass=regular" constant="70"/>
+                </constraint>
+                <constraint firstItem="iN0-l3-epB" firstAttribute="top" secondItem="g9s-CR-OtF" secondAttribute="top" id="dcO-Gn-iyH"/>
+                <constraint firstAttribute="trailing" secondItem="iN0-l3-epB" secondAttribute="trailing" id="fVS-nP-dCK">
+                    <variation key="heightClass=regular-widthClass=regular" constant="70"/>
+                </constraint>
+                <constraint firstAttribute="bottom" secondItem="iN0-l3-epB" secondAttribute="bottom" id="vVt-TB-UGB"/>
+            </constraints>
+            <point key="canvasLocation" x="256" y="733"/>
         </view>
     </objects>
     <resources>

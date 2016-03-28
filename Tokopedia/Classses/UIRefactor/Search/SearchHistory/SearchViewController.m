@@ -22,13 +22,28 @@
 #import "SearchAutoCompleteObject.h"
 #import "SearchAutoCompleteCell.h"
 #import "SearchAutoCompleteHeaderView.h"
+#import "UIView+HVDLayout.h"
 
 #import "Localytics.h"
 
+#import "ImagePickerCategoryController.h"
+
 NSString *const searchPath = @"search/%@";
 
-@interface SearchViewController () <UISearchBarDelegate, UISearchDisplayDelegate, UICollectionViewDataSource, UICollectionViewDelegate, SearchResultDelegate, NotificationDelegate,NotificationManagerDelegate> {
-
+@interface SearchViewController ()
+<
+UISearchBarDelegate,
+UISearchDisplayDelegate,
+UICollectionViewDataSource,
+UICollectionViewDelegate,
+UIImagePickerControllerDelegate,
+UINavigationControllerDelegate,
+SearchResultDelegate,
+NotificationDelegate,
+NotificationManagerDelegate
+>
+{
+    
     NSString *_filter;
     UITextField *_activeTextField;
     
@@ -40,7 +55,7 @@ NSString *const searchPath = @"search/%@";
     
     NSInteger *_requestCount;
     NSOperationQueue *_operationQueue;
-
+    
     NSMutableArray *_domains;
     NSMutableArray *_general;
     NSMutableArray *_hotlist;
@@ -48,6 +63,7 @@ NSString *const searchPath = @"search/%@";
     NSMutableArray *_typedHistoryResult;
     NSURL *_deeplinkUrl;
     
+    UITapGestureRecognizer *imageSearchGestureRecognizer;
 }
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
@@ -55,7 +71,9 @@ NSString *const searchPath = @"search/%@";
 
 @property (strong, nonatomic) NotificationBarButton *notificationButton;
 @property (strong, nonatomic) NotificationViewController *notificationController;
-
+@property (strong, nonatomic) IBOutlet UIView *iconCamera;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *searchBarTrailingConstraint;
+@property (strong, nonatomic) IBOutlet UIImageView *cameraImageView;
 
 @end
 
@@ -81,63 +99,90 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     
     _operationQueue = [NSOperationQueue new];
     [self.navigationController.navigationBar setTranslucent:NO];
-
+    
     _historyResult =[NSMutableArray new];
     _typedHistoryResult = [NSMutableArray new];
     _domains = [NSMutableArray new];
-
+    
     _general = [NSMutableArray new];
     _hotlist = [NSMutableArray new];
     
-
-    UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 44)];
-    [searchBar setPlaceholder:@"Cari produk, katalog dan toko"];
-    [searchBar setOpaque:YES];
-    [searchBar setBackgroundImage:[UIImage imageNamed:@"NavBar"]];
-    [searchBar setTintColor:[UIColor whiteColor]];
-    [[UITextField appearance] setTintColor:[UIColor blueColor]];
-    _searchBar = searchBar;
+    [_searchBar setPlaceholder:@"Cari produk, katalog dan toko"];
     [self.view addSubview:_searchBar];
-
-    _searchBar.delegate = self;
     
-
-
+    _searchBar.delegate = self;
+    _searchBar.showsCancelButton = NO;
+    
+    [_searchBar setImage:[UIImage imageNamed:@"camera-grey.png"] forSearchBarIcon:UISearchBarIconBookmark state:UIControlStateNormal];
+    
+    imageSearchGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(takePhoto:)];
+    [_iconCamera addGestureRecognizer:imageSearchGestureRecognizer];
+    
     _filter = @"search_product";
     
     [self loadHistory];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(clearHistory)
-                                                 name:kTKPD_REMOVE_SEARCH_HISTORY
-                                               object:nil];
     
+    //    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
     
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//                                             selector:@selector(didReceiveDeeplinkUrl:)
-//                                                 name:@"didReceiveDeeplinkUrl" object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(goToHotlist:) name:@"redirectSearch" object:nil];
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-    [nc addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    NSNotificationCenter *notification = [NSNotificationCenter defaultCenter];
+    [notification addObserver:self selector:@selector(clearHistory) name:kTKPD_REMOVE_SEARCH_HISTORY object:nil];
+    [notification addObserver:self selector:@selector(goToHotlist:) name:@"redirectSearch" object:nil];
+    [notification addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [notification addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    //    [notification addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:[UIDevice currentDevice]];
     
     UINib *cellNib = [UINib nibWithNibName:@"SearchAutoCompleteCell" bundle:nil];
     [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"SearchAutoCompleteCellIdentifier"];
     
     [self.collectionView registerClass:[SearchAutoCompleteHeaderView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"SearchAutoCompleteCellHeaderViewIdentifier"];
-    
     [self.collectionView setBackgroundColor:[UIColor colorWithWhite:0.85 alpha:1.0]];
-
+    
     [_domains removeAllObjects];
     [_domains addObject:@{@"title" : SearchDomainHistory, @"data" : _historyResult}];
     [_collectionView reloadData];
 }
 
+-(BOOL)isEnableImageSearch{
+    UserAuthentificationManager *auth = [UserAuthentificationManager new];
+    if (!auth.isLogin) {
+        return NO;
+    }
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    TAGContainer *gtmContainer = appDelegate.container;
+    
+    NSString *enableImageSearchString = [gtmContainer stringForKey:@"enable_image_search"]?:@"0";
+    
+    return [enableImageSearchString isEqualToString:@"1"];
+}
+
+- (UITextField*)searchSubviewsForTextFieldIn:(UIView*)view
+{
+    if ([view isKindOfClass:[UITextField class]]) {
+        return (UITextField*)view;
+    }
+    UITextField *searchedTextField;
+    for (UIView *subview in view.subviews) {
+        searchedTextField = [self searchSubviewsForTextFieldIn:subview];
+        if (searchedTextField) {
+            break;
+        }
+    }
+    return searchedTextField;
+}
+
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-
+    
     [self initNotificationManager];
+    
+    [self.searchBar resignFirstResponder];
+    [self.searchBar setShowsBookmarkButton:NO];
+    
+    if([self isEnableImageSearch]) {
+        _searchBarTrailingConstraint.constant = 44;
+    } else {
+        _searchBarTrailingConstraint.constant = 0;
+    }
     
     [TPAnalytics trackScreenName:@"Search Page"];
     self.screenName = @"Search Page";
@@ -153,7 +198,7 @@ NSString *const SearchDomainHotlist = @"Hotlist";
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-
+    
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -164,7 +209,7 @@ NSString *const SearchDomainHotlist = @"Hotlist";
 #pragma mark - Memory Management
 - (void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
-    [[NSNotificationCenter defaultCenter] removeObserver:self];    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -175,20 +220,20 @@ NSString *const SearchDomainHotlist = @"Hotlist";
 -(void)saveHistory:(NSString*)history {
     NSString *destPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
     destPath = [destPath stringByAppendingPathComponent:kTKPDSEARCH_SEARCHHISTORYPATHKEY];
-
+    
     if(![_historyResult containsObject:[history lowercaseString]]) {
         [_historyResult insertObject:[history lowercaseString] atIndex:0];
         [_historyResult writeToFile:destPath atomically:YES];
         
         [_collectionView reloadData];
     }
-
+    
 }
 
 -(void)loadHistory {
     NSString *destPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
     destPath = [destPath stringByAppendingPathComponent:kTKPDSEARCH_SEARCHHISTORYPATHKEY];
-
+    
     [_historyResult addObjectsFromArray:[[NSArray alloc] initWithContentsOfFile:destPath]];
     [_typedHistoryResult addObjectsFromArray:_historyResult];
 }
@@ -252,6 +297,7 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     UICollectionViewCell *cell = nil;
     
     SearchAutoCompleteCell *searchCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"SearchAutoCompleteCellIdentifier" forIndexPath:indexPath];
+    
     NSDictionary *domain = [_domains objectAtIndex:indexPath.section];
     NSString *domainName = [domain objectForKey:@"title"];
     if([domainName isEqualToString:SearchDomainHistory]) {
@@ -311,43 +357,43 @@ NSString *const SearchDomainHotlist = @"Hotlist";
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     UICollectionViewCell  *cell = [collectionView cellForItemAtIndexPath:indexPath];
     [UIView animateWithDuration:0.10 delay:0 options:(UIViewAnimationOptionCurveEaseInOut)
-         animations:^{
-             [cell setBackgroundColor: collectionView.backgroundColor];
-         }
-         completion:^(BOOL finished){
-             [cell setBackgroundColor:[UIColor colorWithRed:(231.0/255) green:(231.0/255) blue:(231.0/255) alpha:1.0]];
-             
-             NSDictionary *domain = [_domains objectAtIndex:indexPath.section];
-             NSString *domainName = [domain objectForKey:@"title"];
-             if([domainName isEqualToString:SearchDomainHistory]) {
-                 if (_searchBar.text.length > 0) {
-                     [self goToResultPage:[_typedHistoryResult objectAtIndex:indexPath.row] withAutoComplete:YES];
-                 } else {
-                     NSString *searchText = [_historyResult objectAtIndex:indexPath.row];
-                     [self goToResultPage:searchText withAutoComplete:YES];
-                 }
-             }
-             
-             else if ([domainName isEqualToString:SearchDomainGeneral]) {
-                 NSArray *generals = [domain objectForKey:@"data"];
-                 SearchAutoCompleteGeneral *general = [generals objectAtIndex:indexPath.row];
-                 [self saveHistory:general.title];
-                 [self goToResultPage:general.title withAutoComplete:YES];
-             }
-             else if ([domainName isEqualToString:SearchDomainHotlist]) {
-                 NSArray *hotlists = [domain objectForKey:@"data"];
-                 SearchAutoCompleteHotlist *hotlist = [hotlists objectAtIndex:indexPath.row];
-                 NSArray *keys = [hotlist.url componentsSeparatedByString:@"/"];
-                 
-                 HotlistResultViewController *controller = [HotlistResultViewController new];
-                 controller.data = @{@"title" : hotlist.title, @"key" : [keys lastObject]};
-                 controller.isFromAutoComplete = YES;
-                 controller.hidesBottomBarWhenPushed = YES;
-                 
-                 [self.navigationController pushViewController:controller animated:YES];
-             }
-
-         }
+                     animations:^{
+                         [cell setBackgroundColor: collectionView.backgroundColor];
+                     }
+                     completion:^(BOOL finished){
+                         [cell setBackgroundColor:[UIColor colorWithRed:(231.0/255) green:(231.0/255) blue:(231.0/255) alpha:1.0]];
+                         
+                         NSDictionary *domain = [_domains objectAtIndex:indexPath.section];
+                         NSString *domainName = [domain objectForKey:@"title"];
+                         if([domainName isEqualToString:SearchDomainHistory]) {
+                             if (_searchBar.text.length > 0) {
+                                 [self goToResultPage:[_typedHistoryResult objectAtIndex:indexPath.row] withAutoComplete:YES];
+                             } else {
+                                 NSString *searchText = [_historyResult objectAtIndex:indexPath.row];
+                                 [self goToResultPage:searchText withAutoComplete:YES];
+                             }
+                         }
+                         
+                         else if ([domainName isEqualToString:SearchDomainGeneral]) {
+                             NSArray *generals = [domain objectForKey:@"data"];
+                             SearchAutoCompleteGeneral *general = [generals objectAtIndex:indexPath.row];
+                             [self saveHistory:general.title];
+                             [self goToResultPage:general.title withAutoComplete:YES];
+                         }
+                         else if ([domainName isEqualToString:SearchDomainHotlist]) {
+                             NSArray *hotlists = [domain objectForKey:@"data"];
+                             SearchAutoCompleteHotlist *hotlist = [hotlists objectAtIndex:indexPath.row];
+                             NSArray *keys = [hotlist.url componentsSeparatedByString:@"/"];
+                             
+                             HotlistResultViewController *controller = [HotlistResultViewController new];
+                             controller.data = @{@"title" : hotlist.title, @"key" : [keys lastObject]};
+                             controller.isFromAutoComplete = YES;
+                             controller.hidesBottomBarWhenPushed = YES;
+                             
+                             [self.navigationController pushViewController:controller animated:YES];
+                         }
+                         
+                     }
      ];
 }
 
@@ -365,7 +411,7 @@ NSString *const SearchDomainHotlist = @"Hotlist";
         NSArray *historiesresult;
         historiesresult = [_historyResult filteredArrayUsingPredicate:resultPredicate];
         NSInteger limit = 5;
-
+        
         if(historiesresult.count > limit) {
             NSRange endRange = NSMakeRange((historiesresult.count-limit), limit);
             NSArray *lastThree= [historiesresult subarrayWithRange:endRange];
@@ -377,7 +423,7 @@ NSString *const SearchDomainHotlist = @"Hotlist";
         [self configureRestkit];
         [self doRequest];
     }
-
+    
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
@@ -412,15 +458,21 @@ NSString *const SearchDomainHotlist = @"Hotlist";
 
 - (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar {
     [searchBar setShowsCancelButton:NO animated:YES];
+    [searchBar setShowsBookmarkButton:NO];
+    if ([self isEnableImageSearch]) {
+        _searchBarTrailingConstraint.constant = 44;
+    } else {
+        _searchBarTrailingConstraint.constant = 0;
+    }
     [self deActivateSearchBar];
-    
     return YES;
 }
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
     [searchBar setShowsCancelButton:YES animated:YES];
+    _searchBar.showsBookmarkButton = ([self isEnableImageSearch]);
+    _searchBarTrailingConstraint.constant = 0;
     [self activateSearchBar];
-
     return YES;
 }
 
@@ -533,7 +585,7 @@ NSString *const SearchDomainHotlist = @"Hotlist";
         
         [_general addObjectsFromArray:search.domains.general];
         [_hotlist addObjectsFromArray:search.domains.hotlist];
-
+        
         if(_general.count > 0) {
             [_domains addObject:@{@"title" : SearchDomainGeneral, @"data" : _general}];
         }
@@ -549,7 +601,7 @@ NSString *const SearchDomainHotlist = @"Hotlist";
         [_collectionView reloadData];
         [_collectionView setHidden:NO];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-
+        
     }];
     
     [_operationQueue addOperation:_objectRequest];
@@ -611,6 +663,36 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
+- (void)orientationChanged:(NSNotification*)note {
+    [_collectionView reloadData];
+}
 
+#pragma mark - Image search
+
+- (void)takePhoto:(UIButton *)sender {
+    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+    imagePicker.delegate = self;
+    imagePicker.allowsEditing = YES;
+    imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+    imagePicker.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self.navigationController presentViewController:imagePicker animated:YES completion:NULL];
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    [picker dismissViewControllerAnimated:YES completion:^{
+        ImagePickerCategoryController *controller = [[ImagePickerCategoryController alloc] init];
+        controller.imageQuery = info;
+        controller.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:controller animated:YES];
+    }];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    [picker dismissViewControllerAnimated:YES completion:NULL];
+}
+
+-(void)searchBarBookmarkButtonClicked:(UISearchBar *)searchBar{
+    [self takePhoto:nil];
+}
 
 @end

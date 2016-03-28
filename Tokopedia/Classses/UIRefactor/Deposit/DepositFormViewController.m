@@ -11,6 +11,7 @@
 #import "GeneralAction.h"
 #import "DepositForm.h"
 #import "profile.h"
+#import "string.h"
 
 @interface DepositFormViewController () <UITextFieldDelegate, UIScrollViewDelegate> {
     NSString *_clearTotalAmount;

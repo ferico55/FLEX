@@ -7,10 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MoreWrapperViewController.h"
 
 @interface MoreViewController : UITableViewController
 
 - (IBAction)actionCreateShop:(id)sender;
 - (void)updateShopInformation;
 - (void)updateImageURL;
+
+@property(strong, nonatomic) MoreWrapperViewController* wrapperViewController;
 @end

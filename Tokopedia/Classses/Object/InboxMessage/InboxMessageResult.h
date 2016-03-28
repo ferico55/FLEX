@@ -14,6 +14,8 @@
 @interface InboxMessageResult : NSObject
 
 @property (nonatomic, strong) Paging *paging;
-@property (nonatomic, strong) NSArray *list;
+@property (nonatomic, strong) NSArray<InboxMessageList*> *list;
+
++ (RKObjectMapping*)mapping;
 
 @end

@@ -33,7 +33,7 @@
 
 @interface InboxTalkViewController () <UITableViewDataSource, UITableViewDelegate, TKPDTabViewDelegate, UIAlertViewDelegate, TokopediaNetworkManagerDelegate, TalkCellDelegate>
 
-@property (weak, nonatomic) IBOutlet UIView *footer;
+@property (strong, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UITableView *table;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 
@@ -116,7 +116,6 @@
     
     _table.delegate = self;
     _table.dataSource = self;
-    _table.tableFooterView = _footer;
     
     UINib *cellNib = [UINib nibWithNibName:@"TalkCell" bundle:nil];
     [_table registerNib:cellNib forCellReuseIdentifier:@"TalkCellIdentifier"];
@@ -161,14 +160,11 @@
     cell.selectedTalkProductID = list.talk_product_id;
     cell.selectedTalkReputation = list.talk_user_reputation;
     cell.detailViewController = _detailViewController;
+    cell.marksOpenedTalkAsRead = YES;
     cell.isSplitScreen = YES;
+
     
     [cell setTalkViewModel:list.viewModel];
-    
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad && indexPath.row == 1 && isFirstShow) {
-        [cell tapToDetailTalk:cell];
-        isFirstShow = NO;
-    }
     
     //next page if already last cell
     NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1;
@@ -205,7 +201,19 @@
     NSDictionary *userInfo = @{kTKPDDETAIL_DATAINDEXKEY:@(indexPath.row)};
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"updateUnreadTalk" object:nil userInfo:userInfo];
-    [_detailViewController replaceDataSelected:data];
+    
+    UIViewController* containerViewController = (UIViewController*)_delegate;
+    UIViewController* master = containerViewController.splitViewController.viewControllers.firstObject;
+    
+    ProductTalkDetailViewController* detailVC = [[ProductTalkDetailViewController alloc] initByMarkingOpenedTalkAsRead:YES];
+    detailVC.data = data;
+    
+    UINavigationController *detailNav = [[UINavigationController alloc]initWithRootViewController:detailVC];
+    detailNav.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+    detailNav.navigationBar.translucent = NO;
+    detailNav.navigationBar.tintColor = [UIColor whiteColor];
+    
+    containerViewController.splitViewController.viewControllers = @[master, detailNav];
 }
 
 #pragma mark - Talk Cell Delegate
@@ -225,11 +233,24 @@
     return _currentTabSegmentIndex;
 }
 
+- (void)updateTalkStatusAtIndexPath:(NSIndexPath *)indexPath following:(BOOL)following {
+    TalkList *talk = _talkList[indexPath.row];
+    talk.talk_follow_status = following;
+    talk.viewModel = nil;
+}
+
+- (void)tapToDeleteTalk:(UITableViewCell *)cell {
+    NSInteger index = [_table indexPathForCell:cell].row;
+    [_talkList removeObjectAtIndex:index];
+    [_table reloadData];
+}
+
 #pragma mark - Refresh View 
 - (void)refreshView:(UIRefreshControl*)refresh {
     [_networkManager requestCancel];
     _page = 1;
     
+    [_talkList removeAllObjects];
     [_table reloadData];
     [_networkManager doRequest];
 }
@@ -414,21 +435,17 @@
 }
 
 - (void)actionBeforeRequest:(int)tag {
-    UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    [indicator startAnimating];
-    
-    CGRect frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 60);
-    UIView *loadingView = [[UIView alloc] initWithFrame:frame];
-    [loadingView addSubview:indicator];
-    
-    indicator.center = loadingView.center;
-    
-    self.table.tableFooterView = loadingView;
+    if (_page != 1) {
+        self.table.tableFooterView = _footer;
+    } else {
+        [_refreshControl beginRefreshing];
+    }
 }
 
 - (void)actionAfterRequest:(RKMappingResult *)mappingResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
+    [_refreshControl endRefreshing];
+    
     InboxTalk *inboxTalk = [mappingResult.dictionary objectForKey:@""];
-    [_refreshControl setHidden:YES];
     
     if (_page == 1) {
         [_talkList removeAllObjects];
@@ -443,10 +460,22 @@
         }
         self.table.tableFooterView = nil;
         [_noResultView removeFromSuperview];
+        
+        [self.table reloadData];
+
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            if (isFirstShow) {
+                isFirstShow = NO;
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    TalkCell* cell = [_table cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+                    [cell tapToDetailTalk:cell];
+                });
+            }
+        }
     } else {
         NSString *text;
         NSString *desc;
-        [_refreshControl setHidden:YES];
         
         if([_readStatus isEqualToString:@"all"]){
             if (self.inboxTalkType == InboxTalkTypeAll) {
@@ -482,14 +511,10 @@
         
         _table.tableFooterView = nil;
         [_table addSubview:_noResultView];
+        [self.table reloadData];
     }
     
-    [self.table reloadData];
     
-    [_refreshControl endRefreshing];
-    [_refreshControl setHidden:YES];
-    [_refreshControl setEnabled:NO];
-    [_refreshControl layoutIfNeeded];
 }
 
 - (void)actionAfterFailRequestMaxTries:(int)tag {

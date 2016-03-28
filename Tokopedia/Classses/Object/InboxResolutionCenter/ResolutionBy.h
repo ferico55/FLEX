@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface ResolutionBy : NSObject
+@interface ResolutionBy : NSObject <TKPObjectMapping>
 
 @property (nonatomic) NSInteger by_customer;
 @property (nonatomic) NSInteger by_seller;

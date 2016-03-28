@@ -17,7 +17,7 @@
 #import "ResolutionButton.h"
 #import "ResolutionConversation.h"
 
-@interface ResolutionDetailConversation : NSObject
+@interface ResolutionDetailConversation : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) ResolutionLast *resolution_last;
 @property (nonatomic, strong) NSNumber *resolution_conversation_count;

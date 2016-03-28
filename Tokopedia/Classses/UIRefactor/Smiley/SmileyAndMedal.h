@@ -9,6 +9,13 @@
 #import <Foundation/Foundation.h>
 #import "SmileyDelegate.h"
 
+#define CBadgeSpeedGood @"badge-speed-good"
+#define CBadgeSpeedBad @"badge-speed-bad"
+#define CBadgeSpeedNeutral @"badge-speed-neutral"
+#define CStringPoin @"Poin"
+#define CWidthItemPopUp 50
+#define CHeightItemPopUp 30
+
 @interface SmileyAndMedal : NSObject
 + (void)setIconResponseSpeed:(NSString *)strResponse withImage:(id)imgSpeed largeImage:(BOOL)isLarge;
 + (void)generateMedalWithLevel:(NSString *)level withSet:(NSString *)set withImage:(id)image isLarge:(BOOL)isLarge;

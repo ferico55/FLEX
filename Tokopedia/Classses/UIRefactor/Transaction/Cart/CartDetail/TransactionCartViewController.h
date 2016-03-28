@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "InstallmentBank.h"
 
 @class TransactionCartViewController;
 
@@ -34,6 +35,12 @@
 @property (nonatomic) NSInteger indexPage;
 @property (strong,nonatomic,setter=setData:) NSDictionary *data;
 @property NSArray *listSummary;
+
+@property BOOL isLogin;
+
+@property InstallmentBank *selectedInstallmentBank;
+@property InstallmentTerm *selectedInstallmentDuration;
+
 
 -(void)refreshRequestCart;
 

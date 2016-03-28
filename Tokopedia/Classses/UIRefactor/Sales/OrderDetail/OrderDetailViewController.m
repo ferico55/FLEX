@@ -27,8 +27,14 @@
 #import "OrderBookingResponse.h"
 #import "AlertShipmentCodeView.h"
 
+#define CTagRecipientName 1
 #define CTagAddress 2
 #define CTagPhone 3
+#define CTagCourier 4
+#define CTagReceivePartialOrder 5
+#define CTagSenderName 6
+#define CTagSenderPhoneNumber 7
+#define CTagPickupAddress 8
 
 typedef enum TagRequest {
     OrderDetailTag
@@ -64,18 +70,15 @@ typedef enum TagRequest {
 @property (weak, nonatomic) IBOutlet UILabel *buyerNameLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *buyerProfileImageView;
 
-@property (weak, nonatomic) IBOutlet UILabel *receiverNameLabel;
+@property (weak, nonatomic) IBOutlet LabelMenu *receiverNameLabel;
 
 @property (weak, nonatomic) IBOutlet LabelMenu *addressLabel;
-@property (weak, nonatomic) IBOutlet LabelMenu *cityLabel;
-@property (weak, nonatomic) IBOutlet LabelMenu *countryLabel;
 
 @property (weak, nonatomic) IBOutlet LabelMenu *phoneNumberLabel;
 
-@property (weak, nonatomic) IBOutlet UILabel *courierAgentLabel;
+@property (weak, nonatomic) IBOutlet LabelMenu *courierAgentLabel;
 @property (weak, nonatomic) IBOutlet UIButton *getCodeButton;
 
-@property (weak, nonatomic) IBOutlet UILabel *paymentMethodLabel;
 @property (weak, nonatomic) IBOutlet UILabel *totalProductLabel;
 
 @property (weak, nonatomic) IBOutlet UILabel *subTotalFeeLabel;
@@ -84,14 +87,14 @@ typedef enum TagRequest {
 @property (weak, nonatomic) IBOutlet UILabel *totalFeeLabel;
 
 @property (weak, nonatomic) IBOutlet UIView *dropshipView;
-@property (weak, nonatomic) IBOutlet UILabel *dropshipSenderNameLabel;
-@property (weak, nonatomic) IBOutlet UILabel *dropshipSenderPhoneLabel;
+@property (weak, nonatomic) IBOutlet LabelMenu *dropshipSenderNameLabel;
+@property (weak, nonatomic) IBOutlet LabelMenu *dropshipSenderPhoneLabel;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *dropshipViewHeightConstraint;
 
 @property (strong, nonatomic) IBOutlet UIView *detailTransactionView;
 @property (weak, nonatomic) IBOutlet UILabel *transactionDateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *transactionDueDateLabel;
-@property (weak, nonatomic) IBOutlet UILabel *receivePartialOrderLabel;
+@property (weak, nonatomic) IBOutlet LabelMenu *receivePartialOrderLabel;
 @property (weak, nonatomic) IBOutlet UIButton *infoAddFeeButton;
 @property (weak, nonatomic) IBOutlet UILabel *insuranceTextLabel;
 
@@ -126,11 +129,11 @@ typedef enum TagRequest {
     
     [self setBackButton];
     
-    [self addGestureToLabels];
-    
     [self request];
 
     [self setData];
+
+    [self setDelegates];
     
     if ([_delegate isKindOfClass:[SalesNewOrderViewController class]]) {
         [self updateFrameForNewOrder];
@@ -177,30 +180,6 @@ typedef enum TagRequest {
     self.navigationItem.backBarButtonItem = backButton;
 }
 
-- (void)addGestureToLabels {
-    UILongPressGestureRecognizer *recognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
-    
-    _addressLabel.gestureRecognizers = @[recognizer];
-    _addressLabel.userInteractionEnabled = YES;
-    _addressLabel.delegate = self;
-    _addressLabel.tag = CTagAddress;
-
-    _cityLabel.gestureRecognizers = @[recognizer];
-    _cityLabel.userInteractionEnabled = YES;
-    _cityLabel.delegate = self;
-    _cityLabel.tag = CTagAddress;
-    
-    _countryLabel.gestureRecognizers = @[recognizer];
-    _countryLabel.userInteractionEnabled = YES;
-    _countryLabel.delegate = self;
-    _countryLabel.tag = CTagAddress;
-
-    _phoneNumberLabel.gestureRecognizers = @[recognizer];
-    _phoneNumberLabel.userInteractionEnabled = YES;
-    _phoneNumberLabel.delegate = self;
-    _phoneNumberLabel.tag = CTagPhone;
-}
-
 - (void)setData {
     [self setInvoiceData];
     [self setBuyerInformation];
@@ -208,6 +187,16 @@ typedef enum TagRequest {
     [self setPickupData];
     [self setCostData];
     [self setFooterView];
+}
+
+- (void)setDelegates {
+    self.receiverNameLabel.delegate = self;
+    self.addressLabel.delegate = self;
+    self.phoneNumberLabel.delegate = self;
+    self.courierAgentLabel.delegate = self;
+    self.receivePartialOrderLabel.delegate = self;
+    self.dropshipSenderNameLabel.delegate = self;
+    self.dropshipSenderPhoneLabel.delegate = self;
 }
 
 - (void)setInvoiceData {
@@ -248,22 +237,12 @@ typedef enum TagRequest {
     NSString *address = [_transaction.order_destination.address_street stringByReplacingOccurrencesOfString:@"<br>" withString:@"\n"];
     address = [address stringByReplacingOccurrencesOfString:@"<br>" withString:@"\n"];
     address = [address stringByReplacingOccurrencesOfString:@"<br/>" withString:@"\n"];
-    NSAttributedString *addressAttributedString = [[NSAttributedString alloc] initWithString:address
-                                                                                  attributes:attributes];
-    _addressLabel.attributedText = addressAttributedString;
-    _addressLabel.numberOfLines = 0;
-    [_addressLabel sizeToFit];
     
     NSString *city = [NSString stringWithFormat:@"%@\n%@",
                       _transaction.order_destination.address_district,
                       _transaction.order_destination.address_city];
     city = [city stringByReplacingOccurrencesOfString:@"<br>" withString:@"\n"];
     city = [city stringByReplacingOccurrencesOfString:@"<br/>" withString:@"\n"];
-    NSAttributedString *cityAttributedString = [[NSAttributedString alloc] initWithString:city
-                                                                               attributes:attributes];
-    _cityLabel.attributedText = cityAttributedString;
-    _cityLabel.numberOfLines = 0;
-    [_cityLabel sizeToFit];
     
     NSString *country = [NSString stringWithFormat:@"%@, %@, %@",
                          _transaction.order_destination.address_province,
@@ -271,12 +250,13 @@ typedef enum TagRequest {
                          _transaction.order_destination.address_postal];
     country = [country stringByReplacingOccurrencesOfString:@"<br>" withString:@"\n"];
     country = [country stringByReplacingOccurrencesOfString:@"<br/>" withString:@"\n"];
-    NSAttributedString *countryAttributedString = [[NSAttributedString alloc] initWithString:country
-                                                                                  attributes:attributes];
-    _countryLabel.attributedText = countryAttributedString;
-    _countryLabel.numberOfLines = 0;
-    [_countryLabel sizeToFit];
     
+    NSString *completeAddress = [NSString stringWithFormat:@"%@\n%@\n%@", address, city, country];
+    NSAttributedString *addressAttributedString = [[NSAttributedString alloc] initWithString:completeAddress attributes:attributes];
+    _addressLabel.attributedText = addressAttributedString;
+    _addressLabel.numberOfLines = 0;
+    [_addressLabel sizeToFit];
+
     _phoneNumberLabel.text = _transaction.order_destination.receiver_phone;
     
     _courierAgentLabel.text = [NSString stringWithFormat:@"%@ (%@)",
@@ -326,8 +306,6 @@ typedef enum TagRequest {
 }
 
 - (void)setCostData {
-    _paymentMethodLabel.text = _transaction.order_payment.payment_gateway_name;
-    
     _totalProductLabel.text = [NSString stringWithFormat:@"%@ Barang (%.3f kg)",
                                [NSNumber numberWithInteger:_transaction.order_detail.detail_quantity],
                                _transaction.order_detail.detail_total_weight];
@@ -335,6 +313,7 @@ typedef enum TagRequest {
     _subTotalFeeLabel.text = _transaction.order_detail.detail_product_price_idr;
     _assuranceFeeLabel.text = _transaction.order_detail.detail_insurance_price_idr;
     _insuranceTextLabel.text = ([_transaction.order_detail.detail_additional_fee integerValue]==0)?@"Biaya Asuransi":@"Biaya Tambahan";
+    [_insuranceTextLabel sizeToFit];
     _assuranceFeeLabel.text = ([_transaction.order_detail.detail_additional_fee integerValue]==0)?_transaction.order_detail.detail_insurance_price_idr:_transaction.order_detail.detail_total_add_fee_idr;
     _infoAddFeeButton.hidden = ([_transaction.order_detail.detail_additional_fee integerValue]==0);
     
@@ -364,8 +343,6 @@ typedef enum TagRequest {
     CGFloat additionalHeight = 0;
     additionalHeight += _pickupLocationView.frame.size.height;
     additionalHeight += _addressLabel.frame.size.height;
-    additionalHeight += _cityLabel.frame.size.height;
-    additionalHeight += _countryLabel.frame.size.height;
     
     CGFloat heightLeftOvers = 30;
     additionalHeight -= heightLeftOvers;
@@ -619,7 +596,7 @@ typedef enum TagRequest {
 }
 
 #pragma mark - Method
-- (void)longPress:(UILongPressGestureRecognizer *)sender
+- (IBAction)longPress:(UILongPressGestureRecognizer *)sender
 {
     if (sender.state == UIGestureRecognizerStateBegan) {
         UILabel *lbl = (UILabel *)sender.view;
@@ -643,25 +620,7 @@ typedef enum TagRequest {
             [self shipmentConfirmationActionButton:button];
         }
     } else if ([[sender view] isKindOfClass:[UILabel class]]) {
-        
-        NSURL *desktopURL = [NSURL URLWithString:_transaction.order_detail.detail_pdf_uri];
-        
-        NSString *pdf = [[[[[desktopURL query] componentsSeparatedByString:@"&"] objectAtIndex:0] componentsSeparatedByString:@"="] objectAtIndex:1];
-        NSString *invoiceID = [[[[[desktopURL query] componentsSeparatedByString:@"&"] objectAtIndex:1] componentsSeparatedByString:@"="] objectAtIndex:1];
-        
-        UserAuthentificationManager *authManager = [UserAuthentificationManager new];
-        NSString *userID = authManager.getUserId;
-        
-        NSString *url = [NSString stringWithFormat:@"%@/invoice.pl?invoice_pdf=%@&id=%@&user_id=%@",
-                         kTkpdBaseURLString, pdf, invoiceID, userID];
-        
-        UIWebView *webView = [[UIWebView alloc] initWithFrame:[self.view bounds]];
-        [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:url]]];
-        webView.scalesPageToFit = YES;
-        UIViewController *controller = [UIViewController new];
-        controller.title = _transaction.order_detail.detail_invoice;
-        [controller.view addSubview:webView];
-        [self.navigationController pushViewController:controller animated:YES];
+        [NavigateViewController navigateToInvoiceFromViewController:self withInvoiceURL:_transaction.order_detail.detail_pdf_uri];
     } else if ([[sender view] isKindOfClass:[UIView class]]) {
         NavigateViewController *controller = [NavigateViewController new];
         [controller navigateToProfileFromViewController:self withUserID:_transaction.order_customer.customer_id];
@@ -1011,12 +970,27 @@ typedef enum TagRequest {
 #pragma mark - LabelMenu Delegate
 - (void)duplicate:(int)tag
 {
-    if(tag == CTagAddress) {
-        [UIPasteboard generalPasteboard].string = [NSString stringWithFormat:@"%@ %@ %@", _addressLabel.text, _cityLabel.text, _countryLabel.text];
+    NSString *copiedText = @"";
+    if (tag == CTagRecipientName) {
+        copiedText = _transaction.order_destination.receiver_name;
+    } else if(tag == CTagAddress) {
+        copiedText = _addressLabel.text;
+    } else if(tag == CTagPhone) {
+        copiedText = _phoneNumberLabel.text;
+    } else if (tag == CTagCourier) {
+        copiedText = [NSString stringWithFormat:@"%@ (%@)",
+                      _transaction.order_shipment.shipment_name,
+                      _transaction.order_shipment.shipment_product];
+    } else if (tag == CTagReceivePartialOrder) {
+        copiedText = _transaction.order_detail.detail_partial_order?@"Ya":@"Tidak";
+    } else if (tag == CTagSenderName) {
+        copiedText = _transaction.order_detail.detail_dropship_name;
+    } else if (tag == CTagSenderPhoneNumber) {
+        copiedText = _transaction.order_detail.detail_dropship_telp;
+    } else if (tag == CTagPickupAddress) {
+        copiedText = _transaction.order_shop.address_street;
     }
-    else if(tag == CTagPhone) {
-        [UIPasteboard generalPasteboard].string = _phoneNumberLabel.text;
-    }
+    [UIPasteboard generalPasteboard].string = copiedText;
 }
 
 #pragma mark - Tokopedia Network Delegate
@@ -1064,7 +1038,7 @@ typedef enum TagRequest {
     
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[OrderBookingResponse class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{@"Status":@"status"}];
+    [statusMapping addAttributeMappingsFromDictionary:@{@"status":@"status"}];
     
     RKObjectMapping *dataMapping = [RKObjectMapping mappingForClass:[OrderBookingData class]];
     

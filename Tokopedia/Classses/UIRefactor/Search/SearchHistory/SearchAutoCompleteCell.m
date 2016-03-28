@@ -7,11 +7,13 @@
 //
 
 #import "SearchAutoCompleteCell.h"
+#import "UIView+HVDLayout.h"
 
 @implementation SearchAutoCompleteCell
 
 - (void)awakeFromNib {
     // Initialization code
+    [self.contentView HVD_fillInSuperViewWithInsets:UIEdgeInsetsZero];
 }
 
 - (void)setViewModel:(SearchAutoCompleteViewModel *)viewModel {

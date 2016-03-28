@@ -10,4 +10,19 @@
 
 @implementation ResolutionButton
 
+// MARK: TKPRootObjectMapping methods
++ (NSDictionary *)attributeMappingDictionary {
+    NSArray *keys = @[@"button_report",
+                      @"button_cancel",
+                      @"button_no_btn",
+                      @"button_edit"];
+    return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
+}
+
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+    return mapping;
+}
+
 @end

@@ -7,7 +7,18 @@
 //
 
 #import "InboxMessageResult.h"
+#import "InboxMessageList.h"
 
 @implementation InboxMessageResult
+
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:self];
+    RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"paging" toKeyPath:@"paging" withMapping:[Paging mapping]];
+    [resultMapping addPropertyMapping:pageRel];
+    
+    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"list" toKeyPath:@"list" withMapping:[InboxMessageList mapping]];
+    [resultMapping addPropertyMapping:listRel];
+    return resultMapping;
+}
 
 @end

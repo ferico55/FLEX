@@ -215,8 +215,7 @@
             
             NSInteger wholesaleMinQty = [[wholesale objectForKey:wholesaleQuantityMinimum]integerValue];
             NSInteger wholesaleMaxQty = [[wholesale objectForKey:wholesaleQuantityMaximum]integerValue];
-            ((ProductEditWholesaleCell*)cell).productPriceTextField.text = (wholesalePrice==0)?@"":wholesalePrice;
-            
+            ((ProductEditWholesaleCell*)cell).productPriceTextField.text = ([wholesalePrice isEqualToString:@"0"])?@"":wholesalePrice;            
             ((ProductEditWholesaleCell*)cell).minimumProductTextField.text = (wholesaleMinQty==0)?@"":[NSString stringWithFormat:@"%zd",wholesaleMinQty];
             ((ProductEditWholesaleCell*)cell).maximumProductTextField.text = (wholesaleMaxQty==0)?@"":[NSString stringWithFormat:@"%zd",wholesaleMaxQty];
             ((ProductEditWholesaleCell*)cell).indexPath = indexPath;

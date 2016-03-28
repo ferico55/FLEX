@@ -118,14 +118,6 @@
     _orderInProcess = [NSMutableDictionary new];
     _operationQueueAction = [NSOperationQueue new];
     
-    [self configureRestKit];
-    [self request];
-    [self configureActionReskit];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
     
     self.title = @"Pesanan Baru";
     
@@ -162,6 +154,10 @@
     _refreshControl = [[UIRefreshControl alloc] init];
     [_refreshControl addTarget:self action:@selector(refreshData) forControlEvents:UIControlEventValueChanged];
     [self.tableView addSubview:_refreshControl];
+    
+    [self configureRestKit];
+    [self request];
+    [self configureActionReskit];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -819,6 +815,9 @@
     if (_request.isExecuting) return;
     
     _requestCount++;
+    
+    self.tableView.tableFooterView = _footerView;
+    [_activityIndicator startAnimating];
 
     TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
     NSDictionary *auth = [secureStorage keychainDictionary];
@@ -961,6 +960,7 @@
         
         if (_page == 0) {
             [_activityIndicator stopAnimating];
+            _activityIndicator.hidden = YES;
             _tableView.tableFooterView = nil;
         }
         

@@ -330,8 +330,7 @@
 {
     if (buttonIndex != 0) {
         TxOrderConfirmedDetailInvoice *invoice = _orderDetail.detail[buttonIndex-1];
-        NavigateViewController *vc =[NavigateViewController new];
-        [vc navigateToInvoiceFromViewController:self withInvoiceURL:invoice.url];
+        [NavigateViewController navigateToInvoiceFromViewController:self withInvoiceURL:invoice.url];
     }
 }
 #pragma mark - Camera Controller Delegate

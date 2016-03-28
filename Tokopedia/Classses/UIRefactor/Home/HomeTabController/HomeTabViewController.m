@@ -35,6 +35,7 @@
 #import "CategoryViewController.h"
 
 #import "Localytics.h"
+#import "UIView+HVDLayout.h"
 
 @interface HomeTabViewController ()
 <
@@ -84,11 +85,28 @@
                                              selector:@selector(redirectNotification:)
                                                  name:@"redirectNotification" object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(didReceiveDeeplinkUrl:)
-                                                 name:@"didReceiveDeeplinkUrl" object:nil];
-
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                             selector:@selector(didReceiveDeeplinkUrl:)
+//                                                 name:@"didReceiveDeeplinkUrl" object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLoggedIn) name:TKPDUserDidLoginNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLoggedOut) name:kTKPDACTIVATION_DIDAPPLICATIONLOGGEDOUTNOTIFICATION object:nil];
+   
+}
+
+- (void)didLoggedIn {
+    _scrollView.translatesAutoresizingMaskIntoConstraints = YES;
+    CGRect frame = _scrollView.frame;
+    frame.origin.y = 44;
+    frame.size.height = self.view.frame.size.height-44;
+    _scrollView.frame = frame;
+
+//    [_scrollView HVD_fillInSuperViewWithInsets:UIEdgeInsetsMake(44, 0, 0, 0)];
+}
+
+- (void)didLoggedOut {
+    _scrollView.translatesAutoresizingMaskIntoConstraints = YES;
+    [_scrollView HVD_fillInSuperViewWithInsets:UIEdgeInsetsZero];
 }
 
 #pragma mark - Lifecycle
@@ -98,9 +116,6 @@
     
 	__weak typeof(self) weakSelf = self;
     _categoryController = [CategoryViewController new];
-    _categoryController.delegate = weakSelf;
-    
-    
     
     _productFeedController = [ProductFeedViewController new];
     _productFeedController.delegate = weakSelf;
@@ -134,12 +149,55 @@
     self.navigationItem.backBarButtonItem = backBarButtonItem;
     
     [_scrollView setFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
-    [_scrollView setContentSize:CGSizeMake(_scrollView.frame.size.width*5, 300)];
+    [_scrollView setContentSize:CGSizeMake(_scrollView.frame.size.width*5, [UIScreen mainScreen].bounds.size.height)];
     [_scrollView setPagingEnabled:YES];
+    
+    //this code to prevent user lose their hometabheader being hided by scrollview if they already loggedin from previous version
+    //check didLoggedIn method
+    CGRect frame = _scrollView.frame;
+    frame.origin.y = 44;
+    _scrollView.frame = frame;
+    
     _scrollView.delegate = self;
 
     [self addChildViewController:_categoryController];
     [self.scrollView addSubview:_categoryController.view];
+    
+    NSLayoutConstraint *width =[NSLayoutConstraint
+                                constraintWithItem:_categoryController.view
+                                attribute:NSLayoutAttributeWidth
+                                relatedBy:0
+                                toItem:self.scrollView
+                                attribute:NSLayoutAttributeWidth
+                                multiplier:1.0
+                                constant:0];
+    NSLayoutConstraint *height =[NSLayoutConstraint
+                                 constraintWithItem:_categoryController.view
+                                 attribute:NSLayoutAttributeHeight
+                                 relatedBy:0
+                                 toItem:self.scrollView
+                                 attribute:NSLayoutAttributeHeight
+                                 multiplier:1.0
+                                 constant:0];
+    NSLayoutConstraint *top = [NSLayoutConstraint
+                               constraintWithItem:_categoryController.view
+                               attribute:NSLayoutAttributeTop
+                               relatedBy:NSLayoutRelationEqual
+                               toItem:self.scrollView
+                               attribute:NSLayoutAttributeTop
+                               multiplier:1.0f
+                               constant:0.f];
+    NSLayoutConstraint *leading = [NSLayoutConstraint
+                                   constraintWithItem:_categoryController.view
+                                   attribute:NSLayoutAttributeLeading
+                                   relatedBy:NSLayoutRelationEqual
+                                   toItem:self.scrollView
+                                   attribute:NSLayoutAttributeLeading
+                                   multiplier:1.0f
+                                   constant:0.f];
+
+    [self.scrollView addConstraints:@[width, height, top, leading]];
+    [_categoryController.view setTranslatesAutoresizingMaskIntoConstraints:NO];
     
     [_categoryController didMoveToParentViewController:self];
     [self setArrow];
@@ -149,7 +207,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    self.navigationController.title = @"Beranda";
+    self.navigationController.title = @"Home";
     
     [self goToPage:_page];
     [self initNotificationManager];
@@ -180,15 +238,15 @@
 }
 
 - (void)setArrow {
-    UIImageView *greenArrowImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_green.png"]];
-    CGRect frame = greenArrowImageView.frame;
-    frame.size.width = 13;
-    frame.size.height = 7;
-    frame.origin.x = [[UIScreen mainScreen]bounds].size.width/2 - 6.5f;
-    frame.origin.y = 64;
-    greenArrowImageView.frame = frame;
-//    [self.navigationController.navigationBar addSubview:greenArrowImageView];
-    [self.view addSubview:greenArrowImageView];
+//    UIImageView *greenArrowImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_green.png"]];
+//    CGRect frame = greenArrowImageView.frame;
+//    frame.size.width = 13;
+//    frame.size.height = 7;
+//    frame.origin.x = [[UIScreen mainScreen]bounds].size.width/2 - 6.5f;
+//    frame.origin.y = 64;
+//    greenArrowImageView.frame = frame;
+////    [self.navigationController.navigationBar addSubview:greenArrowImageView];
+//    [self.view addSubview:greenArrowImageView];
     
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                           style:UIBarButtonItemStyleBordered
@@ -241,6 +299,7 @@
     if(page == 1) {
         CGRect frame = _productFeedController.view.frame;
         frame.origin.x = _scrollView.frame.size.width;
+        frame.size.height = _scrollView.frame.size.height;
         _productFeedController.view.frame = frame;
         
         [self addChildViewController:_productFeedController];
@@ -249,6 +308,7 @@
     } else if(page == 2) {
         CGRect frame = _wishListViewController.view.frame;
         frame.origin.x = _scrollView.frame.size.width*page;
+        frame.size.height = _scrollView.frame.size.height;
         _wishListViewController.view.frame = frame;
         
         [self addChildViewController:_wishListViewController];
@@ -257,6 +317,7 @@
     } else if(page == 3) {
         CGRect frame = _historyController.view.frame;
         frame.origin.x = _scrollView.frame.size.width*page;
+        frame.size.height = _scrollView.frame.size.height;
         _historyController.view.frame = frame;
         
         [self addChildViewController:_historyController];
@@ -265,6 +326,7 @@
     } else if(page == 4) {
         CGRect frame = _shopViewController.view.frame;
         frame.origin.x = _scrollView.frame.size.width*page;
+        frame.size.height = _scrollView.frame.size.height;
         _shopViewController.view.frame = frame;
         
         [self addChildViewController:_shopViewController];
@@ -360,6 +422,9 @@
                code == STATE_EDIT_REVIEW ||
                code == STATE_REPLY_REVIEW) {
         [self goToInboxReview];
+    } else if (code == STATE_NEW_RESOLUTION||
+              code == STATE_EDIT_RESOLUTION) {
+        [self goToResolutionCenter];
     }
 }
 
@@ -377,6 +442,11 @@
 
 - (void)goToNewOrder {
     
+}
+
+-(void)goToResolutionCenter
+{
+    [_navigate navigateToInboxResolutionFromViewController:self];
 }
 
 #pragma mark - Child view contoller delegate

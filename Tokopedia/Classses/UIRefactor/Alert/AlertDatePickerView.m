@@ -20,7 +20,6 @@
 @interface AlertDatePickerView ()
 {
     NSInteger _type;
-    UITapGestureRecognizer *_newGesture;
 }
 @property (weak, nonatomic) IBOutlet UIDatePicker *datepicker;
 @property (weak, nonatomic) IBOutlet UIButton *doneButton;
@@ -56,32 +55,12 @@
     }
 }
 
-- (IBAction)gesture:(UITapGestureRecognizer *)sender
-{
-    switch (sender.state) {
-        case UIGestureRecognizerStateBegan: {
-            break;
-        }
-        case UIGestureRecognizerStateChanged: {
-            break;
-        }
-        case UIGestureRecognizerStateEnded: {
-            UIView* view = [_window.subviews lastObject];
-            if (self == view) {
-                [self dismissWithClickedButtonIndex:-1 animated:YES];
-            }
-            break;
-        }
-        default: {
-            break;
-        }
-    }
-}
-
 
 #pragma mark - Methods
 - (void)show
 {
+    [super show];
+    
 	id<TKPDAlertViewDelegate> _delegate = self.delegate;
 	
 	if ((_delegate != nil) && ([_delegate respondsToSelector:@selector(willPresentAlertView:)])) {
@@ -104,20 +83,12 @@
 	
 	self.center = hidecenter;
 	self.autoresizingMask = (UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin);
-	
-    if (_background.superview == nil) {	//fix dismiss - show race condition
-        [_window addSubview:_background];
-    }
-    
-     _background.userInteractionEnabled = YES;
-    _newGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(gesture:)];
-    [_background addGestureRecognizer:_newGesture];
     
     self.frame = CGRectMake(0, self.frame.origin.y, _window.bounds.size.width, self.bounds.size.height);
 	[_window addSubview:self];	//from animation block below
 	[_window makeKeyAndVisible];
 	
-	[UIView transitionWithView:_window duration:TKPD_FADEANIMATIONDURATION options:(UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionTransitionNone | UIViewAnimationOptionAllowAnimatedContent) animations:^{
+	[UIView transitionWithView:_window duration:0.5 options:(UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionTransitionNone | UIViewAnimationOptionAllowAnimatedContent) animations:^{
 		
 		//[_window addSubview:self];	//moved before animation call above
 		self.center = selfcenter;
@@ -183,7 +154,6 @@
     [super dismissWithClickedButtonIndex:buttonIndex animated:YES];
     
     if(self.superview != nil){
-        [_background removeGestureRecognizer:_newGesture];
         [self dismissindex:buttonIndex silent:NO animated:animated];
     }
 }

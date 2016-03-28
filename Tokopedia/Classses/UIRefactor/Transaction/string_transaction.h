@@ -86,7 +86,7 @@ typedef enum
 #define STRING_BIAYA_ADMINISTRASI_INDOMARET @"Biaya Administrasi Indomaret"
 #define STRING_METODE_PEMBAYARAN @"Metode Pembayaran"
 #define STRING_TOTAL_TAGIHAN @"Total Tagihan"
-#define STRING_PENGGUNAAN_KUPON @"Penggunaan Kupon"
+#define STRING_PENGGUNAAN_KUPON @"Penggunaan Voucher"
 #define STRING_LOYALTY_POINT @"TopPoints Terpakai"
 #define STRING_PAYMENT
 
@@ -380,8 +380,8 @@ typedef enum
 #define ERRORMESSAGE_NULL_CART_PASSWORD @"Kata Sandi harus diisi."
 #define ERRORMESSAGE_NULL_CART_USERID @"User ID harus diisi."
 
-#define ERRORMESSAGE_NULL_VOUCHER_CODE @"Masukkan kode kupon terlebih dahulu."
-#define ERRORMESSAGE_VOUCHER_CODE_LENGHT @"Kode kupon minimal 11 karakter."
+#define ERRORMESSAGE_NULL_VOUCHER_CODE @"Masukkan kode voucher terlebih dahulu."
+#define ERRORMESSAGE_VOUCHER_CODE_LENGHT @"Kode voucher minimal 11 karakter."
 
 #define ERRORMESSAGE_SENDER_NAME_NILL @"Nama pengirim harus diisi"
 #define ERRORMESSAGE_SENDER_PHONE_NILL @"Telepon pengirim harus diisi"

@@ -57,6 +57,7 @@
 @property (nonatomic) int tagRequest;
 @property (nonatomic) BOOL isParameterNotEncrypted;
 @property (nonatomic) BOOL isUsingHmac;
+@property (nonatomic) BOOL isUsingDefaultError;
 @property (nonatomic) NSTimeInterval timeInterval;
 @property (nonatomic) NSInteger maxTries;
 
@@ -71,6 +72,15 @@
 - (RKManagedObjectRequestOperation *)getObjectRequest;
 - (void)requestCancel;
 - (NSString*)explodeURL:(NSString*)URL withKey:(NSString*)key;
+
+
+- (void) requestWithBaseUrl:(NSString*)baseUrl
+                       path:(NSString*)path
+                     method:(RKRequestMethod)method
+                  parameter:(NSDictionary<NSString*, NSString*>*)parameter
+                    mapping:(RKObjectMapping*)mapping
+                  onSuccess:(void(^)(RKMappingResult* successResult, RKObjectRequestOperation* operation))successCallback
+                  onFailure:(void(^)(NSError* errorResult)) errorCallback;
 
 
 @end

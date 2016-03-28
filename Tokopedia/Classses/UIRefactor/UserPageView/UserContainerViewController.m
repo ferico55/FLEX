@@ -32,6 +32,7 @@
 #import "UserAuthentificationManager.h"
 #import "SettingUserProfileViewController.h"
 #import "ShopContainerViewController.h"
+#import "UIView+HVDLayout.h"
 
 
 @interface UserContainerViewController ()
@@ -207,7 +208,13 @@
                                  completion:nil];
     
     [self addChildViewController:self.pageController];
+
     [self.view addSubview:[self.pageController view]];
+    [self.view setBackgroundColor:[UIColor colorWithRed:(231/255.0) green:(231/255.0) blue:(231/255.0) alpha:1]];
+    if(IS_IPAD) {
+        [self.pageController.view HVD_fillInSuperViewWithInsets:UIEdgeInsetsMake(20, 70, 0, 70)];
+    }
+
     
     NSArray *subviews = self.pageController.view.subviews;
     UIPageControl *thisControl = nil;

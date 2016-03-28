@@ -45,6 +45,7 @@
 
 #import "TKPAppFlow.h"
 #import "TKPStoreManager.h"
+#import "MoreWrapperViewController.h"
 
 #define TkpdNotificationForcedLogout @"NOTIFICATION_FORCE_LOGOUT"
 
@@ -218,36 +219,39 @@ typedef enum TagRequest {
                                              forState:UIControlStateNormal];
     [[UITabBarItem appearance] setTitleTextAttributes:@{ UITextAttributeTextColor : [UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1] }
                                              forState:UIControlStateSelected];
-    
-    /** TAB BAR INDEX 1 **/
-    /** adjust view controllers at tab bar controller **/
-    NSMutableArray *viewcontrollers = [NSMutableArray new];
-    /** create new view controller **/
-    if (!isauth) {
-        // before login
-//        HotlistViewController *v = [HotlistViewController new];
-//        v.data = @{kTKPD_AUTHKEY : _auth?:@{}};
-//        [viewcontrollers addObject:v];
-        CategoryViewController *controller = [[CategoryViewController alloc] init];
-        controller.data = @{@"auth" : _auth?:@{}};
-        [viewcontrollers addObject:controller];
-    }
-    else{
-        // after login
-        HotlistViewController *controller = [[HotlistViewController alloc] init];
-        controller.data = @{@"auth" : _auth?:@{}};
-        [viewcontrollers addObject:controller];
-        ProductFeedViewController *v1 = [ProductFeedViewController new];
-        [viewcontrollers addObject:v1];
-        HistoryProductViewController *v2 = [HistoryProductViewController new];
-        [viewcontrollers addObject:v2];
-        FavoritedShopViewController *v3 = [FavoritedShopViewController new];
-        [viewcontrollers addObject:v3];
-    }
+//    
+//    /** TAB BAR INDEX 1 **/
+//    /** adjust view controllers at tab bar controller **/
+//    NSMutableArray *viewcontrollers = [NSMutableArray new];
+//    /** create new view controller **/
+//    if (!isauth) {
+//        // before login
+////        HotlistViewController *v = [HotlistViewController new];
+////        v.data = @{kTKPD_AUTHKEY : _auth?:@{}};
+////        [viewcontrollers addObject:v];
+//        CategoryViewController *controller = [[CategoryViewController alloc] init];
+//        controller.data = @{@"auth" : _auth?:@{}};
+//        [viewcontrollers addObject:controller];
+//    }
+//    else{
+//        // after login
+//        HotlistViewController *controller = [[HotlistViewController alloc] init];
+//        controller.data = @{@"auth" : _auth?:@{}};
+//        [viewcontrollers addObject:controller];
+//        ProductFeedViewController *v1 = [ProductFeedViewController new];
+//        [viewcontrollers addObject:v1];
+//        HistoryProductViewController *v2 = [HistoryProductViewController new];
+//        [viewcontrollers addObject:v2];
+//        FavoritedShopViewController *v3 = [FavoritedShopViewController new];
+//        [viewcontrollers addObject:v3];
+//    }
     
     _swipevc = [[HomeTabViewController alloc] init];
     UINavigationController *swipevcNav = [[UINavigationController alloc] initWithRootViewController:_swipevc];
     [swipevcNav.navigationBar setTranslucent:NO];
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(iOS7_0)) {
+        _swipevc.edgesForExtendedLayout = UIRectEdgeNone;
+    }
     
     /** TAB BAR INDEX 2 **/
     HotlistViewController *categoryvc = [HotlistViewController new];
@@ -282,12 +286,16 @@ typedef enum TagRequest {
     UINavigationController *moreNavBar;
     if (!isauth) {
         LoginViewController *more = [LoginViewController new];
+        more.isFromTabBar = YES;
         moreNavBar = [[UINavigationController alloc]initWithRootViewController:more];
     }
     else{
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
-        MoreNavigationController *moreNavController = [storyboard instantiateViewControllerWithIdentifier:@"MoreNavigationViewController"];
-        moreNavBar = moreNavController;
+//        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
+//        MoreNavigationController *moreNavController = [storyboard instantiateViewControllerWithIdentifier:@"MoreNavigationViewController"];
+//        moreNavBar = moreNavController;
+        
+        MoreWrapperViewController *controller = [[MoreWrapperViewController alloc] init];
+        moreNavBar = [[UINavigationController alloc] initWithRootViewController:controller];
     }
 
     [moreNavBar.navigationBar setTranslucent:NO];
@@ -526,13 +534,17 @@ typedef enum TagRequest {
     UINavigationController *moreNavBar = nil;
     if (!isauth) {
         LoginViewController *more = [LoginViewController new];
+        more.isFromTabBar = YES;
         moreNavBar = [[UINavigationController alloc]initWithRootViewController:more];
         [[_tabBarController.viewControllers objectAtIndex:3] tabBarItem].badgeValue = nil;
     }
     else{
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
-        MoreNavigationController *moreNavController = [storyboard instantiateViewControllerWithIdentifier:@"MoreNavigationViewController"];
-        moreNavBar = moreNavController;
+//        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
+//        MoreNavigationController *moreNavController = [storyboard instantiateViewControllerWithIdentifier:@"MoreNavigationViewController"];
+//        moreNavBar = moreNavController;
+        MoreWrapperViewController *controller = [[MoreWrapperViewController alloc] init];
+        moreNavBar = [[UINavigationController alloc] initWithRootViewController:controller];
+        
     }
     [moreNavBar.navigationBar setTranslucent:NO];
 
@@ -554,8 +566,12 @@ typedef enum TagRequest {
     
     NSMutableArray *newControllers = [NSMutableArray arrayWithArray:_tabBarController.viewControllers];
 
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
-    MoreNavigationController *moreNavController = [storyboard instantiateViewControllerWithIdentifier:@"MoreNavigationViewController"];
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
+//    MoreNavigationController *moreNavController = [storyboard instantiateViewControllerWithIdentifier:@"MoreNavigationViewController"];
+    
+    MoreWrapperViewController *controller = [[MoreWrapperViewController alloc] init];
+    UINavigationController *moreNavController = [[UINavigationController alloc] initWithRootViewController:controller];
+    
     [moreNavController.navigationBar setTranslucent:NO];
     [newControllers replaceObjectAtIndex:4 withObject:moreNavController];
     [_tabBarController setViewControllers:newControllers animated:YES];
@@ -578,6 +594,20 @@ typedef enum TagRequest {
 }
 
 - (void)doApplicationLogout {
+    /*
+    remove all cache from webview, all credential that been logged in, will be removed
+    example : login kereta api, login pulsa
+    */
+    NSHTTPCookie *cookie;
+    NSHTTPCookieStorage *cookieStorage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+    for (cookie in [cookieStorage cookies]) {
+        NSString* domainName = [cookie domain];
+        NSRange domainRange = [domainName rangeOfString:@"tokopedia"];
+        if(domainRange.length > 0) {
+            [cookieStorage deleteCookie:cookie];
+        }
+    }
+    
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
     

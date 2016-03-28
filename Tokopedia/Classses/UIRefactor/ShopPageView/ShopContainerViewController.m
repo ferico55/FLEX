@@ -876,7 +876,7 @@
         _requestFavoriteCount = 0;
         [self configureFavoriteRestkit];
         [self favoriteShop:_shop.result.info.shop_id];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"removeFavoriteShop" object:nil];
+
     }
 }
 
@@ -888,7 +888,6 @@
         _requestFavoriteCount = 0;
         [self configureFavoriteRestkit];
         [self favoriteShop:_shop.result.info.shop_id];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"addFavoriteShop" object:nil];
     }else {
         UINavigationController *navigationController = [[UINavigationController alloc] init];
         navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
@@ -1047,6 +1046,7 @@
         if([[tempArr objectAtIndex:tempArr.count-2] isMemberOfClass:[DetailProductViewController class]]) {
             [((DetailProductViewController *) [tempArr objectAtIndex:tempArr.count-2]) setButtonFav];
         }
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"updateFavoriteShop" object:nil];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         /** failure **/
         [self requestFavoriteError:error];

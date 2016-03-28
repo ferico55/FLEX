@@ -124,8 +124,8 @@
     
     [self setDefaultData:_data];
     
-    _viewpassword.hidden = (_type == TYPE_ADD_EDIT_PROFILE_ADD_NEW||_type == TYPE_ADD_EDIT_PROFILE_ATC)?YES:NO;
-    _textfieldpass.hidden = (_type == TYPE_ADD_EDIT_PROFILE_ADD_NEW||_type == TYPE_ADD_EDIT_PROFILE_ATC)?YES:NO;
+    _viewpassword.hidden = (_type == TYPE_ADD_EDIT_PROFILE_ADD_NEW||_type == TYPE_ADD_EDIT_PROFILE_ATC || _type == TYPE_ADD_EDIT_PROFILE_ADD_RESO || _type == TYPE_ADD_EDIT_PROFILE_EDIT_RESO)?YES:NO;
+    _textfieldpass.hidden = (_type == TYPE_ADD_EDIT_PROFILE_ADD_NEW||_type == TYPE_ADD_EDIT_PROFILE_ATC|| _type == TYPE_ADD_EDIT_PROFILE_ADD_RESO || _type == TYPE_ADD_EDIT_PROFILE_EDIT_RESO)?YES:NO;
     [_table reloadData];
 
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
@@ -297,7 +297,7 @@
             case 11: {
                 //submit
                 if ([self isValidInput]) {
-                    if (_type == TYPE_ADD_EDIT_PROFILE_ATC) {
+                    if (_type == TYPE_ADD_EDIT_PROFILE_ATC|| _type == TYPE_ADD_EDIT_PROFILE_ADD_RESO|| _type == TYPE_ADD_EDIT_PROFILE_EDIT_RESO) {
 
                         NSString *receivernName = _textfieldreceivername.text?:@"";
                         NSString *addressName = _textfieldaddressname.text?:@"";
@@ -325,6 +325,8 @@
                         detailAddress.receiver_phone = phone;
                         detailAddress.longitude = _longitude?:@"";
                         detailAddress.latitude = _latitude?:@"";
+                        detailAddress.address = -1;
+                        detailAddress.address_id = -1;
                         
                         NSDictionary *userInfo = @{DATA_ADDRESS_DETAIL_KEY: detailAddress};
                         
@@ -370,28 +372,19 @@
 #pragma mark - Picker Place Delegate
 -(void)pickAddress:(GMSAddress *)address suggestion:(NSString *)suggestion longitude:(double)longitude latitude:(double)latitude mapImage:(UIImage *)mapImage
 {
-    NSString *addressStreet= @"";
-    if (![suggestion isEqualToString:@""]) {
-        NSArray *addressSuggestions = [suggestion componentsSeparatedByString:@","];
-        addressStreet = addressSuggestions[0];
-    }
+    TKPAddressStreet *tkpAddressStreet = [TKPAddressStreet new];
+    NSString *addressStreet = [tkpAddressStreet getStreetAddress:address.thoroughfare];
     
-    NSString *street= (address.lines.count>0)?address.lines[0]:address.thoroughfare?:@"";
-    if (addressStreet.length != 0) {
-        addressStreet = [NSString stringWithFormat:@"%@\n%@",addressStreet,street];
-    }
-    else
-        addressStreet = street;
+    //MARK :: PO Wishes don't automating fill address
     //if ([_textviewaddress.text isEqualToString:@""]){
-        _textviewaddress.text = addressStreet;
-        _textviewaddress.placeholderLabel.hidden = YES;
+//        _textviewaddress.text = addressStreet;
+//        _textviewaddress.placeholderLabel.hidden = YES;
     //}
     //if ([_textfieldpostcode.text isEqualToString:@""])
-        _textfieldpostcode.text = addressStreet;
-    
-    _textfieldpostcode.text = address.postalCode;
+//        _textfieldpostcode.text = addressStreet;
+//    _textfieldpostcode.text = address.postalCode;
     _buttonMapLocation.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-    [_buttonMapLocation setCustomAttributedText:[addressStreet isEqualToString:@""]?@"Lokasi yang Dituju":addressStreet];
+    [_buttonMapLocation setCustomAttributedText:[addressStreet isEqualToString:@""]?@"Tandai lokasi Anda":addressStreet];
 //    _mapImageView.image = mapImage;
 //    _mapImageView.contentMode = UIViewContentModeScaleAspectFill;
     _opsionalLabel.hidden = YES;
@@ -545,9 +538,11 @@
         switch (_type) {
             case TYPE_ADD_EDIT_PROFILE_ATC:
             case TYPE_ADD_EDIT_PROFILE_ADD_NEW:
+            case TYPE_ADD_EDIT_PROFILE_ADD_RESO:
                 self.title = TITLE_NEW_ADDRESS;
                 break;
             case TYPE_ADD_EDIT_PROFILE_EDIT:
+            case TYPE_ADD_EDIT_PROFILE_EDIT_RESO:
                 self.title = TITLE_EDIT_ADDRESS;
                 break;
             default:
@@ -600,18 +595,12 @@
                 
                 if (response == nil|| response.results.count == 0) {
                     _buttonMapLocation.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-                    [_buttonMapLocation setCustomAttributedText:@"Lokasi yang Dituju"];
+                    [_buttonMapLocation setCustomAttributedText:@"Tandai lokasi Anda"];
 
                 } else {
                     GMSAddress *address = [response results][0];
-                    NSString *addressString;
-                    if (address.lines.count>0) {
-                        addressString = address.lines[0];
-                    }
-                    else
-                    {
-                        addressString = address.thoroughfare;
-                    }
+                    TKPAddressStreet *tkpAddressStreet = [TKPAddressStreet new];
+                    NSString *addressString = [tkpAddressStreet getStreetAddress:address.thoroughfare];
                     _buttonMapLocation.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
                     [_buttonMapLocation setCustomAttributedText:addressString];
                 }
@@ -904,7 +893,7 @@
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     NSInteger sectionCount = 0;
-    sectionCount = (_type == TYPE_ADD_EDIT_PROFILE_ADD_NEW||_type == TYPE_ADD_EDIT_PROFILE_ATC)?3:4;
+    sectionCount = (_type == TYPE_ADD_EDIT_PROFILE_ADD_NEW||_type == TYPE_ADD_EDIT_PROFILE_ATC||_type == TYPE_ADD_EDIT_PROFILE_EDIT_RESO || _type == TYPE_ADD_EDIT_PROFILE_ADD_RESO)?3:4;
     return sectionCount;
 }
 

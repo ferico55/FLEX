@@ -8,12 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "EDStarRating.h"
+#import "TTTAttributedLabel.h"
 
 @class DetailReviewReputationViewModel;
 @class ReviewList;
 
 @protocol ProductReputationSimpleDelegate <NSObject>
-
+-(void)showMoreDidTappedInIndexPath:(NSIndexPath*)indexPath;
 @end
 
 
@@ -35,7 +36,8 @@
 @property(nonatomic, weak) IBOutlet UIView *reputationStarAccuracyView;
 @property(nonatomic, weak) IBOutlet UIView *productView;
 
-@property(nonatomic, weak) IBOutlet UILabel *reputationMessageLabel;
+
+@property (strong, nonatomic) IBOutlet TTTAttributedLabel *reputationMessageLabel;
 @property(nonatomic, weak) IBOutlet UILabel *reputationBuyerLabel;
 @property(nonatomic, weak) IBOutlet UILabel *reputationDateLabel;
 @property(nonatomic, weak) IBOutlet UIButton *productNameButton;
@@ -45,8 +47,16 @@
 
 @property(nonatomic, weak) IBOutlet UIImageView *reputationBuyerImage;
 @property(nonatomic, weak) id<ProductReputationSimpleDelegate> delegate;
+@property (strong, nonatomic) IBOutlet UIView *leftBorderView;
+@property (strong, nonatomic) IBOutlet UIButton *showMoreButton;
+@property(strong, nonatomic) NSIndexPath *indexPath;
+
+//put flag in cell not in viewmodel because everyone uses different viewmodel and entity
+//cannot put flag in all viewmodel variations!
+@property BOOL isHelpful;
 
 - (void)setReputationModelView:(DetailReviewReputationViewModel*)viewModel;
 - (void)setShopReputationModelView:(ReviewList*)viewModel;
+
 
 @end

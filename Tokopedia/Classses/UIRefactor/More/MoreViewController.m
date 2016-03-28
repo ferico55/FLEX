@@ -64,6 +64,8 @@
 #import "ContactUsWebViewController.h"
 
 #import "UIActivityViewController+Extensions.h"
+#import "MoreWrapperViewController.h"
+#import "MoreNavigationController.h"
 
 #define CTagProfileInfo 12
 #define CTagLP 13
@@ -181,7 +183,7 @@
     _versionLabel.text = [NSString stringWithFormat:@"Versi : %@", [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]];
     
     self.navigationController.title = @"More";
-    [self initNotificationManager];
+//    [self initNotificationManager];
     
     // Remove default table inset
     self.tableView.contentInset = UIEdgeInsetsMake(-35, 0, 0, 0);
@@ -206,13 +208,14 @@
     [self updateSaldoTokopedia:nil];
     [self updateShopInformation];
     [self configureGTM];
+    [self.tableView setShowsVerticalScrollIndicator:NO];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
-    [self initNotificationManager];
+//    [self initNotificationManager];
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
     
     [self updateSaldoTokopedia:nil];
@@ -566,16 +569,21 @@
 
 
 #pragma mark - Table delegate
-
+/*
+why we need to wrap more vc ?
+objective : to simply reduce the width of the table
+problem : morevc is a tableviewcontroller, that is why it has no self.view, and we need to shrink the view, not the tableview
+ */
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    self.hidesBottomBarWhenPushed = YES;
+    _wrapperViewController.hidesBottomBarWhenPushed = YES;
+    UIViewController* wrapperController = _wrapperViewController;
     
     if(indexPath.section == 0 && indexPath.row == 0) {
         if(![_depositLabel.text isEqualToString:@"-"]) {
             DepositSummaryViewController *depositController = [DepositSummaryViewController new];
             depositController.data = @{@"total_saldo":_depositLabel.text};
-            [self.navigationController pushViewController:depositController animated:YES];
+            [wrapperController.navigationController pushViewController:depositController animated:YES];
         }
     }
     if (indexPath.section == 0 && indexPath.row == 1) {
@@ -589,24 +597,24 @@
         webViewController.isLPWebView = YES;
         webViewController.strURL = webViewStrUrl;
         webViewController.strTitle = @"TopPoints";
-        [self.navigationController pushViewController:webViewController animated:YES];
+        [wrapperController.navigationController pushViewController:webViewController animated:YES];
     }
     
     if (indexPath.section == 1 && indexPath.row == 0) {
         NavigateViewController *navigateController = [NavigateViewController new];
-        [navigateController navigateToProfileFromViewController:self withUserID:[_auth objectForKey:MORE_USER_ID]];
+        [navigateController navigateToProfileFromViewController:wrapperController withUserID:[_auth objectForKey:MORE_USER_ID]];
     }
     
     else if (indexPath.section == 1 && indexPath.row == 1) {
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         PurchaseViewController *purchaseController = [storyboard instantiateViewControllerWithIdentifier:@"PurchaseViewController"];
         purchaseController.notification = _notifManager.notification;
-        [self.navigationController pushViewController:purchaseController animated:YES];
+        [wrapperController.navigationController pushViewController:purchaseController animated:YES];
     }
     else if(indexPath.section==1 && indexPath.row==2) {
-        UINavigationController *tempNavController = (UINavigationController *) [self.tabBarController.viewControllers firstObject];
+        UINavigationController *tempNavController = (UINavigationController *) [wrapperController.tabBarController.viewControllers firstObject];
         [((HomeTabViewController *)[tempNavController.viewControllers firstObject]) setIndexPage:2];
-        [self.tabBarController setSelectedIndex:0];
+        [wrapperController.tabBarController setSelectedIndex:0];
         [((HomeTabViewController *)[tempNavController.viewControllers firstObject]) redirectToWishList];
     }
     
@@ -617,33 +625,33 @@
                                MORE_AUTH : _auth,
                                MORE_SHOP_NAME : [_auth objectForKey:MORE_SHOP_NAME]
                                };
-            [self.navigationController pushViewController:container animated:YES];
+            [wrapperController.navigationController pushViewController:container animated:YES];
         } else if(indexPath.row == 1) {
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
             SalesViewController *salesController = [storyboard instantiateViewControllerWithIdentifier:@"SalesViewController"];
             salesController.notification = _notifManager.notification;
             salesController.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:salesController animated:YES];
+            [wrapperController.navigationController pushViewController:salesController animated:YES];
         } else if (indexPath.row == 2) {
             ProductListMyShopViewController *vc = [ProductListMyShopViewController new];
             vc.data = @{kTKPD_AUTHKEY:_auth?:@{}};
             vc.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:vc animated:YES];
+            [wrapperController.navigationController pushViewController:vc animated:YES];
         } else if (indexPath.row == 3) {
             MyShopEtalaseViewController *vc = [MyShopEtalaseViewController new];
             vc.data = @{MORE_SHOP_ID : [_auth objectForKey:MORE_SHOP_ID]?:@{},
                         kTKPD_AUTHKEY:_auth?:@{}};
             vc.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:vc animated:YES];
+            [wrapperController.navigationController pushViewController:vc animated:YES];
         }
         
     }
     
     else if (indexPath.section == 4) {
         if(indexPath.row == 0) {
-            [_navigate navigateToInboxMessageFromViewController:self];
+            [_navigate navigateToInboxMessageFromViewController:wrapperController];
         } else if(indexPath.row == 1) {
-            [_navigate navigateToInboxTalkFromViewController:self];
+            [_navigate navigateToInboxTalkFromViewController:wrapperController];
         } else if (indexPath.row == 2) {
             if([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
                 splitViewController = [UISplitViewController new];
@@ -651,12 +659,12 @@
                 SplitReputationViewController *splitReputationViewController = [SplitReputationViewController new];
                 splitReputationViewController.splitViewController = splitViewController;
                 splitReputationViewController.del = self;
-                [self.navigationController pushViewController:splitReputationViewController animated:YES];
+                [wrapperController.navigationController pushViewController:splitReputationViewController animated:YES];
             }
             else  {
                 SegmentedReviewReputationViewController *segmentedReputationViewController = [SegmentedReviewReputationViewController new];
                 segmentedReputationViewController.hidesBottomBarWhenPushed = YES;
-                [self.navigationController pushViewController:segmentedReputationViewController animated:YES];
+                [wrapperController.navigationController pushViewController:segmentedReputationViewController animated:YES];
             }
             
             /*
@@ -680,12 +688,12 @@
         } else if (indexPath.row == 3) {
             AlertPriceNotificationViewController *alertPriceNotificationViewController = [AlertPriceNotificationViewController new];
             alertPriceNotificationViewController.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:alertPriceNotificationViewController animated:YES];
+            [wrapperController.navigationController pushViewController:alertPriceNotificationViewController animated:YES];
         } else if (indexPath.row == 4) {
             if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
                 InboxTicketSplitViewController *controller = [InboxTicketSplitViewController new];
                 
-                [self.navigationController pushViewController:controller animated:YES];
+                [wrapperController.navigationController pushViewController:controller animated:YES];
             } else {
                 TKPDTabViewController *controller = [TKPDTabViewController new];
                 controller.hidesBottomBarWhenPushed = YES;
@@ -706,18 +714,18 @@
                 controller.tabTitles = @[@"Semua", @"Dalam Proses", @"Ditutup"];
                 controller.menuTitles = @[@"Semua Layanan Pengguna", @"Belum Dibaca"];
                 
-                [self.navigationController pushViewController:controller animated:YES];
+                [wrapperController.navigationController pushViewController:controller animated:YES];
             }
         } else if (indexPath.row == 5) {
             if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
                 InboxResolSplitViewController *controller = [InboxResolSplitViewController new];
                 controller.hidesBottomBarWhenPushed = YES;
-                [self.navigationController pushViewController:controller animated:YES];
+                [wrapperController.navigationController pushViewController:controller animated:YES];
                 
             } else {
                 InboxResolutionCenterTabViewController *controller = [InboxResolutionCenterTabViewController new];
                 controller.hidesBottomBarWhenPushed = YES;
-                [self.navigationController pushViewController:controller animated:YES];
+                [wrapperController.navigationController pushViewController:controller animated:YES];
             }
         }
     }
@@ -728,7 +736,7 @@
             ContactUsWebViewController *controller = [ContactUsWebViewController new];
             controller.title = @"Hubungi Kami";
             controller.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:controller animated:YES];
+            [wrapperController.navigationController pushViewController:controller animated:YES];
             
         } else if(indexPath.row == 1) {
             [self pushIOSFeedback];
@@ -746,7 +754,7 @@
             WebViewController *webViewController = [WebViewController new];
             webViewController.strURL = kTKPDMORE_PRIVACY_URL;
             webViewController.strTitle = kTKPDMORE_PRIVACY_TITLE;
-            [self.navigationController pushViewController:webViewController animated:YES];
+            [wrapperController.navigationController pushViewController:webViewController animated:YES];
         } else if(indexPath.row == 3) {
             // UA
             [TPAnalytics trackScreenName:@"Share App"];
@@ -763,7 +771,7 @@
                                                                                               url:url
                                                                                            anchor:[tableView cellForRowAtIndexPath:indexPath]];
             
-            [self presentViewController:controller animated:YES completion:nil];
+            [wrapperController presentViewController:controller animated:YES completion:nil];
         }
     }
     
@@ -777,7 +785,7 @@
         
     }
     
-    self.hidesBottomBarWhenPushed = NO;
+    _wrapperViewController.hidesBottomBarWhenPushed = NO;
 }
 
 -(void)pushIOSFeedback
@@ -803,8 +811,10 @@
         [emailController setToRecipients:@[@"ios.feedback@tokopedia.com"]];
         [emailController.navigationBar setTintColor:[UIColor whiteColor]];
         
-        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
-        [self presentViewController:emailController animated:YES completion:nil];
+
+        [self presentViewController:emailController animated:YES completion:^() {
+            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+        }];
     } else {
         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Kamu harus memiliki email apabila ingin mengirimkan kritik dan saran aplikasi."]
                                                                        delegate:self];
@@ -910,18 +920,19 @@
 
 - (void)initNotificationManager {
     _notifManager = [NotificationManager new];
-    [_notifManager setViewController:self];
-    _notifManager.delegate = self;
-    self.navigationItem.rightBarButtonItem = _notifManager.notificationButton;
+    [_notifManager setViewController:_wrapperViewController];
+    _notifManager.delegate = _wrapperViewController;
+    _wrapperViewController.navigationItem.rightBarButtonItem = _notifManager.notificationButton;
 }
 
-- (void)tapNotificationBar {
-    [_notifManager tapNotificationBar];
-}
-
-- (void)tapWindowBar {
-    [_notifManager tapWindowBar];
-}
+//
+//- (void)tapNotificationBar {
+//    [_notifManager tapNotificationBar];
+//}
+//
+//- (void)tapWindowBar {
+//    [_notifManager tapWindowBar];
+//}
 
 - (void)navigateToContactUs:(NSNotification*)notification{
     id tracker = [[GAI sharedInstance] defaultTracker];
@@ -939,17 +950,17 @@
 {
     [self initNotificationManager];
 }
-
-- (void)notificationManager:(id)notificationManager pushViewController:(id)viewController
-{
-    [notificationManager tapWindowBar];
-    [self performSelector:@selector(pushViewController:) withObject:viewController afterDelay:0.3];
-}
-
+//
+//- (void)notificationManager:(id)notificationManager pushViewController:(id)viewController
+//{
+//    [notificationManager tapWindowBar];
+//    [self performSelector:@selector(pushViewController:) withObject:viewController afterDelay:0.3];
+//}
+//
 - (void)pushViewController:(id)viewController
 {
     self.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:viewController animated:YES];
+    [_wrapperViewController.navigationController pushViewController:viewController animated:YES];
     self.hidesBottomBarWhenPushed = NO;
 }
 
@@ -1004,7 +1015,10 @@
 
 #pragma mark - Email delegate
 - (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
-    [self dismissViewControllerAnimated:YES completion:NULL];
+
+    [self dismissViewControllerAnimated:YES completion:^() {
+        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
+    }];
 }
 
 

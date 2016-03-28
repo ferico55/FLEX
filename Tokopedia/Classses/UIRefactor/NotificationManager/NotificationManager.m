@@ -30,6 +30,7 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetNotification) name:@"resetNotification" object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setUnreadNotification:) name:@"setUnreadNotification" object:nil];
         
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(statusBarDidChangeFrame:) name:UIApplicationDidChangeStatusBarFrameNotification object:nil];
         
     }
     return self;
@@ -57,10 +58,13 @@
     _notificationWindow.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0];
     _notificationWindow.clipsToBounds = YES;
     
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    CGFloat screenWidth = screenRect.size.width;
+
     _notificationArrowImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_triangle_grey"]];
     _notificationArrowImageView.contentMode = UIViewContentModeScaleAspectFill;
     _notificationArrowImageView.clipsToBounds = YES;
-    _notificationArrowImageView.frame = CGRectMake(_notificationWindow.frame.size.width-40, 60, 10, 5);
+    _notificationArrowImageView.frame = CGRectMake(screenWidth-40, 60, 10, 5);
     _notificationArrowImageView.alpha = 0;
     [_notificationWindow addSubview:_notificationArrowImageView];
 }
@@ -168,6 +172,14 @@
     
     [self setUnreadNotification:nil];
     [self resetNotification];
+    
+    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0")) {
+        [_notificationWindow setTransform:[self transformForOrientation:orientation]];
+        _notificationWindow.frame = [self screenBounds];
+    } else {
+        [_notificationWindow setTransform:[self transformForOrientation:orientation]];
+    }
 }
 
 
@@ -280,6 +292,40 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (CGAffineTransform)transformForOrientation:(UIInterfaceOrientation)orientation {
+    switch (orientation) {
+        case UIInterfaceOrientationLandscapeLeft:
+            return CGAffineTransformMakeRotation(-90 * M_PI / 180);
+        case UIInterfaceOrientationLandscapeRight:
+            return CGAffineTransformMakeRotation(90 * M_PI / 180);
+        case UIInterfaceOrientationPortraitUpsideDown:
+            return CGAffineTransformMakeRotation(180 * M_PI / 180);
+        default:
+            return CGAffineTransformMakeRotation(0 * M_PI / 180);
+    }
+}
 
+- (void)statusBarDidChangeFrame:(NSNotification *)notification {
+    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0")) {
+        [_notificationWindow setTransform:[self transformForOrientation:orientation]];
+        _notificationWindow.frame = [self screenBounds];
+    } else {
+        [_notificationWindow setTransform:[self transformForOrientation:orientation]];
+    }
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    CGFloat screenWidth = screenRect.size.width;
+    _notificationArrowImageView.frame = CGRectMake(screenWidth-40, 60, 10, 5);
+}
+
+- (CGRect)screenBounds {
+    CGRect bounds = [UIScreen mainScreen].bounds;
+    if ([[UIScreen mainScreen] respondsToSelector:@selector(fixedCoordinateSpace)]) {
+        id<UICoordinateSpace> currentCoordSpace = [[UIScreen mainScreen] coordinateSpace];
+        id<UICoordinateSpace> portraitCoordSpace = [[UIScreen mainScreen] fixedCoordinateSpace];
+        bounds = [portraitCoordSpace convertRect:[[UIScreen mainScreen] bounds] fromCoordinateSpace:currentCoordSpace];
+    }
+    return bounds;
+}
 
 @end

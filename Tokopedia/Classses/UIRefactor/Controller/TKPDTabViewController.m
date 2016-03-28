@@ -7,6 +7,7 @@
 //
 
 #import "TKPDTabViewController.h"
+#import "Tokopedia-Swift.h"
 
 @interface TKPDTabViewController () <TKPDTabViewDelegate>
 
@@ -94,6 +95,9 @@
 - (IBAction)valueChangedSegmentedControl:(UISegmentedControl *)sender {
     UIViewController *controller = [self.viewControllers objectAtIndex:sender.selectedSegmentIndex];
     controller.view.frame = _containerView.bounds;
+
+    [_containerView removeAllSubviews];
+    
     [_containerView addSubview:controller.view];
     [controller didMoveToParentViewController:self];
     self.delegate = controller;    

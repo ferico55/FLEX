@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CategoryViewController">
@@ -18,7 +18,7 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="ikQ-6Y-5dq">
-                    <rect key="frame" x="0.0" y="2" width="320" height="420"/>
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <animations/>
                     <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="1" minimumInteritemSpacing="0.0" id="uyH-RR-V9c">
@@ -27,22 +27,18 @@
                         <size key="footerReferenceSize" width="0.0" height="0.0"/>
                         <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                     </collectionViewFlowLayout>
-                    <connections>
-                        <outlet property="dataSource" destination="-1" id="zs3-1d-jnv"/>
-                        <outlet property="delegate" destination="-1" id="qAk-Yk-7r4"/>
-                    </connections>
                 </collectionView>
             </subviews>
             <animations/>
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="ikQ-6Y-5dq" firstAttribute="leading" secondItem="qGp-dd-DRY" secondAttribute="leading" id="gIb-Qy-p8S"/>
-                <constraint firstItem="ikQ-6Y-5dq" firstAttribute="top" secondItem="qGp-dd-DRY" secondAttribute="top" constant="2" id="s6P-Gj-apR"/>
-                <constraint firstAttribute="bottom" secondItem="ikQ-6Y-5dq" secondAttribute="bottom" constant="146" id="sch-f5-Iwr"/>
+                <constraint firstItem="ikQ-6Y-5dq" firstAttribute="top" secondItem="qGp-dd-DRY" secondAttribute="top" id="s6P-Gj-apR"/>
+                <constraint firstAttribute="bottom" secondItem="ikQ-6Y-5dq" secondAttribute="bottom" id="sch-f5-Iwr"/>
                 <constraint firstAttribute="trailing" secondItem="ikQ-6Y-5dq" secondAttribute="trailing" id="xFH-Gy-uHa"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
-            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="304" y="-2"/>
         </view>
     </objects>

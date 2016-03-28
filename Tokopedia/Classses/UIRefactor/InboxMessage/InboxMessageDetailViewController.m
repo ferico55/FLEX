@@ -13,14 +13,14 @@
 #import "inbox.h"
 #import "string_inbox_message.h"
 #import "string_home.h"
-#import "HPGrowingTextView.h"
 #import "inbox.h"
 #import "detail.h"
 #import "NavigateViewController.h"
 #import "TagManagerHandler.h"
 #import "NavigationHelper.h"
+#import "Tokopedia-Swift.h"
 
-@interface InboxMessageDetailViewController () <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, HPGrowingTextViewDelegate, UISplitViewControllerDelegate>
+@interface InboxMessageDetailViewController () <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UIView *messagingview;
@@ -28,12 +28,13 @@
 @property (weak, nonatomic) IBOutlet UITableView *table;
 @property (weak, nonatomic) IBOutlet UIButton *buttonloadmore;
 @property (weak, nonatomic) IBOutlet UIButton *buttonsend;
-@property (weak, nonatomic) IBOutlet UILabel *titlelabel;
-@property (weak, nonatomic) IBOutlet UILabel *titlebetween;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 
-@property (strong, nonatomic) UIPopoverController *masterPopoverController;
-
+@property (strong, nonatomic) IBOutlet RSKGrowingTextView *textView;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *messageViewBottomConstraint;
+@property (strong, nonatomic) IBOutlet UIView *titleView;
+@property (strong, nonatomic) IBOutlet UILabel *titleLabel;
+@property (strong, nonatomic) IBOutlet UILabel *participantsLabel;
 
 
 @end
@@ -41,10 +42,8 @@
 @implementation InboxMessageDetailViewController {
     BOOL _isnodata;
     BOOL _isrefreshview;
-    BOOL _ismorebuttonview;
-    
+
     NSMutableArray *_messages;
-    HPGrowingTextView *_growingtextview;
     
     NSInteger _page;
     NSInteger _limit;
@@ -104,11 +103,17 @@
                                                                      target:self
                                                                      action:@selector(tap:)];
     
-//    [[NSNotificationCenter defaultCenter] postNotificationName:@"markAsReadMessage" object:nil userInfo:@{@"index_path" : [_data objectForKey:@"index_path"], @"read_status" : @"1"}];
-//    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
-//    barButtonItem.tag = 10;
-//    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
-//    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    _textView.delegate = self;
+    
+    if (_data) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"markAsReadMessage" object:nil userInfo:@{@"index_path" : [_data objectForKey:@"index_path"], @"read_status" : @"1"}];
+        
+        [_act startAnimating];
+    } else {
+        _messagingview.hidden = YES;
+        [_refreshControl endRefreshing];
+        [_act stopAnimating];
+    }
 
     _operationQueue = [NSOperationQueue new];
     _page = 1;
@@ -120,7 +125,6 @@
     
     /** set table footer view (loading act) **/
     _table.tableHeaderView = _header;
-    [_act startAnimating];
     
     UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
     TagManagerHandler *gtmHandler = [TagManagerHandler new];
@@ -138,14 +142,14 @@
     _buttonsend.enabled = NO;
     
     [self setMessagingView];
-    
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone)
-    {
+//    self.navigationController.navigationBar.backItem.backBarButtonItem.title = @"";
+//    self.navigationController.navigationItem.backBarButtonItem = nil;
+    self.navigationItem.titleView = _titleView;
+
+    if (_data) {
         [self configureRestKit];
         [self loadData];
     }
-    
-
 }
 
 -(TAGContainer *)gtmContainer {
@@ -172,35 +176,9 @@
 }
 
 - (void) setMessagingView {
-    _growingtextview = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(10, 10, [[UIScreen mainScreen] bounds].size.width - _buttonsend.frame.size.width -40, 45)];
-    
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
-    {
-        CGRect frame = _growingtextview.frame;
-        frame.size.width = [[UIScreen mainScreen] bounds].size.width - _buttonsend.frame.size.width -40 -_masterViewController.view.frame.size.width;
-        _growingtextview.frame = frame;
-    }
-    _growingtextview.isScrollable = NO;
-    _growingtextview.contentInset = UIEdgeInsetsMake(0, 5, 0, 5);
-    _growingtextview.layer.borderWidth = 0.5f;
-    _growingtextview.layer.borderColor = [UIColor lightGrayColor].CGColor;
-    _growingtextview.layer.cornerRadius = 5;
-    _growingtextview.layer.masksToBounds = YES;
-    
+    _textView.layer.borderWidth = 0.5f;
+    _textView.layer.borderColor = [UIColor lightGrayColor].CGColor;
 
-    _growingtextview.minNumberOfLines = 1;
-    _growingtextview.maxNumberOfLines = 6;
-    // you can also set the maximum height in points with maxHeight
-    // textView.maxHeight = 200.0f;
-    _growingtextview.returnKeyType = UIReturnKeyDefault; //just as an example
-    _growingtextview.delegate = self;
-    _growingtextview.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
-    _growingtextview.backgroundColor = [UIColor whiteColor];
-    _growingtextview.placeholder = @"Kirim pesanmu di sini..";
-    _growingtextview.enablesReturnKeyAutomatically = YES;
-    
-    [_messagingview addSubview:_growingtextview];
-        
     _messagingview.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
 }
 
@@ -321,12 +299,6 @@
     return messageSize.height + 2*[InboxMessageDetailCell textMarginVertical] + 30.0f;
 }
 
--(void) scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-    [_growingtextview resignFirstResponder];
-}
-
-
-
 #pragma mark - Request and Mapping
 - (void) configureRestKit {
     // initialize RestKit
@@ -336,62 +308,14 @@
         _objectmanager = [RKObjectManager sharedClient:_messageBaseUrl];
     }
     
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[InboxMessageDetail class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[InboxMessageDetailResult class]];
-    
-    RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
-    [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDHOME_APIURINEXTKEY:kTKPDHOME_APIURINEXTKEY}];
-
-    
-    RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[InboxMessageDetailList class]];
-    [listMapping addAttributeMappingsFromArray:@[
-                                                 KTKPDMESSAGE_ACTIONKEY,
-                                                 KTKPDMESSAGE_CREATEBYKEY,
-                                                 KTKPDMESSAGE_REPLYKEY,
-                                                 KTKPDMESSAGE_REPLYIDKEY
-                                                 KTKPDMESSAGE_BUTTONSPAMKEY,
-                                                 KTKPDMESSAGE_REPLYTIMEKEY,
-                                                 KTKPDMESSAGE_ISMODKEY,
-                                                 KTKPDMESSAGE_USERIDKEY,
-                                                 KTKPDMESSAGE_USERNAMEKEY,
-                                                 KTKPDMESSAGE_USERIMAGEKEY,
-                                                 KTKPDMESSAGE_USER_LABEL,
-                                                 KTKPDMESSAGE_USER_LABEL_ID
-                                                 ]];
-    
-    RKObjectMapping *betweenMapping = [RKObjectMapping mappingForClass:[InboxMessageDetailBetween class]];
-    [betweenMapping addAttributeMappingsFromArray:@[
-                                                     KTKPDMESSAGE_USERIDKEY,
-                                                     KTKPDMESSAGE_USERNAMEKEY
-                                                     ]];
-    
-    //relation
-    RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
-    [statusMapping addPropertyMapping:resulRel];
-    
-    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APILISTKEY toKeyPath:kTKPDHOME_APILISTKEY withMapping:listMapping];
-    [resultMapping addPropertyMapping:listRel];
-    
-    RKRelationshipMapping *betweenRel = [RKRelationshipMapping relationshipMappingFromKeyPath:KTKPDMESSAGE_BETWEENCONVERSATIONKEY toKeyPath:KTKPDMESSAGE_BETWEENCONVERSATIONKEY withMapping:betweenMapping];
-    [resultMapping addPropertyMapping:betweenRel];
-    
-    RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APIPAGINGKEY toKeyPath:kTKPDHOME_APIPAGINGKEY withMapping:pagingMapping];
-    [resultMapping addPropertyMapping:pageRel];
-    
-    
     //register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:[InboxMessageDetail mapping]
                                                                                                   method:RKRequestMethodPOST
                                                                                              pathPattern:[_messagePostUrl isEqualToString:@""] ? KTKPDMESSAGE_PATHURL : _messagePostUrl
                                                                                                  keyPath:@""
                                                                                              statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectmanager addResponseDescriptor:responseDescriptorStatus];
-
 }
 
 
@@ -422,7 +346,6 @@
       
         [_table reloadData];
         _isrefreshview = NO;
-        _buttonsend.enabled = YES;
         [_refreshControl endRefreshing];
         [_timer invalidate];
         _timer = nil;
@@ -511,15 +434,17 @@
             
             NSString *title = [NSString stringWithFormat:@"%@\n%@", [_data objectForKey:KTKPDMESSAGE_TITLEKEY], btw];
 
+            _titleLabel.text = [_data objectForKey:KTKPDMESSAGE_TITLEKEY];
+            _participantsLabel.text = btw;
+
             NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:title];
             [attributedText addAttribute:NSFontAttributeName
                                    value:[UIFont boldSystemFontOfSize: 16.0f]
                                    range:NSMakeRange(0, [[_data objectForKey:KTKPDMESSAGE_TITLEKEY] length])];
+
             
             label.attributedText = attributedText;
-            
-            self.navigationItem.titleView = label;
-            
+
             [_table setContentOffset:CGPointMake(0, CGFLOAT_MAX)];
         }
         
@@ -575,7 +500,6 @@
 }
 
 
-
 - (void)requesttimeout {
     
 }
@@ -612,13 +536,13 @@
             }
                 
             case 11: {
-                NSString *message = [_growingtextview.text stringByTrimmingCharactersInSet:
+                NSString *message = [_textView.text stringByTrimmingCharactersInSet:
                                      [NSCharacterSet whitespaceCharacterSet]];
-                if(message.length > 5 || ![message isEqualToString:@""]) {
+                if(message.length > 5) {
                     NSInteger lastindexpathrow = [_messages count];
                     
                     InboxMessageDetailList *sendmessage = [InboxMessageDetailList new];
-                    sendmessage.message_reply = _growingtextview.text;
+                    sendmessage.message_reply = _textView.text;
                     
                     NSDate *today = [NSDate date];
                     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
@@ -644,9 +568,10 @@
                                           animated:YES];
                     
                     [self configureActionRestkit];
-                    [self doSendMessage:_growingtextview.text];
+                    [self doSendMessage:_textView.text];
                     
-                    _growingtextview.text = nil;
+                    _textView.text = nil;
+                    [self adjustButtonSendAvailability];
                 } else {
                     
                     NSArray *array = [[NSArray alloc] initWithObjects:KTKPDMESSAGE_EMPTYFORM5, nil];
@@ -662,73 +587,48 @@
     }
 }
 
-#pragma mark - UITextView Delegate
-- (void)growingTextView:(HPGrowingTextView *)growingTextView willChangeHeight:(float)height
-{
-    float diff = (growingTextView.frame.size.height - height);
-    
-    CGRect r = _messagingview.frame;
-    r.size.height -= diff;
-    r.origin.y += diff;
-    
-    _messagingview.frame = r;
-}
-
-
 -(void) keyboardWillShow:(NSNotification *)note{
     // get keyboard size and loctaion
     CGRect keyboardBounds;
     [[note.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue: &keyboardBounds];
-    NSNumber *duration = [note.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
-    NSNumber *curve = [note.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey];
+    NSNumber *duration = note.userInfo[UIKeyboardAnimationDurationUserInfoKey];
+    NSNumber *curve = note.userInfo[UIKeyboardAnimationCurveUserInfoKey];
     
     // Need to translate the bounds to account for rotation.
     keyboardBounds = [self.view convertRect:keyboardBounds toView:nil];
     
-    // get a rect for the textView frame
-    CGRect containerFrame = self.view.frame;
-    
-    containerFrame.origin.y = self.view.bounds.size.height - (keyboardBounds.size.height + containerFrame.size.height - 65);
-//    containerFrame.size.height = self.view.bounds.size.height - keyboardBounds.size.height;
-//    _table.contentInset = UIEdgeInsetsMake(0, 0, keyboardBounds.size.height, 0);
-//    [_table scrollRectToVisible:CGRectMake(0, _table.contentSize.height, _table.bounds.size.width, 1) animated:YES];
-    // animations settings
     [UIView beginAnimations:nil context:NULL];
     [UIView setAnimationBeginsFromCurrentState:YES];
     [UIView setAnimationDuration:[duration doubleValue]];
     [UIView setAnimationCurve:[curve intValue]];
     
-    
-    // set views with new info
-    self.view.frame = containerFrame;
-    
+    _messageViewBottomConstraint.constant = keyboardBounds.size.height;
+    [self.view layoutIfNeeded];
+
     [_messagingview becomeFirstResponder];
-    // commit animations
     [UIView commitAnimations];
 }
 
 -(void) keyboardWillHide:(NSNotification *)note{
-    NSNumber *duration = [note.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
-    NSNumber *curve = [note.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey];
-    
-    // get a rect for the textView frame
-    self.view.backgroundColor = [UIColor colorWithRed:231.0/255.0 green:231.0/255.0 blue:231.0/255.0 alpha:1.0];
-    CGRect containerFrame = self.view.frame;
-    
-    containerFrame.origin.y = self.view.bounds.size.height - containerFrame.size.height + 65;
-//    containerFrame.size.height = [UIScreen mainScreen].bounds.size.height - self.navigationController.navigationBar.bounds.size.height - [UIApplication sharedApplication].statusBarFrame.size.height;
-//    _table.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
-    
-    // animations settings
+    // get keyboard size and loctaion
+    CGRect keyboardBounds;
+    [[note.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue: &keyboardBounds];
+    NSNumber *duration = note.userInfo[UIKeyboardAnimationDurationUserInfoKey];
+    NSNumber *curve = note.userInfo[UIKeyboardAnimationCurveUserInfoKey];
+
+    // Need to translate the bounds to account for rotation.
+    keyboardBounds = [self.view convertRect:keyboardBounds toView:nil];
+
     [UIView beginAnimations:nil context:NULL];
     [UIView setAnimationBeginsFromCurrentState:YES];
     [UIView setAnimationDuration:[duration doubleValue]];
     [UIView setAnimationCurve:[curve intValue]];
-    
-    // set views with new info
-    self.view.frame = containerFrame;
-    
-    // commit animations
+
+
+    _messageViewBottomConstraint.constant = 0;
+    [self.view layoutIfNeeded];
+
+    [_messagingview becomeFirstResponder];
     [UIView commitAnimations];
 }
 
@@ -791,11 +691,12 @@
     
     _requestsendcount ++;
     _requestsend = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:[_messageActionPostUrl isEqualToString:@""] ? KTKPDMESSAGEPRODUCTACTION_PATHURL : _messageActionPostUrl parameters:[param encrypt]];
-    
-    NSDictionary *userinfo;
-    userinfo = @{MESSAGE_INDEX_PATH : [_data objectForKey:MESSAGE_INDEX_PATH], KTKPDMESSAGE_MESSAGEREPLYKEY : _growingtextview.text};
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateMessageWithIndex" object:nil userInfo:userinfo];
-    [_growingtextview resignFirstResponder];
+
+    if (_onMessagePosted) {
+        _onMessagePosted(_textView.text);
+    }
+
+    [_textView resignFirstResponder];
     
     [_requestsend setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestsendmessage:mappingResult withOperation:operation];
@@ -827,16 +728,19 @@
     
 }
 
-#pragma mark - Growing TextView Delegate
-- (void)growingTextViewDidChange:(HPGrowingTextView *)growingTextView {
-    NSString *message = [growingTextView.text stringByTrimmingCharactersInSet:
-                          [NSCharacterSet whitespaceCharacterSet]];
-    if([message length] < 5 || [message isEqualToString:@""]) {
-        _buttonsend.enabled = NO;
-        
-    } else {
-        _buttonsend.enabled = YES;
-    }
+#pragma mark - TextView Delegate
+- (void)textViewDidChange:(UITextView *)textView {
+    [self adjustButtonSendAvailability];
+}
+
+- (void)textViewDidBeginEditing:(UITextView *)textView {
+    [_table scrollToBottomAnimated:YES];
+}
+
+- (void)adjustButtonSendAvailability {
+    NSString *message = [_textView.text stringByTrimmingCharactersInSet:
+                         [NSCharacterSet whitespaceCharacterSet]];
+    _buttonsend.enabled = message.length > 5;
 }
 
 #pragma mark - Tap User
@@ -856,6 +760,8 @@
     
         [self configureRestKit];
         [self loadData];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"markAsReadMessage" object:nil userInfo:@{@"index_path" : [_data objectForKey:@"index_path"], @"read_status" : @"1"}];
     }
     else {
         [_act stopAnimating];
@@ -865,8 +771,4 @@
     _messagingview.hidden = _data == nil;
 }
 
-- (BOOL)splitViewController:(UISplitViewController *)svc shouldHideViewController:(UIViewController *)vc inOrientation:(UIInterfaceOrientation)orientation
-{
-    return NO;
-}
 @end

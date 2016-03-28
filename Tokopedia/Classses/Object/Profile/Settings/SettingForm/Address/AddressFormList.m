@@ -63,6 +63,8 @@
                       @"address_district",
                       @"address_city",
                       @"address_province",
+                      @"addr_id",
+                      @"addr_name",
                       @"longitude",
                       @"latitude"];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];

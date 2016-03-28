@@ -17,6 +17,7 @@
 #import "detail.h"
 
 #define CStringPenilaianUser @"DATA PENILAIAN USER"
+#define CStringPoin @"Poin"
 
 @interface UserProfileBiodataViewController () <UserPageHeaderDelegate, ProfileBiodataShopCellDelegate, UIScrollViewDelegate, UITableViewDelegate, CMPopTipViewDelegate>
 

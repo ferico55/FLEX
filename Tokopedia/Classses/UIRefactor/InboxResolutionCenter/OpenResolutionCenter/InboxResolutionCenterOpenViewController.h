@@ -18,12 +18,11 @@
 - (void)changeSolution:(NSString*)solutionType troubleType:(NSString*)troubleType refundAmount:(NSString*)refundAmout remark:(NSString*)note photo:(NSString*)photo serverID:(NSString*)serverID isGotTheOrder:(BOOL)isGotTheOrder;
 - (void)appealSolution:(NSString*)solutionType refundAmount:(NSString*)refundAmout remark:(NSString*)note photo:(NSString*)photo serverID:(NSString*)serverID;
 - (void)didFailureComplainOrder:(TxOrderStatusList*)order atIndexPath:(NSIndexPath*)indexPath;
-- (void)syncroImages:(NSArray*)images message:(NSString*)message;
 @end
 
 @protocol SyncroDelegate <NSObject>
 @optional
-- (void)syncroImages:(NSArray*)images message:(NSString*)message;
+- (void)syncroImages:(NSArray*)images message:(NSString*)message refundAmount:(NSString*)refundAmount;
 @end
 
 

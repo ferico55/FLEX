@@ -80,6 +80,11 @@
     [super viewWillAppear:animated];
     
     _userManager = [UserAuthentificationManager new];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(changeProfilePicture:)
+                                                 name:kTKPD_EDITPROFILEPICTUREPOSTNOTIFICATIONNAMEKEY
+                                               object:nil];
 }
 
 - (void)viewDidLoad
@@ -117,13 +122,7 @@
 }
 
 - (void)setHeaderData {
-    NSURL *userImageURL;
-    UserAuthentificationManager *auth = [UserAuthentificationManager new];
-    if ([auth.getUserId isEqualToString:_profile.result.user_info.user_id]) {
-        userImageURL = [NSURL URLWithString:[auth.getUserLoginData objectForKey:@"user_image"]];
-    } else {
-        userImageURL = [NSURL URLWithString:_profile.result.user_info.user_image];
-    }
+    NSURL *userImageURL = [NSURL URLWithString:_profile.result.user_info.user_image];
     
     NSURLRequest* requestAvatar = [[NSURLRequest alloc] initWithURL:userImageURL
                                                         cachePolicy:NSURLRequestUseProtocolCachePolicy
@@ -203,6 +202,10 @@
     
 }
 
+#pragma mark - Change profile pic notif
 
+- (void)changeProfilePicture:(NSNotification *)notification {
+    self.profileImage.image = [[notification userInfo] objectForKey:@"profile_img"];
+}
 
 @end

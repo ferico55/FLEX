@@ -12,7 +12,6 @@
 #import "ProfileInfo.h"
 
 #import "TKPDTabProfileNavigationController.h"
-#import "SortViewController.h"
 #import "MyShopEtalaseFilterViewController.h"
 #import "SettingUserProfileViewController.h"
 #import "ProfileSettingViewController.h"

@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface ResolutionOrder : NSObject
+@interface ResolutionOrder : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *order_pdf_url;
 @property (nonatomic, strong) NSString *order_shipping_price_idr;

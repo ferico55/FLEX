@@ -27,8 +27,21 @@
                                     options:nil];
         [self.view setFrame:CGRectMake(0, 0, frame.size.width?:[[UIScreen mainScreen]bounds].size.width, frame.size.height?:[[UIScreen mainScreen]bounds].size.height)];
         [self addSubview:self.view];
+        
+//        UIDevice *device = [UIDevice currentDevice];					//Get the device object
+//        [device beginGeneratingDeviceOrientationNotifications];			//Tell it to start monitoring the accelerometer for orientation
+//        NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];	//Get the notification centre for the app
+//        [nc addObserver:self											//Add yourself as an observer
+//               selector:@selector(orientationChanged:)
+//                   name:UIDeviceOrientationDidChangeNotification
+//                 object:device];
     }
     return self;
+}
+
+- (void)orientationChanged:(NSNotification *)note
+{
+    [self.view setFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, [[UIScreen mainScreen]bounds].size.height)];
 }
 
 -(void)generateAllElements:(NSString *)fileName title:(NSString *)title desc:(NSString *)desc btnTitle:(NSString *)btnTitle{

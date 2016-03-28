@@ -12,6 +12,7 @@
 #import "ReputationDetail.h"
 #import "ReviewResponse.h"
 #import "ProductOwner.h"
+#import "DetailTotalLikeDislike.h"
 @class ShopBadgeLevel;
 
 #define CShopBadgeLevel @"shop_badge_level"
@@ -116,4 +117,7 @@
 @property (nonatomic, strong) ProductOwner *product_owner;
 @property (nonatomic, strong) ReviewResponse *review_response;
 @property (nonatomic, strong) DetailReviewReputationViewModel *viewModel;
+
+//only used in helpful review, diff implementation, diff ws
+@property (nonatomic, strong) DetailTotalLikeDislike *review_like_dislike;
 @end

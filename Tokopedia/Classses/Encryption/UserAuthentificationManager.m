@@ -88,12 +88,16 @@
     return [NSString stringWithFormat: @"%@", shopHasTerms]?:@"";
 }
 
--(Breadcrumb*)getLastProductAddCategory
+-(CategoryDetail *)getLastProductAddCategory
 {
-    Breadcrumb *category = [Breadcrumb new];
-    category.department_id = [_auth objectForKey:LAST_CATEGORY_VALUE]?:@"";
-    category.department_name = [_auth objectForKey:LAST_CATEGORY_NAME]?:@"";
-    return category;
+    if ([_auth objectForKey:LAST_CATEGORY_NAME]) {
+        CategoryDetail *category = [CategoryDetail new];
+        category.categoryId = [_auth objectForKey:LAST_CATEGORY_VALUE]?:@"0";
+        category.name = [_auth objectForKey:LAST_CATEGORY_NAME]?:@"";
+        return category;
+    } else {
+        return nil;
+    }
 }
 
 - (NSDictionary *)autoAddParameter:(id)params
@@ -102,11 +106,11 @@
     if (![[self getUserId] isEqualToString:@"0"]) {
         [parameters setValue:[self getUserId] forKey:@"user_id"];
     }
-//#ifdef DEBUG
-//    [parameters setValue:@"SIMULATORDUMMY" forKey:@"device_id"];
-//#else
+#if (TARGET_OS_SIMULATOR)
+    [parameters setValue:@"SIMULATORDUMMY" forKey:@"device_id"];
+#else
     [parameters setValue:[self getMyDeviceToken] forKey:@"device_id"];
-//#endif
+#endif
     [parameters setValue:@"2" forKey:@"os_type"];
     
     NSString *hash;

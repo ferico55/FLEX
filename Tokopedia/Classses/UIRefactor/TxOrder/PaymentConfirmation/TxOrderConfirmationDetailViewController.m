@@ -282,7 +282,7 @@
 -(void)goToInvoiceAtSection:(NSInteger)section
 {
     TxOrderConfirmationListOrder *orderList = _list[section];
-    [_navigate navigateToInvoiceFromViewController:self withInvoiceURL:orderList.order_detail.detail_pdf_uri];
+    [NavigateViewController navigateToInvoiceFromViewController:self withInvoiceURL:orderList.order_detail.detail_pdf_uri];
 }
 
 -(void)goToShopAtSection:(NSInteger)section

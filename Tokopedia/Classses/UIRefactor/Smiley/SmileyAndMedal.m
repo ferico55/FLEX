@@ -8,6 +8,19 @@
 
 #import "SmileyAndMedal.h"
 
+#define CBadgeSpeedGood @"badge-speed-good"
+#define CBadgeSpeedBad @"badge-speed-bad"
+#define CBadgeSpeedNeutral @"badge-speed-neutral"
+
+enum emoticonTag {
+    CTagMerah = 1,
+    CTagKuning = 2,
+    CTagHijau = 3
+};
+
+
+
+
 @implementation SmileyAndMedal
 #pragma mark - Method
 + (void)setIconResponseSpeed:(NSString *)strResponse withImage:(id)imgSpeed largeImage:(BOOL)isLarge {
@@ -114,6 +127,9 @@
 
 - (id)initButtonContentPopUp:(NSString *)strTitle withImage:(UIImage *)image withFrame:(CGRect)rectFrame withTextColor:(UIColor *)textColor
 {
+    if ([strTitle isKindOfClass:[NSNumber class]]) {
+        strTitle = [NSString stringWithFormat:@"%zd", [strTitle integerValue]];
+    }
     UIButton *tempBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     tempBtn.frame = rectFrame;
     [tempBtn setImage:image forState:UIControlStateNormal];

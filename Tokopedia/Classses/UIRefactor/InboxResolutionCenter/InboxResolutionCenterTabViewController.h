@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class ResolutionCenterDetailViewController;
+#import "ResolutionCenterDetailViewController.h"
 
 @interface InboxResolutionCenterTabViewController : GAITrackedViewController
 

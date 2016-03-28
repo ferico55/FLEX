@@ -127,7 +127,7 @@ RetryViewDelegate
     _loadingView = [LoadingView new];
     _loadingView.delegate = self;
     
-    [self setTableInset];
+//    [self setTableInset];
     
     if (_product.count > 0) {
         _isnodata = NO;
@@ -146,6 +146,8 @@ RetryViewDelegate
     [[UINavigationBar appearance] setShadowImage:[[UIImage alloc] init]];
     [[UINavigationBar appearance] setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
     
+//    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:[UIDevice currentDevice]];
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.delegate = self;
     
@@ -312,9 +314,9 @@ RetryViewDelegate
         for (NSString *parameter in [url.query componentsSeparatedByString:@"&"]) {
             NSString *key = [[parameter componentsSeparatedByString:@"="] objectAtIndex:0];
             if ([key isEqualToString:kTKPDSEARCH_APIMINPRICEKEY]) {
-                [parameters setValue:[[parameter componentsSeparatedByString:@"="] objectAtIndex:1] forKey:kTKPDSEARCH_APIMINPRICEKEY];
+                [parameters setValue:[[parameter componentsSeparatedByString:@"="] objectAtIndex:1] forKey:kTKPDSEARCH_APIPRICEMINKEY];
             } else if ([key isEqualToString:kTKPDSEARCH_APIMAXPRICEKEY]) {
-                [parameters setValue:[[parameter componentsSeparatedByString:@"="] objectAtIndex:1] forKey:kTKPDSEARCH_APIMAXPRICEKEY];
+                [parameters setValue:[[parameter componentsSeparatedByString:@"="] objectAtIndex:1] forKey:kTKPDSEARCH_APIPRICEMAXKEY];
             } else if ([key isEqualToString:kTKPDSEARCH_APIOBKEY]) {
                 [parameters setValue:[[parameter componentsSeparatedByString:@"="] objectAtIndex:1] forKey:kTKPDSEARCH_APIOBKEY];
             } else if ([key isEqualToString:kTKPDSEARCH_APILOCATIONIDKEY]) {
@@ -323,21 +325,12 @@ RetryViewDelegate
                 [parameters setValue:[[parameter componentsSeparatedByString:@"="] objectAtIndex:1] forKey:kTKPDSEARCH_APIGOLDMERCHANTKEY];
             }
         }
+        
         [parameters setValue:@"search_product" forKey:kTKPDSEARCH_DATATYPE];
         
         SearchResultViewController *controller = [SearchResultViewController new];
         controller.data = parameters;
         controller.hidesBottomBarWhenPushed = YES;
-        
-        SearchResultViewController *controller2 = [SearchResultViewController new];
-//        [parameters setValue:@"search_catalog" forKey:kTKPDSEARCH_DATATYPE];
-//        controller.data = parameters;
-//        controller.hidesBottomBarWhenPushed = YES;
-        
-//        SearchResultShopViewController *controller3 = [SearchResultShopViewController new];
-//        [parameters setValue:@"search_shop" forKey:kTKPDSEARCH_DATATYPE];
-//        controller3.data = parameters;
-//        controller3.hidesBottomBarWhenPushed = YES;
         
         NSArray *viewcontrollers = @[controller];
         
@@ -350,9 +343,6 @@ RetryViewDelegate
         viewController.hidesBottomBarWhenPushed = YES;
         [[NSNotificationCenter defaultCenter] postNotificationName:@"setsegmentcontrol" object:nil userInfo:@{@"hide_segment" : @"1"}];
         [self.navigationController pushViewController:viewController animated:YES];
-        
-        
-//        [self.delegate pushViewController:controller];
         
     } else if ([hotlist.url rangeOfString:@"/catalog/"].length) {
         
@@ -373,8 +363,15 @@ RetryViewDelegate
     CGRect screenRect = [[UIScreen mainScreen] bounds];
     CGFloat cellWidth;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
-        CGFloat screenWidth = screenRect.size.width/2;
-        cellWidth = screenWidth-15;
+        UIDeviceOrientation *orientation = [[UIDevice currentDevice] orientation];
+//        if(UIDeviceOrientationIsLandscape(orientation)) {
+//            CGFloat screenWidth = screenRect.size.width/3;
+//            cellWidth = screenWidth-15;
+//        } else {
+            CGFloat screenWidth = screenRect.size.width/2;
+            cellWidth = screenWidth-15;
+//        }
+
     } else {
         CGFloat screenWidth = screenRect.size.width;
         cellWidth = screenWidth-20;
@@ -685,5 +682,11 @@ RetryViewDelegate
     [self.navigationController pushViewController:viewController animated:YES];
     self.hidesBottomBarWhenPushed = NO;
 }
+
+#pragma mark - orientation changed
+- (void)orientationChanged:(NSNotification *)note {
+    [_collectionView reloadData];
+}
+
 
 @end

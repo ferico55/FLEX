@@ -12,6 +12,8 @@ target "Tokopedia" do
     pod 'GoogleMaps'
     pod 'Reveal-iOS-SDK', :configurations => ['Debug']
     pod 'Rollout.io', '~> 0.13.0'
+    pod 'AppsFlyer-SDK', '4.3.7'
+    pod 'BlocksKit', '~> 2.2.5'
 end
 
 target "TokopediaTests" do

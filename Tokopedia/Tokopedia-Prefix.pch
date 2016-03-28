@@ -5,32 +5,24 @@
 //
 
 #import <Availability.h>
-#ifndef Constant
-#define Constant
-#define degreeToRadian(x) (M_PI*(x) /180)
-
-#define CStringLastCheckVerify @"lastCheckVerify"
-#define CStringMSISDNIsVerify @"msisdnIsVerify"
-#define CStringMSISDN @"msisdn"
-#define CBadgeSpeedGood @"badge-speed-good"
-#define CBadgeSpeedBad @"badge-speed-bad"
-#define CBadgeSpeedNeutral @"badge-speed-neutral"
-#define CStringPoin @"Poin"
-#define CWidthItemPopUp 50
-#define CHeightItemPopUp 30
-
-#define CPriceAlertCell @"PriceAlertCell"
-#define CDetailPriceAlertTableViewCell @"DetailPriceAlertTableViewCell"
-#define CStringFailedInServer @"Server error"
-#define CStringNoConnection @"Tidak ada koneksi internet"
-#endif
-
-enum emoticonTag
-{
-    CTagMerah = 1,
-    CTagKuning = 2,
-    CTagHijau = 3
-};
+//#ifndef Constant
+//#define Constant
+//#define degreeToRadian(x) (M_PI*(x) /180)
+//
+//#define CStringLastCheckVerify @"lastCheckVerify"
+//#define CStringMSISDNIsVerify @"msisdnIsVerify"
+//#define CStringMSISDN @"msisdn"
+//#define CBadgeSpeedGood @"badge-speed-good"
+//#define CBadgeSpeedBad @"badge-speed-bad"
+//#define CBadgeSpeedNeutral @"badge-speed-neutral"
+//#define CStringPoin @"Poin"
+//#define CWidthItemPopUp 50
+//#define CHeightItemPopUp 30
+//
+//#define CPriceAlertCell @"PriceAlertCell"
+//#define CDetailPriceAlertTableViewCell @"DetailPriceAlertTableViewCell"
+//
+//#endif
 
 #ifndef __IPHONE_3_0
 #warning "This project uses features only available in iOS SDK 3.0 and later."
@@ -60,6 +52,7 @@ enum emoticonTag
     #import "NSString+HTML.h"
     #import "NSStringAttribute.h"
     #import "UserAuthentificationManager.h"
+    #import "NSMutableAttributedString+TKPCategory.h"
 
     #import "StickyAlertView.h"
     #import "NoResultView.h"
@@ -75,5 +68,7 @@ enum emoticonTag
     #import "UIViewController+TKPAdditions.h"
     #import "TKPStoreManager.h"
     #import "TKPMappingManager.h"
+
+    #import "TPSpotlight.h"
 
 #endif

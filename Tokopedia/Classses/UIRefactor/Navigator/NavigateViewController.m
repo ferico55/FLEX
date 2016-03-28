@@ -63,7 +63,7 @@
     NSUInteger *_indexImage;
     NSArray *_imageDescriptions;
 }
--(void)navigateToInvoiceFromViewController:(UIViewController *)viewController withInvoiceURL:(NSString *)invoiceURL
++(void)navigateToInvoiceFromViewController:(UIViewController *)viewController withInvoiceURL:(NSString *)invoiceURL
 {
     UserAuthentificationManager *auth = [UserAuthentificationManager new];
     WebViewInvoiceViewController *VC = [WebViewInvoiceViewController new];
@@ -175,7 +175,11 @@
 }
 
 - (void)navigateToProductFromViewController:(UIViewController *)viewController withName:(NSString *)name withPrice:(NSString *)price withId:(NSString *)productId withImageurl:(NSString *)url withShopName:(NSString*)shopName {
-    NSDictionary *loadedData = @{@"product_id" : productId?:@"", @"product_name" : name?:@"", @"product_image" : url?:@"", @"product_price" :price?:@"", @"shop_name" : shopName?:@""};
+    NSDictionary *loadedData = @{@"product_id" : productId?:@"",
+                                 @"product_name" : name?:@"",
+                                 @"product_image" : url?:@"",
+                                 @"product_price" :price?:@"",
+                                 @"shop_name" : shopName?:@""};
     
     DetailProductViewController *productController = [DetailProductViewController new];
     productController.loadedData = loadedData;
@@ -297,10 +301,12 @@
 {
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
         InboxResolSplitViewController *controller = [InboxResolSplitViewController new];
+        controller.hidesBottomBarWhenPushed = YES;
         [viewController.navigationController pushViewController:controller animated:YES];
         
     } else {
         InboxResolutionCenterTabViewController *controller = [InboxResolutionCenterTabViewController new];
+        controller.hidesBottomBarWhenPushed = YES;
         [viewController.navigationController pushViewController:controller animated:YES];
     }
 }

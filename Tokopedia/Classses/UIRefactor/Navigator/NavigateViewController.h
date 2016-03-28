@@ -20,7 +20,7 @@
 
 -(void)navigateToProfileFromViewController:(UIViewController*)viewController withUserID:(NSString *)userID;
 -(void)navigateToShopFromViewController:(UIViewController*)viewController withShopID:(NSString *)shopID;
--(void)navigateToInvoiceFromViewController:(UIViewController*)viewController withInvoiceURL:(NSString *)invoiceURL;
+
 -(void)navigateToShowImageFromViewController:(UIViewController *)viewController withImageDictionaries:(NSArray*)images imageDescriptions:(NSArray*)imageDesc indexImage:(NSInteger)index;
 
 - (void)navigateToProductFromViewController:(UIViewController *)viewController withName:(NSString*)name withPrice:(NSString*)price withId:(NSString*)productId withImageurl:(NSString*)url withShopName:(NSString*)shopName;
@@ -35,6 +35,7 @@
                                   promoData:(NSDictionary *)data
                                 productData:(NSDictionary *)productData;
 -(void)popUpLuckyDeal:(LuckyDealWord*)words;
++(void)navigateToInvoiceFromViewController:(UIViewController *)viewController withInvoiceURL:(NSString *)invoiceURL;
 
 +(void)navigateToMap:(CLLocationCoordinate2D)location type:(NSInteger)type infoAddress:(AddressViewModel*)infoAddress fromViewController:(UIViewController *)viewController;
 +(void)navigateToMap:(CLLocationCoordinate2D)location type:(NSInteger)type fromViewController:(UIViewController *)viewController;

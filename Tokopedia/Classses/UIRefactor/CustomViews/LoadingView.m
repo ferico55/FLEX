@@ -27,10 +27,11 @@
                                       owner:self
                                     options:nil];
         
-        CGFloat width = [[UIScreen mainScreen] bounds].size.width;
+        CGFloat width = ((UIViewController*)_delegate).view.frame.size.width;
         CGRect frame = self.view.frame;
         frame.size.width = width;
         self.view.frame = frame;
+        self.frame = frame;
         [self addSubview:self.view];
         [self layoutIfNeeded];
         _buttonRetry.layer.cornerRadius = 3.0;

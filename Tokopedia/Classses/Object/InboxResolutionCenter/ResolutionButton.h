@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface ResolutionButton : NSObject
+@interface ResolutionButton : NSObject <TKPObjectMapping>
 
 @property (nonatomic) NSInteger button_report;
 @property (nonatomic) NSInteger button_cancel;

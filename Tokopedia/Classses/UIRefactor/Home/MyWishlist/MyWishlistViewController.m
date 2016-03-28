@@ -24,6 +24,7 @@
 #import "Localytics.h"
 
 #import "RetryCollectionReusableView.h"
+#import "Tokopedia-Swift.h"
 
 static NSString *wishListCellIdentifier = @"ProductCellIdentifier";
 #define normalWidth 320
@@ -113,6 +114,8 @@ typedef enum TagRequest {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSwipeHomeTab:) name:@"didSwipeHomeTab" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshView:) name:kTKPDOBSERVER_WISHLIST object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshView:) name:TKPDUserDidLoginNotification object:nil];
+//    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:[UIDevice currentDevice]];
     
     //todo with view
     [self initNoResultView];
@@ -127,7 +130,7 @@ typedef enum TagRequest {
     [_collectionView setCollectionViewLayout:_flowLayout];
     [_collectionView setAlwaysBounceVertical:YES];
     
-    [_collectionView setContentInset:UIEdgeInsetsMake(5, 0, 150 * heightMultiplier, 0)];
+//    [_collectionView setContentInset:UIEdgeInsetsMake(5, 0, 150 * heightMultiplier, 0)];
     
     [_flowLayout setItemSize:CGSizeMake((productCollectionViewCellWidthNormal * widthMultiplier), (productCollectionViewCellHeightNormal * heightMultiplier))];
     
@@ -195,6 +198,30 @@ typedef enum TagRequest {
     return cell;
 }
 
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+//    NSInteger numberOfCell;
+//    NSInteger cellHeight;
+//    if(IS_IPAD) {
+//        UIInterfaceOrientation *orientation = [UIDevice currentDevice].orientation;
+//        if(UIInterfaceOrientationIsLandscape(orientation)) {
+//            numberOfCell = 5;
+//        } else {
+//            numberOfCell = 4;
+//        }
+//        cellHeight = 250;
+//    } else {
+//        numberOfCell = 2;
+//        cellHeight = 205 * ([UIScreen mainScreen].bounds.size.height / 568);
+//    }
+//    
+//    CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
+//    CGFloat cellWidth = screenWidth/numberOfCell - 15;
+//    
+//    return CGSizeMake(cellWidth, cellHeight);
+    return [ProductCellSize sizeWithType:1];
+}
+
+
 - (UICollectionReusableView*)collectionView:(UICollectionView*)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
     [self registerNib];
     
@@ -219,36 +246,36 @@ typedef enum TagRequest {
     [navigateController navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_image withShopName:product.shop_name];
 }
 
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    
-    CGSize cellSize = CGSizeMake(0, 0);
-    CGRect screenRect = [[UIScreen mainScreen] bounds];
-    
-    NSInteger cellCount;
-    float heightRatio;
-    float widhtRatio;
-    float inset;
-    
-    CGFloat screenWidth = screenRect.size.width;
-    
-    cellCount = 2;
-    heightRatio = 41;
-    widhtRatio = 29;
-    inset = 15;
-    
-    CGFloat cellWidth;
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
-        screenWidth = screenRect.size.width/2;
-        cellWidth = screenWidth/cellCount-inset;
-    } else {
-        screenWidth = screenRect.size.width;
-        cellWidth = screenWidth/cellCount-inset;
-    }
-    
-    cellSize = CGSizeMake(cellWidth, cellWidth*heightRatio/widhtRatio);
-    return cellSize;
-}
+//- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    
+//    CGSize cellSize = CGSizeMake(0, 0);
+//    CGRect screenRect = [[UIScreen mainScreen] bounds];
+//    
+//    NSInteger cellCount;
+//    float heightRatio;
+//    float widhtRatio;
+//    float inset;
+//    
+//    CGFloat screenWidth = screenRect.size.width;
+//    
+//    cellCount = 2;
+//    heightRatio = 41;
+//    widhtRatio = 29;
+//    inset = 15;
+//    
+//    CGFloat cellWidth;
+//    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
+//        screenWidth = screenRect.size.width/2;
+//        cellWidth = screenWidth/cellCount-inset;
+//    } else {
+//        screenWidth = screenRect.size.width;
+//        cellWidth = screenWidth/cellCount-inset;
+//    }
+//    
+//    cellSize = CGSizeMake(cellWidth, cellWidth*heightRatio/widhtRatio);
+//    return cellSize;
+//}
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
     
@@ -460,6 +487,9 @@ typedef enum TagRequest {
     
 }
 
+- (void)orientationChanged:(NSNotification *)note {
+    [_collectionView reloadData];
+}
 
 
 @end

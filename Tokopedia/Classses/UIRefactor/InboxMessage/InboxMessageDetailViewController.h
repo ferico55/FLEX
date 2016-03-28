@@ -12,10 +12,9 @@
 @interface InboxMessageDetailViewController : UIViewController
 
 @property (strong, nonatomic) NSDictionary *data;
+@property (copy) void(^onMessagePosted)(NSString* replyMessage);
 
 -(void)replaceDataSelected:(NSDictionary*)data;
-
-@property (strong, nonatomic) UIViewController *masterViewController;
 
 
 @end

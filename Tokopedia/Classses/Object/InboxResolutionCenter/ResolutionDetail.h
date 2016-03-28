@@ -14,7 +14,7 @@
 #import "ResolutionCustomer.h"
 #import "ResolutionDispute.h"
 
-@interface ResolutionDetail : NSObject
+@interface ResolutionDetail : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) ResolutionLast *resolution_last;
 @property (nonatomic, strong) ResolutionOrder *resolution_order;

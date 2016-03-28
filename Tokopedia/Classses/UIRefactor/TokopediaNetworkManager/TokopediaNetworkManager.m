@@ -12,10 +12,9 @@
 #import "StickyAlertView.h"
 #import "NSString+MD5.h"
 #import "TkpdHMAC.h"
+#import <BlocksKit/BlocksKit.h>
 
 #define TkpdNotificationForcedLogout @"NOTIFICATION_FORCE_LOGOUT"
-
-
 
 @implementation TokopediaNetworkManager
 @synthesize tagRequest;
@@ -25,6 +24,7 @@
     
     if(self != nil) {
         _operationQueue = [NSOperationQueue new];
+        _isUsingDefaultError = YES;
     }
     
     return self;
@@ -66,6 +66,8 @@
     NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
     [_objectManager.HTTPClient setDefaultHeader:@"X-APP-VERSION" value:appVersion];
 
+    [_objectManager.HTTPClient setDefaultHeader:@"X-Device" value:@"ios"];
+    
     if(self.isUsingHmac) {
         TkpdHMAC *hmac = [TkpdHMAC new];
         NSString *signature = [hmac generateSignatureWithMethod:[self getStringRequestMethod:requestMethod] tkpdPath:[_delegate getPath:self.tagRequest] parameter:[_delegate getParameter:self.tagRequest]];
@@ -270,6 +272,151 @@
     _requestCount = 0;
 }
 
+- (void)requestWithBaseUrl:(NSString *)baseUrl
+                      path:(NSString *)path
+                    method:(RKRequestMethod)method
+                 parameter:(NSDictionary<NSString *,NSString *> *)parameter
+                   mapping:(RKObjectMapping *)mapping
+                 onSuccess:(void (^)(RKMappingResult *, RKObjectRequestOperation *))successCallback
+                 onFailure:(void (^)(NSError *))errorCallback {
+    if(_objectRequest.isExecuting) return;
+    
+    _requestCount ++;
 
+    _objectManager  = [RKObjectManager sharedClient:baseUrl];
+    RKResponseDescriptor* responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:mapping
+                                                                                                  method:method
+                                                                                             pathPattern:path
+                                                                                                 keyPath:@""
+                                                                                             statusCodes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(200, 100)]];
+    [_objectManager addResponseDescriptor:responseDescriptorStatus];
+    
+    NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    [_objectManager.HTTPClient setDefaultHeader:@"X-APP-VERSION" value:appVersion];
+    
+    if(self.isUsingHmac) {
+        TkpdHMAC *hmac = [TkpdHMAC new];
+        NSString *signature = [hmac generateSignatureWithMethod:[self getStringRequestMethod:method] tkpdPath:path parameter:parameter];
+        
+        [_objectManager.HTTPClient setDefaultHeader:@"Request-Method" value:[hmac getRequestMethod]];
+        [_objectManager.HTTPClient setDefaultHeader:@"Content-MD5" value:[hmac getParameterMD5]];
+        [_objectManager.HTTPClient setDefaultHeader:@"Content-Type" value:[hmac getContentType]];
+        [_objectManager.HTTPClient setDefaultHeader:@"Date" value:[hmac getDate]];
+        [_objectManager.HTTPClient setDefaultHeader:@"X-Tkpd-Path" value:[hmac getTkpdPath]];
+        [_objectManager.HTTPClient setDefaultHeader:@"X-Method" value:[hmac getRequestMethod]];
+        
+        [_objectManager.HTTPClient setDefaultHeader:@"Authorization" value:[NSString stringWithFormat:@"TKPD %@:%@", @"Tokopedia", signature]];
+        [_objectManager.HTTPClient setDefaultHeader:@"X-Tkpd-Authorization" value:[NSString stringWithFormat:@"TKPD %@:%@", @"Tokopedia", signature]];
+        
+        _objectRequest = [_objectManager appropriateObjectRequestOperationWithObject:nil
+                                                                              method:method
+                                                                                path:path
+                                                                          parameters:[parameter autoParameters]];
+    } else {
+        NSDictionary *parameters;
+        if (self.isParameterNotEncrypted) {
+            parameters = parameter;
+        } else {
+            parameters = [parameter encrypt];
+        }
+        _objectRequest = [_objectManager appropriateObjectRequestOperationWithObject:nil
+                                                                              method:method
+                                                                                path:path
+                                                                          parameters:parameters];
+    }
+    
+    
+    [_requestTimer invalidate];
+    _requestTimer = nil;
+    [_objectRequest setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+#ifdef DEBUG
+        NSLog(@"Response string : %@", operation.HTTPRequestOperation.responseString);
+        NSLog(@"Request body %@", [[NSString alloc] initWithData:[operation.HTTPRequestOperation.request HTTPBody]  encoding:NSUTF8StringEncoding]);
+#endif
+        
+        NSDictionary* resultDict = mappingResult.dictionary;
+        NSObject* mappedResult = [resultDict objectForKey:@""];
+        
+        if ([mappedResult respondsToSelector:@selector(status)]) {
+        NSString* status = [mappedResult performSelector:@selector(status)];
+        
+            if([status isEqualToString:@"OK"]) {
+                successCallback(mappingResult, operation);
+            } else if ([status isEqualToString:@"INVALID_REQUEST"]) {
+                
+            } else if ([status isEqualToString:@"UNDER_MAINTENANCE"]) {
+                [self requestMaintenance];
+            } else if ([status isEqualToString:@"REQUEST_DENIED"]) {
+                NSLog(@"xxxxxxxxx REQUEST DENIED xxxxxxxxx");
+                [[NSNotificationCenter defaultCenter] postNotificationName:TkpdNotificationForcedLogout object:nil userInfo:@{}];
+            }
+        } else {
+            successCallback(mappingResult, operation);
+        }
+        
+        [_requestTimer invalidate];
+        _requestTimer = nil;
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        NSLog(@"Request body %@", [[NSString alloc] initWithData:[operation.HTTPRequestOperation.request HTTPBody]  encoding:NSUTF8StringEncoding]);
+        
+        NSInteger requestCountMax = _maxTries?:kTKPDREQUESTCOUNTMAX;
+        if(_requestCount < requestCountMax) {
+            //cancelled request
+            if(error.code == -999) {
+                [self requestWithBaseUrl:baseUrl
+                                        path:path
+                                      method:method
+                                   parameter:parameter
+                                     mapping:mapping
+                                   onSuccess:successCallback
+                                   onFailure:errorCallback];
+            } else {
+                [self handleErrorWithCallback:errorCallback error:error];
+            }
+        } else {
+            [self handleErrorWithCallback:errorCallback error:error];
+        }
+        
+    }];
+    
+    [_operationQueue addOperation:_objectRequest];
+    NSTimeInterval timeInterval = _timeInterval ? _timeInterval : kTKPDREQUEST_TIMEOUTINTERVAL;
+
+    __weak typeof(self) weakSelf = self;
+    _requestTimer = [NSTimer bk_scheduledTimerWithTimeInterval:timeInterval block:^(NSTimer* timer) {
+        [weakSelf requestCancel];
+    } repeats:NO];
+    [[NSRunLoop currentRunLoop] addTimer:_requestTimer forMode:NSRunLoopCommonModes];
+
+}
+
+- (void)handleErrorWithCallback:(void (^)(NSError *))errorCallback error:(NSError *)error {
+    if (errorCallback) {
+        errorCallback(error);
+        if(_isUsingDefaultError) {
+            [self showErrorAlert:error];
+        }
+    } else {
+        [self showErrorAlert:error];
+    }
+}
+
+- (void)showErrorAlert:(NSError*)error {
+    StickyAlertView *alert;
+    NSArray *errors;
+    if(error.code == -1011) {
+        errors = @[@"Mohon maaf, terjadi kendala pada server"];
+    } else if (error.code == -1009) {
+        errors = @[@"Tidak ada koneksi internet"];
+    } else if (error.code == -999) {
+        errors = @[@"Terjadi kendala pada koneksi internet"];
+    } else {
+        errors = @[error.localizedDescription];
+    }
+    
+    
+    alert = [[StickyAlertView alloc] initWithErrorMessages:errors delegate:[((UINavigationController*)((UITabBarController*)[[[[[UIApplication sharedApplication] delegate] window] rootViewController] presentedViewController]).selectedViewController). viewControllers lastObject]];
+    [alert show];
+}
 
 @end

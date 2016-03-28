@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9059" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
+            <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
         </mutableArray>
@@ -23,7 +24,9 @@
                 <outlet property="buyerThumbView" destination="FFc-W4-g7O" id="A3Q-8J-SEC"/>
                 <outlet property="dateTimeLabel" destination="mfP-nr-xB1" id="vGd-sK-BPc"/>
                 <outlet property="footerView" destination="23D-UF-aIh" id="rL4-m7-gEg"/>
+                <outlet property="headerInfoView" destination="GQj-sG-yhB" id="5ff-3A-PKB"/>
                 <outlet property="headerView" destination="s8o-KD-9LU" id="7QV-gX-YDJ"/>
+                <outlet property="infoLabel" destination="9b2-6w-0D2" id="igH-gL-hQh"/>
                 <outlet property="inputConversation" destination="0aw-Ah-gfv" id="gU9-yS-ljf"/>
                 <outlet property="invoiceLabel" destination="LLB-VF-pFH" id="WwB-RH-5ip"/>
                 <outlet property="loadMoreButton" destination="Cti-C9-twK" id="jY7-XB-QyE"/>
@@ -231,6 +234,42 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="507" y="-58.5"/>
         </view>
+        <view contentMode="scaleToFill" id="GQj-sG-yhB" userLabel="Header View">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="123"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view tag="11" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GiJ-3m-xF7" userLabel="User View">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="107"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Thomas" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9b2-6w-0D2">
+                            <rect key="frame" x="15" y="8" width="290" height="91"/>
+                            <animations/>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <animations/>
+                    <color key="backgroundColor" red="1" green="1" blue="0.85902847780000002" alpha="1" colorSpace="calibratedRGB"/>
+                    <gestureRecognizers/>
+                    <constraints>
+                        <constraint firstItem="9b2-6w-0D2" firstAttribute="leading" secondItem="GiJ-3m-xF7" secondAttribute="leading" constant="15" id="5PA-rX-l0o"/>
+                        <constraint firstItem="9b2-6w-0D2" firstAttribute="top" secondItem="GiJ-3m-xF7" secondAttribute="top" constant="8" id="Kch-hN-pzQ"/>
+                        <constraint firstAttribute="bottom" secondItem="9b2-6w-0D2" secondAttribute="bottom" constant="8" id="NbG-XE-DZv"/>
+                        <constraint firstAttribute="trailing" secondItem="9b2-6w-0D2" secondAttribute="trailing" constant="15" id="xuj-ab-4ad"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <animations/>
+            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="GiJ-3m-xF7" firstAttribute="leading" secondItem="GQj-sG-yhB" secondAttribute="leading" id="Nfj-N0-Fwk"/>
+                <constraint firstAttribute="bottom" secondItem="GiJ-3m-xF7" secondAttribute="bottom" constant="16" id="Txv-VT-cWf"/>
+                <constraint firstItem="GiJ-3m-xF7" firstAttribute="top" secondItem="GQj-sG-yhB" secondAttribute="top" id="pcR-bj-0TV"/>
+                <constraint firstAttribute="trailing" secondItem="GiJ-3m-xF7" secondAttribute="trailing" id="vqy-CL-cRh"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="523" y="104.5"/>
+        </view>
         <view contentMode="scaleToFill" id="23D-UF-aIh" userLabel="FooterView">
             <rect key="frame" x="0.0" y="0.0" width="320" height="34"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -288,7 +327,7 @@
             </tableViewCellContentView>
             <animations/>
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
-            <point key="canvasLocation" x="551" y="149.5"/>
+            <point key="canvasLocation" x="537" y="231.5"/>
         </tableViewCell>
         <tapGestureRecognizer id="zD8-oc-nhU">
             <connections>

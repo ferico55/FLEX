@@ -5,3 +5,11 @@
 #import "UIKitCategory.h"
 #import "string.h"
 #import "AddressViewModel.h"
+#import "ProductFeedList.h"
+#import "SearchAWSProduct.h"
+#import "ProductCell.h"
+#import "ProductModelView.h"
+
+#import "SwipeView.h"
+#import "MiniSlide.h"
+#import <QuartzCore/QuartzCore.h>

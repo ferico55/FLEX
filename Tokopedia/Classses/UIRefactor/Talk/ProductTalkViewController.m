@@ -28,6 +28,7 @@
 #import "string_inbox_message.h"
 #import "stringrestkit.h"
 #import "inbox.h"
+#import "string.h"
 
 #import "TalkCell.h"
 

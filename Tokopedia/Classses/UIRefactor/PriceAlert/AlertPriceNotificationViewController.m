@@ -23,6 +23,10 @@
 #import "string_price_alert.h"
 #import "TokopediaNetworkManager.h"
 #import "DetailPriceAlertViewController.h"
+
+#define CPriceAlertCell @"PriceAlertCell"
+#define CDetailPriceAlertTableViewCell @"DetailPriceAlertTableViewCell"
+
 #define CCellIdentifier @"cell"
 #define CTagGetPriceAlert 10
 #define CTagDeletePriceAlert 11

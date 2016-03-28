@@ -14,4 +14,5 @@
 
 @property (nonatomic, strong) NSString *is_success;
 
++ (RKObjectMapping *)mapping;
 @end

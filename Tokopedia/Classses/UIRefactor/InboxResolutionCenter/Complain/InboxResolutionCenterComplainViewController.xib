@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -22,9 +22,14 @@
             <connections>
                 <outlet property="act" destination="R0J-t9-MVo" id="sIX-kJ-sWl"/>
                 <outlet property="footer" destination="xCp-Pb-Bzx" id="ZLM-mg-24M"/>
+                <outlet property="headerFilterDays" destination="R6L-Ze-0GC" id="pD3-S0-S4y"/>
                 <outlet property="headerView" destination="R3a-kT-d1Y" id="uEI-Ea-mRZ"/>
+                <outlet property="labelFilterDaysCount" destination="MAq-eM-RId" id="Cl7-OP-KBm"/>
+                <outlet property="labelPendingAmount" destination="pbc-qs-rKQ" id="aJQ-BB-BZF"/>
                 <outlet property="tableView" destination="tF2-SW-y74" id="jtN-gF-tlU"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outletCollection property="redirectButton" destination="7Za-nC-pI3" id="Fbd-IP-XMl"/>
+                <outletCollection property="redirectButton" destination="COu-Pz-Pbl" id="oSM-xR-y7E"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -33,106 +38,22 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="198" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="tF2-SW-y74">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="523"/>
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                    <animations/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="aMx-hB-Oij"/>
                         <outlet property="delegate" destination="-1" id="bF9-6w-J4c"/>
                     </connections>
                 </tableView>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RN8-1f-srC" userLabel="Toolbar View">
-                    <rect key="frame" x="0.0" y="523" width="320" height="45"/>
-                    <subviews>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MjV-S6-ge3" userLabel="Top Border">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
-                            <color key="backgroundColor" white="0.66666666669999997" alpha="0.29999999999999999" colorSpace="calibratedWhite"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="1" id="lWZ-tb-mjM"/>
-                            </constraints>
-                        </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zks-KN-jsr" userLabel="Vertical Border">
-                            <rect key="frame" x="160" y="0.0" width="1" height="45"/>
-                            <color key="backgroundColor" white="0.66666666669999997" alpha="0.29999999999999999" colorSpace="calibratedWhite"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="1" id="CRS-Me-7gr"/>
-                            </constraints>
-                        </view>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_urutkan_alt.png" translatesAutoresizingMaskIntoConstraints="NO" id="2RM-HE-e1c">
-                            <rect key="frame" x="69" y="12" width="22" height="22"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="22" id="Pwf-KZ-nxq"/>
-                                <constraint firstAttribute="height" constant="22" id="RWz-2J-iz8"/>
-                            </constraints>
-                        </imageView>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_filter.png" translatesAutoresizingMaskIntoConstraints="NO" id="IKA-yQ-ihc">
-                            <rect key="frame" x="229" y="12" width="22" height="22"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="22" id="JiP-iW-qhy"/>
-                                <constraint firstAttribute="width" constant="22" id="YxK-mA-Bfx"/>
-                            </constraints>
-                        </imageView>
-                        <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5o3-Cx-O8o">
-                            <rect key="frame" x="0.0" y="0.0" width="160" height="45"/>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
-                            <inset key="contentEdgeInsets" minX="-19" minY="0.0" maxX="0.0" maxY="0.0"/>
-                            <inset key="titleEdgeInsets" minX="-29" minY="0.0" maxX="0.0" maxY="0.0"/>
-                            <inset key="imageEdgeInsets" minX="83" minY="0.0" maxX="0.0" maxY="0.0"/>
-                            <state key="normal">
-                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                            <connections>
-                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="aPC-aV-U9t"/>
-                            </connections>
-                        </button>
-                        <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Mi-X5-0OA">
-                            <rect key="frame" x="160" y="0.0" width="160" height="45"/>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
-                            <inset key="contentEdgeInsets" minX="-82" minY="0.0" maxX="0.0" maxY="0.0"/>
-                            <inset key="titleEdgeInsets" minX="-29" minY="0.0" maxX="0.0" maxY="0.0"/>
-                            <inset key="imageEdgeInsets" minX="83" minY="0.0" maxX="0.0" maxY="0.0"/>
-                            <state key="normal">
-                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                            <connections>
-                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="dMs-zI-1PG"/>
-                            </connections>
-                        </button>
-                    </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstItem="zks-KN-jsr" firstAttribute="top" secondItem="RN8-1f-srC" secondAttribute="top" id="1Wd-it-ZTn"/>
-                        <constraint firstItem="9Mi-X5-0OA" firstAttribute="top" secondItem="RN8-1f-srC" secondAttribute="top" id="1ud-p7-j0i"/>
-                        <constraint firstItem="IKA-yQ-ihc" firstAttribute="centerX" secondItem="9Mi-X5-0OA" secondAttribute="centerX" id="4wp-ei-vmL"/>
-                        <constraint firstAttribute="bottom" secondItem="9Mi-X5-0OA" secondAttribute="bottom" id="67m-Z9-Z4e"/>
-                        <constraint firstItem="9Mi-X5-0OA" firstAttribute="width" secondItem="5o3-Cx-O8o" secondAttribute="width" id="A7A-m9-QGI"/>
-                        <constraint firstItem="IKA-yQ-ihc" firstAttribute="centerY" secondItem="9Mi-X5-0OA" secondAttribute="centerY" id="FFj-jV-BgE"/>
-                        <constraint firstItem="zks-KN-jsr" firstAttribute="leading" secondItem="5o3-Cx-O8o" secondAttribute="trailing" id="GaS-SH-A10"/>
-                        <constraint firstItem="MjV-S6-ge3" firstAttribute="top" secondItem="RN8-1f-srC" secondAttribute="top" id="K22-t6-E5l"/>
-                        <constraint firstItem="5o3-Cx-O8o" firstAttribute="centerY" secondItem="2RM-HE-e1c" secondAttribute="centerY" id="OAM-j1-tuD"/>
-                        <constraint firstItem="5o3-Cx-O8o" firstAttribute="top" secondItem="RN8-1f-srC" secondAttribute="top" id="QdW-Td-oWJ"/>
-                        <constraint firstAttribute="trailing" secondItem="9Mi-X5-0OA" secondAttribute="trailing" id="Qhm-oq-0OO"/>
-                        <constraint firstItem="5o3-Cx-O8o" firstAttribute="centerX" secondItem="2RM-HE-e1c" secondAttribute="centerX" id="QxF-fv-ZmU"/>
-                        <constraint firstItem="MjV-S6-ge3" firstAttribute="leading" secondItem="RN8-1f-srC" secondAttribute="leading" id="Rrz-f7-Ogd"/>
-                        <constraint firstAttribute="bottom" secondItem="zks-KN-jsr" secondAttribute="bottom" id="XyC-rz-0oF"/>
-                        <constraint firstAttribute="bottom" secondItem="5o3-Cx-O8o" secondAttribute="bottom" id="cZE-bg-utS"/>
-                        <constraint firstItem="9Mi-X5-0OA" firstAttribute="leading" secondItem="5o3-Cx-O8o" secondAttribute="trailing" id="ibJ-LL-WuJ"/>
-                        <constraint firstItem="5o3-Cx-O8o" firstAttribute="leading" secondItem="RN8-1f-srC" secondAttribute="leading" id="tAu-JX-M6t"/>
-                        <constraint firstAttribute="height" constant="45" id="ytf-8S-GWO"/>
-                        <constraint firstAttribute="trailing" secondItem="MjV-S6-ge3" secondAttribute="trailing" id="zrn-ab-aGf"/>
-                    </constraints>
-                </view>
             </subviews>
+            <animations/>
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="RN8-1f-srC" secondAttribute="bottom" id="9Df-nN-Pky"/>
                 <constraint firstItem="tF2-SW-y74" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="LHR-S4-JBa"/>
                 <constraint firstItem="tF2-SW-y74" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="SjG-fN-03p"/>
-                <constraint firstItem="RN8-1f-srC" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="bWo-r1-YVh"/>
-                <constraint firstItem="RN8-1f-srC" firstAttribute="top" secondItem="tF2-SW-y74" secondAttribute="bottom" id="evC-jR-Ht6"/>
                 <constraint firstAttribute="trailing" secondItem="tF2-SW-y74" secondAttribute="trailing" id="khf-Kw-4RK"/>
-                <constraint firstAttribute="trailing" secondItem="RN8-1f-srC" secondAttribute="trailing" id="mjR-9m-vUJ"/>
+                <constraint firstAttribute="bottom" secondItem="tF2-SW-y74" secondAttribute="bottom" id="zj4-gh-zWr"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
             <point key="canvasLocation" x="58" y="-212"/>
@@ -143,8 +64,10 @@
             <subviews>
                 <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="R0J-t9-MVo">
                     <rect key="frame" x="150" y="7" width="20" height="20"/>
+                    <animations/>
                 </activityIndicatorView>
             </subviews>
+            <animations/>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="R0J-t9-MVo" firstAttribute="centerX" secondItem="xCp-Pb-Bzx" secondAttribute="centerX" id="9xw-h5-fKb"/>
@@ -160,33 +83,42 @@
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Komplain hanya bisa dilakukan terhadap transaksi" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DW8-dK-3V4">
                     <rect key="frame" x="15" y="5" width="298" height="23"/>
+                    <animations/>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="pembelian." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aHw-fm-mtW">
                     <rect key="frame" x="15" y="21" width="298" height="23"/>
+                    <animations/>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Lihat daftar transaksi Anda di halaman" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ilb-fl-swM">
                     <rect key="frame" x="15" y="37" width="298" height="23"/>
+                    <animations/>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="dan" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eOh-gA-Fat">
                     <rect key="frame" x="119" y="53" width="27" height="23"/>
+                    <animations/>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <button opaque="NO" tag="13" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="COu-Pz-Pbl">
+                <button opaque="NO" tag="13" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="COu-Pz-Pbl">
                     <rect key="frame" x="144" y="54" width="150" height="23"/>
+                    <animations/>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
                     <state key="normal" title="Daftar Transaksi Pembelian">
+                        <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <state key="disabled">
+                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
                         <action selector="tap:" destination="-1" eventType="touchUpInside" id="6hZ-6D-vXL"/>
@@ -194,28 +126,91 @@
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qVS-6K-6Xa">
                     <rect key="frame" x="295" y="53" width="27" height="23"/>
+                    <animations/>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <button opaque="NO" tag="12" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Za-nC-pI3">
+                <button opaque="NO" tag="12" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Za-nC-pI3">
                     <rect key="frame" x="15" y="50" width="101" height="30"/>
+                    <animations/>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
                     <state key="normal" title="Status Pemesanan">
+                        <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <state key="disabled">
+                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
                         <action selector="tap:" destination="-1" eventType="touchUpInside" id="sQm-IM-cek"/>
                     </connections>
                 </button>
             </subviews>
+            <animations/>
             <color key="backgroundColor" red="1" green="1" blue="0.85902847782258063" alpha="1" colorSpace="calibratedRGB"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="440" y="-364.5"/>
         </view>
+        <view contentMode="scaleToFill" id="R6L-Ze-0GC" userLabel="Header Filter View">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="70"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7do-PZ-caD">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="35"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ada 10 komplain yang belum selesai lebih dari 14 hari" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MAq-eM-RId">
+                            <rect key="frame" x="15" y="0.0" width="295" height="35"/>
+                            <animations/>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qeO-Lu-eWQ">
+                            <rect key="frame" x="39" y="0.0" width="91" height="35"/>
+                            <animations/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="91" id="NpY-CA-qcJ"/>
+                            </constraints>
+                            <connections>
+                                <action selector="tapFilterDay:" destination="-1" eventType="touchUpInside" id="4D1-6f-G11"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <animations/>
+                    <color key="backgroundColor" red="1" green="1" blue="0.85902847780000002" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="35" id="1Qp-9n-Gry"/>
+                        <constraint firstItem="qeO-Lu-eWQ" firstAttribute="top" secondItem="7do-PZ-caD" secondAttribute="top" id="2VF-Z8-qi6"/>
+                        <constraint firstItem="MAq-eM-RId" firstAttribute="top" secondItem="7do-PZ-caD" secondAttribute="top" id="5pM-R5-dXp"/>
+                        <constraint firstAttribute="bottom" secondItem="MAq-eM-RId" secondAttribute="bottom" id="6GX-Pk-5vK"/>
+                        <constraint firstAttribute="trailing" secondItem="MAq-eM-RId" secondAttribute="trailing" constant="10" id="KrK-KA-K4e"/>
+                        <constraint firstItem="MAq-eM-RId" firstAttribute="leading" secondItem="7do-PZ-caD" secondAttribute="leading" constant="15" id="SNB-z6-s8y"/>
+                        <constraint firstItem="qeO-Lu-eWQ" firstAttribute="leading" secondItem="7do-PZ-caD" secondAttribute="leading" constant="39" id="VtD-dF-UPb"/>
+                        <constraint firstAttribute="bottom" secondItem="qeO-Lu-eWQ" secondAttribute="bottom" id="imL-da-PwP"/>
+                    </constraints>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Total dana berkendala anda Rp 1.000.000" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pbc-qs-rKQ">
+                    <rect key="frame" x="15" y="35" width="295" height="35"/>
+                    <animations/>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <animations/>
+            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="pbc-qs-rKQ" firstAttribute="top" secondItem="7do-PZ-caD" secondAttribute="bottom" id="3Xt-G8-0y3"/>
+                <constraint firstItem="7do-PZ-caD" firstAttribute="leading" secondItem="R6L-Ze-0GC" secondAttribute="leading" id="E3E-Oh-sx1"/>
+                <constraint firstAttribute="bottom" secondItem="pbc-qs-rKQ" secondAttribute="bottom" id="Paq-ne-ddx"/>
+                <constraint firstAttribute="trailing" secondItem="7do-PZ-caD" secondAttribute="trailing" id="Y00-zg-0tD"/>
+                <constraint firstItem="7do-PZ-caD" firstAttribute="top" secondItem="R6L-Ze-0GC" secondAttribute="top" id="hj0-ZR-CEA"/>
+                <constraint firstItem="pbc-qs-rKQ" firstAttribute="leading" secondItem="R6L-Ze-0GC" secondAttribute="leading" constant="15" id="jag-Yw-w5j"/>
+                <constraint firstAttribute="trailing" secondItem="pbc-qs-rKQ" secondAttribute="trailing" constant="10" id="vTe-lJ-V28"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="415" y="-224"/>
+        </view>
     </objects>
-    <resources>
-        <image name="icon_filter.png" width="30" height="30"/>
-        <image name="icon_urutkan_alt.png" width="30" height="30"/>
-    </resources>
 </document>

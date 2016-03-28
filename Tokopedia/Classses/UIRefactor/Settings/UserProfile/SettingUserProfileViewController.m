@@ -29,898 +29,315 @@
 
 #import "UIImage+ImageEffects.h"
 #import "HelloPhoneVerificationViewController.h"
-
-#define CTagProfile 2
+#import "UIView+HVDLayout.h"
 
 #pragma mark - Profile Edit View Controller
+
+typedef NS_ENUM(NSInteger, RequestType) {
+    RequestTypeGetData,
+    RequestTypeSubmitData,
+    RequestTypeUploadImage,
+};
+
+typedef NS_ENUM(NSInteger, PickerView) {
+    PickerViewDate,
+    PickerViewGender,
+};
+
 @interface SettingUserProfileViewController ()
 <
+    UITextFieldDelegate,
+    UITextViewDelegate,
+    UIScrollViewDelegate,
     TKPDAlertViewDelegate,
     RequestUploadImageDelegate,
     GenerateHostDelegate,
-    UITextFieldDelegate,
-    UIScrollViewDelegate,
-    UITextViewDelegate,
     TokopediaNetworkManagerDelegate,
     TKPDPhotoPickerDelegate
 >
-{
-    NSMutableDictionary *_datainput;
-    
-    ProfileEdit *_profile;
-    GenerateHost *_generatehost;
-    UploadImage *_images;
-    ProfileEditForm *_editform;
-    
-    UITextField *_activetextfield;
-    UITextView *_activeTextView;
-    
-    CGPoint _keyboardPosition;
-    CGSize _keyboardSize;
-    
-    CGRect _containerDefault;
-    CGSize _scrollviewContentSize;
-    
-    BOOL _isnodataprofile;
-    NSInteger _requestcount;
-    
-    BOOL _isaddressexpanded;
-    
-    __weak RKObjectManager *_objectmanagerGenerateHost;
-    __weak RKManagedObjectRequestOperation *_requestGenerateHost;
-    
-    __weak RKObjectManager *_objectmanagerActionSubmit;
-    __weak RKManagedObjectRequestOperation *_requestActionSubmit;
-    
-    __weak RKObjectManager *_objectmanagerProfileForm;
-    TokopediaNetworkManager *tokopediaNetworkManagerProfileForm;
 
-    __weak RKObjectManager *_uploadProfileImageObjectManager;
-    __weak RKManagedObjectRequestOperation *_uploadProfileImageRequest;
-    
-    NSOperationQueue *_operationQueue;
-    __weak IBOutlet UILabel *verifiedLabel;
-    __weak IBOutlet UILabel *verifyButton;
-    __weak IBOutlet UIView *verifyView;
-    __weak IBOutlet NSLayoutConstraint *verifyViewHeight;
-    __weak IBOutlet UIButton *verifSekarangButton;
-    __weak IBOutlet UILabel *pastikanLabel;
-    
-    UIBarButtonItem *_barbuttonsave;
-}
+// Data
+@property (strong, nonatomic) GeneratedHost *generatedHostData;
+@property (strong, nonatomic) UploadImage *uploadImageData;
+@property (strong, nonatomic) DataUser *userData;
 
-@property (weak, nonatomic) IBOutlet UIScrollView *scrollview;
-@property (weak, nonatomic) IBOutlet UIView *contentView;
-@property (weak, nonatomic) IBOutlet UILabel *labelfullname;
-@property (weak, nonatomic) IBOutlet UIButton *buttondob;
-@property (weak, nonatomic) IBOutlet UIButton *buttongender;
-@property (weak, nonatomic) IBOutlet UITextView *textviewhobbies;
-@property (weak, nonatomic) IBOutlet UITextField *textfieldemail;
-@property (weak, nonatomic) IBOutlet UITextField *textfieldmesseger;
-@property (weak, nonatomic) IBOutlet UITextField *textfieldphone;
-@property (weak, nonatomic) IBOutlet UITextField *textfieldpassword;
-@property (weak, nonatomic) IBOutlet UIImageView *thumb;
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
-@property (weak, nonatomic) IBOutlet UIButton *editProfilePictButton;
+// Container
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (strong, nonatomic) IBOutlet UIView *contentView;
+
+// Profile image outlets
+@property (weak, nonatomic) IBOutlet UIImageView *profileImageView;
+@property (weak, nonatomic) IBOutlet UIButton *changeProfileImageButton;
+
+// Labels
+@property (weak, nonatomic) IBOutlet UILabel *fullNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *birthdateLabel;
+@property (weak, nonatomic) IBOutlet UILabel *sexLabel;
+@property (weak, nonatomic) IBOutlet UILabel *phoneNumberLabel;
+@property (weak, nonatomic) IBOutlet UILabel *phoneNumberStatusLabel;
+
+// Verification phone number view
+@property (weak, nonatomic) IBOutlet UIView *verificationPhoneView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *verificationPhoneViewHeight;
+
+// Textfields
+@property (weak, nonatomic) IBOutlet UITextField *hobbyTextField;
+@property (weak, nonatomic) IBOutlet UITextField *emailTextField;
+@property (weak, nonatomic) IBOutlet UITextField *messengerTextField;
+@property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
+@property (weak, nonatomic) UITextField *activeTextField;
+
+// Photo picker
 @property (strong, nonatomic) TKPDPhotoPicker *photoPicker;
-
-- (IBAction)tap:(id)sender;
-- (IBAction)gesture:(id)sender;
+@property (strong, nonatomic) IBOutlet UIButton *verifyButton;
 
 @end
 
 @implementation SettingUserProfileViewController
 
-#pragma mark - Initialization
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        _isnodataprofile = YES;
-        self.hidesBottomBarWhenPushed = YES;
-    }
-    return self;
+#pragma mark - Life Cycle
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.title = @"Biodata Diri";
+    [self requestGetData];
 }
 
-#pragma mark - Life Cycle
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+
+    [self initView];
+    [_verifyButton setUserInteractionEnabled:YES];
+    [_verifyButton setHidden:NO];
     
+    [self showSaveButton];
+    _scrollView.contentSize = CGSizeMake(_contentView.frame.size.width, _contentView.frame.size.height + 200);
+
+    // register for keyboard notifications
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    
+    // unregister for keyboard notifications while not visible.
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardWillShowNotification
+                                                  object:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardWillHideNotification
+                                                  object:nil];
+}
+
+- (void)initView {
     CGRect screenRect = [[UIScreen mainScreen] bounds];
-    CGFloat screenWidth = screenRect.size.width;
+
+    CGRect viewFrame = self.view.frame;
+    viewFrame.size.width = screenRect.size.width;
+    self.view.frame = viewFrame;
     
-    CGRect frame = _contentView.frame;
-    frame.size.width = screenWidth;
-    _contentView.frame = frame;
+    CGRect contentFrame = self.contentView.frame;
+    contentFrame.size.width = screenRect.size.width;
+    self.contentView.frame = contentFrame;
     
-    [self.navigationController.navigationBar setTranslucent:NO];
-    [self.navigationController.navigationItem setTitle:kTKPDPROFILEEDIT_TITLE];
+    [self.scrollView addSubview:_contentView];
+    [self.scrollView setContentSize:_contentView.frame.size];
     
-    self.title = kTKPDPROFILEEDIT_TITLE;
-    
-    _datainput = [NSMutableDictionary new];
-    _operationQueue = [NSOperationQueue new];
-    
-    //[self setDefaultData:_data];
-    
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(keyboardWillShow:)
-               name:UIKeyboardWillShowNotification
-             object:nil];
-    [nc addObserver:self selector:@selector(keyboardWillHide:)
-               name:UIKeyboardWillHideNotification
-             object:nil];
-    
-    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
-    _barbuttonsave = [[UIBarButtonItem alloc] initWithTitle:kTKPDPROFILESAVE
-                                                      style:UIBarButtonItemStyleDone
-                                                     target:(self)
-                                                     action:@selector(tap:)];
-    _barbuttonsave.tag = 11;
-    self.navigationItem.rightBarButtonItem = _barbuttonsave;
+    if(IS_IPAD) {
+        [self.scrollView HVD_fillInSuperViewWithInsets:UIEdgeInsetsMake(20, 70, 0, 70)];
+    }
+
+}
+
+- (void)showSaveButton {
+    UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithTitle:@"Simpan"
+                                                                   style:UIBarButtonItemStyleDone
+                                                                  target:self
+                                                                  action:@selector(didTapSaveButton:)];
+    self.navigationItem.rightBarButtonItem = saveButton;
+}
+
+- (void)showLoadingBar {
+    UIActivityIndicatorView *loadingView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    [loadingView startAnimating];
+    UIBarButtonItem *loadingButton = [[UIBarButtonItem alloc] initWithCustomView:loadingView];
+    self.navigationItem.rightBarButtonItem = loadingButton;
+}
+
+#pragma mark - Request Method
+
+- (void)requestGetData {
+    TokopediaNetworkManager *network = [TokopediaNetworkManager new];
+    network.tagRequest = RequestTypeGetData;
+    network.delegate = self;
+    [network doRequest];
     
     RequestGenerateHost *requestHost = [RequestGenerateHost new];
     [requestHost configureRestkitGenerateHost];
     [requestHost requestGenerateHost];
     requestHost.delegate = self;
-    _thumb = [UIImageView circleimageview:_thumb];
-    
-    UIFont *font = [UIFont fontWithName:@"Gotham Book" size:12.0];
-    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    paragraphStyle.lineSpacing = 7;
-    NSDictionary *attrsDictionary = @{NSFontAttributeName:font,
-                                      NSParagraphStyleAttributeName:paragraphStyle};
-    NSAttributedString *attrString = [[NSAttributedString alloc] initWithString:pastikanLabel.text attributes:attrsDictionary];
-    
-    [pastikanLabel setAttributedText:attrString];
-    
+}
+
+- (void)requestSubmitData {
+    TokopediaNetworkManager *network = [TokopediaNetworkManager new];
+    network.tagRequest = RequestTypeSubmitData;
+    network.delegate = self;
+    [network doRequest];
+}
+
+- (void)requestUploadPhoto {
+    TokopediaNetworkManager *network = [TokopediaNetworkManager new];
+    network.tagRequest = RequestTypeUploadImage;
+    network.delegate = self;
+    [network doRequest];
+}
+
+#pragma mark - Network delegate
+
+- (NSString *)getPath:(int)tag {
+    NSString *path = @"";
+    if (tag == RequestTypeGetData) {
+        path = kTKPDPROFILE_SETTINGAPIPATH;
+    } else if (tag == RequestTypeSubmitData) {
+        path = kTKPDPROFILE_PROFILESETTINGAPIPATH;
+    } else if (tag == RequestTypeUploadImage) {
+        path = kTKPDPROFILE_PROFILESETTINGAPIPATH;
     }
+    return path;
+}
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [self.scrollview addSubview:_contentView];
-    self.scrollview.contentSize = CGSizeMake(self.view.frame.size.width,
-                                             _contentView.frame.size.height);
-    self.scrollview.contentOffset = CGPointZero;
-    
-    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
-    NSDictionary *_auth = [secureStorage keychainDictionary];
-    if([[_auth objectForKey:@"msisdn_is_verified"] integerValue] == 1){
-        [verifiedLabel setText:@"Terverifikasi"];
-        [verifiedLabel setTextColor:[UIColor colorWithRed:0.061
-                                                    green:0.648
-                                                     blue:0.275
-                                                    alpha:1]];
-        [verifyView setHidden:YES];
-        [verifyViewHeight setConstant:10];
-    }else{
-        [verifiedLabel setText:@"Belum Terverifikasi"];
-        [verifiedLabel setTextColor:[UIColor colorWithRed:0.882
-                                                    green:0.296
-                                                     blue:0.209
-                                                    alpha:1]];
-        [verifyView setHidden:NO];
-        [verifyViewHeight setConstant:101];
+- (NSDictionary *)getParameter:(int)tag {
+    NSDictionary *parameter = @{};
+    if (tag == RequestTypeGetData) {
+        parameter = @{
+            kTKPDPROFILE_APIACTIONKEY : kTKPDPROFILE_APIGETPROFILEKEY
+        };
+    } else if (tag == RequestTypeSubmitData) {
+        NSString *userPassword = self.passwordTextField.text?:@"";
+        parameter = @{
+            kTKPDPROFILE_APIACTIONKEY      : kTKPDPROFILE_APIEDITPROFILEKEY,
+            kTKPDPROFILE_APIFULLNAMEKEY    : _userData.full_name,
+            kTKPDPROFILE_APIBIRTHDAYKEY    : _userData.birth_day,
+            kTKPDPROFILE_APIBIRTHMONTHKEY  : _userData.birth_month,
+            kTKPDPROFILE_APIBIRTHYEARKEY   : _userData.birth_year,
+            kTKPDPROFILE_APIGENDERKEY      : _userData.gender,
+            kTKPDPROFILE_APIHOBBYKEY       : _userData.hobby,
+            kTKPDPROFILE_APIMESSENGERKEY   : _userData.user_messenger,
+            kTKPDPROFILE_APIPASSKEY        : userPassword,
+            kTKPDPROFILE_APIMSISDNKEY      : _userData.user_phone
+        };
+    } else if (tag == RequestTypeUploadImage) {
+        parameter = @{
+            kTKPDPROFILE_APIACTIONKEY           : kTKPDPROFILE_APIUPLOADPROFILEPICTUREKEY,
+            kTKPDPROFILE_APIFILEUPLOADEDKEY     : _uploadImageData.result.pic_obj,
+            @"server_id"                        : _generatedHostData.server_id
+        };
     }
-    
-    
-    [self requestProfileForm];
-
+    return parameter;
 }
 
-#pragma mark - Memory Management
-- (void)dealloc{
-    NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardWillHideNotification object:nil];
-    
-    if(tokopediaNetworkManagerProfileForm != nil)
-    {
-        tokopediaNetworkManagerProfileForm.delegate = nil;
-        [tokopediaNetworkManagerProfileForm requestCancel];
+- (id)getObjectManager:(int)tag {
+    RKObjectManager *objectManager;
+    if (tag == RequestTypeGetData) {
+        objectManager = [self getDataObjectManager];
+    } else if (tag == RequestTypeSubmitData) {
+        objectManager = [self submitDataObjectManager];
+    } else if (tag == RequestTypeUploadImage) {
+        objectManager = [self uploadImageObjectManager];
     }
-}
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    return objectManager;
 }
 
-#pragma mark - View Action
-- (IBAction)tap:(id)sender {
-    [_activetextfield resignFirstResponder];
-    [_activeTextView resignFirstResponder];
-    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
-        UIBarButtonItem *btn = (UIBarButtonItem*)sender;
-        switch (btn.tag) {
-            case 10:
-            {
-                // back button
-                break;
-            }
-            case 11:
-            {
-                //submit button
-                [self configureRestkitSubmit];
-                NSMutableArray *messages = [NSMutableArray new];
-                NSDictionary *userinfo = _datainput;
-                NSString *password = [_datainput objectForKey:kTKPDPROFILE_APIPASSKEY];
-                if (password && ![password isEqualToString:@""]) {
-                    if (_textviewhobbies.text.length > 128) {
-                        [messages addObject:ERRORMESSAGE_INVALID_HOBBY_CHARACTER_COUNT];
-                        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messages delegate:self];
-                        [alert show];
-                        break;
-                    }
-                    [self requestActionSubmit:userinfo];
-                } else {
-                    [messages addObject:ERRORMESSAGE_NULL_PASSWORD];
-                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messages delegate:self];
-                    [alert show];
-                }
-                break;
-            }
-            default:
-                break;
-        }
-    }
-    if ([sender isKindOfClass:[UIButton class]]) {
-        UIButton *btn = (UIButton*)sender;
-        switch (btn.tag) {
-            case 10:
-            {   //edit thumbnail
-                _photoPicker = [[TKPDPhotoPicker alloc] initWithParentViewController:self pickerTransistionStyle:UIModalTransitionStyleCoverVertical];
-                [_photoPicker setDelegate:self];
-                break;
-            }
-            case 11:
-            {   //dob
-                // display datepicker
-                AlertDatePickerView *v = [AlertDatePickerView newview];
-                v.tag = 10;
-                v.isSetMinimumDate = YES;
-                v.delegate = self;
-                if (!_isnodataprofile) {
-                    NSString *dob = [NSString stringWithFormat:kTKPDPROFILEEDIT_DATEOFBIRTHFORMAT,_profile.result.data_user.birth_day,_profile.result.data_user.birth_month, _profile.result.data_user.birth_year];
-                    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-                    [dateFormat setDateFormat:@"dd / MM / yyyy"];
-                    NSDate *date = [dateFormat dateFromString:dob];
-                    v.currentdate = date;
-                }
-                [v show];
-                break;
-            }
-            case 12:
-            {    //gender
-                AlertPickerView *alertView = [AlertPickerView newview];
-                alertView.tag = 11;
-                alertView.delegate = self;
-                alertView.pickerData = ARRAY_GENDER;
-                [alertView show];
-                break;
-            }
-            case 13:
-            {    //update phone number
-                SettingUserPhoneViewController *vc = [SettingUserPhoneViewController new];
-                vc.data = @{kTKPDPROFILEEDIT_DATAPHONENUMBERKEY:_profile.result.data_user.user_phone};
-                [self.navigationController pushViewController:vc animated:YES];
-                break;
-            }
-            default:
-                break;
-        }
-    }
-}
-
-- (IBAction)verifyTapped:(id)sender {
-    HelloPhoneVerificationViewController *controller = [HelloPhoneVerificationViewController new];
+- (RKObjectManager *)getDataObjectManager {
+    RKObjectManager *objectManager = [RKObjectManager sharedClient];
     
-    controller.isSkipButtonHidden = YES;
-    [self.navigationController pushViewController:controller animated:YES];
-}
-
-- (IBAction)gesture:(id)sender {
-    [_activetextfield resignFirstResponder];
-    [_activeTextView resignFirstResponder];
-}
-
-#pragma mark - Request + Mapping
-#pragma mark Request Get Profile Form
-
--(void)cancelProfileForm
-{
-    [_objectmanagerProfileForm.operationQueue cancelAllOperations];
-    _objectmanagerProfileForm = nil;
-}
-
-- (void)requestProfileForm
-{
-    if([self getNetWorkManager:CTagProfile].getObjectRequest.isExecuting) return;
-    _barbuttonsave.enabled = NO;
-    [_act startAnimating];
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ProfileEdit class]];
+    [statusMapping addAttributeMappingsFromArray:@[kTKPD_APIERRORMESSAGEKEY,
+                                                   kTKPD_APISTATUSKEY,
+                                                   kTKPD_APISERVERPROCESSTIMEKEY]];
     
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ProfileEditResult class]];
     
-    [[self getNetWorkManager:CTagProfile] doRequest];
-}
+    RKObjectMapping *datauserMapping = [RKObjectMapping mappingForClass:[DataUser class]];
+    [datauserMapping addAttributeMappingsFromArray:@[kTKPDPROFILE_APIHOBBYKEY,
+                                                     kTKPDPROFILE_APIBIRTHDAYKEY,
+                                                     kTKPDPROFILE_APIFULLNAMEKEY,
+                                                     kTKPDPROFILE_APIBIRTHMONTHKEY,
+                                                     kTKPDPROFILE_APIBIRTHYEARKEY,
+                                                     kTKPDPROFILE_APIGENDERKEY,
+                                                     kTKPDPROFILE_APIUSERIMAGEKEY,
+                                                     kTKPDPROFILE_APIUSEREMAILKEY,
+                                                     kTKPDPROFILE_APIUSERMESSENGERKEY,
+                                                     kTKPDPROFILE_APIUSERPHONEKEY]];
 
-
--(void)requestsuccessProfileForm:(id)object withOperation:(RKObjectRequestOperation*)operation
-{
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id info = [result objectForKey:@""];
-    _profile = info;
-    NSString *statusstring = _profile.status;
-    BOOL status = [statusstring isEqualToString:kTKPDREQUEST_OKSTATUS];
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
+                                                                                  toKeyPath:kTKPD_APIRESULTKEY
+                                                                                withMapping:resultMapping]];
     
-    if (status) {
-        [self requestprocessProfileForm:object];
-    }
-}
-
--(void)requestfailureProfileForm:(id)object
-{
-    [self requestprocessProfileForm:object];
-}
-
--(void)requestprocessProfileForm:(id)object
-{
-    if (object) {
-        NSDictionary *result = ((RKMappingResult*)object).dictionary;
-        id info = [result objectForKey:@""];
-        _profile = info;
-        NSString *statusstring = _profile.status;
-        BOOL status = [statusstring isEqualToString:kTKPDREQUEST_OKSTATUS];
-        
-        if (status) {
-            [self setDefaultData:_profile];
-            _isnodataprofile = NO;
-        }
-    }
-}
-
--(void)requesttimeoutProfileForm
-{
-    [self cancelProfileForm];
-}
-
-#pragma mark Request Generate Host
--(void)successGenerateHost:(GenerateHost *)generateHost
-{
-    _generatehost = generateHost;
-}
-
-- (void)failedGenerateHost:(NSArray *)errorMessages {
-    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessages delegate:self];
-    [alert show];
-}
-
-#pragma mark Request Action Upload Photo
--(void)actionUploadImage:(id)object
-{
-    _thumb.alpha = 0.5;
-    RequestUploadImage *uploadImage = [RequestUploadImage new];
-    [uploadImage requestActionUploadObject:object
-                             generatedHost:_generatehost.result.generated_host
-                                    action:kTKPDPROFILE_APIUPLOADPROFILEIMAGEKEY
-                                    newAdd:1
-                                 productID:@""
-                                 paymentID:@""
-                                 fieldName:API_UPLOAD_PROFILE_IMAGE_DATA_NAME
-                                   success:^(id imageObject, UploadImage *image) {
-                                       [self successUploadObject:object withMappingResult:image];
-                                   } failure:^(id imageObject, NSError *error) {
-                                       [self failedUploadObject:object];
-                                   }];
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDPROFILE_APIDATAUSERKEY
+                                                                                  toKeyPath:kTKPDPROFILE_APIDATAUSERKEY
+                                                                                withMapping:datauserMapping]];
     
-    _editProfilePictButton.enabled = NO;
-}
-
--(void)successUploadObject:(id)object withMappingResult:(UploadImage *)uploadImage
-{
-    _images = uploadImage;
-    [self configureRestKitProfileImage];
-    [self requestUploadProfilePicture:uploadImage.result.pic_obj?:@""];
-    
-}
-
--(void)failedUploadObject:(id)object
-{
-    [self setImageWithStringURL:_profile.result.data_user.user_image?:@""];
-    _editProfilePictButton.enabled = YES;
-}
-
--(void)failedUploadErrorMessage:(NSArray *)errorMessage
-{
-    StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:errorMessage delegate:self];
-    [stickyAlertView show];
-}
-
--(void)setImageWithStringURL:(NSString*)stringURL
-{
-    NSURL *profilePictureURL = [NSURL URLWithString:stringURL];
-    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:profilePictureURL
-                                                  cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                              timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-    
-    UIImageView *thumb = _thumb;
-    thumb = [UIImageView circleimageview:thumb];
-    thumb.image = nil;
-    
-    [thumb setImageWithURLRequest:request
-                 placeholderImage:[UIImage imageNamed:@"icon_profile_picture.jpeg"]
-                          success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-                              [thumb setImage:image];
-#pragma clang diagnostic pop
-                          } failure:nil];
-    
-    _thumb.alpha = 1;
-}
-
-#pragma mark Request Action Submit
--(void)configureRestkitSubmit
-{
-    _objectmanagerActionSubmit =  [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ProfileEditForm class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ProfileEditFormResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{kTKPDPROFILE_APIISSUCCESSKEY:kTKPDPROFILE_APIISSUCCESSKEY
-                                                        }];
-    
-    // Relationship Mapping
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDPROFILE_PROFILESETTINGAPIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectmanagerActionSubmit addResponseDescriptor:responseDescriptor];
-}
-
-
-- (void)cancelActionSubmit
-{
-	[_requestActionSubmit cancel];
-	_requestActionSubmit = nil;
-	
-    [_objectmanagerActionSubmit.operationQueue cancelAllOperations];
-    _objectmanagerActionSubmit = nil;
-}
-
-- (void)requestActionSubmit:(id)object
-{
-    if (_requestActionSubmit.isExecuting) return;
-    
-	NSDictionary* userInfo = object;
-    
-    NSTimer *timer;
-    
-    NSDictionary *param = @{
-        kTKPDPROFILE_APIACTIONKEY      : kTKPDPROFILE_APIEDITPROFILEKEY,
-        kTKPDPROFILE_APIFULLNAMEKEY    : [userInfo objectForKey:kTKPDPROFILE_APIFULLNAMEKEY]?:(_profile.result.data_user.full_name?:@""),
-        kTKPDPROFILE_APIBIRTHDAYKEY    : [userInfo objectForKey:kTKPDPROFILE_APIBIRTHDAYKEY]?:(_profile.result.data_user.birth_day?:@""),
-        kTKPDPROFILE_APIBIRTHMONTHKEY  : [userInfo objectForKey:kTKPDPROFILE_APIBIRTHMONTHKEY]?:(_profile.result.data_user.birth_month?:@""),
-        kTKPDPROFILE_APIBIRTHYEARKEY   : [userInfo objectForKey:kTKPDPROFILE_APIBIRTHYEARKEY]?:(_profile.result.data_user.birth_year?:@""),
-        kTKPDPROFILE_APIGENDERKEY      : [userInfo objectForKey:kTKPDPROFILE_APIGENDERKEY]?:(_profile.result.data_user.gender?:@""),
-        kTKPDPROFILE_APIHOBBYKEY       : [userInfo objectForKey:kTKPDPROFILE_APIHOBBYKEY]?:(_profile.result.data_user.hobby?:@""),
-        kTKPDPROFILE_APIMESSENGERKEY   : [userInfo objectForKey:kTKPDPROFILE_APIUSERMESSENGERKEY]?:(_profile.result.data_user.user_messenger?:@""),
-        kTKPDPROFILE_APIPASSKEY        : [userInfo objectForKey:kTKPDPROFILE_APIPASSKEY],
-        kTKPDPROFILE_APIMSISDNKEY      : _profile.result.data_user.user_phone
-    };
-    
-    _barbuttonsave.enabled = NO;
-    _requestActionSubmit = [_objectmanagerActionSubmit appropriateObjectRequestOperationWithObject:self
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
                                                                                             method:RKRequestMethodPOST
-                                                                                              path:kTKPDPROFILE_PROFILESETTINGAPIPATH
-                                                                                        parameters:[param encrypt]];
+                                                                                       pathPattern:kTKPDPROFILE_SETTINGAPIPATH
+                                                                                           keyPath:@""
+                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
     
-    [_requestActionSubmit setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-         [self requestSuccessSubmit:mappingResult withOperation:operation];
-        _barbuttonsave.enabled = YES;
-     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-         [self requestFailureSubmit:error];
-         _barbuttonsave.enabled = YES;
-     }];
-
-    [_operationQueue addOperation:_requestActionSubmit];
+    [objectManager addResponseDescriptor:responseDescriptor];
     
-    timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
-                                             target:self
-                                           selector:@selector(requesttimeoutProfileForm)
-                                           userInfo:nil
-                                            repeats:NO];
+    return objectManager;
+}
+
+- (RKObjectManager *)submitDataObjectManager {
+    RKObjectManager *objectManager =  [RKObjectManager sharedClient];
     
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-}
-
-- (void)requestSuccessSubmit:(id)object withOperation:(RKObjectRequestOperation *)operation
-{
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id info = [result objectForKey:@""];
-    _editform = info;
-    NSString *statusstring = _editform.status;
-    BOOL status = [statusstring isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if (status) {
-        [self requestProcessSubmit:object];
-    }
-}
-
-- (void)requestFailureSubmit:(id)object
-{
-    [self requestProcessSubmit:object];
-}
-
-- (void)requestProcessSubmit:(id)object
-{
-    if (object) {
-        if ([object isKindOfClass:[RKMappingResult class]]) {
-            NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            id info = [result objectForKey:@""];
-            _editform = info;
-            NSString *statusstring = _editform.status;
-            BOOL status = [statusstring isEqualToString:kTKPDREQUEST_OKSTATUS];
-            
-            if (status) {
-                if(_editform.message_error) {
-                    NSArray *errorMessages = _editform.message_error?:@[kTKPDMESSAGE_ERROREDITPROFILEMESSAGEKEY];
-                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
-                    [alert show];
-                }
-                if ([_editform.result.is_success boolValue]) {
-                    NSArray *successMessages = _editform.message_status?:@[kTKPDMESSAGE_SUCCESSEDITPROFILEMESSAGEKEY];
-                    StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:self];
-                    [alert show];
-                    
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITPROFILEPOSTNOTIFICATIONNAMEKEY
-                                                                        object:nil
-                                                                      userInfo:nil];
-                    
-                    [self.navigationController popViewControllerAnimated:YES];
-                    
-                    if ([_delegate respondsToSelector:@selector(successEditUserProfile)]) {
-                        [_delegate successEditUserProfile];
-                    }
-                }
-            }
-        }
-        else
-        {
-            NSError *error = object;
-            NSString *errorDescription = error.localizedDescription;
-            UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:@"ERROR"
-                                                                message:errorDescription
-                                                               delegate:self
-                                                      cancelButtonTitle:@"OK"
-                                                      otherButtonTitles:nil];
-            [errorAlert show];
-        }
-    }
-}
--(void)requesttimeoutSubmit
-{
-    [self cancelActionSubmit];
-}
-
-#pragma mark - Methods
-- (TokopediaNetworkManager *)getNetWorkManager:(int)tag
-{
-    if(tag == CTagProfile)
-    {
-        if(tokopediaNetworkManagerProfileForm == nil)
-        {
-            tokopediaNetworkManagerProfileForm = [TokopediaNetworkManager new];
-            tokopediaNetworkManagerProfileForm.tagRequest = CTagProfile;
-            tokopediaNetworkManagerProfileForm.delegate = self;
-        }
-        
-        return tokopediaNetworkManagerProfileForm;
-    }
-    
-    return nil;
-}
-
-- (void)setDefaultData:(id)object
-{
-    if (object) {
-        
-        [self setImageWithStringURL:_profile.result.data_user.user_image];
-        
-        _textfieldemail.text = _profile.result.data_user.user_email;
-        NSString *hobby =_profile.result.data_user.hobby;
-        _textviewhobbies.text = ([hobby isEqualToString:@"0"])?@"":hobby;
-        _textfieldmesseger.text = _profile.result.data_user.user_messenger;
-        _textfieldphone.text = _profile.result.data_user.user_phone;
-        
-        _labelfullname.text = _profile.result.data_user.full_name?:@"";
-        
-        NSString *dob = [NSString stringWithFormat:kTKPDPROFILEEDIT_DATEOFBIRTHFORMAT,
-                         _profile.result.data_user.birth_day?:@"",
-                         _profile.result.data_user.birth_month,
-                         _profile.result.data_user.birth_year];
-        [_buttondob setTitle:dob?:@"" forState:UIControlStateNormal];
-        NSString *gender = ([_profile.result.data_user.gender isEqualToString:@"1"])?@"Pria":@"Wanita";
-        [_buttongender setTitle:gender forState:UIControlStateNormal];
-    }
-}
-
-#pragma mark - Scroll View delegate
-
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
-{
-    [_activetextfield resignFirstResponder];
-}
-
-#pragma mark - Textfield Delegate
--(BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
-    [textField resignFirstResponder];
-    _activetextfield = textField;
-    _activeTextView = nil;
-    return YES;
-}
-
--(BOOL)textFieldShouldReturn:(UITextField *)textField{
-    
-    [textField resignFirstResponder];
-    return YES;
-}
-
--(BOOL)textFieldShouldEndEditing:(UITextField *)textField
-{
-    if (textField == _textfieldemail) {
-        [_datainput setObject:textField.text forKey:kTKPDPROFILE_APIUSEREMAILKEY];
-    }
-    if ((UITextView *)textField == _textviewhobbies) {
-        [_datainput setObject:textField.text forKey:kTKPDPROFILE_APIHOBBYKEY];
-    }
-    if (textField == _textfieldphone) {
-        [_datainput setObject:textField.text forKey:kTKPDPROFILE_APIUSERPHONEKEY];
-    }
-    if (textField == _textfieldpassword) {
-        [_datainput setObject:textField.text forKey:kTKPDPROFILE_APIPASSKEY];
-    }
-    if (textField == _textfieldmesseger) {
-        [_datainput setObject:textField.text forKey:kTKPDPROFILE_APIUSERMESSENGERKEY];
-    }
-
-    return YES;
-}
-
-#pragma mark - TextView Delegate
--(BOOL)textViewShouldBeginEditing:(UITextView *)textView{
-    [textView resignFirstResponder];
-    _activeTextView = textView;
-    _activetextfield = nil;
-    return YES;
-}
-
--(BOOL)textViewShouldEndEditing:(UITextView *)textView
-{
-    if (textView == _textviewhobbies) {
-        [_datainput setObject:textView.text forKey:kTKPDPROFILE_APIHOBBYKEY];
-    }
-    return YES;
-}
-
-#pragma mark - Scroll delegate
-
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
-{
-    [_activetextfield resignFirstResponder];
-    [_activeTextView resignFirstResponder];
-}
-
-#pragma mark - Keyboard Notification
-
-- (void)keyboardWillShow:(NSNotification *)notification {
-    NSDictionary* keyboardInfo = [notification userInfo];
-    NSValue* keyboardFrameBegin = [keyboardInfo valueForKey:UIKeyboardFrameBeginUserInfoKey];
-    CGRect keyboardFrameBeginRect = [keyboardFrameBegin CGRectValue];
-    
-    self.scrollview.contentInset = UIEdgeInsetsMake(0, 0, keyboardFrameBeginRect.size.height+25, 0);
-    [self.scrollview scrollRectToVisible:CGRectMake(0, _textviewhobbies.superview.frame.origin.y, self.scrollview.bounds.size.width, 100) animated:YES];
-}
-
-- (void)keyboardWillHide:(NSNotification *)info {
-    self.scrollview.contentInset = UIEdgeInsetsZero;
-}
-
-#pragma mark - Delegate Alert View
-
--(void)alertView:(TKPDAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    switch (alertView.tag) {
-        case 10:
-        {
-            // alert date picker date of birth
-            NSDictionary *data = alertView.data;
-            NSDate *date = [data objectForKey:kTKPDALERTVIEW_DATADATEPICKERKEY];
-            NSDateComponents *components = [[NSCalendar currentCalendar] components:NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:date];
-            NSInteger year = [components year];
-            NSInteger month = [components month];
-            NSInteger day = [components day];
-            [_datainput setObject:@(year) forKey:kTKPDPROFILE_APIBIRTHYEARKEY];
-            [_datainput setObject:@(month) forKey:kTKPDPROFILE_APIBIRTHMONTHKEY];
-            [_datainput setObject:@(day) forKey:kTKPDPROFILE_APIBIRTHDAYKEY];
-            
-            NSString *stringdate = [NSString stringWithFormat:@"%zd / %zd / %zd", day, month, year];
-            [_buttondob setTitle:stringdate forState:UIControlStateNormal];
-            break;
-        }
-        case 11:
-        {
-            // alert gender
-            NSInteger index = [[alertView.data objectForKey:DATA_INDEX_KEY] integerValue];
-            NSString *gender = [ARRAY_GENDER[index] objectForKey:DATA_NAME_KEY];
-            NSInteger genderID = [[ARRAY_GENDER[index] objectForKey:DATA_VALUE_KEY]integerValue];
-            [_buttongender setTitle:gender forState:UIControlStateNormal];
-            [_datainput setObject:@(genderID) forKey:kTKPDPROFILE_APIGENDERKEY];
-            break;
-        }
-        default:
-            break;
-    }
-}
-
-
-#pragma mark - TokopediaNetworkManager Delegate
-- (NSDictionary*)getParameter:(int)tag
-{
-    if(tag == CTagProfile)
-        return @{kTKPDPROFILE_APIACTIONKEY : kTKPDPROFILE_APIGETPROFILEKEY};
-    
-    return nil;
-}
-
-- (NSString*)getPath:(int)tag
-{
-    if(tag == CTagProfile)
-        return kTKPDPROFILE_SETTINGAPIPATH;
-    
-    return nil;
-}
-
-- (id)getObjectManager:(int)tag
-{
-    if(tag == CTagProfile)
-    {
-        _objectmanagerProfileForm =  [RKObjectManager sharedClient];
-        
-        // setup object mappings
-        RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ProfileEdit class]];
-        [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                            kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                            kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-        
-        RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ProfileEditResult class]];
-        
-        RKObjectMapping *datauserMapping = [RKObjectMapping mappingForClass:[DataUser class]];
-        [datauserMapping addAttributeMappingsFromDictionary:@{
-                                                              kTKPDPROFILE_APIHOBBYKEY:kTKPDPROFILE_APIHOBBYKEY,
-                                                              kTKPDPROFILE_APIBIRTHDAYKEY:kTKPDPROFILE_APIBIRTHDAYKEY,
-                                                              kTKPDPROFILE_APIFULLNAMEKEY:kTKPDPROFILE_APIFULLNAMEKEY,
-                                                              kTKPDPROFILE_APIBIRTHMONTHKEY:kTKPDPROFILE_APIBIRTHMONTHKEY,
-                                                              kTKPDPROFILE_APIBIRTHMONTHKEY:kTKPDPROFILE_APIBIRTHMONTHKEY,
-                                                              kTKPDPROFILE_APIBIRTHYEARKEY:kTKPDPROFILE_APIBIRTHYEARKEY,
-                                                              kTKPDPROFILE_APIGENDERKEY:kTKPDPROFILE_APIGENDERKEY,
-                                                              kTKPDPROFILE_APIUSERIMAGEKEY:kTKPDPROFILE_APIUSERIMAGEKEY,
-                                                              kTKPDPROFILE_APIUSEREMAILKEY:kTKPDPROFILE_APIUSEREMAILKEY,
-                                                              kTKPDPROFILE_APIUSERMESSENGERKEY:kTKPDPROFILE_APIUSERMESSENGERKEY,
-                                                              kTKPDPROFILE_APIUSERPHONEKEY:kTKPDPROFILE_APIUSERPHONEKEY
-                                                              }];
-        // Relationship Mapping
-        [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                      toKeyPath:kTKPD_APIRESULTKEY
-                                                                                    withMapping:resultMapping]];
-        
-        [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDPROFILE_APIDATAUSERKEY
-                                                                                      toKeyPath:kTKPDPROFILE_APIDATAUSERKEY
-                                                                                    withMapping:datauserMapping]];
-        
-        RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDPROFILE_SETTINGAPIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-        
-        [_objectmanagerProfileForm addResponseDescriptor:responseDescriptor];
-
-        return _objectmanagerProfileForm;
-    }
-    
-    return nil;
-}
-
-- (NSString*)getRequestStatus:(id)result withTag:(int)tag
-{
-    NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
-    id stat = [resultDict objectForKey:@""];
-    
-    if(tag == CTagProfile)
-        return ((ProfileEdit *) stat).status;
-    
-    return nil;
-}
-
-
-- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag
-{
-    if(tag == CTagProfile)
-    {
-        [self requestsuccessProfileForm:successResult withOperation:operation];
-        [_act stopAnimating];
-        _barbuttonsave.enabled = YES;
-    }
-}
-
-- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
-{
-    if(tag == CTagProfile)
-    {
-    
-    }
-}
-
-- (void)actionBeforeRequest:(int)tag
-{}
-
-- (void)actionRequestAsync:(int)tag
-{}
-
-- (void)actionAfterFailRequestMaxTries:(int)tag
-{
-    if(tag == CTagProfile)
-    {
-        [_act stopAnimating];
-        _barbuttonsave.enabled = YES;
-    }
-}
-
-// MARK: TKPDPhotoPickerControllerDelegate methods
-
-- (void)photoPicker:(TKPDPhotoPicker *)picker didDismissCameraControllerWithUserInfo:(NSDictionary *)userInfo {
-    NSMutableDictionary *object = [NSMutableDictionary new];
-    [object setObject:userInfo forKey:DATA_SELECTED_PHOTO_KEY];
-    
-    UIImageView *imageView = _thumb;
-    
-    
-    [object setObject:imageView forKey:DATA_SELECTED_IMAGE_VIEW_KEY];
-    
-    NSDictionary* photo = [userInfo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
-    
-    UIImage* image = [photo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
-    
-    imageView.image = image;
-    imageView.hidden = NO;
-    imageView.alpha = 0.5f;
-    
-    [self actionUploadImage:object];
-
-}
-
-- (void)configureRestKitProfileImage
-{
-    _uploadProfileImageObjectManager = [RKObjectManager sharedClient];
-    //NSString *urlString = [NSString stringWithFormat:@"http://%@/ws",_generatehost.result.generated_host.upload_host];
-    //_uploadProfileImageObjectManager = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:urlString]];
-
-    // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ProfileEditForm class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{
-                                                        kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY
-                                                        }];
+    [statusMapping addAttributeMappingsFromArray:@[kTKPD_APISTATUSMESSAGEKEY,
+                                                   kTKPD_APIERRORMESSAGEKEY,
+                                                   kTKPD_APISTATUSKEY,
+                                                   kTKPD_APISERVERPROCESSTIMEKEY
+                                                   ]];
     
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ProfileEditFormResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{
-                                                        kTKPDPROFILE_APIISSUCCESSKEY:kTKPDPROFILE_APIISSUCCESSKEY
-                                                        }];
+    [resultMapping addAttributeMappingsFromArray:@[kTKPDPROFILE_APIISSUCCESSKEY]];
+    
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
+                                                                                  toKeyPath:kTKPD_APIRESULTKEY
+                                                                                withMapping:resultMapping]];
+    
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                            method:RKRequestMethodPOST
+                                                                                       pathPattern:kTKPDPROFILE_PROFILESETTINGAPIPATH
+                                                                                           keyPath:@""
+                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    [objectManager addResponseDescriptor:responseDescriptor];
+
+    return objectManager;
+}
+
+- (RKObjectManager *)uploadImageObjectManager {
+    RKObjectManager *objectManager = [RKObjectManager sharedClient];
+    
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ProfileEditForm class]];
+    [statusMapping addAttributeMappingsFromArray:@[kTKPD_APISTATUSMESSAGEKEY,
+                                                   kTKPD_APIERRORMESSAGEKEY,
+                                                   kTKPD_APISTATUSKEY,
+                                                   kTKPD_APISERVERPROCESSTIMEKEY
+                                                   ]];
+
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ProfileEditFormResult class]];
+    [resultMapping addAttributeMappingsFromArray:@[kTKPDPROFILE_APIISSUCCESSKEY]];
     
     // Relationship Mapping
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
@@ -933,69 +350,310 @@
                                                                                            keyPath:@""
                                                                                        statusCodes:kTkpdIndexSetStatusCodeOK];
     
-    [_uploadProfileImageObjectManager addResponseDescriptor:responseDescriptor];
+    [objectManager addResponseDescriptor:responseDescriptor];
+    
+    return objectManager;
 }
 
-- (void)requestUploadProfilePicture:(NSString *)fileUploaded
-{
-    if (_uploadProfileImageRequest.isExecuting) return;
-    
-    _barbuttonsave.enabled = NO;
-    
-    NSDictionary *param = @{
-                            kTKPDPROFILE_APIACTIONKEY      : kTKPDPROFILE_APIUPLOADPROFILEPICTUREKEY,
-                            kTKPDPROFILE_APIFILEUPLOADEDKEY    : fileUploaded?:@"",
-                            @"server_id" : _generatehost.result.generated_host.server_id?:@""
-                            };
-    
-    _uploadProfileImageRequest = [_uploadProfileImageObjectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDPROFILE_PROFILESETTINGAPIPATH parameters:[param encrypt]];
-    
-    NSTimer *timer;
-
-    [_uploadProfileImageRequest setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self uploadImageRequestSuccessMappingResult:mappingResult operation:operation];
-        _barbuttonsave.enabled = YES;
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [self uploadImageRequestError:error];
-        _barbuttonsave.enabled = YES;
-    }];
-    
-    [_operationQueue addOperation:_uploadProfileImageRequest];
-    
-    timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
-                                             target:self
-                                           selector:@selector(requesttimeoutProfileForm)
-                                           userInfo:nil
-                                            repeats:NO];
-    
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+- (NSString *)getRequestStatus:(RKMappingResult *)mappingResult withTag:(int)tag {
+    return [[mappingResult.dictionary objectForKey:@""] status];
 }
 
-- (void)uploadImageRequestSuccessMappingResult:(RKMappingResult *)mappingResult operation:(RKObjectRequestOperation *)operation
-{
-    ProfileEditForm *uploadImageResponse = [mappingResult.dictionary objectForKey:@""];
-    BOOL status = [uploadImageResponse.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    if (status) {
-        if ([uploadImageResponse.result.is_success boolValue]) {
-            _thumb.alpha = 1;
-            NSDictionary *userinfo = @{kTKPDPROFILE_APIPROFILEPHOTOKEY : self.thumb.image,
-                                       @"file_th": _images.result.file_th
-                                       };
+- (void)actionBeforeRequest:(int)tag {
+    if (tag == RequestTypeSubmitData) {
+        [self showLoadingBar];
+    } else if (tag == RequestTypeUploadImage) {
+        [self showLoadingBar];
+    }
+}
+
+- (void)actionAfterRequest:(RKMappingResult *)mappingResult
+             withOperation:(RKObjectRequestOperation *)operation
+                   withTag:(int)tag {
+
+    // Replace loading with save button
+    [self showSaveButton];
+
+    if (tag == RequestTypeGetData) {
+        
+        ProfileEdit *response = [mappingResult.dictionary objectForKey:@""];
+        self.userData = response.result.data_user;
+        [self showUserData:_userData];
+        
+    } else if (tag == RequestTypeSubmitData) {
+        
+        ProfileEditForm *response = [mappingResult.dictionary objectForKey:@""];
+        BOOL isSuccess = [response.result.is_success boolValue];
+        if (isSuccess) {
+            // Shows success message save data
+            NSArray *successMessages = response.message_status?:@[kTKPDMESSAGE_SUCCESSEDITPROFILEMESSAGEKEY];
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:self];
+            [alert show];
+            
+            // Notify other controller that edit profile is success
+            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITPROFILEPOSTNOTIFICATIONNAMEKEY
+                                                                object:nil
+                                                              userInfo:nil];
+
+            // Notify delegate controller that edit profile is success
+            if ([_delegate respondsToSelector:@selector(successEditUserProfile)]) {
+                [_delegate successEditUserProfile];
+            }
+            
+            // Reset password field
+            self.passwordTextField.text = @"";
+            
+        } else {
+            NSArray *errorMessages = response.message_error?:@[kTKPDMESSAGE_ERROREDITPROFILEMESSAGEKEY];
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
+            [alert show];
+        }
+        
+    } else if (tag == RequestTypeUploadImage) {
+        
+        ProfileEditForm *response = [mappingResult.dictionary objectForKey:@""];
+        BOOL isSuccess = [response.result.is_success boolValue];
+        BOOL hasErrorMessages = response.message_error?YES:NO;
+        if (isSuccess) {
+            // Notify other controller that upload image is success
+            NSDictionary *userInfo = @{
+                kTKPDPROFILE_APIPROFILEPHOTOKEY : _profileImageView.image,
+                @"file_th": _uploadImageData.result.file_th
+            };
             [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITPROFILEPICTUREPOSTNOTIFICATIONNAMEKEY
                                                                 object:nil
-                                                              userInfo:userinfo];
-        } else if (uploadImageResponse.message_error.count > 0) {
-            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:uploadImageResponse.message_error delegate:self];
+                                                              userInfo:userInfo];
+        } else if (hasErrorMessages) {
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:response.message_error delegate:self];
             [alert show];
         }
     }
-    _editProfilePictButton.enabled = YES;
 }
 
-- (void)uploadImageRequestError:(NSError *)error
+- (void)showUserData:(DataUser *)userData {
+    // Set value to outlet
+    self.fullNameLabel.text = userData.full_name;
+    self.birthdateLabel.text = [NSString stringWithFormat:@"%@/%@/%@", userData.birth_day, userData.birth_month, userData.birth_year];
+    self.sexLabel.text = [userData.gender isEqualToString:@"1"]?@"Pria":@"Wanita";
+    self.hobbyTextField.text = userData.hobby;
+    self.emailTextField.text = userData.user_email;
+    self.messengerTextField.text = userData.user_messenger?:@"-";
+    self.phoneNumberLabel.text = userData.user_phone;
+    
+    // Set user profile picture
+    [self setUserProfilePicture];
+    
+    // Show verification view if user phone number not verified
+    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+    NSDictionary *auth = [secureStorage keychainDictionary];
+    if([[auth objectForKey:@"msisdn_is_verified"] boolValue]){
+        self.phoneNumberStatusLabel.hidden = NO;
+        self.phoneNumberStatusLabel.text = @"Terverifikasi";
+        self.phoneNumberStatusLabel.textColor = [UIColor colorWithRed:0.061 green:0.648 blue:0.275 alpha:1];
+        self.verificationPhoneView.hidden = YES;
+        self.verificationPhoneViewHeight.constant = 20;
+    } else{
+        self.phoneNumberStatusLabel.hidden = NO;
+        self.phoneNumberStatusLabel.text = @"Belum Terverifikasi";
+        self.phoneNumberStatusLabel.textColor = [UIColor colorWithRed:0.882 green:0.296 blue:0.209 alpha:1];
+        self.verificationPhoneView.hidden = NO;
+        self.verificationPhoneViewHeight.constant = 100;
+    }
+}
+
+- (void)actionAfterFailRequestMaxTries:(int)tag {
+    [self showSaveButton];
+}
+
+- (void)setUserProfilePicture {
+    // Set user profile image
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:_userData.user_image]];
+    [self.profileImageView setImageWithURLRequest:request
+                                 placeholderImage:_profileImageView.image
+                                          success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                                              self.profileImageView.image = image;
+                                          } failure:nil];
+}
+
+#pragma mark - Scroll delegate
+
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView
+                     withVelocity:(CGPoint)velocity
+              targetContentOffset:(inout CGPoint *)targetContentOffset {
+    [self.view endEditing:YES];
+}
+
+#pragma mark - Keyboard notification
+
+- (void)keyboardWillShow:(NSNotification*)aNotification {
+    NSDictionary *info = [aNotification userInfo];
+    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    
+    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height + 30, 0.0);
+    self.scrollView.contentInset = contentInsets;
+    self.scrollView.scrollIndicatorInsets = contentInsets;
+    
+    // If active text field is hidden by keyboard, scroll it so it's visible
+    CGRect aRect = self.view.frame;
+    aRect.size.height -= kbSize.height;
+    if (!CGRectContainsPoint(aRect, self.activeTextField.frame.origin) ) {
+        [self.scrollView scrollRectToVisible:self.activeTextField.frame animated:YES];
+    }
+}
+
+- (void)keyboardWillHide:(NSNotification*)aNotification {
+    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
+    self.scrollView.contentInset = contentInsets;
+    self.scrollView.scrollIndicatorInsets = contentInsets;
+}
+
+#pragma mark - Textfield delegate
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    self.activeTextField = textField;
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+    self.activeTextField = nil;
+
+    // Set textfield value
+    if (textField == _hobbyTextField) {
+        self.userData.hobby = _hobbyTextField.text;
+    } else if (textField == _messengerTextField) {
+        self.userData.user_messenger = _messengerTextField.text;
+    }
+}
+
+#pragma mark - Tap Gesture
+
+- (IBAction)didTapBirthdateLabel:(UITapGestureRecognizer *)sender {
+    AlertDatePickerView *datePicker = [AlertDatePickerView newview];
+    datePicker.tag = PickerViewDate;
+    datePicker.isSetMinimumDate = YES;
+    datePicker.delegate = self;
+    datePicker.data = @{kTKPDALERTVIEW_DATATYPEKEY:@(kTKPDALERT_DATAALERTTYPEREGISTERKEY)};
+    if (_userData) {
+        NSString *dob = [NSString stringWithFormat:@"%@/%@/%@", _userData.birth_day, _userData.birth_month, _userData.birth_year];
+        NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+        [dateFormat setDateFormat:@"dd/MM/yyyy"];
+        datePicker.currentdate = [dateFormat dateFromString:dob];
+    }
+    [datePicker show];
+}
+
+- (IBAction)didTapGenderLabel:(id)sender {
+    AlertPickerView *pickerView = [AlertPickerView newview];
+    pickerView.tag = PickerViewGender;
+    pickerView.delegate = self;
+    pickerView.pickerData = ARRAY_GENDER;
+    [pickerView show];
+}
+
+#pragma mark - Picker delegate
+
+-(void)alertView:(TKPDAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (alertView.tag == PickerViewDate) {
+        // alert date picker date of birth
+        NSDate *date = [alertView.data objectForKey:kTKPDALERTVIEW_DATADATEPICKERKEY];
+        NSCalendarUnit calendarUnit = NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit;
+        NSDateComponents *components = [[NSCalendar currentCalendar] components:calendarUnit fromDate:date];
+        
+        self.userData.birth_day = [NSString stringWithFormat:@"%d", [components day]];
+        self.userData.birth_month = [NSString stringWithFormat:@"%d", [components month]];
+        self.userData.birth_year = [NSString stringWithFormat:@"%d", [components year]];
+        
+        NSString *birthdate = [NSString stringWithFormat:@"%@/%@/%@",
+                               _userData.birth_day,
+                               _userData.birth_month,
+                               _userData.birth_year];
+        self.birthdateLabel.text = birthdate;
+        
+    } else if (alertView.tag == PickerViewGender) {
+        // alert gender
+        NSInteger index = [[alertView.data objectForKey:DATA_INDEX_KEY] integerValue];
+
+        NSString *genderLabel = [ARRAY_GENDER[index] objectForKey:DATA_NAME_KEY];
+        self.sexLabel.text = genderLabel;
+
+        NSString *genderValue = [[ARRAY_GENDER[index] objectForKey:DATA_VALUE_KEY] stringValue];
+        self.userData.gender = genderValue;
+    }
+}
+
+#pragma mark - Action Button
+
+- (IBAction)didTapChangeProfilePicture:(UIButton *)sender {
+    self.photoPicker = [[TKPDPhotoPicker alloc] initWithParentViewController:self pickerTransistionStyle:UIModalTransitionStyleCoverVertical];
+    [self.photoPicker setDelegate:self];
+}
+
+- (IBAction)didTapVerificationPhoneButton:(UIButton *)sender {
+    HelloPhoneVerificationViewController *controller = [HelloPhoneVerificationViewController new];
+    controller.isSkipButtonHidden = NO;
+    
+    UINavigationController *navigationController = [[UINavigationController alloc] init];
+    navigationController.navigationBarHidden = YES;
+    navigationController.viewControllers = @[controller];
+    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+}
+
+- (void)didTapSaveButton:(UIBarButtonItem *)saveButton {
+    [self requestSubmitData];
+}
+
+#pragma mark - Photo picker delegate
+
+- (void)photoPicker:(TKPDPhotoPicker *)picker didDismissCameraControllerWithUserInfo:(NSDictionary *)userInfo {
+    NSMutableDictionary *object = [NSMutableDictionary new];
+    [object setObject:userInfo forKey:DATA_SELECTED_PHOTO_KEY];
+    [object setObject:self.profileImageView forKey:DATA_SELECTED_IMAGE_VIEW_KEY];
+    
+    NSDictionary *photo = [userInfo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
+    UIImage *image = [photo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
+
+    self.profileImageView.image = image;
+    
+    [self uploadImageData:object];
+}
+
+#pragma mark - Upload profile image
+
+- (void)uploadImageData:(NSDictionary *)data {
+    RequestUploadImage *uploadImage = [RequestUploadImage new];
+    [uploadImage requestActionUploadObject:data
+                             generatedHost:_generatedHostData
+                                    action:kTKPDPROFILE_APIUPLOADPROFILEIMAGEKEY
+                                    newAdd:1
+                                 productID:@""
+                                 paymentID:@""
+                                 fieldName:API_UPLOAD_PROFILE_IMAGE_DATA_NAME
+                                   success:^(id imageObject, UploadImage *uploadImageData) {
+                                       self.uploadImageData = uploadImageData;
+                                       [self requestUploadPhoto];
+                                   } failure:^(id imageObject, NSError *error) {
+                                       // Show error messages
+                                       StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[[error localizedDescription]] delegate:self];
+                                       [alert show];
+                                       
+                                       // Show user profile image
+                                       [self setUserProfilePicture];
+                                   }];
+}
+
+- (void)failedUploadErrorMessage:(NSArray *)errorMessage {
+    
+}
+
+#pragma mark - Request Generate Host
+
+-(void)successGenerateHost:(GenerateHost *)generateHost
 {
-    [self setImageWithStringURL:_profile.result.data_user.user_image];
-    _thumb.alpha = 1;
+    _generatedHostData = generateHost.result.generated_host;
+}
+
+- (void)failedGenerateHost:(NSArray *)errorMessages {
+    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessages delegate:self];
+    [alert show];
 }
 
 @end

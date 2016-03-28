@@ -50,6 +50,7 @@
 #import "PromoRequest.h"
 
 #import "UIActivityViewController+Extensions.h"
+#import "Tokopedia-Swift.h"
 
 typedef NS_ENUM(NSInteger, UITableViewCellType) {
     UITableViewCellTypeOneColumn,
@@ -164,6 +165,8 @@ RetryViewDelegate
     BOOL _isFailRequest;
     
     PromoRequest *_promoRequest;
+    
+    NSIndexPath *_sortIndexPath;
 }
 
 #pragma mark - Initialization
@@ -432,45 +435,7 @@ RetryViewDelegate
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    
-    CGSize cellSize = CGSizeMake(0, 0);
-    CGRect screenRect = [[UIScreen mainScreen] bounds];
-    
-    NSInteger cellCount;
-    float heightRatio;
-    float widhtRatio;
-    float inset;
-    
-    CGFloat screenWidth = screenRect.size.width;
-    
-    if (self.cellType == UITableViewCellTypeOneColumn) {
-        cellCount = 1;
-        heightRatio = 390;
-        widhtRatio = 300;
-        inset = 15;
-    } else if (self.cellType == UITableViewCellTypeTwoColumn) {
-        cellCount = 2;
-        heightRatio = 41;
-        widhtRatio = 29;
-        inset = 15;
-    } else {
-        cellCount = 3;
-        heightRatio = 1;
-        widhtRatio = 1;
-        inset = 14;
-    }
-    
-    CGFloat cellWidth;
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
-        screenWidth = screenRect.size.width/2;
-        cellWidth = screenWidth/cellCount-inset;
-    } else {
-        screenWidth = screenRect.size.width;
-        cellWidth = screenWidth/cellCount-inset;
-    }
-    
-    cellSize = CGSizeMake(cellWidth, cellWidth*heightRatio/widhtRatio);
-    return cellSize;
+   return [ProductCellSize sizeWithType:self.cellType];
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
@@ -691,13 +656,14 @@ RetryViewDelegate
 }
 
 - (IBAction)tapToSort:(id)sender {
-    NSIndexPath *indexpath = [_detailfilter objectForKey:kTKPDFILTERSORT_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-    SortViewController *vc = [SortViewController new];
-    vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPESHOPPRODUCTVIEWKEY),
-                kTKPDFILTER_DATAINDEXPATHKEY: indexpath};
-    vc.delegate = self;
-    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
+    SortViewController *controller = [SortViewController new];
+    controller.sortType = SortProductShopSearch;
+    controller.selectedIndexPath = _sortIndexPath;
+    controller.delegate = self;
+    
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:controller];
     self.navigationController.navigationBar.alpha = 0;
+    
     [self.navigationController presentViewController:nav animated:YES completion:nil];
 }
 
@@ -711,9 +677,10 @@ RetryViewDelegate
 }
 
 #pragma mark - Sort Delegate
--(void)SortViewController:(SortViewController *)viewController withUserInfo:(NSDictionary *)userInfo {
-    [_detailfilter addEntriesFromDictionary:userInfo];
+- (void)didSelectSort:(NSString *)sort atIndexPath:(NSIndexPath *)indexPath {
+    [_detailfilter setObject:sort forKey:kTKPDDETAIL_APIORERBYKEY];
     [self refreshView:nil];
+    _sortIndexPath = indexPath;
 }
 
 #pragma mark - Filter Delegate

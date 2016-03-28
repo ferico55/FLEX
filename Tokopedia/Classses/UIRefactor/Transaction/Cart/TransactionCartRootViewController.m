@@ -13,7 +13,6 @@
 #import "TransactionCartResultViewController.h"
 #import "NotificationManager.h"
 #import "RegisterViewController.h"
-#import "NoResultReusableView.h"
 
 #import "TransactionCartFormMandiriClickPayViewController.h"
 #import "MainViewController.h"
@@ -30,8 +29,7 @@
     UIPageViewControllerDelegate,
     TransactionCartViewControllerDelegate,
     NotificationManagerDelegate,
-    UIScrollViewDelegate,
-    NoResultDelegate
+    UIScrollViewDelegate
 >
 {
     NSInteger _index;
@@ -74,11 +72,6 @@
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
     
-    CGRect screenRect = [[UIScreen mainScreen] bounds];
-    CGRect frame = _noLoginView.frame;
-    frame.size.width = screenRect.size.width;
-    _noLoginView.frame = frame;
-    
     _isShouldRefreshingCart = NO;
     
     _pageButtons = [NSArray sortViewsWithTagInArray:_pageButtons];
@@ -110,30 +103,28 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
+    
+    MainViewController *rootController = (MainViewController*)[[[[UIApplication sharedApplication] delegate] window] rootViewController];
+    _auth = rootController.auth;
+    _isLogin = [[_auth objectForKey:kTKPD_ISLOGINKEY] boolValue];
+    if(!_isLogin) {
+        [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];
+        [[self view] addSubview:_noLoginView];
+        [_noLoginView setHidden:NO];
+    } else {
+        [_noLoginView setHidden:YES];
+    }
+    
     if (_index == 0) {
-        
-        MainViewController *rootController = (MainViewController*)[[[[UIApplication sharedApplication] delegate] window] rootViewController];
-        _auth = rootController.auth;
-        _isLogin = [[_auth objectForKey:kTKPD_ISLOGINKEY] boolValue];
-        
-        if(!_isLogin) {
-            [[self view] addSubview:_noLoginView];
-            [_noLoginView setHidden:NO];
+        if(_isShouldRefreshingCart) {
+            [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];
+            [((TransactionCartViewController*)[self viewControllerAtIndex:0]) refreshRequestCart];
+            _isShouldRefreshingCart = NO;
         } else {
-            
-            if(_isShouldRefreshingCart) {
-                [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
-                [((TransactionCartViewController*)[self viewControllerAtIndex:0]) refreshRequestCart];
-                _isShouldRefreshingCart = NO;
-            } else {
-                if (_cartViewController == nil) {
-                    
-                    [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
-                }
+            if (_cartViewController == nil) {
+                
+                [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
             }
-            
-            [_noLoginView setHidden:YES];
         }
         if (_isLogin && self.navigationController.viewControllers.count<=1) {
             [self initNotificationManager];
@@ -147,6 +138,9 @@
 {
     [super viewDidAppear:animated];
     
+    CGRect frame = _noLoginView.frame;
+    frame.size = self.view.frame.size;
+    _noLoginView.frame = frame;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -201,6 +195,7 @@
                 _cartViewController = [TransactionCartViewController new];
             }
 
+            _cartViewController.isLogin = _isLogin;
             _cartViewController.delegate = self;
             ((UIButton*)_pageButtons[index]).enabled = YES;
             childViewController = _cartViewController;
@@ -224,11 +219,14 @@
             if (_isLogin && self.navigationController.viewControllers.count<=1) {
                 [self initNotificationManager];
             }
-            else
-            {
-                self.navigationItem.rightBarButtonItem = nil;
+            
+            if (self.navigationController.viewControllers.count>1){
                 self.navigationItem.titleView = nil;
                 self.navigationItem.title = @"Keranjang Belanja";
+            }
+            
+            if (!_isLogin) {
+                self.navigationItem.rightBarButtonItem = nil;
             }
 
             _isShouldRefreshingCart = NO;
@@ -242,6 +240,8 @@
             _cartSummaryViewController.data =_data;
             _cartSummaryViewController.listSummary = [_data objectForKey:DATA_CART_SUMMARY_LIST_KEY];
             _cartSummaryViewController.delegate = self;
+            _cartSummaryViewController.selectedInstallmentBank = nil;
+            _cartSummaryViewController.selectedInstallmentDuration = nil;
             ((UIButton*)_pageButtons[index-1]).enabled = YES;
             ((UIButton*)_pageButtons[index-1]).backgroundColor = COLOR_SELECTED_BUTTON;
             ((UIButton*)_pageButtons[index]).enabled = YES;
@@ -430,10 +430,6 @@
     }
 }
 
-#pragma mark - NoResult Delegate
-- (void)buttonDidTapped:(id)sender{
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"navigateToPageInTabBar" object:@"1"];
-}
 
 #pragma mark - Notification Manager
 
@@ -509,28 +505,6 @@
 -(void)isNodata:(BOOL)isNodata
 {
     _pageControlView.hidden = isNodata;
-    if (isNodata) {
-        NoResultReusableView *noResultView = [[NoResultReusableView alloc] initWithFrame:[[UIScreen mainScreen]bounds]];
-        noResultView.delegate = self;
-        [noResultView generateAllElements:@"Keranjang.png"
-                                     title:@"Keranjang belanja Anda kosong"
-                                     desc:@"Pilih dan beli produk yang anda inginkan,\nayo mulai belanja!"
-                                  btnTitle:@"Ayo mulai belanja!"];
-        [self.view addSubview:noResultView];
-        //self.view = noResultView;
-    }
-    else
-    {
-        
-        for (UIView *view in self.view.subviews) {
-            if ([view isKindOfClass:[NoResultReusableView class]]) {
-                [view removeFromSuperview];
-            }
-        }
-         
-        
-        //self.view = self.contentView;
-    }
     if (_isLogin && self.navigationController.viewControllers.count<=1) {
         [self initNotificationManager];
     }

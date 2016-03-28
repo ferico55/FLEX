@@ -7,21 +7,32 @@
 //
 
 #import <UIKit/UIKit.h>
+
 @class SortViewController;
 
+typedef NS_ENUM(NSInteger, SortType) {
+    SortDefault,
+    SortCondition,
+    SortHotlistDetail,
+    SortProductSearch,
+    SortCatalogSearch,
+    SortCatalogDetailSeach,
+    SortShopSearch,
+    SortProductShopSearch,
+    SortManageProduct,
+    SortImageSearch
+};
+
 @protocol SortViewControllerDelegate <NSObject>
-@required
--(void)SortViewController:(SortViewController*)viewController withUserInfo:(NSDictionary*)userInfo;
+
+- (void)didSelectSort:(NSString *)sort atIndexPath:(NSIndexPath *)indexPath;
 
 @end
 
-@interface SortViewController : UIViewController
+@interface SortViewController : UITableViewController
 
-
-@property (nonatomic, weak) IBOutlet id<SortViewControllerDelegate> delegate;
-
-
-@property (nonatomic, strong) NSDictionary *data;
-@property (nonatomic, weak) UIImage *screenshotImage;
+@property (nonatomic, weak) id<SortViewControllerDelegate> delegate;
+@property SortType sortType;
+@property (nonatomic, strong) NSIndexPath *selectedIndexPath;
 
 @end

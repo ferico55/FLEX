@@ -31,10 +31,7 @@
 #import "NoResultReusableView.h"
 
 #import "TagManagerHandler.h"
-
-#define DATA_FILTER_PROCESS_KEY @"filter_process"
-#define DATA_FILTER_READ_KEY @"filter_read"
-#define DATA_FILTER_SORTING_KEY @"filter_sorting"
+#import "NavigationHelper.h"
 
 #define DATA_SELECTED_RESOLUTION_KEY @"selected_resolution"
 #define DATA_SELECTED_INDEXPATH_RESOLUTION_KEY @"seleted_indexpath_resolution"
@@ -57,7 +54,7 @@
 >
 {
     NavigateViewController *_navigate;
-    NSMutableArray *_list;
+    NSMutableArray<InboxResolutionCenterList*> *_list;
     NSString *_URINext;
     BOOL _isNodata;
     UIRefreshControl *_refreshControl;
@@ -67,12 +64,8 @@
     NSMutableDictionary *_dataInput;
 
     CMPopTipView *cmPopTitpView;
-    InboxResolutionCenterObjectMapping *_mapping;
-    
-    __weak RKObjectManager *_objectManager;
     __weak RKManagedObjectRequestOperation *_request;
     
-    __weak RKObjectManager *_objectManagerCancelComplain;
     __weak RKManagedObjectRequestOperation *_requestCancelComplain;
     
     NSMutableArray *_allObjectCancelComplain;
@@ -96,11 +89,17 @@
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 @property (strong, nonatomic) IBOutlet UIView *contentView;
+@property (strong, nonatomic) IBOutlet UIView *headerFilterDays;
+@property (strong, nonatomic) IBOutlet UILabel *labelFilterDaysCount;
+@property (strong, nonatomic) IBOutlet UILabel *labelPendingAmount;
+@property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *redirectButton;
 
 @end
 
 @implementation InboxResolutionCenterComplainViewController{
     NoResultReusableView *_noResultView;
+    __weak IBOutlet UIButton *btnStatusPemesanan;
+    __weak IBOutlet UIButton *btnDaftarTransaksi;
 }
 
 -(instancetype)init{
@@ -108,11 +107,11 @@
     _dataInput = [NSMutableDictionary new];
     _navigate = [NavigateViewController new];
     _operationQueue = [NSOperationQueue new];
-    _mapping = [InboxResolutionCenterObjectMapping new];
     _allObjectCancelComplain = [NSMutableArray new];
     
     _networkManager = [TokopediaNetworkManager new];
     _networkManagerCancelComplain = [TokopediaNetworkManager new];
+    
     return self;
 }
 
@@ -127,6 +126,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    
+    if (![NavigationHelper shouldDoDeepNavigation]) {
+        [btnDaftarTransaksi setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [btnStatusPemesanan setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        btnDaftarTransaksi.userInteractionEnabled = btnStatusPemesanan.userInteractionEnabled = NO;
+    }
     
     _tableView.delegate = self;
     _tableView.dataSource = self;
@@ -147,10 +153,6 @@
     [_refreshControl addTarget:self action:@selector(refreshRequest)forControlEvents:UIControlEventValueChanged];
     [_tableView addSubview:_refreshControl];
     
-    if (_isMyComplain) {
-        _tableView.tableHeaderView = _headerView;
-    }
-    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(didChangePreferredContentSize:)
                                                  name:UIContentSizeCategoryDidChangeNotification object:nil];
@@ -166,6 +168,10 @@
     UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
     TagManagerHandler *gtmHandler = [TagManagerHandler new];
     [gtmHandler pushDataLayer:@{@"user_id" : [_userManager getUserId]}];
+
+    for (UIButton *button in _redirectButton) {
+        button.enabled = [NavigationHelper shouldDoDeepNavigation];
+    }
 }
 
 -(TAGContainer *)gtmContainer
@@ -192,41 +198,8 @@
     [self.tableView reloadData];
 }
 
--(void)setFilterReadIndex:(NSInteger)filterReadIndex
+-(IBAction)tap:(UIButton*)button
 {
-    [_dataInput setObject:ARRAY_FILTER_UNREAD[filterReadIndex] forKey:DATA_FILTER_READ_KEY];
-    if (_filterReadIndex != filterReadIndex) {
-        _filterReadIndex = filterReadIndex;
-        [self refreshRequest];
-   }
-}
-
--(IBAction)tap:(id)sender
-{
-    UIButton *button = (UIButton*)sender;
-    
-    NSString *filterProcess = [_dataInput objectForKey:DATA_FILTER_PROCESS_KEY];
-    NSString *filterSort = [_dataInput objectForKey:DATA_FILTER_SORTING_KEY];
-    
-    if (button.tag == 10) {
-        GeneralTableViewController *controller = [GeneralTableViewController new];
-        controller.title = @"Urutkan";
-        controller.delegate = self;
-        controller.senderIndexPath = [NSIndexPath indexPathForRow:button.tag inSection:0];
-        controller.objects = ARRAY_FILTER_SORT;
-        controller.selectedObject = filterSort ?: ARRAY_FILTER_SORT[0];
-        [self.navigationController pushViewController:controller animated:YES];
-    }
-    if (button.tag == 11) {
-        GeneralTableViewController *controller = [GeneralTableViewController new];
-        controller.title = @"Filter";
-        controller.delegate = self;
-        controller.senderIndexPath = [NSIndexPath indexPathForRow:button.tag inSection:0];
-        controller.objects = ARRAY_FILTER_PROCESS;
-        controller.selectedObject = filterProcess?:ARRAY_FILTER_PROCESS[0];
-        [self.navigationController pushViewController:controller animated:YES];
-    }
-    
     if (button.tag == 12) {
         //Status Pemesanan
         TxOrderStatusViewController *vc =[TxOrderStatusViewController new];
@@ -242,24 +215,15 @@
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
+- (IBAction)tapFilterDay:(id)sender {
+    [_delegate backToFirstPageWithFilterProcess:3];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Delegate General View Controller
--(void)didSelectObject:(id)object senderIndexPath:(NSIndexPath *)indexPath
-{
-    if (indexPath.row == 10) {
-        [_dataInput setObject:object forKey:DATA_FILTER_SORTING_KEY];
-    }
-    if (indexPath.row == 11) {
-        [_dataInput setObject:object forKey:DATA_FILTER_PROCESS_KEY];
-    }
-    
-    [self refreshRequest];
-}
 
 #pragma mark - Table View Data Source
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -284,14 +248,15 @@
     }
     
     ResolutionDetail *resolution = ((InboxResolutionCenterList*)_list[indexPath.row]).resolution_detail;
-    cell.viewLabelUser.text = _isMyComplain?resolution.resolution_shop.shop_name:resolution.resolution_customer.customer_name;
+    cell.viewLabelUser.text = (resolution.resolution_by.by_customer==1)?resolution.resolution_shop.shop_name:resolution.resolution_customer.customer_name;
     
     //Set reputation score
     cell.btnReputation.tag = indexPath.row;
     
-    if(resolution.resolution_by.by_customer == 1)
-        [SmileyAndMedal generateMedalWithLevel:resolution.resolution_shop.shop_reputation.reputation_badge_object.level withSet:resolution.resolution_shop.shop_reputation.reputation_badge_object.set withImage:cell.btnReputation isLarge:NO];
-    else {
+    if(resolution.resolution_by.by_customer == 1){
+        [SmileyAndMedal generateMedalWithLevel:resolution.resolution_shop.shop_reputation.reputation_badge.level withSet:resolution.resolution_shop.shop_reputation.reputation_badge.set withImage:cell.btnReputation isLarge:NO];
+        [cell.btnReputation setTitle:@"" forState:UIControlStateNormal];
+    }else {
         if(resolution.resolution_customer.customer_reputation.no_reputation!=nil && [resolution.resolution_customer.customer_reputation.no_reputation isEqualToString:@"1"]) {
             [cell.btnReputation setTitle:@"" forState:UIControlStateNormal];
             [cell.btnReputation setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_neutral_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
@@ -320,14 +285,14 @@
 //    }
     [cell.viewLabelUser setLabelBackground:resolution.resolution_by.user_label];
     
-    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_isMyComplain?resolution.resolution_shop.shop_image:resolution.resolution_customer.customer_image]
+    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:(resolution.resolution_by.by_customer == 1)?resolution.resolution_shop.shop_image:resolution.resolution_customer.customer_image]
                                                   cachePolicy:NSURLRequestUseProtocolCachePolicy
                                               timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     
     UIImageView *thumb = cell.buyerProfileImageView;
     thumb.image = nil;
     [thumb setImageWithURLRequest:request
-                 placeholderImage:_isMyComplain?[UIImage imageNamed:@"icon_default_shop.jpg"]:[UIImage imageNamed:@"icon_profile_picture.jpeg"]
+                 placeholderImage:(resolution.resolution_by.by_customer == 1)?[UIImage imageNamed:@"icon_default_shop.jpg"]:[UIImage imageNamed:@"icon_profile_picture.jpeg"]
                           success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
@@ -336,33 +301,12 @@
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
     }];
     
-    NSInteger lastSolutionType = [resolution.resolution_last.last_solution integerValue];
-    NSString *lastSolution = @"";
-    
-    if (lastSolutionType == SOLUTION_REFUND) {
-        lastSolution = [NSString stringWithFormat:@"Pengembalian dana kepada pembeli sebesar %@",resolution.resolution_last.last_refund_amt_idr];
-    }
-    else if (lastSolutionType == SOLUTION_RETUR) {
-        lastSolution = [NSString stringWithFormat:@"Tukar barang sesuai pesanan"];
-    }
-    else if (lastSolutionType == SOLUTION_RETUR_REFUND) {
-        lastSolution = [NSString stringWithFormat:@"Pengembalian barang dan dana sebesar %@",resolution.resolution_last.last_refund_amt_idr];
-    }
-    else if (lastSolutionType == SOLUTION_SELLER_WIN) {
-        lastSolution = [NSString stringWithFormat:@"Pengembalian dana penuh"];
-    }
-    else if (lastSolutionType == SOLUTION_SEND_REMAINING) {
-        lastSolution = [NSString stringWithFormat:@"Kirimkan sisanya"];
-    }
-    else if (lastSolutionType == SOLUTION_CHECK_COURIER){
-        lastSolution = @"Minta bantuan penjual cek ke kurir	";
-    }
-    
-    cell.invoiceDateLabel.text = resolution.resolution_dispute.dispute_update_time;
+    cell.invoiceDateLabel.text = _list[indexPath.row].resolution_respond_time;
+    cell.unrespondView.hidden = ([_list[indexPath.row].resolution_respond_status integerValue] != 0);
     cell.invoiceNumberLabel.text = resolution.resolution_order.order_invoice_ref_num;
-    [cell.lastStatusLabel setCustomAttributedText:lastSolution];
+    [cell.lastStatusLabel setCustomAttributedText:resolution.resolution_last.last_solution_string?:@""];
     cell.disputeStatus = resolution.resolution_dispute.dispute_status;
-    cell.buyerOrSellerLabel.text = _isMyComplain?@"Pembelian dari":@"Pembelian oleh";
+    cell.buyerOrSellerLabel.text = (resolution.resolution_by.by_customer == 1)?@"Pembelian dari":@"Pembelian oleh";
     cell.indexPath = indexPath;
     
     cell.unreadBorderView.hidden = (((InboxResolutionCenterList*)_list[indexPath.row]).resolution_read_status == 2)?YES:NO;
@@ -390,14 +334,17 @@
 #pragma mark - Cell Delegate
 -(void)goToInvoiceAtIndexPath:(NSIndexPath *)indexPath
 {
+    UIViewController* sourceViewController = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)?_detailViewController:self;
+    
     InboxResolutionCenterList *resolution = _list[indexPath.row];
-    [_navigate navigateToInvoiceFromViewController:self withInvoiceURL:resolution.resolution_detail.resolution_order.order_pdf_url];
+    [NavigateViewController navigateToInvoiceFromViewController:sourceViewController
+                                    withInvoiceURL:resolution.resolution_detail.resolution_order.order_pdf_url];
 }
 
 -(void)goToShopOrProfileAtIndexPath:(NSIndexPath *)indexPath
 {
     InboxResolutionCenterList *resolution = _list[indexPath.row];
-    if (_isMyComplain)
+    if (resolution.resolution_detail.resolution_by.by_customer == 1)
     {
         //gotoshop
         [_navigate navigateToShopFromViewController:self withShopID:(resolution.resolution_detail.resolution_shop.shop_id)?:@""];
@@ -415,15 +362,6 @@
 -(void)showImageAtIndexPath:(NSIndexPath *)indexPath
 {
     [self goToShopOrProfileAtIndexPath:indexPath];
-//    InboxResolutionCenterList *resolution = _list[indexPath.row];
-//
-//    NSString *imageURLString = @"";
-//    if (_isMyComplain)
-//        imageURLString = resolution.resolution_detail.resolution_shop.shop_image;
-//    else
-//        imageURLString = resolution.resolution_detail.resolution_customer.customer_image;
-//
-//    [_navigate navigateToShowImageFromViewController:self withImageURLStrings:@[imageURLString] indexImage:0];
 }
 
 -(void)goToResolutionDetailAtIndexPath:(NSIndexPath *)indexPath
@@ -433,8 +371,10 @@
     NSString *resolutionID = [resolution.resolution_detail.resolution_last.last_resolution_id stringValue];
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
         if (![resolution isEqual:_detailViewController.resolution]) {
+            _detailViewController.delegate = self;
             [_detailViewController replaceDataSelected:resolution indexPath:indexPath resolutionID:resolutionID];
         }
+        
     }
     else
     {
@@ -446,10 +386,20 @@
         [self.navigationController pushViewController:vc animated:YES];
     }
     
-    ((InboxResolutionCenterList*)_list[indexPath.row]).resolution_read_status = 2; //status resolution become read
+    _list[indexPath.row].resolution_read_status = 2; //status resolution become read
+    InboxResolutionCenterComplainCell *cell = [_tableView cellForRowAtIndexPath:indexPath];
+    cell.unreadBorderView.hidden = YES;
+    cell.unreadIconImageView.hidden = YES;
 
-    [_tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-    [_tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [_tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    });
+}
+
+-(void)didResponseComplain:(NSIndexPath*)indexPath {
+    InboxResolutionCenterComplainCell *cell = [_tableView cellForRowAtIndexPath:indexPath];
+    _list[indexPath.row].resolution_respond_status = @"2";
+    cell.unrespondView.hidden = YES;
 }
 
 #pragma mark - Table View Delegate
@@ -513,14 +463,6 @@
 #pragma mark - Cell Delegate
 - (void)actionReputation:(id)sender {
     ResolutionDetail *resolution = ((InboxResolutionCenterList*)_list[((UIView *) sender).tag]).resolution_detail;
-    
-    
-    
-    
-    
-    
-    
-    
     if(resolution.resolution_by.by_customer == 1) {
         if(resolution.resolution_shop.shop_reputation.tooltip!=nil && resolution.resolution_shop.shop_reputation.tooltip.length>0)
             [self initPopUp:resolution.resolution_shop.shop_reputation.tooltip withSender:sender withRangeDesc:NSMakeRange(0, 0)];
@@ -581,38 +523,11 @@
 -(NSDictionary *)getParameter:(int)tag
 {
     if (tag == TAG_REQUEST_LIST) {
-        NSString *filterProcess = [_dataInput objectForKey:DATA_FILTER_PROCESS_KEY];
-        NSString *filterRead = ARRAY_FILTER_UNREAD[_filterReadIndex];
-        NSString *filterSort = [_dataInput objectForKey:DATA_FILTER_SORTING_KEY];
-        
-        NSString *status = @"";
-        NSString *unread = @"";
-        NSString *sortType = @"";
-        
-        if ([filterProcess isEqualToString:ARRAY_FILTER_PROCESS[0]])
-            status = @"0";
-        else if([filterProcess isEqualToString:ARRAY_FILTER_PROCESS[1]])
-            status = @"1";
-        else if ([filterProcess isEqualToString:ARRAY_FILTER_PROCESS[2]])
-            status = @"2";
-        
-        if ([filterRead isEqualToString:ARRAY_FILTER_UNREAD[0]])
-            unread = @"0";
-        else if([filterRead isEqualToString:ARRAY_FILTER_UNREAD[1]])
-            unread = @"1";
-        else if ([filterRead isEqualToString:ARRAY_FILTER_UNREAD[2]])
-            unread = @"2";
-        
-        if ([filterSort isEqualToString:ARRAY_FILTER_SORT[0]])
-            sortType = @"2";
-        else if([filterSort isEqualToString:ARRAY_FILTER_SORT[1]])
-            sortType = @"1";
-        
         NSDictionary* param = @{API_ACTION_KEY : ACTION_GET_RESOLUTION_CENTER,
-                                API_COMPLAIN_TYPE_KEY : _isMyComplain?@(0):@(1),
-                                API_STATUS_KEY : status,
-                                API_UNREAD_KEY : unread,
-                                API_SORT_KEY :sortType,
+                                API_COMPLAIN_TYPE_KEY : @(_typeComplaint),
+                                API_STATUS_KEY : @(_filterProcess),
+                                API_UNREAD_KEY : @(_filterRead),
+                                API_SORT_KEY :@(_filterSort),
                                 API_PAGE_KEY :@(_page)
                                 };
         return param;
@@ -700,8 +615,13 @@
             if (_page == 1) {
                 [_list removeAllObjects];
             }
-            
             if (order.result.list.count >0) {
+                
+                if ([order.result.counter_days integerValue] > 0){
+                    [self adjustHeaderFilterDaysReso:order.result];
+                    _tableView.tableHeaderView = _headerFilterDays;
+                } else _tableView.tableHeaderView = nil;
+                
                 [_list addObjectsFromArray:order.result.list];
                 _isNodata = NO;
                 _URINext =  order.result.paging.uri_next;
@@ -727,12 +647,17 @@
                     InboxResolutionCenterList *resolution = _list[indexPath.row];
                     NSString *resolutionID = [resolution.resolution_detail.resolution_last.last_resolution_id stringValue];
                     if (![resolution isEqual:_detailViewController.resolution]) {
-                        [_detailViewController replaceDataSelected:resolution indexPath:indexPath resolutionID:resolutionID];
+                        [self goToResolutionDetailAtIndexPath:indexPath];
+                        //[_detailViewController replaceDataSelected:resolution indexPath:indexPath resolutionID:resolutionID];
                     }
                 }
             }
             else
             {
+                if (_typeComplaint == TypeComplaintMine) {
+                    _tableView.tableHeaderView = _headerView;
+                } else _tableView.tableHeaderView = nil;
+                
                 if([[_dataInput objectForKey:@"filter_read"] isEqualToString:@"Semua Status"]){
                     [_noResultView setNoResultTitle:@"Tidak ada komplain"];
                 }else if([[_dataInput objectForKey:@"filter_read"] isEqualToString:@"Belum dibaca"]){
@@ -748,6 +673,25 @@
     }
     [_refreshControl endRefreshing];
     [_act stopAnimating];
+}
+
+-(void)adjustHeaderFilterDaysReso:(InboxResolutionCenterResult*)reso
+{
+    NSString *filterDaysString = [NSString stringWithFormat:@"Ada %@ komplain yang belum selesai lebih dari %@ hari", reso.counter_days, reso.pending_days];
+    
+    NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:filterDaysString];
+    [string setColorForText:[NSString stringWithFormat:@"%@ komplain", reso.counter_days] withColor:COLOR_BLUE_DEFAULT withFont:FONT_GOTHAM_MEDIUM_11];
+    _labelFilterDaysCount.attributedText = string;
+    
+    _labelPendingAmount.text = [NSString stringWithFormat:@"Total dana berkendala Anda %@", reso.pending_amt.total_amt_idr];
+    string = [[NSMutableAttributedString alloc] initWithString:_labelPendingAmount.text];
+    [string setColorForText:reso.pending_amt.total_amt_idr withColor:COLOR_PENDING_AMOUNT withFont:FONT_GOTHAM_MEDIUM_11];
+    
+    _labelPendingAmount.attributedText = string;
+    
+    if ([reso.pending_amt.total_amt integerValue] == 0) {
+        [_headerFilterDays setFrame:CGRectMake(_headerFilterDays.frame.origin.x, _headerFilterDays.frame.origin.y, _headerFilterDays.frame.size.width, _headerFilterDays.frame.size.height - _labelPendingAmount.frame.size.height)];
+    }
 }
 
 -(void)requestSuccessCancelComplain:(id)successResult withOperation:(RKObjectRequestOperation *)operation
@@ -767,6 +711,19 @@
             [alert show];
             [_allObjectCancelComplain removeObject:_objectCancelComplain];
             [[NSNotificationCenter defaultCenter] postNotificationName:DID_CANCEL_COMPLAIN_NOTIFICATION_NAME object:nil];
+            _selectedDetailIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+            if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+                NSIndexPath *indexPath = _selectedDetailIndexPath?:[NSIndexPath indexPathForRow:0 inSection:0];
+                if (indexPath.row < _list.count) {
+                    InboxResolutionCenterList *resolution = _list[indexPath.row];
+                    NSString *resolutionID = [resolution.resolution_detail.resolution_last.last_resolution_id stringValue];
+                    if (![resolution isEqual:_detailViewController.resolution]) {
+                        [_tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+                        _detailViewController.delegate = self;
+                        [_detailViewController replaceDataSelected:resolution indexPath:indexPath resolutionID:resolutionID];
+                    }
+                }
+            }
         }
         else
         {
@@ -822,156 +779,33 @@
 
 -(RKObjectManager*)objectManagerList
 {
-    _objectManager = [RKObjectManager sharedClient];
+    RKObjectManager *objectManager = [RKObjectManager sharedClient];
     
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[InboxResolutionCenter class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[InboxResolutionCenterResult class]];
-    RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[InboxResolutionCenterList class]];
-    [listMapping addAttributeMappingsFromArray:@[API_RESOLUTION_READ_STATUS_KEY]];
-    
-    RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
-    [pagingMapping addAttributeMappingsFromDictionary:@{kTKPD_APIURINEXTKEY:kTKPD_APIURINEXTKEY,
-                                                        }];
-    RKObjectMapping *resolutionDetailMapping = [RKObjectMapping mappingForClass:[ResolutionDetail class]];
-    
-    RKObjectMapping *resolutionLastMapping = [_mapping resolutionLastMapping];
-    RKObjectMapping *resolutionOrderMapping = [_mapping resolutionOrderMapping];
-    RKObjectMapping *resolutionByMapping = [_mapping resolutionByMapping];
-    RKObjectMapping *resolutionShopMapping = [_mapping resolutionShopMapping];
-    RKObjectMapping *resolutionCustomerMapping = [_mapping resolutionCustomerMapping];
-    RKObjectMapping *resolutionDisputeMapping = [_mapping resolutionDisputeMapping];
-    
-    
-    RKObjectMapping *reviewUserReputationMapping = [RKObjectMapping mappingForClass:[ReputationDetail class]];
-    [reviewUserReputationMapping addAttributeMappingsFromArray:@[CPositivePercentage,
-                                                                 CNoReputation,
-                                                                 CNegative,
-                                                                 CNeutral,
-                                                                 CPositif]];
-    
-    
-    RKObjectMapping *shopReputationMapping = [RKObjectMapping mappingForClass:[ShopReputation class]];
-    [shopReputationMapping addAttributeMappingsFromArray:@[CToolTip,
-                                                           CReputationBadge,
-                                                           CReputationScore,
-                                                           CScore,
-                                                           CMinBadgeScore]];
-    
-    RKObjectMapping *shopBadgeMapping = [RKObjectMapping mappingForClass:[ShopBadgeLevel class]];
-    [shopBadgeMapping addAttributeMappingsFromArray:@[CLevel, CSet]];
-
-    [resolutionShopMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CShopReputation toKeyPath:CShopReputation withMapping:shopReputationMapping]];
-    [resolutionCustomerMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CCustomerReputation toKeyPath:CCustomerReputation withMapping:reviewUserReputationMapping]];
-    
-    
-    RKRelationshipMapping *resultRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                   toKeyPath:kTKPD_APIRESULTKEY
-                                                                                 withMapping:resultMapping];
-    
-    RKRelationshipMapping *listRel =[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APILISTKEY
-                                                                                toKeyPath:kTKPD_APILISTKEY
-                                                                              withMapping:listMapping];
-    
-    RKRelationshipMapping *pagingRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIPAGINGKEY
-                                                                                   toKeyPath:kTKPD_APIPAGINGKEY
-                                                                                 withMapping:pagingMapping];
-    
-    RKRelationshipMapping *resolutionDetailRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_RESOLUTION_DETAIL_KEY
-                                                                                             toKeyPath:API_RESOLUTION_DETAIL_KEY
-                                                                                           withMapping:resolutionDetailMapping];
-    
-    RKRelationshipMapping *resolutionLastRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_RESOLUTION_LAST_KEY
-                                                                                           toKeyPath:API_RESOLUTION_LAST_KEY
-                                                                                         withMapping:resolutionLastMapping];
-    
-    RKRelationshipMapping *resolutionOrderRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_RESOLUTION_ORDER_KEY
-                                                                                            toKeyPath:API_RESOLUTION_ORDER_KEY
-                                                                                          withMapping:resolutionOrderMapping];
-    
-    RKRelationshipMapping *resolutionByRel= [RKRelationshipMapping relationshipMappingFromKeyPath:API_RESOLUTION_BY_KEY
-                                                                                        toKeyPath:API_RESOLUTION_BY_KEY
-                                                                                      withMapping:resolutionByMapping];
-    
-    RKRelationshipMapping *resolutionShopRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_RESOLUTION_SHOP_KEY
-                                                                                           toKeyPath:API_RESOLUTION_SHOP_KEY
-                                                                                         withMapping:resolutionShopMapping];
-    
-    RKRelationshipMapping *resolutionCustomerRel= [RKRelationshipMapping relationshipMappingFromKeyPath:API_RESOLUTION_CUSTOMER_KEY
-                                                                                              toKeyPath:API_RESOLUTION_CUSTOMER_KEY
-                                                                                            withMapping:resolutionCustomerMapping];
-    
-    RKRelationshipMapping *resolutionDisputeRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_RESOLUTION_DISPUTE_KEY
-                                                                                              toKeyPath:API_RESOLUTION_DISPUTE_KEY
-                                                                                            withMapping:resolutionDisputeMapping];
-    
-    
-    [shopReputationMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CReputationBadge toKeyPath:CReputationBadgeObject withMapping:shopBadgeMapping]];
-    [statusMapping addPropertyMapping:resultRel];
-    
-    [resultMapping addPropertyMapping:listRel];
-    [resultMapping addPropertyMapping:pagingRel];
-    
-    [listMapping addPropertyMapping:resolutionDetailRel];
-    
-    [resolutionDetailMapping addPropertyMapping:resolutionLastRel];
-    [resolutionDetailMapping addPropertyMapping:resolutionOrderRel];
-    [resolutionDetailMapping addPropertyMapping:resolutionByRel];
-    [resolutionDetailMapping addPropertyMapping:resolutionShopRel];
-    [resolutionDetailMapping addPropertyMapping:resolutionCustomerRel];
-    [resolutionDetailMapping addPropertyMapping:resolutionDisputeRel];
-    
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[InboxResolutionCenter mapping]
                                                                                             method:RKRequestMethodPOST
                                                                                        pathPattern:API_PATH_INBOX_RESOLUTION_CENTER
                                                                                            keyPath:@""
                                                                                        statusCodes:kTkpdIndexSetStatusCodeOK];
     
-    [_objectManager addResponseDescriptor:responseDescriptor];
+    [objectManager addResponseDescriptor:responseDescriptor];
     
-    return _objectManager;
+    return objectManager;
 }
 
 
 -(RKObjectManager*)objectManagerCancelComplain
 //-(void)configureRestKitCancelComplain
 {
-    _objectManagerCancelComplain = [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ResolutionAction class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ResolutionActionResult class]];
-    [resultMapping addAttributeMappingsFromArray:@[kTKPD_APIISSUCCESSKEY]];
-    
-    
-    RKRelationshipMapping *resultRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                   toKeyPath:kTKPD_APIRESULTKEY
-                                                                                 withMapping:resultMapping];
-    
-    
-    [statusMapping addPropertyMapping:resultRel];
-    
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+    RKObjectManager *objectManager = [RKObjectManager sharedClient];
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[ResolutionAction mapping]
                                                                                             method:RKRequestMethodPOST
                                                                                        pathPattern:API_PATH_ACTION_RESOLUTION_CENTER
                                                                                            keyPath:@""
                                                                                        statusCodes:kTkpdIndexSetStatusCodeOK];
     
-    [_objectManagerCancelComplain addResponseDescriptor:responseDescriptor];
+    [objectManager addResponseDescriptor:responseDescriptor];
     
-    return _objectManagerCancelComplain;
+    return objectManager;
 }
 
 

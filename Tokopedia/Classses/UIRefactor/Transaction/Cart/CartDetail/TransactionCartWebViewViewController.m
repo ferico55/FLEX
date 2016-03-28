@@ -76,7 +76,6 @@
     NSURL *url;
     
     if (gateway == TYPE_GATEWAY_BCA_CLICK_PAY) {
-        self. title = @"KlikPay BCA";
         urlAddress =_BCAParam.bca_url;
         
         NSString *clickPayCode = _BCAParam.bca_code?:@"";
@@ -114,6 +113,7 @@
         url = [NSURL URLWithString:urlAddress];
     }
     else if ((gateway == TYPE_GATEWAY_CC || gateway == TYPE_GATEWAY_INSTALLMENT) && !_isVeritrans) {
+        
         urlAddress = _URLString;
         
         NSDictionary *paramEncrypt = [_CCParam encrypt];
@@ -200,13 +200,7 @@
     else if(gateway == TYPE_GATEWAY_MANDIRI_E_CASH)
     {
         //if ([request.URL.absoluteString rangeOfString:@"ws-new"].location != NSNotFound) {
-        TKPDSecureStorage* storage = [TKPDSecureStorage standardKeyChains];
-        NSString *baseURLFull = [[storage keychainDictionary] objectForKey:@"AppBaseUrl"]?:kTkpdBaseURLString;
-        NSURL *url = [NSURL URLWithString:baseURLFull];
-        NSURL *root = [NSURL URLWithString:@"/" relativeToURL:url];
-        NSString *baseURL = root.absoluteString;
-        
-        NSString *stringURLEMoney = [NSString stringWithFormat:@"%@ws-new/tx-payment-emoney.pl?id=",baseURL];
+        NSString *stringURLEMoney = [self getStringURLMandiriECash];
             if ([request.URL.absoluteString rangeOfString:stringURLEMoney].location != NSNotFound) {
                     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                     [_delegate shouldDoRequestEMoney:YES];
@@ -247,6 +241,19 @@
     }
     
     return YES;
+}
+
+-(NSString *)getStringURLMandiriECash
+{
+    TKPDSecureStorage* storage = [TKPDSecureStorage standardKeyChains];
+    NSString *baseURLFull = [[storage keychainDictionary] objectForKey:@"AppBaseUrl"]?:kTkpdBaseURLString;
+    NSURL *url = [NSURL URLWithString:baseURLFull];
+    NSURL *root = [NSURL URLWithString:@"/" relativeToURL:url];
+    NSString *baseURL = root.absoluteString;
+    
+    NSString *stringURLEMoney = [NSString stringWithFormat:@"%@ws-new/tx-payment-emoney.pl?id=",baseURL];
+    
+    return stringURLEMoney;
 }
 
 -(void)webViewDidFinishLoad:(UIWebView *)webView

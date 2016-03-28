@@ -40,7 +40,6 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 {
     BOOL _isFollowingTalk;
     IBOutlet NSLayoutConstraint* commentButtonTrailingToVerticalBorder;
-    IBOutlet UIView* selectedMarker;
     IBOutlet UILabel *_productNameLabel;
 }
 
@@ -85,11 +84,11 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    selectedMarker.hidden = !selected;
+    _view.backgroundColor = selected ? [UIColor colorWithRed:232 / 255.0 green:245 / 255.0 blue:233 / 255.0 alpha:1] : [UIColor colorWithWhite:249/255.0 alpha:1];
 }
 
 - (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
-    selectedMarker.hidden = !highlighted;
+    _view.backgroundColor = highlighted ? [UIColor colorWithRed:232 / 255.0 green:245 / 255.0 blue:233 / 255.0 alpha:1] : [UIColor colorWithWhite:249/255.0 alpha:1];
 }
 
 - (void)setTalkViewModel:(TalkModelView *)modelView {
@@ -147,13 +146,17 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 
 - (void)setTalkFollowStatus:(BOOL)talkFollowStatus {
     _isFollowingTalk = talkFollowStatus;
-    if (talkFollowStatus) {
+    [self adjustFollowButton];
+}
+
+- (void)adjustFollowButton {
+    if (_isFollowingTalk) {
         [_unfollowButton setTitle:@"Berhenti Ikuti" forState:UIControlStateNormal];
         [_unfollowButton setImage:[UIImage imageNamed:@"icon_diskusi_unfollow_grey"] forState:UIControlStateNormal];
         
     } else {
         [_unfollowButton setTitle:@"Ikuti" forState:UIControlStateNormal];
-        [_unfollowButton setImage:[UIImage imageNamed:@"icon_check_grey"] forState:UIControlStateNormal];
+        [_unfollowButton setImage:[UIImage imageNamed:@"icon_order_check"] forState:UIControlStateNormal];
     }
 }
 
@@ -193,7 +196,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
         }
     }
     else {
-        ProductTalkDetailViewController *vc = [[ProductTalkDetailViewController alloc] initByMarkingOpenedTalkAsRead:YES];
+        ProductTalkDetailViewController *vc = [[ProductTalkDetailViewController alloc] initByMarkingOpenedTalkAsRead:_marksOpenedTalkAsRead];
         vc.data = data;
 
         UIViewController *controller = [_delegate getNavigationController:self];
@@ -406,20 +409,30 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
             NSArray *successMessages = [[NSMutableArray alloc] init];
             _isFollowingTalk = !_isFollowingTalk;
             
+            [self adjustFollowButton];
 
 			if (tag == RequestDeleteTalk) {
 				successMessages = @[@"Anda berhasil menghapus diskusi ini."];
 
                 NSDictionary *userInfo = @{@"index" : @(_deleteIndexPath.row)};
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"TokopediaDeleteInboxTalk"
-                                                                    object:nil
-                                                                  userInfo:userInfo];
+
+                //use delegate to prevent broadcast to multiple view controllers at once
+                if ([_delegate respondsToSelector:@selector(tapToDeleteTalk:)]) {
+                    [_delegate tapToDeleteTalk:self];
+                } else {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"TokopediaDeleteInboxTalk"
+                                                                        object:nil
+                                                                      userInfo:userInfo];
+                }
 			} else {
             	if(_isFollowingTalk) {
                 	successMessages = @[@"Anda berhasil mengikuti diskusi ini."];
 	            } else {
     	            successMessages = @[@"Anda batal mengikuti diskusi ini."];
         	    }
+
+                if ([_delegate respondsToSelector:@selector(updateTalkStatusAtIndexPath:following:)])
+                    [_delegate updateTalkStatusAtIndexPath:indexPath following:_isFollowingTalk];
 			}
             StickyAlertView *stickyAlert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:[_delegate getNavigationController:self]];
             [stickyAlert show];

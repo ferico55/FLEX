@@ -10,4 +10,21 @@
 
 @implementation ResolutionOrder
 
+// MARK: TKPRootObjectMapping methods
++ (NSDictionary *)attributeMappingDictionary {
+    NSArray *keys = @[@"order_pdf_url",
+                      @"order_shipping_price_idr",
+                      @"order_open_amount_idr",
+                      @"order_shipping_price",
+                      @"order_open_amount",
+                      @"order_invoice_ref_num"];
+    return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
+}
+
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+    return mapping;
+}
+
 @end

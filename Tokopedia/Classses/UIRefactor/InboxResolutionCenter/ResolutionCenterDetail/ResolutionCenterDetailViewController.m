@@ -30,13 +30,23 @@
 
 #import "RequestResolutionCenter.h"
 
+#import "SettingAddressViewController.h"
+#import "SettingAddressEditViewController.h"
+
+#import "profile.h"
+#import "string_settings.h"
+#import "AddressFormList.h"
+#import "RequestResoInputAddress.h"
+
 #define TAG_ALERT_CANCEL_COMPLAIN 10
 #define TAG_CHANGE_SOLUTION 11
 #define DATA_SELECTED_SHIPMENT_KEY @"data_selected_shipment"
 
 #define BUTTON_TITLE_ACCEPT_SOLUTION  @"Terima Solusi"
+#define BUTTON_TITLE_EDIT_ADDRESS  @"Ubah Alamat"
 #define BUTTON_TITLE_APPEAL  @"Naik Banding"
 #define BUTTON_TITLE_ACCEPT_ADMIN_SOLUTION @"Terima Solusi Admin"
+#define BUTTON_TITLE_INPUT_ADDRESS @"Masukkan Alamat"
 #define BUTTON_TITLE_INPUT_RESI @"Masukkan No. Resi"
 #define BUTTON_TITLE_EDIT_RESI @"Ubah No. Resi"
 #define BUTTON_TITLE_FINISH_COMPLAIN @"Komplain Selesai"
@@ -60,7 +70,10 @@
     InboxResolutionCenterOpenViewControllerDelegate,
     TokopediaNetworkManagerDelegate,
     RequestResolutionCenterDelegate,
-    UISplitViewControllerDelegate
+    UISplitViewControllerDelegate,
+    SettingAddressViewControllerDelegate,
+    SettingAddressEditViewControllerDelegate,
+    addressDelegate
 >
 {
     BOOL _isNodata;
@@ -68,12 +81,6 @@
     NSMutableArray *_listResolutionConversation;
     
     NSOperationQueue *_operationQueue;
-    
-    __weak RKObjectManager *_objectManager;
-    __weak RKManagedObjectRequestOperation *_request;
-    
-    __weak RKObjectManager *_objectManagerCancelComplain;
-    __weak RKManagedObjectRequestOperation *_requestCancelComplain;
     
     __weak RKObjectManager *_objectManagerEditReceipt;
     __weak RKManagedObjectRequestOperation *_requestEditReceipt;
@@ -101,6 +108,8 @@
     RequestResolutionCenter *_requestResolutionCenter;
     
     GeneratedHost *_generatedHost;
+    AddressFormList *_selectedAddress;
+    RequestResoInputAddress *_requestInputAddress;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -116,6 +125,8 @@
 @property (weak, nonatomic) IBOutlet UIImageView *buyerThumbView;
 @property (weak, nonatomic) IBOutlet UIButton *inputConversation;
 @property (weak, nonatomic) IBOutlet UIView *replayConversationView;
+@property (strong, nonatomic) IBOutlet UIView *headerInfoView;
+@property (strong, nonatomic) IBOutlet UILabel *infoLabel;
 
 @end
 
@@ -132,6 +143,8 @@
     _listResolutionConversation = [NSMutableArray new];
     _dataInput = [NSMutableDictionary new];
     _navigate = [NavigateViewController new];
+    _requestInputAddress = [RequestResoInputAddress new];
+    _requestInputAddress.delegate = self;
     
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
     [backBarButtonItem setTintColor:[UIColor whiteColor]];
@@ -141,7 +154,6 @@
     _networkManager.delegate = self;
     
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone  || _isNeedRequestListDetail) {
-        [self configureRestKit];
         [self requestWithAction:ACTION_GET_RESOLUTION_CENTER_DETAIL];
     }
     
@@ -275,12 +287,13 @@
         else if (conversation.system_flag == 1 && ![conversation.user_name isEqualToString:@"Admin Tokopedia"])
         {
             NSInteger cellRowHeight = CELL_SYSTEM_HEIGHT;
+            
             ResolutionCenterSystemCell *cell = (ResolutionCenterSystemCell*)[self cellSystemResolutionAtIndexPath:indexPath];
             
+            cellRowHeight = [self calculateHeightForConfiguredSizingCell:cell];
+
             rowHeight = cellRowHeight - cell.twoButtonView.frame.size.height + deltaHeightCell;
-            if ([self isShowOneButton:conversation atIndexPath:indexPath] ||
-                [self isShowTwoButton:conversation]
-                ) {
+            if ([self countShowButton:conversation atIndexPath:indexPath] > 0) {
                 rowHeight = cellRowHeight + deltaHeightCell;
             }
         }
@@ -288,35 +301,31 @@
         {
             ResolutionCenterDetailCell *cell = (ResolutionCenterDetailCell*)[self cellDetailResolutionAtIndexPath:indexPath];
             NSInteger cellRowHeight = CELL_DETAIL_HEIGHT;
-            NSInteger attachmentHeight = VIEW_ATTACHMENT_HEIGHT;
             
-            //Calculate the expected size based on the font and linebreak mode of your label
-            NSString *string = [NSString convertHTML:[self markConversation:conversation]];
-            CGSize maximumLabelSize = CGSizeMake(190,9999);
-            CGSize expectedLabelSize = [string sizeWithFont:FONT_GOTHAM_BOOK_12
-                                          constrainedToSize:maximumLabelSize
-                                              lineBreakMode:NSLineBreakByTruncatingTail];
+            cellRowHeight = [self calculateHeightForConfiguredSizingCell:cell];
             
-            cellRowHeight += expectedLabelSize.height;
-            
-            rowHeight = cellRowHeight + deltaHeightCell;
-            if ([self isShowOneButton:conversation atIndexPath:indexPath] || [self isShowTwoButton:conversation]) {
+            rowHeight = cellRowHeight - VIEW_MARK_HEIGHT + deltaHeightCell;
+            if ([self countShowButton:conversation atIndexPath:indexPath] > 0) {
                 rowHeight = cellRowHeight + cell.oneButtonView.frame.size.height + deltaHeightCell;
             }
             if ([self isShowAttachment:conversation]) {
-                rowHeight = cellRowHeight + attachmentHeight;
+                rowHeight = cellRowHeight + deltaHeightCell;
             }
             if ([self isShowAttachmentWithButton:conversation]) {
-                rowHeight = cellRowHeight + attachmentHeight + cell.oneButtonView.frame.size.height;
-            }
-            if ([cell.markLabel.text isEqualToString:@""]) {
-                rowHeight = rowHeight - VIEW_MARK_HEIGHT + deltaHeightCell;
+                rowHeight = cellRowHeight + cell.oneButtonView.frame.size.height + deltaHeightCell;
             }
         }
         
         return rowHeight;
     }
     return UITableViewAutomaticDimension;
+}
+
+- (CGFloat)calculateHeightForConfiguredSizingCell:(UITableViewCell *)sizingCell {
+    [sizingCell layoutIfNeeded];
+    
+    CGSize size = [sizingCell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+    return size.height;
 }
 
 -(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -328,8 +337,6 @@
 - (IBAction)tap:(id)sender {
     UIButton *button = (UIButton*)sender;
     if (button == _loadMoreButton) {
-        _objectManager = nil;
-        [self configureRestkitConversation];
         [self requestWithAction:ACTION_GET_RESOLUTION_CENTER_DETAIL_LOAD_MORE];
     }
     if (button == _inputConversation) {
@@ -435,11 +442,28 @@
         [self.navigationController pushViewController:vc animated:YES];
     }
     
+    if ([sender.titleLabel.text isEqualToString:BUTTON_TITLE_INPUT_ADDRESS]) {
+        SettingAddressViewController *addressViewController = [SettingAddressViewController new];
+        addressViewController.delegate = self;
+        addressViewController.data = @{DATA_TYPE_KEY:@(TYPE_ADD_EDIT_PROFILE_ADD_RESO),
+                                       @"conversation" : conversation
+                                       };
+        [self.navigationController pushViewController:addressViewController animated:YES];
+    }
+    
     if ([sender.titleLabel.text isEqualToString:BUTTON_TITLE_ACCEPT_ADMIN_SOLUTION]) {
         [self configureRestKitAction];
         [self requestAction:ACTION_ACCEPT_ADMIN_SOLUTION];
     }
     
+    if ([sender.titleLabel.text isEqualToString:BUTTON_TITLE_EDIT_ADDRESS]) {
+        SettingAddressViewController *addressViewController = [SettingAddressViewController new];
+        addressViewController.delegate = self;
+        addressViewController.data = @{DATA_TYPE_KEY:@(TYPE_ADD_EDIT_PROFILE_EDIT_RESO),
+                                       @"conversation":conversation
+                                       };
+        [self.navigationController pushViewController:addressViewController animated:YES];
+    }
     if ([sender.titleLabel.text isEqualToString:BUTTON_TITLE_ACCEPT_SOLUTION]) {
         [self configureRestKitAction];
         [self requestAction:ACTION_ACCEPT_SOLUTION];
@@ -503,15 +527,11 @@
 -(void)goToShopOrProfileIndexPath:(NSIndexPath *)indexPath
 {
     ResolutionConversation *conversation = _listResolutionConversation[indexPath.row];
-    if(conversation.action_by == ACTION_BY_BUYER)
+    if(conversation.action_by == ACTION_BY_BUYER || conversation.action_by == ACTION_BY_SELLER)
     {
         //profile
         NSArray *query = [[[NSURL URLWithString:conversation.user_url] path] componentsSeparatedByString: @"/"];
         [_navigate navigateToProfileFromViewController:self withUserID:[query objectAtIndex:2]?:@""];
-    }
-    else if(conversation.action_by == ACTION_BY_SELLER)
-    {
-        [_navigate navigateToProfileFromViewController:self withUserID:@""];
     }
     else if(conversation.action_by == ACTION_BY_TOKOPEDIA)
     {
@@ -531,37 +551,15 @@
 
 -(NSString *)trouble
 {
-    NSString *trouble = @"";
-    if ([_resolutionDetail.resolution_last.last_trouble_type isEqual:@(1)]) {
-        trouble = ARRAY_PROBLEM_COMPLAIN[0];
-    }
-    else if ([_resolutionDetail.resolution_last.last_trouble_type isEqual:@(2)]) {
-        trouble = ARRAY_PROBLEM_COMPLAIN[1];
-    }
-    else if ([_resolutionDetail.resolution_last.last_trouble_type isEqual:@(3)]) {
-        trouble = ARRAY_PROBLEM_COMPLAIN[2];
-    }
-    else if ([_resolutionDetail.resolution_last.last_trouble_type isEqual:@(4)]) {
-        trouble = ARRAY_PROBLEM_COMPLAIN[3];
-    }
+    NSString *trouble = _resolutionDetail.resolution_last.last_trouble_string?:@"";
+
     return trouble;
 }
 
 -(NSString*)solution
 {
-    NSString *solution = @"";
-    if ([_resolutionDetail.resolution_last.last_solution isEqual:@(1)]) {
-        solution = ARRAY_SOLUTION_PRODUCT_NOT_SAME_AS_DESCRIPTION[0];
-    }
-    else if ([_resolutionDetail.resolution_last.last_solution isEqual:@(2)]) {
-        solution = ARRAY_SOLUTION_PRODUCT_NOT_SAME_AS_DESCRIPTION[1];
-    }
-    else if ([_resolutionDetail.resolution_last.last_solution isEqual:@(3)]) {
-        solution = ARRAY_SOLUTION_PRODUCT_NOT_SAME_AS_DESCRIPTION[2];
-    }
-    else if ([_resolutionDetail.resolution_last.last_solution isEqual:@(4)]) {
-        solution = ARRAY_SOLUTION_PRODUCT_NOT_SAME_AS_DESCRIPTION[3];
-    }
+    NSString *solution = _resolutionDetail.resolution_last.last_solution_string?:@"";
+
     return solution;
 }
 
@@ -646,8 +644,14 @@
         cell = [ResolutionCenterSystemCell newCell];
         cell.delegate = self;
     }
-    [self adjustActionByLabel:cell.buyerSellerLabel conversation:conversation];
+    [self adjustActionByLabel:cell.buyerSellerLabel conversation:conversation]; 
     
+    if([conversation.show_edit_addr_button integerValue] != 1 && conversation.address)
+    {
+        cell.markLabel.textColor = COLOR_STATUS_DONE;
+    }
+    else
+        cell.markLabel.textColor = [UIColor blackColor];
     cell.markLabel.text = [NSString convertHTML:[self markConversation:conversation]];
     
     NSDateFormatter *dateFormatter = [NSDateFormatter new];
@@ -668,22 +672,20 @@
     cell.indexPath = indexPath;
     
 
-    if (!([self isShowOneButton:conversation atIndexPath:indexPath] ||
-        [self isShowTwoButton:conversation]
-        )) {
+    if ([self countShowButton:conversation atIndexPath:indexPath] == 0) {
         cell.oneButtonConstraintHeight.constant = 0;
         cell.twoButtonConstraintHeight.constant = 0;
     }
     else {
         cell.oneButtonConstraintHeight.constant = 44;
         cell.twoButtonConstraintHeight.constant = 44;
-        if ([self isShowTwoButton:conversation])
+        if ([self countShowButton:conversation atIndexPath:indexPath] == 2)
         {
             cell.twoButtonView.hidden = NO;
             [self adjustTwoButtonsTitleConversation:conversation cell:cell];
             
         }
-        else if ([self isShowOneButton:conversation atIndexPath:indexPath])
+        else if ([self countShowButton:conversation atIndexPath:indexPath] == 1)
         {
             cell.oneButtonView.hidden = NO;
             [self adjustOneButtonTitleConversation:conversation cell:cell];
@@ -730,6 +732,7 @@
     NSString *sinceDateString = [NSString timeLeftSinceDate:createDate];
     cell.timeRemainingLabel.text = sinceDateString;
     cell.markLabel.text = [NSString convertHTML:[self markConversation:conversation]];
+
     [cell.btnReputation setTitle:_resolutionDetail.resolution_customer.customer_reputation.positive_percentage forState:UIControlStateNormal];
     
     [self adjustActionByLabel:cell.buyerSellerLabel conversation:conversation];
@@ -763,11 +766,11 @@
         cell.atachmentView.hidden = NO;
         cell.isShowAttachment = YES;
     }
-    if ([self isShowTwoButton:conversation])
+    if ([self countShowButton:conversation atIndexPath:indexPath] == 2)
     {
         cell.twoButtonView.hidden = NO;
     }
-    else if ([self isShowOneButton:conversation atIndexPath:indexPath])
+    else if ([self countShowButton:conversation atIndexPath:indexPath] == 1)
     {
         cell.oneButtonView.hidden = NO;
         UIImage *btnImage;
@@ -788,7 +791,7 @@
     
     cell.indexPath = indexPath;
     
-    if (!([self isShowOneButton:conversation atIndexPath:indexPath] || [self isShowTwoButton:conversation]))
+    if ([self countShowButton:conversation atIndexPath:indexPath] == 0)
     {
         cell.twobuttonConstraintHeight.constant = 0;
         cell.oneButtonConstraintHeight.constant = 0;
@@ -840,6 +843,13 @@
                     title2 = BUTTON_TITLE_ACCEPT_ADMIN_SOLUTION;
             }
         }
+        if([_resolutionDetail.resolution_last.last_show_input_addr_button integerValue] == 1)
+        {
+            if ([title1 isEqualToString:@""])
+                title1 = BUTTON_TITLE_INPUT_ADDRESS;
+            else
+                title2 =BUTTON_TITLE_INPUT_ADDRESS;
+        }
         if([_resolutionDetail.resolution_last.last_show_input_resi_button integerValue] == 1)
         {
             if ([title1 isEqualToString:@""])
@@ -876,6 +886,10 @@
 {
     NSString *buttonTitle = @"";
     
+    if ([conversation.show_edit_addr_button integerValue]==1) {
+        buttonTitle = BUTTON_TITLE_EDIT_ADDRESS;
+    }
+    
     if (conversation.isAddedConversation)
     {
         if([_resolutionDetail.resolution_last.last_show_accept_button integerValue] == 1)
@@ -893,6 +907,10 @@
         if([_resolutionDetail.resolution_last.last_show_input_resi_button integerValue] == 1)
         {
             buttonTitle = BUTTON_TITLE_INPUT_RESI;
+        }
+        if([_resolutionDetail.resolution_last.last_show_input_addr_button integerValue] == 1)
+        {
+            buttonTitle = BUTTON_TITLE_INPUT_ADDRESS;
         }
     }
     
@@ -1002,7 +1020,9 @@
     if([_resolutionDetail.resolution_last.last_show_finish_button integerValue] == 1)
         return YES; //finish complain
     if([_resolutionDetail.resolution_last.last_show_input_resi_button integerValue] == 1)
-        return YES; //finish complain
+        return YES; //input resi
+    if([_resolutionDetail.resolution_last.last_show_input_addr_button integerValue] == 1)
+        return YES; //input address
     
     return NO;
 }
@@ -1012,18 +1032,16 @@
     return conversation.isAddedConversation;
 }
 
--(BOOL)isShowOneButton:(ResolutionConversation*)conversation atIndexPath:(NSIndexPath*)indexPath
-{
-    if (([self isShowCancelComplainButton:conversation] && indexPath.row == 0)||
-        [self isShowRecievedSolutionButton:conversation]) {
-        return YES;
-    }
-    return NO;
-}
-
--(BOOL)isShowTwoButton:(ResolutionConversation*)conversation
+-(NSInteger)countShowButton:(ResolutionConversation*)conversation atIndexPath:(NSIndexPath*)indexPath
 {
     int buttonCount = 0;
+    
+    if (([self isShowCancelComplainButton:conversation] && indexPath.row == 0)) {
+       return 1;
+    }
+    if ([conversation.show_edit_addr_button integerValue]==1) {
+        buttonCount +=1;
+    }
 
     if (conversation.isAddedConversation) {
         if([_resolutionDetail.resolution_last.last_show_accept_button integerValue] == 1)
@@ -1039,19 +1057,15 @@
             buttonCount +=1;
         if([_resolutionDetail.resolution_last.last_show_input_resi_button integerValue] == 1)
             buttonCount +=1;
+        if([_resolutionDetail.resolution_last.last_show_input_addr_button integerValue] == 1)
+            buttonCount +=1;
     }
     
-    if ([self isShowTrackAndEditButton:conversation]||
-        (buttonCount>=2)) {
-        return YES;
-    }
-    
-    return NO;
+    return buttonCount;
 }
 
 -(void)refreshRequest
 {
-    [self configureRestKit];
     [self requestWithAction:ACTION_GET_RESOLUTION_CENTER_DETAIL];
 }
 
@@ -1072,61 +1086,28 @@
     }
     
     NSString *markString = [[marks valueForKey:@"description"] componentsJoinedByString:@"\n"];
+    NSCharacterSet *whitespaces = [NSCharacterSet whitespaceCharacterSet];
+    NSPredicate *noEmptyStrings = [NSPredicate predicateWithFormat:@"SELF != ''"];
+    
+    NSArray *parts = [markString componentsSeparatedByCharactersInSet:whitespaces];
+    NSArray *filteredArray = [parts filteredArrayUsingPredicate:noEmptyStrings];
+    markString = [filteredArray componentsJoinedByString:@" "];
+
     return markString;
 }
 
 -(NSString *)solutionString:(ResolutionConversation*)conversation
 {
-    NSInteger lastSolutionType = [conversation.solution integerValue];
-    NSString *solutionString = @"";
-    if (lastSolutionType == SOLUTION_REFUND) {
-        solutionString = [NSString stringWithFormat:@"Pengembalian dana kepada pembeli sebesar %@",conversation.refund_amt_idr];
-    }
-    else if (lastSolutionType == SOLUTION_RETUR) {
-        solutionString = [NSString stringWithFormat:@"Tukar barang sesuai pesanan"];
-    }
-    else if (lastSolutionType == SOLUTION_RETUR_REFUND) {
-        solutionString = [NSString stringWithFormat:@"Pengembalian barang dan dana sebesar %@",conversation.refund_amt_idr];
-    }
-    else if (lastSolutionType == SOLUTION_SELLER_WIN) {
-        solutionString = [NSString stringWithFormat:@"Pengembalian dana penuh"];
-    }
-    else if (lastSolutionType == SOLUTION_SEND_REMAINING) {
-        solutionString = [NSString stringWithFormat:@"Kirimkan sisanya"];
-    }
-    else if (lastSolutionType == SOLUTION_CHECK_COURIER) {
-        solutionString = [NSString stringWithFormat:@"Minta bantuan penjual cek ke kurir"];
-    }
-    
+    NSString *solutionString = conversation.solution_string?:@"";
+   
     return solutionString;
 }
 
 -(NSString *)problemAndSolutionConversation:(ResolutionConversation*)conversation
 {
     NSString *solutionString = [self solutionString:conversation];
-    
-    NSInteger troubleType = [conversation.trouble_type integerValue];
-    NSString *troubleString;
-    if (conversation.flag_received) {
-        if (troubleType == TROUBLE_DIFF_DESCRIPTION) {
-            troubleString = ARRAY_PROBLEM_COMPLAIN[0];
-        }
-        else if (troubleType == TROUBLE_BROKEN) {
-            troubleString = ARRAY_PROBLEM_COMPLAIN[1];
-        }
-        else if (troubleType == TROUBLE_DIFF_QUANTITY) {
-            troubleString = ARRAY_PROBLEM_COMPLAIN[2];
-        }
-        else if (troubleType == TROUBLE_DIFF_CARRIER) {
-            troubleString = ARRAY_PROBLEM_COMPLAIN[3];
-        }
-        else
-            troubleString = @"";
-    }
-    else{
-        troubleString = @"Produk tidak diterima";
-    }
-    
+    NSString *troubleString = conversation.trouble_string?:@"";
+
     NSString *returnString;
     if ([troubleString isEqualToString:@""])
         returnString = [NSString stringWithFormat:@"Solusi terakhir yang ditawarkan :\n%@",solutionString];
@@ -1156,8 +1137,15 @@
         imageName = @"icon_edit_grey.png";
     }
     
+    if ([titleButton isEqualToString:BUTTON_TITLE_INPUT_ADDRESS]) {
+        imageName = @"icon_edit_grey.png";
+    }
+    
     if ([titleButton isEqualToString:BUTTON_TITLE_ACCEPT_ADMIN_SOLUTION]) {
         imageName = @"icon_order_check-01.png";
+    }
+    if ([titleButton isEqualToString:BUTTON_TITLE_EDIT_ADDRESS]) {
+        imageName = @"icon_edit_grey.png";
     }
     
     if ([titleButton isEqualToString:BUTTON_TITLE_ACCEPT_SOLUTION]) {
@@ -1175,173 +1163,17 @@
 }
 
 #pragma mark - Request
--(void)cancel
-{
-    [_request cancel];
-    _request = nil;
-    [_objectManager.operationQueue cancelAllOperations];
-    _objectManager = nil;
-}
-
 -(id)getObjectManager:(int)tag
 {
-    return _objectManager;
-}
-
--(void)configureRestKit
-{
-    _objectManager = [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ResolutionCenterDetail class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ResolutionCenterDetailResult class]];
-    
-    RKObjectMapping *resolutionDetailMapping = [RKObjectMapping mappingForClass:[ResolutionDetailConversation class]];
-    [resolutionDetailMapping addAttributeMappingsFromArray:@[API_FLAG_CAN_CONVERSATION_KEY,
-                                                             API_RESOLUTION_CONFERSATION_COUNT_KEY,
-                                                             ]];
-    
-    RKObjectMapping *resolutionLastMapping = [_mapping resolutionLastMapping];
-    RKObjectMapping *resolutionOrderMapping = [_mapping resolutionOrderMapping];
-    RKObjectMapping *resolutionButtonMapping = [_mapping resolutionButtonMapping];
-    RKObjectMapping *resolutionByMapping = [_mapping resolutionByMapping];
-    RKObjectMapping *resolutionShopMapping = [_mapping resolutionShopMapping];
-    RKObjectMapping *resolutionCustomerMapping = [_mapping resolutionCustomerMapping];
-    RKObjectMapping *resolutionDisputeMapping = [_mapping resolutionDisputeMapping];
-    RKObjectMapping *resolutionConversationMapping = [_mapping resolutionConversationMapping];
-    RKObjectMapping *resolutionAttachmentMapping = [_mapping resolutionAttachmentMapping];
-    
-    RKObjectMapping *reviewUserReputationMapping = [RKObjectMapping mappingForClass:[ReputationDetail class]];
-    [reviewUserReputationMapping addAttributeMappingsFromArray:@[CPositivePercentage,
-                                                                 CNegative,
-                                                                 CNeutral,
-                                                                 CPositif]];
-    
-    
-    RKObjectMapping *shopReputationMapping = [RKObjectMapping mappingForClass:[ShopReputation class]];
-    [shopReputationMapping addAttributeMappingsFromArray:@[CToolTip,
-                                                           CReputationBadge,
-                                                           CReputationScore,
-                                                           CScore,
-                                                           CMinBadgeScore]];
-    
-    [resolutionShopMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CShopReputation toKeyPath:CShopReputation withMapping:shopReputationMapping]];
-    [resolutionCustomerMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CCustomerReputation toKeyPath:CCustomerReputation withMapping:reviewUserReputationMapping]];
-    
-    RKRelationshipMapping *resultRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                   toKeyPath:kTKPD_APIRESULTKEY
-                                                                                 withMapping:resultMapping];
-    
-    
-    RKRelationshipMapping *resolutionDetailRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_RESOLUTION_DETAIL_CONVERSATION_KEY
-                                                                                             toKeyPath:API_RESOLUTION_DETAIL_CONVERSATION_KEY
-                                                                                           withMapping:resolutionDetailMapping];
-    
-    RKRelationshipMapping *resolutionAttachmentRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_RESOLUTION_ATTACHMENT_KEY
-                                                                                             toKeyPath:API_RESOLUTION_ATTACHMENT_KEY
-                                                                                           withMapping:resolutionAttachmentMapping];
-    
-    RKRelationshipMapping *resolutionLastRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_RESOLUTION_LAST_KEY
-                                                                                           toKeyPath:API_RESOLUTION_LAST_KEY
-                                                                                         withMapping:resolutionLastMapping];
-    
-    RKRelationshipMapping *resolutionButtonRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_RESOLUTION_BUTTON_KEY
-                                                                                             toKeyPath:API_RESOLUTION_BUTTON_KEY
-                                                                                           withMapping:resolutionButtonMapping];
-    
-    RKRelationshipMapping *resolutionOrderRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_RESOLUTION_ORDER_KEY
-                                                                                            toKeyPath:API_RESOLUTION_ORDER_KEY
-                                                                                          withMapping:resolutionOrderMapping];
-    
-    RKRelationshipMapping *resolutionByRel= [RKRelationshipMapping relationshipMappingFromKeyPath:API_RESOLUTION_BY_KEY
-                                                                                        toKeyPath:API_RESOLUTION_BY_KEY
-                                                                                      withMapping:resolutionByMapping];
-    
-    RKRelationshipMapping *resolutionShopRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_RESOLUTION_SHOP_KEY
-                                                                                           toKeyPath:API_RESOLUTION_SHOP_KEY
-                                                                                         withMapping:resolutionShopMapping];
-    
-    RKRelationshipMapping *resolutionConversationRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_RESOLUTION_CONVERSATION_KEY
-                                                                                           toKeyPath:API_RESOLUTION_CONVERSATION_KEY
-                                                                                         withMapping:resolutionConversationMapping];
-    
-    RKRelationshipMapping *resolutionCustomerRel= [RKRelationshipMapping relationshipMappingFromKeyPath:API_RESOLUTION_CUSTOMER_KEY
-                                                                                              toKeyPath:API_RESOLUTION_CUSTOMER_KEY
-                                                                                            withMapping:resolutionCustomerMapping];
-    
-    RKRelationshipMapping *resolutionDisputeRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_RESOLUTION_DISPUTE_KEY
-                                                                                              toKeyPath:API_RESOLUTION_DISPUTE_KEY
-                                                                                            withMapping:resolutionDisputeMapping];
-    
-    
-    [statusMapping addPropertyMapping:resultRel];
-    
-    [resultMapping addPropertyMapping:resolutionDetailRel];
-    
-    [resolutionDetailMapping addPropertyMapping:resolutionLastRel];
-    [resolutionDetailMapping addPropertyMapping:resolutionButtonRel];
-    [resolutionDetailMapping addPropertyMapping:resolutionOrderRel];
-    [resolutionDetailMapping addPropertyMapping:resolutionByRel];
-    [resolutionDetailMapping addPropertyMapping:resolutionShopRel];
-    [resolutionDetailMapping addPropertyMapping:resolutionCustomerRel];
-    [resolutionDetailMapping addPropertyMapping:resolutionDisputeRel];
-    [resolutionDetailMapping addPropertyMapping:resolutionConversationRel];
-    [resolutionConversationMapping addPropertyMapping:resolutionAttachmentRel];
-    
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+    RKObjectManager *objectManager = [RKObjectManager sharedClient];
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[ResolutionCenterDetail mapping]
                                                                                             method:RKRequestMethodPOST
                                                                                        pathPattern:API_PATH_INBOX_RESOLUTION_CENTER
                                                                                            keyPath:@""
                                                                                        statusCodes:kTkpdIndexSetStatusCodeOK];
     
-    [_objectManager addResponseDescriptor:responseDescriptor];
-}
-
--(void)configureRestkitConversation
-{
-    _objectManager = [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ResolutionCenterDetail class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ResolutionCenterDetailResult class]];
-    
-    RKObjectMapping *resolutionConversationMapping = [_mapping resolutionConversationMapping];
-    RKObjectMapping *resolutionAttachmentMapping = [_mapping resolutionAttachmentMapping];
-    
-    RKRelationshipMapping *resultRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                   toKeyPath:kTKPD_APIRESULTKEY
-                                                                                 withMapping:resultMapping];
-    
-    RKRelationshipMapping *resolutionConversationRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_RESOLUTION_CONVERSATION_KEY
-                                                                                                   toKeyPath:API_RESOLUTION_CONVERSATION_KEY
-                                                                                                 withMapping:resolutionConversationMapping];
-    RKRelationshipMapping *resolutionAttachmentRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_RESOLUTION_ATTACHMENT_KEY
-                                                                                                 toKeyPath:API_RESOLUTION_ATTACHMENT_KEY
-                                                                                               withMapping:resolutionAttachmentMapping];
-    
-    [statusMapping addPropertyMapping:resultRel];
-    [resultMapping addPropertyMapping:resolutionConversationRel];
-    [resolutionConversationMapping addPropertyMapping:resolutionAttachmentRel];
-    
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                            method:RKRequestMethodPOST
-                                                                                       pathPattern:API_PATH_INBOX_RESOLUTION_CENTER
-                                                                                           keyPath:@""
-                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectManager addResponseDescriptor:responseDescriptor];
+    [objectManager addResponseDescriptor:responseDescriptor];
+    return objectManager;
 }
 
 -(NSString *)getPath:(int)tag
@@ -1431,6 +1263,8 @@
                 _addedLastConversation.isAddedConversation = [self isNeedAddList]?YES:NO;
                 _addedLastConversation.trouble_type = @(0);
                 _addedLastConversation.refund_amt_idr = resolution.result.detail.resolution_last.last_refund_amt_idr;
+                _addedLastConversation.solution_string = resolution.result.detail.resolution_last.last_solution_string;
+                _addedLastConversation.trouble_string = resolution.result.detail.resolution_last.last_trouble_string;
                 [_listResolutionConversation addObject:_addedLastConversation];
             }
             
@@ -1469,11 +1303,35 @@
     _loadMoreButton.enabled = YES;
 }
 
-//-(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
-//{
-////    _tableView.tableFooterView = nil;
-////    [_act stopAnimating];
-//}
+-(UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    if (section == 0) {
+        return _headerInfoView;
+    }
+    return nil;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if (section == 0) {
+        if (![_resolutionDetail.resolution_dispute.dispute_split_info isEqualToString:@"0"]) {
+            [_infoLabel setCustomAttributedText:_resolutionDetail.resolution_dispute.dispute_split_info];
+            return [self findHeightForText:_infoLabel.text havingWidth:_infoLabel.frame.size.width andFont:FONT_GOTHAM_BOOK_18].height;
+        }
+        return 0;
+    }
+    return 0;
+}
+
+- (CGSize)findHeightForText:(NSString *)text havingWidth:(CGFloat)widthValue andFont:(UIFont *)font {
+    CGSize size = CGSizeZero;
+    if (text) {
+        //iOS 7
+        CGRect frame = [text boundingRectWithSize:CGSizeMake(widthValue, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{ NSFontAttributeName:font } context:nil];
+        size = CGSizeMake(frame.size.width, frame.size.height + 1);
+    }
+    return size;
+}
 
 -(void)actionAfterFailRequestMaxTries:(int)tag
 {
@@ -1586,15 +1444,15 @@
         if (resolution.result.is_success == 1) {
             StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:resolution.message_status?:@[@"Sukses"] delegate:self];
             [alert show];
-            
+            [_delegate didResponseComplain:_indexPath];
             [self refreshRequest];
             
-            if ([action isEqualToString:ACTION_FINISH_RESOLUTION]||
-                [action isEqualToString:ACTION_ACCEPT_SOLUTION] ||
-                [action isEqualToString:ACTION_ACCEPT_ADMIN_SOLUTION] ) {
-                [_delegate finishComplain:_resolution atIndexPath:_indexPath];
-                [self.navigationController popViewControllerAnimated:YES];
-            }
+//            if ([action isEqualToString:ACTION_FINISH_RESOLUTION]||
+//                [action isEqualToString:ACTION_ACCEPT_SOLUTION] ||
+//                [action isEqualToString:ACTION_ACCEPT_ADMIN_SOLUTION] ) {
+//                [_delegate finishComplain:_resolution atIndexPath:_indexPath];
+//                [self.navigationController popViewControllerAnimated:YES];
+//            }
         }
         else
         {
@@ -1779,20 +1637,21 @@
 
 -(void)didSuccessReplay
 {
+    [_delegate didResponseComplain:_indexPath];
     [self refreshRequest];
 }
 
 - (IBAction)gesture:(id)sender {
-    if (![NavigationHelper shouldDoDeepNavigation]) {
-        return;
-    }
-    
     UITapGestureRecognizer *gesture = (UITapGestureRecognizer*)sender;
     if (gesture.view.tag == 10) {
-        [_navigate navigateToInvoiceFromViewController:self withInvoiceURL:_resolutionDetail.resolution_order.order_pdf_url];
+        [NavigateViewController navigateToInvoiceFromViewController:self withInvoiceURL:_resolutionDetail.resolution_order.order_pdf_url];
     }
     else
     {
+        if (![NavigationHelper shouldDoDeepNavigation]) {
+            return;
+        }
+        
         if (_resolutionDetail.resolution_by.by_customer == 1) {
             [_navigate navigateToProfileFromViewController:self withUserID:@""];
         }
@@ -1815,8 +1674,57 @@
     _indexPath = indexPath;
     _resolutionID = resolutionID;
     
-    [self configureRestKit];
     [self requestWithAction:ACTION_GET_RESOLUTION_CENTER_DETAIL];
+}
+
+
+-(void)SettingAddressViewController:(SettingAddressViewController *)viewController withUserInfo:(NSDictionary *)userInfo
+{
+    BOOL isEditAddress = ([[viewController.data objectForKey:@"type"] integerValue] == TYPE_ADD_EDIT_PROFILE_EDIT_RESO);
+
+    AddressFormList *address = [userInfo objectForKey:DATA_ADDRESS_DETAIL_KEY];
+    ResolutionConversation *conversation = viewController.data[@"conversation"];
+
+    if (address.address_id == 0) {
+        address.address_id = address.addr_id;
+    }
+
+    if (conversation.address.address_id == 0) {
+        conversation.address.address_id = conversation.address.addr_id;
+    }
+    
+    NSString *oldDataID = @"";
+    if (isEditAddress) {
+        oldDataID = [NSString stringWithFormat:@"%ld-%@",conversation.address.address_id, conversation.conversation_id];
+    }
+    _selectedAddress = address;
+    NSString *action = @"";
+    if (isEditAddress) {
+        action = @"edit_address_resolution";
+    }
+    else
+        action = @"input_address_resolution";
+    
+    [_requestInputAddress setParamInputAddress:_selectedAddress
+                                  resolutionID:[_resolutionDetail.resolution_last.last_resolution_id stringValue]
+                                     oldDataID:oldDataID
+                                 isEditAddress:isEditAddress
+                                        action:action];
+    
+    [_requestInputAddress doRequest];
+}
+
+-(void)successAddress:(InboxResolutionCenterList *)resolution successStatus:(NSArray *)successStatus
+{
+    StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:successStatus?:@[@"Anda telah berhasil mengubah alamat"] delegate:self];
+    [alert show];
+    [self refreshRequest];
+}
+
+-(void)failedAddress:(InboxResolutionCenterList *)resolution errors:(NSArray *)errors
+{
+    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errors delegate:self];
+    [alert show];
 }
 
 @end

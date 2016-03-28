@@ -43,6 +43,7 @@
 #import "GeneralTableViewController.h"
 
 #import "ListRekeningBank.h"
+#import "NoResultReusableView.h"
 
 #define DurationInstallmentFormat @"%@ bulan (%@)"
 
@@ -66,7 +67,8 @@
     LoadingViewDelegate,
     RequestCartDelegate,
     TransactionCCViewControllerDelegate,
-    GeneralTableViewControllerDelegate
+    GeneralTableViewControllerDelegate,
+    NoResultDelegate
 >
 {
     NSMutableArray *_list;
@@ -132,9 +134,7 @@
     LoadingView *_loadingView;
     TAGContainer *_gtmContainer;
     
-    InstallmentBank *_selectedInstallmentBank;
-    InstallmentTerm *_selectedInstallmentDuration;
-    
+
     BOOL _isSelectBankInstallment;
     BOOL _isSelectDurationInstallment;
     
@@ -144,6 +144,7 @@
     URLCacheConnection *_cacheconnection;
     
     NSString *_cachepath;
+    NoResultReusableView *_noResultView;
     
 }
 @property (weak, nonatomic) IBOutlet UIView *paymentMethodView;
@@ -207,6 +208,8 @@
 
 @property (weak, nonatomic) IBOutlet UIView *bankView;
 @property (weak, nonatomic) IBOutlet UIView *durationView;
+@property (strong, nonatomic) IBOutlet UILabel *transferCodeInfoLabel;
+@property (strong, nonatomic) IBOutlet UILabel *transferCodeLabel;
 
 @property (weak, nonatomic) IBOutlet UILabel *klikBCANotes;
 - (IBAction)tap:(id)sender;
@@ -287,12 +290,15 @@
         [_refreshControl addTarget:self action:@selector(refreshRequestCart)forControlEvents:UIControlEventValueChanged];
         [_tableView addSubview:_refreshControl];
         
-        _requestCart.param = @{@"lp_flag":@"1"};
-        [_requestCart doRequestCart];
+        if (_isLogin) {
+            _requestCart.param = @{@"lp_flag":@"1"};
+            [_requestCart doRequestCart];
+        }
         _paymentMethodView.hidden = YES;
         
         //[_networkManager doRequest];
     }
+    [self initNoResultView];
     
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 8.0;
@@ -340,6 +346,16 @@
     [_cachecontroller initCacheWithDocumentPath:path];
 }
 
+- (void)initNoResultView{
+    //_noResultView = [[NoResultReusableView alloc] initWithFrame:[[UIScreen mainScreen]bounds]];
+    _noResultView = [[NoResultReusableView alloc] initWithFrame:CGRectMake(0, -30, [[UIScreen mainScreen]bounds].size.width, [[UIScreen mainScreen]bounds].size.height)];
+    _noResultView.delegate = self;
+    [_noResultView generateAllElements:@"Keranjang.png"
+                                title:@"Keranjang belanja Anda kosong"
+                                 desc:@"Pilih dan beli produk yang anda inginkan,\nayo mulai belanja!"
+                             btnTitle:@"Ayo mulai belanja!"];
+    [_transferCodeInfoLabel setCustomAttributedText:_transferCodeInfoLabel.text];
+}
 
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -705,8 +721,8 @@
             UIButton *button = (UIButton*)sender;
             switch (button.tag) {
                 case 10:{
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Kode Kupon"
-                                                                    message:@"Masukan kode kupon"
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Kode Voucher"
+                                                                    message:@"Masukan kode voucher"
                                                                    delegate:self
                                                           cancelButtonTitle:@"Batal"
                                                           otherButtonTitles:@"OK", nil];
@@ -718,8 +734,8 @@
                 case 11:
                 {
                     AlertInfoView *alertInfo = [AlertInfoView newview];
-                    alertInfo.text = @"Info Kode Kupon Tokopedia";
-                    alertInfo.detailText = @"Hanya berlaku untuk satu kali pembayaran. Sisa nilai kupon tidak dapat dikembalikan";
+                    alertInfo.text = @"Info Kode Voucher Tokopedia";
+                    alertInfo.detailText = @"Hanya berlaku untuk satu kali pembayaran. Sisa nilai voucher tidak dapat dikembalikan";
                     [alertInfo show];
                 }
                 case 12:
@@ -776,6 +792,7 @@
                         vc.cartDetail = _cartSummary;
                         vc.delegate = self;
                         vc.paymentID = _cartSummary.payment_id;
+                        vc.title = _cartSummary.gateway_name?:@"BCA KlikPay";
                         
                         UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:vc];
                         navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
@@ -809,6 +826,7 @@
                     vc.transactionCode = _cartSummary.transaction_code?:@"";
                     vc.delegate = self;
                     vc.paymentID = _cartSummary.payment_id;
+                    vc.title = _cartSummary.gateway_name?:@"BRI E-Pay";
                     
                     UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:vc];
                     navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
@@ -823,6 +841,12 @@
             [self sendingProductDataToGA];
         }
     }
+}
+- (IBAction)tapInfoTransferCode:(id)sender {
+    AlertInfoView *alertInfo = [AlertInfoView newview];
+    alertInfo.text = @"Info Kode Unik";
+    alertInfo.detailText = @"Kode Unik adalah nominal unik yang ditambahkan untuk mempermudah proses verifikasi.";
+    [alertInfo show];
 }
 
 - (IBAction)tapBankInstallment:(id)sender {
@@ -1113,7 +1137,10 @@
     TransactionCartGateway *selectedGateway = [_data objectForKey:DATA_CART_GATEWAY_KEY];
     if ([selectedGateway.gateway integerValue] == TYPE_GATEWAY_INSTALLMENT) {
         if (!_selectedInstallmentBank) _selectedInstallmentBank = _cartSummary.installment_bank_option[0];
-        if (!_selectedInstallmentDuration) _selectedInstallmentDuration = ((InstallmentBank*)_cartSummary.installment_bank_option[0]).installment_term[0];
+        if (!_selectedInstallmentDuration){
+            _selectedInstallmentDuration = ((InstallmentBank*)_cartSummary.installment_bank_option[0]).installment_term[0];
+            [self adjustTotalPaymentInstallment];
+        }
         
         _bankInstallmentLabel.text = _selectedInstallmentBank.bank_name;
         _durationInstallmentLabel.text = [NSString stringWithFormat:DurationInstallmentFormat,_selectedInstallmentDuration.duration ,_selectedInstallmentDuration.monthly_price_idr];
@@ -1221,12 +1248,7 @@
         isValid = NO;
         [errorMessages addObject:ERRORMESSAGE_NULL_VOUCHER_CODE];
     }
-    if (voucherCode.length < 11)
-    {
-        isValid = NO;
-        [errorMessages addObject:ERRORMESSAGE_VOUCHER_CODE_LENGHT];
-    }
-    
+
     if (!isValid) {
         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
         [alert show];
@@ -1414,6 +1436,7 @@
             }
         }
         _selectedInstallmentDuration = _selectedInstallmentBank.installment_term[0];
+        [self adjustTotalPaymentInstallment];
         _isSelectBankInstallment = NO;
     }
     
@@ -1422,12 +1445,18 @@
             NSString *termNow = [NSString stringWithFormat:DurationInstallmentFormat,term.duration,term.monthly_price_idr];
             if ([termNow isEqualToString:object]) {
                 _selectedInstallmentDuration = term;
+                [self adjustTotalPaymentInstallment];
             }
         }
         _isSelectDurationInstallment = NO;
     }
     
     [_tableView reloadData];
+}
+
+-(void)adjustTotalPaymentInstallment{
+    _cartSummary.conf_code = _selectedInstallmentDuration.admin_price;
+    _cartSummary.conf_code_idr = _selectedInstallmentDuration.admin_price_idr;
 }
 
 -(void)adjustGrandTotalWithDeposit:(NSString*)deposit
@@ -1469,7 +1498,7 @@
     
     _cart.grand_total = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:grandTotalInteger]];
     
-    _cart.grand_total_idr = [[_IDRformatter stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]] stringByAppendingString:@",-"];
+    _cart.grand_total_idr = [_IDRformatter stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]];
     _cart.grand_total_without_lp = _cart.grand_total;
     _cart.grand_total_without_lp_idr = _cart.grand_total_idr;
     _grandTotalLabel.text = _cart.grand_total_without_lp_idr;
@@ -1630,6 +1659,12 @@
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
+    // should be phone numbers text field
+    if (textField.tag < 0) {
+        NSString* newString = [textField.text stringByReplacingCharactersInRange:range withString:string];
+        return [newString isNumber];
+    }
+    
     if (textField == _saldoTokopediaAmountTextField) {
         
         NSString *textFieldValue = [NSString stringWithFormat:@"%@%@", textField.text, string];
@@ -2029,8 +2064,8 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
 
-    NSString *error1 = [list.cart_error_message_1 isEqualToString:@"0"]?@"":list.cart_error_message_1;
-    NSString *error2 = [list.cart_error_message_2 isEqualToString:@"0"]?@"":list.cart_error_message_2;
+    NSString *error1 = ([list.cart_error_message_1 isEqualToString:@"0"] || !(list.cart_error_message_1))?@"":list.cart_error_message_1;
+    NSString *error2 = ([list.cart_error_message_2 isEqualToString:@"0"] || !(list.cart_error_message_2))?@"":list.cart_error_message_2;
     cell.textLabel.font = FONT_DEFAULT_CELL_TKPD;
 
     NSString *string = [NSString stringWithFormat:@"%@\n%@",error1, error2];
@@ -2081,7 +2116,7 @@
         }
         case 5:
             cell = _transferCodeCell;
-            [cell.detailTextLabel setText:_cartSummary.conf_code_idr];
+            [_transferCodeLabel setText:_cartSummary.conf_code_idr];
             break;
         case 6:
         {
@@ -2102,10 +2137,15 @@
             break;
         }
         case 8:
+        {
             cell = _totalPaymentDetail;
-            [cell.detailTextLabel setText:_cartSummary.payment_left_idr?:@"Rp 0" animated:YES];
+            NSString *paymentLeft = _cartSummary.payment_left_idr?:@"Rp 0";
+            if([_cartSummary.gateway integerValue] == TYPE_GATEWAY_INSTALLMENT){
+                paymentLeft = _selectedInstallmentDuration.total_price_idr;
+            }
+            [cell.detailTextLabel setText:paymentLeft animated:YES];
             break;
-
+        }
         default:
             break;
      }
@@ -2469,6 +2509,7 @@
         if (indexPath.row == 5) {
             if ([_cartSummary.gateway integerValue] != TYPE_GATEWAY_TRANSFER_BANK)
                 return 0;
+            else return 91;
         }
         if (indexPath.row == 6) {
             if ([_cartSummary.gateway integerValue] == TYPE_GATEWAY_CC || ([_cartSummary.gateway integerValue] == TYPE_GATEWAY_INSTALLMENT && [_cartSummary.conf_code integerValue] != 0)) {
@@ -2527,8 +2568,8 @@
 
 -(CGFloat)errorLabelHeight:(TransactionCartList*)list
 {
-    NSString *error1 = [list.cart_error_message_1 isEqualToString:@"0"]?@"":list.cart_error_message_1;
-    NSString *error2 = [list.cart_error_message_2 isEqualToString:@"0"]?@"":list.cart_error_message_2;
+    NSString *error1 = ([list.cart_error_message_1 isEqualToString:@"0"] || !(list.cart_error_message_1))?@"":list.cart_error_message_1;
+    NSString *error2 = ([list.cart_error_message_2 isEqualToString:@"0"] || !(list.cart_error_message_2))?@"":list.cart_error_message_2;
     if ([error1 isEqualToString:@""]&& [error2 isEqualToString:@""])
     {
         return 0;
@@ -2845,6 +2886,12 @@
     NSArray *list = cart.result.list;
     [_list addObjectsFromArray:list];
     
+    if(list.count >0){
+        [_noResultView removeFromSuperview];
+    }else{
+        [_tableView addSubview:_noResultView];
+    }
+    
     _cart = cart.result;
     [_dataInput setObject:_cart.grand_total?:@"" forKey:DATA_CART_GRAND_TOTAL];
     [_dataInput setObject:_cart.grand_total_without_lp forKey:DATA_CART_GRAND_TOTAL_WO_LP];
@@ -2956,7 +3003,7 @@
     
     _cart.grand_total = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:grandTotalInteger]];
     
-    _cart.grand_total_idr = [[_IDRformatter stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]] stringByAppendingString:@",-"];
+    _cart.grand_total_idr = [_IDRformatter stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]];
     
     _cart.grand_total_without_lp = _cart.grand_total;
     _cart.grand_total_without_lp_idr = _cart.grand_total_idr;
@@ -3049,6 +3096,7 @@
             vc.emoney_code = cart.result.transaction.emoney_code;
             vc.delegate = self;
             vc.paymentID = cart.result.transaction.payment_id;
+            vc.title = _cartSummary.gateway_name?:@"Mandiri E-Cash";
             
             UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:vc];
             navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
@@ -3093,7 +3141,7 @@
     
     NSInteger voucher = [voucherResponse.result.data_voucher.voucher_amount integerValue];
     NSString *voucherString = [_IDRformatter stringFromNumber:[NSNumber numberWithInteger:voucher]];
-    voucherString = [NSString stringWithFormat:@"Anda mendapatkan voucher %@,-", voucherString];
+    voucherString = [NSString stringWithFormat:@"Anda mendapatkan voucher %@", voucherString];
     _voucherAmountLabel.text = voucherString;
     _voucherAmountLabel.font = [UIFont fontWithName:@"GothamBook" size:12];
     
@@ -3231,6 +3279,11 @@
         }
     }
     [tracker send:[builder build]];
+}
+
+#pragma mark - NoResult Delegate
+- (void)buttonDidTapped:(id)sender{
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"navigateToPageInTabBar" object:@"1"];
 }
 
 @end

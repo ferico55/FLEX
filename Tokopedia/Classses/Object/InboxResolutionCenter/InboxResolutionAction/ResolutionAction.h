@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "ResolutionActionResult.h"
 
-@interface ResolutionAction : NSObject
+@interface ResolutionAction : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSArray *message_status;
 @property (nonatomic, strong) NSArray *message_error;
