@@ -55,6 +55,7 @@
 @property (nonatomic, strong) NSString *product_total_price;
 @property (nonatomic, strong) NSString *product_total_price_idr;
 @property (nonatomic, strong) NSString *product_pic;
+@property (nonatomic, strong) NSString *product_picture;
 @property (nonatomic, strong) NSString *product_use_insurance;
 @property (nonatomic, strong) NSString *product_cart_id;
 @property (nonatomic, strong) NSString *product_total_weight;

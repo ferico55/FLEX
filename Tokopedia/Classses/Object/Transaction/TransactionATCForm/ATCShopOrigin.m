@@ -23,7 +23,8 @@
                       @"latitude",
                       @"show_oke",
                       @"token",
-                      @"avail_shipping_code"
+                      @"avail_shipping_code",
+                      @"name"
                       ];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }

@@ -233,6 +233,8 @@
                                _ATCForm = data;
                                _isnodata = NO;
                                
+                               _shopNameLabel.text = _ATCForm.shop.name?:@"";
+                               
                                [self setProduct:_ATCForm.form.product_detail];
                                [self setAddress:_ATCForm.form.destination];
                                [self setPlacePicker];
@@ -878,6 +880,10 @@ replacementString:(NSString*)string
 -(void)setProduct:(ProductDetail*)product{
     _selectedProduct = product;
     _productQuantityTextField.text = ([_productQuantityTextField.text integerValue]!=0)?_productQuantityTextField.text:_selectedProduct.product_min_order?:@"1";
+    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:product.product_picture?:@""]
+                                                  cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                              timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    [_productThumbImageView setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_default_shop.jpg"] success:nil failure:nil];
     [_productDescriptionLabel setText:_selectedProduct.product_name];
 }
 
