@@ -155,7 +155,7 @@ RetryViewDelegate
     URLCacheController *_cachecontroller;
     URLCacheConnection *_cacheconnection;
     NSTimeInterval _timeinterval;
-    NSMutableArray *_product;
+    NSMutableArray<ShopProductPageList*> *_product;
     NSArray *_tmpProduct;
     Shop *_shop;
     NoResultReusableView *_noResultView;
@@ -297,7 +297,7 @@ RetryViewDelegate
     //[_networkManager doRequest];
     
     _shopPageRequest = [[ShopPageRequest alloc]init];
-    _shopPageRequest requestForShopProductPageListingWithShopId:<#(NSString *)#> onSuccess:<#^(NSArray<ShopProductPageResult *> *)successCallback#> onFailure:<#^(NSError *)errorCallback#>
+    [self requestProduct];
     
     NSDictionary *data = [[TKPDSecureStorage standardKeyChains] keychainDictionary];
     if ([data objectForKey:USER_LAYOUT_PREFERENCES]) {
@@ -401,7 +401,7 @@ RetryViewDelegate
     NSString *cellid;
     UICollectionViewCell *cell = nil;
     
-    List *list = [_product objectAtIndex:indexPath.row];
+    ShopProductPageList *list = [_product objectAtIndex:indexPath.row];
     if (self.cellType == UITableViewCellTypeOneColumn) {
         cellid = @"ProductSingleViewIdentifier";
         cell = (ProductSingleViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
@@ -464,7 +464,8 @@ RetryViewDelegate
         [_refreshControl beginRefreshing];
     }
 
-    [_networkManager doRequest];
+    //[_networkManager doRequest];
+    [self requestProduct];
 }
 
 #pragma mark - Memory Management
@@ -931,6 +932,92 @@ RetryViewDelegate
     
     _isFailRequest = YES;
     [_collectionView reloadData];
+}
+
+-(void)requestProduct{
+    NSString *querry =[_detailfilter objectForKey:kTKPDDETAIL_DATAQUERYKEY]?:@"";
+    NSString *sort =  [_detailfilter objectForKey:kTKPDDETAIL_APIORERBYKEY]?:@"";
+    NSString *shopID = [_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]?:@"";
+    EtalaseList *etalase = [_detailfilter objectForKey:DATA_ETALASE_KEY];
+    BOOL isSoldProduct = ([etalase.etalase_id integerValue] == 7);
+    BOOL isAllEtalase = (etalase.etalase_id == 0);
+    
+    id etalaseid;
+    
+    if (isSoldProduct) {
+        etalaseid = @"sold";
+        if(sort == 0) sort = etalase.etalase_id;
+    }
+    else if (isAllEtalase)
+        etalaseid = @"all";
+    else{
+        etalaseid = etalase.etalase_id?:@"";
+    }
+    
+    if([_data objectForKey:@"product_etalase_id"] && !etalase) {
+        etalaseid = [_data objectForKey:@"product_etalase_id"];
+    }
+    NSString* shopDomain = [_data objectForKey:@"shop_domain"]?:@"";
+    
+    [_shopPageRequest requestForShopProductPageListingWithShopId:shopID
+                                                       etalaseId:etalaseid
+                                                         keyWord:querry
+                                                            page:_page
+                                                        order_by:sort
+                                                     shop_domain:shopDomain
+                                                       onSuccess:^(ShopProductPageResult *result) {
+                                                           [_noResultView removeFromSuperview];
+                                                           
+                                                           if(_page == 1) {
+                                                               _product = [result.list mutableCopy];
+                                                               //[self addImpressionClick];
+                                                           } else {
+                                                               [_product addObjectsFromArray:result.list];
+                                                           }
+                                                           
+                                                           //[TPAnalytics trackProductImpressions:result.list];
+                                                           
+                                                           if (_product.count >0) {
+                                                               _isNoData = NO;
+                                                               [_noResultView removeFromSuperview];
+                                                               _nextPageUri =  result.paging.uri_next;
+                                                               _page = [[_networkManager splitUriToPage:_nextPageUri] integerValue];
+                                                               
+                                                               if(!_nextPageUri || [_nextPageUri isEqualToString:@"0"]) {
+                                                                   //remove loadingview if there is no more item
+                                                                   [_flowLayout setFooterReferenceSize:CGSizeZero];
+                                                               }
+                                                           } else {
+                                                               // no data at all
+                                                               _isNoData = YES;
+                                                               [_flowLayout setFooterReferenceSize:CGSizeZero];
+                                                               if([_detailfilter objectForKey:@"query"] == nil || [[_detailfilter objectForKey:@"query"] isEqualToString:@""]){
+                                                                   [_noResultView setNoResultTitle:@"Toko ini belum memiliki produk."];
+                                                               }else{
+                                                                   [_noResultView setNoResultTitle:@"Produk yang Anda cari tidak ditemukan."];
+                                                               }
+                                                               [_collectionView addSubview:_noResultView];
+                                                               [_collectionView sendSubviewToBack:_noResultView];
+                                                               [_collectionView sendSubviewToBack:_footer];
+                                                               [_collectionView bringSubviewToFront:_header];
+                                                               
+                                                               [_refreshControl endRefreshing];
+                                                               [_refreshControl setHidden:YES];
+                                                               [_refreshControl setEnabled:NO];
+                                                           }
+                                                           
+                                                           if(_refreshControl.isRefreshing) {
+                                                               [_refreshControl endRefreshing];
+                                                               //[_collectionView reloadSections:[NSIndexSet indexSetWithIndex:0]];
+                                                               [_collectionView reloadData];
+                                                           } else  {
+                                                               [_collectionView reloadData];
+                                                           }
+
+                                                       } onFailure:^(NSError *error) {
+                                                           //StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[error] delegate:self];
+                                                           //[alert show];
+                                                       }];
 }
 
 #pragma mark - Promo Request

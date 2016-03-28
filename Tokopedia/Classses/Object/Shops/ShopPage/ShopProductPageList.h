@@ -7,6 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+@class ProductModelView;
+@class CatalogModelView;
 
 @interface ShopProductPageList : NSObject
 @property(nonatomic, strong) NSString* shop_lucky;
@@ -39,5 +41,8 @@
 @property(nonatomic, strong) NSString* product_url;
 @property(nonatomic, strong) NSString* product_name;
 
+@property (nonatomic, strong) ProductModelView *viewModel;
+
 +(RKObjectMapping*)mapping;
+- (NSDictionary *)productFieldObjects;
 @end

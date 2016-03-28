@@ -7,6 +7,7 @@
 //
 
 #import "ShopProductPageList.h"
+#import "ProductModelView.h"
 
 @implementation ShopProductPageList
 +(RKObjectMapping *)mapping{
@@ -41,5 +42,36 @@
                                                                 @"product_url",
                                                                 @"product_name"]];
     return shopProductPageListMapping;
+}
+- (ProductModelView *)viewModel {
+    if(!_viewModel) {
+        ProductModelView *viewModel = [[ProductModelView alloc] init];
+        [viewModel setProductName:self.product_name];
+        [viewModel setProductPrice:self.product_price];
+        [viewModel setProductShop:self.shop_name];
+        [viewModel setProductThumbUrl:self.product_image];
+        [viewModel setProductReview:self.product_review_count];
+        [viewModel setProductTalk:self.product_talk_count];
+        [viewModel setIsGoldShopProduct:[self.shop_gold_status isEqualToString:@"1"]?YES:NO];
+        [viewModel setLuckyMerchantImageURL:self.shop_lucky];
+        
+        _viewModel = viewModel;
+    }
+    
+    return _viewModel;
+}
+
+- (NSDictionary *)productFieldObjects {
+    NSCharacterSet *characterSet = [NSCharacterSet characterSetWithCharactersInString:@"Rp."];
+    NSString *productPrice = [[_product_price componentsSeparatedByCharactersInSet:characterSet]
+                              componentsJoinedByString: @""];
+    NSDictionary *productFieldObjects = @{
+                                          @"name"     : _product_name?:@"",
+                                          @"id"       : _product_id?:@"",
+                                          @"price"    : productPrice,
+                                          @"brand"    : _shop_name?:@"",
+                                          @"url"      : _product_url?:@""
+                                          };
+    return productFieldObjects;
 }
 @end

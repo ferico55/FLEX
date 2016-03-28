@@ -11,7 +11,7 @@
 
 @interface ShopProductPageResponse : NSObject
 @property(nonatomic, strong) NSString* status;
-@property(nonatomic, strong) NSArray* data;
+@property(nonatomic, strong) ShopProductPageResult* data;
 
 + (RKObjectMapping *)mapping;
 @end

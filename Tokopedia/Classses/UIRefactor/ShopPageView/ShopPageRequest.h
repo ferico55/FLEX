@@ -11,5 +11,11 @@
 #import "ShopProductPageResult.h"
 
 @interface ShopPageRequest : NSObject
--(void)requestForShopProductPageListingWithShopId:(NSString *)shopId onSuccess:(void (^)(NSArray<ShopProductPageResult*>*))successCallback onFailure:(void (^)(NSError *))errorCallback;
+-(void)requestForShopProductPageListingWithShopId:(NSString*)shopId
+                                        etalaseId:(NSString*)etalaseId
+                                          keyWord:(NSString*)keyWord
+                                             page:(NSInteger)page
+                                         order_by:(NSString*)orderBy
+                                      shop_domain:(NSString*)shopDomain
+                                        onSuccess:(void (^)(ShopProductPageResult*))successCallback onFailure:(void (^)(NSError *))errorCallback;
 @end
