@@ -610,7 +610,6 @@ RetryViewDelegate
 - (IBAction)tapToEtalase:(id)sender {
     NSIndexPath *indexpath = [_detailfilter objectForKey:kTKPDDETAILETALASE_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
     MyShopEtalaseFilterViewController *vc =[MyShopEtalaseFilterViewController new];
-    //ProductEtalaseViewController *vc = [ProductEtalaseViewController new];
     vc.data = @{kTKPDDETAIL_APISHOPIDKEY:@([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0),
                 @"object_selected":[_detailfilter objectForKey:DATA_ETALASE_KEY]?:@0,
                 @"product_etalase_name" : [_detailfilter objectForKey:@"product_etalase_name"]?:@"",
@@ -701,7 +700,7 @@ RetryViewDelegate
         index = indexPath.section+3*(indexPath.row);
     }
     
-    List *list = _product[index];
+    ShopProductPageList *list = _product[index];
     
     NSString *shopName = list.shop_name;
     if ([shopName isEqualToString:@""]|| [shopName integerValue] == 0) {
