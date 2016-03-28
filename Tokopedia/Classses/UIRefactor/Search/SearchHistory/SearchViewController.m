@@ -28,7 +28,7 @@
 
 #import "ImagePickerCategoryController.h"
 
-NSString *const searchPath = @"search/%@";
+NSString *const searchPath = @"/search/%@";
 
 @interface SearchViewController ()
 <
@@ -50,12 +50,6 @@ NotificationManagerDelegate
     NotificationManager *_notifManager;
     SearchAutoCompleteViewController *_searchAutoCompleteController;
     
-    __weak RKObjectManager *_objectManager;
-    __weak RKManagedObjectRequestOperation *_objectRequest;
-    
-    NSInteger *_requestCount;
-    NSOperationQueue *_operationQueue;
-    
     NSMutableArray *_domains;
     NSMutableArray *_general;
     NSMutableArray *_hotlist;
@@ -64,6 +58,8 @@ NotificationManagerDelegate
     NSURL *_deeplinkUrl;
     
     UITapGestureRecognizer *imageSearchGestureRecognizer;
+    
+    TokopediaNetworkManager* _requestManager;
 }
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
@@ -97,7 +93,6 @@ NSString *const SearchDomainHotlist = @"Hotlist";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    _operationQueue = [NSOperationQueue new];
     [self.navigationController.navigationBar setTranslucent:NO];
     
     _historyResult =[NSMutableArray new];
@@ -122,14 +117,12 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     
     [self loadHistory];
     
-    //    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
     
     NSNotificationCenter *notification = [NSNotificationCenter defaultCenter];
     [notification addObserver:self selector:@selector(clearHistory) name:kTKPD_REMOVE_SEARCH_HISTORY object:nil];
     [notification addObserver:self selector:@selector(goToHotlist:) name:@"redirectSearch" object:nil];
     [notification addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [notification addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-    //    [notification addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:[UIDevice currentDevice]];
     
     UINib *cellNib = [UINib nibWithNibName:@"SearchAutoCompleteCell" bundle:nil];
     [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"SearchAutoCompleteCellIdentifier"];
@@ -140,6 +133,8 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     [_domains removeAllObjects];
     [_domains addObject:@{@"title" : SearchDomainHistory, @"data" : _historyResult}];
     [_collectionView reloadData];
+    
+    _requestManager = [TokopediaNetworkManager new];
 }
 
 -(BOOL)isEnableImageSearch{
@@ -420,8 +415,41 @@ NSString *const SearchDomainHotlist = @"Hotlist";
             [_typedHistoryResult addObjectsFromArray:historiesresult];
         }
         
-        [self configureRestkit];
-        [self doRequest];
+        [_requestManager requestWithBaseUrl:@"http://jahe.tokopedia.com"
+                                       path:[NSString stringWithFormat:searchPath, _searchBar.text]
+                                     method:RKRequestMethodGET
+                                  parameter:nil
+                                    mapping:[self mapping]
+                                  onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                      NSDictionary *result = successResult.dictionary;
+                                      SearchAutoCompleteObject *search = [result objectForKey:@""];
+                                      
+                                      [_domains removeAllObjects];
+                                      [_general removeAllObjects];
+                                      [_hotlist removeAllObjects];
+                                      
+                                      [_general addObjectsFromArray:search.domains.general];
+                                      [_hotlist addObjectsFromArray:search.domains.hotlist];
+                                      
+                                      if(_general.count > 0) {
+                                          [_domains addObject:@{@"title" : SearchDomainGeneral, @"data" : _general}];
+                                      }
+                                      
+                                      if(_hotlist.count > 0) {
+                                          [_domains addObject:@{@"title" : SearchDomainHotlist, @"data" : _hotlist}];
+                                      }
+                                      
+                                      if(_typedHistoryResult.count > 0) {
+                                          [_domains addObject:@{@"title" : SearchDomainHistory, @"data" : _typedHistoryResult}];
+                                      }
+                                      
+                                      [_collectionView reloadData];
+                                      [_collectionView setHidden:NO];
+                                  } onFailure:^(NSError *errorResult) {
+                                      
+                                  }];
+        
+        
     }
     
 }
@@ -536,11 +564,8 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     [self.navigationController pushViewController:viewController animated:animated];
 }
 
-#pragma mark - Network
-- (void)configureRestkit {
-    NSString *urlString = [NSString stringWithFormat:@"http://jahe.tokopedia.com/"];
-    _objectManager = [RKObjectManager sharedClient:urlString];
-    
+
+- (RKObjectMapping*)mapping {
     RKObjectMapping *searchMapping = [RKObjectMapping mappingForClass:[SearchAutoCompleteObject class]];;
     RKObjectMapping *domainsMapping = [RKObjectMapping mappingForClass:[SearchAutoCompleteDomains class]];
     
@@ -559,54 +584,11 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     [domainsMapping addPropertyMapping:generalRel];
     [domainsMapping addPropertyMapping:hotlistRel];
     [searchMapping addPropertyMapping:domainsRel];
-    
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:searchMapping
-                                                                                                  method:RKRequestMethodGET
-                                                                                             pathPattern:[NSString stringWithFormat:searchPath, _searchBar.text]
-                                                                                                 keyPath:@""
-                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectManager addResponseDescriptor:responseDescriptorStatus];
+
+    return searchMapping;
 }
 
-- (void)doRequest {
-    _objectRequest = [_objectManager appropriateObjectRequestOperationWithObject:self
-                                                                          method:RKRequestMethodGET
-                                                                            path:[NSString stringWithFormat:searchPath, _searchBar.text]
-                                                                      parameters:nil];
-    
-    [_objectRequest setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        NSDictionary *result = ((RKMappingResult*)mappingResult).dictionary;
-        SearchAutoCompleteObject *search = [result objectForKey:@""];
-        
-        [_domains removeAllObjects];
-        [_general removeAllObjects];
-        [_hotlist removeAllObjects];
-        
-        [_general addObjectsFromArray:search.domains.general];
-        [_hotlist addObjectsFromArray:search.domains.hotlist];
-        
-        if(_general.count > 0) {
-            [_domains addObject:@{@"title" : SearchDomainGeneral, @"data" : _general}];
-        }
-        
-        if(_hotlist.count > 0) {
-            [_domains addObject:@{@"title" : SearchDomainHotlist, @"data" : _hotlist}];
-        }
-        
-        if(_typedHistoryResult.count > 0) {
-            [_domains addObject:@{@"title" : SearchDomainHistory, @"data" : _typedHistoryResult}];
-        }
-        
-        [_collectionView reloadData];
-        [_collectionView setHidden:NO];
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        
-    }];
-    
-    [_operationQueue addOperation:_objectRequest];
-    
-}
+
 
 #pragma mark - SearchBar Method
 - (void)activateSearchBar {
