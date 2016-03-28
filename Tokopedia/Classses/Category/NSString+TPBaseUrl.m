@@ -38,7 +38,7 @@
                          (@{
                             @"https://ws-staging.tokopedia.com" : @"Staging",
                             @"https://ws-alpha.tokopedia.com" : @"Alpha",
-                            @"https://ws.tokopedia.con" : @"Production",
+                            @"https://ws.tokopedia.com" : @"Production",
                             }
                           ));
 }
