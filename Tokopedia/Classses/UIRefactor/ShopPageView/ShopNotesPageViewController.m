@@ -24,6 +24,7 @@
 
 #import "URLCacheController.h"
 #import "ShopPageHeader.h"
+#import "ShopPageRequest.h"
 
 #import "NoResultReusableView.h"
 
@@ -91,6 +92,7 @@
     NSOperationQueue *_operationQueue;
     NSOperationQueue *_operationUnfollowQueue;
     NSOperationQueue *_operationDeleteQueue;
+    ShopPageRequest *_shopPageRequest;
     
     
     NSString *_cachepath;
@@ -162,7 +164,8 @@
     _shopPageHeader.data = _data;
     
     _header = _shopPageHeader.view;
-
+    
+    _shopPageRequest = [[ShopPageRequest alloc]init];
     
     UIView *btmGreenLine = (UIView *)[_header viewWithTag:22];
     [btmGreenLine setHidden:NO];
@@ -186,7 +189,8 @@
     
     [self initNotification];
     [self configureRestKit];
-    [self loadData];
+    //[self loadData];
+    [self requestNotes];
 }
 
 
@@ -199,7 +203,8 @@
     if (!_isrefreshview) {
         [self configureRestKit];
         if (_isNoData && _page < 1) {
-            [self loadData];
+            //[self loadData];
+            [self requestNotes];
         }
     }
 }
@@ -251,7 +256,8 @@
     if (row == indexPath.row) {
         if (_uriNext != NULL && ![_uriNext isEqualToString:@"0"] && _uriNext != 0) {
             [self configureRestKit];
-            [self loadData];
+            //[self loadData];
+            [self requestNotes];
         } else {
             _table.tableFooterView = nil;
             [_act stopAnimating];
@@ -483,7 +489,28 @@
     [self cancel];
 }
 
-
+-(void)requestNotes{
+    [_shopPageRequest requestForShopNotesPageListingWithShopId:[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]?:@(0)
+                                                   shop_domain:[_data objectForKey:@"shop_domain"]?:@""
+                                                     onSuccess:^(Notes *notes) {
+                                                         _notes = notes;
+                                                         NSArray *list = _notes.result.list;
+                                                         _isNoData = NO;
+                                                         [_list addObjectsFromArray:list];
+                                                         
+                                                         [self.table reloadData];
+                                                         if (_list.count == 0) {
+                                                             _table.tableFooterView = _noResultView;
+                                                             _act.hidden = YES;
+                                                         }else{
+                                                             [_noResultView removeFromSuperview];
+                                                         }
+                                                     }
+                                                     onFailure:^(NSError *error) {
+                                                         [_act stopAnimating];
+                                                         self.table.tableFooterView = _noResultView;
+                                                     }];
+}
 
 
 #pragma mark - Refresh View
@@ -499,7 +526,8 @@
     [_table reloadData];
     /** request data **/
     [self configureRestKit];
-    [self loadData];
+    //[self loadData];
+    [self requestNotes];
 }
 
 #pragma mark - Memory Management

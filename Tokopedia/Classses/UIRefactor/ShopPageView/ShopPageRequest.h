@@ -10,6 +10,7 @@
 #import "ShopProductPageResponse.h"
 #import "ShopProductPageResult.h"
 #import "Talk.h"
+#import "Notes.h"
 
 @interface ShopPageRequest : NSObject
 -(void)requestForShopProductPageListingWithShopId:(NSString*)shopId
@@ -26,6 +27,13 @@
                                    shop_domain:(NSString*)shopDomain
                                      onSuccess:(void (^)(Talk*))successCallback
                                      onFailure:(void (^)(NSError *))errorCallback;
+
+-(void)requestForShopNotesPageListingWithShopId:(NSString*)shopId
+                                   shop_domain:(NSString*)shopDomain
+                                     onSuccess:(void (^)(Notes*))successCallback
+                                     onFailure:(void (^)(NSError *))errorCallback;
+
+
 
 -(NSString*)splitUriToPage:(NSString*)uri;
 @end
