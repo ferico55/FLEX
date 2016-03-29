@@ -2,11 +2,12 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9531"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="IntroViewController" customModule="Tokopedia" customModuleProvider="target">
             <connections>
+                <outlet property="presentationContainer" destination="gBF-Tr-zYB" id="CpJ-N8-Ntb"/>
                 <outlet property="view" destination="iN0-l3-epB" id="Zd2-Pg-sk0"/>
             </connections>
         </placeholder>
@@ -15,22 +16,17 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SiQ-9H-NwP">
-                    <rect key="frame" x="50" y="587" width="46" height="30"/>
-                    <state key="normal" title="Button"/>
-                </button>
-                <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="5" translatesAutoresizingMaskIntoConstraints="NO" id="O6D-zW-YPW">
-                    <rect key="frame" x="152" y="580" width="71" height="37"/>
-                    <color key="pageIndicatorTintColor" red="0.25882352939999997" green="0.74117647060000003" blue="0.25490196079999999" alpha="1" colorSpace="calibratedRGB"/>
-                    <color key="currentPageIndicatorTintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                </pageControl>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gBF-Tr-zYB">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="calibratedRGB"/>
+                </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="SiQ-9H-NwP" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="50" id="TcJ-KD-oe5"/>
-                <constraint firstItem="O6D-zW-YPW" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="f5z-iH-AiA"/>
-                <constraint firstAttribute="bottom" secondItem="SiQ-9H-NwP" secondAttribute="bottom" constant="50" id="ndj-we-t2z"/>
-                <constraint firstAttribute="bottom" secondItem="O6D-zW-YPW" secondAttribute="bottom" constant="50" id="x5f-CC-dmk"/>
+                <constraint firstAttribute="trailing" secondItem="gBF-Tr-zYB" secondAttribute="trailing" id="6G3-yw-6bB"/>
+                <constraint firstItem="gBF-Tr-zYB" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Bfh-fp-EOt"/>
+                <constraint firstItem="gBF-Tr-zYB" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="hkb-IA-JQb"/>
+                <constraint firstAttribute="bottom" secondItem="gBF-Tr-zYB" secondAttribute="bottom" id="r9x-8S-Bxl"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
             <point key="canvasLocation" x="279.5" y="291.5"/>

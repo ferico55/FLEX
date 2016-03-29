@@ -13,3 +13,4 @@
 #import "SwipeView.h"
 #import "MiniSlide.h"
 #import <QuartzCore/QuartzCore.h>
+#import <EAIntroView/EAIntroView.h>

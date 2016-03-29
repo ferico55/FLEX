@@ -9,51 +9,35 @@
 import UIKit
 
 @objc
-class IntroViewController: UIPageViewController, UIPageViewControllerDataSource {
-    
-    lazy var vcs: [UIViewController] = {
-        let vc1 = UIViewController()
-        
-        let vc2 = UIViewController()
-        
-        let vc3 = UIViewController()
-        
-        return [vc1, vc2, vc3, UIViewController(), UIViewController()]
-    }();
-    
-    init() {
-        super.init(transitionStyle: .Scroll, navigationOrientation: .Horizontal, options: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-    }
+class IntroViewController: UIViewController {
+    @IBOutlet var presentationContainer: UIView!
+    var introView: EAIntroView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = UIColor(white: 0xe7/255.0, alpha: 1)
-        self.dataSource = self
         
-        setViewControllers([vcs[0]], direction: .Forward, animated: false, completion: nil)
+        let page1 = EAIntroPage()
+        page1.title = "page 1"
+        page1.desc = "page 1 desc"
         
-        let pageControl = UIPageControl(frame: CGRect(x:50, y:50, width: 100, height: 50))
-        pageControl.tintColor = UIColor.redColor()
-        pageControl.numberOfPages = vcs.count
-        pageControl.currentPageIndicatorTintColor = UIColor.greenColor()
+        let page2 = EAIntroPage()
+        page2.title = "page 2"
+        page2.desc = "page2 desc"
         
+        let page3 = EAIntroPage()
+        page3.title = "page 3"
+        page3.desc = "page 3 desc"
         
-        self.view.addSubview(pageControl)
-        
+        introView = EAIntroView(frame: UIScreen.mainScreen().bounds, andPages: [page1, page2, page3])
+
+        introView.showInView(presentationContainer)
     }
     
-    func pageViewController(pageViewController: UIPageViewController, viewControllerAfterViewController viewController: UIViewController) -> UIViewController? {
-        let index = vcs.indexOf(viewController)! + 1
-        return index < vcs.count ? vcs[index]:nil
-    }
-    
-    func pageViewController(pageViewController: UIPageViewController, viewControllerBeforeViewController viewController: UIViewController) -> UIViewController? {
-        let index = vcs.indexOf(viewController)! - 1
-        return index >= 0 ? vcs[index]:nil
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        // for some reason the introView's frame is distorted
+        introView.frame = self.view.bounds
     }
     
     override func didReceiveMemoryWarning() {
