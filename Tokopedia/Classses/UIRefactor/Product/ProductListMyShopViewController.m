@@ -389,7 +389,7 @@
     ManageProduct *response = [mappingResult.dictionary objectForKey:@""];
     if (response.data.list.count > 0) {
         [_products addObjectsFromArray:response.data.list];
-        _uriNext = [NSURL URLWithString:response.data.paging.uri_next]?:nil;
+        _uriNext = [NSURL URLWithString:response.data.paging.uri_next];
         _page = [[_uriNext valueForKey:@"page"] integerValue];
         self.tableView.tableFooterView = nil;
     } else {
