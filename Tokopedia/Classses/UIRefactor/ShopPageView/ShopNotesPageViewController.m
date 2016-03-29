@@ -67,9 +67,6 @@
     NSString *_talkNavigationFlag;
     
     UIRefreshControl *_refreshControl;
-    NSInteger _requestCount;
-    NSInteger _requestUnfollowCount;
-    NSInteger _requestDeleteCount;
     
     NSTimer *_timer;
     UISearchBar *_searchbar;
@@ -77,28 +74,9 @@
     NSString *_readstatus;
     NSString *_navthatwillrefresh;
     BOOL _isrefreshnav;
-    BOOL _isNeedToInsertCache;
-    BOOL _isLoadFromCache;
     
-    
-    __weak RKObjectManager *_objectmanager;
-    __weak RKObjectManager *_objectUnfollowmanager;
-    __weak RKObjectManager *_objectDeletemanager;
-    
-    __weak RKManagedObjectRequestOperation *_request;
-    __weak RKManagedObjectRequestOperation *_requestUnfollow;
-    __weak RKManagedObjectRequestOperation *_requestDelete;
-    
-    NSOperationQueue *_operationQueue;
-    NSOperationQueue *_operationUnfollowQueue;
-    NSOperationQueue *_operationDeleteQueue;
     ShopPageRequest *_shopPageRequest;
     
-    
-    NSString *_cachepath;
-    URLCacheController *_cachecontroller;
-    URLCacheConnection *_cacheconnection;
-    NSTimeInterval _timeinterval;
     Notes *_notes;
     Shop *_shop;
     NoResultReusableView *_noResultView;
@@ -188,8 +166,6 @@
     [_fakeStickytab.layer setShadowOpacity:0.3];
     
     [self initNotification];
-    [self configureRestKit];
-    //[self loadData];
     [self requestNotes];
 }
 
@@ -201,9 +177,7 @@
     self.screenName = @"Shop - Note List";
     
     if (!_isrefreshview) {
-        [self configureRestKit];
         if (_isNoData && _page < 1) {
-            //[self loadData];
             [self requestNotes];
         }
     }
@@ -255,8 +229,6 @@
     NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] -1;
     if (row == indexPath.row) {
         if (_uriNext != NULL && ![_uriNext isEqualToString:@"0"] && _uriNext != 0) {
-            [self configureRestKit];
-            //[self loadData];
             [self requestNotes];
         } else {
             _table.tableFooterView = nil;
@@ -308,187 +280,7 @@
     return cell;
 }
 
-#pragma mark - Request + Mapping
-
--(void)cancel
-{
-    [_request cancel];
-    _request = nil;
-    [_objectmanager.operationQueue cancelAllOperations];
-    _objectmanager = nil;
-}
-
-- (void)configureRestKit
-{
-    // initialize RestKit
-    _objectmanager =  [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Notes class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[NotesResult class]];
-    
-    RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[NotesList class]];
-    [listMapping addAttributeMappingsFromArray:@[kTKPDNOTES_APINOTEIDKEY,
-                                                 kTKPDNOTES_APINOTESTATUSKEY,
-                                                 kTKPDNOTES_APINOTETITLEKEY
-                                                 ]];
-    
-    //add relationship mapping
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APILISTKEY toKeyPath:kTKPD_APILISTKEY withMapping:listMapping];
-    [resultMapping addPropertyMapping:listRel];
-    
-    // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDDETAILSHOP_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectmanager addResponseDescriptor:responseDescriptorStatus];
-}
-
-- (void)loadData
-{
-    if (_request.isExecuting) return;
-    
-    _requestCount++;
-    
-    NSDictionary *param = @{kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETSHOPNOTESKEY,
-                            kTKPDDETAIL_APISHOPIDKEY : [_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]?:@(0),
-                                                        @"shop_domain" : [_data objectForKey:@"shop_domain"]?:@"",
-                            };
-    
-    
-    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self
-                                                                    method:RKRequestMethodPOST
-                                                                      path:kTKPDDETAILSHOP_APIPATH
-                                                                parameters:[param encrypt]];
-    
-    [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [_timer invalidate];
-        _timer = nil;
-        [_act stopAnimating];
-        self.table.hidden = NO;
-        _isrefreshview = NO;
-        [_refreshControl endRefreshing];
-        [self requestSuccess:mappingResult withOperation:operation];
-        
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [_timer invalidate];
-        _timer = nil;
-        [_act stopAnimating];
-        _table.hidden = NO;
-        _isrefreshview = NO;
-        [_refreshControl endRefreshing];
-        [self requestFailure:error];
-    }];
-    [_operationQueue addOperation:_request];
-    
-    _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
-                                              target:self
-                                            selector:@selector(requestTimeout)
-                                            userInfo:nil
-                                             repeats:NO];
-    
-    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
-    
-}
-
--(void)requestSuccess:(id)object withOperation:(RKObjectRequestOperation *)operation
-{
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id stats = [result objectForKey:@""];
-    _notes = stats;
-    BOOL status = [_notes.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if (status) {
-        [self requestProcess:object];
-    }
-}
-
--(void)requestFailure:(id)object
-{
-    
-    //    NSMutableDictionary *mappingsDictionary = [[NSMutableDictionary alloc] init];
-    //    for (RKResponseDescriptor *descriptor in _objectManager.responseDescriptors) {
-    //        [mappingsDictionary setObject:descriptor.mapping forKey:descriptor.keyPath];
-    //    }
-    //
-    //    RKMapperOperation *mapper = [[RKMapperOperation alloc] initWithRepresentation:parsedData mappingsDictionary:mappingsDictionary];
-    //    NSError *mappingError = nil;
-    //    BOOL isMapped = [mapper execute:&mappingError];
-    //    if (isMapped && !mappingError) {
-    //        RKMappingResult *mappingresult = [mapper mappingResult];
-    //        NSDictionary *result = mappingresult.dictionary;
-    //        id stats = [result objectForKey:@""];
-    //        _talk = stats;
-    //        BOOL status = [_talk.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    //        if (status) {
-    //            [self requestProcess:mappingresult];
-    //        }
-    //    }
-}
-
--(void)requestProcess:(id)object
-{
-    if (object) {
-        if ([object isKindOfClass:[RKMappingResult class]]) {
-            NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            
-            id stats = [result objectForKey:@""];
-            
-            _notes = stats;
-            
-            BOOL status = [_notes.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-            
-            if (status) {
-                
-                NSArray *list = _notes.result.list;
-                _isNoData = NO;
-                [_list addObjectsFromArray:list];
-                
-                
-                [self.table reloadData];
-                if (_list.count == 0) {
-                    _table.tableFooterView = _noResultView;
-                    _act.hidden = YES;
-                }else{
-                    [_noResultView removeFromSuperview];
-                }
-                
-            }
-        }else{
-            
-            [self cancel];
-            NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
-            if ([(NSError*)object code] == NSURLErrorCancelled) {
-                if (_requestCount<kTKPDREQUESTCOUNTMAX) {
-                    NSLog(@" ==== REQUESTCOUNT %zd =====",_requestCount);
-                    //_table.tableFooterView = _footer;
-                    //[_act startAnimating];
-                    [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-                    [self performSelector:@selector(loadData) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-                }
-                else
-                {
-                    [_act stopAnimating];
-                    self.table.tableFooterView = _noResultView;
-                }
-            }
-            else
-            {
-                [_act stopAnimating];
-                self.table.tableFooterView = _noResultView;
-            }
-        }
-    }
-}
-
--(void)requestTimeout
-{
-    [self cancel];
-}
-
+#pragma mark - Request
 -(void)requestNotes{
     [_shopPageRequest requestForShopNotesPageListingWithShopId:[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]?:@(0)
                                                    shop_domain:[_data objectForKey:@"shop_domain"]?:@""
@@ -517,16 +309,12 @@
 -(void)refreshView:(UIRefreshControl*)refresh
 {
     /** clear object **/
-    [self cancel];
-    _requestCount = 0;
     [_list removeAllObjects];
     _page = 1;
     _isrefreshview = YES;
     
     [_table reloadData];
     /** request data **/
-    [self configureRestKit];
-    //[self loadData];
     [self requestNotes];
 }
 
