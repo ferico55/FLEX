@@ -9,6 +9,7 @@
             <connections>
                 <outlet property="page1View" destination="lY8-xc-qq4" id="1td-Jb-T3y"/>
                 <outlet property="presentationContainer" destination="gBF-Tr-zYB" id="CpJ-N8-Ntb"/>
+                <outlet property="topedImageView" destination="uoJ-Oz-2ks" id="gUM-PS-SVx"/>
                 <outlet property="view" destination="iN0-l3-epB" id="Zd2-Pg-sk0"/>
             </connections>
         </placeholder>

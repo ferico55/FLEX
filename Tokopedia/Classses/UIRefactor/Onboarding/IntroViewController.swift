@@ -11,6 +11,9 @@ import UIKit
 @objc
 class IntroViewController: UIViewController {
     @IBOutlet private var presentationContainer: UIView!
+    
+    @IBOutlet private var topedImageView: UIImageView!
+    
     @IBOutlet private var page1View: UIView!
     
     var introView: EAIntroView!
@@ -35,7 +38,18 @@ class IntroViewController: UIViewController {
     }
     
     private func setupPage1() {
+        topedImageView.animationDuration = 3
+        topedImageView.animationRepeatCount = 1
+        topedImageView.animationImages = [
+            UIImage(named: "onboarding_toped_1a.png")!,
+            UIImage(named: "onboarding_toped_1b.png")!,
+            UIImage(named: "onboarding_toped_1c.png")!,
+            UIImage(named: "onboarding_toped_1d.png")!,
+            UIImage(named: "onboarding_toped_1e.png")!,
+            UIImage(named: "onboarding_toped_1f.png")!,
+        ]
         
+        topedImageView.startAnimating()
     }
     
     override func viewDidLayoutSubviews() {
