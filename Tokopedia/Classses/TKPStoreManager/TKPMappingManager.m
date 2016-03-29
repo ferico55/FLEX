@@ -11,6 +11,7 @@
 #import "RequestObject.h"
 #import "ProfileSettings.h"
 #import "ImageResult.h"
+#import "UploadImage.h"
 
 @implementation TKPMappingManager
 
@@ -74,7 +75,14 @@ static RKObjectManager *_objectManager;
                                                                                            keyPath:@""
                                                                                        statusCodes:kTkpdIndexSetStatusCodeOK];
     
+    RKResponseDescriptor *responseStatusDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[UploadImage mapping]
+                                                                                            method:RKRequestMethodPOST
+                                                                                       pathPattern:pathPattern
+                                                                                           keyPath:@""
+                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
+    
     [_objectManager addResponseDescriptor:responseDescriptor];
+    [_objectManager addResponseDescriptor:responseStatusDescriptor];
     
     return _objectManager;
 }

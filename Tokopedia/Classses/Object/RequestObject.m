@@ -65,7 +65,10 @@
 + (NSDictionary*)attributeMappingDictionary {
     NSDictionary *dictionary = @{@"id"       : @"image_id",
                                  @"token"    : @"token",
-                                 @"user_id"  : @"user_id"};
+                                 @"user_id"  : @"user_id",
+                                 @"payment_id": @"payment_id",
+                                 @"action" : @"action"
+                                 };
     
     return dictionary;
 }
