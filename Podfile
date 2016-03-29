@@ -15,6 +15,7 @@ target "Tokopedia" do
     pod 'AppsFlyer-SDK', '4.3.7'
     pod 'BlocksKit', '~> 2.2.5'
     pod 'UITableView+FDTemplateLayoutCell'
+    pod 'EAIntroView', '~> 2.8.0'
 end
 
 target "TokopediaTests" do
