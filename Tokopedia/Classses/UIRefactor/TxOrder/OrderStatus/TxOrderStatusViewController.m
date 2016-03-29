@@ -390,16 +390,6 @@
     }
     if ([self isShowThreeButtonsOrder:order])
         cell.threeButtonsView.hidden = NO;
-    
-//    if ([self isShowTwoButtonsOrder:order] ||
-//        [self isShowThreeButtonsOrder:order] ||
-//        [self isShowButtonSeeComplainOrder:order] ||
-//        [self isShowButtonSeeComplainOrder:order] ||
-//        [self isShowButtonReorder:order]) {
-//        [cell.buttonsConstraintHeight makeObjectsPerformSelector:@selector(setConstant:)withObject:@(44)];
-//    } else {
-//        [cell.buttonsConstraintHeight makeObjectsPerformSelector:@selector(setConstant:)withObject:@(0)];
-//    }
 
     cell.indexPath = indexPath;
 
@@ -504,50 +494,83 @@
 #pragma mark - Request Get Transaction Order Payment Confirmation
 
 -(void)doRequestList{
-    NSString *filterInvoice = [_dataInput objectForKey:API_INVOICE_KEY]?:@"";
-    NSString *filterStartDate = [_dataInput objectForKey:API_TRANSACTION_START_DATE_KEY]?:@"";
-    NSString *filterEndDate = [_dataInput objectForKey:API_TRANSACTION_END_DATE_KEY]?:@"";
-    NSString *filterStatus = (_isCanceledPayment)?@"5":[_dataInput objectForKey:API_TRANSACTION_STATUS_KEY]?:@"";
+
     if (![_refreshControll isRefreshing]) {
         _tableView.tableFooterView = _footer;
         [_act startAnimating];
     }
+    if ([_action isEqualToString:@"get_tx_order_status"]) {
+        [self doRequestStatusList];
+    } else if([_action isEqualToString:@"get_tx_order_deliver"]){
+        [self doRequestDeliverList];
+    }else{
+        [self doRequestTransactionList];
+    }
+
+}
+
+-(void)doRequestTransactionList{
+    NSString *filterInvoice = [_dataInput objectForKey:API_INVOICE_KEY]?:@"";
+    NSString *filterStartDate = [_dataInput objectForKey:API_TRANSACTION_START_DATE_KEY]?:@"";
+    NSString *filterEndDate = [_dataInput objectForKey:API_TRANSACTION_END_DATE_KEY]?:@"";
+    NSString *filterStatus = (_isCanceledPayment)?@"5":[_dataInput objectForKey:API_TRANSACTION_STATUS_KEY]?:@"";
     
-    [RequestPurchase fetchListPuchasePage:_page action:_action invoice:filterInvoice startDate:filterStartDate endDate:filterEndDate status:filterStatus success:^(NSArray *list, NSInteger nextPage, NSString* uriNext) {
-        
-        if (_page == 1) {
-            [_list removeAllObjects];
-        }
-        [_list addObjectsFromArray:list];
-        if (_list.count >0) {
-            _isNodata = NO;
-            _URINext =  uriNext;
-            _page = nextPage;
-            _tableView.tableFooterView = nil;
-        } else {
-            if ([self isUsingAnyFilter]) {
-                [_noResultView setNoResultTitle:[NSString stringWithFormat:@"Belum ada transaksi untuk tanggal %@ - %@", [_dataInput objectForKey:API_TRANSACTION_START_DATE_KEY], [_dataInput objectForKey:API_TRANSACTION_END_DATE_KEY]]];
-                [_noResultView hideButton:YES];
-            } else {
-                [_noResultView setNoResultTitle:@"Belum ada transaksi"];
-                [_noResultView hideButton:YES];
-            }
-            
-            [_tableView addSubview:_noResultView];
-        }
-        
-        [_act stopAnimating];
-        [_refreshControll endRefreshing];
-        [_tableView reloadData];
-        
+    [RequestPurchase fetchTransactionListPage:_page invoice:filterInvoice startDate:filterStartDate endDate:filterEndDate status:filterStatus success:^(NSArray *list, NSInteger nextPage, NSString* uriNext) {
+        [self adjustList:list nextPage:nextPage uriNext:uriNext];
     } failure:^(NSError *error) {
-        [_act stopAnimating];
-        [_refreshControll endRefreshing];
-        
-        [_noResultView removeFromSuperview];
-        
-        _tableView.tableFooterView = _loadingView.view;
+        [self failedFetch];
     }];
+}
+
+-(void)doRequestDeliverList{
+    [RequestPurchase fetchOrderDeliverListPage:_page success:^(NSArray *list, NSInteger nextPage, NSString *uriNext) {
+        [self adjustList:list nextPage:nextPage uriNext:uriNext];
+    } failure:^(NSError *error) {
+        [self failedFetch];
+    }];
+}
+
+-(void)doRequestStatusList{
+    [RequestPurchase fetchOrderStatusListPage:_page success:^(NSArray *list, NSInteger nextPage, NSString *uriNext) {
+        [self adjustList:list nextPage:nextPage uriNext:uriNext];
+    } failure:^(NSError *error) {
+        [self failedFetch];
+    }];
+}
+
+-(void)failedFetch{
+    [_act stopAnimating];
+    [_refreshControll endRefreshing];
+    [_noResultView removeFromSuperview];
+    _tableView.tableFooterView = _loadingView.view;
+}
+
+-(void)adjustList:(NSArray*)list nextPage:(NSInteger)nextPage uriNext:(NSString*)uriNext{
+    
+    if (_page == 1) {
+        [_list removeAllObjects];
+    }
+    [_list addObjectsFromArray:list];
+    if (_list.count >0) {
+        _isNodata = NO;
+        _URINext =  uriNext;
+        _page = nextPage;
+        _tableView.tableFooterView = nil;
+    } else {
+        if ([self isUsingAnyFilter]) {
+            [_noResultView setNoResultTitle:[NSString stringWithFormat:@"Belum ada transaksi untuk tanggal %@ - %@", [_dataInput objectForKey:API_TRANSACTION_START_DATE_KEY], [_dataInput objectForKey:API_TRANSACTION_END_DATE_KEY]]];
+            [_noResultView hideButton:YES];
+        } else {
+            [_noResultView setNoResultTitle:@"Belum ada transaksi"];
+            [_noResultView hideButton:YES];
+        }
+        
+        [_tableView addSubview:_noResultView];
+    }
+    
+    [_act stopAnimating];
+    [_refreshControll endRefreshing];
+    [_tableView reloadData];
 }
 
 #pragma mark - loading view delegate

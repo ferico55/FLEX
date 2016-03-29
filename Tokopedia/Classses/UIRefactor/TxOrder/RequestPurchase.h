@@ -11,14 +11,22 @@
 #import "TransactionAction.h"
 
 @interface RequestPurchase : NSObject
-+(void)fetchListPuchasePage:(NSInteger)page
-                     action:(NSString*)action
-                    invoice:(NSString*)invoice
-                  startDate:(NSString*)startDate
-                    endDate:(NSString*)endDate
-                     status:(NSString*)status
-                    success:(void (^)(NSArray *list, NSInteger nextPage, NSString* uriNext))success
-                    failure:(void (^)(NSError *error))failure;
+
++(void)fetchOrderStatusListPage:(NSInteger)page
+                        success:(void (^)(NSArray *list, NSInteger nextPage, NSString* uriNext))success
+                        failure:(void (^)(NSError *error))failure;
+
++(void)fetchOrderDeliverListPage:(NSInteger)page
+                         success:(void (^)(NSArray *list, NSInteger nextPage, NSString* uriNext))success
+                         failure:(void (^)(NSError *error))failure;
+    
++(void)fetchTransactionListPage:(NSInteger)page
+                        invoice:(NSString*)invoice
+                      startDate:(NSString*)startDate
+                        endDate:(NSString*)endDate
+                         status:(NSString*)status
+                        success:(void (^)(NSArray *list, NSInteger nextPage, NSString* uriNext))success
+                        failure:(void (^)(NSError *error))failure ;
 
 +(void)fetchConfirmDeliveryOrder:(TxOrderStatusList*)order
                           action:(NSString*)action

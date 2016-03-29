@@ -11,8 +11,75 @@
 
 @implementation RequestPurchase
 
-+(void)fetchListPuchasePage:(NSInteger)page
-                     action:(NSString*)action
++(void)fetchOrderStatusListPage:(NSInteger)page
+                        success:(void (^)(NSArray *list, NSInteger nextPage, NSString* uriNext))success
+                        failure:(void (^)(NSError *error))failure {
+    
+    
+    NSDictionary* param = @{ @"page" : @(page) };
+    
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    networkManager.isUsingHmac = YES;
+    [networkManager requestWithBaseUrl:[NSString v4Url]
+                                  path:@"/v4/tx-order/get_tx_order_status.pl"
+                                method:RKRequestMethodGET
+                             parameter:param
+                               mapping:[TxOrderStatus mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                 
+                                 TxOrderStatus *response = [successResult.dictionary objectForKey:@""];
+                                 
+                                 if(response.message_error)
+                                 {
+                                     NSArray *array = response.message_error?:@[@"Permintaan Anda gagal. Cobalah beberapa saat lagi."];
+                                     [StickyAlertView showErrorMessage:array];
+                                     failure(nil);
+                                     
+                                 } else {
+                                     NSInteger nextPage = [[networkManager splitUriToPage:response.data.paging.uri_next] integerValue];
+                                     success(response.data.list, nextPage, response.data.paging.uri_next);
+                                 }
+                                 
+                             } onFailure:^(NSError *errorResult) {
+                                 failure(errorResult);
+                             }];
+}
+
++(void)fetchOrderDeliverListPage:(NSInteger)page
+                        success:(void (^)(NSArray *list, NSInteger nextPage, NSString* uriNext))success
+                        failure:(void (^)(NSError *error))failure {
+    
+    
+    NSDictionary* param = @{ @"page" : @(page) };
+    
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    networkManager.isUsingHmac = YES;
+    [networkManager requestWithBaseUrl:[NSString v4Url]
+                                  path:@"/v4/tx-order/get_tx_order_deliver.pl"
+                                method:RKRequestMethodGET
+                             parameter:param
+                               mapping:[TxOrderStatus mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                 
+                                 TxOrderStatus *response = [successResult.dictionary objectForKey:@""];
+                                 
+                                 if(response.message_error)
+                                 {
+                                     NSArray *array = response.message_error?:@[@"Permintaan Anda gagal. Cobalah beberapa saat lagi."];
+                                     [StickyAlertView showErrorMessage:array];
+                                     failure(nil);
+                                     
+                                 } else {
+                                     NSInteger nextPage = [[networkManager splitUriToPage:response.data.paging.uri_next] integerValue];
+                                     success(response.data.list, nextPage, response.data.paging.uri_next);
+                                 }
+                                 
+                             } onFailure:^(NSError *errorResult) {
+                                 failure(errorResult);
+                             }];
+}
+
++(void)fetchTransactionListPage:(NSInteger)page
                     invoice:(NSString*)invoice
                   startDate:(NSString*)startDate
                     endDate:(NSString*)endDate
@@ -21,7 +88,7 @@
                     failure:(void (^)(NSError *error))failure {
 
     
-    NSDictionary* param = @{@"action"   : action,
+    NSDictionary* param = @{
                             @"page"     : @(page),
                             @"invoice"  : invoice,
                             @"start"    :startDate,
@@ -30,7 +97,13 @@
                             };
     
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
-    [networkManager requestWithBaseUrl:kTkpdBaseURLString path:@"tx-order.pl" method:RKRequestMethodPOST parameter:param mapping:[TxOrderStatus mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+    networkManager.isUsingHmac = YES;
+    [networkManager requestWithBaseUrl:[NSString v4Url]
+                                  path:@"/v4/tx-order/get_tx_order_list.pl"
+                                method:RKRequestMethodGET
+                             parameter:param
+                               mapping:[TxOrderStatus mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
         
         TxOrderStatus *response = [successResult.dictionary objectForKey:@""];
         
@@ -40,8 +113,8 @@
             [StickyAlertView showErrorMessage:array];
             failure(nil);
         } else {
-            NSInteger nextPage = [[networkManager splitUriToPage:response.result.paging.uri_next] integerValue];
-            success(response.result.list,nextPage, response.result.paging.uri_next);
+            NSInteger nextPage = [[networkManager splitUriToPage:response.data.paging.uri_next] integerValue];
+            success(response.data.list,nextPage, response.data.paging.uri_next);
         }
         
     } onFailure:^(NSError *errorResult) {
