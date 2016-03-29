@@ -184,31 +184,37 @@
     [self cancelGenerateHost];
 }
 
-+(void)fetchGenerateHostSuccess:(void(^)(GeneratedHost* host))success{
++(void)fetchGenerateHostSuccess:(void(^)(GeneratedHost* host))success failure:(void (^)(NSError * error))failure{
+    
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
     networkManager.isUsingHmac = YES;
     
     UserAuthentificationManager *userManager = [UserAuthentificationManager new];
     NSString *userID = [userManager getUserId];
     NSDictionary* param = @{
-                            @"action"           : @"generate_host",
                             @"user_id"          : userID,
                             @"new_add"          : @"1",
                             @"upload_version"   : @"2"
                             };
     
-    [networkManager requestWithBaseUrl:@"https://ws.tokopedia.com" path:@"/v4/action/generate-host/generate_host.pl" method:RKRequestMethodGET parameter:param mapping:[GenerateHost mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-        
-        GenerateHost *response = [successResult.dictionary objectForKey:@""];
-        if (response.data.generated_host == 0 || response.data.generated_host == nil) {
-            [StickyAlertView showSuccessMessage:response.message_error?:@[@"Terjadi kendala pada server. Mohon coba kembali"]];
-        }
-        else{
-            success(response.data.generated_host);
-        }
-    } onFailure:^(NSError *errorResult) {
-        
-    }];
+    [networkManager requestWithBaseUrl:@"https://ws.tokopedia.com"
+                                  path:@"/v4/action/generate-host/generate_host.pl"
+                                method:RKRequestMethodGET
+                             parameter:param
+                               mapping:[GenerateHost mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                 
+                                 GenerateHost *response = [successResult.dictionary objectForKey:@""];
+                                 if (response.data.generated_host == 0 || response.data.generated_host == nil) {
+                                     [StickyAlertView showSuccessMessage:response.message_error?:@[@"Terjadi kendala pada server. Mohon coba kembali"]];
+                                     failure(nil);
+                                 }
+                                 else{
+                                     success(response.data.generated_host);
+                                 }
+                             } onFailure:^(NSError *errorResult) {
+                                 failure(errorResult);
+                             }];
 }
 
 @end
