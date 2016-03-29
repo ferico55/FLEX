@@ -239,26 +239,32 @@
     
     
     
-    RKObjectRequestOperation *operation = [objectManager objectRequestOperationWithRequest:request
-                                                                                   success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-                                                                                       NSLog(@"Request body %@", [[NSString alloc] initWithData:[operation.HTTPRequestOperation.request HTTPBody]  encoding:NSUTF8StringEncoding]);
-                                                                                       NSDictionary *result = mappingResult.dictionary;
-                                                                                       ImageResult *obj = [result objectForKey:@""];
-                                                                                       if ([obj.success isEqualToString:@"1"]) {
-                                                                                           success(obj);
-                                                                                       } else {
-                                                                                           [StickyAlertView showErrorMessage:obj.message_error?:@[@"Upload gambar gagal, mohon dicoba kembali atau gunakan gambar lain."]];
-                                                                                           failure(nil);
-                                                                                       }
-                                                                                       
-                                                                                   }
-                                                                                   failure:^(RKObjectRequestOperation *operation, NSError *error) {
-                                                                                       NSLog(@"Request body %@", [[NSString alloc] initWithData:[operation.HTTPRequestOperation.request HTTPBody]  encoding:NSUTF8StringEncoding]);
-                                                                                       
-                                                                                       [StickyAlertView showNetworkError:error];
-                                                                                       
-                                                                                       failure(error);
-                                                                                   }];
+    RKObjectRequestOperation *operation = [objectManager objectRequestOperationWithRequest:request success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        
+        NSLog(@"Request body %@", [[NSString alloc] initWithData:[operation.HTTPRequestOperation.request HTTPBody]  encoding:NSUTF8StringEncoding]);
+        if ([[mappingResult.dictionary objectForKey:@""] class] == [UploadImage class]) {
+            UploadImage *response = [mappingResult.dictionary objectForKey:@""];
+            if (response.data) {
+                success(response.data);
+            } else {
+                [StickyAlertView showErrorMessage:response.message_error?:@[@"Upload gambar gagal, mohon dicoba kembali atau gunakan gambar lain."]];
+                failure(nil);
+            }
+            
+        } else {
+            ImageResult *obj = [mappingResult.dictionary objectForKey:@""];
+            if ([obj.success isEqualToString:@"1"]) {
+                success(obj);
+            } else {
+                [StickyAlertView showErrorMessage:obj.message_error?:@[@"Upload gambar gagal, mohon dicoba kembali atau gunakan gambar lain."]];
+                failure(nil);
+            }
+        }
+        
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        [StickyAlertView showNetworkError:error];
+        failure(error);
+    }];
     
     [objectManager enqueueObjectRequestOperation:operation]; // NOTE: Must be enqueued rather than started
 }
