@@ -60,7 +60,6 @@
     NSArray *_bankAccount;
     
     TKPDPhotoPicker *_photoPicker;
-    RequestPayment *_requestPayment;
     UIAlertView *_loadingAlertView;
 }
 
@@ -228,7 +227,7 @@
         UIBarButtonItem *button = (UIBarButtonItem*)sender;
         if (button.tag == TAG_BAR_BUTTON_TRANSACTION_DONE) {
             if ([self isValidInput]) {
-                [self requestPaymentConfirmation];
+                [self doConfirmPayment];
             }
         }
         else
@@ -258,12 +257,6 @@
     [popUp show];
 }
 
--(void)requestPaymentConfirmation
-{
-    [self showLoadingView];
-    [[self requestPayment] doRequestPaymentConfirmation];
-}
-
 -(void)showLoadingView
 {
     [self initLoadingView];
@@ -283,15 +276,6 @@
     [indicator startAnimating];
     
     [_loadingAlertView setValue:indicator forKey:@"accessoryView"];
-}
-
--(RequestPayment*)requestPayment
-{
-    if (!_requestPayment) {
-        _requestPayment = [RequestPayment new];
-        _requestPayment.delegate = self;
-    }
-    return _requestPayment;
 }
 
 -(TKPDPhotoPicker *)photoPicker
@@ -315,7 +299,7 @@
 
 -(NSDictionary *)getImageObject
 {
-    return [_dataInput objectForKey:@"data_image_object"]?:@{};
+    return [_dataInput objectForKey:@"data_image_object"][@"photo"]?:@{};
 }
 
 #pragma mark - Table View Data Source
@@ -740,72 +724,44 @@
     }
 }
 
-
 #pragma mark - Request Confirm Payment
--(NSDictionary *)getParamConfirmationValidation:(BOOL)isStepValidation pictObj:(NSString *)picObj
-{
+-(void)doConfirmPayment{
+    [self showLoadingView];
+    
     NSArray *selectedOrder = [_dataInput objectForKey:DATA_SELECTED_ORDER_KEY];
     MethodList *method = [_dataInput objectForKey:DATA_SELECTED_PAYMENT_METHOD_KEY];
     TxOrderConfirmPaymentFormForm *form = [_dataInput objectForKey:DATA_DETAIL_ORDER_CONFIRMATION_KEY];
     SystemBankAcount *systemBank = [_dataInput objectForKey:DATA_SELECTED_SYSTEM_BANK_KEY];
     BankAccountFormList *bank = [_dataInput objectForKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
-    
-    NSMutableArray *confirmationIDs = [NSMutableArray new];
-    for (TxOrderConfirmationList *detail in selectedOrder) {
-        [confirmationIDs addObject:detail.confirmation.confirmation_id];
-    }
-    NSString * confirmationID = [[confirmationIDs valueForKey:@"description"] componentsJoinedByString:@"~"]?:@"";
-    NSString *paymentID = _paymentID?:@"";
-    NSString *token = form.token?:@"";
-    NSString *methodID = method.method_id?:@"";
     NSDate *paymentDate = [_dataInput objectForKey:DATA_PAYMENT_DATE_KEY]?:[NSDate date];
     NSString *totalPayment = [_totalPaymentTextField.text stringByReplacingOccurrencesOfString:@"." withString:@""];
-    NSString *paymentAmount = totalPayment?:@"";
-    NSDateComponents *components = [[NSCalendar currentCalendar] components:NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:paymentDate];
-    NSNumber *year = @([components year])?:@(0);
-    NSNumber *month = @([components month])?:@(0);
-    NSNumber *day = @([components day])?:@(0);
-    NSString *comment = _markTextView.text?:@"";
-    NSString *password = _passwordTextField.text?:@"";
-    NSString *systemBankID = systemBank.sysbank_id?:@"";
-    NSNumber *bankID = @(bank.bank_id)?:@(0);
-    NSString *bankName = bank.bank_name?:@"";
-    NSString *bankAccountName = _accountNameTextField.text?:@"";
-    NSString *bankAccountBranch = _branchTextField.text?:@"";
-    NSString *bankAccountNumber = _rekeningNumberTextField.text?:@"";
     NSString *bankAccountID = _isNewRekening?@"0":bank.bank_account_id?:@"";
-    NSString *depositor = _depositorTextField.text?:@"";
-    NSString *action = _isConfirmed?ACTION_EDIT_PAYMENT:ACTION_CONFIRM_PAYMENT;
-    if (isStepValidation) {
-        action = ACTION_CONFIRM_PAYMENT_VALIDATION;
-    }
     
-    //TODO:: File name & file path
-    
-    NSDictionary* param = @{API_ACTION_KEY : action,
-                            API_PAYMENT_ID_KEY : paymentID,
-                            API_CONFIRMATION_CONFIRMATION_ID_KEY : confirmationID,
-                            API_TOKEN_KEY : token,
-                            API_METHOD_ID_KEY : methodID,
-                            API_ORDER_PAYMENT_AMOUNT_KEY : paymentAmount,
-                            API_PAYMENT_DAY_KEY : day,
-                            API_PAYMENT_MONTH_KEY: month,
-                            API_PAYMENT_YEAR_KEY :year,
-                            API_PAYMENT_COMMENT_KEY : comment,
-                            API_PASSWORD_KEY : password,
-                            API_PASSWORD_DEPOSIT_KEY :password,
-                            API_DEPOSITOR_KEY : depositor,
-                            API_BANK_ID_KEY : bankID,
-                            API_BANK_NAME_KEY : bankName,
-                            API_BANK_ACCOUNT_NAME_KEY : bankAccountName,
-                            API_BANK_ACCOUNT_BRANCH_KEY : bankAccountBranch,
-                            API_BANK_ACCOUNT_NUMBER_KEY : bankAccountNumber,
-                            API_BANK_ACCOUNT_ID_KEY : bankAccountID,
-                            API_SYSTEM_BANK_ID_KEY : systemBankID,
-                            @"pic_obj":picObj
-                            };
-    return param;
-    
+    [RequestPayment fetchSubmitWithImageObject:[self getImageObject]
+                                   isConfirmed:_isConfirmed
+                                         token:form.token
+                                 selectedOrder:selectedOrder
+                                        method:method
+                                  systemBankID:systemBank.sysbank_id
+                                   bankAccount:bank
+                                     paymentID:_paymentID?:@""
+                                   paymentDate:paymentDate
+                                  totalPayment:totalPayment
+                                          note:_markTextView.text?:@""
+                                      password:_passwordTextField.text?:@""
+                               bankAccountName:_accountNameTextField.text?:@""
+                             bankAccountBranch:_branchTextField.text?:@""
+                             bankAccountNumber:_rekeningNumberTextField.text?:@""
+                                 bankAccountID:bankAccountID
+                                     depositor:_depositorTextField.text?:@""
+                                       success:^(TransactionAction *data) {
+                                           
+                                           [self actionAfterRequest];
+                                           [self requestSuccessConfirmPayment:data];
+                                           
+                                       } failed:^(NSError *error) {
+                                           [self actionAfterRequest];
+                                       }];
 }
 
 -(void)requestSuccessConfirmPayment:(TransactionAction*)action

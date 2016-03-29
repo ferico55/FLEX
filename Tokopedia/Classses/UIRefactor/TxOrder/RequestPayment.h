@@ -9,6 +9,14 @@
 #import <Foundation/Foundation.h>
 #import "RequestGenerateHost.h"
 #import "RequestUploadImage.h"
+#import "objectManagerPayment.h"
+#import "RequestGenerateHost.h"
+#import "string_tx_order.h"
+#import "AlertInfoView.h"
+#import "RequestObject.h"
+#import "MethodList.h"
+#import "BankAccountFormList.h"
+#import "TxOrderConfirmationList.h"
 
 @class TransactionAction;
 
@@ -25,5 +33,25 @@
 @property (nonatomic, weak) IBOutlet id<RequestPaymentDelegate> delegate;
 
 -(void)doRequestPaymentConfirmation;
+
++(void)fetchSubmitWithImageObject:(NSDictionary*)imageObject
+                      isConfirmed:(BOOL)isConfirmed
+                            token:(NSString*)token
+                    selectedOrder:(NSArray*)selectedOrder
+                           method:(MethodList*)method
+                     systemBankID:(NSString*)systemBankID
+                      bankAccount:(BankAccountFormList*)bankAccount
+                        paymentID:(NSString*)paymentID
+                      paymentDate:(NSDate*)paymentDate
+                     totalPayment:(NSString*)totalPayment
+                             note:(NSString*)note
+                         password:(NSString*)password
+                  bankAccountName:(NSString*)bankAccountName
+                bankAccountBranch:(NSString*)bankAccountBranch
+                bankAccountNumber:(NSString*)bankAccountNumber
+                    bankAccountID:(NSString*)bankAccountID
+                        depositor:(NSString*)depositor
+                          success:(void(^)(TransactionAction *data))success
+                           failed:(void(^)(NSError *error))failed ;
 
 @end

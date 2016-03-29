@@ -10,259 +10,204 @@
 #define TAG_REQUEST_SUBMIT 12
 
 #import "RequestPayment.h"
-#import "objectManagerPayment.h"
-#import "RequestGenerateHost.h"
-#import "string_tx_order.h"
-#import "AlertInfoView.h"
-#import "RequestObject.h"
+#import "StickyAlertView+NetworkErrorHandler.h"
+
+typedef void (^failedCompletionBlock)(NSError *error);
+
+static failedCompletionBlock failedCompletion;
 
 @implementation RequestPayment
-{
-    objectManagerPayment *_objectManager;
-    TokopediaNetworkManager *_networkManagerValidation;
-    TokopediaNetworkManager *_networkManagerSubmit;
+
++(void)fetchImageProof:(UIImage*)image imageName:(NSString*)imageName requestObject:(RequestObjectUploadImage*)object success:(void(^)(ImageResult *data))success {
     
-    UploadImage *_uploadImageObj;
-}
-
--(TokopediaNetworkManager*)networkManagerValidation
-{
-    if (!_networkManagerValidation) {
-        _networkManagerValidation = [TokopediaNetworkManager new];
-        _networkManagerValidation.tagRequest = TAG_REQUEST_VALIDATION;
-        _networkManagerValidation.delegate = self;
-    }
-    return _networkManagerValidation;
-}
-
--(TokopediaNetworkManager *)networkManagerSubmit
-{
-    if (!_networkManagerSubmit) {
-        _networkManagerSubmit = [TokopediaNetworkManager new];
-        _networkManagerSubmit.tagRequest = TAG_REQUEST_SUBMIT;
-        _networkManagerSubmit.delegate = self;
-    }
-    return _networkManagerSubmit;
-}
-
--(objectManagerPayment*)objectManager
-{
-    if (!_objectManager) {
-        _objectManager = [objectManagerPayment new];
-    }
-    return _objectManager;
-}
-
--(void)doRequestPaymentConfirmation;
-{
-    if ([[_delegate getImageObject] isEqualToDictionary:@{}]) {
-        [self doRequestSubmit];
-    }
-    else
-    {
-        [self doRequestValidation];
-    }
-}
-
--(void)doRequestValidation
-{
-    [[self networkManagerValidation]doRequest];
-}
-
--(void)doRequestGenerateHost
-{
     [RequestGenerateHost fetchGenerateHostSuccess:^(GeneratedHost *host) {
+        NSString *uploadImageBaseURL = [NSString stringWithFormat:@"https://%@",host.upload_host];
+        [RequestUploadImage requestUploadImage:image
+                                withUploadHost:uploadImageBaseURL
+                                          path:@"/web-service/v4/action/upload-image/upload_proof_image.pl"
+                                          name:@"payment_image"
+                                      fileName:imageName
+                                 requestObject:object
+                                     onSuccess:^(ImageResult *imageResult) {
+                                         
+                                         success(imageResult);
+                                         
+                                     } onFailure:^(NSError *error) {
+                                         failedCompletion(error);
+                                     }];
         
+    } failure:^(NSError *error) {
+        failedCompletion(error);
     }];
 }
 
--(void)doUploadImage:(id)object withHost:(GenerateHost*)host;
-{
-    RequestUploadImage *requestImage = [RequestUploadImage new];
-    requestImage.generateHost = host;
-    requestImage.imageObject = @{DATA_SELECTED_PHOTO_KEY:object};
-    requestImage.action = ACTION_UPLOAD_PROOF_IMAGE;
-    requestImage.fieldName = API_FORM_FIELD_NAME_PROOF;
-    requestImage.delegate = self;
-    UserAuthentificationManager *auth = [UserAuthentificationManager new];
-    requestImage.paymentID = [auth getUserId];
-    //TxOrderConfirmedList *selectedConfirmation = [_dataInput objectForKey:DATA_SELECTED_ORDER_KEY];
-    //requestImage.paymentID = selectedConfirmation.payment_id?:@"";
-    [requestImage configureRestkitUploadPhoto];
-    [requestImage requestActionUploadPhoto];
-}
-
--(void)doRequestSubmit
-{
-    [[self networkManagerSubmit] doRequest];
-}
-
-#pragma mark - Generate Host Delegate
--(void)successGenerateHost:(GenerateHost *)generateHost
-{
-    [self doUploadImage:[_delegate getImageObject] withHost:generateHost];
-}
-
-- (void)failedGenerateHost:(NSArray *)errorMessages
-{
-    StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:_delegate];
-    [stickyAlertView show];
-    [_delegate actionAfterRequest];
-}
-
-#pragma mark - Request Image Delegate
--(void)successUploadObject:(id)object withMappingResult:(UploadImage *)uploadImage
-{
-    _uploadImageObj = uploadImage;
-    [self doRequestSubmit];
-}
-
--(void)failedUploadErrorMessage:(NSArray *)errorMessage
-{
-    StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:errorMessage delegate:_delegate];
-    [stickyAlertView show];
-}
-
--(void)failedUploadObject:(id)object
-{
-    [_delegate actionAfterRequest];
-}
-
-#pragma mark - Network Manager Delegate
-
--(NSDictionary *)getParameter:(int)tag
-{
-    if (tag == TAG_REQUEST_VALIDATION) {
-        return [_delegate getParamConfirmationValidation:YES pictObj:@""];
-    }
-    if (tag == TAG_REQUEST_SUBMIT) {
-        return [_delegate getParamConfirmationValidation:NO pictObj:_uploadImageObj.result.pic_obj?:@""];
-    }
-    return nil;
-}
-
--(NSString *)getPath:(int)tag
-{
-    if (tag == TAG_REQUEST_VALIDATION) {
-        return API_PATH_ACTION_TX_ORDER;
++(NSDictionary*)getParamIsValidation:(BOOL)isValidation
+                         isConfirmed:(BOOL)isConfirmed
+                               token:(NSString*)token
+                       selectedOrder:(NSArray*)selectedOrder
+                              method:(MethodList*)method
+                        systemBankID:(NSString*)systemBankID
+                         bankAccount:(BankAccountFormList*)bankAccount
+                           paymentID:(NSString*)paymentID
+                         paymentDate:(NSDate*)paymentDate
+                        totalPayment:(NSString*)totalPayment
+                                note:(NSString*)note
+                            password:(NSString*)password
+                     bankAccountName:(NSString*)bankAccountName
+                   bankAccountBranch:(NSString*)bankAccountBranch
+                   bankAccountNumber:(NSString*)bankAccountNumber
+                       bankAccountID:(NSString*)bankAccountID
+                           depositor:(NSString*)depositor
+                              picObj:(NSString*)picObj {
+    
+    NSMutableArray *confirmationIDs = [NSMutableArray new];
+    for (TxOrderConfirmationList *detail in selectedOrder) {
+        [confirmationIDs addObject:detail.confirmation.confirmation_id];
     }
     
-    if (tag == TAG_REQUEST_SUBMIT) {
-        return API_PATH_ACTION_TX_ORDER;
-    }
-    return nil;
-}
-
--(id)getObjectManager:(int)tag
-{
-    if (tag == TAG_REQUEST_VALIDATION) {
-        return [[self objectManager] objectManagerTransactionAction];
-    }
-    
-    if (tag == TAG_REQUEST_SUBMIT) {
-        return [[self objectManager] objectManagerTransactionAction];
-    }
-    return nil;
-}
-
--(NSString *)getRequestStatus:(id)result withTag:(int)tag
-{
-    NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
-    id stat = [resultDict objectForKey:@""];
-    
-    if (tag == TAG_REQUEST_VALIDATION) {
-        TransactionAction *action = stat;
-        return action.status;
-    }
-    if (tag == TAG_REQUEST_SUBMIT) {
-        TransactionAction *action = stat;
-        return action.status;
+    NSString * confirmationID = [[confirmationIDs valueForKey:@"description"] componentsJoinedByString:@"~"]?:@"";
+    NSString *methodID = method.method_id?:@"";
+    NSString *paymentAmount = totalPayment?:@"";
+    NSDateComponents *components = [[NSCalendar currentCalendar] components:NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:paymentDate];
+    NSNumber *year = @([components year])?:@(0);
+    NSNumber *month = @([components month])?:@(0);
+    NSNumber *day = @([components day])?:@(0);
+    NSNumber *bankID = @(bankAccount.bank_id)?:@(0);
+    NSString *bankName = bankAccount.bank_name?:@"";
+    NSString *action = isConfirmed?ACTION_EDIT_PAYMENT:ACTION_CONFIRM_PAYMENT;
+    if (isValidation) {
+        action = ACTION_CONFIRM_PAYMENT_VALIDATION;
     }
     
-    return nil;
+    NSDictionary* param = @{API_ACTION_KEY : action,
+                            API_PAYMENT_ID_KEY : paymentID,
+                            API_CONFIRMATION_CONFIRMATION_ID_KEY : confirmationID,
+                            API_TOKEN_KEY : token,
+                            API_METHOD_ID_KEY : methodID,
+                            API_ORDER_PAYMENT_AMOUNT_KEY : paymentAmount,
+                            API_PAYMENT_DAY_KEY : day,
+                            API_PAYMENT_MONTH_KEY: month,
+                            API_PAYMENT_YEAR_KEY :year,
+                            API_PAYMENT_COMMENT_KEY : note,
+                            API_PASSWORD_KEY : password,
+                            API_PASSWORD_DEPOSIT_KEY :password,
+                            API_DEPOSITOR_KEY : depositor,
+                            API_BANK_ID_KEY : bankID,
+                            API_BANK_NAME_KEY : bankName,
+                            API_BANK_ACCOUNT_NAME_KEY : bankAccountName,
+                            API_BANK_ACCOUNT_BRANCH_KEY : bankAccountBranch,
+                            API_BANK_ACCOUNT_NUMBER_KEY : bankAccountNumber,
+                            API_BANK_ACCOUNT_ID_KEY : bankAccountID,
+                            API_SYSTEM_BANK_ID_KEY : systemBankID,
+                            @"pic_obj":picObj
+                            };
+
+    return param;
 }
 
--(void)actionBeforeRequest:(int)tag
-{
++(void)fetchValidationParam:(NSDictionary*)param success:(void(^)(TransactionAction *data))success{
     
-}
-
--(void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag
-{
-    if (tag == TAG_REQUEST_VALIDATION) {
-        NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
-        id stat = [result objectForKey:@""];
-        TransactionAction *order = stat;
-        if(order.result.is_success == 1)
-        {
-            [self doRequestGenerateHost];
-        }
-        else
-        {
-            NSArray *array = order.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:_delegate];
-            [alert show];
-            [_delegate actionAfterRequest];
-        }
-    }
-    if (tag == TAG_REQUEST_SUBMIT) {
-        NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
-        id stat = [result objectForKey:@""];
-        TransactionAction *order = stat;
-        if(order.result.is_success == 1)
-        {
-            [_delegate requestSuccessConfirmPayment:order];
-            [_delegate actionAfterRequest];
-        }
-        else
-        {
-            NSArray *array = order.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:_delegate];
-            [alert show];
-            [_delegate actionAfterRequest];
-            
-        }
-    }
-}
-
--(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
-{
-    NSError *error = errorResult;
-    NSArray *errors;
-    
-    if (error.code==-1009 || error.code==-999) {
-        errors = @[@"Tidak ada koneksi internet"];
-    } else {
-        errors = @[@"Mohon maaf, terjadi kendala pada server"];
-    }
-    
-    StickyAlertView *failedAlert = [[StickyAlertView alloc]initWithErrorMessages:errors?:@[@"Error"] delegate:_delegate];
-    [failedAlert show];
-    [_delegate actionAfterRequest];
-}
-
--(void)actionAfterFailRequestMaxTries:(int)tag
-{
-    [_delegate actionAfterRequest];
-}
-
-+(void)requestPaymentConfirmationImage:(UIImage*)image imageName:(NSString*)imageName fileName:(NSString*)fileName requestObject:(RequestObjectUploadImage*)object Success:(void(^)(TransactionAction *data))success{
-    
-    if (image == nil) {
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    [networkManager requestWithBaseUrl:kTkpdBaseURLString
+                                  path:@"action/tx-order.pl"
+                                method:RKRequestMethodPOST
+                             parameter:param
+                               mapping:[TransactionAction mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
         
-    }
+        TransactionAction *response = [successResult.dictionary objectForKey:@""];
+        if(response.result.is_success == 1){
+            success(response);
+        } else {
+            failedCompletion(nil);
+            NSArray *array = response.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
+            [StickyAlertView showErrorMessage:array];
+        }
+        
+    } onFailure:^(NSError *errorResult) {
+        failedCompletion(errorResult);
+    }];
+}
+
++(void)fetchSubmitParam:(NSDictionary*)param success:(void(^)(TransactionAction *data))success{
     
-    [RequestGenerateHost fetchGenerateHostSuccess:^(GeneratedHost *host) {
-        [RequestUploadImage requestUploadImage:image withUploadHost:host.upload_host path:@"ws/action/upload-image.pl" name:imageName fileName:@"payment_image" requestObject:object onSuccess:^(ImageResult *imageResult) {
-            
-        } onFailure:^(NSError *error) {
-            
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    [networkManager requestWithBaseUrl:kTkpdBaseURLString
+                                  path:@"action/tx-order.pl"
+                                method:RKRequestMethodPOST
+                             parameter:param
+                               mapping:[TransactionAction mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+        
+        TransactionAction *response = [successResult.dictionary objectForKey:@""];
+        if(response.result.is_success == 1){
+            success(response);
+        } else {
+            failedCompletion(nil);
+            NSArray *array = response.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
+            [StickyAlertView showErrorMessage:array];
+        }
+        
+    } onFailure:^(NSError *errorResult) {
+        failedCompletion(errorResult);
+    }];
+}
+
++(void)fetchSubmitWithImageObject:(NSDictionary*)imageObject
+                      isConfirmed:(BOOL)isConfirmed
+                            token:(NSString*)token
+                    selectedOrder:(NSArray*)selectedOrder
+                           method:(MethodList*)method
+                     systemBankID:(NSString*)systemBankID
+                      bankAccount:(BankAccountFormList*)bankAccount
+                        paymentID:(NSString*)paymentID
+                      paymentDate:(NSDate*)paymentDate
+                     totalPayment:(NSString*)totalPayment
+                             note:(NSString*)note
+                         password:(NSString*)password
+                  bankAccountName:(NSString*)bankAccountName
+                bankAccountBranch:(NSString*)bankAccountBranch
+                bankAccountNumber:(NSString*)bankAccountNumber
+                    bankAccountID:(NSString*)bankAccountID
+                        depositor:(NSString*)depositor
+                          success:(void(^)(TransactionAction *data))success
+                           failed:(void(^)(NSError *error))failed {
+    
+    failedCompletion = failed;
+    
+    if ([imageObject isEqual:@{}]) {
+        
+        NSDictionary *param = [RequestPayment getParamIsValidation:NO isConfirmed:isConfirmed token:token selectedOrder:selectedOrder method:method systemBankID:systemBankID bankAccount:bankAccount paymentID:paymentID paymentDate:paymentDate totalPayment:totalPayment note:note password:password bankAccountName:bankAccountName bankAccountBranch:bankAccountBranch bankAccountNumber:bankAccountNumber bankAccountID:bankAccountID depositor:depositor picObj:@""];
+        
+        [RequestPayment fetchSubmitParam:param success:^(TransactionAction *data) {
+            success(data);
         }];
-    }];
-}
-
-+(void)requestSubmitSuccess:(void(^)(TransactionAction *data))success{
-    
+    } else {
+        
+        NSDictionary *param = [RequestPayment getParamIsValidation:YES isConfirmed:isConfirmed token:token selectedOrder:selectedOrder method:method systemBankID:systemBankID bankAccount:bankAccount paymentID:paymentID paymentDate:paymentDate totalPayment:totalPayment note:note password:password bankAccountName:bankAccountName bankAccountBranch:bankAccountBranch bankAccountNumber:bankAccountNumber bankAccountID:bankAccountID depositor:depositor picObj:@""];
+        
+        [RequestPayment fetchValidationParam:param success:^(TransactionAction *data) {
+            
+            UserAuthentificationManager *auth = [UserAuthentificationManager new];
+            RequestObjectUploadImage *objectRequest = [RequestObjectUploadImage new];
+            objectRequest.token = token;
+            objectRequest.user_id = [auth getUserId];
+            objectRequest.payment_id = [auth getUserId];
+            objectRequest.action = @"upload_proof_image";
+            
+            [RequestPayment fetchImageProof:imageObject[@"photo"]
+                                  imageName:imageObject[@"cameraimagename"]?:@"image.png"
+                              requestObject:objectRequest
+                                    success:^(ImageResult *data) {
+                                        
+                                        NSDictionary *param = [RequestPayment getParamIsValidation:NO isConfirmed:isConfirmed token:token selectedOrder:selectedOrder method:method systemBankID:systemBankID bankAccount:bankAccount paymentID:paymentID paymentDate:paymentDate totalPayment:totalPayment note:note password:password bankAccountName:bankAccountName bankAccountBranch:bankAccountBranch bankAccountNumber:bankAccountNumber bankAccountID:bankAccountID depositor:depositor picObj:data.pic_obj];
+                                        
+                                        [RequestPayment fetchSubmitParam:param success:^(TransactionAction *data) {
+                                            success(data);
+                                        }];
+                                    }];
+        }];
+    }
 }
 
 @end
