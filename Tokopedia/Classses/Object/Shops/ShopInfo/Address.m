@@ -10,20 +10,18 @@
 
 @implementation Address
 
-//- (NSString *)location_phone {
-//    if ([_location_phone isEqualToString:@"0"]) {
-//        return @"-";
-//    } else {
-//        return _location_phone;
-//    }
-//}
-
 - (NSString *)location_address {
     return [_location_address kv_decodeHTMLCharacterEntities];
 }
 
 - (NSString *)location_address_name {
     return [_location_address_name kv_decodeHTMLCharacterEntities];
+}
+
++ (RKObjectMapping *)objectMapping {
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[self class]];
+    [mapping addAttributeMappingsFromArray:@[@"location_city_name", @"location_email", @"location_address", @"location_postal_code", @"location_city_id", @"location_area", @"location_phone", @"location_district_id", @"location_province_name", @"location_province_id", @"location_district_name", @"location_address_id", @"location_fax", @"location_address_name"]];
+    return mapping;
 }
 
 @end
