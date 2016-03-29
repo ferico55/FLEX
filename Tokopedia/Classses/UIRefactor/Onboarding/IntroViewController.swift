@@ -10,15 +10,16 @@ import UIKit
 
 @objc
 class IntroViewController: UIViewController {
-    @IBOutlet var presentationContainer: UIView!
+    @IBOutlet private var presentationContainer: UIView!
+    @IBOutlet private var page1View: UIView!
+    
     var introView: EAIntroView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let page1 = EAIntroPage()
-        page1.title = "page 1"
-        page1.desc = "page 1 desc"
+        let page1 = EAIntroPage(customView: page1View)
+        setupPage1()
         
         let page2 = EAIntroPage()
         page2.title = "page 2"
@@ -31,6 +32,10 @@ class IntroViewController: UIViewController {
         introView = EAIntroView(frame: UIScreen.mainScreen().bounds, andPages: [page1, page2, page3])
 
         introView.showInView(presentationContainer)
+    }
+    
+    private func setupPage1() {
+        
     }
     
     override func viewDidLayoutSubviews() {

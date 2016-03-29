@@ -36,7 +36,7 @@
 
     [self hideTitleBackButton];
     
-    _viewController = [IntroViewController new];
+    _viewController = [[IntroViewController alloc] initWithNibName:@"IntroViewController" bundle:nil];
     _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     _window.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
     _window.backgroundColor = kTKPDNAVIGATION_NAVIGATIONBGCOLOR;

@@ -2,11 +2,12 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9531"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="IntroViewController" customModule="Tokopedia" customModuleProvider="target">
             <connections>
+                <outlet property="page1View" destination="lY8-xc-qq4" id="1td-Jb-T3y"/>
                 <outlet property="presentationContainer" destination="gBF-Tr-zYB" id="CpJ-N8-Ntb"/>
                 <outlet property="view" destination="iN0-l3-epB" id="Zd2-Pg-sk0"/>
             </connections>
@@ -29,7 +30,28 @@
                 <constraint firstAttribute="bottom" secondItem="gBF-Tr-zYB" secondAttribute="bottom" id="r9x-8S-Bxl"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
-            <point key="canvasLocation" x="279.5" y="291.5"/>
+            <point key="canvasLocation" x="-182.5" y="373.5"/>
+        </view>
+        <view contentMode="scaleToFill" id="lY8-xc-qq4">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="onboarding_toped_1a.png" translatesAutoresizingMaskIntoConstraints="NO" id="uoJ-Oz-2ks">
+                    <rect key="frame" x="92" y="109" width="230" height="194"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="230" id="MZf-Tn-zTB"/>
+                        <constraint firstAttribute="height" constant="194" id="qYB-GH-xLr"/>
+                    </constraints>
+                </imageView>
+            </subviews>
+            <constraints>
+                <constraint firstItem="uoJ-Oz-2ks" firstAttribute="top" secondItem="lY8-xc-qq4" secondAttribute="top" constant="109" id="Dcr-OQ-ZQc"/>
+                <constraint firstItem="uoJ-Oz-2ks" firstAttribute="centerX" secondItem="lY8-xc-qq4" secondAttribute="centerX" id="tjc-0t-0Yt"/>
+            </constraints>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
         </view>
     </objects>
+    <resources>
+        <image name="onboarding_toped_1a.png" width="460" height="388"/>
+    </resources>
 </document>
