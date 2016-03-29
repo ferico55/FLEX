@@ -9,6 +9,7 @@
 #import "ShopPageRequest.h"
 #import "TokopediaNetworkManager.h"
 #define PRODUCT_PER_PAGE 12
+#define TALK_PER_PAGE 6
 
 @implementation ShopPageRequest{
     TokopediaNetworkManager* _productNetworkManager;
@@ -38,6 +39,24 @@
                                      } onFailure:^(NSError *errorResult) {
                                          errorCallback(errorResult);
                                      }];
+}
+
+-(void)requestForShopTalkPageListingWithShopId:(NSString *)shopId page:(NSInteger)page shop_domain:(NSString *)shopDomain onSuccess:(void (^)(ShopProductPageResult *))successCallback onFailure:(void (^)(NSError *))errorCallback{
+    /*
+    _talkNetworkManager = [TokopediaNetworkManager new];
+    _talkNetworkManager.isUsingHmac = YES;
+    [_talkNetworkManager requestWithBaseUrl:@"https://ws.tokopedia.com"
+                                       path:@"/v4/shop/get_shop_talk.pl"
+                                     method:RKRequestMethodGET
+                                  parameter:@{}
+                                    mapping:<#(RKObjectMapping *)#>
+                                  onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                      
+                                  }
+                                  onFailure:^(NSError *errorResult) {
+                                      
+                                  }];
+     */
 }
 
 -(NSString*)splitUriToPage:(NSString *)uri{

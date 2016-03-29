@@ -17,7 +17,16 @@
                                              page:(NSInteger)page
                                          order_by:(NSString*)orderBy
                                       shop_domain:(NSString*)shopDomain
-                                        onSuccess:(void (^)(ShopProductPageResult*))successCallback onFailure:(void (^)(NSError *))errorCallback;
+                                        onSuccess:(void (^)(ShopProductPageResult*))successCallback
+                                        onFailure:(void (^)(NSError *))errorCallback;
+
+-(void)requestForShopTalkPageListingWithShopId:(NSString*)shopId
+                                          page:(NSInteger)page
+                                   shop_domain:(NSString*)shopDomain
+                                     onSuccess:(void (^)(ShopProductPageResult*))successCallback
+                                     onFailure:(void (^)(NSError *))errorCallback;
+
+-(void)requestF
 
 -(NSString*)splitUriToPage:(NSString*)uri;
 @end
