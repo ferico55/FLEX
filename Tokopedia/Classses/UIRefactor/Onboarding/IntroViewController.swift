@@ -16,6 +16,8 @@ class IntroViewController: UIViewController {
     
     @IBOutlet private var page1View: UIView!
     
+    @IBOutlet private var page2View: UIView!
+    
     var introView: EAIntroView!
     
     override func viewDidLoad() {
@@ -24,17 +26,21 @@ class IntroViewController: UIViewController {
         let page1 = EAIntroPage(customView: page1View)
         setupPage1()
         
-        let page2 = EAIntroPage()
-        page2.title = "page 2"
-        page2.desc = "page2 desc"
+        page1.onPageDidAppear = animatePage1
+        
+        let page2 = EAIntroPage(customView: page2View)
         
         let page3 = EAIntroPage()
         page3.title = "page 3"
         page3.desc = "page 3 desc"
         
         introView = EAIntroView(frame: UIScreen.mainScreen().bounds, andPages: [page1, page2, page3])
-
+        introView.swipeToExit = false
         introView.showInView(presentationContainer)
+    }
+    
+    private func animatePage1() {
+        
     }
     
     private func setupPage1() {
