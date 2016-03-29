@@ -41,6 +41,7 @@
 #import "LoadingView.h"
 
 #import "GalleryViewController.h"
+#import "RequestPurchase.h"
 
 @interface TxOrderConfirmedViewController ()
 <
@@ -87,7 +88,6 @@
     TxOrderConfirmedDetailOrder *_orderDetail;
     GenerateHost *_generateHost;
     
-    TokopediaNetworkManager *_networkManager;
     TKPDPhotoPicker *_photoPicker;
     LoadingView *_loadingView;
     
@@ -133,25 +133,22 @@
                                                  name:REFRESH_TX_ORDER_POST_NOTIFICATION_NAME
                                                object:nil];
     
-    _networkManager = [TokopediaNetworkManager new];
-    _networkManager.delegate = self;
-    [_networkManager doRequest];
-    
     _loadingView = [LoadingView new];
     _loadingView.delegate = self;
     
     _loadingAlert = [[UIAlertView alloc]initWithTitle:nil message:@"Uploading" delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
+    
+    [self doRequestList];
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    _networkManager.delegate = self;
     _tableView.delegate = self;
     _tableView.dataSource = self;
     
     if (_isRefresh) {
-        [_networkManager doRequest];
+        [self doRequestList];
         _isRefresh = NO;
         [_delegate setIsRefresh:_isRefresh];
     }
@@ -171,10 +168,8 @@
 -(void)refreshRequest
 {
     _page = 1;
-    _networkManager.delegate = self;
     [_refreshControl beginRefreshing];
     [_tableView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
-    [_networkManager doRequest];
     [_act stopAnimating];
 }
 
@@ -187,9 +182,6 @@
 {
     [[NSNotificationCenter defaultCenter]removeObserver:self];
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
-    [_networkManager requestCancel];
-    _networkManager.delegate = nil;
-    _networkManager = nil;
 }
 
 #pragma mark - Table View Data Source
@@ -445,117 +437,53 @@
 //}
 
 #pragma mark - Tokopedia Network Manager
--(id)getObjectManager:(int)tag
-//-(void)configureRestKit
-{
-    _objectManager = [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[TxOrderConfirmed class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TxOrderConfirmedResult class]];
-    RKObjectMapping *listMapping = [_mapping confirmedListMapping];
-    RKRelationshipMapping *resultRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                   toKeyPath:kTKPD_APIRESULTKEY
-                                                                                 withMapping:resultMapping];
-    
-    RKRelationshipMapping *listRel =[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APILISTKEY
-                                                                                toKeyPath:kTKPD_APILISTKEY
-                                                                              withMapping:listMapping];
-    
-    [statusMapping addPropertyMapping:resultRel];
-    [resultMapping addPropertyMapping:listRel];
- 
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                            method:RKRequestMethodPOST
-                                                                                       pathPattern:API_PATH_TX_ORDER
-                                                                                           keyPath:@""
-                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectManager addResponseDescriptor:responseDescriptor];
-    return _objectManager;
-    
-}
-
--(NSDictionary *)getParameter:(int)tag
-{
-    NSDictionary* param = @{API_ACTION_KEY : ACTION_GET_TX_ORDER_PAYMENT_CONFIRMED};
-    return param;
-}
-
--(NSString *)getPath:(int)tag
-{
-    return API_PATH_TX_ORDER;
-}
-
--(NSString *)getRequestStatus:(id)result withTag:(int)tag
-{
-     NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
-    id stat = [resultDict objectForKey:@""];
-    TxOrderConfirmed *order = stat;
-    return order.status;
-}
-
-- (void)actionBeforeRequest:(int)tag {
-
+-(void)doRequestList{
     if (!_refreshControl.isRefreshing) {
         _tableView.tableFooterView = _footer;
         [_act startAnimating];
     }
-}
-
-- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
-    [_act stopAnimating];
-    NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
-    TxOrderConfirmed *order = [result objectForKey:@""];
     
-    if(_refreshControl.isRefreshing) {
+    [RequestPurchase fetchListPaymentConfirmedSuccess:^(NSArray *list) {
+        [_act stopAnimating];
+        
+        if(_refreshControl.isRefreshing) {
+            if (_page == 1||_page == 0) {
+                _tableView.contentOffset = CGPointZero;
+            }
+            [_refreshControl endRefreshing];
+        }
+        
         if (_page == 1||_page == 0) {
+            _list = [list mutableCopy];
+        } else {
+            [_list addObjectsFromArray:list];
+        }
+        
+        if (_list.count >0) {
+            _isNodata = NO;
+        }
+        else
+        {
+            NoResultView *noResultView = [[NoResultView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 100)];
+            _tableView.tableFooterView = noResultView;
+        }
+        
+        [_tableView reloadData];
+    } failure:^(NSError *error) {
+        if (_page == 1) {
             _tableView.contentOffset = CGPointZero;
         }
         [_refreshControl endRefreshing];
-    }
-    
-    if (_page == 1||_page == 0) {
-        _list = [order.result.list mutableCopy];
-    }
-    else
-    {
-        [_list addObjectsFromArray:order.result.list];
-    }
-    
-    if (_list.count >0) {
-        _isNodata = NO;
-        _URINext =  order.result.paging.uri_next;
-        _page = [[_networkManager splitUriToPage:_URINext] integerValue];
-    }
-    else
-    {
-        NoResultView *noResultView = [[NoResultView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 100)];
-        _tableView.tableFooterView = noResultView;
-    }
-    
-    [_tableView reloadData];
-}
-
-- (void)actionAfterFailRequestMaxTries:(int)tag {
-    if (_page == 1) {
-        _tableView.contentOffset = CGPointZero;
-    }
-    [_refreshControl endRefreshing];
-    [_act stopAnimating];
-    _tableView.tableFooterView = _loadingView.view;
+        [_act stopAnimating];
+        _tableView.tableFooterView = _loadingView.view;
+    }];
 }
 
 -(void)pressRetryButton
 {
     [_act startAnimating];
     _tableView.tableFooterView = _act;
-    [_networkManager doRequest];
+    [self doRequestList];
 }
 
 #pragma mark - Request Detail

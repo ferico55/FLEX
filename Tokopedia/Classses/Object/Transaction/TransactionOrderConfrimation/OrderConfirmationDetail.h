@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface OrderConfirmationDetail : NSObject
+@interface OrderConfirmationDetail : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *left_amount;
 @property (nonatomic, strong) NSString *status;

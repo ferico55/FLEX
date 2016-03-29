@@ -12,7 +12,7 @@
 #import "OrderConfirmationDetail.h"
 #import "OrderExtraFee.h"
 
-@interface TxOrderConfirmationList : NSObject
+@interface TxOrderConfirmationList : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *total_extra_fee_plain;
 @property (nonatomic, strong) OrderConfirmationDetail *confirmation;

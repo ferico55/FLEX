@@ -26,7 +26,14 @@
                         endDate:(NSString*)endDate
                          status:(NSString*)status
                         success:(void (^)(NSArray *list, NSInteger nextPage, NSString* uriNext))success
-                        failure:(void (^)(NSError *error))failure ;
+                        failure:(void (^)(NSError *error))failure;
+
++(void)fetchListPaymentConfirmationPage:(NSInteger)page
+                                success:(void (^)(NSArray *list, NSInteger nextPage, NSString* uriNext))success
+                                failure:(void (^)(NSError *error))failure;
+
++(void)fetchListPaymentConfirmedSuccess:(void (^)(NSArray *list))success
+                             failure:(void (^)(NSError *error))failure;
 
 +(void)fetchConfirmDeliveryOrder:(TxOrderStatusList*)order
                           action:(NSString*)action

@@ -23,6 +23,7 @@
 #import "TransactionAction.h"
 #import "TokopediaNetworkManager.h"
 #import "LoadingView.h"
+#import "RequestPurchase.h"
 
 @interface TxOrderConfirmationViewController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate ,TxOrderConfirmationCellDelegate, TxOrderConfirmationDetailViewControllerDelegate, TokopediaNetworkManagerDelegate, TxOrderPaymentViewControllerDelegate, LoadingViewDelegate>
 {
@@ -53,7 +54,6 @@
     NSMutableArray *_selectedIndextPath;
     NSMutableArray *_objectProcessingCancel;
     
-    TokopediaNetworkManager *_networkManager;
     LoadingView *_loadingView;
 }
 
@@ -87,22 +87,19 @@
     
     _page = 1;
     
-    _networkManager = [TokopediaNetworkManager new];
-    _networkManager.delegate = self;
-    [_networkManager doRequest];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(refreshRequest)
                                                  name:REFRESH_TX_ORDER_POST_NOTIFICATION_NAME
                                                object:nil];
     _loadingView = [LoadingView new];
     _loadingView.delegate = self;
+    
+    [self doRequestListconfirmation];
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-     _networkManager.delegate = self;
     _tableView.delegate = self;
     _tableView.dataSource = self;
 }
@@ -113,8 +110,6 @@
     
     _tableView.delegate = nil;
     _tableView.dataSource = nil;
-    [_networkManager requestCancel];
-    _networkManager.delegate = nil;
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -128,9 +123,6 @@
 {
     [[NSNotificationCenter defaultCenter]removeObserver:self];
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
-    [_networkManager requestCancel];
-    _networkManager.delegate = nil;
-    _networkManager = nil;
 }
 
 #pragma mark - View Action
@@ -306,7 +298,7 @@
         NSLog(@"%ld", (long)row);
         
         if (_URINext != NULL && ![_URINext isEqualToString:@"0"] && _URINext != 0) {
-            [_networkManager doRequest];
+            [self doRequestListconfirmation];
             //[self configureRestKitGetTransaction];
             //[self requestGetTransaction];
         }
@@ -387,183 +379,54 @@
 }
 
 #pragma mark - Request Get Transaction Order Payment Confirmation
-
--(id)getObjectManager:(int)tag
-{
-    _objectManagerGetTransaction = [RKObjectManager sharedClient];
+-(void)doRequestListconfirmation{
     
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[TxOrderConfirmation class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TxOrderConfirmationResult class]];
-    
-    RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[TxOrderConfirmationList class]];
-    [listMapping addAttributeMappingsFromArray:@[API_TOTAL_EXTRA_FEE_PLAIN,
-                                                 API_TOTAL_LOGISTIC_FEE_KEY,
-                                                 API_TOTAL_EXTRA_FEE
-                                                ]];
-    
-    RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
-    [pagingMapping addAttributeMappingsFromDictionary:@{kTKPD_APIURINEXTKEY:kTKPD_APIURINEXTKEY,
-                                                        }];
-
-    
-    RKObjectMapping *confirmationMapping = [_mapping confirmationDetailMapping];
-    RKObjectMapping *orderListMapping = [_mapping orderListMapping];
-    RKObjectMapping *orderextraFeeMapping = [_mapping orderExtraFeeMapping];
-    RKObjectMapping *orderProductMapping = [_mapping orderProductsMapping];
-    RKObjectMapping *orderShopMapping = [_mapping orderShopMapping];
-    RKObjectMapping *orderShipmentMapping = [_mapping orderShipmentsMapping];
-    RKObjectMapping *orderDestinationMapping = [_mapping orderDestinationMapping];
-    RKObjectMapping *orderDetailMapping = [_mapping orderDetailMapping];
-    
-    RKRelationshipMapping *resultRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                   toKeyPath:kTKPD_APIRESULTKEY
-                                                                                 withMapping:resultMapping];
-    
-    RKRelationshipMapping *listRel =[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APILISTKEY
-                                                                                toKeyPath:kTKPD_APILISTKEY
-                                                                              withMapping:listMapping];
-    
-    RKRelationshipMapping *pagingRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIPAGINGKEY
-                                                                                   toKeyPath:kTKPD_APIPAGINGKEY
-                                                                                 withMapping:pagingMapping];
-    
-    RKRelationshipMapping *orderConfirmationRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_CONFIRMATION_KEY
-                                                                                              toKeyPath:API_CONFIRMATION_KEY
-                                                                                            withMapping:confirmationMapping];
-    
-    RKRelationshipMapping *orderListRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_ORDER_LIST_KEY
-                                                                                      toKeyPath:API_ORDER_LIST_KEY
-                                                                                    withMapping:orderListMapping];
-    
-    RKRelationshipMapping *orderExtraFeeRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_EXTRA_FEE_KEY
-                                                                                          toKeyPath:API_EXTRA_FEE_KEY
-                                                                                        withMapping:orderextraFeeMapping];
-    
-    RKRelationshipMapping *orderproductsRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_ORDER_LIST_PRODUCTS_KEY
-                                                                                          toKeyPath:API_ORDER_LIST_PRODUCTS_KEY
-                                                                                        withMapping:orderProductMapping];
-    
-    RKRelationshipMapping *orderShopRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_ORDER_LIST_SHOP_KEY
-                                                                                      toKeyPath:API_ORDER_LIST_SHOP_KEY
-                                                                                    withMapping:orderShopMapping];
-    
-    RKRelationshipMapping *orderShipmentRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_ORDER_LIST_SHIPMENT_KEY
-                                                                                          toKeyPath:API_ORDER_LIST_SHIPMENT_KEY
-                                                                                        withMapping:orderShipmentMapping];
-    
-    RKRelationshipMapping *orderDestinationRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_ORDER_LIST_DESTINATION_KEY
-                                                                                          toKeyPath:API_ORDER_LIST_DESTINATION_KEY
-                                                                                        withMapping:orderDestinationMapping];
-    
-    RKRelationshipMapping *orderDetailRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_ORDER_LIST_DETAIL_KEY
-                                                                                          toKeyPath:API_ORDER_LIST_DETAIL_KEY
-                                                                                        withMapping:orderDetailMapping];
-    
-    [statusMapping addPropertyMapping:resultRel];
-    
-    [resultMapping addPropertyMapping:listRel];
-    [resultMapping addPropertyMapping:pagingRel];
-    
-    [listMapping addPropertyMapping:orderConfirmationRel];
-    [listMapping addPropertyMapping:orderListRel];
-    [listMapping addPropertyMapping:orderExtraFeeRel];
-    
-    [orderListMapping addPropertyMapping:orderproductsRel];
-    [orderListMapping addPropertyMapping:orderShopRel];
-    [orderListMapping addPropertyMapping:orderShipmentRel];
-    [orderListMapping addPropertyMapping:orderDestinationRel];
-    [orderListMapping addPropertyMapping:orderDetailRel];
- 
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                            method:RKRequestMethodPOST
-                                                                                       pathPattern:API_PATH_TX_ORDER
-                                                                                           keyPath:@""
-                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectManagerGetTransaction addResponseDescriptor:responseDescriptor];
-    
-    return _objectManagerGetTransaction;
-}
-
--(NSDictionary *)getParameter:(int)tag
-{
-    NSDictionary* param = @{API_ACTION_KEY : ACTION_GET_TX_ORDER_PAYMENT_CONFIRMATION,
-                            API_PAGE_KEY : @(_page)
-                            };
-    return param;
-}
-
--(NSString *)getPath:(int)tag
-{
-    return API_PATH_TX_ORDER;
-}
-
--(NSString *)getRequestStatus:(id)result withTag:(int)tag
-{
-    NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
-    id stat = [resultDict objectForKey:@""];
-    TxOrderConfirmation *order = stat;
-    return order.status;
-}
-
-- (void)actionBeforeRequest:(int)tag {
     if(!_refreshControl.isRefreshing) {
         _tableView.tableFooterView = _footer;
         [_act startAnimating];
     }
-}
+    
+    [RequestPurchase fetchListPaymentConfirmationPage:_page success:^(NSArray *list, NSInteger nextPage, NSString *uriNext) {
+        [_act stopAnimating];
 
-- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag{
-    [_act stopAnimating];
-    NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
-    TxOrderConfirmed *order = [result objectForKey:@""];
-    
-    if(_refreshControl.isRefreshing) {
-        [_refreshControl endRefreshing];
-    }
-    
-    if (_page == 1) {
-        [_list removeAllObjects];
-        [_isSelectedOrders removeAllObjects];
-    }
-    
-    [_list addObjectsFromArray:order.result.list];
-    
-    if (_list.count >0) {
-        _isNodata = NO;
-        _URINext =  order.result.paging.uri_next;
-        _page = [[_networkManager splitUriToPage:_URINext] integerValue];
-        
-        for (int i = 0; i<_list.count; i++) {
-            [_isSelectedOrders addObject:@(NO)];
+        if(_refreshControl.isRefreshing) {
+            [_refreshControl endRefreshing];
         }
-    }
-    else
-    {
-        _isNodata = YES;
-        NoResultView *noResultView = [[NoResultView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 100)];
-        _tableView.tableFooterView = noResultView;
-    }
-    
-    [_act stopAnimating];
-    [_delegate isNodata:_isNodata];
-    
-    [_tableView reloadData];
-}
-
-- (void)actionAfterFailRequestMaxTries:(int)tag {
-    if(_refreshControl.isRefreshing) {
-        [_refreshControl endRefreshing];
-    }
-    [_act stopAnimating];
-    _tableView.tableFooterView = _loadingView.view;
+        
+        if (_page == 1) {
+            [_list removeAllObjects];
+            [_isSelectedOrders removeAllObjects];
+        }
+        
+        [_list addObjectsFromArray:list];
+        
+        if (_list.count >0) {
+            _isNodata = NO;
+            _URINext =  uriNext;
+            _page = nextPage;
+            
+            for (int i = 0; i<_list.count; i++) {
+                [_isSelectedOrders addObject:@(NO)];
+            }
+        }
+        else
+        {
+            _isNodata = YES;
+            NoResultView *noResultView = [[NoResultView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 100)];
+            _tableView.tableFooterView = noResultView;
+        }
+        
+        [_act stopAnimating];
+        [_delegate isNodata:_isNodata];
+        
+        [_tableView reloadData];
+    } failure:^(NSError *error) {
+        if(_refreshControl.isRefreshing) {
+            [_refreshControl endRefreshing];
+        }
+        [_act stopAnimating];
+        _tableView.tableFooterView = _loadingView.view;
+    }];
 }
 
 #pragma loading view delegate
@@ -571,7 +434,7 @@
 {
     [_act startAnimating];
     _tableView.tableFooterView = _footer;
-    [_networkManager doRequest];
+    [self doRequestListconfirmation];
 }
 
 #pragma mark - Request Cancel Payment Confirmation
@@ -940,11 +803,8 @@
 {
     _page = 1;
     
-    _networkManager.delegate = self;
-    [_networkManager doRequest];
+    [self doRequestListconfirmation];
     [_act stopAnimating];
-    //[self configureRestKitGetTransaction];
-    //[self requestGetTransaction];
 }
 
 -(void)successConfirmPayment:(NSArray *)payment

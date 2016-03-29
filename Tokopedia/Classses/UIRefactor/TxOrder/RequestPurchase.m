@@ -8,6 +8,8 @@
 
 #import "RequestPurchase.h"
 #import "StickyAlertView+NetworkErrorHandler.h"
+#import "TxOrderConfirmation.h"
+#import "TxOrderConfirmed.h"
 
 @implementation RequestPurchase
 
@@ -120,6 +122,72 @@
     } onFailure:^(NSError *errorResult) {
         failure(errorResult);
     }];
+}
+
++(void)fetchListPaymentConfirmationPage:(NSInteger)page
+                         success:(void (^)(NSArray *list, NSInteger nextPage, NSString* uriNext))success
+                         failure:(void (^)(NSError *error))failure {
+    
+    
+    NSDictionary* param = @{ @"page" : @(page) };
+    
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    networkManager.isUsingHmac = YES;
+    [networkManager requestWithBaseUrl:[NSString v4Url]
+                                  path:@"/v4/tx-order/get_tx_order_payment_confirmation.pl"
+                                method:RKRequestMethodGET
+                             parameter:param
+                               mapping:[TxOrderConfirmation mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                 
+                                 TxOrderStatus *response = [successResult.dictionary objectForKey:@""];
+                                 
+                                 if(response.message_error)
+                                 {
+                                     NSArray *array = response.message_error?:@[@"Permintaan Anda gagal. Cobalah beberapa saat lagi."];
+                                     [StickyAlertView showErrorMessage:array];
+                                     failure(nil);
+                                     
+                                 } else {
+                                     NSInteger nextPage = [[networkManager splitUriToPage:response.data.paging.uri_next] integerValue];
+                                     success(response.data.list, nextPage, response.data.paging.uri_next);
+                                 }
+                                 
+                             } onFailure:^(NSError *errorResult) {
+                                 failure(errorResult);
+                             }];
+}
+
++(void)fetchListPaymentConfirmedSuccess:(void (^)(NSArray *list))success
+                                failure:(void (^)(NSError *error))failure {
+    
+    
+    NSDictionary* param = @{ };
+    
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    networkManager.isUsingHmac = YES;
+    [networkManager requestWithBaseUrl:[NSString v4Url]
+                                  path:@"/v4/tx-order/get_tx_order_payment_confirmed.pl"
+                                method:RKRequestMethodGET
+                             parameter:param
+                               mapping:[TxOrderConfirmed mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                 
+                                 TxOrderConfirmed *response = [successResult.dictionary objectForKey:@""];
+                                 
+                                 if(response.message_error)
+                                 {
+                                     NSArray *array = response.message_error?:@[@"Permintaan Anda gagal. Cobalah beberapa saat lagi."];
+                                     [StickyAlertView showErrorMessage:array];
+                                     failure(nil);
+                                     
+                                 } else {
+                                     success(response.data.list);
+                                 }
+                                 
+                             } onFailure:^(NSError *errorResult) {
+                                 failure(errorResult);
+                             }];
 }
 
 +(void)fetchConfirmDeliveryOrder:(TxOrderStatusList*)order
