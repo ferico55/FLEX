@@ -8,10 +8,6 @@ class OverrideClang
     @project = initialized_project
   end
 
-  def install(lib_path)
-    installOrUninstall false, lib_path
-  end
-
   def uninstall
     installOrUninstall true
   end

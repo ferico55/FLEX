@@ -12,4 +12,3 @@ RemoveRolloutFromXcodeproj.new(project).remove_rollout_from_xcodeproj
 OverrideClang.new(project).uninstall
 
 project.save()
-
