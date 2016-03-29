@@ -117,20 +117,25 @@ TokopediaNetworkManagerDelegate
     _attachedImagesArray = [NSArray sortViewsWithTagInArray:_attachedImagesArray];
     
     if ([self isNoImageUploaded]) {
-        _attachedImagesViewHeight.constant = 0;
+        _attachedImagesViewHeight.constant = 8;
         _textViewHeight.constant = 139.0;
     } else {
-        for (NSInteger ii = 0; ii < _detailReputationReview.review_image_attachment.count; ii++) {
-            ReviewImageAttachment *attachedImage = _detailReputationReview.review_image_attachment[ii];
-            [((UIImageView*)_attachedImagesArray[ii]) setImageWithURL:[NSURL URLWithString:attachedImage.uri_thumbnail]
-                                                     placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-01.png"]];
-            [((UIImageView*)_attachedImagesArray[ii]) setHidden:NO];
+        for (NSInteger ii = 0; ii < _attachedImages.count; ii++) {
+            ((UIImageView*)_attachedImagesArray[ii]).image = _attachedImages[ii];
+            ((UIImageView*)_attachedImagesArray[ii]).hidden = NO;
         }
         
-        for (NSInteger jj = _detailReputationReview.review_image_attachment.count; jj < _detailReputationReview.review_image_attachment.count + _uploadedImages.count; jj++) {
-            ((UIImageView*)_attachedImagesArray[jj]).image = [[_uploadedImages[jj-_detailReputationReview.review_image_attachment.count] objectForKey:@"photo"] objectForKey:@"photo"];
-            ((UIImageView*)_attachedImagesArray[jj]).hidden = NO;
-        }
+//        for (NSInteger ii = 0; ii < _detailReputationReview.review_image_attachment.count; ii++) {
+//            ReviewImageAttachment *attachedImage = _detailReputationReview.review_image_attachment[ii];
+//            [((UIImageView*)_attachedImagesArray[ii]) setImageWithURL:[NSURL URLWithString:attachedImage.uri_thumbnail]
+//                                                     placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-01.png"]];
+//            [((UIImageView*)_attachedImagesArray[ii]) setHidden:NO];
+//        }
+//        
+//        for (NSInteger jj = _detailReputationReview.review_image_attachment.count; jj < _detailReputationReview.review_image_attachment.count + _uploadedImages.count; jj++) {
+//            ((UIImageView*)_attachedImagesArray[jj]).image = [[_uploadedImages[jj-_detailReputationReview.review_image_attachment.count] objectForKey:@"photo"] objectForKey:@"photo"];
+//            ((UIImageView*)_attachedImagesArray[jj]).hidden = NO;
+//        }
     }
     
     

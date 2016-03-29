@@ -383,7 +383,6 @@
         uploaded = [[NSString alloc] initWithBytes:[jsonData bytes] length:[jsonData length] encoding:NSUTF8StringEncoding];
         uploaded = [uploaded stringByReplacingOccurrencesOfString:@"\n" withString:@""];
         uploaded = [uploaded stringByReplacingOccurrencesOfString:@"\\" withString:@""];
-        uploaded = [uploaded stringByReplacingOccurrencesOfString:@" " withString:@""];
         uploaded = [uploaded stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     }
     
@@ -495,9 +494,7 @@
         uploaded = [[NSString alloc] initWithBytes:[jsonData bytes] length:[jsonData length] encoding:NSUTF8StringEncoding];
         uploaded = [uploaded stringByReplacingOccurrencesOfString:@"\n" withString:@""];
         uploaded = [uploaded stringByReplacingOccurrencesOfString:@"\\" withString:@""];
-        uploaded = [uploaded stringByReplacingOccurrencesOfString:@" " withString:@""];
         uploaded = [uploaded stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-
     }
     
     

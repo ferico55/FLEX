@@ -9,7 +9,9 @@
 #import "SearchAWSProduct.h"
 #import "ProductCell.h"
 #import "ProductModelView.h"
+//#import "DetailReputationReview.h"
 
 #import "SwipeView.h"
 #import "MiniSlide.h"
+#import "TPLiveCameraView.h"
 #import <QuartzCore/QuartzCore.h>

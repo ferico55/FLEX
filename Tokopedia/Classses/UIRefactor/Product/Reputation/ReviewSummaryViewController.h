@@ -34,5 +34,6 @@
 @property NSArray *imageIDs;
 @property NSDictionary *imageDescriptions;
 @property NSString *isAttachedImagesModified;
+@property NSArray *attachedImages;
 
 @end

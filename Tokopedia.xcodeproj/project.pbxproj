@@ -12,6 +12,9 @@
 		433B4F276C164CB3BD80BBF4 /* RolloutDynamic_13.m in Sources */ = {isa = PBXBuildFile; fileRef = E3598AB47E694294BE7E64B0 /* RolloutDynamic_13.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		50ECD52C47984ABA922D5E36 /* RolloutDynamic_01.m in Sources */ = {isa = PBXBuildFile; fileRef = 939838F8A82345A2B27A507A /* RolloutDynamic_01.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		5D2AC7E4D6454D028AA007B9 /* RolloutDynamic_11.m in Sources */ = {isa = PBXBuildFile; fileRef = B4BB39A2964641C3B54529B1 /* RolloutDynamic_11.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		6222A8EB1CA3EFA5000DB21E /* AddCaptionTextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6222A8EA1CA3EFA5000DB21E /* AddCaptionTextFieldCell.swift */; };
+		6222A8ED1CA3F0FD000DB21E /* ImageThumbnailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6222A8EC1CA3F0FD000DB21E /* ImageThumbnailCell.swift */; };
+		6241DC901CA3DEE1005388AC /* AddImageCaptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6241DC8F1CA3DEE1005388AC /* AddImageCaptionViewController.swift */; };
 		627068A21CA0F5FA0099A288 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 62705AF91CA0F5ED0099A288 /* AppDelegate.m */; };
 		627068A31CA0F5FA0099A288 /* TPAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 62705AFD1CA0F5ED0099A288 /* TPAnalytics.m */; };
 		627068A41CA0F5FA0099A288 /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 62705B001CA0F5ED0099A288 /* URLCacheAlert.m */; };
@@ -2133,7 +2136,21 @@
 		627070E81CA0F5FB0099A288 /* Tokopedia-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6270689E1CA0F5FA0099A288 /* Tokopedia-Info.plist */; };
 		627070E91CA0F5FB0099A288 /* Tokopedia.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 627068A01CA0F5FA0099A288 /* Tokopedia.entitlements */; };
 		627070EA1CA0F5FB0099A288 /* Tokopedia.xcworkspace in Resources */ = {isa = PBXBuildFile; fileRef = 627068A11CA0F5FA0099A288 /* Tokopedia.xcworkspace */; };
+		62C4368A1CAA823D007A2145 /* DKCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C4367E1CAA823D007A2145 /* DKCamera.swift */; };
+		62C4368B1CAA823D007A2145 /* DKCameraResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 62C4367F1CAA823D007A2145 /* DKCameraResource.bundle */; };
+		62C4368C1CAA823D007A2145 /* DKAssetGroupDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C436811CAA823D007A2145 /* DKAssetGroupDetailVC.swift */; };
+		62C4368D1CAA823D007A2145 /* DKAssetGroupVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C436821CAA823D007A2145 /* DKAssetGroupVC.swift */; };
+		62C4368E1CAA823D007A2145 /* DKImagePickerController.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 62C436831CAA823D007A2145 /* DKImagePickerController.bundle */; };
+		62C4368F1CAA823D007A2145 /* DKImagePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C436841CAA823D007A2145 /* DKImagePickerController.swift */; };
+		62C436901CAA823D007A2145 /* DKImageResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C436851CAA823D007A2145 /* DKImageResource.swift */; };
+		62C436911CAA823D007A2145 /* DKPopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C436861CAA823D007A2145 /* DKPopoverViewController.swift */; };
+		62C436921CAA823D007A2145 /* ImagePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C436871CAA823D007A2145 /* ImagePickerController.swift */; };
+		62C436931CAA823D007A2145 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 62C436881CAA823D007A2145 /* LICENSE */; };
+		62C436941CAA823D007A2145 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 62C436891CAA823D007A2145 /* README.md */; };
+		62C436971CAA8E62007A2145 /* TPLiveCameraView.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C436961CAA8E62007A2145 /* TPLiveCameraView.m */; };
 		62E7D2121CA23DED0037806E /* ImageStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 62E7D2111CA23DED0037806E /* ImageStorage.m */; };
+		62EBD0D91CA8CCA800476642 /* DetailedImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62EBD0D71CA8CCA800476642 /* DetailedImageCell.swift */; };
+		62EBD0DA1CA8CCA800476642 /* DetailedImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 62EBD0D81CA8CCA800476642 /* DetailedImageCell.xib */; };
 		725BCCFABC2A4725B7AF9F21 /* RolloutDynamic_06.m in Sources */ = {isa = PBXBuildFile; fileRef = 6286D53ADD3E4438854ADF36 /* RolloutDynamic_06.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
@@ -2219,6 +2236,9 @@
 		4868E459AB2A65D133732296 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tokopedia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4EDDBE0EC1C84475BF722622 /* RolloutDynamic_10.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_10.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_10.m"; sourceTree = "<group>"; };
 		533DAC02DFAC4982940161B5 /* RolloutDynamic_14.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_14.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_14.m"; sourceTree = "<group>"; };
+		6222A8EA1CA3EFA5000DB21E /* AddCaptionTextFieldCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddCaptionTextFieldCell.swift; sourceTree = "<group>"; };
+		6222A8EC1CA3F0FD000DB21E /* ImageThumbnailCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageThumbnailCell.swift; sourceTree = "<group>"; };
+		6241DC8F1CA3DEE1005388AC /* AddImageCaptionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddImageCaptionViewController.swift; sourceTree = "<group>"; };
 		62705AF81CA0F5ED0099A288 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		62705AF91CA0F5ED0099A288 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		62705AFC1CA0F5ED0099A288 /* TPAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPAnalytics.h; sourceTree = "<group>"; };
@@ -2285,7 +2305,6 @@
 		62705B3C1CA0F5ED0099A288 /* TextMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextMenu.m; sourceTree = "<group>"; };
 		62705B3D1CA0F5ED0099A288 /* TKPDSecureStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPDSecureStorage.h; sourceTree = "<group>"; };
 		62705B3E1CA0F5ED0099A288 /* TKPDSecureStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPDSecureStorage.m; sourceTree = "<group>"; };
-		62705B3F1CA0F5ED0099A288 /* Tokopedia-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Tokopedia-Bridging-Header.h"; sourceTree = "<group>"; };
 		62705B401CA0F5ED0099A288 /* TopAlignedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TopAlignedLabel.h; sourceTree = "<group>"; };
 		62705B411CA0F5ED0099A288 /* TopAlignedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TopAlignedLabel.m; sourceTree = "<group>"; };
 		62705B421CA0F5ED0099A288 /* UIScrollViewCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIScrollViewCategory.swift; sourceTree = "<group>"; };
@@ -5422,8 +5441,23 @@
 		627068A01CA0F5FA0099A288 /* Tokopedia.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Tokopedia.entitlements; sourceTree = "<group>"; };
 		627068A11CA0F5FA0099A288 /* Tokopedia.xcworkspace */ = {isa = PBXFileReference; lastKnownFileType = wrapper.workspace; path = Tokopedia.xcworkspace; sourceTree = "<group>"; };
 		6286D53ADD3E4438854ADF36 /* RolloutDynamic_06.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_06.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_06.m"; sourceTree = "<group>"; };
+		62C4367E1CAA823D007A2145 /* DKCamera.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKCamera.swift; sourceTree = "<group>"; };
+		62C4367F1CAA823D007A2145 /* DKCameraResource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = DKCameraResource.bundle; sourceTree = "<group>"; };
+		62C436811CAA823D007A2145 /* DKAssetGroupDetailVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKAssetGroupDetailVC.swift; sourceTree = "<group>"; };
+		62C436821CAA823D007A2145 /* DKAssetGroupVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKAssetGroupVC.swift; sourceTree = "<group>"; };
+		62C436831CAA823D007A2145 /* DKImagePickerController.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = DKImagePickerController.bundle; sourceTree = "<group>"; };
+		62C436841CAA823D007A2145 /* DKImagePickerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKImagePickerController.swift; sourceTree = "<group>"; };
+		62C436851CAA823D007A2145 /* DKImageResource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKImageResource.swift; sourceTree = "<group>"; };
+		62C436861CAA823D007A2145 /* DKPopoverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKPopoverViewController.swift; sourceTree = "<group>"; };
+		62C436871CAA823D007A2145 /* ImagePickerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePickerController.swift; sourceTree = "<group>"; };
+		62C436881CAA823D007A2145 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		62C436891CAA823D007A2145 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		62C436951CAA8E62007A2145 /* TPLiveCameraView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPLiveCameraView.h; sourceTree = "<group>"; };
+		62C436961CAA8E62007A2145 /* TPLiveCameraView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPLiveCameraView.m; sourceTree = "<group>"; };
 		62E7D2101CA23DED0037806E /* ImageStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageStorage.h; sourceTree = "<group>"; };
 		62E7D2111CA23DED0037806E /* ImageStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageStorage.m; sourceTree = "<group>"; };
+		62EBD0D71CA8CCA800476642 /* DetailedImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailedImageCell.swift; sourceTree = "<group>"; };
+		62EBD0D81CA8CCA800476642 /* DetailedImageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailedImageCell.xib; sourceTree = "<group>"; };
 		6764B0BEA6124327B68DA4B6 /* RolloutDynamic_05.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RolloutDynamic_05.m; path = "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_05.m"; sourceTree = "<group>"; };
 		7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
@@ -5726,7 +5760,6 @@
 				62705B3C1CA0F5ED0099A288 /* TextMenu.m */,
 				62705B3D1CA0F5ED0099A288 /* TKPDSecureStorage.h */,
 				62705B3E1CA0F5ED0099A288 /* TKPDSecureStorage.m */,
-				62705B3F1CA0F5ED0099A288 /* Tokopedia-Bridging-Header.h */,
 				62705B401CA0F5ED0099A288 /* TopAlignedLabel.h */,
 				62705B411CA0F5ED0099A288 /* TopAlignedLabel.m */,
 				62705B421CA0F5ED0099A288 /* UIScrollViewCategory.swift */,
@@ -7626,6 +7659,7 @@
 		62705F831CA0F5EE0099A288 /* Third Party */ = {
 			isa = PBXGroup;
 			children = (
+				62C4367C1CAA823D007A2145 /* DKImagePicker */,
 				62705F841CA0F5EE0099A288 /* iCarousel.h */,
 				62705F851CA0F5EE0099A288 /* iCarousel.m */,
 				62705F861CA0F5EE0099A288 /* RSKGrowingTextView.swift */,
@@ -7898,6 +7932,11 @@
 				6270601F1CA0F5EF0099A288 /* RequestUploadImage.m */,
 				627060201CA0F5EF0099A288 /* TKPDPhotoPicker.h */,
 				627060211CA0F5EF0099A288 /* TKPDPhotoPicker.m */,
+				6241DC8F1CA3DEE1005388AC /* AddImageCaptionViewController.swift */,
+				6222A8EA1CA3EFA5000DB21E /* AddCaptionTextFieldCell.swift */,
+				6222A8EC1CA3F0FD000DB21E /* ImageThumbnailCell.swift */,
+				62EBD0D71CA8CCA800476642 /* DetailedImageCell.swift */,
+				62EBD0D81CA8CCA800476642 /* DetailedImageCell.xib */,
 			);
 			path = Camera;
 			sourceTree = "<group>";
@@ -7919,6 +7958,8 @@
 				6270600E1CA0F5EF0099A288 /* CameraCollectionViewController.xib */,
 				6270600F1CA0F5EF0099A288 /* TKPDLiveCameraTableViewCell.h */,
 				627060101CA0F5EF0099A288 /* TKPDLiveCameraTableViewCell.m */,
+				62C436951CAA8E62007A2145 /* TPLiveCameraView.h */,
+				62C436961CAA8E62007A2145 /* TPLiveCameraView.m */,
 			);
 			path = CameraCustom;
 			sourceTree = "<group>";
@@ -11147,6 +11188,40 @@
 			path = XYPieChart;
 			sourceTree = "<group>";
 		};
+		62C4367C1CAA823D007A2145 /* DKImagePicker */ = {
+			isa = PBXGroup;
+			children = (
+				62C4367D1CAA823D007A2145 /* DKCamera */,
+				62C436801CAA823D007A2145 /* DKImagePickerController */,
+				62C436881CAA823D007A2145 /* LICENSE */,
+				62C436891CAA823D007A2145 /* README.md */,
+			);
+			path = DKImagePicker;
+			sourceTree = "<group>";
+		};
+		62C4367D1CAA823D007A2145 /* DKCamera */ = {
+			isa = PBXGroup;
+			children = (
+				62C4367E1CAA823D007A2145 /* DKCamera.swift */,
+				62C4367F1CAA823D007A2145 /* DKCameraResource.bundle */,
+			);
+			path = DKCamera;
+			sourceTree = "<group>";
+		};
+		62C436801CAA823D007A2145 /* DKImagePickerController */ = {
+			isa = PBXGroup;
+			children = (
+				62C436811CAA823D007A2145 /* DKAssetGroupDetailVC.swift */,
+				62C436821CAA823D007A2145 /* DKAssetGroupVC.swift */,
+				62C436831CAA823D007A2145 /* DKImagePickerController.bundle */,
+				62C436841CAA823D007A2145 /* DKImagePickerController.swift */,
+				62C436851CAA823D007A2145 /* DKImageResource.swift */,
+				62C436861CAA823D007A2145 /* DKPopoverViewController.swift */,
+				62C436871CAA823D007A2145 /* ImagePickerController.swift */,
+			);
+			path = DKImagePickerController;
+			sourceTree = "<group>";
+		};
 		E1A48FC656B05056B45251AD /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -11630,6 +11705,7 @@
 				62706CF51CA0F5FA0099A288 /* SettingBankNameViewController.xib in Resources */,
 				627070BB1CA0F5FB0099A288 /* icon_cancel_grey@2x.png in Resources */,
 				62706F611CA0F5FB0099A288 /* icon_neutral_smile_small@3x.png in Resources */,
+				62EBD0DA1CA8CCA800476642 /* DetailedImageCell.xib in Resources */,
 				62706FDF1CA0F5FB0099A288 /* icon_sold.png in Resources */,
 				62706FCD1CA0F5FB0099A288 /* icon_smile.png in Resources */,
 				627070A41CA0F5FB0099A288 /* icon_hotlist_active@3x.png in Resources */,
@@ -11841,6 +11917,7 @@
 				62706FF91CA0F5FB0099A288 /* icon_speed_neutral_large@3x.png in Resources */,
 				62706EB51CA0F5FA0099A288 /* icon_close_white.png in Resources */,
 				62706E551CA0F5FA0099A288 /* icon_arrow_right_grey@2x.png in Resources */,
+				62C4368B1CAA823D007A2145 /* DKCameraResource.bundle in Resources */,
 				62706FE71CA0F5FB0099A288 /* icon_speed_bad_large@3x.png in Resources */,
 				62706B221CA0F5FA0099A288 /* ContactUsCategoryCell.xib in Resources */,
 				62706E201CA0F5FA0099A288 /* icon_18@2x.png in Resources */,
@@ -12271,6 +12348,7 @@
 				62706F5A1CA0F5FB0099A288 /* icon_neutral_smile50.png in Resources */,
 				627070751CA0F5FB0099A288 /* icon_grid_satu@3x.png in Resources */,
 				62706EC11CA0F5FA0099A288 /* icon_countdown.png in Resources */,
+				62C4368E1CAA823D007A2145 /* DKImagePickerController.bundle in Resources */,
 				62706F091CA0F5FA0099A288 /* icon_medal.png in Resources */,
 				62706DF81CA0F5FA0099A288 /* GothamBlack.ttf in Resources */,
 				62706EE51CA0F5FA0099A288 /* icon_grid_tiga@2x.png in Resources */,
@@ -12343,6 +12421,7 @@
 				62706F0E1CA0F5FA0099A288 /* icon_medal@3x.png in Resources */,
 				62706F461CA0F5FA0099A288 /* icon_neutral20@2x.png in Resources */,
 				627070991CA0F5FB0099A288 /* icon_cart_active.png in Resources */,
+				62C436931CAA823D007A2145 /* LICENSE in Resources */,
 				627070841CA0F5FB0099A288 /* icon_login@2x.png in Resources */,
 				627070A71CA0F5FB0099A288 /* icon_more_active.png in Resources */,
 				627070C91CA0F5FB0099A288 /* icon_komplain@2x.png in Resources */,
@@ -12626,6 +12705,7 @@
 				627069FA1CA0F5FA0099A288 /* SearchAWS.m in Sources */,
 				62706CD91CA0F5FA0099A288 /* SearchAutoCompleteHeaderView.m in Sources */,
 				627068E81CA0F5FA0099A288 /* CategoryDetail.m in Sources */,
+				6222A8EB1CA3EFA5000DB21E /* AddCaptionTextFieldCell.swift in Sources */,
 				62706AE21CA0F5FA0099A288 /* AlertShipmentCodeView.m in Sources */,
 				62706D371CA0F5FA0099A288 /* ShopProductPageViewController.m in Sources */,
 				627068FE1CA0F5FA0099A288 /* Catalog.m in Sources */,
@@ -12668,6 +12748,7 @@
 				627069151CA0F5FA0099A288 /* Review.m in Sources */,
 				62706A5A1CA0F5FA0099A288 /* TransactionSystemBank.m in Sources */,
 				62706B381CA0F5FA0099A288 /* ContactUsFormPresenter.m in Sources */,
+				6241DC901CA3DEE1005388AC /* AddImageCaptionViewController.swift in Sources */,
 				62706B1D1CA0F5FA0099A288 /* CategoryMenuViewController.m in Sources */,
 				62706AF91CA0F5FA0099A288 /* RequestUploadImageHelper.m in Sources */,
 				627070DD1CA0F5FB0099A288 /* MarqueeLabel.m in Sources */,
@@ -12680,6 +12761,7 @@
 				62706C241CA0F5FA0099A288 /* DetailProductInfoCell.m in Sources */,
 				627070E71CA0F5FB0099A288 /* test.m in Sources */,
 				62706C341CA0F5FA0099A288 /* ProductReviewCell.m in Sources */,
+				62C4368C1CAA823D007A2145 /* DKAssetGroupDetailVC.swift in Sources */,
 				62706CBB1CA0F5FA0099A288 /* SalesTransactionListViewController.m in Sources */,
 				6270695C1CA0F5FA0099A288 /* ResolutionAttachment.m in Sources */,
 				62706B041CA0F5FA0099A288 /* CatalogSectionHeaderView.m in Sources */,
@@ -12845,6 +12927,7 @@
 				62706AC71CA0F5FA0099A288 /* AlertBaseUrl.m in Sources */,
 				627069221CA0F5FA0099A288 /* TalkResult.m in Sources */,
 				62706A311CA0F5FA0099A288 /* SettingLocationResult.m in Sources */,
+				62C4368F1CAA823D007A2145 /* DKImagePickerController.swift in Sources */,
 				627069C71CA0F5FA0099A288 /* AddressFormList.m in Sources */,
 				62706C081CA0F5FA0099A288 /* MyShopNoteViewController.m in Sources */,
 				62706A5D1CA0F5FA0099A288 /* TransactionCart.m in Sources */,
@@ -12863,11 +12946,13 @@
 				627068A61CA0F5FA0099A288 /* URLCacheController.m in Sources */,
 				6270697D1CA0F5FA0099A288 /* InboxTicketTicket.m in Sources */,
 				627069BC1CA0F5FA0099A288 /* ProfileEdit.m in Sources */,
+				62C436941CAA823D007A2145 /* README.md in Sources */,
 				62706D391CA0F5FA0099A288 /* ShopReviewPageViewController.m in Sources */,
 				62706B481CA0F5FA0099A288 /* TKPDTabProfileNavigationController.m in Sources */,
 				62706C001CA0F5FA0099A288 /* MyShopEtalaseFilterCell.m in Sources */,
 				62706DD21CA0F5FA0099A288 /* AddressViewModel.m in Sources */,
 				62706CC91CA0F5FA0099A288 /* ChangeReceiptNumberViewController.m in Sources */,
+				62EBD0D91CA8CCA800476642 /* DetailedImageCell.swift in Sources */,
 				627069001CA0F5FA0099A288 /* CatalogInfo.m in Sources */,
 				62706AA31CA0F5FA0099A288 /* UploadImageSubmit.m in Sources */,
 				627068AE1CA0F5FA0099A288 /* NSStringCategory.m in Sources */,
@@ -12909,6 +12994,7 @@
 				627068AA1CA0F5FA0099A288 /* NSData+Encryption.m in Sources */,
 				62706A2E1CA0F5FA0099A288 /* AddProductValidation.m in Sources */,
 				62706A831CA0F5FA0099A288 /* TxOrderConfirmedDetail.m in Sources */,
+				6222A8ED1CA3F0FD000DB21E /* ImageThumbnailCell.swift in Sources */,
 				627068DE1CA0F5FA0099A288 /* AddressObj.m in Sources */,
 				62706BF11CA0F5FA0099A288 /* MoreViewController.m in Sources */,
 				62706B4A1CA0F5FA0099A288 /* TKPDTabViewController.m in Sources */,
@@ -12916,6 +13002,7 @@
 				62706C861CA0F5FA0099A288 /* ProfileContactViewController.m in Sources */,
 				62706D661CA0F5FA0099A288 /* TransactionATCViewController.m in Sources */,
 				62706D271CA0F5FA0099A288 /* ShopInfoShipmentCell.m in Sources */,
+				62C4368D1CAA823D007A2145 /* DKAssetGroupVC.swift in Sources */,
 				62706C321CA0F5FA0099A288 /* ProductGalleryViewController.m in Sources */,
 				62706BAF1CA0F5FA0099A288 /* TKPDTabHomeViewController.m in Sources */,
 				62706A1E1CA0F5FA0099A288 /* Notes.m in Sources */,
@@ -12942,6 +13029,7 @@
 				627069521CA0F5FA0099A288 /* InboxMessageDetailList.m in Sources */,
 				62706A321CA0F5FA0099A288 /* SettingPayment.m in Sources */,
 				62706A561CA0F5FA0099A288 /* TransactionATCFormDetail.m in Sources */,
+				62C436911CAA823D007A2145 /* DKPopoverViewController.swift in Sources */,
 				62706A521CA0F5FA0099A288 /* TransactionAddressShipping.m in Sources */,
 				627069B11CA0F5FA0099A288 /* ProductFeedList.m in Sources */,
 				62706C301CA0F5FA0099A288 /* GalleryPhotoView.m in Sources */,
@@ -13005,6 +13093,7 @@
 				627069831CA0F5FA0099A288 /* DetailTotalLikeDislike.m in Sources */,
 				6270692D1CA0F5FA0099A288 /* FavoriteShopAction.m in Sources */,
 				62706C061CA0F5FA0099A288 /* MyShopNoteDetailViewController.m in Sources */,
+				62C436971CAA8E62007A2145 /* TPLiveCameraView.m in Sources */,
 				627069CD1CA0F5FA0099A288 /* BankAccountGetDefaultFormDefaultBank.m in Sources */,
 				62706A2D1CA0F5FA0099A288 /* AddProductSubmitResult.m in Sources */,
 				62706CF81CA0F5FA0099A288 /* SettingBankDetailViewController.m in Sources */,
@@ -13143,6 +13232,7 @@
 				62706C951CA0F5FA0099A288 /* ReputationMyProductViewController.m in Sources */,
 				627069B51CA0F5FA0099A288 /* ProductTalkForm.m in Sources */,
 				627069741CA0F5FA0099A288 /* DetailInboxTicket.m in Sources */,
+				62C436921CAA823D007A2145 /* ImagePickerController.swift in Sources */,
 				62706B201CA0F5FA0099A288 /* RequestCategory.m in Sources */,
 				627069BE1CA0F5FA0099A288 /* FavoriteShop.m in Sources */,
 				6270690B1CA0F5FA0099A288 /* CountRatingResult.m in Sources */,
@@ -13473,6 +13563,7 @@
 				6270698C1CA0F5FA0099A288 /* LoyaltyPointDetail.m in Sources */,
 				62706BE71CA0F5FA0099A288 /* InboxTicketReplyViewController.m in Sources */,
 				6270697E1CA0F5FA0099A288 /* InboxTicketUserInvolve.m in Sources */,
+				62C436901CAA823D007A2145 /* DKImageResource.swift in Sources */,
 				62706C641CA0F5FA0099A288 /* MyReviewDetailHeader.mm in Sources */,
 				627068D11CA0F5FA0099A288 /* CreatePasswordResult.m in Sources */,
 				62706C2C1CA0F5FA0099A288 /* DetailProductWholesaleTableCell.m in Sources */,
@@ -13507,6 +13598,7 @@
 				6270690D1CA0F5FA0099A288 /* Info.m in Sources */,
 				627069111CA0F5FA0099A288 /* ProductImages.m in Sources */,
 				62706B5D1CA0F5FA0099A288 /* TKPDTextView.m in Sources */,
+				62C4368A1CAA823D007A2145 /* DKCamera.swift in Sources */,
 				627068CE1CA0F5FA0099A288 /* UserAuthentificationManager.m in Sources */,
 				62706B9B1CA0F5FA0099A288 /* ProductFeedViewController.m in Sources */,
 				627068D71CA0F5FA0099A288 /* SendOTPResult.m in Sources */,
