@@ -18,6 +18,14 @@ class IntroViewController: UIViewController {
     
     @IBOutlet private var page2View: UIView!
     
+    
+    @IBOutlet private var spoonFork: UIImageView!
+    @IBOutlet private var babyBottle: UIImageView!
+    @IBOutlet private var fabulousShoe: UIImageView!
+    @IBOutlet private var tshirt: UIImageView!
+    @IBOutlet private var soccerBall: UIImageView!
+    @IBOutlet private var giftbox: UIImageView!
+    
     var introView: EAIntroView!
     
     override func viewDidLoad() {
@@ -27,10 +35,10 @@ class IntroViewController: UIViewController {
         setupPage1()
         
         page1.onPageDidAppear = topedImageView.startAnimating
-        
         page1.onPageDidDisappear = topedImageView.stopAnimating
         
         let page2 = EAIntroPage(customView: page2View)
+        page2.onPageDidAppear = animatePage2
         
         let page3 = EAIntroPage()
         page3.title = "page 3"
@@ -39,6 +47,34 @@ class IntroViewController: UIViewController {
         introView = EAIntroView(frame: UIScreen.mainScreen().bounds, andPages: [page1, page2, page3])
         introView.swipeToExit = false
         introView.showInView(presentationContainer)
+    }
+    
+    func animatePage2() {
+        UIView.animateKeyframesWithDuration(1, delay: 0.5, options: .CalculationModeLinear, animations: {
+            UIView.addKeyframeWithRelativeStartTime(0.05, relativeDuration: 0, animations: {[unowned self] in
+                self.giftbox.alpha = 1
+            })
+            
+            UIView.addKeyframeWithRelativeStartTime(0.2, relativeDuration: 0, animations: {[unowned self] in
+                self.fabulousShoe.alpha = 1
+            })
+            
+            UIView.addKeyframeWithRelativeStartTime(0.35, relativeDuration: 0, animations: {[unowned self] in
+                self.tshirt.alpha = 1
+            })
+            
+            UIView.addKeyframeWithRelativeStartTime(0.5, relativeDuration: 0, animations: {[unowned self] in
+                self.spoonFork.alpha = 1
+            })
+            
+            UIView.addKeyframeWithRelativeStartTime(0.65, relativeDuration: 0, animations: {[unowned self] in
+                self.babyBottle.alpha = 1
+            })
+            
+            UIView.addKeyframeWithRelativeStartTime(0.8, relativeDuration: 0, animations: {[unowned self] in
+                self.soccerBall.alpha = 1
+            })
+        }, completion: nil)
     }
     
     private func setupPage1() {
