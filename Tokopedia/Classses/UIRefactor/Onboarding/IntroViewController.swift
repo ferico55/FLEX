@@ -26,7 +26,9 @@ class IntroViewController: UIViewController {
         let page1 = EAIntroPage(customView: page1View)
         setupPage1()
         
-        page1.onPageDidAppear = animatePage1
+        page1.onPageDidAppear = topedImageView.startAnimating
+        
+        page1.onPageDidDisappear = topedImageView.stopAnimating
         
         let page2 = EAIntroPage(customView: page2View)
         
@@ -37,10 +39,6 @@ class IntroViewController: UIViewController {
         introView = EAIntroView(frame: UIScreen.mainScreen().bounds, andPages: [page1, page2, page3])
         introView.swipeToExit = false
         introView.showInView(presentationContainer)
-    }
-    
-    private func animatePage1() {
-        
     }
     
     private func setupPage1() {
@@ -54,8 +52,6 @@ class IntroViewController: UIViewController {
             UIImage(named: "onboarding_toped_1e.png")!,
             UIImage(named: "onboarding_toped_1f.png")!,
         ]
-        
-        topedImageView.startAnimating()
     }
     
     override func viewDidLayoutSubviews() {
