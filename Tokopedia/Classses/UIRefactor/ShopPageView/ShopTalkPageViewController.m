@@ -25,6 +25,7 @@
 #import "NSString+HTML.h"
 #import "UserAuthentificationManager.h"
 #import "TalkCell.h"
+#import "ShopPageRequest.h"
 
 @interface ShopTalkPageViewController () <UITableViewDataSource,
 UITableViewDelegate,
@@ -77,6 +78,7 @@ NoResultDelegate>
     BOOL _isLoadFromCache;
     NoResultReusableView *_noResultView;
     UserAuthentificationManager *_userManager;
+    ShopPageRequest *_shopPageRequest;
     
     
     __weak RKObjectManager *_objectManager;
@@ -169,6 +171,8 @@ NoResultDelegate>
     _shopPageHeader.delegate = self;
     _header = _shopPageHeader.view;
     
+    _shopPageRequest = [[ShopPageRequest alloc]init];
+    
     UIView *btmGreenLine = (UIView *)[_header viewWithTag:20];
     [btmGreenLine setHidden:NO];
     _stickyTab = [(UIView *)_header viewWithTag:18];
@@ -197,7 +201,8 @@ NoResultDelegate>
     [self initNotification];
 
     [self configureRestKit];
-    [self loadData];
+    //[self loadData];
+    [self requestTalk];
 }
 
 
@@ -257,7 +262,8 @@ NoResultDelegate>
     if (row == indexPath.row) {
         if (_uriNext != NULL && ![_uriNext isEqualToString:@"0"] && _uriNext != 0) {
             [self configureRestKit];
-            [self loadData];
+            //[self loadData];
+            [self requestTalk];
         }
     }
     
@@ -488,6 +494,50 @@ NoResultDelegate>
 }
 
 
+-(void)requestTalk{
+    [_noResultView removeFromSuperview];
+    [_shopPageRequest requestForShopTalkPageListingWithShopId:[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]?:@(0)
+                                                         page:_page
+                                                  shop_domain:[_data objectForKey:@"shop_domain"]?:@""
+                                                    onSuccess:^(Talk *talk) {
+                                                        _talk = talk;
+                                                        NSArray *list = _talk.result.list;
+                                                        
+                                                        [_list addObjectsFromArray:list];
+                                                        
+                                                        _uriNext =  _talk.result.paging.uri_next;
+                                                        NSURL *url = [NSURL URLWithString:_uriNext];
+                                                        NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
+                                                        
+                                                        NSMutableDictionary *queries = [NSMutableDictionary new];
+                                                        [queries removeAllObjects];
+                                                        for (NSString *keyValuePair in querry)
+                                                        {
+                                                            NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
+                                                            NSString *key = [pairComponents objectAtIndex:0];
+                                                            NSString *value = [pairComponents objectAtIndex:1];
+                                                            
+                                                            [queries setObject:value forKey:key];
+                                                        }
+                                                        
+                                                        _page = [[queries objectForKey:kTKPDDETAIL_APIPAGEKEY] integerValue];
+                                                        
+                                                        _isNoData = NO;
+                                                        
+                                                        [_table reloadData];
+                                                        if (_list.count == 0) {
+                                                            _act.hidden = YES;
+                                                            _table.tableFooterView = _noResultView;
+                                                        }
+                                                    } onFailure:^(NSError *error) {
+                                                        [_act stopAnimating];
+                                                        self.table.tableFooterView = nil;
+                                                        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Kendala koneksi internet"] delegate:self];
+                                                        [alert show];
+                                                    }];
+}
+
+
 
 #pragma mark - Refresh View
 -(void)refreshView:(UIRefreshControl*)refresh
@@ -502,7 +552,8 @@ NoResultDelegate>
     [_table reloadData];
     /** request data **/
     [self configureRestKit];
-    [self loadData];
+    //[self loadData];
+    [self requestTalk];
 }
 
 #pragma mark - Notification Handler

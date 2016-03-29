@@ -9,7 +9,7 @@
 #import "ShopPageRequest.h"
 #import "TokopediaNetworkManager.h"
 #define PRODUCT_PER_PAGE 12
-#define TALK_PER_PAGE 6
+#define TALK_PER_PAGE 5
 
 @implementation ShopPageRequest{
     TokopediaNetworkManager* _productNetworkManager;
@@ -41,22 +41,27 @@
                                      }];
 }
 
--(void)requestForShopTalkPageListingWithShopId:(NSString *)shopId page:(NSInteger)page shop_domain:(NSString *)shopDomain onSuccess:(void (^)(ShopProductPageResult *))successCallback onFailure:(void (^)(NSError *))errorCallback{
-    /*
+-(void)requestForShopTalkPageListingWithShopId:(NSString *)shopId page:(NSInteger)page shop_domain:(NSString *)shopDomain onSuccess:(void (^)(Talk *))successCallback onFailure:(void (^)(NSError *))errorCallback{
+    
     _talkNetworkManager = [TokopediaNetworkManager new];
     _talkNetworkManager.isUsingHmac = YES;
     [_talkNetworkManager requestWithBaseUrl:@"https://ws.tokopedia.com"
                                        path:@"/v4/shop/get_shop_talk.pl"
                                      method:RKRequestMethodGET
-                                  parameter:@{}
-                                    mapping:<#(RKObjectMapping *)#>
+                                  parameter:@{@"page"           : @(page),
+                                              @"per_page"       : @(TALK_PER_PAGE),
+                                              @"shop_domain"    : shopDomain,
+                                              @"shop_id"        : shopId
+                                              }
+                                    mapping:[Talk mapping_v4]
                                   onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                      
+                                      Talk *talk = [successResult.dictionary objectForKey:@""];
+                                      successCallback(talk);
                                   }
                                   onFailure:^(NSError *errorResult) {
-                                      
+                                      errorCallback(errorResult);
                                   }];
-     */
+     
 }
 
 -(NSString*)splitUriToPage:(NSString *)uri{
