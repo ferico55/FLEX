@@ -8,15 +8,18 @@
 @class RolloutMethodId;
 
 typedef enum {
-    RolloutTweakId_swizzlingType_replaceImplementations,
+    RolloutTweakId_swizzlingType_replaceImplementation,
     RolloutTweakId_swizzlingType_createImplementation,
     RolloutTweakId_swizzlingTypesCount
 } RolloutTweakId_swizzlingType;
+
+
 
 @interface RolloutTweakId : NSObject <NSCopying>
 
 @property (readonly) RolloutMethodId *methodId;
 @property (readonly) RolloutTweakId_swizzlingType swizzlingType;
+
 
 - (instancetype)initWithMethodId:(RolloutMethodId *)methodId swizzlingType:(RolloutTweakId_swizzlingType)swizzlingType;
 - (instancetype)initFromJsonConfiguration:(NSDictionary*)configuration;

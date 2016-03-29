@@ -12,12 +12,19 @@
 @class RolloutDeviceProperties;
 @class RolloutInvocationContext;
 
-
-@interface RolloutInvocation : NSObject
-- (instancetype)initWithConfiguration:(RolloutConfiguration *)configuration listsFactory:(RolloutInvocationsListFactory *)listsFactory deviceProperties:(RolloutDeviceProperties *)deviceProperties;
+@protocol RolloutInvocation
 
 - (RolloutTypeWrapper *)invokeWithContext:(RolloutInvocationContext *)context originalMethodWrapper:(RolloutTypeWrapper *(^)(NSArray *))originalMethodWrapper;
 
+-(BOOL)rolloutDisabled;
+-(void)setRolloutDisabled:(BOOL)value;
+
+@end
+
+
+@interface RolloutInvocation : NSObject <RolloutInvocation>
+
+- (instancetype)initWithConfiguration:(RolloutConfiguration *)configuration listsFactory:(RolloutInvocationsListFactory *)listsFactory deviceProperties:(RolloutDeviceProperties *)deviceProperties;
 @property (nonatomic) BOOL rolloutDisabled;
 
 @end
