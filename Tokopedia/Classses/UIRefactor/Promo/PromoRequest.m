@@ -134,16 +134,11 @@ typedef NS_ENUM(NSInteger, PromoNetworkManager) {
 }
 
 - (RKObjectManager *)configureObjectManager {
-    
-#ifdef DEBUG
-    _objectManager = [RKObjectManager sharedClient];
-#else
     if([_promoBaseURL isEqualToString:kTkpdBaseURLString] || [_promoBaseURL isEqualToString:@""]) {
         _objectManager = [RKObjectManager sharedClient];
     } else {
         _objectManager = [RKObjectManager sharedClient:_promoBaseURL];
     }
-#endif
     
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[PromoResponse class]];
     [statusMapping addAttributeMappingsFromArray:@[kTKPD_APISTATUSKEY, kTKPD_APISERVERPROCESSTIMEKEY]];
@@ -345,24 +340,24 @@ typedef NS_ENUM(NSInteger, PromoNetworkManager) {
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     _gtmContainer = appDelegate.container;
 
-#ifdef DEBUG
-    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
-    
-    _promoBaseURL = [secureStorage.keychainDictionary valueForKey:@"AppBaseUrl"];
-    _promoPostURL = @"promo.pl";
-    _promoFullURL = @"";
-    
-    NSString *promoActionBaseURL = [NSString stringWithFormat:@"%@/action/",
-                                    [secureStorage.keychainDictionary valueForKey:@"AppBaseUrl"]];
-    _promoActionBaseURL = promoActionBaseURL;
-    _promoActionPostURL = @"promo.pl";
-    _promoActionFullURL = @"";
-    
-    _cancelRequestHotlist = NO;
-    _cancelRequestProductFeed = NO;
-    _cancelRequestSearch = NO;
-    _cancelRequestShopFeed = NO;
-#else
+//#ifdef DEBUG
+//    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+//    
+//    _promoBaseURL = [secureStorage.keychainDictionary valueForKey:@"AppBaseUrl"];
+//    _promoPostURL = @"promo.pl";
+//    _promoFullURL = @"";
+//    
+//    NSString *promoActionBaseURL = [NSString stringWithFormat:@"%@/action/",
+//                                    [secureStorage.keychainDictionary valueForKey:@"AppBaseUrl"]];
+//    _promoActionBaseURL = promoActionBaseURL;
+//    _promoActionPostURL = @"promo.pl";
+//    _promoActionFullURL = @"";
+//    
+//    _cancelRequestHotlist = NO;
+//    _cancelRequestProductFeed = NO;
+//    _cancelRequestSearch = NO;
+//    _cancelRequestShopFeed = NO;
+//#else
     _promoBaseURL = [_gtmContainer stringForKey:GTMKeyPromoBase];
     _promoPostURL = [_gtmContainer stringForKey:GTMKeyPromoPost];
     _promoFullURL = [_gtmContainer stringForKey:GTMKeyPromoFull];
@@ -375,7 +370,7 @@ typedef NS_ENUM(NSInteger, PromoNetworkManager) {
     _cancelRequestProductFeed = [[_gtmContainer stringForKey:GTMKeyCancelPromoProductFeed] boolValue];
     _cancelRequestSearch = [[_gtmContainer stringForKey:GTMKeyCancelPromoSearch] boolValue];
     _cancelRequestShopFeed = [[_gtmContainer stringForKey:GTMKeyCancelPromoShopFeed] boolValue];
-#endif
+//#endif
 }
 
 @end
