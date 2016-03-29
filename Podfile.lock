@@ -62,6 +62,7 @@ PODS:
   - SOCKit (1.1)
   - TransitionKit (1.1.1)
   - TTTAttributedLabel (1.13.4)
+  - Tweaks (2.0.0)
   - UITableView+FDTemplateLayoutCell (1.4)
 
 DEPENDENCIES:
@@ -77,6 +78,7 @@ DEPENDENCIES:
   - Reveal-iOS-SDK
   - Rollout.io (~> 0.14.5)
   - TTTAttributedLabel
+  - Tweaks
   - UITableView+FDTemplateLayoutCell
 
 SPEC CHECKSUMS:
@@ -100,6 +102,7 @@ SPEC CHECKSUMS:
   SOCKit: c7376ac262bea9115b8f749358f762522a47d392
   TransitionKit: aec4d65b2be460fec0db04f905e8bedca601d669
   TTTAttributedLabel: 0a2ac7b2dd726d32a070dafb01446026b11e624f
+  Tweaks: 524fa47636cce3bf3a4d9156e980f10ae9480e81
   UITableView+FDTemplateLayoutCell: 234e1582bcc4e18461af91155123bb96538ed030
 
 COCOAPODS: 0.38.2
