@@ -17,6 +17,7 @@
                 <outlet property="page4Label" destination="9t7-Tg-QTO" id="TR8-pL-guQ"/>
                 <outlet property="page4Top" destination="mfI-1A-i8w" id="30L-hj-Lxt"/>
                 <outlet property="page4View" destination="pXk-TG-zyI" id="2f3-ko-KzM"/>
+                <outlet property="page5Bling" destination="Djb-fx-nas" id="G1a-J8-skv"/>
                 <outlet property="page5View" destination="uvI-A0-mT8" id="xdr-QP-NTp"/>
                 <outlet property="presentationContainer" destination="gBF-Tr-zYB" id="CpJ-N8-Ntb"/>
                 <outlet property="slide3Content" destination="j04-98-OCB" id="b8I-4X-MFf"/>
@@ -237,7 +238,7 @@
                         <constraint firstAttribute="height" constant="83" id="s1g-G5-gzg"/>
                     </constraints>
                 </imageView>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="onboarding5_bling.png" translatesAutoresizingMaskIntoConstraints="NO" id="Djb-fx-nas">
+                <imageView userInteractionEnabled="NO" alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="onboarding5_bling.png" translatesAutoresizingMaskIntoConstraints="NO" id="Djb-fx-nas">
                     <rect key="frame" x="87" y="196" width="241" height="229"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="241" id="Sdm-3A-xrk"/>

@@ -34,6 +34,8 @@ class IntroViewController: UIViewController {
     @IBOutlet private var page4Door: UIImageView!
     @IBOutlet private var page4Label: UIImageView!
     
+    @IBOutlet var page5Bling: UIImageView!
+    
     var introView: EAIntroView!
     
     override func viewDidLoad() {
@@ -55,6 +57,7 @@ class IntroViewController: UIViewController {
         page4.onPageDidAppear = animatePage4
         
         let page5 = EAIntroPage(customView: page5View)
+        page5.onPageDidAppear = animatePage5
         
         introView = EAIntroView(frame: UIScreen.mainScreen().bounds, andPages: [
             page1,
@@ -120,6 +123,12 @@ class IntroViewController: UIViewController {
             UIView.addKeyframeWithRelativeStartTime(0.95, relativeDuration: 0, animations: {
                 self.page4Label.alpha = 1
             })
+        }, completion: nil)
+    }
+    
+    private func animatePage5() {
+        UIView.animateWithDuration(1, delay: 0.3, options: [.Autoreverse, .Repeat, .CurveEaseInOut], animations: {
+            self.page5Bling.alpha = 1
         }, completion: nil)
     }
     
