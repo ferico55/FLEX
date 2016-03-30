@@ -9,14 +9,12 @@
 #import "RequestCart.h"
 #import "NSNumberFormatter+IDRFormater.h"
 
-#define CartBaseURL @"https://ws.tokopedia.com"
-
 @implementation RequestCart
 
 +(void)fetchCartData:(void(^)(TransactionCartResult *data))success error:(void (^)(NSError *error))error{
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
     networkManager.isUsingHmac = YES;
-    [networkManager requestWithBaseUrl:CartBaseURL
+    [networkManager requestWithBaseUrl:[NSString v4Url]
                                   path:@"/v4/tx.pl"
                                 method:RKRequestMethodGET
                              parameter: @{@"lp_flag":@"1"}
@@ -85,7 +83,7 @@
     transactionSummary.gatewayID = [gatewayID integerValue];
     
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
-    [networkManager requestWithBaseUrl:kTkpdBaseURLString
+    [networkManager requestWithBaseUrl:[NSString basicUrl]
                                   path:@"tx.pl"
                                 method:RKRequestMethodPOST
                              parameter:param
@@ -151,7 +149,7 @@
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
     networkManager.isUsingHmac = YES;
     
-    [networkManager requestWithBaseUrl:CartBaseURL
+    [networkManager requestWithBaseUrl:[NSString v4Url]
                                   path:@"/v4/action/tx/toppay_get_parameter.pl"
                                 method:RKRequestMethodGET
                              parameter:param
@@ -183,7 +181,7 @@
                             @"voucher_code" : voucherCode
                             };
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
-    [networkManager requestWithBaseUrl:kTkpdBaseURLString
+    [networkManager requestWithBaseUrl:[NSString basicUrl]
                                   path:@"tx-voucher.pl"
                                 method:RKRequestMethodPOST
                              parameter:param
@@ -219,7 +217,11 @@
                             };
     
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
-    [networkManager requestWithBaseUrl:kTkpdBaseURLString path:@"action/tx-cart.pl" method:RKRequestMethodPOST parameter:param mapping:[TransactionAction mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+    [networkManager requestWithBaseUrl:[NSString basicUrl]
+                                  path:@"action/tx-cart.pl"
+                                method:RKRequestMethodPOST
+                             parameter:param mapping:[TransactionAction mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
         
         NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
         id stat = [result objectForKey:@""];
@@ -281,7 +283,12 @@
     transactionBuy.gatewayID = [gatewayID integerValue];
     
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
-    [networkManager requestWithBaseUrl:kTkpdBaseURLString path:@"tx.pl" method:RKRequestMethodPOST parameter:param mapping:[transactionBuy mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+    [networkManager requestWithBaseUrl:[NSString basicUrl]
+                                  path:@"tx.pl"
+                                method:RKRequestMethodPOST
+                             parameter:param
+                               mapping:[transactionBuy mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
         
         NSDictionary *result = successResult.dictionary;
         id stat = [result objectForKey:@""];
@@ -331,7 +338,12 @@
                             };
     
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
-    [networkManager requestWithBaseUrl:kTkpdBaseURLString path:@"action/tx-cart.pl" method:RKRequestMethodPOST parameter:param mapping:[TransactionAction mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+    [networkManager requestWithBaseUrl:[NSString basicUrl]
+                                  path:@"action/tx-cart.pl"
+                                method:RKRequestMethodPOST
+                             parameter:param
+                               mapping:[TransactionAction mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
         NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
         id stat = [result objectForKey:@""];
         TransactionAction *action = stat;
@@ -358,7 +370,11 @@
                             @"mandiri_id" : code
                             };
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
-    [networkManager requestWithBaseUrl:kTkpdBaseURLString path:@"tx-payment-emoney.pl" method:RKRequestMethodPOST parameter:param mapping:[TransactionAction mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+    [networkManager requestWithBaseUrl:[NSString basicUrl]
+                                  path:@"tx-payment-emoney.pl"
+                                method:RKRequestMethodPOST
+                             parameter:param mapping:[TransactionAction mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
         
         NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
         id stat = [result objectForKey:@""];
@@ -381,7 +397,12 @@
 
 +(void)fetchBCAClickPaySuccess:(void (^)(TransactionBuyResult *data))success error:(void (^)(NSError *error))error{
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
-    [networkManager requestWithBaseUrl:kTkpdBaseURLString path:@"tx-payment-bcaklikpay.pl" method:RKRequestMethodPOST parameter:@{} mapping:[TransactionBuy mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+    [networkManager requestWithBaseUrl:[NSString basicUrl]
+                                  path:@"tx-payment-bcaklikpay.pl"
+                                method:RKRequestMethodPOST
+                             parameter:@{}
+                               mapping:[TransactionBuy mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
         NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
         id stat = [result objectForKey:@""];
         TransactionBuy *BCAClickPay = stat;
@@ -417,7 +438,12 @@
                             };
 
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
-    [networkManager requestWithBaseUrl:kTkpdBaseURLString path:@"action/tx.pl" method:RKRequestMethodPOST parameter:param mapping:[TransactionCC mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+    [networkManager requestWithBaseUrl:[NSString basicUrl]
+                                  path:@"action/tx.pl"
+                                method:RKRequestMethodPOST
+                             parameter:param
+                               mapping:[TransactionCC mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
         NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
         id stat = [result objectForKey:@""];
         TransactionCC *actionCC = stat;
@@ -443,7 +469,12 @@
                             };
     
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
-    [networkManager requestWithBaseUrl:kTkpdBaseURLString path:@"tx-payment-briepay.pl" method:RKRequestMethodPOST parameter:param mapping:[TransactionAction mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+    [networkManager requestWithBaseUrl:[NSString basicUrl]
+                                  path:@"tx-payment-briepay.pl"
+                                method:RKRequestMethodPOST
+                             parameter:param
+                               mapping:[TransactionAction mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
         NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
         id stat = [result objectForKey:@""];
         TransactionAction *action = stat;
@@ -472,7 +503,7 @@
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
     networkManager.isUsingHmac = YES;
     
-    [networkManager requestWithBaseUrl:CartBaseURL
+    [networkManager requestWithBaseUrl:[NSString v4Url]
                                   path:@"/v4/action/tx/toppay_thanks_action.pl"
                                 method:RKRequestMethodGET
                              parameter:param
