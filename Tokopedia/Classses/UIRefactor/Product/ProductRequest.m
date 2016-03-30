@@ -61,6 +61,7 @@ setCompletionBlockWithSuccess:(void (^)(ShopSettings *))success
                                  ShopSettings *response = [mappingResult.dictionary objectForKey:@""];
                                  if (response.result.is_success == 1) {
                                      success(response);
+                                     [[NSNotificationCenter defaultCenter] postNotificationName:ADD_PRODUCT_POST_NOTIFICATION_NAME object:self];
                                  } else if (response.message_error.count > 0) {
                                      failure(response.message_error);
                                  }
