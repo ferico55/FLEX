@@ -8,7 +8,9 @@
 
 #import "ShopPageRequest.h"
 #import "TokopediaNetworkManager.h"
+
 #define PRODUCT_PER_PAGE 12
+#define REVIEW_PER_PAGE 5
 #define TALK_PER_PAGE 5
 
 @implementation ShopPageRequest{
@@ -42,7 +44,6 @@
 }
 
 -(void)requestForShopTalkPageListingWithShopId:(NSString *)shopId page:(NSInteger)page shop_domain:(NSString *)shopDomain onSuccess:(void (^)(Talk *))successCallback onFailure:(void (^)(NSError *))errorCallback{
-    
     _talkNetworkManager = [TokopediaNetworkManager new];
     _talkNetworkManager.isUsingHmac = YES;
     [_talkNetworkManager requestWithBaseUrl:@"https://ws.tokopedia.com"
@@ -62,6 +63,27 @@
                                       errorCallback(errorResult);
                                   }];
      
+}
+
+-(void)requestForShopReviewPageListingWithShopId:(NSString *)shopId page:(NSInteger)page shop_domain:(NSString *)shopDomain onSuccess:(void (^)(Review *))successCallback onFailure:(void (^)(NSError *))errorCallback{
+    _reviewNetworkManager = [TokopediaNetworkManager new];
+    _reviewNetworkManager.isUsingHmac = YES;
+    [_reviewNetworkManager requestWithBaseUrl:@"https://ws.tokopedia.com"
+                                       path:@"/v4/shop/get_shop_review.pl"
+                                     method:RKRequestMethodGET
+                                  parameter:@{@"page"           : @(page),
+                                              @"per_page"       : @(REVIEW_PER_PAGE),
+                                              @"shop_domain"    : shopDomain,
+                                              @"shop_id"        : shopId
+                                              }
+                                    mapping:[Review mapping_v4]
+                                  onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                      Review *review = [successResult.dictionary objectForKey:@""];
+                                      successCallback(review);
+                                  }
+                                  onFailure:^(NSError *errorResult) {
+                                      errorCallback(errorResult);
+                                  }];
 }
 
 -(void)requestForShopNotesPageListingWithShopId:(NSString *)shopId shop_domain:(NSString *)shopDomain onSuccess:(void (^)(Notes *))successCallback onFailure:(void (^)(NSError *))errorCallback{
