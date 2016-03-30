@@ -18,6 +18,7 @@ class IntroViewController: UIViewController {
     
     @IBOutlet private var page2View: UIView!
     
+    @IBOutlet private var page3View: UIView!
     
     @IBOutlet private var spoonFork: UIImageView!
     @IBOutlet private var babyBottle: UIImageView!
@@ -40,13 +41,12 @@ class IntroViewController: UIViewController {
         let page2 = EAIntroPage(customView: page2View)
         page2.onPageDidAppear = animatePage2
         
-        let page3 = EAIntroPage()
-        page3.title = "page 3"
-        page3.desc = "page 3 desc"
+        let page3 = EAIntroPage(customView: page3View)
         
         introView = EAIntroView(frame: UIScreen.mainScreen().bounds, andPages: [page1, page2, page3])
         introView.swipeToExit = false
         introView.showInView(presentationContainer)
+        introView.backgroundColor = UIColor.clearColor()
     }
     
     func animatePage2() {

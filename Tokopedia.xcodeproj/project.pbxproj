@@ -2106,6 +2106,8 @@
 		928EC3AA1CAA8677001CF972 /* slide2e.png in Resources */ = {isa = PBXBuildFile; fileRef = 928EC3A41CAA8677001CF972 /* slide2e.png */; };
 		928EC3AB1CAA8677001CF972 /* slide2f.png in Resources */ = {isa = PBXBuildFile; fileRef = 928EC3A51CAA8677001CF972 /* slide2f.png */; };
 		928EC3AC1CAA8677001CF972 /* slide2g.png in Resources */ = {isa = PBXBuildFile; fileRef = 928EC3A61CAA8677001CF972 /* slide2g.png */; };
+		92F896EB1CAB7C4B009248CF /* slide3_phone.png in Resources */ = {isa = PBXBuildFile; fileRef = 92F896EA1CAB7C4B009248CF /* slide3_phone.png */; };
+		92F896ED1CAB7D38009248CF /* slide3_content.png in Resources */ = {isa = PBXBuildFile; fileRef = 92F896EC1CAB7D38009248CF /* slide3_content.png */; };
 		F25F6F270D531ED13A92CDB9 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4868E459AB2A65D133732296 /* libPods-Tokopedia.a */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
 		FC23B85A1ACD659900879D75 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8581ACD659900879D75 /* Fabric.framework */; };
@@ -5285,6 +5287,8 @@
 		928EC3A41CAA8677001CF972 /* slide2e.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slide2e.png; sourceTree = "<group>"; };
 		928EC3A51CAA8677001CF972 /* slide2f.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slide2f.png; sourceTree = "<group>"; };
 		928EC3A61CAA8677001CF972 /* slide2g.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slide2g.png; sourceTree = "<group>"; };
+		92F896EA1CAB7C4B009248CF /* slide3_phone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slide3_phone.png; sourceTree = "<group>"; };
+		92F896EC1CAB7D38009248CF /* slide3_content.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slide3_content.png; sourceTree = "<group>"; };
 		AAA12C6A69BF6CB5F8EE3287 /* Pods-Tokopedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug.xcconfig"; sourceTree = "<group>"; };
 		C8A1445074FECD393EA18C17 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		FC23B8571ACD659900879D75 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
@@ -10837,6 +10841,8 @@
 		92464B071CA3FC89000AABAD /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
+				92F896EC1CAB7D38009248CF /* slide3_content.png */,
+				92F896EA1CAB7C4B009248CF /* slide3_phone.png */,
 				928EC3A11CAA8677001CF972 /* slide2b.png */,
 				928EC3A21CAA8677001CF972 /* slide2c.png */,
 				928EC3A31CAA8677001CF972 /* slide2d.png */,
@@ -11302,6 +11308,7 @@
 				85A288A31C919C2C005170EB /* GothamLight.ttf in Resources */,
 				85A289491C919C2C005170EB /* icon_check_orange.png in Resources */,
 				85A288AE1C919C2C005170EB /* button_white_rounded_2.png in Resources */,
+				92F896ED1CAB7D38009248CF /* slide3_content.png in Resources */,
 				85A288B81C919C2C005170EB /* icon_10.png in Resources */,
 				85A285D31C919C2B005170EB /* CatalogViewController.xib in Resources */,
 				85A287611C919C2C005170EB /* SalesOrderCell.xib in Resources */,
@@ -11906,6 +11913,7 @@
 				85A28A001C919C2C005170EB /* icon_no_data_grey_2x.png in Resources */,
 				85A289321C919C2C005170EB /* icon_16@3x.png in Resources */,
 				85A285A81C919C2B005170EB /* AlertPickerView.xib in Resources */,
+				92F896EB1CAB7C4B009248CF /* slide3_phone.png in Resources */,
 				85A289111C919C2C005170EB /* icon_button_pricealert_active@3x.png in Resources */,
 				85A289671C919C2C005170EB /* icon_diskusi_grey_medium@3x.png in Resources */,
 				85A28B1E1C919C2C005170EB /* ic_search.png in Resources */,
