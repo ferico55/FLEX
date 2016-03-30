@@ -199,12 +199,8 @@
     }
 }
 
-- (BOOL)isValidInput {
-    BOOL isValid = YES;
-    
+- (BOOL)isValidInput {    
     Address *list = [_data objectForKey:kTKPDDETAIL_DATAADDRESSKEY];
-    
-    NSMutableArray *messages = [NSMutableArray new];
     
     NSString *addressname = [_datainput objectForKey:kTKPDSHOP_APIADDRESSNAMEKEY]?:list.location_address_name;
     NSString *address = [_datainput objectForKey:kTKPDSHOP_APIADDRESSKEY]?:list.location_address;
@@ -216,55 +212,57 @@
     NSString *email = [_datainput objectForKey:kTKPDSHOP_APIEMAILKEY]?:list.location_email;
     NSString *fax = [_datainput objectForKey:kTKPDSHOP_APIFAXKEY]?:list.location_fax;
     
-    NSString *regex = @"[0-9]*";
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", regex];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", @"[0-9]*"];
     
-    if (!addressname || [addressname isEqualToString:@""]) {
+    BOOL isValid = YES;
+    
+    NSMutableArray *messages = [NSMutableArray new];
+    
+    if (addressname == nil || addressname.length == 0) {
         isValid = NO;
         [messages addObject:@"Nama Alamat harus diisi."];
     }
-    else if (!address || [address isEqualToString:@""]) {
+    if (address == nil || address.length == 0) {
         isValid = NO;
         [messages addObject:@"Alamat harus diisi."];
     }
-    else if (!postcode||postcode ==0 ) {
+    if (postcode == 0) {
         isValid = NO;
         [messages addObject:@"Kode Pos harus diisi."];
     }
-    else if (!prov||[prov isEqualToString:@""]) {
+    if (prov == nil || prov.length == 0) {
         isValid = NO;
         [messages addObject:@"Provinsi harus diisi."];
     }
-    else if (!city||[city isEqualToString:@""]) {
+    if (city == nil || city.length == 0) {
         isValid = NO;
         [messages addObject:@"Kota harus diisi."];
     }
-    else if (!district||[district isEqualToString:@""]) {
+    if (district == nil || district.length == 0) {
         isValid = NO;
         [messages addObject:@"Kecamatan harus diisi."];
     }
-    else if (email && !([email isEqualToString:@""] || [email isEqualToString:@"0"] || [email isEmail])) {
-        isValid = NO;
-        [messages addObject:@"Format email harus benar."];
+    if (email.length > 0 && [email isEmail] == nil) {
+        [messages addObject:@"Format tidak benar."];
     }
-    else if (![predicate evaluateWithObject:phone]) {
-        isValid = NO;
-        [messages addObject:@"Telepon harus berupa angka."];
+    if (phone.length > 0) {
+        if ([predicate evaluateWithObject:phone] == NO) {
+            [messages addObject:@"Telepon harus berupa angka."];
+        }
+        if (phone.length < 6) {
+            [messages addObject:@"Telepon terlalu pendek, minimum 6 karakter."];
+        }
     }
-    else if (phone.length > 1 && phone.length < 6) {
-        isValid = NO;
-        [messages addObject:@"Telepon terlalu pendek, minimum 6 karakter."];
-    }
-    else if (![predicate evaluateWithObject:fax]) {
-        isValid = NO;
-        [messages addObject:@"Fax harus berupa angka."];
-    }
-    else if (fax.length > 1 && fax.length < 6) {
-        isValid = NO;
-        [messages addObject:@"Fax terlalu pendek, minimum 6 karakter."];
+    if (fax.length > 0) {
+        if ([predicate evaluateWithObject:phone] == NO) {
+            [messages addObject:@"Fax harus berupa angka."];
+        }
+        if (phone.length < 6) {
+            [messages addObject:@"Fax terlalu pendek, minimum 6 karakter."];
+        }
     }
     
-    if (!isValid) {
+    if (isValid == NO) {
         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messages delegate:self];
         [alert show];
     }
