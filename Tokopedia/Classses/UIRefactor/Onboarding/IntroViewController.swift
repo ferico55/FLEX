@@ -120,12 +120,15 @@ class IntroViewController: UIViewController {
     private func animatePage3() {
         let initialY = slide3Content.frame.origin.y
         
-        UIView.animateWithDuration(0.7, delay: 0.5, options: [.Autoreverse, .CurveEaseInOut], animations: {[unowned self] in
+        UIView.animateKeyframesWithDuration(1.4, delay: 0.5, options: .CalculationModeCubic, animations: {
+            UIView.addKeyframeWithRelativeStartTime(0.1, relativeDuration: 0.5, animations: {
                 self.slide3Content.frame.origin.y = -122
-            },
-            completion: {[unowned self] complete in
+            })
+            
+            UIView.addKeyframeWithRelativeStartTime(0.51, relativeDuration: 0.5, animations: {
                 self.slide3Content.frame.origin.y = initialY
             })
+        }, completion: nil)
     }
     
     private func stopPage4Animations() {
