@@ -127,8 +127,6 @@
     [self addBottomInsetWhen14inch];
     _talkNavigationFlag = [_data objectForKey:@"nav"];
     _page = 1;
-    
-    _operationQueue = [NSOperationQueue new];
 
     _list = [NSMutableArray new];
     _refreshControl = [[UIRefreshControl alloc] init];
