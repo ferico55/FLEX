@@ -192,7 +192,7 @@
     TokopediaNetworkManager *network = [TokopediaNetworkManager new];
     network.isUsingHmac = YES;
     
-    [network requestWithBaseUrl:@"https://ws.tokopedia.com"
+    [network requestWithBaseUrl:[NSString v4Url]
                            path:@"/v4/action/people/add_address.pl"
                          method:RKRequestMethodGET
                       parameter:param

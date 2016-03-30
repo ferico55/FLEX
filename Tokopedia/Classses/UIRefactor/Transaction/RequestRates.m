@@ -12,15 +12,20 @@
 
 @implementation RequestRates
 
++(NSString*)baseURL{
+    return [NSString keroUrl];
+}
+
++(NSString*)pathURL{
+    return @"/rates/v1";
+}
+
 +(void)fetchRateWithName:(NSString *)name origin:(NSString*)origin destination:(NSString *)destination weight:(NSString*)weight token:(NSString*)token ut:(NSString*)ut shipmentAvailable:(NSArray*)shipmentAvailable isShowOKE:(NSString*)isShowOKE onSuccess:(void(^)(RateData* rateData))success onFailure:(void(^)(NSError* errorResult)) error{
     
     [TPAnalytics trackUserId];
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    TAGContainer *gtmContainer = appDelegate.container;
     
-    //TODO::BASE & POST URL
-    NSString *baseuUrl = @"https://kero.tokopedia.com";//[_gtmContainer stringForKey:@"base_url"]?:@"https://clover.tokopedia.com";
-    NSString *pathUrl = @"/rates/v1";//[_gtmContainer stringForKey:@"post_url"]?:@"notify/v1";
+    NSString *baseuUrl = [RequestRates baseURL];
+    NSString *pathUrl = [RequestRates pathURL];
     
     NSDictionary *param = @{
                             @"names"         :name?:@"",
