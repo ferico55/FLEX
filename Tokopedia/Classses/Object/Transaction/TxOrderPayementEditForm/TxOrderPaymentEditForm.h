@@ -14,7 +14,7 @@
 #import "TxOrderPaymentEditMethod.h"
 #import "TxOrderPaymentEditOrder.h"
 
-@interface TxOrderPaymentEditForm : NSObject
+@interface TxOrderPaymentEditForm : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) TxOrderPaymentEditBankAccount *bank_account;
 @property (nonatomic, strong) TxOrderPaymentEditSystemBank *sysbank_account;

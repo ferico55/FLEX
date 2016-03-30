@@ -9,13 +9,13 @@
 #import <Foundation/Foundation.h>
 #import "TxOrderPaymentEditResult.h"
 
-@interface TxOrderPaymentEdit : NSObject
+@interface TxOrderPaymentEdit : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSArray *message_error;
 @property (nonatomic, strong) NSArray *message_status;
 @property (nonatomic, strong) NSString *status;
 @property (nonatomic, strong) NSString *server_process_time;
 @property (nonatomic, strong) TxOrderPaymentEditResult *result;
-
+@property (nonatomic, strong) TxOrderPaymentEditResult *data;
 
 @end

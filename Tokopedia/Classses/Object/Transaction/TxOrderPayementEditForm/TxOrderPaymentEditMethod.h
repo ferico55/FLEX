@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "MethodList.h"
 
-@interface TxOrderPaymentEditMethod : NSObject
+@interface TxOrderPaymentEditMethod : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSArray *method_list;
 @property (nonatomic, strong) NSString *method_id_chosen;
