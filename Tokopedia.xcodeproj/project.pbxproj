@@ -2115,6 +2115,7 @@
 		92F896F91CAB8F05009248CF /* onboarding5_bell.png in Resources */ = {isa = PBXBuildFile; fileRef = 92F896F61CAB8F05009248CF /* onboarding5_bell.png */; };
 		92F896FA1CAB8F05009248CF /* onboarding5_bling.png in Resources */ = {isa = PBXBuildFile; fileRef = 92F896F71CAB8F05009248CF /* onboarding5_bling.png */; };
 		92F896FB1CAB8F05009248CF /* onboarding5_phone.png in Resources */ = {isa = PBXBuildFile; fileRef = 92F896F81CAB8F05009248CF /* onboarding5_phone.png */; };
+		92F8972C1CAB9456009248CF /* onboarding_6.png in Resources */ = {isa = PBXBuildFile; fileRef = 92F8972B1CAB9456009248CF /* onboarding_6.png */; };
 		F25F6F270D531ED13A92CDB9 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4868E459AB2A65D133732296 /* libPods-Tokopedia.a */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
 		FC23B85A1ACD659900879D75 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8581ACD659900879D75 /* Fabric.framework */; };
@@ -5303,6 +5304,7 @@
 		92F896F61CAB8F05009248CF /* onboarding5_bell.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = onboarding5_bell.png; sourceTree = "<group>"; };
 		92F896F71CAB8F05009248CF /* onboarding5_bling.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = onboarding5_bling.png; sourceTree = "<group>"; };
 		92F896F81CAB8F05009248CF /* onboarding5_phone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = onboarding5_phone.png; sourceTree = "<group>"; };
+		92F8972B1CAB9456009248CF /* onboarding_6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = onboarding_6.png; sourceTree = "<group>"; };
 		AAA12C6A69BF6CB5F8EE3287 /* Pods-Tokopedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug.xcconfig"; sourceTree = "<group>"; };
 		C8A1445074FECD393EA18C17 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		FC23B8571ACD659900879D75 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
@@ -10855,6 +10857,7 @@
 		92464B071CA3FC89000AABAD /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
+				92F8972B1CAB9456009248CF /* onboarding_6.png */,
 				92F896F61CAB8F05009248CF /* onboarding5_bell.png */,
 				92F896F71CAB8F05009248CF /* onboarding5_bling.png */,
 				92F896F81CAB8F05009248CF /* onboarding5_phone.png */,
@@ -11713,6 +11716,7 @@
 				85A289891C919C2C005170EB /* icon_idrop_indomaret@3x.png in Resources */,
 				85A288BE1C919C2C005170EB /* icon_13.png in Resources */,
 				85A2875F1C919C2C005170EB /* OrderDetailViewController.xib in Resources */,
+				92F8972C1CAB9456009248CF /* onboarding_6.png in Resources */,
 				85A28A391C919C2C005170EB /* icon_search@2x (deleted 2852b6750d45e6cc078691c1fdbc73df).png in Resources */,
 				85A28B471C919C2C005170EB /* Icon_check_grey_bg.png in Resources */,
 				85A289451C919C2C005170EB /* icon_category_list_white@2x.png in Resources */,

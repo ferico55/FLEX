@@ -19,6 +19,7 @@ class IntroViewController: UIViewController {
     @IBOutlet private var page3View: UIView!
     @IBOutlet private var page4View: UIView!
     @IBOutlet private var page5View: UIView!
+    @IBOutlet private var page6View: UIView!
     
     @IBOutlet private var spoonFork: UIImageView!
     @IBOutlet private var babyBottle: UIImageView!
@@ -49,6 +50,7 @@ class IntroViewController: UIViewController {
         
         let page2 = EAIntroPage(customView: page2View)
         page2.onPageDidAppear = animatePage2
+        page2.onPageDidDisappear = stopPage2Animations
         
         let page3 = EAIntroPage(customView: page3View)
         page3.onPageDidAppear = animatePage3
@@ -59,16 +61,26 @@ class IntroViewController: UIViewController {
         let page5 = EAIntroPage(customView: page5View)
         page5.onPageDidAppear = animatePage5
         
+        let page6 = EAIntroPage(customView: page6View)
+        
         introView = EAIntroView(frame: UIScreen.mainScreen().bounds, andPages: [
             page1,
             page2,
             page3,
             page4,
-            page5])
+            page5,
+            page6])
         
         introView.swipeToExit = false
         introView.showInView(presentationContainer)
         introView.backgroundColor = UIColor.clearColor()
+    }
+    
+    private func stopPage2Animations() {
+        [spoonFork, babyBottle, fabulousShoe, tshirt, soccerBall, giftbox].forEach { view in
+            view.layer.removeAllAnimations()
+            view.alpha = 0
+        }
     }
     
     private func animatePage2() {

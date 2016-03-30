@@ -19,6 +19,7 @@
                 <outlet property="page4View" destination="pXk-TG-zyI" id="2f3-ko-KzM"/>
                 <outlet property="page5Bling" destination="Djb-fx-nas" id="G1a-J8-skv"/>
                 <outlet property="page5View" destination="uvI-A0-mT8" id="xdr-QP-NTp"/>
+                <outlet property="page6View" destination="zZm-pt-wd4" id="bDL-or-tpN"/>
                 <outlet property="presentationContainer" destination="gBF-Tr-zYB" id="CpJ-N8-Ntb"/>
                 <outlet property="slide3Content" destination="j04-98-OCB" id="b8I-4X-MFf"/>
                 <outlet property="soccerBall" destination="nE0-QU-6VD" id="a5q-9n-kvK"/>
@@ -257,6 +258,25 @@
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
             <point key="canvasLocation" x="2334" y="127"/>
         </view>
+        <view contentMode="scaleToFill" id="zZm-pt-wd4">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="onboarding_6.png" translatesAutoresizingMaskIntoConstraints="NO" id="g0w-RE-hWs">
+                    <rect key="frame" x="118" y="152" width="179" height="226.5"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="179" id="MQ8-bh-cNC"/>
+                        <constraint firstAttribute="height" constant="226.5" id="fi2-wn-jzX"/>
+                    </constraints>
+                </imageView>
+            </subviews>
+            <constraints>
+                <constraint firstItem="g0w-RE-hWs" firstAttribute="centerX" secondItem="zZm-pt-wd4" secondAttribute="centerX" id="T99-jn-EVa"/>
+                <constraint firstItem="g0w-RE-hWs" firstAttribute="top" secondItem="zZm-pt-wd4" secondAttribute="top" constant="152" id="mwc-SY-TDL"/>
+            </constraints>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
+            <point key="canvasLocation" x="2831" y="127"/>
+        </view>
     </objects>
     <resources>
         <image name="onboarding5_bell.png" width="133" height="166"/>
@@ -266,6 +286,7 @@
         <image name="onboarding_4b.png" width="390" height="115"/>
         <image name="onboarding_4c.png" width="251" height="254"/>
         <image name="onboarding_4d.png" width="107" height="78"/>
+        <image name="onboarding_6.png" width="358" height="453"/>
         <image name="onboarding_toped_1a.png" width="460" height="388"/>
         <image name="slide2_phone.png" width="365" height="388"/>
         <image name="slide2b.png" width="127" height="130"/>
