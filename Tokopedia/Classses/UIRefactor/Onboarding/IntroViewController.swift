@@ -54,6 +54,7 @@ class IntroViewController: UIViewController {
         
         let page3 = EAIntroPage(customView: page3View)
         page3.onPageDidAppear = animatePage3
+        page3.onPageDidDisappear = stopPage3Animations
         
         let page4 = EAIntroPage(customView: page4View)
         page4.onPageDidAppear = animatePage4
@@ -110,6 +111,10 @@ class IntroViewController: UIViewController {
                 self.soccerBall.alpha = 1
             })
         }, completion: nil)
+    }
+    
+    private func stopPage3Animations() {
+        slide3Content.layer.removeAllAnimations()
     }
     
     private func animatePage3() {
