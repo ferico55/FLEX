@@ -17,6 +17,7 @@
                 <outlet property="page4Label" destination="9t7-Tg-QTO" id="TR8-pL-guQ"/>
                 <outlet property="page4Top" destination="mfI-1A-i8w" id="30L-hj-Lxt"/>
                 <outlet property="page4View" destination="pXk-TG-zyI" id="2f3-ko-KzM"/>
+                <outlet property="page5View" destination="uvI-A0-mT8" id="xdr-QP-NTp"/>
                 <outlet property="presentationContainer" destination="gBF-Tr-zYB" id="CpJ-N8-Ntb"/>
                 <outlet property="slide3Content" destination="j04-98-OCB" id="b8I-4X-MFf"/>
                 <outlet property="soccerBall" destination="nE0-QU-6VD" id="a5q-9n-kvK"/>
@@ -177,28 +178,28 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="onboarding_4a.png" translatesAutoresizingMaskIntoConstraints="NO" id="boN-YG-LZz">
-                    <rect key="frame" x="116" y="106" width="182" height="256"/>
+                    <rect key="frame" x="116" y="152" width="182" height="256"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="182.5" id="43w-Md-2th"/>
                         <constraint firstAttribute="height" constant="256" id="JLU-gd-EBH"/>
                     </constraints>
                 </imageView>
                 <imageView userInteractionEnabled="NO" alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="onboarding_4b.png" translatesAutoresizingMaskIntoConstraints="NO" id="mfI-1A-i8w">
-                    <rect key="frame" x="110" y="157" width="195" height="57.5"/>
+                    <rect key="frame" x="110" y="203" width="195" height="58"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="195" id="5yG-7y-ZEd"/>
                         <constraint firstAttribute="height" constant="57.5" id="qnq-ml-lVa"/>
                     </constraints>
                 </imageView>
                 <imageView userInteractionEnabled="NO" alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="onboarding_4c.png" translatesAutoresizingMaskIntoConstraints="NO" id="6YN-xD-wgH">
-                    <rect key="frame" x="145" y="235" width="125.5" height="127"/>
+                    <rect key="frame" x="145" y="281" width="126" height="127"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="125.5" id="WRQ-i9-Ekf"/>
                         <constraint firstAttribute="height" constant="127" id="s5Z-gR-jTZ"/>
                     </constraints>
                 </imageView>
                 <imageView userInteractionEnabled="NO" alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="onboarding_4d.png" translatesAutoresizingMaskIntoConstraints="NO" id="9t7-Tg-QTO">
-                    <rect key="frame" x="151" y="250" width="53.5" height="39"/>
+                    <rect key="frame" x="151" y="296" width="54" height="39"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="53.5" id="9op-QC-aEq"/>
                         <constraint firstAttribute="height" constant="39" id="E2V-IQ-4Ta"/>
@@ -206,7 +207,7 @@
                 </imageView>
             </subviews>
             <constraints>
-                <constraint firstItem="boN-YG-LZz" firstAttribute="top" secondItem="pXk-TG-zyI" secondAttribute="top" constant="106" id="Cir-I5-QSV"/>
+                <constraint firstItem="boN-YG-LZz" firstAttribute="top" secondItem="pXk-TG-zyI" secondAttribute="top" constant="152" id="Cir-I5-QSV"/>
                 <constraint firstItem="mfI-1A-i8w" firstAttribute="leading" secondItem="boN-YG-LZz" secondAttribute="trailing" constant="-188" id="D6l-Yz-MSL"/>
                 <constraint firstItem="6YN-xD-wgH" firstAttribute="top" secondItem="boN-YG-LZz" secondAttribute="bottom" constant="-127" id="ISV-gg-kNn"/>
                 <constraint firstItem="boN-YG-LZz" firstAttribute="top" secondItem="mfI-1A-i8w" secondAttribute="bottom" constant="-108.5" id="V50-r2-B9t"/>
@@ -218,8 +219,48 @@
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
             <point key="canvasLocation" x="1838" y="127"/>
         </view>
+        <view contentMode="scaleToFill" id="uvI-A0-mT8">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="onboarding5_phone.png" translatesAutoresizingMaskIntoConstraints="NO" id="h1v-Pu-zbU">
+                    <rect key="frame" x="116" y="152" width="182" height="256"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="256" id="LAl-pb-hXF"/>
+                        <constraint firstAttribute="width" constant="182.5" id="Wwl-Vf-ewx"/>
+                    </constraints>
+                </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="onboarding5_bell.png" translatesAutoresizingMaskIntoConstraints="NO" id="ZhT-C5-0qa">
+                    <rect key="frame" x="174" y="269" width="66.5" height="83"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="66.5" id="Ogd-yz-yXv"/>
+                        <constraint firstAttribute="height" constant="83" id="s1g-G5-gzg"/>
+                    </constraints>
+                </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="onboarding5_bling.png" translatesAutoresizingMaskIntoConstraints="NO" id="Djb-fx-nas">
+                    <rect key="frame" x="87" y="196" width="241" height="229"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="241" id="Sdm-3A-xrk"/>
+                        <constraint firstAttribute="height" constant="229" id="aS8-yb-Y4i"/>
+                    </constraints>
+                </imageView>
+            </subviews>
+            <constraints>
+                <constraint firstItem="h1v-Pu-zbU" firstAttribute="centerX" secondItem="uvI-A0-mT8" secondAttribute="centerX" id="GkM-KL-uxv"/>
+                <constraint firstItem="ZhT-C5-0qa" firstAttribute="top" secondItem="h1v-Pu-zbU" secondAttribute="bottom" constant="-139" id="JHg-2m-hS4"/>
+                <constraint firstItem="h1v-Pu-zbU" firstAttribute="top" secondItem="uvI-A0-mT8" secondAttribute="top" constant="152" id="PWq-D7-STm"/>
+                <constraint firstItem="Djb-fx-nas" firstAttribute="top" secondItem="h1v-Pu-zbU" secondAttribute="bottom" constant="-212" id="c89-Tq-2Wp"/>
+                <constraint firstItem="ZhT-C5-0qa" firstAttribute="leading" secondItem="h1v-Pu-zbU" secondAttribute="trailing" constant="-124" id="gmn-Oe-Aws"/>
+                <constraint firstItem="Djb-fx-nas" firstAttribute="leading" secondItem="h1v-Pu-zbU" secondAttribute="trailing" constant="-211" id="vF7-dB-qR3"/>
+            </constraints>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
+            <point key="canvasLocation" x="2334" y="127"/>
+        </view>
     </objects>
     <resources>
+        <image name="onboarding5_bell.png" width="133" height="166"/>
+        <image name="onboarding5_bling.png" width="482" height="458"/>
+        <image name="onboarding5_phone.png" width="365" height="512"/>
         <image name="onboarding_4a.png" width="365" height="512"/>
         <image name="onboarding_4b.png" width="390" height="115"/>
         <image name="onboarding_4c.png" width="251" height="254"/>

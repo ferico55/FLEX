@@ -18,6 +18,7 @@ class IntroViewController: UIViewController {
     @IBOutlet private var page2View: UIView!
     @IBOutlet private var page3View: UIView!
     @IBOutlet private var page4View: UIView!
+    @IBOutlet private var page5View: UIView!
     
     @IBOutlet private var spoonFork: UIImageView!
     @IBOutlet private var babyBottle: UIImageView!
@@ -53,11 +54,14 @@ class IntroViewController: UIViewController {
         let page4 = EAIntroPage(customView: page4View)
         page4.onPageDidAppear = animatePage4
         
+        let page5 = EAIntroPage(customView: page5View)
+        
         introView = EAIntroView(frame: UIScreen.mainScreen().bounds, andPages: [
             page1,
             page2,
             page3,
-            page4])
+            page4,
+            page5])
         
         introView.swipeToExit = false
         introView.showInView(presentationContainer)

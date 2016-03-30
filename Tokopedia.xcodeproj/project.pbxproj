@@ -2112,6 +2112,9 @@
 		92F896F31CAB8743009248CF /* onboarding_4b.png in Resources */ = {isa = PBXBuildFile; fileRef = 92F896EF1CAB8743009248CF /* onboarding_4b.png */; };
 		92F896F41CAB8743009248CF /* onboarding_4c.png in Resources */ = {isa = PBXBuildFile; fileRef = 92F896F01CAB8743009248CF /* onboarding_4c.png */; };
 		92F896F51CAB8743009248CF /* onboarding_4d.png in Resources */ = {isa = PBXBuildFile; fileRef = 92F896F11CAB8743009248CF /* onboarding_4d.png */; };
+		92F896F91CAB8F05009248CF /* onboarding5_bell.png in Resources */ = {isa = PBXBuildFile; fileRef = 92F896F61CAB8F05009248CF /* onboarding5_bell.png */; };
+		92F896FA1CAB8F05009248CF /* onboarding5_bling.png in Resources */ = {isa = PBXBuildFile; fileRef = 92F896F71CAB8F05009248CF /* onboarding5_bling.png */; };
+		92F896FB1CAB8F05009248CF /* onboarding5_phone.png in Resources */ = {isa = PBXBuildFile; fileRef = 92F896F81CAB8F05009248CF /* onboarding5_phone.png */; };
 		F25F6F270D531ED13A92CDB9 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4868E459AB2A65D133732296 /* libPods-Tokopedia.a */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
 		FC23B85A1ACD659900879D75 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8581ACD659900879D75 /* Fabric.framework */; };
@@ -5297,6 +5300,9 @@
 		92F896EF1CAB8743009248CF /* onboarding_4b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = onboarding_4b.png; sourceTree = "<group>"; };
 		92F896F01CAB8743009248CF /* onboarding_4c.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = onboarding_4c.png; sourceTree = "<group>"; };
 		92F896F11CAB8743009248CF /* onboarding_4d.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = onboarding_4d.png; sourceTree = "<group>"; };
+		92F896F61CAB8F05009248CF /* onboarding5_bell.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = onboarding5_bell.png; sourceTree = "<group>"; };
+		92F896F71CAB8F05009248CF /* onboarding5_bling.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = onboarding5_bling.png; sourceTree = "<group>"; };
+		92F896F81CAB8F05009248CF /* onboarding5_phone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = onboarding5_phone.png; sourceTree = "<group>"; };
 		AAA12C6A69BF6CB5F8EE3287 /* Pods-Tokopedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug.xcconfig"; sourceTree = "<group>"; };
 		C8A1445074FECD393EA18C17 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		FC23B8571ACD659900879D75 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
@@ -10849,6 +10855,9 @@
 		92464B071CA3FC89000AABAD /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
+				92F896F61CAB8F05009248CF /* onboarding5_bell.png */,
+				92F896F71CAB8F05009248CF /* onboarding5_bling.png */,
+				92F896F81CAB8F05009248CF /* onboarding5_phone.png */,
 				92F896EE1CAB8743009248CF /* onboarding_4a.png */,
 				92F896EF1CAB8743009248CF /* onboarding_4b.png */,
 				92F896F01CAB8743009248CF /* onboarding_4c.png */,
@@ -11094,6 +11103,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				85A287651C919C2C005170EB /* SalesTransactionListViewController.xib in Resources */,
+				92F896F91CAB8F05009248CF /* onboarding5_bell.png in Resources */,
 				85A28A281C919C2C005170EB /* icon_retur.png in Resources */,
 				85A289CE1C919C2C005170EB /* icon_move_etalase@2x.png in Resources */,
 				85A288961C919C2C005170EB /* InfoPlist.strings in Resources */,
@@ -11201,6 +11211,7 @@
 				85A288C41C919C2C005170EB /* icon_16.png in Resources */,
 				85A288261C919C2C005170EB /* TransactionCartWebViewViewController.xib in Resources */,
 				85A287B21C919C2C005170EB /* SettingUserPhoneViewController.xib in Resources */,
+				92F896FA1CAB8F05009248CF /* onboarding5_bling.png in Resources */,
 				85A28A0C1C919C2C005170EB /* icon_pinpoin_toped.png in Resources */,
 				85A2888A1C919C2C005170EB /* TalkProductCell.xib in Resources */,
 				85A28B161C919C2C005170EB /* ic_cart.png in Resources */,
@@ -11276,6 +11287,7 @@
 				85A2864F1C919C2B005170EB /* GeneralTableViewController.xib in Resources */,
 				85A28AC51C919C2C005170EB /* indomaret.png in Resources */,
 				85A288CB1C919C2C005170EB /* icon_19@2x.png in Resources */,
+				92F896FB1CAB8F05009248CF /* onboarding5_phone.png in Resources */,
 				85A28A171C919C2C005170EB /* icon_problem_new_user.png in Resources */,
 				85A28A011C919C2C005170EB /* Icon_no_photo_transparan@2x.png in Resources */,
 				85A287451C919C2C005170EB /* FooterCollectionReusableView.xib in Resources */,
