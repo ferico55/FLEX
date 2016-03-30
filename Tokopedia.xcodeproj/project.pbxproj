@@ -2092,6 +2092,8 @@
 		85C494BF1AD790DD008A314A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BE1AD790DD008A314A /* libz.dylib */; };
 		85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494C01AD790E4008A314A /* CoreData.framework */; };
 		92351FD61C9690B30056B25C /* UIScrollViewCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92351FD51C9690B30056B25C /* UIScrollViewCategory.swift */; };
+		BB2844281CAB941800AB1A01 /* SimpleFavoritedShopResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BB2844271CAB941800AB1A01 /* SimpleFavoritedShopResult.m */; };
+		BB28442B1CAB943100AB1A01 /* SimpleFavoritedShop.m in Sources */ = {isa = PBXBuildFile; fileRef = BB28442A1CAB943100AB1A01 /* SimpleFavoritedShop.m */; };
 		F25F6F270D531ED13A92CDB9 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4868E459AB2A65D133732296 /* libPods-Tokopedia.a */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
 		FC23B85A1ACD659900879D75 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8581ACD659900879D75 /* Fabric.framework */; };
@@ -5261,6 +5263,10 @@
 		85C494C01AD790E4008A314A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		92351FD51C9690B30056B25C /* UIScrollViewCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIScrollViewCategory.swift; sourceTree = "<group>"; };
 		AAA12C6A69BF6CB5F8EE3287 /* Pods-Tokopedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug.xcconfig"; sourceTree = "<group>"; };
+		BB2844261CAB941800AB1A01 /* SimpleFavoritedShopResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleFavoritedShopResult.h; sourceTree = "<group>"; };
+		BB2844271CAB941800AB1A01 /* SimpleFavoritedShopResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleFavoritedShopResult.m; sourceTree = "<group>"; };
+		BB2844291CAB943100AB1A01 /* SimpleFavoritedShop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleFavoritedShop.h; sourceTree = "<group>"; };
+		BB28442A1CAB943100AB1A01 /* SimpleFavoritedShop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleFavoritedShop.m; sourceTree = "<group>"; };
 		C8A1445074FECD393EA18C17 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		FC23B8571ACD659900879D75 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		FC23B8581ACD659900879D75 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
@@ -5943,6 +5949,10 @@
 				85A2775C1C919C1C005170EB /* FavoritedShopList.m */,
 				85A2775D1C919C1C005170EB /* FavoritedShopResult.h */,
 				85A2775E1C919C1C005170EB /* FavoritedShopResult.m */,
+				BB2844261CAB941800AB1A01 /* SimpleFavoritedShopResult.h */,
+				BB2844271CAB941800AB1A01 /* SimpleFavoritedShopResult.m */,
+				BB2844291CAB943100AB1A01 /* SimpleFavoritedShop.h */,
+				BB28442A1CAB943100AB1A01 /* SimpleFavoritedShop.m */,
 			);
 			path = FavoritedShop;
 			sourceTree = "<group>";
@@ -12575,6 +12585,7 @@
 				85A287B31C919C2C005170EB /* SettingUserProfileViewController.m in Sources */,
 				85A2852C1C919C2B005170EB /* TransactionEditAddressFormResult.m in Sources */,
 				85A2840B1C919C2B005170EB /* HistoryProduct.m in Sources */,
+				BB2844281CAB941800AB1A01 /* SimpleFavoritedShopResult.m in Sources */,
 				85A285631C919C2B005170EB /* GenerateHostResult.m in Sources */,
 				85A284651C919C2B005170EB /* MyReviewReputationViewModel.m in Sources */,
 				85A283E81C919C2B005170EB /* ShopInfo.m in Sources */,
@@ -12731,6 +12742,7 @@
 				85A287351C919C2C005170EB /* PromoRequest.m in Sources */,
 				85A2859D1C919C2B005170EB /* AlertListFilterView.m in Sources */,
 				85A2872E1C919C2C005170EB /* ProductDataSource.swift in Sources */,
+				BB28442B1CAB943100AB1A01 /* SimpleFavoritedShop.m in Sources */,
 				85A28B6C1C919C2C005170EB /* EDStarRating.m in Sources */,
 				85A2888C1C919C2C005170EB /* VTBaseTransaction.m in Sources */,
 				85A2845F1C919C2B005170EB /* ManageProductResult.m in Sources */,
