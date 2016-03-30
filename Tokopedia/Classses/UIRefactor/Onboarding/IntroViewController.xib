@@ -14,6 +14,7 @@
                 <outlet property="page2View" destination="5kU-ga-1jY" id="tgv-Xr-wsC"/>
                 <outlet property="page3View" destination="BN5-EE-zRc" id="Boh-az-YhE"/>
                 <outlet property="presentationContainer" destination="gBF-Tr-zYB" id="CpJ-N8-Ntb"/>
+                <outlet property="slide3Content" destination="j04-98-OCB" id="b8I-4X-MFf"/>
                 <outlet property="soccerBall" destination="nE0-QU-6VD" id="a5q-9n-kvK"/>
                 <outlet property="spoonFork" destination="2BJ-q0-jCe" id="nDD-9K-Rhm"/>
                 <outlet property="topedImageView" destination="uoJ-Oz-2ks" id="gUM-PS-SVx"/>
@@ -145,17 +146,23 @@
                         <constraint firstAttribute="width" constant="182.5" id="vNU-CG-AiS"/>
                     </constraints>
                 </imageView>
-                <view clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xZy-Qf-OB2">
+                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xZy-Qf-OB2">
                     <rect key="frame" x="133" y="254" width="151" height="154"/>
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="slide3_content.png" translatesAutoresizingMaskIntoConstraints="NO" id="j04-98-OCB">
                             <rect key="frame" x="5" y="8" width="140" height="276"/>
                         </imageView>
                     </subviews>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="151" id="bfH-fn-Uzk"/>
+                        <constraint firstAttribute="height" constant="154" id="cFh-Kp-P2h"/>
+                    </constraints>
                 </view>
             </subviews>
             <constraints>
+                <constraint firstItem="xZy-Qf-OB2" firstAttribute="top" secondItem="3G8-gC-fWs" secondAttribute="bottom" constant="-154" id="ky3-Ia-Ld8"/>
                 <constraint firstItem="3G8-gC-fWs" firstAttribute="centerX" secondItem="BN5-EE-zRc" secondAttribute="centerX" id="vg7-uU-FFe"/>
+                <constraint firstItem="xZy-Qf-OB2" firstAttribute="leading" secondItem="3G8-gC-fWs" secondAttribute="trailing" constant="-165" id="wCX-rm-HHV"/>
                 <constraint firstItem="3G8-gC-fWs" firstAttribute="top" secondItem="BN5-EE-zRc" secondAttribute="top" constant="152" id="xRJ-pB-ohf"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>

@@ -27,6 +27,9 @@ class IntroViewController: UIViewController {
     @IBOutlet private var soccerBall: UIImageView!
     @IBOutlet private var giftbox: UIImageView!
     
+    
+    @IBOutlet private var slide3Content: UIImageView!
+    
     var introView: EAIntroView!
     
     override func viewDidLoad() {
@@ -42,6 +45,7 @@ class IntroViewController: UIViewController {
         page2.onPageDidAppear = animatePage2
         
         let page3 = EAIntroPage(customView: page3View)
+        page3.onPageDidAppear = animatePage3
         
         introView = EAIntroView(frame: UIScreen.mainScreen().bounds, andPages: [page1, page2, page3])
         introView.swipeToExit = false
@@ -49,7 +53,7 @@ class IntroViewController: UIViewController {
         introView.backgroundColor = UIColor.clearColor()
     }
     
-    func animatePage2() {
+    private func animatePage2() {
         UIView.animateKeyframesWithDuration(1, delay: 0.5, options: .CalculationModeLinear, animations: {
             UIView.addKeyframeWithRelativeStartTime(0.05, relativeDuration: 0, animations: {[unowned self] in
                 self.giftbox.alpha = 1
@@ -75,6 +79,17 @@ class IntroViewController: UIViewController {
                 self.soccerBall.alpha = 1
             })
         }, completion: nil)
+    }
+    
+    private func animatePage3() {
+        let initialY = slide3Content.frame.origin.y
+        
+        UIView.animateWithDuration(0.7, delay: 0.5, options: [.Autoreverse, .CurveEaseInOut], animations: {[unowned self] in
+                self.slide3Content.frame.origin.y = -122
+            },
+            completion: {[unowned self] complete in
+                self.slide3Content.frame.origin.y = initialY
+            })
     }
     
     private func setupPage1() {
