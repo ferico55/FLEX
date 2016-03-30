@@ -15,10 +15,9 @@ class IntroViewController: UIViewController {
     @IBOutlet private var topedImageView: UIImageView!
     
     @IBOutlet private var page1View: UIView!
-    
     @IBOutlet private var page2View: UIView!
-    
     @IBOutlet private var page3View: UIView!
+    @IBOutlet private var page4View: UIView!
     
     @IBOutlet private var spoonFork: UIImageView!
     @IBOutlet private var babyBottle: UIImageView!
@@ -47,7 +46,14 @@ class IntroViewController: UIViewController {
         let page3 = EAIntroPage(customView: page3View)
         page3.onPageDidAppear = animatePage3
         
-        introView = EAIntroView(frame: UIScreen.mainScreen().bounds, andPages: [page1, page2, page3])
+        let page4 = EAIntroPage(customView: page4View)
+        
+        introView = EAIntroView(frame: UIScreen.mainScreen().bounds, andPages: [
+            page1,
+            page2,
+            page3,
+            page4])
+        
         introView.swipeToExit = false
         introView.showInView(presentationContainer)
         introView.backgroundColor = UIColor.clearColor()

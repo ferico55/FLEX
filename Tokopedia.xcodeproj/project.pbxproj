@@ -2108,6 +2108,10 @@
 		928EC3AC1CAA8677001CF972 /* slide2g.png in Resources */ = {isa = PBXBuildFile; fileRef = 928EC3A61CAA8677001CF972 /* slide2g.png */; };
 		92F896EB1CAB7C4B009248CF /* slide3_phone.png in Resources */ = {isa = PBXBuildFile; fileRef = 92F896EA1CAB7C4B009248CF /* slide3_phone.png */; };
 		92F896ED1CAB7D38009248CF /* slide3_content.png in Resources */ = {isa = PBXBuildFile; fileRef = 92F896EC1CAB7D38009248CF /* slide3_content.png */; };
+		92F896F21CAB8743009248CF /* onboarding_4a.png in Resources */ = {isa = PBXBuildFile; fileRef = 92F896EE1CAB8743009248CF /* onboarding_4a.png */; };
+		92F896F31CAB8743009248CF /* onboarding_4b.png in Resources */ = {isa = PBXBuildFile; fileRef = 92F896EF1CAB8743009248CF /* onboarding_4b.png */; };
+		92F896F41CAB8743009248CF /* onboarding_4c.png in Resources */ = {isa = PBXBuildFile; fileRef = 92F896F01CAB8743009248CF /* onboarding_4c.png */; };
+		92F896F51CAB8743009248CF /* onboarding_4d.png in Resources */ = {isa = PBXBuildFile; fileRef = 92F896F11CAB8743009248CF /* onboarding_4d.png */; };
 		F25F6F270D531ED13A92CDB9 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4868E459AB2A65D133732296 /* libPods-Tokopedia.a */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
 		FC23B85A1ACD659900879D75 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8581ACD659900879D75 /* Fabric.framework */; };
@@ -5289,6 +5293,10 @@
 		928EC3A61CAA8677001CF972 /* slide2g.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slide2g.png; sourceTree = "<group>"; };
 		92F896EA1CAB7C4B009248CF /* slide3_phone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slide3_phone.png; sourceTree = "<group>"; };
 		92F896EC1CAB7D38009248CF /* slide3_content.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slide3_content.png; sourceTree = "<group>"; };
+		92F896EE1CAB8743009248CF /* onboarding_4a.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = onboarding_4a.png; sourceTree = "<group>"; };
+		92F896EF1CAB8743009248CF /* onboarding_4b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = onboarding_4b.png; sourceTree = "<group>"; };
+		92F896F01CAB8743009248CF /* onboarding_4c.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = onboarding_4c.png; sourceTree = "<group>"; };
+		92F896F11CAB8743009248CF /* onboarding_4d.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = onboarding_4d.png; sourceTree = "<group>"; };
 		AAA12C6A69BF6CB5F8EE3287 /* Pods-Tokopedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug.xcconfig"; sourceTree = "<group>"; };
 		C8A1445074FECD393EA18C17 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		FC23B8571ACD659900879D75 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
@@ -10841,6 +10849,10 @@
 		92464B071CA3FC89000AABAD /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
+				92F896EE1CAB8743009248CF /* onboarding_4a.png */,
+				92F896EF1CAB8743009248CF /* onboarding_4b.png */,
+				92F896F01CAB8743009248CF /* onboarding_4c.png */,
+				92F896F11CAB8743009248CF /* onboarding_4d.png */,
 				92F896EC1CAB7D38009248CF /* slide3_content.png */,
 				92F896EA1CAB7C4B009248CF /* slide3_phone.png */,
 				928EC3A11CAA8677001CF972 /* slide2b.png */,
@@ -11121,6 +11133,7 @@
 				85A28AA51C919C2C005170EB /* icon_unread@2x.png in Resources */,
 				85A285A21C919C2B005170EB /* AlertListViewCell.xib in Resources */,
 				85A2868C1C919C2B005170EB /* InboxResolutionCenterTabViewController.xib in Resources */,
+				92F896F21CAB8743009248CF /* onboarding_4a.png in Resources */,
 				85A286111C919C2B005170EB /* TKPDTabViewController.xib in Resources */,
 				85A28A7B1C919C2C005170EB /* icon_speed_grey@3x.png in Resources */,
 				85A2870B1C919C2C005170EB /* ProductEditWholesaleViewController.xib in Resources */,
@@ -11542,6 +11555,7 @@
 				85A28AC71C919C2C005170EB /* Keranjang.png in Resources */,
 				85A28B301C919C2C005170EB /* icon_more_active.png in Resources */,
 				85A2890A1C919C2C005170EB /* icon_button_favorite_active@2x.png in Resources */,
+				92F896F51CAB8743009248CF /* onboarding_4d.png in Resources */,
 				85A28A2C1C919C2C005170EB /* icon_sad20.png in Resources */,
 				85A289501C919C2C005170EB /* icon_checkmark_green@2x-01.png in Resources */,
 				85A2893F1C919C2C005170EB /* icon_8@3x.png in Resources */,
@@ -11892,6 +11906,7 @@
 				85A2891B1C919C2C005170EB /* icon_button_wishlist_nonactive.png in Resources */,
 				85A28A141C919C2C005170EB /* icon_problem_buyer.png in Resources */,
 				85A28A191C919C2C005170EB /* icon_problem_new_user@3x.png in Resources */,
+				92F896F31CAB8743009248CF /* onboarding_4b.png in Resources */,
 				85A2893E1C919C2C005170EB /* icon_7@3x.png in Resources */,
 				85A288C31C919C2C005170EB /* icon_15@2x.png in Resources */,
 				85A286CB1C919C2B005170EB /* MyShopEtalaseViewController.xib in Resources */,
@@ -12042,6 +12057,7 @@
 				85A28A361C919C2C005170EB /* icon_sad@3x.png in Resources */,
 				85A28AC41C919C2C005170EB /* image_search@2x.png in Resources */,
 				85A286621C919C2B005170EB /* ProductFeedViewController.xib in Resources */,
+				92F896F41CAB8743009248CF /* onboarding_4c.png in Resources */,
 				85A289A81C919C2C005170EB /* icon_medal14@2x.png in Resources */,
 				85A289C31C919C2C005170EB /* icon_medal_silver14@2x.png in Resources */,
 				85A286021C919C2B005170EB /* TKPDTabBarController.xib in Resources */,
