@@ -68,7 +68,9 @@ NSInteger const SectionForShopTagDescription = 2;
                                            cell.shopImageView.image = image;
                                            cell.changeImageLabel.hidden = NO;
                                            [cell.activityIndicatorView stopAnimating];
-    } failure:nil];
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+        cell.changeImageLabel.hidden = NO;        
+    }];
     return cell;
 }
 
@@ -125,6 +127,25 @@ NSInteger const SectionForShopTagDescription = 2;
 }
 
 #pragma mark - Table view delegate
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    NSString *title;
+    if (section == 0) {
+        title = @"Keanggotaan";
+    } else if (section == 1) {
+        title = @"Gambar Toko";
+    } else if (section == 2) {
+        title = @"Informasi Toko";
+    }
+    return title;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section {
+    if([view isKindOfClass:[UITableViewHeaderFooterView class]]){
+        UITableViewHeaderFooterView *tableViewHeaderFooterView = (UITableViewHeaderFooterView *)view;
+        tableViewHeaderFooterView.textLabel.text = [tableViewHeaderFooterView.textLabel.text capitalizedString];
+    }
+}
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {
