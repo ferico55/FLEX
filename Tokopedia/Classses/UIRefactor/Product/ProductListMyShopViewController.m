@@ -59,7 +59,6 @@
     BOOL _isrefreshview;
     
     UIRefreshControl *_refreshControl;
-    NSInteger _requestcount;
     
     NSMutableDictionary *_dataInput;
     NSMutableDictionary *_dataFilter;
@@ -83,8 +82,8 @@
 }
 
 @property (weak, nonatomic) IBOutlet UISearchBar *searchbar;
-@property (strong, nonatomic) IBOutlet UITableView *tableView;
-@property (strong, nonatomic) IBOutlet UIView *footer;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 
 @property (strong, nonatomic) NSMutableArray *products;
@@ -118,11 +117,6 @@
 {
     [super viewDidLoad];
     
-    _networkManager = [TokopediaNetworkManager new];
-    _networkManager.isUsingHmac = YES;
-    
-    [self fetchProductData];
-    
     _isNeedToSearch = YES;
     
     _products = [NSMutableArray new];
@@ -137,6 +131,10 @@
     _page = 1;
     _limit = 8;
     
+    _networkManager = [TokopediaNetworkManager new];
+    _networkManager.isUsingHmac = YES;
+    [self fetchProductData];
+
     /// adjust refresh control
     _refreshControl = [[UIRefreshControl alloc] init];
     _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
@@ -365,7 +363,7 @@
 - (void)fetchProductData {
     if (_refreshControl.isRefreshing == NO) {
         self.tableView.tableFooterView = _footer;
-        [_act startAnimating];
+        [self.act startAnimating];
     }
     NSString *baseURL = @"https://ws.tokopedia.com";
     NSString *path = @"/v4/product/manage_product.pl";
@@ -382,13 +380,24 @@
                                   onFailure:^(NSError *error) {
                                       StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[[error localizedDescription]] delegate:self];
                                       [alert show];
+                                      if (_page == 1) {
+                                          [_refreshControl endRefreshing];
+                                          [self.tableView setContentOffset:CGPointZero animated:YES];
+                                      }
                                   }];
 }
 
 - (void)didReceiveMappingResult:(RKMappingResult *)mappingResult {
     ManageProduct *response = [mappingResult.dictionary objectForKey:@""];
+    if (_page == 1) {
+        [_products removeAllObjects];
+    }
     if (response.data.list.count > 0) {
         [_products addObjectsFromArray:response.data.list];
+        if (_page == 1) {
+            [self.tableView reloadData];
+            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        }
         _uriNext = [NSURL URLWithString:response.data.paging.uri_next];
         _page = [[_uriNext valueForKey:@"page"] integerValue];
         self.tableView.tableFooterView = nil;
@@ -411,6 +420,8 @@
         }
         self.tableView.tableFooterView = _noResultView;
     }
+    [self.act stopAnimating];
+    [_refreshControl endRefreshing];
     [self.tableView reloadData];
 }
 
@@ -428,20 +439,19 @@
     NSString *pictureStatus = [_dataFilter objectForKey:API_MANAGE_PRODUCT_PICTURE_STATUS_KEY]?:@"";
     NSString *productCondition = [_dataFilter objectForKey:API_MANAGE_PRODUCT_CONDITION_KEY]?:@"";
     
-    NSDictionary* param = @{
-                            kTKPDDETAIL_APIACTIONKEY : ACTION_GET_PRODUCT_LIST,
-                            kTKPDDETAIL_APISHOPIDKEY : @(shopID),
-                            kTKPDDETAIL_APILIMITKEY : @(_limit),
-                            kTKPDDETAIL_APIPAGEKEY : @(_page),
-                            kTKPDDETAIL_APISORTKEY : orderByID,
-                            kTKPDSHOP_APIETALASEIDKEY:etalase,
-                            API_MANAGE_PRODUCT_DEPARTMENT_ID_KEY : departmentID,
-                            API_MANAGE_PRODUCT_CATALOG_ID_KEY : catalogID,
-                            API_MANAGE_PRODUCT_PICTURE_STATUS_KEY : pictureStatus,
-                            API_MANAGE_PRODUCT_CONDITION_KEY : productCondition,
-                            API_KEYWORD_KEY:keyword,
-                            };
-    return param;
+    NSDictionary *parameters = @{
+        @"shop_id": @(shopID),
+        @"limit": @(_limit),
+        @"page": @(_page),
+        @"sort": orderByID,
+        @"etalase_id": etalase,
+        @"department_id": departmentID,
+        @"catalog_id": catalogID,
+        @"picture_status": pictureStatus,
+        @"condition": productCondition,
+        @"keyword": keyword,
+    };
+    return parameters;
 }
 
 -(void)pressRetryButton {
@@ -453,7 +463,6 @@
 
 - (void)refreshView {
     _page = 1;
-    _requestcount = 0;
     [self.tableView animateRefreshControl:_refreshControl];
     [self.act stopAnimating];
     [self fetchProductData];
@@ -477,38 +486,28 @@
 
 #pragma mark - UISearchBar Delegate
 
--(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
-{
+-(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
     [_searchbar resignFirstResponder];
 }
 
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
-{
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
     _searchbar.text = @"";
     [_searchbar resignFirstResponder];
 }
 
-- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
-{
+- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
     [searchBar setShowsCancelButton:YES animated:YES];
     return YES;
 }
 
-- (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar
-{
+- (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar {
     [searchBar setShowsCancelButton:NO animated:YES];
-    
-    NSString *searchBarBefore = [_dataFilter objectForKey:API_KEYWORD_KEY]?:@"";
-    
-    if (![searchBarBefore isEqualToString:searchBar.text] && _isNeedToSearch) {
+    _isNeedToSearch = YES;
+    NSString *previousSearchText = [_dataFilter objectForKey:API_KEYWORD_KEY]?:@"";
+    if (![previousSearchText isEqualToString:searchBar.text] && _isNeedToSearch) {
         [_dataFilter setObject:searchBar.text forKey:API_KEYWORD_KEY];
         [self refreshView];
     }
-    
-    if (!_isNeedToSearch) {
-        _isNeedToSearch = YES;
-    }
-    
     return YES;
 }
 
@@ -716,7 +715,6 @@
     [_dataFilter setObject:department forKey:DATA_DEPARTMENT_KEY];
     [_products removeAllObjects];
     _page = 1;
-    _requestcount = 0;
     [self refreshView];
     [self.tableView reloadData];
 }
