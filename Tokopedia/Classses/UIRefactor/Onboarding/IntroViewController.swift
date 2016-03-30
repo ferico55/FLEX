@@ -29,6 +29,10 @@ class IntroViewController: UIViewController {
     
     @IBOutlet private var slide3Content: UIImageView!
     
+    @IBOutlet private var page4Top: UIImageView!
+    @IBOutlet private var page4Door: UIImageView!
+    @IBOutlet private var page4Label: UIImageView!
+    
     var introView: EAIntroView!
     
     override func viewDidLoad() {
@@ -47,6 +51,7 @@ class IntroViewController: UIViewController {
         page3.onPageDidAppear = animatePage3
         
         let page4 = EAIntroPage(customView: page4View)
+        page4.onPageDidAppear = animatePage4
         
         introView = EAIntroView(frame: UIScreen.mainScreen().bounds, andPages: [
             page1,
@@ -96,6 +101,22 @@ class IntroViewController: UIViewController {
             completion: {[unowned self] complete in
                 self.slide3Content.frame.origin.y = initialY
             })
+    }
+    
+    private func animatePage4() {
+        UIView.animateKeyframesWithDuration(0.8, delay: 0.3, options: .CalculationModeLinear, animations: {
+            UIView.addKeyframeWithRelativeStartTime(0.1, relativeDuration: 0, animations: {
+                self.page4Top.alpha = 1
+            })
+            
+            UIView.addKeyframeWithRelativeStartTime(0.75, relativeDuration: 0, animations: {
+                self.page4Door.alpha = 1
+            })
+            
+            UIView.addKeyframeWithRelativeStartTime(0.95, relativeDuration: 0, animations: {
+                self.page4Label.alpha = 1
+            })
+        }, completion: nil)
     }
     
     private func setupPage1() {

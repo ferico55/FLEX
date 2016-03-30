@@ -13,6 +13,9 @@
                 <outlet property="page1View" destination="lY8-xc-qq4" id="1td-Jb-T3y"/>
                 <outlet property="page2View" destination="5kU-ga-1jY" id="tgv-Xr-wsC"/>
                 <outlet property="page3View" destination="BN5-EE-zRc" id="Boh-az-YhE"/>
+                <outlet property="page4Door" destination="6YN-xD-wgH" id="I1P-Qw-DXc"/>
+                <outlet property="page4Label" destination="9t7-Tg-QTO" id="TR8-pL-guQ"/>
+                <outlet property="page4Top" destination="mfI-1A-i8w" id="30L-hj-Lxt"/>
                 <outlet property="page4View" destination="pXk-TG-zyI" id="2f3-ko-KzM"/>
                 <outlet property="presentationContainer" destination="gBF-Tr-zYB" id="CpJ-N8-Ntb"/>
                 <outlet property="slide3Content" destination="j04-98-OCB" id="b8I-4X-MFf"/>
@@ -180,21 +183,21 @@
                         <constraint firstAttribute="height" constant="256" id="JLU-gd-EBH"/>
                     </constraints>
                 </imageView>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="onboarding_4b.png" translatesAutoresizingMaskIntoConstraints="NO" id="mfI-1A-i8w">
+                <imageView userInteractionEnabled="NO" alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="onboarding_4b.png" translatesAutoresizingMaskIntoConstraints="NO" id="mfI-1A-i8w">
                     <rect key="frame" x="110" y="157" width="195" height="57.5"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="195" id="5yG-7y-ZEd"/>
                         <constraint firstAttribute="height" constant="57.5" id="qnq-ml-lVa"/>
                     </constraints>
                 </imageView>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="onboarding_4c.png" translatesAutoresizingMaskIntoConstraints="NO" id="6YN-xD-wgH">
+                <imageView userInteractionEnabled="NO" alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="onboarding_4c.png" translatesAutoresizingMaskIntoConstraints="NO" id="6YN-xD-wgH">
                     <rect key="frame" x="145" y="235" width="125.5" height="127"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="125.5" id="WRQ-i9-Ekf"/>
                         <constraint firstAttribute="height" constant="127" id="s5Z-gR-jTZ"/>
                     </constraints>
                 </imageView>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="onboarding_4d.png" translatesAutoresizingMaskIntoConstraints="NO" id="9t7-Tg-QTO">
+                <imageView userInteractionEnabled="NO" alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="onboarding_4d.png" translatesAutoresizingMaskIntoConstraints="NO" id="9t7-Tg-QTO">
                     <rect key="frame" x="151" y="250" width="53.5" height="39"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="53.5" id="9op-QC-aEq"/>
