@@ -57,6 +57,7 @@ class IntroViewController: UIViewController {
         
         let page4 = EAIntroPage(customView: page4View)
         page4.onPageDidAppear = animatePage4
+        page4.onPageDidDisappear = stopPage4Animations
         
         let page5 = EAIntroPage(customView: page5View)
         page5.onPageDidAppear = animatePage5
@@ -120,6 +121,13 @@ class IntroViewController: UIViewController {
             completion: {[unowned self] complete in
                 self.slide3Content.frame.origin.y = initialY
             })
+    }
+    
+    private func stopPage4Animations() {
+        [page4Top, page4Door, page4Label].forEach { view in
+            view.layer.removeAllAnimations()
+            view.alpha = 0
+        }
     }
     
     private func animatePage4() {
