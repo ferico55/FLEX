@@ -21,7 +21,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BVZ-LZ-cqG">
-                        <rect key="frame" x="93" y="-1" width="134" height="44"/>
+                        <rect key="frame" x="93" y="0.0" width="134" height="44"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Gold Merchant" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yr6-im-99Y">
                                 <rect key="frame" x="28" y="0.0" width="106" height="44"/>
@@ -37,7 +37,7 @@
                                 </constraints>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="yr6-im-99Y" firstAttribute="leading" secondItem="yw8-Az-tTv" secondAttribute="trailing" constant="8" id="0BT-PF-dqQ"/>
                             <constraint firstAttribute="bottom" secondItem="yr6-im-99Y" secondAttribute="bottom" id="Fos-bu-dSZ"/>
