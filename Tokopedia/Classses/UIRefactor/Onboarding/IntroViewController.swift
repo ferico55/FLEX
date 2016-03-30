@@ -73,11 +73,17 @@ class IntroViewController: UIViewController {
             page5,
             page6])
         
+        let pageControl = UIPageControl()
+        pageControl.currentPageIndicatorTintColor = UIColor(red: 18.0/255, green: 199.0/255, blue: 0, alpha: 1)
+        pageControl.pageIndicatorTintColor = UIColor(white: 204/255.0, alpha: 1)
+        
+        introView.pageControl = pageControl
         introView.swipeToExit = false
         introView.showInView(presentationContainer)
+        introView.skipButton = nil
         introView.backgroundColor = UIColor.clearColor()
     }
-    
+        
     private func stopPage2Animations() {
         [spoonFork, babyBottle, fabulousShoe, tshirt, soccerBall, giftbox].forEach { view in
             view.layer.removeAllAnimations()
