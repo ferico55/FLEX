@@ -47,9 +47,6 @@ app_key=$2
   "xcode_dir": "$xcode_dir",
   "app_key": "$app_key",
   "files_to_add": [
-    "Rollout-ios-SDK/Rollout/RolloutDynamic.m",
-    "Rollout-ios-SDK/auto_generated_code/RolloutDynamic_structs.h",
-    `seq -f '"Rollout-ios-SDK/auto_generated_code/RolloutDynamic_%02g.m",' 1 20`
     "Rollout-ios-SDK/Rollout/Rollout.framework"
   ],
   "weak_system_frameworks": [
@@ -59,4 +56,3 @@ app_key=$2
   "sdk_subdir": "Rollout-ios-SDK"
 }
 EOF
-
