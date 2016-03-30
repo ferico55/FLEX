@@ -61,6 +61,7 @@
 @property (nonatomic, strong) NSString *product_total_weight;
 @property (nonatomic, strong) NSString *product_error_msg;
 @property (nonatomic, strong) NSString *product_price_last;
+@property (nonatomic, strong) NSString *product_cat_name;
 
 @property (nonatomic, strong) ProductModelView *viewModel;
 

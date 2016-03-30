@@ -1012,7 +1012,7 @@ replacementString:(NSString*)string
     
     NSDictionary *attributes = @{
                                  @"Product Id" : productId,
-//                                 @"Product Category" : lastCategory.department_name?:@"",
+                                 @"Product Category" : _ATCForm.form.product_detail.product_cat_name?:@"",
                                  @"Price Per Item" : productPrice,
                                  @"Price Total" : total,
                                  @"Quantity" : productQuantity

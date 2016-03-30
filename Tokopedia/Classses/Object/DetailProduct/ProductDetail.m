@@ -113,7 +113,8 @@
                       @"product_total_weight",
                       @"product_error_msg",
                       @"product_price_last",
-                      @"product_picture"
+                      @"product_picture",
+                      @"product_cat_name"
                       ];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }
