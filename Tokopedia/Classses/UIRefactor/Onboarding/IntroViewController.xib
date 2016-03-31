@@ -45,6 +45,11 @@
                 <outlet property="topedImageView" destination="uoJ-Oz-2ks" id="gUM-PS-SVx"/>
                 <outlet property="tshirt" destination="gP3-JM-BQd" id="tve-ge-br7"/>
                 <outlet property="view" destination="iN0-l3-epB" id="Zd2-Pg-sk0"/>
+                <outletCollection property="labelsToReRender" destination="jNy-RO-bFt" collectionClass="NSMutableArray" id="AfI-cB-nqq"/>
+                <outletCollection property="labelsToReRender" destination="aDq-bv-5mA" collectionClass="NSMutableArray" id="Kjz-ur-qKU"/>
+                <outletCollection property="labelsToReRender" destination="mKb-cw-ing" collectionClass="NSMutableArray" id="d2V-GV-dGQ"/>
+                <outletCollection property="labelsToReRender" destination="lEq-ho-gw1" collectionClass="NSMutableArray" id="h0m-hu-x8d"/>
+                <outletCollection property="labelsToReRender" destination="LSx-VY-Px8" collectionClass="NSMutableArray" id="4rT-Ad-Dnr"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -84,11 +89,16 @@
                     <color key="textColor" red="0.38431372549019605" green="0.38431372549019605" blue="0.38431372549019605" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dapetin apa aja kebutuhanmu lewat aplikasi Tokopedia!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="297" translatesAutoresizingMaskIntoConstraints="NO" id="jNy-RO-bFt">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dapetin apa aja kebutuhanmu lewat aplikasi Tokopedia!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="297" translatesAutoresizingMaskIntoConstraints="NO" id="jNy-RO-bFt" customClass="TTTAttributedLabel">
                     <rect key="frame" x="79" y="558" width="257" height="31"/>
                     <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="17"/>
                     <color key="textColor" red="0.51764705882352935" green="0.51764705882352935" blue="0.51764705882352935" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="lineSpacing">
+                            <real key="value" value="5"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
                 </label>
             </subviews>
             <constraints>
@@ -161,11 +171,16 @@
                     <color key="textColor" red="0.38431372549999998" green="0.38431372549999998" blue="0.38431372549999998" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jutaan produk dari semua kategori ada di sini" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="297" translatesAutoresizingMaskIntoConstraints="NO" id="aDq-bv-5mA">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jutaan produk dari semua kategori ada di sini" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="297" translatesAutoresizingMaskIntoConstraints="NO" id="aDq-bv-5mA" customClass="TTTAttributedLabel">
                     <rect key="frame" x="59" y="558" width="297" height="31"/>
                     <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="17"/>
                     <color key="textColor" red="0.51764705879999995" green="0.51764705879999995" blue="0.51764705879999995" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="lineSpacing">
+                            <real key="value" value="5"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
                 </label>
             </subviews>
             <constraints>
@@ -205,7 +220,7 @@
                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xZy-Qf-OB2">
                     <rect key="frame" x="133" y="269" width="151" height="154"/>
                     <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="slide3_content.png" translatesAutoresizingMaskIntoConstraints="NO" id="j04-98-OCB">
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="slide3_content.png" translatesAutoresizingMaskIntoConstraints="NO" id="j04-98-OCB">
                             <rect key="frame" x="5" y="8" width="140" height="276"/>
                         </imageView>
                     </subviews>
@@ -220,11 +235,16 @@
                     <color key="textColor" red="0.38431372549999998" green="0.38431372549999998" blue="0.38431372549999998" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cari produk yang kamu mau langsung dari genggaman" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="297" translatesAutoresizingMaskIntoConstraints="NO" id="mKb-cw-ing">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cari produk yang kamu mau langsung dari genggaman" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="297" translatesAutoresizingMaskIntoConstraints="NO" id="mKb-cw-ing" customClass="TTTAttributedLabel">
                     <rect key="frame" x="86" y="558" width="243" height="31"/>
                     <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="17"/>
                     <color key="textColor" red="0.51764705879999995" green="0.51764705879999995" blue="0.51764705879999995" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="lineSpacing">
+                            <real key="value" value="5"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
                 </label>
             </subviews>
             <constraints>
@@ -278,11 +298,16 @@
                     <color key="textColor" red="0.38431372549999998" green="0.38431372549999998" blue="0.38431372549999998" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mau jualan juga? Buka tokomu di Tokopedia. Gratis!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="297" translatesAutoresizingMaskIntoConstraints="NO" id="lEq-ho-gw1">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mau jualan juga? Buka tokomu di Tokopedia. Gratis!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="297" translatesAutoresizingMaskIntoConstraints="NO" id="lEq-ho-gw1" customClass="TTTAttributedLabel">
                     <rect key="frame" x="66" y="558" width="282" height="31"/>
                     <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="17"/>
                     <color key="textColor" red="0.51764705879999995" green="0.51764705879999995" blue="0.51764705879999995" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="lineSpacing">
+                            <real key="value" value="5"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
                 </label>
             </subviews>
             <constraints>
@@ -333,11 +358,16 @@
                     <color key="textColor" red="0.38431372549999998" green="0.38431372549999998" blue="0.38431372549999998" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Semua update terbaru akan dikirim ke HP kamu" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="297" translatesAutoresizingMaskIntoConstraints="NO" id="LSx-VY-Px8">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Semua update terbaru akan dikirim ke HP kamu" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="297" translatesAutoresizingMaskIntoConstraints="NO" id="LSx-VY-Px8" customClass="TTTAttributedLabel">
                     <rect key="frame" x="59" y="558" width="297" height="31"/>
                     <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="17"/>
                     <color key="textColor" red="0.51764705879999995" green="0.51764705879999995" blue="0.51764705879999995" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="lineSpacing">
+                            <real key="value" value="5"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
                 </label>
             </subviews>
             <constraints>

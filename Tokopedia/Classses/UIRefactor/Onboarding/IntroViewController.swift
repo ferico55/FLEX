@@ -35,7 +35,9 @@ class IntroViewController: UIViewController {
     @IBOutlet private var page4Door: UIImageView!
     @IBOutlet private var page4Label: UIImageView!
     
-    @IBOutlet var page5Bling: UIImageView!
+    @IBOutlet private var page5Bling: UIImageView!
+    
+    @IBOutlet private var labelsToReRender: [UILabel]!
     
     var introView: EAIntroView!
     
@@ -77,11 +79,22 @@ class IntroViewController: UIViewController {
         pageControl.currentPageIndicatorTintColor = UIColor(red: 18.0/255, green: 199.0/255, blue: 0, alpha: 1)
         pageControl.pageIndicatorTintColor = UIColor(white: 204/255.0, alpha: 1)
         
+        reRenderLabels()
+        
         introView.pageControl = pageControl
         introView.swipeToExit = false
         introView.showInView(presentationContainer)
         introView.skipButton = nil
         introView.backgroundColor = UIColor.clearColor()
+    }
+    
+    private func reRenderLabels() {
+        // At first, the line spacings won't be rendered correctly, because IBInspectable properties are set after
+        // each label's text is rendered. As a workaround, we simply need to re-set the texts so that
+        // the line spacings are applied.
+        labelsToReRender.forEach { label in
+            label.text = label.text
+        }
     }
         
     private func stopPage2Animations() {
