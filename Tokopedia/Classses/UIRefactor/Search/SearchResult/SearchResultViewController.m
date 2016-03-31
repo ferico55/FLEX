@@ -297,7 +297,6 @@ ImageSearchRequestDelegate
     [self configureGTM];
     
     _promoRequest = [PromoRequest new];
-    [self requestPromo];
     self.scrollDirection = ScrollDirectionDown;
     
     _imageSearchRequest = [[ImageSearchRequest alloc]init];
@@ -1036,7 +1035,7 @@ ImageSearchRequestDelegate
             [_collectionView reloadData];
             //            [_collectionView layoutIfNeeded];
         }
-        
+        [self requestPromo];
         if (search.result.products.count > 0 || search.result.catalogs.count > 0) {
             _isnodata = NO;
             _urinext =  search.result.paging.uri_next;
@@ -1077,7 +1076,7 @@ ImageSearchRequestDelegate
             [_collectionView addSubview:_noResultView];
         }
         
-        if (_start > 0) [self requestPromo];
+        
         
         if(_refreshControl.isRefreshing) {
             [_refreshControl endRefreshing];
