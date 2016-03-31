@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "ShippingInfoShipmentPackage.h"
 
-@interface ShippingInfoShipments : NSObject
+@interface ShippingInfoShipments : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *shipment_id;
 @property (nonatomic, strong) NSString *shipment_name;
