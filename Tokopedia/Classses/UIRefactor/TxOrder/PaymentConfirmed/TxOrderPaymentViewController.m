@@ -6,7 +6,6 @@
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
 
-#import "TxOrderObjectMapping.h"
 #import "TxOrderPaymentEdit.h"
 #import "AlertListBankView.h"
 #import "TxOrderPaymentViewController.h"
@@ -32,26 +31,16 @@
 #import "TKPDPhotoPicker.h"
 #import "camera.h"
 
-#import "RequestPayment.h"
+#import "RequestOrderData.h"
 #import "AlertInfoView.h"
 
 #import "ListRekeningBank.h"
 
-@interface TxOrderPaymentViewController ()<UITableViewDataSource, UITableViewDelegate, TKPDAlertViewDelegate,SettingBankAccountViewControllerDelegate, GeneralTableViewControllerDelegate, SettingBankNameViewControllerDelegate,UITextFieldDelegate,UITextViewDelegate, UIScrollViewDelegate, SuccessPaymentConfirmationDelegate, TokopediaNetworkManagerDelegate, TKPDPhotoPickerDelegate, RequestPaymentDelegate>
+@interface TxOrderPaymentViewController ()<UITableViewDataSource, UITableViewDelegate, TKPDAlertViewDelegate,SettingBankAccountViewControllerDelegate, GeneralTableViewControllerDelegate, SettingBankNameViewControllerDelegate,UITextFieldDelegate,UITextViewDelegate, UIScrollViewDelegate, SuccessPaymentConfirmationDelegate, TokopediaNetworkManagerDelegate, TKPDPhotoPickerDelegate>
 {
     NSMutableDictionary *_dataInput;
     
     BOOL _isNewRekening;
-    
-    TxOrderObjectMapping *_mapping;
-    
-    TokopediaNetworkManager *_networkManager;
-    
-    __weak RKObjectManager *_objectManager;
-    __weak RKManagedObjectRequestOperation *_request;
-    
-    NSOperationQueue *_operationQueue;
-    
     BOOL _isFinishRequestForm;
     
     UITextField *_activeTextField;
@@ -61,6 +50,8 @@
     
     TKPDPhotoPicker *_photoPicker;
     UIAlertView *_loadingAlertView;
+    
+    UIRefreshControl *_refreshControl;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -117,17 +108,16 @@
     [super viewDidLoad];
     
     _dataInput = [NSMutableDictionary new];
-    _operationQueue = [NSOperationQueue new];
-    _mapping = [TxOrderObjectMapping new];
-    
-    _networkManager = [TokopediaNetworkManager new];
-    _networkManager.tagRequest = TAG_REQUEST_FORM;
-    _networkManager.delegate = self;
     
     _sectionNewRekeningCells = [NSArray sortViewsWithTagInArray:_sectionNewRekeningCells];
     _section2Cell = [NSArray sortViewsWithTagInArray:_section2Cell];
     _section3CashCells = [NSArray sortViewsWithTagInArray:_section3CashCells];
     _section1Cell = [NSArray sortViewsWithTagInArray:_section1Cell];
+    
+    _refreshControl = [[UIRefreshControl alloc] init];
+    _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
+    [_refreshControl addTarget:self action:@selector(refreshView)forControlEvents:UIControlEventValueChanged];
+    [_tableView addSubview:_refreshControl];
     
     self.title = _isConfirmed?TITLE_PAYMENT_EDIT_CONFIRMATION_FORM:TITLE_PAYMENT_CONFIRMATION_FORM;
     
@@ -141,20 +131,21 @@
     _addNewRekeningButton.layer.cornerRadius = 2;
 
     [_dataInput addEntriesFromDictionary:_data];
-    
-    [_networkManager doRequest];
-    
     _isNewRekening = NO;
     
     [_dataInput setObject:[NSDate date] forKey:DATA_PAYMENT_DATE_KEY];
+    [self doRequestGetDataConfirmation];
 
+}
+
+-(void)refreshView{
+    [self doRequestGetDataConfirmation];
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
-    _networkManager.delegate = self;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:)
                                                  name:UIKeyboardWillShowNotification
                                                object:nil];
@@ -175,12 +166,12 @@
     }
     else
     {
-        UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Tidak" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+        UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Batal" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
         [backBarButtonItem setTintColor:[UIColor whiteColor]];
         backBarButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_BACK;
         self.navigationItem.leftBarButtonItem = backBarButtonItem;
         
-        backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Ya" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+        backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Selesai" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
         [backBarButtonItem setTintColor:[UIColor whiteColor]];
         backBarButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_DONE;
         self.navigationItem.rightBarButtonItem = backBarButtonItem;
@@ -190,8 +181,6 @@
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [_networkManager requestCancel];
-    _networkManager.delegate = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" "
@@ -305,13 +294,8 @@
 #pragma mark - Table View Data Source
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    if (_isFinishRequestForm)
-    {
-        NSInteger sectionCount = 10;
-        return sectionCount;
-    }
-    else
-        return 0;
+    NSInteger sectionCount = _isFinishRequestForm?10:0;
+    return sectionCount;
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -404,7 +388,7 @@
     if ([self isPaymentTypeBank] && (section == 2 || section == 3 || section == 4 || section == 5)) {
         return 1;
     }
-    if ([self isPaymentTypeSaldoTokopedia] && (section == 2 || section == 3 || section == 4 || section == 5 || section == 6)) {
+    if (([self isPaymentTypeDefault]||[self isPaymentTypeSaldoTokopedia]) && (section == 2 || section == 3 || section == 4 || section == 5 || section == 6)) {
         return 1;
     }
     if (section == 9) {
@@ -444,12 +428,12 @@
         case 1:
         {
             BankAccountFormList *selectedBank = [_dataInput objectForKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
-            if (([self isPaymentTypeTransfer] || [self isPaymentTypeSaldoTokopedia] || _isNewRekening || [selectedBank.bank_account_id integerValue] == 0 ) && indexPath.row == 2) {
+            if (([self isPaymentTypeTransfer] || [self isPaymentTypeSaldoTokopedia] || _isNewRekening || [selectedBank.bank_account_id integerValue] == 0 || [self isPaymentTypeDefault]) && indexPath.row == 2) {
                 return 0;
             }
             if(indexPath.row == 3)
             {
-                if ([self isPaymentTypeSaldoTokopedia])
+                if ([self isPaymentTypeSaldoTokopedia] || [self isPaymentTypeDefault])
                     return 0;
                 else
                     return 54;
@@ -462,6 +446,9 @@
             }
             break;
         case 3:
+            if ([self isPaymentTypeDefault]) {
+                return 0;
+            }
             if ([self isPaymentTypeSaldoTokopedia]) {
                 return 0;
             }
@@ -473,6 +460,9 @@
             }
             break;
         case 4:
+            if ([self isPaymentTypeDefault]) {
+                return 0;
+            }
             if ([self isPaymentTypeSaldoTokopedia]) {
                 return 0;
             }
@@ -491,6 +481,9 @@
             }
             break;
         case 5:
+            if ([self isPaymentTypeDefault]) {
+                return 0;
+            }
             if (![self isPaymentTypeTransfer] && indexPath.row == 0) {
                 return 0;
             }
@@ -499,6 +492,9 @@
             }
             break;
         case 6:
+            if ([self isPaymentTypeDefault]) {
+                return 0;
+            }
             if ([self isPaymentTypeSaldoTokopedia] || _isConfirmed) {
                 return 0;
             }
@@ -508,6 +504,9 @@
             return _markCell.frame.size.height;
             break;
         case 8:
+            if ([self isPaymentTypeDefault]) {
+                return 0;
+            }
             if (![self isPaymentTypeSaldoTokopedia]) {
                 return 0;
             }
@@ -529,7 +528,7 @@
     if ([self isPaymentTypeBank] && _isNewRekening && (section == 2 || section == 3 || section == 4 )) {
         return 1;
     }
-    if ([self isPaymentTypeSaldoTokopedia] && (section == 2 || section == 3 || section == 4 || section == 5 || section == 6)) {
+    if (([self isPaymentTypeDefault]||[self isPaymentTypeSaldoTokopedia]) && (section == 2 || section == 3 || section == 4 || section == 5 || section == 6)) {
         return 1;
     }
     if (section == 8) {
@@ -597,138 +596,64 @@
     }
 }
 
-
--(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
-{
-    [_activeTextView resignFirstResponder];
-    [_activeTextField resignFirstResponder];
-}
-
 #pragma mark - Request Get Transaction Order Payment Confirmation
--(id)getObjectManager:(int)tag
-{
-    if (tag == TAG_REQUEST_FORM) {
-        return _isConfirmed?[self objectManagerConfirmed]: [self objectManagerConfirmation];
-    }
-    return nil;
-}
-
--(NSDictionary *)getParameter:(int)tag
-{
-    if (tag == TAG_REQUEST_FORM) {
-        NSArray *selectedOrders = [_data objectForKey:DATA_SELECTED_ORDER_KEY];
-        NSMutableArray *confirmationIDs = [NSMutableArray new];
-        for (TxOrderConfirmationList *order in selectedOrders) {
-            [confirmationIDs addObject:order.confirmation.confirmation_id];
-        }
-        
-        NSString * confirmationID = (_isConfirmed)?_paymentID:[[confirmationIDs valueForKey:@"description"] componentsJoinedByString:@"~"];
-        NSString *action = (_isConfirmed)?ACTION_GET_EDIT_PAYMENT_FORM:ACTION_GET_CONFIRM_PAYMENT_FORM;
-        NSString *confirmationKey = (_isConfirmed)?API_ORDER_PAYMENT_ID_KEY:API_CONFIRMATION_CONFIRMATION_ID_KEY;
-        
-        NSDictionary* param = @{API_ACTION_KEY : action,
-                                confirmationKey:confirmationID};
-        return param;
-    }
-    return nil;
-}
-
--(NSString *)getPath:(int)tag
-{
-    if (tag == TAG_REQUEST_FORM) {
-        return API_PATH_TX_ORDER;
-    }
-    return nil;
-}
-
--(void)actionBeforeRequest:(int)tag
-{
-    if (tag == TAG_REQUEST_FORM) {
-        _tableView.tableFooterView = _footerView;
-        [_act startAnimating];
-        _isFinishRequestForm = NO;
-    }
-}
-
--(NSString *)getRequestStatus:(id)result withTag:(int)tag
-{
-    NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
-    id stat = [resultDict objectForKey:@""];
-    if (tag == TAG_REQUEST_FORM) {
-        if (_isConfirmed) {
-            TxOrderPaymentEdit *form = stat;
-            return form.status;
-        }
-        else
-        {
-            TxOrderConfirmPaymentForm *form = stat;
-            return form.status;
-        }
+-(void)doRequestGetDataConfirmation{
+    
+    NSArray *selectedOrders = [_data objectForKey:DATA_SELECTED_ORDER_KEY];
+    NSMutableArray *confirmationIDs = [NSMutableArray new];
+    for (TxOrderConfirmationList *order in selectedOrders) {
+        [confirmationIDs addObject:order.confirmation.confirmation_id];
     }
     
-    return nil;
-}
-
--(void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag
-{
-    if (tag == TAG_REQUEST_FORM) {
-        [self requestSuccess:successResult withOperation:operation];
-        [_act stopAnimating];
-        _tableView.tableFooterView = nil;
-    }
-}
-
--(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
-{
-    [self actionAfterFailRequestMaxTries:tag];
-}
-
--(void)actionAfterFailRequestMaxTries:(int)tag
-{
-    if (tag == TAG_REQUEST_FORM) {
-        [_act stopAnimating];
-        _tableView.tableFooterView = nil;
-    }
-}
-
--(void)requestSuccess:(id)object withOperation:(RKObjectRequestOperation *)operation
-{
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id stat = [result objectForKey:@""];
-    id form;
-    BOOL status;
-    if(_isConfirmed){
-        form = (TxOrderPaymentEdit*)stat;
-        status = [[form status] isEqualToString:kTKPDREQUEST_OKSTATUS];
-    }
-    else {
-        form = (TxOrderConfirmPaymentForm*)stat;
-        status = [[form status] isEqualToString:kTKPDREQUEST_OKSTATUS];
-    }
+    NSString * confirmationID = (_isConfirmed)?_paymentID:[[confirmationIDs valueForKey:@"description"] componentsJoinedByString:@"~"];
     
-    if (status) {
-        if([form message_error])
-        {
-            StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:[form message_error] delegate:self];
-            [alert show];
-        }
-        else{
-            if (_isConfirmed)
-                [self setDefaultDataConfirmed:((TxOrderPaymentEdit*)form).result.form];
-            else
-                [self setDefaultDataConfirmation:((TxOrderConfirmPaymentForm*)form).result.form];
-            
-            _isFinishRequestForm = YES;
-            [_tableView reloadData];
-        }
+    if (_isConfirmed) {
+        [self doRequestDataEditConfirmPaymentID:confirmationID];
+    } else {
+        [self doRequestDataConfirmPaymentID:confirmationID];
     }
+}
+
+-(void)doRequestDataEditConfirmPaymentID:(NSString*)paymentID{
+    [self isLoading:YES];
+    [RequestOrderData fetchDataEditConfirmationID:paymentID success:^(TxOrderPaymentEditForm *data) {
+        [self isLoading:NO];
+        [self setDefaultDataConfirmed:data];
+        [_tableView reloadData];
+    } failure:^(NSError *error) {
+        [self isLoading:NO];
+    }];
+}
+
+-(void)isLoading:(BOOL)isLoading{
+    _isFinishRequestForm = !isLoading;
+    
+    if (isLoading) {
+        [_tableView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
+        [_refreshControl beginRefreshing];
+    } else {
+        _tableView.contentOffset = CGPointZero;
+        [_refreshControl endRefreshing];
+    }
+}
+
+-(void)doRequestDataConfirmPaymentID:(NSString*)paymentID{
+    
+    [self isLoading:YES];
+    [RequestOrderData fetchDataConfirmConfirmationID:paymentID success:^(TxOrderConfirmPaymentFormForm *data) {
+        [self isLoading:NO];
+        [self setDefaultDataConfirmation:data];
+        [_tableView reloadData];
+    } failure:^(NSError *error) {
+        [self isLoading:NO];
+    }];
 }
 
 #pragma mark - Request Confirm Payment
 -(void)doConfirmPayment{
     [self showLoadingView];
     
-    NSArray *selectedOrder = [_dataInput objectForKey:DATA_SELECTED_ORDER_KEY];
+    NSArray *selectedOrder = [_dataInput objectForKey:DATA_SELECTED_ORDER_KEY]?:@"";
     MethodList *method = [_dataInput objectForKey:DATA_SELECTED_PAYMENT_METHOD_KEY];
     TxOrderConfirmPaymentFormForm *form = [_dataInput objectForKey:DATA_DETAIL_ORDER_CONFIRMATION_KEY];
     SystemBankAcount *systemBank = [_dataInput objectForKey:DATA_SELECTED_SYSTEM_BANK_KEY];
@@ -737,12 +662,11 @@
     NSString *totalPayment = [_totalPaymentTextField.text stringByReplacingOccurrencesOfString:@"." withString:@""];
     NSString *bankAccountID = _isNewRekening?@"0":bank.bank_account_id?:@"";
     
-    [RequestPayment fetchSubmitWithImageObject:[self getImageObject]
-                                   isConfirmed:_isConfirmed
-                                         token:form.token
+    [RequestOrderAction fetchSubmitWithImageObject:[self getImageObject]
+                                         token:form.token?:@""
                                  selectedOrder:selectedOrder
                                         method:method
-                                  systemBankID:systemBank.sysbank_id
+                                  systemBankID:systemBank.sysbank_id?:@""
                                    bankAccount:bank
                                      paymentID:_paymentID?:@""
                                    paymentDate:paymentDate
@@ -831,6 +755,14 @@
     NSInteger paymentType = [method.method_id integerValue];
     return (paymentType == TYPE_PAYMENT_SALDO_TOKOPEDIA);
 }
+
+-(BOOL)isPaymentTypeDefault
+{
+    MethodList *method = [_dataInput objectForKey:DATA_SELECTED_PAYMENT_METHOD_KEY];
+    NSInteger paymentType = [method.method_id integerValue];
+    return (paymentType == TYPE_PAYMENT_DEFAULT);
+}
+
 
 -(void)adjustDetailTextLabelCell:(UITableViewCell*)cell atIndextPath:(NSIndexPath*)indexPath
 {
@@ -943,9 +875,7 @@
     }
     controller.objects = [controllerObjects copy];
     
-    CGPoint scrollPosition = _tableView.contentOffset;
     [self.navigationController pushViewController:controller animated:YES];
-    _tableView.contentOffset = scrollPosition;
 }
 
 -(BOOL)isValidInput
@@ -958,6 +888,12 @@
     BankAccountFormList *bank = [_dataInput objectForKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
     NSString *password = [_dataInput objectForKey:DATA_PASSWORD_KEY];
     NSString *depositor = [_dataInput objectForKey:DATA_DEPOSITOR_KEY];
+    
+    if ([self isPaymentTypeDefault]) {
+        StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Pilih metode pembayaran"] delegate:self];
+        [alert show];
+        return NO;
+    }
     
     if ([self isPaymentTypeBank] && _isNewRekening) {
         if (!bank.bank_account_name) {
@@ -1081,8 +1017,8 @@
 -(void)setDefaultDataConfirmation:(TxOrderConfirmPaymentFormForm*)form
 {
     MethodList *selectedMethod =[MethodList new];
-    selectedMethod.method_id = [form.method[3] method_id];
-    selectedMethod.method_name = [form.method[3] method_name];
+    selectedMethod.method_id = [form.method[0] method_id];
+    selectedMethod.method_name = [form.method[0] method_name];
     
     NSArray *bankAccountList = form.bank_account;
     _bankAccount = bankAccountList;
@@ -1339,173 +1275,10 @@
                      }];
 }
 
-#pragma mark - Object Manager
-
--(RKObjectManager*)objectManagerConfirmation
-{
-    _objectManager = [RKObjectManager sharedClient];
-    
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[TxOrderConfirmPaymentForm class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TxOrderConfirmPaymentFormResult class]];
-    
-    RKObjectMapping *formMapping = [RKObjectMapping mappingForClass:[TxOrderConfirmPaymentFormForm class]];
-    [formMapping addAttributeMappingsFromArray:@[API_TOKEN_KEY]];
-    
-    RKObjectMapping *listBankMapping = [_mapping bankAccountListMapping];
-    RKObjectMapping *listSystemBankMapping = [_mapping systemBankListMapping];
-    RKObjectMapping *listMethodMapping = [_mapping methodListMapping];
-    RKObjectMapping *orderMapping = [_mapping confirmedOrderDetailMapping];
-    
-    RKRelationshipMapping *resultRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                   toKeyPath:kTKPD_APIRESULTKEY
-                                                                                 withMapping:resultMapping];
-    
-    RKRelationshipMapping *formRel =[RKRelationshipMapping relationshipMappingFromKeyPath:API_FORM_KEY
-                                                                                toKeyPath:API_FORM_KEY
-                                                                              withMapping:formMapping];
-    
-    RKRelationshipMapping *orderRel =[RKRelationshipMapping relationshipMappingFromKeyPath:API_ORDER_FORM_KEY
-                                                                                 toKeyPath:API_ORDER_FORM_KEY
-                                                                               withMapping:orderMapping];
-    
-    RKRelationshipMapping *listBankAccountRel =[RKRelationshipMapping relationshipMappingFromKeyPath:API_BANK_ACCOUNT_KEY
-                                                                                           toKeyPath:API_BANK_ACCOUNT_KEY
-                                                                                         withMapping:listBankMapping];
-    
-    RKRelationshipMapping *listBankRel =[RKRelationshipMapping relationshipMappingFromKeyPath:API_SYSTEM_BANK_KEY
-                                                                                    toKeyPath:API_SYSTEM_BANK_KEY
-                                                                                  withMapping:listSystemBankMapping];
-    
-    RKRelationshipMapping *listMethodRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_METHOD_KEY
-                                                                                       toKeyPath:API_METHOD_KEY
-                                                                                     withMapping:listMethodMapping];
-    [statusMapping addPropertyMapping:resultRel];
-    [resultMapping addPropertyMapping:formRel];
-    [formMapping addPropertyMapping:listBankAccountRel];
-    [formMapping addPropertyMapping:listBankRel];
-    [formMapping addPropertyMapping:listMethodRel];
-    [formMapping addPropertyMapping:orderRel];
-    
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                            method:RKRequestMethodPOST
-                                                                                       pathPattern:API_PATH_TX_ORDER
-                                                                                           keyPath:@""
-                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectManager addResponseDescriptor:responseDescriptor];
-    
-    return _objectManager;
-}
-
--(RKObjectManager*)objectManagerConfirmed
-{
-    _objectManager = [RKObjectManager sharedClient];
-    
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[TxOrderPaymentEdit class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TxOrderPaymentEditResult class]];
-    RKObjectMapping *formMapping = [RKObjectMapping mappingForClass:[TxOrderPaymentEditForm class]];
-    RKObjectMapping *methodMapping = [RKObjectMapping mappingForClass:[TxOrderPaymentEditMethod class]];
-    [methodMapping addAttributeMappingsFromArray:@[API_METHOD_ID_CHOOSEN_KEY]];
-    
-    RKObjectMapping *bankMapping = [RKObjectMapping mappingForClass:[TxOrderPaymentEditBankAccount class]];
-    [bankMapping addAttributeMappingsFromArray:@[API_BANK_ACCOUNT_ID_CHOOSEN_KEY]];
-    
-    RKObjectMapping *systemBankMapping = [RKObjectMapping mappingForClass:[TxOrderPaymentEditSystemBank class]];
-    [systemBankMapping addAttributeMappingsFromArray:@[API_SYSTEM_BANK_ID_CHOOSEN_KEY]];
-    
-    RKObjectMapping *orderMapping = [RKObjectMapping mappingForClass:[TxOrderPaymentEditOrder class]];
-    [orderMapping addAttributeMappingsFromArray:@[API_INVOICE_STRING_KEY,
-                                                  API_INVOICE_LIST_KEY
-                                                  ]];
-    
-    RKObjectMapping *listBankMapping = [_mapping bankAccountListMapping];
-    RKObjectMapping *listSystemBankMapping = [_mapping systemBankListMapping];
-    RKObjectMapping *listMethodMapping = [_mapping methodListMapping];
-    RKObjectMapping *paymentMapping = [_mapping confirmedOrderDetailMapping];
-    
-    RKRelationshipMapping *resultRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                   toKeyPath:kTKPD_APIRESULTKEY
-                                                                                 withMapping:resultMapping];
-    
-    RKRelationshipMapping *formRel =[RKRelationshipMapping relationshipMappingFromKeyPath:API_FORM_KEY
-                                                                                toKeyPath:API_FORM_KEY
-                                                                              withMapping:formMapping];
-    
-    RKRelationshipMapping *paymentRel =[RKRelationshipMapping relationshipMappingFromKeyPath:API_ORDER_FORM_PAYMENT_KEY
-                                                                                   toKeyPath:API_ORDER_FORM_PAYMENT_KEY
-                                                                                 withMapping:paymentMapping];
-    
-    RKRelationshipMapping *orderRel =[RKRelationshipMapping relationshipMappingFromKeyPath:API_ORDER_FORM_KEY
-                                                                                 toKeyPath:API_ORDER_FORM_KEY
-                                                                               withMapping:orderMapping];
-    
-    RKRelationshipMapping *bankAccountRel =[RKRelationshipMapping relationshipMappingFromKeyPath:API_BANK_ACCOUNT_KEY
-                                                                                       toKeyPath:API_BANK_ACCOUNT_KEY
-                                                                                     withMapping:bankMapping];
-    RKRelationshipMapping *listBankAccountRel =[RKRelationshipMapping relationshipMappingFromKeyPath:API_BANK_ACCOUNT_LIST_KEY
-                                                                                           toKeyPath:API_BANK_ACCOUNT_LIST_KEY
-                                                                                         withMapping:listBankMapping];
-    
-    RKRelationshipMapping *systemBankRel =[RKRelationshipMapping relationshipMappingFromKeyPath:API_SYSTEM_BANK_KEY
-                                                                                      toKeyPath:API_SYSTEM_BANK_KEY
-                                                                                    withMapping:systemBankMapping];
-    RKRelationshipMapping *listSystemBankRel =[RKRelationshipMapping relationshipMappingFromKeyPath:API_SYSTEM_BANK_LIST_KEY
-                                                                                          toKeyPath:API_SYSTEM_BANK_LIST_KEY
-                                                                                        withMapping:listSystemBankMapping];
-    
-    RKRelationshipMapping *methodRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_METHOD_KEY
-                                                                                   toKeyPath:API_METHOD_KEY
-                                                                                 withMapping:methodMapping];
-    RKRelationshipMapping *listMethodRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_METHOD_LIST_KEY
-                                                                                       toKeyPath:API_METHOD_LIST_KEY
-                                                                                     withMapping:listMethodMapping];
-    
-    [statusMapping addPropertyMapping:resultRel];
-    [resultMapping addPropertyMapping:formRel];
-    
-    [formMapping addPropertyMapping:bankAccountRel];
-    [bankMapping addPropertyMapping:listBankAccountRel];
-    
-    [formMapping addPropertyMapping:systemBankRel];
-    [systemBankMapping addPropertyMapping:listSystemBankRel];
-    
-    [formMapping addPropertyMapping:methodRel];
-    [methodMapping addPropertyMapping:listMethodRel];
-    
-    [formMapping addPropertyMapping:paymentRel];
-    [formMapping addPropertyMapping:orderRel];
-    
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                            method:RKRequestMethodPOST
-                                                                                       pathPattern:API_PATH_TX_ORDER
-                                                                                           keyPath:@""
-                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectManager addResponseDescriptor:responseDescriptor];
-    
-    return _objectManager;
-}
-
-
 -(void)dealloc
 {
     [[NSNotificationCenter defaultCenter]removeObserver:self];
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
-    [_networkManager requestCancel];
-    _networkManager.delegate = nil;
-    _networkManager = nil;
 }
 
 @end

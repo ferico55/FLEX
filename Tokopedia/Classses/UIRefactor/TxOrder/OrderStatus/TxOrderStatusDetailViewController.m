@@ -24,7 +24,7 @@
 #import "ResolutionCenterDetailViewController.h"
 
 #import "RequestCancelResolution.h"
-#import "RequestPurchase.h"
+#import "RequestOrderData.h"
 
 #define TAG_ALERT_REORDER 10
 #define TAG_ALERT_COMPLAIN 11

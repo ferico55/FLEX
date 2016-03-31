@@ -1,17 +1,17 @@
 //
-//  RequestPurchase.m
+//  RequestOrderData.m
 //  Tokopedia
 //
 //  Created by Renny Runiawati on 3/21/16.
 //  Copyright © 2016 TOKOPEDIA. All rights reserved.
 //
 
-#import "RequestPurchase.h"
+#import "RequestOrderData.h"
 #import "StickyAlertView+NetworkErrorHandler.h"
 #import "TxOrderConfirmation.h"
 #import "TxOrderConfirmed.h"
 
-@implementation RequestPurchase
+@implementation RequestOrderData
 
 +(void)fetchOrderStatusListPage:(NSInteger)page
                         success:(void (^)(NSArray *list, NSInteger nextPage, NSString* uriNext))success
@@ -190,73 +190,139 @@
                              }];
 }
 
-+(void)fetchConfirmDeliveryOrder:(TxOrderStatusList*)order
-                          action:(NSString*)action
-                         success:(void (^)(TxOrderStatusList *order, TransactionActionResult* data))success
-                         failure:(void (^)(NSError *error, TxOrderStatusList *order))failure{
++(void)fetchDataCancelConfirmationID:(NSString*)confirmationID
+                             Success:(void (^)(TxOrderCancelPaymentFormForm *data))success
+                             failure:(void (^)(NSError *error))failure {
     
-    NSString *actionConfirm = @"delivery_finish_order";
-    if ([action isEqualToString:@"get_tx_order_deliver"]) {
-        action = @"delivery_confirm";
-    }
     
-    NSDictionary* param = @{@"action"   : actionConfirm,
-                            @"order_id" : order.order_detail.detail_order_id};
+    NSDictionary* param = @{
+                            @"confirmation_id":confirmationID
+                            };
     
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
-    
-    [networkManager requestWithBaseUrl:kTkpdBaseURLString path:@"action/tx-order.pl" method:RKRequestMethodPOST parameter:param mapping:[TransactionAction mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-        
-        TransactionAction *response = [successResult.dictionary objectForKey:@""];
-        
-        if (response.result.is_success == 1) {
-            success(order,response.result);
-        }
-        else{
-            [StickyAlertView showErrorMessage:response.message_error?:@[@"Permintaan anda gagal. Mohon coba kembali"]];
-            failure(nil, order);
-        }
-        
-    } onFailure:^(NSError *errorResult) {
-        failure(errorResult, order);
-    }];
+    networkManager.isUsingHmac = YES;
+    [networkManager requestWithBaseUrl:[NSString v4Url]
+                                  path:@"/v4/tx-order/get_cancel_payment_form.pl"
+                                method:RKRequestMethodGET
+                             parameter:param
+                               mapping:[TxOrderCancelPaymentForm mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                 
+                                 TxOrderCancelPaymentForm *response = [successResult.dictionary objectForKey:@""];
+                                 
+                                 if(response.data.form == nil)
+                                 {
+                                     NSArray *array = response.message_error?:@[@"Permintaan Anda gagal. Cobalah beberapa saat lagi."];
+                                     [StickyAlertView showErrorMessage:array];
+                                     failure(nil);
+                                     
+                                 } else {
+                                     success(response.data.form);
+                                 }
+                                 
+                             } onFailure:^(NSError *errorResult) {
+                                 failure(errorResult);
+                             }];
 }
 
-+(void)fetchReorder:(TxOrderStatusList*)order
-            success:(void (^)(TxOrderStatusList *order, TransactionActionResult* data))success
-            failure:(void (^)(NSError *error, TxOrderStatusList *order))failure{
++(void)fetchDataConfirmConfirmationID:(NSString*)confirmationID
+                             success:(void (^)(TxOrderConfirmPaymentFormForm *data))success
+                             failure:(void (^)(NSError *error))failure {
     
-    NSDictionary* param = @{@"action"   : @"reorder",
-                            @"order_id" : order.order_detail.detail_order_id};
     
-    TokopediaNetworkManager *network = [TokopediaNetworkManager new];
+    NSDictionary* param = @{
+                            @"confirmation_id":confirmationID
+                            };
     
-    [network requestWithBaseUrl:kTkpdBaseURLString path:@"action/tx-order.pl" method:RKRequestMethodPOST parameter:param mapping:[TransactionAction mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-        
-        TransactionAction *response = [successResult.dictionary objectForKey:@""];
-        
-        if (response.result.is_success == 1) {
-            success(order,response.result);
-        }
-        else
-        {
-            NSArray *errorMessage = @[];
-            if(response.message_error)
-            {
-                NSMutableArray *errors = [response.message_error mutableCopy];
-                for (int i = 0; i<errors.count; i++) {
-                    if ([response.message_error[i] rangeOfString:@"Alamat"].location == NSNotFound) {
-                        [errors replaceObjectAtIndex:i withObject:@"Pesan ulang tidak dapat dilakukan karena alamat tidak valid."];
-                    }
-                }
-                errorMessage = errors?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-            }
-            [StickyAlertView showErrorMessage:errorMessage?:@[@"Pesan ulang tidak dapat dilakukan"]];
-            failure(nil,order);
-        }
-    } onFailure:^(NSError *errorResult) {
-        failure(errorResult,order);
-    }];
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    networkManager.isUsingHmac = YES;
+    [networkManager requestWithBaseUrl:[NSString v4Url]
+                                  path:@"/v4/tx-order/get_confirm_payment_form.pl"
+                                method:RKRequestMethodGET
+                             parameter:param
+                               mapping:[TxOrderConfirmPaymentForm mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                 
+                                 TxOrderConfirmPaymentForm *response = [successResult.dictionary objectForKey:@""];
+                                 
+                                 if(response.data.form == nil)
+                                 {
+                                     NSArray *array = response.message_error?:@[@"Permintaan Anda gagal. Cobalah beberapa saat lagi."];
+                                     [StickyAlertView showErrorMessage:array];
+                                     failure(nil);
+                                     
+                                 } else {
+                                     success(response.data.form);
+                                 }
+                                 
+                             } onFailure:^(NSError *errorResult) {
+                                 failure(errorResult);
+                             }];
 }
+
++(void)fetchDataEditConfirmationID:(NSString*)confirmationID
+                              success:(void (^)(TxOrderPaymentEditForm *data))success
+                              failure:(void (^)(NSError *error))failure {
+    
+    NSDictionary* param = @{ @"payment_id":confirmationID };
+    
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    networkManager.isUsingHmac = YES;
+    [networkManager requestWithBaseUrl:[NSString v4Url]
+                                  path:@"/v4/tx-order/get_edit_payment_form.pl"
+                                method:RKRequestMethodGET
+                             parameter:param
+                               mapping:[TxOrderPaymentEdit mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                 
+                                 TxOrderPaymentEdit *response = [successResult.dictionary objectForKey:@""];
+                                 
+                                 if(response.data.form == nil)
+                                 {
+                                     NSArray *array = response.message_error?:@[@"Permintaan Anda gagal. Cobalah beberapa saat lagi."];
+                                     [StickyAlertView showErrorMessage:array];
+                                     failure(nil);
+                                     
+                                 } else {
+                                     success(response.data.form);
+                                 }
+                                 
+                             } onFailure:^(NSError *errorResult) {
+                                 failure(errorResult);
+                             }];
+}
+
++(void)fetchDataDetailPaymentID:(NSString*)paymentID
+                           success:(void (^)(TxOrderConfirmedDetailOrder *data))success
+                           failure:(void (^)(NSError *error))failure {
+    
+    NSDictionary* param = @{ @"payment_id":paymentID };
+    
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    networkManager.isUsingHmac = YES;
+    [networkManager requestWithBaseUrl:[NSString v4Url]
+                                  path:@"/v4/tx-order/get_tx_order_payment_confirmed_detail.pl"
+                                method:RKRequestMethodGET
+                             parameter:param
+                               mapping:[TxOrderConfirmedDetail mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                 
+                                 TxOrderConfirmedDetail *response = [successResult.dictionary objectForKey:@""];
+                                 
+                                 if(response.message_error || response.data.tx_order_detail == nil)
+                                 {
+                                     NSArray *array = response.message_error?:@[@"Permintaan Anda gagal. Cobalah beberapa saat lagi."];
+                                     [StickyAlertView showErrorMessage:array];
+                                     failure(nil);
+                                     
+                                 } else {
+                                     success(response.data.tx_order_detail);
+                                 }
+                                 
+                             } onFailure:^(NSError *errorResult) {
+                                 failure(errorResult);
+                             }];
+}
+
 
 @end

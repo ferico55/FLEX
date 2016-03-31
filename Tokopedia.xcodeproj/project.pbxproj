@@ -1235,7 +1235,6 @@
 		454C1B0C1CAA342E007B6ED0 /* TransactionObjectManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 454C129D1CAA342C007B6ED0 /* TransactionObjectManager.m */; };
 		454C1B0D1CAA342E007B6ED0 /* TransactionObjectMapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 454C129F1CAA342C007B6ED0 /* TransactionObjectMapping.m */; };
 		454C1B0E1CAA342E007B6ED0 /* MappingLDExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 454C12A21CAA342C007B6ED0 /* MappingLDExtension.m */; };
-		454C1B0F1CAA342E007B6ED0 /* objectManagerPayment.m in Sources */ = {isa = PBXBuildFile; fileRef = 454C12A41CAA342C007B6ED0 /* objectManagerPayment.m */; };
 		454C1B101CAA342E007B6ED0 /* TxOrderStatusCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 454C12A71CAA342C007B6ED0 /* TxOrderStatusCell.m */; };
 		454C1B111CAA342E007B6ED0 /* TxOrderStatusCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 454C12A81CAA342C007B6ED0 /* TxOrderStatusCell.xib */; };
 		454C1B121CAA342E007B6ED0 /* TxOrderStatusDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 454C12AA1CAA342C007B6ED0 /* TxOrderStatusDetailViewController.m */; };
@@ -1279,9 +1278,7 @@
 		454C1B381CAA342E007B6ED0 /* WebViewInvoiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 454C12E51CAA342C007B6ED0 /* WebViewInvoiceViewController.m */; };
 		454C1B391CAA342E007B6ED0 /* WebViewInvoiceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 454C12E61CAA342C007B6ED0 /* WebViewInvoiceViewController.xib */; };
 		454C1B3A1CAA342E007B6ED0 /* RequestLDExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 454C12E81CAA342C007B6ED0 /* RequestLDExtension.m */; };
-		454C1B3B1CAA342E007B6ED0 /* RequestPayment.m in Sources */ = {isa = PBXBuildFile; fileRef = 454C12EA1CAA342C007B6ED0 /* RequestPayment.m */; };
-		454C1B3C1CAA342E007B6ED0 /* RequestPurchase.m in Sources */ = {isa = PBXBuildFile; fileRef = 454C12EC1CAA342C007B6ED0 /* RequestPurchase.m */; };
-		454C1B3D1CAA342E007B6ED0 /* TxOrderObjectMapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 454C12EF1CAA342C007B6ED0 /* TxOrderObjectMapping.m */; };
+		454C1B3C1CAA342E007B6ED0 /* RequestOrderData.m in Sources */ = {isa = PBXBuildFile; fileRef = 454C12EC1CAA342C007B6ED0 /* RequestOrderData.m */; };
 		454C1B3E1CAA342E007B6ED0 /* TxOrderTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 454C12F11CAA342C007B6ED0 /* TxOrderTabViewController.m */; };
 		454C1B3F1CAA342E007B6ED0 /* TxOrderTabViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 454C12F21CAA342C007B6ED0 /* TxOrderTabViewController.xib */; };
 		454C1B401CAA342E007B6ED0 /* ProfileBiodataCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 454C12F61CAA342C007B6ED0 /* ProfileBiodataCell.m */; };
@@ -2048,6 +2045,7 @@
 		454C1E391CAA342F007B6ED0 /* vt-iOSlib-1.0.1.tar.gz in Resources */ = {isa = PBXBuildFile; fileRef = 454C163F1CAA342E007B6ED0 /* vt-iOSlib-1.0.1.tar.gz */; };
 		454C1E3A1CAA342F007B6ED0 /* vt-iOSlib-1.0.1.zip in Resources */ = {isa = PBXBuildFile; fileRef = 454C16401CAA342E007B6ED0 /* vt-iOSlib-1.0.1.zip */; };
 		454C1E3B1CAA342F007B6ED0 /* XYPieChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 454C16431CAA342E007B6ED0 /* XYPieChart.m */; };
+		458221331CACE04F008B3367 /* RequestOrderAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 458221321CACE04E008B3367 /* RequestOrderAction.m */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
 		7ACE9C541BB00956006C4BB7 /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */; };
@@ -4321,8 +4319,6 @@
 		454C129F1CAA342C007B6ED0 /* TransactionObjectMapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionObjectMapping.m; sourceTree = "<group>"; };
 		454C12A11CAA342C007B6ED0 /* MappingLDExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MappingLDExtension.h; sourceTree = "<group>"; };
 		454C12A21CAA342C007B6ED0 /* MappingLDExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MappingLDExtension.m; sourceTree = "<group>"; };
-		454C12A31CAA342C007B6ED0 /* objectManagerPayment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = objectManagerPayment.h; sourceTree = "<group>"; };
-		454C12A41CAA342C007B6ED0 /* objectManagerPayment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = objectManagerPayment.m; sourceTree = "<group>"; };
 		454C12A61CAA342C007B6ED0 /* TxOrderStatusCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxOrderStatusCell.h; sourceTree = "<group>"; };
 		454C12A71CAA342C007B6ED0 /* TxOrderStatusCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxOrderStatusCell.m; sourceTree = "<group>"; };
 		454C12A81CAA342C007B6ED0 /* TxOrderStatusCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TxOrderStatusCell.xib; sourceTree = "<group>"; };
@@ -4388,13 +4384,9 @@
 		454C12E61CAA342C007B6ED0 /* WebViewInvoiceViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WebViewInvoiceViewController.xib; sourceTree = "<group>"; };
 		454C12E71CAA342C007B6ED0 /* RequestLDExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestLDExtension.h; sourceTree = "<group>"; };
 		454C12E81CAA342C007B6ED0 /* RequestLDExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestLDExtension.m; sourceTree = "<group>"; };
-		454C12E91CAA342C007B6ED0 /* RequestPayment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestPayment.h; sourceTree = "<group>"; };
-		454C12EA1CAA342C007B6ED0 /* RequestPayment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestPayment.m; sourceTree = "<group>"; };
-		454C12EB1CAA342C007B6ED0 /* RequestPurchase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestPurchase.h; sourceTree = "<group>"; };
-		454C12EC1CAA342C007B6ED0 /* RequestPurchase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestPurchase.m; sourceTree = "<group>"; };
+		454C12EB1CAA342C007B6ED0 /* RequestOrderData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestOrderData.h; sourceTree = "<group>"; };
+		454C12EC1CAA342C007B6ED0 /* RequestOrderData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestOrderData.m; sourceTree = "<group>"; };
 		454C12ED1CAA342C007B6ED0 /* string_tx_order.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_tx_order.h; sourceTree = "<group>"; };
-		454C12EE1CAA342C007B6ED0 /* TxOrderObjectMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxOrderObjectMapping.h; sourceTree = "<group>"; };
-		454C12EF1CAA342C007B6ED0 /* TxOrderObjectMapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxOrderObjectMapping.m; sourceTree = "<group>"; };
 		454C12F01CAA342C007B6ED0 /* TxOrderTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxOrderTabViewController.h; sourceTree = "<group>"; };
 		454C12F11CAA342C007B6ED0 /* TxOrderTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxOrderTabViewController.m; sourceTree = "<group>"; };
 		454C12F21CAA342C007B6ED0 /* TxOrderTabViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TxOrderTabViewController.xib; sourceTree = "<group>"; };
@@ -5205,6 +5197,8 @@
 		454C16401CAA342E007B6ED0 /* vt-iOSlib-1.0.1.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "vt-iOSlib-1.0.1.zip"; sourceTree = "<group>"; };
 		454C16421CAA342E007B6ED0 /* XYPieChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XYPieChart.h; sourceTree = "<group>"; };
 		454C16431CAA342E007B6ED0 /* XYPieChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYPieChart.m; sourceTree = "<group>"; };
+		458221311CACE04E008B3367 /* RequestOrderAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestOrderAction.h; sourceTree = "<group>"; };
+		458221321CACE04E008B3367 /* RequestOrderAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestOrderAction.m; sourceTree = "<group>"; };
 		4868E459AB2A65D133732296 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tokopedia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
@@ -9574,23 +9568,19 @@
 			children = (
 				454C12A11CAA342C007B6ED0 /* MappingLDExtension.h */,
 				454C12A21CAA342C007B6ED0 /* MappingLDExtension.m */,
-				454C12A31CAA342C007B6ED0 /* objectManagerPayment.h */,
-				454C12A41CAA342C007B6ED0 /* objectManagerPayment.m */,
 				454C12A51CAA342C007B6ED0 /* OrderStatus */,
 				454C12B21CAA342C007B6ED0 /* PaymentConfirmation */,
 				454C12CC1CAA342C007B6ED0 /* PaymentConfirmed */,
 				454C12E71CAA342C007B6ED0 /* RequestLDExtension.h */,
 				454C12E81CAA342C007B6ED0 /* RequestLDExtension.m */,
-				454C12E91CAA342C007B6ED0 /* RequestPayment.h */,
-				454C12EA1CAA342C007B6ED0 /* RequestPayment.m */,
-				454C12EB1CAA342C007B6ED0 /* RequestPurchase.h */,
-				454C12EC1CAA342C007B6ED0 /* RequestPurchase.m */,
+				454C12EB1CAA342C007B6ED0 /* RequestOrderData.h */,
+				454C12EC1CAA342C007B6ED0 /* RequestOrderData.m */,
 				454C12ED1CAA342C007B6ED0 /* string_tx_order.h */,
-				454C12EE1CAA342C007B6ED0 /* TxOrderObjectMapping.h */,
-				454C12EF1CAA342C007B6ED0 /* TxOrderObjectMapping.m */,
 				454C12F01CAA342C007B6ED0 /* TxOrderTabViewController.h */,
 				454C12F11CAA342C007B6ED0 /* TxOrderTabViewController.m */,
 				454C12F21CAA342C007B6ED0 /* TxOrderTabViewController.xib */,
+				458221311CACE04E008B3367 /* RequestOrderAction.h */,
+				458221321CACE04E008B3367 /* RequestOrderAction.m */,
 			);
 			path = TxOrder;
 			sourceTree = "<group>";
@@ -12341,7 +12331,6 @@
 				454C17841CAA342E007B6ED0 /* OrderBookingResponse.m in Sources */,
 				454C183A1CAA342E007B6ED0 /* UploadImageHelperResult.m in Sources */,
 				454C177E1CAA342E007B6ED0 /* ResponseSpeed.m in Sources */,
-				454C1B0F1CAA342E007B6ED0 /* objectManagerPayment.m in Sources */,
 				454C179F1CAA342E007B6ED0 /* SearchAutoCompleteDomains.m in Sources */,
 				454C17711CAA342E007B6ED0 /* PromoResponse.m in Sources */,
 				454C197F1CAA342E007B6ED0 /* InboxTicketDetailViewController.m in Sources */,
@@ -12451,6 +12440,7 @@
 				454C17041CAA342E007B6ED0 /* ResolutionDetail.m in Sources */,
 				454C16E91CAA342E007B6ED0 /* HotlistDetailResult.m in Sources */,
 				454C17601CAA342E007B6ED0 /* AddressForm.m in Sources */,
+				458221331CACE04F008B3367 /* RequestOrderAction.m in Sources */,
 				454C17621CAA342E007B6ED0 /* AddressFormResult.m in Sources */,
 				454C188E1CAA342E007B6ED0 /* CameraCollectionCell.m in Sources */,
 				454C187A1CAA342E007B6ED0 /* AlertPickerView.m in Sources */,
@@ -12489,7 +12479,6 @@
 				454C164E1CAA342E007B6ED0 /* NSString+TPBaseUrl.m in Sources */,
 				454C16EE1CAA342E007B6ED0 /* InboxMessageAction.m in Sources */,
 				454C17111CAA342E007B6ED0 /* InboxTalkList.m in Sources */,
-				454C1B3D1CAA342E007B6ED0 /* TxOrderObjectMapping.m in Sources */,
 				454C1ADA1CAA342E007B6ED0 /* TokopediaCacheManager.m in Sources */,
 				454C16751CAA342E007B6ED0 /* LogoutResult.m in Sources */,
 				454C1A901CAA342E007B6ED0 /* ShopEditStatusViewController.m in Sources */,
@@ -12622,7 +12611,6 @@
 				454C19F81CAA342E007B6ED0 /* ProductReputationCell.m in Sources */,
 				454C16A41CAA342E007B6ED0 /* CatalogReview.m in Sources */,
 				454C184C1CAA342E007B6ED0 /* TKPGooglePlaceDetailProductStore.m in Sources */,
-				454C1B3B1CAA342E007B6ED0 /* RequestPayment.m in Sources */,
 				454C1E301CAA342F007B6ED0 /* HPTextViewInternal.m in Sources */,
 				454C172C1CAA342E007B6ED0 /* LoyaltyPointDetail.m in Sources */,
 				454C166E1CAA342E007B6ED0 /* UserAuthentificationManager.m in Sources */,
@@ -13174,7 +13162,7 @@
 				454C16CB1CAA342E007B6ED0 /* FavoritedShopList.m in Sources */,
 				454C183B1CAA342E007B6ED0 /* UploadImageImage.m in Sources */,
 				454C16911CAA342E007B6ED0 /* ContactUsQuery.m in Sources */,
-				454C1B3C1CAA342E007B6ED0 /* RequestPurchase.m in Sources */,
+				454C1B3C1CAA342E007B6ED0 /* RequestOrderData.m in Sources */,
 				454C19C61CAA342E007B6ED0 /* DetailProductWholesaleTableCell.m in Sources */,
 				454C16AD1CAA342E007B6ED0 /* Info.m in Sources */,
 				454C17A51CAA342E007B6ED0 /* SearchModel.xcdatamodeld in Sources */,

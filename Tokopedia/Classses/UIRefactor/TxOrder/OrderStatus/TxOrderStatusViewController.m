@@ -27,7 +27,6 @@
 #import "string_tx_order.h"
 
 #import "TxOrderStatus.h"
-#import "TxOrderObjectMapping.h"
 #import "NoResultView.h"
 
 #import "TextMenu.h"
@@ -37,7 +36,7 @@
 #import "NoResultReusableView.h"
 #import "RequestLDExtension.h"
 
-#import "RequestPurchase.h"
+#import "RequestOrderData.h"
 
 #define TAG_ALERT_DELIVERY_CONFIRMATION 10
 #define TAG_ALERT_SUCCESS_DELIVERY_CONFIRM 11
@@ -515,7 +514,7 @@
     NSString *filterEndDate = [_dataInput objectForKey:API_TRANSACTION_END_DATE_KEY]?:@"";
     NSString *filterStatus = (_isCanceledPayment)?@"5":[_dataInput objectForKey:API_TRANSACTION_STATUS_KEY]?:@"";
     
-    [RequestPurchase fetchTransactionListPage:_page invoice:filterInvoice startDate:filterStartDate endDate:filterEndDate status:filterStatus success:^(NSArray *list, NSInteger nextPage, NSString* uriNext) {
+    [RequestOrderData fetchListTransactionPage:_page invoice:filterInvoice startDate:filterStartDate endDate:filterEndDate status:filterStatus success:^(NSArray *list, NSInteger nextPage, NSString* uriNext) {
         [self adjustList:list nextPage:nextPage uriNext:uriNext];
     } failure:^(NSError *error) {
         [self failedFetch];
@@ -523,7 +522,7 @@
 }
 
 -(void)doRequestDeliverList{
-    [RequestPurchase fetchOrderDeliverListPage:_page success:^(NSArray *list, NSInteger nextPage, NSString *uriNext) {
+    [RequestOrderData fetchListOrderDeliverPage:_page success:^(NSArray *list, NSInteger nextPage, NSString *uriNext) {
         [self adjustList:list nextPage:nextPage uriNext:uriNext];
     } failure:^(NSError *error) {
         [self failedFetch];
@@ -531,7 +530,7 @@
 }
 
 -(void)doRequestStatusList{
-    [RequestPurchase fetchOrderStatusListPage:_page success:^(NSArray *list, NSInteger nextPage, NSString *uriNext) {
+    [RequestOrderData fetchListOrderStatusPage:_page success:^(NSArray *list, NSInteger nextPage, NSString *uriNext) {
         [self adjustList:list nextPage:nextPage uriNext:uriNext];
     } failure:^(NSError *error) {
         [self failedFetch];
@@ -587,7 +586,7 @@
     
     [_objectsConfirmRequest addObject:order];
 
-    [RequestPurchase fetchConfirmDeliveryOrder:order action:_action success:^(TxOrderStatusList *order, TransactionActionResult* data) {
+    [RequestOrderAction fetchConfirmDeliveryOrder:order action:_action success:^(TxOrderStatusList *order, TransactionActionResult* data) {
         if (data.ld.url) {
             _requestLD = [RequestLDExtension new];
             _requestLD.luckyDeal = data.ld;
@@ -616,7 +615,7 @@
 
 #pragma mark - Request ReOrder
 -(void)doRequestReorder:(TxOrderStatusList*)order{
-    [RequestPurchase fetchReorder:order success:^(TxOrderStatusList *order, TransactionActionResult *data) {
+    [RequestOrderAction fetchReorder:order success:^(TxOrderStatusList *order, TransactionActionResult *data) {
         [_act stopAnimating];
         TransactionCartRootViewController *vc = [TransactionCartRootViewController new];
         [self.navigationController pushViewController:vc animated:YES];
