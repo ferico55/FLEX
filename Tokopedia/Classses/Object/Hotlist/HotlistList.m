@@ -28,4 +28,11 @@
     return _viewModel;
 }
 
++ (RKObjectMapping *)mapping {
+    RKObjectMapping* mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addAttributeMappingsFromArray:@[@"image_url", @"image_url_600", @"price_start", @"url", @"title"]];
+    
+    return mapping;
+}
+
 @end

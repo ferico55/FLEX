@@ -10,4 +10,12 @@
 
 @implementation Breadcrumb
 
++(RKObjectMapping *)mapping {
+    RKObjectMapping* mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addAttributeMappingsFromArray:@[@"department_name", @"department_id"]];
+    
+    return mapping;
+}
+
+
 @end
