@@ -494,7 +494,7 @@ ImageSearchRequestDelegate
     [_act startAnimating];
 }
 
--(IBAction)tap:(id)sender {
+-(IBAction)tap:(id)sender { 
     UIButton *button = (UIButton *)sender;
     switch (button.tag) {
         case 10:
