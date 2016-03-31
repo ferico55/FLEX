@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface Hashtags : NSObject
+@interface Hashtags : NSObject<TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *url;

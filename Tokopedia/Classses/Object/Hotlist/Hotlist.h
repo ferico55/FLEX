@@ -8,13 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
-#import "HotlistResult.h"
+#import "HotlistData.h"
 
-@interface Hotlist : NSObject <NSCoding>
+@interface Hotlist : NSObject <NSCoding, TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *status;
 @property (nonatomic, strong) NSString *server_process_time;
-@property (nonatomic, strong) HotlistResult *result;
+@property (nonatomic, strong) HotlistData *data;
 
 - (void) encodeWithCoder:(NSCoder *)encoder;
 - (id)initWithCoder:(NSCoder *)decoder;

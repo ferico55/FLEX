@@ -7,11 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-
 #import <RKObjectManager.h>
 
-extern NSString * const kTraktAPIKey;
-extern NSString * const kTraktBaseURLString;
 
 @interface RKObjectManager (TkpdCategory)
 
@@ -19,6 +16,5 @@ extern NSString * const kTraktBaseURLString;
 + (RKObjectManager *)sharedClientHttps;
 + (RKObjectManager *)sharedClient:(NSString*)baseUrl;
 
-+ (void)refreshBaseUrl;
 
 @end

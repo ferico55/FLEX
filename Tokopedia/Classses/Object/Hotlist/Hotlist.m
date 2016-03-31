@@ -7,34 +7,34 @@
 //
 
 #import "Hotlist.h"
+#import "HotlistData.h"
 
 @implementation Hotlist
 
 #pragma mark NSCoding
 
-+(RKObjectMapping *)mapping{
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Hotlist class]];
-    [statusMapping addAttributeMappingsFromArray:@[@"status", @"server_process_time"]];
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data"
-                                                                                  toKeyPath:@"result"
-                                                                                withMapping:[HotlistResult mapping]]];
-    return statusMapping;
-}
-
 - (void) encodeWithCoder:(NSCoder *)encoder {
     [encoder encodeObject:_status forKey:kTKPD_APISTATUSKEY];
     [encoder encodeObject:_server_process_time forKey:kTKPD_APISERVERPROCESSTIMEKEY];
-    [encoder encodeObject:_result forKey:kTKPD_APIRESULTKEY];
+    [encoder encodeObject:_data forKey:@"data"];
 }
 
-- (id)initWithCoder:(NSCoder *)decoder
-{
+- (id)initWithCoder:(NSCoder *)decoder {
     if (self = [super init]) {
         _status = [decoder decodeObjectForKey:kTKPD_APISTATUSKEY];
         _server_process_time = [decoder decodeObjectForKey:kTKPD_APISERVERPROCESSTIMEKEY];
-        _result = [decoder decodeObjectForKey:kTKPD_APIRESULTKEY];
+        _data = [decoder decodeObjectForKey:@"data"];
     }
     return self;
+}
+
++ (RKObjectMapping *)mapping {
+    RKObjectMapping* mapping = [RKObjectMapping mappingForClass:self];
+    
+    [mapping addAttributeMappingsFromDictionary:@{@"status" : @"status"}];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data" toKeyPath:@"data" withMapping:[HotlistData mapping]]];
+    
+    return mapping;
 }
 
 @end

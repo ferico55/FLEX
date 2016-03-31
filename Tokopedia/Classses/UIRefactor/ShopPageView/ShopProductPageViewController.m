@@ -614,7 +614,7 @@ RetryViewDelegate
 }
 
 - (IBAction)tapToEtalase:(id)sender {
-    NSIndexPath *indexpath = [_detailfilter objectForKey:kTKPDDETAILETALASE_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
+    NSIndexPath *indexpath = [_detailfilter objectForKey:kTKPDDETAILETALASE_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:1 inSection:0];
     MyShopEtalaseFilterViewController *vc =[MyShopEtalaseFilterViewController new];
     //ProductEtalaseViewController *vc = [ProductEtalaseViewController new];
     vc.data = @{kTKPDDETAIL_APISHOPIDKEY:@([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0),

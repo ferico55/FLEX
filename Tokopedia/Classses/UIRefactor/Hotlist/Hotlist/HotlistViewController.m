@@ -30,40 +30,15 @@
 
 #pragma mark - HotlistView
 
-@interface HotlistViewController ()
-<
-TokopediaNetworkManagerDelegate,
-LoadingViewDelegate,
-UITableViewDelegate,
-UIGestureRecognizerDelegate,
-UICollectionViewDelegate,
-UICollectionViewDataSource,
-UICollectionViewDelegateFlowLayout,
-NotificationDelegate,
-RetryViewDelegate
->
-{
-    NSMutableArray *_product;
+@interface HotlistViewController ()<UIGestureRecognizerDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,NotificationDelegate, RetryViewDelegate> {
     
+    NSMutableArray *_product;
     NSInteger _page;
-    NSInteger _limit;
     NSString *_urinext;
     
-    BOOL _isrefreshview;
-    BOOL _isnodata;
-    BOOL _isNeedToRemoveAllObject;
-    
     UIRefreshControl *_refreshControl;
-    
     NSTimeInterval _timeinterval;
-    TokopediaNetworkManager *_networkManager;
-    __weak RKObjectManager  *_objectmanager;
-    
-    /**cache part*/
-    NSString *_cachePath;
-    URLCacheConnection *_cacheConnection;
-    URLCacheController *_cacheController;
-    LoadingView *_loadingView;
+    TokopediaNetworkManager *_requestHotlistManager;
     
     BOOL _isFailRequest;
     
@@ -71,7 +46,6 @@ RetryViewDelegate
     NotificationManager *_notifManager;
 }
 
-@property (strong, nonatomic) IBOutlet UITableView *table;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
@@ -81,14 +55,9 @@ RetryViewDelegate
 
 @implementation HotlistViewController
 #pragma mark - Initialization
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        _isrefreshview = NO;
-        _isnodata = YES;
-        _isNeedToRemoveAllObject = NO;
-        
         UIImageView *logo = [[UIImageView alloc]initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
         [self.navigationItem setTitleView:logo];
     }
@@ -98,66 +67,27 @@ RetryViewDelegate
 
 
 #pragma mark - View Lifecylce
-- (void) viewDidLoad
-{
+- (void) viewDidLoad {
     [super viewDidLoad];
-    
-    UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                                      style:UIBarButtonItemStyleBordered
-                                                                     target:self
-                                                                     action:nil];
-    self.navigationItem.backBarButtonItem = backBarButton;
-    
-    [self.navigationController.navigationBar setTranslucent:NO];
     
     _product = [NSMutableArray new];
     _page = 1;
-    _limit = kTKPDHOMEHOTLIST_LIMITPAGE;
-    _cacheConnection = [URLCacheConnection new];
-    _cacheController = [URLCacheController new];
-    
-    
-    /** set table view datasource and delegate **/
-    _table.delegate = self;
-    _table.dataSource = self;
-    _table.tableFooterView = _footer;
     
     
     [self.view setFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, [[UIScreen mainScreen]bounds].size.height)];
-    _loadingView = [LoadingView new];
-    _loadingView.delegate = self;
-    
-//    [self setTableInset];
-    
-    if (_product.count > 0) {
-        _isnodata = NO;
-    }
-    
+
     /** adjust refresh control **/
     _refreshControl = [[UIRefreshControl alloc] init];
     _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_collectionView addSubview:_refreshControl];
     
-    
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSwipeHomeTab:) name:@"didSwipeHomeTab" object:nil];
+
+    _requestHotlistManager = [TokopediaNetworkManager new];
+    _requestHotlistManager.isUsingHmac = YES;
     
-    [[UINavigationBar appearance] setShadowImage:[[UIImage alloc] init]];
-    [[UINavigationBar appearance] setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
-    
-//    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:[UIDevice currentDevice]];
-    _networkManager = [TokopediaNetworkManager new];
-    _networkManager.delegate = self;
-    
-    //[self initCacheHotlist];
-    //if([self getFromCache] && _page == 1) {
-     //   [_networkManager requestSuccess:[self getFromCache] withOperation:nil];
-    //} else {
-        //[_networkManager doRequest];
-    //}
-    [self requestHotlistListing];
+    [self requestHotlist];
     
     UINib *cellNib = [UINib nibWithNibName:@"HotlistCollectionCell" bundle:nil];
     [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"HotlistCollectionCellIdentifier"];
@@ -170,71 +100,63 @@ RetryViewDelegate
         
 }
 
+- (void)requestHotlist {
+    [_requestHotlistManager requestWithBaseUrl:@"https://ws.tokopedia.com"
+                                   path:@"/v4/hotlist/get_hotlist.pl"
+                                 method:RKRequestMethodGET
+                              parameter:@{
+                                          @"page" : @(_page),
+                                          @"limit"  : @10
+                                          }
+                                mapping:[Hotlist mapping]
+                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                  [self didReceiveHotlist:successResult.dictionary[@""]];
+                              } onFailure:^(NSError *errorResult) {
+                                  _isFailRequest = YES;
+                                  [_collectionView reloadData];
+                              }];
+}
+
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     
-    [_networkManager requestCancel];
+    [_requestHotlistManager requestCancel];
 }
 
--(void)doRequestNotify
-{
+-(void)doRequestNotify {
     _requestLBLM = [RequestNotifyLBLM new];
     [_requestLBLM doRequestLBLM];
 }
 
--(void)viewWillAppear:(BOOL)animated
-{
+-(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
     self.screenName = @"Hot List Page";
     [TPAnalytics trackScreenName:@"Hot List Page"];
 
-    [_cacheController getFileModificationDate];
-    _timeinterval = fabs([_cacheController.fileDate timeIntervalSinceNow]);
-    
-    if(_timeinterval > _cacheController.URLCacheInterval) {
-        _page = 1;
-        _isNeedToRemoveAllObject = YES;
-        [self requestHotlistListing];
-        _collectionView.contentOffset = CGPointMake(0, 0 - _table.contentInset.top);
-    }
-    
     [self initNotificationManager];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(initNotificationManager) name:@"reloadNotification" object:nil];
     
-    //[self doRequestNotify];
+    [self doRequestNotify];
 }
-
-- (void) setTableInset {
-    if([[UIScreen mainScreen]bounds].size.height >= 568) {
-        _collectionView.contentInset = UIEdgeInsetsMake(5, 0, 100, 0);
-    } else {
-        _collectionView.contentInset = UIEdgeInsetsMake(5, 0, 200, 0);
-    }
-}
-
 
 #pragma mark - Memory Management
-- (void)dealloc
-{
+- (void)dealloc {
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [_networkManager requestCancel];
-    _networkManager.delegate = nil;
-    _networkManager.isUsingHmac = YES;
-    _networkManager = nil;
+    [_requestHotlistManager requestCancel];
+    _requestHotlistManager.delegate = nil;
+    _requestHotlistManager.isUsingHmac = YES;
+    _requestHotlistManager = nil;
 }
 
 #pragma mark - Collection View Data Source
 
-- (NSInteger) collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
-{
+- (NSInteger) collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     return _product.count;
-    
 }
 
-- (UICollectionViewCell *) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UICollectionViewCell *) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     NSString *cellid = @"HotlistCollectionCellIdentifier";
     HotlistCollectionCell *cell = (HotlistCollectionCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
     
@@ -244,7 +166,7 @@ RetryViewDelegate
     if (row == indexPath.row) {
         if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
             _isFailRequest = NO;
-            [self requestHotlistListing];
+            [self requestHotlist];
         }
     }
     
@@ -268,8 +190,7 @@ RetryViewDelegate
     return reusableView;
 }
 
--(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
-{
+-(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     HotlistList *hotlist = _product[indexPath.row];
     
     if ([hotlist.url rangeOfString:@"/hot/"].length) {
@@ -386,305 +307,30 @@ RetryViewDelegate
 }
 
 #pragma mark - Methods
-
-- (void)requestHotlistListing{
-    _networkManager.isUsingHmac = YES;
-    _networkManager.isParameterNotEncrypted = NO;
-    [_networkManager requestWithBaseUrl:@"https://ws.tokopedia.com"
-                                   path:@"/v4/hotlist/get_hotlist.pl"
-                                 method:RKRequestMethodGET
-                              parameter:@{kTKPDHOME_APIACTIONKEY :   kTKPDHOMEHOTLISTACT,
-                                          kTKPDHOME_APIPAGEKEY   :   @(_page),
-                                          kTKPDHOME_APILIMITPAGEKEY  :   @(kTKPDHOMEHOTLIST_LIMITPAGE),
-                                          }
-                                mapping:[Hotlist mapping]
-                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                  NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
-                                  Hotlist *hotlist = [result objectForKey:@""];
-                                  
-                                  if(_refreshControl.isRefreshing) {
-                                      [_refreshControl endRefreshing];
-                                  }
-                                  
-                                  if(_isNeedToRemoveAllObject) {
-                                      [_product removeAllObjects];
-                                      _isNeedToRemoveAllObject = NO;
-                                  }
-                                  
-                                  [_product addObjectsFromArray: hotlist.result.list];
-                                  
-                                  if (_product.count >0) {
-                                      _isnodata = NO;
-                                      _urinext =  hotlist.result.paging.uri_next;
-                                      _page = [[_networkManager splitUriToPage:_urinext] integerValue];
-                                  }
-                                  
-                                  if((_page - 1) == 1) {
-                                      [self setToCache:operation];
-                                  }
-                                  
-                                  _isFailRequest = NO;
-                                  
-                                  [_collectionView reloadData];
-                              }
-                              onFailure:^(NSError *errorResult) {
-                                  [_refreshControl endRefreshing];
-                                  _isFailRequest = YES;
-                                  [_collectionView reloadData];
-                              }];
-}
-
--(void)refreshView:(UIRefreshControl*)refresh
-{
+-(void)refreshView:(UIRefreshControl*)refresh {
     _page = 1;
-    _isrefreshview = YES;
-    _isNeedToRemoveAllObject = YES;
+    [_requestHotlistManager requestCancel];
+    [_product removeAllObjects];
     
-    [_collectionView reloadData];
-    [self requestHotlistListing];
+    [self requestHotlist];
 }
 
-#pragma mark - Tokopedia Network Manager
-- (NSDictionary *)getParameter:(int)tag {
-    NSDictionary* param = @{kTKPDHOME_APIACTIONKEY :   kTKPDHOMEHOTLISTACT,
-                            kTKPDHOME_APIPAGEKEY   :   @(_page),
-                            kTKPDHOME_APILIMITPAGEKEY  :   @(kTKPDHOMEHOTLIST_LIMITPAGE),
-                            };
-    
-    return param;
-}
 
-- (NSString *)getPath:(int)tag {
-    NSString *path = kTKPDHOMEHOTLIST_APIPATH;
+- (void)didReceiveHotlist:(Hotlist*)hotlist {
+    [_refreshControl endRefreshing];
     
-    return path;
-}
-
-- (id)getObjectManager:(int)tag {
-    //_objectmanager = [RKObjectManager sharedClient];
-    _objectmanager = [RKObjectManager sharedClient:@"http://www.tokopedia.com/ws"];
+    _urinext =  hotlist.data.paging.uri_next;
+    _page = [[_requestHotlistManager splitUriToPage:_urinext] integerValue];
     
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Hotlist class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[HotlistResult class]];
-    
-    RKObjectMapping *hotlistMapping = [RKObjectMapping mappingForClass:[HotlistList class]];
-    [hotlistMapping addAttributeMappingsFromArray:@[kTKPDHOME_APIURLKEY,kTKPDHOME_APILARGEIMGURLKEY, kTKPDHOME_APITHUMBURLKEY,kTKPDHOME_APISTARTERPRICEKEY,kTKPDHOME_APITITLEKEY]];
-    
-    RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
-    [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDHOME_APIURINEXTKEY:kTKPDHOME_APIURINEXTKEY}];
-    
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    
-    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APILISTKEY toKeyPath:kTKPDHOME_APILISTKEY withMapping:hotlistMapping];
-    [resultMapping addPropertyMapping:listRel];
-    
-    RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APIPAGINGKEY toKeyPath:kTKPDHOME_APIPAGINGKEY withMapping:pagingMapping];
-    [resultMapping addPropertyMapping:pageRel];
-    
-    // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                            method:RKRequestMethodPOST
-                                                                                       pathPattern:kTKPDHOMEHOTLIST_APIPATH keyPath:@""
-                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectmanager addResponseDescriptor:responseDescriptor];
-    return _objectmanager;
-}
-
-- (NSString *)getRequestStatus:(id)result withTag:(int)tag {
-    NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
-    id stat = [resultDict objectForKey:@""];
-    Hotlist *hotlist = stat;
-    
-    return hotlist.status;
-}
-
-- (void)actionBeforeRequest:(int)tag {
-    if (!_isrefreshview) {
-        _table.tableFooterView = _footer;
-        [_act startAnimating];
-    }
-    else{
-        _table.tableFooterView = nil;
-        [_act stopAnimating];
-    }
-}
-
-- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag{
-    NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
-    Hotlist *hotlist = [result objectForKey:@""];
-    
-    if(_refreshControl.isRefreshing) {
-        [_refreshControl endRefreshing];
-    }
-    
-    if(_isNeedToRemoveAllObject) {
-        [_product removeAllObjects];
-        _isNeedToRemoveAllObject = NO;
-    }
-    
-    [_product addObjectsFromArray: hotlist.result.list];
-    
-    if (_product.count >0) {
-        _isnodata = NO;
-        _urinext =  hotlist.result.paging.uri_next;
-        _page = [[_networkManager splitUriToPage:_urinext] integerValue];
-    }
-    
-    if((_page - 1) == 1) {
-        [self setToCache:operation];
-    }
-    
+    [_product addObjectsFromArray: hotlist.data.list];
     _isFailRequest = NO;
     
     [_collectionView reloadData];
 }
-
-- (void)actionAfterFailRequestMaxTries:(int)tag {
-    [_refreshControl endRefreshing];
-    _isFailRequest = YES;
-    [_collectionView reloadData];
-}
-
-#pragma mark - Caching Part
-- (void)initCacheHotlist {
-    if(_page == 1) {
-        NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:@"hotlist"];
-        _cachePath = [path stringByAppendingPathComponent:kTKPDHOMEHOTLIST_APIRESPONSEFILE];
-        
-        _cacheController.filePath = _cachePath;
-        _cacheController.URLCacheInterval = 1800.0;
-        [_cacheController initCacheWithDocumentPath:path];
-    }
-}
-
-- (void)setToCache:(RKObjectRequestOperation*)operation {
-    [_cacheConnection connection:operation.HTTPRequestOperation.request
-              didReceiveResponse:operation.HTTPRequestOperation.response];
-    
-    [_cacheController connectionDidFinish:_cacheConnection];
-    [operation.HTTPRequestOperation.responseData writeToFile:_cachePath atomically:YES];
-}
-
-- (id)getFromCache {
-    [_cacheController getFileModificationDate];
-    _timeinterval = fabs([_cacheController.fileDate timeIntervalSinceNow]);
-    
-    NSError* error;
-    NSData *data = [NSData dataWithContentsOfFile:_cachePath];
-    
-    if(data.length) {
-        id parsedData = [RKMIMETypeSerialization objectFromData:data
-                                                       MIMEType:RKMIMETypeJSON
-                                                          error:&error];
-        if (parsedData == nil && error) {
-            NSLog(@"parser error");
-        }
-        
-        NSMutableDictionary *mappingsDictionary = [[NSMutableDictionary alloc] init];
-        _objectmanager = [self getObjectManager:0];
-        for (RKResponseDescriptor *descriptor in _objectmanager.responseDescriptors) {
-            [mappingsDictionary setObject:descriptor.mapping forKey:descriptor.keyPath];
-        }
-        
-        RKMapperOperation *mapper = [[RKMapperOperation alloc] initWithRepresentation:parsedData
-                                                                   mappingsDictionary:mappingsDictionary];
-        NSError *mappingError = nil;
-        BOOL isMapped = [mapper execute:&mappingError];
-        if (isMapped && !mappingError) {
-            RKMappingResult *mappingresult = [mapper mappingResult];
-            
-            return mappingresult;
-        }
-    }
-    
-    return nil;
-}
-
 #pragma mark - Delegate LoadingView
 - (void)pressRetryButton {
     _isFailRequest = NO;
-    [_collectionView reloadData];
-    _table.tableFooterView = _footer;
-    [self requestHotlistListing];
-}
-
-#pragma mark - Delegate
--(void)HotlistCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath withimageview:(UIImageView *)imageview
-{
-    HotlistList *hotlist = _product[indexpath.row];
-    
-    if ([hotlist.url rangeOfString:@"/hot/"].length) {
-        
-        HotlistResultViewController *controller = [HotlistResultViewController new];
-        controller.image = ((HotlistCell*)cell).productimageview.image;
-        NSArray *query = [[[NSURL URLWithString:hotlist.url] path] componentsSeparatedByString: @"/"];
-        controller.data = @{
-                            kTKPDHOME_DATAQUERYKEY      : [query objectAtIndex:2]?:@"",
-                            kTKPHOME_DATAHEADERIMAGEKEY : imageview,
-                            kTKPD_AUTHKEY               : [_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null],
-                            kTKPDHOME_APIURLKEY         : hotlist.url,
-                            kTKPDHOME_APITITLEKEY       : hotlist.title,
-                            };
-        controller.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:controller animated:YES];
-        
-    } else if ([hotlist.url rangeOfString:@"/p/"].length) {
-        
-        NSURL *url = [NSURL URLWithString:hotlist.url];
-        
-        NSMutableDictionary *parameters = [NSMutableDictionary new];
-        
-        for (int i = 2; i < url.pathComponents.count; i++) {
-            if (i == 2) {
-                [parameters setValue:[url.pathComponents objectAtIndex:i] forKey:kTKPDSEARCH_APIDEPARTMENT_1];
-            } else if (i == 3) {
-                [parameters setValue:[url.pathComponents objectAtIndex:i] forKey:kTKPDSEARCH_APIDEPARTMENT_2];
-            } else if (i == 4) {
-                [parameters setValue:[url.pathComponents objectAtIndex:i] forKey:kTKPDSEARCH_APIDEPARTMENT_3];
-            }
-        }
-        
-        for (NSString *parameter in [url.query componentsSeparatedByString:@"&"]) {
-            NSString *key = [[parameter componentsSeparatedByString:@"="] objectAtIndex:0];
-            if ([key isEqualToString:kTKPDSEARCH_APIMINPRICEKEY]) {
-                [parameters setValue:[[parameter componentsSeparatedByString:@"="] objectAtIndex:1] forKey:kTKPDSEARCH_APIMINPRICEKEY];
-            } else if ([key isEqualToString:kTKPDSEARCH_APIMAXPRICEKEY]) {
-                [parameters setValue:[[parameter componentsSeparatedByString:@"="] objectAtIndex:1] forKey:kTKPDSEARCH_APIMAXPRICEKEY];
-            } else if ([key isEqualToString:kTKPDSEARCH_APIOBKEY]) {
-                [parameters setValue:[[parameter componentsSeparatedByString:@"="] objectAtIndex:1] forKey:kTKPDSEARCH_APIOBKEY];
-            } else if ([key isEqualToString:kTKPDSEARCH_APILOCATIONIDKEY]) {
-                [parameters setValue:[[parameter componentsSeparatedByString:@"="] objectAtIndex:1] forKey:kTKPDSEARCH_APILOCATIONIDKEY];
-            } else if ([key isEqualToString:kTKPDSEARCH_APIGOLDMERCHANTKEY]) {
-                [parameters setValue:[[parameter componentsSeparatedByString:@"="] objectAtIndex:1] forKey:kTKPDSEARCH_APIGOLDMERCHANTKEY];
-            }
-        }
-        [parameters setValue:@"search_product" forKey:kTKPDSEARCH_DATATYPE];
-        
-        SearchResultViewController *controller = [SearchResultViewController new];
-        controller.data = parameters;
-        controller.title = hotlist.title;
-        controller.hidesBottomBarWhenPushed = YES;
-        
-        [self.navigationController pushViewController:controller animated:YES];
-        
-    } else if ([hotlist.url rangeOfString:@"/catalog/"].length) {
-        
-        NSString *catalogID = [[hotlist.url componentsSeparatedByString:@"/"] objectAtIndex:4];
-        CatalogViewController *controller = [CatalogViewController new];
-        controller.catalogID = catalogID;
-        controller.catalogName = hotlist.title;
-        controller.catalogImage = hotlist.image_url_600;
-        controller.catalogPrice = hotlist.price_start;
-        controller.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:controller animated:YES];
-        
-    }
+    [self requestHotlist];
 }
 
 #pragma mark - Notification Action

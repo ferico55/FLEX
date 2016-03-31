@@ -13,7 +13,7 @@
 @class Breadcrumb;
 @class DepartmentTree;
 
-@interface SearchAWSResult : NSObject
+@interface SearchAWSResult : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *search_url;
 @property (nonatomic, strong) NSString *share_url;

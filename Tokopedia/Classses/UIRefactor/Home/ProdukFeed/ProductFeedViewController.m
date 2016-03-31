@@ -89,7 +89,8 @@ FavoriteShopRequestDelegate
     NoResultReusableView *_noResultView;
     ProductDataSource* _productDataSource;
     UIActivityIndicatorView *_loadingIndicator;
-    FavoritedShopResult *_favoritedShops;
+    NSString* _favoritedShopString;
+    //FavoritedShopResult *_favoritedShops;
 }
 
 #pragma mark - Initialization
@@ -122,10 +123,6 @@ FavoriteShopRequestDelegate
     //todo with variable
     _promo = [NSMutableArray new];
     _promoScrollPosition = [NSMutableArray new];
-    
-    _favoritedShops = [[FavoritedShopResult alloc] init];
-    
-
     _collectionView.delegate = self;
 
     
@@ -400,7 +397,7 @@ FavoriteShopRequestDelegate
     
     if (scrolledToBottomWithBuffer(scrollView.contentOffset, scrollView.contentSize, scrollView.contentInset, scrollView.bounds)) {
         [_collectionViewFlowLayout setFooterReferenceSize:CGSizeMake([UIScreen mainScreen].bounds.size.width, 45)];
-        [_favoriteShopRequest requestProductFeedWithFavoriteShopList:_favoritedShops withPage:_page];
+        [_favoriteShopRequest requestProductFeedWithFavoriteShopString:_favoritedShopString withPage:_page];
     }
 }
 
@@ -414,11 +411,10 @@ static BOOL scrolledToBottomWithBuffer(CGPoint contentOffset, CGSize contentSize
 
 #pragma mark - Favorite Shop Request delegate
 
--(void) didReceiveFavoriteShopListing:(FavoritedShopResult *)favoriteShops{
-    _favoritedShops = favoriteShops;
-    _isFailRequest = NO;
-    if(_favoritedShops.list.count > 0){
-        [_favoriteShopRequest requestProductFeedWithFavoriteShopList:_favoritedShops withPage:_page];
+-(void)didReceiveAllFavoriteShopString:(NSString *)favoriteShops{
+    if(favoriteShops && [favoriteShops length] > 0){
+        _favoritedShopString = favoriteShops;
+        [_favoriteShopRequest requestProductFeedWithFavoriteShopString:favoriteShops withPage:_page];
     }else{
         [_loadingIndicator stopAnimating];
         [_refreshControl endRefreshing];
@@ -429,6 +425,7 @@ static BOOL scrolledToBottomWithBuffer(CGPoint contentOffset, CGSize contentSize
         [_collectionView layoutIfNeeded];
         [_collectionView reloadData];
         _isRequestingProductFeed = NO;
+
     }
 }
 
@@ -438,7 +435,7 @@ static BOOL scrolledToBottomWithBuffer(CGPoint contentOffset, CGSize contentSize
     [_refreshControl setHidden:YES];
     _isFailRequest = NO;
     
-    if (_favoritedShops.list.count > 0 && feed.result.products.count > 0) {
+    if (_favoritedShopString && [_favoritedShopString length] > 0 && feed.result.products.count > 0) {
         if (_page == 0) {
             [_productDataSource replaceProductsWith: feed.result.products];
         }else{
