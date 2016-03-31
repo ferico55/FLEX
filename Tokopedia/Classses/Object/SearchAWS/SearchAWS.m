@@ -12,11 +12,13 @@
 @implementation SearchAWS
 
 + (RKObjectMapping *)mapping {
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:self];
-    [statusMapping addAttributeMappingsFromDictionary:@{@"status":@"status"}];
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"result" toKeyPath:@"result" withMapping:[SearchAWSResult mapping]]];
+    RKObjectMapping* mapping = [RKObjectMapping mappingForClass:self];
     
-    return statusMapping;
+    [mapping addAttributeMappingsFromDictionary:@{@"status" : @"status"}];
+    
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"result" toKeyPath:@"result" withMapping:[SearchAWSResult mapping]]];
+    
+    return mapping;
 }
 
 @end

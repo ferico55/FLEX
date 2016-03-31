@@ -7,10 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "TKPObjectMapping.h"
 #define CDepartmentID @"department_id"
 #define CDepartmentName @"department_name"
 
-@interface Breadcrumb : NSObject
+@interface Breadcrumb : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *department_name;
 @property (nonatomic, strong) NSString *department_id;

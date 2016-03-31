@@ -8,6 +8,8 @@
 
 #import "SearchAWSResult.h"
 #import "SearchAWSProduct.h"
+#import "Hashtags.h"
+#import "Breadcrumb.h"
 #import "Paging.h"
 #import "CategoryDetail.h"
 
@@ -23,6 +25,9 @@
     
     RKRelationshipMapping *listProductsRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"products" toKeyPath:@"products" withMapping:[SearchAWSProduct mapping]];
     [resultMapping addPropertyMapping:listProductsRel];
+
+	RKRelationshipMapping *hashtagRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"hashtag" toKeyPath:@"hashtag" withMapping:[Hashtags mapping]];
+    [resultMapping addPropertyMapping:hashtagRel];
     
     RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"paging" toKeyPath:@"paging" withMapping:[Paging mapping]];
     [resultMapping addPropertyMapping:pageRel];
