@@ -203,6 +203,7 @@
                             kTKPHOME_DATAHEADERIMAGEKEY : cell.productimageview,
                             kTKPDHOME_APIURLKEY         : hotlist.url,
                             kTKPDHOME_APITITLEKEY       : hotlist.title,
+                            @"hotlist_id"               : hotlist.hotlist_id
                             };
         controller.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:controller animated:YES];
