@@ -583,34 +583,55 @@
 
 #pragma mark - Request Delivery Finish Order
 -(void)doRequestFinishOrder:(TxOrderStatusList*)order{
-    
-    [_objectsConfirmRequest addObject:order];
+    if ([_action isEqualToString:@"get_tx_order_deliver"]) {
+        [self confirmDeliveryOrderDeliver:order];
+    } else {
+        [self confirmDeliveryOrderStatus:order];
+    }
+}
 
-    [RequestOrderAction fetchConfirmDeliveryOrder:order action:_action success:^(TxOrderStatusList *order, TransactionActionResult* data) {
+-(void)confirmDeliveryOrderStatus:(TxOrderStatusList*)order{
+    [RequestOrderAction fetchConfirmDeliveryOrderStatus:order success:^(TxOrderStatusList *order, TransactionActionResult* data) {
         if (data.ld.url) {
             _requestLD = [RequestLDExtension new];
             _requestLD.luckyDeal = data.ld;
             _requestLD.delegate = self;
             [_requestLD doRequestMemberExtendURLString:data.ld.url];
+        } else {
+            UIAlertView *alertSuccess = [[UIAlertView alloc]initWithTitle:nil message:@"Transaksi Anda sudah selesai! Silakan berikan Rating & Review sesuai tingkat kepuasan Anda atas pelayanan toko. Terima kasih sudah berbelanja di Tokopedia!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alertSuccess show];
+            alertSuccess.tag = TAG_ALERT_SUCCESS_DELIVERY_CONFIRM;
+            [[NSNotificationCenter defaultCenter]postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil];
         }
-        [self failedConfirmDelivery:order];
     } failure:^(NSError *error, TxOrderStatusList* order) {
-        [self actionAfterConfirmOrder:order];
         [self failedConfirmDelivery:order];
     }];
 }
 
--(void)actionAfterConfirmOrder:(TxOrderStatusList*)order{
-    [_act stopAnimating];
-    [_objectsConfirmRequest removeObject:order];
-    [self requestProcessFinishOrder];
+-(void)confirmDeliveryOrderDeliver:(TxOrderStatusList*)order{
+    [RequestOrderAction fetchConfirmDeliveryOrderDeliver:order success:^(TxOrderStatusList *order, TransactionActionResult* data) {
+        if (data.ld.url) {
+            _requestLD = [RequestLDExtension new];
+            _requestLD.luckyDeal = data.ld;
+            _requestLD.delegate = self;
+            [_requestLD doRequestMemberExtendURLString:data.ld.url];
+        } else {
+            UIAlertView *alertSuccess = [[UIAlertView alloc]initWithTitle:nil message:@"Transaksi Anda sudah selesai! Silakan berikan Rating & Review sesuai tingkat kepuasan Anda atas pelayanan toko. Terima kasih sudah berbelanja di Tokopedia!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alertSuccess show];
+            alertSuccess.tag = TAG_ALERT_SUCCESS_DELIVERY_CONFIRM;
+            [[NSNotificationCenter defaultCenter]postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil];
+        }
+    } failure:^(NSError *error, TxOrderStatusList* order) {
+        [self failedConfirmDelivery:order];
+    }];
 }
 
--(void)requestProcessFinishOrder
-{
-    if ([_objectsConfirmRequest count]>0) {
-        [self doRequestFinishOrder:[_objectsConfirmRequest firstObject]];
-    }
+
+-(void)finishRequestLD{
+    UIAlertView *alertSuccess = [[UIAlertView alloc]initWithTitle:nil message:@"Transaksi Anda sudah selesai! Silakan berikan Rating & Review sesuai tingkat kepuasan Anda atas pelayanan toko. Terima kasih sudah berbelanja di Tokopedia!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [alertSuccess show];
+    alertSuccess.tag = TAG_ALERT_SUCCESS_DELIVERY_CONFIRM;
+    [[NSNotificationCenter defaultCenter]postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil];
 }
 
 #pragma mark - Request ReOrder

@@ -19,10 +19,13 @@
 
 @interface RequestOrderAction : NSObject
 
-+(void)fetchConfirmDeliveryOrder:(TxOrderStatusList*)order
-                          action:(NSString*)action
++(void)fetchConfirmDeliveryOrderStatus:(TxOrderStatusList*)order
                          success:(void (^)(TxOrderStatusList *order, TransactionActionResult* data))success
                          failure:(void (^)(NSError *error, TxOrderStatusList *order))failure;
+
++(void)fetchConfirmDeliveryOrderDeliver:(TxOrderStatusList*)order
+                                success:(void (^)(TxOrderStatusList *order, TransactionActionResult* data))success
+                                failure:(void (^)(NSError *error, TxOrderStatusList *order))failure;
 
 +(void)fetchReorder:(TxOrderStatusList*)order
             success:(void (^)(TxOrderStatusList *order, TransactionActionResult* data))success

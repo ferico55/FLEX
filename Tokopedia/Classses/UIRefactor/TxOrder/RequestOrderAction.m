@@ -20,26 +20,24 @@ static failedCompletionBlock failedUploadProof;
 
 @implementation RequestOrderAction
 
-+(void)fetchConfirmDeliveryOrder:(TxOrderStatusList*)order
-                          action:(NSString*)action
++(void)fetchConfirmDeliveryOrderStatus:(TxOrderStatusList*)order
                          success:(void (^)(TxOrderStatusList *order, TransactionActionResult* data))success
                          failure:(void (^)(NSError *error, TxOrderStatusList *order))failure{
-    
-    NSString *actionConfirm = @"delivery_finish_order";
-    if ([action isEqualToString:@"get_tx_order_deliver"]) {
-        action = @"delivery_confirm";
-    }
-    
-    NSDictionary* param = @{@"action"   : actionConfirm,
-                            @"order_id" : order.order_detail.detail_order_id};
+
+    NSDictionary* param = @{@"order_id" : order.order_detail.detail_order_id};
     
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
-    
-    [networkManager requestWithBaseUrl:kTkpdBaseURLString path:@"action/tx-order.pl" method:RKRequestMethodPOST parameter:param mapping:[TransactionAction mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+    networkManager.isUsingHmac = YES;
+    [networkManager requestWithBaseUrl:[NSString v4Url]
+                                  path:@"/v4/action/tx-order/delivery_finish_order.pl"
+                                method:RKRequestMethodGET
+                             parameter:param
+                               mapping:[TransactionAction mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
         
         TransactionAction *response = [successResult.dictionary objectForKey:@""];
         
-        if (response.result.is_success == 1) {
+        if (response.data.is_success == 1) {
             success(order,response.result);
         }
         else{
@@ -51,6 +49,37 @@ static failedCompletionBlock failedUploadProof;
         failure(errorResult, order);
     }];
 }
+
++(void)fetchConfirmDeliveryOrderDeliver:(TxOrderStatusList*)order
+                               success:(void (^)(TxOrderStatusList *order, TransactionActionResult* data))success
+                               failure:(void (^)(NSError *error, TxOrderStatusList *order))failure {
+    
+    NSDictionary* param = @{@"order_id" : order.order_detail.detail_order_id};
+    
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    networkManager.isUsingHmac = YES;
+    [networkManager requestWithBaseUrl:[NSString v4Url]
+                                  path:@"/v4/action/tx-order/delivery_confirm.pl"
+                                method:RKRequestMethodGET
+                             parameter:param
+                               mapping:[TransactionAction mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                 
+                                 TransactionAction *response = [successResult.dictionary objectForKey:@""];
+                                 
+                                 if (response.data.is_success == 1) {
+                                     success(order,response.result);
+                                 }
+                                 else{
+                                     [StickyAlertView showErrorMessage:response.message_error?:@[@"Permintaan anda gagal. Mohon coba kembali"]];
+                                     failure(nil, order);
+                                 }
+                                 
+                             } onFailure:^(NSError *errorResult) {
+                                 failure(errorResult, order);
+                             }];
+}
+
 
 +(void)fetchReorder:(TxOrderStatusList*)order
             success:(void (^)(TxOrderStatusList *order, TransactionActionResult* data))success
