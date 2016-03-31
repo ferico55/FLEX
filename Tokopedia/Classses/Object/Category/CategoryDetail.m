@@ -60,4 +60,30 @@
     }
 }
 
++ (RKObjectMapping*) mapping {
+    NSDictionary* categoryAttributeMappings = @{
+                                                @"d_id" : @"categoryId",
+                                                @"title" : @"name",
+                                                @"tree" : @"tree",
+                                                @"href" : @"url",
+                                                };
+    RKObjectMapping *categoryMapping = [RKObjectMapping mappingForClass:self];
+    [categoryMapping addAttributeMappingsFromDictionary:categoryAttributeMappings];
+    
+    RKObjectMapping *childCategoryMapping = [RKObjectMapping mappingForClass:self];
+    [childCategoryMapping addAttributeMappingsFromDictionary:categoryAttributeMappings];
+    
+    RKObjectMapping *lastCategoryMapping = [RKObjectMapping mappingForClass:self];
+    [lastCategoryMapping addAttributeMappingsFromDictionary:categoryAttributeMappings];
+    
+    RKRelationshipMapping *childCategoryRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"child" toKeyPath:@"child" withMapping:childCategoryMapping];
+    [categoryMapping addPropertyMapping:childCategoryRelationship];
+    
+    RKRelationshipMapping *lastCategoryRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"child" toKeyPath:@"child" withMapping:lastCategoryMapping];
+    [childCategoryMapping addPropertyMapping:lastCategoryRelationship];
+    
+    
+    return categoryMapping;
+}
+
 @end

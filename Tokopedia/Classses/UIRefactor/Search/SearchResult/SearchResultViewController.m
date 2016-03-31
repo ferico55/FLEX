@@ -29,7 +29,7 @@
 #import "SortViewController.h"
 #import "FilterViewController.h"
 #import "HotlistResultViewController.h"
-#import "TKPDTabNavigationController.h"
+
 #import "TokopediaNetworkManager.h"
 #import "LoadingView.h"
 
@@ -75,19 +75,11 @@ static NSString *const startPerPage = @"12";
 
 @interface SearchResultViewController ()
 <
-UITableViewDataSource,
-UITableViewDelegate,
 UICollectionViewDataSource,
 UICollectionViewDelegate,
 UICollectionViewDelegateFlowLayout,
-GeneralProductCellDelegate,
-TKPDTabNavigationControllerDelegate,
 SortViewControllerDelegate,
 FilterViewControllerDelegate,
-GeneralPhotoProductDelegate,
-GeneralSingleProductDelegate,
-TokopediaNetworkManagerDelegate,
-LoadingViewDelegate,
 PromoRequestDelegate,
 PromoCollectionViewDelegate,
 NoResultDelegate,
@@ -127,13 +119,9 @@ ImageSearchRequestDelegate
     NSInteger _start;
     NSInteger _limit;
     
-    BOOL _isNeedToRemoveAllObject;
-    
     NSMutableDictionary *_params;
     NSString *_urinext;
     
-    BOOL _isnodata;
-    BOOL _isrefreshview;
     
     UIRefreshControl *_refreshControl;
     SearchAWS *_searchObject;
@@ -163,8 +151,7 @@ ImageSearchRequestDelegate
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        _isrefreshview = NO;
-        _isnodata = YES;
+
     }
     return self;
 }
@@ -180,22 +167,10 @@ ImageSearchRequestDelegate
 }
 
 #pragma mark - Life Cycle
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-    [_networkManager requestCancel];
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                                   style:UIBarButtonItemStylePlain
-                                                                  target:self
-                                                                  action:nil];
-    self.navigationItem.backBarButtonItem = backButton;
-    
     _userManager = [UserAuthentificationManager new];
-    _isNeedToRemoveAllObject = YES;
     
     _product = [NSMutableArray new];
     _promo = [NSMutableArray new];
@@ -303,24 +278,23 @@ ImageSearchRequestDelegate
     [self requestPromo];
     self.scrollDirection = ScrollDirectionDown;
     
-    _imageSearchRequest = [[ImageSearchRequest alloc]init];
-    _imageSearchRequest.delegate = self;
-    _imageSearchRequest.view = self.view;
-    
-    
     _networkManager = [TokopediaNetworkManager new];
-    _networkManager.delegate = self;
-    _networkManager.isParameterNotEncrypted = YES;
     _networkManager.isUsingHmac = YES;
     
+    
     if(_isFromImageSearch){
+        _imageSearchRequest = [[ImageSearchRequest alloc]init];
+        _imageSearchRequest.delegate = self;
+        _imageSearchRequest.view = self.view;
+        
         [_imageSearchRequest requestSearchbyImage:_imageQueryInfo];
         [_fourButtonsToolbar setHidden:YES];
         [_threeButtonsToolbar setHidden:NO];
         [_fourButtonsToolbar setUserInteractionEnabled:NO];
         [_threeButtonsToolbar setUserInteractionEnabled:YES];
-    }else{
-        [_networkManager doRequest];
+    } else{
+        [self requestSearch];
+        
         [_fourButtonsToolbar setHidden:NO];
         [_threeButtonsToolbar setHidden:YES];
         [_fourButtonsToolbar setUserInteractionEnabled:YES];
@@ -414,7 +388,8 @@ ImageSearchRequestDelegate
     if (indexPath.section == section && indexPath.row == row) {
         if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0 && ![_urinext isEqualToString:@""]) {
             _isFailRequest = NO;
-            [_networkManager doRequest];
+
+            [self requestSearch];
         }
     }
     
@@ -509,19 +484,17 @@ ImageSearchRequestDelegate
 
 -(void)refreshView:(UIRefreshControl*)refresh {
     _start = 0;
-    _isrefreshview = YES;
-    _isNeedToRemoveAllObject = YES;
     _urinext = nil;
     
     [_refreshControl beginRefreshing];
     [_collectionView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
     
-    [_networkManager doRequest];
+    [self requestSearch];
     
     [_act startAnimating];
 }
 
--(IBAction)tap:(id)sender {
+-(IBAction)tap:(id)sender { 
     UIButton *button = (UIButton *)sender;
     switch (button.tag) {
         case 10:
@@ -618,14 +591,12 @@ ImageSearchRequestDelegate
 #pragma mark - Filter Delegate
 -(void)FilterViewController:(FilterViewController *)viewController withUserInfo:(NSDictionary *)userInfo {
     [_params addEntriesFromDictionary:userInfo];
-    _isNeedToRemoveAllObject = YES;
     [self refreshView:nil];
 }
 
 #pragma mark - Sort Delegate
 - (void)didSelectSort:(NSString *)sort atIndexPath:(NSIndexPath *)indexPath {
     [_params setObject:sort forKey:@"order_by"];
-    _isNeedToRemoveAllObject = YES;
     
     if([[_params objectForKey:@"order_by"] isEqualToString:@"99"]){
         [self restoreSimilarity];
@@ -653,23 +624,21 @@ ImageSearchRequestDelegate
 
 #pragma mark - Category notification
 - (void)changeCategory:(NSNotification *)notification {
-    //    [_product removeAllObjects];
     [_params setObject:[notification.userInfo objectForKey:@"department_id"] forKey:@"department_id"];
     [_params setObject:[_data objectForKey:@"search"]?:@"" forKey:@"search"];
     
-    _isNeedToRemoveAllObject = YES;
     [self refreshView:nil];
 }
 
 #pragma mark - LoadingView Delegate
 - (IBAction)pressRetryButton:(id)sender {
-    [_networkManager doRequest];
+    [self requestSearch];
     _isFailRequest = NO;
     [_collectionView reloadData];
 }
 
 #pragma mark - TokopediaNetworkManager Delegate
-- (NSDictionary*)getParameter:(int)tag {
+- (NSDictionary*)getParameter {
     NSMutableDictionary *parameter = [[NSMutableDictionary alloc]init];
     [parameter setObject:@"ios" forKey:@"device"];
     [parameter setObject:[_params objectForKey:@"department_id"]?:@"" forKey:@"sc"];
@@ -709,151 +678,27 @@ ImageSearchRequestDelegate
     return strResult;
 }
 
-- (NSString*)getPath:(int)tag{
-    NSString *pathUrl;
-    if (_isFromImageSearch && ![self isUsingAnyFilterExceptCategory] && !([_params objectForKey:@"order_by"])) {
-        pathUrl = @"/v4/search/snapsearch.pl";
-    } else if([[_data objectForKey:@"type"] isEqualToString:@"search_catalog"]) {
-        pathUrl = @"search/v1/catalog";
-    } else if([[_data objectForKey:@"type"] isEqualToString:@"search_shop"]) {
-        pathUrl = @"search/v1/shop";
-    } else {
-        pathUrl = @"search/v1/product";
-    }
-    return pathUrl;
+
+#pragma mark - requestWithBaseUrl
+- (void)requestSearch {
+    [_networkManager requestWithBaseUrl:@"https://ace.tokopedia.com"
+                                   path:[[self pathUrls] objectForKey:[_data objectForKey:@"type"]]
+                                 method:RKRequestMethodGET
+                              parameter:[self getParameter]
+                                mapping:[SearchAWS mapping]
+                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                  [self reloadView];
+                                  [self searchMappingResult:successResult];
+                              } onFailure:nil];
 }
 
-- (id)getObjectManager:(int)tag {
-    if (_isFromImageSearch && ![self isUsingAnyFilterExceptCategory] && ![_params objectForKey:@"order_by"]) {
-        _objectmanager = [RKObjectManager sharedClientHttps];
-        [_objectmanager addResponseDescriptor:[self imageSearchResponseDescriptor]];
-    } else {
-        _objectmanager = [RKObjectManager sharedClient:@"https://ace.tokopedia.com/"];
-        [_objectmanager addResponseDescriptor:[self searchResponseDescriptor]];
-    }
-    return _objectmanager;
-}
-
-- (RKResponseDescriptor *)imageSearchResponseDescriptor {
-    RKObjectMapping *responseMapping = [RKObjectMapping mappingForClass:[ImageSearchResponse class]];
-    [responseMapping addAttributeMappingsFromArray:@[@"status", @"config"]];
-    
-    RKObjectMapping *dataMapping = [RKObjectMapping mappingForClass:[ImageSearchResponseData class]];
-
-    RKObjectMapping *productMapping = [RKObjectMapping mappingForClass:[SearchAWSProduct class]];
-    [productMapping addAttributeMappingsFromArray:@[@"shop_lucky",
-                                                    @"shop_id",
-                                                    @"shop_gold_status",
-                                                    @"shop_url",
-                                                    @"is_owner",
-                                                    @"rate",
-                                                    @"product_id",
-                                                    @"product_image_full",
-                                                    @"product_talk_count",
-                                                    @"product_image",
-                                                    @"product_price",
-                                                    @"product_sold_count",
-                                                    @"shop_location",
-                                                    @"product_wholesale",
-                                                    @"shop_name",
-                                                    @"product_review_count",
-                                                    @"similarity_rank",
-                                                    @"condition",
-                                                    @"product_name",
-                                                    @"product_url"]];
-
-    [responseMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data" toKeyPath:@"data" withMapping:dataMapping]];
-    
-    [dataMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"similar_prods" toKeyPath:@"similar_prods" withMapping:productMapping]];
-    
-    RKResponseDescriptor *descriptor = [RKResponseDescriptor responseDescriptorWithMapping:responseMapping method:RKRequestMethodGET pathPattern:@"/v4/search/snapsearch.pl" keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    return descriptor;
-}
-
-- (RKResponseDescriptor *)searchResponseDescriptor {
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[SearchAWS class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY
-                                                        }];
-    
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[SearchAWSResult class]];
-    
-    [resultMapping addAttributeMappingsFromDictionary:@{kTKPDSEARCH_APIHASCATALOGKEY:kTKPDSEARCH_APIHASCATALOGKEY,
-                                                        kTKPDSEARCH_APISEARCH_URLKEY:kTKPDSEARCH_APISEARCH_URLKEY,
-                                                        @"st":@"st",@"redirect_url" : @"redirect_url", @"department_id" : @"department_id", @"share_url" : @"share_url"
-                                                        }];
-    
-    RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[SearchAWSProduct class]];
-    //product
-    [listMapping addAttributeMappingsFromArray:@[@"product_image", @"product_image_full", @"product_price", @"product_name", @"product_shop", @"product_id", @"product_review_count", @"product_talk_count", @"shop_gold_status", @"shop_name", @"is_owner",@"shop_location", @"shop_lucky" ]];
-    //catalog
-    [listMapping addAttributeMappingsFromArray:@[@"catalog_id", @"catalog_name", @"catalog_price", @"catalog_uri", @"catalog_image", @"catalog_image_300", @"catalog_description", @"catalog_count_product"]];
-    
-    // paging mapping
-    RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
-    [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDSEARCH_APIURINEXTKEY:kTKPDSEARCH_APIURINEXTKEY}];
-    
-    //add list relationship
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    
-    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:([[_data objectForKey:@"type"] isEqualToString:@"search_product"])?@"products":@"catalogs" toKeyPath:([[_data objectForKey:@"type"] isEqualToString:@"search_product"])?@"products":@"catalogs" withMapping:listMapping];
-    [resultMapping addPropertyMapping:listRel];
-    
-    // add page relationship
-    RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDSEARCH_APIPAGINGKEY toKeyPath:kTKPDSEARCH_APIPAGINGKEY withMapping:pagingMapping];
-    [resultMapping addPropertyMapping:pageRel];
-    
-    NSDictionary *categoryAttributeMappings = @{
-        @"d_id" : @"categoryId",
-        @"title" : @"name",
-        @"tree" : @"tree",
-        @"href" : @"url",
-    };
-
-    RKObjectMapping *categoryMapping = [RKObjectMapping mappingForClass:[CategoryDetail class]];
-    [categoryMapping addAttributeMappingsFromDictionary:categoryAttributeMappings];
-
-    RKObjectMapping *childCategoryMapping = [RKObjectMapping mappingForClass:[CategoryDetail class]];
-    [childCategoryMapping addAttributeMappingsFromDictionary:categoryAttributeMappings];
-
-    RKObjectMapping *lastCategoryMapping = [RKObjectMapping mappingForClass:[CategoryDetail class]];
-    [lastCategoryMapping addAttributeMappingsFromDictionary:categoryAttributeMappings];
-
-    // Adjust Relationship
-    RKRelationshipMapping *categoryRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"breadcrumb" toKeyPath:@"breadcrumb" withMapping:categoryMapping];
-    [resultMapping addPropertyMapping:categoryRelationship];
-
-    RKRelationshipMapping *childCategoryRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"child" toKeyPath:@"child" withMapping:childCategoryMapping];
-    [categoryMapping addPropertyMapping:childCategoryRelationship];
-
-    RKRelationshipMapping *lastCategoryRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"child" toKeyPath:@"child" withMapping:lastCategoryMapping];
-    [childCategoryMapping addPropertyMapping:lastCategoryRelationship];
-
-    // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                            method:[self didReceiveRequestMethod:nil]
-                                                                                       pathPattern:[_searchPostUrl isEqualToString:@""] ? [self getPath:nil] : _searchPostUrl
-                                                                                           keyPath:@""
-                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    return responseDescriptor;
-}
-
-- (NSString*)getRequestStatus:(id)result withTag:(int)tag {
-    NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
-    id stat = [resultDict objectForKey:@""];
-    
-    return ((SearchItem *) stat).status;
-}
-
-- (int)getRequestMethod:(int)tag {
-    return RKRequestMethodGET;
-}
-
-- (void)actionBeforeRequest:(int)tag {
-    
+- (NSDictionary*)pathUrls {
+    NSDictionary *pathDictionary = @{
+                                     @"search_catalog" : @"/search/v1/catalog",
+                                     @"search_shop" : @"/search/v1/shop",
+                                     @"search_product" : @"/search/v1/product"
+                                     };
+    return pathDictionary;
 }
 
 - (void)backupSimilarity{
@@ -873,22 +718,16 @@ ImageSearchRequestDelegate
     }
 }
 
-- (void)actionAfterRequest:(RKMappingResult *)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag {
+- (void)reloadView {
     [_noResultView removeFromSuperview];
     [_firstFooter removeFromSuperview];
     
-    if(_isNeedToRemoveAllObject) {
+    if(_start == 0) {
         [_product removeAllObjects];
         [_promo removeAllObjects];
-        _isNeedToRemoveAllObject = NO;
-    }
-    
-    if (_isFromImageSearch && ![self isUsingAnyFilterExceptCategory] && ![_params objectForKey:@"order_by"]) {
-        [self imageSearchMappingResult:successResult];
-    } else {
-        [self searchMappingResult:successResult];
     }
 }
+
 
 - (void)imageSearchMappingResult:(RKMappingResult *)mappingResult {
     ImageSearchResponse *search = [mappingResult.dictionary objectForKey:@""];
@@ -900,7 +739,6 @@ ImageSearchRequestDelegate
         
         _strImageSearchResult = [self generateProductIdString];
         allProductsCount = [[_product firstObject] count];
-        _isnodata = NO;
         _start = [[self splitUriToPage:_urinext] integerValue];
         if([_urinext isEqualToString:@""]) {
             [_flowLayout setFooterReferenceSize:CGSizeZero];
@@ -942,14 +780,7 @@ ImageSearchRequestDelegate
     SearchAWS *search = [mappingResult.dictionary objectForKey:@""];
     _searchObject = search;
     
-    [_noResultView removeFromSuperview];
-    [_firstFooter removeFromSuperview];
-    
-    if(_isNeedToRemoveAllObject) {
-        [_product removeAllObjects];
-        [_promo removeAllObjects];
-        _isNeedToRemoveAllObject = NO;
-    }
+    [self reloadView];
     
     if ([_delegate respondsToSelector:@selector(updateCategories:)]) {
         [_delegate updateCategories:search.result.breadcrumb];
@@ -1007,7 +838,6 @@ ImageSearchRequestDelegate
         }
         
         if (search.result.products.count > 0 || search.result.catalogs.count > 0) {
-            _isnodata = NO;
             _urinext =  search.result.paging.uri_next;
             _start = [[self splitUriToPage:_urinext] integerValue];
             if([_urinext isEqualToString:@""]) {
@@ -1153,18 +983,6 @@ ImageSearchRequestDelegate
     return [queries objectForKey:@"start"];
 }
 
-- (void)actionAfterFailRequestMaxTries:(int)tag {
-    _isrefreshview = NO;
-    _isFailRequest = YES;
-    [_collectionView reloadData];
-    [_collectionView layoutIfNeeded];
-    [_refreshControl endRefreshing];
-}
-
-- (int)didReceiveRequestMethod:(int)tag {
-    return RKRequestMethodGET;
-}
-
 #pragma mark - No Result Delegate
 
 - (void) buttonDidTapped:(id)sender{
@@ -1179,7 +997,8 @@ ImageSearchRequestDelegate
     _data = newData;
     self.title = _suggestion;
     
-    [_networkManager doRequest];
+//    [_networkManager doRequest];
+    [self requestSearch];
 }
 
 #pragma mark - Other Method
@@ -1273,8 +1092,7 @@ ImageSearchRequestDelegate
 
 #pragma mark - Scroll delegate
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     if (self.lastContentOffset > scrollView.contentOffset.y) {
         self.scrollDirection = ScrollDirectionUp;
     } else if (self.lastContentOffset < scrollView.contentOffset.y) {
@@ -1303,7 +1121,16 @@ ImageSearchRequestDelegate
 #pragma mark - ImageSearchRequest Delegate
 -(void)didReceiveUploadedImageURL:(NSString *)imageURL{
     _image_url = imageURL;
-    [_networkManager doRequest];
+
+    [_networkManager requestWithBaseUrl:@"https://ws.tokopedia.com"
+                                   path:@"/v4/search/snapsearch.pl"
+                                 method:RKRequestMethodGET
+                              parameter:[self getParameter]
+                                mapping:[ImageSearchResponse mapping]
+                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                  [self reloadView];
+                                  [self imageSearchMappingResult:successResult];
+                              } onFailure:nil];
 }
 
 - (void)orientationChanged:(NSNotification*)note {

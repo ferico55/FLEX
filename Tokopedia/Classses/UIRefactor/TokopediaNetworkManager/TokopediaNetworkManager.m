@@ -412,6 +412,7 @@
         errors = @[@"Terjadi kendala pada koneksi internet"];
     } else {
         errors = @[error.localizedDescription];
+        return;
     }
     
     
