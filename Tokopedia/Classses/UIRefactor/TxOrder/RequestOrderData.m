@@ -13,7 +13,7 @@
 
 @implementation RequestOrderData
 
-+(void)fetchOrderStatusListPage:(NSInteger)page
++(void)fetchListOrderStatusPage:(NSInteger)page
                         success:(void (^)(NSArray *list, NSInteger nextPage, NSString* uriNext))success
                         failure:(void (^)(NSError *error))failure {
     
@@ -47,7 +47,7 @@
                              }];
 }
 
-+(void)fetchOrderDeliverListPage:(NSInteger)page
++(void)fetchListOrderDeliverPage:(NSInteger)page
                         success:(void (^)(NSArray *list, NSInteger nextPage, NSString* uriNext))success
                         failure:(void (^)(NSError *error))failure {
     
@@ -81,7 +81,7 @@
                              }];
 }
 
-+(void)fetchTransactionListPage:(NSInteger)page
++(void)fetchListTransactionPage:(NSInteger)page
                     invoice:(NSString*)invoice
                   startDate:(NSString*)startDate
                     endDate:(NSString*)endDate

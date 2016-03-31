@@ -53,4 +53,8 @@
                      success:(void (^)(TransactionActionResult *data))success
                      failure:(void (^)(NSError *error))failure;
 
++(void)fetchCancelConfirmationID:(NSString*)confirmationID
+                             Success:(void (^)(TransactionAction *data))success
+                             failure:(void (^)(NSError *error))failure;
+
 @end

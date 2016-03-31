@@ -61,7 +61,12 @@ static failedCompletionBlock failedUploadProof;
     
     TokopediaNetworkManager *network = [TokopediaNetworkManager new];
     
-    [network requestWithBaseUrl:kTkpdBaseURLString path:@"action/tx-order.pl" method:RKRequestMethodPOST parameter:param mapping:[TransactionAction mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+    [network requestWithBaseUrl:kTkpdBaseURLString
+                           path:@"action/tx-order.pl"
+                         method:RKRequestMethodPOST
+                      parameter:param
+                        mapping:[TransactionAction mapping]
+                      onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
         
         TransactionAction *response = [successResult.dictionary objectForKey:@""];
         
@@ -333,6 +338,42 @@ static failedCompletionBlock failedUploadProof;
                                      }];
         }];
     }
+}
+
++(void)fetchCancelConfirmationID:(NSString*)confirmationID
+                             Success:(void (^)(TransactionAction *data))success
+                             failure:(void (^)(NSError *error))failure {
+    
+    
+    NSDictionary* param = @{
+                            @"confirmation_id":confirmationID
+                            };
+    
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    networkManager.isUsingHmac = YES;
+    [networkManager requestWithBaseUrl:[NSString v4Url]
+                                  path:@"/v4/action/tx-order/cancel_payment.pl"
+                                method:RKRequestMethodGET
+                             parameter:param
+                               mapping:[TransactionAction mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                 
+                                 TransactionAction *response = [successResult.dictionary objectForKey:@""];
+                                 
+                                 if(response.data.is_success == 1)
+                                 {
+                                     NSArray *array = response.message_status?:[[NSArray alloc] initWithObjects:@"Anda telah berhasil membatalkan konfirmasi pembayaran", nil];
+                                     [StickyAlertView showSuccessMessage:array];
+                                     success(response);
+                                 } else {
+                                     NSArray *array = response.message_error?:@[@"Permintaan Anda gagal. Cobalah beberapa saat lagi."];
+                                     [StickyAlertView showErrorMessage:array];
+                                     failure(nil);
+                                 }
+                                 
+                             } onFailure:^(NSError *errorResult) {
+                                 failure(errorResult);
+                             }];
 }
 
 @end
