@@ -295,6 +295,9 @@
                                                          }else{
                                                              [_noResultView removeFromSuperview];
                                                          }
+                                                         [_refreshControl endRefreshing];
+                                                         [_refreshControl setHidden:YES];
+                                                         [_refreshControl setEnabled:NO];
                                                      }
                                                      onFailure:^(NSError *error) {
                                                          [_act stopAnimating];

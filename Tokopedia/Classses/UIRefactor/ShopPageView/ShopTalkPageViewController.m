@@ -307,6 +307,9 @@ NoResultDelegate>
                                                             _act.hidden = YES;
                                                             _table.tableFooterView = _noResultView;
                                                         }
+                                                        [_refreshControl endRefreshing];
+                                                        [_refreshControl setHidden:YES];
+                                                        [_refreshControl setEnabled:NO];
                                                     } onFailure:^(NSError *error) {
                                                         [_act stopAnimating];
                                                         self.table.tableFooterView = nil;
