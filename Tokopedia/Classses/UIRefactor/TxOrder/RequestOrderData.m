@@ -260,7 +260,7 @@
                              }];
 }
 
-+(void)fetchDataEditConfirmationID:(NSString*)confirmationID
++(void) fetchDataEditConfirmationID:(NSString*)confirmationID
                               success:(void (^)(TxOrderPaymentEditForm *data))success
                               failure:(void (^)(NSError *error))failure {
     

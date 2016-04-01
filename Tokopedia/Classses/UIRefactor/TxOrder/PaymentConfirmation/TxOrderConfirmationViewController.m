@@ -134,7 +134,11 @@
             if ([selectedOrder count]>0) {
                 TxOrderPaymentViewController *vc = [TxOrderPaymentViewController new];
                 vc.delegate = self;
-                vc.data = @{DATA_SELECTED_ORDER_KEY : [selectedOrder copy]};
+                NSMutableArray *confirmationIDs = [NSMutableArray new];
+                for (TxOrderConfirmationList *order in [selectedOrder copy]) {
+                    [confirmationIDs addObject:order.confirmation.confirmation_id];
+                }
+                vc.paymentID = confirmationIDs;
                 [self.navigationController pushViewController:vc animated:YES];
             }
             else{
@@ -276,12 +280,11 @@
     _confirmationButton.enabled = YES;
     if (!_isMultipleSelection) {
         TxOrderPaymentViewController *vc = [TxOrderPaymentViewController new];
-        vc.data = @{DATA_SELECTED_ORDER_KEY : @[_list[indexPath.row]]};
+        vc.paymentID = @[_list[indexPath.row].confirmation.confirmation_id]?:@[@""];
         vc.delegate  = self;
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
-
 
 #pragma mark - Alert Delegate
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -367,7 +370,6 @@
         NSDictionary *userInfo = @{DATA_PAYMENT_CONFIRMATION_COUNT_KEY:@(confirmationIDs.count)};
         
         [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil userInfo:userInfo];
-        [_delegate successCancelOrConfirmPayment];
         [self refreshRequest];
 
     } failure:^(NSError *error) {
@@ -434,7 +436,6 @@
 {
     [_list removeObjectsInArray:payment];
     [_tableView reloadData];
-    [_delegate successCancelOrConfirmPayment];
 }
 
 - (void)shouldPopViewController {

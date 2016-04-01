@@ -216,7 +216,8 @@
         UIBarButtonItem *button = (UIBarButtonItem*)sender;
         if (button.tag == TAG_BAR_BUTTON_TRANSACTION_DONE) {
             if ([self isValidInput]) {
-                [self doConfirmPayment];
+                if (_isConfirmed) [self doEditPayment];
+                else [self doConfirmPayment];
             }
         }
         else
@@ -598,14 +599,8 @@
 
 #pragma mark - Request Get Transaction Order Payment Confirmation
 -(void)doRequestGetDataConfirmation{
-    
-    NSArray *selectedOrders = [_data objectForKey:DATA_SELECTED_ORDER_KEY];
-    NSMutableArray *confirmationIDs = [NSMutableArray new];
-    for (TxOrderConfirmationList *order in selectedOrders) {
-        [confirmationIDs addObject:order.confirmation.confirmation_id];
-    }
-    
-    NSString * confirmationID = (_isConfirmed)?_paymentID:[[confirmationIDs valueForKey:@"description"] componentsJoinedByString:@"~"];
+
+    NSString * confirmationID = [[_paymentID valueForKey:@"description"] componentsJoinedByString:@"~"];
     
     if (_isConfirmed) {
         [self doRequestDataEditConfirmPaymentID:confirmationID];
@@ -650,10 +645,44 @@
 }
 
 #pragma mark - Request Confirm Payment
+-(void)doEditPayment{
+    [self showLoadingView];
+    
+    NSString * paymentID = [[_paymentID valueForKey:@"description"] componentsJoinedByString:@"~"];
+    MethodList *method = [_dataInput objectForKey:DATA_SELECTED_PAYMENT_METHOD_KEY];
+    SystemBankAcount *systemBank = [_dataInput objectForKey:DATA_SELECTED_SYSTEM_BANK_KEY];
+    BankAccountFormList *bank = [_dataInput objectForKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
+    NSDate *paymentDate = [_dataInput objectForKey:DATA_PAYMENT_DATE_KEY]?:[NSDate date];
+    NSString *totalPayment = [_totalPaymentTextField.text stringByReplacingOccurrencesOfString:@"." withString:@""];
+    NSString *bankAccountID = _isNewRekening?@"0":bank.bank_account_id?:@"";
+    
+    [RequestOrderAction fetchEditPaymentWithMethod:method
+                                              systemBankID:systemBank.sysbank_id?:@""
+                                               bankAccount:bank
+                                                 paymentID:paymentID?:@""
+                                               paymentDate:paymentDate
+                                              totalPayment:totalPayment
+                                                      note:_markTextView.text?:@""
+                                                  password:_passwordTextField.text?:@""
+                                           bankAccountName:_accountNameTextField.text?:@""
+                                         bankAccountBranch:_branchTextField.text?:@""
+                                         bankAccountNumber:_rekeningNumberTextField.text?:@""
+                                             bankAccountID:bankAccountID
+                                                 depositor:_depositorTextField.text?:@""
+                                                   success:^(TransactionAction *data) {
+                                                       
+                                                       [self actionAfterRequest];
+                                                       [self requestSuccessConfirmPayment:data];
+                                                       
+                                                   } failed:^(NSError *error) {
+                                                       [self actionAfterRequest];
+                                                   }];
+}
+
 -(void)doConfirmPayment{
     [self showLoadingView];
     
-    NSArray *selectedOrder = [_dataInput objectForKey:DATA_SELECTED_ORDER_KEY]?:@"";
+    NSString * paymentID = [[_paymentID valueForKey:@"description"] componentsJoinedByString:@"~"];
     MethodList *method = [_dataInput objectForKey:DATA_SELECTED_PAYMENT_METHOD_KEY];
     TxOrderConfirmPaymentFormForm *form = [_dataInput objectForKey:DATA_DETAIL_ORDER_CONFIRMATION_KEY];
     SystemBankAcount *systemBank = [_dataInput objectForKey:DATA_SELECTED_SYSTEM_BANK_KEY];
@@ -662,13 +691,12 @@
     NSString *totalPayment = [_totalPaymentTextField.text stringByReplacingOccurrencesOfString:@"." withString:@""];
     NSString *bankAccountID = _isNewRekening?@"0":bank.bank_account_id?:@"";
     
-    [RequestOrderAction fetchSubmitWithImageObject:[self getImageObject]
+    [RequestOrderAction fetchConfirmPaymentWithImageObject:[self getImageObject]
                                          token:form.token?:@""
-                                 selectedOrder:selectedOrder
                                         method:method
                                   systemBankID:systemBank.sysbank_id?:@""
                                    bankAccount:bank
-                                     paymentID:_paymentID?:@""
+                                     paymentID:paymentID?:@""
                                    paymentDate:paymentDate
                                   totalPayment:totalPayment
                                           note:_markTextView.text?:@""
@@ -719,9 +747,6 @@
         [viewControllers replaceObjectAtIndex:viewControllers.count-1 withObject:vc];
         self.navigationController.viewControllers = viewControllers;
         [_delegate refreshRequest];
-        NSArray *selectedOrder = [_dataInput objectForKey:DATA_SELECTED_ORDER_KEY];
-        [_delegate successConfirmPayment:selectedOrder];
-        //[self.navigationController pushViewController:vc animated:YES];
         
         [[NSNotificationCenter defaultCenter]postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil];
     }

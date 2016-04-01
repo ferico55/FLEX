@@ -199,7 +199,6 @@ static failedCompletionBlock failedUploadProof;
 }
 
 +(NSDictionary*)getParamWithToken:(NSString*)token
-                    selectedOrder:(NSArray*)selectedOrder
                            method:(MethodList*)method
                      systemBankID:(NSString*)systemBankID
                       bankAccount:(BankAccountFormList*)bankAccount
@@ -215,12 +214,6 @@ static failedCompletionBlock failedUploadProof;
                         depositor:(NSString*)depositor
                            picObj:(NSString*)picObj {
     
-    NSMutableArray *confirmationIDs = [NSMutableArray new];
-    for (TxOrderConfirmationList *detail in selectedOrder) {
-        [confirmationIDs addObject:detail.confirmation.confirmation_id];
-    }
-    
-    NSString * confirmationID = [[confirmationIDs valueForKey:@"description"] componentsJoinedByString:@"~"]?:@"";
     NSString *methodID = method.method_id?:@"";
     NSString *paymentAmount = totalPayment?:@"";
     NSDateComponents *components = [[NSCalendar currentCalendar] components:NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:paymentDate];
@@ -232,8 +225,8 @@ static failedCompletionBlock failedUploadProof;
     
     NSDictionary* param = @{
                             @"payment_id"       : paymentID,
-                            @"confirmation_id"  : confirmationID,
-                            @"token"            : token?:@"",
+                            @"confirmation_id"  : paymentID,
+                            @"token"            : @"",
                             @"method_id"        : methodID,
                             @"payment_amount"   : paymentAmount,
                             @"payment_day"      : day,
@@ -283,18 +276,14 @@ static failedCompletionBlock failedUploadProof;
                              }];
 }
 
-+(void)fetchSubmitParam:(NSDictionary*)param success:(void(^)(TransactionAction *data))success{
-    
-    NSMutableDictionary *paramFull = [NSMutableDictionary new];
-    [paramFull addEntriesFromDictionary:param];
-    [paramFull setObject:@"confirm_payment" forKey:@"action"];
++(void)fetchConfirmPaymentParam:(NSDictionary*)param success:(void(^)(TransactionAction *data))success{
     
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
     networkManager.isUsingHmac = YES;
     [networkManager requestWithBaseUrl:[NSString v4Url]
                                   path:@"/v4/action/tx-order/confirm_payment.pl"
                                 method:RKRequestMethodGET
-                             parameter:paramFull //param
+                             parameter:param
                                mapping:[TransactionAction mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                  
@@ -312,9 +301,49 @@ static failedCompletionBlock failedUploadProof;
                              }];
 }
 
-+(void)fetchSubmitWithImageObject:(NSDictionary*)imageObject
++(void)fetchEditPaymentWithMethod:(MethodList*)method
+                     systemBankID:(NSString*)systemBankID
+                      bankAccount:(BankAccountFormList*)bankAccount
+                        paymentID:(NSString*)paymentID
+                      paymentDate:(NSDate*)paymentDate
+                     totalPayment:(NSString*)totalPayment
+                             note:(NSString*)note
+                         password:(NSString*)password
+                  bankAccountName:(NSString*)bankAccountName
+                bankAccountBranch:(NSString*)bankAccountBranch
+                bankAccountNumber:(NSString*)bankAccountNumber
+                    bankAccountID:(NSString*)bankAccountID
+                        depositor:(NSString*)depositor
+                          success:(void(^)(TransactionAction *data))success
+                           failed:(void(^)(NSError *error))failed {
+    
+    NSDictionary *param = [RequestOrderAction getParamWithToken:@"" method:method systemBankID:systemBankID bankAccount:bankAccount paymentID:paymentID paymentDate:paymentDate totalPayment:totalPayment note:note password:password bankAccountName:bankAccountName bankAccountBranch:bankAccountBranch bankAccountNumber:bankAccountNumber bankAccountID:bankAccountID depositor:depositor picObj:@""];
+        
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    networkManager.isUsingHmac = YES;
+    [networkManager requestWithBaseUrl:[NSString v4Url]
+                                  path:@"/v4/action/tx-order/edit_payment.pl"
+                                method:RKRequestMethodGET
+                             parameter:param
+                               mapping:[TransactionAction mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                 
+                                 TransactionAction *response = [successResult.dictionary objectForKey:@""];
+                                 if(response.data.is_success == 1){
+                                     success(response);
+                                 } else {
+                                     failedCompletionSubmitConfirmation(nil);
+                                     NSArray *array = response.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
+                                     [StickyAlertView showErrorMessage:array];
+                                 }
+                                 
+                             } onFailure:^(NSError *errorResult) {
+                                 failed(errorResult);
+                             }];
+}
+
++(void)fetchConfirmPaymentWithImageObject:(NSDictionary*)imageObject
                             token:(NSString*)token
-                    selectedOrder:(NSArray*)selectedOrder
                            method:(MethodList*)method
                      systemBankID:(NSString*)systemBankID
                       bankAccount:(BankAccountFormList*)bankAccount
@@ -335,14 +364,14 @@ static failedCompletionBlock failedUploadProof;
     
     if ([imageObject isEqual:@{}]) {
         
-        NSDictionary *param = [RequestOrderAction getParamWithToken:token selectedOrder:selectedOrder method:method systemBankID:systemBankID bankAccount:bankAccount paymentID:paymentID paymentDate:paymentDate totalPayment:totalPayment note:note password:password bankAccountName:bankAccountName bankAccountBranch:bankAccountBranch bankAccountNumber:bankAccountNumber bankAccountID:bankAccountID depositor:depositor picObj:@""];
+        NSDictionary *param = [RequestOrderAction getParamWithToken:token method:method systemBankID:systemBankID bankAccount:bankAccount paymentID:paymentID paymentDate:paymentDate totalPayment:totalPayment note:note password:password bankAccountName:bankAccountName bankAccountBranch:bankAccountBranch bankAccountNumber:bankAccountNumber bankAccountID:bankAccountID depositor:depositor picObj:@""];
         
-        [RequestOrderAction fetchSubmitParam:param success:^(TransactionAction *data) {
+        [RequestOrderAction fetchConfirmPaymentParam:param success:^(TransactionAction *data) {
             success(data);
         }];
     } else {
         
-        NSDictionary *param = [RequestOrderAction getParamWithToken:token selectedOrder:selectedOrder method:method systemBankID:systemBankID bankAccount:bankAccount paymentID:paymentID paymentDate:paymentDate totalPayment:totalPayment note:note password:password bankAccountName:bankAccountName bankAccountBranch:bankAccountBranch bankAccountNumber:bankAccountNumber bankAccountID:bankAccountID depositor:depositor picObj:@""];
+        NSDictionary *param = [RequestOrderAction getParamWithToken:token method:method systemBankID:systemBankID bankAccount:bankAccount paymentID:paymentID paymentDate:paymentDate totalPayment:totalPayment note:note password:password bankAccountName:bankAccountName bankAccountBranch:bankAccountBranch bankAccountNumber:bankAccountNumber bankAccountID:bankAccountID depositor:depositor picObj:@""];
         
         [RequestOrderAction fetchValidationParam:param success:^(TransactionAction *data) {
             
@@ -358,9 +387,9 @@ static failedCompletionBlock failedUploadProof;
                                requestObject:objectRequest
                                      success:^(ImageResult *data) {
                                          
-                                         NSDictionary *param = [RequestOrderAction getParamWithToken:token selectedOrder:selectedOrder method:method systemBankID:systemBankID bankAccount:bankAccount paymentID:paymentID paymentDate:paymentDate totalPayment:totalPayment note:note password:password bankAccountName:bankAccountName bankAccountBranch:bankAccountBranch bankAccountNumber:bankAccountNumber bankAccountID:bankAccountID depositor:depositor picObj:data.pic_obj];
+                                         NSDictionary *param = [RequestOrderAction getParamWithToken:token method:method systemBankID:systemBankID bankAccount:bankAccount paymentID:paymentID paymentDate:paymentDate totalPayment:totalPayment note:note password:password bankAccountName:bankAccountName bankAccountBranch:bankAccountBranch bankAccountNumber:bankAccountNumber bankAccountID:bankAccountID depositor:depositor picObj:data.pic_obj];
                                          
-                                         [RequestOrderAction fetchSubmitParam:param
+                                         [RequestOrderAction fetchConfirmPaymentParam:param
                                                                    success:^(TransactionAction *data) {
                                                                        success(data);
                                                                    }];

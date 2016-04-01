@@ -31,10 +31,25 @@
             success:(void (^)(TxOrderStatusList *order, TransactionActionResult* data))success
             failure:(void (^)(NSError *error, TxOrderStatusList *order))failure;
 
-+(void)fetchSubmitWithImageObject:(NSDictionary*)imageObject
++(void)fetchConfirmPaymentWithImageObject:(NSDictionary*)imageObject
                             token:(NSString*)token
-                    selectedOrder:(NSArray*)selectedOrder
                            method:(MethodList*)method
+                     systemBankID:(NSString*)systemBankID
+                      bankAccount:(BankAccountFormList*)bankAccount
+                        paymentID:(NSString*)paymentID
+                      paymentDate:(NSDate*)paymentDate
+                     totalPayment:(NSString*)totalPayment
+                             note:(NSString*)note
+                         password:(NSString*)password
+                  bankAccountName:(NSString*)bankAccountName
+                bankAccountBranch:(NSString*)bankAccountBranch
+                bankAccountNumber:(NSString*)bankAccountNumber
+                    bankAccountID:(NSString*)bankAccountID
+                        depositor:(NSString*)depositor
+                          success:(void(^)(TransactionAction *data))success
+                           failed:(void(^)(NSError *error))failed;
+
++(void)fetchEditPaymentWithMethod:(MethodList*)method
                      systemBankID:(NSString*)systemBankID
                       bankAccount:(BankAccountFormList*)bankAccount
                         paymentID:(NSString*)paymentID

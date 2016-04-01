@@ -218,7 +218,7 @@
     TxOrderPaymentViewController *vc = [TxOrderPaymentViewController new];
     vc.isConfirmed = YES;
     vc.delegate = self;
-    vc.paymentID = detailOrder.payment_id;
+    vc.paymentID = @[detailOrder.payment_id];
     [self.navigationController pushViewController:vc animated:YES];
     //}
 }
