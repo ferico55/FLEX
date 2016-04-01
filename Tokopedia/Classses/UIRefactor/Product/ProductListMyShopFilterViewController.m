@@ -12,13 +12,13 @@
 #import "ProductListMyShopFilterViewController.h"
 #import "GeneralTableViewController.h"
 #import "MyShopEtalaseFilterViewController.h"
-#import "CategoryMenuViewController.h"
+#import "FilterCategoryViewController.h"
 
 @interface ProductListMyShopFilterViewController ()
 <
     GeneralTableViewControllerDelegate,
     MyShopEtalaseFilterViewControllerDelegate,
-    CategoryMenuViewDelegate
+    FilterCategoryViewDelegate
 >
 {
     EtalaseList *_etalase;
@@ -27,6 +27,7 @@
     NSString *_catalogValue;
     NSString *_pictureValue;
     NSString *_conditionValue;
+    CategoryDetail *_selectedCategory;
 }
 @end
 
@@ -114,16 +115,11 @@
                             DATA_PRESENTED_ETALASE_TYPE_KEY : @(PRESENTED_ETALASE_MANAGE_PRODUCT)};
         [self.navigationController pushViewController:controller animated:YES];
     } else if (indexPath.row == 1) {
-        CategoryMenuViewController *controller = [CategoryMenuViewController new];
+        FilterCategoryViewController *controller = [FilterCategoryViewController new];
+        controller.filterType = FilterCategoryTypeSearchProduct;
         controller.delegate = self;
-        controller.data = @{
-                            DATA_CATEGORY_MENU_PREVIOUS_VIEW_TYPE:@(CATEGORY_MENU_PREVIOUS_VIEW_ADD_PRODUCT)
-                            };
-        controller.selectedCategoryID = [_breadcrumb.department_id integerValue];
-        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:controller];
-        nav.navigationBar.translucent = NO;
-        
-        [self.navigationController presentViewController:nav animated:YES completion:nil];
+        controller.selectedCategory = _selectedCategory;
+        [self.navigationController pushViewController:controller animated:YES];
     } else if (indexPath.row == 2) {
         GeneralTableViewController *controller = [GeneralTableViewController new];
         controller.objects = @[
@@ -230,15 +226,12 @@
 
 #pragma mark - Category menu delegate
 
--(void)CategoryMenuViewController:(CategoryMenuViewController *)viewController userInfo:(NSDictionary *)userInfo
-{
-    NSString * departmentID = [userInfo objectForKey:kTKPDCATEGORY_DATADEPARTMENTIDKEY];
-    _departmentName = [userInfo objectForKey:kTKPDCATEGORY_DATATITLEKEY];
-    
-    _breadcrumb.department_name = _departmentName;
-    _breadcrumb.department_id = departmentID;
-    
-    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
-    cell.detailTextLabel.text = _departmentName;
+- (void)didSelectCategory:(CategoryDetail *)category {
+    _selectedCategory = category;
+    _departmentName = category.name;
+    _breadcrumb.department_id = category.categoryId;
+    _breadcrumb.department_name = category.name;
+    [self.tableView reloadData];
 }
+
 @end
