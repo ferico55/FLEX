@@ -80,7 +80,6 @@ UICollectionViewDelegate,
 UICollectionViewDelegateFlowLayout,
 SortViewControllerDelegate,
 FilterViewControllerDelegate,
-PromoRequestDelegate,
 PromoCollectionViewDelegate,
 NoResultDelegate,
 SpellCheckRequestDelegate,
@@ -90,7 +89,7 @@ ImageSearchRequestDelegate
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 
 @property (strong, nonatomic) NSMutableArray *product;
-@property (strong, nonatomic) NSMutableArray *promo;
+@property (strong, nonatomic) NSMutableArray<NSArray<PromoResult*>*> *promo;
 @property (strong, nonatomic) NSMutableDictionary *similarityDictionary;
 
 @property (nonatomic) UITableViewCellType cellType;
@@ -274,13 +273,10 @@ ImageSearchRequestDelegate
     [self configureGTM];
     
     _promoRequest = [PromoRequest new];
-    _promoRequest.delegate = self;
-    [self requestPromo];
     self.scrollDirection = ScrollDirectionDown;
     
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.isUsingHmac = YES;
-    
     
     if(_isFromImageSearch){
         _imageSearchRequest = [[ImageSearchRequest alloc]init];
@@ -400,22 +396,42 @@ ImageSearchRequestDelegate
     UICollectionReusableView *reusableView = nil;
     if (kind == UICollectionElementKindSectionHeader) {
         if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY] &&
-            _promo.count >= indexPath.section &&
-            indexPath.section > 0) {
-            if ([_promo objectAtIndex:indexPath.section]) {
-                reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
-                                                                  withReuseIdentifier:@"PromoCollectionReusableView"
-                                                                         forIndexPath:indexPath];
-                ((PromoCollectionReusableView *)reusableView).collectionViewCellType = _promoCellType;
-                ((PromoCollectionReusableView *)reusableView).promo = [_promo objectAtIndex:indexPath.section];
-                ((PromoCollectionReusableView *)reusableView).scrollPosition = [_promoScrollPosition objectAtIndex:indexPath.section];
-                ((PromoCollectionReusableView *)reusableView).delegate = self;
-                ((PromoCollectionReusableView *)reusableView).indexPath = indexPath;
-                if (self.scrollDirection == ScrollDirectionDown && indexPath.section == 1) {
-                    [((PromoCollectionReusableView *)reusableView) scrollToCenter];
+            _promo.count > indexPath.section) {
+            
+            NSArray *currentPromo = [_promo objectAtIndex:indexPath.section];
+            if(_promoCellType == PromoCollectionViewCellTypeThumbnail){
+                if(indexPath.section % 2 == 0){
+                    if (currentPromo && currentPromo.count > 0) {
+                        reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"PromoCollectionReusableView"
+                                                                                 forIndexPath:indexPath];
+                        NSMutableArray<PromoResult*> *combinedPromoResults = [NSMutableArray arrayWithArray:[_promo objectAtIndex:indexPath.section]];
+                        if(_promo.count > indexPath.section){
+                            [combinedPromoResults addObjectsFromArray:[_promo objectAtIndex:indexPath.section+1]];
+                        }
+                        ((PromoCollectionReusableView *)reusableView).collectionViewCellType = _promoCellType;
+                        ((PromoCollectionReusableView *)reusableView).promo = combinedPromoResults;
+                        ((PromoCollectionReusableView *)reusableView).scrollPosition = [_promoScrollPosition objectAtIndex:indexPath.section];
+                        ((PromoCollectionReusableView *)reusableView).delegate = self;
+                        ((PromoCollectionReusableView *)reusableView).indexPath = indexPath;
+                        if (self.scrollDirection == ScrollDirectionDown && indexPath.section == 1) {
+                            [((PromoCollectionReusableView *)reusableView) scrollToCenter];
+                        }
+                    }
                 }
-            } else {
-                reusableView = nil;
+            }else{
+                if (currentPromo && currentPromo.count > 0) {
+                    reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"PromoCollectionReusableView"
+                                                                             forIndexPath:indexPath];
+                    ((PromoCollectionReusableView *)reusableView).collectionViewCellType = _promoCellType;
+                    ((PromoCollectionReusableView *)reusableView).promo = [_promo objectAtIndex:indexPath.section];
+                    ((PromoCollectionReusableView *)reusableView).scrollPosition = [_promoScrollPosition objectAtIndex:indexPath.section];
+                    ((PromoCollectionReusableView *)reusableView).delegate = self;
+                    ((PromoCollectionReusableView *)reusableView).indexPath = indexPath;
+                    if (self.scrollDirection == ScrollDirectionDown && indexPath.section == 1) {
+                        [((PromoCollectionReusableView *)reusableView) scrollToCenter];
+                    }
+                    
+                }
             }
         } else {
             reusableView = nil;
@@ -457,11 +473,23 @@ ImageSearchRequestDelegate
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
     CGSize size = CGSizeZero;
-    if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY] &&
-        _promo.count > section && section > 0) {
-        if ([_promo objectAtIndex:section]) {
-            CGFloat headerHeight = [PromoCollectionReusableView collectionViewHeightForType:_promoCellType];
-            size = CGSizeMake(self.view.frame.size.width, headerHeight);
+    if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
+        if (_promo.count > section) {
+            NSArray *currentPromo = [_promo objectAtIndex:section];
+            
+            if(_promoCellType == PromoCollectionViewCellTypeThumbnail){
+                if(section % 2 == 0){
+                    if (currentPromo && currentPromo.count > 0) {
+                        CGFloat headerHeight = [PromoCollectionReusableView collectionViewHeightForType:_promoCellType];
+                        size = CGSizeMake(self.view.frame.size.width, headerHeight);
+                    }
+                }
+            }else{
+                if (currentPromo && currentPromo.count > 0) {
+                    CGFloat headerHeight = [PromoCollectionReusableView collectionViewHeightForType:_promoCellType];
+                    size = CGSizeMake(self.view.frame.size.width, headerHeight);
+                }
+            }
         }
     }
     return size;
@@ -766,7 +794,7 @@ ImageSearchRequestDelegate
         [_collectionView addSubview:_noResultView];
     }
     
-    if(_start > 0) [self requestPromo];
+    //if(_start > 0) [self requestPromo];
     
     if(_refreshControl.isRefreshing) {
         [_refreshControl endRefreshing];
@@ -836,7 +864,7 @@ ImageSearchRequestDelegate
             [_collectionView reloadData];
             //            [_collectionView layoutIfNeeded];
         }
-        
+        [self requestPromo];
         if (search.result.products.count > 0 || search.result.catalogs.count > 0) {
             _urinext =  search.result.paging.uri_next;
             _start = [[self splitUriToPage:_urinext] integerValue];
@@ -876,7 +904,6 @@ ImageSearchRequestDelegate
             [_collectionView addSubview:_noResultView];
         }
         
-        if(_start > 0) [self requestPromo];
         
         if(_refreshControl.isRefreshing) {
             [_refreshControl endRefreshing];
@@ -1032,41 +1059,60 @@ ImageSearchRequestDelegate
     return  ( isUsingLocationFilter || isUsingPriceMaxFilter || isUsingPriceMinFilter || isUsingShopTypeFilter);
 }
 
-
-#pragma mark - Promo request delegate
-
-- (void)didReceivePromo:(NSArray *)promo {
-    if (promo) {
-        [_promo addObject:promo];
-        [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
-    } else if (promo == nil && _start == startPerPage) {
-        [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
-    }
-    [_collectionView reloadData];
-}
-
 #pragma mark - Promo collection delegate
 
 - (void)requestPromo {
-    NSString *search =[_params objectForKey:kTKPDSEARCH_DATASEARCHKEY]?:@"";
-    NSString *departmentId =[_params objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY]?:@"";
-    _promoRequest.page = _start/[startPerPage integerValue];
-    [_promoRequest requestForProductQuery:search department:departmentId];
+    NSInteger page = _start/[startPerPage integerValue];
+    
+    if(page % 2 == 0){
+        NSString *search =[_params objectForKey:kTKPDSEARCH_DATASEARCHKEY]?:@"";
+        NSString *departmentId =[_params objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY]?:@"";
+        [_promoRequest requestForProductQuery:search
+                                   department:departmentId
+                                         page:page
+                                    onSuccess:^(NSArray<PromoResult *> *promoResult) {
+                                        if (promoResult) {
+                                            if(promoResult.count > 2){
+                                                NSRange arrayRangeToBeTaken = NSMakeRange(0, promoResult.count/2);
+                                                NSArray *promoArrayFirstHalf = [promoResult subarrayWithRange:arrayRangeToBeTaken];
+                                                arrayRangeToBeTaken.location = arrayRangeToBeTaken.length;
+                                                arrayRangeToBeTaken.length = promoResult.count - arrayRangeToBeTaken.length;
+                                                NSArray *promoArrayLastHalf = [promoResult subarrayWithRange:arrayRangeToBeTaken];
+                                                
+                                                [_promo addObject:promoArrayLastHalf];
+                                                [_promo addObject:promoArrayFirstHalf];
+                                                [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
+                                                [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
+                                            }else{
+                                                [_promo addObject:promoResult];
+                                                [_promo addObject:[NSArray new]];
+                                                [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
+                                                [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
+                                            }
+                                        } else if (promoResult == nil && _start == [startPerPage integerValue]) {
+                                            [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
+                                        }
+                                        [_collectionView reloadData];
+                                    } onFailure:^(NSError *error) {
+                                        [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
+                                        [_collectionView reloadData];
+                                    }];
+    }
 }
 
 - (void)promoDidScrollToPosition:(NSNumber *)position atIndexPath:(NSIndexPath *)indexPath {
     [_promoScrollPosition replaceObjectAtIndex:indexPath.section withObject:position];
 }
 
-- (void)didSelectPromoProduct:(PromoProduct *)product {
+- (void)didSelectPromoProduct:(PromoResult *)promoResult {
     if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
         NavigateViewController *navigateController = [NavigateViewController new];
         NSDictionary *productData = @{
-            @"product_id"       : product.product_id?:@"",
-            @"product_name"     : product.product_name?:@"",
-            @"product_image"    : product.product_image_200?:@"",
-            @"product_price"    :product.product_price?:@"",
-            @"shop_name"        : product.shop_name?:@""
+            @"product_id"       : promoResult.product.product_id?:@"",
+            @"product_name"     : promoResult.product.name?:@"",
+            @"product_image"    : promoResult.product.image.s_url?:@"",
+            @"product_price"    : promoResult.product.price_format?:@"",
+            @"shop_name"        : promoResult.shop.name?:@""
         };
 
         PromoRequestSourceType source;
@@ -1077,10 +1123,9 @@ ImageSearchRequestDelegate
         }
 
         NSDictionary *promoData = @{
-            kTKPDDETAIL_APIPRODUCTIDKEY : product.product_id,
-            PromoImpressionKey          : product.ad_key,
-            PromoSemKey                 : product.ad_sem_key,
-            PromoReferralKey            : product.ad_r,
+            kTKPDDETAIL_APIPRODUCTIDKEY : promoResult.product.product_id,
+            PromoImpressionKey          : promoResult.ad_ref_key,
+            PromoClickURL               : promoResult.product_click_url,
             PromoRequestSource          : @(source)
         };
 
