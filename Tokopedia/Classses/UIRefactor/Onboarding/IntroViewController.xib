@@ -362,7 +362,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Semua update terbaru akan dikirim ke HP kamu" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="297" translatesAutoresizingMaskIntoConstraints="NO" id="LSx-VY-Px8" customClass="TTTAttributedLabel">
-                    <rect key="frame" x="12" y="379" width="297" height="31"/>
+                    <rect key="frame" x="12" y="379" width="297" height="30.5"/>
                     <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="17"/>
                     <color key="textColor" red="0.51764705879999995" green="0.51764705879999995" blue="0.51764705879999995" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
@@ -373,10 +373,14 @@
                     </userDefinedRuntimeAttributes>
                 </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7UT-96-5h5">
-                    <rect key="frame" x="26" y="423" width="269" height="44"/>
+                    <rect key="frame" x="26" y="411" width="269" height="44"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X9K-LS-ai8">
                             <rect key="frame" x="0.0" y="0.0" width="102" height="44"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="44" id="C6B-fH-7fi"/>
+                                <constraint firstAttribute="width" constant="102" id="DHC-Gt-MTs"/>
+                            </constraints>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
                             <state key="normal" title="Tidak">
                                 <color key="titleColor" red="0.22745098039215686" green="0.70196078431372544" blue="0.22352941176470587" alpha="1" colorSpace="calibratedRGB"/>
@@ -390,6 +394,10 @@
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dLu-2w-Me2">
                             <rect key="frame" x="108" y="0.0" width="161" height="44"/>
                             <color key="backgroundColor" red="0.22745098039215686" green="0.70196078431372544" blue="0.22352941176470587" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="161" id="DZo-4n-bUe"/>
+                                <constraint firstAttribute="height" constant="44" id="dYA-VX-4ct"/>
+                            </constraints>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
                             <state key="normal" title="Aktifkan Notifikasi">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -401,9 +409,19 @@
                             </userDefinedRuntimeAttributes>
                         </button>
                     </subviews>
+                    <constraints>
+                        <constraint firstItem="X9K-LS-ai8" firstAttribute="top" secondItem="dLu-2w-Me2" secondAttribute="top" id="6cY-he-7J8"/>
+                        <constraint firstItem="dLu-2w-Me2" firstAttribute="top" secondItem="7UT-96-5h5" secondAttribute="top" id="TFN-rw-ptE"/>
+                        <constraint firstItem="X9K-LS-ai8" firstAttribute="bottom" secondItem="dLu-2w-Me2" secondAttribute="bottom" id="VMh-uE-Kag"/>
+                        <constraint firstItem="X9K-LS-ai8" firstAttribute="leading" secondItem="7UT-96-5h5" secondAttribute="leading" id="bfK-lG-7s2"/>
+                        <constraint firstItem="dLu-2w-Me2" firstAttribute="leading" secondItem="X9K-LS-ai8" secondAttribute="trailing" constant="6" id="s3R-8F-AIW"/>
+                        <constraint firstAttribute="bottom" secondItem="dLu-2w-Me2" secondAttribute="bottom" id="t29-4b-S6U"/>
+                        <constraint firstAttribute="trailing" secondItem="dLu-2w-Me2" secondAttribute="trailing" id="xfX-PS-IEc"/>
+                    </constraints>
                 </view>
             </subviews>
             <constraints>
+                <constraint firstAttribute="bottom" secondItem="7UT-96-5h5" secondAttribute="bottom" constant="25" id="1f5-BR-4cr"/>
                 <constraint firstItem="LSx-VY-Px8" firstAttribute="top" secondItem="MQ2-Un-Ohr" secondAttribute="bottom" constant="23" id="Dxe-ub-UjB"/>
                 <constraint firstItem="h1v-Pu-zbU" firstAttribute="centerX" secondItem="uvI-A0-mT8" secondAttribute="centerX" id="GkM-KL-uxv"/>
                 <constraint firstItem="ZhT-C5-0qa" firstAttribute="top" secondItem="h1v-Pu-zbU" secondAttribute="bottom" constant="-139" id="JHg-2m-hS4"/>
@@ -413,6 +431,7 @@
                 <constraint firstItem="Djb-fx-nas" firstAttribute="top" secondItem="h1v-Pu-zbU" secondAttribute="bottom" constant="-212" id="c89-Tq-2Wp"/>
                 <constraint firstItem="ZhT-C5-0qa" firstAttribute="leading" secondItem="h1v-Pu-zbU" secondAttribute="trailing" constant="-124" id="gmn-Oe-Aws"/>
                 <constraint firstItem="MQ2-Un-Ohr" firstAttribute="top" secondItem="uvI-A0-mT8" secondAttribute="centerY" multiplier="1.4" id="iTO-GR-mNF"/>
+                <constraint firstItem="7UT-96-5h5" firstAttribute="centerX" secondItem="uvI-A0-mT8" secondAttribute="centerX" id="kjG-5g-Zmt"/>
                 <constraint firstItem="Djb-fx-nas" firstAttribute="leading" secondItem="h1v-Pu-zbU" secondAttribute="trailing" constant="-211" id="vF7-dB-qR3"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
