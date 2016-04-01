@@ -614,8 +614,8 @@ static NSString const *rows = @"12";
                 [reusableView addSubview:_header];
             }
 
-        } else if (_promo.count >= indexPath.section && indexPath.section > 0) {
-            NSArray *currentPromo = [_promo objectAtIndex:indexPath.section];
+        } else if (_promo.count > indexPath.section -1) {
+            NSArray *currentPromo = [_promo objectAtIndex:indexPath.section-1];
             if(_promoCellType == PromoCollectionViewCellTypeThumbnail){
                 if(indexPath.section % 2 == 1){
                     if (currentPromo && currentPromo.count > 0) {
@@ -628,7 +628,7 @@ static NSString const *rows = @"12";
                         }
                         ((PromoCollectionReusableView *)reusableView).collectionViewCellType = _promoCellType;
                         ((PromoCollectionReusableView *)reusableView).promo = combinedPromoResults;
-                        ((PromoCollectionReusableView *)reusableView).scrollPosition = [_promoScrollPosition objectAtIndex:indexPath.section];
+                        ((PromoCollectionReusableView *)reusableView).scrollPosition = [_promoScrollPosition objectAtIndex:indexPath.section-1];
                         ((PromoCollectionReusableView *)reusableView).delegate = self;
                         ((PromoCollectionReusableView *)reusableView).indexPath = indexPath;
                         if (self.scrollDirection == ScrollDirectionDown && indexPath.section == 1) {
@@ -643,7 +643,7 @@ static NSString const *rows = @"12";
                                                                              forIndexPath:indexPath];
                     ((PromoCollectionReusableView *)reusableView).collectionViewCellType = _promoCellType;
                     ((PromoCollectionReusableView *)reusableView).promo = [_promo objectAtIndex:indexPath.section - 1];
-                    ((PromoCollectionReusableView *)reusableView).scrollPosition = [_promoScrollPosition objectAtIndex:indexPath.section];
+                    ((PromoCollectionReusableView *)reusableView).scrollPosition = [_promoScrollPosition objectAtIndex:indexPath.section - 1];
                     ((PromoCollectionReusableView *)reusableView).delegate = self;
                     ((PromoCollectionReusableView *)reusableView).indexPath = indexPath;
                     if (self.scrollDirection == ScrollDirectionDown && indexPath.section == 1) {
@@ -682,8 +682,8 @@ static NSString const *rows = @"12";
 
         size = CGSizeMake(self.view.bounds.size.width, _header.bounds.size.height);
     } else {
-        if (_promo.count > section && section > 0) {
-            NSArray *currentPromo = [_promo objectAtIndex:section];
+        if (_promo.count > section-1) {
+            NSArray *currentPromo = [_promo objectAtIndex:section-1];
             
             if(_promoCellType == PromoCollectionViewCellTypeThumbnail){
                 if(section % 2 == 1){
@@ -696,6 +696,8 @@ static NSString const *rows = @"12";
                 if (currentPromo && currentPromo.count > 0) {
                     CGFloat headerHeight = [PromoCollectionReusableView collectionViewHeightForType:_promoCellType];
                     size = CGSizeMake(self.view.frame.size.width, headerHeight);
+                }else{
+                    size = CGSizeZero;
                 }
             }
         }
@@ -738,16 +740,23 @@ static NSString const *rows = @"12";
                                            page:_page
                                       onSuccess:^(NSArray<PromoResult *> *promoResult) {
                                           if (promoResult) {
-                                              NSRange arrayRangeToBeTaken = NSMakeRange(0, promoResult.count/2);
-                                              NSArray *promoArrayFirstHalf = [promoResult subarrayWithRange:arrayRangeToBeTaken];
-                                              arrayRangeToBeTaken.location = arrayRangeToBeTaken.length;
-                                              arrayRangeToBeTaken.length = promoResult.count - arrayRangeToBeTaken.length;
-                                              NSArray *promoArrayLastHalf = [promoResult subarrayWithRange:arrayRangeToBeTaken];
-
-                                              [_promo addObject:promoArrayFirstHalf];
-                                              [_promo addObject:promoArrayLastHalf];
-                                              [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
-                                              [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
+                                              if(promoResult.count > 2){
+                                                  NSRange arrayRangeToBeTaken = NSMakeRange(0, promoResult.count/2);
+                                                  NSArray *promoArrayFirstHalf = [promoResult subarrayWithRange:arrayRangeToBeTaken];
+                                                  arrayRangeToBeTaken.location = arrayRangeToBeTaken.length;
+                                                  arrayRangeToBeTaken.length = promoResult.count - arrayRangeToBeTaken.length;
+                                                  NSArray *promoArrayLastHalf = [promoResult subarrayWithRange:arrayRangeToBeTaken];
+                                                  
+                                                  [_promo addObject:promoArrayLastHalf];
+                                                  [_promo addObject:promoArrayFirstHalf];
+                                                  [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
+                                                  [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
+                                              }else{
+                                                  [_promo addObject:promoResult];
+                                                  [_promo addObject:[NSArray new]];
+                                                  [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
+                                                  [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
+                                              }
                                           } else if (promoResult == nil && _page == 2) {
                                               [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
                                           }
