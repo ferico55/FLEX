@@ -83,9 +83,10 @@ typedef enum ScrollDirection {
 
 static NSString const *rows = @"12";
 
-@interface HotlistResultViewController () <FilterCategoryViewDelegate, SortViewControllerDelegate, FilterViewControllerDelegate, PromoCollectionViewDelegate, PromoRequestDelegate, HotlistBannerDelegate> {
+@interface HotlistResultViewController () <FilterCategoryViewDelegate, SortViewControllerDelegate, FilterViewControllerDelegate, PromoCollectionViewDelegate, HotlistBannerDelegate> {
     
     NSInteger _start;
+    NSInteger _page;
     
     NSInteger _viewposition;
     
@@ -153,6 +154,7 @@ static NSString const *rows = @"12";
 
 - (void) viewDidLoad {
     [super viewDidLoad];
+    _page = 0;
     
     [self setRightButton];
     _requestHotlistManager = [[TokopediaNetworkManager alloc] init];
@@ -229,8 +231,6 @@ static NSString const *rows = @"12";
     [_collectionView addSubview:_refreshControl];
     
     _promoRequest = [PromoRequest new];
-    _promoRequest.delegate = self;
-    [self requestPromo];
     
     _bannerRequest = [[HotlistBannerRequest alloc] init];
     [_bannerRequest setDelegate:self];
@@ -615,20 +615,41 @@ static NSString const *rows = @"12";
             }
 
         } else if (_promo.count >= indexPath.section && indexPath.section > 0) {
-            if ([_promo objectAtIndex:indexPath.section]) {
-                reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
-                                                                  withReuseIdentifier:@"PromoCollectionReusableView"
-                                                                         forIndexPath:indexPath];
-                ((PromoCollectionReusableView *)reusableView).collectionViewCellType = _promoCellType;
-                ((PromoCollectionReusableView *)reusableView).promo = [_promo objectAtIndex:indexPath.section];
-                ((PromoCollectionReusableView *)reusableView).scrollPosition = [_promoScrollPosition objectAtIndex:indexPath.section];
-                ((PromoCollectionReusableView *)reusableView).delegate = self;
-                ((PromoCollectionReusableView *)reusableView).indexPath = indexPath;
-                if (self.scrollDirection == ScrollDirectionDown && indexPath.section == 1) {
-                    [((PromoCollectionReusableView *)reusableView) scrollToCenter];
+            NSArray *currentPromo = [_promo objectAtIndex:indexPath.section];
+            if(_promoCellType == PromoCollectionViewCellTypeThumbnail){
+                if(indexPath.section % 2 == 1){
+                    if (currentPromo && currentPromo.count > 0) {
+                        reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+                                                                          withReuseIdentifier:@"PromoCollectionReusableView"
+                                                                                 forIndexPath:indexPath];
+                        NSMutableArray<PromoResult*> *combinedPromoResults = [NSMutableArray arrayWithArray:[_promo objectAtIndex:indexPath.section - 1]];
+                        if(_promo.count > indexPath.section){
+                            [combinedPromoResults addObjectsFromArray:[_promo objectAtIndex:indexPath.section]];
+                        }
+                        ((PromoCollectionReusableView *)reusableView).collectionViewCellType = _promoCellType;
+                        ((PromoCollectionReusableView *)reusableView).promo = combinedPromoResults;
+                        ((PromoCollectionReusableView *)reusableView).scrollPosition = [_promoScrollPosition objectAtIndex:indexPath.section];
+                        ((PromoCollectionReusableView *)reusableView).delegate = self;
+                        ((PromoCollectionReusableView *)reusableView).indexPath = indexPath;
+                        if (self.scrollDirection == ScrollDirectionDown && indexPath.section == 1) {
+                            [((PromoCollectionReusableView *)reusableView) scrollToCenter];
+                        }
+                    }
                 }
-            } else {
-                reusableView = nil;
+            }else{
+                if (currentPromo && currentPromo.count > 0) {
+                    reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+                                                                      withReuseIdentifier:@"PromoCollectionReusableView"
+                                                                             forIndexPath:indexPath];
+                    ((PromoCollectionReusableView *)reusableView).collectionViewCellType = _promoCellType;
+                    ((PromoCollectionReusableView *)reusableView).promo = [_promo objectAtIndex:indexPath.section - 1];
+                    ((PromoCollectionReusableView *)reusableView).scrollPosition = [_promoScrollPosition objectAtIndex:indexPath.section];
+                    ((PromoCollectionReusableView *)reusableView).delegate = self;
+                    ((PromoCollectionReusableView *)reusableView).indexPath = indexPath;
+                    if (self.scrollDirection == ScrollDirectionDown && indexPath.section == 1) {
+                        [((PromoCollectionReusableView *)reusableView) scrollToCenter];
+                    }
+                }
             }
         } else {
             reusableView = nil;
@@ -662,9 +683,20 @@ static NSString const *rows = @"12";
         size = CGSizeMake(self.view.bounds.size.width, _header.bounds.size.height);
     } else {
         if (_promo.count > section && section > 0) {
-            if ([_promo objectAtIndex:section]) {
-                CGFloat headerHeight = [PromoCollectionReusableView collectionViewHeightForType:_promoCellType];
-                size = CGSizeMake(self.view.frame.size.width, headerHeight);
+            NSArray *currentPromo = [_promo objectAtIndex:section];
+            
+            if(_promoCellType == PromoCollectionViewCellTypeThumbnail){
+                if(section % 2 == 1){
+                    if (currentPromo && currentPromo.count > 0) {
+                        CGFloat headerHeight = [PromoCollectionReusableView collectionViewHeightForType:_promoCellType];
+                        size = CGSizeMake(self.view.frame.size.width, headerHeight);
+                    }
+                }
+            }else{
+                if (currentPromo && currentPromo.count > 0) {
+                    CGFloat headerHeight = [PromoCollectionReusableView collectionViewHeightForType:_promoCellType];
+                    size = CGSizeMake(self.view.frame.size.width, headerHeight);
+                }
             }
         }
     }
@@ -693,17 +725,37 @@ static NSString const *rows = @"12";
 
 #pragma mark - Promo request delegate
 - (void)requestPromo {
-    NSString *key = [_data objectForKey:kTKPDHOME_DATAQUERYKEY]?:@"";
-    _promoRequest.page = _start/[rows integerValue] + 1;
-    [_promoRequest requestForProductHotlist:key];
-}
+    _promoRequest.page = _page;
+    
+    if([_data objectForKey:@"hotlist_id"] && _page % 2 == 1){
+        NSString *departmentId = @"";
+        if(_bannerResult.query.sc){
+            departmentId = _bannerResult.query.sc;
+        }
 
-- (void)didReceivePromo:(NSArray *)promo {
-    if (promo) {
-        [_promo addObject:promo];
-        [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
-    } else if (promo == nil && _promoRequest.page == 2) {
-        [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
+        [_promoRequest requestForProductHotlist:[_data objectForKey:@"hotlist_id"]
+                                     department:departmentId
+                                           page:_page
+                                      onSuccess:^(NSArray<PromoResult *> *promoResult) {
+                                          if (promoResult) {
+                                              NSRange arrayRangeToBeTaken = NSMakeRange(0, promoResult.count/2);
+                                              NSArray *promoArrayFirstHalf = [promoResult subarrayWithRange:arrayRangeToBeTaken];
+                                              arrayRangeToBeTaken.location = arrayRangeToBeTaken.length;
+                                              arrayRangeToBeTaken.length = promoResult.count - arrayRangeToBeTaken.length;
+                                              NSArray *promoArrayLastHalf = [promoResult subarrayWithRange:arrayRangeToBeTaken];
+
+                                              [_promo addObject:promoArrayFirstHalf];
+                                              [_promo addObject:promoArrayLastHalf];
+                                              [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
+                                              [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
+                                          } else if (promoResult == nil && _page == 2) {
+                                              [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
+                                          }
+                                      } onFailure:^(NSError *errorResult) {
+                                          
+                                      }];
+    }else{
+        
     }
     [_collectionView reloadData];
     [_collectionView layoutIfNeeded];
@@ -715,25 +767,27 @@ static NSString const *rows = @"12";
     [_promoScrollPosition replaceObjectAtIndex:indexPath.section withObject:position];
 }
 
-- (void)didSelectPromoProduct:(PromoProduct *)product {
+- (void)didSelectPromoProduct:(PromoResult *)promoResult {
     NavigateViewController *navigateController = [NavigateViewController new];
     NSDictionary *productData = @{
-        @"product_id"       : product.product_id?:@"",
-        @"product_name"     : product.product_name?:@"",
-        @"product_image"    : product.product_image_200?:@"",
-        @"product_price"    :product.product_price?:@"",
-        @"shop_name"        : product.shop_name?:@""
-    };
+                                  @"product_id"       : promoResult.product.product_id?:@"",
+                                  @"product_name"     : promoResult.product.name?:@"",
+                                  @"product_image"    : promoResult.product.image.s_url?:@"",
+                                  @"product_price"    : promoResult.product.price_format?:@"",
+                                  @"shop_name"        : promoResult.shop.name?:@""
+                                  };
+    
     NSDictionary *promoData = @{
-        kTKPDDETAIL_APIPRODUCTIDKEY : product.product_id,
-        PromoImpressionKey          : product.ad_key,
-        PromoSemKey                 : product.ad_sem_key,
-        PromoReferralKey            : product.ad_r,
-        PromoRequestSource          : @(PromoRequestSourceHotlist)
-    };
+                                kTKPDDETAIL_APIPRODUCTIDKEY : promoResult.product.product_id,
+                                PromoImpressionKey          : promoResult.ad_ref_key,
+                                PromoClickURL               : promoResult.product_click_url,
+                                PromoRequestSource          : @(PromoRequestSourceHotlist)
+                                };
+    
     [navigateController navigateToProductFromViewController:self
                                                   promoData:promoData
                                                 productData:productData];
+
 }
 
 #pragma mark - Scroll delegate
@@ -824,6 +878,7 @@ static NSString const *rows = @"12";
     [_products addObject:searchResult.result.products];
     _urinext = searchResult.result.paging.uri_next;
     _start = [[_requestHotlistManager explodeURL:_urinext withKey:@"start"] integerValue];
+    _page++;
     
     if (![self isInitialRequest]) [self requestPromo];
     

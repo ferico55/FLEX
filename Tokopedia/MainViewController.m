@@ -189,10 +189,6 @@ typedef enum TagRequest {
 	_auth = [auth mutableCopy];
     	
     _data = nil;
-#if DEBUG
-    AlertBaseUrl *alert = [AlertBaseUrl newview];
-    [alert show];
-#endif
     [self presentcontrollers];
 }
 
