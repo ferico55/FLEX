@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamLight.ttf">
@@ -16,7 +16,7 @@
                 <outlet property="act" destination="pFQ-ej-fSO" id="7Kd-ug-ptg"/>
                 <outlet property="footer" destination="ZLz-ol-CSP" id="5cS-bl-VyI"/>
                 <outlet property="searchbar" destination="eWC-P2-hId" id="Cc2-ZT-ScO"/>
-                <outlet property="table" destination="OQu-8S-oTs" id="T48-jo-d3y"/>
+                <outlet property="tableView" destination="OQu-8S-oTs" id="mtb-JC-AUb"/>
                 <outlet property="view" destination="iN0-l3-epB" id="oua-Kt-zdR"/>
             </connections>
         </placeholder>
@@ -37,7 +37,7 @@
                     </connections>
                 </searchBar>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="90" sectionHeaderHeight="1" sectionFooterHeight="1" translatesAutoresizingMaskIntoConstraints="NO" id="OQu-8S-oTs">
-                    <rect key="frame" x="0.0" y="44" width="600" height="508"/>
+                    <rect key="frame" x="0.0" y="44" width="600" height="512"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="lNW-j7-gJf"/>
@@ -45,13 +45,13 @@
                     </connections>
                 </tableView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vVc-8X-zhr">
-                    <rect key="frame" x="0.0" y="552" width="600" height="48"/>
+                    <rect key="frame" x="0.0" y="556" width="600" height="44"/>
                     <subviews>
                         <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mvt-mF-aQj" userLabel="URUTKAN">
-                            <rect key="frame" x="135" y="9" width="30" height="30"/>
+                            <rect key="frame" x="139" y="10.5" width="22" height="22"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="30" id="8Ra-5h-v6Q"/>
-                                <constraint firstAttribute="height" constant="30" id="cAZ-j7-wY6"/>
+                                <constraint firstAttribute="width" constant="22" id="8Ra-5h-v6Q"/>
+                                <constraint firstAttribute="height" constant="22" id="cAZ-j7-wY6"/>
                             </constraints>
                             <state key="normal" image="icon_urutkan_alt.png">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -61,7 +61,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bvQ-wm-WqJ" userLabel="URUTKAN">
-                            <rect key="frame" x="0.0" y="0.0" width="300" height="48"/>
+                            <rect key="frame" x="0.0" y="0.0" width="300" height="44"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="14"/>
                             <inset key="contentEdgeInsets" minX="0.0" minY="3" maxX="0.0" maxY="0.0"/>
@@ -74,10 +74,10 @@
                             </connections>
                         </button>
                         <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DRA-rl-QAK" userLabel="ETALASE">
-                            <rect key="frame" x="435" y="9" width="30" height="30"/>
+                            <rect key="frame" x="439" y="11.5" width="22" height="22"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="30" id="Kl9-du-SLi"/>
-                                <constraint firstAttribute="width" constant="30" id="ShY-EK-1gK"/>
+                                <constraint firstAttribute="height" constant="22" id="Kl9-du-SLi"/>
+                                <constraint firstAttribute="width" constant="22" id="ShY-EK-1gK"/>
                             </constraints>
                             <state key="normal" image="icon_filter.png">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -93,7 +93,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tyk-zS-hO2" userLabel="ETALASE">
-                            <rect key="frame" x="300" y="0.0" width="300" height="48"/>
+                            <rect key="frame" x="300" y="0.0" width="300" height="44"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="14"/>
                             <inset key="contentEdgeInsets" minX="0.0" minY="3" maxX="0.0" maxY="0.0"/>
@@ -130,9 +130,11 @@
                         <constraint firstItem="hcs-3k-CGW" firstAttribute="top" secondItem="vVc-8X-zhr" secondAttribute="top" constant="12" id="EaE-i7-XPa"/>
                         <constraint firstItem="DRA-rl-QAK" firstAttribute="top" secondItem="KMD-0x-ewF" secondAttribute="bottom" constant="8" id="GNd-TT-wKI"/>
                         <constraint firstItem="mvt-mF-aQj" firstAttribute="top" secondItem="KMD-0x-ewF" secondAttribute="bottom" constant="8" id="HhM-wY-OnR"/>
+                        <constraint firstItem="DRA-rl-QAK" firstAttribute="centerY" secondItem="vVc-8X-zhr" secondAttribute="centerY" id="IPS-3J-ePM"/>
                         <constraint firstAttribute="trailing" secondItem="KMD-0x-ewF" secondAttribute="trailing" id="KlP-JW-MCJ"/>
                         <constraint firstItem="tyk-zS-hO2" firstAttribute="centerX" secondItem="DRA-rl-QAK" secondAttribute="centerX" id="LGd-Kp-Sax"/>
-                        <constraint firstAttribute="height" constant="48" id="UNF-Um-oRf">
+                        <constraint firstItem="mvt-mF-aQj" firstAttribute="centerY" secondItem="vVc-8X-zhr" secondAttribute="centerY" id="PdZ-u7-xFe"/>
+                        <constraint firstAttribute="height" constant="44" id="UNF-Um-oRf">
                             <variation key="heightClass=regular-widthClass=regular" constant="60"/>
                         </constraint>
                         <constraint firstItem="tyk-zS-hO2" firstAttribute="leading" secondItem="bvQ-wm-WqJ" secondAttribute="trailing" id="UWb-nJ-kWV"/>
@@ -152,8 +154,10 @@
                     </constraints>
                     <variation key="default">
                         <mask key="constraints">
+                            <exclude reference="HhM-wY-OnR"/>
                             <exclude reference="fLo-9J-SHn"/>
                             <exclude reference="hJm-iw-W2Q"/>
+                            <exclude reference="GNd-TT-wKI"/>
                         </mask>
                     </variation>
                     <variation key="heightClass=regular-widthClass=regular">
