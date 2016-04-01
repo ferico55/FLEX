@@ -19,6 +19,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TransactionCartRootViewController">
             <connections>
+                <outlet property="contentView" destination="uXr-F6-eiV" id="dD6-V2-Ykv"/>
                 <outlet property="noLoginView" destination="43p-Yg-N4d" id="OhK-JS-LZx"/>
                 <outlet property="pageControlView" destination="Udz-dt-e2a" id="Oox-rG-PNd"/>
                 <outlet property="progressView" destination="jGJ-QC-MGX" id="dBh-Sf-EQq"/>

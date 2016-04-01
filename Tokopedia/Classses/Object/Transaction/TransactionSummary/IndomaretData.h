@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface IndomaretData : NSObject
+@interface IndomaretData : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *charge_idr;
 @property (nonatomic, strong) NSString *total_charge_real_idr;
