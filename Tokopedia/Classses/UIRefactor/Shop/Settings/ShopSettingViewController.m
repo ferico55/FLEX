@@ -15,7 +15,7 @@
 #import "MyShopPaymentViewController.h"
 #import "MyShopShipmentTableViewController.h"
 #import "MyShopNoteViewController.h"
-#import "ShopEditViewController.h"
+#import "EditShopViewController.h"
 
 @interface ShopSettingViewController ()
 <
@@ -70,14 +70,17 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     switch (indexPath.row) {
         case 0 : {
-            ShopEditViewController *vc = [ShopEditViewController new];
-            vc.data = @{
-                        kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:@{},
-                        kTKPDDETAIL_DATASHOPSKEY : _shop?:@{}
-                        };
-            [self.navigationController pushViewController:vc animated:YES];
-
+            EditShopViewController *controller = [EditShopViewController new];
+            [self.navigationController pushViewController:controller animated:YES];
             break;
+//            ShopEditViewController *vc = [ShopEditViewController new];
+//            vc.data = @{
+//                        kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:@{},
+//                        kTKPDDETAIL_DATASHOPSKEY : _shop?:@{}
+//                        };
+//            [self.navigationController pushViewController:vc animated:YES];
+//
+//            break;
         }
         case 1:
         {

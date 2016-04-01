@@ -10,4 +10,12 @@
 
 @implementation ManageProductResult
 
++ (RKObjectMapping *)objectMapping {
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[self class]];
+    [mapping addAttributeMappingsFromArray:@[@"default_sort", @"total_data", @"is_product_manager", @"is_tx_manager", @"etalase_name", @"menu_id"]];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"paging" toKeyPath:@"paging" withMapping:[Paging mapping]]];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"list" toKeyPath:@"list" withMapping:[ManageProductList objectMapping]]];
+    return mapping;
+}
+
 @end

@@ -80,7 +80,7 @@
 
 #import "MyShopEtalaseFilterViewController.h"
 #import "NoResultView.h"
-#import "RequestMoveTo.h"
+#import "ProductRequest.h"
 #import "WebViewController.h"
 #import "EtalaseList.h"
 
@@ -115,7 +115,6 @@
     LoginViewDelegate,
     TokopediaNetworkManagerDelegate,
     MyShopEtalaseFilterViewControllerDelegate,
-    RequestMoveToDelegate,
     UIAlertViewDelegate,
     CMPopTipViewDelegate,
     UIAlertViewDelegate,
@@ -196,7 +195,6 @@
     UIActivityIndicatorView *activityIndicator, *actFav;
     UIFont *fontDesc;
     
-    RequestMoveTo *_requestMoveTo;
     UIImage *_tempFirstThumb;
     TAGContainer *_gtmContainer;
     NavigateViewController *_TKPDNavigator;
@@ -324,9 +322,6 @@
     tokopediaNetworkManagerPriceAlert = [TokopediaNetworkManager new];
     tokopediaNetworkManagerPriceAlert.tagRequest = CTagPriceAlert;
     tokopediaNetworkManagerPriceAlert.delegate = self;
-    
-    _requestMoveTo =[RequestMoveTo new];
-    _requestMoveTo.delegate = self;
     
     tokopediaNetworkManagerFavorite = [TokopediaNetworkManager new];
     tokopediaNetworkManagerFavorite.delegate = self;
@@ -3119,28 +3114,33 @@
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == 1) {
-        [_requestMoveTo requestActionMoveToWarehouse:_product.result.product.product_id etalaseName:_product.result.product.product_etalase];
+        NSString *productId = _product.result.product.product_id;
+        [ProductRequest moveProductToWarehouse:productId
+                 setCompletionBlockWithSuccess:^(ShopSettings *response) {
+            
+        } failure:^(NSArray *errorMessages) {
+            
+        }];
     }
 }
 
--(void)MyShopEtalaseFilterViewController:(MyShopEtalaseFilterViewController *)viewController withUserInfo:(NSDictionary *)userInfo
-{
+- (void)MyShopEtalaseFilterViewController:(MyShopEtalaseFilterViewController *)viewController
+                             withUserInfo:(NSDictionary *)userInfo {
     EtalaseList *etalase = [userInfo objectForKey:DATA_ETALASE_KEY];
-    [_requestMoveTo requestActionMoveToEtalase:_product.result.product.product_id etalaseID:etalase.etalase_id etalaseName:etalase.etalase_name];
-}
-
-
--(void)successMoveToWithMessages:(NSArray *)successMessages
-{
-    [[NSNotificationCenter defaultCenter] postNotificationName:ADD_PRODUCT_POST_NOTIFICATION_NAME object:nil userInfo:nil];
-    StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:successMessages delegate:self];
-    [alert show];
-}
-
--(void)failedMoveToWithMessages:(NSArray *)errorMessages
-{
-    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessages delegate:self];
-    [alert show];
+    NSString *productId = _product.result.product.product_id;
+    [ProductRequest moveProduct:productId
+                      toEtalase:etalase
+  setCompletionBlockWithSuccess:^(ShopSettings *response) {
+      NSArray *messages = @[@"Anda telah berhasil memindahkan produk ke etalase"];
+      StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:messages delegate:self];
+      [alert show];
+      [[NSNotificationCenter defaultCenter] postNotificationName:ADD_PRODUCT_POST_NOTIFICATION_NAME
+                                                          object:nil
+                                                        userInfo:nil];
+    } failure:^(NSArray *errorMessages) {
+        StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessages delegate:self];
+        [alert show];
+    }];
 }
 
 - (void)userDidLogin:(NSNotification*)notification {
@@ -3156,8 +3156,6 @@
     _userManager = [UserAuthentificationManager new];
     _auth = [_userManager getUserLoginData];
 }
-
-
 
 #pragma mark - TTTAttributeLabel Delegate
 - (void)attributedLabel:(TTTAttributedLabel *)label didLongPressLinkWithURL:(NSURL *)url atPoint:(CGPoint)point
