@@ -508,4 +508,35 @@
     return objectManager;
 }
 
+-(RKObjectManager*)objectManagerToppay
+{
+    RKObjectManager *objectManager = [RKObjectManager sharedClient];
+    
+    // setup object mappings
+    RKObjectMapping *statusMapping = [TransactionAction mapping];
+    
+    // register mappings with the provider using a response descriptor
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:@"action/toppay.pl" keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    [objectManager addResponseDescriptor:responseDescriptor];
+    
+    return objectManager;
+}
+
+-(RKObjectManager*)objectManagerToppayThx
+{
+    RKObjectManager *objectManager = [RKObjectManager sharedClient];
+    
+    // setup object mappings
+    RKObjectMapping *statusMapping = [TransactionAction mapping];
+    
+    // register mappings with the provider using a response descriptor
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:@"tx-toppay.pl" keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    [objectManager addResponseDescriptor:responseDescriptor];
+    
+    return objectManager;
+}
+
+
 @end

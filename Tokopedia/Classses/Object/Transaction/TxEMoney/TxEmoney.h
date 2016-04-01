@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "TxEMoneyResult.h"
 
-@interface TxEmoney : NSObject
+@interface TxEmoney : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSArray *message_error;
 @property (nonatomic, strong) NSArray *message_status;
