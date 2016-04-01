@@ -279,21 +279,26 @@ NoResultDelegate>
                                                         [_list addObjectsFromArray:list];
                                                         
                                                         _uriNext =  _talk.result.paging.uri_next;
-                                                        NSURL *url = [NSURL URLWithString:_uriNext];
-                                                        NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
                                                         
-                                                        NSMutableDictionary *queries = [NSMutableDictionary new];
-                                                        [queries removeAllObjects];
-                                                        for (NSString *keyValuePair in querry)
-                                                        {
-                                                            NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
-                                                            NSString *key = [pairComponents objectAtIndex:0];
-                                                            NSString *value = [pairComponents objectAtIndex:1];
+                                                        if(_uriNext == nil || [_uriNext isEqualToString:@""]){
+                                                            [_footer setHidden:YES];
+                                                        }else{
+                                                            NSURL *url = [NSURL URLWithString:_uriNext];
+                                                            NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
                                                             
-                                                            [queries setObject:value forKey:key];
+                                                            NSMutableDictionary *queries = [NSMutableDictionary new];
+                                                            [queries removeAllObjects];
+                                                            for (NSString *keyValuePair in querry)
+                                                            {
+                                                                NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
+                                                                NSString *key = [pairComponents objectAtIndex:0];
+                                                                NSString *value = [pairComponents objectAtIndex:1];
+                                                                
+                                                                [queries setObject:value forKey:key];
+                                                            }
+                                                            
+                                                            _page = [[queries objectForKey:kTKPDDETAIL_APIPAGEKEY] integerValue];
                                                         }
-                                                        
-                                                        _page = [[queries objectForKey:kTKPDDETAIL_APIPAGEKEY] integerValue];
                                                         
                                                         _isNoData = NO;
                                                         
