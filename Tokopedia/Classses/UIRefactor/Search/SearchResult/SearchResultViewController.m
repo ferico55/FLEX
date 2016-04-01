@@ -1072,16 +1072,23 @@ ImageSearchRequestDelegate
                                          page:page
                                     onSuccess:^(NSArray<PromoResult *> *promoResult) {
                                         if (promoResult) {
-                                            NSRange arrayRangeToBeTaken = NSMakeRange(0, promoResult.count/2);
-                                            NSArray *promoArrayFirstHalf = [promoResult subarrayWithRange:arrayRangeToBeTaken];
-                                            arrayRangeToBeTaken.location = arrayRangeToBeTaken.length;
-                                            arrayRangeToBeTaken.length = promoResult.count - arrayRangeToBeTaken.length;
-                                            NSArray *promoArrayLastHalf = [promoResult subarrayWithRange:arrayRangeToBeTaken];
-                                            
-                                            [_promo addObject:promoArrayFirstHalf];
-                                            [_promo addObject:promoArrayLastHalf];
-                                            [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
-                                            [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
+                                            if(promoResult.count > 2){
+                                                NSRange arrayRangeToBeTaken = NSMakeRange(0, promoResult.count/2);
+                                                NSArray *promoArrayFirstHalf = [promoResult subarrayWithRange:arrayRangeToBeTaken];
+                                                arrayRangeToBeTaken.location = arrayRangeToBeTaken.length;
+                                                arrayRangeToBeTaken.length = promoResult.count - arrayRangeToBeTaken.length;
+                                                NSArray *promoArrayLastHalf = [promoResult subarrayWithRange:arrayRangeToBeTaken];
+                                                
+                                                [_promo addObject:promoArrayLastHalf];
+                                                [_promo addObject:promoArrayFirstHalf];
+                                                [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
+                                                [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
+                                            }else{
+                                                [_promo addObject:promoResult];
+                                                [_promo addObject:[NSArray new]];
+                                                [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
+                                                [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
+                                            }
                                         } else if (promoResult == nil && _start == [startPerPage integerValue]) {
                                             [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
                                         }
