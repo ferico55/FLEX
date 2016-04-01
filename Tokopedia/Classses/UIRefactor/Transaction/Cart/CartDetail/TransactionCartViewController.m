@@ -262,6 +262,7 @@
         if (_list.count>0) {
             _tableView.tableFooterView =_checkoutView;
         } else _tableView.tableFooterView = nil;
+        _tableView.tableHeaderView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 1, 40)];
         
     } else {
         [TPAnalytics trackScreenName:@"Shopping Cart Summary"];
