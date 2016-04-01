@@ -10,4 +10,10 @@
 
 @implementation TotalLikeDislike
 
++(RKObjectMapping *)mapping{
+    RKObjectMapping *totalLikeDislikeMapping = [RKObjectMapping mappingForClass:[TotalLikeDislike class]];
+    [totalLikeDislikeMapping addAttributeMappingsFromArray:@[@"like_status", @"review_id"]];
+    [totalLikeDislikeMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CTotalLikeDislike toKeyPath:CTotalLikeDislike withMapping:[DetailTotalLikeDislike mapping]]];
+    return totalLikeDislikeMapping;
+}
 @end

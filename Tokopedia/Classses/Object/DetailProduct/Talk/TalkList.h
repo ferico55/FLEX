@@ -42,4 +42,6 @@
 @property (nonatomic, strong) NSString *talk_user_label_id;
 
 @property (nonatomic, strong) TalkModelView *viewModel;
+
++ (RKObjectMapping *)mapping;
 @end

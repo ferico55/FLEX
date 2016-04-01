@@ -10,6 +10,15 @@
 
 @implementation NotesList
 
++(RKObjectMapping *)mapping{
+    RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[NotesList class]];
+    [listMapping addAttributeMappingsFromArray:@[@"note_id",
+                                                 @"note_status",
+                                                 @"note_title"
+                                                 ]];
+    return listMapping;
+}
+
 - (NSString *)note_title
 {
     return [_note_title kv_decodeHTMLCharacterEntities];
