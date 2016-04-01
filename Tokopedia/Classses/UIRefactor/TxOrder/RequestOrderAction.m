@@ -89,10 +89,10 @@ static failedCompletionBlock failedUploadProof;
                             @"order_id" : order.order_detail.detail_order_id};
     
     TokopediaNetworkManager *network = [TokopediaNetworkManager new];
-    network.isUsingHmac = YES;
-    [network requestWithBaseUrl:[NSString v4Url]//kTkpdBaseURLString
-                           path:@"/v4/action/tx-order/reorder.pl"//@"action/tx-order.pl"
-                         method:RKRequestMethodGET//RKRequestMethodPOST
+    //network.isUsingHmac = YES;
+    [network requestWithBaseUrl:[NSString basicUrl] //[NSString v4Url]
+                           path:@"action/tx-order.pl" //@"/v4/action/tx-order/reorder.pl"
+                         method:RKRequestMethodPOST//RKRequestMethodGET
                       parameter:param
                         mapping:[TransactionAction mapping]
                       onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
