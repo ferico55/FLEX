@@ -187,7 +187,7 @@
                            @"is_from_cart":isFromCart
                            };
     
-    [network requestWithBaseUrl:@"https://ws.tokopedia.com"
+    [network requestWithBaseUrl:[NSString v4Url]
                            path:@"/v4/action/people/edit_address.pl"
                          method:RKRequestMethodGET
                       parameter:param
