@@ -39,6 +39,8 @@ class IntroViewController: UIViewController {
     
     @IBOutlet private var labelsToReRender: [UILabel]!
     
+    @IBOutlet private var btnRejectNotification: UIButton!
+    
     var introView: EAIntroView!
     
     override func viewDidLoad() {
@@ -86,6 +88,9 @@ class IntroViewController: UIViewController {
         introView.showInView(presentationContainer)
         introView.skipButton = nil
         introView.backgroundColor = UIColor.clearColor()
+        
+        btnRejectNotification.layer.borderWidth = 1
+        btnRejectNotification.layer.borderColor = UIColor(red: 58/255.0, green: 179/255.0, blue: 57/255.0, alpha: 1).CGColor
     }
     
     private func reRenderLabels() {

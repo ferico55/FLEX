@@ -13,6 +13,8 @@
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
         </mutableArray>
         <mutableArray key="GothamLight.ttf">
             <string>GothamLight</string>
@@ -26,6 +28,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="IntroViewController" customModule="Tokopedia" customModuleProvider="target">
             <connections>
                 <outlet property="babyBottle" destination="ZFZ-zV-h5i" id="64H-sS-Enl"/>
+                <outlet property="btnRejectNotification" destination="X9K-LS-ai8" id="Im7-gd-JCA"/>
                 <outlet property="fabulousShoe" destination="6r3-Zg-Dvc" id="812-Ls-iHl"/>
                 <outlet property="giftbox" destination="Xhl-Iz-7kg" id="qDE-BB-etK"/>
                 <outlet property="page1View" destination="lY8-xc-qq4" id="1td-Jb-T3y"/>
@@ -328,38 +331,38 @@
             <point key="canvasLocation" x="1838" y="127"/>
         </view>
         <view contentMode="scaleToFill" id="uvI-A0-mT8">
-            <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="onboarding5_phone.png" translatesAutoresizingMaskIntoConstraints="NO" id="h1v-Pu-zbU">
-                    <rect key="frame" x="116" y="166" width="182" height="256"/>
+                    <rect key="frame" x="69" y="64" width="182" height="256"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="256" id="LAl-pb-hXF"/>
                         <constraint firstAttribute="width" constant="182.5" id="Wwl-Vf-ewx"/>
                     </constraints>
                 </imageView>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="onboarding5_bell.png" translatesAutoresizingMaskIntoConstraints="NO" id="ZhT-C5-0qa">
-                    <rect key="frame" x="174" y="283" width="67" height="83"/>
+                    <rect key="frame" x="127" y="181" width="67" height="83"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="66.5" id="Ogd-yz-yXv"/>
                         <constraint firstAttribute="height" constant="83" id="s1g-G5-gzg"/>
                     </constraints>
                 </imageView>
                 <imageView userInteractionEnabled="NO" alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="onboarding5_bling.png" translatesAutoresizingMaskIntoConstraints="NO" id="Djb-fx-nas">
-                    <rect key="frame" x="87" y="210" width="241" height="229"/>
+                    <rect key="frame" x="40" y="108" width="241" height="229"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="241" id="Sdm-3A-xrk"/>
                         <constraint firstAttribute="height" constant="229" id="aS8-yb-Y4i"/>
                     </constraints>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dapatkan Notifikasi" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MQ2-Un-Ohr">
-                    <rect key="frame" x="100" y="515" width="214" height="20"/>
+                    <rect key="frame" x="53" y="336" width="214" height="20"/>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="22"/>
                     <color key="textColor" red="0.38431372549999998" green="0.38431372549999998" blue="0.38431372549999998" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Semua update terbaru akan dikirim ke HP kamu" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="297" translatesAutoresizingMaskIntoConstraints="NO" id="LSx-VY-Px8" customClass="TTTAttributedLabel">
-                    <rect key="frame" x="59" y="558" width="297" height="31"/>
+                    <rect key="frame" x="12" y="379" width="297" height="31"/>
                     <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="17"/>
                     <color key="textColor" red="0.51764705879999995" green="0.51764705879999995" blue="0.51764705879999995" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
@@ -369,6 +372,36 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </label>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7UT-96-5h5">
+                    <rect key="frame" x="26" y="423" width="269" height="44"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X9K-LS-ai8">
+                            <rect key="frame" x="0.0" y="0.0" width="102" height="44"/>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                            <state key="normal" title="Tidak">
+                                <color key="titleColor" red="0.22745098039215686" green="0.70196078431372544" blue="0.22352941176470587" alpha="1" colorSpace="calibratedRGB"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                    <real key="value" value="3"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dLu-2w-Me2">
+                            <rect key="frame" x="108" y="0.0" width="161" height="44"/>
+                            <color key="backgroundColor" red="0.22745098039215686" green="0.70196078431372544" blue="0.22352941176470587" alpha="1" colorSpace="calibratedRGB"/>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                            <state key="normal" title="Aktifkan Notifikasi">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                    <real key="value" value="3"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </button>
+                    </subviews>
+                </view>
             </subviews>
             <constraints>
                 <constraint firstItem="LSx-VY-Px8" firstAttribute="top" secondItem="MQ2-Un-Ohr" secondAttribute="bottom" constant="23" id="Dxe-ub-UjB"/>
@@ -382,7 +415,7 @@
                 <constraint firstItem="MQ2-Un-Ohr" firstAttribute="top" secondItem="uvI-A0-mT8" secondAttribute="centerY" multiplier="1.4" id="iTO-GR-mNF"/>
                 <constraint firstItem="Djb-fx-nas" firstAttribute="leading" secondItem="h1v-Pu-zbU" secondAttribute="trailing" constant="-211" id="vF7-dB-qR3"/>
             </constraints>
-            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="2334" y="127"/>
         </view>
         <view contentMode="scaleToFill" id="zZm-pt-wd4">
