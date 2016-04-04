@@ -43,4 +43,14 @@
                           ));
 }
 
++ (NSString*)keroUrl {
+    return  FBTweakValue(@"General", @"Environment", @"Tokopedia Kero Url", @"https://kero.tokopedia.com",
+                         (@{
+                            @"https://kero-staging.tokopedia.com" : @"Staging",
+                            @"https://kero-alpha.tokopedia.com" : @"Alpha",
+                            @"https://kero.tokopedia.com" : @"Production",
+                            }
+                          ));
+}
+
 @end
