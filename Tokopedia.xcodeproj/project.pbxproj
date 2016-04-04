@@ -2102,6 +2102,7 @@
 		BBCB0DE41CB2139F000C0AE2 /* Tokopedia-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BBCB05D51CB2139E000C0AE2 /* Tokopedia-Info.plist */; };
 		BBCB0DE51CB2139F000C0AE2 /* Tokopedia.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = BBCB05D71CB2139E000C0AE2 /* Tokopedia.entitlements */; };
 		BBCB0DE61CB2139F000C0AE2 /* Tokopedia.xcworkspace in Resources */ = {isa = PBXBuildFile; fileRef = BBCB05D81CB2139E000C0AE2 /* Tokopedia.xcworkspace */; };
+		BBCB0DE91CB21D05000C0AE2 /* EtalaseListOther.m in Sources */ = {isa = PBXBuildFile; fileRef = BBCB0DE81CB21D05000C0AE2 /* EtalaseListOther.m */; };
 		F25F6F270D531ED13A92CDB9 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4868E459AB2A65D133732296 /* libPods-Tokopedia.a */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
 		FC23B85A1ACD659900879D75 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8581ACD659900879D75 /* Fabric.framework */; };
@@ -3560,6 +3561,8 @@
 		BBCB05D61CB2139E000C0AE2 /* Tokopedia-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Tokopedia-Prefix.pch"; sourceTree = "<group>"; };
 		BBCB05D71CB2139E000C0AE2 /* Tokopedia.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Tokopedia.entitlements; sourceTree = "<group>"; };
 		BBCB05D81CB2139E000C0AE2 /* Tokopedia.xcworkspace */ = {isa = PBXFileReference; lastKnownFileType = wrapper.workspace; path = Tokopedia.xcworkspace; sourceTree = "<group>"; };
+		BBCB0DE71CB21D05000C0AE2 /* EtalaseListOther.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EtalaseListOther.h; sourceTree = "<group>"; };
+		BBCB0DE81CB21D05000C0AE2 /* EtalaseListOther.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EtalaseListOther.m; sourceTree = "<group>"; };
 		BBCBF83D1CB21393000C0AE2 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		BBCBF83E1CB21393000C0AE2 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		BBCBF8411CB21393000C0AE2 /* TPAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPAnalytics.h; sourceTree = "<group>"; };
@@ -9003,6 +9006,8 @@
 				BBCBFB7B1CB21395000C0AE2 /* EtalaseList.m */,
 				BBCBFB7C1CB21395000C0AE2 /* EtalaseResult.h */,
 				BBCBFB7D1CB21395000C0AE2 /* EtalaseResult.m */,
+				BBCB0DE71CB21D05000C0AE2 /* EtalaseListOther.h */,
+				BBCB0DE81CB21D05000C0AE2 /* EtalaseListOther.m */,
 			);
 			path = Etalase;
 			sourceTree = "<group>";
@@ -12949,6 +12954,7 @@
 				BBCB082F1CB2139E000C0AE2 /* RequestUploadImageSteps.m in Sources */,
 				BBCB06FD1CB2139E000C0AE2 /* BankAccountFormResult.m in Sources */,
 				BBCB08BD1CB2139E000C0AE2 /* GeneralTableViewController.m in Sources */,
+				BBCB0DE91CB21D05000C0AE2 /* EtalaseListOther.m in Sources */,
 				BBCB06AD1CB2139E000C0AE2 /* InboxTicket.m in Sources */,
 				BBCB09B91CB2139E000C0AE2 /* NoResultReusableView.m in Sources */,
 				BBCB07321CB2139E000C0AE2 /* ImageSearchProduct.m in Sources */,

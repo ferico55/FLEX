@@ -14,4 +14,10 @@
     return [_etalase_name kv_decodeHTMLCharacterEntities];
 }
 
++(RKObjectMapping *)mapping{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[EtalaseList class]];
+    [mapping addAttributeMappingsFromArray:@[@"etalase_id", @"etalase_name", @"etalase_num_product", @"etalase_total_product"]];
+    return mapping;
+}
+
 @end

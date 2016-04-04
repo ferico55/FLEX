@@ -15,4 +15,6 @@
 @property (nonatomic, strong) NSString *etalase_name;
 @property (nonatomic, strong) NSString *etalase_total_product;
 
++(RKObjectMapping*)mapping;
+
 @end
