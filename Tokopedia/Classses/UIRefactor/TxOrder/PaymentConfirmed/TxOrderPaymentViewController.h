@@ -23,6 +23,6 @@
 
 @property (nonatomic, strong) NSDictionary *data;
 @property BOOL isConfirmed;
-@property (nonatomic, strong) NSString *paymentID;
+@property (nonatomic, strong) NSArray *paymentID;
 
 @end

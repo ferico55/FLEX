@@ -9,5 +9,22 @@
 #import "TxOrderConfirmedDetailPayment.h"
 
 @implementation TxOrderConfirmedDetailPayment
++(NSDictionary *)attributeMappingDictionary
+{
+    NSArray *keys = @[
+                      @"payment_id",
+                      @"payment_ref",
+                      @"payment_date"
+                      ];
+    return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
+}
+
++(RKObjectMapping*)mapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+
+    return mapping;
+}
 
 @end

@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface OrderLast : NSObject
+@interface OrderLast : NSObject <TKPObjectMapping>
 
 @property NSInteger last_order_id;
 @property (strong, nonatomic) NSString *last_shipment_id;

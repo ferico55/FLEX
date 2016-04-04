@@ -39,4 +39,6 @@
 - (void)configureRestkitGenerateHost;
 - (void)requestGenerateHost;
 
++(void)fetchGenerateHostSuccess:(void(^)(GeneratedHost* host))success failure:(void (^)(NSError * error))failure;
+
 @end

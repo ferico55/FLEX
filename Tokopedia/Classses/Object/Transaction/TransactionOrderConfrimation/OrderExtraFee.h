@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface OrderExtraFee : NSObject
+@interface OrderExtraFee : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *extra_fee_amount;
 @property (nonatomic, strong) NSString *extra_fee_amount_idr;

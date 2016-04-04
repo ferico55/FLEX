@@ -38,18 +38,5 @@
 - (IBAction)tapConfirmation:(id)sender {
     [_delegate shouldConfirmOrderAtIndexPath:_indexPath];
 }
-- (IBAction)tapCell:(id)sender {
-    [_delegate selectCellConfirmationAtIndexPath:_indexPath];
-}
-
-- (void)selectCell
-{
-    
-}
-
-- (void)deselectCell
-{
-    
-}
 
 @end
