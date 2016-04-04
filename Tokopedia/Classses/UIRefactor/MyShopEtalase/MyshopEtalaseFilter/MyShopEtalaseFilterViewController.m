@@ -134,7 +134,8 @@
     [super viewWillAppear:animated];
     
     if (_isnodata) {
-        [_networkManager doRequest];
+        //[_networkManager doRequest];
+        [self requestEtalase];
     }
     
     self.edgesForExtendedLayout=UIRectEdgeNone;
@@ -285,7 +286,8 @@
     NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1;
     if (row == indexPath.row) {
         if (_uriNext != NULL && ![_uriNext isEqualToString:@"0"] && _uriNext != 0) {
-            [_networkManager doRequest];
+            //[_networkManager doRequest];
+            [self requestEtalase];
         }
     }
 }
@@ -455,6 +457,21 @@
             [_table reloadData];
         }
     }
+}
+
+-(void)requestEtalase{
+    _networkManager.isUsingHmac = YES;
+    [_networkManager requestWithBaseUrl:[NSString v4Url]
+                                   path:@"/v4/shop/get_shop_etalase.pl"
+                                 method:RKRequestMethodGET
+                              parameter:@{kTKPDDETAIL_APISHOPIDKEY    : @([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0),
+                                          kTKPD_APIPAGEKEY            : @(_page)}
+                                mapping:[Etalase mapping]
+                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                  
+                              } onFailure:^(NSError *errorResult) {
+                                  
+                              }];
 }
 
 #pragma mark - Cell Delegate
