@@ -379,7 +379,7 @@ lewat aplikasi Tokopedia!</string>
                     </userDefinedRuntimeAttributes>
                 </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7UT-96-5h5">
-                    <rect key="frame" x="26" y="411" width="269" height="44"/>
+                    <rect key="frame" x="26" y="418" width="269" height="44"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X9K-LS-ai8">
                             <rect key="frame" x="0.0" y="0.0" width="102" height="44"/>
@@ -427,7 +427,7 @@ lewat aplikasi Tokopedia!</string>
                 </view>
             </subviews>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="7UT-96-5h5" secondAttribute="bottom" constant="25" id="1f5-BR-4cr"/>
+                <constraint firstItem="7UT-96-5h5" firstAttribute="top" secondItem="uvI-A0-mT8" secondAttribute="bottom" multiplier="0.87" id="1f5-BR-4cr"/>
                 <constraint firstItem="LSx-VY-Px8" firstAttribute="top" secondItem="MQ2-Un-Ohr" secondAttribute="bottom" constant="19" id="Dxe-ub-UjB"/>
                 <constraint firstItem="h1v-Pu-zbU" firstAttribute="centerX" secondItem="uvI-A0-mT8" secondAttribute="centerX" id="GkM-KL-uxv"/>
                 <constraint firstItem="ZhT-C5-0qa" firstAttribute="top" secondItem="h1v-Pu-zbU" secondAttribute="bottom" constant="-139" id="JHg-2m-hS4"/>
@@ -477,7 +477,7 @@ lewat aplikasi Tokopedia!</string>
                     </userDefinedRuntimeAttributes>
                 </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K5h-vk-9RE">
-                    <rect key="frame" x="36" y="411" width="248" height="44"/>
+                    <rect key="frame" x="36" y="418" width="248" height="44"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e86-zn-lGz">
                             <rect key="frame" x="127" y="0.0" width="121" height="44"/>
@@ -531,7 +531,7 @@ lewat aplikasi Tokopedia!</string>
             <constraints>
                 <constraint firstItem="uuk-gb-hek" firstAttribute="centerX" secondItem="zZm-pt-wd4" secondAttribute="centerX" id="O8y-4Z-6IP"/>
                 <constraint firstItem="g0w-RE-hWs" firstAttribute="centerX" secondItem="zZm-pt-wd4" secondAttribute="centerX" id="T99-jn-EVa"/>
-                <constraint firstAttribute="bottom" secondItem="K5h-vk-9RE" secondAttribute="bottom" constant="25" id="XDj-w2-964"/>
+                <constraint firstItem="K5h-vk-9RE" firstAttribute="top" secondItem="zZm-pt-wd4" secondAttribute="bottom" multiplier="0.87" id="XDj-w2-964"/>
                 <constraint firstItem="K5h-vk-9RE" firstAttribute="width" secondItem="uuk-gb-hek" secondAttribute="width" id="XpR-P1-7Lj"/>
                 <constraint firstItem="K5h-vk-9RE" firstAttribute="centerX" secondItem="zZm-pt-wd4" secondAttribute="centerX" id="a0s-4w-ugY"/>
                 <constraint firstItem="8Zl-mE-4rT" firstAttribute="top" secondItem="zZm-pt-wd4" secondAttribute="centerY" multiplier="1.25" id="fDl-FE-jnX"/>
