@@ -99,7 +99,7 @@
     
     TxOrderConfirmationList *detailOrder = [_data objectForKey:DATA_SELECTED_ORDER_KEY];
     TxOrderPaymentViewController *vc = [TxOrderPaymentViewController new];
-    vc.data = @{DATA_SELECTED_ORDER_KEY : @[detailOrder]};
+    vc.paymentID = @[detailOrder.confirmation.confirmation_id];
     [self.navigationController pushViewController:vc animated:YES];
     
 }

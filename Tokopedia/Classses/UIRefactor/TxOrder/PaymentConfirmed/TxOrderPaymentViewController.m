@@ -130,7 +130,6 @@
 
     _addNewRekeningButton.layer.cornerRadius = 2;
 
-    [_dataInput addEntriesFromDictionary:_data];
     _isNewRekening = NO;
     
     [_dataInput setObject:[NSDate date] forKey:DATA_PAYMENT_DATE_KEY];
@@ -222,7 +221,6 @@
         }
         else
         {
-            [_delegate failedOrCancelConfirmPayment:selectedOrder];
             [self.navigationController popViewControllerAnimated:YES];
         }
     }
@@ -723,7 +721,6 @@
         NSArray *array = action.message_status?:[[NSArray alloc] initWithObjects:@"Anda telah berhasil mengubah konfirmasi pembayaran", nil];
         StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:array delegate:self];
         [alert show];
-        [_delegate refreshRequest];
         [self.navigationController popViewControllerAnimated:YES];
     }
     else{
@@ -746,7 +743,6 @@
         vc.methodName = method.method_name;
         [viewControllers replaceObjectAtIndex:viewControllers.count-1 withObject:vc];
         self.navigationController.viewControllers = viewControllers;
-        [_delegate refreshRequest];
         
         [[NSNotificationCenter defaultCenter]postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil];
     }
@@ -1122,12 +1118,6 @@
         [_dataInput setObject:object forKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
         [_tableView reloadData];
     }
-}
-
--(void)shouldPopViewController
-{
-    [_delegate shouldPopViewController];
-    //[self.navigationController popViewControllerAnimated:NO];
 }
 
 #pragma mark - Alert Delegate
