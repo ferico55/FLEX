@@ -33,6 +33,7 @@
 #import "ShopBadgeLevel.h"
 #import "FavoriteShopAction.h"
 #import "UserAuthentificationManager.h"
+#import "PromoRequest.h"
 
 
 @interface ShopContainerViewController () <UIScrollViewDelegate, LoginViewDelegate, UIPageViewControllerDelegate, CMPopTipViewDelegate> {
@@ -249,7 +250,6 @@
     if ([viewController isKindOfClass:[ShopProductPageViewController class]]) {
         return _shopTalkViewController;
     }
-    
     else if ([viewController isKindOfClass:[ShopTalkPageViewController class]]) {
         return _shopReviewViewController;
     }
@@ -285,7 +285,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogin:) name:TKPDUserDidLoginNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogout:) name:kTKPDACTIVATION_DIDAPPLICATIONLOGGEDOUTNOTIFICATION object:nil];
 
-    
 }
 
 - (void)updateHeaderShopPage
@@ -1029,7 +1028,15 @@
     
     _requestFavoriteCount ++;
     
+    
+    
+    NSString* adKey = @"";
+    if([_data objectForKey:PromoRefKey]){
+        adKey = [_data objectForKey:PromoRefKey];
+    }
+    
     NSDictionary *param = @{kTKPDDETAIL_ACTIONKEY   :   @"fav_shop",
+                            @"ad_key"               :   adKey,
                             @"shop_id"              :   shop_id};
     
     _requestFavorite = [_objectFavoriteManager appropriateObjectRequestOperationWithObject:self
