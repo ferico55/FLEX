@@ -59,6 +59,13 @@ class IntroViewController: UIViewController {
         }
     }
     
+    @IBOutlet var btnLogin: UIButton! {
+        didSet {
+            btnLogin.layer.borderWidth = 1
+            btnLogin.layer.borderColor = UIColor(red: 58/255.0, green: 179/255.0, blue: 57/255.0, alpha: 1).CGColor
+        }
+    }
+    
     var introView: EAIntroView!
     
     override func viewDidLoad() {
