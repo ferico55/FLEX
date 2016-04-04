@@ -52,6 +52,13 @@ class IntroViewController: UIViewController {
     
     @IBOutlet private var labelsToReRender: [UILabel]!
     
+    private var pageControl: UIPageControl = {
+        let pageControl = UIPageControl()
+        pageControl.currentPageIndicatorTintColor = UIColor(red: 18.0/255, green: 199.0/255, blue: 0, alpha: 1)
+        pageControl.pageIndicatorTintColor = UIColor(white: 204/255.0, alpha: 1)
+        return pageControl
+    }()
+    
     @IBOutlet private var btnRejectNotification: UIButton! {
         didSet {
             btnRejectNotification.layer.borderWidth = 1
@@ -95,20 +102,22 @@ class IntroViewController: UIViewController {
                 }(),
                 {
                     let page = EAIntroPage(customView: page4View)
-                    page.onPageDidAppear = animatePage4
+                    page.onPageDidAppear = {[unowned self] in
+                        self.pageControl.hidden = false
+                        self.animatePage4()
+                    }
                     page.onPageDidDisappear = stopPage4Animations
                     return page
                 }(),
                 {
                     let page = EAIntroPage(customView: page5View)
-                    page.onPageDidAppear = animatePage5
+                    page.onPageDidAppear = {[unowned self] in
+                        self.pageControl.hidden = true
+                        self.animatePage5()
+                    }
                     return page
                 }(),
                 EAIntroPage(customView: page6View)])
-            
-            let pageControl = UIPageControl()
-            pageControl.currentPageIndicatorTintColor = UIColor(red: 18.0/255, green: 199.0/255, blue: 0, alpha: 1)
-            pageControl.pageIndicatorTintColor = UIColor(white: 204/255.0, alpha: 1)
             
             view.pageControl = pageControl
             view.swipeToExit = false

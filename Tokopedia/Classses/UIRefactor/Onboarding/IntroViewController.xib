@@ -368,7 +368,7 @@ lewat aplikasi Tokopedia!</string>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Semua update terbaru akan dikirim ke HP kamu" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="297" translatesAutoresizingMaskIntoConstraints="NO" id="LSx-VY-Px8" customClass="TTTAttributedLabel">
-                    <rect key="frame" x="12" y="379" width="297" height="30.5"/>
+                    <rect key="frame" x="57" y="375" width="206" height="31"/>
                     <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="17"/>
                     <color key="textColor" red="0.51764705879999995" green="0.51764705879999995" blue="0.51764705879999995" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
@@ -428,7 +428,7 @@ lewat aplikasi Tokopedia!</string>
             </subviews>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="7UT-96-5h5" secondAttribute="bottom" constant="25" id="1f5-BR-4cr"/>
-                <constraint firstItem="LSx-VY-Px8" firstAttribute="top" secondItem="MQ2-Un-Ohr" secondAttribute="bottom" constant="23" id="Dxe-ub-UjB"/>
+                <constraint firstItem="LSx-VY-Px8" firstAttribute="top" secondItem="MQ2-Un-Ohr" secondAttribute="bottom" constant="19" id="Dxe-ub-UjB"/>
                 <constraint firstItem="h1v-Pu-zbU" firstAttribute="centerX" secondItem="uvI-A0-mT8" secondAttribute="centerX" id="GkM-KL-uxv"/>
                 <constraint firstItem="ZhT-C5-0qa" firstAttribute="top" secondItem="h1v-Pu-zbU" secondAttribute="bottom" constant="-139" id="JHg-2m-hS4"/>
                 <constraint firstItem="MQ2-Un-Ohr" firstAttribute="centerX" secondItem="uvI-A0-mT8" secondAttribute="centerX" id="K3l-Gq-5u2"/>
@@ -505,8 +505,8 @@ lewat aplikasi Tokopedia!</string>
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
                         </button>
-                        <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Bcb-TM-8mW">
-                            <rect key="frame" x="177" y="0.0" width="5" height="44"/>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bcb-TM-8mW">
+                            <rect key="frame" x="122" y="0.0" width="5" height="44"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="5" id="HDR-yi-Lmh"/>
                                 <constraint firstAttribute="height" constant="44" id="L5Q-Eo-449"/>
