@@ -12,7 +12,20 @@ import UIKit
 class IntroViewController: UIViewController {
     @IBOutlet private var presentationContainer: UIView!
     
-    @IBOutlet private var topedImageView: UIImageView!
+    @IBOutlet private var topedImageView: UIImageView! {
+        didSet {
+            topedImageView.animationDuration = 3
+            topedImageView.animationRepeatCount = 1
+            topedImageView.animationImages = [
+                UIImage(named: "onboarding_toped_1a.png")!,
+                UIImage(named: "onboarding_toped_1b.png")!,
+                UIImage(named: "onboarding_toped_1c.png")!,
+                UIImage(named: "onboarding_toped_1d.png")!,
+                UIImage(named: "onboarding_toped_1e.png")!,
+                UIImage(named: "onboarding_toped_1f.png")!,
+            ]
+        }
+    }
     
     @IBOutlet private var page1View: UIView!
     @IBOutlet private var page2View: UIView!
@@ -39,58 +52,65 @@ class IntroViewController: UIViewController {
     
     @IBOutlet private var labelsToReRender: [UILabel]!
     
-    @IBOutlet private var btnRejectNotification: UIButton!
+    @IBOutlet private var btnRejectNotification: UIButton! {
+        didSet {
+            btnRejectNotification.layer.borderWidth = 1
+            btnRejectNotification.layer.borderColor = UIColor(red: 58/255.0, green: 179/255.0, blue: 57/255.0, alpha: 1).CGColor
+        }
+    }
     
     var introView: EAIntroView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let page1 = EAIntroPage(customView: page1View)
-        setupPage1()
-        
-        page1.onPageDidAppear = topedImageView.startAnimating
-        page1.onPageDidDisappear = topedImageView.stopAnimating
-        
-        let page2 = EAIntroPage(customView: page2View)
-        page2.onPageDidAppear = animatePage2
-        page2.onPageDidDisappear = stopPage2Animations
-        
-        let page3 = EAIntroPage(customView: page3View)
-        page3.onPageDidAppear = animatePage3
-        page3.onPageDidDisappear = stopPage3Animations
-        
-        let page4 = EAIntroPage(customView: page4View)
-        page4.onPageDidAppear = animatePage4
-        page4.onPageDidDisappear = stopPage4Animations
-        
-        let page5 = EAIntroPage(customView: page5View)
-        page5.onPageDidAppear = animatePage5
-        
-        let page6 = EAIntroPage(customView: page6View)
-        
-        introView = EAIntroView(frame: UIScreen.mainScreen().bounds, andPages: [
-            page1,
-            page2,
-            page3,
-            page4,
-            page5,
-            page6])
-        
-        let pageControl = UIPageControl()
-        pageControl.currentPageIndicatorTintColor = UIColor(red: 18.0/255, green: 199.0/255, blue: 0, alpha: 1)
-        pageControl.pageIndicatorTintColor = UIColor(white: 204/255.0, alpha: 1)
-        
         reRenderLabels()
         
-        introView.pageControl = pageControl
-        introView.swipeToExit = false
-        introView.showInView(presentationContainer)
-        introView.skipButton = nil
-        introView.backgroundColor = UIColor.clearColor()
-        
-        btnRejectNotification.layer.borderWidth = 1
-        btnRejectNotification.layer.borderColor = UIColor(red: 58/255.0, green: 179/255.0, blue: 57/255.0, alpha: 1).CGColor
+        introView = {
+            let view = EAIntroView(frame: UIScreen.mainScreen().bounds, andPages: [
+                {
+                    let page = EAIntroPage(customView: page1View)
+                    page.onPageDidAppear = topedImageView.startAnimating
+                    page.onPageDidDisappear = topedImageView.stopAnimating
+                    return page
+                }(),
+                {
+                    let page = EAIntroPage(customView: page2View)
+                    page.onPageDidAppear = animatePage2
+                    page.onPageDidDisappear = stopPage2Animations
+                    return page
+                }(),
+                {
+                    let page = EAIntroPage(customView: page3View)
+                    page.onPageDidAppear = animatePage3
+                    page.onPageDidDisappear = stopPage3Animations
+                    return page
+                }(),
+                {
+                    let page = EAIntroPage(customView: page4View)
+                    page.onPageDidAppear = animatePage4
+                    page.onPageDidDisappear = stopPage4Animations
+                    return page
+                }(),
+                {
+                    let page = EAIntroPage(customView: page5View)
+                    page.onPageDidAppear = animatePage5
+                    return page
+                }(),
+                EAIntroPage(customView: page6View)])
+            
+            let pageControl = UIPageControl()
+            pageControl.currentPageIndicatorTintColor = UIColor(red: 18.0/255, green: 199.0/255, blue: 0, alpha: 1)
+            pageControl.pageIndicatorTintColor = UIColor(white: 204/255.0, alpha: 1)
+            
+            view.pageControl = pageControl
+            view.swipeToExit = false
+            view.showInView(presentationContainer)
+            view.skipButton = nil
+            view.backgroundColor = UIColor.clearColor()
+            
+            return view
+        }()
     }
     
     private func reRenderLabels() {
@@ -182,19 +202,6 @@ class IntroViewController: UIViewController {
         UIView.animateWithDuration(1, delay: 0.3, options: [.Autoreverse, .Repeat, .CurveEaseInOut], animations: {
             self.page5Bling.alpha = 1
         }, completion: nil)
-    }
-    
-    private func setupPage1() {
-        topedImageView.animationDuration = 3
-        topedImageView.animationRepeatCount = 1
-        topedImageView.animationImages = [
-            UIImage(named: "onboarding_toped_1a.png")!,
-            UIImage(named: "onboarding_toped_1b.png")!,
-            UIImage(named: "onboarding_toped_1c.png")!,
-            UIImage(named: "onboarding_toped_1d.png")!,
-            UIImage(named: "onboarding_toped_1e.png")!,
-            UIImage(named: "onboarding_toped_1f.png")!,
-        ]
     }
     
     override func viewDidLayoutSubviews() {
