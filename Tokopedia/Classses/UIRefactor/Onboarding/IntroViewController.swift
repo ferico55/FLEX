@@ -147,30 +147,19 @@ class IntroViewController: UIViewController {
     
     private func animatePage2() {
         UIView.animateKeyframesWithDuration(1, delay: 0.5, options: .CalculationModeLinear, animations: {
-            UIView.addKeyframeWithRelativeStartTime(0.05, relativeDuration: 0, animations: {[unowned self] in
-                self.giftbox.alpha = 1
-            })
-            
-            UIView.addKeyframeWithRelativeStartTime(0.2, relativeDuration: 0, animations: {[unowned self] in
-                self.fabulousShoe.alpha = 1
-            })
-            
-            UIView.addKeyframeWithRelativeStartTime(0.35, relativeDuration: 0, animations: {[unowned self] in
-                self.tshirt.alpha = 1
-            })
-            
-            UIView.addKeyframeWithRelativeStartTime(0.5, relativeDuration: 0, animations: {[unowned self] in
-                self.spoonFork.alpha = 1
-            })
-            
-            UIView.addKeyframeWithRelativeStartTime(0.65, relativeDuration: 0, animations: {[unowned self] in
-                self.babyBottle.alpha = 1
-            })
-            
-            UIView.addKeyframeWithRelativeStartTime(0.8, relativeDuration: 0, animations: {[unowned self] in
-                self.soccerBall.alpha = 1
-            })
+            self.showView(self.giftbox, atRelativeStartTime: 0.05)
+            self.showView(self.fabulousShoe, atRelativeStartTime: 0.2)
+            self.showView(self.tshirt, atRelativeStartTime: 0.35)
+            self.showView(self.spoonFork, atRelativeStartTime: 0.5)
+            self.showView(self.babyBottle, atRelativeStartTime: 0.65)
+            self.showView(self.soccerBall, atRelativeStartTime: 0.8)
         }, completion: nil)
+    }
+    
+    private func showView(view:UIView, atRelativeStartTime startTime:Double) {
+        UIView.addKeyframeWithRelativeStartTime(startTime, relativeDuration: 0, animations: {
+            view.alpha = 1
+        })
     }
     
     private func stopPage3Animations() {
@@ -200,17 +189,9 @@ class IntroViewController: UIViewController {
     
     private func animatePage4() {
         UIView.animateKeyframesWithDuration(0.8, delay: 0.3, options: .CalculationModeLinear, animations: {
-            UIView.addKeyframeWithRelativeStartTime(0.1, relativeDuration: 0, animations: {
-                self.page4Top.alpha = 1
-            })
-            
-            UIView.addKeyframeWithRelativeStartTime(0.75, relativeDuration: 0, animations: {
-                self.page4Door.alpha = 1
-            })
-            
-            UIView.addKeyframeWithRelativeStartTime(0.95, relativeDuration: 0, animations: {
-                self.page4Label.alpha = 1
-            })
+            self.showView(self.page4Top, atRelativeStartTime: 0.1)
+            self.showView(self.page4Door, atRelativeStartTime: 0.75)
+            self.showView(self.page4Label, atRelativeStartTime: 0.95)
         }, completion: nil)
     }
     
