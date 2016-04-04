@@ -10,7 +10,10 @@
 
 @interface PromoProductImage : NSObject
 
-@property (strong, nonatomic) NSString *product_name;
-@property (strong, nonatomic) NSString *product_image;
+@property (strong, nonatomic) NSString *m_url;
+@property (strong, nonatomic) NSString *s_url;
+@property (strong, nonatomic) NSString *xs_url;
+
++ (RKObjectMapping*)mapping;
 
 @end

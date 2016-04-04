@@ -100,14 +100,14 @@ TKPDAlertViewDelegate
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     if (_collectionViewCellType == PromoCollectionViewCellTypeNormal) {
         ProductCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"ProductCellIdentifier" forIndexPath:indexPath];
-        PromoProduct *product = [_promo objectAtIndex:indexPath.row];
-        [cell setViewModel:product.viewModel];
+        PromoResult *promoResult = [_promo objectAtIndex:indexPath.row];
+        [cell setViewModel:promoResult.viewModel];
         return cell;
         
     } else if (_collectionViewCellType == PromoCollectionViewCellTypeThumbnail) {
         ProductThumbCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:_cellIdentifier forIndexPath:indexPath];
-        PromoProduct *product = [_promo objectAtIndex:indexPath.row];
-        [cell setViewModel:product.viewModel];
+        PromoResult *promoResult = [_promo objectAtIndex:indexPath.row];
+        [cell setViewModel:promoResult.viewModel];
         return cell;
         
     } else {
@@ -118,9 +118,9 @@ TKPDAlertViewDelegate
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     if ([self.delegate respondsToSelector:@selector(didSelectPromoProduct:)]) {
-        PromoProduct *product = [_promo objectAtIndex:indexPath.row];
-        [TPAnalytics trackPromoClick:product];
-        [self.delegate didSelectPromoProduct:product];
+        PromoResult *promoResult = [_promo objectAtIndex:indexPath.row];
+        [TPAnalytics trackPromoClick:promoResult];
+        [self.delegate didSelectPromoProduct:promoResult];
     }
 }
 

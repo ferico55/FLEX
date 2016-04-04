@@ -11,7 +11,7 @@
 #import "HotListCell.h"
 #import "GAITrackedViewController.h"
 
-@interface HotlistViewController : GAITrackedViewController <UITableViewDataSource, UITableViewDelegate, HotlistCellDelegate>
+@interface HotlistViewController : GAITrackedViewController <HotlistCellDelegate>
 
 @property (assign, nonatomic) NSInteger index;
 @property (strong, nonatomic) NSDictionary *data;

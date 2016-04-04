@@ -10,9 +10,12 @@
 #import "ImageSearchResponse.h"
 
 @protocol ImageSearchRequestDelegate <NSObject>
--(void)didReceiveImageSearchResult:(ImageSearchResponse*)imageSearchResponse;
+//-(void)didReceiveImageSearchResult:(ImageSearchResponse*)imageSearchResponse;
 -(void)didReceiveUploadedImageURL:(NSString*) imageURL;
+
+@optional
 -(void)failToReceiveImageSearchResult:(NSString*)errorMessage;
+
 @end
 
 @interface ImageSearchRequest : NSObject

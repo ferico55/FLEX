@@ -11,6 +11,7 @@
 #import "URLCacheConnection.h"
 #import "URLCacheController.h"
 
+DEPRECATED_ATTRIBUTE
 @protocol TokopediaNetworkManagerDelegate <NSObject>
 
 @required
@@ -61,7 +62,7 @@
 @property (nonatomic) NSTimeInterval timeInterval;
 @property (nonatomic) NSInteger maxTries;
 
-- (void)doRequest;
+- (void)doRequest DEPRECATED_ATTRIBUTE_MESSAGE("use requestWithBaseUrl instead");
 - (void)requestSuccess:(id)successResult withOperation:(RKObjectRequestOperation*)operation;
 - (void)requestFail:(id)errorResult;
 - (void)requestTimeout;
