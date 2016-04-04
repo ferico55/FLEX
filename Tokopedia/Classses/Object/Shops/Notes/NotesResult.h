@@ -14,4 +14,7 @@
 @interface NotesResult : NSObject
 @property (strong, nonatomic) NSArray *list;
 @property (strong, nonatomic) NoteDetails *detail;
+
++(RKObjectMapping*)mapping;
+
 @end

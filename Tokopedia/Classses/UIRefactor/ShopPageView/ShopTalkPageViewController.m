@@ -25,6 +25,7 @@
 #import "NSString+HTML.h"
 #import "UserAuthentificationManager.h"
 #import "TalkCell.h"
+#import "ShopPageRequest.h"
 
 @interface ShopTalkPageViewController () <UITableViewDataSource,
 UITableViewDelegate,
@@ -77,6 +78,7 @@ NoResultDelegate>
     BOOL _isLoadFromCache;
     NoResultReusableView *_noResultView;
     UserAuthentificationManager *_userManager;
+    ShopPageRequest *_shopPageRequest;
     
     
     __weak RKObjectManager *_objectManager;
@@ -169,6 +171,8 @@ NoResultDelegate>
     _shopPageHeader.delegate = self;
     _header = _shopPageHeader.view;
     
+    _shopPageRequest = [[ShopPageRequest alloc]init];
+    
     UIView *btmGreenLine = (UIView *)[_header viewWithTag:20];
     [btmGreenLine setHidden:NO];
     _stickyTab = [(UIView *)_header viewWithTag:18];
@@ -195,9 +199,7 @@ NoResultDelegate>
     [_fakeStickyTab.layer setShadowOpacity:0.3];
     
     [self initNotification];
-
-    [self configureRestKit];
-    [self loadData];
+    [self requestTalk];
 }
 
 
@@ -256,235 +258,64 @@ NoResultDelegate>
     NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1;
     if (row == indexPath.row) {
         if (_uriNext != NULL && ![_uriNext isEqualToString:@"0"] && _uriNext != 0) {
-            [self configureRestKit];
-            [self loadData];
+            [self requestTalk];
         }
     }
     
     return cell;
 }
 
-#pragma mark - Request + Mapping
+#pragma mark - Request 
 
--(void)cancel
-{
-    [_request cancel];
-    _request = nil;
-    [_objectManager.operationQueue cancelAllOperations];
-    _objectManager = nil;
-}
-
-- (void)configureRestKit
-{
-    // initialize RestKit
-    _objectManager =  [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Talk class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TalkResult class]];
-    
-    RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[TalkList class]];
-    [listMapping addAttributeMappingsFromArray:@[TKPD_TALK_TOTAL_COMMENT,
-                                                 TKPD_TALK_ID,
-                                                 TKPD_TALK_CREATE_TIME,
-                                                 TKPD_TALK_MESSAGE,
-                                                 TKPD_TALK_FOLLOW_STATUS,
-                                                 TKPD_TALK_PRODUCT_NAME,
-                                                 TKPD_TALK_PRODUCT_IMAGE,
-                                                 TKPD_TALK_PRODUCT_ID,
-                                                 TKPD_TALK_OWN,
-                                                 TKPD_TALK_USER_ID,
-                                                 TKPD_TALK_USER_NAME,
-                                                 TKPD_TALK_SHOP_ID,
-                                                 TKPD_TALK_USER_IMG,
-                                                 TKPD_TALK_PRODUCT_STATUS,
-                                                 TKPD_TALK_USER_LABEL,
-                                                 TKPD_TALK_USER_LABEL_ID
-                                                 ]];
-    
-    RKObjectMapping *reputationDetailMapping = [RKObjectMapping mappingForClass:[ReputationDetail class]];
-    [reputationDetailMapping addAttributeMappingsFromArray:@[CPositivePercentage,
-                                                             CNoReputation,
-                                                             CNegative,
-                                                             CPositif,
-                                                             CNeutral]];
-    
-    RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
-    [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDDETAIL_APIURINEXTKEY:kTKPDDETAIL_APIURINEXTKEY}];
-    
-    // Relationship Mapping
-    [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CTalkUserReputation toKeyPath:CTalkUserReputation withMapping:reputationDetailMapping]];
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    
-    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APILISTKEY toKeyPath:kTKPD_APILISTKEY withMapping:listMapping];
-    [resultMapping addPropertyMapping:listRel];
-    
-    RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIPAGINGKEY toKeyPath:kTKPDDETAIL_APIPAGINGKEY withMapping:pagingMapping];
-    [resultMapping addPropertyMapping:pageRel];
-    
-    // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                                  method:RKRequestMethodPOST
-                                                                                             pathPattern:kTKPDDETAILSHOP_APIPATH
-                                                                                                 keyPath:@""
-                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectManager addResponseDescriptor:responseDescriptorStatus];
-}
-
-
-
-- (void)loadData
-{
-    if (_request.isExecuting) return;
-    
-    _requestCount++;
-    
-    NSDictionary *param = @{kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETSHOPTALKKEY,
-                            kTKPDDETAIL_APISHOPIDKEY : [_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]?:@(0),
-                            @"shop_domain" : [_data objectForKey:@"shop_domain"]?:@"",
-                            @"page" : @(_page),
-                            @"per_page" : @(5)
-                            };
-    
-    
-    _request = [_objectManager appropriateObjectRequestOperationWithObject:self
-                                                                    method:RKRequestMethodPOST
-                                                                      path:kTKPDDETAILSHOP_APIPATH
-                                                                parameters:[param encrypt]];
-    
-    if (!_isrefreshview) {
-        _table.tableFooterView = _footer;
-        [_act startAnimating];
-    }
-    
-    [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [_timer invalidate];
-        _timer = nil;
-        [_act stopAnimating];
-        self.table.hidden = NO;
-        _isrefreshview = NO;
-        [_refreshControl endRefreshing];
-        [self requestSuccess:mappingResult withOperation:operation];
-        
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [_timer invalidate];
-        _timer = nil;
-        [_act stopAnimating];
-        _table.hidden = NO;
-        _isrefreshview = NO;
-        [_refreshControl endRefreshing];
-        [self requestFailure:error];
-    }];
-    [_operationQueue addOperation:_request];
-    
-    _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
-                                              target:self
-                                            selector:@selector(requestTimeout)
-                                            userInfo:nil
-                                             repeats:NO];
-    
-    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
-    
-}
-
--(void)requestSuccess:(id)object withOperation:(RKObjectRequestOperation *)operation
-{
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id stats = [result objectForKey:@""];
-    _talk = stats;
-    BOOL status = [_talk.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if (status) {
-        [self requestProcess:object];
-    }
-}
-
--(void)requestFailure:(id)object
-{
-
-}
-
--(void)requestProcess:(id)object
-{
-    if (object) {
-        if ([object isKindOfClass:[RKMappingResult class]]) {
-            NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            
-            id stats = [result objectForKey:@""];
-            
-            _talk = stats;
-            
-            BOOL status = [_talk.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-            
-            if (status) {
-                
-                NSArray *list = _talk.result.list;
-                
-                [_list addObjectsFromArray:list];
-                
-                _uriNext =  _talk.result.paging.uri_next;
-                NSURL *url = [NSURL URLWithString:_uriNext];
-                NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
-                
-                NSMutableDictionary *queries = [NSMutableDictionary new];
-                [queries removeAllObjects];
-                for (NSString *keyValuePair in querry)
-                {
-                    NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
-                    NSString *key = [pairComponents objectAtIndex:0];
-                    NSString *value = [pairComponents objectAtIndex:1];
-                    
-                    [queries setObject:value forKey:key];
-                }
-                
-                _page = [[queries objectForKey:kTKPDDETAIL_APIPAGEKEY] integerValue];
-                NSLog(@"next page shop talk : %zd",_page);
-                
-                _isNoData = NO;
-                
-                [self.table reloadData];
-                if (_list.count == 0) {
-                    _act.hidden = YES;
-                    _table.tableFooterView = _noResultView;
-                }else{
-                    [_noResultView removeFromSuperview];
-                }
-            }
-        }else{
-            
-            [self cancel];
-            NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
-            if ([(NSError*)object code] == NSURLErrorCancelled) {
-                if (_requestCount<kTKPDREQUESTCOUNTMAX) {
-                    NSLog(@" ==== REQUESTCOUNT %zd =====",_requestCount);
-                    //_table.tableFooterView = _footer;
-                    //[_act startAnimating];
-                    [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-                    [self performSelector:@selector(loadData) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-                }
-                else
-                {
-                    [_act stopAnimating];
-                    self.table.tableFooterView = nil;
-                }
-            }
-            else
-            {
-                [_act stopAnimating];
-                self.table.tableFooterView = nil;
-            }
-        }
-    }
-}
-
--(void)requestTimeout
-{
-    [self cancel];
+-(void)requestTalk{
+    [_noResultView removeFromSuperview];
+    [_shopPageRequest requestForShopTalkPageListingWithShopId:[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]?:@(0)
+                                                         page:_page
+                                                  shop_domain:[_data objectForKey:@"shop_domain"]?:@""
+                                                    onSuccess:^(Talk *talk) {
+                                                        _talk = talk;
+                                                        NSArray *list = _talk.result.list;
+                                                        
+                                                        [_list addObjectsFromArray:list];
+                                                        
+                                                        _uriNext =  _talk.result.paging.uri_next;
+                                                        
+                                                        if(_uriNext == nil || [_uriNext isEqualToString:@""]){
+                                                            [_footer setHidden:YES];
+                                                        }else{
+                                                            NSURL *url = [NSURL URLWithString:_uriNext];
+                                                            NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
+                                                            
+                                                            NSMutableDictionary *queries = [NSMutableDictionary new];
+                                                            [queries removeAllObjects];
+                                                            for (NSString *keyValuePair in querry)
+                                                            {
+                                                                NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
+                                                                NSString *key = [pairComponents objectAtIndex:0];
+                                                                NSString *value = [pairComponents objectAtIndex:1];
+                                                                
+                                                                [queries setObject:value forKey:key];
+                                                            }
+                                                            
+                                                            _page = [[queries objectForKey:kTKPDDETAIL_APIPAGEKEY] integerValue];
+                                                        }
+                                                        
+                                                        _isNoData = NO;
+                                                        
+                                                        [_table reloadData];
+                                                        if (_list.count == 0) {
+                                                            _act.hidden = YES;
+                                                            _table.tableFooterView = _noResultView;
+                                                        }
+                                                        [_refreshControl endRefreshing];
+                                                        [_refreshControl setHidden:YES];
+                                                        [_refreshControl setEnabled:NO];
+                                                    } onFailure:^(NSError *error) {
+                                                        [_act stopAnimating];
+                                                        self.table.tableFooterView = nil;
+                                                        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Kendala koneksi internet"] delegate:self];
+                                                        [alert show];
+                                                    }];
 }
 
 
@@ -493,7 +324,6 @@ NoResultDelegate>
 -(void)refreshView:(UIRefreshControl*)refresh
 {
     /** clear object **/
-    [self cancel];
     _requestCount = 0;
     [_list removeAllObjects];
     _page = 1;
@@ -501,8 +331,7 @@ NoResultDelegate>
     
     [_table reloadData];
     /** request data **/
-    [self configureRestKit];
-    [self loadData];
+    [self requestTalk];
 }
 
 #pragma mark - Notification Handler

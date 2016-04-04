@@ -73,4 +73,11 @@
 - (IBAction)actionDisLike:(id)sender;
 - (IBAction)actionChat:(id)sender;
 - (IBAction)actionMore:(id)sender;
+- (void)enableLikeButton;
+- (void)disableLikeButton;
+- (void)enableDislikeButton;
+- (void)disableDislikeButton;
+- (void)resetLikeDislikeButton;
+- (void)enableTouchLikeDislikeButton;
+- (void)disableTouchLikeDislikeButton;
 @end
