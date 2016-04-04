@@ -20,7 +20,7 @@
 #import "OrderShop.h"
 #import "OrderButton.h"
 
-@interface TxOrderStatusList : NSObject
+@interface TxOrderStatusList : NSObject <TKPObjectMapping>
 
 @property (strong, nonatomic) NSString *order_JOB_status;
 @property (strong, nonatomic) OrderDetail *order_detail;

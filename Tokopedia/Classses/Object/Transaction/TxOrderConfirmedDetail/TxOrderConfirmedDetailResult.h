@@ -10,7 +10,7 @@
 
 #import "TxOrderConfirmedDetailOrder.h"
 
-@interface TxOrderConfirmedDetailResult : NSObject
+@interface TxOrderConfirmedDetailResult : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) TxOrderConfirmedDetailOrder *tx_order_detail;
 

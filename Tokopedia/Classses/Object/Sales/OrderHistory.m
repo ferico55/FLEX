@@ -13,5 +13,26 @@
 - (NSString *)history_comments {
     return [_history_comments stringByReplacingOccurrencesOfString:@"            " withString:@""];
 }
++(NSDictionary *)attributeMappingDictionary
+{
+    NSArray *keys = @[
+                      @"history_status_date",
+                      @"history_status_date_full",
+                      @"history_order_status",
+                      @"history_comments",
+                      @"history_action_by",
+                      @"history_buyer_status",
+                      @"history_seller_status"
+                      ];
+    return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
+}
+
++(RKObjectMapping*)mapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+
+    return mapping;
+}
 
 @end
