@@ -226,7 +226,7 @@ static failedCompletionBlock failedUploadProof;
     NSDictionary* param = @{
                             @"payment_id"       : paymentID,
                             @"confirmation_id"  : paymentID,
-                            @"token"            : @"",
+                            @"token"            : token?:@"",
                             @"method_id"        : methodID,
                             @"payment_amount"   : paymentAmount,
                             @"payment_day"      : day,

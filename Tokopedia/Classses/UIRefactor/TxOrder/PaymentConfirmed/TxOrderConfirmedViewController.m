@@ -50,7 +50,6 @@
     TxOrderConfirmedButtonCellDelegate,
     TxOrderConfirmedCellDelegate,
     TKPDPhotoPickerDelegate,
-    TxOrderPaymentViewControllerDelegate,
     LoadingViewDelegate,
     GalleryViewControllerDelegate
 >
@@ -217,7 +216,6 @@
     //if (detailOrder.has_user_bank ==1) {
     TxOrderPaymentViewController *vc = [TxOrderPaymentViewController new];
     vc.isConfirmed = YES;
-    vc.delegate = self;
     vc.paymentID = @[detailOrder.payment_id];
     [self.navigationController pushViewController:vc animated:YES];
     //}

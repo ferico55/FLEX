@@ -24,7 +24,7 @@
 #import "LoadingView.h"
 #import "RequestOrderData.h"
 
-@interface TxOrderConfirmationViewController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate ,TxOrderConfirmationCellDelegate, TxOrderConfirmationDetailViewControllerDelegate, TokopediaNetworkManagerDelegate, TxOrderPaymentViewControllerDelegate, LoadingViewDelegate>
+@interface TxOrderConfirmationViewController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate ,TxOrderConfirmationCellDelegate, TxOrderConfirmationDetailViewControllerDelegate, TokopediaNetworkManagerDelegate, LoadingViewDelegate>
 {
     NSInteger _page;
     NSMutableArray<TxOrderConfirmationList*>*_list;
@@ -133,7 +133,6 @@
         {
             if ([selectedOrder count]>0) {
                 TxOrderPaymentViewController *vc = [TxOrderPaymentViewController new];
-                vc.delegate = self;
                 NSMutableArray *confirmationIDs = [NSMutableArray new];
                 for (TxOrderConfirmationList *order in [selectedOrder copy]) {
                     [confirmationIDs addObject:order.confirmation.confirmation_id];
@@ -281,7 +280,6 @@
     if (!_isMultipleSelection) {
         TxOrderPaymentViewController *vc = [TxOrderPaymentViewController new];
         vc.paymentID = @[_list[indexPath.row].confirmation.confirmation_id]?:@[@""];
-        vc.delegate  = self;
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
@@ -436,15 +434,6 @@
 {
     [_list removeObjectsInArray:payment];
     [_tableView reloadData];
-}
-
-- (void)shouldPopViewController {
-    
-}
-
--(void)failedOrCancelConfirmPayment:(NSArray *)payment
-{
-
 }
 
 @end
