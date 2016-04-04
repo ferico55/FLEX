@@ -41,16 +41,17 @@
 #import "ProductThumbCell.h"
 
 #import "NavigateViewController.h"
-#import "TokopediaNetworkManager.h"
-
 #import "RetryCollectionReusableView.h"
-
 #import "NoResultReusableView.h"
-
 #import "PromoRequest.h"
 
 #import "UIActivityViewController+Extensions.h"
 #import "Tokopedia-Swift.h"
+
+#import "ShopProductPageResponse.h"
+#import "ShopProductPageResult.h"
+#import "ShopProductPageList.h"
+#import "ShopPageRequest.h"
 
 typedef NS_ENUM(NSInteger, UITableViewCellType) {
     UITableViewCellTypeOneColumn,
@@ -76,7 +77,6 @@ MyShopEtalaseFilterViewControllerDelegate,
 GeneralProductCellDelegate,
 GeneralSingleProductDelegate,
 GeneralPhotoProductDelegate,
-TokopediaNetworkManagerDelegate,
 NoResultDelegate,
 RetryViewDelegate
 >
@@ -137,8 +137,6 @@ RetryViewDelegate
     __weak RKManagedObjectRequestOperation *_request;
     __weak RKManagedObjectRequestOperation *_requestUnfollow;
     __weak RKManagedObjectRequestOperation *_requestDelete;
-    
-    TokopediaNetworkManager *_networkManager;
     NavigateViewController *_TKPDNavigator;
     
     NSOperationQueue *_operationQueue;
@@ -150,7 +148,7 @@ RetryViewDelegate
     URLCacheController *_cachecontroller;
     URLCacheConnection *_cacheconnection;
     NSTimeInterval _timeinterval;
-    NSMutableArray *_product;
+    NSMutableArray<ShopProductPageList*> *_product;
     NSArray *_tmpProduct;
     Shop *_shop;
     NoResultReusableView *_noResultView;
@@ -167,6 +165,7 @@ RetryViewDelegate
     PromoRequest *_promoRequest;
     
     NSIndexPath *_sortIndexPath;
+    ShopPageRequest* _shopPageRequest;
 }
 
 #pragma mark - Initialization
@@ -284,11 +283,8 @@ RetryViewDelegate
     [_fakeStickyTab.layer setShadowOpacity:0.3];
     
     [self initNotification];
-    //todo with network
-    _networkManager = [TokopediaNetworkManager new];
-    _networkManager.delegate = self;
-    _networkManager.tagRequest = ProductTag;
-    [_networkManager doRequest];
+    _shopPageRequest = [[ShopPageRequest alloc]init];
+    [self requestProduct];
     
     NSDictionary *data = [[TKPDSecureStorage standardKeyChains] keychainDictionary];
     if ([data objectForKey:USER_LAYOUT_PREFERENCES]) {
@@ -392,7 +388,7 @@ RetryViewDelegate
     NSString *cellid;
     UICollectionViewCell *cell = nil;
     
-    List *list = [_product objectAtIndex:indexPath.row];
+    ShopProductPageList *list = [_product objectAtIndex:indexPath.row];
     if (self.cellType == UITableViewCellTypeOneColumn) {
         cellid = @"ProductSingleViewIdentifier";
         cell = (ProductSingleViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
@@ -413,7 +409,7 @@ RetryViewDelegate
     if (row == indexPath.row) {
         if (_nextPageUri != NULL && ![_nextPageUri isEqualToString:@"0"] && _nextPageUri != 0 && ![_nextPageUri isEqualToString:@""]) {
             _isFailRequest = NO;
-            [_networkManager doRequest];
+            [self requestProduct];
         }
     }
     
@@ -422,7 +418,7 @@ RetryViewDelegate
 
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    List *product = [_product objectAtIndex:indexPath.row];
+    ShopProductPageList *product = [_product objectAtIndex:indexPath.row];
     
     [TPAnalytics trackProductClick:product];
     
@@ -454,8 +450,7 @@ RetryViewDelegate
         [_collectionView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
         [_refreshControl beginRefreshing];
     }
-
-    [_networkManager doRequest];
+    [self requestProduct];
 }
 
 #pragma mark - Memory Management
@@ -557,8 +552,7 @@ RetryViewDelegate
     _page = 1;
     
     _isrefreshview = YES;
-    
-    [_networkManager doRequest];
+    [self requestProduct];
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -616,7 +610,6 @@ RetryViewDelegate
 - (IBAction)tapToEtalase:(id)sender {
     NSIndexPath *indexpath = [_detailfilter objectForKey:kTKPDDETAILETALASE_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:1 inSection:0];
     MyShopEtalaseFilterViewController *vc =[MyShopEtalaseFilterViewController new];
-    //ProductEtalaseViewController *vc = [ProductEtalaseViewController new];
     vc.data = @{kTKPDDETAIL_APISHOPIDKEY:@([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0),
                 @"object_selected":[_detailfilter objectForKey:DATA_ETALASE_KEY]?:@0,
                 @"product_etalase_name" : [_detailfilter objectForKey:@"product_etalase_name"]?:@"",
@@ -685,7 +678,6 @@ RetryViewDelegate
 
 #pragma mark - Filter Delegate
 -(void)MyShopEtalaseFilterViewController:(MyShopEtalaseFilterViewController *)viewController withUserInfo:(NSDictionary *)userInfo {
-    [_networkManager requestCancel];
     [_detailfilter removeAllObjects];
     [_detailfilter setObject:[userInfo objectForKey:DATA_ETALASE_KEY]?:@""
                       forKey:DATA_ETALASE_KEY];
@@ -708,7 +700,7 @@ RetryViewDelegate
         index = indexPath.section+3*(indexPath.row);
     }
     
-    List *list = _product[index];
+    ShopProductPageList *list = _product[index];
     
     NSString *shopName = list.shop_name;
     if ([shopName isEqualToString:@""]|| [shopName integerValue] == 0) {
@@ -735,18 +727,16 @@ RetryViewDelegate
 
 #pragma mark - LoadingView Delegate
 - (void)pressRetryButton {
-    [_networkManager doRequest];
+    [self requestProduct];
     _isFailRequest = NO;
     [_collectionView reloadData];
 }
 
-
-
-#pragma mark - TokopediaNetworkDelegate
-- (NSDictionary *)getParameter:(int)tag {
+#pragma mark - ShopPageRequest
+-(void)requestProduct{
     NSString *querry =[_detailfilter objectForKey:kTKPDDETAIL_DATAQUERYKEY]?:@"";
-    NSInteger sort =  [[_detailfilter objectForKey:kTKPDDETAIL_APIORERBYKEY]integerValue];
-    NSInteger shopID = [[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0;
+    NSString *sort =  [_detailfilter objectForKey:kTKPDDETAIL_APIORERBYKEY]?:@"";
+    NSString *shopID = [_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]?:@"";
     EtalaseList *etalase = [_detailfilter objectForKey:DATA_ETALASE_KEY];
     BOOL isSoldProduct = ([etalase.etalase_id integerValue] == 7);
     BOOL isAllEtalase = (etalase.etalase_id == 0);
@@ -755,7 +745,7 @@ RetryViewDelegate
     
     if (isSoldProduct) {
         etalaseid = @"sold";
-        if(sort == 0)sort = [etalase.etalase_id integerValue];
+        if(sort == 0) sort = etalase.etalase_id;
     }
     else if (isAllEtalase)
         etalaseid = @"all";
@@ -766,162 +756,71 @@ RetryViewDelegate
     if([_data objectForKey:@"product_etalase_id"] && !etalase) {
         etalaseid = [_data objectForKey:@"product_etalase_id"];
     }
+    NSString* shopDomain = [_data objectForKey:@"shop_domain"]?:@"";
     
-    NSDictionary *param = @{kTKPDDETAIL_APIACTIONKEY    :   kTKPDDETAIL_APIGETSHOPPRODUCTKEY,
-                            kTKPDDETAIL_APISHOPIDKEY    :   @(shopID),
-                            @"shop_domain" : [_data objectForKey:@"shop_domain"]?:@"",
-                            kTKPDDETAIL_APIPAGEKEY      :   @(_page),
-                            kTKPDDETAIL_APILIMITKEY     :   @(_limit),
-                            kTKPDDETAIL_APIORERBYKEY    :   @(sort),
-                            kTKPDDETAIL_APIKEYWORDKEY   :   querry,
-                            kTKPDDETAIL_APIETALASEIDKEY :   etalaseid};
-    
-    return param;
-}
+    [_shopPageRequest requestForShopProductPageListingWithShopId:shopID
+                                                       etalaseId:etalaseid
+                                                         keyWord:querry
+                                                            page:_page
+                                                        order_by:sort
+                                                     shop_domain:shopDomain
+                                                       onSuccess:^(ShopProductPageResult *result) {
+                                                           [_noResultView removeFromSuperview];
+                                                           
+                                                           if(_page == 1) {
+                                                               _product = [result.list mutableCopy];
+                                                               [self addImpressionClick];
+                                                           } else {
+                                                               [_product addObjectsFromArray:result.list];
+                                                           }
+                                                           
+                                                           [TPAnalytics trackProductImpressions:result.list];
+                                                           
+                                                           if (_product.count >0) {
+                                                               _isNoData = NO;
+                                                               [_noResultView removeFromSuperview];
+                                                               _nextPageUri =  result.paging.uri_next;
+                                                               _page = [[_shopPageRequest splitUriToPage:_nextPageUri] integerValue];
+                                                               
+                                                               if(!_nextPageUri || [_nextPageUri isEqualToString:@"0"]) {
+                                                                   //remove loadingview if there is no more item
+                                                                   [_flowLayout setFooterReferenceSize:CGSizeZero];
+                                                               }
+                                                           } else {
+                                                               // no data at all
+                                                               _isNoData = YES;
+                                                               [_flowLayout setFooterReferenceSize:CGSizeZero];
+                                                               if([_detailfilter objectForKey:@"query"] == nil || [[_detailfilter objectForKey:@"query"] isEqualToString:@""]){
+                                                                   [_noResultView setNoResultTitle:@"Toko ini belum memiliki produk."];
+                                                               }else{
+                                                                   [_noResultView setNoResultTitle:@"Produk yang Anda cari tidak ditemukan."];
+                                                               }
+                                                               [_collectionView addSubview:_noResultView];
+                                                               [_collectionView sendSubviewToBack:_noResultView];
+                                                               [_collectionView sendSubviewToBack:_footer];
+                                                               [_collectionView bringSubviewToFront:_header];
+                                                               
+                                                               [_refreshControl endRefreshing];
+                                                               [_refreshControl setHidden:YES];
+                                                               [_refreshControl setEnabled:NO];
+                                                           }
+                                                           
+                                                           if(_refreshControl.isRefreshing) {
+                                                               [_refreshControl endRefreshing];
+                                                               [_collectionView reloadData];
+                                                           } else  {
+                                                               [_collectionView reloadData];
+                                                           }
 
-- (NSString *)getPath:(int)tag {
-    return kTKPDDETAILSHOP_APIPATH;
-}
-
-- (NSString *)getRequestStatus:(id)result withTag:(int)tag {
-    NSDictionary *dict = ((RKMappingResult*)result).dictionary;
-    id info = [dict objectForKey:@""];
-    _searchitem = info;
-    
-    return _searchitem.status;
-}
-
-- (id)getObjectManager:(int)tag {
-    _objectmanager =  [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[SearchItem class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[SearchResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{kTKPDSEARCH_APIHASCATALOGKEY:kTKPDSEARCH_APIHASCATALOGKEY}];
-    
-    // searchs list mapping
-    RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[List class]];
-    [listMapping addAttributeMappingsFromArray:@[kTKPDSEARCH_APIPRODUCTIMAGEKEY,
-                                                 kTKPDSEARCH_APIPRODUCTIMAGEFULLKEY,
-                                                 kTKPDSEARCH_APIPRODUCTPRICEKEY,
-                                                 kTKPDSEARCH_APIPRODUCTNAMEKEY,
-                                                 kTKPDSEARCH_APIPRODUCTSHOPNAMEKEY,
-                                                 kTKPDSEARCH_APIPRODUCTTALKCOUNTKEY,
-                                                 kTKPDSEARCH_APIPRODUCTREVIEWCOUNTKEY,
-                                                 kTKPDSEARCH_APICATALOGIMAGEKEY,
-                                                 kTKPDSEARCH_APICATALOGNAMEKEY,
-                                                 kTKPDSEARCH_APICATALOGPRICEKEY,
-                                                 kTKPDSEARCH_APIPRODUCTIDKEY,
-                                                 kTKPDSEARCH_APISHOPGOLDSTATUS,
-                                                 kTKPDSEARCH_APICATALOGIDKEY]];
-    
-    // paging mapping
-    RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
-    [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDSEARCH_APIURINEXTKEY:kTKPDSEARCH_APIURINEXTKEY}];
-    
-    RKObjectMapping *departmentMapping = [RKObjectMapping mappingForClass:[DepartmentTree class]];
-    [departmentMapping addAttributeMappingsFromArray:@[kTKPDSEARCH_APIHREFKEY, kTKPDSEARCH_APITREEKEY, kTKPDSEARCH_APIDIDKEY, kTKPDSEARCH_APITITLEKEY,kTKPDSEARCH_APICHILDTREEKEY]];
-    
-    /** redirect mapping & hascatalog **/
-    RKObjectMapping *redirectMapping = [RKObjectMapping mappingForClass:[SearchRedirect class]];
-    [redirectMapping addAttributeMappingsFromDictionary: @{kTKPDSEARCH_APIREDIRECTURLKEY:kTKPDSEARCH_APIREDIRECTURLKEY,
-                                                           kTKPDSEARCH_APIDEPARTMENTIDKEY:kTKPDSEARCH_APIDEPARTMENTIDKEY,
-                                                           kTKPDSEARCH_APIHASCATALOGKEY:kTKPDSEARCH_APIHASCATALOGKEY}];
-    
-    //add list relationship
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                  toKeyPath:kTKPD_APIRESULTKEY
-                                                                                withMapping:resultMapping]];
-    
-    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDSEARCH_APILISTKEY
-                                                                                 toKeyPath:kTKPDSEARCH_APILISTKEY
-                                                                               withMapping:listMapping];
-    [resultMapping addPropertyMapping:listRel];
-    
-    // add page relationship
-    RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDSEARCH_APIPAGINGKEY
-                                                                                 toKeyPath:kTKPDSEARCH_APIPAGINGKEY
-                                                                               withMapping:pagingMapping];
-    [resultMapping addPropertyMapping:pageRel];
-    
-    // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                            method:RKRequestMethodPOST
-                                                                                       pathPattern:kTKPDSHOP_APIPATH
-                                                                                           keyPath:@""
-                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    //add response description to object manager
-    [_objectmanager addResponseDescriptor:responseDescriptor];
-    return  _objectmanager;
-}
-
-- (void)actionBeforeRequest:(int)tag {
-    
-}
-
-- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
-    NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
-    SearchItem *feed = [result objectForKey:@""];
-//    [_collectionView setContentInset:UIEdgeInsetsZero];
-    [_noResultView removeFromSuperview];
-    
-    if(_page == 1) {
-        _product = [feed.result.list mutableCopy];
-        [self addImpressionClick];
-    } else {
-        [_product addObjectsFromArray: feed.result.list];
-    }
-    
-    [TPAnalytics trackProductImpressions:feed.result.list];
-    
-    if (_product.count >0) {
-        _isNoData = NO;
-        [_noResultView removeFromSuperview];
-        _nextPageUri =  feed.result.paging.uri_next;
-        _page = [[_networkManager splitUriToPage:_nextPageUri] integerValue];
-        
-        if(!_nextPageUri || [_nextPageUri isEqualToString:@"0"]) {
-            //remove loadingview if there is no more item
-            [_flowLayout setFooterReferenceSize:CGSizeZero];
-        }
-    } else {
-        // no data at all
-        _isNoData = YES;
-        [_flowLayout setFooterReferenceSize:CGSizeZero];
-        if([_detailfilter objectForKey:@"query"] == nil || [[_detailfilter objectForKey:@"query"] isEqualToString:@""]){
-            [_noResultView setNoResultTitle:@"Toko ini belum memiliki produk."];
-        }else{
-            [_noResultView setNoResultTitle:@"Produk yang Anda cari tidak ditemukan."];
-        }
-        [_collectionView addSubview:_noResultView];
-        [_collectionView sendSubviewToBack:_noResultView];
-        [_collectionView sendSubviewToBack:_footer];
-        [_collectionView bringSubviewToFront:_header];
-        
-        [_refreshControl endRefreshing];
-        [_refreshControl setHidden:YES];
-        [_refreshControl setEnabled:NO];
-    }
-    
-    if(_refreshControl.isRefreshing) {
-        [_refreshControl endRefreshing];
-        [_collectionView reloadSections:[NSIndexSet indexSetWithIndex:0]];
-    } else  {
-        [_collectionView reloadData];
-    }
-}
-
-- (void)actionAfterFailRequestMaxTries:(int)tag {
-    _isrefreshview = NO;
-    [_refreshControl endRefreshing];
-    
-    _isFailRequest = YES;
-    [_collectionView reloadData];
+                                                       } onFailure:^(NSError *error) {
+                                                           _isrefreshview = NO;
+                                                           [_refreshControl endRefreshing];
+                                                           
+                                                           _isFailRequest = YES;
+                                                           [_collectionView reloadData];
+                                                           StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Kendala koneksi internet"] delegate:self];
+                                                           [alert show];
+                                                       }];
 }
 
 #pragma mark - Promo Request

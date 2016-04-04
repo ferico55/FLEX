@@ -14,4 +14,5 @@
 @property (strong, nonatomic) NSString *note_status;
 @property (strong, nonatomic) NSString *note_title;
 
++(RKObjectMapping*)mapping;
 @end

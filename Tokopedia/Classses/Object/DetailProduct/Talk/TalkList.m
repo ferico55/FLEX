@@ -6,10 +6,43 @@
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 
+#import "stringrestkit.h"
+#import "Talk.h"
+#import "InboxTalkViewController.h"
 #import "TalkList.h"
 #import "TalkModelView.h"
 
 @implementation TalkList
+
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[TalkList class]];
+
+    [listMapping addAttributeMappingsFromArray:@[
+                                                 TKPD_TALK_PRODUCT_NAME,
+                                                 TKPD_TALK_SHOP_ID,
+                                                 TKPD_TALK_USER_IMG,
+                                                 TKPD_TALK_PRODUCT_STATUS,
+                                                 TKPD_TALK_CREATE_TIME,
+                                                 TKPD_TALK_MESSAGE,
+                                                 TKPD_TALK_FOLLOW_STATUS,
+                                                 TKPD_TALK_READ_STATUS,
+                                                 TKPD_TALK_TOTAL_COMMENT,
+                                                 TKPD_TALK_USER_NAME,
+                                                 TKPD_TALK_PRODUCT_ID,
+                                                 TKPD_TALK_ID,
+                                                 TKPD_TALK_PRODUCT_IMAGE,
+                                                 TKPD_TALK_OWN,
+                                                 TKPD_TALK_USER_ID,
+                                                 TKPD_TALK_USER_LABEL,
+                                                 TKPD_TALK_USER_LABEL_ID
+                                                 ]];
+
+
+
+    // Relationship Mapping
+    [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CTalkUserReputation toKeyPath:CTalkUserReputation withMapping:[ReputationDetail mapping]]];
+    return listMapping;
+}
 
 - (NSString*)talk_message {
     return [_talk_message kv_decodeHTMLCharacterEntities];
