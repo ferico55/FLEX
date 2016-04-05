@@ -195,6 +195,11 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
     [self cancelLogin];
 }
 
+- (void)navigateToRegister {
+    RegisterViewController *controller = [RegisterViewController new];
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
 #pragma mark - View Actipn
 -(IBAction)tap:(id)sender
 {

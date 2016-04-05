@@ -294,6 +294,10 @@ typedef enum TagRequest {
         LoginViewController *more = [LoginViewController new];
         more.isFromTabBar = YES;
         moreNavBar = [[UINavigationController alloc]initWithRootViewController:more];
+        
+        if (_page == MainViewControllerPageRegister) {
+            [more navigateToRegister];
+        }
     }
     else{
 //        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
@@ -507,6 +511,9 @@ typedef enum TagRequest {
     
 #endif
     
+    if (_page == MainViewControllerPageRegister) {
+        _page = MainViewControllerPageLogin;
+    }
     _tabBarController.selectedIndex = _page;
     // redirect to home after login or register
 //    _tabBarController.selectedViewController=[_tabBarController.viewControllers objectAtIndex:0];
