@@ -511,12 +511,31 @@ typedef enum TagRequest {
     
 #endif
     
-    if (_page == MainViewControllerPageRegister) {
-        _page = MainViewControllerPageLogin;
-    }
-    _tabBarController.selectedIndex = _page;
+    NSInteger pageIndex = [self pageIndex];
+    
+    _tabBarController.selectedIndex = pageIndex;
     // redirect to home after login or register
 //    _tabBarController.selectedViewController=[_tabBarController.viewControllers objectAtIndex:0];
+}
+
+- (NSInteger)pageIndex {
+    switch (_page) {
+        case MainViewControllerPageLogin:
+            return 4;
+            break;
+        
+        case MainViewControllerPageRegister:
+            return 4;
+            break;
+            
+        case MainViewControllerPageSearch:
+            return 2;
+            break;
+            
+        default:
+            return 0;
+            break;
+    }
 }
 
 #pragma mark - Notification observers
