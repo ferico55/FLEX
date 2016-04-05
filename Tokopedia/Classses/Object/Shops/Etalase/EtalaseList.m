@@ -16,7 +16,7 @@
 
 +(RKObjectMapping *)mapping{
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[EtalaseList class]];
-    [mapping addAttributeMappingsFromArray:@[@"etalase_id", @"etalase_name", @"etalase_num_product", @"etalase_total_product"]];
+    [mapping addAttributeMappingsFromArray:@[@"etalase_id", @"etalase_name", @"etalase_num_product", @"etalase_total_product", @"etalase_url"]];
     return mapping;
 }
 
