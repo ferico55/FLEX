@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		2D50139230438B54812D14B9 /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */; };
+		45683A901CB36DA3004E8C85 /* RequestResolutionData.m in Sources */ = {isa = PBXBuildFile; fileRef = 45683A8F1CB36DA3004E8C85 /* RequestResolutionData.m */; };
+		45683A931CB39661004E8C85 /* StickyAlertView+NetworkErrorHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 45683A921CB39661004E8C85 /* StickyAlertView+NetworkErrorHandler.m */; };
+		45683A961CB3B668004E8C85 /* RequestResolutionAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 45683A951CB3B668004E8C85 /* RequestResolutionAction.m */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
 		7ACE9C541BB00956006C4BB7 /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */; };
@@ -2126,6 +2129,12 @@
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
 		2D733D9158C7BF957D514506 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
+		45683A8E1CB36DA3004E8C85 /* RequestResolutionData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestResolutionData.h; sourceTree = "<group>"; };
+		45683A8F1CB36DA3004E8C85 /* RequestResolutionData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestResolutionData.m; sourceTree = "<group>"; };
+		45683A911CB39661004E8C85 /* StickyAlertView+NetworkErrorHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "StickyAlertView+NetworkErrorHandler.h"; sourceTree = "<group>"; };
+		45683A921CB39661004E8C85 /* StickyAlertView+NetworkErrorHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "StickyAlertView+NetworkErrorHandler.m"; sourceTree = "<group>"; };
+		45683A941CB3B668004E8C85 /* RequestResolutionAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestResolutionAction.h; sourceTree = "<group>"; };
+		45683A951CB3B668004E8C85 /* RequestResolutionAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestResolutionAction.m; sourceTree = "<group>"; };
 		4868E459AB2A65D133732296 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tokopedia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
@@ -7578,6 +7587,8 @@
 		BBCBA5811CAD4166000C0AE2 /* Alert */ = {
 			isa = PBXGroup;
 			children = (
+				45683A911CB39661004E8C85 /* StickyAlertView+NetworkErrorHandler.h */,
+				45683A921CB39661004E8C85 /* StickyAlertView+NetworkErrorHandler.m */,
 				BBCBA5821CAD4166000C0AE2 /* AlertBaseUrl.h */,
 				BBCBA5831CAD4166000C0AE2 /* AlertBaseUrl.m */,
 				BBCBA5841CAD4166000C0AE2 /* AlertBaseUrl.xib */,
@@ -8272,6 +8283,10 @@
 				BBCBA7541CAD4166000C0AE2 /* RequestResolutionCenter.m */,
 				BBCBA7551CAD4166000C0AE2 /* ResolutionCenterDetail */,
 				BBCBA7671CAD4167000C0AE2 /* string_inbox_resolution_center.h */,
+				45683A8E1CB36DA3004E8C85 /* RequestResolutionData.h */,
+				45683A8F1CB36DA3004E8C85 /* RequestResolutionData.m */,
+				45683A941CB3B668004E8C85 /* RequestResolutionAction.h */,
+				45683A951CB3B668004E8C85 /* RequestResolutionAction.m */,
 			);
 			path = InboxResolutionCenter;
 			sourceTree = "<group>";
@@ -12786,6 +12801,7 @@
 				BBCBAE941CAD416C000C0AE2 /* CategoryDetail.m in Sources */,
 				BBCBAF551CAD416C000C0AE2 /* Paging.m in Sources */,
 				BBCBAEF81CAD416C000C0AE2 /* HotlistDetailResult.m in Sources */,
+				45683A901CB36DA3004E8C85 /* RequestResolutionData.m in Sources */,
 				BBCBB1371CAD416C000C0AE2 /* FavoritedShopCell.m in Sources */,
 				BBCBAED31CAD416C000C0AE2 /* Favorited.m in Sources */,
 				BBCBB0581CAD416C000C0AE2 /* RSKPlaceholderTextView.swift in Sources */,
@@ -12947,6 +12963,7 @@
 				BBCBB30B1CAD416C000C0AE2 /* TransactionCCDetailViewController.m in Sources */,
 				BBCBB0D61CAD416C000C0AE2 /* ContactUsWireframe.m in Sources */,
 				BBCBB2241CAD416C000C0AE2 /* ReputationMyReviewViewController.m in Sources */,
+				45683A931CB39661004E8C85 /* StickyAlertView+NetworkErrorHandler.m in Sources */,
 				BBCBAEC01CAD416C000C0AE2 /* RatingList.m in Sources */,
 				BBCBAEE21CAD416C000C0AE2 /* GoogleDistanceMatrixElement.m in Sources */,
 				BBCBB3211CAD416C000C0AE2 /* TxOrderStatusDetailViewController.m in Sources */,
@@ -13338,6 +13355,7 @@
 				BBCBB0AB1CAD416C000C0AE2 /* CatalogProductViewController.m in Sources */,
 				BBCBAFF61CAD416C000C0AE2 /* ListRekeningBank.m in Sources */,
 				BBCBAEF01CAD416C000C0AE2 /* HotlistBannerQuery.m in Sources */,
+				45683A961CB3B668004E8C85 /* RequestResolutionAction.m in Sources */,
 				BBCBAF731CAD416C000C0AE2 /* BankAccountFormList.m in Sources */,
 				BBCBAF601CAD416C000C0AE2 /* ChangePhoneNumber.m in Sources */,
 				BBCBAF271CAD416C000C0AE2 /* InboxTicketList.m in Sources */,

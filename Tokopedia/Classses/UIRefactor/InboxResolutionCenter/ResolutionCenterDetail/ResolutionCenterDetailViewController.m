@@ -37,6 +37,7 @@
 #import "string_settings.h"
 #import "AddressFormList.h"
 #import "RequestResoInputAddress.h"
+#import "RequestResolutionData.h"
 
 #define TAG_ALERT_CANCEL_COMPLAIN 10
 #define TAG_CHANGE_SOLUTION 11
@@ -100,11 +101,7 @@
     ResolutionConversation *_addedLastConversation;
     
     NavigateViewController *_navigate;
-    
-    TokopediaNetworkManager *_networkManager;
-    
-    NSString *_actionRequest;
-    
+        
     RequestResolutionCenter *_requestResolutionCenter;
     
     GeneratedHost *_generatedHost;
@@ -149,12 +146,9 @@
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
     [backBarButtonItem setTintColor:[UIColor whiteColor]];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
-   
-    _networkManager = [TokopediaNetworkManager new];
-    _networkManager.delegate = self;
     
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone  || _isNeedRequestListDetail) {
-        [self requestWithAction:ACTION_GET_RESOLUTION_CENTER_DETAIL];
+        [self doRequestDetail];
     }
     
     _inputConversation.layer.cornerRadius = 2;
@@ -179,9 +173,6 @@
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [_networkManager requestCancel];
-    _networkManager.delegate = nil;
-    _networkManager = nil;
 }
 
 
@@ -228,14 +219,12 @@
 {
     [super viewWillAppear:animated];
     self.title = @"Pusat Resolusi";
-    _networkManager.delegate = self;
 }
 
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     self.title = @"";
-    _networkManager.delegate = nil;
 }
 
 
@@ -337,7 +326,7 @@
 - (IBAction)tap:(id)sender {
     UIButton *button = (UIButton*)sender;
     if (button == _loadMoreButton) {
-        [self requestWithAction:ACTION_GET_RESOLUTION_CENTER_DETAIL_LOAD_MORE];
+        [self doRequestShowMoreDetail];
     }
     if (button == _inputConversation) {
         ResolutionCenterInputViewController *vc = [ResolutionCenterInputViewController new];
@@ -1066,7 +1055,7 @@
 
 -(void)refreshRequest
 {
-    [self requestWithAction:ACTION_GET_RESOLUTION_CENTER_DETAIL];
+    [self doRequestDetail];
 }
 
 #pragma mark - String
@@ -1163,26 +1152,76 @@
 }
 
 #pragma mark - Request
--(id)getObjectManager:(int)tag
-{
-    RKObjectManager *objectManager = [RKObjectManager sharedClient];
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[ResolutionCenterDetail mapping]
-                                                                                            method:RKRequestMethodPOST
-                                                                                       pathPattern:API_PATH_INBOX_RESOLUTION_CENTER
-                                                                                           keyPath:@""
-                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
+-(void)doRequestList{
     
-    [objectManager addResponseDescriptor:responseDescriptor];
-    return objectManager;
 }
 
--(NSString *)getPath:(int)tag
-{
-    return API_PATH_INBOX_RESOLUTION_CENTER;
+-(void)doRequestDetail{
+    
+    _tableView.tableFooterView = _footerView;
+    [_act startAnimating];
+    
+    _loadMoreButton.enabled = NO;
+    
+    [RequestResolutionData fetchDataDetailResolutionID:_resolutionID success:^(ResolutionCenterDetailResult *data) {
+        
+        [_listResolutionConversation removeAllObjects];
+        _resolutionDetail = data.detail;
+        [_listResolutionConversation addObjectsFromArray:data.detail.resolution_conversation];
+        
+        if (data.detail.resolution_can_conversation == 1) {
+            _replayConversationView.hidden = NO;
+            _tableView.contentInset = UIEdgeInsetsMake(0, 0, 50, 0);
+        }
+        else
+        {
+            _replayConversationView.hidden = YES;
+            _tableView.contentInset = UIEdgeInsetsZero;
+        }
+        
+        if (data.detail.resolution_can_conversation == 1) {
+            _addedLastConversation = [ResolutionConversation new];
+            _addedLastConversation.flag_received = [data.detail.resolution_last.last_flag_received integerValue];
+            _addedLastConversation.system_flag = 1;
+            _addedLastConversation.action_by = [data.detail.resolution_last.last_action_by integerValue];
+            _addedLastConversation.solution = data.detail.resolution_last.last_solution;
+            _addedLastConversation.solution_flag = 1;
+            _addedLastConversation.isAddedConversation = [self isNeedAddList]?YES:NO;
+            _addedLastConversation.trouble_type = @(0);
+            _addedLastConversation.refund_amt_idr = data.detail.resolution_last.last_refund_amt_idr;
+            _addedLastConversation.solution_string = data.detail.resolution_last.last_solution_string;
+            _addedLastConversation.trouble_string = data.detail.resolution_last.last_trouble_string;
+            [_listResolutionConversation addObject:_addedLastConversation];
+        }
+        
+        _tableView.tableHeaderView = _headerView;
+        [self setHeaderData];
+        _tableView.tableFooterView = nil;
+        [_act stopAnimating];
+        _loadMoreButton.enabled = YES;
+        
+        if (_listResolutionConversation.count >0) {
+            _isNodata = NO;
+        }
+        
+        [_tableView reloadData];
+        
+    } failure:^(NSError *error) {
+        
+        _tableView.tableFooterView = nil;
+        [_act stopAnimating];
+        _loadMoreButton.enabled = YES;
+        
+    }];
 }
 
--(NSDictionary *)getParameter:(int)tag
-{
+-(void)doRequestShowMoreDetail{
+    
+    _tableView.tableFooterView = _footerView;
+    [_act startAnimating];
+    
+    _loadMoreButton.enabled = NO;
+    
     NSString *startTime = @"";
     NSString *lastTime = @"";
     
@@ -1191,105 +1230,26 @@
         lastConversation = _listResolutionConversation[_listResolutionConversation.count-2];
     }
     
-    if ([_actionRequest isEqualToString:ACTION_GET_RESOLUTION_CENTER_DETAIL_LOAD_MORE]) {
-        startTime = ((ResolutionConversation*)_listResolutionConversation[0]).create_time?:@"";
-        lastTime = lastConversation.create_time?:@"";
-    }
+    startTime = ((ResolutionConversation*)_listResolutionConversation[0]).create_time?:@"";
+    lastTime = lastConversation.create_time?:@"";
     
-    NSDictionary* param = @{API_ACTION_KEY : _actionRequest,
-                            API_RESOLUTION_ID_KEY : _resolutionID?:@"",
-                            API_START_UPDATE_TIME_KEY :startTime,
-                            API_LAST_UPDATE_TIME_KEY :lastTime
-                            };
-    
-    return param;
-}
-
--(void)actionBeforeRequest:(int)tag
-{
-    
-    _tableView.tableFooterView = _footerView;
-    [_act startAnimating];
-    
-    _loadMoreButton.enabled = NO;
-}
-
--(NSString *)getRequestStatus:(id)result withTag:(int)tag
-{
-    NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
-    id stat = [resultDict objectForKey:@""];
-    ResolutionCenterDetail *resolution = stat;
-    
-    return resolution.status;
-}
-
--(void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag
-{
-    NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
-    id stat = [result objectForKey:@""];
-    ResolutionCenterDetail *resolution = stat;
-    
-    if(resolution.message_error)
-    {
-        NSArray *array = resolution.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
-        [alert show];
-    }
-    else{
-        
-        if ([_actionRequest isEqualToString:ACTION_GET_RESOLUTION_CENTER_DETAIL]) {
-            
+    [RequestResolutionData fetchDataShowMoreResolutionID:_resolutionID hasSolution:@"" lastUt:lastTime startUt:startTime success:^(ResolutionCenterDetailResult *data) {
+        ResolutionConversation *firstConversation = [_listResolutionConversation firstObject];
+        ResolutionConversation *lastConversation = [_listResolutionConversation lastObject];
+        if (lastConversation == _addedLastConversation) {
+            lastConversation = _listResolutionConversation [_listResolutionConversation.count-2];
             [_listResolutionConversation removeAllObjects];
-            _resolutionDetail = resolution.result.detail;
-            [_listResolutionConversation addObjectsFromArray:resolution.result.detail.resolution_conversation];
-            
-            if (resolution.result.detail.resolution_can_conversation == 1) {
-                _replayConversationView.hidden = NO;
-                _tableView.contentInset = UIEdgeInsetsMake(0, 0, 50, 0);
-            }
-            else
-            {
-                _replayConversationView.hidden = YES;
-                _tableView.contentInset = UIEdgeInsetsZero;
-            }
-            
-            if (resolution.result.detail.resolution_can_conversation == 1) {
-                _addedLastConversation = [ResolutionConversation new];
-                _addedLastConversation.flag_received = [resolution.result.detail.resolution_last.last_flag_received integerValue];
-                _addedLastConversation.system_flag = 1;
-                _addedLastConversation.action_by = [resolution.result.detail.resolution_last.last_action_by integerValue];
-                _addedLastConversation.solution = resolution.result.detail.resolution_last.last_solution;
-                _addedLastConversation.solution_flag = 1;
-                _addedLastConversation.isAddedConversation = [self isNeedAddList]?YES:NO;
-                _addedLastConversation.trouble_type = @(0);
-                _addedLastConversation.refund_amt_idr = resolution.result.detail.resolution_last.last_refund_amt_idr;
-                _addedLastConversation.solution_string = resolution.result.detail.resolution_last.last_solution_string;
-                _addedLastConversation.trouble_string = resolution.result.detail.resolution_last.last_trouble_string;
-                [_listResolutionConversation addObject:_addedLastConversation];
-            }
-            
-            _tableView.tableHeaderView = _headerView;
-            [self setHeaderData];
+            [_listResolutionConversation addObject:firstConversation];
+            [_listResolutionConversation addObjectsFromArray:data.resolution_conversation];
+            [_listResolutionConversation addObject:lastConversation];
+            [_listResolutionConversation addObject:_addedLastConversation];
         }
         else
         {
-            ResolutionConversation *firstConversation = [_listResolutionConversation firstObject];
-            ResolutionConversation *lastConversation = [_listResolutionConversation lastObject];
-            if (lastConversation == _addedLastConversation) {
-                lastConversation = _listResolutionConversation [_listResolutionConversation.count-2];
-                [_listResolutionConversation removeAllObjects];
-                [_listResolutionConversation addObject:firstConversation];
-                [_listResolutionConversation addObjectsFromArray:resolution.result.resolution_conversation];
-                [_listResolutionConversation addObject:lastConversation];
-                [_listResolutionConversation addObject:_addedLastConversation];
-            }
-            else
-            {
-                [_listResolutionConversation removeAllObjects];
-                [_listResolutionConversation addObject:firstConversation];
-                [_listResolutionConversation addObjectsFromArray:resolution.result.resolution_conversation];
-                [_listResolutionConversation addObject:lastConversation];
-            }
+            [_listResolutionConversation removeAllObjects];
+            [_listResolutionConversation addObject:firstConversation];
+            [_listResolutionConversation addObjectsFromArray:data.resolution_conversation];
+            [_listResolutionConversation addObject:lastConversation];
         }
         
         if (_listResolutionConversation.count >0) {
@@ -1297,10 +1257,14 @@
         }
         
         [_tableView reloadData];
-    }
-    _tableView.tableFooterView = nil;
-    [_act stopAnimating];
-    _loadMoreButton.enabled = YES;
+        _tableView.tableFooterView = nil;
+        [_act stopAnimating];
+        _loadMoreButton.enabled = YES;
+    } failure:^(NSError *error) {
+        _tableView.tableFooterView = nil;
+        [_act stopAnimating];
+        _loadMoreButton.enabled = YES;
+    }];
 }
 
 -(UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
@@ -1337,12 +1301,6 @@
 {
     _tableView.tableFooterView = nil;
     [_act stopAnimating];
-}
-
--(void)requestWithAction:(NSString*)action
-{
-    _actionRequest = action;
-    [_networkManager doRequest];
 }
 
 
@@ -1674,7 +1632,7 @@
     _indexPath = indexPath;
     _resolutionID = resolutionID;
     
-    [self requestWithAction:ACTION_GET_RESOLUTION_CENTER_DETAIL];
+    [self doRequestDetail];
 }
 
 
