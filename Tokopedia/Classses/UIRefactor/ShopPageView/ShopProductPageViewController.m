@@ -53,6 +53,8 @@
 #import "ShopProductPageList.h"
 #import "ShopPageRequest.h"
 
+#import "EtalaseViewController.h"
+
 typedef NS_ENUM(NSInteger, UITableViewCellType) {
     UITableViewCellTypeOneColumn,
     UITableViewCellTypeTwoColumn,
@@ -609,6 +611,7 @@ RetryViewDelegate
 
 - (IBAction)tapToEtalase:(id)sender {
     NSIndexPath *indexpath = [_detailfilter objectForKey:kTKPDDETAILETALASE_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:1 inSection:0];
+    /*
     MyShopEtalaseFilterViewController *vc =[MyShopEtalaseFilterViewController new];
     vc.data = @{kTKPDDETAIL_APISHOPIDKEY:@([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0),
                 @"object_selected":[_detailfilter objectForKey:DATA_ETALASE_KEY]?:@0,
@@ -616,8 +619,12 @@ RetryViewDelegate
                 @"product_etalase_id" : [_detailfilter objectForKey:@"product_etalase_id"]?:@"",
                 kTKPDFILTER_DATAINDEXPATHKEY: indexpath};
     vc.delegate = self;
+     */
+    EtalaseViewController *vc = [EtalaseViewController new];
+    NSString* shopId = [_data objectForKey:kTKPDDETAIL_APISHOPIDKEY];
+    [vc setShowOtherEtalase:YES];
+    [vc setShopId:shopId];
     UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
-    self.navigationController.navigationBar.alpha = 0;
     [self.navigationController presentViewController:nav animated:YES completion:nil];
 }
 
