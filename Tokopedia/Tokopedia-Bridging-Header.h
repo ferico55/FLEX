@@ -14,3 +14,4 @@
 #import "MiniSlide.h"
 #import <QuartzCore/QuartzCore.h>
 #import <EAIntroView/EAIntroView.h>
+#import "MainViewController.h"

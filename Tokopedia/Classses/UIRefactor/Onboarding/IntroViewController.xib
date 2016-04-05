@@ -475,6 +475,9 @@ lewat aplikasi Tokopedia!</string>
                             <real key="value" value="3"/>
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="btnSearchTapped:" destination="-1" eventType="touchUpInside" id="pT4-vp-R2i"/>
+                    </connections>
                 </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K5h-vk-9RE">
                     <rect key="frame" x="36" y="418" width="248" height="44"/>
@@ -489,6 +492,9 @@ lewat aplikasi Tokopedia!</string>
                             <state key="normal" title="I'm New">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <connections>
+                                <action selector="btnRegisterTapped:" destination="-1" eventType="touchUpInside" id="uhe-23-sjQ"/>
+                            </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rbf-Ej-xB8">
                             <rect key="frame" x="0.0" y="0.0" width="122" height="44"/>
@@ -504,6 +510,9 @@ lewat aplikasi Tokopedia!</string>
                                     <real key="value" value="3"/>
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="btnLoginTapped:" destination="-1" eventType="touchUpInside" id="L4x-3i-mam"/>
+                            </connections>
                         </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bcb-TM-8mW">
                             <rect key="frame" x="122" y="0.0" width="5" height="44"/>
