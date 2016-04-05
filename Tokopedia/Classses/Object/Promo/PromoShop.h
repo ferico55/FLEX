@@ -7,18 +7,19 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "PromoShopImage.h"
 
 @interface PromoShop : NSObject
 
-@property (strong, nonatomic) NSString *shop_uri_ad;
-@property (strong, nonatomic) NSString *shop_image;
-@property (strong, nonatomic) NSString *ad_sem_key;
-@property (strong, nonatomic) NSString *shop_location;
-@property (strong, nonatomic) NSString *shop_id;
-@property (strong, nonatomic) NSString *shop_name;
-@property (strong, nonatomic) NSString *shop_uri;
-@property (strong, nonatomic) NSString *ad_r;
-@property (strong, nonatomic) NSString *ad_key;
-@property (strong, nonatomic) NSArray *product_images;
+@property (strong, nonatomic) NSString* shop_id;
+@property (strong, nonatomic) NSString* name;
+@property (strong, nonatomic) NSString* domain;
+@property (strong, nonatomic) NSString* location;
+@property (strong, nonatomic) NSString* lucky_shop;
+@property (strong, nonatomic) NSString* uri;
+@property (strong, nonatomic) PromoShopImage* image_shop;
+@property (nonatomic) BOOL gold_shop;
+
++(RKObjectMapping*) mapping;
 
 @end

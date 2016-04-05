@@ -7,9 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SearchAWSProduct.h"
 
-@interface ImageSearchResponseData : NSObject
+@interface ImageSearchResponseData : NSObject <TKPObjectMapping>
 
 @property (strong, nonatomic) NSArray *similar_prods;
+
 
 @end

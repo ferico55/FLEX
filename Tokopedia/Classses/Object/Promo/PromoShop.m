@@ -10,12 +10,25 @@
 
 @implementation PromoShop
 
-- (NSString *)shop_name {
-    return [_shop_name kv_decodeHTMLCharacterEntities];
++(RKObjectMapping *)mapping{
+    RKObjectMapping* promoShopMapping = [RKObjectMapping mappingForClass:[PromoShop class]];
+    [promoShopMapping addAttributeMappingsFromDictionary:@{@"id":@"shop_id"}];
+    [promoShopMapping addAttributeMappingsFromArray:@[@"name",
+                                                      @"domain",
+                                                      @"location",
+                                                      @"gold_shop",
+                                                      @"lucky_shop",
+                                                      @"uri"
+                                                      ]];
+    [promoShopMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"image_shop"
+                                                                                     toKeyPath:@"image_shop"
+                                                                                   withMapping:[PromoShopImage mapping]]];
+    
+    return promoShopMapping;
 }
 
-- (NSString *)ad_key {
-    return _ad_key?:@"";
+- (NSString *)_name {
+    return [_name kv_decodeHTMLCharacterEntities];
 }
 
 @end

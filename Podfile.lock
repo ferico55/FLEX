@@ -19,6 +19,7 @@ PODS:
   - EAIntroView (2.8.1):
     - EARestrictedScrollView (~> 0.2.0)
   - EARestrictedScrollView (0.2.0)
+  - FLEX (2.1.1)
   - Google/Analytics (1.2.1):
     - Google/Core
     - GoogleAnalytics (~> 3.12)
@@ -65,12 +66,14 @@ PODS:
   - SOCKit (1.1)
   - TransitionKit (1.1.1)
   - TTTAttributedLabel (1.13.4)
+  - Tweaks (2.0.0)
   - UITableView+FDTemplateLayoutCell (1.4)
 
 DEPENDENCIES:
   - AppsFlyer-SDK (= 4.3.7)
   - BlocksKit (~> 2.2.5)
   - EAIntroView (~> 2.8.0)
+  - FLEX (~> 2.0)
   - Google/Analytics
   - GoogleAppIndexing
   - GoogleMaps
@@ -81,7 +84,8 @@ DEPENDENCIES:
   - Reveal-iOS-SDK
   - Rollout.io (~> 0.14.5)
   - TTTAttributedLabel
-  - UITableView+FDTemplateLayoutCell
+  - Tweaks (~> 2.0.0)
+  - UITableView+FDTemplateLayoutCell (~> 1.4)
 
 SPEC CHECKSUMS:
   AFNetworking: cf8e418e16f0c9c7e5c3150d019a3c679d015018
@@ -89,6 +93,7 @@ SPEC CHECKSUMS:
   BlocksKit: 7f422b971407001178d181a43b99014ea2591fe6
   EAIntroView: 73abfa89caa311f450af876421d950b96679e845
   EARestrictedScrollView: f86d61e16c61d3e93c84f8e96e83122a2a3b7631
+  FLEX: 27b768fcae23a313a1eb115076d429180ca9b472
   Google: fd33b5fa40fa3aaee5176de49c873a74e3d11dce
   GoogleAnalytics: fcf1f1cad57ae1a9a53520018f0f680ceeeb8b49
   GoogleAppIndexing: aa25aeb2eed109032529e88f99fd3f512cdfc685
@@ -106,6 +111,7 @@ SPEC CHECKSUMS:
   SOCKit: c7376ac262bea9115b8f749358f762522a47d392
   TransitionKit: aec4d65b2be460fec0db04f905e8bedca601d669
   TTTAttributedLabel: 0a2ac7b2dd726d32a070dafb01446026b11e624f
+  Tweaks: 524fa47636cce3bf3a4d9156e980f10ae9480e81
   UITableView+FDTemplateLayoutCell: 234e1582bcc4e18461af91155123bb96538ed030
 
 COCOAPODS: 0.38.2

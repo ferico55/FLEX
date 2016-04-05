@@ -10,10 +10,11 @@
 #import "ImageSearchResponseData.h"
 #import "ImageSearchProduct.h"
 
-@interface ImageSearchResponse : NSObject
+@interface ImageSearchResponse : NSObject <TKPObjectMapping>
 
 @property (strong, nonatomic) NSString *status;
 @property (strong, nonatomic) NSString *config;
 @property (strong, nonatomic) ImageSearchResponseData *data;
+
 
 @end

@@ -14,6 +14,7 @@
 #import "PromoProduct.h"
 #import "TransactionCartList.h"
 #import "ProductDetail.h"
+#import "PromoResult.h"
 
 @interface TPAnalytics ()
 
@@ -194,14 +195,14 @@
     [analytics.dataLayer push:data];
 }
 
-+ (void)trackPromoClick:(PromoProduct *)product {
-    if (!product) return;
++ (void)trackPromoClick:(PromoResult *)promoResult {
+    if (!promoResult || !promoResult.product) return;
     TPAnalytics *analytics = [[self alloc] init];
     NSDictionary *data = @{
         @"event" : @"promotionClick",
         @"ecommerce" : @{
             @"promoClick" : @{
-                @"promotions" : @[product.productFieldObjects]
+                @"promotions" : @[promoResult.productFieldObjects]
             }
         }
     };

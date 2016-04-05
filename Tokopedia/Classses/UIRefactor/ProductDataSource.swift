@@ -17,13 +17,13 @@ import UIKit
     static let productCellIdentifier: String = "ProductCellIdentifier"
     
     var _collectionView: UICollectionView!
-    var _products: Array<SearchAWSProduct>!
+    var _products: Array<Array<SearchAWSProduct>>!
     var _supplementaryDataSource: CollectionViewSupplementaryDataSource!
 
     init(collectionView:UICollectionView, supplementaryDataSource: CollectionViewSupplementaryDataSource?) {
         super.init()
         _supplementaryDataSource = supplementaryDataSource
-        _products = Array<SearchAWSProduct>()
+        _products = Array<Array<SearchAWSProduct>>()
         _collectionView = collectionView
         _collectionView.dataSource = self
         
@@ -35,28 +35,29 @@ import UIKit
         
         let retryNib = UINib.init(nibName: "RetryCollectionReusableView", bundle: nil)
         _collectionView.registerNib(retryNib, forCellWithReuseIdentifier: "RetryView")
+        
+        let promoNib = UINib.init(nibName: "PromoCollectionReusableView", bundle: nil)
+        _collectionView.registerNib(promoNib, forCellWithReuseIdentifier: "PromoCollectionReusableView")
     }
     
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        return 1
+        return _products.count
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return _products.count
+        return _products[section].count
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(ProductDataSource.productCellIdentifier, forIndexPath: indexPath) as! ProductCell
         
-        let product = _products[indexPath.row]
+        let product = _products[indexPath.section][indexPath.row]
         cell.setViewModel(product.viewModel)
         return cell
     }
     
     func addProducts(products:Array<SearchAWSProduct>) {
-        let indexPaths = indexPathForInsertions(products)
-        _products.appendContentsOf(products)
-        //_collectionView.insertItemsAtIndexPaths(indexPaths)
+        _products.append(products)
         _collectionView.reloadData()
     }
     
@@ -71,7 +72,8 @@ import UIKit
     }
 
     func replaceProductsWith(products:Array<SearchAWSProduct>) {
-        _products = products
+        _products.removeAll()
+        _products.append(products)
         _collectionView.reloadData()
     }
     
@@ -80,8 +82,8 @@ import UIKit
         _collectionView.reloadData()
     }
     
-    func productAtIndex(index: Int) -> SearchAWSProduct {
-        return _products[index]
+    func productAtIndex(indexPath:NSIndexPath) -> SearchAWSProduct {
+        return _products[indexPath.section][indexPath.row]
     }
     
     func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
