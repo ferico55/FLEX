@@ -8,12 +8,12 @@
 
 import UIKit
 
-class ImagePickerController: NSObject {
+@objc class ImagePickerController: NSObject {
     
     class func showImagePicker(viewController:UIViewController, assetType: DKImagePickerControllerAssetType,
         allowMultipleSelect: Bool,
-        sourceType: DKImagePickerControllerSourceType = [.Camera, .Photo],
         showCancel:Bool,
+        showCamera:Bool,
         maxSelected:Int,
         selectedAssets:NSArray?,
         completion: (assets: [DKAsset]) -> Void){
@@ -22,7 +22,11 @@ class ImagePickerController: NSObject {
             pickerController.assetType = assetType
             pickerController.showCancelButton = showCancel
             pickerController.allowMultipleTypes = allowMultipleSelect
-            pickerController.sourceType = sourceType
+            if (showCamera){
+                pickerController.sourceType = [.Camera, .Photo]
+            } else {
+                pickerController.sourceType = [.Photo]
+            }
             pickerController.maxSelectableCount = maxSelected
             if (selectedAssets?.count > 0 && selectedAssets != nil){
                 pickerController.selectedAssets = selectedAssets as! [DKAsset]

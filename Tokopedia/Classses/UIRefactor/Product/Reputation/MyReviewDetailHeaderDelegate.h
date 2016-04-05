@@ -10,5 +10,5 @@
 
 @protocol MyReviewDetailHeaderDelegate <NSObject>
 - (void)didTapRevieweeNameWithID:(NSString*)revieweeID;
-- (void)didTapRevieweeReputation:(id)sender role:(NSString*)role;
+- (void)didTapRevieweeReputation:(id)sender role:(NSString*)role atView:(UIView*)view;
 @end

@@ -17,17 +17,23 @@
 #import "Tokopedia-Swift.h"
 #import "ReviewRequest.h"
 #import "MyReviewDetailViewController.h"
+#import "ReviewImageAttachment.h"
+#import "NavigateViewController.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface GiveReviewResponseViewController () <
     UICollectionViewDelegateFlowLayout,
-    RSKGrowingTextViewDelegate
+    RSKGrowingTextViewDelegate,
+    DetailReputationReviewComponentDelegate
 >
 {
     MyReviewDetailDataManager *_dataManager;
     CMPopTipView *_cmPopTipView;
     
     ReviewRequest *_reviewRequest;
+    NavigateViewController *_navigator;
+    
+    NSInteger _count;
     
     IBOutlet UICollectionView *_collectionView;
 }
@@ -52,14 +58,6 @@
 @implementation GiveReviewResponseViewController {
 }
 
-- (void)viewDidLayoutSubviews {
-//    [super viewDidLayoutSubviews];
-    CGRect frame = _headerView.frame;
-    frame.size.width = self.view.bounds.size.width;
-    _headerView.frame = frame;
-    [_headerView sizeToFit];
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -67,11 +65,21 @@
                                                                         role:_inbox.role
                                                                     isDetail:YES
                                                                   imageCache:_imageCache
-                                                                    delegate:nil];
+                                                                    delegate:self];
     
     
     _collectionView.delegate = self;
     _collectionView.alwaysBounceVertical = YES;
+    
+    CGRect frame = _collectionView.frame;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        frame.size.width = [[self.navigationController viewControllers] firstObject].view.bounds.size.width;
+    } else {
+        frame.size.width = [[UIScreen screens] lastObject].bounds.size.width;
+    }
+    
+    _collectionView.frame = frame;
+    [_collectionView sizeToFit];
     
     [_dataManager replaceReviews:@[_review]];
     
@@ -91,8 +99,12 @@
     _textView.layer.borderWidth = 0.5f;
     _textView.layer.borderColor = [UIColor lightGrayColor].CGColor;
     
-    CGRect frame = _headerView.frame;
-    frame.size.width = self.view.frame.size.width;
+    frame = _headerView.frame;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        frame.size.width = [[self.navigationController viewControllers] firstObject].view.bounds.size.width;
+    } else {
+        frame.size.width = [[UIScreen screens] lastObject].bounds.size.width;
+    }
     _headerView.frame = frame;
     [_headerView sizeToFit];
     
@@ -108,16 +120,28 @@
                                              selector:@selector(keyboardWillShow:)
                                                  name:UIKeyboardWillShowNotification
                                                object:nil];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillHide:)
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
     
     _reviewRequest = [ReviewRequest new];
+    
+    _navigator = [NavigateViewController new];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardWillShowNotification
+                                                  object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardWillHideNotification
+                                                  object:nil];
 }
 
 #pragma mark - Actions
@@ -186,10 +210,6 @@
     }
 }
 
-- (void)resignKeyboardView:(id)sender {
-    [_textView resignFirstResponder];
-}
-
 #pragma mark - Collection View Delegate
 - (CGSize)collectionView:(UICollectionView *)collectionView
                   layout:(UICollectionViewLayout *)collectionViewLayout
@@ -210,20 +230,48 @@
 }
 
 #pragma mark - Text View Delegate
-//- (void)growingTextView:(HPGrowingTextView *)growingTextView willChangeHeight:(float)height {
-//    float diff = growingTextView.frame.size.height - height;
-//    
-//    CGRect aRect = _giveResponseView.frame;
-//    aRect.size.height -= diff;
-//    aRect.origin.y += diff;
-//    
-//    _giveResponseView.frame = aRect;
-//}
-
 - (void)textViewDidBeginEditing:(UITextView *)textView {
     [_collectionView scrollToBottomAnimated:YES];
 }
 
+#pragma mark - Scroll View Delegate
+- (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView {
+    [_giveResponseView resignFirstResponder];
+}
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    [_giveResponseView resignFirstResponder];
+}
+
+#pragma mark - Reputation Detail Cells Delegate
+- (void)didTapAttachedImages:(DetailReputationReview *)review withIndex:(NSInteger)index {
+    NSMutableArray *descriptionArray = [NSMutableArray new];
+    NSMutableArray<UIImageView*> *imageArray = [NSMutableArray new];
+    
+    _count = 0;
+    
+    for (ReviewImageAttachment *imageAttachment in review.review_image_attachment) {
+        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:imageAttachment.uri_large]];
+        [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
+        UIImageView *imageView = [UIImageView new];
+        [imageView setImageWithURLRequest:request
+                         placeholderImage:[UIImage imageNamed:@"attached_image_placeholder.png"]
+                                  success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                                      _count++;
+                                      [imageView setImage:image];
+                                      [descriptionArray addObject:imageAttachment.desc?:@""];
+                                      [imageArray addObject:imageView];
+                                      if (_count == review.review_image_attachment.count) {
+                                          [_navigator navigateToShowImageFromViewController:self withImageDictionaries:imageArray imageDescriptions:descriptionArray indexImage:index];
+                                      }
+                                  }
+                                  failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+                                      
+                                      
+                                  }];
+        
+    }
+}
 
 #pragma mark - Keyboard Notification
 - (void)keyboardWillShow:(NSNotification*)notification {

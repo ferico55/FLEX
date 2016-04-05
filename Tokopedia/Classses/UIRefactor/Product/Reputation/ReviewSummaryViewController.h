@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "DetailMyReviewReputationViewController.h"
 
-@class DetailReputationReview, DetailMyReviewReputationViewController;
+@class DetailReputationReview, MyReviewDetailViewController;
 
 @protocol ReviewSummaryDelegate <NSObject>
 @optional
@@ -19,8 +19,8 @@
 @interface ReviewSummaryViewController : UIViewController
 
 @property (nonatomic, weak) IBOutlet id<ReviewSummaryDelegate> delegate;
-@property (nonatomic, weak) DetailMyReviewReputationViewController *detailMyReviewReputation;
-@property (nonatomic, weak) DetailReputationReview *detailReputationReview;
+@property (nonatomic, weak) DetailReputationReview *review;
+@property (nonatomic, weak) MyReviewDetailViewController *myReviewDetailViewController;
 
 @property BOOL isEdit;
 @property BOOL hasAttachedImages;

@@ -7,18 +7,22 @@
 //
 
 #import "InboxReviewCell.h"
+#import "NavigationHelper.h"
 
 @implementation InboxReviewCell
 
 - (void)awakeFromNib {
     // Initialization code
+    [_theirUserName setUserInteractionEnabled:[NavigationHelper shouldDoDeepNavigation]];
+    [_theirUserImage setUserInteractionEnabled:[NavigationHelper shouldDoDeepNavigation]];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
     _inboxReviewCellView.backgroundColor = selected ? [UIColor colorWithRed:232/255.0 green:245/255.0 blue:233/255.0 alpha:1] : [UIColor whiteColor];
+}
+
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
+    _inboxReviewCellView.backgroundColor = highlighted ? [UIColor colorWithRed:232/255.0 green:245/255.0 blue:233/255.0 alpha:1] : [UIColor whiteColor];
 }
 
 #pragma mark - Action

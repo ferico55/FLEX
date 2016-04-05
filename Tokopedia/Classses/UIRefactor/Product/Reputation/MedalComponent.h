@@ -11,5 +11,8 @@
 #import <ComponentKit/ComponentKit.h>
 
 @interface MedalComponent : CKCompositeComponent
-+ (instancetype)newMedalWithLevel:(NSInteger)level set:(NSInteger)set imageCache:(ImageStorage*)imageCache;
++ (instancetype)newMedalWithLevel:(NSInteger)level
+                              set:(NSInteger)set
+                       imageCache:(ImageStorage*)imageCache
+                         selector:(SEL)sel;
 @end

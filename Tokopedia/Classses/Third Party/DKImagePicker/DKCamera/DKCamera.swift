@@ -299,6 +299,9 @@ public class DKCamera: UIViewController {
         
         self.setupCurrentDevice()
         
+        // Setup the session Preset
+        self.captureSession.sessionPreset = AVCaptureSessionPresetPhoto
+        
         let stillImageOutput = AVCaptureStillImageOutput()
         if self.captureSession.canAddOutput(stillImageOutput) {
             self.captureSession.addOutput(stillImageOutput)

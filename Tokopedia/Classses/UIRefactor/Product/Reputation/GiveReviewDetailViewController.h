@@ -9,11 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "DetailMyReviewReputationViewController.h"
 
-@class DetailReputationReview, GiveReviewRatingViewController, DetailMyReviewReputationViewController;
+@class DetailReputationReview, GiveReviewRatingViewController, MyReviewDetailViewController;
 
 @interface GiveReviewDetailViewController : UIViewController
-@property (nonatomic, weak) DetailMyReviewReputationViewController *detailMyReviewReputation;
-@property (nonatomic, weak) DetailReputationReview *detailReputationReview;
+@property (nonatomic, weak) DetailReputationReview *review;
+@property (nonatomic, weak) GiveReviewRatingViewController *reviewRating;
+@property (nonatomic, weak) MyReviewDetailViewController *myReviewDetailViewController;
 
 @property BOOL isEdit;
 @property int qualityRate;
@@ -21,7 +22,6 @@
 @property NSString *reviewMessage;
 @property NSDictionary *userInfo;
 @property NSString *token;
-@property (nonatomic, weak) GiveReviewRatingViewController *reviewRating;
 @property NSDictionary *productReviewPhotoObjects;
 
 @end

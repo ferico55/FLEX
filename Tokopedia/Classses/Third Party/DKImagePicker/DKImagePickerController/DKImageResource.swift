@@ -27,7 +27,7 @@ internal class DKImageResource {
     }
     
     class func checkedImage() -> UIImage {
-        let image = imageForResource("icon_checkmark")
+        let image = imageForResource("icon_checkmark_green")
         return image;
     }
     

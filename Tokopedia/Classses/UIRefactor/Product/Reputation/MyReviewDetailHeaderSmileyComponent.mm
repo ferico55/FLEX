@@ -271,7 +271,6 @@ static CKComponent* score(DetailMyInboxReputation *inbox, MyReviewDetailContext 
             smileys.push_back({smileySadGrey});
             smileys.push_back({smileyNeutralGrey});
             smileys.push_back({smileySmileGrey});
-            backgroundColor = [UIColor colorWithRed:255.0/255 green:251.0/255 blue:234.0/255 alpha:1.0];
         }
             break;
         case 1: {
@@ -370,7 +369,7 @@ static CKComponent *myScore(DetailMyInboxReputation *inbox, MyReviewDetailContex
                               size:{([inbox.reputation_progress isEqualToString:@"2"] && [inbox.my_score_image isEqualToString:@"smiley_none"])?24.7:20,20}]
                          },
                          {
-                             reviewerEditedLabel(inbox)
+                             revieweeEditedLabel(inbox)
                          }
                          
                      }],
@@ -417,10 +416,6 @@ static CKComponent *myScore(DetailMyInboxReputation *inbox, MyReviewDetailContex
         revieweeScore = [inbox.buyer_score integerValue];
     }
     
-    if (revieweeScore == 0 && ![inbox.reputation_progress isEqualToString:@"2"]) {
-        backgroundColor = [UIColor colorWithRed:255.0/255 green:251.0/255 blue:234.0/255 alpha:1.0];
-    }
-    
     MyReviewDetailHeaderSmileyComponent *smiley = [super newWithComponent:
             [CKStackLayoutComponent
              newWithView:{
@@ -464,7 +459,7 @@ static CKComponent *myScore(DetailMyInboxReputation *inbox, MyReviewDetailContex
                                size:{}]
                           },
                           {
-                              revieweeEditedLabel(inbox)
+                              reviewerEditedLabel(inbox)
                           }
                       }],
                      .alignSelf = CKStackLayoutAlignSelfCenter,

@@ -13,8 +13,9 @@
 - (void)didTapToGiveReview:(DetailReputationReview*)review;
 - (void)didTapToGiveResponse:(DetailReputationReview*)review;
 - (void)didTapToSkipReview:(DetailReputationReview*)review;
-- (void)didTapToEditReview:(DetailReputationReview*)review;
-- (void)didTapToReportReview:(DetailReputationReview*)review;
-- (void)didTapToDeleteResponse:(DetailReputationReview*)review;
+- (void)didTapToEditReview:(DetailReputationReview*)review atView:(UIView*)view;
+- (void)didTapToReportReview:(DetailReputationReview*)review atView:(UIView*)view;
+- (void)didTapToDeleteResponse:(DetailReputationReview*)review atView:(UIView*)view;
 - (void)didTapAttachedImages:(DetailReputationReview*)review withIndex:(NSInteger)index;
+- (void)didTapRevieweeReputation:(DetailReputationReview*)review atView:(UIView*)view;
 @end

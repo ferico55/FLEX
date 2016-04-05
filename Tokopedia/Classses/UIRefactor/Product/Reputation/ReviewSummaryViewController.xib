@@ -96,7 +96,7 @@
                         <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dDz-Gn-XKH" userLabel="Attached Images View">
                             <rect key="frame" x="8" y="88" width="382" height="75"/>
                             <subviews>
-                                <imageView userInteractionEnabled="NO" tag="20" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="0q6-My-BHX" userLabel="Attached Images 1">
+                                <imageView userInteractionEnabled="NO" tag="20" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="0q6-My-BHX" userLabel="Attached Images 1">
                                     <rect key="frame" x="0.0" y="16" width="44" height="44"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="44" id="nnA-FH-qk3"/>
@@ -108,7 +108,7 @@
                                         </userDefinedRuntimeAttribute>
                                     </userDefinedRuntimeAttributes>
                                 </imageView>
-                                <imageView userInteractionEnabled="NO" tag="21" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Bej-Qd-wrz" userLabel="Attached Images 2">
+                                <imageView userInteractionEnabled="NO" tag="21" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Bej-Qd-wrz" userLabel="Attached Images 2">
                                     <rect key="frame" x="52" y="16" width="44" height="44"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="44" id="Mix-g4-rOK"/>
@@ -120,7 +120,7 @@
                                         </userDefinedRuntimeAttribute>
                                     </userDefinedRuntimeAttributes>
                                 </imageView>
-                                <imageView userInteractionEnabled="NO" tag="22" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="gCB-eS-W4x" userLabel="Attached Images 3">
+                                <imageView userInteractionEnabled="NO" tag="22" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="gCB-eS-W4x" userLabel="Attached Images 3">
                                     <rect key="frame" x="104" y="16" width="44" height="44"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="44" id="IUF-7o-Edp"/>
@@ -132,7 +132,7 @@
                                         </userDefinedRuntimeAttribute>
                                     </userDefinedRuntimeAttributes>
                                 </imageView>
-                                <imageView userInteractionEnabled="NO" tag="23" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Dtw-Im-i4T" userLabel="Attached Images 4">
+                                <imageView userInteractionEnabled="NO" tag="23" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Dtw-Im-i4T" userLabel="Attached Images 4">
                                     <rect key="frame" x="156" y="16" width="44" height="44"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="44" id="iVl-UU-l2g"/>
@@ -144,7 +144,7 @@
                                         </userDefinedRuntimeAttribute>
                                     </userDefinedRuntimeAttributes>
                                 </imageView>
-                                <imageView userInteractionEnabled="NO" tag="24" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yYZ-j2-8ll" userLabel="Attached Images 5">
+                                <imageView userInteractionEnabled="NO" tag="24" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yYZ-j2-8ll" userLabel="Attached Images 5">
                                     <rect key="frame" x="208" y="16" width="44" height="44"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="44" id="h84-5j-ghG"/>

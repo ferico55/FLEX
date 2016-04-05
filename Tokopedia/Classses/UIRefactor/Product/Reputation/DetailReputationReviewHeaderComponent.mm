@@ -26,7 +26,11 @@ static CKComponent* timestampLabel(NSString* createTime) {
             size:{}];
 }
 
-static CKComponent* button(DetailReputationReview *review, SEL buttonAction, NSString *role, ImageStorage *imageCache) {
+static CKComponent* button(DetailReputationReview *review, SEL buttonAction, NSString *role, ImageStorage *imageCache, BOOL isDetail) {
+    if (isDetail) {
+        return nil;
+    }
+    
     if ([role isEqualToString:@"1"]) {
         if (![review.review_is_allow_edit isEqualToString:@"1"]) {
             return nil;
@@ -74,7 +78,8 @@ static CKComponent* button(DetailReputationReview *review, SEL buttonAction, NSS
            tapToProductAction:(SEL)action
               tapButtonAction:(SEL)buttonAction
               imageDownloader:(id<CKNetworkImageDownloading>)imageDownloader
-                   imageCache:(ImageStorage *)imageCache {
+                   imageCache:(ImageStorage *)imageCache
+                     isDetail:(BOOL)isDetail {
     return [super newWithComponent:
             [CKStackLayoutComponent
              newWithView:{}
@@ -131,7 +136,7 @@ static CKComponent* button(DetailReputationReview *review, SEL buttonAction, NSS
                      .alignSelf = CKStackLayoutAlignSelfStretch
                  },
                  {
-                     button(review, buttonAction, role, imageCache),
+                     button(review, buttonAction, role, imageCache, isDetail),
                      .alignSelf = CKStackLayoutAlignSelfStart
                  }
              }]];

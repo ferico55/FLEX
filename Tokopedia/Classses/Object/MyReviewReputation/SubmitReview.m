@@ -14,7 +14,8 @@
     RKObjectMapping *submitReviewMapping = [RKObjectMapping mappingForClass:[SubmitReview class]];
     
     [submitReviewMapping addAttributeMappingsFromArray:@[@"status",
-                                                         @"server_process_time"]];
+                                                         @"server_process_time",
+                                                         @"message_error"]];
     
     [submitReviewMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data"
                                                                                         toKeyPath:@"data"

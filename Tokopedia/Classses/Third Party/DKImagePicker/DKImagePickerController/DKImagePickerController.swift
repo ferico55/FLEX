@@ -24,14 +24,27 @@ public class DKAsset: NSObject {
 		return nil
     }()
     
+    public private(set) lazy var fileName: NSString? = {
+        if let originalAsset = self.originalAsset {
+            return originalAsset.defaultRepresentation().filename()
+        }
+        return nil
+    }()
+    
     /// Returns a CGImage of the representation that is appropriate for displaying full screen.
     public private(set) lazy var resizedImage: UIImage? = {
         if let originalAsset = self.originalAsset {
             let original : UIImage = UIImage(CGImage: (originalAsset.defaultRepresentation().fullResolutionImage().takeUnretainedValue()))
+            return self.resizeImage(original)
+        }
+        return nil
+    }()
+    
+    func resizeImage(original:UIImage)->UIImage {
             var actualHeight = original.size.height
             var actualWidth = original.size.width
             var imgRatio = actualWidth/actualHeight
-            let maxImageSize = CGSizeMake(320, 568)
+            let maxImageSize = CGSizeMake(600, 600)
             let widthView = maxImageSize.width;
             let heightView = maxImageSize.height;
             let maxRatio = widthView/heightView;
@@ -55,9 +68,7 @@ public class DKAsset: NSObject {
             UIGraphicsEndImageContext()
             
             return resized
-        }
-        return nil
-    }()
+    }
 
     
     /// Returns a CGImage representation of the asset.
@@ -128,7 +139,7 @@ public class DKAsset: NSObject {
         self.fullScreenImage = image
         self.fullResolutionImage = image
         self.thumbnailImage = image
-        self.resizedImage = image
+        self.resizedImage = self.resizeImage(image)
     }
     
     // Compare two DKAssets
@@ -239,7 +250,7 @@ public class DKImagePickerController: UINavigationController {
     internal var selectedAssets = [DKAsset]()
     
     private lazy var doneButton: UIButton = {
-        let button = UIButton(type: UIButtonType.Custom)
+        let button = UIButton(type: UIButtonType.System)
 		button.setTitleColor(UINavigationBar.appearance().tintColor ?? self.navigationBar.tintColor, forState: UIControlState.Normal)
         button.reversesTitleShadowWhenHighlighted = true
         button.addTarget(self, action: "done", forControlEvents: UIControlEvents.TouchUpInside)
@@ -304,11 +315,16 @@ public class DKImagePickerController: UINavigationController {
 	
     internal func done() {
         self.callSelector("dismissController", object: nil, delay: 0.5)
-        self.didSelectAssets?(assets: self.selectedAssets)
+        
     }
     
     internal func dismissController() {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.didSelectAssets?(assets: self.selectedAssets)
+        dispatch_async(dispatch_get_main_queue(), {
+            // code here
+            self.dismissViewControllerAnimated(true, completion: nil)
+        })
+        
     }
     
     // MARK: - Notifications

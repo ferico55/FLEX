@@ -80,14 +80,15 @@ static CKComponent *revieweeReputation(DetailMyInboxReputation *inbox, MyReviewD
                 }
                 selected:NO
                 enabled:YES
-                action:@selector(didTapRevieweeReputation:)
+                action:@selector(didTapBuyerReputation:)
                 size:{}
                 attributes:{}
                 accessibilityConfiguration:{}];
     } else {
         return [MedalComponent newMedalWithLevel:[inbox.shop_badge_level.level intValue]
                                              set:[inbox.shop_badge_level.set intValue]
-                                      imageCache:imageCache];
+                                      imageCache:imageCache
+                                        selector:@selector(didTapSellerReputation:)];
     }
 }
 
@@ -144,8 +145,12 @@ static CKComponent *remainingTimeLeft(DetailMyInboxReputation *inbox, MyReviewDe
     [_delegate didTapRevieweeNameWithID:userID];
 }
 
-- (void)didTapRevieweeReputation:(id)sender {
-    [_delegate didTapRevieweeReputation:sender role:_inbox.role];
+- (void)didTapBuyerReputation:(id)sender {
+    [_delegate didTapRevieweeReputation:sender role:_inbox.reviewee_role atView:((CKButtonComponent*)sender).viewContext.view];
+}
+
+- (void)didTapSellerReputation:(id)sender {
+    [_delegate didTapRevieweeReputation:sender role:_inbox.reviewee_role atView:((CKStackLayoutComponent*)sender).viewContext.view];
 }
 
 + (instancetype)newWithInbox:(DetailMyInboxReputation*)inbox context:(MyReviewDetailContext*)context {

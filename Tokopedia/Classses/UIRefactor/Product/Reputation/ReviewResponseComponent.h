@@ -15,5 +15,6 @@
               imageDownloader:(id<CKNetworkImageDownloading>)imageDownloader
                    imageCache:(ImageStorage*)imageCache
                          role:(NSString*)role
-                       action:(SEL)action;
+                       action:(SEL)action
+              tapToReputation:(SEL)tapAction;
 @end

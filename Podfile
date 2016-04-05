@@ -16,6 +16,7 @@ target "Tokopedia" do
     pod 'BlocksKit', '~> 2.2.5'
     pod 'Tweaks'
     pod 'UITableView+FDTemplateLayoutCell'
+    pod 'ComponentKit', '~> 0.14'
 end
 
 target "TokopediaTests" do

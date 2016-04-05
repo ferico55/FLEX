@@ -16,6 +16,7 @@
 #import "UIImageView+AFNetworking.h"
 #import "ReviewRequest.h"
 #import "ReviewImageAttachment.h"
+#import "AttachedPicture.h"
 
 @interface ReviewSummaryViewController ()
 <
@@ -66,7 +67,6 @@ TokopediaNetworkManagerDelegate
     _accuracyStarsArray = [NSArray sortViewsWithTagInArray:_accuracyStarsArray];
     
     [self setData];
-    [self generateImageIDs];
     
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.delegate = self;
@@ -93,9 +93,9 @@ TokopediaNetworkManagerDelegate
 
 #pragma mark - Methods
 - (void)setData {
-    _productName.text = [NSString convertHTML:_detailReputationReview.product_name];
+    _productName.text = [NSString convertHTML:_review.product_name];
     
-    [_productImage setImageWithURL:[NSURL URLWithString:_detailReputationReview.product_image]
+    [_productImage setImageWithURL:[NSURL URLWithString:_review.product_image]
                   placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-01.png"]];
     
     _reviewMessageTextView.text = _reviewMessage;
@@ -121,24 +121,20 @@ TokopediaNetworkManagerDelegate
         _textViewHeight.constant = 139.0;
     } else {
         for (NSInteger ii = 0; ii < _attachedImages.count; ii++) {
-            ((UIImageView*)_attachedImagesArray[ii]).image = _attachedImages[ii];
+            AttachedPicture *pict = _attachedImages[ii];
+            
+            if (![pict.thumbnailUrl isEqualToString:@""]) {
+                [((UIImageView*)_attachedImagesArray[ii]) setImageWithURL:[NSURL URLWithString:pict.thumbnailUrl]
+                                                         placeholderImage:[UIImage imageNamed:@"image_not_loading.png"]];
+            } else {
+                ((UIImageView*)_attachedImagesArray[ii]).image = pict.image;
+            }
+            
             ((UIImageView*)_attachedImagesArray[ii]).hidden = NO;
+            
+            
         }
-        
-//        for (NSInteger ii = 0; ii < _detailReputationReview.review_image_attachment.count; ii++) {
-//            ReviewImageAttachment *attachedImage = _detailReputationReview.review_image_attachment[ii];
-//            [((UIImageView*)_attachedImagesArray[ii]) setImageWithURL:[NSURL URLWithString:attachedImage.uri_thumbnail]
-//                                                     placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-01.png"]];
-//            [((UIImageView*)_attachedImagesArray[ii]) setHidden:NO];
-//        }
-//        
-//        for (NSInteger jj = _detailReputationReview.review_image_attachment.count; jj < _detailReputationReview.review_image_attachment.count + _uploadedImages.count; jj++) {
-//            ((UIImageView*)_attachedImagesArray[jj]).image = [[_uploadedImages[jj-_detailReputationReview.review_image_attachment.count] objectForKey:@"photo"] objectForKey:@"photo"];
-//            ((UIImageView*)_attachedImagesArray[jj]).hidden = NO;
-//        }
     }
-    
-    
 }
 
 - (void)setQualityLabel {
@@ -212,11 +208,11 @@ TokopediaNetworkManagerDelegate
 }
 
 - (BOOL)isNoImageUploaded {
-    if (_uploadedImages != nil || _detailReputationReview.review_image_attachment.count > 0) {
-        return NO;
+    if (_attachedImages.count > 0) {
+        return false;
+    } else {
+        return true;
     }
-    
-    return YES;
 }
 
 - (void)sendButtonIsLoading:(BOOL)isProcessing {
@@ -236,7 +232,7 @@ TokopediaNetworkManagerDelegate
 
 - (BOOL)isSuccessValidateReview {
     if (_isEdit) {
-        if ([_reviewMessage isEqualToString:_detailReputationReview.review_message] && [_detailReputationReview.product_accuracy_point intValue] == _accuracyRate && [_detailReputationReview.product_rating_point intValue] == _qualityRate && [_isAttachedImagesModified isEqualToString:@"0"]) {
+        if ([_reviewMessage isEqualToString:_review.review_message] && [_review.product_accuracy_point intValue] == _accuracyRate && [_review.product_rating_point intValue] == _qualityRate && [_isAttachedImagesModified isEqualToString:@"0"]) {
             StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[@"Tidak ada perubahan ulasan"] delegate:self];
             [stickyAlertView show];
             
@@ -247,23 +243,19 @@ TokopediaNetworkManagerDelegate
     return YES;
 }
 
-- (void)generateImageIDs {
-    
-}
-
 #pragma mark - Actions
 - (IBAction)tapToSend:(id)sender {
     if ([self isSuccessValidateReview]) {
         [self sendButtonIsLoading:YES];
         
         if (_isEdit) {
-            [_reviewRequest requestEditReviewWithImageWithReviewID:_detailReputationReview.review_id
-                                                         productID:_detailReputationReview.product_id
+            [_reviewRequest requestEditReviewWithImageWithReviewID:_review.review_id
+                                                         productID:_review.product_id
                                                       accuracyRate:_accuracyRate
                                                        qualityRate:_qualityRate
-                                                      reputationID:_detailReputationReview.reputation_id
+                                                      reputationID:_review.reputation_id
                                                            message:_reviewMessage
-                                                            shopID:_detailReputationReview.shop_id
+                                                            shopID:_review.shop_id
                                              hasProductReviewPhoto:_hasAttachedImages
                                                     reviewPhotoIDs:_imageIDs
                                                 reviewPhotoObjects:_imageDescriptions
@@ -289,12 +281,12 @@ TokopediaNetworkManagerDelegate
                                                              [self sendButtonIsLoading:NO];
                                                          }];
         } else {
-            [_reviewRequest requestSubmitReviewWithImageWithReputationID:_detailReputationReview.reputation_id
-                                                               productID:_detailReputationReview.product_id
+            [_reviewRequest requestSubmitReviewWithImageWithReputationID:_review.reputation_id
+                                                               productID:_review.product_id
                                                             accuracyRate:_accuracyRate
                                                              qualityRate:_qualityRate
                                                                  message:[_reviewMessage stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]
-                                                                  shopID:_detailReputationReview.shop_id
+                                                                  shopID:_review.shop_id
                                                                 serverID:_generatedHost.server_id
                                                    hasProductReviewPhoto:_hasAttachedImages
                                                           reviewPhotoIDs:_imageIDs
@@ -323,134 +315,6 @@ TokopediaNetworkManagerDelegate
         }
         
     }
-}
-
-#pragma mark - Tokopedia Network Manager
-- (NSDictionary *)getParameter:(int)tag {
-    NSDictionary *parameter = @{@"action"           : (_isEdit? @"edit_reputation_review":@"insert_reputation_review"),
-                                @"accuracy_rate"    : @(_accuracyRate),
-                                @"product_id"       : _detailReputationReview.product_id,
-                                @"quality_rate"     : @(_qualityRate),
-                                @"reputation_id"    : _detailReputationReview.reputation_id,
-                                @"review_message"   : [_reviewMessage stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]],
-                                @"shop_id"          : _detailReputationReview.shop_id,
-                                @"review_id"        : _detailReputationReview.review_id!=nil?_detailReputationReview.review_id:@""
-                                };
-    
-    return parameter;
-}
-
-- (NSString *)getPath:(int)tag {
-    return @"action/reputation.pl";
-}
-
-- (NSString *)getRequestStatus:(id)result withTag:(int)tag {
-    NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
-    id stat = [resultDict objectForKey:@""];
-    GeneralAction *list = stat;
-    
-    return list.status;
-}
-
-- (int)getRequestMethod:(int)tag {
-    return RKRequestMethodPOST;
-}
-
-- (id)getObjectManager:(int)tag {
-    _objectManager = [RKObjectManager sharedClient];
-    
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[GeneralAction class]];
-    [statusMapping addAttributeMappingsFromArray:@[@"status",
-                                                   @"message_error",
-                                                   @"message_status",
-                                                   @"server_process_time"]];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[GeneralActionResult class]];
-    [resultMapping addAttributeMappingsFromArray:@[@"feedback_id",
-                                                   @"is_success"]];
-    
-    RKRelationshipMapping *resultRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"result"
-                                                                                   toKeyPath:@"result"
-                                                                                 withMapping:resultMapping];
-    [statusMapping addPropertyMapping:resultRel];
-    
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                                  method:RKRequestMethodPOST
-                                                                                             pathPattern:[self getPath:0]
-                                                                                                 keyPath:@""
-                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectManager addResponseDescriptor:responseDescriptorStatus];
-    
-    return _objectManager;
-}
-
-- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
-    NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
-    GeneralAction *action = [result objectForKey:@""];
-    
-    if (action.result.is_success) {
-        StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[_isEdit? @"Anda telah berhasil mengubah ulasan":@"Anda telah berhasil mengisi ulasan"]
-                                                                         delegate:self];
-        [alert show];
-        
-        NSDateFormatter *formatter = [NSDateFormatter new];
-        formatter.dateFormat = @"d MMMM yyyy, HH:mm";
-        
-        if (_isEdit) {
-            _detailReputationReview.viewModel.review_is_allow_edit = _detailReputationReview.review_is_allow_edit = @"0";
-            _detailReputationReview.viewModel.review_update_time = _detailReputationReview.review_update_time = [formatter stringFromDate:[NSDate new]];
-        } else {
-            _detailReputationReview.viewModel.review_is_allow_edit = _detailReputationReview.review_is_allow_edit = @"1";
-            _detailReputationReview.viewModel.review_update_time = _detailReputationReview.review_update_time = [formatter stringFromDate:[NSDate new]];
-            
-            UserAuthentificationManager *user = [UserAuthentificationManager new];
-            NSDictionary *userData = [user getUserLoginData];
-            _detailReputationReview.review_full_name = [userData objectForKey:@"full_name"]?:@"-";
-            _detailReputationReview.review_user_label = @"Pembeli";
-            if (user.reputation) {
-                _detailReputationReview.review_user_reputation = user.reputation;
-            }
-        }
-        
-        _detailReputationReview.review_id = action.result.feedback_id;
-        _detailReputationReview.viewModel.review_is_skipable = _detailReputationReview.review_is_skipable = @"0";
-        _detailReputationReview.viewModel.review_message = _detailReputationReview.review_message = [_reviewMessage stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-        _detailReputationReview.viewModel.product_rating_point = _detailReputationReview.product_rating_point = [NSString stringWithFormat:@"%d", _qualityRate];
-        _detailReputationReview.viewModel.product_accuracy_point = _detailReputationReview.product_accuracy_point = [NSString stringWithFormat:@"%d", _accuracyRate];
-        [_detailMyReviewReputation successGiveReview];
-        [self.navigationController popViewControllerAnimated:YES];
-        
-        NSMutableArray *allViewControllers = [NSMutableArray arrayWithArray:[self.navigationController viewControllers]];
-        for (UIViewController *aViewController in allViewControllers) {
-            if ([aViewController isKindOfClass:[DetailMyReviewReputationViewController class]]) {
-                [self.navigationController popToViewController:aViewController animated:YES];
-            }
-        }
-        
-    } else {
-        StickyAlertView *alert;
-        if (action.message_error != nil && action.message_error.count > 0) {
-            alert = [[StickyAlertView alloc] initWithErrorMessages:action.message_error
-                                                          delegate:self];
-        } else {
-            alert = [[StickyAlertView alloc] initWithErrorMessages:@[_isEdit? @"Anda gagal memperbaharui ulasan":@"Anda gagal mengisi ulasan"]
-                                                          delegate:self];
-        }
-        
-        [alert show];
-    }
-}
-
-- (void)actionAfterFailRequestMaxTries:(int)tag {
-    [self sendButtonIsLoading:NO];
-    StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[_isEdit? @"Anda gagal memperbaharui ulasan":@"Anda gagal mengisi ulasan"]
-                                                                             delegate:self];
-    [stickyAlertView show];
-}
-
-- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
-    
 }
 
 @end

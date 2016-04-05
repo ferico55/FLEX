@@ -16,23 +16,23 @@
 #import "ProductAddCaptionViewController.h"
 #import "UIImageView+AFNetworking.h"
 #import "ReviewImageAttachment.h"
+#import "Tokopedia-Swift.h"
+#import "AttachedPicture.h"
+
 #import <QuartzCore/QuartzCore.h>
 
 @interface GiveReviewDetailViewController () <CameraCollectionViewControllerDelegate, CameraControllerDelegate, ProductAddCaptionDelegate, UITextViewDelegate> {
-    NSMutableArray *_selectedImagesCameraController;
-    NSMutableArray *_selectedIndexPathCameraController;
-    NSMutableArray *_attachedImageURL;
-    
-    NSMutableArray *_uploadingImages;
-    NSMutableArray *_uploadedImages;
-    NSMutableArray *_attachedImages;
-    
-    NSMutableDictionary *_imagesToUpload;
-    
-    NSOperationQueue *_operationQueue;
-    
-    BOOL _isFinishedUploadingImage;
     BOOL _hasImages;
+    
+    NSMutableArray *_attachedPictures;
+    NSMutableArray *_uploadedPictures;
+    NSMutableArray *_tempUploadedPictures;
+    NSMutableArray *_imageIDs;
+    
+    NSArray *_selectedAssets;
+    
+    NSMutableDictionary *_productReviewPhotoObjects;
+    NSMutableDictionary *_imagesToUpload;
 }
 
 @property (weak, nonatomic) IBOutlet UIImageView *productImage;
@@ -49,10 +49,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = _isEdit?@"Ubah Ulasan":@"Tulis Ulasan";
-    _reviewDetailTextView.placeholder = @"Tulis Ulasan Anda";
-    
-    _attachedImagesArray = [NSArray sortViewsWithTagInArray:_attachedImagesArray];
+    self.title = _isEdit? @"Ubah Ulasan" : @"Tulis Ulasan";
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Lanjut"
                                                                               style:UIBarButtonItemStyleDone
@@ -64,38 +61,47 @@
                                                                             target:self
                                                                             action:nil];
     
-    [self initData];
+    _attachedPictures = [NSMutableArray new];
+    _uploadedPictures = [NSMutableArray new];
+    _tempUploadedPictures = [NSMutableArray new];
+    _imageIDs = [NSMutableArray new];
     
-    
-    _operationQueue = [NSOperationQueue new];
-    
-    _uploadingImages = [NSMutableArray new];
-    _selectedImagesCameraController = [[NSMutableArray alloc] initWithObjects:@"", @"", @"", @"", @"", nil];
-    _selectedIndexPathCameraController = [[NSMutableArray alloc] initWithObjects:@"", @"", @"", @"", @"", nil];
-    _attachedImageURL = [[NSMutableArray alloc] initWithObjects:@"", @"", @"", @"", @"", nil];
-    _attachedImages = [[NSMutableArray alloc] initWithObjects:@"", @"", @"", @"", @"", nil];
-    
+    _selectedAssets = [NSArray new];
+    _attachedImagesArray = [NSArray sortViewsWithTagInArray:_attachedImagesArray];
+    _productReviewPhotoObjects = [NSMutableDictionary new];
     _imagesToUpload = [NSMutableDictionary new];
     
-    _isFinishedUploadingImage = YES;
-    
+    _reviewDetailTextView.placeholder = @"Tulis Ulasan Anda";
     _reviewDetailTextView.delegate = self;
     
-    if (_detailReputationReview.review_image_attachment.count > 0) {
-        NSMutableArray *tempImageCaptions = [[NSMutableArray alloc] initWithObjects:@"", @"", @"", @"", @"", nil];
+    _productName.text = [NSString convertHTML:_review.product_name];
+    [_productImage setImageWithURL:[NSURL URLWithString:_review.product_image]
+                  placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-01.png"]];
+    
+    if (_review.review_image_attachment.count > 0) {
+        _hasImages = YES;
         
-        for (int ii = 0; ii < _detailReputationReview.review_image_attachment.count; ii++) {
-            ReviewImageAttachment *image = _detailReputationReview.review_image_attachment[ii];
-            [tempImageCaptions replaceObjectAtIndex:ii withObject:image.desc];
+        for (int ii = 0; ii < _review.review_image_attachment.count; ii++) {
+            ReviewImageAttachment *imageAttachment = _review.review_image_attachment[ii];
+            
+            UIImage *image = [[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:imageAttachment.uri_thumbnail]]];
+            
+            AttachedPicture *pict = [AttachedPicture new];
+            pict.image = image;
+            pict.largeUrl = imageAttachment.uri_large;
+            pict.thumbnailUrl = imageAttachment.uri_thumbnail;
+            pict.imageDescription = imageAttachment.desc;
+            pict.attachmentID = imageAttachment.attachment_id;
+            pict.isDeleted = @"0";
+            pict.isPreviouslyUploaded = @"1";
+            
+            [_uploadedPictures addObject:pict];
+            [_attachedPictures addObject:pict];
+            [_tempUploadedPictures addObject:pict];
         }
-        
-        NSDictionary *tempUserInfo = @{@"attached_images":_detailReputationReview.review_image_attachment,
-                                       @"images-captions":tempImageCaptions
-                                       };
-        
-        _userInfo = tempUserInfo;
     }
     
+    [self setAttachedPictures];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -109,41 +115,43 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    self.title = _isEdit?@"Ubah Ulasan":@"Tulis Ulasan";
+    self.title = _isEdit ? @"Ubah Ulasan" : @"Tulis Ulasan";
 }
 
-#pragma mark - Methods
-- (void)initData {
-    _productName.text = [NSString convertHTML:_detailReputationReview.product_name];
-    
-    // Set Product Image
-    [_productImage setImageWithURL:[NSURL URLWithString:_detailReputationReview.product_image]
-                  placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-01.png"]];
-    
-    if (_isEdit) {
-        _reviewDetailTextView.text = [NSString convertHTML:_detailReputationReview.review_message];
-        
-        for (int ii = 0; ii < _detailReputationReview.review_image_attachment.count; ii++) {
-            ReviewImageAttachment *imageAttachment = _detailReputationReview.review_image_attachment[ii];
-            
-            for (UIImageView *image in _attachedImagesArray) {
-                if (image.tag == 20 + ii) {
-                    [image setImageWithURL:[NSURL URLWithString:imageAttachment.uri_thumbnail]
-                         placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-01.png"]];
-                    image.userInteractionEnabled = YES;
+- (void)setAttachedPictures {
+    if (_attachedPictures.count > 0) {
+        for (int jj = 0; jj < _attachedPictures.count; jj++) {
+            for (UIImageView *imageView in _attachedImagesArray) {
+                if (imageView.tag == 20 + jj) {
+                    AttachedPicture *pict = _attachedPictures[jj];
+                    
+                    if (![pict.thumbnailUrl isEqualToString:@""]) {
+                        [imageView setImageWithURL:[NSURL URLWithString:pict.thumbnailUrl]
+                                  placeholderImage:[UIImage imageNamed:@"image_not_loading.png"]];
+                    } else {
+                        imageView.image = pict.image;
+                    }
+                    
+                    
+                    imageView.userInteractionEnabled = YES;
                 }
             }
         }
         
-        if (_detailReputationReview.review_image_attachment.count < 5) {
-            [self initCameraIconAtIndex:_detailReputationReview.review_image_attachment.count];
+        if (_attachedPictures.count < 5) {
+            [self initCameraIconAtIndex:_attachedPictures.count];
         }
-        
     } else {
         [self initCameraIconAtIndex:0];
     }
+    
+    if (_isEdit) {
+        _reviewDetailTextView.text = [NSString convertHTML:_review.review_message];
+    }
+
 }
 
+#pragma mark - Methods
 - (void)initCameraIconAtIndex:(NSInteger)index {
     for (UIImageView *image in _attachedImagesArray) {
         if (image.tag == 20 + index) {
@@ -156,7 +164,6 @@
             [image.layer setBorderWidth:1.0];
             image.layer.cornerRadius = 5.0;
             image.layer.masksToBounds = YES;
-            
         }
     }
 }
@@ -176,34 +183,8 @@
     }
 }
 
-- (NSInteger)totalUploadedAndUploadingImage {
-    NSMutableArray *fileThumbImage = [NSMutableArray new];
-    for (NSString *image in _uploadedImages) {
-        if (![image isEqualToString:@""]) {
-            [fileThumbImage addObject:image];
-        }
-    }
-    
-    return fileThumbImage.count + _uploadingImages.count;
-}
-
 - (BOOL)image:(UIImage*)image1 isEqualTo:(UIImage*)image2 {
     return [UIImagePNGRepresentation(image1) isEqual:UIImagePNGRepresentation(image2)];
-}
-
-- (BOOL)array:(NSArray*)arr containsObject:(NSDictionary*)object {
-    if (object && [object isKindOfClass:[NSDictionary class]]) {
-        for (id objectInArray in arr) {
-            if ([objectInArray isKindOfClass:[NSDictionary class]]) {
-                NSDictionary *photoObjectInArray = [objectInArray objectForKey:@"photo"];
-                NSDictionary *photoObject = [object objectForKey:@"photo"];
-                if ([self image:[photoObjectInArray objectForKey:@"photo"] isEqualTo:[photoObject objectForKey:@"photo"]]) {
-                    return YES;
-                }
-            }
-        }
-    }
-    return NO;
 }
 
 - (NSString*)generateUniqueImageID {
@@ -212,7 +193,74 @@
     return [NSString stringWithFormat:@"%d", unixTime];
 }
 
-#pragma mark - Text Field Delegate 
+- (void)generateProductReviewPhotoObject:(NSMutableArray*)attachedPictures
+                        uploadedPictures:(NSMutableArray*)uploadedPictures {
+    _productReviewPhotoObjects = [NSMutableDictionary new];
+    _imagesToUpload = [NSMutableDictionary new];
+    _imageIDs = [NSMutableArray new];
+    
+    for (int ii = 0; ii < uploadedPictures.count; ii++) {
+        AttachedPicture *pict = uploadedPictures[ii];
+        NSMutableDictionary *photoObject = [NSMutableDictionary new];
+        
+        [photoObject setObject:pict.imageDescription
+                        forKey:@"file_desc"];
+        [photoObject setObject:pict.attachmentID
+                        forKey:@"attachment_id"];
+        [photoObject setObject:pict.isDeleted
+                        forKey:@"is_deleted"];
+        
+        NSString *uniqueID;
+        
+        if ([pict.isPreviouslyUploaded isEqualToString:@"0"]) {
+            uniqueID = [[self generateUniqueImageID] stringByAppendingString:[NSString stringWithFormat:@"%zd", ii]];
+        } else {
+            uniqueID = pict.attachmentID;
+        }
+        
+        [_productReviewPhotoObjects setObject:photoObject
+                                       forKey:uniqueID];
+        
+        [_imageIDs addObject:uniqueID];
+    }
+    
+    for (int ii = 0; ii < attachedPictures.count; ii++) {
+        AttachedPicture *pict = attachedPictures[ii];
+        NSMutableDictionary *photoObject = [NSMutableDictionary new];
+        
+        [photoObject setObject:pict.imageDescription
+                        forKey:@"file_desc"];
+        [photoObject setObject:pict.attachmentID
+                        forKey:@"attachment_id"];
+        [photoObject setObject:pict.isDeleted
+                        forKey:@"is_deleted"];
+        
+        NSString *uniqueID;
+        
+        if ([pict.isPreviouslyUploaded isEqualToString:@"0"]) {
+            uniqueID = [[self generateUniqueImageID] stringByAppendingString:[NSString stringWithFormat:@"%zd", ii]];
+        } else {
+            uniqueID = pict.attachmentID;
+        }
+        
+        [_productReviewPhotoObjects setObject:photoObject
+                                       forKey:uniqueID];
+        
+        NSDictionary *temp = @{@"image" : pict.image,
+                               @"name"  : pict.fileName?:@"image.png"};
+        
+        if (![_imageIDs containsObject:uniqueID]) {
+            [_imageIDs addObject:uniqueID];
+        }
+        
+        if ([pict.isPreviouslyUploaded isEqualToString:@"0"]) {
+            [_imagesToUpload setObject:temp
+                                forKey:uniqueID];
+        }
+    }
+}
+
+#pragma mark - Text View Delegate
 - (void)textViewDidBeginEditing:(UITextView *)textView {
     _reviewDetailTextView.placeholder = nil;
 }
@@ -225,184 +273,112 @@
 #pragma mark - Actions
 - (IBAction)tapToContinue:(id)sender {
     if ([self isSuccessValidateMessage]) {
+        [self generateProductReviewPhotoObject:_attachedPictures
+                              uploadedPictures:_uploadedPictures];
+        
+        if (_attachedPictures.count > 0) {
+            _hasImages = YES;
+        }
+        
         ReviewSummaryViewController *vc = [ReviewSummaryViewController new];
-        vc.detailReputationReview = _detailReputationReview;
+        vc.review = _review;
         vc.isEdit = _isEdit;
         vc.qualityRate = _qualityRate;
         vc.accuracyRate = _accuracyRate;
         vc.reviewMessage = _reviewMessage;
-        vc.uploadedImages = [_userInfo objectForKey:@"selected_images"];
-        vc.imagesCaption = [_userInfo objectForKey:@"images-captions"];
-        vc.detailMyReviewReputation = _detailMyReviewReputation;
         vc.token = _token;
-        vc.imagesToUpload = [_userInfo objectForKey:@"images-to-upload"];
+        vc.imagesToUpload = _imagesToUpload;
         vc.imageDescriptions = _productReviewPhotoObjects;
         vc.hasAttachedImages = _hasImages;
-        vc.imageIDs = [_userInfo objectForKey:@"all-image-ids"];
-        vc.isAttachedImagesModified = [_userInfo objectForKey:@"is-attached-images-modified"];
+        vc.imageIDs = _imageIDs;
+        vc.attachedImages = _attachedPictures;
+        
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
 
 - (IBAction)tapImage:(UITapGestureRecognizer*)sender {
     if ([self image:((UIImageView*)_attachedImagesArray[sender.view.tag-20]).image isEqualTo:[UIImage imageNamed:@"icon_camera.png"]]) {
-        [self didTapImage:((UIImageView*)_attachedImagesArray[sender.view.tag-20])];
+        [ImagePickerController showImagePicker:self
+                                     assetType:DKImagePickerControllerAssetTypeallPhotos
+                           allowMultipleSelect:YES
+                                    showCancel:YES
+                                    showCamera:YES
+                                   maxSelected:(5 - _tempUploadedPictures.count)
+                                selectedAssets:_selectedAssets
+                                    completion:^(NSArray<DKAsset *> *asset) {
+                                        dispatch_async(dispatch_get_main_queue(), ^{
+                                            NSMutableArray *temp = [_tempUploadedPictures mutableCopy];
+                                            _selectedAssets = asset;
+                                            
+                                            for (int ii = 0; ii < asset.count; ii++) {
+                                                DKAsset *dk = asset[ii];
+                                                
+                                                AttachedPicture *pict = [AttachedPicture new];
+                                                pict.image = dk.resizedImage;
+                                                pict.fileName = dk.fileName;
+                                                pict.largeUrl = @"";
+                                                pict.thumbnailUrl = @"";
+                                                pict.imageDescription = @"";
+                                                pict.attachmentID = @"0";
+                                                pict.isDeleted = @"0";
+                                                pict.isPreviouslyUploaded = @"0";
+                                                
+                                                [temp addObject:pict];
+                                            }
+                                            
+                                            _attachedPictures = temp;
+                                            
+                                            ProductAddCaptionViewController *vc = [ProductAddCaptionViewController new];
+                                            vc.delegate = self;
+                                            vc.attachedPictures = _attachedPictures;
+                                            vc.isEdit = _isEdit;
+                                            vc.selectedAssets = _selectedAssets;
+                                            vc.uploadedPictures = _uploadedPictures;
+                                            vc.tempUploadedPictures = _tempUploadedPictures;
+                                            
+                                            [self.navigationController pushViewController:vc animated:NO];
+                                        });                                        
+                                    }];
+        
     } else {
         ProductAddCaptionViewController *vc = [ProductAddCaptionViewController new];
-        vc.selectedIndexPaths = [_userInfo objectForKey:@"selected_indexpath"];
-        vc.selectedImages = [_userInfo objectForKey:@"selected_images"];
-        vc.imagesCaptions = [_userInfo objectForKey:@"images-captions"];
         vc.delegate = self;
-        vc.selectedImageTag = (int)sender.view.tag;
-        vc.review = _detailReputationReview;
+        vc.attachedPictures = _attachedPictures;
+        vc.isEdit = _isEdit;
+        vc.selectedAssets = _selectedAssets;
+        vc.uploadedPictures = _uploadedPictures;
+        vc.tempUploadedPictures = _tempUploadedPictures;
         
-        UINavigationController *nav = [[UINavigationController alloc]init];
-        nav.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
-        nav.navigationBar.translucent = NO;
-        nav.navigationBar.tintColor = [UIColor whiteColor];
-        NSArray *controllers = @[vc];
-        [nav setViewControllers:controllers];
-        
-        [self.navigationController presentViewController:nav animated:YES completion:nil];
+        [self.navigationController pushViewController:vc animated:YES];
     }
-}
-
-- (void)didTapImage:(UIImageView*)sender {
-    CameraAlbumListViewController *albumVC = [CameraAlbumListViewController new];
-    albumVC.title = @"Album";
-    albumVC.delegate = self;
-    CameraCollectionViewController *photoVC = [CameraCollectionViewController new];
-    photoVC.title = @"All Picture";
-    photoVC.delegate = self;
-    photoVC.isAddEditProduct = YES;
-    photoVC.tag = sender.tag;
-    photoVC.review = _detailReputationReview;
-    photoVC.attachedImagesCaptions = [_userInfo objectForKey:@"images-captions"];
-    
-    NSMutableArray *notEmptyImageIndex = [NSMutableArray new];
-    for (UIImageView *image in _attachedImagesArray) {
-        if (image.image == nil) {
-            [notEmptyImageIndex addObject:@(image.tag - 20)];
-        }
-    }
-    
-    NSMutableArray *selectedImage = [NSMutableArray new];
-    for (id selected in _selectedImagesCameraController) {
-        if (![selected isEqual:@""]) {
-            [selectedImage addObject:selected];
-        }
-    }
-    
-    NSMutableArray *selectedIndexPath = [NSMutableArray new];
-    for (NSIndexPath *selected in _selectedIndexPathCameraController) {
-        if (![selected isEqual:@""]) {
-            [selectedIndexPath addObject:selected];
-        }
-    }
-    
-    photoVC.maxSelected = 5 - _detailReputationReview.review_image_attachment.count;
-    photoVC.selectedImagesArray = selectedImage;
-    
-    selectedIndexPath = [NSMutableArray new];
-    for (NSIndexPath *selected in _selectedIndexPathCameraController) {
-        if (![selected isEqual:@""]) {
-            [selectedIndexPath addObject:selected];
-        }
-    }
-    
-    photoVC.selectedIndexPath = _selectedIndexPathCameraController;
-    photoVC.isAddReviewImage = YES;
-    
-    UINavigationController *nav = [[UINavigationController alloc]init];
-    nav.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
-    nav.navigationBar.translucent = NO;
-    nav.navigationBar.tintColor = [UIColor whiteColor];
-    NSArray *controllers = @[albumVC,photoVC];
-    [nav setViewControllers:controllers];
-    [self.navigationController presentViewController:nav animated:YES completion:nil];
 }
 
 #pragma mark - Product Add Caption Delegate
-- (void)didDismissController:(ProductAddCaptionViewController*)controller withUserInfo:(NSDictionary *)userinfo {
-    _userInfo = userinfo;
-    _productReviewPhotoObjects = [userinfo objectForKey:@"product-review-photo-objects"];
-    _hasImages = YES;
-    NSArray *selectedImages = [userinfo objectForKey:@"selected_images"];
-    NSArray *selectedIndexpaths = [userinfo objectForKey:@"selected_indexpath"];
+- (void)updateAttachedPictures:(NSArray *)attachedPictures
+                selectedAssets:(NSArray *)selectedAssets
+              uploadedPictures:(NSArray *)uploadedPictures
+          tempUploadedPictures:(NSArray *)tempUploadedPictures {
+    _attachedPictures = [attachedPictures mutableCopy];
+    _selectedAssets = selectedAssets;
+    _uploadedPictures = [uploadedPictures mutableCopy];
+    _tempUploadedPictures = [tempUploadedPictures mutableCopy];
     
-    // Cari Index Image yang kosong
-    NSMutableArray *emptyImageIndex = [NSMutableArray new];
-    for (UIImageView *image in _attachedImagesArray) {
-        if (image.image == nil || [self image:image.image isEqualTo:[UIImage imageNamed:@"icon_camera.png"]]) {
-            [emptyImageIndex addObject:@(image.tag - 20)];
-        }
+    if (_attachedPictures.count == 0) {
+        _hasImages = NO;
     }
     
-    //Upload Image yg belum diupload tp dipilih
-    int j = 0;
-    for (NSDictionary *selected in selectedImages) {
-        if ([selected isKindOfClass:[NSDictionary class]]) {
-            if (j>=emptyImageIndex.count) {
-                return;
-            }
-            if (![self array:[_selectedImagesCameraController copy] containsObject:selected]) {
-                NSUInteger index = [emptyImageIndex[j] integerValue];
-                [_selectedImagesCameraController replaceObjectAtIndex:index withObject:selected];
-                NSMutableDictionary *data = [NSMutableDictionary new];
-                [data addEntriesFromDictionary:selected];
-                NSUInteger indexIndexPath = [_selectedImagesCameraController indexOfObject:selected];
-                [data setObject:selectedIndexpaths[indexIndexPath] forKey:@"selected_indexpath"];
-                [self setImageData:[data copy] tag:index];
-                j++;
-            }
-        }
-    }
-}
-
-- (void)setImageData:(NSDictionary*)data tag:(NSInteger)tag {
-    id selectedIndexpaths = [data objectForKey:@"selected_indexpath"];
-    [_selectedIndexPathCameraController replaceObjectAtIndex:tag withObject:selectedIndexpaths?:@""];
-    
-    NSInteger tagView = tag + 20;
-    NSMutableDictionary *object = [NSMutableDictionary new];
-    [object setObject:data forKey:@"photo"];
-    UIImageView *imageView;
-    
-    NSDictionary* photo = [data objectForKey:@"photo"];
-    
-    UIImage* imagePhoto = [photo objectForKey:@"photo"];
-    
-    for (UIImageView *image in _attachedImagesArray) {
-        if (image.tag == tagView) {
-            imageView = image;
-            image.image = imagePhoto;
-            image.hidden = NO;
-            image.userInteractionEnabled = YES;
-            image.contentMode = UIViewContentModeScaleToFill;
-            [_attachedImages replaceObjectAtIndex:tagView-20 withObject:image];
-        }
-        
-        if (image.tag == tagView + 1) {
-            if (image.image == nil) {
-                image.image = [UIImage imageNamed:@"icon_camera.png"];
-                image.userInteractionEnabled = YES;
-                image.hidden = NO;
-                image.contentMode = UIViewContentModeCenter;
-                [image.layer setBorderColor:[[UIColor colorWithRed:200.0/255 green:199.0/255 blue:204.0/255 alpha:1] CGColor]];
-                [image.layer setBorderWidth:1.0];
-                image.layer.cornerRadius = 5.0;
-                image.layer.masksToBounds = YES;
-                
-            }
-        }
+    for (UIImageView *imageView in _attachedImagesArray) {
+        imageView.image = nil;
+        imageView.userInteractionEnabled = NO;
+        imageView.contentMode = UIViewContentModeScaleAspectFit;
+        [imageView.layer setBorderColor:[[UIColor clearColor] CGColor]];
+        [imageView.layer setBorderWidth:0];
+        [imageView.layer setCornerRadius:0];
+        [imageView.layer setMasksToBounds:NO];
     }
     
-    if (imageView != nil) {
-        [object setObject:imageView forKey:@"data_selected_image_view"];
-    }
-    
-    [object setObject:_selectedImagesCameraController[tag] forKey:@"data_selected_photo"];
-    [object setObject:_selectedIndexPathCameraController[tag] forKey:@"data_selected_indexpath"];
+    [self setAttachedPictures];
 }
 
 @end

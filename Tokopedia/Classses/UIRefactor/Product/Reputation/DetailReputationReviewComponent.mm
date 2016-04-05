@@ -43,7 +43,7 @@ static CKComponent* messageLabel(DetailReputationReview* review, NSString* role)
     if (!([review.review_message isEqualToString:@"0"] || review.review_message == nil)) {
         message = review.review_message;
     } else if ([role isEqualToString:@"2"]) {
-        message = [review.review_is_skipped isEqualToString:@"1"]?@"Pembeli memutuskan untuk tidak mengisi ulasan":@"Pembeli belum memberi ulasan";
+        message = [review.review_is_skipped isEqualToString:@"1"]?@"Pembeli telah melewati ulasan":@"Pembeli belum memberi ulasan";
     } else if ([review.review_is_skipped isEqualToString:@"1"] && [role isEqualToString:@"1"]) {
         message = @"Anda telah melewati ulasan ini";
     }
@@ -59,7 +59,7 @@ static CKComponent* messageLabel(DetailReputationReview* review, NSString* role)
                      .string = message,
                      .font = [UIFont fontWithName:@"Gotham Book" size:14],
                      .maximumNumberOfLines = 0,
-                     .lineSpacing = 1.0
+                     .lineSpacing = 5.0
                  }
                  viewAttributes:{}
                  size:{}]];
@@ -217,34 +217,31 @@ static CKComponent *attachedImages(DetailReputationReview *review, DetailReputat
 
 - (void)didTapButton:(id)sender {
     if ([_role isEqualToString:@"2"]) {
-        [_delegate didTapToReportReview:_review];
+        [_delegate didTapToReportReview:_review atView:((CKButtonComponent*)sender).viewContext.view];
     } else {
-        [_delegate didTapToEditReview:_review];
+        [_delegate didTapToEditReview:_review atView:((CKButtonComponent*)sender).viewContext.view];
     }
 }
 
 - (void)didTapToDeleteResponse:(id)sender {
-    [_delegate didTapToDeleteResponse:_review];
+    [_delegate didTapToDeleteResponse:_review atView:((CKButtonComponent*)sender).viewContext.view];
 }
 
 - (void)didTapAttachedImages:(id)sender {
     [_delegate didTapAttachedImages:_review withIndex:0];
 }
 
+- (void)didTapRevieweeReputation:(id)sender {
+    [_delegate didTapRevieweeReputation:_review atView:((CKStackLayoutComponent*)sender).viewContext.view];
+}
+
 + (instancetype)newWithReview:(DetailReputationReview*)review role:(NSString*)role isDetail:(BOOL)isDetail context:(DetailReputationReviewContext*)context {
-    
-    UIEdgeInsets insets;
-    if (isDetail) {
-        insets = {0, 8, 0, 8};
-    } else {
-        insets = {8, 8, 0, 8};
-    }
     
     DetailReputationReviewComponent* component =
     [super newWithComponent:
      [CKInsetComponent
       newWithView:{}
-      insets:insets
+      insets:{8, 8, 0, 8}
       component:
       [CKStackLayoutComponent
        newWithView:{
@@ -278,7 +275,8 @@ static CKComponent *attachedImages(DetailReputationReview *review, DetailReputat
                                                            tapToProductAction:@selector(didTapHeader:)
                                                               tapButtonAction:@selector(didTapButton:)
                                                               imageDownloader:context.imageDownloader
-                                                                   imageCache:context.imageCache],
+                                                                   imageCache:context.imageCache
+                                                                     isDetail:isDetail],
                          .flexGrow = YES,
                          .flexShrink = YES,
                          .alignSelf = CKStackLayoutAlignSelfStretch
@@ -317,7 +315,8 @@ static CKComponent *attachedImages(DetailReputationReview *review, DetailReputat
                                       imageDownloader:context.imageDownloader
                                            imageCache:context.imageCache
                                                  role:role
-                                               action:@selector(didTapToDeleteResponse:)]
+                                               action:@selector(didTapToDeleteResponse:)
+                                      tapToReputation:@selector(didTapRevieweeReputation:)]
            },
            {
                giveResponseButton(review, role, isDetail)

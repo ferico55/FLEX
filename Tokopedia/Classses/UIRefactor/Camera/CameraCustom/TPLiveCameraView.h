@@ -2,12 +2,17 @@
 //  TPLiveCameraView.h
 //  Tokopedia
 //
-//  Created by Kenneth Vincent on 3/29/16.
+//  Created by Renny Runiawati on 3/28/16.
 //  Copyright © 2016 TOKOPEDIA. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
 @interface TPLiveCameraView : UIView
+
+- (void)startLiveVideo;
+- (void)stopLiveVideo;
+- (void)restartCaptureSession;
+- (void)freezeCapturedContent;
 
 @end

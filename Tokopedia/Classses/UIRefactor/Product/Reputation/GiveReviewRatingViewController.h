@@ -18,8 +18,8 @@
 @interface GiveReviewRatingViewController : UIViewController
 
 @property (nonatomic, weak) IBOutlet id<GiveReviewRatingDelegate> delegate;
-@property (nonatomic, weak) MyReviewDetailViewController *detailMyReviewReputation;
-@property (nonatomic, weak) DetailReputationReview *detailReputationReview;
+@property (nonatomic, weak) MyReviewDetailViewController *myReviewDetailViewController;
+@property (nonatomic, weak) DetailReputationReview *review;
 
 @property BOOL isEdit;
 @property int accuracyRate;

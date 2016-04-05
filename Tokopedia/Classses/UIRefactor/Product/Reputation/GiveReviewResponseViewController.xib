@@ -21,7 +21,6 @@
                 <outlet property="_collectionView" destination="IkR-FG-1ah" id="O15-gA-XG9"/>
                 <outlet property="giveResponseView" destination="0Tb-3r-e2G" id="Sct-Tr-5Lj"/>
                 <outlet property="headerView" destination="WNj-GM-80k" id="hsg-Hp-0HI"/>
-                <outlet property="horizontalBorderView" destination="WxN-8p-B1k" id="Kvq-Rh-exY"/>
                 <outlet property="invoiceLabel" destination="Ses-s4-UB7" id="VM8-7c-OhK"/>
                 <outlet property="responseViewBottomConstraint" destination="nAi-z3-Fs0" id="fox-nn-NXv"/>
                 <outlet property="revieweeImage" destination="Kq6-NV-tnA" id="XGs-6B-P7Y"/>
@@ -35,13 +34,13 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
-            <rect key="frame" x="0.0" y="0.0" width="335" height="519"/>
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="IkR-FG-1ah">
-                    <rect key="frame" x="0.0" y="0.0" width="335" height="469"/>
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                     <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
-                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="FrQ-zR-mNJ">
+                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="10" id="FrQ-zR-mNJ">
                         <size key="itemSize" width="50" height="50"/>
                         <size key="headerReferenceSize" width="0.0" height="0.0"/>
                         <size key="footerReferenceSize" width="0.0" height="0.0"/>
@@ -49,24 +48,10 @@
                     </collectionViewFlowLayout>
                 </collectionView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Tb-3r-e2G">
-                    <rect key="frame" x="0.0" y="469" width="335" height="50"/>
+                    <rect key="frame" x="0.0" y="550" width="600" height="50"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3fn-5e-sEa">
-                            <rect key="frame" x="281" y="10" width="46" height="30"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="30" id="90V-PL-eB9"/>
-                                <constraint firstAttribute="width" constant="46" id="hcJ-gZ-GQE"/>
-                            </constraints>
-                            <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
-                            <state key="normal" title="Kirim">
-                                <color key="titleColor" red="0.23529411759999999" green="0.70196078429999997" blue="0.22352941179999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </state>
-                            <connections>
-                                <action selector="didTapSendButton:" destination="-1" eventType="touchUpInside" id="AAX-Nx-kyu"/>
-                            </connections>
-                        </button>
                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="IZD-CW-svx" customClass="RSKGrowingTextView" customModule="Tokopedia" customModuleProvider="target">
-                            <rect key="frame" x="8" y="8" width="265" height="34"/>
+                            <rect key="frame" x="8" y="8" width="530" height="34"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -84,14 +69,29 @@
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
                         </textView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3fn-5e-sEa">
+                            <rect key="frame" x="546" y="12" width="46" height="30"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="30" id="90V-PL-eB9"/>
+                                <constraint firstAttribute="width" constant="46" id="hcJ-gZ-GQE"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
+                            <state key="normal" title="Kirim">
+                                <color key="titleColor" red="0.23529411759999999" green="0.70196078429999997" blue="0.22352941179999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="didTapSendButton:" destination="-1" eventType="touchUpInside" id="AAX-Nx-kyu"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" red="0.96470588239999999" green="0.96470588239999999" blue="0.96470588239999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="3fn-5e-sEa" secondAttribute="trailing" constant="8" id="4fw-oA-GaD"/>
-                        <constraint firstAttribute="bottom" secondItem="3fn-5e-sEa" secondAttribute="bottom" constant="10" id="8lz-6q-BCC"/>
+                        <constraint firstAttribute="bottom" secondItem="3fn-5e-sEa" secondAttribute="bottom" constant="8" id="8lz-6q-BCC"/>
                         <constraint firstItem="IZD-CW-svx" firstAttribute="top" secondItem="0Tb-3r-e2G" secondAttribute="top" constant="8" id="9Cp-9X-28k"/>
                         <constraint firstItem="IZD-CW-svx" firstAttribute="leading" secondItem="0Tb-3r-e2G" secondAttribute="leading" constant="8" id="JkU-1e-guH"/>
                         <constraint firstItem="3fn-5e-sEa" firstAttribute="leading" secondItem="IZD-CW-svx" secondAttribute="trailing" constant="8" id="XP9-BW-9ti"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="ec9-Of-kGQ"/>
                         <constraint firstAttribute="bottom" secondItem="IZD-CW-svx" secondAttribute="bottom" constant="8" id="fux-KX-LhB"/>
                     </constraints>
                 </view>
@@ -100,18 +100,16 @@
             <constraints>
                 <constraint firstItem="IkR-FG-1ah" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="09t-5T-pv9"/>
                 <constraint firstItem="0Tb-3r-e2G" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="NZd-NN-Aas"/>
-                <constraint firstItem="0Tb-3r-e2G" firstAttribute="top" secondItem="IkR-FG-1ah" secondAttribute="bottom" id="YVz-O9-wmK"/>
+                <constraint firstAttribute="bottom" secondItem="IkR-FG-1ah" secondAttribute="bottom" id="T58-DS-cFG"/>
                 <constraint firstAttribute="trailing" secondItem="IkR-FG-1ah" secondAttribute="trailing" id="c3N-gZ-FpI"/>
                 <constraint firstAttribute="bottom" secondItem="0Tb-3r-e2G" secondAttribute="bottom" id="nAi-z3-Fs0"/>
                 <constraint firstAttribute="trailing" secondItem="0Tb-3r-e2G" secondAttribute="trailing" id="pT6-WC-E3R"/>
                 <constraint firstItem="IkR-FG-1ah" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="qx0-5b-T6H"/>
-                <constraint firstItem="0Tb-3r-e2G" firstAttribute="top" secondItem="IkR-FG-1ah" secondAttribute="bottom" id="vEd-3E-WMM"/>
             </constraints>
-            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="48.5" y="303.5"/>
+            <point key="canvasLocation" x="136.5" y="232"/>
         </view>
         <view contentMode="scaleToFill" id="WNj-GM-80k">
-            <rect key="frame" x="0.0" y="0.0" width="369" height="66"/>
+            <rect key="frame" x="0.0" y="0.0" width="383" height="66"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Kq6-NV-tnA">
@@ -140,13 +138,6 @@
                         <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WxN-8p-B1k">
-                    <rect key="frame" x="8" y="65" width="353" height="1"/>
-                    <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="1" id="K3X-Z8-Prh"/>
-                    </constraints>
-                </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
@@ -156,13 +147,9 @@
                 <constraint firstItem="Kq6-NV-tnA" firstAttribute="top" secondItem="WNj-GM-80k" secondAttribute="top" constant="8" id="Nwt-uA-ygv"/>
                 <constraint firstItem="iiF-RI-UqZ" firstAttribute="leading" secondItem="Kq6-NV-tnA" secondAttribute="trailing" constant="8" id="ObH-mK-NtZ"/>
                 <constraint firstItem="8p8-tP-5wT" firstAttribute="leading" secondItem="Kq6-NV-tnA" secondAttribute="trailing" constant="8" id="ZPd-Qu-hFb"/>
-                <constraint firstItem="WxN-8p-B1k" firstAttribute="top" secondItem="Kq6-NV-tnA" secondAttribute="bottom" constant="7" id="ZxM-2C-Gmq"/>
-                <constraint firstAttribute="bottom" secondItem="WxN-8p-B1k" secondAttribute="bottom" id="bmn-83-hlU"/>
-                <constraint firstItem="WxN-8p-B1k" firstAttribute="leading" secondItem="WNj-GM-80k" secondAttribute="leading" constant="8" id="cyX-rH-fZb"/>
-                <constraint firstAttribute="trailing" secondItem="WxN-8p-B1k" secondAttribute="trailing" constant="8" id="th7-a0-SqP"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="123.5" y="686"/>
+            <point key="canvasLocation" x="136.5" y="614"/>
         </view>
         <view contentMode="scaleToFill" id="759-KD-gFq">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -199,7 +186,7 @@
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="48" y="960"/>
+            <point key="canvasLocation" x="136" y="729"/>
         </view>
     </objects>
     <resources>

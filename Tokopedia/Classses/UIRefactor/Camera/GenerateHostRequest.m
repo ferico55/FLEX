@@ -29,7 +29,7 @@
     _generateHostNetworkManager.isParameterNotEncrypted = NO;
     _generateHostNetworkManager.isUsingHmac = YES;
     
-    [_generateHostNetworkManager requestWithBaseUrl:@"https://ws-staging.tokopedia.com"
+    [_generateHostNetworkManager requestWithBaseUrl:[NSString v4Url]
                                                path:@"/v4/action/generate-host/generate_host.pl"
                                              method:RKRequestMethodGET
                                           parameter:@{@"new_add" : newAdd}

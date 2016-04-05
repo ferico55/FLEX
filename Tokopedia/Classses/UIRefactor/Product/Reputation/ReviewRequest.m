@@ -183,7 +183,7 @@
     getInboxReputationNetworkManager.isParameterNotEncrypted = NO;
     getInboxReputationNetworkManager.isUsingHmac = YES;
     
-    [getInboxReputationNetworkManager requestWithBaseUrl:@"https://ws-staging.tokopedia.com"
+    [getInboxReputationNetworkManager requestWithBaseUrl:[NSString v4Url]
                                                     path:@"/v4/inbox-reputation/get_inbox_reputation.pl"
                                                   method:RKRequestMethodGET
                                                parameter:@{@"filter" : filter,
@@ -223,7 +223,7 @@
                                 @"buyer_seller"         : role
                                 };
     
-    [getReviewDetailNetworkManager requestWithBaseUrl:@"https://ws-staging.tokopedia.com"
+    [getReviewDetailNetworkManager requestWithBaseUrl:[NSString v4Url]
                                                  path:@"/v4/inbox-reputation/get_list_reputation_review.pl"
                                                method:RKRequestMethodGET
                                             parameter:parameter
@@ -238,51 +238,6 @@
                                             }];
 }
 
-- (void)requestReviewValidationWithReputationID:(NSString *)reputationID
-                                      productID:(NSString *)productID
-                                   accuracyRate:(int)accuracyRate
-                                    qualityRate:(int)qualityRate
-                                        message:(NSString *)reviewMessage
-                                         shopID:(NSString *)shopID
-                                       serverID:(NSString *)serverID
-                          hasProductReviewPhoto:(BOOL)hasProductReviewPhoto
-                                 reviewPhotoIDs:(NSArray *)imageIDs
-                             reviewPhotoObjects:(NSDictionary *)photos
-                                      onSuccess:(void (^)(SubmitReviewResult *))successCallback
-                                      onFailure:(void (^)(NSError *))errorCallback {
-    
-    submitReviewNetworkManager.isParameterNotEncrypted = NO;
-    submitReviewNetworkManager.isUsingHmac = YES;
-    
-    NSNumber *hasPhoto = hasProductReviewPhoto?@(1):@(0);
-    NSString *allImageIDs = [imageIDs componentsJoinedByString:@"~"];
-    
-    [submitReviewNetworkManager requestWithBaseUrl:@"https://ws-staging.tokopedia.com"
-                                              path:@"/v4/action/review/add_product_review_validation.pl"
-                                            method:RKRequestMethodGET
-                                         parameter:@{@"product_id" : productID,
-                                                     @"rate_accuracy" : @(accuracyRate),
-                                                     @"rate_quality" : @(qualityRate),
-                                                     @"reputation_id" : reputationID,
-                                                     @"review_message" : reviewMessage,
-                                                     @"shop_id" : shopID,
-                                                     @"server_id" : serverID,
-                                                     @"has_product_review_photo" : hasPhoto,
-                                                     @"product_review_photo_all" : allImageIDs?:@"",
-                                                     @"product_review_photo_obj" : photos?:@{}
-                                                     }
-                                           mapping:[SubmitReview mapping]
-                                         onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                             NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
-                                             SubmitReview *obj = [result objectForKey:@""];
-                                             successCallback(obj.data);
-                                         }
-                                         onFailure:^(NSError *errorResult) {
-                                             errorCallback(errorResult);
-                                         }];
-    
-}
-
 - (void)requestUploadReviewImageWithHost:(NSString*)host
                                     data:(id)imageData
                                  imageID:(NSString *)imageID
@@ -292,19 +247,18 @@
     uploadReviewImageNetworkManager.isParameterNotEncrypted = NO;
     uploadReviewImageNetworkManager.isUsingHmac = YES;
     
-    UIImage *image = [imageData objectForKey:@"photo"];
-    NSString *fileName = [imageData objectForKey:@"cameraimagename"];
-    NSString *name = @"fileToUpload";
-    
     RequestObjectUploadImage *requestObject = [RequestObjectUploadImage new];
     requestObject.image_id = imageID;
     requestObject.token = token;
     requestObject.user_id = [[UserAuthentificationManager new] getUserId];
     
+    UIImage *image = [imageData objectForKey:@"image"];
+    NSString *fileName = [imageData objectForKey:@"name"];
+    
     [RequestUploadImage requestUploadImage:image
                             withUploadHost:host
                                       path:@"/upload/attachment"
-                                      name:name
+                                      name:@"fileToUpload"
                                   fileName:fileName
                              requestObject:requestObject
                                  onSuccess:^(ImageResult *imageResult) {
@@ -331,7 +285,7 @@
     
     NSString *path = _isEdit?@"/v4/action/reputation/edit_reputation_review_submit.pl":@"/v4/action/reputation/insert_reputation_review_submit.pl";
     
-    [productReviewSubmitNetworkManager requestWithBaseUrl:@"https://ws-staging.tokopedia.com"
+    [productReviewSubmitNetworkManager requestWithBaseUrl:[NSString v4Url]
                                                      path:path
                                                    method:RKRequestMethodGET
                                                 parameter:@{@"post_key" : postKey?:@"",
@@ -375,7 +329,7 @@
     submitReviewWithImageNetworkManager.isUsingHmac = YES;
     
     NSNumber *hasPhoto = hasProductReviewPhoto?@(1):@(0);
-    NSString *allImageIDs = [imageIDs componentsJoinedByString:@"~"];
+    NSString *allImageIDs = [[photos allKeys] componentsJoinedByString:@"~"];
     NSString *uploaded = @"";
     
     if (photos) {
@@ -386,7 +340,7 @@
         uploaded = [uploaded stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     }
     
-    [submitReviewWithImageNetworkManager requestWithBaseUrl:@"https://ws-staging.tokopedia.com"
+    [submitReviewWithImageNetworkManager requestWithBaseUrl:[NSString v4Url]
                                                        path:@"/v4/action/reputation/insert_reputation_review_validation.pl"
                                                      method:RKRequestMethodGET
                                                   parameter:@{@"product_id" : productID,
@@ -410,7 +364,7 @@
                                                           _fileUploaded = [NSMutableDictionary new];
                                                           for (NSString *imageID in imageIDs) {
                                                               [self requestUploadImageWithImageID:imageID
-                                                                                   imagesToUpload:imagesToUpload
+                                                                                   imagesToUpload:[imagesToUpload objectForKey:imageID]
                                                                                             token:token
                                                                                              host:host];
                                                               self.successCompletionBlock = successCallback;
@@ -431,7 +385,7 @@
                                 token:(NSString*)token
                                  host:(NSString*)host {
     [self requestUploadReviewImageWithHost:[NSString stringWithFormat:@"https://%@",host]
-                                      data:[imagesToUpload objectForKey:imageID]
+                                      data:imagesToUpload
                                    imageID:imageID
                                      token:token
                                  onSuccess:^(ImageResult *result) {
@@ -487,7 +441,7 @@
     editReviewWithImageNetworkManager.isUsingHmac = YES;
     
     NSNumber *hasPhoto = hasProductReviewPhoto?@(1):@(0);
-    NSString *allImageIDs = [imageIDs componentsJoinedByString:@"~"];
+    NSString *allImageIDs = [[photos allKeys] componentsJoinedByString:@"~"];
     NSString *uploaded = @"";
     if (photos) {
         NSData *jsonData = [NSJSONSerialization dataWithJSONObject:photos options:NSJSONWritingPrettyPrinted error:nil];
@@ -497,8 +451,7 @@
         uploaded = [uploaded stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     }
     
-    
-    [editReviewWithImageNetworkManager requestWithBaseUrl:@"https://ws-staging.tokopedia.com"
+    [editReviewWithImageNetworkManager requestWithBaseUrl:[NSString v4Url]
                                                      path:@"/v4/action/reputation/edit_reputation_review_validation.pl"
                                                    method:RKRequestMethodGET
                                                 parameter:@{@"product_id" : productID,
@@ -523,7 +476,7 @@
                                                         for (NSString *imageID in imageIDs) {
                                                             if ([imagesToUpload objectForKey:imageID] != nil) {
                                                                 [self requestUploadImageWithImageID:imageID
-                                                                                     imagesToUpload:imagesToUpload
+                                                                                     imagesToUpload:[imagesToUpload objectForKey:imageID]
                                                                                               token:token
                                                                                                host:host];
                                                                 self.successCompletionBlock = successCallback;
@@ -553,7 +506,7 @@
     skipProductReviewNetworkManager.isParameterNotEncrypted = NO;
     skipProductReviewNetworkManager.isUsingHmac = YES;
     
-    [skipProductReviewNetworkManager requestWithBaseUrl:@"https://ws-staging.tokopedia.com"
+    [skipProductReviewNetworkManager requestWithBaseUrl:[NSString v4Url]
                                                    path:@"/v4/action/review/skip_product_review.pl"
                                                  method:RKRequestMethodGET
                                               parameter:@{@"product_id" : productID,
@@ -600,7 +553,7 @@
     uploaded = [uploaded stringByReplacingOccurrencesOfString:@" " withString:@""];
     uploaded = [uploaded stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
-    [editReputationReviewSubmitNetworkManager requestWithBaseUrl:@"https://ws-staging.tokopedia.com"
+    [editReputationReviewSubmitNetworkManager requestWithBaseUrl:[NSString v4Url]
                                                             path:@"/v4/action/reputation/edit_reputation_review_submit.pl"
                                                           method:RKRequestMethodGET
                                                        parameter:@{@"post_key" : postKey?:@"",
@@ -630,7 +583,7 @@
     insertReputationReviewResponseNetworkManager.isParameterNotEncrypted = NO;
     insertReputationReviewResponseNetworkManager.isUsingHmac = YES;
     
-    [insertReputationReviewResponseNetworkManager requestWithBaseUrl:@"https://ws-staging.tokopedia.com"
+    [insertReputationReviewResponseNetworkManager requestWithBaseUrl:[NSString v4Url]
                                                                 path:@"/v4/action/reputation/insert_reputation_review_response.pl"
                                                               method:RKRequestMethodGET
                                                            parameter:@{@"reputation_id" : reputationID,
@@ -655,7 +608,7 @@
     deleteReputationReviewResponseNetworkManager.isParameterNotEncrypted = NO;
     deleteReputationReviewResponseNetworkManager.isUsingHmac = YES;
     
-    [deleteReputationReviewResponseNetworkManager requestWithBaseUrl:@"https://ws-staging.tokopedia.com"
+    [deleteReputationReviewResponseNetworkManager requestWithBaseUrl:[NSString v4Url]
                                                                 path:@"/v4/action/reputation/delete_reputation_review_response.pl"
                                                               method:RKRequestMethodGET
                                                            parameter:@{@"reputation_id" : reputationID,
@@ -679,7 +632,7 @@
     insertReputationNetworkManager.isParameterNotEncrypted = NO;
     insertReputationNetworkManager.isUsingHmac = YES;
     
-    [insertReputationNetworkManager requestWithBaseUrl:@"https://ws-staging.tokopedia.com"
+    [insertReputationNetworkManager requestWithBaseUrl:[NSString v4Url]
                                                   path:@"/v4/action/reputation/insert_reputation.pl"
                                                 method:RKRequestMethodGET
                                              parameter:@{@"buyer_seller"     : role,

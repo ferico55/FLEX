@@ -436,10 +436,10 @@
 //    [self.navigationController pushViewController:giveReviewViewController animated:YES];
     
     GiveReviewRatingViewController *vc = [GiveReviewRatingViewController new];
-    vc.detailMyReviewReputation = self;
+//    vc.detailMyReviewReputation = self;
     DetailReputationReview *detailReputationReview = arrList[tag];
     
-    vc.detailReputationReview = detailReputationReview;
+    vc.review = detailReputationReview;
     vc.isEdit = isEdit;
     
     [self.navigationController pushViewController:vc animated:YES];

@@ -7,8 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@class ViewLabelUser;
+#import "ViewLabelUser.h"
 
 @protocol InboxReviewCellDelegate <NSObject>
 - (void)tapToInboxReviewDetailAtIndexPath:(NSIndexPath*)indexPath;

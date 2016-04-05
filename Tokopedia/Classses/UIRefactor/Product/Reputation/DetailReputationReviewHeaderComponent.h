@@ -16,5 +16,6 @@
            tapToProductAction:(SEL)action
               tapButtonAction:(SEL)buttonAction
               imageDownloader:(id<CKNetworkImageDownloading>)imageDownloader
-                   imageCache:(ImageStorage*)imageCache;
+                   imageCache:(ImageStorage*)imageCache
+                     isDetail:(BOOL)isDetail;
 @end

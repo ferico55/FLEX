@@ -10,7 +10,7 @@
 
 @implementation MedalComponent
 
-+ (instancetype)newMedalWithLevel:(NSInteger)level set:(NSInteger)set imageCache:(ImageStorage *)imageCache {
++ (instancetype)newMedalWithLevel:(NSInteger)level set:(NSInteger)set imageCache:(ImageStorage *)imageCache selector:(SEL)sel {
     NSInteger intLevel = level;
     NSInteger intSet = set;
     std::vector<CKStackLayoutComponentChild> medal;
@@ -44,7 +44,12 @@
     
     return [super newWithComponent:
             [CKStackLayoutComponent
-             newWithView:{}
+             newWithView:{
+                 [UIView class],
+                 {
+                     CKComponentTapGestureAttribute(sel)
+                 }
+             }
              size:{}
              style:{
                  .direction = CKStackLayoutDirectionHorizontal

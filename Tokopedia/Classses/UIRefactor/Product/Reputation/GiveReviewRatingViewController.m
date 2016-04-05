@@ -67,10 +67,10 @@
         GiveReviewDetailViewController *vc = [GiveReviewDetailViewController new];
         
         vc.isEdit = _isEdit;
-        vc.detailMyReviewReputation = _detailMyReviewReputation;
+        vc.myReviewDetailViewController = _myReviewDetailViewController;
         vc.qualityRate = _qualityRate;
         vc.accuracyRate = _accuracyRate;
-        vc.detailReputationReview = _detailReputationReview;
+        vc.review = _review;
         vc.token = _token;
         
         [self.navigationController pushViewController:vc animated:YES];
@@ -108,10 +108,10 @@
 
 #pragma mark - Methods
 - (void)initData {
-    _productName.text = [NSString convertHTML:_detailReputationReview.product_name];
+    _productName.text = [NSString convertHTML:_review.product_name];
     
     // Set Product Image
-    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_detailReputationReview.product_image]
+    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_review.product_image]
                                                   cachePolicy:NSURLRequestUseProtocolCachePolicy
                                               timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     
@@ -133,7 +133,7 @@
         _accuracyLabel.attributedText = [[NSAttributedString alloc] initWithString:@"Akurasi:"
                                                                         attributes:@{NSFontAttributeName:[UIFont fontWithName:@"Gotham Book" size:17.0]}];
     } else {
-        _qualityRate = (_detailReputationReview.product_rating_point==nil || _detailReputationReview.product_rating_point.length==0)? 0:[_detailReputationReview.product_rating_point intValue];
+        _qualityRate = (_review.product_rating_point==nil || _review.product_rating_point.length==0)? 0:[_review.product_rating_point intValue];
         [self setQualityLabel];
         for (int ii = 0; ii < _qualityStarsArray.count; ii++) {
             UIImageView *temp = [_qualityStarsArray objectAtIndex:ii];
@@ -141,7 +141,7 @@
         }
         
         
-        _accuracyRate = (_detailReputationReview.product_accuracy_point==nil || _detailReputationReview.product_accuracy_point.length==0)? 0:[_detailReputationReview.product_accuracy_point intValue];
+        _accuracyRate = (_review.product_accuracy_point==nil || _review.product_accuracy_point.length==0)? 0:[_review.product_accuracy_point intValue];
         [self setAccuracyLabel];
         for (int ii = 0; ii < _accuracyStarsArray.count; ii++) {
             UIImageView *temp = [_accuracyStarsArray objectAtIndex:ii];
@@ -222,7 +222,7 @@
 
 - (BOOL)isSuccessValidateRating {
     if (_isEdit) {
-        if ([_detailReputationReview.product_accuracy_point intValue] > _accuracyRate || [_detailReputationReview.product_rating_point intValue] > _qualityRate) {
+        if ([_review.product_accuracy_point intValue] > _accuracyRate || [_review.product_rating_point intValue] > _qualityRate) {
             StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[@"Anda tidak dapat memberi penurunan rating"] delegate:self];
             [stickyAlertView show];
             return NO;

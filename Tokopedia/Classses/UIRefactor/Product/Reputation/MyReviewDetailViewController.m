@@ -29,6 +29,7 @@
 #import "ReviewImageAttachment.h"
 #import "UIImageView+AFNetworking.h"
 #import "ImageStorage.h"
+#import "LoadingView.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface MyReviewDetailViewController ()
@@ -40,7 +41,9 @@
     UIActionSheetDelegate,
     ReportViewControllerDelegate,
     UIAlertViewDelegate,
-    requestLDExttensionDelegate
+    requestLDExttensionDelegate,
+    LoadingViewDelegate,
+    CMPopTipViewDelegate
 >
 {
     TAGContainer *_gtmContainer;
@@ -58,6 +61,7 @@
     NSString *_getDataFromMasterInServer;
     NSString *_score;
     NSString *_token;
+    NSInteger _count;
     NavigateViewController *_navigator;
     
     UIRefreshControl *_refreshControl;
@@ -68,6 +72,8 @@
     
     RequestLDExtension *_request;
     ImageStorage *_imageCache;
+    
+    LoadingView *_loadingView;
     
     BOOL _page;
     BOOL _isRefreshing;
@@ -151,7 +157,7 @@
                         action:@selector(refreshData)
               forControlEvents:UIControlEventValueChanged];
     [_header addSubview:_refreshControl];
-    
+
     _reviewRequest = [ReviewRequest new];
     [_reviewRequest requestGetListReputationReviewWithReputationID:_detailMyInboxReputation.reputation_id
                                                  reputationInboxID:_detailMyInboxReputation.reputation_inbox_id
@@ -159,6 +165,7 @@
                                                               role:_detailMyInboxReputation.role
                                                           autoRead:_autoRead
                                                          onSuccess:^(MyReviewReputationResult *result) {
+                                                             [_loadingView removeFromSuperview];
                                                              _token = result.token;
                                                              
                                                              [_refreshControl endRefreshing];
@@ -173,7 +180,7 @@
                                                                  [_dataManager addReviews:result.list];
                                                              }
                                                          } onFailure:^(NSError *errorResult) {
-                                                             
+                                                             [self getLoadingView];
                                                          }];
     
     
@@ -196,7 +203,7 @@
                                                                                  action:@selector(tapToInvoice)]];
     self.navigationItem.titleView = _pageTitleView;
     
-    _navigator = [NavigateViewController new];
+    
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(refreshData)
@@ -254,8 +261,8 @@
     if (buttonIndex == 0) {
         if (actionSheet.tag == 100) {
             GiveReviewRatingViewController *vc = [GiveReviewRatingViewController new];
-            vc.detailMyReviewReputation = self;
-            vc.detailReputationReview = _selectedReview;
+            vc.myReviewDetailViewController = self;
+            vc.review = _selectedReview;
             vc.isEdit = YES;
             vc.token = _token;
             [self.navigationController pushViewController:vc animated:YES];
@@ -335,7 +342,7 @@
                                                       onFailure:^(NSError *error) {
                                                           
                                                       }];
-    } else if (buttonIndex == alertView.cancelButtonIndex && alertView.tag == 40) {
+    } else if (alertView.tag == 40) {
         [_reviewRequest requestSkipProductReviewWithProductID:_selectedReview.product_id
                                                  reputationID:_selectedReview.reputation_id
                                                        shopID:_selectedReview.shop_id
@@ -357,18 +364,20 @@
 
 #pragma mark - Reputation Detail Cells Delegate
 - (void)didTapProductWithReview:(DetailReputationReview *)review{
-    [_navigator navigateToProductFromViewController:self
-                                           withName:review.product_name
-                                          withPrice:nil
-                                             withId:review.product_id
-                                       withImageurl:review.product_image
-                                       withShopName:review.shop_name];
+    if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad) {
+        [_navigator navigateToProductFromViewController:self
+                                               withName:review.product_name
+                                              withPrice:nil
+                                                 withId:review.product_id
+                                           withImageurl:review.product_image
+                                           withShopName:review.shop_name];
+    }
 }
 
 - (void)didTapToGiveReview:(DetailReputationReview *)review {
     GiveReviewRatingViewController *vc = [GiveReviewRatingViewController new];
-    vc.detailMyReviewReputation = self;
-    vc.detailReputationReview = review;
+    vc.myReviewDetailViewController = self;
+    vc.review = review;
     vc.isEdit = NO;
     vc.token = _token;
     
@@ -381,13 +390,13 @@
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
                                                     message:@"Apakah Anda yakin melewati review ini?"
                                                    delegate:self
-                                          cancelButtonTitle:@"Ya"
-                                          otherButtonTitles:@"Tidak", nil];
+                                          cancelButtonTitle:@"Tidak"
+                                          otherButtonTitles:@"Ya", nil];
     alert.tag = 40;
     [alert show];
 }
 
-- (void)didTapToEditReview:(DetailReputationReview *)review {
+- (void)didTapToEditReview:(DetailReputationReview *)review atView:(UIView *)view {
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                              delegate:self
                                                     cancelButtonTitle:@"Batal"
@@ -396,10 +405,17 @@
     _selectedReview = review;
     actionSheet.tag = 100;
     
-    [actionSheet showInView:self.view];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        // In this case the device is an iPad.
+        [actionSheet showFromRect:view.frame inView:view.superview animated:YES];
+    }
+    else{
+        // In this case the device is an iPhone/iPod Touch.
+        [actionSheet showInView:self.view];
+    }
 }
 
-- (void)didTapToReportReview:(DetailReputationReview *)review {
+- (void)didTapToReportReview:(DetailReputationReview *)review atView:(UIView *)view {
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                              delegate:self
                                                     cancelButtonTitle:@"Batal"
@@ -408,10 +424,17 @@
     _selectedReview = review;
     actionSheet.tag = 200;
     
-    [actionSheet showInView:self.view];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        // In this case the device is an iPad.
+        [actionSheet showFromRect:view.frame inView:view.superview animated:YES];
+    }
+    else{
+        // In this case the device is an iPhone/iPod Touch.
+        [actionSheet showInView:self.view];
+    }
 }
 
-- (void)didTapToDeleteResponse:(DetailReputationReview *)review {
+- (void)didTapToDeleteResponse:(DetailReputationReview *)review atView:(UIView *)view {
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                              delegate:self
                                                     cancelButtonTitle:@"Batal"
@@ -420,61 +443,84 @@
     _selectedReview = review;
     actionSheet.tag = 300;
     
-    [actionSheet showInView:self.view];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        // In this case the device is an iPad.
+        [actionSheet showFromRect:view.frame inView:view.superview animated:YES];
+    }
+    else{
+        // In this case the device is an iPhone/iPod Touch.
+        [actionSheet showInView:self.view];
+    }
 }
 
 - (void)didTapAttachedImages:(DetailReputationReview *)review withIndex:(NSInteger)index {
     NSMutableArray *descriptionArray = [NSMutableArray new];
     NSMutableArray<UIImageView*> *imageArray = [NSMutableArray new];
     
-    for (ReviewImageAttachment *imageAttachment in review.review_image_attachment) {
-        UIImageView *image = [UIImageView new];
-        [image setImageWithURL:[NSURL URLWithString:imageAttachment.uri_large]
-              placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-01.png"]];
-        [descriptionArray addObject:imageAttachment.desc?:@""];
-        [imageArray addObject:image];
-    }
+    _count = 0;
     
-    [_navigator navigateToShowImageFromViewController:self withImageDictionaries:imageArray imageDescriptions:descriptionArray indexImage:index];
+    for (ReviewImageAttachment *imageAttachment in review.review_image_attachment) {
+        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:imageAttachment.uri_large]];
+        [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
+        UIImageView *imageView = [UIImageView new];
+        [imageView setImageWithURLRequest:request
+                         placeholderImage:[UIImage imageNamed:@"attached_image_placeholder.png"]
+                                  success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                                      _count++;
+                                      [imageView setImage:image];
+                                      [descriptionArray addObject:imageAttachment.desc?:@""];
+                                      [imageArray addObject:imageView];
+                                      if (_count == review.review_image_attachment.count) {
+                                          [_navigator navigateToShowImageFromViewController:self withImageDictionaries:imageArray imageDescriptions:descriptionArray indexImage:index];
+                                      }
+                                  }
+                                  failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+                                      
+                                      
+                                  }];
+        
+    }
 }
 
 
 #pragma mark - Header Delegate
 - (void)didTapRevieweeNameWithID:(NSString *)revieweeID {
-    if ([_detailMyInboxReputation.role isEqualToString:@"2"]) {
-        [_navigator navigateToProfileFromViewController:self withUserID:revieweeID];
-    } else {
-        [_navigator navigateToShopFromViewController:self withShopID:revieweeID];
+    if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad) {
+        if ([_detailMyInboxReputation.role isEqualToString:@"2"]) {
+            [_navigator navigateToProfileFromViewController:self withUserID:revieweeID];
+        } else {
+            [_navigator navigateToShopFromViewController:self withShopID:revieweeID];
+        }
     }
 }
 
-- (void)didTapRevieweeReputation:(id)sender role:(NSString *)role {
-        if ([role isEqualToString:@"1"]) {
-            int paddingRightLeftContent = 10;
-            UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+paddingRightLeftContent, CHeightItemPopUp)];
-            SmileyAndMedal *tempSmileyAndMedal = [SmileyAndMedal new];
-            [tempSmileyAndMedal showPopUpSmiley:viewContentPopUp
-                                     andPadding:paddingRightLeftContent
-                           withReputationNetral:_detailMyInboxReputation.user_reputation.neutral
-                                   withRepSmile:_detailMyInboxReputation.user_reputation.positive
-                                     withRepSad:_detailMyInboxReputation.user_reputation.negative
-                                   withDelegate:self];
-    
-            //Init pop up
-            _cmPopTipView = [[CMPopTipView alloc] initWithCustomView:viewContentPopUp];
-            _cmPopTipView.delegate = self;
-            _cmPopTipView.backgroundColor = [UIColor whiteColor];
-            _cmPopTipView.animation = CMPopTipAnimationSlide;
-            _cmPopTipView.dismissTapAnywhere = YES;
-            _cmPopTipView.leftPopUp = YES;
-    
-            [_cmPopTipView presentPointingAtView:sender
-                                          inView:self.view
-                                        animated:YES];
-        } else {
-            NSString *strText = [NSString stringWithFormat:@"%@ %@", _detailMyInboxReputation.reputation_score, CStringPoin];
-            [self initPopUp:strText withSender:sender withRangeDesc:NSMakeRange(strText.length-CStringPoin.length, CStringPoin.length)];
-        }
+- (void)didTapRevieweeReputation:(id)sender role:(NSString *)role atView:(UIView *)view {
+    if ([role isEqualToString:@"1"]) {
+        int paddingRightLeftContent = 10;
+        UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+paddingRightLeftContent, CHeightItemPopUp)];
+        SmileyAndMedal *tempSmileyAndMedal = [SmileyAndMedal new];
+        [tempSmileyAndMedal showPopUpSmiley:viewContentPopUp
+                                 andPadding:paddingRightLeftContent
+                       withReputationNetral:_detailMyInboxReputation.user_reputation.neutral
+                               withRepSmile:_detailMyInboxReputation.user_reputation.positive
+                                 withRepSad:_detailMyInboxReputation.user_reputation.negative
+                               withDelegate:self];
+        
+        //Init pop up
+        _cmPopTipView = [[CMPopTipView alloc] initWithCustomView:viewContentPopUp];
+        _cmPopTipView.delegate = self;
+        _cmPopTipView.backgroundColor = [UIColor whiteColor];
+        _cmPopTipView.animation = CMPopTipAnimationSlide;
+        _cmPopTipView.dismissTapAnywhere = YES;
+        _cmPopTipView.leftPopUp = YES;
+        
+        [_cmPopTipView presentPointingAtView:view
+                                      inView:view.superview
+                                    animated:YES];
+    } else {
+        NSString *strText = [NSString stringWithFormat:@"%@ %@", _detailMyInboxReputation.reputation_score, CStringPoin];
+        [self initPopUp:strText atView:view withRangeDesc:NSMakeRange(strText.length-CStringPoin.length, CStringPoin.length)];
+    }
 }
 
 - (void)didTapToGiveResponse:(DetailReputationReview *)review {
@@ -595,6 +641,37 @@
     [_navigator popUpLuckyDeal:words];
 }
 
+#pragma mark - Loading View Delegate
+- (void)pressRetryButton {
+    [_reviewRequest requestGetListReputationReviewWithReputationID:_detailMyInboxReputation.reputation_id
+                                                 reputationInboxID:_detailMyInboxReputation.reputation_inbox_id
+                                                      isUsingRedis:_getDataFromMasterInServer
+                                                              role:_detailMyInboxReputation.role
+                                                          autoRead:_autoRead
+                                                         onSuccess:^(MyReviewReputationResult *result) {
+                                                             [_loadingView removeFromSuperview];
+                                                             [_refreshControl endRefreshing];
+                                                             [_reviewList removeAllObjects];
+                                                             
+                                                             if (_page == 0) {
+                                                                 _isRefreshing = NO;
+                                                                 [_dataManager removeAllReviews];
+                                                                 [_dataManager replaceReviews:result.list];
+                                                             } else {
+                                                                 [_dataManager removeAllReviews];
+                                                                 [_dataManager addReviews:result.list];
+                                                             }
+                                                         } onFailure:^(NSError *errorResult) {
+                                                             [self getLoadingView];
+                                                         }];
+}
+
+#pragma mark - Pop Tip View Delegate
+- (void)popTipViewWasDismissedByUser:(CMPopTipView *)popTipView {
+    [_cmPopTipView dismissAnimated:YES];
+    _cmPopTipView = nil;
+}
+
 #pragma mark - Methods
 - (void)setHeaderPosition {
     _headerView = _header;
@@ -602,7 +679,6 @@
     frame.size.width = self.view.bounds.size.width;
     _header.frame = frame;
     [_header sizeToFit];
-    
     
     frame = _header.frame;
     frame.origin.y = -_header.frame.size.height;
@@ -612,7 +688,7 @@
     _collectionView.contentInset = UIEdgeInsetsMake(_header.frame.size.height, 0, 8, 0);
 }
 
-- (void)initPopUp:(NSString *)strText withSender:(id)sender withRangeDesc:(NSRange)range
+- (void)initPopUp:(NSString *)strText atView:(UIView*)view withRangeDesc:(NSRange)range
 {
     UILabel *lblShow = [[UILabel alloc] init];
     CGFloat fontSize = 13;
@@ -639,9 +715,9 @@
     _cmPopTipView.dismissTapAnywhere = YES;
     _cmPopTipView.leftPopUp = YES;
     
-    UIButton *button = (UIButton *)sender;
-    [_cmPopTipView presentPointingAtView:button
-                                  inView:self.view
+    
+    [_cmPopTipView presentPointingAtView:view
+                                  inView:view.superview
                                 animated:YES];
 }
 
@@ -652,6 +728,7 @@
                                                               role:_detailMyInboxReputation.role
                                                           autoRead:_autoRead
                                                          onSuccess:^(MyReviewReputationResult *result) {
+                                                             [_loadingView removeFromSuperview];
                                                              [_refreshControl endRefreshing];
                                                              [_reviewList removeAllObjects];
                                                              
@@ -664,7 +741,7 @@
                                                                  [_dataManager addReviews:result.list];
                                                              }
                                                          } onFailure:^(NSError *errorResult) {
-                                                             
+                                                             [self getLoadingView];
                                                          }];
     
     [_header removeFromSuperview];
@@ -681,6 +758,24 @@
                         action:@selector(refreshData)
               forControlEvents:UIControlEventValueChanged];
     [_header addSubview:_refreshControl];
+}
+
+- (void)getLoadingView {
+    if (_loadingView == nil) {
+        _loadingView = [LoadingView new];
+        _loadingView.delegate = self;
+    }
+    
+    CGRect frame = _loadingView.frame;
+    frame.size.width = self.view.bounds.size.width;
+    _loadingView.frame = frame;
+    [_loadingView sizeToFit];
+    
+    frame = _loadingView.frame;
+    frame.origin.y = 0;
+    _loadingView.frame = frame;
+    
+    [_collectionView addSubview:_loadingView];
 }
 
 @end

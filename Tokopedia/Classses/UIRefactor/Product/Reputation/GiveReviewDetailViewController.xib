@@ -80,7 +80,7 @@
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ttj-jZ-tE5" userLabel="Attached Pictures View">
                                     <rect key="frame" x="8" y="166" width="382" height="75"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" tag="20" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="WjH-qc-nj5" userLabel="Attached Image 1">
+                                        <imageView userInteractionEnabled="NO" tag="20" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="WjH-qc-nj5" userLabel="Attached Image 1">
                                             <rect key="frame" x="0.0" y="16" width="44" height="44"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="44" id="AHk-om-ams"/>
@@ -95,7 +95,7 @@
                                                 <outletCollection property="gestureRecognizers" destination="83n-4O-ds0" appends="YES" id="TbD-xO-dYg"/>
                                             </connections>
                                         </imageView>
-                                        <imageView userInteractionEnabled="NO" tag="22" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="bhv-ls-Fk6" userLabel="Attached Image 3">
+                                        <imageView userInteractionEnabled="NO" tag="22" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="bhv-ls-Fk6" userLabel="Attached Image 3">
                                             <rect key="frame" x="104" y="16" width="44" height="44"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="44" id="0pP-vb-NcP"/>
@@ -110,7 +110,7 @@
                                                 <outletCollection property="gestureRecognizers" destination="0df-hX-KDO" appends="YES" id="SlM-z7-7dd"/>
                                             </connections>
                                         </imageView>
-                                        <imageView userInteractionEnabled="NO" tag="23" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="KjK-tC-eTp" userLabel="Attached Image 4">
+                                        <imageView userInteractionEnabled="NO" tag="23" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="KjK-tC-eTp" userLabel="Attached Image 4">
                                             <rect key="frame" x="156" y="16" width="44" height="44"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="44" id="HQP-M8-TuE"/>
@@ -125,7 +125,7 @@
                                                 <outletCollection property="gestureRecognizers" destination="lIc-xt-b7h" appends="YES" id="5Fa-He-D7X"/>
                                             </connections>
                                         </imageView>
-                                        <imageView userInteractionEnabled="NO" tag="24" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="OAS-eZ-Wqa" userLabel="Attached Image 5">
+                                        <imageView userInteractionEnabled="NO" tag="24" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="OAS-eZ-Wqa" userLabel="Attached Image 5">
                                             <rect key="frame" x="208" y="16" width="44" height="44"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="44" id="Bwp-m6-agT"/>
@@ -140,7 +140,7 @@
                                                 <outletCollection property="gestureRecognizers" destination="LRJ-TG-XNF" appends="YES" id="5zH-Is-z62"/>
                                             </connections>
                                         </imageView>
-                                        <imageView userInteractionEnabled="NO" tag="21" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7aL-nO-5kV" userLabel="Attached Image 2">
+                                        <imageView userInteractionEnabled="NO" tag="21" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7aL-nO-5kV" userLabel="Attached Image 2">
                                             <rect key="frame" x="52" y="16" width="44" height="44"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="44" id="WkX-2q-Hap"/>

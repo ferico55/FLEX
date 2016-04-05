@@ -37,7 +37,8 @@ static CKComponent *deleteButton (NSString *role, SEL action, ImageStorage *imag
               imageDownloader:(id<CKNetworkImageDownloading>)imageDownloader
                    imageCache:(ImageStorage *)imageCache
                          role:(NSString *)role
-                       action:(SEL)action {
+                       action:(SEL)action
+              tapToReputation:(SEL)tapAction {
     if ([review.review_response.response_message isEqualToString:@"0"] || review.review_response.response_message == nil) {
         return nil;
     }
@@ -133,14 +134,18 @@ static CKComponent *deleteButton (NSString *role, SEL action, ImageStorage *imag
                                     }]
                                },
                                {
-                                   [MedalComponent newMedalWithLevel:[review.shop_badge_level.level intValue] set:[review.shop_badge_level.set intValue] imageCache:imageCache]
+                                   [MedalComponent newMedalWithLevel:[review.shop_badge_level.level intValue]
+                                                                 set:[review.shop_badge_level.set intValue]
+                                                          imageCache:imageCache
+                                                            selector:tapAction]
                                },
                                {
                                    [CKLabelComponent
                                     newWithLabelAttributes:{
                                         .string = review.review_response.response_message,
                                         .font = [UIFont fontWithName:@"Gotham Book" size:14.0],
-                                        .maximumNumberOfLines = 0
+                                        .maximumNumberOfLines = 0,
+                                        .lineSpacing = 5.0
                                     }
                                     viewAttributes:{}
                                     size:{}],

@@ -163,7 +163,7 @@
                                                       [tableContent reloadData];
                                                   }
                                                   onFailure:^(NSError *errorResult) {
-                                                  
+                                                      tableContent.tableFooterView = [self getLoadView].view;
                                                   }];
 }
 
@@ -367,11 +367,11 @@
                                                               
                                                               [tableContent reloadData];
                                                               
-                                                              UITableViewCell *firstCell = [tableContent cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+                                                              UITableViewCell *firstCell = [tableContent cellForRowAtIndexPath:indexPath];
                                                               [firstCell setSelected:YES];
                                                           }
                                                           onFailure:^(NSError *errorResult) {
-                                                              
+                                                              tableContent.tableFooterView = [self getLoadView].view;
                                                           }];
         }
     }
@@ -435,20 +435,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    //TODO: refactor this nasty hack
-    UITableViewCell *firstCell = [tableContent cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-    if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )
-    {
-        [firstCell setSelected:NO];
-    }
-    
-    InboxReviewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
-    if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )
-    {
-        [cell setSelected:YES];
-    }
-    
-    [self tapToInboxReviewDetailAtIndexPath:indexPath];
+    [self navigateToReviewDetailAtIndexPath:indexPath];
 }
 
 
@@ -617,10 +604,15 @@
 
 
 - (void)showFirstDataOnFirstShowInIpad {
-    if (arrList.count && !hasShownData && UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        hasShownData = YES;
-        [self tapToInboxReviewDetailAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (arrList.count && !hasShownData && UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            hasShownData = YES;
+            NSIndexPath *indexPath = [tableContent indexPathForSelectedRow]?:[NSIndexPath indexPathForRow:0 inSection:0];
+            [tableContent selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+            [self tapToInboxReviewDetailAtIndexPath:indexPath];
+            
+        }
+    });
 }
 
 - (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag {
@@ -823,7 +815,7 @@
                                                       [tableContent reloadData];
                                                   }
                                                   onFailure:^(NSError *errorResult) {
-                                                      
+                                                      tableContent.tableFooterView = [self getLoadView].view;
                                                   }];
 }
 
@@ -881,7 +873,7 @@
                                                       [tableContent reloadData];
                                                   }
                                                   onFailure:^(NSError *errorResult) {
-                                                      
+                                                      tableContent.tableFooterView = [self getLoadView].view;
                                                   }];
 }
 
@@ -938,7 +930,7 @@
                                                       [tableContent reloadData];
                                                   }
                                                   onFailure:^(NSError *errorResult) {
-                                                      
+                                                      tableContent.tableFooterView = [self getLoadView].view;
                                                   }];
 }
 
@@ -995,13 +987,18 @@
                                                       [tableContent reloadData];
                                                   }
                                                   onFailure:^(NSError *errorResult) {
-                                                      
+                                                      tableContent.tableFooterView = [self getLoadView].view;
                                                   }];
 }
 
 #pragma mark - Inbox Review Cell Delegate
 
 - (void)tapToInboxReviewDetailAtIndexPath:(NSIndexPath *)indexPath {
+    [tableContent selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    [self tableView:tableContent didSelectRowAtIndexPath:indexPath];
+}
+
+- (void)navigateToReviewDetailAtIndexPath:(NSIndexPath*)indexPath {
     if(! isRefreshing) {
         DetailMyInboxReputation *tempObj = arrList[indexPath.row];;
         //Set flag to read -> From unread
@@ -1013,15 +1010,6 @@
         vc.tag = (int)indexPath.row;
         vc.autoRead = tempObj.auto_read;
         
-//        DetailMyReviewReputationViewController *vc = [DetailMyReviewReputationViewController new];
-//        vc.tag = (int)indexPath.row;
-//        vc.detailMyInboxReputation = tempObj;
-//        vc.autoRead = tempObj.auto_read;
-//        [vc onReputationIconTapped:^void() {
-//            [self performSelector:@selector(actionFlagReview:) withObject:vc];
-//        }];
-        
-        
         if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
             [((SegmentedReviewReputationViewController *) self.parentViewController).splitVC setDetailViewController:vc];
         }
@@ -1029,6 +1017,7 @@
             [self.navigationController pushViewController:vc animated:YES];
         }
     }
+
 }
 
 - (void)tapToReputationDetail:(id)sender atIndexPath:(NSIndexPath *)indexPath {
