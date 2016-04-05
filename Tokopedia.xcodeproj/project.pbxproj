@@ -2103,6 +2103,10 @@
 		BBCB0DE51CB2139F000C0AE2 /* Tokopedia.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = BBCB05D71CB2139E000C0AE2 /* Tokopedia.entitlements */; };
 		BBCB0DE61CB2139F000C0AE2 /* Tokopedia.xcworkspace in Resources */ = {isa = PBXBuildFile; fileRef = BBCB05D81CB2139E000C0AE2 /* Tokopedia.xcworkspace */; };
 		BBCB0DE91CB21D05000C0AE2 /* EtalaseListOther.m in Sources */ = {isa = PBXBuildFile; fileRef = BBCB0DE81CB21D05000C0AE2 /* EtalaseListOther.m */; };
+		BBCB0DED1CB27554000C0AE2 /* EtalaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBCB0DEB1CB27554000C0AE2 /* EtalaseViewController.m */; };
+		BBCB0DEE1CB27555000C0AE2 /* EtalaseViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBCB0DEC1CB27554000C0AE2 /* EtalaseViewController.xib */; };
+		BBCB0DF71CB35FB5000C0AE2 /* EtalaseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BBCB0DF51CB35FB5000C0AE2 /* EtalaseCell.m */; };
+		BBCB0DF81CB35FB5000C0AE2 /* EtalaseCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBCB0DF61CB35FB5000C0AE2 /* EtalaseCell.xib */; };
 		F25F6F270D531ED13A92CDB9 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4868E459AB2A65D133732296 /* libPods-Tokopedia.a */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
 		FC23B85A1ACD659900879D75 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8581ACD659900879D75 /* Fabric.framework */; };
@@ -3563,6 +3567,12 @@
 		BBCB05D81CB2139E000C0AE2 /* Tokopedia.xcworkspace */ = {isa = PBXFileReference; lastKnownFileType = wrapper.workspace; path = Tokopedia.xcworkspace; sourceTree = "<group>"; };
 		BBCB0DE71CB21D05000C0AE2 /* EtalaseListOther.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EtalaseListOther.h; sourceTree = "<group>"; };
 		BBCB0DE81CB21D05000C0AE2 /* EtalaseListOther.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EtalaseListOther.m; sourceTree = "<group>"; };
+		BBCB0DEA1CB27554000C0AE2 /* EtalaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EtalaseViewController.h; sourceTree = "<group>"; };
+		BBCB0DEB1CB27554000C0AE2 /* EtalaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EtalaseViewController.m; sourceTree = "<group>"; };
+		BBCB0DEC1CB27554000C0AE2 /* EtalaseViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EtalaseViewController.xib; sourceTree = "<group>"; };
+		BBCB0DF41CB35FB5000C0AE2 /* EtalaseCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EtalaseCell.h; sourceTree = "<group>"; };
+		BBCB0DF51CB35FB5000C0AE2 /* EtalaseCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EtalaseCell.m; sourceTree = "<group>"; };
+		BBCB0DF61CB35FB5000C0AE2 /* EtalaseCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EtalaseCell.xib; sourceTree = "<group>"; };
 		BBCBF83D1CB21393000C0AE2 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		BBCBF83E1CB21393000C0AE2 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		BBCBF8411CB21393000C0AE2 /* TPAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPAnalytics.h; sourceTree = "<group>"; };
@@ -6023,6 +6033,12 @@
 				BBCB01861CB21398000C0AE2 /* ShopTalkPageViewController.h */,
 				BBCB01871CB21398000C0AE2 /* ShopTalkPageViewController.m */,
 				BBCB01881CB21398000C0AE2 /* ShopTalkPageViewController.xib */,
+				BBCB0DEA1CB27554000C0AE2 /* EtalaseViewController.h */,
+				BBCB0DEB1CB27554000C0AE2 /* EtalaseViewController.m */,
+				BBCB0DEC1CB27554000C0AE2 /* EtalaseViewController.xib */,
+				BBCB0DF41CB35FB5000C0AE2 /* EtalaseCell.h */,
+				BBCB0DF51CB35FB5000C0AE2 /* EtalaseCell.m */,
+				BBCB0DF61CB35FB5000C0AE2 /* EtalaseCell.xib */,
 			);
 			path = ShopPageView;
 			sourceTree = "<group>";
@@ -12060,6 +12076,7 @@
 				BBCB0BB11CB2139F000C0AE2 /* icon_8@3x.png in Resources */,
 				BBCB09B41CB2139E000C0AE2 /* ReputationPageViewController.xib in Resources */,
 				BBCB0AC81CB2139F000C0AE2 /* TxOrderConfirmedBankCell.xib in Resources */,
+				BBCB0DF81CB35FB5000C0AE2 /* EtalaseCell.xib in Resources */,
 				BBCB0C551CB2139F000C0AE2 /* icon_neutral20@2x.png in Resources */,
 				BBCB0B1C1CB2139F000C0AE2 /* banner_1.jpg in Resources */,
 				BBCB0C1B1CB2139F000C0AE2 /* icon_medal14@3x.png in Resources */,
@@ -12091,6 +12108,7 @@
 				BBCB0C751CB2139F000C0AE2 /* icon_order_cancel-01@2x.png in Resources */,
 				BBCB0BF71CB2139F000C0AE2 /* icon_home_active.png in Resources */,
 				BBCB0D301CB2139F000C0AE2 /* icon_search_active@2x.png in Resources */,
+				BBCB0DEE1CB27555000C0AE2 /* EtalaseViewController.xib in Resources */,
 				BBCB0B441CB2139F000C0AE2 /* icon_2@2x.png in Resources */,
 				BBCB09601CB2139E000C0AE2 /* DetailProductWholesaleCell.xib in Resources */,
 				BBCB080F1CB2139E000C0AE2 /* AlertListView.xib in Resources */,
@@ -13057,6 +13075,7 @@
 				BBCB08001CB2139E000C0AE2 /* AlertCameraView.m in Sources */,
 				BBCB05E11CB2139E000C0AE2 /* NSData+Encryption.m in Sources */,
 				BBCB06B41CB2139E000C0AE2 /* InboxTicketResultDetail.m in Sources */,
+				BBCB0DF71CB35FB5000C0AE2 /* EtalaseCell.m in Sources */,
 				BBCB07831CB2139E000C0AE2 /* LuckyDeal.m in Sources */,
 				BBCB06351CB2139E000C0AE2 /* CatalogImages.m in Sources */,
 				BBCB06D31CB2139E000C0AE2 /* SkipReview.m in Sources */,
@@ -13459,6 +13478,7 @@
 				BBCB0AEB1CB2139F000C0AE2 /* UserProfileBiodataViewController.m in Sources */,
 				BBCB084E1CB2139E000C0AE2 /* FilterCategoryViewController.m in Sources */,
 				BBCB06971CB2139E000C0AE2 /* ResolutionCenterDetail.m in Sources */,
+				BBCB0DED1CB27554000C0AE2 /* EtalaseViewController.m in Sources */,
 				BBCB07DB1CB2139E000C0AE2 /* UploadImageSubmitResult.m in Sources */,
 				BBCB092F1CB2139E000C0AE2 /* MyShopAddressViewController.m in Sources */,
 				BBCB05EF1CB2139E000C0AE2 /* DBManager.m in Sources */,
