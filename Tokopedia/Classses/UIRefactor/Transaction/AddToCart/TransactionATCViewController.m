@@ -239,7 +239,7 @@
                                [self setAddress:_ATCForm.form.destination];
                                [self setPlacePicker];
                                [self requestRate];
-                               [_tableView reloadData];
+                               
                            } failed:^(NSError *error) {
                                [self adjustViewIsLoading:NO];
                            }];
