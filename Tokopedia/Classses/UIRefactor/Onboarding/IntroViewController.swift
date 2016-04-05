@@ -213,24 +213,26 @@ class IntroViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    private func navigateToMainViewController() {
+    private func navigateToMainViewControllerWithPage(page: MainViewControllerPage) {
         let window = UIApplication.sharedApplication().keyWindow!
         UIView.transitionWithView(window,
             duration: 0.5,
             options: UIViewAnimationOptions.TransitionCrossDissolve,
             animations: {
-                window.rootViewController = MainViewController()
+                window.rootViewController = MainViewController(page: page)
             },
             completion: nil)
     }
     
     @IBAction func btnSearchTapped(sender: AnyObject) {
-        navigateToMainViewController()
+        navigateToMainViewControllerWithPage(.Search)
     }
     
     @IBAction func btnLoginTapped(sender: AnyObject) {
+        navigateToMainViewControllerWithPage(.Login)
     }
     
     @IBAction func btnRegisterTapped(sender: AnyObject) {
+        navigateToMainViewControllerWithPage(.Register)
     }
 }

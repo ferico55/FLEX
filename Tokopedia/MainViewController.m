@@ -74,6 +74,8 @@
     
     RequestNotifyLBLM *_requestLBLM;
     TKPStoreManager *_storeManager;
+    
+    MainViewControllerPage _page;
 }
 
 @end
@@ -94,6 +96,13 @@ typedef enum TagRequest {
     return self;
 }
 
+- (instancetype)initWithPage:(MainViewControllerPage)page {
+    if (self = [super init]) {
+        _page = page;
+    }
+    return self;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -110,6 +119,7 @@ typedef enum TagRequest {
     [[UISegmentedControl appearance] setTintColor:kTKPDNAVIGATION_NAVIGATIONBGCOLOR];
     
     [self performSelector:@selector(viewDidLoadQueued) withObject:nil afterDelay:kTKPDMAIN_PRESENTATIONDELAY];	//app launch delay presentation
+
     NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
     
     [center addObserver:self
@@ -497,6 +507,7 @@ typedef enum TagRequest {
     
 #endif
     
+    _tabBarController.selectedIndex = _page;
     // redirect to home after login or register
 //    _tabBarController.selectedViewController=[_tabBarController.viewControllers objectAtIndex:0];
 }
