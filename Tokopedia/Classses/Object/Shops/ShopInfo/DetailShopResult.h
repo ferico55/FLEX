@@ -35,4 +35,6 @@
 @property (nonatomic, strong) ShopTransactionStats *shop_tx_stats;
 @property (nonatomic, strong) NSNumber *is_open;
 
++(RKObjectMapping*)mapping;
+
 @end

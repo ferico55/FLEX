@@ -14,10 +14,31 @@
 #define TALK_PER_PAGE 5
 
 @implementation ShopPageRequest{
+    TokopediaNetworkManager* _containerNetworkManager;
     TokopediaNetworkManager* _productNetworkManager;
     TokopediaNetworkManager* _talkNetworkManager;
     TokopediaNetworkManager* _reviewNetworkManager;
     TokopediaNetworkManager* _notesNetworkManager;
+}
+
+-(void)requestForShopPageContainerWithShopId:(NSString *)shopId shopDomain:(NSString *)shopDomain onSuccess:(void (^)(Shop *))successCallback onFailure:(void (^)(NSError *))errorCallback{
+    _containerNetworkManager = [TokopediaNetworkManager new];
+    _containerNetworkManager.isUsingHmac = YES;
+    
+    [_containerNetworkManager requestWithBaseUrl:@"https://ws.tokopedia.com"
+                                            path:@"/v4/shop/get_shop_info.pl"
+                                          method:RKRequestMethodGET
+                                       parameter:@{@"shop_id":shopId,
+                                                   @"shop_domain":shopDomain
+                                                   }
+                                         mapping:[Shop mapping]
+                                       onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                           
+                                       }
+                                       onFailure:^(NSError *errorResult) {
+                                           
+                                       }];
+     
 }
 
 -(void)requestForShopProductPageListingWithShopId:(NSString *)shopId etalaseId:(NSString *)etalaseId keyWord:(NSString*)keyWord page:(NSInteger)page order_by:(NSString *)orderBy shop_domain:(NSString *)shopDomain onSuccess:(void (^)(ShopProductPageResult *))successCallback onFailure:(void (^)(NSError *))errorCallback{

@@ -33,6 +33,7 @@
 #import "ShopBadgeLevel.h"
 #import "FavoriteShopAction.h"
 #import "UserAuthentificationManager.h"
+#import "ShopPageRequest.h"
 
 
 @interface ShopContainerViewController () <UIScrollViewDelegate, LoginViewDelegate, UIPageViewControllerDelegate, CMPopTipViewDelegate> {
@@ -69,6 +70,7 @@
     UserAuthentificationManager *_userManager;
     
     UIBarButtonItem *_fixedSpace;
+    ShopPageRequest *shopPageRequest;
 }
 
 @property (strong, nonatomic) ShopProductPageViewController *shopProductViewController;
@@ -163,6 +165,7 @@
     
     _operationQueue = [NSOperationQueue new];
     _operationFavoriteQueue = [NSOperationQueue new];
+    shopPageRequest = [ShopPageRequest new];
     
     _cacheController = [URLCacheController new];
     _cacheController.URLCacheInterval = 86400.0;
@@ -209,7 +212,8 @@
     
     
     [self configureRestKit];
-    [self request];
+    [self requestShopInfo];
+    //[self request];
     
     [self.pageController didMoveToParentViewController:self];
     [self setScrollEnabled:NO forPageViewController:_pageController];
@@ -722,6 +726,16 @@
     [self cancel];
 }
 
+-(void)requestShopInfo{
+    NSString *shopId = [_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]?:@"";
+    NSString *shopDomain = [_data objectForKey:@"shop_domain"]?:@"";
+    [shopPageRequest requestForShopPageContainerWithShopId:shopId shopDomain:shopDomain onSuccess:^(Shop *shop) {
+        
+    } onFailure:^(NSError *error) {
+        
+    }];
+}
+
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
@@ -1080,13 +1094,13 @@
     _auth = [tempAuth mutableCopy];
     
     [self configureRestKit];
-    [self request];
+    //[self request];
 }
 
 #pragma mark - Reload Shop
 - (void)reloadShop {
     [self configureRestKit];
-    [self request];
+    //[self request];
 }
 
 #pragma mark - Notification Center Action
