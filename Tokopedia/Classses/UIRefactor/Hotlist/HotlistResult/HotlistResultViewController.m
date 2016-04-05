@@ -54,6 +54,8 @@
 #import "Tokopedia-Swift.h"
 #import "TokopediaNetworkManager.h"
 
+#import "MHVerticalTabBarController.h"
+
 #define CTagGeneralProductCollectionView @"ProductCell"
 #define CTagGeneralProductIdentifier @"ProductCellIdentifier"
 #define CTagFooterCollectionView @"FooterCollectionReusableView"
@@ -286,14 +288,40 @@ static NSString const *rows = @"12";
 
 #pragma mark - Action View
 - (void)didTapFilterSubCategoryButton {
-    FilterCategoryViewController *controller = [FilterCategoryViewController new];
-    controller.filterType = FilterCategoryTypeHotlist;
-    controller.selectedCategory = _selectedCategory;
-    controller.categories = [_initialCategories mutableCopy];
-    controller.delegate = self;
-    UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:controller];
-    navigationController.navigationBar.translucent = NO;
-    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+    
+    FilterCategoryViewController *categoryVC = [FilterCategoryViewController new];
+    categoryVC.filterType = FilterCategoryTypeHotlist;
+    categoryVC.selectedCategory = _selectedCategory;
+    categoryVC.categories = [_initialCategories mutableCopy];
+    categoryVC.delegate = self;
+    categoryVC.tabBarItem.title = @"Kategori";
+    
+    UIViewController *vc2 = [[UIViewController alloc] init];
+    vc2.view.backgroundColor = [UIColor yellowColor];
+    vc2.tabBarItem.title = @"Starred";
+    
+    UIViewController *vc3 = [[UIViewController alloc] init];
+    vc3.view.backgroundColor = [UIColor purpleColor];
+    vc3.tabBarItem.title = @"Favorites";
+    
+    UIViewController *vc4 = [[UIViewController alloc] init];
+    vc4.view.backgroundColor = [UIColor blueColor];
+    vc4.title = @"Settings";
+    
+    MHVerticalTabBarController *tabBarController = [[MHVerticalTabBarController alloc] init];
+    tabBarController.title = @"Filter";
+    tabBarController.viewControllers = @[categoryVC, vc2, vc3, vc4, categoryVC, vc2, vc3, vc4, categoryVC, vc2, vc3, vc4, categoryVC, vc2, vc3, vc4, categoryVC, vc2, vc3, vc4, categoryVC, vc2, vc3, vc4, categoryVC, vc2, vc3, vc4, categoryVC, vc2, vc3, vc4, categoryVC, vc2, vc3, vc4, categoryVC, vc2, vc3, vc4, categoryVC, vc2, vc3, vc4, categoryVC, vc2, vc3, vc4];
+    
+    // turn off selection animation
+    //    self.tabBarController.tabBar.animationDuration = 0.0;
+    
+    // set the width
+    tabBarController.tabBarWidth = 120.0;
+    tabBarController.tabBarItemHeight = 44.0;
+    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:tabBarController];
+    nav.navigationBar.translucent = NO;
+    self.navigationController.navigationBar.alpha = 0;
+    [self.navigationController presentViewController:nav animated:YES completion:nil];
 }
 
 - (IBAction)didTapSortButton:(id)sender {

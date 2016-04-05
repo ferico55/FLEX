@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		2D50139230438B54812D14B9 /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */; };
+		450CB6A01CB250930080EF5B /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 450CB6981CB250930080EF5B /* LICENSE */; };
+		450CB6A11CB250930080EF5B /* MHVerticalTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 450CB69A1CB250930080EF5B /* MHVerticalTabBar.m */; };
+		450CB6A21CB250930080EF5B /* MHVerticalTabBarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 450CB69C1CB250930080EF5B /* MHVerticalTabBarButton.m */; };
+		450CB6A31CB250930080EF5B /* MHVerticalTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 450CB69E1CB250930080EF5B /* MHVerticalTabBarController.m */; };
+		450CB6A41CB250930080EF5B /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 450CB69F1CB250930080EF5B /* README.md */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
 		7ACE9C541BB00956006C4BB7 /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */; };
@@ -2126,6 +2131,14 @@
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
 		2D733D9158C7BF957D514506 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
+		450CB6981CB250930080EF5B /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		450CB6991CB250930080EF5B /* MHVerticalTabBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MHVerticalTabBar.h; sourceTree = "<group>"; };
+		450CB69A1CB250930080EF5B /* MHVerticalTabBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MHVerticalTabBar.m; sourceTree = "<group>"; };
+		450CB69B1CB250930080EF5B /* MHVerticalTabBarButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MHVerticalTabBarButton.h; sourceTree = "<group>"; };
+		450CB69C1CB250930080EF5B /* MHVerticalTabBarButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MHVerticalTabBarButton.m; sourceTree = "<group>"; };
+		450CB69D1CB250930080EF5B /* MHVerticalTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MHVerticalTabBarController.h; sourceTree = "<group>"; };
+		450CB69E1CB250930080EF5B /* MHVerticalTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MHVerticalTabBarController.m; sourceTree = "<group>"; };
+		450CB69F1CB250930080EF5B /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		4868E459AB2A65D133732296 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tokopedia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
@@ -5351,6 +5364,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		450CB6971CB250930080EF5B /* MHVerticalTabBarController */ = {
+			isa = PBXGroup;
+			children = (
+				450CB6981CB250930080EF5B /* LICENSE */,
+				450CB6991CB250930080EF5B /* MHVerticalTabBar.h */,
+				450CB69A1CB250930080EF5B /* MHVerticalTabBar.m */,
+				450CB69B1CB250930080EF5B /* MHVerticalTabBarButton.h */,
+				450CB69C1CB250930080EF5B /* MHVerticalTabBarButton.m */,
+				450CB69D1CB250930080EF5B /* MHVerticalTabBarController.h */,
+				450CB69E1CB250930080EF5B /* MHVerticalTabBarController.m */,
+				450CB69F1CB250930080EF5B /* README.md */,
+			);
+			path = MHVerticalTabBarController;
+			sourceTree = "<group>";
+		};
 		BBCBA0BD1CAD4165000C0AE2 /* Tokopedia */ = {
 			isa = PBXGroup;
 			children = (
@@ -7387,6 +7415,7 @@
 		BBCBA5441CAD4166000C0AE2 /* Third Party */ = {
 			isa = PBXGroup;
 			children = (
+				450CB6971CB250930080EF5B /* MHVerticalTabBarController */,
 				BBCBA5451CAD4166000C0AE2 /* iCarousel.h */,
 				BBCBA5461CAD4166000C0AE2 /* iCarousel.m */,
 				BBCBA5471CAD4166000C0AE2 /* RSKGrowingTextView.swift */,
@@ -11744,6 +11773,7 @@
 				BBCBB4911CAD416D000C0AE2 /* icon_medal_bronze14.png in Resources */,
 				BBCBB0EC1CAD416C000C0AE2 /* TKPDTabInboxReviewNavigationController.xib in Resources */,
 				BBCBB1321CAD416C000C0AE2 /* GeneralTableViewController.xib in Resources */,
+				450CB6A01CB250930080EF5B /* LICENSE in Resources */,
 				BBCBB5A91CAD416D000C0AE2 /* indomaret.png in Resources */,
 				BBCBB3AF1CAD416D000C0AE2 /* icon_19@2x.png in Resources */,
 				BBCBB4FB1CAD416D000C0AE2 /* icon_problem_new_user.png in Resources */,
@@ -12721,6 +12751,7 @@
 				BBCBB14A1CAD416C000C0AE2 /* HomeFlowLayout.m in Sources */,
 				BBCBAF8B1CAD416C000C0AE2 /* ShopBadgeLevel.m in Sources */,
 				BBCBAED21CAD416C000C0AE2 /* WholesalePrice.m in Sources */,
+				450CB6A11CB250930080EF5B /* MHVerticalTabBar.m in Sources */,
 				BBCBAEAC1CAD416C000C0AE2 /* CatalogInfo.m in Sources */,
 				BBCBB1DB1CAD416C000C0AE2 /* ProductGalleryViewController.m in Sources */,
 				BBCBB13B1CAD416C000C0AE2 /* FavoriteShopRequest.m in Sources */,
@@ -13203,6 +13234,7 @@
 				BBCBAF9A1CAD416C000C0AE2 /* OrderHistory.m in Sources */,
 				BBCBAFD81CAD416C000C0AE2 /* AddProductSubmitResult.m in Sources */,
 				BBCBB17B1CAD416C000C0AE2 /* ResolutionCenterSystemCell.m in Sources */,
+				450CB6A21CB250930080EF5B /* MHVerticalTabBarButton.m in Sources */,
 				BBCBB1311CAD416C000C0AE2 /* GeneralTableViewController.m in Sources */,
 				BBCBB2C81CAD416C000C0AE2 /* ShopTalkPageViewController.m in Sources */,
 				BBCBAF7F1CAD416C000C0AE2 /* PromoProduct.m in Sources */,
@@ -13217,6 +13249,7 @@
 				BBCBB0421CAD416C000C0AE2 /* TxOrderStatusList.m in Sources */,
 				BBCBB0141CAD416C000C0AE2 /* TxOrderConfirmationList.m in Sources */,
 				BBCBB0881CAD416C000C0AE2 /* AlertPhoneVerification.m in Sources */,
+				450CB6A31CB250930080EF5B /* MHVerticalTabBarController.m in Sources */,
 				BBCBB0AD1CAD416C000C0AE2 /* CatalogSectionHeaderView.m in Sources */,
 				BBCBAEA01CAD416C000C0AE2 /* TicketCategory.m in Sources */,
 				BBCBB06B1CAD416C000C0AE2 /* RegisterViewController.m in Sources */,
@@ -13716,6 +13749,7 @@
 				BBCBB1B91CAD416C000C0AE2 /* MyShopShipmentViewController.m in Sources */,
 				BBCBB0BB1CAD416C000C0AE2 /* CarouselDataSource.m in Sources */,
 				BBCBAF511CAD416C000C0AE2 /* NotificationSales.m in Sources */,
+				450CB6A41CB250930080EF5B /* README.md in Sources */,
 				BBCBB64C1CAD416D000C0AE2 /* MGSwipeButton.m in Sources */,
 				BBCBAF7D1CAD416C000C0AE2 /* PrivacyFormResult.m in Sources */,
 			);
