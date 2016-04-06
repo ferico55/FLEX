@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TransactionCartList.h"
 @class TransactionCartHeaderView;
 
 #pragma mark - General Talk Cell Delegate
@@ -30,5 +31,6 @@
 @property (nonatomic) NSInteger section;
 
 +(id)newview;
+-(void)setViewModel:(CartModelView*)viewModel page:(NSInteger)page section:(NSInteger)section delegate:(UIViewController*)delegate;
 
 @end

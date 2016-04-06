@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "TransactionSummaryDetail.h"
+#import "TransactionActionResult.h"
 
 @protocol TransactionCartWebViewViewControllerDelegate <NSObject>
 
@@ -16,9 +17,7 @@
 - (void)shouldDoRequestBCAClickPay;
 - (void)doRequestCC:(NSDictionary*)param;
 - (void)isSucessSprintAsia:(NSDictionary*)param;
-- (void)refreshCartAfterCancelPayment;
 - (void)shouldDoRequestBRIEPayCode:(NSString*)code;
-
 - (void)shouldDoRequestTopPayThxCode:(NSString*)code;
 
 @end
@@ -28,7 +27,6 @@
 
 @property (nonatomic, weak) IBOutlet id<TransactionCartWebViewViewControllerDelegate> delegate;
 
-@property TransactionSummaryBCAParam *BCAParam;
 @property NSDictionary *CCParam;
 @property NSNumber *gateway;
 @property BOOL isVeritrans;
@@ -41,7 +39,10 @@
 @property NSDictionary *toppayParam;
 @property NSString *paymentID;
 
-@property NSDictionary *data;
++(void)pushBCAKlikPayFrom:(UIViewController*)vc cartDetail:(TransactionSummaryDetail*)cartDetail;
++(void)pushMandiriECashFrom:(UIViewController*)vc cartDetail:(TransactionSummaryDetail*)cartDetail LinkMandiri:(NSString*)linkMandiri;
++(void)pushBRIEPayFrom:(UIViewController*)vc cartDetail:(TransactionSummaryDetail*)cartDetail;
++(void)pushToppayFrom:(UIViewController*)vc data:(TransactionActionResult*)data gatewayID:(NSInteger)gatewayID gatewayName:(NSString*)gatewayName;
 
 @end
 

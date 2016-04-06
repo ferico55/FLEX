@@ -48,6 +48,15 @@
 @property (nonatomic, strong) NSString *cart_logistic_fee;
 
 @property (nonatomic, strong) NSString *cart_is_price_changed;
+@property (nonatomic, strong) NSString *cart_is_dropshipper;
+@property (nonatomic, strong) NSString *cart_dropship_name;
+@property (nonatomic, strong) NSString *cart_dropship_phone;
+
+@property (nonatomic, strong) NSString *cart_dropship_param;
+@property (nonatomic, strong) NSString *cart_partial_param;
+
+@property (nonatomic, strong) NSString *cart_is_partial;
+
 @property (nonatomic, strong) ShopInfo *cart_shop;
 
 @property (nonatomic, strong) CartModelView *viewModel;

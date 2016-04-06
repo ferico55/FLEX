@@ -11,6 +11,7 @@
 #import "TxEmoney.h"
 #import "string_transaction.h"
 #import "RequestCart.h"
+#import <objc/runtime.h>
 
 #define CLICK_BCA_LOGIN_URL @"https://klikpay.klikbca.com/login.do?action=loginRequest"
 #define CLICK_BCA_LOGIN_PAYEMNET_URL @"https://klikpay.klikbca.com/purchasing/purchase.do?action=loginRequest"
@@ -35,6 +36,69 @@
 
 @implementation TransactionCartWebViewViewController
 
++(void)pushBCAKlikPayFrom:(UIViewController*)vc cartDetail:(TransactionSummaryDetail*)cartDetail {
+    
+    TransactionCartWebViewViewController *controller = [TransactionCartWebViewViewController new];
+    controller.gateway = cartDetail.gateway;
+    controller.token = cartDetail.token;
+    controller.cartDetail = cartDetail;
+    controller.delegate = vc;
+    controller.paymentID = cartDetail.payment_id;
+    controller.title = cartDetail.gateway_name?:@"BCA KlikPay";
+    
+    UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:controller];
+    navigationController.navigationBar.translucent = NO;
+    [vc.navigationController presentViewController:navigationController animated:YES completion:nil];
+}
+
++(void)pushMandiriECashFrom:(UIViewController*)vc cartDetail:(TransactionSummaryDetail*)cartDetail LinkMandiri:(NSString*)linkMandiri {
+
+    TransactionCartWebViewViewController *controller = [TransactionCartWebViewViewController new];
+    controller.gateway = @(TYPE_GATEWAY_MANDIRI_E_CASH);
+    controller.token = cartDetail.token;
+    controller.URLString = linkMandiri?:@"";
+    controller.cartDetail = cartDetail;
+    controller.emoney_code = cartDetail.emoney_code;
+    controller.delegate = vc;
+    controller.paymentID = cartDetail.payment_id;
+    controller.title = cartDetail.gateway_name?:@"Mandiri E-Cash";
+    
+    UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:controller];
+    navigationController.navigationBar.translucent = NO;
+    
+    [vc.navigationController presentViewController:navigationController animated:YES completion:nil];
+}
+
++(void)pushBRIEPayFrom:(UIViewController*)vc cartDetail:(TransactionSummaryDetail*)cartDetail{
+    
+    TransactionCartWebViewViewController *controller = [TransactionCartWebViewViewController new];
+    controller.gateway = cartDetail.gateway;
+    controller.token = cartDetail.token;
+    controller.URLString = cartDetail.bri_website_link?:@"";
+    controller.cartDetail = cartDetail;
+    controller.transactionCode = cartDetail.transaction_code?:@"";
+    controller.delegate = vc;
+    controller.paymentID = cartDetail.payment_id;
+    controller.title = cartDetail.gateway_name?:@"BRI E-Pay";
+    
+    UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:controller];
+    navigationController.navigationBar.translucent = NO;
+    [vc.navigationController presentViewController:navigationController animated:YES completion:nil];
+}
+
++(void)pushToppayFrom:(UIViewController*)vc data:(TransactionActionResult*)data gatewayID:(NSInteger)gatewayID gatewayName:(NSString*)gatewayName {
+    
+    TransactionCartWebViewViewController *controller = [TransactionCartWebViewViewController new];
+    controller.toppayQueryString = data.query_string;
+    controller.URLString = data.redirect_url;
+    controller.toppayParam = data.parameter;
+    controller.gateway = @(gatewayID);
+    controller.delegate = vc;
+    controller.title = gatewayName?:@"Pembayaran";
+    
+    [vc.navigationController pushViewController:controller animated:YES];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -56,7 +120,7 @@
 
 -(IBAction)didTapSuccess:(id)sender
 {
-    [_delegate isSucessSprintAsia:_data];
+    [_delegate isSucessSprintAsia:@{}];
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -71,91 +135,126 @@
     
     NSInteger gateway = [_gateway integerValue];
     
-    NSString *urlAddress = @"" ;
     _webView.scalesPageToFit = YES;
-    
+
+    switch (gateway) {
+        case TYPE_GATEWAY_BCA_CLICK_PAY:
+            [_webView loadRequest:[self requestBCAKlikPay]];
+            break;
+        case TYPE_GATEWAY_MANDIRI_E_CASH:
+            [_webView loadRequest:[self requestMandiriECash]];
+            break;
+        case TYPE_GATEWAY_CC:
+        case TYPE_GATEWAY_INSTALLMENT:
+            if (!_isVeritrans) {
+                [_webView loadRequest:[self requestCC]];
+            } else {
+                [_webView loadRequest:[self requestDefault]];
+            }
+            break;
+        case TYPE_GATEWAY_BRI_EPAY:
+            [_webView loadRequest:[self requestBRIEPay]];
+            break;
+        default:
+            [_webView loadRequest:[self requestDefault]];
+            break;
+    }
+
+}
+
+-(NSMutableURLRequest*)requestDefault{
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-    NSURL *url;
     
-    if (gateway == TYPE_GATEWAY_BCA_CLICK_PAY) {
-        urlAddress =_BCAParam.bca_url;
-        
-        NSString *clickPayCode = _BCAParam.bca_code?:@"";
-        NSString *paymentID = _BCAParam.payment_id?:@"";
-        NSString *amount = _BCAParam.bca_amt?:@"";
-        NSString *currency = _BCAParam.currency?:@"";
-        NSString *payType = _BCAParam.payType?:@"";
-        NSString *callBack = _BCAParam.callback?:@"";
-        NSString *date = _BCAParam.bca_date?:@"";
-        NSString *MISCFee = _BCAParam.miscFee?:@"";
-        NSString *signature = _BCAParam.signature?:@"";
-        NSString *postString = [NSString stringWithFormat:@"token_cart=%@&gateway=%@&step=2&klikPayCode=%@&transactionNo=%@&totalAmount=%@&currency=%@&payType=%@&callback=%@&transactionDate=%@&miscFee=%@&signature=%@",
-                                _token,
-                                _gateway,
-                                clickPayCode,
-                                paymentID,
-                                amount,
-                                currency,
-                                payType,
-                                callBack,
-                                date,
-                                MISCFee,
-                                signature
-                                ];
-        NSLog(@"%@", postString);
-        NSData *postData = [postString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
-        [request setHTTPBody:postData];
-        [request setHTTPMethod:@"POST"];
-        
-        url = [NSURL URLWithString:urlAddress];
-        //[_delegate shouldDoRequestBCAClickPay];
-    }
-    else if (gateway == TYPE_GATEWAY_MANDIRI_E_CASH) {
-        urlAddress = _URLString;
-        url = [NSURL URLWithString:urlAddress];
-    }
-    else if ((gateway == TYPE_GATEWAY_CC || gateway == TYPE_GATEWAY_INSTALLMENT) && !_isVeritrans) {
-        
-        urlAddress = _URLString;
-        
-        NSDictionary *paramEncrypt = [_CCParam encrypt];
-        
-        NSString *postString = [self encodeDictionary:paramEncrypt];
-
-        postString = [postString stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-        postString = [postString stringByReplacingOccurrencesOfString:@"+" withString:@"%2B"];
-        NSData *postData = [postString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
-        NSLog(@"POST String %@", postString);
-        
-        [request setHTTPBody:postData];
-        [request setHTTPMethod:@"POST"];
-
-        url = [NSURL URLWithString:urlAddress];
-    }
-    else if (gateway == TYPE_GATEWAY_BRI_EPAY)
-    {
-        urlAddress = _URLString;
-        NSString *postString = [NSString stringWithFormat:@"keysTrxEcomm=%@&gateway=%@,token=%@,step=2", _transactionCode,_gateway,_token];
-        NSLog(@"%@", postString);
-        NSData *postData = [postString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
-        [request setHTTPBody:postData];
-        [request setHTTPMethod:@"POST"];
-        
-        url = [NSURL URLWithString:urlAddress];
-    }
-    else{
-        urlAddress = _URLString;//@"http://pay-staging.tokopedia.com/v1/payment";
-        NSString *postString                = _toppayQueryString?:@"";
-        NSData *postData                    = [postString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
-        [request setHTTPMethod:@"POST"];
-        [request setHTTPBody:postData];
-        
-        url = [NSURL URLWithString:urlAddress];
-    }
+    NSString *postString                = _toppayQueryString?:@"";
+    NSData *postData                    = [postString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
     
+    [request setHTTPBody:postData];
+    [request setHTTPMethod:@"POST"];
+    
+    NSURL *url = [NSURL URLWithString:_URLString];
     [request setURL:url];
-    [_webView loadRequest:request];
+    
+    return request;
+}
+
+-(NSMutableURLRequest*)requestBRIEPay{
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    
+    NSString *postString = [NSString stringWithFormat:@"keysTrxEcomm=%@&gateway=%@,token=%@,step=2", _transactionCode,_gateway,_token];
+    NSLog(@"%@", postString);
+    NSData *postData = [postString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+    
+    [request setHTTPBody:postData];
+    [request setHTTPMethod:@"POST"];
+    
+    NSURL *url = [NSURL URLWithString:_URLString];
+    [request setURL:url];
+    
+    return request;
+}
+
+-(NSMutableURLRequest*)requestCC{
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    
+    NSDictionary *paramEncrypt = [_CCParam encrypt];
+    NSString *postString = [self encodeDictionary:paramEncrypt];
+    
+    postString = [postString stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    postString = [postString stringByReplacingOccurrencesOfString:@"+" withString:@"%2B"];
+    NSData *postData = [postString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+    
+    [request setHTTPBody:postData];
+    [request setHTTPMethod:@"POST"];
+    
+    NSURL *url = [NSURL URLWithString:_URLString];
+    [request setURL:url];
+    
+    return request;
+}
+
+-(NSMutableURLRequest*)requestMandiriECash{
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    
+    NSURL *url = [NSURL URLWithString:_URLString];
+    [request setURL:url];
+
+    return request;
+}
+
+-(NSMutableURLRequest*)requestBCAKlikPay{
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    
+    TransactionSummaryBCAParam *bcaParam =_cartDetail.bca_param;
+    
+    NSDictionary *param = @{
+                            @"token_cart"       : _token,
+                            @"gateway"          : [_gateway stringValue],
+                            @"step"             : @"2",
+                            @"klikPayCode"      : bcaParam.bca_code,
+                            @"transactionNo"    : bcaParam.payment_id,
+                            @"totalAmount"      : bcaParam.bca_amt,
+                            @"currency"         : bcaParam.currency,
+                            @"payType"          : bcaParam.payType,
+                            @"callback"         : bcaParam.callback,
+                            @"transactionDate"  : bcaParam.bca_date,
+                            @"miscFee"          : bcaParam.miscFee,
+                            @"signature"        : bcaParam.signature
+                            };
+    
+    NSString *postString = [self encodeDictionary:param];
+    NSData *postData = [postString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+    [request setHTTPBody:postData];
+    [request setHTTPMethod:@"POST"];
+    
+    NSURL *url = [NSURL URLWithString:_cartDetail.bca_param.bca_url];
+    [request setURL:url];
+    
+    return request;
 }
 
 - (BOOL)isModal {
@@ -190,7 +289,7 @@
     NSInteger gateway = [_gateway integerValue];
     if ( gateway == TYPE_GATEWAY_BCA_CLICK_PAY)
     {
-        if ([request.URL.absoluteString isEqualToString:_BCAParam.callback] ||
+        if ([request.URL.absoluteString isEqualToString:_cartDetail.bca_param.callback] ||
             [request.URL.absoluteString isEqualToString:CLICK_BCA_VIEW_TRANSACTION] ||
             [webView.request.URL.absoluteString isEqualToString:CLICK_BCA_SUMMARY_URL]
             ) {
@@ -345,7 +444,7 @@
 
 -(void)requestCCCallback
 {
-    [_delegate doRequestCC:_data];
+    [_delegate doRequestCC:@{}];
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -408,14 +507,22 @@
 {
     if (alertView.tag == 11) {
         [_webView stopLoading];
-        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-    }
+        if ([self isModal]) {
+            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+        } else
+        {
+            [self.navigationController popViewControllerAnimated:YES];
+        }    }
     else
     {
         if (buttonIndex == 1) {
-            [_delegate refreshCartAfterCancelPayment];
             [_webView stopLoading];
-            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+            if ([self isModal]) {
+                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+            } else
+            {
+                [self.navigationController popViewControllerAnimated:YES];
+            }
         }
     }
 }

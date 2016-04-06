@@ -18,5 +18,4 @@
 @property (nonatomic, strong) TransactionActionResult *result;
 @property (nonatomic, strong) TransactionActionResult *data;
 
-
 @end

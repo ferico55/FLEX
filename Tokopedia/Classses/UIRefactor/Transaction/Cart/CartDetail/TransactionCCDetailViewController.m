@@ -223,28 +223,6 @@
     }
 }
 
--(void)requestSuccessCC:(id)object withOperation:(RKObjectRequestOperation *)operation
-{
-    [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
-
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id stat = [result objectForKey:@""];
-    
-    TransactionCC *step1 = stat;
-    _dataCC = step1.result.data_credit;
-    
-    if ([_dataCC.cc_agent integerValue] == 1) {
-        [self shouldDoRequestCCVeritrans];
-    }
-    else if ([_dataCC.cc_agent integerValue] == 2) {
-        [self shouldDoRequestCCSprintAsia];
-    }
-}
-
--(void)refreshCartAfterCancelPayment
-{
-    
-}
 
 #pragma mark - GTM
 - (void)configureGTM {

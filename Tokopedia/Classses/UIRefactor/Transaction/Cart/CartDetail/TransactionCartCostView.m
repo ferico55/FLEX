@@ -8,6 +8,7 @@
 
 #import "TransactionCartCostView.h"
 #import "AlertInfoView.h"
+#import "NSNumberFormatter+IDRFormater.h"
 
 @implementation TransactionCartCostView
 
@@ -27,6 +28,17 @@
     alertInfo.text = @"Info Biaya Tambahan";
     alertInfo.detailText = @"Biaya tambahan termasuk biaya asuransi dan biaya administrasi pengiriman";
     [alertInfo show];
+}
+
+-(void)setViewModel:(CartModelView*)viewModel{
+    self.biayaInsuranceLabel.text = ([viewModel.logiscticFee integerValue]==0)?@"Biaya Asuransi":@"Biaya Tambahan";
+    self.infoButton.hidden = ([viewModel.logiscticFee integerValue]==0);
+    [self.subtotalLabel setText:viewModel.totalProductPriceIDR animated:YES];
+    NSInteger aditionalFeeValue = [viewModel.logiscticFee integerValue]+[viewModel.insuranceFee integerValue];
+    NSString *formatAdditionalFeeValue = [[NSNumberFormatter IDRFormarter] stringFromNumber:@(aditionalFeeValue)];
+    [self.insuranceLabel setText:formatAdditionalFeeValue animated:YES];
+    [self.shippingCostLabel setText:viewModel.shippingRateIDR animated:YES];
+    [self.totalLabel setText:viewModel.totalProductPriceIDR animated:YES];
 }
 
 @end
