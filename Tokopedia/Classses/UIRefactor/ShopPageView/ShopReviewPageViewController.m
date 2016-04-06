@@ -220,6 +220,7 @@ ProductReputationSimpleDelegate>
     UINib *cellNib = [UINib nibWithNibName:@"ProductReputationSimpleCell" bundle:nil];
     [_table registerNib:cellNib forCellReuseIdentifier:@"ProductReputationSimpleCellIdentifier"];
     
+    [_refreshControl endRefreshing];
     [self initNotification];
     [self requestReview];
     
@@ -402,6 +403,7 @@ ProductReputationSimpleDelegate>
 
 #pragma mark - Request
 -(void)requestReview{
+    [_noResultView removeFromSuperview];
     [_shopPageRequest requestForShopReviewPageListingWithShopId:[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]?:@(0)
                                                            page:_page
                                                     shop_domain:[_data objectForKey:@"shop_domain"]?:@""
@@ -429,6 +431,10 @@ ProductReputationSimpleDelegate>
                                                           _table.tableFooterView = nil;
                                                           StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Kendala koneksi internet"] delegate:self];
                                                           [alert show];
+                                                          
+                                                          [_refreshControl endRefreshing];
+                                                          [_refreshControl setHidden:YES];
+                                                          [_refreshControl setEnabled:NO];
                                                       }];
 }
 

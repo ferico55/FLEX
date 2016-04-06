@@ -327,6 +327,7 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:DID_UPDATE_SHOP_HAS_TERM_NOTIFICATION_NAME object:nil userInfo:nil];
         _isNoData = NO;
         [self updateHeaderShopPage];
+        
     } onFailure:^(NSError *error) {
         StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Kendala koneksi internet."] delegate:self];
         [alert show];

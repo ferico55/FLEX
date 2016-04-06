@@ -198,6 +198,7 @@ NoResultDelegate>
     [_fakeStickyTab.layer setShadowRadius:1];
     [_fakeStickyTab.layer setShadowOpacity:0.3];
     
+    [_refreshControl endRefreshing];
     [self initNotification];
     [self requestTalk];
 }
@@ -315,6 +316,10 @@ NoResultDelegate>
                                                         self.table.tableFooterView = nil;
                                                         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Kendala koneksi internet"] delegate:self];
                                                         [alert show];
+                                                        
+                                                        [_refreshControl endRefreshing];
+                                                        [_refreshControl setHidden:YES];
+                                                        [_refreshControl setEnabled:NO];
                                                     }];
 }
 
