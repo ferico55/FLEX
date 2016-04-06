@@ -37,11 +37,11 @@
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"shop_last_one_month"
                                                                             toKeyPath:@"shop_last_one_month"
                                                                           withMapping:[CountRatingResult mapping]]];
-    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"shop_last_six_month"
-                                                                            toKeyPath:@"shop_last_six_month"
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"shop_last_six_months"
+                                                                            toKeyPath:@"shop_last_six_months"
                                                                           withMapping:[CountRatingResult mapping]]];
-    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"shop_last_twelve_month"
-                                                                            toKeyPath:@"shop_last_twelve_month"
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"shop_last_twelve_months"
+                                                                            toKeyPath:@"shop_last_twelve_months"
                                                                           withMapping:[CountRatingResult mapping]]];
     return mapping;
 }
