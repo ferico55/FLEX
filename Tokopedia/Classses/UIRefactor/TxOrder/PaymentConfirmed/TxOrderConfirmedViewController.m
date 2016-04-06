@@ -429,10 +429,10 @@
 #pragma mark - Request Detail
 -(void)doRequestDetailOrder:(TxOrderConfirmedList*)order{
     
-    [self isLoading:YES];
+    [_loadingAlert show];
     
     [RequestOrderData fetchDataDetailPaymentID:order.payment_id success:^(TxOrderConfirmedDetailOrder *data) {
-        [self isLoading:NO];
+        [_loadingAlert dismissWithClickedButtonIndex:0 animated:YES];
         
         _orderDetail = data;
         
