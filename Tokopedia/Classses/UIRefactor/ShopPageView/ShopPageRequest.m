@@ -21,7 +21,7 @@
     TokopediaNetworkManager* _notesNetworkManager;
 }
 
--(void)requestForShopPageContainerWithShopId:(NSString *)shopId shopDomain:(NSString *)shopDomain onSuccess:(void (^)(Shop *))successCallback onFailure:(void (^)(NSError *))errorCallback{
+-(void)requestForShopPageContainerWithShopId:(NSString *)shopId shopDomain:(NSString *)shopDomain onSuccess:(void (^)(Shop *shop))successCallback onFailure:(void (^)(NSError *))errorCallback{
     _containerNetworkManager = [TokopediaNetworkManager new];
     _containerNetworkManager.isUsingHmac = YES;
     
@@ -33,10 +33,11 @@
                                                    }
                                          mapping:[Shop mapping]
                                        onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                           
+                                           Shop *shop = [successResult.dictionary objectForKey:@""];
+                                           successCallback(shop);
                                        }
                                        onFailure:^(NSError *errorResult) {
-                                           
+                                           errorCallback(errorResult);
                                        }];
      
 }
