@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2D50139230438B54812D14B9 /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */; };
+		458D1D8D1CB4BE2C004A0313 /* ATCPushLocalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 458D1D8C1CB4BE2C004A0313 /* ATCPushLocalytics.m */; };
 		45FED9BB1CAB8F35004639FC /* TPAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 45FECC791CAB8F31004639FC /* TPAnalytics.m */; };
 		45FED9BC1CAB8F35004639FC /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 45FECC7C1CAB8F31004639FC /* URLCacheAlert.m */; };
 		45FED9BD1CAB8F35004639FC /* URLCacheConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 45FECC7E1CAB8F31004639FC /* URLCacheConnection.m */; };
@@ -2132,6 +2133,8 @@
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
 		2D733D9158C7BF957D514506 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
+		458D1D8B1CB4BE2C004A0313 /* ATCPushLocalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATCPushLocalytics.h; sourceTree = "<group>"; };
+		458D1D8C1CB4BE2C004A0313 /* ATCPushLocalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATCPushLocalytics.m; sourceTree = "<group>"; };
 		45FECC781CAB8F31004639FC /* TPAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPAnalytics.h; sourceTree = "<group>"; };
 		45FECC791CAB8F31004639FC /* TPAnalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPAnalytics.m; sourceTree = "<group>"; };
 		45FECC7B1CAB8F31004639FC /* URLCacheAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheAlert.h; sourceTree = "<group>"; };
@@ -9533,6 +9536,8 @@
 				45FED5DA1CAB8F33004639FC /* TransactionShipmentATCViewController.h */,
 				45FED5DB1CAB8F33004639FC /* TransactionShipmentATCViewController.m */,
 				45FED5DC1CAB8F33004639FC /* TransactionShipmentATCViewController.xib */,
+				458D1D8B1CB4BE2C004A0313 /* ATCPushLocalytics.h */,
+				458D1D8C1CB4BE2C004A0313 /* ATCPushLocalytics.m */,
 			);
 			path = AddToCart;
 			sourceTree = "<group>";
@@ -12803,6 +12808,7 @@
 				45FEDD361CAB8F35004639FC /* PriceAlertCell.m in Sources */,
 				45FEDB301CAB8F35004639FC /* Notes.m in Sources */,
 				45FEE1B11CAB8F35004639FC /* MarqueeLabel.m in Sources */,
+				458D1D8D1CB4BE2C004A0313 /* ATCPushLocalytics.m in Sources */,
 				45FEDECE1CAB8F35004639FC /* UserProfileBiodataViewController.m in Sources */,
 				45FEDE631CAB8F35004639FC /* TransactionATCViewController.m in Sources */,
 				45FEDB881CAB8F35004639FC /* IndomaretData.m in Sources */,

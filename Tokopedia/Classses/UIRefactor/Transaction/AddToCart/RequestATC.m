@@ -17,26 +17,26 @@
                    failed:(void(^)(NSError * error))failed {
     
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
-    
-    NSDictionary* param = @{@"action" : @"get_add_to_cart_form",
+    networkManager.isUsingHmac = YES;
+    NSDictionary* param = @{
                             @"product_id":productID,
                             @"address_id": addressID
                             };
     
-    [networkManager requestWithBaseUrl:[NSString basicUrl]
-                                  path:@"tx-cart.pl"
-                                method:RKRequestMethodPOST
+    [networkManager requestWithBaseUrl:[NSString v4Url]
+                                  path:@"/v4/tx-cart/get_add_to_cart_form.pl"
+                                method:RKRequestMethodGET
                              parameter:param
                                mapping:[TransactionATCForm mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
      TransactionATCForm *form = [successResult.dictionary objectForKey:@""];
-    if(form.message_error && form.result.form == nil)
+    if(form.message_error && form.data.form == nil)
      {
          NSArray *messages = form.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
          [StickyAlertView showErrorMessage:messages];
          failed(nil);
      } else{
-         success(form.result);
+         success(form.data);
      }
     } onFailure:^(NSError *errorResult) {
         failed(errorResult);
@@ -60,7 +60,7 @@
     NSString *recieverName = address.receiver_name?:@"";
     NSString *recieverPhone = address.receiver_phone?:@"";
     
-    NSDictionary* param = @{@"action":@"add_to_cart",
+    NSDictionary* param = @{
                             @"product_id":@(productID),
                             @"address_id" : @(addressID),
                             @"quantity":qty,
@@ -81,10 +81,16 @@
                             };
     
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
-    [networkManager requestWithBaseUrl:kTkpdBaseURLString path:@"action/tx-cart.pl" method:RKRequestMethodPOST parameter:param mapping:[TransactionAction mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+    networkManager.isUsingHmac = YES;
+    [networkManager requestWithBaseUrl:[NSString v4Url]
+                                  path:@"/v4/action/tx-cart/add_to_cart.pl"
+                                method:RKRequestMethodGET
+                             parameter:param
+                               mapping:[TransactionAction mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
         
         TransactionAction *setting = [successResult.dictionary objectForKey:@""];
-        if (setting.result.is_success == 1) {
+        if (setting.data.is_success == 1) {
             success(setting);
         } else {
             NSArray *messages = setting.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
@@ -115,7 +121,7 @@
     NSString *recieverName = address.receiver_name?:@"";
     NSString *recieverPhone = address.receiver_phone?:@"";
     
-    NSDictionary* param = @{@"action":@"calculate_cart",
+    NSDictionary* param = @{
                             @"product_id":productID,
                             @"district_id": districtID,
                             @"address_id" : @(addressID),
@@ -135,9 +141,10 @@
                             };
     
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
-    [networkManager requestWithBaseUrl:[NSString basicUrl]
-                                  path:@"tx-cart.pl"
-                                method:RKRequestMethodPOST
+    networkManager.isUsingHmac = YES;
+    [networkManager requestWithBaseUrl:[NSString v4Url]
+                                  path:@"/v4/tx-cart/calculate_cart.pl"
+                                method:RKRequestMethodGET
                              parameter:param
                                mapping:[TransactionCalculatePrice mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
@@ -150,7 +157,7 @@
         }
         else
         {
-            success(calculate.result);
+            success(calculate.data);
         }
     } onFailure:^(NSError *errorResult) {
         failed(errorResult);
