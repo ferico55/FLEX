@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "PromoProduct.h"
+#import "PromoResult.h"
 
 typedef NS_ENUM(NSInteger, PromoCollectionViewCellType) {
     PromoCollectionViewCellTypeThumbnail,
@@ -23,7 +24,7 @@ typedef NS_ENUM(NSInteger, PromoCollectionViewCellType) {
 
 @interface PromoCollectionReusableView : UICollectionReusableView
 
-@property (strong, nonatomic) NSArray *promo;
+@property (strong, nonatomic) NSArray<PromoResult*> *promo;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (nonatomic) PromoCollectionViewCellType collectionViewCellType;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *collectionViewHeightConstraint;

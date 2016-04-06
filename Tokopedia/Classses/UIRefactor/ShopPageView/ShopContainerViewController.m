@@ -33,6 +33,7 @@
 #import "UserAuthentificationManager.h"
 #import "ShopPageRequest.h"
 #import "FavoriteShopRequest.h"
+#import "PromoRequest.h"
 
 @interface ShopContainerViewController () <UIScrollViewDelegate, LoginViewDelegate, UIPageViewControllerDelegate, CMPopTipViewDelegate, FavoriteShopRequestDelegate> {
     BOOL _isNoData, isDoingFavorite, isDoingMessage;
@@ -222,7 +223,6 @@
     if ([viewController isKindOfClass:[ShopProductPageViewController class]]) {
         return _shopTalkViewController;
     }
-    
     else if ([viewController isKindOfClass:[ShopTalkPageViewController class]]) {
         return _shopReviewViewController;
     }
@@ -258,7 +258,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogin:) name:TKPDUserDidLoginNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogout:) name:kTKPDACTIVATION_DIDAPPLICATIONLOGGEDOUTNOTIFICATION object:nil];
 
-    
 }
 
 - (void)updateHeaderShopPage
@@ -497,14 +496,22 @@
 //this function called when user tap RED HEART button, with intention to UNFAVORITE a shop
 - (IBAction)favoriteTap:(id)sender {
     if([_userManager isLogin]) {
-        [favoriteShopRequest requestActionButtonFavoriteShop:_shop.result.info.shop_id withAdKey:@""];
+		NSString* adKey = @"";
+    	if([_data objectForKey:PromoRefKey]){
+        	adKey = [_data objectForKey:PromoRefKey];
+    	}
+        [favoriteShopRequest requestActionButtonFavoriteShop:_shop.result.info.shop_id withAdKey:adKey];
     }
 }
 
 //this function called when user tap WHITE HEART button, with intention to FAVORITE a shop
 - (IBAction)unfavoriteTap:(id)sender {
     if([_userManager isLogin]) {
-        [favoriteShopRequest requestActionButtonFavoriteShop:_shop.result.info.shop_id withAdKey:@""];
+        NSString* adKey = @"";
+    	if([_data objectForKey:PromoRefKey]){
+        	adKey = [_data objectForKey:PromoRefKey];
+    	}
+        [favoriteShopRequest requestActionButtonFavoriteShop:_shop.result.info.shop_id withAdKey:adKey];
     }else {
         UINavigationController *navigationController = [[UINavigationController alloc] init];
         navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];

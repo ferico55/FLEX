@@ -608,7 +608,7 @@ RetryViewDelegate
 }
 
 - (IBAction)tapToEtalase:(id)sender {
-    NSIndexPath *indexpath = [_detailfilter objectForKey:kTKPDDETAILETALASE_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
+    NSIndexPath *indexpath = [_detailfilter objectForKey:kTKPDDETAILETALASE_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:1 inSection:0];
     MyShopEtalaseFilterViewController *vc =[MyShopEtalaseFilterViewController new];
     vc.data = @{kTKPDDETAIL_APISHOPIDKEY:@([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0),
                 @"object_selected":[_detailfilter objectForKey:DATA_ETALASE_KEY]?:@0,
@@ -826,15 +826,16 @@ RetryViewDelegate
 #pragma mark - Promo Request
 
 - (void)addImpressionClick {
-    if ([_data objectForKey:PromoImpressionKey]) {
-        _promoRequest = [[PromoRequest alloc] init];
-        NSString *adKey = [_data objectForKey:PromoImpressionKey];
-        NSString *adSemKey = [_data objectForKey:PromoSemKey];
-        NSString *adReferralKey = [_data objectForKey:PromoReferralKey];
-        [_promoRequest addImpressionKey:adKey
-                                 semKey:adSemKey
-                            referralKey:adReferralKey
-                                 source:PromoRequestSourceFavoriteShop];
+    _promoRequest = [[PromoRequest alloc] init];
+    NSString* clickURL;
+    if([_data objectForKey:PromoClickURL]){
+        clickURL = [_data objectForKey:PromoClickURL];
+        [_promoRequest requestForClickURL:clickURL
+                                onSuccess:^{
+                                    
+                                } onFailure:^(NSError *error) {
+                                    
+                                }];
     }
 }
 

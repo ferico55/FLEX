@@ -10,4 +10,11 @@
 
 @implementation Hashtags
 
++(RKObjectMapping *)mapping {
+    RKObjectMapping* mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addAttributeMappingsFromArray:@[@"name", @"url", @"department_id"]];
+    
+    return mapping;
+}
+
 @end
