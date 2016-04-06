@@ -32,17 +32,11 @@
 #import "FavoriteShopAction.h"
 #import "UserAuthentificationManager.h"
 #import "ShopPageRequest.h"
+#import "FavoriteShopRequest.h"
 
-@interface ShopContainerViewController () <UIScrollViewDelegate, LoginViewDelegate, UIPageViewControllerDelegate, CMPopTipViewDelegate> {
+@interface ShopContainerViewController () <UIScrollViewDelegate, LoginViewDelegate, UIPageViewControllerDelegate, CMPopTipViewDelegate, FavoriteShopRequestDelegate> {
     BOOL _isNoData, isDoingFavorite, isDoingMessage;
     BOOL _isRefreshView;
-    
-    NSInteger _requestFavoriteCount;
-    
-    __weak RKObjectManager *_objectFavoriteManager;
-    __weak RKManagedObjectRequestOperation *_requestFavorite;
-    NSOperationQueue *_operationFavoriteQueue;
-    NSTimer *_timerFavorite;
     
     CMPopTipView *cmPopTitpView;
     NSDictionary *_auth;
@@ -56,6 +50,7 @@
     
     UIBarButtonItem *_fixedSpace;
     ShopPageRequest *shopPageRequest;
+    FavoriteShopRequest *favoriteShopRequest;
 }
 
 @property (strong, nonatomic) ShopProductPageViewController *shopProductViewController;
@@ -146,6 +141,8 @@
     _isRefreshView = NO;
     
     shopPageRequest = [ShopPageRequest new];
+    favoriteShopRequest = [FavoriteShopRequest new];
+    favoriteShopRequest.delegate = self;
     
     _userManager = [UserAuthentificationManager new];
     
@@ -336,6 +333,21 @@
     }];
 }
 
+-(void)didReceiveActionButtonFavoriteShopConfirmation:(FavoriteShopAction *)action{
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"notifyFav" object:nil];
+    [self setFavoriteRightButtonItem];
+    NSArray *tempArr = self.navigationController.viewControllers;
+    if([[tempArr objectAtIndex:tempArr.count-2] isMemberOfClass:[DetailProductViewController class]]) {
+        [((DetailProductViewController *) [tempArr objectAtIndex:tempArr.count-2]) setButtonFav];
+    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateFavoriteShop" object:nil];
+}
+
+-(void)failToRequestActionButtonFavoriteShopConfirmation{
+    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Kendala koneksi internet"] delegate:self];
+    [alert show];
+}
+
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
@@ -484,24 +496,15 @@
 
 //this function called when user tap RED HEART button, with intention to UNFAVORITE a shop
 - (IBAction)favoriteTap:(id)sender {
-    if(_requestFavorite.isExecuting) return;
-    
     if([_userManager isLogin]) {
-        _requestFavoriteCount = 0;
-        [self configureFavoriteRestkit];
-        [self favoriteShop:_shop.result.info.shop_id];
-
+        [favoriteShopRequest requestActionButtonFavoriteShop:_shop.result.info.shop_id withAdKey:@""];
     }
 }
 
 //this function called when user tap WHITE HEART button, with intention to FAVORITE a shop
 - (IBAction)unfavoriteTap:(id)sender {
-    if(_requestFavorite.isExecuting) return;
-    
     if([_userManager isLogin]) {
-        _requestFavoriteCount = 0;
-        [self configureFavoriteRestkit];
-        [self favoriteShop:_shop.result.info.shop_id];
+        [favoriteShopRequest requestActionButtonFavoriteShop:_shop.result.info.shop_id withAdKey:@""];
     }else {
         UINavigationController *navigationController = [[UINavigationController alloc] init];
         navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
@@ -584,8 +587,7 @@
                 break;
             }
             case 12:
-            {
-                
+            {                
                 [_pageController setViewControllers:@[_shopNotesViewController] direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];
                 [self updateHeaderShopPage];
                 break;
@@ -593,7 +595,6 @@
                 
             case 13:
             {
-                
                 [_pageController setViewControllers:@[_shopProductViewController] direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];
                 [self updateHeaderShopPage];
                 break;
@@ -602,88 +603,6 @@
                 break;
         }
     }
-}
-
-
-#pragma mark - Request and mapping favorite action
-
--(void)configureFavoriteRestkit {
-    
-    // initialize RestKit
-    _objectFavoriteManager =  [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[FavoriteShopAction class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[FavoriteShopActionResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{@"content":@"content",
-                                                        @"is_success":@"is_success"}];
-    
-    //relation
-    RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                  toKeyPath:kTKPD_APIRESULTKEY
-                                                                                withMapping:resultMapping];
-    [statusMapping addPropertyMapping:resulRel];
-    
-    //register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                                  method:RKRequestMethodPOST
-                                                                                             pathPattern:@"action/favorite-shop.pl"
-                                                                                                 keyPath:@""
-                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectFavoriteManager addResponseDescriptor:responseDescriptorStatus];
-}
-
--(void)favoriteShop:(NSString*)shop_id
-{
-    if (_requestFavorite.isExecuting) return;
-    
-    _requestFavoriteCount ++;
-    
-    NSDictionary *param = @{kTKPDDETAIL_ACTIONKEY   :   @"fav_shop",
-                            @"shop_id"              :   shop_id};
-    
-    _requestFavorite = [_objectFavoriteManager appropriateObjectRequestOperationWithObject:self
-                                                                                    method:RKRequestMethodPOST
-                                                                                      path:@"action/favorite-shop.pl"
-                                                                                parameters:[param encrypt]];
-    
-    [_requestFavorite setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestFavoriteResult:mappingResult withOperation:operation];
-        //[_timer invalidate];
-        //_timer = nil;
-        [self setFavoriteRightButtonItem];
-        NSArray *tempArr = self.navigationController.viewControllers;
-        if([[tempArr objectAtIndex:tempArr.count-2] isMemberOfClass:[DetailProductViewController class]]) {
-            [((DetailProductViewController *) [tempArr objectAtIndex:tempArr.count-2]) setButtonFav];
-        }
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"updateFavoriteShop" object:nil];
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        /** failure **/
-        [self requestFavoriteError:error];
-        //[_timer invalidate];
-        //_timer = nil;
-    }];
-    
-    [_operationFavoriteQueue addOperation:_requestFavorite];
-    
-    _timerFavorite = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
-                                                      target:self
-                                                    selector:@selector(requestTimeout)
-                                                    userInfo:nil
-                                                     repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:_timerFavorite forMode:NSRunLoopCommonModes];
-}
-
--(void)requestFavoriteResult:(id)mappingResult withOperation:(NSOperation *)operation {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"notifyFav" object:nil];
-}
-
--(void)requestFavoriteError:(id)object {
-    
 }
 
 #pragma mark - LoginView Delegate
