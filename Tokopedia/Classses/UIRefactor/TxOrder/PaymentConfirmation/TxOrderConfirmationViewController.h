@@ -21,4 +21,6 @@
 @property (nonatomic) BOOL isMultipleSelection;
 @property (nonatomic) BOOL isSelectAll;
 
+-(void)removeAllSelected;
+
 @end

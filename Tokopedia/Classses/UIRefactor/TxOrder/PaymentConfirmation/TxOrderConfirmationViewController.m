@@ -76,6 +76,12 @@
 
 }
 
+-(void)removeAllSelected{
+    for (int i = 0; i<_list.count; i++) {
+        _list[i].isSelectedPayment = NO;
+    }
+}
+
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -260,6 +266,7 @@
 -(void)shouldCancelOrderAtIndexPath:(NSIndexPath *)indexPath
 {
     if (!_isMultipleSelection) {
+        _list[indexPath.row].isSelectedPayment = YES;
         NSString *cancelAlertDesc = @"Apakah anda yakin membatalkan transaksi ini?";
         if ([_list[indexPath.row].confirmation.deposit_amount_plain integerValue]>0)
             cancelAlertDesc = [NSString stringWithFormat:@"Apakah anda yakin membatalkan transaksi ini?\nSaldo Tokopedia yang akan dikembalikan adalah sebesar: %@",_list[indexPath.row].confirmation.deposit_amount];

@@ -197,6 +197,7 @@
             if(!_confirmationViewController)_confirmationViewController = [TxOrderConfirmationViewController new];
             ((TxOrderConfirmationViewController*)_confirmationViewController).isMultipleSelection = _isMultipleSelect;
             childViewController = _confirmationViewController;
+            [_confirmationViewController removeAllSelected];
             _confirmationViewController.delegate = self;
             break;
         }
