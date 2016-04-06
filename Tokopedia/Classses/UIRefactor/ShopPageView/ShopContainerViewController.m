@@ -328,7 +328,8 @@
         _isNoData = NO;
         [self updateHeaderShopPage];
     } onFailure:^(NSError *error) {
-        
+        StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Kendala koneksi internet."] delegate:self];
+        [alert show];
     }];
 }
 
