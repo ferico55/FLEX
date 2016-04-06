@@ -555,6 +555,7 @@
         _URINext =  uriNext;
         _page = nextPage;
         _tableView.tableFooterView = nil;
+        [_noResultView removeFromSuperview];
     } else {
         if ([self isUsingAnyFilter]) {
             [_noResultView setNoResultTitle:[NSString stringWithFormat:@"Belum ada transaksi untuk tanggal %@ - %@", [_dataInput objectForKey:API_TRANSACTION_START_DATE_KEY], [_dataInput objectForKey:API_TRANSACTION_END_DATE_KEY]]];
