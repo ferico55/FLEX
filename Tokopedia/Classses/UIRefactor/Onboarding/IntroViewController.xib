@@ -90,13 +90,13 @@
                         <constraint firstAttribute="height" constant="194" id="qYB-GH-xLr"/>
                     </constraints>
                 </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Selamat Datang!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z06-T0-a5Y">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Selamat Datang!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z06-T0-a5Y">
                     <rect key="frame" x="117" y="515" width="181" height="20"/>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="22"/>
                     <color key="textColor" red="0.38431372549019605" green="0.38431372549019605" blue="0.38431372549019605" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="297" translatesAutoresizingMaskIntoConstraints="NO" id="jNy-RO-bFt" customClass="TTTAttributedLabel">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="297" translatesAutoresizingMaskIntoConstraints="NO" id="jNy-RO-bFt" customClass="TTTAttributedLabel">
                     <rect key="frame" x="79" y="558" width="257" height="31"/>
                     <string key="text">Dapetin apa aja kebutuhanmu
 lewat aplikasi Tokopedia!</string>
@@ -174,13 +174,13 @@ lewat aplikasi Tokopedia!</string>
                         <constraint firstAttribute="height" constant="55" id="reM-Yu-GS6"/>
                     </constraints>
                 </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Yang Jual Banyak!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5qL-G6-vTm">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Yang Jual Banyak!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5qL-G6-vTm">
                     <rect key="frame" x="107" y="515" width="201" height="20"/>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="22"/>
                     <color key="textColor" red="0.38431372549999998" green="0.38431372549999998" blue="0.38431372549999998" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jutaan produk dari semua kategori ada di sini" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="297" translatesAutoresizingMaskIntoConstraints="NO" id="aDq-bv-5mA" customClass="TTTAttributedLabel">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Jutaan produk dari semua kategori ada di sini" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="297" translatesAutoresizingMaskIntoConstraints="NO" id="aDq-bv-5mA" customClass="TTTAttributedLabel">
                     <rect key="frame" x="59" y="558" width="297" height="31"/>
                     <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="17"/>
                     <color key="textColor" red="0.51764705879999995" green="0.51764705879999995" blue="0.51764705879999995" alpha="1" colorSpace="calibratedRGB"/>
@@ -229,7 +229,7 @@ lewat aplikasi Tokopedia!</string>
                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xZy-Qf-OB2">
                     <rect key="frame" x="133" y="269" width="151" height="154"/>
                     <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="slide3_content.png" translatesAutoresizingMaskIntoConstraints="NO" id="j04-98-OCB">
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="slide3_content.png" translatesAutoresizingMaskIntoConstraints="NO" id="j04-98-OCB">
                             <rect key="frame" x="5" y="8" width="140" height="276"/>
                         </imageView>
                     </subviews>
@@ -238,13 +238,13 @@ lewat aplikasi Tokopedia!</string>
                         <constraint firstAttribute="height" constant="154" id="cFh-Kp-P2h"/>
                     </constraints>
                 </view>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Belanja Lebih Mudah!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CaD-C3-0M0">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Belanja Lebih Mudah!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CaD-C3-0M0">
                     <rect key="frame" x="91" y="515" width="233" height="20"/>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="22"/>
                     <color key="textColor" red="0.38431372549999998" green="0.38431372549999998" blue="0.38431372549999998" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cari produk yang kamu mau langsung dari genggaman" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="297" translatesAutoresizingMaskIntoConstraints="NO" id="mKb-cw-ing" customClass="TTTAttributedLabel">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Cari produk yang kamu mau langsung dari genggaman" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="297" translatesAutoresizingMaskIntoConstraints="NO" id="mKb-cw-ing" customClass="TTTAttributedLabel">
                     <rect key="frame" x="86" y="558" width="243" height="31"/>
                     <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="17"/>
                     <color key="textColor" red="0.51764705879999995" green="0.51764705879999995" blue="0.51764705879999995" alpha="1" colorSpace="calibratedRGB"/>
@@ -301,13 +301,13 @@ lewat aplikasi Tokopedia!</string>
                         <constraint firstAttribute="height" constant="39" id="E2V-IQ-4Ta"/>
                     </constraints>
                 </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Buka Toko Gratis!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V1C-3J-LVg">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Buka Toko Gratis!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V1C-3J-LVg">
                     <rect key="frame" x="110" y="515" width="194" height="20"/>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="22"/>
                     <color key="textColor" red="0.38431372549999998" green="0.38431372549999998" blue="0.38431372549999998" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mau jualan juga? Buka tokomu di Tokopedia. Gratis!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="297" translatesAutoresizingMaskIntoConstraints="NO" id="lEq-ho-gw1" customClass="TTTAttributedLabel">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Mau jualan juga? Buka tokomu di Tokopedia. Gratis!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="297" translatesAutoresizingMaskIntoConstraints="NO" id="lEq-ho-gw1" customClass="TTTAttributedLabel">
                     <rect key="frame" x="66" y="558" width="282" height="31"/>
                     <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="17"/>
                     <color key="textColor" red="0.51764705879999995" green="0.51764705879999995" blue="0.51764705879999995" alpha="1" colorSpace="calibratedRGB"/>
@@ -361,13 +361,13 @@ lewat aplikasi Tokopedia!</string>
                         <constraint firstAttribute="height" constant="229" id="aS8-yb-Y4i"/>
                     </constraints>
                 </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dapatkan Notifikasi" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MQ2-Un-Ohr">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Dapatkan Notifikasi" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MQ2-Un-Ohr">
                     <rect key="frame" x="53" y="336" width="214" height="20"/>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="22"/>
                     <color key="textColor" red="0.38431372549999998" green="0.38431372549999998" blue="0.38431372549999998" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Semua update terbaru akan dikirim ke HP kamu" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="297" translatesAutoresizingMaskIntoConstraints="NO" id="LSx-VY-Px8" customClass="TTTAttributedLabel">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Semua update terbaru akan dikirim ke HP kamu" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="297" translatesAutoresizingMaskIntoConstraints="NO" id="LSx-VY-Px8" customClass="TTTAttributedLabel">
                     <rect key="frame" x="57" y="375" width="206" height="31"/>
                     <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="17"/>
                     <color key="textColor" red="0.51764705879999995" green="0.51764705879999995" blue="0.51764705879999995" alpha="1" colorSpace="calibratedRGB"/>
@@ -413,6 +413,9 @@ lewat aplikasi Tokopedia!</string>
                                     <real key="value" value="3"/>
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="btnNotificationTapped:" destination="-1" eventType="touchUpInside" id="yL4-aP-AGa"/>
+                            </connections>
                         </button>
                     </subviews>
                     <constraints>

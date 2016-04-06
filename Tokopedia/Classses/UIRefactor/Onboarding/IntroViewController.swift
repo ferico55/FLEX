@@ -235,4 +235,19 @@ class IntroViewController: UIViewController {
     @IBAction func btnRegisterTapped(sender: AnyObject) {
         navigateToMainViewControllerWithPage(.Register)
     }
+    
+    @IBAction func btnNotificationTapped(sender: AnyObject) {
+        if #available(iOS 8, *) {
+            let notificationSettings = UIUserNotificationSettings(
+                forTypes: [.Alert, .Badge, .Sound],
+                categories: nil)
+            
+            UIApplication.sharedApplication().registerUserNotificationSettings(notificationSettings)
+            UIApplication.sharedApplication().registerForRemoteNotifications()
+        } else {
+            UIApplication.sharedApplication().registerForRemoteNotificationTypes([
+                .Alert, .Badge, .Sound
+            ])
+        }
+    }
 }
