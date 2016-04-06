@@ -237,17 +237,14 @@ class IntroViewController: UIViewController {
     }
     
     @IBAction func btnNotificationTapped(sender: AnyObject) {
-        if #available(iOS 8, *) {
-            let notificationSettings = UIUserNotificationSettings(
-                forTypes: [.Alert, .Badge, .Sound],
-                categories: nil)
-            
-            UIApplication.sharedApplication().registerUserNotificationSettings(notificationSettings)
-            UIApplication.sharedApplication().registerForRemoteNotifications()
-        } else {
-            UIApplication.sharedApplication().registerForRemoteNotificationTypes([
-                .Alert, .Badge, .Sound
-            ])
-        }
+        JLNotificationPermission.sharedInstance().extraAlertEnabled = false
+        JLNotificationPermission.sharedInstance().authorize({deviceId, error in
+            let deniedCode = JLAuthorizationErrorCode.PermissionSystemDenied.rawValue
+            if let errorCode = error?.code where errorCode == deniedCode {
+                guard #available(iOS 8, *) else { return }
+                let url = NSURL(string: UIApplicationOpenSettingsURLString)!
+                UIApplication.sharedApplication().openURL(url)
+            }
+        })
     }
 }
