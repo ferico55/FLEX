@@ -43,7 +43,10 @@
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_close_white.png"] style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
     [backBarButtonItem setTintColor:[UIColor whiteColor]];
     backBarButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_BACK;
-    self.navigationItem.leftBarButtonItem = backBarButtonItem;
+    
+    if ([self isModal]) {
+        self.navigationItem.leftBarButtonItem = backBarButtonItem;
+    }
     
     _isSuccessBCA = NO;
     
@@ -130,7 +133,7 @@
 
         url = [NSURL URLWithString:urlAddress];
     }
-    else
+    else if (gateway == TYPE_GATEWAY_BRI_EPAY)
     {
         urlAddress = _URLString;
         NSString *postString = [NSString stringWithFormat:@"keysTrxEcomm=%@&gateway=%@,token=%@,step=2", _transactionCode,_gateway,_token];
@@ -141,11 +144,25 @@
         
         url = [NSURL URLWithString:urlAddress];
     }
+    else{
+        urlAddress = _URLString;//@"http://pay-staging.tokopedia.com/v1/payment";
+        NSString *postString                = _toppayQueryString?:@"";
+        NSData *postData                    = [postString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+        [request setHTTPMethod:@"POST"];
+        [request setHTTPBody:postData];
+        
+        url = [NSURL URLWithString:urlAddress];
+    }
     
     [request setURL:url];
     [_webView loadRequest:request];
 }
 
+- (BOOL)isModal {
+    return self.presentingViewController.presentedViewController == self
+    || (self.navigationController != nil && self.navigationController.presentingViewController.presentedViewController == self.navigationController)
+    || [self.tabBarController.presentingViewController isKindOfClass:[UITabBarController class]];
+}
 
 -(NSString*)encodeDictionary:(NSDictionary*)dictionary{
     NSMutableString *bodyData = [[NSMutableString alloc]init];
@@ -227,20 +244,49 @@
             self.navigationItem.leftBarButtonItem = nil;
         }
         if ([request.URL.absoluteString rangeOfString:BRI_EPAY_CALLBACK_URL].location != NSNotFound) {
-            NSDictionary *param = @{
-                                    @"action" : @"validate_payment",
-                                    @"tid" : _transactionCode
-                                    };
+
             if (!_isBRIEPayRequested) {
-                [_delegate shouldDoRequestBRIEPay:param];
+                [_delegate shouldDoRequestBRIEPayCode:_transactionCode];
                 _isBRIEPayRequested = YES;
             }
             [self.navigationController dismissViewControllerAnimated:YES completion:nil];
             return NO;
         }
     }
+    else
+    {
+        if ([request.URL.absoluteString rangeOfString:@"tx-toppay-thanks.pl"].location != NSNotFound) {
+            
+            NSDictionary *paramURL = [self dictionaryFromURLString:request.URL.absoluteString];
+
+            [_delegate shouldDoRequestTopPayThxCode:[paramURL objectForKey:@"id"]?:_toppayParam[@"transaction_id"]?:@""];
+            if ([self isModal]) {
+                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+            } else
+            {
+                [self.navigationController popViewControllerAnimated:YES];
+            }
+            return NO;
+        }
+    }
     
     return YES;
+}
+
+-(NSDictionary *)dictionaryFromURLString:(NSString *)urlString
+{
+    NSURL *url = [NSURL URLWithString:urlString];
+    NSString * q = [url query];
+    NSArray * pairs = [q componentsSeparatedByString:@"&"];
+    NSMutableDictionary * dictionary = [NSMutableDictionary dictionary];
+    for (NSString * pair in pairs) {
+        NSArray * bits = [pair componentsSeparatedByString:@"="];
+        NSString * key = [[bits objectAtIndex:0] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSString * value = [[bits objectAtIndex:1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        [dictionary setObject:value forKey:key];
+    }
+    
+    return [dictionary copy];
 }
 
 -(NSString *)getStringURLMandiriECash

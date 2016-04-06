@@ -70,6 +70,7 @@
     #import "TKPMappingManager.h"
 
     #import "TPSpotlight.h"
+    #import "StickyAlertView+NetworkErrorHandler.h"
     #import "FBTweakInline.h"
     #import "NSString+TPBaseUrl.h"
 

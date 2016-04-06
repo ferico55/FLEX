@@ -96,7 +96,7 @@
     } else {
         NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
         appVersion = [appVersion stringByReplacingOccurrencesOfString:@"." withString:@""];
-        NSString *urlString = [NSString stringWithFormat:@"https://m.tokopedia.com/contact-us-faq.pl?flag_app=1&device=ios&app_version=%@", appVersion];
+        NSString *urlString = [NSString stringWithFormat:@"https://m-alpha.tokopedia.com/contact-us-faq.pl?flag_app=1&device=ios&app_version=%@", appVersion];
         NSURL *initialURL = [NSURL URLWithString:urlString]; 
         return initialURL;
     }

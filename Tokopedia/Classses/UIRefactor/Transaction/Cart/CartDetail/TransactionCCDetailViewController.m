@@ -22,7 +22,6 @@
 @interface TransactionCCDetailViewController ()
 <
     TKPDAlertViewDelegate,
-    RequestCartDelegate,
     TransactionCartWebViewViewControllerDelegate,
     UITextFieldDelegate,
     UIWebViewDelegate
@@ -92,8 +91,6 @@
     }
     
     _requestCart = [RequestCart new];
-    _requestCart.viewController = self;
-    _requestCart.delegate = self;
     
     _alertLoading = [[UIAlertView alloc]initWithTitle:@"Processing" message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
     
@@ -143,7 +140,6 @@
 {
     [super viewWillDisappear:animated];
     
-    [_dataInput addEntriesFromDictionary:[self param]];
     [_dataInput addEntriesFromDictionary:[self paramCC]];
     [_delegate addData:_dataInput];
 }
@@ -419,11 +415,7 @@
 
 -(NSString*)getSprintAsiaURLString
 {
-    TKPDSecureStorage* storage = [TKPDSecureStorage standardKeyChains];
-    NSString *baseURLString = [[storage keychainDictionary] objectForKey:@"AppBaseUrl"]?:kTkpdBaseURLString;
-    
-    NSString *stringURL = [NSString stringWithFormat:@"%@/tx-payment-sprintasia.pl",baseURLString];
-    
+    NSString *stringURL =@"http://www.tokopedia.com/ws/tx-payment-sprintasia.pl";
     return stringURL;
 }
 
@@ -456,32 +448,6 @@
     [self.navigationController popToViewController:self.navigationController.viewControllers[self.navigationController.viewControllers.count-3] animated:YES];
 }
 
--(void)actionAfterFailRequestMaxTries:(int)tag
-{
-    _isFailMaxRequest = YES;
-    [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
-}
-
-#pragma mark - Methods
--(NSDictionary *)param
-{
-    NSDictionary *param = @{@"action":@"step_1_process_credit_card",
-                            @"credit_card_edit_flag":@"1",
-                            API_CC_FIRST_NAME_KEY:[_dataInput objectForKey:API_CC_FIRST_NAME_KEY]?:@"",
-                            API_CC_LAST_NAME_KEY:[_dataInput objectForKey:API_CC_LAST_NAME_KEY]?:@"",
-                            API_CC_CITY_KEY:[_dataInput objectForKey:API_CC_CITY_KEY]?:@"",
-                            API_CC_POSTAL_CODE_KEY:[_dataInput objectForKey:API_CC_POSTAL_CODE_KEY]?:@"",
-                            API_CC_ADDRESS_KEY:[_dataInput objectForKey:API_CC_ADDRESS_KEY]?:@"",
-                            API_CC_PHONE_KEY:[_dataInput objectForKey:API_CC_PHONE_KEY]?:@"",
-                            API_CC_STATE_KEY:[_dataInput objectForKey:API_CC_STATE_KEY]?:@"",
-                            API_CC_CARD_NUMBER_KEY:[self CCNumber]?:@"",
-                            API_CC_BANK_INSTALLMENT_KEY: [_dataInput objectForKey:API_CC_BANK_INSTALLMENT_KEY]?:@"",
-                            API_CC_DURATION_INSTALLMENT_KEY: [_dataInput objectForKey:API_CC_DURATION_INSTALLMENT_KEY]?:@""
-                            };
-    
-    return param;
-}
-
 -(NSString*)CCNumber
 {
     return [_CCNumberTextField.text stringByReplacingOccurrencesOfString:@" " withString:@""];
@@ -496,10 +462,28 @@
 
     
     if ([self isValidInput]) {
-        _requestCart.param = [self param];
-        [_requestCart doRequestCC];
+        [self doRequestCC];
     }
 }
+
+-(void)doRequestCC{
+    
+    [RequestCart fetchCCValidationFirstName:_dataInput[@"first_name"]?:@"" lastName:_dataInput[@"last_name"]?:@"" city:_dataInput[@"city"]?:@"" postalCode:_dataInput[@"postal_code"]?:@"" addressStreet:_dataInput[@"address_street"]?:@"" phone:_dataInput[@"phone"]?:@"" state:_dataInput[@"state"]?:@"" cardNumber:[self CCNumber]?:@"" installmentBank:_dataInput[@"installment_bank"]?:@"" InstallmentTerm:_dataInput[@"installment_term"]?:@"" success:^(DataCredit *data) {
+        
+        [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+        _dataCC = data;
+        if ([_dataCC.cc_agent integerValue] == 1) {
+            [self shouldDoRequestCCVeritrans];
+        }
+        else if ([_dataCC.cc_agent integerValue] == 2) {
+            [self shouldDoRequestCCSprintAsia];
+        }
+    } error:^(NSError *error) {
+        _isFailMaxRequest = YES;
+        [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+    }];
+}
+
 - (IBAction)infoCVC:(id)sender {
     AlertInfoView *alertInfo = [AlertInfoView newview];
     alertInfo.text = @"Info CVC/CVV";
