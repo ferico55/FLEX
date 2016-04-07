@@ -621,6 +621,10 @@ RetryViewDelegate
     vc.delegate = self;
      */
     EtalaseViewController *vc = [EtalaseViewController new];
+    vc.showChevron = NO;
+    vc.showOtherEtalase = YES;
+    vc.showTotalProduct = NO;
+    
     NSString* shopId = [_data objectForKey:kTKPDDETAIL_APISHOPIDKEY];
     [vc setShowOtherEtalase:YES];
     [vc setShopId:shopId];

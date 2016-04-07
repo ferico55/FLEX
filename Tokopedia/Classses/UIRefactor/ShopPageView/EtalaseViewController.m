@@ -96,6 +96,7 @@
     }else{
         [cell.detailLabel setHidden:YES];
     }
+    cell.showCheckImage = !_showChevron;
     
     return cell;
 }
@@ -121,7 +122,8 @@
 #pragma mark - Method
 -(IBAction)cancelButtonTapped:(id)sender
 {
-    
+    [etalaseNetworkManager requestCancel];
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 -(IBAction)finishButtonTapped:(id)sender
