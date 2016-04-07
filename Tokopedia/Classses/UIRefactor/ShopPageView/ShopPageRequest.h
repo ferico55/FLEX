@@ -12,8 +12,15 @@
 #import "Talk.h"
 #import "Notes.h"
 #import "Review.h"
+#import "Shop.h"
 
 @interface ShopPageRequest : NSObject
+
+-(void)requestForShopPageContainerWithShopId:(NSString*)shopId
+                                  shopDomain:(NSString*)shopDomain
+                                   onSuccess:(void (^)(Shop*))successCallback
+                                   onFailure:(void (^)(NSError *))errorCallback;
+
 -(void)requestForShopProductPageListingWithShopId:(NSString*)shopId
                                         etalaseId:(NSString*)etalaseId
                                           keyWord:(NSString*)keyWord

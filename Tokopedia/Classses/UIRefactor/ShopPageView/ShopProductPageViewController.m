@@ -283,6 +283,9 @@ RetryViewDelegate
     [_fakeStickyTab.layer setShadowOpacity:0.3];
     
     [self initNotification];
+    
+    
+    [_refreshControl endRefreshing];
     _shopPageRequest = [[ShopPageRequest alloc]init];
     [self requestProduct];
     
@@ -354,6 +357,9 @@ RetryViewDelegate
 
     if (_nextPageUri != NULL && ![_nextPageUri isEqualToString:@"0"] && _nextPageUri != 0 && ![_nextPageUri isEqualToString:@""]) {
         size = CGSizeMake(self.view.frame.size.width, 50);
+    }
+    if(_isNoData){
+        size = CGSizeZero;
     }
     return size;
 }
@@ -757,7 +763,7 @@ RetryViewDelegate
         etalaseid = [_data objectForKey:@"product_etalase_id"];
     }
     NSString* shopDomain = [_data objectForKey:@"shop_domain"]?:@"";
-    
+    [_noResultView removeFromSuperview];
     [_shopPageRequest requestForShopProductPageListingWithShopId:shopID
                                                        etalaseId:etalaseid
                                                          keyWord:querry

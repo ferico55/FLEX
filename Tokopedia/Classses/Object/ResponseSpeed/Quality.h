@@ -25,4 +25,6 @@
 @property (nonatomic, strong) NSString *five_star_rank;
 @property (nonatomic, strong) NSString *two_star_rank;
 @property (nonatomic, strong) NSString *three_star_rank;
+
++(RKObjectMapping*)mapping;
 @end
