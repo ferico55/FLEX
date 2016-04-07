@@ -56,7 +56,7 @@ typedef NS_ENUM(NSInteger, PromoRequestType) {
 -(void)requestForFavoriteShop:(void (^)(NSArray<PromoResult*> *))successCallback onFailure:(void (^)(NSError *))errorCallback{
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.isUsingHmac = YES;
-    [_networkManager requestWithBaseUrl:@"https://ta.tokopedia.com"
+    [_networkManager requestWithBaseUrl:[NSString topAdsUrl]
                                    path:@"/promo/v1/display/shops"
                                  method:RKRequestMethodGET
                               parameter:@{@"src":@"fav_shop",
@@ -75,7 +75,7 @@ typedef NS_ENUM(NSInteger, PromoRequestType) {
 -(void)requestForProductQuery:(NSString *)query department:(NSString *)department page:(NSInteger)page onSuccess:(void (^)(NSArray<PromoResult*> *))successCallback onFailure:(void (^)(NSError *))errorCallback{
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.isUsingHmac = YES;
-    [_networkManager requestWithBaseUrl:@"https://ta.tokopedia.com"
+    [_networkManager requestWithBaseUrl:[NSString topAdsUrl]
                                    path:@"/promo/v1/display/products"
                                  method:RKRequestMethodGET
                               parameter:@{@"item":@"4",
@@ -96,7 +96,7 @@ typedef NS_ENUM(NSInteger, PromoRequestType) {
 - (void)requestForProductHotlist:(NSString *)hotlistId department:(NSString *)department page:(NSInteger)page onSuccess:(void (^)(NSArray<PromoResult *> *))successCallback onFailure:(void (^)(NSError *))errorCallback{
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.isUsingHmac = YES;
-    [_networkManager requestWithBaseUrl:@"https://ta.tokopedia.com"
+    [_networkManager requestWithBaseUrl:[NSString topAdsUrl]
                                    path:@"/promo/v1/display/products"
                                  method:RKRequestMethodGET
                               parameter:@{@"item":@"4",
@@ -117,7 +117,7 @@ typedef NS_ENUM(NSInteger, PromoRequestType) {
 -(void)requestForProductFeedWithPage:(NSInteger)page onSuccess:(void (^)(NSArray<PromoResult *> *))successCallback onFailure:(void (^)(NSError *))errorCallback{
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.isUsingHmac = YES;
-    [_networkManager requestWithBaseUrl:@"https://ta.tokopedia.com"
+    [_networkManager requestWithBaseUrl:[NSString topAdsUrl]
                                    path:@"/promo/v1/display/products"
                                  method:RKRequestMethodGET
                               parameter:@{@"item":@"4",
