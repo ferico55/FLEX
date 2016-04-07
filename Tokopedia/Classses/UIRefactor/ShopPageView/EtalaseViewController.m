@@ -45,7 +45,7 @@
         UIBarButtonItem *cancelBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
                                                                             style:UIBarButtonItemStyleBordered
                                                                            target:self
-                                                                           action:@selector(tap:)];
+                                                                           action:@selector(cancelButtonTapped:)];
         cancelBarButton.tag = 10;
         self.navigationItem.leftBarButtonItem = cancelBarButton;
     }
@@ -53,7 +53,7 @@
     UIBarButtonItem  *rightBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Selesai"
                                                                         style:UIBarButtonItemStyleDone
                                                                        target:(self)
-                                                                       action:@selector(tap:)];
+                                                                       action:@selector(finishButtonTapped:)];
     rightBarButton.tag = 11;
     self.navigationItem.rightBarButtonItem = rightBarButton;
     

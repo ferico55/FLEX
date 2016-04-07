@@ -622,11 +622,10 @@ RetryViewDelegate
      */
     EtalaseViewController *vc = [EtalaseViewController new];
     vc.showChevron = NO;
-    vc.showOtherEtalase = YES;
+    vc.showOtherEtalase = NO;
     vc.showTotalProduct = NO;
     
     NSString* shopId = [_data objectForKey:kTKPDDETAIL_APISHOPIDKEY];
-    [vc setShowOtherEtalase:YES];
     [vc setShopId:shopId];
     UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
     [self.navigationController presentViewController:nav animated:YES completion:nil];
