@@ -74,6 +74,8 @@
     
     RequestNotifyLBLM *_requestLBLM;
     TKPStoreManager *_storeManager;
+    
+    MainViewControllerPage _page;
 }
 
 @end
@@ -94,6 +96,13 @@ typedef enum TagRequest {
     return self;
 }
 
+- (instancetype)initWithPage:(MainViewControllerPage)page {
+    if (self = [super init]) {
+        _page = page;
+    }
+    return self;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -110,6 +119,7 @@ typedef enum TagRequest {
     [[UISegmentedControl appearance] setTintColor:kTKPDNAVIGATION_NAVIGATIONBGCOLOR];
     
     [self performSelector:@selector(viewDidLoadQueued) withObject:nil afterDelay:kTKPDMAIN_PRESENTATIONDELAY];	//app launch delay presentation
+
     NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
     
     [center addObserver:self
@@ -284,6 +294,10 @@ typedef enum TagRequest {
         LoginViewController *more = [LoginViewController new];
         more.isFromTabBar = YES;
         moreNavBar = [[UINavigationController alloc]initWithRootViewController:more];
+        
+        if (_page == MainViewControllerPageRegister) {
+            [more navigateToRegister];
+        }
     }
     else{
 //        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
@@ -497,8 +511,31 @@ typedef enum TagRequest {
     
 #endif
     
+    NSInteger pageIndex = [self pageIndex];
+    
+    _tabBarController.selectedIndex = pageIndex;
     // redirect to home after login or register
 //    _tabBarController.selectedViewController=[_tabBarController.viewControllers objectAtIndex:0];
+}
+
+- (NSInteger)pageIndex {
+    switch (_page) {
+        case MainViewControllerPageLogin:
+            return 4;
+            break;
+        
+        case MainViewControllerPageRegister:
+            return 4;
+            break;
+            
+        case MainViewControllerPageSearch:
+            return 2;
+            break;
+            
+        default:
+            return 0;
+            break;
+    }
 }
 
 #pragma mark - Notification observers
