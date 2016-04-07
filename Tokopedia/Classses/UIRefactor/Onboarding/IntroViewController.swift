@@ -175,7 +175,7 @@ class IntroViewController: UIViewController, EAIntroDelegate {
     }
     
     private func showView(view:UIView, atRelativeStartTime startTime:Double) {
-        UIView.addKeyframeWithRelativeStartTime(startTime, relativeDuration: 0, animations: {
+        UIView.addKeyframeWithRelativeStartTime(startTime, relativeDuration: 0.2, animations: {
             view.alpha = 1
         })
     }
