@@ -25,7 +25,7 @@
     _containerNetworkManager = [TokopediaNetworkManager new];
     _containerNetworkManager.isUsingHmac = YES;
     
-    [_containerNetworkManager requestWithBaseUrl:@"https://ws.tokopedia.com"
+    [_containerNetworkManager requestWithBaseUrl:[NSString v4Url]
                                             path:@"/v4/shop/get_shop_info.pl"
                                           method:RKRequestMethodGET
                                        parameter:@{@"shop_id":shopId,
@@ -45,7 +45,7 @@
 -(void)requestForShopProductPageListingWithShopId:(NSString *)shopId etalaseId:(NSString *)etalaseId keyWord:(NSString*)keyWord page:(NSInteger)page order_by:(NSString *)orderBy shop_domain:(NSString *)shopDomain onSuccess:(void (^)(ShopProductPageResult *))successCallback onFailure:(void (^)(NSError *))errorCallback{
     _productNetworkManager = [TokopediaNetworkManager new];
     _productNetworkManager.isUsingHmac = YES;
-    [_productNetworkManager requestWithBaseUrl:@"https://ws.tokopedia.com"
+    [_productNetworkManager requestWithBaseUrl:[NSString v4Url]
                                           path:@"/v4/shop/get_shop_product.pl"
                                         method:RKRequestMethodGET
                                      parameter:@{@"shop_id"     :shopId,
@@ -68,7 +68,7 @@
 -(void)requestForShopTalkPageListingWithShopId:(NSString *)shopId page:(NSInteger)page shop_domain:(NSString *)shopDomain onSuccess:(void (^)(Talk *))successCallback onFailure:(void (^)(NSError *))errorCallback{
     _talkNetworkManager = [TokopediaNetworkManager new];
     _talkNetworkManager.isUsingHmac = YES;
-    [_talkNetworkManager requestWithBaseUrl:@"https://ws.tokopedia.com"
+    [_talkNetworkManager requestWithBaseUrl:[NSString v4Url]
                                        path:@"/v4/shop/get_shop_talk.pl"
                                      method:RKRequestMethodGET
                                   parameter:@{@"page"           : @(page),
@@ -90,7 +90,7 @@
 -(void)requestForShopReviewPageListingWithShopId:(NSString *)shopId page:(NSInteger)page shop_domain:(NSString *)shopDomain onSuccess:(void (^)(Review *))successCallback onFailure:(void (^)(NSError *))errorCallback{
     _reviewNetworkManager = [TokopediaNetworkManager new];
     _reviewNetworkManager.isUsingHmac = YES;
-    [_reviewNetworkManager requestWithBaseUrl:@"https://ws.tokopedia.com"
+    [_reviewNetworkManager requestWithBaseUrl:[NSString v4Url]
                                        path:@"/v4/shop/get_shop_review.pl"
                                      method:RKRequestMethodGET
                                   parameter:@{@"page"           : @(page),
@@ -111,7 +111,7 @@
 -(void)requestForShopNotesPageListingWithShopId:(NSString *)shopId shop_domain:(NSString *)shopDomain onSuccess:(void (^)(Notes *))successCallback onFailure:(void (^)(NSError *))errorCallback{
     _notesNetworkManager = [TokopediaNetworkManager new];
     _notesNetworkManager.isUsingHmac = YES;
-    [_notesNetworkManager requestWithBaseUrl:@"https://ws.tokopedia.com"
+    [_notesNetworkManager requestWithBaseUrl:[NSString v4Url]
                                         path:@"/v4/shop/get_shop_notes.pl"
                                       method:RKRequestMethodGET
                                    parameter:@{@"shop_id":shopId,
