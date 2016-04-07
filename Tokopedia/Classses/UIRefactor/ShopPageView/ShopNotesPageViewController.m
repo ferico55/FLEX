@@ -163,6 +163,7 @@
     [_fakeStickytab.layer setShadowRadius:1];
     [_fakeStickytab.layer setShadowOpacity:0.3];
     
+    [_refreshControl endRefreshing];
     [self initNotification];
     [self requestNotes];
 }
@@ -280,6 +281,7 @@
 
 #pragma mark - Request
 -(void)requestNotes{
+    [_noResultView removeFromSuperview];
     [_shopPageRequest requestForShopNotesPageListingWithShopId:[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]?:@(0)
                                                    shop_domain:[_data objectForKey:@"shop_domain"]?:@""
                                                      onSuccess:^(Notes *notes) {
@@ -301,7 +303,12 @@
                                                      }
                                                      onFailure:^(NSError *error) {
                                                          [_act stopAnimating];
-                                                         self.table.tableFooterView = _noResultView;
+                                                         
+                                                         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Kendala koneksi internet"] delegate:self];
+                                                         [alert show];
+                                                         [_refreshControl endRefreshing];
+                                                         [_refreshControl setHidden:YES];
+                                                         [_refreshControl setEnabled:NO];
                                                      }];
 }
 

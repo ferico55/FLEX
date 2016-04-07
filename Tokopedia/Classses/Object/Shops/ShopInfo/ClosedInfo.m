@@ -10,6 +10,12 @@
 
 @implementation ClosedInfo
 
++(RKObjectMapping *)mapping{
+    RKObjectMapping* mapping = [RKObjectMapping mappingForClass:[ClosedInfo class]];
+    [mapping addAttributeMappingsFromArray:@[@"until", @"reason", @"note"]];
+    return mapping;
+}
+
 - (NSString *)reason {
     return [_reason kv_decodeHTMLCharacterEntities];
 }
