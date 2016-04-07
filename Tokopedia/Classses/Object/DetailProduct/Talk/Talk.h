@@ -16,4 +16,6 @@
 @property (nonatomic, strong) NSString *server_process_time;
 @property (nonatomic, strong) TalkResult *result;
 
++ (RKObjectMapping *)mapping;
++ (RKObjectMapping *)mapping_v4;
 @end

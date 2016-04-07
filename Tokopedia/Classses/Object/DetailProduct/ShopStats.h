@@ -7,8 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "ShopBadgeLevel.h"
 #import "CountRatingResult.h"
-@class ShopBadgeLevel;
 
 #define CShopLastOneMonth @"shop_last_one_month"
 #define CShopLastSixMonth @"shop_last_six_months"
@@ -48,4 +48,6 @@
 @property (nonatomic, strong) NSString *shop_reputation_score;
 @property (nonatomic, strong) NSString *rate_success;
 @property (nonatomic, strong) NSString *tooltip;
+
++(RKObjectMapping*)mapping;
 @end

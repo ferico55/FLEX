@@ -19,4 +19,5 @@
 @property (nonatomic, strong) NSString *owner_messenger;
 @property (nonatomic, strong) ReputationDetail *owner_reputation;
 
++(RKObjectMapping*)mapping;
 @end

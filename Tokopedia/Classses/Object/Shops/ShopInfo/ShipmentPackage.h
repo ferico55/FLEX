@@ -12,5 +12,5 @@
 
 @property (nonatomic, strong) NSString *shipping_id;
 @property (nonatomic, strong) NSString *product_name;
-
++(RKObjectMapping*)mapping;
 @end
