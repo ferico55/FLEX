@@ -186,10 +186,12 @@ class IntroViewController: UIViewController, EAIntroDelegate {
     
     private func animatePage3() {
         let initialY = slide3Content.frame.origin.y
+        let targetY = initialY - slide3Content.frame.size.height +
+            slide3Content.superview!.frame.size.height
         
         UIView.animateKeyframesWithDuration(1.4, delay: 0.5, options: .CalculationModeCubic, animations: {
             UIView.addKeyframeWithRelativeStartTime(0.1, relativeDuration: 0.5, animations: {
-                self.slide3Content.frame.origin.y = -122
+                self.slide3Content.frame.origin.y = targetY
             })
             
             UIView.addKeyframeWithRelativeStartTime(0.51, relativeDuration: 0.5, animations: {
