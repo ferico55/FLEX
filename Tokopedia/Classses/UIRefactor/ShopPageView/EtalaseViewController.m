@@ -217,8 +217,41 @@
 }
 
 -(void)requestMyEtalase{
-    
+    myEtalaseNetworkManager.isUsingHmac = YES;
+    [myEtalaseNetworkManager requestWithBaseUrl:[NSString v4Url]
+                                           path:@"/v4/myshop-etalase/get_shop_etalase.pl"
+                                         method:RKRequestMethodGET
+                                      parameter:@{@"shop_id"    : _shopId,
+                                                  @"page"       : @(page)}
+                                        mapping:[Etalase mapping]
+                                      onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                          Etalase *etalase = [successResult.dictionary objectForKey:@""];
+                                          [etalaseList addObjectsFromArray:etalase.result.list];
+                                          [otherEtalaseList addObjectsFromArray:etalase.result.list_other];
+                                          
+                                          uriNext = etalase.result.paging.uri_next;
+                                          if (uriNext) {
+                                              page = [[etalaseNetworkManager splitUriToPage:uriNext] integerValue];
+                                          }else{
+                                              [loadingView setHidden:YES];
+                                          }
+                                          
+                                          [_tableView reloadData];
+                                      }onFailure:^(NSError *errorResult) {
+                                          
+                                      }];
 }
 
+#pragma mark - TextField Delegate
+-(BOOL)textFieldShouldReturn:(UITextField *)textField{
+    [_tambahEtalaseTextField setText:@""];
+    [_tambahEtalaseTextField resignFirstResponder];
+    return YES;
+}
+
+- (void)didRecognizeTapGesture:(UITapGestureRecognizer*)gesture
+{
+    [_tableView deselectRowAtIndexPath:selectedIndexPath animated:YES];
+}
 
 @end
