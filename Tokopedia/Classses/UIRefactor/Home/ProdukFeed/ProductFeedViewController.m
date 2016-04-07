@@ -52,13 +52,12 @@ UICollectionViewDelegateFlowLayout,
 UIScrollViewDelegate,
 TokopediaNetworkManagerDelegate,
 PromoCollectionViewDelegate,
-PromoRequestDelegate,
 NoResultDelegate,
 CollectionViewSupplementaryDataSource,
 FavoriteShopRequestDelegate
 >
 
-@property (strong, nonatomic) NSMutableArray *promo;
+@property (strong, nonatomic) NSMutableArray<NSArray<PromoResult*>*> *promo;
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UICollectionViewFlowLayout *flowLayout;
@@ -144,6 +143,7 @@ FavoriteShopRequestDelegate
 //    [_firstFooter setHidden:NO];
     
     [_flowLayout setItemSize:CGSizeMake((productCollectionViewCellWidthNormal * widthMultiplier), (productCollectionViewCellHeightNormal * heightMultiplier))];
+    [_flowLayout setSectionInset:UIEdgeInsetsMake(100, 0, 0, 0)];
     
     
     [self.view setFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, [[UIScreen mainScreen]bounds].size.height)];
@@ -167,7 +167,6 @@ FavoriteShopRequestDelegate
     [_favoriteShopRequest requestFavoriteShopListings];
     
     _promoRequest = [PromoRequest new];
-    _promoRequest.delegate = self;
     [self requestPromo];
     
     [self registerNib];
@@ -196,16 +195,18 @@ FavoriteShopRequestDelegate
 }
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     NavigateViewController *navigateController = [NavigateViewController new];
-    SearchAWSProduct *product = [_productDataSource productAtIndex:indexPath.row];
+    SearchAWSProduct *product = [_productDataSource productAtIndex:indexPath];
     [TPAnalytics trackProductClick:product];
     [navigateController navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_image withShopName:product.shop_name];
 }
+
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
 {
     CGSize size = CGSizeZero;
-    if (_promo.count > section && section > 0) {
-        if ([_promo objectAtIndex:section]) {
-            CGFloat headerHeight = [PromoCollectionReusableView collectionViewNormalHeight];
+    if (_promo.count > section) {
+        NSArray *currentPromo = [_promo objectAtIndex:section];
+        if (currentPromo && currentPromo.count > 0) {
+            CGFloat headerHeight = [PromoCollectionReusableView collectionViewHeightForType:PromoCollectionViewCellTypeNormal];
             size = CGSizeMake(self.view.frame.size.width, headerHeight);
         }
     }
@@ -253,6 +254,7 @@ FavoriteShopRequestDelegate
     if(!_isRequestingProductFeed){
         _page = 0;
         _isRequestingProductFeed = YES;
+        [_collectionView addSubview:_loadingIndicator];
         //[_favoriteShopRequest requestProductFeedWithFavoriteShopList:_favoritedShops withPage:_page];
         [_favoriteShopRequest requestFavoriteShopListings];
     }
@@ -273,10 +275,10 @@ FavoriteShopRequestDelegate
 - (UICollectionReusableView*)collectionView:(UICollectionView*)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
     UICollectionReusableView *reusableView = nil;
     if (kind == UICollectionElementKindSectionHeader) {
-        if (_promo.count >= indexPath.section && indexPath.section > 0 ) {
-            if ([_promo objectAtIndex:indexPath.section]) {
-                reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
-                                                                  withReuseIdentifier:@"PromoCollectionReusableView"
+        if (_promo.count >= indexPath.section) {
+            NSArray *currentPromo = [_promo objectAtIndex:indexPath.section];
+            if (currentPromo && currentPromo.count > 0) {
+                reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"PromoCollectionReusableView"
                                                                          forIndexPath:indexPath];
                 ((PromoCollectionReusableView *)reusableView).collectionViewCellType = PromoCollectionViewCellTypeNormal;
                 ((PromoCollectionReusableView *)reusableView).promo = [_promo objectAtIndex:indexPath.section];
@@ -286,10 +288,8 @@ FavoriteShopRequestDelegate
                 if (self.scrollDirection == ScrollDirectionDown && indexPath.section == 1) {
                     [((PromoCollectionReusableView *)reusableView) scrollToCenter];
                 }
-            } else {
-                reusableView = nil;
-            }
-        } else {
+                
+            }        } else {
             reusableView = nil;
         }
     } else if (kind == UICollectionElementKindSectionFooter) {
@@ -298,38 +298,56 @@ FavoriteShopRequestDelegate
                                                               withReuseIdentifier:@"RetryView"
                                                                      forIndexPath:indexPath];
         } else {
-                reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter
-                                                                  withReuseIdentifier:@"FooterView"
-                                                                         forIndexPath:indexPath];
+            reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter
+                                                              withReuseIdentifier:@"FooterView"
+                                                                     forIndexPath:indexPath];
             
         }
     }
+    
     return reusableView;
 }
 
 -(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section{
-    if([_productDataSource isProductFeedEmpty] || _nextPageUri == nil || [_nextPageUri isEqualToString:@""]){
-        return CGSizeZero;
+    
+    CGSize size = CGSizeZero;
+    NSInteger lastSection = [collectionView numberOfSections] - 1;
+    if (section == lastSection) {
+        if (_nextPageUri != NULL && ![_nextPageUri isEqualToString:@"0"] && _nextPageUri != 0 && ![_nextPageUri isEqualToString:@""]) {
+            size = CGSizeMake(self.view.frame.size.width, 45);
+        }
+    } else if ([_productDataSource isProductFeedEmpty]) {
+        size = CGSizeMake(self.view.frame.size.width, 45);
     }
-    return CGSizeMake(collectionView.bounds.size.width, 45.0f);
+    return size;
 }
 
 #pragma mark - Promo request delegate
 
 - (void)requestPromo {
     _promoRequest.page = _page;
-    [_promoRequest requestForProductFeed];
-}
-
-- (void)didReceivePromo:(NSArray *)promo {
-    if (promo) {
-        [_promo addObject:promo];
-        [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
-    } else if (promo == nil && _page == 2) {
-        [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
+    if(_page % 2 == 0){
+        [_promoRequest requestForProductFeedWithPage:_page
+                                           onSuccess:^(NSArray<PromoResult *> *promoResult) {
+                                        if (promoResult) {
+                                            NSRange arrayRangeToBeTaken = NSMakeRange(0, promoResult.count/2);
+                                            NSArray *promoArrayFirstHalf = [promoResult subarrayWithRange:arrayRangeToBeTaken];
+                                            arrayRangeToBeTaken.location = arrayRangeToBeTaken.length;
+                                            arrayRangeToBeTaken.length = promoResult.count - arrayRangeToBeTaken.length;
+                                            NSArray *promoArrayLastHalf = [promoResult subarrayWithRange:arrayRangeToBeTaken];
+                                            
+                                            [_promo addObject:promoArrayFirstHalf];
+                                            [_promo addObject:promoArrayLastHalf];
+                                            [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
+                                            [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
+                                            [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
+                                        }
+                                        [_collectionView reloadData];
+                                    } onFailure:^(NSError *error) {
+                                        [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
+                                        [_collectionView reloadData];
+                                    }];
     }
-    [_collectionView reloadData];
-    [_collectionView layoutIfNeeded];
 }
 
 #pragma mark - Promo collection delegate
@@ -338,26 +356,30 @@ FavoriteShopRequestDelegate
     [_promoScrollPosition replaceObjectAtIndex:indexPath.section withObject:position];
 }
 
-- (void)didSelectPromoProduct:(PromoProduct *)product {
+- (void)didSelectPromoProduct:(PromoResult *)promoResult {
     NavigateViewController *navigateController = [NavigateViewController new];
     NSDictionary *productData = @{
-                                  @"product_id"       : product.product_id?:@"",
-                                  @"product_name"     : product.product_name?:@"",
-                                  @"product_image"    : product.product_image_200?:@"",
-                                  @"product_price"    :product.product_price?:@"",
-                                  @"shop_name"        : product.shop_name?:@""
+                                  @"product_id"       : promoResult.product.product_id?:@"",
+                                  @"product_name"     : promoResult.product.name?:@"",
+                                  @"product_image"    : promoResult.product.image.s_url?:@"",
+                                  @"product_price"    : promoResult.product.price_format?:@"",
+                                  @"shop_name"        : promoResult.shop.name?:@""
                                   };
+    
     NSDictionary *promoData = @{
-                                kTKPDDETAIL_APIPRODUCTIDKEY : product.product_id,
-                                PromoImpressionKey          : product.ad_key,
-                                PromoSemKey                 : product.ad_sem_key,
-                                PromoReferralKey            : product.ad_r,
-                                PromoRequestSource          : @(PromoRequestSourceFavoriteProduct)
+                                kTKPDDETAIL_APIPRODUCTIDKEY : promoResult.product.product_id,
+                                PromoImpressionKey          : promoResult.ad_ref_key,
+                                PromoClickURL               : promoResult.product_click_url,
+                                PromoRequestSource          : @(PromoRequestSourceHotlist)
                                 };
+    
     [navigateController navigateToProductFromViewController:self
                                                   promoData:promoData
                                                 productData:productData];
+    
 }
+
+
 
 #pragma mark - Scroll delegate
 
@@ -395,11 +417,13 @@ static BOOL scrolledToBottomWithBuffer(CGPoint contentOffset, CGSize contentSize
         [_favoriteShopRequest requestProductFeedWithFavoriteShopString:favoriteShops withPage:_page];
     }else{
         [_loadingIndicator stopAnimating];
+        [_refreshControl endRefreshing];
         [_noResultView removeFromSuperview];
         [_firstFooter removeFromSuperview];
         [_productDataSource removeAllProducts];
         [_collectionView addSubview:_noResultView];
         [_collectionView layoutIfNeeded];
+        [_collectionView reloadData];
         _isRequestingProductFeed = NO;
 
     }
@@ -414,7 +438,6 @@ static BOOL scrolledToBottomWithBuffer(CGPoint contentOffset, CGSize contentSize
     if (_favoritedShopString && [_favoritedShopString length] > 0 && feed.result.products.count > 0) {
         if (_page == 0) {
             [_productDataSource replaceProductsWith: feed.result.products];
-            [_promo removeAllObjects];
         }else{
             [_productDataSource addProducts: feed.result.products];
         }
@@ -453,6 +476,15 @@ static BOOL scrolledToBottomWithBuffer(CGPoint contentOffset, CGSize contentSize
 }
 
 -(void)failToRequestProductFeed{
+    [_refreshControl endRefreshing];
+    
+    StickyAlertView *stickyView = [[StickyAlertView alloc] initWithWarningMessages:@[@"Kendala koneksi internet."] delegate:self];
+    [stickyView show];
+    _isFailRequest = YES;
+    _isRequestingProductFeed = NO;
+}
+
+-(void)failToRequestAllFavoriteShopString{
     [_refreshControl endRefreshing];
     
     StickyAlertView *stickyView = [[StickyAlertView alloc] initWithWarningMessages:@[@"Kendala koneksi internet."] delegate:self];
