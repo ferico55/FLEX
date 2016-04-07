@@ -90,14 +90,23 @@ class IntroViewController: UIViewController {
                 }(),
                 {
                     let page = EAIntroPage(customView: page2View)
-                    page.onPageDidAppear = animatePage2
-                    page.onPageDidDisappear = stopPage2Animations
+                    page.onPageDidAppear = {[unowned self] in
+                        self.animatePage2()
+                    }
+                    
+                    page.onPageDidDisappear = {[unowned self] in
+                        self.stopPage2Animations()
+                    }
                     return page
                 }(),
                 {
                     let page = EAIntroPage(customView: page3View)
-                    page.onPageDidAppear = animatePage3
-                    page.onPageDidDisappear = stopPage3Animations
+                    page.onPageDidAppear = {[unowned self] in
+                        self.animatePage3()
+                    }
+                    page.onPageDidDisappear = {[unowned self] in
+                        self.stopPage3Animations()
+                    }
                     return page
                 }(),
                 {
@@ -106,7 +115,9 @@ class IntroViewController: UIViewController {
                         self.pageControl.hidden = false
                         self.animatePage4()
                     }
-                    page.onPageDidDisappear = stopPage4Animations
+                    page.onPageDidDisappear = {[unowned self] in
+                        self.stopPage4Animations()
+                    }
                     return page
                 }(),
                 {
