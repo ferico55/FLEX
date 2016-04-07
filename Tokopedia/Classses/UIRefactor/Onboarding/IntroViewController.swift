@@ -9,7 +9,7 @@
 import UIKit
 
 @objc
-class IntroViewController: UIViewController {
+class IntroViewController: UIViewController, EAIntroDelegate {
     @IBOutlet private var presentationContainer: UIView!
     
     @IBOutlet private var topedImageView: UIImageView! {
@@ -112,7 +112,6 @@ class IntroViewController: UIViewController {
                 {
                     let page = EAIntroPage(customView: page4View)
                     page.onPageDidAppear = {[unowned self] in
-                        self.pageControl.hidden = false
                         self.animatePage4()
                     }
                     page.onPageDidDisappear = {[unowned self] in
@@ -123,7 +122,6 @@ class IntroViewController: UIViewController {
                 {
                     let page = EAIntroPage(customView: page5View)
                     page.onPageDidAppear = {[unowned self] in
-                        self.pageControl.hidden = true
                         self.animatePage5()
                     }
                     return page
@@ -135,9 +133,18 @@ class IntroViewController: UIViewController {
             view.showInView(presentationContainer)
             view.skipButton = nil
             view.backgroundColor = UIColor.clearColor()
+            view.delegate = self
             
             return view
         }()
+    }
+    
+    private func togglePageControlVisibility(pageIndex: UInt) {
+        pageControl.hidden = pageIndex > 3
+    }
+    
+    func intro(introView: EAIntroView!, pageAppeared page: EAIntroPage!, withIndex pageIndex: UInt) {
+        togglePageControlVisibility(pageIndex)
     }
     
     private func reRenderLabels() {
