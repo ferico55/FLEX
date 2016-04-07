@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MainViewController">
@@ -17,7 +17,6 @@
             <subviews>
                 <tabBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1QR-j0-WeV">
                     <rect key="frame" x="0.0" y="519" width="320" height="49"/>
-                    <animations/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="49" id="H03-eH-NnL"/>
@@ -26,35 +25,22 @@
                 </tabBar>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="whx-NL-F90">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
-                    <animations/>
                     <color key="backgroundColor" red="0.070588235289999995" green="0.78039215689999997" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="64" id="Q0s-TV-OPf"/>
                     </constraints>
                 </view>
-                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="launch_image.png" translatesAutoresizingMaskIntoConstraints="NO" id="g4d-4p-y4P">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                    <animations/>
-                </imageView>
             </subviews>
-            <animations/>
             <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="whx-NL-F90" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="3L8-sw-hs5"/>
-                <constraint firstItem="g4d-4p-y4P" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="4Gl-Ov-gbK"/>
                 <constraint firstAttribute="trailing" secondItem="whx-NL-F90" secondAttribute="trailing" id="Slx-U9-yE9"/>
-                <constraint firstAttribute="trailing" secondItem="g4d-4p-y4P" secondAttribute="trailing" id="Z9m-KE-OLp"/>
                 <constraint firstItem="1QR-j0-WeV" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="eZ5-Z0-j3X"/>
                 <constraint firstItem="whx-NL-F90" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="h6q-JU-WaS"/>
                 <constraint firstAttribute="bottom" secondItem="1QR-j0-WeV" secondAttribute="bottom" id="lG6-Yw-kec"/>
-                <constraint firstAttribute="bottom" secondItem="g4d-4p-y4P" secondAttribute="bottom" id="lvV-yJ-qfh"/>
                 <constraint firstAttribute="trailing" secondItem="1QR-j0-WeV" secondAttribute="trailing" id="nMc-Jd-0py"/>
-                <constraint firstItem="g4d-4p-y4P" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="zFn-ds-6eI"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
         </view>
     </objects>
-    <resources>
-        <image name="launch_image.png" width="375" height="667"/>
-    </resources>
 </document>

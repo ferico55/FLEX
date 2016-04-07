@@ -17,6 +17,8 @@ target "Tokopedia" do
     pod 'Tweaks', '~> 2.0.0'
     pod 'UITableView+FDTemplateLayoutCell', '~> 1.4'
     pod 'FLEX', '~> 2.0', :configurations => ['Debug']
+	pod 'EAIntroView', '~> 2.8.0'
+    pod 'JLPermissions/Notification'
 end
 
 target "TokopediaTests" do

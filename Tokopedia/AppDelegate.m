@@ -52,7 +52,7 @@
 
     [self hideTitleBackButton];
     
-    _viewController = [MainViewController new];
+    _viewController = [[IntroViewController alloc] initWithNibName:@"IntroViewController" bundle:nil];
     _window = [[FBTweakShakeWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     _window.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
     _window.backgroundColor = kTKPDNAVIGATION_NAVIGATIONBGCOLOR;
@@ -79,7 +79,6 @@
         [self configureAppsflyer];
         [self configureAppIndexing];
         [self configureGoogleAnalytics];
-        [self configurePushNotificationsInApplication:application];
         
         [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
 
@@ -169,20 +168,6 @@
     [Localytics setTestModeEnabled:YES];
     [Localytics tagEvent:@"Developer Options"];
 #endif
-}
-
-- (void)configurePushNotificationsInApplication:(UIApplication *)application {
-    // If you are using Localytics Messaging include the following code to register for push notifications
-    if ([application respondsToSelector:@selector(registerUserNotificationSettings:)] ||
-        [application respondsToSelector:@selector(isRegisteredForRemoteNotifications)]) {
-        UIUserNotificationType types = (UIUserNotificationTypeAlert | UIUserNotificationTypeBadge | UIUserNotificationTypeSound);
-        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:types
-                                                                                 categories:nil];
-        [application registerUserNotificationSettings:settings];
-        [application registerForRemoteNotifications];
-    } else {
-        [application registerForRemoteNotificationTypes:(UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound)];
-    }
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
