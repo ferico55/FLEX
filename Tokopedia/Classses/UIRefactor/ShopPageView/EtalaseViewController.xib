@@ -42,11 +42,14 @@
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
         <view contentMode="scaleToFill" id="BE7-tA-tww">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="47"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="61"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Tambah Etalase" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="5DQ-dX-yGb">
-                    <rect key="frame" x="8" y="8" width="304" height="31"/>
+                    <rect key="frame" x="8" y="8" width="304" height="44"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="SVo-qs-LAn"/>
+                    </constraints>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                     <textInputTraits key="textInputTraits"/>
                 </textField>
@@ -59,7 +62,12 @@
                 <constraint firstAttribute="bottom" secondItem="5DQ-dX-yGb" secondAttribute="bottom" constant="8" id="y5E-Qo-8xu"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="1045" y="70.5"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="y5E-Qo-8xu"/>
+                </mask>
+            </variation>
+            <point key="canvasLocation" x="1045" y="77.5"/>
         </view>
     </objects>
 </document>

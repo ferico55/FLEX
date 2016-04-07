@@ -8,8 +8,9 @@
 
 #import "EtalaseViewController.h"
 #import "EtalaseCell.h"
+#import "LoadingView.h"
 
-@interface EtalaseViewController ()<UITableViewDataSource, UITableViewDelegate>
+@interface EtalaseViewController ()<UITableViewDataSource, UITableViewDelegate, LoadingViewDelegate, UITextFieldDelegate>
 
 @end
 
@@ -22,6 +23,9 @@
     
     TokopediaNetworkManager *etalaseNetworkManager;
     TokopediaNetworkManager *myEtalaseNetworkManager;
+    
+    LoadingView *loadingView;
+    NSIndexPath *selectedIndexPath;
 }
 
 - (void)viewDidLoad {
@@ -33,6 +37,9 @@
     etalaseNetworkManager = [TokopediaNetworkManager new];
     myEtalaseNetworkManager = [TokopediaNetworkManager new];
     page = 0;
+    
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didRecognizeTapGesture:)];
+    [_tambahEtalaseTextField addGestureRecognizer:tapGesture];
     
     if (self.navigationController.isBeingPresented) {
         UIBarButtonItem *cancelBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
@@ -49,8 +56,14 @@
                                                                        action:@selector(tap:)];
     rightBarButton.tag = 11;
     self.navigationItem.rightBarButtonItem = rightBarButton;
-
     
+    CGFloat width = [[UIScreen mainScreen] bounds].size.width;
+    CGRect frame = CGRectMake(0, 0, width, 60);
+    loadingView = [[LoadingView alloc]initWithFrame:frame];
+    loadingView.delegate = self;
+    _tableView.tableFooterView = loadingView;
+    
+    _tambahEtalaseTextField.delegate = self;
     
     [self requestEtalase];
 }
@@ -62,7 +75,8 @@
 
 #pragma mark - UITableView
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
+    [_tambahEtalaseTextField setText:@""];
+    selectedIndexPath = indexPath;
 }
 
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -119,6 +133,38 @@
     
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    if(section == 0){
+        return 15;
+    }else if(section == 1){
+        return _tambahEtalaseView.frame.size.height;
+    }
+    return 0;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
+    if(section == 0){
+        return 10;
+    }else if(section == 1){
+        return loadingView.frame.size.height;
+    }
+    return 0;
+}
+
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    if(section == 1){
+        return _tambahEtalaseView;
+    }
+    return nil;
+}
+
+-(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
+    if(section == 1){
+        return loadingView;
+    }
+    return nil;
+}
+
 #pragma mark - Method
 -(IBAction)cancelButtonTapped:(id)sender
 {
@@ -135,6 +181,7 @@
 #pragma mark - Request
 
 -(void)requestEtalase{
+    [loadingView setHidden:NO];
     if(_showOtherEtalase){
         [self requestCertainShopEtalase];
     }else{
@@ -148,7 +195,7 @@
                                    path:@"/v4/shop/get_shop_etalase.pl"
                                  method:RKRequestMethodGET
                               parameter:@{@"shop_id"    : _shopId,
-                                          @"page"            : @(page)}
+                                          @"page"       : @(page)}
                                 mapping:[Etalase mapping]
                               onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                   Etalase *etalase = [successResult.dictionary objectForKey:@""];
@@ -159,7 +206,7 @@
                                   if (uriNext) {
                                       page = [[etalaseNetworkManager splitUriToPage:uriNext] integerValue];
                                   }else{
-                                      //[_footer setHidden:YES];
+                                      [loadingView setHidden:YES];
                                   }
                                   
                                   [_tableView reloadData];
