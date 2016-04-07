@@ -142,17 +142,11 @@ lewat aplikasi Tokopedia!</string>
                     <rect key="frame" x="85" y="353" width="65" height="65"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="6r3-Zg-Dvc" secondAttribute="height" multiplier="1:1" id="ZoG-v9-ihJ"/>
-                        <constraint firstAttribute="width" constant="64.5" id="b5s-qb-Sfj">
-                            <variation key="heightClass=regular-widthClass=regular" constant="97"/>
-                        </constraint>
                     </constraints>
                 </imageView>
                 <imageView userInteractionEnabled="NO" alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="slide2c.png" translatesAutoresizingMaskIntoConstraints="NO" id="Xhl-Iz-7kg">
                     <rect key="frame" x="263" y="172" width="65" height="65"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="64.5" id="U03-91-vli">
-                            <variation key="heightClass=regular-widthClass=regular" constant="97"/>
-                        </constraint>
                         <constraint firstAttribute="width" secondItem="Xhl-Iz-7kg" secondAttribute="height" multiplier="1:1" id="mg1-Oz-9k5"/>
                     </constraints>
                 </imageView>
@@ -160,35 +154,23 @@ lewat aplikasi Tokopedia!</string>
                     <rect key="frame" x="59" y="285" width="55" height="55"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="ZFZ-zV-h5i" secondAttribute="height" multiplier="1:1" id="9Rb-8R-xJ7"/>
-                        <constraint firstAttribute="width" constant="55" id="gkV-vO-ECd">
-                            <variation key="heightClass=regular-widthClass=regular" constant="82"/>
-                        </constraint>
                     </constraints>
                 </imageView>
                 <imageView userInteractionEnabled="NO" alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="slide2g.png" translatesAutoresizingMaskIntoConstraints="NO" id="2BJ-q0-jCe">
                     <rect key="frame" x="79" y="211" width="55" height="55"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="55" id="V96-yJ-t7y">
-                            <variation key="heightClass=regular-widthClass=regular" constant="82"/>
-                        </constraint>
                         <constraint firstAttribute="width" secondItem="2BJ-q0-jCe" secondAttribute="height" multiplier="1:1" id="tCK-j4-1JY"/>
                     </constraints>
                 </imageView>
                 <imageView userInteractionEnabled="NO" alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="slide2e.png" translatesAutoresizingMaskIntoConstraints="NO" id="gP3-JM-BQd">
                     <rect key="frame" x="284" y="317" width="55" height="55"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="55" id="PKM-GV-KVh">
-                            <variation key="heightClass=regular-widthClass=regular" constant="82"/>
-                        </constraint>
                         <constraint firstAttribute="width" secondItem="gP3-JM-BQd" secondAttribute="height" multiplier="1:1" id="cvw-qG-hVm"/>
                     </constraints>
                 </imageView>
                 <imageView userInteractionEnabled="NO" alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="slide2f.png" translatesAutoresizingMaskIntoConstraints="NO" id="nE0-QU-6VD">
                     <rect key="frame" x="302" y="245" width="55" height="55"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="55" id="I59-b2-1np">
-                            <variation key="heightClass=regular-widthClass=regular" constant="82"/>
-                        </constraint>
                         <constraint firstAttribute="width" secondItem="nE0-QU-6VD" secondAttribute="height" multiplier="1:1" id="ULN-IC-uRg"/>
                     </constraints>
                 </imageView>
@@ -223,12 +205,14 @@ lewat aplikasi Tokopedia!</string>
                 <constraint firstItem="E5q-DK-FEw" firstAttribute="leading" secondItem="ZFZ-zV-h5i" secondAttribute="trailing" constant="2" id="IWC-xb-S8Q">
                     <variation key="heightClass=regular-widthClass=regular" constant="3"/>
                 </constraint>
+                <constraint firstItem="gP3-JM-BQd" firstAttribute="width" secondItem="E5q-DK-FEw" secondAttribute="height" multiplier="55:194" id="Kpm-Mh-3N9"/>
                 <constraint firstItem="Xhl-Iz-7kg" firstAttribute="leading" secondItem="E5q-DK-FEw" secondAttribute="trailing" constant="-35.5" id="Oiz-K3-kJA">
                     <variation key="heightClass=regular-widthClass=regular" constant="-54"/>
                 </constraint>
                 <constraint firstItem="nE0-QU-6VD" firstAttribute="leading" secondItem="E5q-DK-FEw" secondAttribute="trailing" constant="3.5" id="PLD-gc-g4t">
                     <variation key="heightClass=regular-widthClass=regular" constant="6"/>
                 </constraint>
+                <constraint firstItem="Xhl-Iz-7kg" firstAttribute="width" secondItem="E5q-DK-FEw" secondAttribute="height" multiplier="65:194" id="RdQ-3N-gV4"/>
                 <constraint firstItem="E5q-DK-FEw" firstAttribute="top" secondItem="Xhl-Iz-7kg" secondAttribute="bottom" constant="-39" id="TbC-Vm-9QO">
                     <variation key="heightClass=regular-widthClass=regular" constant="-60"/>
                 </constraint>
@@ -237,12 +221,16 @@ lewat aplikasi Tokopedia!</string>
                 <constraint firstItem="gP3-JM-BQd" firstAttribute="top" secondItem="E5q-DK-FEw" secondAttribute="bottom" constant="-75" id="ZHk-qU-KWC">
                     <variation key="heightClass=regular-widthClass=regular" constant="-112"/>
                 </constraint>
+                <constraint firstItem="nE0-QU-6VD" firstAttribute="width" secondItem="E5q-DK-FEw" secondAttribute="height" multiplier="55:194" id="dl3-7f-97O"/>
                 <constraint firstItem="E5q-DK-FEw" firstAttribute="leading" secondItem="2BJ-q0-jCe" secondAttribute="trailing" constant="-18" id="gMj-7E-lQ5">
                     <variation key="heightClass=regular-widthClass=regular" constant="-27"/>
                 </constraint>
+                <constraint firstItem="2BJ-q0-jCe" firstAttribute="width" secondItem="E5q-DK-FEw" secondAttribute="height" multiplier="55:194" id="hRF-Yq-0qY"/>
                 <constraint firstItem="gP3-JM-BQd" firstAttribute="leading" secondItem="E5q-DK-FEw" secondAttribute="trailing" constant="-14.5" id="lqh-2B-5Gv">
                     <variation key="heightClass=regular-widthClass=regular" constant="-22"/>
                 </constraint>
+                <constraint firstItem="6r3-Zg-Dvc" firstAttribute="width" secondItem="E5q-DK-FEw" secondAttribute="height" multiplier="65:194" id="nY1-5U-Z6h"/>
+                <constraint firstItem="ZFZ-zV-h5i" firstAttribute="width" secondItem="E5q-DK-FEw" secondAttribute="height" multiplier="55:194" id="ppd-s0-zos"/>
                 <constraint firstItem="E5q-DK-FEw" firstAttribute="top" secondItem="2BJ-q0-jCe" secondAttribute="bottom" constant="-68" id="tuD-FE-eDc">
                     <variation key="heightClass=regular-widthClass=regular" constant="-102"/>
                 </constraint>
