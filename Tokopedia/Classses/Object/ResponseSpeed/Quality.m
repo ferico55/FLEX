@@ -9,5 +9,16 @@
 #import "Quality.h"
 
 @implementation Quality
-
++(RKObjectMapping *)mapping{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[Quality class]];
+    [mapping addAttributeMappingsFromArray:@[@"rating_star",
+                                             @"average",
+                                             @"one_star_rank",
+                                             @"count_total",
+                                             @"four_star_rank",
+                                             @"five_star_rank",
+                                             @"two_star_rank",
+                                             @"three_star_rank"]];
+    return mapping;
+}
 @end

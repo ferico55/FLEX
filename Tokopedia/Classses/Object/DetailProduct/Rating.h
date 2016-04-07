@@ -21,4 +21,6 @@
 @property (nonatomic, strong) NSString *product_accuracy_star_rate;
 @property (nonatomic, strong) Quality *quality;
 @property (nonatomic, strong) Quality *accuracy;
+
++(RKObjectMapping*)mapping;
 @end

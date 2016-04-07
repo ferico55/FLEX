@@ -9,5 +9,9 @@
 #import "CountRatingResult.h"
 
 @implementation CountRatingResult
-
++(RKObjectMapping *)mapping{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[CountRatingResult class]];
+    [mapping addAttributeMappingsFromArray:@[@"count_score_good", @"count_score_bad", @"count_score_neutral"]];
+    return mapping;
+}
 @end

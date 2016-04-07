@@ -17,4 +17,5 @@
 @property (nonatomic, strong) NSString *review_id;
 @property (nonatomic, strong) DetailTotalLikeDislike *total_like_dislike;
 
++(RKObjectMapping*) mapping;
 @end

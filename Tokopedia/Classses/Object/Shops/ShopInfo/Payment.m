@@ -9,5 +9,14 @@
 #import "Payment.h"
 
 @implementation Payment
-
++(RKObjectMapping *)mapping{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[Payment class]];
+    [mapping addAttributeMappingsFromArray:@[@"payment_image",
+                                             @"payment_id",
+                                             @"payment_name",
+                                             @"payment_info",
+                                             @"payment_default_status"
+                                             ]];
+    return mapping;
+}
 @end

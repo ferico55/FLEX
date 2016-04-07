@@ -15,4 +15,6 @@
 @property (nonatomic, strong) NSString *count_score_good;
 @property (nonatomic, strong) NSString *count_score_bad;
 @property (nonatomic, strong) NSString *count_score_neutral;
+
++(RKObjectMapping*)mapping;
 @end

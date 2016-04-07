@@ -9,9 +9,10 @@
 #import <Foundation/Foundation.h>
 #import "ReputationDetail.h"
 #import "ReviewResponse.h"
-#import "ReviewProductOwner.h"
+#import "ProductOwner.h"
 
 #import "ProductReputationViewModel.h"
+#import "DetailReviewReputationViewModel.h"
 
 #define CReviewUserReputation @"review_user_reputation"
 #define CReviewReputationID @"review_reputation_id"
@@ -25,7 +26,7 @@
 @property (nonatomic, strong) NSString *review_create_time;
 @property (nonatomic, strong) NSString *review_id;
 @property (nonatomic, strong) NSString *product_images;
-@property (nonatomic, strong) ReviewProductOwner *review_product_owner;
+@property (nonatomic, strong) ProductOwner *review_product_owner;
 @property (nonatomic, strong) NSString *review_reputation_id;
 @property (nonatomic, strong) NSString *review_user_name;
 @property (nonatomic, strong) NSString *review_message;
@@ -53,9 +54,11 @@
 @property (nonatomic, strong) NSString *review_user_label;
 @property (nonatomic, strong) NSString *review_user_label_id;
 
-@property (nonatomic, strong) ProductReputationViewModel *viewModel;
+//@property (nonatomic, strong) ProductReputationViewModel *viewModel;
+@property (nonatomic, strong) DetailReviewReputationViewModel *viewModel;
 
 @property (nonatomic, strong) NSString *is_helpful;
 
++ (RKObjectMapping*) mapping;
 
 @end

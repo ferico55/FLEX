@@ -54,11 +54,11 @@ TTTAttributedLabelDelegate
 }
 
 
-- (void)setShopReputationModelView:(ReviewList *)viewModel{
+- (void)setShopReputationModelView:(DetailReputationReview *)viewModel{
     [self setReputationMessage:viewModel.review_message];
     [self setReputationStars:viewModel.review_rate_quality withAccuracy:viewModel.review_rate_accuracy];
     [self setUser:viewModel.review_user_name withCreateTime:viewModel.review_create_time andWithImage:viewModel.review_user_image];
-    [self setReputationProduct:viewModel.review_product_name withProductID:viewModel.review_product_id];
+    [self.productNameButton setTitle:viewModel.product_name forState:UIControlStateNormal];
     
     //add border bottom
     CALayer *bottomBorder = [CALayer layer];
@@ -68,8 +68,8 @@ TTTAttributedLabelDelegate
     [self.reputationBuyerView.layer addSublayer:bottomBorder];
     
     _productID = viewModel.review_product_id;
-    _productName = viewModel.review_product_name;
-    _productImage = viewModel.review_product_image;
+    _productName = viewModel.product_name;
+    _productImage = viewModel.product_image;
 }
 - (IBAction)showMoreTapped:(id)sender {
     
@@ -182,10 +182,6 @@ TTTAttributedLabelDelegate
         
     } failure:nil];
 
-}
-
-- (void)setReputationProduct:(NSString*)productName withProductID:(NSString*)productID {
-    [self.productNameButton setTitle:productName forState:UIControlStateNormal];
 }
 
 - (IBAction)tapProduct:(id)sender {
