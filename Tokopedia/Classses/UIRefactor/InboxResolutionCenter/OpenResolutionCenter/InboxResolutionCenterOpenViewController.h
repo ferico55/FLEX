@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "TxOrderStatusList.h"
 #import "GenerateHost.h"
+#import "Tokopedia-Swift.h"
 
 #pragma mark - Delegate
 @protocol InboxResolutionCenterOpenViewControllerDelegate <NSObject>
@@ -61,5 +62,7 @@
 @property NSString *invoice;
 @property NSString *note;
 @property NSString *totalRefund;
+
+@property NSArray <DKAsset*>*images;
 
 @end

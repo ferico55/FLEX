@@ -8,6 +8,19 @@
 
 /* Begin PBXBuildFile section */
 		2D50139230438B54812D14B9 /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */; };
+		4506C9E81CB6123A004CE0A8 /* ImageResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 4506C9E71CB6123A004CE0A8 /* ImageResult.m */; };
+		4506C9FE1CB636BE004CE0A8 /* DKCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4506C9F21CB636BE004CE0A8 /* DKCamera.swift */; };
+		4506C9FF1CB636BE004CE0A8 /* DKCameraResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4506C9F31CB636BE004CE0A8 /* DKCameraResource.bundle */; };
+		4506CA001CB636BE004CE0A8 /* DKAssetGroupDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4506C9F51CB636BE004CE0A8 /* DKAssetGroupDetailVC.swift */; };
+		4506CA011CB636BE004CE0A8 /* DKAssetGroupVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4506C9F61CB636BE004CE0A8 /* DKAssetGroupVC.swift */; };
+		4506CA021CB636BE004CE0A8 /* DKImagePickerController.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4506C9F71CB636BE004CE0A8 /* DKImagePickerController.bundle */; };
+		4506CA031CB636BE004CE0A8 /* DKImagePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4506C9F81CB636BE004CE0A8 /* DKImagePickerController.swift */; };
+		4506CA041CB636BE004CE0A8 /* DKImageResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4506C9F91CB636BE004CE0A8 /* DKImageResource.swift */; };
+		4506CA051CB636BE004CE0A8 /* DKPopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4506C9FA1CB636BE004CE0A8 /* DKPopoverViewController.swift */; };
+		4506CA061CB636BE004CE0A8 /* ImagePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4506C9FB1CB636BE004CE0A8 /* ImagePickerController.swift */; };
+		4506CA071CB636BE004CE0A8 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 4506C9FC1CB636BE004CE0A8 /* LICENSE */; };
+		4506CA081CB636BE004CE0A8 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 4506C9FD1CB636BE004CE0A8 /* README.md */; };
+		4506CA0B1CB638D1004CE0A8 /* TPLiveCameraView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4506CA091CB638D1004CE0A8 /* TPLiveCameraView.m */; };
 		45683A901CB36DA3004E8C85 /* RequestResolutionData.m in Sources */ = {isa = PBXBuildFile; fileRef = 45683A8F1CB36DA3004E8C85 /* RequestResolutionData.m */; };
 		45683A931CB39661004E8C85 /* StickyAlertView+NetworkErrorHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 45683A921CB39661004E8C85 /* StickyAlertView+NetworkErrorHandler.m */; };
 		45683A961CB3B668004E8C85 /* RequestResolutionAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 45683A951CB3B668004E8C85 /* RequestResolutionAction.m */; };
@@ -2129,6 +2142,21 @@
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
 		2D733D9158C7BF957D514506 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
+		4506C9E61CB6123A004CE0A8 /* ImageResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageResult.h; sourceTree = "<group>"; };
+		4506C9E71CB6123A004CE0A8 /* ImageResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageResult.m; sourceTree = "<group>"; };
+		4506C9F21CB636BE004CE0A8 /* DKCamera.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKCamera.swift; sourceTree = "<group>"; };
+		4506C9F31CB636BE004CE0A8 /* DKCameraResource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = DKCameraResource.bundle; sourceTree = "<group>"; };
+		4506C9F51CB636BE004CE0A8 /* DKAssetGroupDetailVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKAssetGroupDetailVC.swift; sourceTree = "<group>"; };
+		4506C9F61CB636BE004CE0A8 /* DKAssetGroupVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKAssetGroupVC.swift; sourceTree = "<group>"; };
+		4506C9F71CB636BE004CE0A8 /* DKImagePickerController.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = DKImagePickerController.bundle; sourceTree = "<group>"; };
+		4506C9F81CB636BE004CE0A8 /* DKImagePickerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKImagePickerController.swift; sourceTree = "<group>"; };
+		4506C9F91CB636BE004CE0A8 /* DKImageResource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKImageResource.swift; sourceTree = "<group>"; };
+		4506C9FA1CB636BE004CE0A8 /* DKPopoverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKPopoverViewController.swift; sourceTree = "<group>"; };
+		4506C9FB1CB636BE004CE0A8 /* ImagePickerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePickerController.swift; sourceTree = "<group>"; };
+		4506C9FC1CB636BE004CE0A8 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		4506C9FD1CB636BE004CE0A8 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		4506CA091CB638D1004CE0A8 /* TPLiveCameraView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPLiveCameraView.m; sourceTree = "<group>"; };
+		4506CA0A1CB638D1004CE0A8 /* TPLiveCameraView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPLiveCameraView.h; sourceTree = "<group>"; };
 		45683A8E1CB36DA3004E8C85 /* RequestResolutionData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestResolutionData.h; sourceTree = "<group>"; };
 		45683A8F1CB36DA3004E8C85 /* RequestResolutionData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestResolutionData.m; sourceTree = "<group>"; };
 		45683A911CB39661004E8C85 /* StickyAlertView+NetworkErrorHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "StickyAlertView+NetworkErrorHandler.h"; sourceTree = "<group>"; };
@@ -5360,6 +5388,42 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4506C9F01CB636BE004CE0A8 /* DKImagePicker */ = {
+			isa = PBXGroup;
+			children = (
+				4506CA091CB638D1004CE0A8 /* TPLiveCameraView.m */,
+				4506CA0A1CB638D1004CE0A8 /* TPLiveCameraView.h */,
+				4506C9F11CB636BE004CE0A8 /* DKCamera */,
+				4506C9F41CB636BE004CE0A8 /* DKImagePickerController */,
+				4506C9FC1CB636BE004CE0A8 /* LICENSE */,
+				4506C9FD1CB636BE004CE0A8 /* README.md */,
+			);
+			path = DKImagePicker;
+			sourceTree = "<group>";
+		};
+		4506C9F11CB636BE004CE0A8 /* DKCamera */ = {
+			isa = PBXGroup;
+			children = (
+				4506C9F21CB636BE004CE0A8 /* DKCamera.swift */,
+				4506C9F31CB636BE004CE0A8 /* DKCameraResource.bundle */,
+			);
+			path = DKCamera;
+			sourceTree = "<group>";
+		};
+		4506C9F41CB636BE004CE0A8 /* DKImagePickerController */ = {
+			isa = PBXGroup;
+			children = (
+				4506C9F51CB636BE004CE0A8 /* DKAssetGroupDetailVC.swift */,
+				4506C9F61CB636BE004CE0A8 /* DKAssetGroupVC.swift */,
+				4506C9F71CB636BE004CE0A8 /* DKImagePickerController.bundle */,
+				4506C9F81CB636BE004CE0A8 /* DKImagePickerController.swift */,
+				4506C9F91CB636BE004CE0A8 /* DKImageResource.swift */,
+				4506C9FA1CB636BE004CE0A8 /* DKPopoverViewController.swift */,
+				4506C9FB1CB636BE004CE0A8 /* ImagePickerController.swift */,
+			);
+			path = DKImagePickerController;
+			sourceTree = "<group>";
+		};
 		BBCBA0BD1CAD4165000C0AE2 /* Tokopedia */ = {
 			isa = PBXGroup;
 			children = (
@@ -7315,6 +7379,8 @@
 				BBCBA5251CAD4166000C0AE2 /* UploadImageHelper */,
 				BBCBA52A1CAD4166000C0AE2 /* UploadImageImage.h */,
 				BBCBA52B1CAD4166000C0AE2 /* UploadImageImage.m */,
+				4506C9E61CB6123A004CE0A8 /* ImageResult.h */,
+				4506C9E71CB6123A004CE0A8 /* ImageResult.m */,
 				BBCBA52C1CAD4166000C0AE2 /* UploadImageParams.h */,
 				BBCBA52D1CAD4166000C0AE2 /* UploadImageParams.m */,
 				BBCBA52E1CAD4166000C0AE2 /* UploadImageResult.h */,
@@ -7396,6 +7462,7 @@
 		BBCBA5441CAD4166000C0AE2 /* Third Party */ = {
 			isa = PBXGroup;
 			children = (
+				4506C9F01CB636BE004CE0A8 /* DKImagePicker */,
 				BBCBA5451CAD4166000C0AE2 /* iCarousel.h */,
 				BBCBA5461CAD4166000C0AE2 /* iCarousel.m */,
 				BBCBA5471CAD4166000C0AE2 /* RSKGrowingTextView.swift */,
@@ -11635,6 +11702,7 @@
 				BBCBB5DC1CAD416D000C0AE2 /* product-feed@3x.png in Resources */,
 				BBCBB3FC1CAD416D000C0AE2 /* icon_button_wishlist_active.png in Resources */,
 				BBCBB5C21CAD416D000C0AE2 /* icon_location_14px.png in Resources */,
+				4506CA021CB636BE004CE0A8 /* DKImagePickerController.bundle in Resources */,
 				BBCBB0DB1CAD416C000C0AE2 /* ContactUsFormCategoryCell.xib in Resources */,
 				BBCBB51E1CAD416D000C0AE2 /* icon_search@2x.png in Resources */,
 				BBCBB4BE1CAD416D000C0AE2 /* icon_netral25@2x.png in Resources */,
@@ -11833,6 +11901,7 @@
 				BBCBB40D1CAD416D000C0AE2 /* icon_category@2x.png in Resources */,
 				BBCBB4C81CAD416D000C0AE2 /* icon_neutral20@3x.png in Resources */,
 				BBCBB21B1CAD416C000C0AE2 /* ReputationCell.xib in Resources */,
+				4506C9FF1CB636BE004CE0A8 /* DKCameraResource.bundle in Resources */,
 				BBCBB08E1CAD416C000C0AE2 /* AlertShipmentCodeView.xib in Resources */,
 				BBCBB4011CAD416D000C0AE2 /* icon_button_wishlist_nonactive@3x.png in Resources */,
 				BBCBB6511CAD416D000C0AE2 /* vt-iOSlib-1.0.1.tar.gz in Resources */,
@@ -12050,6 +12119,7 @@
 				BBCBB1251CAD416C000C0AE2 /* GeneralProductReviewCell.xib in Resources */,
 				BBCBB4531CAD416D000C0AE2 /* icon_dislike_active.png in Resources */,
 				BBCBB3EB1CAD416D000C0AE2 /* icon_arrow_white_up@2x.png in Resources */,
+				4506CA071CB636BE004CE0A8 /* LICENSE in Resources */,
 				BBCBB6441CAD416D000C0AE2 /* wishlist.png in Resources */,
 				BBCBB4C41CAD416D000C0AE2 /* icon_netral@3x.png in Resources */,
 				BBCBB1F11CAD416C000C0AE2 /* ProductListMyShopCell.xib in Resources */,
@@ -12735,6 +12805,7 @@
 				BBCBB1501CAD416C000C0AE2 /* HotlistViewController.m in Sources */,
 				BBCBB14A1CAD416C000C0AE2 /* HomeFlowLayout.m in Sources */,
 				BBCBAF8B1CAD416C000C0AE2 /* ShopBadgeLevel.m in Sources */,
+				4506CA031CB636BE004CE0A8 /* DKImagePickerController.swift in Sources */,
 				BBCBAED21CAD416C000C0AE2 /* WholesalePrice.m in Sources */,
 				BBCBAEAC1CAD416C000C0AE2 /* CatalogInfo.m in Sources */,
 				BBCBB1DB1CAD416C000C0AE2 /* ProductGalleryViewController.m in Sources */,
@@ -12844,6 +12915,7 @@
 				BBCBB1CF1CAD416C000C0AE2 /* DetailProductOtherView.m in Sources */,
 				BBCBB2851CAD416C000C0AE2 /* SettingBankDetailViewController.m in Sources */,
 				BBCBAFCF1CAD416C000C0AE2 /* Owner.m in Sources */,
+				4506CA0B1CB638D1004CE0A8 /* TPLiveCameraView.m in Sources */,
 				BBCBAF101CAD416C000C0AE2 /* ResolutionDetailConversation.m in Sources */,
 				BBCBAE821CAD416C000C0AE2 /* SendOTP.m in Sources */,
 				BBCBB1DA1CAD416C000C0AE2 /* GalleryViewController.m in Sources */,
@@ -12944,6 +13016,7 @@
 				BBCBB15B1CAD416C000C0AE2 /* InboxMessageCell.m in Sources */,
 				BBCBB33D1CAD416C000C0AE2 /* TxOrderConfirmedButtonCell.m in Sources */,
 				BBCBB1D31CAD416C000C0AE2 /* DetailProductWholesaleCell.m in Sources */,
+				4506CA011CB636BE004CE0A8 /* DKAssetGroupVC.swift in Sources */,
 				BBCBB15D1CAD416C000C0AE2 /* InboxMessageDetailCell.m in Sources */,
 				BBCBAE7C1CAD416C000C0AE2 /* CreatePassword.m in Sources */,
 				BBCBAE921CAD416C000C0AE2 /* CatalogShopAWSResult.m in Sources */,
@@ -12979,6 +13052,7 @@
 				BBCBAE571CAD416C000C0AE2 /* NSData+Encryption.m in Sources */,
 				BBCBAFA11CAD416C000C0AE2 /* OrderShipment.m in Sources */,
 				BBCBAFEB1CAD416C000C0AE2 /* ShippingInfoResult.m in Sources */,
+				4506CA051CB636BE004CE0A8 /* DKPopoverViewController.swift in Sources */,
 				BBCBB34E1CAD416C000C0AE2 /* ProfileBiodataCell.m in Sources */,
 				BBCBB3771CAD416D000C0AE2 /* VTItemDetails.m in Sources */,
 				BBCBB07A1CAD416C000C0AE2 /* AlertInfoView.m in Sources */,
@@ -13060,6 +13134,7 @@
 				BBCBAF2D1CAD416C000C0AE2 /* InboxTicketUserInvolve.m in Sources */,
 				BBCBAF701CAD416C000C0AE2 /* AddressFormList.m in Sources */,
 				BBCBB0F81CAD416C000C0AE2 /* LoadingView.m in Sources */,
+				4506CA081CB636BE004CE0A8 /* README.md in Sources */,
 				BBCBAFFC1CAD416C000C0AE2 /* TransactionActionResult.m in Sources */,
 				BBCBAF591CAD416C000C0AE2 /* ProductFeed.m in Sources */,
 				BBCBAF631CAD416C000C0AE2 /* ProfileEditForm.m in Sources */,
@@ -13093,6 +13168,7 @@
 				BBCBB0D01CAD416C000C0AE2 /* ContactUsTypeCell.m in Sources */,
 				BBCBB1171CAD416C000C0AE2 /* GeneralAlertCell.m in Sources */,
 				BBCBAFAC1CAD416C000C0AE2 /* HotlistDetail.m in Sources */,
+				4506C9E81CB6123A004CE0A8 /* ImageResult.m in Sources */,
 				BBCBB0291CAD416C000C0AE2 /* TxOrderCancelPaymentFormForm.m in Sources */,
 				BBCBAFF41CAD416C000C0AE2 /* TrackOrderHistory.m in Sources */,
 				BBCBAFB81CAD416C000C0AE2 /* SearchResult.m in Sources */,
@@ -13282,6 +13358,7 @@
 				BBCBB1FE1CAD416C000C0AE2 /* HelpfulReviewResult.m in Sources */,
 				BBCBB3831CAD416D000C0AE2 /* MoreWrapperViewController.m in Sources */,
 				BBCBB01C1CAD416C000C0AE2 /* InstallmentTerm.m in Sources */,
+				4506C9FE1CB636BE004CE0A8 /* DKCamera.swift in Sources */,
 				BBCBB26D1CAD416C000C0AE2 /* SpellCheckRequest.m in Sources */,
 				BBCBAE8F1CAD416C000C0AE2 /* CatalogResult.m in Sources */,
 				BBCBAFC31CAD416C000C0AE2 /* Etalase.m in Sources */,
@@ -13292,6 +13369,7 @@
 				BBCBB0A71CAD416C000C0AE2 /* RequestUploadImage.m in Sources */,
 				BBCBB1741CAD416C000C0AE2 /* RequestCancelResolution.m in Sources */,
 				BBCBB0101CAD416C000C0AE2 /* OrderConfirmationDetail.m in Sources */,
+				4506CA041CB636BE004CE0A8 /* DKImageResource.swift in Sources */,
 				BBCBAF6F1CAD416C000C0AE2 /* AddressForm.m in Sources */,
 				BBCBAF291CAD416C000C0AE2 /* InboxTicketReply.m in Sources */,
 				BBCBB0D81CAD416C000C0AE2 /* TPRootWireframe.m in Sources */,
@@ -13513,6 +13591,7 @@
 				BBCBB2661CAD416C000C0AE2 /* SearchAutoCompleteHeaderView.m in Sources */,
 				BBCBB2DF1CAD416C000C0AE2 /* PlacePickerViewController.m in Sources */,
 				BBCBAF391CAD416C000C0AE2 /* LoyaltyPoint.m in Sources */,
+				4506CA061CB636BE004CE0A8 /* ImagePickerController.swift in Sources */,
 				BBCBAF571CAD416C000C0AE2 /* PriceAlert.m in Sources */,
 				BBCBAFF01CAD416C000C0AE2 /* TKPString.m in Sources */,
 				BBCBAF2F1CAD416C000C0AE2 /* RatingResult.m in Sources */,
@@ -13667,6 +13746,7 @@
 				BBCBB08F1CAD416C000C0AE2 /* AlertVerifyOTP.m in Sources */,
 				BBCBB16D1CAD416C000C0AE2 /* InboxResolutionCenterObjectMapping.m in Sources */,
 				BBCBAF5F1CAD416C000C0AE2 /* ProductTalkFormResult.m in Sources */,
+				4506CA001CB636BE004CE0A8 /* DKAssetGroupDetailVC.swift in Sources */,
 				BBCBB27D1CAD416C000C0AE2 /* SettingAddressViewController.m in Sources */,
 				BBCBB1991CAD416C000C0AE2 /* MoreNavigationViewController.m in Sources */,
 				BBCBB1EA1CAD416C000C0AE2 /* ProductEditImageViewController.m in Sources */,

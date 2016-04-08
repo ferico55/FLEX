@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9059" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -55,21 +55,16 @@
                 <outlet property="totalInvoiceLabel" destination="5Tq-Yr-44M" id="8qX-kg-uLO"/>
                 <outlet property="totalRefundTextField" destination="dBD-hC-Mwo" id="31m-yO-SwF"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
-                <outletCollection property="uploadedImages" destination="R4q-zH-iUn" id="m2A-U0-O3J"/>
                 <outletCollection property="cancelButtons" destination="BwP-sh-Q9S" id="Opa-vi-sBM"/>
-                <outletCollection property="uploadedImages" destination="5uc-Gr-auB" id="4SM-Mg-ohZ"/>
                 <outletCollection property="uploadButtons" destination="bQF-Yj-JsB" id="pWD-3n-BZ9"/>
                 <outletCollection property="cancelButtons" destination="92y-65-3Lq" id="sQn-oS-UoQ"/>
-                <outletCollection property="uploadedImages" destination="4Mt-8d-V3D" id="jd1-Vf-UHJ"/>
                 <outletCollection property="cancelButtons" destination="Dk9-Vm-nJA" id="79B-qE-3Xn"/>
                 <outletCollection property="uploadButtons" destination="wAj-wA-cgw" id="Mae-BD-SWQ"/>
                 <outletCollection property="cancelButtons" destination="FTk-Sp-VD2" id="iVG-Mi-oBM"/>
                 <outletCollection property="uploadButtons" destination="8nL-7H-tIC" id="s52-pD-bMx"/>
                 <outletCollection property="cancelButtons" destination="zeX-Ym-3c7" id="qMK-qh-44l"/>
                 <outletCollection property="uploadButtons" destination="KHn-7e-jJZ" id="bVI-cE-q2r"/>
-                <outletCollection property="uploadedImages" destination="nJS-eK-hqK" id="oFh-3k-LuG"/>
                 <outletCollection property="uploadButtons" destination="PuV-sr-geZ" id="kzX-oR-fzj"/>
-                <outletCollection property="uploadedImages" destination="Dii-Xj-cCd" id="je9-9u-Uwq"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -527,32 +522,7 @@
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zgj-Ue-0eL">
                                 <rect key="frame" x="0.0" y="0.0" width="519" height="120"/>
                                 <subviews>
-                                    <imageView tag="10" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5uc-Gr-auB">
-                                        <rect key="frame" x="15" y="15" width="90" height="90"/>
-                                        <animations/>
-                                        <gestureRecognizers/>
-                                    </imageView>
-                                    <imageView tag="11" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="R4q-zH-iUn">
-                                        <rect key="frame" x="115" y="15" width="90" height="90"/>
-                                        <animations/>
-                                        <gestureRecognizers/>
-                                    </imageView>
-                                    <imageView tag="12" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4Mt-8d-V3D">
-                                        <rect key="frame" x="215" y="15" width="90" height="90"/>
-                                        <animations/>
-                                        <gestureRecognizers/>
-                                    </imageView>
-                                    <imageView tag="13" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Dii-Xj-cCd">
-                                        <rect key="frame" x="315" y="15" width="90" height="90"/>
-                                        <animations/>
-                                        <gestureRecognizers/>
-                                    </imageView>
-                                    <imageView tag="14" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nJS-eK-hqK">
-                                        <rect key="frame" x="415" y="15" width="90" height="90"/>
-                                        <animations/>
-                                        <gestureRecognizers/>
-                                    </imageView>
-                                    <button opaque="NO" tag="10" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KHn-7e-jJZ">
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KHn-7e-jJZ">
                                         <rect key="frame" x="15" y="15" width="90" height="90"/>
                                         <animations/>
                                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="9"/>
@@ -563,7 +533,7 @@
                                             <action selector="tap:" destination="-1" eventType="touchUpInside" id="fng-Vl-FqF"/>
                                         </connections>
                                     </button>
-                                    <button hidden="YES" opaque="NO" tag="11" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wAj-wA-cgw">
+                                    <button hidden="YES" opaque="NO" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wAj-wA-cgw">
                                         <rect key="frame" x="115" y="15" width="90" height="90"/>
                                         <animations/>
                                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="9"/>
@@ -574,7 +544,7 @@
                                             <action selector="tap:" destination="-1" eventType="touchUpInside" id="Tdc-RA-759"/>
                                         </connections>
                                     </button>
-                                    <button hidden="YES" opaque="NO" tag="12" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8nL-7H-tIC">
+                                    <button hidden="YES" opaque="NO" tag="2" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8nL-7H-tIC">
                                         <rect key="frame" x="215" y="15" width="90" height="90"/>
                                         <animations/>
                                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="9"/>
@@ -585,7 +555,7 @@
                                             <action selector="tap:" destination="-1" eventType="touchUpInside" id="Py3-I0-ESk"/>
                                         </connections>
                                     </button>
-                                    <button hidden="YES" opaque="NO" tag="13" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PuV-sr-geZ">
+                                    <button hidden="YES" opaque="NO" tag="3" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PuV-sr-geZ">
                                         <rect key="frame" x="315" y="15" width="90" height="90"/>
                                         <animations/>
                                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="9"/>
@@ -596,7 +566,7 @@
                                             <action selector="tap:" destination="-1" eventType="touchUpInside" id="DsF-K5-Lp8"/>
                                         </connections>
                                     </button>
-                                    <button hidden="YES" opaque="NO" tag="14" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bQF-Yj-JsB">
+                                    <button hidden="YES" opaque="NO" tag="4" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bQF-Yj-JsB">
                                         <rect key="frame" x="415" y="15" width="90" height="90"/>
                                         <animations/>
                                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="9"/>
@@ -607,7 +577,7 @@
                                             <action selector="tap:" destination="-1" eventType="touchUpInside" id="dO0-dc-amy"/>
                                         </connections>
                                     </button>
-                                    <button hidden="YES" opaque="NO" tag="12" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="92y-65-3Lq">
+                                    <button hidden="YES" opaque="NO" tag="2" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="92y-65-3Lq">
                                         <rect key="frame" x="285" y="15" width="20" height="20"/>
                                         <animations/>
                                         <state key="normal" image="icon_cancel.png">
@@ -617,7 +587,7 @@
                                             <action selector="tapRemoveImage:" destination="-1" eventType="touchUpInside" id="Tc9-Ss-Z7m"/>
                                         </connections>
                                     </button>
-                                    <button hidden="YES" opaque="NO" tag="13" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FTk-Sp-VD2">
+                                    <button hidden="YES" opaque="NO" tag="3" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FTk-Sp-VD2">
                                         <rect key="frame" x="385" y="15" width="20" height="20"/>
                                         <animations/>
                                         <state key="normal" image="icon_cancel.png">
@@ -627,7 +597,7 @@
                                             <action selector="tapRemoveImage:" destination="-1" eventType="touchUpInside" id="XA8-Yp-9SY"/>
                                         </connections>
                                     </button>
-                                    <button hidden="YES" opaque="NO" tag="14" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BwP-sh-Q9S">
+                                    <button hidden="YES" opaque="NO" tag="4" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BwP-sh-Q9S">
                                         <rect key="frame" x="484" y="15" width="20" height="20"/>
                                         <animations/>
                                         <state key="normal" image="icon_cancel.png">
@@ -637,7 +607,7 @@
                                             <action selector="tapRemoveImage:" destination="-1" eventType="touchUpInside" id="EW2-wJ-rW0"/>
                                         </connections>
                                     </button>
-                                    <button hidden="YES" opaque="NO" tag="11" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zeX-Ym-3c7">
+                                    <button hidden="YES" opaque="NO" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zeX-Ym-3c7">
                                         <rect key="frame" x="185" y="15" width="20" height="20"/>
                                         <animations/>
                                         <state key="normal" image="icon_cancel.png">
@@ -647,7 +617,7 @@
                                             <action selector="tapRemoveImage:" destination="-1" eventType="touchUpInside" id="Ntj-wf-nFK"/>
                                         </connections>
                                     </button>
-                                    <button hidden="YES" opaque="NO" tag="10" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dk9-Vm-nJA">
+                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dk9-Vm-nJA">
                                         <rect key="frame" x="85" y="15" width="20" height="20"/>
                                         <animations/>
                                         <state key="normal" image="icon_cancel.png">

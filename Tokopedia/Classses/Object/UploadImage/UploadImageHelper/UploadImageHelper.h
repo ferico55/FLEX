@@ -17,5 +17,6 @@
 @property (nonatomic, strong) NSString *status;
 @property (nonatomic, strong) NSString *server_process_time;
 @property (nonatomic, strong) UploadImageHelperResult *result;
+@property (nonatomic, strong) UploadImageHelperResult *data;
 
 @end

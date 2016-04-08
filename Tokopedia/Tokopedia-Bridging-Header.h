@@ -12,4 +12,5 @@
 
 #import "SwipeView.h"
 #import "MiniSlide.h"
+#import "TPLiveCameraView.h"
 #import <QuartzCore/QuartzCore.h>

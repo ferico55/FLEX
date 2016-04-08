@@ -59,3 +59,26 @@
 }
 
 @end
+
+@implementation RequestObjectUploadImage
+
++ (NSDictionary*)attributeMappingDictionary {
+    NSDictionary *dictionary = @{@"id"       : @"image_id",
+                                 @"token"    : @"token",
+                                 @"user_id"  : @"user_id",
+                                 @"payment_id": @"payment_id",
+                                 @"action" : @"action",
+                                 @"server_id" : @"server_id"
+                                 };
+    
+    return dictionary;
+}
+
++ (RKObjectMapping*)mapping {
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+    
+    return mapping;
+}
+
+@end

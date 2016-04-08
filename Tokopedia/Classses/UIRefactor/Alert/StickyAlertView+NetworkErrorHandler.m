@@ -13,8 +13,17 @@
 + (StickyAlertView*)showNetworkError:(NSError *)error{
     
     NSArray *errors;
+    
     if(error.code == -1011) {
-        errors = @[@"Mohon maaf, terjadi kendala pada server"];
+        NSString *JSON = [[error userInfo] valueForKey:NSLocalizedRecoverySuggestionErrorKey] ;
+        NSError *aerror = nil;
+        NSDictionary *errorFromWs = [NSJSONSerialization JSONObjectWithData: [JSON dataUsingEncoding:NSUTF8StringEncoding]
+                                                                    options: NSJSONReadingMutableContainers
+                                                                      error: &aerror];
+        if (errorFromWs && !aerror) {
+            errors = [errorFromWs[@"errors"] valueForKeyPath:@"@distinctUnionOfObjects.title"];
+        } else
+            errors = @[@"Mohon maaf, terjadi kendala pada server"];
     } else if (error.code==-1009) {
         errors = @[@"Tidak ada koneksi internet"];
     } else {
@@ -22,7 +31,7 @@
     }
     
     
-    StickyAlertView *alert = [[self alloc] initWithErrorMessages:errors delegate:[((UINavigationController*)((UITabBarController*)[[[[[UIApplication sharedApplication] delegate] window] rootViewController] presentedViewController]).selectedViewController). viewControllers lastObject]];
+    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errors delegate:[((UINavigationController*)((UITabBarController*)[[[[[UIApplication sharedApplication] delegate] window] rootViewController] presentedViewController]).selectedViewController). viewControllers lastObject]];
     [alert show];
     
     return alert;

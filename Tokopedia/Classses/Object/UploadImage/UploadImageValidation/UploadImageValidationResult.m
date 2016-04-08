@@ -12,7 +12,7 @@
 
 // MARK: TKPRootObjectMapping methods
 + (NSDictionary *)attributeMappingDictionary {
-    NSArray *keys = @[@"post_key"];
+    NSArray *keys = @[@"post_key", @"is_success"];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }
 
