@@ -9644,7 +9644,6 @@
 				BBCBFD411CB21396000C0AE2 /* Camera */,
 				BBCBFD641CB21396000C0AE2 /* Catalog */,
 				BBCBFD811CB21396000C0AE2 /* Category */,
-				BBCBFD9E1CB21396000C0AE2 /* ContactUs */,
 				BBCBFDD71CB21396000C0AE2 /* Controller */,
 				BBCBFDF11CB21396000C0AE2 /* CustomViews */,
 				BBCBFE111CB21396000C0AE2 /* Deeplink */,
@@ -10016,7 +10015,8 @@
 				BBCBFDBF1CB21396000C0AE2 /* Form */,
 				BBCBFDD61CB21396000C0AE2 /* string_contact_us.h */,
 			);
-			path = ContactUs;
+			name = ContactUs;
+			path = ../ContactUs;
 			sourceTree = "<group>";
 		};
 		BBCBFD9F1CB21396000C0AE2 /* ChooseCategory */ = {
@@ -10119,6 +10119,7 @@
 		BBCBFDF11CB21396000C0AE2 /* CustomViews */ = {
 			isa = PBXGroup;
 			children = (
+				BBCBFD9E1CB21396000C0AE2 /* ContactUs */,
 				BBCBFDF21CB21396000C0AE2 /* BackgroundLayer.h */,
 				BBCBFDF31CB21396000C0AE2 /* BackgroundLayer.m */,
 				BBCBFDF41CB21396000C0AE2 /* CollectionScrollAndSwipe.h */,

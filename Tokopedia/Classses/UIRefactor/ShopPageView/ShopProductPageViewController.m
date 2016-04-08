@@ -75,12 +75,12 @@ LoadingViewDelegate,
 TKPDTabInboxTalkNavigationControllerDelegate,
 ShopPageHeaderDelegate,
 SortViewControllerDelegate,
-MyShopEtalaseFilterViewControllerDelegate,
 GeneralProductCellDelegate,
 GeneralSingleProductDelegate,
 GeneralPhotoProductDelegate,
 NoResultDelegate,
-RetryViewDelegate
+RetryViewDelegate,
+EtalaseViewControllerDelegate
 >
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
@@ -621,14 +621,24 @@ RetryViewDelegate
     vc.delegate = self;
      */
     EtalaseViewController *vc = [EtalaseViewController new];
-    vc.showChevron = NO;
-    vc.showOtherEtalase = NO;
-    vc.showTotalProduct = NO;
+    vc.delegate = self;
+    vc.isEditable = NO;
+    vc.showOtherEtalase = YES;
+    vc.selectedEtalase = [_detailfilter objectForKey:DATA_ETALASE_KEY];
     
     NSString* shopId = [_data objectForKey:kTKPDDETAIL_APISHOPIDKEY];
     [vc setShopId:shopId];
     UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
+    UIColor *backgroundColor = [UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1];
+    nav.navigationBar.backgroundColor = [UIColor colorWithCGColor:backgroundColor.CGColor];
+    nav.navigationBar.translucent = NO;
+    nav.navigationBar.tintColor = [UIColor whiteColor];
     [self.navigationController presentViewController:nav animated:YES completion:nil];
+}
+
+- (void)didSelectEtalase:(EtalaseList*)selectedEtalase{
+    [_detailfilter setObject:selectedEtalase forKey:DATA_ETALASE_KEY];
+    [self requestProduct];
 }
 
 - (IBAction)tapToGrid:(id)sender {

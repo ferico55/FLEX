@@ -99,18 +99,12 @@
     [cell.nameLabel setText:currentEtalase.etalase_name];
     [cell.detailLabel setText:currentEtalase.etalase_num_product];
     
-    if(_showChevron){
-        [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
-    }else{
-        [cell setAccessoryType:UITableViewCellAccessoryNone];
-    }
-    
-    if(_showTotalProduct){
+    if(_isEditable){
         [cell.detailLabel setHidden:NO];
     }else{
         [cell.detailLabel setHidden:YES];
     }
-    cell.showCheckImage = !_showChevron;
+    cell.showCheckImage = !_isEditable;
     
     return cell;
 }
@@ -137,7 +131,7 @@
     if(section == 0){
         return 15;
     }else if(section == 1){
-        return _tambahEtalaseView.frame.size.height;
+        return _isEditable?_tambahEtalaseView.frame.size.height:0;
     }
     return 0;
 }
@@ -152,7 +146,7 @@
 }
 
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-    if(section == 1){
+    if(_isEditable && section == 1){
         return _tambahEtalaseView;
     }
     return nil;
@@ -174,7 +168,12 @@
 
 -(IBAction)finishButtonTapped:(id)sender
 {
-    
+    if(selectedIndexPath.section == 0){
+        [_delegate didSelectEtalase:otherEtalaseList[selectedIndexPath.row]];
+    }else{
+        [_delegate didSelectEtalase:etalaseList[selectedIndexPath.row]];
+    }
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 

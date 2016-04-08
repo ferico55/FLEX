@@ -22,7 +22,7 @@
 @property (strong, nonatomic) IBOutlet UITapGestureRecognizer *deleteGesture;
 
 @property (strong, nonatomic) NSIndexPath *indexpath;
-@property (nonatomic, weak) IBOutlet id<EtalaseCellDelegate> delegate;
+@property (nonatomic, weak) id<EtalaseCellDelegate> delegate;
 
 @property (nonatomic) BOOL showDetail;
 @property (nonatomic) BOOL showCheckImage;

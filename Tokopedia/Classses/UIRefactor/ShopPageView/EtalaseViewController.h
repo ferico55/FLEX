@@ -10,7 +10,7 @@
 #import "Etalase.h"
 
 @protocol EtalaseViewControllerDelegate <NSObject>
--(void)didSelectEtalase:(NSString*)etalaseId;
+-(void)didSelectEtalase:(EtalaseList*)selectedEtalase;
 @end
 
 @interface EtalaseViewController : UIViewController
@@ -19,11 +19,13 @@
 
 @property (nonatomic) BOOL showOtherEtalase;
 @property (nonatomic) BOOL enableAddEtalase;
-@property (nonatomic) BOOL showTotalProduct;
-@property (nonatomic) BOOL showChevron;
+@property (nonatomic) BOOL isEditable;
 
 @property (strong, nonatomic) IBOutlet UIView *tambahEtalaseView;
 @property (strong, nonatomic) IBOutlet UITextField *tambahEtalaseTextField;
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 
+@property (strong, nonatomic) EtalaseList *selectedEtalase;
+
+@property (nonatomic, weak) id<EtalaseViewControllerDelegate> delegate;
 @end
