@@ -78,7 +78,7 @@
                 <constraint firstAttribute="bottom" secondItem="gBF-Tr-zYB" secondAttribute="bottom" id="r9x-8S-Bxl"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
-            <point key="canvasLocation" x="-116.5" y="92.5"/>
+            <point key="canvasLocation" x="-344.5" y="-51.5"/>
         </view>
         <view contentMode="scaleToFill" id="lY8-xc-qq4">
             <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
@@ -93,13 +93,13 @@
                         <constraint firstAttribute="width" secondItem="uoJ-Oz-2ks" secondAttribute="height" multiplier="115:97" id="ibB-Wf-8u1"/>
                     </constraints>
                 </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Selamat Datang!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z06-T0-a5Y">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Selamat Datang!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z06-T0-a5Y">
                     <rect key="frame" x="294" y="717" width="181" height="20"/>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="22"/>
                     <color key="textColor" red="0.38431372549019605" green="0.38431372549019605" blue="0.38431372549019605" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="297" translatesAutoresizingMaskIntoConstraints="NO" id="jNy-RO-bFt" customClass="TTTAttributedLabel">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="297" translatesAutoresizingMaskIntoConstraints="NO" id="jNy-RO-bFt" customClass="TTTAttributedLabel">
                     <rect key="frame" x="259" y="760" width="251" height="31"/>
                     <string key="text">Dapetin apa aja kebutuhanmu
 lewat aplikasi Tokopedia!</string>
@@ -174,13 +174,13 @@ lewat aplikasi Tokopedia!</string>
                         <constraint firstAttribute="width" secondItem="nE0-QU-6VD" secondAttribute="height" multiplier="1:1" id="ULN-IC-uRg"/>
                     </constraints>
                 </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Yang Jual Banyak!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5qL-G6-vTm">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Yang Jual Banyak!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5qL-G6-vTm">
                     <rect key="frame" x="107" y="515" width="201" height="20"/>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="22"/>
                     <color key="textColor" red="0.38431372549999998" green="0.38431372549999998" blue="0.38431372549999998" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Jutaan produk dari semua kategori ada di sini" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="297" translatesAutoresizingMaskIntoConstraints="NO" id="aDq-bv-5mA" customClass="TTTAttributedLabel">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jutaan produk dari semua kategori ada di sini" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="297" translatesAutoresizingMaskIntoConstraints="NO" id="aDq-bv-5mA" customClass="TTTAttributedLabel">
                     <rect key="frame" x="98" y="558" width="219" height="31"/>
                     <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="17"/>
                     <color key="textColor" red="0.51764705879999995" green="0.51764705879999995" blue="0.51764705879999995" alpha="1" colorSpace="calibratedRGB"/>
@@ -243,7 +243,7 @@ lewat aplikasi Tokopedia!</string>
                 <constraint firstItem="5qL-G6-vTm" firstAttribute="top" secondItem="5kU-ga-1jY" secondAttribute="centerY" multiplier="1.4" id="w1K-OC-JeZ"/>
             </constraints>
             <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
-            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="iPad"/>
             <point key="canvasLocation" x="1210" y="127"/>
         </view>
         <view contentMode="scaleToFill" id="BN5-EE-zRc">
@@ -280,13 +280,13 @@ lewat aplikasi Tokopedia!</string>
                         </constraint>
                     </constraints>
                 </view>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Belanja Lebih Mudah!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CaD-C3-0M0">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Belanja Lebih Mudah!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CaD-C3-0M0">
                     <rect key="frame" x="91" y="717" width="233" height="20"/>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="22"/>
                     <color key="textColor" red="0.38431372549999998" green="0.38431372549999998" blue="0.38431372549999998" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Cari produk yang kamu mau langsung dari genggaman" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="297" translatesAutoresizingMaskIntoConstraints="NO" id="mKb-cw-ing" customClass="TTTAttributedLabel">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cari produk yang kamu mau langsung dari genggaman" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="297" translatesAutoresizingMaskIntoConstraints="NO" id="mKb-cw-ing" customClass="TTTAttributedLabel">
                     <rect key="frame" x="88" y="558" width="238" height="31"/>
                     <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="17"/>
                     <color key="textColor" red="0.51764705879999995" green="0.51764705879999995" blue="0.51764705879999995" alpha="1" colorSpace="calibratedRGB"/>
@@ -334,7 +334,7 @@ lewat aplikasi Tokopedia!</string>
                         <constraint firstAttribute="width" secondItem="mfI-1A-i8w" secondAttribute="height" multiplier="195:58" id="BOM-0j-VDC"/>
                     </constraints>
                 </imageView>
-                <imageView userInteractionEnabled="NO" alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="onboarding_4c.png" translatesAutoresizingMaskIntoConstraints="NO" id="6YN-xD-wgH">
+                <imageView userInteractionEnabled="NO" alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="onboarding_4c.png" translatesAutoresizingMaskIntoConstraints="NO" id="6YN-xD-wgH">
                     <rect key="frame" x="145" y="410" width="126" height="127"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="6YN-xD-wgH" secondAttribute="height" multiplier="126:127" id="h50-Wt-akc"/>
@@ -346,13 +346,13 @@ lewat aplikasi Tokopedia!</string>
                         <constraint firstAttribute="width" secondItem="9t7-Tg-QTO" secondAttribute="height" multiplier="18:13" id="xxV-ga-vLI"/>
                     </constraints>
                 </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Buka Toko Gratis!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V1C-3J-LVg">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Buka Toko Gratis!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V1C-3J-LVg">
                     <rect key="frame" x="110" y="716" width="194" height="20"/>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="22"/>
                     <color key="textColor" red="0.38431372549999998" green="0.38431372549999998" blue="0.38431372549999998" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Mau jualan juga? Buka tokomu di Tokopedia. Gratis!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="297" translatesAutoresizingMaskIntoConstraints="NO" id="lEq-ho-gw1" customClass="TTTAttributedLabel">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mau jualan juga? Buka tokomu di Tokopedia. Gratis!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="297" translatesAutoresizingMaskIntoConstraints="NO" id="lEq-ho-gw1" customClass="TTTAttributedLabel">
                     <rect key="frame" x="66" y="558" width="282" height="31"/>
                     <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="17"/>
                     <color key="textColor" red="0.51764705879999995" green="0.51764705879999995" blue="0.51764705879999995" alpha="1" colorSpace="calibratedRGB"/>
@@ -391,41 +391,41 @@ lewat aplikasi Tokopedia!</string>
             </constraints>
             <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="iPad"/>
-            <point key="canvasLocation" x="1838" y="127"/>
+            <point key="canvasLocation" x="2190" y="127"/>
         </view>
         <view contentMode="scaleToFill" id="uvI-A0-mT8">
             <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="onboarding5_phone.png" translatesAutoresizingMaskIntoConstraints="NO" id="h1v-Pu-zbU">
-                    <rect key="frame" x="116" y="166" width="182" height="256"/>
+                    <rect key="frame" x="293" y="282" width="182" height="256"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="256" id="LAl-pb-hXF"/>
-                        <constraint firstAttribute="width" constant="182.5" id="Wwl-Vf-ewx"/>
+                        <constraint firstAttribute="width" constant="182" id="Wwl-Vf-ewx">
+                            <variation key="heightClass=regular-widthClass=regular" constant="274"/>
+                        </constraint>
+                        <constraint firstAttribute="width" secondItem="h1v-Pu-zbU" secondAttribute="height" multiplier="91:128" id="oKv-Ig-a2g"/>
                     </constraints>
                 </imageView>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="onboarding5_bell.png" translatesAutoresizingMaskIntoConstraints="NO" id="ZhT-C5-0qa">
-                    <rect key="frame" x="174" y="283" width="67" height="83"/>
+                    <rect key="frame" x="351" y="399" width="67" height="83"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="66.5" id="Ogd-yz-yXv"/>
-                        <constraint firstAttribute="height" constant="83" id="s1g-G5-gzg"/>
+                        <constraint firstAttribute="width" secondItem="ZhT-C5-0qa" secondAttribute="height" multiplier="67:83" id="l15-Me-hbd"/>
                     </constraints>
                 </imageView>
                 <imageView userInteractionEnabled="NO" alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="onboarding5_bling.png" translatesAutoresizingMaskIntoConstraints="NO" id="Djb-fx-nas">
-                    <rect key="frame" x="87" y="210" width="241" height="229"/>
+                    <rect key="frame" x="264" y="326" width="241" height="229"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="241" id="Sdm-3A-xrk"/>
-                        <constraint firstAttribute="height" constant="229" id="aS8-yb-Y4i"/>
+                        <constraint firstAttribute="width" secondItem="Djb-fx-nas" secondAttribute="height" multiplier="241:229" id="prU-Z2-nvV"/>
                     </constraints>
                 </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Dapatkan Notifikasi" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MQ2-Un-Ohr">
-                    <rect key="frame" x="100" y="515" width="214" height="20"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dapatkan Notifikasi" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MQ2-Un-Ohr">
+                    <rect key="frame" x="277" y="717" width="214" height="20"/>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="22"/>
                     <color key="textColor" red="0.38431372549999998" green="0.38431372549999998" blue="0.38431372549999998" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Semua update terbaru akan dikirim ke HP kamu" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="297" translatesAutoresizingMaskIntoConstraints="NO" id="LSx-VY-Px8" customClass="TTTAttributedLabel">
-                    <rect key="frame" x="104" y="554" width="206" height="31"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Semua update terbaru akan dikirim ke HP kamu" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="297" translatesAutoresizingMaskIntoConstraints="NO" id="LSx-VY-Px8" customClass="TTTAttributedLabel">
+                    <rect key="frame" x="281" y="756" width="206" height="31"/>
                     <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="17"/>
                     <color key="textColor" red="0.51764705879999995" green="0.51764705879999995" blue="0.51764705879999995" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
@@ -436,7 +436,7 @@ lewat aplikasi Tokopedia!</string>
                     </userDefinedRuntimeAttributes>
                 </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7UT-96-5h5">
-                    <rect key="frame" x="73" y="641" width="269" height="44"/>
+                    <rect key="frame" x="250" y="891" width="269" height="44"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X9K-LS-ai8">
                             <rect key="frame" x="0.0" y="0.0" width="102" height="44"/>
@@ -488,43 +488,59 @@ lewat aplikasi Tokopedia!</string>
             </subviews>
             <constraints>
                 <constraint firstItem="7UT-96-5h5" firstAttribute="top" secondItem="uvI-A0-mT8" secondAttribute="bottom" multiplier="0.87" id="1f5-BR-4cr"/>
+                <constraint firstItem="Djb-fx-nas" firstAttribute="width" secondItem="h1v-Pu-zbU" secondAttribute="height" multiplier="241:256" id="Ccp-QW-wWQ"/>
                 <constraint firstItem="LSx-VY-Px8" firstAttribute="top" secondItem="MQ2-Un-Ohr" secondAttribute="bottom" constant="19" id="Dxe-ub-UjB"/>
                 <constraint firstItem="h1v-Pu-zbU" firstAttribute="centerX" secondItem="uvI-A0-mT8" secondAttribute="centerX" id="GkM-KL-uxv"/>
-                <constraint firstItem="ZhT-C5-0qa" firstAttribute="top" secondItem="h1v-Pu-zbU" secondAttribute="bottom" constant="-139" id="JHg-2m-hS4"/>
+                <constraint firstItem="ZhT-C5-0qa" firstAttribute="top" secondItem="h1v-Pu-zbU" secondAttribute="bottom" constant="-139" id="JHg-2m-hS4">
+                    <variation key="heightClass=regular-widthClass=regular" constant="-208"/>
+                </constraint>
                 <constraint firstItem="MQ2-Un-Ohr" firstAttribute="centerX" secondItem="uvI-A0-mT8" secondAttribute="centerX" id="K3l-Gq-5u2"/>
                 <constraint firstItem="h1v-Pu-zbU" firstAttribute="centerY" secondItem="uvI-A0-mT8" secondAttribute="centerY" multiplier="0.8" id="PWq-D7-STm"/>
                 <constraint firstItem="LSx-VY-Px8" firstAttribute="centerX" secondItem="uvI-A0-mT8" secondAttribute="centerX" id="SF4-qe-t6P"/>
-                <constraint firstItem="Djb-fx-nas" firstAttribute="top" secondItem="h1v-Pu-zbU" secondAttribute="bottom" constant="-212" id="c89-Tq-2Wp"/>
-                <constraint firstItem="ZhT-C5-0qa" firstAttribute="leading" secondItem="h1v-Pu-zbU" secondAttribute="trailing" constant="-124" id="gmn-Oe-Aws"/>
+                <constraint firstItem="Djb-fx-nas" firstAttribute="top" secondItem="h1v-Pu-zbU" secondAttribute="bottom" constant="-212" id="c89-Tq-2Wp">
+                    <variation key="heightClass=regular-widthClass=regular" constant="-318"/>
+                </constraint>
+                <constraint firstItem="ZhT-C5-0qa" firstAttribute="leading" secondItem="h1v-Pu-zbU" secondAttribute="trailing" constant="-124" id="gmn-Oe-Aws">
+                    <variation key="heightClass=regular-widthClass=regular" constant="-186"/>
+                </constraint>
                 <constraint firstItem="MQ2-Un-Ohr" firstAttribute="top" secondItem="uvI-A0-mT8" secondAttribute="centerY" multiplier="1.4" id="iTO-GR-mNF"/>
                 <constraint firstItem="7UT-96-5h5" firstAttribute="centerX" secondItem="uvI-A0-mT8" secondAttribute="centerX" id="kjG-5g-Zmt"/>
-                <constraint firstItem="Djb-fx-nas" firstAttribute="leading" secondItem="h1v-Pu-zbU" secondAttribute="trailing" constant="-211" id="vF7-dB-qR3"/>
+                <constraint firstItem="ZhT-C5-0qa" firstAttribute="width" secondItem="h1v-Pu-zbU" secondAttribute="height" multiplier="67:256" id="pmd-IA-6oC"/>
+                <constraint firstItem="Djb-fx-nas" firstAttribute="leading" secondItem="h1v-Pu-zbU" secondAttribute="trailing" constant="-211" id="vF7-dB-qR3">
+                    <variation key="heightClass=regular-widthClass=regular" constant="-316"/>
+                </constraint>
             </constraints>
-            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
-            <point key="canvasLocation" x="2334" y="127"/>
+            <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="iPad"/>
+            <point key="canvasLocation" x="3048" y="127"/>
         </view>
         <view contentMode="scaleToFill" id="zZm-pt-wd4">
             <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="onboarding_6.png" translatesAutoresizingMaskIntoConstraints="NO" id="g0w-RE-hWs">
-                    <rect key="frame" x="71" y="67" width="179" height="227"/>
+                    <rect key="frame" x="295" y="271" width="179" height="227"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="179" id="MQ8-bh-cNC"/>
-                        <constraint firstAttribute="height" constant="226.5" id="fi2-wn-jzX"/>
+                        <constraint firstAttribute="width" constant="179" id="MQ8-bh-cNC">
+                            <variation key="heightClass=regular-widthClass=regular" constant="270"/>
+                        </constraint>
+                        <constraint firstAttribute="width" secondItem="g0w-RE-hWs" secondAttribute="height" multiplier="179:227" id="S9r-1P-wW2"/>
                     </constraints>
+                    <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
+                        <rect key="frame" x="250" y="213" width="270" height="343"/>
+                    </variation>
                 </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Yuk Belanja di Tokopedia Sekarang!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="297" translatesAutoresizingMaskIntoConstraints="NO" id="8Zl-mE-4rT">
-                    <rect key="frame" x="31" y="300" width="258" height="40"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Yuk Belanja di Tokopedia Sekarang!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="297" translatesAutoresizingMaskIntoConstraints="NO" id="8Zl-mE-4rT">
+                    <rect key="frame" x="255" y="640" width="258" height="40"/>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="22"/>
                     <color key="textColor" red="0.38431372549999998" green="0.38431372549999998" blue="0.38431372549999998" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                     <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
-                        <rect key="frame" x="125" y="200" width="231" height="51.5"/>
+                        <rect key="frame" x="125" y="640" width="231" height="52"/>
                     </variation>
                 </label>
-                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uuk-gb-hek">
-                    <rect key="frame" x="36" y="360" width="248" height="44"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uuk-gb-hek">
+                    <rect key="frame" x="85" y="700" width="598" height="44"/>
                     <color key="backgroundColor" red="1" green="0.28235294117647058" blue="0.12156862745098039" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="Fp9-mq-UZI"/>
@@ -539,17 +555,17 @@ lewat aplikasi Tokopedia!</string>
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                     <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
-                        <rect key="frame" x="53" y="271" width="374" height="44"/>
+                        <rect key="frame" x="113" y="271" width="798" height="44"/>
                     </variation>
                     <connections>
                         <action selector="btnSearchTapped:" destination="-1" eventType="touchUpInside" id="pT4-vp-R2i"/>
                     </connections>
                 </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K5h-vk-9RE">
-                    <rect key="frame" x="36" y="418" width="248" height="44"/>
+                    <rect key="frame" x="85" y="891" width="598" height="44"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e86-zn-lGz">
-                            <rect key="frame" x="127" y="0.0" width="121" height="44"/>
+                            <rect key="frame" x="302" y="0.0" width="296" height="44"/>
                             <color key="backgroundColor" red="0.2274509804" green="0.70196078429999997" blue="0.22352941179999999" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="44" id="Gi5-mK-7wo"/>
@@ -558,12 +574,15 @@ lewat aplikasi Tokopedia!</string>
                             <state key="normal" title="I'm New">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
+                                <rect key="frame" x="402" y="0.0" width="396" height="44"/>
+                            </variation>
                             <connections>
                                 <action selector="btnRegisterTapped:" destination="-1" eventType="touchUpInside" id="uhe-23-sjQ"/>
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rbf-Ej-xB8">
-                            <rect key="frame" x="0.0" y="0.0" width="122" height="44"/>
+                            <rect key="frame" x="0.0" y="0.0" width="297" height="44"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="44" id="Kuq-hJ-xf9"/>
                             </constraints>
@@ -576,16 +595,22 @@ lewat aplikasi Tokopedia!</string>
                                     <real key="value" value="3"/>
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
+                            <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
+                                <rect key="frame" x="0.0" y="0.0" width="397" height="44"/>
+                            </variation>
                             <connections>
                                 <action selector="btnLoginTapped:" destination="-1" eventType="touchUpInside" id="L4x-3i-mam"/>
                             </connections>
                         </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bcb-TM-8mW">
-                            <rect key="frame" x="122" y="0.0" width="5" height="44"/>
+                            <rect key="frame" x="297" y="0.0" width="5" height="44"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="5" id="HDR-yi-Lmh"/>
                                 <constraint firstAttribute="height" constant="44" id="L5Q-Eo-449"/>
                             </constraints>
+                            <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
+                                <rect key="frame" x="397" y="0.0" width="5" height="44"/>
+                            </variation>
                         </view>
                     </subviews>
                     <constraints>
@@ -601,6 +626,9 @@ lewat aplikasi Tokopedia!</string>
                         <constraint firstItem="rbf-Ej-xB8" firstAttribute="leading" secondItem="K5h-vk-9RE" secondAttribute="leading" id="fr4-gX-AqK"/>
                         <constraint firstItem="rbf-Ej-xB8" firstAttribute="trailing" secondItem="Bcb-TM-8mW" secondAttribute="leading" id="hKC-LG-h1u"/>
                     </constraints>
+                    <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
+                        <rect key="frame" x="113" y="892" width="798" height="44"/>
+                    </variation>
                 </view>
             </subviews>
             <constraints>
@@ -615,8 +643,9 @@ lewat aplikasi Tokopedia!</string>
                 <constraint firstItem="uuk-gb-hek" firstAttribute="width" secondItem="zZm-pt-wd4" secondAttribute="width" multiplier="3.5:4.5" id="vQB-hy-1kb"/>
                 <constraint firstItem="uuk-gb-hek" firstAttribute="top" secondItem="8Zl-mE-4rT" secondAttribute="bottom" constant="20" id="wZD-q3-U4o"/>
             </constraints>
-            <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="2831" y="127"/>
+            <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="iPad"/>
+            <point key="canvasLocation" x="3908" y="127"/>
         </view>
     </objects>
     <resources>
