@@ -12,6 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EtalaseViewController">
             <connections>
+                <outlet property="footerView" destination="O3v-JQ-E17" id="59F-iM-tl0"/>
                 <outlet property="tableView" destination="AZY-UW-lxS" id="Bqb-ki-cHS"/>
                 <outlet property="tambahEtalaseTextField" destination="5DQ-dX-yGb" id="ePB-NE-7xk"/>
                 <outlet property="tambahEtalaseView" destination="BE7-tA-tww" id="eNj-P0-H4p"/>
@@ -34,10 +35,14 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
+                <constraint firstItem="AZY-UW-lxS" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="DUn-UH-Pdf"/>
                 <constraint firstItem="AZY-UW-lxS" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="DwI-Kf-kpS"/>
                 <constraint firstAttribute="bottom" secondItem="AZY-UW-lxS" secondAttribute="bottom" id="lcj-iK-xKd"/>
+                <constraint firstAttribute="bottom" secondItem="AZY-UW-lxS" secondAttribute="bottom" id="lkr-cB-jvn"/>
+                <constraint firstItem="AZY-UW-lxS" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="pSN-Dt-b1T"/>
                 <constraint firstItem="AZY-UW-lxS" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="pvr-j1-UqA"/>
                 <constraint firstAttribute="trailing" secondItem="AZY-UW-lxS" secondAttribute="trailing" id="r4I-Si-bOb"/>
+                <constraint firstAttribute="trailing" secondItem="AZY-UW-lxS" secondAttribute="trailing" id="zkl-AV-Sc5"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
@@ -68,6 +73,26 @@
                 </mask>
             </variation>
             <point key="canvasLocation" x="1045" y="77.5"/>
+        </view>
+        <view contentMode="scaleToFill" id="O3v-JQ-E17" userLabel="FooterView">
+            <rect key="frame" x="0.0" y="0.0" width="319" height="34"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="0GT-Tz-Fh6">
+                    <rect key="frame" x="150" y="7" width="20" height="20"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <color key="color" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                </activityIndicatorView>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="0GT-Tz-Fh6" firstAttribute="leading" secondItem="O3v-JQ-E17" secondAttribute="leading" constant="150" id="ZUu-rz-WDL"/>
+                <constraint firstAttribute="bottom" secondItem="0GT-Tz-Fh6" secondAttribute="bottom" constant="7" id="Zz6-KC-qYb"/>
+                <constraint firstAttribute="trailing" secondItem="0GT-Tz-Fh6" secondAttribute="trailing" constant="149" id="jKm-43-lmQ"/>
+                <constraint firstItem="0GT-Tz-Fh6" firstAttribute="top" secondItem="O3v-JQ-E17" secondAttribute="top" constant="7" id="ym8-pN-VQ3"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
     </objects>
 </document>

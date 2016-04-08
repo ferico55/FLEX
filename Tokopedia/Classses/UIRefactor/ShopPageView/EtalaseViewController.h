@@ -24,6 +24,7 @@
 @property (strong, nonatomic) IBOutlet UIView *tambahEtalaseView;
 @property (strong, nonatomic) IBOutlet UITextField *tambahEtalaseTextField;
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
+@property (strong, nonatomic) IBOutlet UIView *footerView;
 
 @property (strong, nonatomic) EtalaseList *selectedEtalase;
 

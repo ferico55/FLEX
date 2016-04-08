@@ -637,6 +637,7 @@ EtalaseViewControllerDelegate
 }
 
 - (void)didSelectEtalase:(EtalaseList*)selectedEtalase{
+    _page = 1;
     [_detailfilter setObject:selectedEtalase forKey:DATA_ETALASE_KEY];
     [self requestProduct];
 }
@@ -758,16 +759,10 @@ EtalaseViewControllerDelegate
     NSString *sort =  [_detailfilter objectForKey:kTKPDDETAIL_APIORERBYKEY]?:@"";
     NSString *shopID = [_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]?:@"";
     EtalaseList *etalase = [_detailfilter objectForKey:DATA_ETALASE_KEY];
-    BOOL isSoldProduct = ([etalase.etalase_id integerValue] == 7);
     BOOL isAllEtalase = (etalase.etalase_id == 0);
     
     id etalaseid;
-    
-    if (isSoldProduct) {
-        etalaseid = @"sold";
-        if(sort == 0) sort = etalase.etalase_id;
-    }
-    else if (isAllEtalase)
+    if (isAllEtalase)
         etalaseid = @"all";
     else{
         etalaseid = etalase.etalase_id?:@"";

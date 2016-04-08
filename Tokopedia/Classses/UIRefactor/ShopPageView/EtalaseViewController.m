@@ -24,7 +24,6 @@
     TokopediaNetworkManager *etalaseNetworkManager;
     TokopediaNetworkManager *myEtalaseNetworkManager;
     
-    LoadingView *loadingView;
     NSIndexPath *selectedIndexPath;
 }
 
@@ -57,12 +56,7 @@
     rightBarButton.tag = 11;
     self.navigationItem.rightBarButtonItem = rightBarButton;
     
-    CGFloat width = [[UIScreen mainScreen] bounds].size.width;
-    CGRect frame = CGRectMake(0, 0, width, 60);
-    loadingView = [[LoadingView alloc]initWithFrame:frame];
-    loadingView.delegate = self;
-    _tableView.tableFooterView = loadingView;
-    
+    _tableView.tableFooterView = _footerView;
     _tambahEtalaseTextField.delegate = self;
     
     [self requestEtalase];
@@ -140,7 +134,7 @@
     if(section == 0){
         return 10;
     }else if(section == 1){
-        return loadingView.frame.size.height;
+        return _footerView.frame.size.height;
     }
     return 0;
 }
@@ -152,12 +146,6 @@
     return nil;
 }
 
--(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
-    if(section == 1){
-        return loadingView;
-    }
-    return nil;
-}
 
 #pragma mark - Method
 -(IBAction)cancelButtonTapped:(id)sender
@@ -180,7 +168,7 @@
 #pragma mark - Request
 
 -(void)requestEtalase{
-    [loadingView setHidden:NO];
+    _tableView.tableFooterView = _footerView;
     if(_showOtherEtalase){
         [self requestCertainShopEtalase];
     }else{
@@ -205,12 +193,12 @@
                                   if (uriNext) {
                                       page = [[etalaseNetworkManager splitUriToPage:uriNext] integerValue];
                                   }else{
-                                      [loadingView setHidden:YES];
+                                      _tableView.tableFooterView = nil;
                                   }
                                   
                                   [_tableView reloadData];
                               }onFailure:^(NSError *errorResult) {
-         
+                                    _tableView.tableFooterView = nil;
                               }];
 
 }
@@ -232,12 +220,12 @@
                                           if (uriNext) {
                                               page = [[etalaseNetworkManager splitUriToPage:uriNext] integerValue];
                                           }else{
-                                              [loadingView setHidden:YES];
+                                              _tableView.tableFooterView = nil;
                                           }
                                           
                                           [_tableView reloadData];
                                       }onFailure:^(NSError *errorResult) {
-                                          
+                                          _tableView.tableFooterView = nil;
                                       }];
 }
 
