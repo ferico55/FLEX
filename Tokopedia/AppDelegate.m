@@ -23,14 +23,13 @@
 #import <GoogleMaps/GoogleMaps.h>
 #import <Rollout/Rollout.h>
 #import "FBTweakShakeWindow.h"
+#import <JLPermissions/JLNotificationPermission.h>
 
 #ifdef DEBUG
 #import "FlexManager.h"
 #endif
 
 @implementation AppDelegate
-
-@synthesize viewController = _viewController;
 
 #ifdef DEBUG
 - (void)onThreeFingerTap {
@@ -52,11 +51,11 @@
 
     [self hideTitleBackButton];
     
-    _viewController = [[IntroViewController alloc] initWithNibName:@"IntroViewController" bundle:nil];
+    UIViewController* viewController = [[IntroViewController alloc] initWithNibName:@"IntroViewController" bundle:nil];
     _window = [[FBTweakShakeWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     _window.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
     _window.backgroundColor = kTKPDNAVIGATION_NAVIGATIONBGCOLOR;
-    _window.rootViewController = _viewController;
+    _window.rootViewController = viewController;
     [_window makeKeyAndVisible];
     
 #ifdef DEBUG
@@ -177,6 +176,9 @@
 
 - (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
 {
+    [[JLNotificationPermission sharedInstance] notificationResult:deviceToken error:nil];
+
+    
     TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
     
     NSString *deviceTokenString = [[deviceToken description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
@@ -185,7 +187,7 @@
 }
 
 -(void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
-    
+    [[JLNotificationPermission sharedInstance] notificationResult:nil error:error];
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {

@@ -9,7 +9,7 @@
 import UIKit
 
 @objc
-class IntroViewController: UIViewController {
+class IntroViewController: UIViewController, EAIntroDelegate {
     @IBOutlet private var presentationContainer: UIView!
     
     @IBOutlet private var topedImageView: UIImageView! {
@@ -90,29 +90,38 @@ class IntroViewController: UIViewController {
                 }(),
                 {
                     let page = EAIntroPage(customView: page2View)
-                    page.onPageDidAppear = animatePage2
-                    page.onPageDidDisappear = stopPage2Animations
+                    page.onPageDidAppear = {[unowned self] in
+                        self.animatePage2()
+                    }
+                    
+                    page.onPageDidDisappear = {[unowned self] in
+                        self.stopPage2Animations()
+                    }
                     return page
                 }(),
                 {
                     let page = EAIntroPage(customView: page3View)
-                    page.onPageDidAppear = animatePage3
-                    page.onPageDidDisappear = stopPage3Animations
+                    page.onPageDidAppear = {[unowned self] in
+                        self.animatePage3()
+                    }
+                    page.onPageDidDisappear = {[unowned self] in
+                        self.stopPage3Animations()
+                    }
                     return page
                 }(),
                 {
                     let page = EAIntroPage(customView: page4View)
                     page.onPageDidAppear = {[unowned self] in
-                        self.pageControl.hidden = false
                         self.animatePage4()
                     }
-                    page.onPageDidDisappear = stopPage4Animations
+                    page.onPageDidDisappear = {[unowned self] in
+                        self.stopPage4Animations()
+                    }
                     return page
                 }(),
                 {
                     let page = EAIntroPage(customView: page5View)
                     page.onPageDidAppear = {[unowned self] in
-                        self.pageControl.hidden = true
                         self.animatePage5()
                     }
                     return page
@@ -124,9 +133,22 @@ class IntroViewController: UIViewController {
             view.showInView(presentationContainer)
             view.skipButton = nil
             view.backgroundColor = UIColor.clearColor()
+            view.delegate = self
             
             return view
         }()
+    }
+    
+    private func togglePageControlVisibility(pageIndex: UInt) {
+        pageControl.hidden = pageIndex > 3
+    }
+    
+    func intro(introView: EAIntroView!, pageAppeared page: EAIntroPage!, withIndex pageIndex: UInt) {
+        togglePageControlVisibility(pageIndex)
+
+        if (pageIndex > 3) {
+            introView.scrollView.scrollEnabled = false
+        }
     }
     
     private func reRenderLabels() {
@@ -157,7 +179,7 @@ class IntroViewController: UIViewController {
     }
     
     private func showView(view:UIView, atRelativeStartTime startTime:Double) {
-        UIView.addKeyframeWithRelativeStartTime(startTime, relativeDuration: 0, animations: {
+        UIView.addKeyframeWithRelativeStartTime(startTime, relativeDuration: 0.2, animations: {
             view.alpha = 1
         })
     }
@@ -168,10 +190,12 @@ class IntroViewController: UIViewController {
     
     private func animatePage3() {
         let initialY = slide3Content.frame.origin.y
+        let targetY = initialY - slide3Content.frame.size.height +
+            slide3Content.superview!.frame.size.height
         
         UIView.animateKeyframesWithDuration(1.4, delay: 0.5, options: .CalculationModeCubic, animations: {
             UIView.addKeyframeWithRelativeStartTime(0.1, relativeDuration: 0.5, animations: {
-                self.slide3Content.frame.origin.y = -122
+                self.slide3Content.frame.origin.y = targetY
             })
             
             UIView.addKeyframeWithRelativeStartTime(0.51, relativeDuration: 0.5, animations: {
@@ -238,13 +262,22 @@ class IntroViewController: UIViewController {
     
     @IBAction func btnNotificationTapped(sender: AnyObject) {
         JLNotificationPermission.sharedInstance().extraAlertEnabled = false
-        JLNotificationPermission.sharedInstance().authorize({deviceId, error in
+        JLNotificationPermission.sharedInstance().authorize({[unowned self] deviceId, error in
             let deniedCode = JLAuthorizationErrorCode.PermissionSystemDenied.rawValue
             if let errorCode = error?.code where errorCode == deniedCode {
                 guard #available(iOS 8, *) else { return }
                 let url = NSURL(string: UIApplicationOpenSettingsURLString)!
                 UIApplication.sharedApplication().openURL(url)
             }
+            
+            if let _ = deviceId {
+                self.introView.setCurrentPageIndex(5, animated: true)
+            }
         })
+    }
+    
+    @IBAction func btnRejectNotificationTapped(sender: AnyObject) {
+        introView.scrollingEnabled = true
+        introView.setCurrentPageIndex(5, animated: true)
     }
 }
