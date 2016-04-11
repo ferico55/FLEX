@@ -14,6 +14,9 @@
             <connections>
                 <outlet property="footerView" destination="O3v-JQ-E17" id="59F-iM-tl0"/>
                 <outlet property="tableView" destination="AZY-UW-lxS" id="Bqb-ki-cHS"/>
+                <outlet property="tambahEtalaseButton" destination="4AP-bQ-1Jt" id="rkp-NB-VPZ"/>
+                <outlet property="tambahEtalaseButtonLeftConstraint" destination="Xqc-uB-vaA" id="DRh-ac-VDO"/>
+                <outlet property="tambahEtalaseButtonWidthConstraint" destination="YIr-2L-Css" id="MNv-vP-rhE"/>
                 <outlet property="tambahEtalaseTextField" destination="5DQ-dX-yGb" id="ePB-NE-7xk"/>
                 <outlet property="tambahEtalaseView" destination="BE7-tA-tww" id="eNj-P0-H4p"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -50,19 +53,31 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="61"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Tambah Etalase" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="5DQ-dX-yGb">
-                    <rect key="frame" x="8" y="8" width="304" height="44"/>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Tambah Etalase" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="5DQ-dX-yGb">
+                    <rect key="frame" x="8" y="8" width="266" height="44"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="SVo-qs-LAn"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                     <textInputTraits key="textInputTraits"/>
                 </textField>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4AP-bQ-1Jt">
+                    <rect key="frame" x="282" y="16" width="30" height="30"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="30" id="YIr-2L-Css"/>
+                    </constraints>
+                    <state key="normal" title="OK"/>
+                    <connections>
+                        <action selector="tambahEtalaseButtonTapped:" destination="-1" eventType="touchUpInside" id="hr2-7s-2bM"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
+                <constraint firstAttribute="trailing" secondItem="4AP-bQ-1Jt" secondAttribute="trailing" constant="8" id="C7J-Nt-Ifz"/>
+                <constraint firstItem="4AP-bQ-1Jt" firstAttribute="centerY" secondItem="BE7-tA-tww" secondAttribute="centerY" id="NV7-L0-Nya"/>
+                <constraint firstItem="4AP-bQ-1Jt" firstAttribute="leading" secondItem="5DQ-dX-yGb" secondAttribute="trailing" constant="8" id="Xqc-uB-vaA"/>
                 <constraint firstItem="5DQ-dX-yGb" firstAttribute="leading" secondItem="BE7-tA-tww" secondAttribute="leading" constant="8" id="YbG-hh-lY2"/>
-                <constraint firstAttribute="trailing" secondItem="5DQ-dX-yGb" secondAttribute="trailing" constant="8" id="bCq-c9-q76"/>
                 <constraint firstItem="5DQ-dX-yGb" firstAttribute="top" secondItem="BE7-tA-tww" secondAttribute="top" constant="8" id="vUg-EW-pyA"/>
                 <constraint firstAttribute="bottom" secondItem="5DQ-dX-yGb" secondAttribute="bottom" constant="8" id="y5E-Qo-8xu"/>
             </constraints>
@@ -72,7 +87,7 @@
                     <exclude reference="y5E-Qo-8xu"/>
                 </mask>
             </variation>
-            <point key="canvasLocation" x="1045" y="77.5"/>
+            <point key="canvasLocation" x="205" y="41.5"/>
         </view>
         <view contentMode="scaleToFill" id="O3v-JQ-E17" userLabel="FooterView">
             <rect key="frame" x="0.0" y="0.0" width="319" height="34"/>

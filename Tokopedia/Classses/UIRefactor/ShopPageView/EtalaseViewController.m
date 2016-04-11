@@ -25,6 +25,7 @@
     TokopediaNetworkManager *myEtalaseNetworkManager;
     
     NSIndexPath *selectedIndexPath;
+    UIAlertView *alertView;
 }
 
 - (void)viewDidLoad {
@@ -36,9 +37,6 @@
     etalaseNetworkManager = [TokopediaNetworkManager new];
     myEtalaseNetworkManager = [TokopediaNetworkManager new];
     page = 0;
-    
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didRecognizeTapGesture:)];
-    [_tambahEtalaseTextField addGestureRecognizer:tapGesture];
     
     if (self.navigationController.isBeingPresented) {
         UIBarButtonItem *cancelBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
@@ -58,6 +56,12 @@
     
     _tableView.tableFooterView = _footerView;
     _tambahEtalaseTextField.delegate = self;
+    alertView = [[UIAlertView alloc]initWithTitle:@"Edit Etalase" message:@"" delegate:self cancelButtonTitle:@"Batal" otherButtonTitles:@"OK", nil];
+    alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
+    [alertView textFieldAtIndex:0].delegate = self;
+    
+    _tambahEtalaseButtonWidthConstraint.constant = 0;
+    _tambahEtalaseButtonLeftConstraint.constant = 0;
     
     [self requestEtalase];
 }
@@ -71,6 +75,11 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [_tambahEtalaseTextField setText:@""];
     selectedIndexPath = indexPath;
+    EtalaseList *selectedEtalase = indexPath.section == 0?[otherEtalaseList objectAtIndex:indexPath.row]:[etalaseList objectAtIndex:indexPath.row];
+    if(_isEditable){
+        [[alertView textFieldAtIndex:0] setText:selectedEtalase.etalase_name];
+        [alertView show];
+    }
 }
 
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -91,7 +100,7 @@
     }
     
     [cell.nameLabel setText:currentEtalase.etalase_name];
-    [cell.detailLabel setText:currentEtalase.etalase_num_product];
+    [cell.detailLabel setText:[NSString stringWithFormat:@"%@ Produk", currentEtalase.etalase_num_product]];
     
     if(_isEditable){
         [cell.detailLabel setHidden:NO];
@@ -109,7 +118,7 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if(section == 0){
-        return otherEtalaseList.count;
+        return _isEditable?0:otherEtalaseList.count;
     }else if(section == 1){
         return etalaseList.count;
     }
@@ -139,13 +148,12 @@
     return 0;
 }
 
--(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+- (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     if(_isEditable && section == 1){
         return _tambahEtalaseView;
     }
     return nil;
 }
-
 
 #pragma mark - Method
 -(IBAction)cancelButtonTapped:(id)sender
@@ -156,12 +164,14 @@
 
 -(IBAction)finishButtonTapped:(id)sender
 {
-    if(selectedIndexPath.section == 0){
-        [_delegate didSelectEtalase:otherEtalaseList[selectedIndexPath.row]];
-    }else{
-        [_delegate didSelectEtalase:etalaseList[selectedIndexPath.row]];
+    if(!_isEditable){
+        if(selectedIndexPath.section == 0){
+            [_delegate didSelectEtalase:otherEtalaseList[selectedIndexPath.row]];
+        }else{
+            [_delegate didSelectEtalase:etalaseList[selectedIndexPath.row]];
+        }
     }
-    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 
@@ -235,10 +245,24 @@
     [_tambahEtalaseTextField resignFirstResponder];
     return YES;
 }
-
-- (void)didRecognizeTapGesture:(UITapGestureRecognizer*)gesture
-{
+-(void)textFieldDidBeginEditing:(UITextField *)textField{
     [_tableView deselectRowAtIndexPath:selectedIndexPath animated:YES];
+    [UIView animateWithDuration:1 animations:^{
+    }];
+    [UIView animateWithDuration:2
+                          delay:0
+         usingSpringWithDamping:0
+          initialSpringVelocity:0.1
+                        options:UIViewAnimationOptionCurveEaseIn
+                     animations:^{
+                         [_tambahEtalaseButtonWidthConstraint setConstant:30];
+                         [_tambahEtalaseButtonLeftConstraint setConstant:8];
+                     } completion:^(BOOL finished) {
+                         
+                     }];
+}
+- (IBAction)tambahEtalaseButtonTapped:(id)sender {
+    
 }
 
 @end
