@@ -27,6 +27,7 @@
 #import "string_inbox_talk.h"
 
 #import "NavigationHelper.h"
+#import "ShopBadgeLevel.h"
 
 @interface ProductTalkDetailViewController ()
 <

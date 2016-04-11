@@ -19,5 +19,6 @@
 @property (nonatomic, strong) ReviewResult *data;
 
 + (RKObjectMapping*) mapping;
++ (RKObjectMapping*) mapping_v4;
 
 @end
