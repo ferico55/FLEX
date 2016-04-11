@@ -147,15 +147,7 @@ class IntroViewController: UIViewController, EAIntroDelegate {
         togglePageControlVisibility(pageIndex)
 
         if (pageIndex > 3) {
-            let numberOfActivePages = UInt(introView.pages.count) - pageIndex
-            let scrollViewBounds = introView.scrollView.bounds
-            
-            introView.scrollView.restrictionArea = CGRect(
-                x: CGFloat(pageIndex) * scrollViewBounds.width,
-                y: 0,
-                width: CGFloat(numberOfActivePages) * scrollViewBounds.width,
-                height: scrollViewBounds.height
-            )
+            introView.scrollView.scrollEnabled = false
         }
     }
     
@@ -270,13 +262,22 @@ class IntroViewController: UIViewController, EAIntroDelegate {
     
     @IBAction func btnNotificationTapped(sender: AnyObject) {
         JLNotificationPermission.sharedInstance().extraAlertEnabled = false
-        JLNotificationPermission.sharedInstance().authorize({deviceId, error in
+        JLNotificationPermission.sharedInstance().authorize({[unowned self] deviceId, error in
             let deniedCode = JLAuthorizationErrorCode.PermissionSystemDenied.rawValue
             if let errorCode = error?.code where errorCode == deniedCode {
                 guard #available(iOS 8, *) else { return }
                 let url = NSURL(string: UIApplicationOpenSettingsURLString)!
                 UIApplication.sharedApplication().openURL(url)
             }
+            
+            if let _ = deviceId {
+                self.introView.setCurrentPageIndex(5, animated: true)
+            }
         })
+    }
+    
+    @IBAction func btnRejectNotificationTapped(sender: AnyObject) {
+        introView.scrollingEnabled = true
+        introView.setCurrentPageIndex(5, animated: true)
     }
 }

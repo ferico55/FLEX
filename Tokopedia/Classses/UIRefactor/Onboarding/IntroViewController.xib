@@ -452,6 +452,9 @@ lewat aplikasi Tokopedia!</string>
                                     <real key="value" value="3"/>
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="btnRejectNotificationTapped:" destination="-1" eventType="touchUpInside" id="cRQ-2q-esI"/>
+                            </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dLu-2w-Me2">
                             <rect key="frame" x="108" y="0.0" width="161" height="44"/>
