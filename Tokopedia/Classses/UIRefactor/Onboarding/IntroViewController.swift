@@ -145,6 +145,18 @@ class IntroViewController: UIViewController, EAIntroDelegate {
     
     func intro(introView: EAIntroView!, pageAppeared page: EAIntroPage!, withIndex pageIndex: UInt) {
         togglePageControlVisibility(pageIndex)
+
+        if (pageIndex > 3) {
+            let numberOfActivePages = UInt(introView.pages.count) - pageIndex
+            let scrollViewBounds = introView.scrollView.bounds
+            
+            introView.scrollView.restrictionArea = CGRect(
+                x: CGFloat(pageIndex) * scrollViewBounds.width,
+                y: 0,
+                width: CGFloat(numberOfActivePages) * scrollViewBounds.width,
+                height: scrollViewBounds.height
+            )
+        }
     }
     
     private func reRenderLabels() {
