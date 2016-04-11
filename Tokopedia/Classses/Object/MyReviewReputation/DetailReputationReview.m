@@ -8,7 +8,6 @@
 
 #import "DetailReputationReview.h"
 #import "ShopBadgeLevel.h"
-#import "ReviewImageAttachment.h"
 
 @implementation DetailReputationReview
 
@@ -46,6 +45,8 @@
             //if coming from inbox review
             tempViewModel.review_user_image = _user_image;
         }
+        
+        tempViewModel.review_image_attachment = _review_image_attachment;
 
         _viewModel = tempViewModel;
     }
@@ -200,6 +201,10 @@
     [detailReputationReviewMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"shop_badge_level"
                                                                                                   toKeyPath:@"shop_badge_level"
                                                                                                 withMapping:[ShopBadgeLevel mapping]]];
+    
+    [detailReputationReviewMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"review_image_attachment"
+                                                                                                  toKeyPath:@"review_image_attachment"
+                                                                                                withMapping:[ReviewImageAttachment mapping]]];
     
     return detailReputationReviewMapping;
 }

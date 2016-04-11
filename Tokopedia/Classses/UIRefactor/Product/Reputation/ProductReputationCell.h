@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "TTTattributedLabel.h"
+#import "DetailReputationReview.h"
 
 #define CPaddingTopBottom 8
 #define CHeightDate 15
@@ -23,6 +24,7 @@
 - (void)actionDisLike:(id)sender;
 - (void)actionChat:(id)sender;
 - (void)actionMore:(id)sender;
+- (void)didTapAttachedImage:(DetailReputationReview*)review atIndex:(NSInteger)index;
 @end
 
 
@@ -30,6 +32,7 @@
 @interface ProductReputationCell : UITableViewCell
 {
     IBOutlet UIView *viewContent, *lineSeparatorDesc, *viewStarKualitas, *viewStarAkurasi, *viewSeparatorKualitas, *viewContentLoad, *viewContentRating, *viewContentAction;
+    IBOutlet UIView *viewAttachedImages;
     IBOutlet UIImageView *imageProfile;
     IBOutlet ViewLabelUser *viewLabelUser;
     IBOutlet UIButton *btnRateEmoji, *btnLike, *btnDislike, *btnChat, *btnMore;
@@ -39,6 +42,7 @@
     
     BOOL isProductCell;//flag is used to product data
     IBOutletCollection(UIImageView) NSArray *arrImageKualitas, *arrImageAkurasi;
+    IBOutletCollection(UIImageView) NSArray *arrAttachedImages;
 }
 @property (nonatomic, unsafe_unretained) id<productReputationDelegate> delegate;
 
@@ -80,4 +84,5 @@
 - (void)resetLikeDislikeButton;
 - (void)enableTouchLikeDislikeButton;
 - (void)disableTouchLikeDislikeButton;
+- (void)setAttachedImages:(NSArray*)attachedImages;
 @end

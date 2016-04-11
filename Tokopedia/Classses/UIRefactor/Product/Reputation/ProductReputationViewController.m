@@ -105,7 +105,6 @@ static NSInteger userViewHeight = 70;
     [viewStarThree addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(gestureViewStar:)]];
     [viewStarFour addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(gestureViewStar:)]];
     [viewStarFive addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(gestureViewStar:)]];
-
     
     if (SYSTEM_VERSION_GREATER_THAN(@"8.0") && !UIAccessibilityIsReduceTransparencyEnabled()) {
         _filterView.backgroundColor = [UIColor clearColor];
@@ -124,16 +123,20 @@ static NSInteger userViewHeight = 70;
     UINib *cellNib = [UINib nibWithNibName:@"ProductReputationSimpleCell" bundle:nil];
     [tableContent registerNib:cellNib forCellReuseIdentifier:@"ProductReputationSimpleCellIdentifier"];
     
+    reviewRequest = [ReviewRequest new];
     
 }
+
 -(void) viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     animationHasShown = NO;
 }
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
 - (void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self unloadRequesting];
@@ -283,27 +286,28 @@ static NSInteger userViewHeight = 70;
     return (filterStar == 0 && helpfulReviews.count > 0) ? 2 : 1;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if(filterStar == 0 && helpfulReviews.count > 0){
-        if(indexPath.section == 1){
+    if (filterStar == 0 && helpfulReviews.count > 0) {
+        if (indexPath.section == 1) {
             return [self calculateCellHeightAtIndexPath:indexPath withArrayContent:arrList];
-        }else{
-            if(!isShowingMore && indexPath.row == 1){
+        } else {
+            if (!isShowingMore && indexPath.row == 1) {
                 //"load more" cell
-                if(helpfulReviews.count > 1){
+                if (helpfulReviews.count > 1) {
                     return 30;
-                }else{
+                } else {
                     return 0;
                 }
-            }else if(isShowingMore && indexPath.row == helpfulReviews.count){
+            } else if (isShowingMore && indexPath.row == helpfulReviews.count) {
                 return 30;
-            }else{
+            } else {
                 return [self calculateCellHeightAtIndexPath:indexPath withArrayContent:helpfulReviews];
             }
             
         }
-    }else{
+    } else {
         return [self calculateCellHeightAtIndexPath:indexPath withArrayContent:arrList];
     }
+    
     return 0;
 }
 - (CGFloat) calculateCellHeightAtIndexPath:(NSIndexPath*)indexPath withArrayContent:(NSMutableArray*)arr{
@@ -325,9 +329,15 @@ static NSInteger userViewHeight = 70;
     return height;
      */
     
+    if (((DetailReputationReview*)arr[indexPath.row]).review_image_attachment.count > 0) {
+        return 253;
+    } else {
+        return 160;
+    }
     
-    return 160;
+    
 }
+
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
     if(indexPath.row == arrList.count-1) {
         if(strUri!=nil && ![strUri isEqualToString:@"0"]) {
@@ -450,6 +460,35 @@ static NSInteger userViewHeight = 70;
     
     [self setLoadingView:YES];
     [[self getNetworkManager:CTagGetProductReview] doRequest];
+    
+    NSString *monthRange = @"";
+    NSString *shopQuality = @"";
+    NSString *shopAccuracy = @"";
+    NSNumberFormatter *value = [[NSNumberFormatter alloc] init];
+    value.numberStyle = NSNumberFormatterDecimalStyle;
+    
+    if (btnFilter6Month.tag == 1) {
+        monthRange = @"6";
+    }
+    
+    if ((int)segmentedControl.selectedSegmentIndex == 0 && filterStar > 0) {
+        shopQuality = [@(filterStar) stringValue];
+    } else if (filterStar > 0) {
+        shopAccuracy = [@(filterStar) stringValue];
+    }
+    
+    [reviewRequest requestGetProductReviewWithProductID:_strProductID
+                                             monthRange:monthRange
+                                                   page:@(page)
+                                           shopAccuracy:shopAccuracy
+                                            shopQuality:shopQuality
+                                             shopDomain:_strShopDomain
+                                              onSuccess:^(ReviewResult *result) {
+                                                  
+                                              }
+                                              onFailure:^(NSError *error) {
+                                                  
+                                              }];
 }
 - (void)actionResetFilter:(id)sender {
     if(filterStar == 0) {

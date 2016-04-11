@@ -13,6 +13,7 @@
 #import "ReviewResponse.h"
 #import "ProductOwner.h"
 #import "DetailTotalLikeDislike.h"
+
 @class ShopBadgeLevel;
 
 #define CShopBadgeLevel @"shop_badge_level"

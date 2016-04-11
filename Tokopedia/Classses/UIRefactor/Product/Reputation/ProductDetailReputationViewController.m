@@ -332,6 +332,10 @@ MGSwipeTableCellDelegate>
     [productReputationCell setImageAkurasi:[_detailReputationReview.product_accuracy_point intValue]];
     [productReputationCell setDescription:[NSString convertHTML:_detailReputationReview.review_message]];
     
+    if (_detailReputationReview.review_image_attachment.count > 0) {
+        [productReputationCell setAttachedImages:_detailReputationReview.review_image_attachment];
+    }
+    
     if(_strTotalDisLike != nil || ![_strTotalDisLike isEqualToString:@""]) {
         [productReputationCell.getBtnLike setTitle:_strTotalLike forState:UIControlStateNormal];
         [productReputationCell.getBtnDisLike setTitle:_strTotalDisLike forState:UIControlStateNormal];

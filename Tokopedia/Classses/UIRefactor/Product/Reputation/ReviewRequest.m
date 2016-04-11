@@ -23,6 +23,7 @@
 #import "SkipReview.h"
 #import "ResponseComment.h"
 #import "GeneralAction.h"
+#import "Review.h"
 
 #define ACTION_LIKE_REQUEST 1
 #define ACTION_DISLIKE_REQUEST 2
@@ -52,6 +53,7 @@
     TokopediaNetworkManager *insertReputationReviewResponseNetworkManager;
     TokopediaNetworkManager *deleteReputationReviewResponseNetworkManager;
     TokopediaNetworkManager *insertReputationNetworkManager;
+    TokopediaNetworkManager *getProductReviewNetworkManager;
     
     NSInteger _counter;
     NSDictionary *_imagesToUpload;
@@ -79,11 +81,12 @@
         insertReputationReviewResponseNetworkManager = [TokopediaNetworkManager new];
         deleteReputationReviewResponseNetworkManager = [TokopediaNetworkManager new];
         insertReputationNetworkManager = [TokopediaNetworkManager new];
+        getProductReviewNetworkManager = [TokopediaNetworkManager new];
     }
     return self;
 }
 
-#pragma mark - Public Function
+#pragma mark - Like Dislike Requests
 - (void)requestReviewLikeDislikesWithId:(NSString *)reviewId
                                  shopId:(NSString *)shopId
                               onSuccess:(void (^)(TotalLikeDislike *))successCallback
@@ -106,8 +109,12 @@
                                              }];
 }
 
--(void)actionLikeWithReviewId:(NSString *)reviewId shopId:(NSString *)shopId productId:(NSString *)productId userId:(NSString *)userId onSuccess:(void (^)(LikeDislikePostResult *))successCallback onFailure:(void (^)(NSError *))errorCallback{
-    
+- (void)actionLikeWithReviewId:(NSString *)reviewId
+                       shopId:(NSString *)shopId
+                    productId:(NSString *)productId
+                       userId:(NSString *)userId
+                    onSuccess:(void (^)(LikeDislikePostResult *))successCallback
+                    onFailure:(void (^)(NSError *))errorCallback {
     actionLikeNetworkManager.isParameterNotEncrypted = NO;
     actionLikeNetworkManager.isUsingHmac = YES;
     [actionLikeNetworkManager requestWithBaseUrl:@"https://ws.tokopedia.com"
@@ -129,7 +136,12 @@
                                        }];
 }
 
--(void)actionDislikeWithReviewId:(NSString *)reviewId shopId:(NSString *)shopId productId:(NSString *)productId userId:(NSString *)userId onSuccess:(void (^)(LikeDislikePostResult *))successCallback onFailure:(void (^)(NSError *))errorCallback{
+- (void)actionDislikeWithReviewId:(NSString *)reviewId
+                           shopId:(NSString *)shopId
+                        productId:(NSString *)productId
+                           userId:(NSString *)userId
+                        onSuccess:(void (^)(LikeDislikePostResult *))successCallback
+                        onFailure:(void (^)(NSError *))errorCallback{
     
     actionDislikeNetworkManager.isParameterNotEncrypted = NO;
     actionDislikeNetworkManager.isUsingHmac = YES;
@@ -152,7 +164,12 @@
                                           }];
 }
 
--(void)actionCancelLikeDislikeWithReviewId:(NSString *)reviewId shopId:(NSString *)shopId productId:(NSString *)productId userId:(NSString *)userId onSuccess:(void (^)(LikeDislikePostResult *))successCallback onFailure:(void (^)(NSError *))errorCallback{
+- (void)actionCancelLikeDislikeWithReviewId:(NSString *)reviewId
+                                     shopId:(NSString *)shopId
+                                  productId:(NSString *)productId
+                                     userId:(NSString *)userId
+                                  onSuccess:(void (^)(LikeDislikePostResult *))successCallback
+                                  onFailure:(void (^)(NSError *))errorCallback{
     
     actionCancelLikeDislikeNetworkManager.isParameterNotEncrypted = NO;
     actionCancelLikeDislikeNetworkManager.isUsingHmac = YES;
@@ -175,6 +192,7 @@
                                                     }];
 }
 
+#pragma mark - Inbox Review Requests
 - (void)requestGetInboxReputationWithNavigation:(NSString *)navigation
                                            page:(NSNumber *)page
                                          filter:(NSString *)filter
@@ -183,8 +201,8 @@
     getInboxReputationNetworkManager.isParameterNotEncrypted = NO;
     getInboxReputationNetworkManager.isUsingHmac = YES;
     
-    [getInboxReputationNetworkManager requestWithBaseUrl:[NSString v4Url]
-                                                    path:@"/v4/inbox-reputation/get_inbox_reputation.pl"
+    [getInboxReputationNetworkManager requestWithBaseUrl:@"http://lo-lucky.ndvl"
+                                                    path:@"/web-service/v4/inbox-reputation/get_inbox_reputation.pl"
                                                   method:RKRequestMethodGET
                                                parameter:@{@"filter" : filter,
                                                            @"nav"    : navigation,
@@ -223,8 +241,8 @@
                                 @"buyer_seller"         : role
                                 };
     
-    [getReviewDetailNetworkManager requestWithBaseUrl:[NSString v4Url]
-                                                 path:@"/v4/inbox-reputation/get_list_reputation_review.pl"
+    [getReviewDetailNetworkManager requestWithBaseUrl:@"http://lo-lucky.ndvl"
+                                                 path:@"/web-service/v4/inbox-reputation/get_list_reputation_review.pl"
                                                method:RKRequestMethodGET
                                             parameter:parameter
                                               mapping:[MyReviewReputation mapping]
@@ -238,90 +256,21 @@
                                             }];
 }
 
-- (void)requestUploadReviewImageWithHost:(NSString*)host
-                                    data:(id)imageData
-                                 imageID:(NSString *)imageID
-                                   token:(NSString *)token
-                               onSuccess:(void (^)(ImageResult *))successCallback
-                               onFailure:(void (^)(NSError *))errorCallback {
-    uploadReviewImageNetworkManager.isParameterNotEncrypted = NO;
-    uploadReviewImageNetworkManager.isUsingHmac = YES;
-    
-    RequestObjectUploadImage *requestObject = [RequestObjectUploadImage new];
-    requestObject.image_id = imageID;
-    requestObject.token = token;
-    requestObject.user_id = [[UserAuthentificationManager new] getUserId];
-    
-    UIImage *image = [imageData objectForKey:@"image"];
-    NSString *fileName = [imageData objectForKey:@"name"];
-    
-    [RequestUploadImage requestUploadImage:image
-                            withUploadHost:host
-                                      path:@"/upload/attachment"
-                                      name:@"fileToUpload"
-                                  fileName:fileName
-                             requestObject:requestObject
-                                 onSuccess:^(ImageResult *imageResult) {
-                                     successCallback(imageResult);
-                                 }
-                                 onFailure:^(NSError *errorResult) {
-                                     errorCallback(errorResult);
-                                 }];
-}
-
-- (void)requestProductReviewSubmitWithPostKey:(NSString *)postKey
-                                 fileUploaded:(NSDictionary *)fileUploaded
-                                    onSuccess:(void (^)(SubmitReviewResult *))successCallback
-                                    onFailure:(void (^)(NSError *))errorCallback {
-    productReviewSubmitNetworkManager.isParameterNotEncrypted = NO;
-    productReviewSubmitNetworkManager.isUsingHmac = YES;
-    
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:fileUploaded options:NSJSONWritingPrettyPrinted error:nil];
-    NSString *uploaded = [[NSString alloc] initWithBytes:[jsonData bytes] length:[jsonData length] encoding:NSUTF8StringEncoding];
-    uploaded = [uploaded stringByReplacingOccurrencesOfString:@"\n" withString:@""];
-    uploaded = [uploaded stringByReplacingOccurrencesOfString:@"\\" withString:@""];
-    uploaded = [uploaded stringByReplacingOccurrencesOfString:@" " withString:@""];
-    uploaded = [uploaded stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    
-    NSString *path = _isEdit?@"/v4/action/reputation/edit_reputation_review_submit.pl":@"/v4/action/reputation/insert_reputation_review_submit.pl";
-    
-    [productReviewSubmitNetworkManager requestWithBaseUrl:[NSString v4Url]
-                                                     path:path
-                                                   method:RKRequestMethodGET
-                                                parameter:@{@"post_key" : postKey?:@"",
-                                                            @"file_uploaded" : uploaded?:@""}
-                                                  mapping:[SubmitReview mapping]
-                                                onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                                    NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
-                                                    SubmitReview *obj = [result objectForKey:@""];
-                                                    
-                                                    if ([obj.data.is_success isEqualToString:@"1"]) {
-                                                        successCallback(obj.data);
-                                                    } else {
-                                                        [StickyAlertView showErrorMessage:obj.message_error];
-                                                    }
-                                                    
-                                                }
-                                                onFailure:^(NSError *errorResult) {
-                                                    errorCallback(errorResult);
-                                                }];
-}
-
--(void)requestSubmitReviewWithImageWithReputationID:(NSString *)reputationID
-                                          productID:(NSString *)productID
-                                       accuracyRate:(int)accuracyRate
-                                        qualityRate:(int)qualityRate
-                                            message:(NSString *)reviewMessage
-                                             shopID:(NSString *)shopID
-                                           serverID:(NSString *)serverID
-                              hasProductReviewPhoto:(BOOL)hasProductReviewPhoto
-                                     reviewPhotoIDs:(NSArray *)imageIDs
-                                 reviewPhotoObjects:(NSDictionary *)photos
-                                     imagesToUpload:(NSDictionary *)imagesToUpload
-                                              token:(NSString*)token
-                                               host:(NSString*)host
-                                          onSuccess:(void (^)(SubmitReviewResult *))successCallback
-                                          onFailure:(void (^)(NSError *))errorCallback {
+- (void)requestSubmitReviewWithImageWithReputationID:(NSString *)reputationID
+                                           productID:(NSString *)productID
+                                        accuracyRate:(int)accuracyRate
+                                         qualityRate:(int)qualityRate
+                                             message:(NSString *)reviewMessage
+                                              shopID:(NSString *)shopID
+                                            serverID:(NSString *)serverID
+                               hasProductReviewPhoto:(BOOL)hasProductReviewPhoto
+                                      reviewPhotoIDs:(NSArray *)imageIDs
+                                  reviewPhotoObjects:(NSDictionary *)photos
+                                      imagesToUpload:(NSDictionary *)imagesToUpload
+                                               token:(NSString*)token
+                                                host:(NSString*)host
+                                           onSuccess:(void (^)(SubmitReviewResult *))successCallback
+                                           onFailure:(void (^)(NSError *))errorCallback {
     _imagesToUpload = imagesToUpload;
     _counter = 0;
     
@@ -340,8 +289,8 @@
         uploaded = [uploaded stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     }
     
-    [submitReviewWithImageNetworkManager requestWithBaseUrl:[NSString v4Url]
-                                                       path:@"/v4/action/reputation/insert_reputation_review_validation.pl"
+    [submitReviewWithImageNetworkManager requestWithBaseUrl:@"http://lo-lucky.ndvl"
+                                                       path:@"/web-service/v4/action/reputation/insert_reputation_review_validation.pl"
                                                      method:RKRequestMethodGET
                                                   parameter:@{@"product_id" : productID,
                                                               @"rate_accuracy" : @(accuracyRate),
@@ -384,7 +333,7 @@
                        imagesToUpload:(NSDictionary*)imagesToUpload
                                 token:(NSString*)token
                                  host:(NSString*)host {
-    [self requestUploadReviewImageWithHost:[NSString stringWithFormat:@"https://%@",host]
+    [self requestUploadReviewImageWithHost:[NSString stringWithFormat:@"http://%@",host]
                                       data:imagesToUpload
                                    imageID:imageID
                                      token:token
@@ -399,7 +348,37 @@
                                  onFailure:^(NSError *errorResult) {
                                      self.errorCompletionBlock(errorResult);
                                  }];
+}
+
+- (void)requestUploadReviewImageWithHost:(NSString*)host
+                                    data:(id)imageData
+                                 imageID:(NSString *)imageID
+                                   token:(NSString *)token
+                               onSuccess:(void (^)(ImageResult *))successCallback
+                               onFailure:(void (^)(NSError *))errorCallback {
+    uploadReviewImageNetworkManager.isParameterNotEncrypted = NO;
+    uploadReviewImageNetworkManager.isUsingHmac = YES;
     
+    RequestObjectUploadImage *requestObject = [RequestObjectUploadImage new];
+    requestObject.image_id = imageID;
+    requestObject.token = token;
+    requestObject.user_id = [[UserAuthentificationManager new] getUserId];
+    
+    UIImage *image = [imageData objectForKey:@"image"];
+    NSString *fileName = [imageData objectForKey:@"name"];
+    
+    [RequestUploadImage requestUploadImage:image
+                            withUploadHost:host
+                                      path:@"/upload/attachment"
+                                      name:@"fileToUpload"
+                                  fileName:fileName
+                             requestObject:requestObject
+                                 onSuccess:^(ImageResult *imageResult) {
+                                     successCallback(imageResult);
+                                 }
+                                 onFailure:^(NSError *errorResult) {
+                                     errorCallback(errorResult);
+                                 }];
 }
 
 - (void)requestSubmitReviewWithPostKey:(NSString*)postKey
@@ -416,6 +395,44 @@
                                       onFailure:^(NSError *errorResult) {
                                           self.errorCompletionBlock(errorResult);
                                       }];
+}
+
+- (void)requestProductReviewSubmitWithPostKey:(NSString *)postKey
+                                 fileUploaded:(NSDictionary *)fileUploaded
+                                    onSuccess:(void (^)(SubmitReviewResult *))successCallback
+                                    onFailure:(void (^)(NSError *))errorCallback {
+    productReviewSubmitNetworkManager.isParameterNotEncrypted = NO;
+    productReviewSubmitNetworkManager.isUsingHmac = YES;
+    
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:fileUploaded options:NSJSONWritingPrettyPrinted error:nil];
+    NSString *uploaded = [[NSString alloc] initWithBytes:[jsonData bytes] length:[jsonData length] encoding:NSUTF8StringEncoding];
+    uploaded = [uploaded stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+    uploaded = [uploaded stringByReplacingOccurrencesOfString:@"\\" withString:@""];
+    uploaded = [uploaded stringByReplacingOccurrencesOfString:@" " withString:@""];
+    uploaded = [uploaded stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    
+    NSString *path = _isEdit?@"/web-service/v4/action/reputation/edit_reputation_review_submit.pl":@"/web-service/v4/action/reputation/insert_reputation_review_submit.pl";
+    
+    [productReviewSubmitNetworkManager requestWithBaseUrl:@"http://lo-lucky.ndvl"
+                                                     path:path
+                                                   method:RKRequestMethodGET
+                                                parameter:@{@"post_key" : postKey?:@"",
+                                                            @"file_uploaded" : uploaded?:@""}
+                                                  mapping:[SubmitReview mapping]
+                                                onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                                    NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+                                                    SubmitReview *obj = [result objectForKey:@""];
+                                                    
+                                                    if ([obj.data.is_success isEqualToString:@"1"]) {
+                                                        successCallback(obj.data);
+                                                    } else {
+                                                        [StickyAlertView showErrorMessage:obj.message_error];
+                                                    }
+                                                    
+                                                }
+                                                onFailure:^(NSError *errorResult) {
+                                                    errorCallback(errorResult);
+                                                }];
 }
 
 - (void)requestEditReviewWithImageWithReviewID:(NSString *)reviewID
@@ -451,8 +468,8 @@
         uploaded = [uploaded stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     }
     
-    [editReviewWithImageNetworkManager requestWithBaseUrl:[NSString v4Url]
-                                                     path:@"/v4/action/reputation/edit_reputation_review_validation.pl"
+    [editReviewWithImageNetworkManager requestWithBaseUrl:@"http://lo-lucky.ndvl"
+                                                     path:@"/web-service/v4/action/reputation/edit_reputation_review_validation.pl"
                                                    method:RKRequestMethodGET
                                                 parameter:@{@"product_id" : productID,
                                                             @"rate_accuracy" : @(accuracyRate),
@@ -470,57 +487,38 @@
                                                     NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
                                                     SubmitReview *obj = [result objectForKey:@""];
                                                     
-                                                    if (hasProductReviewPhoto && ([imagesToUpload count] > 0)) {
-                                                        _postKey = obj.data.post_key;
-                                                        _fileUploaded = [NSMutableDictionary new];
-                                                        for (NSString *imageID in imageIDs) {
-                                                            if ([imagesToUpload objectForKey:imageID] != nil) {
-                                                                [self requestUploadImageWithImageID:imageID
-                                                                                     imagesToUpload:[imagesToUpload objectForKey:imageID]
-                                                                                              token:token
-                                                                                               host:host];
-                                                                self.successCompletionBlock = successCallback;
-                                                                self.errorCompletionBlock = errorCallback;
+                                                    if (obj.data && !obj.message_error) {
+                                                        if (hasProductReviewPhoto && ([imagesToUpload count] > 0)) {
+                                                            _postKey = obj.data.post_key;
+                                                            _fileUploaded = [NSMutableDictionary new];
+                                                            for (NSString *imageID in imageIDs) {
+                                                                if ([imagesToUpload objectForKey:imageID] != nil) {
+                                                                    [self requestUploadImageWithImageID:imageID
+                                                                                         imagesToUpload:[imagesToUpload objectForKey:imageID]
+                                                                                                  token:token
+                                                                                                   host:host];
+                                                                    self.successCompletionBlock = successCallback;
+                                                                    self.errorCompletionBlock = errorCallback;
+                                                                }
                                                             }
+                                                        } else if (hasProductReviewPhoto && ([imagesToUpload count] == 0)) {
+                                                            [self requestEditReviewSubmitWithPostKey:obj.data.post_key
+                                                                                        fileUploaded:@{}];
+                                                            self.successCompletionBlock = successCallback;
+                                                            self.errorCompletionBlock = errorCallback;
+                                                        } else {
+                                                            successCallback(obj.data);
                                                         }
-                                                    } else if (hasProductReviewPhoto && ([imagesToUpload count] == 0)) {
-                                                        [self requestEditReviewSubmitWithPostKey:obj.data.post_key
-                                                                                    fileUploaded:@{}];
-                                                        self.successCompletionBlock = successCallback;
-                                                        self.errorCompletionBlock = errorCallback;
                                                     } else {
-                                                        successCallback(obj.data);
+                                                        [StickyAlertView showErrorMessage:obj.message_error?:@[@"Gagal ubah ulasan."]];
+                                                        errorCallback(nil);
                                                     }
+                                                    
                                                     
                                                 }
                                                 onFailure:^(NSError *errorResult) {
                                                     errorCallback(errorResult);
                                                 }];
-}
-
-- (void)requestSkipProductReviewWithProductID:(NSString *)productID
-                                 reputationID:(NSString *)reputationID
-                                       shopID:(NSString *)shopID
-                                    onSuccess:(void (^)(SkipReviewResult *))successCallback
-                                    onFailure:(void (^)(NSError *))errorCallback {
-    skipProductReviewNetworkManager.isParameterNotEncrypted = NO;
-    skipProductReviewNetworkManager.isUsingHmac = YES;
-    
-    [skipProductReviewNetworkManager requestWithBaseUrl:[NSString v4Url]
-                                                   path:@"/v4/action/review/skip_product_review.pl"
-                                                 method:RKRequestMethodGET
-                                              parameter:@{@"product_id" : productID,
-                                                          @"reputation_id" : reputationID,
-                                                          @"shop_id" : shopID}
-                                                mapping:[SkipReview mapping]
-                                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                                  NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
-                                                  SkipReview *obj = [result objectForKey:@""];
-                                                  successCallback(obj.data);
-                                              }
-                                              onFailure:^(NSError *errorResult) {
-                                                  errorCallback(errorResult);
-                                              }];
 }
 
 - (void)requestEditReviewSubmitWithPostKey:(NSString*)postKey
@@ -553,8 +551,8 @@
     uploaded = [uploaded stringByReplacingOccurrencesOfString:@" " withString:@""];
     uploaded = [uploaded stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
-    [editReputationReviewSubmitNetworkManager requestWithBaseUrl:[NSString v4Url]
-                                                            path:@"/v4/action/reputation/edit_reputation_review_submit.pl"
+    [editReputationReviewSubmitNetworkManager requestWithBaseUrl:@"http://lo-lucky.ndvl"
+                                                            path:@"/web-service/v4/action/reputation/edit_reputation_review_submit.pl"
                                                           method:RKRequestMethodGET
                                                        parameter:@{@"post_key" : postKey?:@"",
                                                                    @"file_uploaded" : uploaded?:@""}
@@ -574,6 +572,31 @@
                                                        }];
 }
 
+- (void)requestSkipProductReviewWithProductID:(NSString *)productID
+                                 reputationID:(NSString *)reputationID
+                                       shopID:(NSString *)shopID
+                                    onSuccess:(void (^)(SkipReviewResult *))successCallback
+                                    onFailure:(void (^)(NSError *))errorCallback {
+    skipProductReviewNetworkManager.isParameterNotEncrypted = NO;
+    skipProductReviewNetworkManager.isUsingHmac = YES;
+    
+    [skipProductReviewNetworkManager requestWithBaseUrl:@"http://lo-lucky.ndvl"
+                                                   path:@"/web-service/v4/action/review/skip_product_review.pl"
+                                                 method:RKRequestMethodGET
+                                              parameter:@{@"product_id" : productID,
+                                                          @"reputation_id" : reputationID,
+                                                          @"shop_id" : shopID}
+                                                mapping:[SkipReview mapping]
+                                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                                  NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+                                                  SkipReview *obj = [result objectForKey:@""];
+                                                  successCallback(obj.data);
+                                              }
+                                              onFailure:^(NSError *errorResult) {
+                                                  errorCallback(errorResult);
+                                              }];
+}
+
 - (void)requestInsertReputationReviewResponseWithReputationID:(NSString *)reputationID
                                               responseMessage:(NSString *)responseMessage
                                                      reviewID:(NSString *)reviewID
@@ -583,8 +606,8 @@
     insertReputationReviewResponseNetworkManager.isParameterNotEncrypted = NO;
     insertReputationReviewResponseNetworkManager.isUsingHmac = YES;
     
-    [insertReputationReviewResponseNetworkManager requestWithBaseUrl:[NSString v4Url]
-                                                                path:@"/v4/action/reputation/insert_reputation_review_response.pl"
+    [insertReputationReviewResponseNetworkManager requestWithBaseUrl:@"http://lo-lucky.ndvl"
+                                                                path:@"/web-service/v4/action/reputation/insert_reputation_review_response.pl"
                                                               method:RKRequestMethodGET
                                                            parameter:@{@"reputation_id" : reputationID,
                                                                        @"response_message" : responseMessage,
@@ -608,8 +631,8 @@
     deleteReputationReviewResponseNetworkManager.isParameterNotEncrypted = NO;
     deleteReputationReviewResponseNetworkManager.isUsingHmac = YES;
     
-    [deleteReputationReviewResponseNetworkManager requestWithBaseUrl:[NSString v4Url]
-                                                                path:@"/v4/action/reputation/delete_reputation_review_response.pl"
+    [deleteReputationReviewResponseNetworkManager requestWithBaseUrl:@"http://lo-lucky.ndvl"
+                                                                path:@"/web-service/v4/action/reputation/delete_reputation_review_response.pl"
                                                               method:RKRequestMethodGET
                                                            parameter:@{@"reputation_id" : reputationID,
                                                                        @"review_id" : reviewID,
@@ -632,8 +655,8 @@
     insertReputationNetworkManager.isParameterNotEncrypted = NO;
     insertReputationNetworkManager.isUsingHmac = YES;
     
-    [insertReputationNetworkManager requestWithBaseUrl:[NSString v4Url]
-                                                  path:@"/v4/action/reputation/insert_reputation.pl"
+    [insertReputationNetworkManager requestWithBaseUrl:@"http://lo-lucky.ndvl"
+                                                  path:@"/web-service/v4/action/reputation/insert_reputation.pl"
                                                 method:RKRequestMethodGET
                                              parameter:@{@"buyer_seller"     : role,
                                                          @"reputation_id"    : reputationID,
@@ -645,6 +668,49 @@
                                                  successCallback(obj.data);
                                              } onFailure:^(NSError *errorResult) {
                                                  errorCallback(errorResult);
+                                             }];
+}
+
+#pragma mark - Product Review Requests
+
+- (void)requestGetProductReviewWithProductID:(NSString *)productID
+                                  monthRange:(NSString *)monthRange
+                                        page:(NSNumber *)page
+                                shopAccuracy:(NSString *)shopAccuracy
+                                 shopQuality:(NSString *)shopQuality
+                                  shopDomain:(NSString *)shopDomain
+                                   onSuccess:(void (^)(ReviewResult *))successCallback
+                                   onFailure:(void (^)(NSError *))errorCallback {
+    getProductReviewNetworkManager.isParameterNotEncrypted = NO;
+    getProductReviewNetworkManager.isUsingHmac = YES;
+    
+    NSMutableDictionary *parameter = [[NSMutableDictionary alloc] initWithDictionary:@{@"product_id" : productID,
+                                                                                       @"page" : page,
+                                                                                       @"shop_domain" : shopDomain}];
+    
+    if (![shopQuality isEqualToString:@""]) {
+        [parameter setObject:shopQuality forKey:@"shop_quality"];
+    }
+    
+    if (![shopAccuracy isEqualToString:@""]) {
+        [parameter setObject:shopAccuracy forKey:@"shop_accuracy"];
+    }
+    
+    if (![monthRange isEqualToString:@""]) {
+        [parameter setObject:monthRange forKey:@"month_range"];
+    }
+    
+    [getProductReviewNetworkManager requestWithBaseUrl:@"http://lo-lucky.ndvl"
+                                                  path:@"/web-service/v4/product/get_product_review.pl"
+                                                method:RKRequestMethodGET
+                                             parameter:parameter
+                                               mapping:[Review mapping]
+                                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                                 
+                                                 
+                                             } onFailure:^(NSError *errorResult) {
+                                                 
+                                                 
                                              }];
 }
 

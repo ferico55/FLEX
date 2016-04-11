@@ -17,6 +17,8 @@
 }
 
 - (void)awakeFromNib {
+    arrAttachedImages = [NSArray sortViewsWithTagInArray:arrAttachedImages];
+    
     self.contentView.backgroundColor = [UIColor clearColor];
     self.backgroundColor = [UIColor clearColor];
     [viewLabelUser setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"GothamBook" size:15.0f]];
@@ -45,6 +47,7 @@
     }
     
     btnMore.frame = CGRectMake((self.bounds.size.width-(viewContent.frame.origin.x*2))-10-btnMore.bounds.size.width, 5, btnMore.bounds.size.width, btnMore.bounds.size.height);
+    
     lblDateDesc.frame = CGRectMake(imageProfile.frame.origin.x, CPaddingTopBottom+lblDesc.frame.origin.y+lblDesc.bounds.size.height+CPaddingTopBottom, lblDesc.bounds.size.width, lblDateDesc.bounds.size.height);
     viewContentRating.frame = CGRectMake(imageProfile.frame.origin.x, lblDateDesc.frame.origin.y+lblDateDesc.bounds.size.height+CPaddingTopBottom, (self.bounds.size.width-(viewContent.frame.origin.x*2))-(imageProfile.frame.origin.x*2), (viewContentRating.isHidden)?0:CHeightContentRate);
     lineSeparatorDesc.frame = CGRectMake(0, 0, viewContentRating.bounds.size.width, lineSeparatorDesc.bounds.size.height);
@@ -134,6 +137,9 @@
     [_delegate actionMore:sender];
 }
 
+- (IBAction)tapOnAttachedImage:(id)sender {
+    
+}
 
 #pragma mark - Setter and Getter
 - (UIImageView *)getProductImage {

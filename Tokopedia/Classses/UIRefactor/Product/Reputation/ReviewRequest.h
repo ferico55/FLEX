@@ -19,6 +19,7 @@
 #import "SkipReviewResult.h"
 #import "ResponseCommentResult.h"
 #import "GeneralActionResult.h"
+#import "ReviewResult.h"
 
 @interface ReviewRequest : NSObject
 - (void)requestReviewLikeDislikesWithId:(NSString *)reviewId
@@ -119,5 +120,14 @@
                                           score:(NSString*)score
                                       onSuccess:(void(^)(GeneralActionResult *result))successCallback
                                       onFailure:(void(^)(NSError *error))errorCallback;
+
+- (void)requestGetProductReviewWithProductID:(NSString*)productID
+                                  monthRange:(NSString*)monthRange
+                                        page:(NSNumber*)page
+                                shopAccuracy:(NSString*)shopAccuracy
+                                 shopQuality:(NSString*)shopQuality
+                                  shopDomain:(NSString*)shopDomain
+                                   onSuccess:(void(^)(ReviewResult *result))successCallback
+                                   onFailure:(void(^)(NSError *error))errorCallback;
 
 @end
