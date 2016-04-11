@@ -442,7 +442,6 @@ lewat aplikasi Tokopedia!</string>
                             <rect key="frame" x="0.0" y="0.0" width="102" height="44"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="44" id="C6B-fH-7fi"/>
-                                <constraint firstAttribute="width" constant="102" id="DHC-Gt-MTs"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
                             <state key="normal" title="Tidak">
@@ -458,7 +457,6 @@ lewat aplikasi Tokopedia!</string>
                             <rect key="frame" x="108" y="0.0" width="161" height="44"/>
                             <color key="backgroundColor" red="0.22745098039215686" green="0.70196078431372544" blue="0.22352941176470587" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="161" id="DZo-4n-bUe"/>
                                 <constraint firstAttribute="height" constant="44" id="dYA-VX-4ct"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
@@ -480,6 +478,10 @@ lewat aplikasi Tokopedia!</string>
                         <constraint firstItem="dLu-2w-Me2" firstAttribute="top" secondItem="7UT-96-5h5" secondAttribute="top" id="TFN-rw-ptE"/>
                         <constraint firstItem="X9K-LS-ai8" firstAttribute="bottom" secondItem="dLu-2w-Me2" secondAttribute="bottom" id="VMh-uE-Kag"/>
                         <constraint firstItem="X9K-LS-ai8" firstAttribute="leading" secondItem="7UT-96-5h5" secondAttribute="leading" id="bfK-lG-7s2"/>
+                        <constraint firstAttribute="width" constant="269" id="gzm-We-fK8">
+                            <variation key="heightClass=regular-widthClass=regular" constant="350"/>
+                        </constraint>
+                        <constraint firstItem="X9K-LS-ai8" firstAttribute="width" secondItem="dLu-2w-Me2" secondAttribute="height" multiplier="51:22" id="h85-ie-GhS"/>
                         <constraint firstItem="dLu-2w-Me2" firstAttribute="leading" secondItem="X9K-LS-ai8" secondAttribute="trailing" constant="6" id="s3R-8F-AIW"/>
                         <constraint firstAttribute="bottom" secondItem="dLu-2w-Me2" secondAttribute="bottom" id="t29-4b-S6U"/>
                         <constraint firstAttribute="trailing" secondItem="dLu-2w-Me2" secondAttribute="trailing" id="xfX-PS-IEc"/>
