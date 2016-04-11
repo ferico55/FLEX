@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -77,27 +78,29 @@
                 <constraint firstAttribute="bottom" secondItem="gBF-Tr-zYB" secondAttribute="bottom" id="r9x-8S-Bxl"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
-            <point key="canvasLocation" x="-116.5" y="92.5"/>
+            <point key="canvasLocation" x="-344.5" y="-51.5"/>
         </view>
         <view contentMode="scaleToFill" id="lY8-xc-qq4">
-            <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+            <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="onboarding_toped_1a.png" translatesAutoresizingMaskIntoConstraints="NO" id="uoJ-Oz-2ks">
-                    <rect key="frame" x="92" y="197" width="230" height="194"/>
+                    <rect key="frame" x="269" y="312" width="230" height="194"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="230" id="MZf-Tn-zTB"/>
-                        <constraint firstAttribute="height" constant="194" id="qYB-GH-xLr"/>
+                        <constraint firstAttribute="width" constant="230" id="MZf-Tn-zTB">
+                            <variation key="heightClass=regular-widthClass=regular" constant="345"/>
+                        </constraint>
+                        <constraint firstAttribute="width" secondItem="uoJ-Oz-2ks" secondAttribute="height" multiplier="115:97" id="ibB-Wf-8u1"/>
                     </constraints>
                 </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Selamat Datang!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z06-T0-a5Y">
-                    <rect key="frame" x="117" y="515" width="181" height="20"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Selamat Datang!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z06-T0-a5Y">
+                    <rect key="frame" x="294" y="717" width="181" height="20"/>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="22"/>
                     <color key="textColor" red="0.38431372549019605" green="0.38431372549019605" blue="0.38431372549019605" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="297" translatesAutoresizingMaskIntoConstraints="NO" id="jNy-RO-bFt" customClass="TTTAttributedLabel">
-                    <rect key="frame" x="79" y="558" width="257" height="31"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="297" translatesAutoresizingMaskIntoConstraints="NO" id="jNy-RO-bFt" customClass="TTTAttributedLabel">
+                    <rect key="frame" x="259" y="760" width="251" height="31"/>
                     <string key="text">Dapetin apa aja kebutuhanmu
 lewat aplikasi Tokopedia!</string>
                     <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="17"/>
@@ -118,70 +121,67 @@ lewat aplikasi Tokopedia!</string>
                 <constraint firstItem="z06-T0-a5Y" firstAttribute="top" secondItem="lY8-xc-qq4" secondAttribute="centerY" multiplier="1.4" id="d5u-gI-plG"/>
                 <constraint firstItem="uoJ-Oz-2ks" firstAttribute="centerX" secondItem="lY8-xc-qq4" secondAttribute="centerX" id="tjc-0t-0Yt"/>
             </constraints>
-            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
+            <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="iPad"/>
             <point key="canvasLocation" x="370" y="127"/>
         </view>
         <view contentMode="scaleToFill" id="5kU-ga-1jY">
-            <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+            <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="slide2_phone.png" translatesAutoresizingMaskIntoConstraints="NO" id="E5q-DK-FEw">
-                    <rect key="frame" x="116" y="197" width="183" height="194"/>
+                    <rect key="frame" x="293" y="313" width="183" height="194"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="194" id="QNU-Cs-TB6"/>
-                        <constraint firstAttribute="width" constant="182.5" id="aYG-zL-bV9"/>
+                        <constraint firstAttribute="width" constant="182.5" id="aYG-zL-bV9">
+                            <variation key="heightClass=regular-widthClass=regular" constant="274"/>
+                        </constraint>
+                        <constraint firstAttribute="width" secondItem="E5q-DK-FEw" secondAttribute="height" multiplier="183:194" id="x7M-zi-VSz"/>
                     </constraints>
                 </imageView>
                 <imageView userInteractionEnabled="NO" alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="slide2b.png" translatesAutoresizingMaskIntoConstraints="NO" id="6r3-Zg-Dvc">
-                    <rect key="frame" x="85" y="352" width="65" height="65"/>
+                    <rect key="frame" x="262" y="468" width="65" height="65"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="65" id="2cu-w7-jTE"/>
-                        <constraint firstAttribute="width" constant="64.5" id="b5s-qb-Sfj"/>
+                        <constraint firstAttribute="width" secondItem="6r3-Zg-Dvc" secondAttribute="height" multiplier="1:1" id="ZoG-v9-ihJ"/>
                     </constraints>
                 </imageView>
                 <imageView userInteractionEnabled="NO" alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="slide2c.png" translatesAutoresizingMaskIntoConstraints="NO" id="Xhl-Iz-7kg">
-                    <rect key="frame" x="263" y="171" width="65" height="65"/>
+                    <rect key="frame" x="440" y="287" width="65" height="65"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="64.5" id="U03-91-vli"/>
-                        <constraint firstAttribute="height" constant="65" id="WBq-V3-OQw"/>
+                        <constraint firstAttribute="width" secondItem="Xhl-Iz-7kg" secondAttribute="height" multiplier="1:1" id="mg1-Oz-9k5"/>
                     </constraints>
                 </imageView>
                 <imageView userInteractionEnabled="NO" alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="slide2d.png" translatesAutoresizingMaskIntoConstraints="NO" id="ZFZ-zV-h5i">
-                    <rect key="frame" x="59" y="284" width="55" height="55"/>
+                    <rect key="frame" x="236" y="400" width="55" height="55"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="55" id="Sq4-Lc-hvE"/>
-                        <constraint firstAttribute="width" constant="55" id="gkV-vO-ECd"/>
+                        <constraint firstAttribute="width" secondItem="ZFZ-zV-h5i" secondAttribute="height" multiplier="1:1" id="9Rb-8R-xJ7"/>
                     </constraints>
                 </imageView>
                 <imageView userInteractionEnabled="NO" alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="slide2g.png" translatesAutoresizingMaskIntoConstraints="NO" id="2BJ-q0-jCe">
-                    <rect key="frame" x="79" y="210" width="55" height="55"/>
+                    <rect key="frame" x="256" y="326" width="55" height="55"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="55" id="O3d-OC-28x"/>
-                        <constraint firstAttribute="width" constant="55" id="V96-yJ-t7y"/>
+                        <constraint firstAttribute="width" secondItem="2BJ-q0-jCe" secondAttribute="height" multiplier="1:1" id="tCK-j4-1JY"/>
                     </constraints>
                 </imageView>
                 <imageView userInteractionEnabled="NO" alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="slide2e.png" translatesAutoresizingMaskIntoConstraints="NO" id="gP3-JM-BQd">
-                    <rect key="frame" x="284" y="316" width="55" height="55"/>
+                    <rect key="frame" x="461" y="432" width="55" height="55"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="55" id="PKM-GV-KVh"/>
-                        <constraint firstAttribute="height" constant="55" id="vZI-o1-dja"/>
+                        <constraint firstAttribute="width" secondItem="gP3-JM-BQd" secondAttribute="height" multiplier="1:1" id="cvw-qG-hVm"/>
                     </constraints>
                 </imageView>
                 <imageView userInteractionEnabled="NO" alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="slide2f.png" translatesAutoresizingMaskIntoConstraints="NO" id="nE0-QU-6VD">
-                    <rect key="frame" x="302" y="244" width="55" height="55"/>
+                    <rect key="frame" x="479" y="360" width="55" height="55"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="55" id="I59-b2-1np"/>
-                        <constraint firstAttribute="height" constant="55" id="reM-Yu-GS6"/>
+                        <constraint firstAttribute="width" secondItem="nE0-QU-6VD" secondAttribute="height" multiplier="1:1" id="ULN-IC-uRg"/>
                     </constraints>
                 </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Yang Jual Banyak!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5qL-G6-vTm">
-                    <rect key="frame" x="107" y="515" width="201" height="20"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Yang Jual Banyak!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5qL-G6-vTm">
+                    <rect key="frame" x="107" y="717" width="201" height="20"/>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="22"/>
                     <color key="textColor" red="0.38431372549999998" green="0.38431372549999998" blue="0.38431372549999998" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Jutaan produk dari semua kategori ada di sini" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="297" translatesAutoresizingMaskIntoConstraints="NO" id="aDq-bv-5mA" customClass="TTTAttributedLabel">
-                    <rect key="frame" x="59" y="558" width="297" height="31"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jutaan produk dari semua kategori ada di sini" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="297" translatesAutoresizingMaskIntoConstraints="NO" id="aDq-bv-5mA" customClass="TTTAttributedLabel">
+                    <rect key="frame" x="98" y="558" width="219" height="31"/>
                     <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="17"/>
                     <color key="textColor" red="0.51764705879999995" green="0.51764705879999995" blue="0.51764705879999995" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
@@ -194,58 +194,100 @@ lewat aplikasi Tokopedia!</string>
             </subviews>
             <constraints>
                 <constraint firstItem="aDq-bv-5mA" firstAttribute="top" secondItem="5qL-G6-vTm" secondAttribute="bottom" constant="23" id="4i2-cV-IRU"/>
-                <constraint firstItem="6r3-Zg-Dvc" firstAttribute="top" secondItem="E5q-DK-FEw" secondAttribute="bottom" constant="-39" id="C9F-is-jEN"/>
-                <constraint firstItem="E5q-DK-FEw" firstAttribute="top" secondItem="nE0-QU-6VD" secondAttribute="bottom" constant="-102" id="CLm-QL-V0M"/>
+                <constraint firstItem="6r3-Zg-Dvc" firstAttribute="top" secondItem="E5q-DK-FEw" secondAttribute="bottom" constant="-39" id="C9F-is-jEN">
+                    <variation key="heightClass=regular-widthClass=regular" constant="-60"/>
+                </constraint>
+                <constraint firstItem="E5q-DK-FEw" firstAttribute="top" secondItem="nE0-QU-6VD" secondAttribute="bottom" constant="-102" id="CLm-QL-V0M">
+                    <variation key="heightClass=regular-widthClass=regular" constant="-153"/>
+                </constraint>
                 <constraint firstItem="5qL-G6-vTm" firstAttribute="centerX" secondItem="5kU-ga-1jY" secondAttribute="centerX" id="DBi-8Y-zAj"/>
                 <constraint firstItem="E5q-DK-FEw" firstAttribute="centerY" secondItem="5kU-ga-1jY" secondAttribute="centerY" multiplier="0.8" id="GYC-bd-PaI"/>
-                <constraint firstItem="E5q-DK-FEw" firstAttribute="leading" secondItem="ZFZ-zV-h5i" secondAttribute="trailing" constant="2" id="IWC-xb-S8Q"/>
-                <constraint firstItem="Xhl-Iz-7kg" firstAttribute="leading" secondItem="E5q-DK-FEw" secondAttribute="trailing" constant="-35.5" id="Oiz-K3-kJA"/>
-                <constraint firstItem="nE0-QU-6VD" firstAttribute="leading" secondItem="E5q-DK-FEw" secondAttribute="trailing" constant="3.5" id="PLD-gc-g4t"/>
-                <constraint firstItem="E5q-DK-FEw" firstAttribute="top" secondItem="Xhl-Iz-7kg" secondAttribute="bottom" constant="-39" id="TbC-Vm-9QO"/>
+                <constraint firstItem="E5q-DK-FEw" firstAttribute="leading" secondItem="ZFZ-zV-h5i" secondAttribute="trailing" constant="2" id="IWC-xb-S8Q">
+                    <variation key="heightClass=regular-widthClass=regular" constant="3"/>
+                </constraint>
+                <constraint firstItem="gP3-JM-BQd" firstAttribute="width" secondItem="E5q-DK-FEw" secondAttribute="height" multiplier="55:194" id="Kpm-Mh-3N9"/>
+                <constraint firstItem="Xhl-Iz-7kg" firstAttribute="leading" secondItem="E5q-DK-FEw" secondAttribute="trailing" constant="-35.5" id="Oiz-K3-kJA">
+                    <variation key="heightClass=regular-widthClass=regular" constant="-54"/>
+                </constraint>
+                <constraint firstItem="nE0-QU-6VD" firstAttribute="leading" secondItem="E5q-DK-FEw" secondAttribute="trailing" constant="3.5" id="PLD-gc-g4t">
+                    <variation key="heightClass=regular-widthClass=regular" constant="6"/>
+                </constraint>
+                <constraint firstItem="Xhl-Iz-7kg" firstAttribute="width" secondItem="E5q-DK-FEw" secondAttribute="height" multiplier="65:194" id="RdQ-3N-gV4"/>
+                <constraint firstItem="E5q-DK-FEw" firstAttribute="top" secondItem="Xhl-Iz-7kg" secondAttribute="bottom" constant="-39" id="TbC-Vm-9QO">
+                    <variation key="heightClass=regular-widthClass=regular" constant="-60"/>
+                </constraint>
                 <constraint firstItem="aDq-bv-5mA" firstAttribute="centerX" secondItem="5kU-ga-1jY" secondAttribute="centerX" id="UzV-GR-wFb"/>
                 <constraint firstItem="E5q-DK-FEw" firstAttribute="centerX" secondItem="5kU-ga-1jY" secondAttribute="centerX" id="Wuw-83-ICU"/>
-                <constraint firstItem="gP3-JM-BQd" firstAttribute="top" secondItem="E5q-DK-FEw" secondAttribute="bottom" constant="-75" id="ZHk-qU-KWC"/>
-                <constraint firstItem="E5q-DK-FEw" firstAttribute="leading" secondItem="2BJ-q0-jCe" secondAttribute="trailing" constant="-18" id="gMj-7E-lQ5"/>
-                <constraint firstItem="gP3-JM-BQd" firstAttribute="leading" secondItem="E5q-DK-FEw" secondAttribute="trailing" constant="-14.5" id="lqh-2B-5Gv"/>
-                <constraint firstItem="E5q-DK-FEw" firstAttribute="top" secondItem="2BJ-q0-jCe" secondAttribute="bottom" constant="-68" id="tuD-FE-eDc"/>
-                <constraint firstItem="E5q-DK-FEw" firstAttribute="leading" secondItem="6r3-Zg-Dvc" secondAttribute="trailing" constant="-33.5" id="ukW-eF-Sj2"/>
-                <constraint firstItem="ZFZ-zV-h5i" firstAttribute="top" secondItem="E5q-DK-FEw" secondAttribute="bottom" constant="-107" id="vWz-hl-Xgy"/>
+                <constraint firstItem="gP3-JM-BQd" firstAttribute="top" secondItem="E5q-DK-FEw" secondAttribute="bottom" constant="-75" id="ZHk-qU-KWC">
+                    <variation key="heightClass=regular-widthClass=regular" constant="-112"/>
+                </constraint>
+                <constraint firstItem="nE0-QU-6VD" firstAttribute="width" secondItem="E5q-DK-FEw" secondAttribute="height" multiplier="55:194" id="dl3-7f-97O"/>
+                <constraint firstItem="E5q-DK-FEw" firstAttribute="leading" secondItem="2BJ-q0-jCe" secondAttribute="trailing" constant="-18" id="gMj-7E-lQ5">
+                    <variation key="heightClass=regular-widthClass=regular" constant="-27"/>
+                </constraint>
+                <constraint firstItem="2BJ-q0-jCe" firstAttribute="width" secondItem="E5q-DK-FEw" secondAttribute="height" multiplier="55:194" id="hRF-Yq-0qY"/>
+                <constraint firstItem="gP3-JM-BQd" firstAttribute="leading" secondItem="E5q-DK-FEw" secondAttribute="trailing" constant="-14.5" id="lqh-2B-5Gv">
+                    <variation key="heightClass=regular-widthClass=regular" constant="-22"/>
+                </constraint>
+                <constraint firstItem="6r3-Zg-Dvc" firstAttribute="width" secondItem="E5q-DK-FEw" secondAttribute="height" multiplier="65:194" id="nY1-5U-Z6h"/>
+                <constraint firstItem="ZFZ-zV-h5i" firstAttribute="width" secondItem="E5q-DK-FEw" secondAttribute="height" multiplier="55:194" id="ppd-s0-zos"/>
+                <constraint firstItem="E5q-DK-FEw" firstAttribute="top" secondItem="2BJ-q0-jCe" secondAttribute="bottom" constant="-68" id="tuD-FE-eDc">
+                    <variation key="heightClass=regular-widthClass=regular" constant="-102"/>
+                </constraint>
+                <constraint firstItem="E5q-DK-FEw" firstAttribute="leading" secondItem="6r3-Zg-Dvc" secondAttribute="trailing" constant="-33.5" id="ukW-eF-Sj2">
+                    <variation key="heightClass=regular-widthClass=regular" constant="-51"/>
+                </constraint>
+                <constraint firstItem="ZFZ-zV-h5i" firstAttribute="top" secondItem="E5q-DK-FEw" secondAttribute="bottom" constant="-107" id="vWz-hl-Xgy">
+                    <variation key="heightClass=regular-widthClass=regular" constant="-160"/>
+                </constraint>
                 <constraint firstItem="5qL-G6-vTm" firstAttribute="top" secondItem="5kU-ga-1jY" secondAttribute="centerY" multiplier="1.4" id="w1K-OC-JeZ"/>
             </constraints>
-            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
-            <point key="canvasLocation" x="860" y="127"/>
+            <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="iPad"/>
+            <point key="canvasLocation" x="1210" y="127"/>
         </view>
         <view contentMode="scaleToFill" id="BN5-EE-zRc">
-            <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+            <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="slide3_phone.png" translatesAutoresizingMaskIntoConstraints="NO" id="3G8-gC-fWs">
-                    <rect key="frame" x="116" y="167" width="182" height="256"/>
+                    <rect key="frame" x="293" y="282" width="182" height="256"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="256" id="3tG-tB-EhH"/>
-                        <constraint firstAttribute="width" constant="182.5" id="vNU-CG-AiS"/>
+                        <constraint firstAttribute="width" secondItem="3G8-gC-fWs" secondAttribute="height" multiplier="91:128" id="dcd-pm-2C0"/>
+                        <constraint firstAttribute="width" constant="182" id="vNU-CG-AiS">
+                            <variation key="heightClass=regular-widthClass=regular" constant="274"/>
+                        </constraint>
                     </constraints>
                 </imageView>
                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xZy-Qf-OB2">
-                    <rect key="frame" x="133" y="269" width="151" height="154"/>
+                    <rect key="frame" x="310" y="384" width="151" height="154"/>
                     <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="slide3_content.png" translatesAutoresizingMaskIntoConstraints="NO" id="j04-98-OCB">
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="slide3_content.png" translatesAutoresizingMaskIntoConstraints="NO" id="j04-98-OCB">
                             <rect key="frame" x="5" y="8" width="140" height="276"/>
+                            <constraints>
+                                <constraint firstAttribute="width" secondItem="j04-98-OCB" secondAttribute="height" multiplier="35:69" id="WNc-6G-2qG"/>
+                            </constraints>
                         </imageView>
                     </subviews>
                     <constraints>
-                        <constraint firstAttribute="width" constant="151" id="bfH-fn-Uzk"/>
-                        <constraint firstAttribute="height" constant="154" id="cFh-Kp-P2h"/>
+                        <constraint firstAttribute="width" secondItem="xZy-Qf-OB2" secondAttribute="height" multiplier="151:154" id="A90-tj-iyR"/>
+                        <constraint firstItem="j04-98-OCB" firstAttribute="width" secondItem="xZy-Qf-OB2" secondAttribute="height" multiplier="10:11" id="m4L-4T-DXw"/>
+                        <constraint firstItem="j04-98-OCB" firstAttribute="top" secondItem="xZy-Qf-OB2" secondAttribute="top" constant="8" id="xBx-bl-UJS">
+                            <variation key="heightClass=regular-widthClass=regular" constant="12"/>
+                        </constraint>
+                        <constraint firstItem="j04-98-OCB" firstAttribute="leading" secondItem="xZy-Qf-OB2" secondAttribute="leading" constant="5" id="xHb-hs-aam">
+                            <variation key="heightClass=regular-widthClass=regular" constant="8"/>
+                        </constraint>
                     </constraints>
                 </view>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Belanja Lebih Mudah!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CaD-C3-0M0">
-                    <rect key="frame" x="91" y="515" width="233" height="20"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Belanja Lebih Mudah!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CaD-C3-0M0">
+                    <rect key="frame" x="91" y="717" width="233" height="20"/>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="22"/>
                     <color key="textColor" red="0.38431372549999998" green="0.38431372549999998" blue="0.38431372549999998" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Cari produk yang kamu mau langsung dari genggaman" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="297" translatesAutoresizingMaskIntoConstraints="NO" id="mKb-cw-ing" customClass="TTTAttributedLabel">
-                    <rect key="frame" x="86" y="558" width="243" height="31"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cari produk yang kamu mau langsung dari genggaman" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="297" translatesAutoresizingMaskIntoConstraints="NO" id="mKb-cw-ing" customClass="TTTAttributedLabel">
+                    <rect key="frame" x="88" y="558" width="238" height="31"/>
                     <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="17"/>
                     <color key="textColor" red="0.51764705879999995" green="0.51764705879999995" blue="0.51764705879999995" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
@@ -257,57 +299,60 @@ lewat aplikasi Tokopedia!</string>
                 </label>
             </subviews>
             <constraints>
+                <constraint firstItem="xZy-Qf-OB2" firstAttribute="bottom" secondItem="3G8-gC-fWs" secondAttribute="bottom" id="4CR-FD-5wC"/>
                 <constraint firstItem="CaD-C3-0M0" firstAttribute="top" secondItem="BN5-EE-zRc" secondAttribute="centerY" multiplier="1.4" id="8Nl-41-fkS"/>
+                <constraint firstItem="xZy-Qf-OB2" firstAttribute="width" secondItem="3G8-gC-fWs" secondAttribute="height" multiplier="151:256" id="J6m-lV-Jgz"/>
                 <constraint firstItem="mKb-cw-ing" firstAttribute="centerX" secondItem="BN5-EE-zRc" secondAttribute="centerX" id="Q1h-ZU-PbW"/>
                 <constraint firstItem="mKb-cw-ing" firstAttribute="top" secondItem="CaD-C3-0M0" secondAttribute="bottom" constant="23" id="TZw-gF-5G9"/>
                 <constraint firstItem="CaD-C3-0M0" firstAttribute="centerX" secondItem="BN5-EE-zRc" secondAttribute="centerX" id="jMd-nS-6u3"/>
-                <constraint firstItem="xZy-Qf-OB2" firstAttribute="top" secondItem="3G8-gC-fWs" secondAttribute="bottom" constant="-154" id="ky3-Ia-Ld8"/>
                 <constraint firstItem="3G8-gC-fWs" firstAttribute="centerX" secondItem="BN5-EE-zRc" secondAttribute="centerX" id="vg7-uU-FFe"/>
-                <constraint firstItem="xZy-Qf-OB2" firstAttribute="leading" secondItem="3G8-gC-fWs" secondAttribute="trailing" constant="-165" id="wCX-rm-HHV"/>
+                <constraint firstItem="xZy-Qf-OB2" firstAttribute="leading" secondItem="3G8-gC-fWs" secondAttribute="leading" constant="17" id="wCX-rm-HHV">
+                    <variation key="heightClass=regular-widthClass=regular" constant="26"/>
+                </constraint>
                 <constraint firstItem="3G8-gC-fWs" firstAttribute="centerY" secondItem="BN5-EE-zRc" secondAttribute="centerY" multiplier="0.8" id="xRJ-pB-ohf"/>
             </constraints>
-            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
+            <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="iPad"/>
             <point key="canvasLocation" x="1334" y="127"/>
         </view>
         <view contentMode="scaleToFill" id="pXk-TG-zyI">
-            <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+            <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="onboarding_4a.png" translatesAutoresizingMaskIntoConstraints="NO" id="boN-YG-LZz">
-                    <rect key="frame" x="116" y="166" width="182" height="256"/>
+                    <rect key="frame" x="293" y="281" width="182" height="256"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="182.5" id="43w-Md-2th"/>
-                        <constraint firstAttribute="height" constant="256" id="JLU-gd-EBH"/>
+                        <constraint firstAttribute="width" constant="182.5" id="43w-Md-2th">
+                            <variation key="heightClass=regular-widthClass=regular" constant="273"/>
+                        </constraint>
+                        <constraint firstAttribute="width" secondItem="boN-YG-LZz" secondAttribute="height" multiplier="91:128" id="KJT-S6-x3d"/>
                     </constraints>
                 </imageView>
                 <imageView userInteractionEnabled="NO" alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="onboarding_4b.png" translatesAutoresizingMaskIntoConstraints="NO" id="mfI-1A-i8w">
-                    <rect key="frame" x="110" y="217" width="195" height="58"/>
+                    <rect key="frame" x="287" y="332" width="195" height="58"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="195" id="5yG-7y-ZEd"/>
-                        <constraint firstAttribute="height" constant="57.5" id="qnq-ml-lVa"/>
+                        <constraint firstAttribute="width" secondItem="mfI-1A-i8w" secondAttribute="height" multiplier="195:58" id="BOM-0j-VDC"/>
                     </constraints>
                 </imageView>
                 <imageView userInteractionEnabled="NO" alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="onboarding_4c.png" translatesAutoresizingMaskIntoConstraints="NO" id="6YN-xD-wgH">
-                    <rect key="frame" x="145" y="295" width="126" height="127"/>
+                    <rect key="frame" x="145" y="410" width="126" height="127"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="125.5" id="WRQ-i9-Ekf"/>
-                        <constraint firstAttribute="height" constant="127" id="s5Z-gR-jTZ"/>
+                        <constraint firstAttribute="width" secondItem="6YN-xD-wgH" secondAttribute="height" multiplier="126:127" id="h50-Wt-akc"/>
                     </constraints>
                 </imageView>
                 <imageView userInteractionEnabled="NO" alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="onboarding_4d.png" translatesAutoresizingMaskIntoConstraints="NO" id="9t7-Tg-QTO">
-                    <rect key="frame" x="151" y="310" width="54" height="39"/>
+                    <rect key="frame" x="328" y="425" width="54" height="39"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="53.5" id="9op-QC-aEq"/>
-                        <constraint firstAttribute="height" constant="39" id="E2V-IQ-4Ta"/>
+                        <constraint firstAttribute="width" secondItem="9t7-Tg-QTO" secondAttribute="height" multiplier="18:13" id="xxV-ga-vLI"/>
                     </constraints>
                 </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Buka Toko Gratis!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V1C-3J-LVg">
-                    <rect key="frame" x="110" y="515" width="194" height="20"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Buka Toko Gratis!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V1C-3J-LVg">
+                    <rect key="frame" x="110" y="716" width="194" height="20"/>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="22"/>
                     <color key="textColor" red="0.38431372549999998" green="0.38431372549999998" blue="0.38431372549999998" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Mau jualan juga? Buka tokomu di Tokopedia. Gratis!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="297" translatesAutoresizingMaskIntoConstraints="NO" id="lEq-ho-gw1" customClass="TTTAttributedLabel">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mau jualan juga? Buka tokomu di Tokopedia. Gratis!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="297" translatesAutoresizingMaskIntoConstraints="NO" id="lEq-ho-gw1" customClass="TTTAttributedLabel">
                     <rect key="frame" x="66" y="558" width="282" height="31"/>
                     <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="17"/>
                     <color key="textColor" red="0.51764705879999995" green="0.51764705879999995" blue="0.51764705879999995" alpha="1" colorSpace="calibratedRGB"/>
@@ -323,52 +368,64 @@ lewat aplikasi Tokopedia!</string>
                 <constraint firstItem="V1C-3J-LVg" firstAttribute="top" secondItem="pXk-TG-zyI" secondAttribute="centerY" multiplier="1.4" id="3yC-Nk-VS3"/>
                 <constraint firstItem="lEq-ho-gw1" firstAttribute="centerX" secondItem="pXk-TG-zyI" secondAttribute="centerX" id="7al-nm-1tg"/>
                 <constraint firstItem="boN-YG-LZz" firstAttribute="centerY" secondItem="pXk-TG-zyI" secondAttribute="centerY" multiplier="0.8" id="Cir-I5-QSV"/>
-                <constraint firstItem="mfI-1A-i8w" firstAttribute="leading" secondItem="boN-YG-LZz" secondAttribute="trailing" constant="-188" id="D6l-Yz-MSL"/>
-                <constraint firstItem="6YN-xD-wgH" firstAttribute="top" secondItem="boN-YG-LZz" secondAttribute="bottom" constant="-127" id="ISV-gg-kNn"/>
-                <constraint firstItem="boN-YG-LZz" firstAttribute="top" secondItem="mfI-1A-i8w" secondAttribute="bottom" constant="-108.5" id="V50-r2-B9t"/>
-                <constraint firstItem="6YN-xD-wgH" firstAttribute="leading" secondItem="boN-YG-LZz" secondAttribute="trailing" constant="-153" id="bhP-Yy-0hG"/>
+                <constraint firstItem="mfI-1A-i8w" firstAttribute="leading" secondItem="boN-YG-LZz" secondAttribute="trailing" constant="-188" id="D6l-Yz-MSL">
+                    <variation key="heightClass=regular-widthClass=regular" constant="-282"/>
+                </constraint>
+                <constraint firstItem="6YN-xD-wgH" firstAttribute="centerX" secondItem="pXk-TG-zyI" secondAttribute="centerX" id="LrX-NL-Pgy"/>
+                <constraint firstItem="mfI-1A-i8w" firstAttribute="width" secondItem="boN-YG-LZz" secondAttribute="height" multiplier="195:256" id="MoH-AH-Dnj"/>
+                <constraint firstItem="6YN-xD-wgH" firstAttribute="width" secondItem="boN-YG-LZz" secondAttribute="height" multiplier="63:128" id="NIV-FH-Kox"/>
+                <constraint firstItem="9t7-Tg-QTO" firstAttribute="width" secondItem="boN-YG-LZz" secondAttribute="height" multiplier="27:128" id="Tjd-V7-MR2"/>
+                <constraint firstItem="boN-YG-LZz" firstAttribute="top" secondItem="mfI-1A-i8w" secondAttribute="bottom" constant="-108.5" id="V50-r2-B9t">
+                    <variation key="heightClass=regular-widthClass=regular" constant="-163"/>
+                </constraint>
+                <constraint firstItem="6YN-xD-wgH" firstAttribute="bottom" secondItem="boN-YG-LZz" secondAttribute="bottom" id="ahw-xE-apv"/>
                 <constraint firstItem="V1C-3J-LVg" firstAttribute="centerX" secondItem="pXk-TG-zyI" secondAttribute="centerX" id="ga2-gM-qYN"/>
-                <constraint firstItem="9t7-Tg-QTO" firstAttribute="top" secondItem="boN-YG-LZz" secondAttribute="bottom" constant="-112" id="lxt-8Z-uuI"/>
-                <constraint firstItem="boN-YG-LZz" firstAttribute="leading" secondItem="9t7-Tg-QTO" secondAttribute="trailing" constant="-88.5" id="pn5-cX-ESD"/>
+                <constraint firstItem="9t7-Tg-QTO" firstAttribute="top" secondItem="boN-YG-LZz" secondAttribute="bottom" constant="-112" id="lxt-8Z-uuI">
+                    <variation key="heightClass=regular-widthClass=regular" constant="-168"/>
+                </constraint>
+                <constraint firstItem="boN-YG-LZz" firstAttribute="leading" secondItem="9t7-Tg-QTO" secondAttribute="trailing" constant="-88" id="pn5-cX-ESD">
+                    <variation key="heightClass=regular-widthClass=regular" constant="-133"/>
+                </constraint>
                 <constraint firstItem="lEq-ho-gw1" firstAttribute="top" secondItem="V1C-3J-LVg" secondAttribute="bottom" constant="23" id="po2-fE-C4w"/>
                 <constraint firstItem="boN-YG-LZz" firstAttribute="centerX" secondItem="pXk-TG-zyI" secondAttribute="centerX" id="ywW-oI-Ogv"/>
             </constraints>
-            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
-            <point key="canvasLocation" x="1838" y="127"/>
+            <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="iPad"/>
+            <point key="canvasLocation" x="2190" y="127"/>
         </view>
         <view contentMode="scaleToFill" id="uvI-A0-mT8">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+            <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="onboarding5_phone.png" translatesAutoresizingMaskIntoConstraints="NO" id="h1v-Pu-zbU">
-                    <rect key="frame" x="69" y="64" width="182" height="256"/>
+                    <rect key="frame" x="293" y="282" width="182" height="256"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="256" id="LAl-pb-hXF"/>
-                        <constraint firstAttribute="width" constant="182.5" id="Wwl-Vf-ewx"/>
+                        <constraint firstAttribute="width" constant="182" id="Wwl-Vf-ewx">
+                            <variation key="heightClass=regular-widthClass=regular" constant="274"/>
+                        </constraint>
+                        <constraint firstAttribute="width" secondItem="h1v-Pu-zbU" secondAttribute="height" multiplier="91:128" id="oKv-Ig-a2g"/>
                     </constraints>
                 </imageView>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="onboarding5_bell.png" translatesAutoresizingMaskIntoConstraints="NO" id="ZhT-C5-0qa">
-                    <rect key="frame" x="127" y="181" width="67" height="83"/>
+                    <rect key="frame" x="351" y="399" width="67" height="83"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="66.5" id="Ogd-yz-yXv"/>
-                        <constraint firstAttribute="height" constant="83" id="s1g-G5-gzg"/>
+                        <constraint firstAttribute="width" secondItem="ZhT-C5-0qa" secondAttribute="height" multiplier="67:83" id="l15-Me-hbd"/>
                     </constraints>
                 </imageView>
                 <imageView userInteractionEnabled="NO" alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="onboarding5_bling.png" translatesAutoresizingMaskIntoConstraints="NO" id="Djb-fx-nas">
-                    <rect key="frame" x="40" y="108" width="241" height="229"/>
+                    <rect key="frame" x="264" y="326" width="241" height="229"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="241" id="Sdm-3A-xrk"/>
-                        <constraint firstAttribute="height" constant="229" id="aS8-yb-Y4i"/>
+                        <constraint firstAttribute="width" secondItem="Djb-fx-nas" secondAttribute="height" multiplier="241:229" id="prU-Z2-nvV"/>
                     </constraints>
                 </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Dapatkan Notifikasi" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MQ2-Un-Ohr">
-                    <rect key="frame" x="53" y="336" width="214" height="20"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dapatkan Notifikasi" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MQ2-Un-Ohr">
+                    <rect key="frame" x="277" y="717" width="214" height="20"/>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="22"/>
                     <color key="textColor" red="0.38431372549999998" green="0.38431372549999998" blue="0.38431372549999998" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Semua update terbaru akan dikirim ke HP kamu" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="297" translatesAutoresizingMaskIntoConstraints="NO" id="LSx-VY-Px8" customClass="TTTAttributedLabel">
-                    <rect key="frame" x="57" y="375" width="206" height="31"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Semua update terbaru akan dikirim ke HP kamu" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="297" translatesAutoresizingMaskIntoConstraints="NO" id="LSx-VY-Px8" customClass="TTTAttributedLabel">
+                    <rect key="frame" x="281" y="756" width="206" height="31"/>
                     <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="17"/>
                     <color key="textColor" red="0.51764705879999995" green="0.51764705879999995" blue="0.51764705879999995" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
@@ -379,13 +436,12 @@ lewat aplikasi Tokopedia!</string>
                     </userDefinedRuntimeAttributes>
                 </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7UT-96-5h5">
-                    <rect key="frame" x="26" y="418" width="269" height="44"/>
+                    <rect key="frame" x="250" y="891" width="269" height="44"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X9K-LS-ai8">
                             <rect key="frame" x="0.0" y="0.0" width="102" height="44"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="44" id="C6B-fH-7fi"/>
-                                <constraint firstAttribute="width" constant="102" id="DHC-Gt-MTs"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
                             <state key="normal" title="Tidak">
@@ -396,12 +452,14 @@ lewat aplikasi Tokopedia!</string>
                                     <real key="value" value="3"/>
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="btnRejectNotificationTapped:" destination="-1" eventType="touchUpInside" id="cRQ-2q-esI"/>
+                            </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dLu-2w-Me2">
                             <rect key="frame" x="108" y="0.0" width="161" height="44"/>
                             <color key="backgroundColor" red="0.22745098039215686" green="0.70196078431372544" blue="0.22352941176470587" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="161" id="DZo-4n-bUe"/>
                                 <constraint firstAttribute="height" constant="44" id="dYA-VX-4ct"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
@@ -423,6 +481,10 @@ lewat aplikasi Tokopedia!</string>
                         <constraint firstItem="dLu-2w-Me2" firstAttribute="top" secondItem="7UT-96-5h5" secondAttribute="top" id="TFN-rw-ptE"/>
                         <constraint firstItem="X9K-LS-ai8" firstAttribute="bottom" secondItem="dLu-2w-Me2" secondAttribute="bottom" id="VMh-uE-Kag"/>
                         <constraint firstItem="X9K-LS-ai8" firstAttribute="leading" secondItem="7UT-96-5h5" secondAttribute="leading" id="bfK-lG-7s2"/>
+                        <constraint firstAttribute="width" constant="269" id="gzm-We-fK8">
+                            <variation key="heightClass=regular-widthClass=regular" constant="350"/>
+                        </constraint>
+                        <constraint firstItem="X9K-LS-ai8" firstAttribute="width" secondItem="dLu-2w-Me2" secondAttribute="height" multiplier="51:22" id="h85-ie-GhS"/>
                         <constraint firstItem="dLu-2w-Me2" firstAttribute="leading" secondItem="X9K-LS-ai8" secondAttribute="trailing" constant="6" id="s3R-8F-AIW"/>
                         <constraint firstAttribute="bottom" secondItem="dLu-2w-Me2" secondAttribute="bottom" id="t29-4b-S6U"/>
                         <constraint firstAttribute="trailing" secondItem="dLu-2w-Me2" secondAttribute="trailing" id="xfX-PS-IEc"/>
@@ -431,43 +493,57 @@ lewat aplikasi Tokopedia!</string>
             </subviews>
             <constraints>
                 <constraint firstItem="7UT-96-5h5" firstAttribute="top" secondItem="uvI-A0-mT8" secondAttribute="bottom" multiplier="0.87" id="1f5-BR-4cr"/>
+                <constraint firstItem="Djb-fx-nas" firstAttribute="width" secondItem="h1v-Pu-zbU" secondAttribute="height" multiplier="241:256" id="Ccp-QW-wWQ"/>
                 <constraint firstItem="LSx-VY-Px8" firstAttribute="top" secondItem="MQ2-Un-Ohr" secondAttribute="bottom" constant="19" id="Dxe-ub-UjB"/>
                 <constraint firstItem="h1v-Pu-zbU" firstAttribute="centerX" secondItem="uvI-A0-mT8" secondAttribute="centerX" id="GkM-KL-uxv"/>
-                <constraint firstItem="ZhT-C5-0qa" firstAttribute="top" secondItem="h1v-Pu-zbU" secondAttribute="bottom" constant="-139" id="JHg-2m-hS4"/>
+                <constraint firstItem="ZhT-C5-0qa" firstAttribute="top" secondItem="h1v-Pu-zbU" secondAttribute="bottom" constant="-139" id="JHg-2m-hS4">
+                    <variation key="heightClass=regular-widthClass=regular" constant="-208"/>
+                </constraint>
                 <constraint firstItem="MQ2-Un-Ohr" firstAttribute="centerX" secondItem="uvI-A0-mT8" secondAttribute="centerX" id="K3l-Gq-5u2"/>
                 <constraint firstItem="h1v-Pu-zbU" firstAttribute="centerY" secondItem="uvI-A0-mT8" secondAttribute="centerY" multiplier="0.8" id="PWq-D7-STm"/>
                 <constraint firstItem="LSx-VY-Px8" firstAttribute="centerX" secondItem="uvI-A0-mT8" secondAttribute="centerX" id="SF4-qe-t6P"/>
-                <constraint firstItem="Djb-fx-nas" firstAttribute="top" secondItem="h1v-Pu-zbU" secondAttribute="bottom" constant="-212" id="c89-Tq-2Wp"/>
-                <constraint firstItem="ZhT-C5-0qa" firstAttribute="leading" secondItem="h1v-Pu-zbU" secondAttribute="trailing" constant="-124" id="gmn-Oe-Aws"/>
+                <constraint firstItem="Djb-fx-nas" firstAttribute="top" secondItem="h1v-Pu-zbU" secondAttribute="bottom" constant="-212" id="c89-Tq-2Wp">
+                    <variation key="heightClass=regular-widthClass=regular" constant="-318"/>
+                </constraint>
+                <constraint firstItem="ZhT-C5-0qa" firstAttribute="leading" secondItem="h1v-Pu-zbU" secondAttribute="trailing" constant="-124" id="gmn-Oe-Aws">
+                    <variation key="heightClass=regular-widthClass=regular" constant="-186"/>
+                </constraint>
                 <constraint firstItem="MQ2-Un-Ohr" firstAttribute="top" secondItem="uvI-A0-mT8" secondAttribute="centerY" multiplier="1.4" id="iTO-GR-mNF"/>
                 <constraint firstItem="7UT-96-5h5" firstAttribute="centerX" secondItem="uvI-A0-mT8" secondAttribute="centerX" id="kjG-5g-Zmt"/>
-                <constraint firstItem="Djb-fx-nas" firstAttribute="leading" secondItem="h1v-Pu-zbU" secondAttribute="trailing" constant="-211" id="vF7-dB-qR3"/>
+                <constraint firstItem="ZhT-C5-0qa" firstAttribute="width" secondItem="h1v-Pu-zbU" secondAttribute="height" multiplier="67:256" id="pmd-IA-6oC"/>
+                <constraint firstItem="Djb-fx-nas" firstAttribute="leading" secondItem="h1v-Pu-zbU" secondAttribute="trailing" constant="-211" id="vF7-dB-qR3">
+                    <variation key="heightClass=regular-widthClass=regular" constant="-316"/>
+                </constraint>
             </constraints>
-            <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="2334" y="127"/>
+            <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="iPad"/>
+            <point key="canvasLocation" x="3048" y="127"/>
         </view>
         <view contentMode="scaleToFill" id="zZm-pt-wd4">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+            <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="onboarding_6.png" translatesAutoresizingMaskIntoConstraints="NO" id="g0w-RE-hWs">
-                    <rect key="frame" x="71" y="67" width="179" height="227"/>
+                    <rect key="frame" x="295" y="271" width="179" height="227"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="179" id="MQ8-bh-cNC"/>
-                        <constraint firstAttribute="height" constant="226.5" id="fi2-wn-jzX"/>
+                        <constraint firstAttribute="width" constant="179" id="MQ8-bh-cNC">
+                            <variation key="heightClass=regular-widthClass=regular" constant="270"/>
+                        </constraint>
+                        <constraint firstAttribute="width" secondItem="g0w-RE-hWs" secondAttribute="height" multiplier="179:227" id="S9r-1P-wW2"/>
                     </constraints>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Yuk Belanja di Tokopedia Sekarang!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="297" translatesAutoresizingMaskIntoConstraints="NO" id="8Zl-mE-4rT">
-                    <rect key="frame" x="31" y="300" width="258" height="40"/>
+                    <rect key="frame" x="255" y="640" width="258" height="40"/>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="22"/>
                     <color key="textColor" red="0.38431372549999998" green="0.38431372549999998" blue="0.38431372549999998" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uuk-gb-hek">
-                    <rect key="frame" x="36" y="360" width="248" height="44"/>
+                    <rect key="frame" x="85" y="700" width="598" height="44"/>
                     <color key="backgroundColor" red="1" green="0.28235294117647058" blue="0.12156862745098039" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="Fp9-mq-UZI"/>
+                        <constraint firstAttribute="width" constant="400" id="hlu-Kr-m65"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
                     <state key="normal" title="Cari Produk">
@@ -478,15 +554,25 @@ lewat aplikasi Tokopedia!</string>
                             <real key="value" value="3"/>
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="hlu-Kr-m65"/>
+                        </mask>
+                    </variation>
+                    <variation key="heightClass=regular-widthClass=regular">
+                        <mask key="constraints">
+                            <include reference="hlu-Kr-m65"/>
+                        </mask>
+                    </variation>
                     <connections>
                         <action selector="btnSearchTapped:" destination="-1" eventType="touchUpInside" id="pT4-vp-R2i"/>
                     </connections>
                 </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K5h-vk-9RE">
-                    <rect key="frame" x="36" y="418" width="248" height="44"/>
+                    <rect key="frame" x="85" y="891" width="598" height="44"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e86-zn-lGz">
-                            <rect key="frame" x="127" y="0.0" width="121" height="44"/>
+                            <rect key="frame" x="302" y="0.0" width="296" height="44"/>
                             <color key="backgroundColor" red="0.2274509804" green="0.70196078429999997" blue="0.22352941179999999" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="44" id="Gi5-mK-7wo"/>
@@ -500,7 +586,7 @@ lewat aplikasi Tokopedia!</string>
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rbf-Ej-xB8">
-                            <rect key="frame" x="0.0" y="0.0" width="122" height="44"/>
+                            <rect key="frame" x="0.0" y="0.0" width="297" height="44"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="44" id="Kuq-hJ-xf9"/>
                             </constraints>
@@ -518,11 +604,14 @@ lewat aplikasi Tokopedia!</string>
                             </connections>
                         </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bcb-TM-8mW">
-                            <rect key="frame" x="122" y="0.0" width="5" height="44"/>
+                            <rect key="frame" x="297" y="0.0" width="5" height="44"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="5" id="HDR-yi-Lmh"/>
                                 <constraint firstAttribute="height" constant="44" id="L5Q-Eo-449"/>
                             </constraints>
+                            <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
+                                <rect key="frame" x="397" y="0.0" width="5" height="44"/>
+                            </variation>
                         </view>
                     </subviews>
                     <constraints>
@@ -541,6 +630,7 @@ lewat aplikasi Tokopedia!</string>
                 </view>
             </subviews>
             <constraints>
+                <constraint firstItem="K5h-vk-9RE" firstAttribute="top" secondItem="uuk-gb-hek" secondAttribute="bottom" constant="20" id="O3g-RQ-XwW"/>
                 <constraint firstItem="uuk-gb-hek" firstAttribute="centerX" secondItem="zZm-pt-wd4" secondAttribute="centerX" id="O8y-4Z-6IP"/>
                 <constraint firstItem="g0w-RE-hWs" firstAttribute="centerX" secondItem="zZm-pt-wd4" secondAttribute="centerX" id="T99-jn-EVa"/>
                 <constraint firstItem="K5h-vk-9RE" firstAttribute="top" secondItem="zZm-pt-wd4" secondAttribute="bottom" multiplier="0.87" id="XDj-w2-964"/>
@@ -552,8 +642,21 @@ lewat aplikasi Tokopedia!</string>
                 <constraint firstItem="uuk-gb-hek" firstAttribute="width" secondItem="zZm-pt-wd4" secondAttribute="width" multiplier="3.5:4.5" id="vQB-hy-1kb"/>
                 <constraint firstItem="uuk-gb-hek" firstAttribute="top" secondItem="8Zl-mE-4rT" secondAttribute="bottom" constant="20" id="wZD-q3-U4o"/>
             </constraints>
-            <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="2831" y="127"/>
+            <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="iPad"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="O3g-RQ-XwW"/>
+                </mask>
+            </variation>
+            <variation key="heightClass=regular-widthClass=regular">
+                <mask key="constraints">
+                    <exclude reference="vQB-hy-1kb"/>
+                    <include reference="O3g-RQ-XwW"/>
+                    <exclude reference="XDj-w2-964"/>
+                </mask>
+            </variation>
+            <point key="canvasLocation" x="3908" y="127"/>
         </view>
     </objects>
     <resources>
