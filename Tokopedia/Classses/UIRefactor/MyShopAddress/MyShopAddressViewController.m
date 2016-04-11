@@ -183,6 +183,11 @@
 #pragma mark - Restkit
 
 - (void)fetchShopAddress {
+    if (_refreshControl.isRefreshing == NO && self.list.count == 0) {
+        [self.activityIndicatorView startAnimating];
+        self.tableView.tableFooterView = _tableFooterView;
+    }
+    
     NSString *baseURL = @"https://ws.tokopedia.com";
     NSString *path = @"/v4/myshop-address/get_location.pl";
     NSDictionary *parameters = @{@"action": @"get_location"};
@@ -255,6 +260,11 @@
 #pragma mark - View Action
 
 - (IBAction)didTapAddButton:(id)sender {
+    if (self.list.count == 3) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Anda hanya bisa menambah sampai 3 alamat." message:nil delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+        [alert show];
+        return;
+    }
     MyShopAddressEditViewController *controller = [MyShopAddressEditViewController new];
     controller.data = @{
         kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY],
