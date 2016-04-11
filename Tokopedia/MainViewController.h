@@ -22,10 +22,10 @@
 #pragma mark MainViewController
 
 typedef NS_ENUM(NSInteger, MainViewControllerPage) {
+    MainViewControllerPageDefault,
     MainViewControllerPageSearch,
     MainViewControllerPageLogin,
-    MainViewControllerPageRegister,
-    MainViewControllerPageDefault
+    MainViewControllerPageRegister
 };
 
 @interface MainViewController : UIViewController

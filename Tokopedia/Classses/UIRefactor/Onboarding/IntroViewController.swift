@@ -248,15 +248,22 @@ class IntroViewController: UIViewController, EAIntroDelegate {
             completion: nil)
     }
     
+    private func markOnboardingPlayed() {
+        NSUserDefaults.standardUserDefaults().setBool(true, forKey: "has_shown_onboarding")
+    }
+    
     @IBAction func btnSearchTapped(sender: AnyObject) {
+        markOnboardingPlayed()
         navigateToMainViewControllerWithPage(.Search)
     }
     
     @IBAction func btnLoginTapped(sender: AnyObject) {
+        markOnboardingPlayed()
         navigateToMainViewControllerWithPage(.Login)
     }
     
     @IBAction func btnRegisterTapped(sender: AnyObject) {
+        markOnboardingPlayed()
         navigateToMainViewControllerWithPage(.Register)
     }
     

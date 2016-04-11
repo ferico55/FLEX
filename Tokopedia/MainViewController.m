@@ -103,6 +103,13 @@ typedef enum TagRequest {
     return self;
 }
 
+- (instancetype)init {
+    if (self = [super init]) {
+        _page = MainViewControllerPageDefault;
+    }
+    return self;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];

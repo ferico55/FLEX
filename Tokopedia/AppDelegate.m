@@ -44,6 +44,21 @@
 }
 #endif
 
+- (BOOL)shouldShowOnboarding {
+    BOOL hasShownOnboarding = [[NSUserDefaults standardUserDefaults] boolForKey:@"has_shown_onboarding"];
+    
+    BOOL alwaysShowOnboarding = FBTweakValue(@"Onboarding", @"General", @"Always show onboarding", NO);
+    
+    BOOL shouldShowOnboarding = alwaysShowOnboarding?YES:!hasShownOnboarding;
+    return shouldShowOnboarding;
+}
+
+- (UIViewController*)frontViewController {
+    return [self shouldShowOnboarding]?
+        [[IntroViewController alloc] initWithNibName:@"IntroViewController" bundle:nil]:
+        [MainViewController new];
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [application setStatusBarStyle:UIStatusBarStyleLightContent];
@@ -51,7 +66,7 @@
 
     [self hideTitleBackButton];
     
-    UIViewController* viewController = [[IntroViewController alloc] initWithNibName:@"IntroViewController" bundle:nil];
+    UIViewController* viewController = [self frontViewController];
     _window = [[FBTweakShakeWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     _window.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
     _window.backgroundColor = kTKPDNAVIGATION_NAVIGATIONBGCOLOR;
