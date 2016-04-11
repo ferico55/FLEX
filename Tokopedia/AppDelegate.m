@@ -44,9 +44,19 @@
 }
 #endif
 
-- (UIViewController*)frontViewController {
+- (BOOL)shouldShowOnboarding {
     BOOL hasShownOnboarding = [[NSUserDefaults standardUserDefaults] boolForKey:@"has_shown_onboarding"];
-    return hasShownOnboarding? [MainViewController new]: [[IntroViewController alloc] initWithNibName:@"IntroViewController" bundle:nil];
+    
+    BOOL alwaysShowOnboarding = FBTweakValue(@"Onboarding", @"General", @"Always show onboarding", NO);
+    
+    BOOL shouldShowOnboarding = alwaysShowOnboarding?YES:!hasShownOnboarding;
+    return shouldShowOnboarding;
+}
+
+- (UIViewController*)frontViewController {
+    return [self shouldShowOnboarding]?
+        [[IntroViewController alloc] initWithNibName:@"IntroViewController" bundle:nil]:
+        [MainViewController new];
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
