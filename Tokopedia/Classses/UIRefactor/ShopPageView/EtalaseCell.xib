@@ -21,13 +21,13 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bXe-Ym-ASB">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bXe-Ym-ASB">
                         <rect key="frame" x="16" y="16" width="39" height="11"/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" misplaced="YES" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4tM-5b-ohv">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4tM-5b-ohv">
                         <rect key="frame" x="60" y="8" width="245" height="27"/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -40,22 +40,14 @@
                             <constraint firstAttribute="width" constant="16" id="toc-Qi-Xvl"/>
                         </constraints>
                     </imageView>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_cancel.png" translatesAutoresizingMaskIntoConstraints="NO" id="nqC-bT-4yl">
-                        <rect key="frame" x="285" y="12" width="20" height="20"/>
-                        <connections>
-                            <outletCollection property="gestureRecognizers" destination="sWf-IN-fPj" appends="YES" id="8wN-Fo-CcL"/>
-                        </connections>
-                    </imageView>
                 </subviews>
                 <constraints>
                     <constraint firstItem="bXe-Ym-ASB" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="8" id="Crl-8P-rE1"/>
-                    <constraint firstAttribute="trailing" secondItem="nqC-bT-4yl" secondAttribute="trailing" constant="15" id="Flu-cd-GbS"/>
                     <constraint firstAttribute="trailing" secondItem="nG4-c7-j2c" secondAttribute="trailing" constant="15" id="Hu9-rO-R5e"/>
                     <constraint firstItem="nG4-c7-j2c" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Vn6-gX-DJh"/>
                     <constraint firstItem="4tM-5b-ohv" firstAttribute="leading" secondItem="bXe-Ym-ASB" secondAttribute="trailing" constant="5" id="Yy7-yW-9T5"/>
                     <constraint firstAttribute="trailing" secondItem="4tM-5b-ohv" secondAttribute="trailing" constant="15" id="fjF-Uq-wxU"/>
                     <constraint firstItem="bXe-Ym-ASB" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="8" id="r2G-4k-E9T"/>
-                    <constraint firstItem="nqC-bT-4yl" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="yp0-Ku-e57"/>
                     <constraint firstItem="4tM-5b-ohv" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="yw1-L4-bfy"/>
                     <constraint firstAttribute="bottom" secondItem="4tM-5b-ohv" secondAttribute="bottom" constant="8" id="zFM-ri-6GG"/>
                     <constraint firstAttribute="bottomMargin" secondItem="bXe-Ym-ASB" secondAttribute="bottom" constant="8" id="zoc-VS-6nZ"/>
@@ -64,21 +56,12 @@
             <gestureRecognizers/>
             <connections>
                 <outlet property="checkImageView" destination="nG4-c7-j2c" id="Z0E-Co-sKf"/>
-                <outlet property="deleteGesture" destination="sWf-IN-fPj" id="8fZ-aI-vu4"/>
-                <outlet property="deleteImageView" destination="nqC-bT-4yl" id="7r4-1O-jyY"/>
                 <outlet property="detailLabel" destination="4tM-5b-ohv" id="o9R-HL-MuU"/>
                 <outlet property="nameLabel" destination="bXe-Ym-ASB" id="6Si-3O-NwK"/>
-                <outletCollection property="gestureRecognizers" destination="sWf-IN-fPj" appends="YES" id="RrL-d5-shQ"/>
             </connections>
         </tableViewCell>
-        <tapGestureRecognizer id="sWf-IN-fPj">
-            <connections>
-                <action selector="deleteGestureTapped:" destination="KGk-i7-Jjw" id="Mnt-2d-qrL"/>
-            </connections>
-        </tapGestureRecognizer>
     </objects>
     <resources>
-        <image name="icon_cancel.png" width="20" height="20"/>
         <image name="icon_check_orange.png" width="14" height="14"/>
     </resources>
 </document>

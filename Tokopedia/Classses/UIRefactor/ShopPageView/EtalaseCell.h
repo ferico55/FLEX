@@ -19,7 +19,6 @@
 @property (strong, nonatomic) IBOutlet UILabel *detailLabel;
 @property (strong, nonatomic) IBOutlet UIImageView *checkImageView;
 @property (strong, nonatomic) IBOutlet UIImageView *deleteImageView;
-@property (strong, nonatomic) IBOutlet UITapGestureRecognizer *deleteGesture;
 
 @property (strong, nonatomic) NSIndexPath *indexpath;
 @property (nonatomic, weak) id<EtalaseCellDelegate> delegate;
