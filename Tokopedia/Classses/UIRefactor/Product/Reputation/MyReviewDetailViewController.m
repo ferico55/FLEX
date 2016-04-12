@@ -342,7 +342,7 @@
                                                       onFailure:^(NSError *error) {
                                                           
                                                       }];
-    } else if (alertView.tag == 40) {
+    } else if (alertView.tag == 40 && buttonIndex != alertView.cancelButtonIndex) {
         [_reviewRequest requestSkipProductReviewWithProductID:_selectedReview.product_id
                                                  reputationID:_selectedReview.reputation_id
                                                        shopID:_selectedReview.shop_id
