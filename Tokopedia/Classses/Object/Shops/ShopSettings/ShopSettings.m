@@ -11,7 +11,7 @@
 @implementation ShopSettings
 +(RKObjectMapping *)mapping{
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[ShopSettings class]];
-    [mapping addAttributeMappingsFromArray:@[@"status", @"server_process_time"]];
+    [mapping addAttributeMappingsFromArray:@[@"message_error", @"status", @"server_process_time"]];
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data" toKeyPath:@"result" withMapping:[ShopSettingsResult mapping]]];
     return mapping;
 }
