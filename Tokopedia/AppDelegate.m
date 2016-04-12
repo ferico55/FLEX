@@ -61,9 +61,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [application setStatusBarStyle:UIStatusBarStyleLightContent];
-    
-
     [self hideTitleBackButton];
     
     UIViewController* viewController = [self frontViewController];

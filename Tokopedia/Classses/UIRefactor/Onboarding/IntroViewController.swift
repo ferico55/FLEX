@@ -78,6 +78,8 @@ class IntroViewController: UIViewController, EAIntroDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        UIApplication.sharedApplication().statusBarStyle = .Default
+        
         reRenderLabels()
         
         introView = {
