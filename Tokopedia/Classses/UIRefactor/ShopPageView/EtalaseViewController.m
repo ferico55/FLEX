@@ -87,6 +87,7 @@
 
 #pragma mark - UITableView
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [self hideTambahEtalaseButton];
     [_tambahEtalaseTextField setText:@""];
     selectedIndexPath = indexPath;
     EtalaseList *selectedEtalase = indexPath.section == 0?[otherEtalaseList objectAtIndex:indexPath.row]:[etalaseList objectAtIndex:indexPath.row];
@@ -182,6 +183,7 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [self hideTambahEtalaseButton];
     if (editingStyle== UITableViewCellEditingStyleDelete && indexPath.section == 1) {
         [self requestDeleteEtalase:indexPath];
     }
@@ -207,6 +209,7 @@
 }
 
 -(IBAction)deleteButtonTapped:(id)sender{
+    [self hideTambahEtalaseButton];
     if(_isDeleting){
         [_tableView setEditing:NO animated:YES];
         UIBarButtonItem  *rightBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Hapus"
@@ -301,8 +304,7 @@
               initialSpringVelocity:0.1
                             options:UIViewAnimationOptionCurveEaseIn
                          animations:^{
-                             [_tambahEtalaseButtonWidthConstraint setConstant:0];
-                             [_tambahEtalaseButtonLeftConstraint setConstant:0];
+                             [self hideTambahEtalaseButton];
                          } completion:^(BOOL finished) {
                              
                          }];
@@ -365,10 +367,7 @@
                                                 userId:userId
                                              onSuccess:^(ShopSettings *shopSettings, NSString* name) {
                                                  if(shopSettings.result.is_success){
-                                                     
                                                      EtalaseList *selectedEtalase = [etalaseList objectAtIndex:selectedIndexPath.row];
-                                                     
-                                                     
                                                      EtalaseList *newEtalase = [EtalaseList new];
                                                      [newEtalase setEtalase_id:selectedEtalase.etalase_id];
                                                      [newEtalase setEtalase_name:name];
@@ -421,11 +420,24 @@
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    [self hideTambahEtalaseButton];
     if(buttonIndex == 0){
         //batal
     }else if(buttonIndex == 1){
         //OK
         [self requestEditEtalase:[alertView textFieldAtIndex:0].text];
     }
+}
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex{
+    [_tambahEtalaseTextField resignFirstResponder];
+    [_tambahEtalaseTextField setText:@""];
+    [self hideTambahEtalaseButton];
+    [_tableView reloadData];
+}
+
+- (void)hideTambahEtalaseButton{
+    _tambahEtalaseButtonLeftConstraint.constant = 0;
+    _tambahEtalaseButtonWidthConstraint.constant = 0;
 }
 @end
