@@ -272,4 +272,51 @@
     return detailReputationReviewMapping;
 }
 
++ (RKObjectMapping *)mappingForHelpfulReview {
+    RKObjectMapping *detailReputationReviewMapping = [RKObjectMapping mappingForClass:[DetailReputationReview class]];
+    [detailReputationReviewMapping addAttributeMappingsFromArray:@[@"review_user_id",
+                                                                   @"review_rate_product_desc",
+                                                                   @"review_user_name",
+                                                                   @"review_reputation_id",
+                                                                   @"review_rate_service_desc",
+                                                                   @"review_id",
+                                                                   @"review_rate_speed",
+                                                                   @"review_rate_service",
+                                                                   @"review_update_time",
+                                                                   @"review_rate_accuracy_desc",
+                                                                   @"review_rate_product",
+                                                                   @"review_rate_speed_desc",
+                                                                   @"review_shop_id",
+                                                                   @"review_create_time",
+                                                                   @"review_user_label",
+                                                                   @"review_product_id",
+                                                                   @"review_message",
+                                                                   @"review_user_image",
+                                                                   @"review_user_label_id",
+                                                                   @"review_rate_accuracy"
+                                                                   ]];
+    
+    [detailReputationReviewMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"review_user_reputation"
+                                                                                                  toKeyPath:@"review_user_reputation"
+                                                                                                withMapping:[ReputationDetail mapping]]];
+    
+    [detailReputationReviewMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"review_response"
+                                                                                                  toKeyPath:@"review_response"
+                                                                                                withMapping:[ReviewResponse mapping]]];
+    
+    [detailReputationReviewMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"review_product_owner"
+                                                                                                  toKeyPath:@"review_product_owner"
+                                                                                                withMapping:[ProductOwner mappingForInbox]]];
+    
+    [detailReputationReviewMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"review_like_dislike"
+                                                                                                  toKeyPath:@"review_like_dislike"
+                                                                                                withMapping:[DetailTotalLikeDislike mapping]]];
+    
+    [detailReputationReviewMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"review_image_attachment"
+                                                                                                  toKeyPath:@"review_image_attachment"
+                                                                                                withMapping:[ReviewImageAttachment mapping]]];
+    
+    return detailReputationReviewMapping;
+}
+
 @end

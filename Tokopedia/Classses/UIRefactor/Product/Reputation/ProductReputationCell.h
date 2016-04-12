@@ -24,7 +24,7 @@
 - (void)actionDisLike:(id)sender;
 - (void)actionChat:(id)sender;
 - (void)actionMore:(id)sender;
-- (void)didTapAttachedImage:(DetailReputationReview*)review atIndex:(NSInteger)index;
+- (void)didTapAttachedImage:(UITapGestureRecognizer*)sender;
 @end
 
 
@@ -45,6 +45,7 @@
     IBOutletCollection(UIImageView) NSArray *arrAttachedImages;
 }
 @property (nonatomic, unsafe_unretained) id<productReputationDelegate> delegate;
+@property BOOL hasAttachedImages;
 
 - (void)setImageKualitas:(int)total;
 - (void)setImageAkurasi:(int)total;

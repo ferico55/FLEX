@@ -42,6 +42,7 @@
 #import "URLCacheController.h"
 #import "ProductReputationSimpleCell.h"
 #import "ShopPageRequest.h"
+#import "NSString+TPBaseUrl.h"
 
 #define CTagGetTotalLike 1
 #define CTagLike 2
@@ -231,8 +232,9 @@
         [_act startAnimating];
     }
     
-    [_networkManager requestWithBaseUrl:@"http://lo-lucky.ndvl"
-                                   path:@"/web-service/v4/shop/get_shop_review.pl" method:RKRequestMethodGET
+    [_networkManager requestWithBaseUrl:[NSString v4Url]
+                                   path:@"/v4/shop/get_shop_review.pl"
+                                 method:RKRequestMethodGET
                               parameter:@{@"page": @(_page),
                                           @"per_page" : @(5),
                                           @"shop_domain" : [_data objectForKey:@"shop_domain"]?:@"",
@@ -307,8 +309,8 @@
     if (!_isRefreshView) {
         _table.tableFooterView = _footer;
         [_act startAnimating];
-        [_networkManager requestWithBaseUrl:@"http://lo-lucky.ndvl"
-                                       path:@"/web-service/v4/shop/get_shop_review.pl" method:RKRequestMethodGET
+        [_networkManager requestWithBaseUrl:[NSString v4Url]
+                                       path:@"/v4/shop/get_shop_review.pl" method:RKRequestMethodGET
                                   parameter:@{@"page": @(_page),
                                               @"per_page" : @(5),
                                               @"shop_domain" : [_data objectForKey:@"shop_domain"]?:@"",
@@ -476,8 +478,8 @@
                 _table.tableFooterView = _footer;
                 [_act startAnimating];
             }
-            [_networkManager requestWithBaseUrl:@"http://lo-lucky.ndvl"
-                                           path:@"/web-service/v4/shop/get_shop_review.pl" method:RKRequestMethodGET
+            [_networkManager requestWithBaseUrl:[NSString v4Url]
+                                           path:@"/v4/shop/get_shop_review.pl" method:RKRequestMethodGET
                                       parameter:@{@"page": @(_page),
                                                   @"per_page" : @(5),
                                                   @"shop_domain" : [_data objectForKey:@"shop_domain"]?:@"",
@@ -674,8 +676,8 @@
         _table.tableFooterView = _footer;
         [_act startAnimating];
     }
-    [_networkManager requestWithBaseUrl:@"http://lo-lucky.ndvl"
-                                   path:@"/web-service/v4/shop/get_shop_review.pl" method:RKRequestMethodGET
+    [_networkManager requestWithBaseUrl:[NSString v4Url]
+                                   path:@"/v4/shop/get_shop_review.pl" method:RKRequestMethodGET
                               parameter:@{@"page": @(_page),
                                           @"per_page" : @(5),
                                           @"shop_domain" : [_data objectForKey:@"shop_domain"]?:@"",

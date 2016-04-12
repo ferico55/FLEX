@@ -142,4 +142,6 @@
 
 + (RKObjectMapping*)mapping;
 + (RKObjectMapping*)mappingForInbox;
++ (RKObjectMapping*)mappingForHelpfulReview;
+
 @end

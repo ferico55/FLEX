@@ -9,6 +9,11 @@
 #import <Foundation/Foundation.h>
 
 @interface HelpfulReviewResult : NSObject
+
+@property (nonatomic, strong) NSArray *list;
 @property (nonatomic, strong) NSArray *helpful_reviews;
 @property (nonatomic, strong) NSString *helpful_reviews_total;
+
++ (RKObjectMapping*)mapping;
+
 @end

@@ -122,12 +122,14 @@
                                       onFailure:(void(^)(NSError *error))errorCallback;
 
 - (void)requestGetProductReviewWithProductID:(NSString*)productID
-                                  monthRange:(NSString*)monthRange
+                                  monthRange:(NSNumber*)monthRange
                                         page:(NSNumber*)page
-                                shopAccuracy:(NSString*)shopAccuracy
-                                 shopQuality:(NSString*)shopQuality
+                                shopAccuracy:(NSNumber*)shopAccuracy
+                                 shopQuality:(NSNumber*)shopQuality
                                   shopDomain:(NSString*)shopDomain
                                    onSuccess:(void(^)(ReviewResult *result))successCallback
                                    onFailure:(void(^)(NSError *error))errorCallback;
+
+- (int)requestGetProductReviewNextPageFromUri:(NSString*)uri;
 
 @end

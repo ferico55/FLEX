@@ -24,6 +24,7 @@
 #import "ResponseComment.h"
 #import "GeneralAction.h"
 #import "Review.h"
+#import "NSString+TPBaseUrl.h"
 
 #define ACTION_LIKE_REQUEST 1
 #define ACTION_DISLIKE_REQUEST 2
@@ -93,7 +94,7 @@
                               onFailure:(void (^)(NSError *))errorCallback {
     likeDislikeCountNetworkManager.isParameterNotEncrypted = NO;
     likeDislikeCountNetworkManager.isUsingHmac = YES;
-    [likeDislikeCountNetworkManager requestWithBaseUrl:@"https://ws.tokopedia.com"
+    [likeDislikeCountNetworkManager requestWithBaseUrl:[NSString v4Url]
                                                   path:@"/v4/product/get_like_dislike_review.pl"
                                                 method:RKRequestMethodGET
                                              parameter:@{@"review_ids" : reviewId,
@@ -117,7 +118,7 @@
                     onFailure:(void (^)(NSError *))errorCallback {
     actionLikeNetworkManager.isParameterNotEncrypted = NO;
     actionLikeNetworkManager.isUsingHmac = YES;
-    [actionLikeNetworkManager requestWithBaseUrl:@"https://ws.tokopedia.com"
+    [actionLikeNetworkManager requestWithBaseUrl:[NSString v4Url]
                                             path:@"/v4/action/review/like_dislike_review.pl"
                                           method:RKRequestMethodGET
                                        parameter:@{@"product_id"  : productId,
@@ -145,7 +146,7 @@
     
     actionDislikeNetworkManager.isParameterNotEncrypted = NO;
     actionDislikeNetworkManager.isUsingHmac = YES;
-    [actionDislikeNetworkManager requestWithBaseUrl:@"https://ws.tokopedia.com"
+    [actionDislikeNetworkManager requestWithBaseUrl:[NSString v4Url]
                                                path:@"/v4/action/review/like_dislike_review.pl"
                                              method:RKRequestMethodGET
                                           parameter:@{@"product_id"  : productId,
@@ -173,7 +174,7 @@
     
     actionCancelLikeDislikeNetworkManager.isParameterNotEncrypted = NO;
     actionCancelLikeDislikeNetworkManager.isUsingHmac = YES;
-    [actionCancelLikeDislikeNetworkManager requestWithBaseUrl:@"https://ws.tokopedia.com"
+    [actionCancelLikeDislikeNetworkManager requestWithBaseUrl:[NSString v4Url]
                                                          path:@"/v4/action/review/like_dislike_review.pl"
                                                        method:RKRequestMethodGET
                                                     parameter:@{@"product_id"  : productId,
@@ -201,8 +202,8 @@
     getInboxReputationNetworkManager.isParameterNotEncrypted = NO;
     getInboxReputationNetworkManager.isUsingHmac = YES;
     
-    [getInboxReputationNetworkManager requestWithBaseUrl:@"http://lo-lucky.ndvl"
-                                                    path:@"/web-service/v4/inbox-reputation/get_inbox_reputation.pl"
+    [getInboxReputationNetworkManager requestWithBaseUrl:[NSString v4Url]
+                                                    path:@"/v4/inbox-reputation/get_inbox_reputation.pl"
                                                   method:RKRequestMethodGET
                                                parameter:@{@"filter" : filter,
                                                            @"nav"    : navigation,
@@ -241,8 +242,8 @@
                                 @"buyer_seller"         : role
                                 };
     
-    [getReviewDetailNetworkManager requestWithBaseUrl:@"http://lo-lucky.ndvl"
-                                                 path:@"/web-service/v4/inbox-reputation/get_list_reputation_review.pl"
+    [getReviewDetailNetworkManager requestWithBaseUrl:[NSString v4Url]
+                                                 path:@"/v4/inbox-reputation/get_list_reputation_review.pl"
                                                method:RKRequestMethodGET
                                             parameter:parameter
                                               mapping:[MyReviewReputation mapping]
@@ -278,7 +279,12 @@
     submitReviewWithImageNetworkManager.isUsingHmac = YES;
     
     NSNumber *hasPhoto = hasProductReviewPhoto?@(1):@(0);
-    NSString *allImageIDs = [[photos allKeys] componentsJoinedByString:@"~"];
+    
+    NSString *allImageIDs = @"";
+    if (photos.count > 0) {
+        allImageIDs = [[photos allKeys] componentsJoinedByString:@"~"];
+    }
+    
     NSString *uploaded = @"";
     
     if (photos) {
@@ -289,8 +295,8 @@
         uploaded = [uploaded stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     }
     
-    [submitReviewWithImageNetworkManager requestWithBaseUrl:@"http://lo-lucky.ndvl"
-                                                       path:@"/web-service/v4/action/reputation/insert_reputation_review_validation.pl"
+    [submitReviewWithImageNetworkManager requestWithBaseUrl:[NSString v4Url]
+                                                       path:@"/v4/action/reputation/insert_reputation_review_validation.pl"
                                                      method:RKRequestMethodGET
                                                   parameter:@{@"product_id" : productID,
                                                               @"rate_accuracy" : @(accuracyRate),
@@ -333,7 +339,7 @@
                        imagesToUpload:(NSDictionary*)imagesToUpload
                                 token:(NSString*)token
                                  host:(NSString*)host {
-    [self requestUploadReviewImageWithHost:[NSString stringWithFormat:@"http://%@",host]
+    [self requestUploadReviewImageWithHost:[NSString stringWithFormat:@"https://%@",host]
                                       data:imagesToUpload
                                    imageID:imageID
                                      token:token
@@ -411,9 +417,9 @@
     uploaded = [uploaded stringByReplacingOccurrencesOfString:@" " withString:@""];
     uploaded = [uploaded stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
-    NSString *path = _isEdit?@"/web-service/v4/action/reputation/edit_reputation_review_submit.pl":@"/web-service/v4/action/reputation/insert_reputation_review_submit.pl";
+    NSString *path = _isEdit?@"/v4/action/reputation/edit_reputation_review_submit.pl":@"/v4/action/reputation/insert_reputation_review_submit.pl";
     
-    [productReviewSubmitNetworkManager requestWithBaseUrl:@"http://lo-lucky.ndvl"
+    [productReviewSubmitNetworkManager requestWithBaseUrl:[NSString v4Url]
                                                      path:path
                                                    method:RKRequestMethodGET
                                                 parameter:@{@"post_key" : postKey?:@"",
@@ -458,7 +464,12 @@
     editReviewWithImageNetworkManager.isUsingHmac = YES;
     
     NSNumber *hasPhoto = hasProductReviewPhoto?@(1):@(0);
-    NSString *allImageIDs = [[photos allKeys] componentsJoinedByString:@"~"];
+    
+    NSString *allImageIDs = @"";
+    if (photos.count > 0) {
+        allImageIDs = [[photos allKeys] componentsJoinedByString:@"~"];
+    }
+    
     NSString *uploaded = @"";
     if (photos) {
         NSData *jsonData = [NSJSONSerialization dataWithJSONObject:photos options:NSJSONWritingPrettyPrinted error:nil];
@@ -468,8 +479,8 @@
         uploaded = [uploaded stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     }
     
-    [editReviewWithImageNetworkManager requestWithBaseUrl:@"http://lo-lucky.ndvl"
-                                                     path:@"/web-service/v4/action/reputation/edit_reputation_review_validation.pl"
+    [editReviewWithImageNetworkManager requestWithBaseUrl:[NSString v4Url]
+                                                     path:@"/v4/action/reputation/edit_reputation_review_validation.pl"
                                                    method:RKRequestMethodGET
                                                 parameter:@{@"product_id" : productID,
                                                             @"rate_accuracy" : @(accuracyRate),
@@ -551,8 +562,8 @@
     uploaded = [uploaded stringByReplacingOccurrencesOfString:@" " withString:@""];
     uploaded = [uploaded stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
-    [editReputationReviewSubmitNetworkManager requestWithBaseUrl:@"http://lo-lucky.ndvl"
-                                                            path:@"/web-service/v4/action/reputation/edit_reputation_review_submit.pl"
+    [editReputationReviewSubmitNetworkManager requestWithBaseUrl:[NSString v4Url]
+                                                            path:@"/v4/action/reputation/edit_reputation_review_submit.pl"
                                                           method:RKRequestMethodGET
                                                        parameter:@{@"post_key" : postKey?:@"",
                                                                    @"file_uploaded" : uploaded?:@""}
@@ -580,8 +591,8 @@
     skipProductReviewNetworkManager.isParameterNotEncrypted = NO;
     skipProductReviewNetworkManager.isUsingHmac = YES;
     
-    [skipProductReviewNetworkManager requestWithBaseUrl:@"http://lo-lucky.ndvl"
-                                                   path:@"/web-service/v4/action/review/skip_product_review.pl"
+    [skipProductReviewNetworkManager requestWithBaseUrl:[NSString v4Url]
+                                                   path:@"/v4/action/review/skip_product_review.pl"
                                                  method:RKRequestMethodGET
                                               parameter:@{@"product_id" : productID,
                                                           @"reputation_id" : reputationID,
@@ -606,8 +617,8 @@
     insertReputationReviewResponseNetworkManager.isParameterNotEncrypted = NO;
     insertReputationReviewResponseNetworkManager.isUsingHmac = YES;
     
-    [insertReputationReviewResponseNetworkManager requestWithBaseUrl:@"http://lo-lucky.ndvl"
-                                                                path:@"/web-service/v4/action/reputation/insert_reputation_review_response.pl"
+    [insertReputationReviewResponseNetworkManager requestWithBaseUrl:[NSString v4Url]
+                                                                path:@"/v4/action/reputation/insert_reputation_review_response.pl"
                                                               method:RKRequestMethodGET
                                                            parameter:@{@"reputation_id" : reputationID,
                                                                        @"response_message" : responseMessage,
@@ -631,8 +642,8 @@
     deleteReputationReviewResponseNetworkManager.isParameterNotEncrypted = NO;
     deleteReputationReviewResponseNetworkManager.isUsingHmac = YES;
     
-    [deleteReputationReviewResponseNetworkManager requestWithBaseUrl:@"http://lo-lucky.ndvl"
-                                                                path:@"/web-service/v4/action/reputation/delete_reputation_review_response.pl"
+    [deleteReputationReviewResponseNetworkManager requestWithBaseUrl:[NSString v4Url]
+                                                                path:@"/v4/action/reputation/delete_reputation_review_response.pl"
                                                               method:RKRequestMethodGET
                                                            parameter:@{@"reputation_id" : reputationID,
                                                                        @"review_id" : reviewID,
@@ -655,8 +666,8 @@
     insertReputationNetworkManager.isParameterNotEncrypted = NO;
     insertReputationNetworkManager.isUsingHmac = YES;
     
-    [insertReputationNetworkManager requestWithBaseUrl:@"http://lo-lucky.ndvl"
-                                                  path:@"/web-service/v4/action/reputation/insert_reputation.pl"
+    [insertReputationNetworkManager requestWithBaseUrl:[NSString v4Url]
+                                                  path:@"/v4/action/reputation/insert_reputation.pl"
                                                 method:RKRequestMethodGET
                                              parameter:@{@"buyer_seller"     : role,
                                                          @"reputation_id"    : reputationID,
@@ -674,44 +685,37 @@
 #pragma mark - Product Review Requests
 
 - (void)requestGetProductReviewWithProductID:(NSString *)productID
-                                  monthRange:(NSString *)monthRange
+                                  monthRange:(NSNumber *)monthRange
                                         page:(NSNumber *)page
-                                shopAccuracy:(NSString *)shopAccuracy
-                                 shopQuality:(NSString *)shopQuality
+                                shopAccuracy:(NSNumber *)shopAccuracy
+                                 shopQuality:(NSNumber *)shopQuality
                                   shopDomain:(NSString *)shopDomain
                                    onSuccess:(void (^)(ReviewResult *))successCallback
                                    onFailure:(void (^)(NSError *))errorCallback {
     getProductReviewNetworkManager.isParameterNotEncrypted = NO;
     getProductReviewNetworkManager.isUsingHmac = YES;
     
-    NSMutableDictionary *parameter = [[NSMutableDictionary alloc] initWithDictionary:@{@"product_id" : productID,
-                                                                                       @"page" : page,
-                                                                                       @"shop_domain" : shopDomain}];
-    
-    if (![shopQuality isEqualToString:@""]) {
-        [parameter setObject:shopQuality forKey:@"shop_quality"];
-    }
-    
-    if (![shopAccuracy isEqualToString:@""]) {
-        [parameter setObject:shopAccuracy forKey:@"shop_accuracy"];
-    }
-    
-    if (![monthRange isEqualToString:@""]) {
-        [parameter setObject:monthRange forKey:@"month_range"];
-    }
-    
-    [getProductReviewNetworkManager requestWithBaseUrl:@"http://lo-lucky.ndvl"
-                                                  path:@"/web-service/v4/product/get_product_review.pl"
+    [getProductReviewNetworkManager requestWithBaseUrl:[NSString v4Url]
+                                                  path:@"/v4/product/get_product_review.pl"
                                                 method:RKRequestMethodGET
-                                             parameter:parameter
+                                             parameter:@{@"product_id" : productID,
+                                                         @"page" : page,
+                                                         @"shop_domain" : shopDomain,
+                                                         @"shop_quality" : shopQuality,
+                                                         @"shop_accuracy" : shopAccuracy,
+                                                         @"month_range" : monthRange}
                                                mapping:[Review mapping]
                                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                                 
-                                                 
+                                                 NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+                                                 Review *obj = [result objectForKey:@""];
+                                                 successCallback(obj.data);
                                              } onFailure:^(NSError *errorResult) {
-                                                 
-                                                 
+                                                 errorCallback(errorResult);
                                              }];
+}
+
+- (int)requestGetProductReviewNextPageFromUri:(NSString*)uri {
+    return [[getProductReviewNetworkManager splitUriToPage:uri] intValue];
 }
 
 @end

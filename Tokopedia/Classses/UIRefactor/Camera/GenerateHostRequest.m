@@ -8,6 +8,7 @@
 
 #import "GenerateHostRequest.h"
 #import "GenerateHost.h"
+#import "NSString+TPBaseUrl.h"
 
 @implementation GenerateHostRequest {
     TokopediaNetworkManager *_generateHostNetworkManager;
@@ -29,8 +30,8 @@
     _generateHostNetworkManager.isParameterNotEncrypted = NO;
     _generateHostNetworkManager.isUsingHmac = YES;
     
-    [_generateHostNetworkManager requestWithBaseUrl:@"http://lo-lucky.ndvl"
-                                               path:@"/web-service/v4/action/generate-host/generate_host.pl"
+    [_generateHostNetworkManager requestWithBaseUrl:[NSString v4Url]
+                                               path:@"/v4/action/generate-host/generate_host.pl"
                                              method:RKRequestMethodGET
                                           parameter:@{@"new_add" : newAdd}
                                             mapping:[GenerateHost mapping]

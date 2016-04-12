@@ -64,6 +64,7 @@ static NSInteger userViewHeight = 70;
     
     HelpfulReviewRequest *helpfulReviewRequest;
     ReviewRequest *reviewRequest;
+    ReviewResult *reviewResult;
     BOOL isShowingMore, animationHasShown;
 }
 
@@ -152,7 +153,7 @@ static NSInteger userViewHeight = 70;
     nRate1 = nRate2 = nRate3 = nRate4 = nRate5 = 0;
     
     
-    for(RatingList *tempRatingList in review.result.advance_review.rating_list) {
+    for(RatingList *tempRatingList in reviewResult.advance_review.rating_list) {
         switch ([tempRatingList.rating_rating_star_point intValue]) {
             case 5:
             {
@@ -229,14 +230,14 @@ static NSInteger userViewHeight = 70;
     //Set header rate
     for(int i=0;i<arrImageHeaderRating.count;i++) {
         UIImageView *tempImageView = arrImageHeaderRating[i];
-        tempImageView.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:(i<ceilf([review.result.advance_review.product_rating_point floatValue]))?@"icon_star_active":@"icon_star" ofType:@"png"]];
+        tempImageView.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:(i<ceilf([reviewResult.advance_review.product_rating_point floatValue]))?@"icon_star_active":@"icon_star" ofType:@"png"]];
     }
     
-    lblTotalHeaderRating.text = [NSString stringWithFormat:@"%.1f", [review.result.advance_review.product_rating_point floatValue]];
+    lblTotalHeaderRating.text = [NSString stringWithFormat:@"%.1f", [reviewResult.advance_review.product_rating_point floatValue]];
     
     
     NSString *strReview = @"Review";
-    lblDescTotalHeaderRating.text = [NSString stringWithFormat:@"%d Review", [review.result.advance_review.product_review intValue]];
+    lblDescTotalHeaderRating.text = [NSString stringWithFormat:@"%d Review", [reviewResult.advance_review.product_review intValue]];
     UIFont *boldFont = [UIFont boldSystemFontOfSize:lblDescTotalHeaderRating.font.pointSize];
     NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys: boldFont, NSFontAttributeName, lblDescTotalHeaderRating.textColor, NSForegroundColorAttributeName, nil];
     NSDictionary *subAttrs = [NSDictionary dictionaryWithObjectsAndKeys:lblDescTotalHeaderRating.font, NSFontAttributeName, lblDescTotalHeaderRating.textColor, NSForegroundColorAttributeName, nil];
@@ -253,6 +254,74 @@ static NSInteger userViewHeight = 70;
     [tableContent addSubview:refreshControl];
     [tableContent setContentInset:UIEdgeInsetsMake(0, 0, 40, 0)];
     tableContent.tableHeaderView = viewHeader;
+}
+
+- (void)doRequestGetProductReview {
+    NSNumber *monthRange = @(0);
+    NSNumber *shopQuality = @(0);
+    NSNumber *shopAccuracy = @(0);
+    
+    if (btnFilter6Month.tag == 1) {
+        monthRange = @(6);
+    }
+    
+    if ((int)segmentedControl.selectedSegmentIndex == 0 && filterStar > 0) {
+        shopQuality = @(filterStar);
+    } else if (filterStar > 0) {
+        shopAccuracy = @(filterStar);
+    }
+    
+    [reviewRequest requestGetProductReviewWithProductID:_strProductID
+                                             monthRange:monthRange
+                                                   page:@(0)
+                                           shopAccuracy:shopAccuracy
+                                            shopQuality:shopQuality
+                                             shopDomain:_strShopDomain
+                                              onSuccess:^(ReviewResult *result) {
+                                                  reviewResult = result;
+                                                  NSMutableArray *contentsToAdd = [[NSMutableArray alloc] initWithArray:result.list];
+                                                  
+                                                  for (DetailReputationReview *review in contentsToAdd) {
+                                                      review.product_id = _strProductID;
+                                                      review.review_product_id = _strProductID;
+                                                  }
+                                                  
+                                                  if (page == 0 && result.list != nil) {
+                                                      arrList = [[NSMutableArray alloc] initWithArray:contentsToAdd];
+                                                      
+                                                      segmentedControl.enabled = YES;
+                                                      btnFilter6Month.enabled = btnFilterAllTime.enabled = YES;
+                                                      [self setRateStar:(int)segmentedControl.selectedSegmentIndex withAnimate:YES];
+                                                  } else if (result.list != nil) {
+                                                      [arrList addObjectsFromArray:contentsToAdd];
+                                                  }
+                                                  
+                                                  // Check next page
+                                                  strUri = result.paging.uri_next;
+                                                  page = [reviewRequest requestGetProductReviewNextPageFromUri:strUri];
+                                                  
+                                                  if (arrList != nil && arrList.count > 0) {
+                                                      if (tableContent.delegate == nil) {
+                                                          tableContent.delegate = self;
+                                                          tableContent.dataSource = self;
+                                                      }
+                                                      
+                                                      [tableContent reloadData];
+                                                      [self setLoadingView:NO];
+                                                  } else {
+                                                      [self setLoadingView:NO];
+                                                      
+                                                      if (noResultView == nil) {
+                                                          noResultView = [NoResultView new];
+                                                      }
+                                                      
+                                                      tableContent.tableFooterView = noResultView.view;
+                                                  }
+                                                  
+                                              }
+                                              onFailure:^(NSError *error) {
+                                                  
+                                              }];
 }
 
 #pragma mark - UITableView Delegate and DataSource
@@ -342,7 +411,8 @@ static NSInteger userViewHeight = 70;
     if(indexPath.row == arrList.count-1) {
         if(strUri!=nil && ![strUri isEqualToString:@"0"]) {
             [self setLoadingView:YES];
-            [[self getNetworkManager:CTagGetProductReview] doRequest];
+//            [[self getNetworkManager:CTagGetProductReview] doRequest];
+            [self doRequestGetProductReview];
         }
     }
     if(!animationHasShown && helpfulReviews.count > 0 && indexPath.section == 0 && ![self isLastCellInSectionZero:indexPath]){
@@ -408,7 +478,6 @@ static NSInteger userViewHeight = 70;
             if([self isLastCellInSectionZero:indexPath]){
                 [self showMoreTapped:nil];
             }else{
-                //will show most hr details when jerry team has already STP
                 DetailReputationReview *detailReputationReview = helpfulReviews[indexPath.row];
                 [self redirectToProductDetailReputation:detailReputationReview withIndexPath:indexPath];
             }
@@ -459,7 +528,8 @@ static NSInteger userViewHeight = 70;
     [self unloadRequesting];
     
     [self setLoadingView:YES];
-    [[self getNetworkManager:CTagGetProductReview] doRequest];
+//    [[self getNetworkManager:CTagGetProductReview] doRequest];
+    [self doRequestGetProductReview];
     
     NSString *monthRange = @"";
     NSString *shopQuality = @"";
@@ -534,7 +604,8 @@ static NSInteger userViewHeight = 70;
     }
     
     [self setLoadingView:YES];
-    [[self getNetworkManager:CTagGetProductReview] doRequest];
+//    [[self getNetworkManager:CTagGetProductReview] doRequest];
+    [self doRequestGetProductReview];
 }
 - (IBAction)actionFilter6Month:(id)sender {
     [btnFilterAllTime setTitleColor:[UIColor colorWithRed:111/255.0f green:113/255.0f blue:121/255.0f alpha:1.0f] forState:UIControlStateNormal];
@@ -549,7 +620,8 @@ static NSInteger userViewHeight = 70;
     animationHasShown = NO;
     
     [self setLoadingView:YES];
-    [[self getNetworkManager:CTagGetProductReview] doRequest];
+//    [[self getNetworkManager:CTagGetProductReview] doRequest];
+    [self doRequestGetProductReview];
 }
 - (IBAction)actionFilterAllTime:(id)sender {
     [btnFilter6Month setTitleColor:[UIColor colorWithRed:111/255.0f green:113/255.0f blue:121/255.0f alpha:1.0f] forState:UIControlStateNormal];
@@ -565,7 +637,8 @@ static NSInteger userViewHeight = 70;
     animationHasShown = NO;
     
     [self setLoadingView:YES];
-    [[self getNetworkManager:CTagGetProductReview] doRequest];
+//    [[self getNetworkManager:CTagGetProductReview] doRequest];
+    [self doRequestGetProductReview];
 }
 - (IBAction)actionSegmentedValueChange:(id)sender {
     page = 0;
@@ -573,7 +646,8 @@ static NSInteger userViewHeight = 70;
     [arrList removeAllObjects];
     [tableContent reloadData];
     [self setLoadingView:YES];
-    [[self getNetworkManager:CTagGetProductReview] doRequest];
+//    [[self getNetworkManager:CTagGetProductReview] doRequest];
+    [self doRequestGetProductReview];
 }
 - (void)actionVote:(id)sender {
     [self dismissAllPopTipViews];
@@ -684,7 +758,8 @@ static NSInteger userViewHeight = 70;
     [tableContent reloadData];
     
     [self setLoadingView:YES];
-    [[self getNetworkManager:CTagGetProductReview] doRequest];
+//    [[self getNetworkManager:CTagGetProductReview] doRequest];
+    [self doRequestGetProductReview];
 }
 - (void)redirectToProductDetailReputation:(DetailReputationReview *)detailReputationReview withIndexPath:(NSIndexPath *)indexPath {
     ProductDetailReputationViewController *productDetailReputationViewController = [ProductDetailReputationViewController new];
@@ -1006,7 +1081,8 @@ static NSInteger userViewHeight = 70;
 #pragma mark - LoadingView Delegate
 - (void)pressRetryButton{
     [self setLoadingView:YES];
-    [[self getNetworkManager:CTagGetProductReview] doRequest];
+//    [[self getNetworkManager:CTagGetProductReview] doRequest];
+    [self doRequestGetProductReview];
 }
 
 #pragma mark - LoginView Delegate
@@ -1032,7 +1108,8 @@ static NSInteger userViewHeight = 70;
 
 #pragma mark - HelpfulReviewRequestDelegate
 - (void) didReceiveHelpfulReview:(NSArray*)helpfulReview{
-    [[self getNetworkManager:CTagGetProductReview] doRequest];
+//    [[self getNetworkManager:CTagGetProductReview] doRequest];
+    [self doRequestGetProductReview];
     
     [helpfulReviews removeAllObjects];
     [helpfulReviews addObjectsFromArray:helpfulReview];

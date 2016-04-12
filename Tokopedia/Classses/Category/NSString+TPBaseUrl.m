@@ -39,7 +39,6 @@
                             @"https://ws-staging.tokopedia.com" : @"Staging",
                             @"https://ws-alpha.tokopedia.com" : @"Alpha",
                             @"https://ws.tokopedia.com" : @"Production",
-                            FBTweakValue(@"General", @"Developer's", @"NDVL Base Url", @"http://lo-lucky.ndvl/web-service") : @"Developer's"
                             }
                           ));
 }
