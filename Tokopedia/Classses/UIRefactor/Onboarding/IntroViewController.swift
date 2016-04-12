@@ -14,7 +14,7 @@ class IntroViewController: UIViewController, EAIntroDelegate {
     
     @IBOutlet private var topedImageView: UIImageView! {
         didSet {
-            topedImageView.animationDuration = 3
+            topedImageView.animationDuration = 4.2
             topedImageView.animationRepeatCount = 1
             topedImageView.animationImages = [
                 UIImage(named: "onboarding_toped_1a.png")!,
@@ -77,6 +77,8 @@ class IntroViewController: UIViewController, EAIntroDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        UIApplication.sharedApplication().statusBarStyle = .Default
         
         reRenderLabels()
         
