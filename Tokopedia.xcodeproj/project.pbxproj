@@ -2107,6 +2107,7 @@
 		BB7B2AEA1CB7B1E400634D45 /* Tokopedia-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB7B22D41CB7B1E300634D45 /* Tokopedia-Info.plist */; };
 		BB7B2AEB1CB7B1E400634D45 /* Tokopedia.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = BB7B22D61CB7B1E400634D45 /* Tokopedia.entitlements */; };
 		BB7B2AEC1CB7B1E400634D45 /* Tokopedia.xcworkspace in Resources */ = {isa = PBXBuildFile; fileRef = BB7B22D71CB7B1E400634D45 /* Tokopedia.xcworkspace */; };
+		BB7B2AEF1CBB556400634D45 /* EtalaseRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = BB7B2AEE1CBB556400634D45 /* EtalaseRequest.m */; };
 		F25F6F270D531ED13A92CDB9 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4868E459AB2A65D133732296 /* libPods-Tokopedia.a */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
 		FC23B85A1ACD659900879D75 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8581ACD659900879D75 /* Fabric.framework */; };
@@ -5301,6 +5302,8 @@
 		BB7B22D51CB7B1E400634D45 /* Tokopedia-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Tokopedia-Prefix.pch"; sourceTree = "<group>"; };
 		BB7B22D61CB7B1E400634D45 /* Tokopedia.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Tokopedia.entitlements; sourceTree = "<group>"; };
 		BB7B22D71CB7B1E400634D45 /* Tokopedia.xcworkspace */ = {isa = PBXFileReference; lastKnownFileType = wrapper.workspace; path = Tokopedia.xcworkspace; sourceTree = "<group>"; };
+		BB7B2AED1CBB556400634D45 /* EtalaseRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EtalaseRequest.h; sourceTree = "<group>"; };
+		BB7B2AEE1CBB556400634D45 /* EtalaseRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EtalaseRequest.m; sourceTree = "<group>"; };
 		C8A1445074FECD393EA18C17 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		FC23B8571ACD659900879D75 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		FC23B8581ACD659900879D75 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
@@ -9902,6 +9905,8 @@
 				BB7B1E851CB7B1DF00634D45 /* ShopTalkPageViewController.h */,
 				BB7B1E861CB7B1DF00634D45 /* ShopTalkPageViewController.m */,
 				BB7B1E871CB7B1DF00634D45 /* ShopTalkPageViewController.xib */,
+				BB7B2AED1CBB556400634D45 /* EtalaseRequest.h */,
+				BB7B2AEE1CBB556400634D45 /* EtalaseRequest.m */,
 			);
 			path = ShopPageView;
 			sourceTree = "<group>";
@@ -13564,6 +13569,7 @@
 				BB7B24161CB7B1E400634D45 /* Quality.m in Sources */,
 				BB7B23821CB7B1E400634D45 /* HotlistList.m in Sources */,
 				BB7B23611CB7B1E400634D45 /* FavoritedShopResult.m in Sources */,
+				BB7B2AEF1CBB556400634D45 /* EtalaseRequest.m in Sources */,
 				BB7B24401CB7B1E400634D45 /* SearchResult.m in Sources */,
 				BB7B27ED1CB7B1E400634D45 /* UserContainerViewController.m in Sources */,
 				BB7B23C41CB7B1E400634D45 /* LoyaltyPointMerchant.m in Sources */,

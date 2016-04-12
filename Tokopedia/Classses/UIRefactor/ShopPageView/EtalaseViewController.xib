@@ -7,6 +7,7 @@
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
             <string>GothamBook</string>
+            <string>GothamBook</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -54,7 +55,7 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Tambah Etalase" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="5DQ-dX-yGb">
-                    <rect key="frame" x="8" y="8" width="266" height="44"/>
+                    <rect key="frame" x="8" y="8" width="226" height="44"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="SVo-qs-LAn"/>
                     </constraints>
@@ -62,11 +63,12 @@
                     <textInputTraits key="textInputTraits"/>
                 </textField>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4AP-bQ-1Jt">
-                    <rect key="frame" x="282" y="16" width="30" height="30"/>
+                    <rect key="frame" x="242" y="18" width="70" height="26"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="30" id="YIr-2L-Css"/>
+                        <constraint firstAttribute="width" constant="70" id="YIr-2L-Css"/>
                     </constraints>
-                    <state key="normal" title="OK"/>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                    <state key="normal" title="Tambah"/>
                     <connections>
                         <action selector="tambahEtalaseButtonTapped:" destination="-1" eventType="touchUpInside" id="hr2-7s-2bM"/>
                     </connections>

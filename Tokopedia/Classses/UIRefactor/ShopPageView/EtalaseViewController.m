@@ -9,8 +9,9 @@
 #import "EtalaseViewController.h"
 #import "EtalaseCell.h"
 #import "LoadingView.h"
+#import "EtalaseRequest.h"
 
-@interface EtalaseViewController ()<UITableViewDataSource, UITableViewDelegate, LoadingViewDelegate, UITextFieldDelegate>
+@interface EtalaseViewController ()<UITableViewDataSource, UITableViewDelegate, LoadingViewDelegate, UITextFieldDelegate, UIAlertViewDelegate>
 
 @end
 
@@ -21,11 +22,12 @@
     NSInteger page;
     NSString *uriNext;
     
-    TokopediaNetworkManager *etalaseNetworkManager;
-    TokopediaNetworkManager *myEtalaseNetworkManager;
+    EtalaseRequest *etalaseRequest;
     
     NSIndexPath *selectedIndexPath;
     UIAlertView *alertView;
+    NSString *_urinext;
+    BOOL _isDeleting;
 }
 
 - (void)viewDidLoad {
@@ -34,9 +36,9 @@
     etalaseList = [NSMutableArray new];
     otherEtalaseList = [NSMutableArray new];
     
-    etalaseNetworkManager = [TokopediaNetworkManager new];
-    myEtalaseNetworkManager = [TokopediaNetworkManager new];
+    etalaseRequest = [EtalaseRequest new];
     page = 0;
+    _urinext = @"";
     
     if (self.navigationController.isBeingPresented) {
         UIBarButtonItem *cancelBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
@@ -47,18 +49,29 @@
         self.navigationItem.leftBarButtonItem = cancelBarButton;
     }
     
-    UIBarButtonItem  *rightBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Selesai"
-                                                                        style:UIBarButtonItemStyleDone
-                                                                       target:(self)
-                                                                       action:@selector(finishButtonTapped:)];
-    rightBarButton.tag = 11;
-    self.navigationItem.rightBarButtonItem = rightBarButton;
+    if(_isEditable){
+        UIBarButtonItem  *rightBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Hapus"
+                                                                            style:UIBarButtonItemStyleDone
+                                                                           target:(self)
+                                                                           action:@selector(deleteButtonTapped:)];
+        self.navigationItem.rightBarButtonItem = rightBarButton;
+    }else{
+        UIBarButtonItem  *rightBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Selesai"
+                                                                            style:UIBarButtonItemStyleDone
+                                                                           target:(self)
+                                                                           action:@selector(finishButtonTapped:)];
+        self.navigationItem.rightBarButtonItem = rightBarButton;
+    }
     
     _tableView.tableFooterView = _footerView;
     _tambahEtalaseTextField.delegate = self;
+    _tambahEtalaseTextField.tag = 111;
+    
     alertView = [[UIAlertView alloc]initWithTitle:@"Edit Etalase" message:@"" delegate:self cancelButtonTitle:@"Batal" otherButtonTitles:@"OK", nil];
     alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
     [alertView textFieldAtIndex:0].delegate = self;
+    [alertView textFieldAtIndex:0].tag = 222;
+    alertView.delegate = self;
     
     _tambahEtalaseButtonWidthConstraint.constant = 0;
     _tambahEtalaseButtonLeftConstraint.constant = 0;
@@ -118,7 +131,7 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if(section == 0){
-        return _isEditable?0:otherEtalaseList.count;
+        return _showOtherEtalase?otherEtalaseList.count:0;
     }else if(section == 1){
         return etalaseList.count;
     }
@@ -127,7 +140,13 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+    NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] -1;
+    NSInteger indexPathRow = indexPath.row;
+    if (row <= indexPathRow) {
+        if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
+            [self requestEtalase];
+        }
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
@@ -155,10 +174,23 @@
     return nil;
 }
 
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return UITableViewCellEditingStyleDelete;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [etalaseList removeObjectAtIndex:indexPath.row];
+    if ( editingStyle== UITableViewCellEditingStyleDelete) {
+        [_tableView deleteRowsAtIndexPaths:[NSMutableArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationBottom];
+    }
+}
+
 #pragma mark - Method
 -(IBAction)cancelButtonTapped:(id)sender
 {
-    [etalaseNetworkManager requestCancel];
+    [etalaseRequest cancelAllRequest];
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -174,6 +206,26 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+-(IBAction)deleteButtonTapped:(id)sender{
+    if(_isDeleting){
+        [_tableView setEditing:NO animated:YES];
+        UIBarButtonItem  *rightBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Hapus"
+                                                                            style:UIBarButtonItemStyleDone
+                                                                           target:(self)
+                                                                           action:@selector(deleteButtonTapped:)];
+        self.navigationItem.rightBarButtonItem = rightBarButton;
+        _isDeleting = NO;
+    }else{
+        [_tableView setEditing:YES animated:YES];
+        UIBarButtonItem  *rightBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Selesai"
+                                                                            style:UIBarButtonItemStyleDone
+                                                                           target:(self)
+                                                                           action:@selector(deleteButtonTapped:)];
+        self.navigationItem.rightBarButtonItem = rightBarButton;
+        _isDeleting = YES;
+    }
+}
+
 
 #pragma mark - Request
 
@@ -187,82 +239,172 @@
 }
 
 -(void)requestCertainShopEtalase{
-    etalaseNetworkManager.isUsingHmac = YES;
-    [etalaseNetworkManager requestWithBaseUrl:[NSString v4Url]
-                                   path:@"/v4/shop/get_shop_etalase.pl"
-                                 method:RKRequestMethodGET
-                              parameter:@{@"shop_id"    : _shopId,
-                                          @"page"       : @(page)}
-                                mapping:[Etalase mapping]
-                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                  Etalase *etalase = [successResult.dictionary objectForKey:@""];
-                                  [etalaseList addObjectsFromArray:etalase.result.list];
-                                  [otherEtalaseList addObjectsFromArray:etalase.result.list_other];
-                                  
-                                  uriNext = etalase.result.paging.uri_next;
-                                  if (uriNext) {
-                                      page = [[etalaseNetworkManager splitUriToPage:uriNext] integerValue];
-                                  }else{
-                                      _tableView.tableFooterView = nil;
-                                  }
-                                  
-                                  [_tableView reloadData];
-                              }onFailure:^(NSError *errorResult) {
-                                    _tableView.tableFooterView = nil;
-                              }];
-
+    [etalaseRequest requestEtalaseFilterWithShopId:_shopId
+                                              page:page
+                                         onSuccess:^(Etalase *etalase) {
+                                             if(page == 1){
+                                                 [etalaseList removeAllObjects];
+                                                 [otherEtalaseList removeAllObjects];
+                                             }
+                                             [etalaseList addObjectsFromArray:etalase.result.list];
+                                             [otherEtalaseList addObjectsFromArray:etalase.result.list_other];
+                                             
+                                             uriNext = etalase.result.paging.uri_next;
+                                             _urinext = uriNext;
+                                             if (uriNext) {
+                                                 page = [[etalaseRequest splitUriToPage:uriNext] integerValue];
+                                             }else{
+                                                 _tableView.tableFooterView = nil;
+                                             }
+                                             
+                                             [_tableView reloadData];
+                                         } onFailure:^(NSError *error) {
+                                             _tableView.tableFooterView = nil;
+                                         }];
 }
 
 -(void)requestMyEtalase{
-    myEtalaseNetworkManager.isUsingHmac = YES;
-    [myEtalaseNetworkManager requestWithBaseUrl:[NSString v4Url]
-                                           path:@"/v4/myshop-etalase/get_shop_etalase.pl"
-                                         method:RKRequestMethodGET
-                                      parameter:@{@"shop_id"    : _shopId,
-                                                  @"page"       : @(page)}
-                                        mapping:[Etalase mapping]
-                                      onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                          Etalase *etalase = [successResult.dictionary objectForKey:@""];
-                                          [etalaseList addObjectsFromArray:etalase.result.list];
-                                          [otherEtalaseList addObjectsFromArray:etalase.result.list_other];
-                                          
-                                          uriNext = etalase.result.paging.uri_next;
-                                          if (uriNext) {
-                                              page = [[etalaseNetworkManager splitUriToPage:uriNext] integerValue];
-                                          }else{
-                                              _tableView.tableFooterView = nil;
-                                          }
-                                          
-                                          [_tableView reloadData];
-                                      }onFailure:^(NSError *errorResult) {
-                                          _tableView.tableFooterView = nil;
-                                      }];
+    [etalaseRequest requestMyShopEtalaseWithShopId:_shopId
+                                              page:page
+                                         onSuccess:^(Etalase *etalase) {
+                                             if(page == 1){
+                                                 [etalaseList removeAllObjects];
+                                                 [otherEtalaseList removeAllObjects];
+                                             }
+                                             [etalaseList addObjectsFromArray:etalase.result.list];
+                                             [otherEtalaseList addObjectsFromArray:etalase.result.list_other];
+                                             
+                                             uriNext = etalase.result.paging.uri_next;
+                                             _urinext = uriNext;
+                                             if (uriNext) {
+                                                 page = [[etalaseRequest splitUriToPage:uriNext] integerValue];
+                                             }else{
+                                                 _tableView.tableFooterView = nil;
+                                             }
+                                             
+                                             [_tableView reloadData];
+                                         } onFailure:^(NSError *error) {
+                                             _tableView.tableFooterView = nil;
+                                         }];
 }
 
 #pragma mark - TextField Delegate
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{
-    [_tambahEtalaseTextField setText:@""];
-    [_tambahEtalaseTextField resignFirstResponder];
+    if(textField.tag == 111){
+        [_tambahEtalaseTextField setText:@""];
+        [_tambahEtalaseTextField resignFirstResponder];
+        [UIView animateWithDuration:1 animations:^{
+        }];
+        [UIView animateWithDuration:2
+                              delay:0
+             usingSpringWithDamping:0
+              initialSpringVelocity:0.1
+                            options:UIViewAnimationOptionCurveEaseIn
+                         animations:^{
+                             [_tambahEtalaseButtonWidthConstraint setConstant:0];
+                             [_tambahEtalaseButtonLeftConstraint setConstant:0];
+                         } completion:^(BOOL finished) {
+                             
+                         }];
+    }
     return YES;
 }
 -(void)textFieldDidBeginEditing:(UITextField *)textField{
-    [_tableView deselectRowAtIndexPath:selectedIndexPath animated:YES];
-    [UIView animateWithDuration:1 animations:^{
-    }];
-    [UIView animateWithDuration:2
-                          delay:0
-         usingSpringWithDamping:0
-          initialSpringVelocity:0.1
-                        options:UIViewAnimationOptionCurveEaseIn
-                     animations:^{
-                         [_tambahEtalaseButtonWidthConstraint setConstant:30];
-                         [_tambahEtalaseButtonLeftConstraint setConstant:8];
-                     } completion:^(BOOL finished) {
-                         
-                     }];
+    if(textField.tag == 111){
+        [UIView animateWithDuration:2
+                              delay:0
+             usingSpringWithDamping:0
+              initialSpringVelocity:0.1
+                            options:UIViewAnimationOptionCurveEaseIn
+                         animations:^{
+                             [_tambahEtalaseButtonWidthConstraint setConstant:70];
+                             [_tambahEtalaseButtonLeftConstraint setConstant:8];
+                         } completion:^(BOOL finished) {
+                             
+                         }];
+    }
 }
 - (IBAction)tambahEtalaseButtonTapped:(id)sender {
-    
+    UserAuthentificationManager *auth = [UserAuthentificationManager new];
+    NSDictionary *loginData = [auth getUserLoginData];
+    NSString *userId = [loginData objectForKey:@"user_id"]?:@"";
+    [etalaseRequest requestActionAddEtalaseWithName:[_tambahEtalaseTextField text]
+                                             userId:userId
+                                          onSuccess:^(ShopSettings *shopSettings) {
+                                              if(shopSettings.result.is_success == 1){
+                                                  EtalaseList *newEtalase = [EtalaseList new];
+                                                  [newEtalase setEtalase_id:shopSettings.result.etalase_id];
+                                                  [newEtalase setEtalase_name:[_tambahEtalaseTextField text]];
+                                                  [newEtalase setEtalase_num_product:@"0"];
+                                                  [newEtalase setEtalase_total_product:@"0"];
+                                                  
+                                                  [etalaseList insertObject:newEtalase atIndex:0];
+                                                  NSArray *insertIndexPaths = [NSArray arrayWithObjects:
+                                                                               [NSIndexPath indexPathForRow:0 inSection:1],nil
+                                                                               ];
+                                                  [_tableView beginUpdates];
+                                                  [_tableView insertRowsAtIndexPaths:insertIndexPaths withRowAnimation:UITableViewRowAnimationTop];
+                                                  [_tableView endUpdates];
+                                                  [_tambahEtalaseTextField.delegate textFieldShouldReturn:_tambahEtalaseTextField];
+                                              }else{
+                                                  [self alertForError:shopSettings.message_error];
+                                              }
+                                          } onFailure:^(NSError *error) {
+                                              [self alertForError:@[@"Kendala koneksi internet"]];
+                                          }];
 }
 
+- (void)requestEditEtalase:(NSString*)name{
+    if(selectedIndexPath.section == 1){
+        UserAuthentificationManager *auth = [UserAuthentificationManager new];
+        NSDictionary *loginData = [auth getUserLoginData];
+        NSString *userId = [loginData objectForKey:@"user_id"]?:@"";
+        EtalaseList *selectedEtalase = [etalaseList objectAtIndex:selectedIndexPath.row];
+        [etalaseRequest requestActionEditEtalaseWithId:selectedEtalase.etalase_id
+                                                  name:name
+                                                userId:userId
+                                             onSuccess:^(ShopSettings *shopSettings, NSString* name) {
+                                                 if(shopSettings.result.is_success){
+                                                     
+                                                     EtalaseList *selectedEtalase = [etalaseList objectAtIndex:selectedIndexPath.row];
+                                                     
+                                                     
+                                                     EtalaseList *newEtalase = [EtalaseList new];
+                                                     [newEtalase setEtalase_id:selectedEtalase.etalase_id];
+                                                     [newEtalase setEtalase_name:name];
+                                                     [newEtalase setEtalase_num_product:selectedEtalase.etalase_num_product];
+                                                     [newEtalase setEtalase_total_product:selectedEtalase.etalase_total_product];
+                                                     
+                                                     [etalaseList replaceObjectAtIndex:selectedIndexPath.row withObject:newEtalase];
+                                                     
+                                                     NSArray *operationIndexPaths = [NSArray arrayWithObjects:[NSIndexPath indexPathForRow:selectedIndexPath.row inSection:selectedIndexPath.section], nil];
+                                                     
+                                                     [_tableView beginUpdates];
+                                                     [_tableView deleteRowsAtIndexPaths:operationIndexPaths withRowAnimation:UITableViewRowAnimationFade];
+                                                     [_tableView insertRowsAtIndexPaths:operationIndexPaths withRowAnimation:UITableViewRowAnimationFade];
+                                                     [_tableView endUpdates];
+                                                 }else{
+                                                     [self alertForError:shopSettings.message_error];
+                                                 }
+                                             } onFailure:^(NSError *error) {
+                                                 [self alertForError:@[@"Kendala koneksi internet"]];
+                                             }];
+    }
+}
+
+
+
+- (void)alertForError:(NSArray*)error{
+    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:error delegate:self];
+    [alert show];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if(buttonIndex == 0){
+        //batal
+    }else if(buttonIndex == 1){
+        //OK
+        [self requestEditEtalase:[alertView textFieldAtIndex:0].text];
+    }
+}
 @end

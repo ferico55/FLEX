@@ -13,4 +13,6 @@
 @property (nonatomic) NSInteger is_success;
 @property (nonatomic, strong) NSString *etalase_id;
 
++(RKObjectMapping*)mapping;
+
 @end

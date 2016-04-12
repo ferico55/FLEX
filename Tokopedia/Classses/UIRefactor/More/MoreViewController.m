@@ -648,7 +648,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
             EtalaseViewController *vc = [EtalaseViewController new];
             vc.delegate = self;
             vc.isEditable = YES;
-            vc.showOtherEtalase = YES;
+            vc.showOtherEtalase = NO;
             
             NSString* shopId = [_auth objectForKey:MORE_SHOP_ID]?:@{};
             [vc setShopId:shopId];
