@@ -525,4 +525,42 @@ static failedCompletionBlock failedRequest;
     
 }
 
+#pragma mark - Input Resi Resolution
++(void)fetchInputResiResolutionID:(NSString*)resolutionID
+                       shipmentID:(NSString*)shipmentID
+                      shippingRef:(NSString*)shippingRef
+                       success:(void(^) (ResolutionActionResult* data))success
+                       failure:(void(^) (NSError* error))failure {
+    
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    networkManager.isUsingHmac = YES;
+    
+    NSDictionary *param = @{
+                            @"resolution_id":resolutionID?:@"",
+                            @"shipment_id"  :shipmentID?:@"",
+                            @"shipping_ref" :shippingRef?:@""
+                            };
+    
+    [networkManager requestWithBaseUrl:[NSString v4Url]
+                                  path:@"/v4/action/resolution-center/input_resi_resolution.pl"
+                                method:RKRequestMethodGET
+                             parameter:param
+                               mapping:[ResolutionAction mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                 
+                                 ResolutionAction *response = [successResult.dictionary objectForKey:@""];
+                                 
+                                 if (response.data.is_success != 0) {
+                                     [StickyAlertView showSuccessMessage:response.message_status?:@[@"Tokopedia akan mempelajari kasus ini terlebih dahulu dan memberikan resolusi dalam waktu 3 hari."]];
+                                     success(response.data);
+                                 } else {
+                                     [StickyAlertView showErrorMessage:response.message_error?:@[@"Gagal membuat komplain"]];
+                                     failure(nil);
+                                 }
+                                 
+                             } onFailure:^(NSError *errorResult) {
+                                 failure(errorResult);
+                             }];
+    
+}
 @end

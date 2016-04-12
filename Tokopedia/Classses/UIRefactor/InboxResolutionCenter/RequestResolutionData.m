@@ -122,4 +122,32 @@
                              }];
 }
 
++(void)fetchListCourierSuccess:(void(^) (NSArray<ShipmentCourier*>* shipments))success
+                             failure:(void(^)(NSError* error))failure {
+    
+    NSDictionary* param = @{ };
+    
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    networkManager.isUsingHmac = YES;
+    [networkManager requestWithBaseUrl:[NSString v4Url]
+                                  path:@"/v4/inbox-resolution-center/get_kurir_list.pl"
+                                method:RKRequestMethodGET
+                             parameter:param
+                               mapping:[ShipmentOrder mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                 
+                                 ShipmentOrder *response = [successResult.dictionary objectForKey:@""];
+                                 
+                                 if (response.data && !response.message_error) {
+                                     success(response.data.shipment);
+                                 } else {
+                                     [StickyAlertView showErrorMessage:response.message_error?:@[@"error get detail"]];
+                                     failure(nil);
+                                 }
+                                 
+                             } onFailure:^(NSError *errorResult) {
+                                 failure(errorResult);
+                             }];
+}
+
 @end

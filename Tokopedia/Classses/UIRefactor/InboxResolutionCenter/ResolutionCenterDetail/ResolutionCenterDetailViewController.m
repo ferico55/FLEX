@@ -414,20 +414,17 @@
     if ([sender.titleLabel.text isEqualToString:BUTTON_TITLE_EDIT_RESI]) {
         ShipmentCourier *selectedShipment = [_dataInput objectForKey:DATA_SELECTED_SHIPMENT_KEY]?:[ShipmentCourier new];
         ResolutionInputReceiptViewController *vc = [ResolutionInputReceiptViewController new];
-        vc.action = ACTION_EDIT_RECEIPT;
         vc.delegate = self;
         vc.selectedShipment = selectedShipment;
-        vc.conversation = conversation;
+        vc.conversationID = conversation.conversation_id;
         [self.navigationController pushViewController:vc animated:YES];
     }
     
     if ([sender.titleLabel.text isEqualToString:BUTTON_TITLE_INPUT_RESI]) {
-        ShipmentCourier *selectedShipment = [_dataInput objectForKey:DATA_SELECTED_SHIPMENT_KEY]?:[ShipmentCourier new];
         ResolutionInputReceiptViewController *vc = [ResolutionInputReceiptViewController new];
-        vc.action = ACTION_INPUT_RECEIPT;
         vc.delegate = self;
-        vc.selectedShipment = selectedShipment;
-        vc.conversation = conversation;
+        vc.isInputResi = YES;
+        vc.resolutionID = _resolutionID;
         [self.navigationController pushViewController:vc animated:YES];
     }
     
@@ -1568,10 +1565,10 @@
         [_listResolutionConversation insertObject:conversationLast atIndex:_listResolutionConversation.count-1];
         if (isReplyEnable == NO) {
             [_listResolutionConversation removeLastObject];
-        } else{
-            _addedLastConversation.refund_amt_idr = conversationLast.refund_amt_idr;
-            _addedLastConversation.solution_string = conversationLast.solution_string;
-            _addedLastConversation.trouble_string = conversationLast.trouble_string;
+        }else if(conversationLast) {
+            if(conversationLast.refund_amt_idr)_addedLastConversation.refund_amt_idr = conversationLast.refund_amt_idr;
+            if(conversationLast.solution_string)_addedLastConversation.solution_string = conversationLast.solution_string;
+            if(conversationLast.trouble_string)_addedLastConversation.trouble_string = conversationLast.trouble_string;
         }
         [self hideReplyButton:!isReplyEnable];
     } else {

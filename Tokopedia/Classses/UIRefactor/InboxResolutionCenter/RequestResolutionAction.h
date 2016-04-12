@@ -40,6 +40,12 @@
 
 +(void)fetchReportResolutionID:(NSString*)resolutionID
                        success:(void(^) (ResolutionActionResult* data))success
-                       failure:(void(^) (NSError* error))failure ;
+                       failure:(void(^) (NSError* error))failure;
+
++(void)fetchInputResiResolutionID:(NSString*)resolutionID
+                       shipmentID:(NSString*)shipmentID
+                      shippingRef:(NSString*)shippingRef
+                          success:(void(^) (ResolutionActionResult* data))success
+                          failure:(void(^) (NSError* error))failure;
 
 @end
