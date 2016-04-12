@@ -215,51 +215,7 @@
     _note = note;
 }
 
-
--(void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-}
-
--(void)dealloc
-{
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-}
-
 #pragma mark - View Action
-
-- (void)photoPicker:(TKPDPhotoPicker *)picker didDismissCameraControllerWithUserInfo:(NSDictionary *)userInfo
-{
-    UIImageView *imageView;
-    
-    if (userInfo != nil && imageView != nil) {
-        NSDictionary *object = @{
-                                 DATA_SELECTED_PHOTO_KEY : userInfo,
-                                 DATA_SELECTED_IMAGE_VIEW_KEY : imageView
-                                 };
-        
-        UIImage *image = [[userInfo objectForKey:kTKPDCAMERA_DATAPHOTOKEY] objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
-        
-        for (UIButton *button in _uploadButtons) {
-            if (button.tag == picker.tag) {
-                button.enabled = NO;
-                button.hidden = YES;
-            } else if (button.tag == picker.tag+1 && ((UIImageView*)_uploadedImages[(picker.tag+1)-10]).image == nil) {
-                button.enabled = YES;
-                button.hidden = NO;
-            }
-        }
-        
-        imageView.image = image;
-        [imageView setContentMode:UIViewContentModeScaleAspectFill];
-        [imageView setClipsToBounds:YES];
-        
-    }
-}
-
 -(void)navigateToPhotoPicker{
     __weak typeof(self) wself = self;
     [ImagePickerController showImagePicker:self
@@ -343,31 +299,11 @@
 -(void)didTapDoneBarButtonItem
 {
     if ([self isValidInput]) {
-        NSString *troubleType = [self troubleType]?:@"";
-        NSString *solutionType = [self solutionType]?:@"";
-
-        NSString *photos = [[_uploadedPhotos valueForKey:@"description"] componentsJoinedByString:@"~"]?:@"";
-       
-        NSString *server_id = _generatehost.result.generated_host.server_id?:_serverID?:@"0";
-        
         if ([self.title isEqualToString:TITLE_APPEAL]) {
-
-            [_delegate appealSolution:solutionType refundAmount:_totalRefund remark:_note photo:photos serverID:server_id];
-            NSArray *viewControllers = self.navigationController.viewControllers;
-            UIViewController *destinationVC;
-            for (UIViewController *vc in viewControllers) {
-                if ([vc isKindOfClass:[_delegate class]]) {
-                    destinationVC = vc;
-                }
-            }
-            [self.navigationController popToViewController:destinationVC animated:YES];
-        }
-        else if([self.title isEqualToString:TITLE_CHANGE_SOLUTION])
-        {
+            [self doRequestAppealResolution];
+        } else if([self.title isEqualToString:TITLE_CHANGE_SOLUTION]) {
             [self doRequestReplyResolution];
-        }
-        else
-        {
+        } else {
             [self doRequestCreateResolution];
         }
     }
@@ -729,17 +665,7 @@
                                                   cachePolicy:NSURLRequestUseProtocolCachePolicy
                                               timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     
-    UIImageView *thumb = _shopImageView;
-    thumb.image = nil;
-    [thumb setImageWithURLRequest:request
-                 placeholderImage:[UIImage imageNamed:@"icon_default_shop.jpg"]
-                          success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-                              [thumb setImage:image];
-#pragma clang diagnosti c pop
-                          } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-                          }];
+    [_shopImageView setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_default_shop.jpg"] success:nil failure:nil];
     
     _selectedSolution = _selectedSolution?:[[self solutions] firstObject];
     _selectedProblem = _selectedProblem?:[ARRAY_PROBLEM_COMPLAIN firstObject];
@@ -888,13 +814,6 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-#pragma mark - Request Complaint
-
--(void)didSuccessCreate
-{
-
-}
-
 -(NSString *)troubleType
 {
     NSString *troubleType;
@@ -982,6 +901,35 @@
                                             success:^(ResolutionActionResult *data) {
                                                 [_alertCreateReso dismissWithClickedButtonIndex:0 animated:YES];
 
+                                                if ([_delegate respondsToSelector:@selector(addResolutionLast:conversationLast:replyEnable:)]){
+                                                    [_delegate addResolutionLast:data.solution_last conversationLast:data.conversation_last[0] replyEnable:!data.button.hide_no_reply];
+                                                }
+                                                NSArray *viewControllers = self.navigationController.viewControllers;
+                                                UIViewController *destinationVC;
+                                                for (UIViewController *vc in viewControllers) {
+                                                    if ([vc isKindOfClass:[_delegate class]]) {
+                                                        destinationVC = vc;
+                                                    }
+                                                }
+                                                [self.navigationController popToViewController:destinationVC animated:YES];
+                                                
+                                            } failure:^(NSError *error) {
+                                                [_alertCreateReso dismissWithClickedButtonIndex:0 animated:YES];
+                                            }];
+}
+
+-(void)doRequestAppealResolution{
+    
+    [_alertCreateReso show];
+    
+    [RequestResolutionAction fetchAppealResolutionID:_resolutionID?:@""
+                                           solution:[self solutionType]?:@""
+                                       refundAmount:_totalRefundTextField.text?:@""
+                                            message:_note?:@""
+                                       imageObjects:_selectedImages
+                                            success:^(ResolutionActionResult *data) {
+                                                [_alertCreateReso dismissWithClickedButtonIndex:0 animated:YES];
+                                                
                                                 if ([_delegate respondsToSelector:@selector(addResolutionLast:conversationLast:replyEnable:)]){
                                                     [_delegate addResolutionLast:data.solution_last conversationLast:data.conversation_last[0] replyEnable:!data.button.hide_no_reply];
                                                 }

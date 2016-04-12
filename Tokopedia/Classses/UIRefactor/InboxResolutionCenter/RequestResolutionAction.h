@@ -38,6 +38,14 @@
                       success:(void(^) (ResolutionActionResult* data))success
                       failure:(void(^)(NSError* error))failure;
 
++(void)fetchAppealResolutionID:(NSString *)resolutionID
+                      solution:(NSString *)solution
+                  refundAmount:(NSString *)refundAmount
+                       message:(NSString *)message
+                  imageObjects:(NSArray<DKAsset*>*)imageObjects
+                       success:(void(^) (ResolutionActionResult* data))success
+                       failure:(void(^)(NSError* error))failure;
+
 +(void)fetchReportResolutionID:(NSString*)resolutionID
                        success:(void(^) (ResolutionActionResult* data))success
                        failure:(void(^) (NSError* error))failure;

@@ -465,6 +465,7 @@
 -(void)resolutionOpenIsGotTheOrder:(BOOL)isGotTheOrder
 {
     InboxResolutionCenterOpenViewController *vc = [InboxResolutionCenterOpenViewController new];
+    vc.resolutionID = _resolutionID;
     vc.isGotTheOrder = isGotTheOrder;
     vc.isChangeSolution = YES;
     vc.detailOpenAmount = _resolutionDetail.resolution_order.order_open_amount;

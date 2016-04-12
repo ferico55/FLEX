@@ -15,10 +15,7 @@
 #pragma mark - Delegate
 @protocol InboxResolutionCenterOpenViewControllerDelegate <NSObject>
 @optional
--(void)setGenerateHost:(GeneratedHost*)generateHost;
 - (void)updateDataSolution:(NSString*)selectedSolution refundAmount:(NSString*)refund remark:(NSString*)note;
-- (void)changeSolution:(NSString*)solutionType troubleType:(NSString*)troubleType refundAmount:(NSString*)refundAmout remark:(NSString*)note photo:(NSString*)photo serverID:(NSString*)serverID isGotTheOrder:(BOOL)isGotTheOrder;
-- (void)appealSolution:(NSString*)solutionType refundAmount:(NSString*)refundAmout remark:(NSString*)note photo:(NSString*)photo serverID:(NSString*)serverID;
 - (void)didFailureComplainOrder:(TxOrderStatusList*)order atIndexPath:(NSIndexPath*)indexPath;
 - (void)addResolutionLast:(ResolutionLast*)resolutionLast conversationLast:(ResolutionConversation*)conversationLast replyEnable:(BOOL)isReplyEnable;
 @end

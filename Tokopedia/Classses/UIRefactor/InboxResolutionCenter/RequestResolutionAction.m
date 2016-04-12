@@ -494,6 +494,179 @@ static failedCompletionBlock failedRequest;
     }
 }
 
+#pragma mark - Request Resolution Appeal
+
++(NSDictionary*)setParamAppealValidationWithID:(NSString *)resolutionID
+                                     solution:(NSString *)solution
+                                 refundAmount:(NSString *)refundAmount
+                                      message:(NSString *)message
+                                       photos:(NSArray <ImageResult*>*)photos
+                                     serverID:(NSString *)serverID
+{
+    NSMutableArray *filePathPhotos = [NSMutableArray new];
+    for (ImageResult *imageResult in photos) {
+        [filePathPhotos addObject:imageResult.file_path?:@""];
+    }
+    NSString *photo = [[[filePathPhotos copy] valueForKey:@"description"]componentsJoinedByString:@"~"];
+    
+    NSDictionary *param = @{
+                            @"photos"               :photo?:@"",
+                            @"refund_amount"        :refundAmount?:@"",
+                            @"remark"               :message?:@"",
+                            @"resolution_id"        :resolutionID?:@"",
+                            @"server_id"            :serverID?:@"",
+                            @"solution"             :solution?:@"",
+                            };
+    return param;
+}
+
++(NSDictionary*)setParamAppealImageWithID:(NSString*)orderID
+                             attachments:(NSArray <ImageResult*>*)attachments
+                                serverID:(NSString*)serverID
+{
+    UserAuthentificationManager *auth = [UserAuthentificationManager new];
+    
+    NSMutableArray *filePathPhotos = [NSMutableArray new];
+    for (ImageResult *imageResult in attachments) {
+        [filePathPhotos addObject:imageResult.file_path?:@""];
+    }
+    NSString *photo = [[[filePathPhotos copy] valueForKey:@"description"]componentsJoinedByString:@"~"];
+    
+    NSDictionary *param = @{
+                            @"order_id"          :orderID?:@"",
+                            @"file_path"         :photo?:@"",
+                            @"attachment_string" :photo?:@"",
+                            @"server_id"         :serverID?:@"",
+                            @"user_id"           :[auth getUserId]?:@""
+                            };
+    return param;
+}
+
++(NSDictionary*)setParamAppealSubmitWithID:(NSString*)resolutionID
+                             fileUploaded:(NSString*)fileUploaded
+                                  postKey:(NSString*)postKey
+{
+    NSDictionary *param = @{
+                            @"file_uploaded"    :fileUploaded?:@"",
+                            @"resolution_id"    :resolutionID?:@"",
+                            @"post_key"         :postKey?:@"",
+                            };
+    return param;
+}
+
++(void)fetchAppealResolutionValidationWithParam:(NSDictionary*)param
+                                       success:(void(^) (ResolutionActionResult* dataValidattion))success {
+    
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    networkManager.isUsingHmac = YES;
+    
+    [networkManager requestWithBaseUrl:[NSString v4Url]
+                                  path:@"/v4/action/resolution-center/reject_admin_resolution_validation.pl"
+                                method:RKRequestMethodGET
+                             parameter:param
+                               mapping:[ResolutionAction mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                 
+                                 ResolutionAction *response = [successResult.dictionary objectForKey:@""];
+                                 
+                                 if (response.data.is_success == 1) {
+                                     success(response.data);
+                                 } else {
+                                     [StickyAlertView showErrorMessage:response.message_error?:@[@"Gagal naik banding"]];
+                                     failedRequest(nil);
+                                 }
+                                 
+                             } onFailure:^(NSError *errorResult) {
+                                 failedRequest(errorResult);
+                             }];
+    
+}
+
+
++(void)fetchAppealResolutionSubmitWithParam:(NSDictionary*)param
+                                   success:(void(^) (ResolutionActionResult* dataSubmit))success {
+    
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    networkManager.isUsingHmac = YES;
+    
+    [networkManager requestWithBaseUrl:[NSString v4Url]
+                                  path:@"/v4/action/resolution-center/reject_admin_resolution_submit.pl"
+                                method:RKRequestMethodGET
+                             parameter:param
+                               mapping:[ResolutionAction mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                 
+                                 ResolutionAction *response = [successResult.dictionary objectForKey:@""];
+                                 
+                                 if (response.data.is_success != 0) {
+                                     success(response.data);
+                                 } else {
+                                     [StickyAlertView showErrorMessage:response.message_error?:@[@"Gagal naik banding"]];
+                                     failedRequest(nil);
+                                 }
+                                 
+                             } onFailure:^(NSError *errorResult) {
+                                 failedRequest(errorResult);
+                             }];
+    
+}
+
+
++(void)fetchAppealResolutionID:(NSString *)resolutionID
+                     solution:(NSString *)solution
+                 refundAmount:(NSString *)refundAmount
+                      message:(NSString *)message
+                 imageObjects:(NSArray<DKAsset*>*)imageObjects
+                      success:(void(^) (ResolutionActionResult* data))success
+                      failure:(void(^)(NSError* error))failure {
+    
+    failedRequest = failure;
+    
+    if (imageObjects.count == 0) {
+        NSDictionary *paramValidation = [RequestResolutionAction setParamAppealValidationWithID:resolutionID
+                                                                                      solution:solution
+                                                                                  refundAmount:refundAmount
+                                                                                       message:message
+                                                                                        photos:@[]
+                                                                                      serverID:@""];
+        
+        [RequestResolutionAction fetchAppealResolutionValidationWithParam:paramValidation success:^(ResolutionActionResult *dataValidation) {
+            success(dataValidation);
+        }];
+        
+    } else {
+        [RequestResolutionAction fetchResolutionUploadImages:imageObjects success:^(NSArray<ImageResult *> *datas, GeneratedHost *host) {
+            NSDictionary *paramValidation = [RequestResolutionAction setParamAppealValidationWithID:resolutionID
+                                                                                          solution:solution
+                                                                                      refundAmount:refundAmount
+                                                                                           message:message
+                                                                                            photos:datas
+                                                                                           serverID:host.server_id];
+            
+            [RequestResolutionAction fetchAppealResolutionValidationWithParam:paramValidation success:^(ResolutionActionResult *dataValidation) {
+                
+                NSDictionary *paramImageHelper = [RequestResolutionAction setParamAppealImageWithID:resolutionID
+                                                                                       attachments:datas
+                                                                                          serverID:host.server_id?:@""];
+                
+                [RequestResolutionAction fetchResolutionFileUploadedWithParam:paramImageHelper uploadHost:host.upload_host?:@"" success:^(ResolutionActionResult *dataImageHelper) {
+                    
+                    NSDictionary *paramSubmit = [RequestResolutionAction setParamAppealSubmitWithID:resolutionID
+                                                                                      fileUploaded:dataImageHelper.file_uploaded?:@""
+                                                                                           postKey:dataValidation.post_key?:@""];
+                    
+                    [RequestResolutionAction fetchAppealResolutionSubmitWithParam:paramSubmit success:^(ResolutionActionResult *dataSubmit) {
+                        
+                        success(dataSubmit);
+                        
+                    }];
+                }];
+            }];
+        }];
+    }
+}
+
+
 #pragma mark - Help/Report
 +(void)fetchReportResolutionID:(NSString*)resolutionID
                        success:(void(^) (ResolutionActionResult* data))success
@@ -592,10 +765,10 @@ static failedCompletionBlock failedRequest;
                                  ResolutionAction *response = [successResult.dictionary objectForKey:@""];
                                  
                                  if (response.data.is_success != 0) {
-                                     [StickyAlertView showSuccessMessage:response.message_status?:@[@"Berhasil menambahkan resi."]];
+                                     [StickyAlertView showSuccessMessage:response.message_status?:@[@"Berhasil merubah resi."]];
                                      success(response.data);
                                  } else {
-                                     [StickyAlertView showErrorMessage:response.message_error?:@[@"Gagal menambahkan resi"]];
+                                     [StickyAlertView showErrorMessage:response.message_error?:@[@"Gagal merubah resi"]];
                                      failure(nil);
                                  }
                                  
