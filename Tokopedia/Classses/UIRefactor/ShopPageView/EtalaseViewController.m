@@ -28,6 +28,8 @@
     UIAlertView *alertView;
     NSString *_urinext;
     BOOL _isDeleting;
+    
+    UIRefreshControl *_refreshControl;
 }
 
 - (void)viewDidLoad {
@@ -66,6 +68,12 @@
     _tableView.tableFooterView = _footerView;
     _tambahEtalaseTextField.delegate = self;
     _tambahEtalaseTextField.tag = 111;
+    
+    _refreshControl = [[UIRefreshControl alloc] init];
+    _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
+    [_refreshControl addTarget:self action:@selector(refreshEtalase)forControlEvents:UIControlEventValueChanged];
+    [_tableView addSubview:_refreshControl];
+    [_tableView setContentInset:UIEdgeInsetsMake(0, 0, 50, 0)];
     
     alertView = [[UIAlertView alloc]initWithTitle:@"Edit Etalase" message:@"" delegate:self cancelButtonTitle:@"Batal" otherButtonTitles:@"OK", nil];
     alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
@@ -264,6 +272,7 @@
                                          } onFailure:^(NSError *error) {
                                              _tableView.tableFooterView = nil;
                                          }];
+    [_refreshControl endRefreshing];
 }
 
 -(void)requestMyEtalase{
@@ -289,6 +298,7 @@
                                          } onFailure:^(NSError *error) {
                                              _tableView.tableFooterView = nil;
                                          }];
+    [_refreshControl endRefreshing];
 }
 
 #pragma mark - TextField Delegate
@@ -413,6 +423,12 @@
 
 }
 
+-(void)refreshEtalase{
+    page = 1;
+    [etalaseList removeAllObjects];
+    [otherEtalaseList removeAllObjects];
+    [self requestEtalase];
+}
 
 - (void)alertForError:(NSArray*)error{
     StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:error delegate:self];
