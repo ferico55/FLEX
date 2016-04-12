@@ -86,6 +86,24 @@
                                  }];
 }
 
+-(void)requestActionDeleteEtalaseWithId:(NSString *)etalaseId userId:(NSString *)userId onSuccess:(void (^)(ShopSettings *))successCallback onFailure:(void (^)(NSError *))errorCallback{
+    deleteNetworkManager = [TokopediaNetworkManager new];
+    deleteNetworkManager.isUsingHmac = YES;
+    [deleteNetworkManager requestWithBaseUrl:[NSString v4Url]
+                                        path:@"/v4/action/myshop-etalase/event_shop_delete_etalase.pl"
+                                      method:RKRequestMethodGET
+                                   parameter:@{@"etalase_id":etalaseId,
+                                               @"user_id":userId
+                                               }
+                                     mapping:[ShopSettings mapping]
+                                   onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                       ShopSettings *shopSettings = [successResult.dictionary objectForKey:@""];
+                                       successCallback(shopSettings);
+                                   } onFailure:^(NSError *errorResult) {
+                                       errorCallback(errorResult);
+                                   }];
+}
+
 -(NSString *)splitUriToPage:(NSString *)uri{
     if(!etalaseNetworkManager){
         etalaseNetworkManager = [TokopediaNetworkManager new];

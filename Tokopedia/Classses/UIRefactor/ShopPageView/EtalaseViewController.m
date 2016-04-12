@@ -75,6 +75,7 @@
     
     _tambahEtalaseButtonWidthConstraint.constant = 0;
     _tambahEtalaseButtonLeftConstraint.constant = 0;
+    self.edgesForExtendedLayout = UIRectEdgeNone;
     
     [self requestEtalase];
 }
@@ -151,7 +152,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     if(section == 0){
-        return 15;
+        return 0;
     }else if(section == 1){
         return _isEditable?_tambahEtalaseView.frame.size.height:0;
     }
@@ -160,7 +161,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
     if(section == 0){
-        return 10;
+        return 0;
     }else if(section == 1){
         return _footerView.frame.size.height;
     }
@@ -181,9 +182,8 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [etalaseList removeObjectAtIndex:indexPath.row];
-    if ( editingStyle== UITableViewCellEditingStyleDelete) {
-        [_tableView deleteRowsAtIndexPaths:[NSMutableArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationBottom];
+    if (editingStyle== UITableViewCellEditingStyleDelete && indexPath.section == 1) {
+        [self requestDeleteEtalase:indexPath];
     }
 }
 
@@ -380,8 +380,8 @@
                                                      NSArray *operationIndexPaths = [NSArray arrayWithObjects:[NSIndexPath indexPathForRow:selectedIndexPath.row inSection:selectedIndexPath.section], nil];
                                                      
                                                      [_tableView beginUpdates];
-                                                     [_tableView deleteRowsAtIndexPaths:operationIndexPaths withRowAnimation:UITableViewRowAnimationFade];
-                                                     [_tableView insertRowsAtIndexPaths:operationIndexPaths withRowAnimation:UITableViewRowAnimationFade];
+                                                     [_tableView deleteRowsAtIndexPaths:operationIndexPaths withRowAnimation:UITableViewRowAnimationMiddle];
+                                                     [_tableView insertRowsAtIndexPaths:operationIndexPaths withRowAnimation:UITableViewRowAnimationMiddle];
                                                      [_tableView endUpdates];
                                                  }else{
                                                      [self alertForError:shopSettings.message_error];
@@ -392,6 +392,27 @@
     }
 }
 
+- (void)requestDeleteEtalase:(NSIndexPath*) indexPath{
+    EtalaseList *selectedEtalase = [etalaseList objectAtIndex:indexPath.row];
+    UserAuthentificationManager *auth = [UserAuthentificationManager new];
+    NSDictionary *loginData = [auth getUserLoginData];
+    NSString *userId = [loginData objectForKey:@"user_id"]?:@"";
+    [etalaseRequest requestActionDeleteEtalaseWithId:selectedEtalase.etalase_id
+                                              userId:userId
+                                           onSuccess:^(ShopSettings *shopSettings) {
+                                               if(shopSettings.result.is_success == 1){
+                                                   [etalaseList removeObjectAtIndex:indexPath.row];
+                                                   [_tableView beginUpdates];
+                                                   [_tableView deleteRowsAtIndexPaths:[NSMutableArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationBottom];
+                                                   [_tableView endUpdates];
+                                               }else{
+                                                   [self alertForError:shopSettings.message_error];
+                                               }
+                                           } onFailure:^(NSError *error) {
+                                               [self alertForError:@[@"Kendala koneksi internet"]];
+                                           }];
+
+}
 
 
 - (void)alertForError:(NSArray*)error{

@@ -42,11 +42,7 @@
                 <constraint firstItem="AZY-UW-lxS" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="DUn-UH-Pdf"/>
                 <constraint firstItem="AZY-UW-lxS" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="DwI-Kf-kpS"/>
                 <constraint firstAttribute="bottom" secondItem="AZY-UW-lxS" secondAttribute="bottom" id="lcj-iK-xKd"/>
-                <constraint firstAttribute="bottom" secondItem="AZY-UW-lxS" secondAttribute="bottom" id="lkr-cB-jvn"/>
-                <constraint firstItem="AZY-UW-lxS" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="pSN-Dt-b1T"/>
-                <constraint firstItem="AZY-UW-lxS" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="pvr-j1-UqA"/>
                 <constraint firstAttribute="trailing" secondItem="AZY-UW-lxS" secondAttribute="trailing" id="r4I-Si-bOb"/>
-                <constraint firstAttribute="trailing" secondItem="AZY-UW-lxS" secondAttribute="trailing" id="zkl-AV-Sc5"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
@@ -54,7 +50,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="61"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Tambah Etalase" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="5DQ-dX-yGb">
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Tambah Etalase" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="5DQ-dX-yGb">
                     <rect key="frame" x="8" y="8" width="226" height="44"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="SVo-qs-LAn"/>
@@ -68,7 +64,9 @@
                         <constraint firstAttribute="width" constant="70" id="YIr-2L-Css"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
-                    <state key="normal" title="Tambah"/>
+                    <state key="normal" title="Tambah">
+                        <color key="titleColor" red="0.20392156862745098" green="0.67450980392156867" blue="0.1803921568627451" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
                     <connections>
                         <action selector="tambahEtalaseButtonTapped:" destination="-1" eventType="touchUpInside" id="hr2-7s-2bM"/>
                     </connections>
