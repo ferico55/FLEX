@@ -16,10 +16,11 @@
 
 typedef void (^failedCompletionBlock)(NSError *error);
 
-static failedCompletionBlock failedCreateReso;
+static failedCompletionBlock failedRequest;
 
 @implementation RequestResolutionAction
 
+#pragma mark - Cancel Complain
 +(void)fetchCancelResolutionID:(NSString*)resolutionID
                            success:(void(^) (ResolutionActionResult* data))success
                            failure:(void(^)(NSError* error))failure {
@@ -52,9 +53,9 @@ static failedCompletionBlock failedCreateReso;
                              }];
 }
 
-#pragma mark - Request Create Resolution
+#pragma mark - Upload Images
 
-+(void)fetchCreateResolutionUploadImages:(NSArray<DKAsset*>*)imageObjects
++(void)fetchResolutionUploadImages:(NSArray<DKAsset*>*)imageObjects
                                  success:(void(^)(NSArray<ImageResult *>*datas, GeneratedHost *host))success {
     
     [RequestGenerateHost fetchGenerateHostSuccess:^(GeneratedHost *host) {
@@ -85,15 +86,46 @@ static failedCompletionBlock failedCreateReso;
                                              }
                                              
                                          } onFailure:^(NSError *error) {
-                                             failedCreateReso(error);
+                                             failedRequest(error);
                                          }];
         }
 
         
     } failure:^(NSError *error) {
-        failedCreateReso(error);
+        failedRequest(error);
     }];
 }
+
++(void)fetchResolutionFileUploadedWithParam:(NSDictionary*)param
+                                       uploadHost:(NSString *)uploadHost
+                                          success:(void(^) (ResolutionActionResult* dataImageHelper))success {
+    
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    networkManager.isUsingHmac = YES;
+    NSString *uploadImageBaseURL = [NSString stringWithFormat:@"https://%@",uploadHost];
+    [networkManager requestWithBaseUrl:uploadImageBaseURL
+                                  path:@"/web-service/v4/action/upload-image-helper/create_resolution_picture.pl"
+                                method:RKRequestMethodGET
+                             parameter:param
+                               mapping:[ResolutionAction mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                 
+                                 ResolutionAction *response = [successResult.dictionary objectForKey:@""];
+                                 
+                                 if (response.data.is_success == 1) {
+                                     success(response.data);
+                                 } else {
+                                     [StickyAlertView showErrorMessage:response.message_error?:@[@"Gagal membuat komplain"]];
+                                     failedRequest(nil);
+                                 }
+                                 
+                             } onFailure:^(NSError *errorResult) {
+                                 failedRequest(errorResult);
+                             }];
+    
+}
+
+#pragma mark - Request Create Resolution
 
 +(NSDictionary*)setParamCreateValidationWithID:(NSString *)orderID
                                   flagReceived:(NSString *)flagReceived
@@ -159,7 +191,7 @@ static failedCompletionBlock failedCreateReso;
 }
 
 +(void)fetchCreateResolutionValidationWithParam:(NSDictionary*)param
-                                        success:(void(^) (NSString* postKey))success {
+                                        success:(void(^) (ResolutionActionResult* dataValidation))success {
     
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
     networkManager.isUsingHmac = YES;
@@ -168,50 +200,21 @@ static failedCompletionBlock failedCreateReso;
                                   path:@"/v4/action/resolution-center/create_resolution_validation.pl"
                                 method:RKRequestMethodGET
                              parameter:param
-                               mapping:[UploadImageValidation mapping]
+                               mapping:[ResolutionAction mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                  
-                                 UploadImageValidation *response = [successResult.dictionary objectForKey:@""];
+                                 ResolutionAction *response = [successResult.dictionary objectForKey:@""];
                                  
-                                 if ([response.data.is_success integerValue] == 1) {
-                                     success(response.data.post_key);
+                                 if (response.data.is_success == 1) {
+                                     success(response.data);
                                  } else {
                                      [StickyAlertView showErrorMessage:response.message_error?:@[@"Gagal membuat komplain"]];
-                                     failedCreateReso(nil);
+                                     failedRequest(nil);
                                  }
                                  
     } onFailure:^(NSError *errorResult) {
-        failedCreateReso(errorResult);
+        failedRequest(errorResult);
     }];
-    
-}
-
-+(void)fetchCreateResolutionFileUploadedWithParam:(NSDictionary*)param
-                                       uploadHost:(NSString *)uploadHost
-                                          success:(void(^) (NSString* fileUploaded))success {
-    
-    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
-    networkManager.isUsingHmac = YES;
-    NSString *uploadImageBaseURL = [NSString stringWithFormat:@"https://%@",uploadHost];
-    [networkManager requestWithBaseUrl:uploadImageBaseURL
-                                  path:@"/web-service/v4/action/upload-image-helper/create_resolution_picture.pl"
-                                method:RKRequestMethodGET
-                             parameter:param
-                               mapping:[UploadImageHelper mapping]
-                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                 
-                                 UploadImageHelper *response = [successResult.dictionary objectForKey:@""];
-                                 
-                                 if ([response.data.is_success integerValue] == 1) {
-                                     success(response.data.file_uploaded);
-                                 } else {
-                                     [StickyAlertView showErrorMessage:response.message_error?:@[@"Gagal membuat komplain"]];
-                                     failedCreateReso(nil);
-                                 }
-                                 
-                             } onFailure:^(NSError *errorResult) {
-                                 failedCreateReso(errorResult);
-                             }];
     
 }
 
@@ -234,11 +237,11 @@ static failedCompletionBlock failedCreateReso;
                                      success(response.data);
                                  } else {
                                      [StickyAlertView showErrorMessage:response.message_error?:@[@"Gagal membuat komplain"]];
-                                     failedCreateReso(nil);
+                                     failedRequest(nil);
                                  }
                                  
                              } onFailure:^(NSError *errorResult) {
-                                 failedCreateReso(errorResult);
+                                 failedRequest(errorResult);
                              }];
     
 }
@@ -250,10 +253,10 @@ static failedCompletionBlock failedCreateReso;
                        refundAmount:(NSString*)refundAmount
                              remark:(NSString*)remark
                              imageObjects:(NSArray<DKAsset*>*)imageObjects
-                            success:(void(^) (ResolutionActionResult* data))success
+                            success:(void(^) (ResolutionActionResult* dataValidation))success
                             failure:(void(^)(NSError* error))failure {
     
-    failedCreateReso = failure;
+    failedRequest = failure;
     
     if (imageObjects.count == 0) {
         NSDictionary *paramValidation = [RequestResolutionAction setParamCreateValidationWithID:orderID
@@ -265,14 +268,12 @@ static failedCompletionBlock failedCreateReso;
                                                                                          photos:@[]
                                                                                        serverID:@""];
         
-        [RequestResolutionAction fetchCreateResolutionValidationWithParam:paramValidation success:^(NSString *postKey) {
-            ResolutionActionResult *data = [ResolutionActionResult new];
-            data.is_success = [postKey integerValue];
-            success(data);
+        [RequestResolutionAction fetchCreateResolutionValidationWithParam:paramValidation success:^(ResolutionActionResult *dataValidation) {
+            success(dataValidation);
         }];
 
     } else {
-        [RequestResolutionAction fetchCreateResolutionUploadImages:imageObjects success:^(NSArray<ImageResult *> *datas, GeneratedHost *host) {
+        [RequestResolutionAction fetchResolutionUploadImages:imageObjects success:^(NSArray<ImageResult *> *datas, GeneratedHost *host) {
             
             NSDictionary *paramValidation = [RequestResolutionAction setParamCreateValidationWithID:orderID
                                                                                        flagReceived:flagReceived
@@ -283,17 +284,17 @@ static failedCompletionBlock failedCreateReso;
                                                                                              photos:datas
                                                                                            serverID:host.server_id?:@""];
             
-            [RequestResolutionAction fetchCreateResolutionValidationWithParam:paramValidation success:^(NSString *postKey) {
+            [RequestResolutionAction fetchCreateResolutionValidationWithParam:paramValidation success:^(ResolutionActionResult *dataValidation) {
                 
                 NSDictionary *paramImageHelper = [RequestResolutionAction setParamCreateImageWithID:orderID
                                                                                         attachments:datas
                                                                                            serverID:host.server_id?:@""];
                 
-                [RequestResolutionAction fetchCreateResolutionFileUploadedWithParam:paramImageHelper uploadHost:host.upload_host?:@"" success:^(NSString *fileUploaded) {
+                [RequestResolutionAction fetchResolutionFileUploadedWithParam:paramImageHelper uploadHost:host.upload_host?:@"" success:^(ResolutionActionResult *dataImageHelper) {
                     
                     NSDictionary *paramSubmit = [RequestResolutionAction setParamCreateSubmitWithID:orderID
-                                                                                       fileUploaded:fileUploaded
-                                                                                            postKey:postKey];
+                                                                                       fileUploaded:dataImageHelper.file_uploaded
+                                                                                            postKey:dataValidation.post_key];
                     
                     [RequestResolutionAction fetchCreateResolutionSubmitWithParam:paramSubmit success:^(ResolutionActionResult *data) {
                         
@@ -304,6 +305,223 @@ static failedCompletionBlock failedCreateReso;
             }];
         }];
     }
+}
+
+#pragma mark - Request Resolution Reply
+
++(NSDictionary*)setParamReplyValidationWithID:(NSString *)resolutionID
+                                  flagReceived:(NSString *)flagReceived
+                                   troubleType:(NSString *)troubleType
+                                      solution:(NSString *)solution
+                                  refundAmount:(NSString *)refundAmount
+                                        message:(NSString *)message
+                                        photos:(NSArray <ImageResult*>*)photos
+                                     serverID:(NSString *)serverID
+                               isEditSolution:(NSString *)isEditSolution
+{
+    NSMutableArray *filePathPhotos = [NSMutableArray new];
+    for (ImageResult *imageResult in photos) {
+        [filePathPhotos addObject:imageResult.file_path?:@""];
+    }
+    NSString *photo = [[[filePathPhotos copy] valueForKey:@"description"]componentsJoinedByString:@"~"];
+    
+    NSDictionary *param = @{
+                            @"edit_solution_flag"   :@([isEditSolution integerValue])?:@(0),
+                            @"flag_received"        :flagReceived?:@"",
+                            @"photos"               :photo?:@"",
+                            @"refund_amount"        :refundAmount?:@"",
+                            @"reply_msg"            :message?:@"",
+                            @"resolution_id"        :resolutionID?:@"",
+                            @"server_id"            :serverID?:@"",
+                            @"solution"             :solution?:@"",
+                            @"trouble_type"         :troubleType?:@""
+                            };
+    return param;
+}
+
++(NSDictionary*)setParamReplyImageWithID:(NSString*)orderID
+                              attachments:(NSArray <ImageResult*>*)attachments
+                                 serverID:(NSString*)serverID
+{
+    UserAuthentificationManager *auth = [UserAuthentificationManager new];
+    
+    NSMutableArray *filePathPhotos = [NSMutableArray new];
+    for (ImageResult *imageResult in attachments) {
+        [filePathPhotos addObject:imageResult.file_path?:@""];
+    }
+    NSString *photo = [[[filePathPhotos copy] valueForKey:@"description"]componentsJoinedByString:@"~"];
+    
+    NSDictionary *param = @{
+                            @"order_id"          :orderID?:@"",
+                            @"file_path"         :photo?:@"",
+                            @"attachment_string" :photo?:@"",
+                            @"server_id"         :serverID?:@"",
+                            @"user_id"           :[auth getUserId]?:@""
+                            };
+    return param;
+}
+
++(NSDictionary*)setParamReplySubmitWithID:(NSString*)resolutionID
+                              fileUploaded:(NSString*)fileUploaded
+                                   postKey:(NSString*)postKey
+{
+    NSDictionary *param = @{
+                            @"file_uploaded"    :fileUploaded?:@"",
+                            @"resolution_id"    :resolutionID?:@"",
+                            @"post_key"         :postKey?:@"",
+                            };
+    return param;
+}
+
++(void)fetchReplyResolutionValidationWithParam:(NSDictionary*)param
+                                        success:(void(^) (ResolutionActionResult* dataValidattion))success {
+    
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    networkManager.isUsingHmac = YES;
+    
+    [networkManager requestWithBaseUrl:[NSString v4Url]
+                                  path:@"/v4/action/resolution-center/reply_conversation_validation.pl"
+                                method:RKRequestMethodGET
+                             parameter:param
+                               mapping:[ResolutionAction mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                 
+                                 ResolutionAction *response = [successResult.dictionary objectForKey:@""];
+                                 
+                                 if (response.data.is_success == 1) {
+                                     success(response.data);
+                                 } else {
+                                     [StickyAlertView showErrorMessage:response.message_error?:@[@"Gagal membalas komplain"]];
+                                     failedRequest(nil);
+                                 }
+                                 
+                             } onFailure:^(NSError *errorResult) {
+                                 failedRequest(errorResult);
+                             }];
+    
+}
+
+
++(void)fetchReplyResolutionSubmitWithParam:(NSDictionary*)param
+                                    success:(void(^) (ResolutionActionResult* dataSubmit))success {
+    
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    networkManager.isUsingHmac = YES;
+    
+    [networkManager requestWithBaseUrl:[NSString v4Url]
+                                  path:@"/v4/action/resolution-center/reply_conversation_submit.pl"
+                                method:RKRequestMethodGET
+                             parameter:param
+                               mapping:[ResolutionAction mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                 
+                                 ResolutionAction *response = [successResult.dictionary objectForKey:@""];
+                                 
+                                 if (response.data.is_success != 0) {
+                                     success(response.data);
+                                 } else {
+                                     [StickyAlertView showErrorMessage:response.message_error?:@[@"Gagal membuat komplain"]];
+                                     failedRequest(nil);
+                                 }
+                                 
+                             } onFailure:^(NSError *errorResult) {
+                                 failedRequest(errorResult);
+                             }];
+    
+}
+
+
++(void)fetchReplyResolutionID:(NSString *)resolutionID
+                 flagReceived:(NSString *)flagReceived
+                  troubleType:(NSString *)troubleType
+                     solution:(NSString *)solution
+                 refundAmount:(NSString *)refundAmount
+                      message:(NSString *)message
+               isEditSolution:(NSString *)isEditSolution
+                 imageObjects:(NSArray<DKAsset*>*)imageObjects
+                      success:(void(^) (ResolutionActionResult* data))success
+                      failure:(void(^)(NSError* error))failure {
+    
+    failedRequest = failure;
+    
+    if (imageObjects.count == 0) {
+        NSDictionary *paramValidation = [RequestResolutionAction setParamReplyValidationWithID:resolutionID
+                                                                                  flagReceived:flagReceived
+                                                                                   troubleType:troubleType
+                                                                                      solution:solution
+                                                                                  refundAmount:refundAmount
+                                                                                       message:message
+                                                                                        photos:@[]
+                                                                                      serverID:@""
+                                                                                isEditSolution:isEditSolution];
+        
+        [RequestResolutionAction fetchReplyResolutionValidationWithParam:paramValidation success:^(ResolutionActionResult *dataValidation) {
+            success(dataValidation);
+        }];
+        
+    } else {
+        [RequestResolutionAction fetchResolutionUploadImages:imageObjects success:^(NSArray<ImageResult *> *datas, GeneratedHost *host) {
+            NSDictionary *paramValidation = [RequestResolutionAction setParamReplyValidationWithID:resolutionID
+                                                                                      flagReceived:flagReceived
+                                                                                       troubleType:troubleType
+                                                                                          solution:solution
+                                                                                      refundAmount:refundAmount
+                                                                                           message:message
+                                                                                            photos:datas
+                                                                                          serverID:host.server_id
+                                                                                    isEditSolution:isEditSolution];
+            
+            [RequestResolutionAction fetchReplyResolutionValidationWithParam:paramValidation success:^(ResolutionActionResult *dataValidation) {
+                
+                NSDictionary *paramImageHelper = [RequestResolutionAction setParamReplyImageWithID:resolutionID
+                                                                                        attachments:datas
+                                                                                           serverID:host.server_id?:@""];
+                
+                [RequestResolutionAction fetchResolutionFileUploadedWithParam:paramImageHelper uploadHost:host.upload_host?:@"" success:^(ResolutionActionResult *dataImageHelper) {
+                    
+                    NSDictionary *paramSubmit = [RequestResolutionAction setParamReplySubmitWithID:resolutionID
+                                                                                      fileUploaded:dataImageHelper.file_uploaded?:@""
+                                                                                           postKey:dataValidation.post_key?:@""];
+                    
+                    [RequestResolutionAction fetchReplyResolutionSubmitWithParam:paramSubmit success:^(ResolutionActionResult *dataSubmit) {
+                        
+                        success(dataSubmit);
+                        
+                    }];
+                }];
+            }];
+        }];
+    }
+}
+
+#pragma mark - Help/Report
++(void)fetchReportResolutionID:(NSString*)resolutionID
+                       success:(void(^) (ResolutionActionResult* data))success
+                       failure:(void(^) (NSError* error))failure {
+    
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    networkManager.isUsingHmac = YES;
+    
+    [networkManager requestWithBaseUrl:[NSString v4Url]
+                                  path:@"/v4/action/resolution-center/report_resolution.pl"
+                                method:RKRequestMethodGET
+                             parameter:@{@"resolution_id": resolutionID?:@""}
+                               mapping:[ResolutionAction mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                 
+                                 ResolutionAction *response = [successResult.dictionary objectForKey:@""];
+                                 
+                                 if (response.data.is_success != 0) {
+                                     [StickyAlertView showSuccessMessage:response.message_status?:@[@"Tokopedia akan mempelajari kasus ini terlebih dahulu dan memberikan resolusi dalam waktu 3 hari."]];
+                                     success(response.data);
+                                 } else {
+                                     [StickyAlertView showErrorMessage:response.message_error?:@[@"Gagal membuat komplain"]];
+                                     failure(nil);
+                                 }
+                                 
+                             } onFailure:^(NSError *errorResult) {
+                                 failure(errorResult);
+                             }];
     
 }
 

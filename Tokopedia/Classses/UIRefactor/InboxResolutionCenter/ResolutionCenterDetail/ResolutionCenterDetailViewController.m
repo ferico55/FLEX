@@ -333,7 +333,7 @@
         vc.resolution = _resolutionDetail;
         vc.lastSolution = [self solutionString:[_listResolutionConversation lastObject]];
         vc.delegate = self;
-        
+        vc.resolutionID = _resolutionID;
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
@@ -583,18 +583,6 @@
                              action:ACTION_APPEAL];
 }
 
--(void)solutionType:(NSString *)solutionType troubleType:(NSString *)troubleType refundAmount:(NSString *)refundAmout message:(NSString *)message photo:(NSString *)photo serverID:(NSString *)serverID isGotTheOrder:(BOOL)isGotTheOrder
-{
-    [self requestReplayConversation:message?:@""
-                              photo:photo?:@""
-                           serverID:serverID?:@""
-                   editSolutionFlag:YES
-                       solutionType:solutionType?:@""
-                        troubleType:troubleType?:@""
-                       refundAmount:refundAmout?:@""
-                           received:isGotTheOrder
-                             action:ACTION_REPLY_CONVERSATION];
-}
 
 -(void)message:(NSString *)message photo:(NSString *)photo serverID:(NSString *)serverID
 {
@@ -649,7 +637,7 @@
     NSDate *date = [dateFormatter dateFromString:conversation.time_ago];
     NSString *sinceDateString = [NSString timeLeftSinceDate:date];
     ResolutionConversation *lastConversation = [_listResolutionConversation lastObject];
-    cell.timeDateLabel.text = (lastConversation == _addedLastConversation)?_resolutionDetail.resolution_last.last_create_time_str:sinceDateString;
+    cell.timeDateLabel.text = (lastConversation == _addedLastConversation)?_resolutionDetail.resolution_last.last_create_time_str?:_resolutionDetail.resolution_last.last_create_time_wib:sinceDateString;
     
     [cell hideAllViews];
 
@@ -1572,7 +1560,42 @@
     [self cancelRequestEditReceipt];
 }
 
-#pragma mark - Replay Conversation
+#pragma mark - Reply Conversation
+-(void)addResolutionLast:(ResolutionLast *)resolutionLast conversationLast:(ResolutionConversation *)conversationLast replyEnable:(BOOL)isReplyEnable {
+    
+    if(resolutionLast)_resolutionDetail.resolution_last = resolutionLast;
+    if ([_listResolutionConversation lastObject] == _addedLastConversation) {
+        [_listResolutionConversation insertObject:conversationLast atIndex:_listResolutionConversation.count-1];
+        if (isReplyEnable == NO) {
+            [_listResolutionConversation removeLastObject];
+        } else{
+            _addedLastConversation.refund_amt_idr = conversationLast.refund_amt_idr;
+            _addedLastConversation.solution_string = conversationLast.solution_string;
+            _addedLastConversation.trouble_string = conversationLast.trouble_string;
+        }
+        [self hideReplyButton:!isReplyEnable];
+    } else {
+        [_listResolutionConversation addObject:conversationLast];
+        [self hideReplyButton:!isReplyEnable];
+    }
+
+    [_tableView reloadData];
+}
+
+-(void)hideReportButton:(BOOL)isHideReportButton{
+    _resolutionDetail.resolution_button.button_report = !isHideReportButton;
+}
+
+-(void)hideReplyButton:(BOOL)hide{
+    if (hide) {
+        _replayConversationView.hidden = YES;
+        _tableView.contentInset = UIEdgeInsetsZero;
+    } else {
+        _replayConversationView.hidden = NO;
+        _tableView.contentInset = UIEdgeInsetsMake(0, 0, 50, 0);
+    }
+}
+
 -(void)requestReplayConversation:(NSString*)message photo:(NSString*)photo serverID:(NSString*)serverID editSolutionFlag:(BOOL)editSolutionFlag solutionType:(NSString*)solution troubleType:(NSString*)trouble refundAmount:(NSString*)refunAmount received:(BOOL)received action:(NSString*)action
 {
     NSString *editSolutionFlagString = [NSString stringWithFormat:@"%zd",editSolutionFlag];

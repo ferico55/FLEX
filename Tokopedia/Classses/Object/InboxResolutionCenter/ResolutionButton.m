@@ -15,7 +15,9 @@
     NSArray *keys = @[@"button_report",
                       @"button_cancel",
                       @"button_no_btn",
-                      @"button_edit"];
+                      @"button_edit",
+                      @"hide_no_reply",
+                      @"button_report_hide"];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }
 

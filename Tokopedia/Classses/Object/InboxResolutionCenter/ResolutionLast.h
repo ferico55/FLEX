@@ -23,6 +23,7 @@
 @property (nonatomic, strong) NSNumber *last_solution;
 @property (nonatomic, strong) NSString *last_user_url;
 @property (nonatomic, strong) NSString *last_create_time_str;
+@property (nonatomic, strong) NSString *last_create_time_wib;
 @property (nonatomic, strong) NSNumber *last_trouble_type;
 @property (nonatomic, strong) NSNumber *last_show_accept_admin_button;
 @property (nonatomic, strong) NSNumber *last_show_accept_button;

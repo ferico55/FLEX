@@ -27,4 +27,19 @@
                             success:(void(^) (ResolutionActionResult* data))success
                             failure:(void(^)(NSError* error))failure;
 
++(void)fetchReplyResolutionID:(NSString *)resolutionID
+                 flagReceived:(NSString *)flagReceived
+                  troubleType:(NSString *)troubleType
+                     solution:(NSString *)solution
+                 refundAmount:(NSString *)refundAmount
+                      message:(NSString *)message
+               isEditSolution:(NSString *)isEditSolution
+                 imageObjects:(NSArray<DKAsset*>*)imageObjects
+                      success:(void(^) (ResolutionActionResult* data))success
+                      failure:(void(^)(NSError* error))failure;
+
++(void)fetchReportResolutionID:(NSString*)resolutionID
+                       success:(void(^) (ResolutionActionResult* data))success
+                       failure:(void(^) (NSError* error))failure ;
+
 @end

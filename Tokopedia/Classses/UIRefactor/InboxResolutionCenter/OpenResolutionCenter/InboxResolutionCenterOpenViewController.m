@@ -50,21 +50,13 @@
 {
     BOOL _isNodata;
     NSString *_URINext;
-    NSMutableDictionary *_dataInput;
-    NSMutableArray *_photos;
     
     UITextField *_activeTextField;
     UITextView *_activeTextView;
     
-    NSMutableArray *_uploadingPhotos;
-    
-    NSOperationQueue *_operationQueue;
-    
     TKPDPhotoPicker *_photoPicker;
     
     NSString *_serverID;
-    NSString *_uploadHost;
-    NSInteger _userID;
     
     NSMutableArray <DKAsset *>*_selectedImages;
     
@@ -108,11 +100,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    _dataInput = [NSMutableDictionary new];
-    _operationQueue = [NSOperationQueue new];
     _generatehost = [GenerateHost new];
-    _photos = (_photos)?_photos:[[NSMutableArray alloc]initWithObjects:@"",@"",@"",@"",@"", nil];
-    _uploadingPhotos = [NSMutableArray new];
     _selectedImages = [NSMutableArray new];
     
     _cancelButtons = [NSArray sortViewsWithTagInArray:_cancelButtons];
@@ -216,7 +204,7 @@
     self.title = @"";
     
     if ([_syncroDelegate respondsToSelector:@selector(syncroImages:message:refundAmount:)]) {
-        [_syncroDelegate syncroImages:[_photos copy]?:@[] message:_noteTextView.text?:@"" refundAmount:_totalRefundTextField.text?:@""];
+        [_syncroDelegate syncroImages:[_selectedImages copy]?:@[] message:_noteTextView.text?:@"" refundAmount:_totalRefundTextField.text?:@""];
     }
 }
 
@@ -273,7 +261,7 @@
 }
 
 -(void)navigateToPhotoPicker{
-    
+    __weak typeof(self) wself = self;
     [ImagePickerController showImagePicker:self
                                  assetType:DKImagePickerControllerAssetTypeallPhotos
                        allowMultipleSelect:YES
@@ -281,9 +269,14 @@
                                 showCamera:YES
                                maxSelected:5
                             selectedAssets:_selectedImages completion:^(NSArray<DKAsset *> * images) {
-                                
-                                [_selectedImages addObjectsFromArray:images];
-                                [self setSelectedImages];
+                                dispatch_async(dispatch_get_main_queue(), ^{
+                                    if (wself != nil) {
+                                        typeof(self) sself = wself;
+                                        [sself->_selectedImages removeAllObjects];
+                                        [sself->_selectedImages addObjectsFromArray:images];
+                                        [sself setSelectedImages];
+                                    }
+                                });
     }];
 }
 
@@ -344,8 +337,6 @@
         UIButton *uploadedButton = (UIButton*)_uploadButtons[_selectedImages.count];
         uploadedButton.hidden = NO;
         _scrollViewUploadPhoto.contentSize = CGSizeMake(uploadedButton.frame.origin.x+uploadedButton.frame.size.width+30, 0);
-
-        
     }
 }
 
@@ -373,15 +364,7 @@
         }
         else if([self.title isEqualToString:TITLE_CHANGE_SOLUTION])
         {
-            [_delegate changeSolution:solutionType troubleType:troubleType refundAmount:_totalRefund remark:_note photo:photos serverID:_serverID isGotTheOrder:_isGotTheOrder];
-            NSArray *viewControllers = self.navigationController.viewControllers;
-            UIViewController *destinationVC;
-            for (UIViewController *vc in viewControllers) {
-                if ([vc isKindOfClass:[_delegate class]]) {
-                    destinationVC = vc;
-                }
-            }
-            [self.navigationController popToViewController:destinationVC animated:YES];
+            [self doRequestReplyResolution];
         }
         else
         {
@@ -769,31 +752,8 @@
         _choosenProblemSolutionLabel.frame = frame;
     }
     
-    if (_uploadedPhotos.count>0) {
-        for (int i = 0; i<_uploadedPhotos.count; i++) {
-            NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_uploadedPhotos[i]] cachePolicy:
-                                     NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-            
-            UIImageView *thumb = (UIImageView*)_uploadedImages[i];
-            thumb.image = nil;
-            [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-                [thumb setImage:image];
-#pragma clang diagnosti c pop
-            } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-            }];
-            
-            [(UIButton*)_cancelButtons[i] setHidden:NO];
-            [(UIButton*)_uploadButtons[i] setHidden:YES];
-            if (i<_uploadButtons.count-1) {
-                [(UIButton*)_uploadButtons[i+1] setHidden:NO];
-            }
-            [_photos replaceObjectAtIndex:i withObject:_uploadedPhotos[i]];
-        }
-    }
-    
     [_selectedImages addObjectsFromArray:_images];
+    [self setSelectedImages];
     
     _noteTextView.text = _note?:@"";
     if ([_noteTextView.text isEqualToString:@""]) {
@@ -907,7 +867,6 @@
     vc.selectedProblem = _selectedProblem;
     vc.isGotTheOrder = _isGotTheOrder;
     vc.order = _order?:[TxOrderStatusList new];
-    vc.uploadedPhotos = (_uploadedPhotos.count>0)?_uploadedPhotos:_photos?:@[];
     vc.delegate = _delegate;
     vc.detailOpenAmount = _detailOpenAmount;
     vc.detailOpenAmountIDR = _detailOpenAmountIDR;
@@ -924,6 +883,7 @@
     vc.controllerTitle = _controllerTitle;
     vc.generatehost = _generatehost;
     vc.images = [_selectedImages copy];
+    vc.resolutionID = _resolutionID;
     
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -975,7 +935,7 @@
     return solutionType;
 }
 
-#pragma mark - Request Create Resolution
+#pragma mark - Request Resolution
 -(void)doRequestCreateResolution{
     
     [_alertCreateReso show];
@@ -1007,5 +967,36 @@
     }];
 }
 
+-(void)doRequestReplyResolution{
+    
+    [_alertCreateReso show];
+    
+    [RequestResolutionAction fetchReplyResolutionID:_resolutionID?:@""
+                                       flagReceived:[@(_isGotTheOrder) stringValue]
+                                        troubleType:[self troubleType]?:@""
+                                           solution:[self solutionType]?:@""
+                                       refundAmount:_totalRefundTextField.text?:@""
+                                            message:_note?:@""
+                                     isEditSolution:@"1"
+                                       imageObjects:_selectedImages
+                                            success:^(ResolutionActionResult *data) {
+                                                [_alertCreateReso dismissWithClickedButtonIndex:0 animated:YES];
+
+                                                if ([_delegate respondsToSelector:@selector(addResolutionLast:conversationLast:replyEnable:)]){
+                                                    [_delegate addResolutionLast:data.solution_last conversationLast:data.conversation_last[0] replyEnable:!data.button.hide_no_reply];
+                                                }
+                                                NSArray *viewControllers = self.navigationController.viewControllers;
+                                                UIViewController *destinationVC;
+                                                for (UIViewController *vc in viewControllers) {
+                                                    if ([vc isKindOfClass:[_delegate class]]) {
+                                                        destinationVC = vc;
+                                                    }
+                                                }
+                                                [self.navigationController popToViewController:destinationVC animated:YES];
+                                                
+                                            } failure:^(NSError *error) {
+                                                [_alertCreateReso dismissWithClickedButtonIndex:0 animated:YES];
+                                            }];
+}
 
 @end
