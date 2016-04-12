@@ -420,7 +420,7 @@ static failedCompletionBlock failedRequest;
                                  if (response.data.is_success != 0) {
                                      success(response.data);
                                  } else {
-                                     [StickyAlertView showErrorMessage:response.message_error?:@[@"Gagal membuat komplain"]];
+                                     [StickyAlertView showErrorMessage:response.message_error?:@[@"Gagal membalas komplain"]];
                                      failedRequest(nil);
                                  }
                                  
@@ -515,7 +515,7 @@ static failedCompletionBlock failedRequest;
                                      [StickyAlertView showSuccessMessage:response.message_status?:@[@"Tokopedia akan mempelajari kasus ini terlebih dahulu dan memberikan resolusi dalam waktu 3 hari."]];
                                      success(response.data);
                                  } else {
-                                     [StickyAlertView showErrorMessage:response.message_error?:@[@"Gagal membuat komplain"]];
+                                     [StickyAlertView showErrorMessage:response.message_error?:@[@"Gagal membuat bantuan"]];
                                      failure(nil);
                                  }
                                  
@@ -551,10 +551,51 @@ static failedCompletionBlock failedRequest;
                                  ResolutionAction *response = [successResult.dictionary objectForKey:@""];
                                  
                                  if (response.data.is_success != 0) {
-                                     [StickyAlertView showSuccessMessage:response.message_status?:@[@"Tokopedia akan mempelajari kasus ini terlebih dahulu dan memberikan resolusi dalam waktu 3 hari."]];
+                                     [StickyAlertView showSuccessMessage:response.message_status?:@[@"Berhasil menambahkan resi."]];
                                      success(response.data);
                                  } else {
-                                     [StickyAlertView showErrorMessage:response.message_error?:@[@"Gagal membuat komplain"]];
+                                     [StickyAlertView showErrorMessage:response.message_error?:@[@"Gagal menambahkan resi"]];
+                                     failure(nil);
+                                 }
+                                 
+                             } onFailure:^(NSError *errorResult) {
+                                 failure(errorResult);
+                             }];
+    
+}
+
+#pragma mark - Edit Resi Resolution
++(void)fetchEditResiResolutionID:(NSString*)resolutionID
+                  conversationID:(NSString*)conversationID
+                       shipmentID:(NSString*)shipmentID
+                      shippingRef:(NSString*)shippingRef
+                          success:(void(^) (ResolutionActionResult* data))success
+                          failure:(void(^) (NSError* error))failure {
+    
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    networkManager.isUsingHmac = YES;
+    
+    NSDictionary *param = @{
+                            @"resolution_id":resolutionID?:@"",
+                            @"conversation_id":conversationID?:@"",
+                            @"shipment_id"  :shipmentID?:@"",
+                            @"shipping_ref" :shippingRef?:@""
+                            };
+    
+    [networkManager requestWithBaseUrl:[NSString v4Url]
+                                  path:@"/v4/action/resolution-center/edit_resi_resolution.pl"
+                                method:RKRequestMethodGET
+                             parameter:param
+                               mapping:[ResolutionAction mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                 
+                                 ResolutionAction *response = [successResult.dictionary objectForKey:@""];
+                                 
+                                 if (response.data.is_success != 0) {
+                                     [StickyAlertView showSuccessMessage:response.message_status?:@[@"Berhasil menambahkan resi."]];
+                                     success(response.data);
+                                 } else {
+                                     [StickyAlertView showErrorMessage:response.message_error?:@[@"Gagal menambahkan resi"]];
                                      failure(nil);
                                  }
                                  

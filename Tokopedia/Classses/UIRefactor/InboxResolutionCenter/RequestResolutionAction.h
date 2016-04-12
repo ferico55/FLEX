@@ -48,4 +48,11 @@
                           success:(void(^) (ResolutionActionResult* data))success
                           failure:(void(^) (NSError* error))failure;
 
++(void)fetchEditResiResolutionID:(NSString*)resolutionID
+                  conversationID:(NSString*)conversationID
+                      shipmentID:(NSString*)shipmentID
+                     shippingRef:(NSString*)shippingRef
+                         success:(void(^) (ResolutionActionResult* data))success
+                         failure:(void(^) (NSError* error))failure;
+
 @end

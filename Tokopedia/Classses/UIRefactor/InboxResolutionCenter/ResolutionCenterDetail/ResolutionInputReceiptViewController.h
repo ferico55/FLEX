@@ -14,7 +14,6 @@
 
 @protocol ResolutionInputReceiptViewControllerDelegate <NSObject>
 @required
-- (void)receiptNumber:(NSString*)receiptNumber withShipmentAgent:(ShipmentCourier*)shipmentAgent withAction:(NSString *)action conversation:(ResolutionConversation*)conversation;
 - (void)addResolutionLast:(ResolutionLast*)resolutionLast conversationLast:(ResolutionConversation*)conversationLast replyEnable:(BOOL)isReplyEnable;
 @end
 

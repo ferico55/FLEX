@@ -51,6 +51,8 @@
     if ([self isValidInput]) {
         if (_isInputResi) {
             [self doRequestInputResiWithButton:sender];
+        } else {
+            [self doRequestEditResiWithButton:sender];
         }
     }
 }
@@ -132,7 +134,28 @@
 
 -(void)doRequestInputResiWithButton:(UIBarButtonItem*)button{
     button.enabled = NO;
-    [RequestResolutionAction fetchInputResiResolutionID:_resolutionID shipmentID:_selectedShipment.shipment_id shippingRef:_nomorReceiptTextField.text success:^(ResolutionActionResult *data) {
+    [RequestResolutionAction fetchInputResiResolutionID:_resolutionID
+                                             shipmentID:_selectedShipment.shipment_id
+                                            shippingRef:_nomorReceiptTextField.text
+                                                success:^(ResolutionActionResult *data) {
+        button.enabled = YES;
+        if ([_delegate respondsToSelector:@selector(addResolutionLast:conversationLast:replyEnable:)]){
+            [_delegate addResolutionLast:data.solution_last conversationLast:data.conversation_last[0] replyEnable:!data.button.hide_no_reply];
+        }
+        [self.navigationController popViewControllerAnimated:YES];
+        
+    } failure:^(NSError *error) {
+        button.enabled = YES;
+    }];
+}
+
+-(void)doRequestEditResiWithButton:(UIBarButtonItem*)button{
+    button.enabled = NO;
+    [RequestResolutionAction fetchEditResiResolutionID:_resolutionID
+                                        conversationID:_conversationID
+                                            shipmentID:_selectedShipment.shipment_id
+                                           shippingRef:_nomorReceiptTextField.text
+                                               success:^(ResolutionActionResult *data) {
         button.enabled = YES;
         if ([_delegate respondsToSelector:@selector(addResolutionLast:conversationLast:replyEnable:)]){
             [_delegate addResolutionLast:data.solution_last conversationLast:data.conversation_last[0] replyEnable:!data.button.hide_no_reply];

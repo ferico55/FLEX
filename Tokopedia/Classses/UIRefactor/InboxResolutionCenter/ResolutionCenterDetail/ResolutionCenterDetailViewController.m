@@ -28,8 +28,6 @@
 
 #import "TokopediaNetworkManager.h"
 
-#import "RequestResolutionCenter.h"
-
 #import "SettingAddressViewController.h"
 #import "SettingAddressEditViewController.h"
 
@@ -69,8 +67,6 @@
     ResolutionCenterInputViewControllerDelegate,
     ResolutionInputReceiptViewControllerDelegate,
     InboxResolutionCenterOpenViewControllerDelegate,
-    TokopediaNetworkManagerDelegate,
-    RequestResolutionCenterDelegate,
     UISplitViewControllerDelegate,
     SettingAddressViewControllerDelegate,
     SettingAddressEditViewControllerDelegate,
@@ -82,12 +78,6 @@
     NSMutableArray *_listResolutionConversation;
     
     NSOperationQueue *_operationQueue;
-    
-    __weak RKObjectManager *_objectManagerEditReceipt;
-    __weak RKManagedObjectRequestOperation *_requestEditReceipt;
-    
-    __weak RKObjectManager *_objectManagerReplay;
-    __weak RKManagedObjectRequestOperation *_requestReplay;
     
     __weak RKObjectManager *_objectManagerAction;
     __weak RKManagedObjectRequestOperation *_requestAction;
@@ -101,10 +91,7 @@
     ResolutionConversation *_addedLastConversation;
     
     NavigateViewController *_navigate;
-        
-    RequestResolutionCenter *_requestResolutionCenter;
     
-    GeneratedHost *_generatedHost;
     AddressFormList *_selectedAddress;
     RequestResoInputAddress *_requestInputAddress;
 }
@@ -417,6 +404,7 @@
         vc.delegate = self;
         vc.selectedShipment = selectedShipment;
         vc.conversationID = conversation.conversation_id;
+        vc.resolutionID = _resolutionID;
         [self.navigationController pushViewController:vc animated:YES];
     }
     
@@ -547,61 +535,6 @@
     NSString *solution = _resolutionDetail.resolution_last.last_solution_string?:@"";
 
     return solution;
-}
-
-#pragma mark - Resolution Input Receipt View Controller Delegate
-- (void)receiptNumber:(NSString*)receiptNumber withShipmentAgent:(ShipmentCourier*)shipmentAgent withAction:(NSString *)action conversation:(ResolutionConversation*)conversation
-{
-    ShipmentCourier *selectedShipment = [_dataInput objectForKey:DATA_SELECTED_SHIPMENT_KEY];
-    if ([shipmentAgent.shipment_name isEqualToString:selectedShipment.shipment_name] &&
-        [receiptNumber isEqualToString:conversation.input_resi]) {
-    }
-    else
-    {
-        [self configureRestKitEditReceipt];
-        [self requestEditReceiptConversation:conversation
-                           receiptNumber:receiptNumber
-                       withShipmentAgent:shipmentAgent
-                              withAction:action];
-    }
-}
-
-#pragma mark - Resolution Center Input View Controller Delegate
--(void)appealSolution:(NSString *)solutionType refundAmount:(NSString *)refundAmout remark:(NSString *)message photo:(NSString *)photo serverID:(NSString *)serverID
-{
-    [self requestReplayConversation:message
-                              photo:photo?:@""
-                           serverID:serverID?:@""
-                   editSolutionFlag:NO
-                       solutionType:solutionType?:@""
-                        troubleType:@""
-                       refundAmount:refundAmout?:@""
-                           received:([_resolutionDetail.resolution_last.last_flag_received isEqual:@(1)])
-                             action:ACTION_APPEAL];
-}
-
-
--(void)message:(NSString *)message photo:(NSString *)photo serverID:(NSString *)serverID
-{
-    [self requestReplayConversation:message?:@""
-                              photo:photo?:@""
-                           serverID:serverID?:@""
-                   editSolutionFlag:NO
-                       solutionType:@""
-                        troubleType:@""
-                       refundAmount:@""
-                           received:([_resolutionDetail.resolution_last.last_flag_received isEqual:@(1)])
-                             action:ACTION_REPLY_CONVERSATION];
-}
--(void)setGenerateHost:(GeneratedHost *)generateHost
-{
-    _generatedHost = generateHost;
-}
-
--(void)reportResolution
-{
-    [self configureRestKitAction];
-    [self requestAction:ACTION_REPORT_RESOLUTION];
 }
 
 #pragma mark - Table View Cell
@@ -1016,6 +949,10 @@
     if ([conversation.show_edit_addr_button integerValue]==1) {
         buttonCount +=1;
     }
+    
+    if ([self isShowTrackAndEditButton:conversation]) {
+        buttonCount +=2;
+    }
 
     if (conversation.isAddedConversation) {
         if([_resolutionDetail.resolution_last.last_show_accept_button integerValue] == 1)
@@ -1428,135 +1365,6 @@
     [self cancelRequestAction];
 }
 
-#pragma mark - Request Edit And Input Receipt
--(void)cancelRequestEditReceipt
-{
-    [_requestEditReceipt cancel];
-    _requestEditReceipt = nil;
-    [_objectManagerEditReceipt.operationQueue cancelAllOperations];
-    _objectManagerEditReceipt = nil;
-}
-
--(void)configureRestKitEditReceipt
-{
-    _objectManagerEditReceipt = [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ResolutionAction class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ResolutionActionResult class]];
-    [resultMapping addAttributeMappingsFromArray:@[kTKPD_APIISSUCCESSKEY]];
-    
-    
-    RKRelationshipMapping *resultRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                   toKeyPath:kTKPD_APIRESULTKEY
-                                                                                 withMapping:resultMapping];
-    
-    
-    [statusMapping addPropertyMapping:resultRel];
-    
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                            method:RKRequestMethodPOST
-                                                                                       pathPattern:API_PATH_ACTION_RESOLUTION_CENTER
-                                                                                           keyPath:@""
-                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectManagerEditReceipt addResponseDescriptor:responseDescriptor];
-}
-
--(void)requestEditReceiptConversation:(ResolutionConversation*)conversation receiptNumber:(NSString *)receiptNumber withShipmentAgent:(ShipmentCourier*)shipment withAction:(NSString*)action
-{
-    if (_requestEditReceipt.isExecuting) return;
-    
-    NSTimer *timer;
-
-    NSDictionary* param = @{API_ACTION_KEY : action?:@"",
-                            API_RESOLUTION_ID_KEY : _resolutionID?:@"",
-                            API_SHIPPING_REF_KEY : receiptNumber?:@"",
-                            API_SHIPMENT_ID_KEY : shipment.shipment_id?:@"",
-                            API_CONVERSATION_ID_KEY : conversation.conversation_id?:@""
-                            };
-    
-//#if DEBUG
-//    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-//    NSDictionary* auth = [secureStorage keychainDictionary];
-//    
-//    NSString *userID = [auth objectForKey:kTKPD_USERIDKEY];
-//    
-//    NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
-//    [paramDictionary addEntriesFromDictionary:param];
-//    [paramDictionary setObject:@"off" forKey:@"enc_dec"];
-//    [paramDictionary setObject:userID forKey:kTKPD_USERIDKEY];
-//    
-//    _requestEditReceipt = [_objectManagerEditReceipt appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_PATH_ACTION_RESOLUTION_CENTER parameters:paramDictionary];
-//#else
-    _requestEditReceipt = [_objectManagerEditReceipt appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_PATH_ACTION_RESOLUTION_CENTER parameters:[param encrypt]];
-//#endif
-    
-    [_requestEditReceipt setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestSuccessEditReceipt:mappingResult withOperation:operation];
-        [timer invalidate];
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [self requestFailureEditReceiptWithErrorMessage:@[error.localizedDescription]];
-        [timer invalidate];
-    }];
-    
-    [_operationQueue addOperation:_requestEditReceipt];
-    
-    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutEditReceipt) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-}
-
--(void)requestSuccessEditReceipt:(RKMappingResult*)mappingResult withOperation:(RKObjectRequestOperation *)operation
-{
-    NSDictionary *result = mappingResult.dictionary;
-    id stat = [result objectForKey:@""];
-    ResolutionAction *resolution = stat;
-    BOOL status = [resolution.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if (status) {
-        if (resolution.result.is_success == 1) {
-            StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:resolution.message_status?:@[@"Sukses"] delegate:self];
-            [alert show];
-            
-            [self refreshRequest];
-        }
-        else
-        {
-            [self requestFailureActionWithErrorMessage:resolution.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY]];
-        }
-    }
-    else
-    {
-        [self requestFailureEditReceiptWithErrorMessage:@[resolution.status]];
-    }
-    
-    [self requestProcessEditReceipt];
-}
-
--(void)requestFailureEditReceiptWithErrorMessage:(NSArray*)error
-{
-    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:error delegate:self];
-    [alert show];
-    
-    [_tableView reloadData];
-}
-
--(void)requestProcessEditReceipt
-{
-    
-}
-
--(void)requestTimeoutEditReceipt
-{
-    [self cancelRequestEditReceipt];
-}
-
 #pragma mark - Reply Conversation
 -(void)addResolutionLast:(ResolutionLast *)resolutionLast conversationLast:(ResolutionConversation *)conversationLast replyEnable:(BOOL)isReplyEnable {
     
@@ -1591,32 +1399,6 @@
         _replayConversationView.hidden = NO;
         _tableView.contentInset = UIEdgeInsetsMake(0, 0, 50, 0);
     }
-}
-
--(void)requestReplayConversation:(NSString*)message photo:(NSString*)photo serverID:(NSString*)serverID editSolutionFlag:(BOOL)editSolutionFlag solutionType:(NSString*)solution troubleType:(NSString*)trouble refundAmount:(NSString*)refunAmount received:(BOOL)received action:(NSString*)action
-{
-    NSString *editSolutionFlagString = [NSString stringWithFormat:@"%zd",editSolutionFlag];
-    NSString *flagReceivedString = [NSString stringWithFormat:@"%zd",received];
-    NSString *solutionString = (!received || [solution isEqualToString:@""])?@"1":solution;
-    
-    [self requestResolutionCenter].generatedHost = _generatedHost;
-    [[self requestResolutionCenter] setParamReplayValidationFromID:_resolutionID?:@"" message:message photos:photo serverID:serverID editSolutionFlag:editSolutionFlagString solution:solutionString refundAmount:refunAmount flagReceived:flagReceivedString troubleType:trouble action:action];
-    [[self requestResolutionCenter] doRequestReplay];
-}
-
--(RequestResolutionCenter*)requestResolutionCenter
-{
-    if (!_requestResolutionCenter) {
-        _requestResolutionCenter = [RequestResolutionCenter new];
-        _requestResolutionCenter.delegate = self;
-    }
-    return _requestResolutionCenter;
-}
-
--(void)didSuccessReplay
-{
-    [_delegate didResponseComplain:_indexPath];
-    [self refreshRequest];
 }
 
 - (IBAction)gesture:(id)sender {
