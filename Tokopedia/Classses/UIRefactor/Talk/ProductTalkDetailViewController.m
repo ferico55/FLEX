@@ -232,9 +232,10 @@
     GeneralTalkCommentCell* cell = [tableView dequeueReusableCellWithIdentifier:kTKPDGENERALTALKCOMMENTCELL_IDENTIFIER];
     if (cell == nil) {
         cell = [GeneralTalkCommentCell newcell];
-        cell.delegate = self;
-        cell.del = self;
     }
+    
+    cell.delegate = self;
+    cell.del = self;
 
     TalkCommentList *list = _list[indexPath.row];
 
