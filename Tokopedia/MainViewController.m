@@ -113,6 +113,8 @@ typedef enum TagRequest {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
         
     [self adjustnavigationbar];
         
