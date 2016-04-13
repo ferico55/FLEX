@@ -638,17 +638,11 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
             vc.hidesBottomBarWhenPushed = YES;
             [wrapperController.navigationController pushViewController:vc animated:YES];
         } else if (indexPath.row == 3) {
-            /*
-            MyShopEtalaseViewController *vc = [MyShopEtalaseViewController new];
-            vc.data = @{MORE_SHOP_ID : [_auth objectForKey:MORE_SHOP_ID]?:@{},
-                        kTKPD_AUTHKEY:_auth?:@{}};
-            vc.hidesBottomBarWhenPushed = YES;
-            [wrapperController.navigationController pushViewController:vc animated:YES];
-             */
             EtalaseViewController *vc = [EtalaseViewController new];
             vc.delegate = self;
             vc.isEditable = YES;
             vc.showOtherEtalase = NO;
+            vc.hidesBottomBarWhenPushed = YES;
             
             NSString* shopId = [_auth objectForKey:MORE_SHOP_ID]?:@{};
             [vc setShopId:shopId];
@@ -656,8 +650,6 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
             UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
             UIColor *backgroundColor = [UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1];
             nav.navigationBar.backgroundColor = [UIColor colorWithCGColor:backgroundColor.CGColor];
-            nav.navigationBar.translucent = NO;
-            nav.navigationBar.tintColor = [UIColor whiteColor];
             [wrapperController.navigationController pushViewController:vc animated:YES];
 
         }
