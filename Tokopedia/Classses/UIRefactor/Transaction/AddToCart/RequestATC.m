@@ -77,7 +77,11 @@
                             @"address_postal_code":@(postalCode),
                             @"receiver_name":recieverName,
                             @"receiver_phone":recieverPhone,
-                            @"district_id" : districtID
+                            @"district_id" : districtID,
+                            @"ut": shipmentPackage.ut,
+                            @"check_sum": shipmentPackage.check_sum?:@"",
+                            @"weight" : shipment.weight?:@"",
+                            @"price": shipmentPackage.price?:@""
                             };
     
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
