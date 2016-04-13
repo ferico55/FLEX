@@ -134,6 +134,7 @@
     [_imageCache loadImageNamed:@"icon_star_active.png" description:@"IconStarActive"];
     [_imageCache loadImageNamed:@"icon_star.png" description:@"IconStar"];
     [_imageCache loadImageNamed:@"icon_order_cancel-01.png" description:@"IconDelete"];
+    [_imageCache loadImageNamed:@"icon_default_shop.jpg" description:@"IconDefaultShop"];
     
     _dataManager = [[MyReviewDetailDataManager alloc] initWithCollectionView:_collectionView
                                                                         role:_detailMyInboxReputation.role
@@ -580,22 +581,43 @@
 
 - (void)didTapNotSatisfiedSmiley:(DetailMyInboxReputation*)inbox {
     _selectedInbox = inbox;
-    if ([_detailMyInboxReputation.their_score_image isEqualToString:@"smiley_neutral"]) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                        message:@"Maaf, Anda tidak bisa melakukan penurunan nilai"
-                                                       delegate:self
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles:nil];
-        [alert show];
+    
+    if ([_selectedInbox.role isEqualToString:@"2"]) {
+        if ([_selectedInbox.buyer_score isEqualToString:@"1"]) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                            message:@"Maaf, Anda tidak bisa melakukan penurunan nilai"
+                                                           delegate:self
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil];
+            [alert show];
+        } else {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                            message:@"Apakah Anda yakin memberi nilai Tidak Puas?"
+                                                           delegate:self
+                                                  cancelButtonTitle:@"Ya"
+                                                  otherButtonTitles:@"Tidak", nil];
+            _score = @"-1";
+            alert.tag = 10;
+            [alert show];
+        }
     } else {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                        message:@"Apakah Anda yakin memberi nilai Tidak Puas?"
-                                                       delegate:self
-                                              cancelButtonTitle:@"Ya"
-                                              otherButtonTitles:@"Tidak", nil];
-        _score = @"-1";
-        alert.tag = 10;
-        [alert show];
+        if ([_selectedInbox.seller_score isEqualToString:@"1"]) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                            message:@"Maaf, Anda tidak bisa melakukan penurunan nilai"
+                                                           delegate:self
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil];
+            [alert show];
+        } else {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                            message:@"Apakah Anda yakin memberi nilai Tidak Puas?"
+                                                           delegate:self
+                                                  cancelButtonTitle:@"Ya"
+                                                  otherButtonTitles:@"Tidak", nil];
+            _score = @"-1";
+            alert.tag = 10;
+            [alert show];
+        }
     }
 }
 

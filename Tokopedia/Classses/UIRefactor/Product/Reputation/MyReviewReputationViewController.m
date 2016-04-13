@@ -391,8 +391,14 @@
         cell.indexPath = indexPath;
     }
     
-    [cell.theirUserImage setImageWithURL:[NSURL URLWithString:current.reviewee_picture]
-                        placeholderImage:[UIImage imageNamed:@"icon_profile_picture.jpeg"]];
+    if ([current.reviewee_role isEqualToString:@"2"]) {
+        [cell.theirUserImage setImageWithURL:[NSURL URLWithString:current.reviewee_picture]
+                            placeholderImage:[UIImage imageNamed:@"icon_default_shop.jpg"]];
+    } else {
+        [cell.theirUserImage setImageWithURL:[NSURL URLWithString:current.reviewee_picture]
+                            placeholderImage:[UIImage imageNamed:@"icon_profile_picture.jpeg"]];
+    }
+    
     [cell.theirUserImage setCornerRadius:cell.theirUserImage.frame.size.width/2];
     [cell.theirUserImage setClipsToBounds:YES];
     

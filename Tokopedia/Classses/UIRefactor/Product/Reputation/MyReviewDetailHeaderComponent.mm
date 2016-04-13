@@ -186,7 +186,7 @@ static CKComponent *remainingTimeLeft(DetailMyInboxReputation *inbox, MyReviewDe
                                                                                    scenePath:nil
                                                                                    size:{50,50}
                                                                                    options:{
-                                                                                       .defaultImage = [imageCache cachedImageWithDescription:@"IconProfilePicture"]
+                                                                                       .defaultImage = [inbox.reviewee_role isEqualToString:@"2"]?[imageCache cachedImageWithDescription:@"IconDefaultShop"]:[imageCache cachedImageWithDescription:@"IconProfilePicture"]
                                                                                    }
                                                                                    attributes:{
                                                                                        {CKComponentViewAttribute::LayerAttribute(@selector(setCornerRadius:)), 25.0},

@@ -31,6 +31,8 @@
     
     NSMutableArray *_uploadedPicts;
     NSMutableArray *_attachedPicts;
+    
+    NSMutableArray *_tempUploadedPicts;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
@@ -93,11 +95,13 @@
     
     _uploadedPicts = [NSMutableArray new];
     _attachedPicts = [NSMutableArray new];
+    _tempUploadedPicts = [NSMutableArray new];
     
     [_uploadedPicts addObjectsFromArray:_uploadedPictures];
     [_attachedPicts addObjectsFromArray:_attachedPictures];
+    [_tempUploadedPicts addObjectsFromArray:_tempUploadedPictures];
     
-    [self setDataWithImageTag:0];
+    [self setDataWithImageTag:_selectedImageTag-20];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -105,6 +109,9 @@
 }
 
 - (void)setDataWithImageTag:(NSInteger)imageTag {
+    if (imageTag < 0) {
+        imageTag = imageTag + 20;
+    }
     _imageCaptionTextField.text = ((AttachedPicture*)_attachedPicts[imageTag]).imageDescription;
     
     for (int ii = 0; ii < _attachedPicts.count; ii++) {
@@ -115,8 +122,10 @@
                 if (![pict.thumbnailUrl isEqualToString:@""]) {
                     [imageView setImageWithURL:[NSURL URLWithString:pict.thumbnailUrl]
                               placeholderImage:[UIImage imageNamed:@"image_not_loading.png"]];
+                    imageView.userInteractionEnabled = YES;
                 } else {
                     imageView.image = pict.image;
+                    imageView.userInteractionEnabled = YES;
                 }
             }
             
@@ -130,7 +139,7 @@
         }
     }
     
-    [self setScrollViewImages];
+    [self setScrollViewImagesFocusAtIndex:imageTag];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -234,7 +243,7 @@
                 [_delegate updateAttachedPictures:_attachedPicts
                                    selectedAssets:_selectedAssets
                                  uploadedPictures:_uploadedPicts
-                             tempUploadedPictures:_tempUploadedPictures];
+                             tempUploadedPictures:_tempUploadedPicts];
                 [self.navigationController popViewControllerAnimated:YES];
                 break;
             }
@@ -254,32 +263,46 @@
                                allowMultipleSelect:YES
                                         showCancel:YES
                                         showCamera:YES
-                                       maxSelected:(5 - _tempUploadedPictures.count)
+                                       maxSelected:(5 - _tempUploadedPicts.count)
                                     selectedAssets:_selectedAssets
                                         completion:^(NSArray<DKAsset *> *asset) {
                                             dispatch_async(dispatch_get_main_queue(), ^{
-                                                NSMutableArray *temp = [_tempUploadedPictures mutableCopy];
+                                                NSMutableArray *temp = [_tempUploadedPicts mutableCopy];
                                                 _selectedAssets = asset;
                                                 
                                                 for (int ii = 0; ii < asset.count; ii++) {
                                                     DKAsset *dk = asset[ii];
-                                                    
                                                     AttachedPicture *pict = [AttachedPicture new];
-                                                    pict.image = dk.resizedImage;
-                                                    pict.fileName = dk.fileName;
-                                                    pict.thumbnailUrl = @"";
-                                                    pict.largeUrl = @"";
-                                                    pict.imageDescription = @"";
-                                                    pict.attachmentID = @"0";
-                                                    pict.isDeleted = @"0";
-                                                    pict.isPreviouslyUploaded = @"0";
+                                                    BOOL isAdded = NO;
                                                     
-                                                    [temp addObject:pict];
+                                                    for (int jj = 0; jj < _attachedPicts.count; jj++) {
+                                                        AttachedPicture *tempPict = _attachedPicts[jj];
+                                                        if ([tempPict.fileName isEqualToString:dk.fileName]) {
+                                                            pict = tempPict;
+                                                            
+                                                            [temp addObject:pict];
+                                                            isAdded = YES;
+                                                        }
+                                                    }
+                                                    
+                                                    if (!isAdded) {
+                                                        pict.image = dk.resizedImage;
+                                                        pict.fileName = dk.fileName;
+                                                        pict.thumbnailUrl = @"";
+                                                        pict.largeUrl = @"";
+                                                        pict.imageDescription = @"";
+                                                        pict.attachmentID = @"0";
+                                                        pict.isDeleted = @"0";
+                                                        pict.isPreviouslyUploaded = @"0";
+                                                        
+                                                        [temp addObject:pict];
+                                                        isAdded = YES;
+                                                    }
                                                 }
                                                 
                                                 _attachedPicts = temp;
                                                 
-                                                [self setDataWithImageTag:0];
+                                                [self setDataWithImageTag:sender.view.tag-20];
 
                                             });
                                         }];
@@ -370,7 +393,7 @@
 }
 
 #pragma mark - Methods
-- (void)setScrollViewImages {
+- (void)setScrollViewImagesFocusAtIndex:(NSInteger)tag {
     [_imagesScrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     
     for(int ii = 0; ii < _attachedPicts.count; ii++) {
@@ -424,6 +447,8 @@
     }
     
     _imagesScrollView.contentSize = CGSizeMake(_imagesScrollView.frame.size.width * _attachedPicts.count, _imagesScrollView.frame.size.height);
+    
+    [_imagesScrollView setContentOffset:CGPointMake(tag * _imagesScrollView.frame.size.width, 0) animated:NO];
 }
 
 - (void)deleteImageAtIndex:(NSInteger)index {
@@ -439,10 +464,10 @@
             }
         }
         
-        [_tempUploadedPictures removeObjectAtIndex:index];
+        [_tempUploadedPicts removeObjectAtIndex:index];
     } else {
         NSMutableArray *tempSelectedPicts = [_selectedAssets mutableCopy];
-        [tempSelectedPicts removeObjectAtIndex:(index - _tempUploadedPictures.count)];
+        [tempSelectedPicts removeObjectAtIndex:(index - _tempUploadedPicts.count)];
         _selectedAssets = tempSelectedPicts;
     }
     
@@ -475,10 +500,10 @@
         [_delegate updateAttachedPictures:_attachedPicts
                            selectedAssets:_selectedAssets
                          uploadedPictures:_uploadedPicts
-                     tempUploadedPictures:_tempUploadedPictures];
+                     tempUploadedPictures:_tempUploadedPicts];
         [self.navigationController popViewControllerAnimated:YES];
     } else {
-        [self setDataWithImageTag:temp];
+        [self setDataWithImageTag:temp-20];
     }
 }
 

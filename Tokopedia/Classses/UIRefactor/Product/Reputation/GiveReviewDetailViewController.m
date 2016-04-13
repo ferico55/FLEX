@@ -102,6 +102,10 @@
     }
     
     [self setAttachedPictures];
+    
+    if (_isEdit) {
+        _reviewDetailTextView.text = [NSString convertHTML:_review.review_message];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -144,11 +148,6 @@
     } else {
         [self initCameraIconAtIndex:0];
     }
-    
-    if (_isEdit) {
-        _reviewDetailTextView.text = [NSString convertHTML:_review.review_message];
-    }
-
 }
 
 #pragma mark - Methods
@@ -313,18 +312,32 @@
                                             
                                             for (int ii = 0; ii < asset.count; ii++) {
                                                 DKAsset *dk = asset[ii];
-                                                
                                                 AttachedPicture *pict = [AttachedPicture new];
-                                                pict.image = dk.resizedImage;
-                                                pict.fileName = dk.fileName;
-                                                pict.largeUrl = @"";
-                                                pict.thumbnailUrl = @"";
-                                                pict.imageDescription = @"";
-                                                pict.attachmentID = @"0";
-                                                pict.isDeleted = @"0";
-                                                pict.isPreviouslyUploaded = @"0";
+                                                BOOL isAdded = NO;
                                                 
-                                                [temp addObject:pict];
+                                                for (int jj = 0; jj < _attachedPictures.count; jj++) {
+                                                    AttachedPicture *tempPict = _attachedPictures[jj];
+                                                    if ([tempPict.fileName isEqualToString:dk.fileName]) {
+                                                        pict = tempPict;
+                                                        
+                                                        [temp addObject:pict];
+                                                        isAdded = YES;
+                                                    }
+                                                }
+                                                
+                                                if (!isAdded) {
+                                                    pict.image = dk.resizedImage;
+                                                    pict.fileName = dk.fileName;
+                                                    pict.thumbnailUrl = @"";
+                                                    pict.largeUrl = @"";
+                                                    pict.imageDescription = @"";
+                                                    pict.attachmentID = @"0";
+                                                    pict.isDeleted = @"0";
+                                                    pict.isPreviouslyUploaded = @"0";
+                                                    
+                                                    [temp addObject:pict];
+                                                    isAdded = YES;
+                                                }
                                             }
                                             
                                             _attachedPictures = temp;
@@ -336,6 +349,7 @@
                                             vc.selectedAssets = _selectedAssets;
                                             vc.uploadedPictures = _uploadedPictures;
                                             vc.tempUploadedPictures = _tempUploadedPictures;
+                                            vc.selectedImageTag = sender.view.tag;
                                             
                                             [self.navigationController pushViewController:vc animated:NO];
                                         });                                        
@@ -349,6 +363,7 @@
         vc.selectedAssets = _selectedAssets;
         vc.uploadedPictures = _uploadedPictures;
         vc.tempUploadedPictures = _tempUploadedPictures;
+        vc.selectedImageTag = sender.view.tag;
         
         [self.navigationController pushViewController:vc animated:YES];
     }

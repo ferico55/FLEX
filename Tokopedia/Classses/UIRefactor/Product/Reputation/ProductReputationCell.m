@@ -88,6 +88,8 @@
         viewStarAkurasi.frame = CGRectMake(viewContentRating.bounds.size.width-viewStarAkurasi.bounds.size.width, viewStarKualitas.frame.origin.y, viewStarAkurasi.bounds.size.width, viewStarAkurasi.bounds.size.height);
         lblAkurasi.frame = CGRectMake(viewStarAkurasi.frame.origin.x-lblAkurasi.bounds.size.width-2, lblKualitas.frame.origin.y, lblAkurasi.bounds.size.width, lblAkurasi.bounds.size.height);
         
+        viewAttachedImages.frame = CGRectMake(0,0,0,0);
+        
         
         //View content action
         viewContentAction.frame = CGRectMake(0, viewContentRating.frame.origin.y+viewContentRating.bounds.size.height, (self.bounds.size.width-(viewContent.frame.origin.x*2)), viewContentAction.isHidden?0:CHeightContentAction);
