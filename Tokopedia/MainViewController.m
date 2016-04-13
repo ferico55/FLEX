@@ -113,6 +113,7 @@ typedef enum TagRequest {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [Localytics tagEvent:@"Enter Main Page"];
     
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
         
