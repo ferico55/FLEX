@@ -777,4 +777,73 @@ static failedCompletionBlock failedRequest;
                              }];
     
 }
+
+#pragma mark - Accept Resolution
++(void)fetchAcceptResolutionID:(NSString*)resolutionID
+                         success:(void(^) (ResolutionActionResult* data))success
+                         failure:(void(^) (NSError* error))failure {
+    
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    networkManager.isUsingHmac = YES;
+    
+    NSDictionary *param = @{
+                            @"resolution_id":resolutionID?:@""
+                            };
+    
+    [networkManager requestWithBaseUrl:[NSString v4Url]
+                                  path:@"/v4/action/resolution-center/accept_resolution.pl"
+                                method:RKRequestMethodGET
+                             parameter:param
+                               mapping:[ResolutionAction mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                 
+                                 ResolutionAction *response = [successResult.dictionary objectForKey:@""];
+                                 
+                                 if (response.data.is_success != 0) {
+                                     [StickyAlertView showSuccessMessage:response.message_status?:@[@"Solusi telah diterima."]];
+                                     success(response.data);
+                                 } else {
+                                     [StickyAlertView showErrorMessage:response.message_error?:@[@"Gagal menerima solusi"]];
+                                     failure(nil);
+                                 }
+                                 
+                             } onFailure:^(NSError *errorResult) {
+                                 failure(errorResult);
+                             }];
+    
+}
+
++(void)fetchFinishReturResolutionID:(NSString*)resolutionID
+                       success:(void(^) (ResolutionActionResult* data))success
+                       failure:(void(^) (NSError* error))failure {
+    
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    networkManager.isUsingHmac = YES;
+    
+    NSDictionary *param = @{
+                            @"resolution_id":resolutionID?:@""
+                            };
+    
+    [networkManager requestWithBaseUrl:[NSString v4Url]
+                                  path:@"/v4/action/resolution-center/finish_resolution_retur.pl"
+                                method:RKRequestMethodGET
+                             parameter:param
+                               mapping:[ResolutionAction mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                 
+                                 ResolutionAction *response = [successResult.dictionary objectForKey:@""];
+                                 
+                                 if (response.data.is_success != 0) {
+                                     [StickyAlertView showSuccessMessage:response.message_status?:@[@"Solusi telah diterima."]];
+                                     success(response.data);
+                                 } else {
+                                     [StickyAlertView showErrorMessage:response.message_error?:@[@"Gagal menerima solusi"]];
+                                     failure(nil);
+                                 }
+                                 
+                             } onFailure:^(NSError *errorResult) {
+                                 failure(errorResult);
+                             }];
+    
+}
 @end

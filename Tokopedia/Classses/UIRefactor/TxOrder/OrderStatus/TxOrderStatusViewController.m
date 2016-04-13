@@ -17,7 +17,6 @@
 #import "FilterSalesTransactionListViewController.h"
 #import "TransactionCartRootViewController.h"
 #import "ResolutionCenterDetailViewController.h"
-#import "RequestCancelResolution.h"
 
 #import "InboxResolutionCenterOpenViewController.h"
 
@@ -36,6 +35,7 @@
 
 #import "NoResultReusableView.h"
 #import "RequestLDExtension.h"
+#import "RequestResolutionAction.h"
 
 #define TAG_ALERT_DELIVERY_CONFIRMATION 10
 #define TAG_ALERT_SUCCESS_DELIVERY_CONFIRM 11
@@ -45,7 +45,7 @@
 #define DATA_ORDER_REORDER_KEY @"data_reorder"
 #define DATA_ORDER_COMPLAIN_KEY @"data_complain"
 
-@interface TxOrderStatusViewController () <UITableViewDataSource, UITableViewDelegate, TxOrderStatusCellDelegate, UIAlertViewDelegate, FilterSalesTransactionListDelegate, TxOrderStatusDetailViewControllerDelegate, TrackOrderViewControllerDelegate, TokopediaNetworkManagerDelegate, ResolutionCenterDetailViewControllerDelegate, CancelComplainDelegate, InboxResolutionCenterOpenViewControllerDelegate, LoadingViewDelegate, NoResultDelegate, requestLDExttensionDelegate>
+@interface TxOrderStatusViewController () <UITableViewDataSource, UITableViewDelegate, TxOrderStatusCellDelegate, UIAlertViewDelegate, FilterSalesTransactionListDelegate, TxOrderStatusDetailViewControllerDelegate, TrackOrderViewControllerDelegate, TokopediaNetworkManagerDelegate, ResolutionCenterDetailViewControllerDelegate, InboxResolutionCenterOpenViewControllerDelegate, LoadingViewDelegate, NoResultDelegate, requestLDExttensionDelegate>
 {
     NSMutableArray *_list;
     NSOperationQueue *_operationQueue;
@@ -79,7 +79,6 @@
     TxOrderStatusList *_selectedTrackOrder;
     LoadingView *_loadingView;
     
-    RequestCancelResolution *_requestCancelComplain;
     FilterSalesTransactionListViewController *_filterSalesTransactionList;
     
     UIViewController *_detailViewController;
@@ -1127,42 +1126,6 @@
     NSString *resolutionID = [queries objectForKey:@"id"];
     vc.resolutionID = resolutionID;
     [self.navigationController pushViewController:vc animated:YES];
-}
--(void)shouldCancelComplain:(InboxResolutionCenterList *)resolution atIndexPath:(NSIndexPath *)indexPath
-{
-    TxOrderStatusList *order = _list[indexPath.row];
-    RequestCancelResolution *request = [self requestCancelComlpain];
-    NSDictionary *queries = [NSDictionary dictionaryFromURLString:order.order_button.button_res_center_url];
-    NSString *resolutionID = [queries objectForKey:@"id"];
-    request.resolutionID = [resolutionID integerValue];
-    request.delegate = self;
-    request.resolution = resolution;
-    [request doRequest];
-}
-
--(RequestCancelResolution*)requestCancelComlpain
-{
-    if (!_requestCancelComplain) {
-        _requestCancelComplain = [RequestCancelResolution new];
-        _requestCancelComplain.delegate = self;
-    }
-    
-    return _requestCancelComplain;
-}
-
--(void)successCancelComplain:(InboxResolutionCenterList *)resolution successStatus:(NSArray *)successStatus
-{
-    StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:successStatus?:@[@"Anda telah berhasil membatalkan komplain"] delegate:self];
-    [alert show];
-    [_list removeObject:resolution];
-    [_tableView reloadData];
-    [self refreshRequest];
-}
-
--(void)failedCancelComplain:(InboxResolutionCenterList *)resolution errors:(NSArray *)errors
-{
-    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errors delegate:self];
-    [alert show];
 }
 
 -(void)failedConfirmDelivery:(NSDictionary*)object

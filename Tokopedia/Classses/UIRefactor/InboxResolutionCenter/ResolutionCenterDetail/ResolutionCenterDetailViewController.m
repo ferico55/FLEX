@@ -332,21 +332,10 @@
         case TAG_ALERT_CANCEL_COMPLAIN:
         {
             if (buttonIndex == 1) {
-                [_delegate shouldCancelComplain:_resolution atIndexPath:_indexPath];
-                if ([_delegate isKindOfClass:[TxOrderStatusDetailViewController class]]) {
-                    NSArray *viewControllers = self.navigationController.viewControllers;
-                    UIViewController *destinationVC = viewControllers[viewControllers.count-3];
-                    [self.navigationController popToViewController:destinationVC animated:YES];
-                }
-                else
-                {
-                    [self.navigationController popViewControllerAnimated:YES];
-
-                }
+                [self doRequestCancelComplain];
             }
         }
             break;
-            
         case TAG_CHANGE_SOLUTION:
         {
             if (buttonIndex == 1) {
@@ -364,6 +353,22 @@
     }
 }
 
+-(void)doRequestCancelComplain{
+    [RequestResolutionAction fetchCancelResolutionID:_resolutionID success:^(ResolutionActionResult *data) {
+        if ([_delegate isKindOfClass:[TxOrderStatusDetailViewController class]]) {
+            NSArray *viewControllers = self.navigationController.viewControllers;
+            UIViewController *destinationVC = viewControllers[viewControllers.count-3];
+            [self.navigationController popToViewController:destinationVC animated:YES];
+        }
+        else
+        {
+            [self.navigationController popViewControllerAnimated:YES];
+            
+        }
+    } failure:^(NSError *error) {
+        
+    }];
+}
 
 #pragma mark - Cell Delegate
 -(void)tapCellButton:(UIButton *)sender atIndexPath:(NSIndexPath *)indexPath
@@ -439,26 +444,15 @@
         [self.navigationController pushViewController:addressViewController animated:YES];
     }
     if ([sender.titleLabel.text isEqualToString:BUTTON_TITLE_ACCEPT_SOLUTION]) {
-        [self configureRestKitAction];
-        [self requestAction:ACTION_ACCEPT_SOLUTION];
+        [self doRequestAcceptResolution];
     }
     
     if ([sender.titleLabel.text isEqualToString:BUTTON_TITLE_FINISH_COMPLAIN]) {
-        [self configureRestKitAction];
-        [self requestAction:ACTION_FINISH_RESOLUTION];
+        [self doRequestFinishReturResolution];
     }
     if ([sender.titleLabel.text isEqualToString:BUTTON_TITLE_APPEAL]) {
         BOOL isGotTheOrder = [_resolutionDetail.resolution_last.last_flag_received boolValue];
-        
-        //if (isGotTheOrder) {
-            [self resolutionOpenIsGotTheOrder:isGotTheOrder];
-        //}
-        //else
-        //{
-        //    UIAlertView *alertChangeSolution = [[UIAlertView alloc]initWithTitle:@"Konfirmasi" message:@"Apakah barang telah diterima?\nAnda tidak bisa mengubah menjadi tidak terima barang, setelah Anda konfirmasi terima barang." delegate:self cancelButtonTitle:@"Batal" otherButtonTitles:@"Ya",@"Tidak", nil];
-        //    alertChangeSolution.tag = TAG_CHANGE_SOLUTION;
-        //    [alertChangeSolution show];
-        //}
+        [self resolutionOpenIsGotTheOrder:isGotTheOrder];
     }
 }
 
@@ -658,13 +652,7 @@
     
     UIImage *placeholderImage = (conversation.action_by == ACTION_BY_SELLER)?[UIImage imageNamed:@"icon_default_shop.jpg"]:[UIImage imageNamed:@"icon_profile_picture.jpeg"];
     
-    [thumb setImageWithURLRequest:request placeholderImage:placeholderImage success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-        [thumb setImage:image];
-#pragma clang diagnosti c pop
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-    }];
+    [thumb setImageWithURLRequest:request placeholderImage:placeholderImage success:nil failure:nil];
     
     [cell hideAllViews];
     if ([self isShowAttachment:conversation]) {
@@ -1364,6 +1352,21 @@
 -(void)requestTimeoutAction
 {
     [self cancelRequestAction];
+}
+
+-(void)doRequestAcceptResolution{
+    [RequestResolutionAction fetchAcceptResolutionID:_resolutionID success:^(ResolutionActionResult *data) {
+        [self addResolutionLast:data.solution_last conversationLast:[data.conversation_last lastObject] replyEnable:!([data.hide_conversation_box integerValue] == 1)];
+    } failure:^(NSError *error) {
+        
+    }];
+}
+-(void)doRequestFinishReturResolution{
+    [RequestResolutionAction fetchFinishReturResolutionID:_resolutionID success:^(ResolutionActionResult *data) {
+        [self addResolutionLast:data.solution_last conversationLast:[data.conversation_last lastObject] replyEnable:!([data.hide_conversation_box integerValue] == 1)];
+    } failure:^(NSError *error) {
+        
+    }];
 }
 
 #pragma mark - Reply Conversation

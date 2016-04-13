@@ -860,7 +860,6 @@
 		BBCBB1711CAD416C000C0AE2 /* InboxResolutionCenterOpenViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBCBA7501CAD4166000C0AE2 /* InboxResolutionCenterOpenViewController.xib */; };
 		BBCBB1721CAD416C000C0AE2 /* RequestResoInputAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = BBCBA7521CAD4166000C0AE2 /* RequestResoInputAddress.m */; };
 		BBCBB1731CAD416C000C0AE2 /* RequestResolutionCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = BBCBA7541CAD4166000C0AE2 /* RequestResolutionCenter.m */; };
-		BBCBB1741CAD416C000C0AE2 /* RequestCancelResolution.m in Sources */ = {isa = PBXBuildFile; fileRef = BBCBA7571CAD4166000C0AE2 /* RequestCancelResolution.m */; };
 		BBCBB1751CAD416C000C0AE2 /* ResolutionCenterDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BBCBA7591CAD4167000C0AE2 /* ResolutionCenterDetailCell.m */; };
 		BBCBB1761CAD416C000C0AE2 /* ResolutionCenterDetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBCBA75A1CAD4167000C0AE2 /* ResolutionCenterDetailCell.xib */; };
 		BBCBB1771CAD416C000C0AE2 /* ResolutionCenterDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBCBA75C1CAD4167000C0AE2 /* ResolutionCenterDetailViewController.m */; };
@@ -3714,8 +3713,6 @@
 		BBCBA7521CAD4166000C0AE2 /* RequestResoInputAddress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestResoInputAddress.m; sourceTree = "<group>"; };
 		BBCBA7531CAD4166000C0AE2 /* RequestResolutionCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestResolutionCenter.h; sourceTree = "<group>"; };
 		BBCBA7541CAD4166000C0AE2 /* RequestResolutionCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestResolutionCenter.m; sourceTree = "<group>"; };
-		BBCBA7561CAD4166000C0AE2 /* RequestCancelResolution.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestCancelResolution.h; sourceTree = "<group>"; };
-		BBCBA7571CAD4166000C0AE2 /* RequestCancelResolution.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestCancelResolution.m; sourceTree = "<group>"; };
 		BBCBA7581CAD4166000C0AE2 /* ResolutionCenterDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionCenterDetailCell.h; sourceTree = "<group>"; };
 		BBCBA7591CAD4167000C0AE2 /* ResolutionCenterDetailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionCenterDetailCell.m; sourceTree = "<group>"; };
 		BBCBA75A1CAD4167000C0AE2 /* ResolutionCenterDetailCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ResolutionCenterDetailCell.xib; sourceTree = "<group>"; };
@@ -8387,8 +8384,6 @@
 		BBCBA7551CAD4166000C0AE2 /* ResolutionCenterDetail */ = {
 			isa = PBXGroup;
 			children = (
-				BBCBA7561CAD4166000C0AE2 /* RequestCancelResolution.h */,
-				BBCBA7571CAD4166000C0AE2 /* RequestCancelResolution.m */,
 				BBCBA7581CAD4166000C0AE2 /* ResolutionCenterDetailCell.h */,
 				BBCBA7591CAD4167000C0AE2 /* ResolutionCenterDetailCell.m */,
 				BBCBA75A1CAD4167000C0AE2 /* ResolutionCenterDetailCell.xib */,
@@ -13367,7 +13362,6 @@
 				BBCBB2D51CAD416C000C0AE2 /* FilterViewController.m in Sources */,
 				BBCBB0DC1CAD416C000C0AE2 /* ContactUsFormDataCollector.m in Sources */,
 				BBCBB0A71CAD416C000C0AE2 /* RequestUploadImage.m in Sources */,
-				BBCBB1741CAD416C000C0AE2 /* RequestCancelResolution.m in Sources */,
 				BBCBB0101CAD416C000C0AE2 /* OrderConfirmationDetail.m in Sources */,
 				4506CA041CB636BE004CE0A8 /* DKImageResource.swift in Sources */,
 				BBCBAF6F1CAD416C000C0AE2 /* AddressForm.m in Sources */,

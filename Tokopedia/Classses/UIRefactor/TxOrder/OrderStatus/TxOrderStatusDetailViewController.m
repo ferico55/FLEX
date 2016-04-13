@@ -23,8 +23,6 @@
 
 #import "ResolutionCenterDetailViewController.h"
 
-#import "RequestCancelResolution.h"
-
 #define TAG_ALERT_REORDER 10
 #define TAG_ALERT_COMPLAIN 11
 #define TAG_ALERT_CONFIRMATION 12
@@ -32,7 +30,6 @@
 @interface TxOrderStatusDetailViewController () <UITableViewDataSource, UITableViewDelegate, ResolutionCenterDetailViewControllerDelegate>
 {
     NavigateViewController *_navigate;
-    RequestCancelResolution *_requestCancelComplain;
 }
 
 @property (strong, nonatomic) IBOutlet UIView *headerTwoButton;
