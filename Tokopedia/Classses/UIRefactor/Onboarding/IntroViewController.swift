@@ -241,11 +241,17 @@ class IntroViewController: UIViewController, EAIntroDelegate {
     
     private func navigateToMainViewControllerWithPage(page: MainViewControllerPage) {
         let window = UIApplication.sharedApplication().keyWindow!
-        UIView.transitionWithView(window,
+        window.backgroundColor = UIColor.clearColor()
+        let nextViewController = MainViewController(page: page)
+        
+        nextViewController.view.frame = self.view.frame
+        
+        UIView.transitionWithView(
+            window,
             duration: 0.5,
-            options: UIViewAnimationOptions.TransitionCrossDissolve,
+            options: .TransitionCrossDissolve,
             animations: {
-                window.rootViewController = MainViewController(page: page)
+                window.rootViewController = nextViewController
             },
             completion: nil)
     }
