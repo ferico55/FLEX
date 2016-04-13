@@ -177,6 +177,7 @@ typedef enum TagRequest {
 {
     [super viewWillAppear:animated];
     
+    [Localytics tagEvent:@"Enter Main Page"];
     _userManager = [UserAuthentificationManager new];
 }
 
