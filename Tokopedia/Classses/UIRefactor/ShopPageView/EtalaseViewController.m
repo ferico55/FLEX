@@ -122,10 +122,6 @@
     }
     cell.showCheckImage = !_isEditable;
     
-    if(_initialSelectedEtalase && [currentEtalase.etalase_id isEqualToString:_initialSelectedEtalase.etalase_id]){
-        [cell setSelected:YES];
-    }
-    
     return cell;
 }
 
@@ -260,17 +256,61 @@
                                              [etalaseList addObjectsFromArray:etalase.result.list];
                                              [otherEtalaseList addObjectsFromArray:etalase.result.list_other];
                                              
+                                             [_tableView reloadData];
+                                             if(page == 1){
+                                                 [self selectInitialSelectedEtalase];
+                                             }
                                              uriNext = etalase.result.paging.uri_next;
                                              if (uriNext) {
                                                  page = [[etalaseRequest splitUriToPage:uriNext] integerValue];
                                              }else{
                                                  _tableView.tableFooterView = nil;
                                              }
-                                             
-                                             [_tableView reloadData];
                                          } onFailure:^(NSError *error) {
                                              _tableView.tableFooterView = nil;
                                          }];
+}
+
+-(void)selectInitialSelectedEtalase{
+    if(_initialSelectedEtalase){
+        NSInteger position = [self etalaseListIndexWithId:_initialSelectedEtalase.etalase_id];
+        NSInteger otherPosition = [self otherEtalaseListIndexWithId:_initialSelectedEtalase.etalase_id];
+        
+        if(position != -1){
+            [_tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:position inSection:1]
+                                    animated:YES
+                              scrollPosition:UITableViewScrollPositionMiddle];
+        }else if(otherPosition != -1){
+            [_tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:otherPosition inSection:0]
+                                    animated:YES
+                              scrollPosition:UITableViewScrollPositionMiddle];
+        }
+    }else{
+        NSInteger semuaEtalasePosition = [self otherEtalaseListIndexWithId:@"etalase"];
+        if(semuaEtalasePosition != -1){
+            [_tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:semuaEtalasePosition inSection:0]
+                                    animated:YES
+                              scrollPosition:UITableViewScrollPositionMiddle];
+        }
+    }
+}
+
+-(NSInteger)etalaseListIndexWithId:(NSString*)selectedEtalaseId{
+    for(int i=0;i<etalaseList.count;i++){
+        if([etalaseList[i].etalase_id isEqualToString:selectedEtalaseId]){
+            return i;
+        }
+    }
+    return -1;
+}
+
+-(NSInteger)otherEtalaseListIndexWithId:(NSString*)selectedOtherEtalaseId{
+    for(int i=0;i<otherEtalaseList.count;i++){
+        if([otherEtalaseList[i].etalase_id isEqualToString:selectedOtherEtalaseId]){
+            return i;
+        }
+    }
+    return -1;
 }
 
 -(void)requestMyEtalase{
