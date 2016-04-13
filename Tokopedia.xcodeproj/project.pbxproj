@@ -717,8 +717,6 @@
 		BB7B257A1CB7B1E400634D45 /* TKPDTabInboxTalkNavigationController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB7B1ADD1CB7B1DD00634D45 /* TKPDTabInboxTalkNavigationController.xib */; };
 		BB7B257B1CB7B1E400634D45 /* TKPDTabNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB7B1ADF1CB7B1DD00634D45 /* TKPDTabNavigationController.m */; };
 		BB7B257C1CB7B1E400634D45 /* TKPDTabNavigationController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB7B1AE01CB7B1DD00634D45 /* TKPDTabNavigationController.xib */; };
-		BB7B257D1CB7B1E400634D45 /* TKPDTabProfileNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB7B1AE21CB7B1DD00634D45 /* TKPDTabProfileNavigationController.m */; };
-		BB7B257E1CB7B1E400634D45 /* TKPDTabProfileNavigationController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB7B1AE31CB7B1DD00634D45 /* TKPDTabProfileNavigationController.xib */; };
 		BB7B257F1CB7B1E400634D45 /* TKPDTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB7B1AE51CB7B1DD00634D45 /* TKPDTabViewController.m */; };
 		BB7B25801CB7B1E400634D45 /* TKPDTabViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB7B1AE61CB7B1DD00634D45 /* TKPDTabViewController.xib */; };
 		BB7B25811CB7B1E400634D45 /* BackgroundLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = BB7B1AE91CB7B1DD00634D45 /* BackgroundLayer.m */; };
@@ -901,12 +899,6 @@
 		BB7B26341CB7B1E400634D45 /* MyShopEtalaseDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB7B1C301CB7B1DE00634D45 /* MyShopEtalaseDetailViewController.xib */; };
 		BB7B26351CB7B1E400634D45 /* MyShopEtalaseEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB7B1C321CB7B1DE00634D45 /* MyShopEtalaseEditViewController.m */; };
 		BB7B26361CB7B1E400634D45 /* MyShopEtalaseEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB7B1C331CB7B1DE00634D45 /* MyShopEtalaseEditViewController.xib */; };
-		BB7B26371CB7B1E400634D45 /* MyShopEtalaseFilterCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BB7B1C361CB7B1DE00634D45 /* MyShopEtalaseFilterCell.m */; };
-		BB7B26381CB7B1E400634D45 /* MyShopEtalaseFilterCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB7B1C371CB7B1DE00634D45 /* MyShopEtalaseFilterCell.xib */; };
-		BB7B26391CB7B1E400634D45 /* MyShopEtalaseFilterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB7B1C391CB7B1DE00634D45 /* MyShopEtalaseFilterViewController.m */; };
-		BB7B263A1CB7B1E400634D45 /* MyShopEtalaseFilterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB7B1C3A1CB7B1DE00634D45 /* MyShopEtalaseFilterViewController.xib */; };
-		BB7B263B1CB7B1E400634D45 /* MyShopEtalaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB7B1C3C1CB7B1DE00634D45 /* MyShopEtalaseViewController.m */; };
-		BB7B263C1CB7B1E400634D45 /* MyShopEtalaseViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB7B1C3D1CB7B1DE00634D45 /* MyShopEtalaseViewController.xib */; };
 		BB7B263D1CB7B1E400634D45 /* MyShopNoteDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB7B1C411CB7B1DE00634D45 /* MyShopNoteDetailViewController.m */; };
 		BB7B263E1CB7B1E400634D45 /* MyShopNoteDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB7B1C421CB7B1DE00634D45 /* MyShopNoteDetailViewController.xib */; };
 		BB7B263F1CB7B1E400634D45 /* MyShopNoteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB7B1C441CB7B1DE00634D45 /* MyShopNoteViewController.m */; };
@@ -3484,9 +3476,6 @@
 		BB7B1ADE1CB7B1DD00634D45 /* TKPDTabNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPDTabNavigationController.h; sourceTree = "<group>"; };
 		BB7B1ADF1CB7B1DD00634D45 /* TKPDTabNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPDTabNavigationController.m; sourceTree = "<group>"; };
 		BB7B1AE01CB7B1DD00634D45 /* TKPDTabNavigationController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TKPDTabNavigationController.xib; sourceTree = "<group>"; };
-		BB7B1AE11CB7B1DD00634D45 /* TKPDTabProfileNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPDTabProfileNavigationController.h; sourceTree = "<group>"; };
-		BB7B1AE21CB7B1DD00634D45 /* TKPDTabProfileNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPDTabProfileNavigationController.m; sourceTree = "<group>"; };
-		BB7B1AE31CB7B1DD00634D45 /* TKPDTabProfileNavigationController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TKPDTabProfileNavigationController.xib; sourceTree = "<group>"; };
 		BB7B1AE41CB7B1DD00634D45 /* TKPDTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPDTabViewController.h; sourceTree = "<group>"; };
 		BB7B1AE51CB7B1DD00634D45 /* TKPDTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPDTabViewController.m; sourceTree = "<group>"; };
 		BB7B1AE61CB7B1DD00634D45 /* TKPDTabViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TKPDTabViewController.xib; sourceTree = "<group>"; };
@@ -3787,15 +3776,6 @@
 		BB7B1C311CB7B1DE00634D45 /* MyShopEtalaseEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyShopEtalaseEditViewController.h; sourceTree = "<group>"; };
 		BB7B1C321CB7B1DE00634D45 /* MyShopEtalaseEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyShopEtalaseEditViewController.m; sourceTree = "<group>"; };
 		BB7B1C331CB7B1DE00634D45 /* MyShopEtalaseEditViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyShopEtalaseEditViewController.xib; sourceTree = "<group>"; };
-		BB7B1C351CB7B1DE00634D45 /* MyShopEtalaseFilterCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyShopEtalaseFilterCell.h; sourceTree = "<group>"; };
-		BB7B1C361CB7B1DE00634D45 /* MyShopEtalaseFilterCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyShopEtalaseFilterCell.m; sourceTree = "<group>"; };
-		BB7B1C371CB7B1DE00634D45 /* MyShopEtalaseFilterCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyShopEtalaseFilterCell.xib; sourceTree = "<group>"; };
-		BB7B1C381CB7B1DE00634D45 /* MyShopEtalaseFilterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyShopEtalaseFilterViewController.h; sourceTree = "<group>"; };
-		BB7B1C391CB7B1DE00634D45 /* MyShopEtalaseFilterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyShopEtalaseFilterViewController.m; sourceTree = "<group>"; };
-		BB7B1C3A1CB7B1DE00634D45 /* MyShopEtalaseFilterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyShopEtalaseFilterViewController.xib; sourceTree = "<group>"; };
-		BB7B1C3B1CB7B1DE00634D45 /* MyShopEtalaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyShopEtalaseViewController.h; sourceTree = "<group>"; };
-		BB7B1C3C1CB7B1DE00634D45 /* MyShopEtalaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyShopEtalaseViewController.m; sourceTree = "<group>"; };
-		BB7B1C3D1CB7B1DE00634D45 /* MyShopEtalaseViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyShopEtalaseViewController.xib; sourceTree = "<group>"; };
 		BB7B1C3E1CB7B1DE00634D45 /* string_myshop_etalase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_myshop_etalase.h; sourceTree = "<group>"; };
 		BB7B1C401CB7B1DE00634D45 /* MyShopNoteDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyShopNoteDetailViewController.h; sourceTree = "<group>"; };
 		BB7B1C411CB7B1DE00634D45 /* MyShopNoteDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyShopNoteDetailViewController.m; sourceTree = "<group>"; };
@@ -7941,9 +7921,6 @@
 				BB7B1ADE1CB7B1DD00634D45 /* TKPDTabNavigationController.h */,
 				BB7B1ADF1CB7B1DD00634D45 /* TKPDTabNavigationController.m */,
 				BB7B1AE01CB7B1DD00634D45 /* TKPDTabNavigationController.xib */,
-				BB7B1AE11CB7B1DD00634D45 /* TKPDTabProfileNavigationController.h */,
-				BB7B1AE21CB7B1DD00634D45 /* TKPDTabProfileNavigationController.m */,
-				BB7B1AE31CB7B1DD00634D45 /* TKPDTabProfileNavigationController.xib */,
 				BB7B1AE41CB7B1DD00634D45 /* TKPDTabViewController.h */,
 				BB7B1AE51CB7B1DD00634D45 /* TKPDTabViewController.m */,
 				BB7B1AE61CB7B1DD00634D45 /* TKPDTabViewController.xib */,
@@ -8479,26 +8456,9 @@
 				BB7B1C311CB7B1DE00634D45 /* MyShopEtalaseEditViewController.h */,
 				BB7B1C321CB7B1DE00634D45 /* MyShopEtalaseEditViewController.m */,
 				BB7B1C331CB7B1DE00634D45 /* MyShopEtalaseEditViewController.xib */,
-				BB7B1C341CB7B1DE00634D45 /* MyshopEtalaseFilter */,
-				BB7B1C3B1CB7B1DE00634D45 /* MyShopEtalaseViewController.h */,
-				BB7B1C3C1CB7B1DE00634D45 /* MyShopEtalaseViewController.m */,
-				BB7B1C3D1CB7B1DE00634D45 /* MyShopEtalaseViewController.xib */,
 				BB7B1C3E1CB7B1DE00634D45 /* string_myshop_etalase.h */,
 			);
 			path = MyShopEtalase;
-			sourceTree = "<group>";
-		};
-		BB7B1C341CB7B1DE00634D45 /* MyshopEtalaseFilter */ = {
-			isa = PBXGroup;
-			children = (
-				BB7B1C351CB7B1DE00634D45 /* MyShopEtalaseFilterCell.h */,
-				BB7B1C361CB7B1DE00634D45 /* MyShopEtalaseFilterCell.m */,
-				BB7B1C371CB7B1DE00634D45 /* MyShopEtalaseFilterCell.xib */,
-				BB7B1C381CB7B1DE00634D45 /* MyShopEtalaseFilterViewController.h */,
-				BB7B1C391CB7B1DE00634D45 /* MyShopEtalaseFilterViewController.m */,
-				BB7B1C3A1CB7B1DE00634D45 /* MyShopEtalaseFilterViewController.xib */,
-			);
-			path = MyshopEtalaseFilter;
 			sourceTree = "<group>";
 		};
 		BB7B1C3F1CB7B1DE00634D45 /* MyShopNote */ = {
@@ -11844,7 +11804,6 @@
 				BB7B2AD81CB7B1E400634D45 /* transparent_navigationbar.png in Resources */,
 				BB7B28301CB7B1E400634D45 /* icon_10.png in Resources */,
 				BB7B28BE1CB7B1E400634D45 /* icon_category_white.png in Resources */,
-				BB7B263A1CB7B1E400634D45 /* MyShopEtalaseFilterViewController.xib in Resources */,
 				BB7B29DA1CB7B1E400634D45 /* icon_smile50.png in Resources */,
 				BB7B2ACD1CB7B1E400634D45 /* icon_lihat_komplain@2x.png in Resources */,
 				BB7B272C1CB7B1E400634D45 /* CreateShopViewController.xib in Resources */,
@@ -11886,7 +11845,6 @@
 				BB7B2A871CB7B1E400634D45 /* icon_more@3x.png in Resources */,
 				BB7B29F51CB7B1E400634D45 /* icon_speed_grey_large@2x.png in Resources */,
 				BB7B2A8F1CB7B1E400634D45 /* ic_cart.png in Resources */,
-				BB7B26381CB7B1E400634D45 /* MyShopEtalaseFilterCell.xib in Resources */,
 				BB7B2A811CB7B1E400634D45 /* icon_category_active.png in Resources */,
 				BB7B27D41CB7B1E400634D45 /* TxOrderConfirmedCell.xib in Resources */,
 				BB7B2AEC1CB7B1E400634D45 /* Tokopedia.xcworkspace in Resources */,
@@ -11962,7 +11920,6 @@
 				BB7B2A061CB7B1E400634D45 /* icon_star_unactive@2x.png in Resources */,
 				BB7B29311CB7B1E400634D45 /* icon_medal_diamond_one@2x.png in Resources */,
 				BB7B28B01CB7B1E400634D45 /* icon_21@3x.png in Resources */,
-				BB7B257E1CB7B1E400634D45 /* TKPDTabProfileNavigationController.xib in Resources */,
 				BB7B27091CB7B1E400634D45 /* SettingAddressEditViewController.xib in Resources */,
 				BB7B262E1CB7B1E400634D45 /* MyShopAddressEditViewController.xib in Resources */,
 				BB7B283D1CB7B1E400634D45 /* icon_16@2x.png in Resources */,
@@ -12085,7 +12042,6 @@
 				BB7B2ABC1CB7B1E400634D45 /* icon_cancel_grey.png in Resources */,
 				BB7B29501CB7B1E400634D45 /* icon_netral20@3x.png in Resources */,
 				BB7B29861CB7B1E400634D45 /* icon_pinpoin_toped@3x.png in Resources */,
-				BB7B263C1CB7B1E400634D45 /* MyShopEtalaseViewController.xib in Resources */,
 				BB7B29791CB7B1E400634D45 /* Icon_no_photo_transparan@2x.png in Resources */,
 				BB7B28791CB7B1E400634D45 /* icon_arrow_up_white.png in Resources */,
 				BB7B27521CB7B1E400634D45 /* ShopContainerViewController.xib in Resources */,
@@ -12884,7 +12840,6 @@
 				BB7B26CB1CB7B1E400634D45 /* SalesNewOrderViewController.m in Sources */,
 				BB7B24D11CB7B1E400634D45 /* GenerateHost.m in Sources */,
 				BB7B262B1CB7B1E400634D45 /* MyShopAddressDetailViewController.m in Sources */,
-				BB7B263B1CB7B1E400634D45 /* MyShopEtalaseViewController.m in Sources */,
 				BB7B26D31CB7B1E400634D45 /* SalesOrderCell.m in Sources */,
 				BB7B270A1CB7B1E400634D45 /* SettingAddressExpandedCell.m in Sources */,
 				BB7B241D1CB7B1E400634D45 /* OrderBookingResponse.m in Sources */,
@@ -13089,7 +13044,6 @@
 				BB7B238F1CB7B1E400634D45 /* InboxResolutionCenter.m in Sources */,
 				BB7B23731CB7B1E400634D45 /* GooglePlacesDetail.m in Sources */,
 				BB7B25631CB7B1E400634D45 /* TPContactUsDependencies.m in Sources */,
-				BB7B26391CB7B1E400634D45 /* MyShopEtalaseFilterViewController.m in Sources */,
 				BB7B27001CB7B1E400634D45 /* SearchResultShopViewController.m in Sources */,
 				BB7B23941CB7B1E400634D45 /* ResolutionButton.m in Sources */,
 				BB7B23B41CB7B1E400634D45 /* InboxTicketTicket.m in Sources */,
@@ -13598,7 +13552,6 @@
 				BB7B269E1CB7B1E400634D45 /* ProductReputationSimpleCell.m in Sources */,
 				BB7B23091CB7B1E400634D45 /* Logout.m in Sources */,
 				BB7B23551CB7B1E400634D45 /* TalkCommentResult.m in Sources */,
-				BB7B257D1CB7B1E400634D45 /* TKPDTabProfileNavigationController.m in Sources */,
 				BB7B269C1CB7B1E400634D45 /* SplitReputationViewController.m in Sources */,
 				BB7B26B31CB7B1E400634D45 /* ReputationMyReviewViewController.m in Sources */,
 				BB7B246E1CB7B1E400634D45 /* District.m in Sources */,
@@ -13780,7 +13733,6 @@
 				BB7B2AE51CB7B1E400634D45 /* EDStarRating.m in Sources */,
 				BB7B230A1CB7B1E400634D45 /* LogoutResult.m in Sources */,
 				BB7B25121CB7B1E400634D45 /* AlertLuckyView.m in Sources */,
-				BB7B26371CB7B1E400634D45 /* MyShopEtalaseFilterCell.m in Sources */,
 				BB7B23D31CB7B1E400634D45 /* SkipReviewResult.m in Sources */,
 				BB7B23DE1CB7B1E400634D45 /* DetailPriceAlert.m in Sources */,
 				BB7B25C11CB7B1E400634D45 /* TagManagerHandler.m in Sources */,

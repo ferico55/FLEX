@@ -60,6 +60,7 @@
                                                                            action:@selector(finishButtonTapped:)];
         self.navigationItem.rightBarButtonItem = rightBarButton;
     }
+    [self.navigationController setTitle:@"Etalase"];
     
     _tableView.tableFooterView = _footerView;
     _tambahEtalaseTextField.delegate = self;
@@ -153,7 +154,7 @@
     if(section == 0){
         return 0;
     }else if(section == 1){
-        return _isEditable?_tambahEtalaseView.frame.size.height:0;
+        return _enableAddEtalase?_tambahEtalaseView.frame.size.height:0;
     }
     return 0;
 }
@@ -168,7 +169,7 @@
 }
 
 - (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-    if(_isEditable && section == 1){
+    if(_enableAddEtalase && section == 1){
         return _tambahEtalaseView;
     }
     return nil;
@@ -195,7 +196,7 @@
 -(IBAction)cancelButtonTapped:(id)sender
 {
     [etalaseRequest cancelAllRequest];
-    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 -(IBAction)finishButtonTapped:(id)sender
@@ -206,10 +207,8 @@
         }else{
             [_delegate didSelectEtalase:etalaseList[selectedIndexPath.row]];
         }
-        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-    }else{
-        [self.navigationController popViewControllerAnimated:YES];
     }
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 -(IBAction)deleteButtonTapped:(id)sender{

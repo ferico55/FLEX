@@ -22,7 +22,6 @@
 #import "ShopInfoViewController.h"
 
 //profile
-#import "TKPDTabProfileNavigationController.h"
 //#import "ProfileBiodataViewController.h"
 #import "ProfileContactViewController.h"
 #import "ProfileFavoriteShopViewController.h"

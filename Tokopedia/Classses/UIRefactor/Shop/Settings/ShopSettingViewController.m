@@ -84,6 +84,7 @@
             EtalaseViewController *vc = [EtalaseViewController new];
             vc.isEditable = YES;
             vc.showOtherEtalase = NO;
+            [vc setEnableAddEtalase:YES];
             vc.hidesBottomBarWhenPushed = YES;
             
             UserAuthentificationManager *_userAuth = [UserAuthentificationManager new];

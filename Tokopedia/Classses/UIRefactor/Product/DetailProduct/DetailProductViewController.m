@@ -77,8 +77,8 @@
 #import "TokopediaNetworkManager.h"
 #import "ProductGalleryViewController.h"
 #import "NavigateViewController.h"
+#import "EtalaseViewController.h"
 
-#import "MyShopEtalaseFilterViewController.h"
 #import "NoResultView.h"
 #import "RequestMoveTo.h"
 #import "WebViewController.h"
@@ -114,7 +114,7 @@
     DetailProductOtherViewDelegate,
     LoginViewDelegate,
     TokopediaNetworkManagerDelegate,
-    MyShopEtalaseFilterViewControllerDelegate,
+    EtalaseViewControllerDelegate,
     RequestMoveToDelegate,
     UIAlertViewDelegate,
     CMPopTipViewDelegate,
@@ -819,10 +819,11 @@
             }
             case UIGestureRecognizerStateEnded: {
                 // Move To Etalase
-                MyShopEtalaseFilterViewController *controller = [MyShopEtalaseFilterViewController new];
+                EtalaseViewController *controller = [EtalaseViewController new];
                 controller.delegate = self;
-                controller.data = @{kTKPD_SHOPIDKEY:_product.result.shop_info.shop_id,
-                                    DATA_PRESENTED_ETALASE_TYPE_KEY : @(PRESENTED_ETALASE_ADD_PRODUCT)};
+                controller.shopId =_product.result.shop_info.shop_id;
+                controller.isEditable = NO;
+                controller.showOtherEtalase = NO;
                 [self.navigationController pushViewController:controller animated:YES];
                 break;
             }
@@ -3126,10 +3127,8 @@
     }
 }
 
--(void)MyShopEtalaseFilterViewController:(MyShopEtalaseFilterViewController *)viewController withUserInfo:(NSDictionary *)userInfo
-{
-    EtalaseList *etalase = [userInfo objectForKey:DATA_ETALASE_KEY];
-    [_requestMoveTo requestActionMoveToEtalase:_product.result.product.product_id etalaseID:etalase.etalase_id etalaseName:etalase.etalase_name];
+-(void)didSelectEtalase:(EtalaseList *)selectedEtalase{
+    [_requestMoveTo requestActionMoveToEtalase:_product.result.product.product_id etalaseID:selectedEtalase.etalase_id etalaseName:selectedEtalase.etalase_name];
 }
 
 

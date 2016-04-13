@@ -18,10 +18,7 @@
 #import "ShopSettings.h"
 #import "DetailProductViewController.h"
 #import "ProductAddEditViewController.h"
-#import "MyShopEtalaseFilterViewController.h"
 #import "ProductListMyShopFilterViewController.h"
-
-#import "MyShopEtalaseFilterViewController.h"
 
 #import "SortViewController.h"
 #import "FilterViewController.h"
@@ -40,9 +37,7 @@
     UISearchBarDelegate,
     MGSwipeTableCellDelegate,
     SortViewControllerDelegate,
-    MyShopEtalaseFilterViewControllerDelegate,
     ProductListMyShopFilterDelegate,
-    MyShopEtalaseFilterViewControllerDelegate,
     TokopediaNetworkManagerDelegate,
     RequestMoveToDelegate,
     LoadingViewDelegate,
@@ -880,6 +875,7 @@
 }
 
 #pragma mark - Etalase Delegate
+/*
 -(void)MyShopEtalaseFilterViewController:(MyShopEtalaseFilterViewController *)viewController withUserInfo:(NSDictionary *)userInfo
 {
     if (viewController.tag == 0)
@@ -900,6 +896,7 @@
         [_requestMoveTo requestActionMoveToEtalase:[@(list.product_id) stringValue] etalaseID:etalase.etalase_id etalaseName:etalase.etalase_name];
     }
 }
+ */
 
 #pragma mark - Notification
 -(void)updateView:(NSNotification*)notification
@@ -978,12 +975,15 @@
             // Move To Etalase
             UserAuthentificationManager *userAuthentificationManager = [UserAuthentificationManager new];
             
+            /*
+                                                           
             MyShopEtalaseFilterViewController *controller = [MyShopEtalaseFilterViewController new];
             controller.tag = indexPath.row+10;
             controller.delegate = self;
             controller.data = @{kTKPD_SHOPIDKEY:[userAuthentificationManager getShopId],
                                 DATA_PRESENTED_ETALASE_TYPE_KEY : @(PRESENTED_ETALASE_ADD_PRODUCT)};
             [self.navigationController pushViewController:controller animated:YES];
+             */
             return YES;
         }];
         

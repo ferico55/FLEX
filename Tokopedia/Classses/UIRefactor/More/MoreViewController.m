@@ -28,7 +28,6 @@
 
 #import "ProfileFavoriteShopViewController.h"
 #import "ProfileContactViewController.h"
-#import "TKPDTabProfileNavigationController.h"
 
 #import "ShopFavoritedViewController.h"
 #import "EtalaseViewController.h"
@@ -50,7 +49,6 @@
 #import "UserContainerViewController.h"
 #import "ReputationPageViewController.h"
 #import "ProductListMyShopViewController.h"
-#import "MyShopEtalaseViewController.h"
 #import "InboxResolutionCenterTabViewController.h"
 #import "InboxResolSplitViewController.h"
 #import "NavigateViewController.h"
@@ -642,14 +640,11 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
             vc.delegate = self;
             vc.isEditable = YES;
             vc.showOtherEtalase = NO;
+            [vc setEnableAddEtalase:YES];
             vc.hidesBottomBarWhenPushed = YES;
             
             NSString* shopId = [_auth objectForKey:MORE_SHOP_ID]?:@{};
             [vc setShopId:shopId];
-            
-            UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
-            UIColor *backgroundColor = [UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1];
-            nav.navigationBar.backgroundColor = [UIColor colorWithCGColor:backgroundColor.CGColor];
             [wrapperController.navigationController pushViewController:vc animated:YES];
 
         }

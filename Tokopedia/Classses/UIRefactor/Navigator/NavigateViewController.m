@@ -17,7 +17,6 @@
 #import "UserContainerViewController.h"
 #import "ProfileContactViewController.h"
 #import "ProfileFavoriteShopViewController.h"
-#import "TKPDTabProfileNavigationController.h"
 #import "DetailProductViewController.h"
 #import "ProductGalleryViewController.h"
 #import "HotlistResultViewController.h"

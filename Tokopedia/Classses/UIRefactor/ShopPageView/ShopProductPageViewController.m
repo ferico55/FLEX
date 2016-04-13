@@ -30,7 +30,6 @@
 
 #import "URLCacheController.h"
 #import "SortViewController.h"
-#import "MyShopEtalaseFilterViewController.h"
 
 #import "GeneralSingleProductCell.h"
 #import "GeneralPhotoProductCell.h"
@@ -611,15 +610,6 @@ EtalaseViewControllerDelegate
 
 - (IBAction)tapToEtalase:(id)sender {
     NSIndexPath *indexpath = [_detailfilter objectForKey:kTKPDDETAILETALASE_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:1 inSection:0];
-    /*
-    MyShopEtalaseFilterViewController *vc =[MyShopEtalaseFilterViewController new];
-    vc.data = @{kTKPDDETAIL_APISHOPIDKEY:@([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0),
-                @"object_selected":[_detailfilter objectForKey:DATA_ETALASE_KEY]?:@0,
-                @"product_etalase_name" : [_detailfilter objectForKey:@"product_etalase_name"]?:@"",
-                @"product_etalase_id" : [_detailfilter objectForKey:@"product_etalase_id"]?:@"",
-                kTKPDFILTER_DATAINDEXPATHKEY: indexpath};
-    vc.delegate = self;
-     */
     EtalaseViewController *vc = [EtalaseViewController new];
     vc.delegate = self;
     vc.isEditable = NO;
@@ -628,12 +618,7 @@ EtalaseViewControllerDelegate
     
     NSString* shopId = [_data objectForKey:kTKPDDETAIL_APISHOPIDKEY];
     [vc setShopId:shopId];
-    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
-    UIColor *backgroundColor = [UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1];
-    nav.navigationBar.backgroundColor = [UIColor colorWithCGColor:backgroundColor.CGColor];
-    nav.navigationBar.translucent = NO;
-    nav.navigationBar.tintColor = [UIColor whiteColor];
-    [self.navigationController presentViewController:nav animated:YES completion:nil];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)didSelectEtalase:(EtalaseList*)selectedEtalase{
@@ -695,19 +680,6 @@ EtalaseViewControllerDelegate
     [_detailfilter setObject:sort forKey:kTKPDDETAIL_APIORERBYKEY];
     [self refreshView:nil];
     _sortIndexPath = indexPath;
-}
-
-#pragma mark - Filter Delegate
--(void)MyShopEtalaseFilterViewController:(MyShopEtalaseFilterViewController *)viewController withUserInfo:(NSDictionary *)userInfo {
-    [_detailfilter removeAllObjects];
-    [_detailfilter setObject:[userInfo objectForKey:DATA_ETALASE_KEY]?:@""
-                      forKey:DATA_ETALASE_KEY];
-    
-    [_detailfilter setObject:[userInfo objectForKey:kTKPDDETAILETALASE_DATAINDEXPATHKEY]?:@""
-                      forKey:kTKPDDETAILETALASE_DATAINDEXPATHKEY];
-    
-    
-    [self refreshView:nil];
 }
 
 #pragma mark - Cell Delegate
