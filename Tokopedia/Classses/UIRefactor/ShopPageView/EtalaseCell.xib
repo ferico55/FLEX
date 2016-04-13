@@ -3,7 +3,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -21,16 +20,10 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bXe-Ym-ASB">
-                        <rect key="frame" x="16" y="16" width="39" height="11"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bXe-Ym-ASB">
+                        <rect key="frame" x="10" y="12" width="243" height="20"/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4tM-5b-ohv">
-                        <rect key="frame" x="60" y="8" width="245" height="27"/>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
-                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_check_orange.png" translatesAutoresizingMaskIntoConstraints="NO" id="nG4-c7-j2c">
@@ -40,17 +33,20 @@
                             <constraint firstAttribute="width" constant="16" id="toc-Qi-Xvl"/>
                         </constraints>
                     </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="0 Produk" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4tM-5b-ohv">
+                        <rect key="frame" x="237" y="8" width="75" height="27"/>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="bXe-Ym-ASB" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="8" id="Crl-8P-rE1"/>
+                    <constraint firstAttribute="trailing" secondItem="4tM-5b-ohv" secondAttribute="trailing" constant="15" id="DUx-46-UlH"/>
                     <constraint firstAttribute="trailing" secondItem="nG4-c7-j2c" secondAttribute="trailing" constant="15" id="Hu9-rO-R5e"/>
+                    <constraint firstItem="bXe-Ym-ASB" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="SKS-Bz-F5I"/>
                     <constraint firstItem="nG4-c7-j2c" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Vn6-gX-DJh"/>
-                    <constraint firstItem="4tM-5b-ohv" firstAttribute="leading" secondItem="bXe-Ym-ASB" secondAttribute="trailing" constant="5" id="Yy7-yW-9T5"/>
-                    <constraint firstAttribute="trailing" secondItem="4tM-5b-ohv" secondAttribute="trailing" constant="15" id="fjF-Uq-wxU"/>
-                    <constraint firstItem="bXe-Ym-ASB" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="8" id="r2G-4k-E9T"/>
-                    <constraint firstItem="4tM-5b-ohv" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="yw1-L4-bfy"/>
-                    <constraint firstAttribute="bottom" secondItem="4tM-5b-ohv" secondAttribute="bottom" constant="8" id="zFM-ri-6GG"/>
-                    <constraint firstAttribute="bottomMargin" secondItem="bXe-Ym-ASB" secondAttribute="bottom" constant="8" id="zoc-VS-6nZ"/>
+                    <constraint firstItem="bXe-Ym-ASB" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="dPW-7M-ugU"/>
+                    <constraint firstItem="4tM-5b-ohv" firstAttribute="leading" secondItem="bXe-Ym-ASB" secondAttribute="trailing" constant="8" id="qMY-Ai-uDj"/>
                 </constraints>
             </tableViewCellContentView>
             <gestureRecognizers/>
