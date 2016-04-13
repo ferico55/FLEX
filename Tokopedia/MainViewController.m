@@ -113,6 +113,7 @@ typedef enum TagRequest {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [Localytics tagEvent:@"Enter Main Page"];
     
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
         
@@ -177,7 +178,6 @@ typedef enum TagRequest {
 {
     [super viewWillAppear:animated];
     
-    [Localytics tagEvent:@"Enter Main Page"];
     _userManager = [UserAuthentificationManager new];
 }
 
