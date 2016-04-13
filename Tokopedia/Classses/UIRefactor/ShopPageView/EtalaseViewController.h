@@ -29,7 +29,7 @@
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UIView *footerView;
 
-@property (strong, nonatomic) EtalaseList *selectedEtalase;
+@property (strong, nonatomic) EtalaseList *initialSelectedEtalase;
 
 @property (nonatomic, weak) id<EtalaseViewControllerDelegate> delegate;
 @end

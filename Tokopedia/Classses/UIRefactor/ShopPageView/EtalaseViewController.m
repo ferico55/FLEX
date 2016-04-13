@@ -26,10 +26,7 @@
     
     NSIndexPath *selectedIndexPath;
     UIAlertView *alertView;
-    NSString *_urinext;
     BOOL _isDeleting;
-    
-    UIRefreshControl *_refreshControl;
 }
 
 - (void)viewDidLoad {
@@ -39,8 +36,7 @@
     otherEtalaseList = [NSMutableArray new];
     
     etalaseRequest = [EtalaseRequest new];
-    page = 0;
-    _urinext = @"";
+    page = 1;
     
     if (self.navigationController.isBeingPresented) {
         UIBarButtonItem *cancelBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
@@ -68,12 +64,6 @@
     _tableView.tableFooterView = _footerView;
     _tambahEtalaseTextField.delegate = self;
     _tambahEtalaseTextField.tag = 111;
-    
-    _refreshControl = [[UIRefreshControl alloc] init];
-    _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
-    [_refreshControl addTarget:self action:@selector(refreshEtalase)forControlEvents:UIControlEventValueChanged];
-    [_tableView addSubview:_refreshControl];
-    [_tableView setContentInset:UIEdgeInsetsMake(0, 0, 50, 0)];
     
     alertView = [[UIAlertView alloc]initWithTitle:@"Edit Etalase" message:@"" delegate:self cancelButtonTitle:@"Batal" otherButtonTitles:@"OK", nil];
     alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
@@ -132,6 +122,10 @@
     }
     cell.showCheckImage = !_isEditable;
     
+    if(_initialSelectedEtalase && [currentEtalase.etalase_id isEqualToString:_initialSelectedEtalase.etalase_id]){
+        [cell setSelected:YES];
+    }
+    
     return cell;
 }
 
@@ -153,7 +147,7 @@
     NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] -1;
     NSInteger indexPathRow = indexPath.row;
     if (row <= indexPathRow) {
-        if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
+        if (uriNext != NULL && ![uriNext isEqualToString:@"0"] && uriNext != 0) {
             [self requestEtalase];
         }
     }
@@ -170,9 +164,9 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
     if(section == 0){
-        return 0;
+        return 10;
     }else if(section == 1){
-        return _footerView.frame.size.height;
+        return 0;
     }
     return 0;
 }
@@ -186,7 +180,11 @@
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return UITableViewCellEditingStyleDelete;
+    if(_isEditable){
+        return UITableViewCellEditingStyleDelete;
+    }else{
+        return UITableViewCellEditingStyleNone;
+    }
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -212,8 +210,10 @@
         }else{
             [_delegate didSelectEtalase:etalaseList[selectedIndexPath.row]];
         }
+        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    }else{
+        [self.navigationController popViewControllerAnimated:YES];
     }
-    [self.navigationController popViewControllerAnimated:YES];
 }
 
 -(IBAction)deleteButtonTapped:(id)sender{
@@ -261,7 +261,6 @@
                                              [otherEtalaseList addObjectsFromArray:etalase.result.list_other];
                                              
                                              uriNext = etalase.result.paging.uri_next;
-                                             _urinext = uriNext;
                                              if (uriNext) {
                                                  page = [[etalaseRequest splitUriToPage:uriNext] integerValue];
                                              }else{
@@ -272,7 +271,6 @@
                                          } onFailure:^(NSError *error) {
                                              _tableView.tableFooterView = nil;
                                          }];
-    [_refreshControl endRefreshing];
 }
 
 -(void)requestMyEtalase{
@@ -287,7 +285,6 @@
                                              [otherEtalaseList addObjectsFromArray:etalase.result.list_other];
                                              
                                              uriNext = etalase.result.paging.uri_next;
-                                             _urinext = uriNext;
                                              if (uriNext) {
                                                  page = [[etalaseRequest splitUriToPage:uriNext] integerValue];
                                              }else{
@@ -298,7 +295,6 @@
                                          } onFailure:^(NSError *error) {
                                              _tableView.tableFooterView = nil;
                                          }];
-    [_refreshControl endRefreshing];
 }
 
 #pragma mark - TextField Delegate
@@ -421,13 +417,6 @@
                                                [self alertForError:@[@"Kendala koneksi internet"]];
                                            }];
 
-}
-
--(void)refreshEtalase{
-    page = 1;
-    [etalaseList removeAllObjects];
-    [otherEtalaseList removeAllObjects];
-    [self requestEtalase];
 }
 
 - (void)alertForError:(NSArray*)error{
