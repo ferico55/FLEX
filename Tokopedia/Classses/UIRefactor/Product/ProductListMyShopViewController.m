@@ -83,7 +83,7 @@
 
 @property (weak, nonatomic) IBOutlet UISearchBar *searchbar;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (weak, nonatomic) IBOutlet UIView *footer;
+@property (strong, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 
 @property (strong, nonatomic) NSMutableArray *products;
@@ -362,8 +362,8 @@
 
 - (void)fetchProductData {
     if (_refreshControl.isRefreshing == NO) {
-        self.tableView.tableFooterView = _footer;
         [self.act startAnimating];
+        self.tableView.tableFooterView = _footer;
     }
     NSString *baseURL = @"https://ws.tokopedia.com";
     NSString *path = @"/v4/product/manage_product.pl";
@@ -397,6 +397,7 @@
         if (_page == 1) {
             [self.tableView reloadData];
             [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+            [self.tableView setContentOffset:CGPointZero animated:YES];
         }
         _uriNext = [NSURL URLWithString:response.data.paging.uri_next];
         _page = [[_uriNext valueForKey:@"page"] integerValue];
