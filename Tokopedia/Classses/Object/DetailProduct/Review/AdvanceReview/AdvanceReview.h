@@ -40,8 +40,6 @@
 @property (nonatomic) NSInteger total_review;
 @property (nonatomic) float rating_quality_point;
 
-
-
 @property (nonatomic, strong) NSString *product_rating_point;
 @property (nonatomic, strong) NSString *product_rate_accuracy_point;
 @property (nonatomic, strong) NSString *product_positive_review_rating;
@@ -57,4 +55,6 @@
 @property (nonatomic, strong) NSString *product_accuracy_star_rate;
 @property (nonatomic, strong) NSString *product_positive_review_rate_accuracy;
 @property (nonatomic, strong) NSString *product_negative_review_rate_accuracy;
+
++ (RKObjectMapping*) mapping;
 @end
