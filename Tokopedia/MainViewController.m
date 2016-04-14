@@ -334,6 +334,11 @@ typedef enum TagRequest {
     _tabBarController.viewControllers = controllers;
     _tabBarController.delegate = self;
     //tabBarController.tabBarItem.title = nil;
+    
+    NSInteger pageIndex = [self pageIndex];
+    
+    _tabBarController.selectedIndex = pageIndex;
+    
     [self adjusttabbar];
 }
 
@@ -520,10 +525,6 @@ typedef enum TagRequest {
     [proxy setShadowImage:[[UIImage alloc] init]];
     
 #endif
-    
-    NSInteger pageIndex = [self pageIndex];
-    
-    _tabBarController.selectedIndex = pageIndex;
     // redirect to home after login or register
 //    _tabBarController.selectedViewController=[_tabBarController.viewControllers objectAtIndex:0];
 }
