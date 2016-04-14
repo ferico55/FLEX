@@ -15,11 +15,12 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HotlistResultViewController">
             <connections>
                 <outlet property="changeGridButton" destination="ctw-XW-ljb" id="v4k-0g-D63"/>
+                <outlet property="collectionView" destination="NyE-A1-2NA" id="OgY-KO-ZFW"/>
                 <outlet property="descriptionlabel" destination="mBb-aS-tY9" id="faL-qh-eu1"/>
                 <outlet property="descriptionview" destination="91z-Sh-o8k" id="8tz-hs-PvV"/>
                 <outlet property="filterview" destination="vHm-Tc-Aus" id="2yn-hQ-25U"/>
                 <outlet property="firstFooter" destination="04a-cn-Xyi" id="QJB-wL-yaP"/>
-                <outlet property="flowLayout" destination="OsW-P4-XGO" id="7HW-4L-yFG"/>
+                <outlet property="flowLayout" destination="OsW-P4-XGO" id="k5S-Lu-4ks"/>
                 <outlet property="hashtagsscrollview" destination="Q9k-15-37M" id="DyX-7G-5S7"/>
                 <outlet property="header" destination="HKl-uZ-hi3" id="crS-Jy-zYR"/>
                 <outlet property="hotlistDescription" destination="paG-jW-UkY" id="EOP-ap-M4d"/>
@@ -31,7 +32,6 @@
                 <outlet property="swipegestureleft" destination="pSV-5V-5RB" id="c4J-rH-uJ4"/>
                 <outlet property="swipegestureright" destination="fyb-L5-qaN" id="Nh9-MH-mwo"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
-                <outlet property="viewCollection" destination="NyE-A1-2NA" id="fPH-HC-ZNU"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -42,6 +42,7 @@
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="NyE-A1-2NA">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="520"/>
                     <animations/>
+                    <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="520" id="ZBu-WA-TgN"/>
                     </constraints>
@@ -105,7 +106,7 @@
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="oYc-Gd-wNL"/>
+                                <action selector="didTapSortButton:" destination="-1" eventType="touchUpInside" id="t5i-Yj-JeQ"/>
                             </connections>
                         </button>
                         <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kye-YT-baO">
@@ -118,7 +119,7 @@
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="ZBm-ks-Q2K"/>
+                                <action selector="didTapSortButton:" destination="-1" eventType="touchUpInside" id="EAZ-OT-c4o"/>
                             </connections>
                         </button>
                         <button opaque="NO" tag="11" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xuQ-uE-KVo">
@@ -132,7 +133,7 @@
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="dYw-wI-2Vy"/>
+                                <action selector="didTapFilterButton:" destination="-1" eventType="touchUpInside" id="LxD-hQ-wYc"/>
                             </connections>
                         </button>
                         <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XBz-Qj-ipQ">
@@ -145,7 +146,7 @@
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="oi6-7q-Fhv"/>
+                                <action selector="didTapFilterButton:" destination="-1" eventType="touchUpInside" id="jUR-rE-xPU"/>
                             </connections>
                         </button>
                         <button opaque="NO" tag="13" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ctw-XW-ljb">
@@ -159,7 +160,7 @@
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="98p-Ep-jyh"/>
+                                <action selector="didTapChangeGridButton:" destination="-1" eventType="touchUpInside" id="5vf-Na-WZf"/>
                             </connections>
                         </button>
                         <button opaque="NO" tag="13" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rdy-wf-apN">
@@ -172,7 +173,7 @@
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="Cej-Fi-lJA"/>
+                                <action selector="didTapChangeGridButton:" destination="-1" eventType="touchUpInside" id="ZBd-tB-NvA"/>
                             </connections>
                         </button>
                         <button opaque="NO" tag="12" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ejP-Iq-Dno">
@@ -186,7 +187,7 @@
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="s2c-IP-J9e"/>
+                                <action selector="didTapShareButton:" destination="-1" eventType="touchUpInside" id="jUk-uL-6vJ"/>
                             </connections>
                         </button>
                         <button opaque="NO" tag="12" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nY9-Ec-yVC">
@@ -199,7 +200,7 @@
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="YhW-Al-22W"/>
+                                <action selector="didTapShareButton:" destination="-1" eventType="touchUpInside" id="Rhf-et-6g6"/>
                             </connections>
                         </button>
                     </subviews>

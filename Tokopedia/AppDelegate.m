@@ -22,11 +22,28 @@
 #import "DeeplinkController.h"
 #import <GoogleMaps/GoogleMaps.h>
 #import <Rollout/Rollout.h>
+#import "FBTweakShakeWindow.h"
+
+#ifdef DEBUG
+#import "FlexManager.h"
+#endif
 
 @implementation AppDelegate
 
 @synthesize viewController = _viewController;
 
+#ifdef DEBUG
+- (void)onThreeFingerTap {
+    [[FLEXManager sharedManager] showExplorer];
+}
+
+- (void)showFlexManagerOnSecretGesture {
+    UITapGestureRecognizer* gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onThreeFingerTap)];
+    gesture.numberOfTouchesRequired = 3;
+    gesture.cancelsTouchesInView = YES;
+    [_window addGestureRecognizer:gesture];
+}
+#endif
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -36,18 +53,22 @@
     [self hideTitleBackButton];
     
     _viewController = [MainViewController new];
-    _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    _window = [[FBTweakShakeWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     _window.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
     _window.backgroundColor = kTKPDNAVIGATION_NAVIGATIONBGCOLOR;
     _window.rootViewController = _viewController;
     [_window makeKeyAndVisible];
     
-    #if defined( DEBUG )
-        [Rollout setupWithDebug:YES];
-    #else
-        [Rollout setupWithDebug:NO];
-    #endif
-        
+#ifdef DEBUG
+    [self showFlexManagerOnSecretGesture];
+#endif
+    
+    [Rollout setupWithKey:@"56a717aed7bed00574f5169c"
+#ifdef DEBUG
+        developmentDevice:YES
+#endif
+     ];
+    
     dispatch_async(dispatch_get_main_queue(), ^{
         // Init Fabric
         [Fabric with:@[CrashlyticsKit]];

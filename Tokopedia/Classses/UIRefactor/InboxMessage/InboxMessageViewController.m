@@ -169,7 +169,7 @@
             KTKPDMESSAGE_NAVKEY:[_data objectForKey:@"nav"]?:@""
     };
 
-    [_getInboxListNetworkManager requestWithBaseUrl:kTkpdBaseURLString
+    [_getInboxListNetworkManager requestWithBaseUrl:[NSString basicUrl]
                                                path:KTKPDMESSAGE_PATHURL
                                              method:RKRequestMethodPOST
                                           parameter:param

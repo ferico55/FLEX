@@ -48,9 +48,7 @@
 - (BOOL)isEqual:(CategoryDetail *)object {
     BOOL isEqual = NO;
     @try {
-        if ([self.name isEqualToString:object.name]) {
-            isEqual = YES;
-        } else if ([self.categoryId isEqualToString:object.categoryId]) {
+        if ([self.categoryId isEqualToString:object.categoryId]) {
             isEqual = YES;
         }
     }
@@ -60,6 +58,32 @@
     @finally {
         return isEqual;
     }
+}
+
++(RKObjectMapping *)mapping {
+    NSDictionary *categoryAttributeMappings = @{
+                                                @"d_id" : @"categoryId",
+                                                @"title" : @"name",
+                                                @"tree" : @"tree",
+                                                @"href" : @"url",
+                                                };
+    
+    RKObjectMapping *categoryMapping = [RKObjectMapping mappingForClass:self];
+    [categoryMapping addAttributeMappingsFromDictionary:categoryAttributeMappings];
+    
+    RKObjectMapping *childCategoryMapping = [RKObjectMapping mappingForClass:self];
+    [childCategoryMapping addAttributeMappingsFromDictionary:categoryAttributeMappings];
+    
+    RKObjectMapping *lastCategoryMapping = [RKObjectMapping mappingForClass:self];
+    [lastCategoryMapping addAttributeMappingsFromDictionary:categoryAttributeMappings];
+    
+    RKRelationshipMapping *childCategoryRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"child" toKeyPath:@"child" withMapping:childCategoryMapping];
+    [categoryMapping addPropertyMapping:childCategoryRelationship];
+    
+    RKRelationshipMapping *lastCategoryRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"child" toKeyPath:@"child" withMapping:lastCategoryMapping];
+    [childCategoryMapping addPropertyMapping:lastCategoryRelationship];
+    
+    return categoryMapping;
 }
 
 @end

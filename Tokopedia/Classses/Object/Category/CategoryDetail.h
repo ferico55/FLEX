@@ -7,8 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "TKPObjectMapping.h"
 
-@interface CategoryDetail : NSObject
+@interface CategoryDetail : NSObject <TKPObjectMapping>
 
 @property (strong, nonatomic) NSString *categoryId;
 @property (strong, nonatomic) NSString *name;

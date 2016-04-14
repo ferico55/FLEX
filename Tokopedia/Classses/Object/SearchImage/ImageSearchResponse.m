@@ -10,4 +10,13 @@
 
 @implementation ImageSearchResponse
 
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *responseMapping = [RKObjectMapping mappingForClass:self];
+    [responseMapping addAttributeMappingsFromArray:@[@"status", @"config"]];
+    
+    [responseMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data" toKeyPath:@"data" withMapping:[ImageSearchResponseData mapping]]];
+    
+    return responseMapping;
+}
+
 @end

@@ -9,5 +9,10 @@
 #import "NotesResult.h"
 
 @implementation NotesResult
-
++(RKObjectMapping *)mapping{
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[NotesResult class]];
+    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APILISTKEY toKeyPath:kTKPD_APILISTKEY withMapping:[NotesList mapping]];
+    [resultMapping addPropertyMapping:listRel];
+    return resultMapping;
+}
 @end

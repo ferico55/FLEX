@@ -11,9 +11,12 @@ target "Tokopedia" do
     pod 'GoogleTagManager'
     pod 'GoogleMaps'
     pod 'Reveal-iOS-SDK', :configurations => ['Debug']
-    pod 'Rollout.io', '~> 0.13.0'
+    pod 'Rollout.io', '~> 0.14.5'
     pod 'AppsFlyer-SDK', '4.3.7'
-    pod ‘BlocksKit’, ‘~> 2.2.5’
+    pod 'BlocksKit', '~> 2.2.5'
+    pod 'Tweaks', '~> 2.0.0'
+    pod 'UITableView+FDTemplateLayoutCell', '~> 1.4'
+    pod 'FLEX', '~> 2.0', :configurations => ['Debug']
 end
 
 target "TokopediaTests" do

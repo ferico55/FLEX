@@ -68,7 +68,10 @@
     #import "UIViewController+TKPAdditions.h"
     #import "TKPStoreManager.h"
     #import "TKPMappingManager.h"
+    #import "TKPObjectMapping.h"
 
     #import "TPSpotlight.h"
+    #import "FBTweakInline.h"
+    #import "NSString+TPBaseUrl.h"
 
 #endif
