@@ -71,4 +71,8 @@
                             success:(void(^) (ResolutionActionResult* data))success
                             failure:(void(^) (NSError* error))failure;
 
++(void)fetchAcceptAdminSolutionResolutionID:(NSString*)resolutionID
+                                    success:(void(^) (ResolutionActionResult* data))success
+                                    failure:(void(^) (NSError* error))failure;
+
 @end

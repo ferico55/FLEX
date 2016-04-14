@@ -76,14 +76,6 @@
     BOOL _isNodata;
     
     NSMutableArray *_listResolutionConversation;
-    
-    NSOperationQueue *_operationQueue;
-    
-    __weak RKObjectManager *_objectManagerAction;
-    __weak RKManagedObjectRequestOperation *_requestAction;
-    
-    InboxResolutionCenterObjectMapping *_mapping;
-    
     ResolutionDetailConversation *_resolutionDetail;
     
     NSMutableDictionary *_dataInput;
@@ -121,9 +113,6 @@
     [super viewDidLoad];
     
     _isNodata = YES;
-    
-    _operationQueue = [NSOperationQueue new];
-    _mapping = [InboxResolutionCenterObjectMapping new];
     _listResolutionConversation = [NSMutableArray new];
     _dataInput = [NSMutableDictionary new];
     _navigate = [NavigateViewController new];
@@ -431,8 +420,7 @@
     }
     
     if ([sender.titleLabel.text isEqualToString:BUTTON_TITLE_ACCEPT_ADMIN_SOLUTION]) {
-        [self configureRestKitAction];
-        [self requestAction:ACTION_ACCEPT_ADMIN_SOLUTION];
+        [self doRequestAcceptAdminSolutionResolution];
     }
     
     if ([sender.titleLabel.text isEqualToString:BUTTON_TITLE_EDIT_ADDRESS]) {
@@ -1216,144 +1204,6 @@
 
 
 #pragma mark - Request Action
-/**
- Help
- Finish Conversation
- Accept Solution
- Accept Admin Solution
- **/
--(void)cancelRequestAction
-{
-    [_requestAction cancel];
-    _requestAction = nil;
-    [_objectManagerAction.operationQueue cancelAllOperations];
-    _objectManagerAction = nil;
-}
-
--(void)configureRestKitAction
-{
-    _objectManagerAction = [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ResolutionAction class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ResolutionActionResult class]];
-    [resultMapping addAttributeMappingsFromArray:@[kTKPD_APIISSUCCESSKEY]];
-    
-    
-    RKRelationshipMapping *resultRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                   toKeyPath:kTKPD_APIRESULTKEY
-                                                                                 withMapping:resultMapping];
-    
-    
-    [statusMapping addPropertyMapping:resultRel];
-    
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                            method:RKRequestMethodPOST
-                                                                                       pathPattern:API_PATH_ACTION_RESOLUTION_CENTER
-                                                                                           keyPath:@""
-                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectManagerAction addResponseDescriptor:responseDescriptor];
-}
-
--(void)requestAction:(NSString*)action
-{
-    if (_requestAction.isExecuting) return;
-    
-    NSTimer *timer;
-    
-    NSDictionary* param = @{API_ACTION_KEY : action,
-                            API_RESOLUTION_ID_KEY : _resolutionID?:@"",
-                            };
-    
-//#if DEBUG
-//    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-//    NSDictionary* auth = [secureStorage keychainDictionary];
-//    
-//    NSString *userID = [auth objectForKey:kTKPD_USERIDKEY];
-//    
-//    NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
-//    [paramDictionary addEntriesFromDictionary:param];
-//    [paramDictionary setObject:@"off" forKey:@"enc_dec"];
-//    [paramDictionary setObject:userID forKey:kTKPD_USERIDKEY];
-//    
-//    _requestAction = [_objectManagerAction appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_PATH_ACTION_RESOLUTION_CENTER parameters:paramDictionary];
-//#else
-    _requestAction = [_objectManagerAction appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_PATH_ACTION_RESOLUTION_CENTER parameters:[param encrypt]];
-//#endif
-    
-    [_requestAction setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestSuccessAction:action mappingResult:mappingResult withOperation:operation];
-        [timer invalidate];
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [self requestFailureActionWithErrorMessage:@[error.localizedDescription]];
-        [timer invalidate];
-    }];
-    
-    [_operationQueue addOperation:_requestAction];
-    
-    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutAction) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-}
-
--(void)requestSuccessAction:(NSString*)action mappingResult:(RKMappingResult*)mappingResult withOperation:(RKObjectRequestOperation *)operation
-{
-    NSDictionary *result = mappingResult.dictionary;
-    id stat = [result objectForKey:@""];
-    ResolutionAction *resolution = stat;
-    BOOL status = [resolution.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if (status) {
-        if (resolution.result.is_success == 1) {
-            StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:resolution.message_status?:@[@"Sukses"] delegate:self];
-            [alert show];
-            [_delegate didResponseComplain:_indexPath];
-            [self refreshRequest];
-            
-//            if ([action isEqualToString:ACTION_FINISH_RESOLUTION]||
-//                [action isEqualToString:ACTION_ACCEPT_SOLUTION] ||
-//                [action isEqualToString:ACTION_ACCEPT_ADMIN_SOLUTION] ) {
-//                [_delegate finishComplain:_resolution atIndexPath:_indexPath];
-//                [self.navigationController popViewControllerAnimated:YES];
-//            }
-        }
-        else
-        {
-            [self requestFailureActionWithErrorMessage:resolution.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY]];
-        }
-    }
-    else
-    {
-        [self requestFailureActionWithErrorMessage:@[resolution.status]];
-    }
-    
-    [self requestProcessAction];
-}
-
--(void)requestFailureActionWithErrorMessage:(NSArray*)error
-{
-    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:error delegate:self];
-    [alert show];
-    
-    [_tableView reloadData];
-}
-
--(void)requestProcessAction
-{
-    
-}
-
--(void)requestTimeoutAction
-{
-    [self cancelRequestAction];
-}
-
 -(void)doRequestAcceptResolution{
     [RequestResolutionAction fetchAcceptResolutionID:_resolutionID success:^(ResolutionActionResult *data) {
         [self addResolutionLast:data.solution_last conversationLast:[data.conversation_last lastObject] replyEnable:!([data.hide_conversation_box integerValue] == 1)];
@@ -1364,6 +1214,13 @@
 -(void)doRequestFinishReturResolution{
     [RequestResolutionAction fetchFinishReturResolutionID:_resolutionID success:^(ResolutionActionResult *data) {
         [self addResolutionLast:data.solution_last conversationLast:[data.conversation_last lastObject] replyEnable:!([data.hide_conversation_box integerValue] == 1)];
+    } failure:^(NSError *error) {
+        
+    }];
+}
+-(void)doRequestAcceptAdminSolutionResolution{
+    [RequestResolutionAction fetchAcceptAdminSolutionResolutionID:_resolutionID success:^(ResolutionActionResult *data) {
+        [self addResolutionLast:data.solution_last conversationLast:[data.conversation_last lastObject] replyEnable:NO];
     } failure:^(NSError *error) {
         
     }];
