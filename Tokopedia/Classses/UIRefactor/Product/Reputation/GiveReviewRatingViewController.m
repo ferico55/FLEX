@@ -10,9 +10,17 @@
 #import "DetailReputationReview.h"
 #import "GiveReviewDetailViewController.h"
 #import "NavigateViewController.h"
+#import "AttachedPicture.h"
 
 @interface GiveReviewRatingViewController () {
     NavigateViewController *_navigate;
+    
+    NSString *_reviewMessage;
+    NSMutableArray *_attachedPictures;
+    NSMutableArray *_uploadedPictures;
+    NSMutableArray *_tempUploadedPictures;
+    
+    BOOL _hasImages;
 }
 
 @property (weak, nonatomic) IBOutlet UIImageView *productImageView;
@@ -35,6 +43,10 @@
     
     _navigate = [NavigateViewController new];
     
+//    _attachedPictures = [NSMutableArray new];
+//    _uploadedPictures = [NSMutableArray new];
+//    _tempUploadedPictures = [NSMutableArray new];
+    
     _qualityStarsArray = [NSArray sortViewsWithTagInArray:_qualityStarsArray];
     _accuracyStarsArray = [NSArray sortViewsWithTagInArray:_accuracyStarsArray];
     
@@ -44,6 +56,37 @@
                                                                              action:@selector(tapToContinue:)];
     
     [self initData];
+    
+//    if (_isEdit) {
+//        _reviewMessage = _review.review_message;
+//    } else {
+//        _reviewMessage = @"";
+//    }
+//    
+//    if (_review.review_image_attachment.count > 0) {
+//        _hasImages = YES;
+//        
+//        for (int ii = 0; ii < _review.review_image_attachment.count; ii++) {
+//            ReviewImageAttachment *imageAttachment = _review.review_image_attachment[ii];
+//            
+//            UIImage *image = [[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:imageAttachment.uri_thumbnail]]];
+//            
+//            AttachedPicture *pict = [AttachedPicture new];
+//            pict.image = image;
+//            pict.largeUrl = imageAttachment.uri_large;
+//            pict.thumbnailUrl = imageAttachment.uri_thumbnail;
+//            pict.imageDescription = imageAttachment.desc;
+//            pict.attachmentID = imageAttachment.attachment_id;
+//            pict.isDeleted = @"0";
+//            pict.isPreviouslyUploaded = @"1";
+//            
+//            [_uploadedPictures addObject:pict];
+//            [_attachedPictures addObject:pict];
+//            [_tempUploadedPictures addObject:pict];
+//        }
+//    }
+    
+    _giveReviewDetailVC = [GiveReviewDetailViewController new];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -64,14 +107,17 @@
 #pragma mark - Actions
 - (IBAction)tapToContinue:(id)sender {
     if ([self isSuccessValidateRating]) {
-        GiveReviewDetailViewController *vc = [GiveReviewDetailViewController new];
-        
+        GiveReviewDetailViewController *vc = _giveReviewDetailVC;        
         vc.isEdit = _isEdit;
         vc.myReviewDetailViewController = _myReviewDetailViewController;
         vc.qualityRate = _qualityRate;
         vc.accuracyRate = _accuracyRate;
         vc.review = _review;
         vc.token = _token;
+//        vc.uploadedPictures = _uploadedPictures;
+//        vc.attachedPictures = _attachedPictures;
+//        vc.tempUploadedPictures = _tempUploadedPictures;
+//        vc.reviewMessage = _reviewMessage;
         
         [self.navigationController pushViewController:vc animated:YES];
     }

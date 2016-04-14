@@ -367,8 +367,8 @@
                                                               
                                                               [tableContent reloadData];
                                                               
-                                                              UITableViewCell *firstCell = [tableContent cellForRowAtIndexPath:indexPath];
-                                                              [firstCell setSelected:YES];
+//                                                              UITableViewCell *firstCell = [tableContent cellForRowAtIndexPath:indexPath];
+//                                                              [firstCell setSelected:YES];
                                                           }
                                                           onFailure:^(NSError *errorResult) {
                                                               tableContent.tableFooterView = [self getLoadView].view;
@@ -418,7 +418,7 @@
         [cell.theirReputation setTitle:[NSString stringWithFormat:@"%@%%", (current.user_reputation==nil? @"0":current.user_reputation.positive_percentage)] forState:UIControlStateNormal];
     }
     
-    if ([current.read_status isEqualToString:@"1"]) {
+    if ([current.show_bookmark isEqualToString:@"1"]) {
         [cell.unreadIconImage setHidden:NO];
     } else {
         [cell.unreadIconImage setHidden:YES];

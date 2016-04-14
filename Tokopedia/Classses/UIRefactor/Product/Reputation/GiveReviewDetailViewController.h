@@ -17,11 +17,16 @@
 @property (nonatomic, weak) MyReviewDetailViewController *myReviewDetailViewController;
 
 @property BOOL isEdit;
+@property BOOL hasImages;
 @property int qualityRate;
 @property int accuracyRate;
-@property NSString *reviewMessage;
+@property (nonatomic, strong) NSString *reviewMessage;
 @property NSDictionary *userInfo;
 @property NSString *token;
 @property NSDictionary *productReviewPhotoObjects;
+
+@property (nonatomic, strong) NSMutableArray *uploadedPictures;
+@property (nonatomic, strong) NSMutableArray *attachedPictures;
+@property (nonatomic, strong) NSMutableArray *tempUploadedPictures;
 
 @end

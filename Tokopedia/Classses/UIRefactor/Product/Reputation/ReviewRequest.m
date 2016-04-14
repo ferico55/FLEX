@@ -592,7 +592,7 @@
     skipProductReviewNetworkManager.isUsingHmac = YES;
     
     [skipProductReviewNetworkManager requestWithBaseUrl:[NSString v4Url]
-                                                   path:@"/v4/action/review/skip_product_review.pl"
+                                                   path:@"/v4/action/reputation/skip_reputation_review.pl"
                                                  method:RKRequestMethodGET
                                               parameter:@{@"product_id" : productID,
                                                           @"reputation_id" : reputationID,

@@ -181,6 +181,9 @@
                                                                  [_dataManager addReviews:result.list];
                                                              }
                                                          } onFailure:^(NSError *errorResult) {
+                                                             [_refreshControl endRefreshing];
+                                                             [_reviewList removeAllObjects];
+                                                             [_dataManager removeAllReviews];
                                                              [self getLoadingView];
                                                          }];
     
@@ -483,6 +486,11 @@
     }
 }
 
+- (void)didTapRevieweeReputation:(id)sender onReview:(DetailReputationReview *)review atView:(UIView *)view {
+    NSString *strText = [NSString stringWithFormat:@"%@ %@", review.product_owner.shop_reputation_score, CStringPoin];
+    [self initPopUp:strText atView:view withRangeDesc:NSMakeRange(strText.length-CStringPoin.length, CStringPoin.length)];
+}
+
 
 #pragma mark - Header Delegate
 - (void)didTapRevieweeNameWithID:(NSString *)revieweeID {
@@ -684,6 +692,9 @@
                                                                  [_dataManager addReviews:result.list];
                                                              }
                                                          } onFailure:^(NSError *errorResult) {
+                                                             [_refreshControl endRefreshing];
+                                                             [_reviewList removeAllObjects];
+                                                             [_dataManager removeAllReviews];
                                                              [self getLoadingView];
                                                          }];
 }
@@ -763,6 +774,9 @@
                                                                  [_dataManager addReviews:result.list];
                                                              }
                                                          } onFailure:^(NSError *errorResult) {
+                                                             [_refreshControl endRefreshing];
+                                                             [_reviewList removeAllObjects];
+                                                             [_dataManager removeAllReviews];
                                                              [self getLoadingView];
                                                          }];
     

@@ -66,7 +66,7 @@ static CKComponent *revieweeReputation(DetailMyInboxReputation *inbox, MyReviewD
     if ([inbox.reviewee_role isEqualToString:@"1"]) {
         return [CKButtonComponent
                 newWithTitles:{
-                    {UIControlStateNormal, [NSString stringWithFormat:@"%@%%", percentage]}
+                    {UIControlStateNormal, [NSString stringWithFormat:@" %@%%", percentage]}
                 }
                 titleColors:{
                     {UIControlStateNormal, [UIColor colorWithWhite:117.0/255 alpha:1.0]}

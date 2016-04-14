@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "DetailMyReviewReputationViewController.h"
 #import "MyReviewDetailViewController.h"
+#import "GiveReviewDetailViewController.h"
 
 @class GeneratedHost, DetailReputationReview, DetailMyReviewReputationViewController;
 
@@ -20,11 +21,11 @@
 @property (nonatomic, weak) IBOutlet id<GiveReviewRatingDelegate> delegate;
 @property (nonatomic, weak) MyReviewDetailViewController *myReviewDetailViewController;
 @property (nonatomic, weak) DetailReputationReview *review;
+@property (nonatomic, strong) GiveReviewDetailViewController *giveReviewDetailVC;
 
 @property BOOL isEdit;
 @property int accuracyRate;
 @property int qualityRate;
-@property NSString *reviewMessage;
 @property NSString *token;
 
 @end

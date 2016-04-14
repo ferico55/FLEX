@@ -232,7 +232,7 @@ static CKComponent *attachedImages(DetailReputationReview *review, DetailReputat
 }
 
 - (void)didTapRevieweeReputation:(id)sender {
-    [_delegate didTapRevieweeReputation:_review atView:((CKStackLayoutComponent*)sender).viewContext.view];
+    [_delegate didTapRevieweeReputation:sender onReview:_review atView:((CKStackLayoutComponent*)sender).viewContext.view];
 }
 
 + (instancetype)newWithReview:(DetailReputationReview*)review role:(NSString*)role isDetail:(BOOL)isDetail context:(DetailReputationReviewContext*)context {

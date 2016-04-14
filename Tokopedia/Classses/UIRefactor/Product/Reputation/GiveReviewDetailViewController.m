@@ -269,6 +269,14 @@
     _reviewDetailTextView.placeholder = @"Tulis Ulasan Anda";
 }
 
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+    NSString *newString = [textView.text stringByReplacingCharactersInRange:range withString:text];
+    
+    _reviewMessage = newString;
+    
+    return YES;
+}
+
 #pragma mark - Actions
 - (IBAction)tapToContinue:(id)sender {
     if ([self isSuccessValidateMessage]) {
@@ -306,53 +314,52 @@
                                    maxSelected:(5 - _tempUploadedPictures.count)
                                 selectedAssets:_selectedAssets
                                     completion:^(NSArray<DKAsset *> *asset) {
-                                        dispatch_async(dispatch_get_main_queue(), ^{
-                                            NSMutableArray *temp = [_tempUploadedPictures mutableCopy];
-                                            _selectedAssets = asset;
-                                            
-                                            for (int ii = 0; ii < asset.count; ii++) {
-                                                DKAsset *dk = asset[ii];
-                                                AttachedPicture *pict = [AttachedPicture new];
-                                                BOOL isAdded = NO;
+                                        if (asset.count > 0) {
+                                            dispatch_async(dispatch_get_main_queue(), ^{
+                                                NSMutableArray *temp = [_tempUploadedPictures mutableCopy];
                                                 
-                                                for (int jj = 0; jj < _attachedPictures.count; jj++) {
-                                                    AttachedPicture *tempPict = _attachedPictures[jj];
-                                                    if ([tempPict.fileName isEqualToString:dk.fileName]) {
-                                                        pict = tempPict;
+                                                for (int ii = 0; ii < asset.count; ii++) {
+                                                    DKAsset *dk = asset[ii];
+                                                    AttachedPicture *pict = [AttachedPicture new];
+                                                    BOOL isAdded = NO;
+                                                    
+                                                    for (int jj = 0; jj < _attachedPictures.count; jj++) {
+                                                        AttachedPicture *tempPict = _attachedPictures[jj];
+                                                        if ([tempPict.fileName isEqualToString:dk.fileName]) {
+                                                            pict = tempPict;
+                                                            
+                                                            [temp addObject:pict];
+                                                            isAdded = YES;
+                                                        }
+                                                    }
+                                                    
+                                                    if (!isAdded) {
+                                                        pict.image = dk.resizedImage;
+                                                        pict.fileName = dk.fileName;
+                                                        pict.thumbnailUrl = @"";
+                                                        pict.largeUrl = @"";
+                                                        pict.imageDescription = @"";
+                                                        pict.attachmentID = @"0";
+                                                        pict.isDeleted = @"0";
+                                                        pict.isPreviouslyUploaded = @"0";
                                                         
                                                         [temp addObject:pict];
                                                         isAdded = YES;
                                                     }
                                                 }
                                                 
-                                                if (!isAdded) {
-                                                    pict.image = dk.resizedImage;
-                                                    pict.fileName = dk.fileName;
-                                                    pict.thumbnailUrl = @"";
-                                                    pict.largeUrl = @"";
-                                                    pict.imageDescription = @"";
-                                                    pict.attachmentID = @"0";
-                                                    pict.isDeleted = @"0";
-                                                    pict.isPreviouslyUploaded = @"0";
-                                                    
-                                                    [temp addObject:pict];
-                                                    isAdded = YES;
-                                                }
-                                            }
-                                            
-                                            _attachedPictures = temp;
-                                            
-                                            ProductAddCaptionViewController *vc = [ProductAddCaptionViewController new];
-                                            vc.delegate = self;
-                                            vc.attachedPictures = _attachedPictures;
-                                            vc.isEdit = _isEdit;
-                                            vc.selectedAssets = _selectedAssets;
-                                            vc.uploadedPictures = _uploadedPictures;
-                                            vc.tempUploadedPictures = _tempUploadedPictures;
-                                            vc.selectedImageTag = sender.view.tag;
-                                            
-                                            [self.navigationController pushViewController:vc animated:NO];
-                                        });                                        
+                                                ProductAddCaptionViewController *vc = [ProductAddCaptionViewController new];
+                                                vc.delegate = self;
+                                                vc.attachedPictures = temp;
+                                                vc.isEdit = _isEdit;
+                                                vc.selectedAssets = asset;
+                                                vc.uploadedPictures = _uploadedPictures;
+                                                vc.tempUploadedPictures = _tempUploadedPictures;
+                                                vc.selectedImageTag = sender.view.tag;
+                                                
+                                                [self.navigationController pushViewController:vc animated:NO];
+                                            });
+                                        }
                                     }];
         
     } else {

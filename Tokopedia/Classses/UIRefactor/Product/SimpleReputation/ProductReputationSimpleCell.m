@@ -214,10 +214,11 @@
 }
 
 - (void)setPictures:(NSArray *)reviewImageAttachments {
+    [_reviewImageAttachmentPictures makeObjectsPerformSelector:@selector(setImage:) withObject:nil];
+    
     for (int ii = 0; ii < reviewImageAttachments.count; ii++) {
         ReviewImageAttachment *image = reviewImageAttachments[ii];
         UIImageView *imageView = _reviewImageAttachmentPictures[ii];
-        
         [imageView setImageWithURL:[NSURL URLWithString:image.uri_thumbnail]
                   placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey.png"]];
     }

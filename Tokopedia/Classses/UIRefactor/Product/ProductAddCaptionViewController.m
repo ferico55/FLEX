@@ -101,7 +101,13 @@
     [_attachedPicts addObjectsFromArray:_attachedPictures];
     [_tempUploadedPicts addObjectsFromArray:_tempUploadedPictures];
     
-    [self setDataWithImageTag:_selectedImageTag-20];
+    NSInteger imageTag = _selectedImageTag - 20;
+    
+    if (imageTag >= _attachedPicts.count) {
+        imageTag = imageTag - 1;
+    }
+    
+    [self setDataWithImageTag:imageTag];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -112,6 +118,7 @@
     if (imageTag < 0) {
         imageTag = imageTag + 20;
     }
+    
     _imageCaptionTextField.text = ((AttachedPicture*)_attachedPicts[imageTag]).imageDescription;
     
     for (int ii = 0; ii < _attachedPicts.count; ii++) {
@@ -127,6 +134,7 @@
                     imageView.image = pict.image;
                     imageView.userInteractionEnabled = YES;
                 }
+                
             }
             
             if (imageView.tag == 21 + ii) {
@@ -266,45 +274,54 @@
                                        maxSelected:(5 - _tempUploadedPicts.count)
                                     selectedAssets:_selectedAssets
                                         completion:^(NSArray<DKAsset *> *asset) {
-                                            dispatch_async(dispatch_get_main_queue(), ^{
-                                                NSMutableArray *temp = [_tempUploadedPicts mutableCopy];
-                                                _selectedAssets = asset;
-                                                
-                                                for (int ii = 0; ii < asset.count; ii++) {
-                                                    DKAsset *dk = asset[ii];
-                                                    AttachedPicture *pict = [AttachedPicture new];
-                                                    BOOL isAdded = NO;
+                                            if (asset.count > 0) {
+                                                dispatch_async(dispatch_get_main_queue(), ^{
+                                                    NSMutableArray *temp = [_tempUploadedPicts mutableCopy];
+                                                    _selectedAssets = asset;
                                                     
-                                                    for (int jj = 0; jj < _attachedPicts.count; jj++) {
-                                                        AttachedPicture *tempPict = _attachedPicts[jj];
-                                                        if ([tempPict.fileName isEqualToString:dk.fileName]) {
-                                                            pict = tempPict;
+                                                    for (int ii = 0; ii < asset.count; ii++) {
+                                                        DKAsset *dk = asset[ii];
+                                                        AttachedPicture *pict = [AttachedPicture new];
+                                                        BOOL isAdded = NO;
+                                                        
+                                                        for (int jj = 0; jj < _attachedPicts.count; jj++) {
+                                                            AttachedPicture *tempPict = _attachedPicts[jj];
+                                                            if ([tempPict.fileName isEqualToString:dk.fileName]) {
+                                                                pict = tempPict;
+                                                                
+                                                                [temp addObject:pict];
+                                                                isAdded = YES;
+                                                            }
+                                                        }
+                                                        
+                                                        if (!isAdded) {
+                                                            pict.image = dk.resizedImage;
+                                                            pict.fileName = dk.fileName;
+                                                            pict.thumbnailUrl = @"";
+                                                            pict.largeUrl = @"";
+                                                            pict.imageDescription = @"";
+                                                            pict.attachmentID = @"0";
+                                                            pict.isDeleted = @"0";
+                                                            pict.isPreviouslyUploaded = @"0";
                                                             
                                                             [temp addObject:pict];
                                                             isAdded = YES;
                                                         }
                                                     }
                                                     
-                                                    if (!isAdded) {
-                                                        pict.image = dk.resizedImage;
-                                                        pict.fileName = dk.fileName;
-                                                        pict.thumbnailUrl = @"";
-                                                        pict.largeUrl = @"";
-                                                        pict.imageDescription = @"";
-                                                        pict.attachmentID = @"0";
-                                                        pict.isDeleted = @"0";
-                                                        pict.isPreviouslyUploaded = @"0";
-                                                        
-                                                        [temp addObject:pict];
-                                                        isAdded = YES;
+                                                    _attachedPicts = temp;
+                                                    
+                                                    NSInteger imageTag = sender.view.tag - 20;
+                                                    
+                                                    if (imageTag >= _attachedPicts.count) {
+                                                        imageTag = imageTag - 1;
                                                     }
-                                                }
-                                                
-                                                _attachedPicts = temp;
-                                                
-                                                [self setDataWithImageTag:sender.view.tag-20];
-
-                                            });
+                                                    
+                                                    [self setDataWithImageTag:imageTag];
+                                                    
+                                                });
+                                            }
+                                            
                                         }];
         } else {
             AttachedPicture *selectedPict = _attachedPicts[sender.view.tag - 20];
@@ -384,12 +401,25 @@
     [textField resignFirstResponder];
     NSString *imageCaption = textField.text;
     
-    AttachedPicture *selectedPict = _attachedPicts[_selectedImageTag];
+    if (_selectedImageTag - 20 < 0) {
+        _selectedImageTag = _selectedImageTag + 20;
+    }
+    
+    AttachedPicture *selectedPict = _attachedPicts[_selectedImageTag-20];
     selectedPict.imageDescription = imageCaption;
 
-    [_attachedPicts replaceObjectAtIndex:_selectedImageTag withObject:selectedPict];
+    [_attachedPicts replaceObjectAtIndex:_selectedImageTag-20 withObject:selectedPict];
     
     return YES;
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    if(range.length + range.location > textField.text.length) {
+        return NO;
+    }
+    
+    NSUInteger newLength = [textField.text length] + [string length] - range.length;
+    return newLength <= 128;
 }
 
 #pragma mark - Methods
