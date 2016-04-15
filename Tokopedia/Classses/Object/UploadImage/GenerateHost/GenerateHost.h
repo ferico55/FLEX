@@ -18,4 +18,6 @@
 @property (nonatomic, strong) GenerateHostResult *result;
 @property (nonatomic, strong) GenerateHostResult *data;
 
++ (RKObjectMapping*)mapping;
+
 @end

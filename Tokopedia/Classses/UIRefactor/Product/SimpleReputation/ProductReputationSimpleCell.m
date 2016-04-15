@@ -10,9 +10,10 @@
 #import "ReviewList.h"
 #import "NavigateViewController.h"
 #import "TTTAttributedLabel.h"
+#import "ReviewImageAttachment.h"
 
 @interface ProductReputationSimpleCell()<
-TTTAttributedLabelDelegate
+    TTTAttributedLabelDelegate
 >
 
 @end
@@ -30,7 +31,13 @@ TTTAttributedLabelDelegate
 
 //TODO: wrong viewmodel!!, API too fcku bloated,  change this later!
 - (void)setReputationModelView:(DetailReviewReputationViewModel *)viewModel {
-    [self setReputationMessage:viewModel.review_message];
+    _reviewImageAttachmentPictures = [NSArray sortViewsWithTagInArray:_reviewImageAttachmentPictures];
+    
+    if (viewModel.review_image_attachment.count > 0) {
+        [self setPictures:viewModel.review_image_attachment];
+    }
+    
+    [self setReputationMessage:viewModel.review_message withAttachment:viewModel.review_image_attachment];
     [self setReputationStars:viewModel.review_rate_quality withAccuracy:viewModel.review_rate_accuracy];
     [self setUser:viewModel.review_user_name withCreateTime:viewModel.review_create_time andWithImage:viewModel.review_user_image];
     
@@ -55,7 +62,13 @@ TTTAttributedLabelDelegate
 
 
 - (void)setShopReputationModelView:(DetailReputationReview *)viewModel{
-    [self setReputationMessage:viewModel.review_message];
+    _reviewImageAttachmentPictures = [NSArray sortViewsWithTagInArray:_reviewImageAttachmentPictures];
+    
+    if (viewModel.review_image_attachment.count > 0) {
+        [self setPictures:viewModel.review_image_attachment];
+    }
+    
+    [self setReputationMessage:viewModel.review_message withAttachment:viewModel.review_image_attachment];
     [self setReputationStars:viewModel.review_rate_quality withAccuracy:viewModel.review_rate_accuracy];
     [self setUser:viewModel.review_user_name withCreateTime:viewModel.review_create_time andWithImage:viewModel.review_user_image];
     [self.productNameButton setTitle:viewModel.product_name forState:UIControlStateNormal];
@@ -76,7 +89,7 @@ TTTAttributedLabelDelegate
 }
 
 #pragma mark - internally used method
-- (void)setReputationMessage:(NSString*)message {
+- (void)setReputationMessage:(NSString*)message withAttachment:(NSArray<ReviewImageAttachment*>*)imageAttachments {
     //count label height dynamically
     
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
@@ -111,26 +124,44 @@ TTTAttributedLabelDelegate
     }
     
     CGFloat heightOfMessage = 45;
-    /*
-    CGRect sizeOfMessage = [messageLabel.text boundingRectWithSize:CGSizeMake([UIScreen mainScreen].bounds.size.width - 10, 0)
-                                                           options:NSStringDrawingUsesLineFragmentOrigin
-                                                        attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14.0f]}
-                                                           context:nil];
-    sizeOfMessage.size.width = [UIScreen mainScreen].bounds.size.width-20;
-    messageLabel.frame = sizeOfMessage;
-     */
     
-    
-    //set vertical origin of user view
-    CGRect newFrame = self.reputationBuyerView.frame;
-    newFrame.origin.y = heightOfMessage + 20;
-    newFrame.size.width = [UIScreen mainScreen].bounds.size.width - 20;
-    self.reputationBuyerView.frame = newFrame;
-    
-    //set wrapper viewheight
-    CGRect reputationViewFrame = self.listReputationView.frame;
-    reputationViewFrame.size.height = self.reputationBuyerView.frame.size.height + 10 + _reputationMessageLabel.frame.size.height;
-    self.listReputationView.frame = reputationViewFrame;
+    if (imageAttachments.count > 0) {
+        CGRect imageAttachmentFrame = self.reviewImageAttachmentView.frame;
+        imageAttachmentFrame.origin.y = heightOfMessage + 8;
+        imageAttachmentFrame.size.height = 48;
+        imageAttachmentFrame.size.width = self.listReputationView.frame.size.width;
+        self.reviewImageAttachmentView.frame = imageAttachmentFrame;
+        self.reviewImageAttachmentView.hidden = NO;
+        
+        //set vertical origin of user view
+        CGRect newFrame = self.reputationBuyerView.frame;
+        newFrame.origin.y = heightOfMessage + 8 + self.reviewImageAttachmentView.frame.size.height + 22;
+        newFrame.size.width = [UIScreen mainScreen].bounds.size.width - 20;
+        self.reputationBuyerView.frame = newFrame;
+        
+        //set wrapper viewheight
+        CGRect reputationViewFrame = self.listReputationView.frame;
+        reputationViewFrame.size.height = self.reputationBuyerView.frame.size.height + 22 + _reputationMessageLabel.frame.size.height + 8 + self.reviewImageAttachmentView.frame.size.height;
+        self.listReputationView.frame = reputationViewFrame;
+    } else {
+        CGRect imageAttachmentFrame = self.reviewImageAttachmentView.frame;
+        imageAttachmentFrame.origin.y = heightOfMessage + 8;
+        imageAttachmentFrame.size.height = 0;
+        imageAttachmentFrame.size.width = [UIScreen mainScreen].bounds.size.width - 20;
+        self.reviewImageAttachmentView.frame = imageAttachmentFrame;
+        self.reviewImageAttachmentView.hidden = YES;
+        
+        //set vertical origin of user view
+        CGRect newFrame = self.reputationBuyerView.frame;
+        newFrame.origin.y = heightOfMessage + 20;
+        newFrame.size.width = [UIScreen mainScreen].bounds.size.width - 20;
+        self.reputationBuyerView.frame = newFrame;
+        
+        //set wrapper viewheight
+        CGRect reputationViewFrame = self.listReputationView.frame;
+        reputationViewFrame.size.height = self.reputationBuyerView.frame.size.height + 10 + _reputationMessageLabel.frame.size.height;
+        self.listReputationView.frame = reputationViewFrame;
+    }
     
     _reputationMessageLabel.delegate = self;
 }
@@ -167,8 +198,6 @@ TTTAttributedLabelDelegate
     starAccuracyFrame.origin.x = self.reputationStarQualityView.frame.origin.x + self.reputationStarQualityView.frame.size.width + 20;
     self.reputationStarAccuracyView.frame = starAccuracyFrame;
     
-    
-    
     [self.reputationBuyerLabel setText:userName];
     [self.reputationDateLabel setText:createTime];
     
@@ -182,6 +211,17 @@ TTTAttributedLabelDelegate
         
     } failure:nil];
 
+}
+
+- (void)setPictures:(NSArray *)reviewImageAttachments {
+    [_reviewImageAttachmentPictures makeObjectsPerformSelector:@selector(setImage:) withObject:nil];
+    
+    for (int ii = 0; ii < reviewImageAttachments.count; ii++) {
+        ReviewImageAttachment *image = reviewImageAttachments[ii];
+        UIImageView *imageView = _reviewImageAttachmentPictures[ii];
+        [imageView setImageWithURL:[NSURL URLWithString:image.uri_thumbnail]
+                  placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey.png"]];
+    }
 }
 
 - (IBAction)tapProduct:(id)sender {

@@ -16,7 +16,7 @@
 #import "string_inbox_talk.h"
 #import "GeneralAction.h"
 #import "LoginViewController.h"
-
+#import "MyReviewDetailViewController.h"
 
 @interface ReportViewController () <UITextViewDelegate, LoginViewDelegate> {
     __weak RKObjectManager *_objectManager;
@@ -176,7 +176,10 @@
     if(_request.isExecuting)return;
     
     NSMutableDictionary *param = [NSMutableDictionary new];
-    if([_delegate isMemberOfClass:[ProductReputationViewController class]] || [_delegate isMemberOfClass:[DetailMyReviewReputationViewController class]] || [_delegate isMemberOfClass:[ShopReviewPageViewController class]]) {
+    if([_delegate isMemberOfClass:[ProductReputationViewController class]] ||
+       [_delegate isMemberOfClass:[DetailMyReviewReputationViewController class]] ||
+       [_delegate isMemberOfClass:[ShopReviewPageViewController class]] ||
+       [_delegate isMemberOfClass:[MyReviewDetailViewController class]]) {
         [param setObject:@"report_review" forKey:@"action"];
         [param setObject:_strReviewID forKey:@"review_id"];
         [param setObject:_strShopID forKey:@"shop_id"];
@@ -191,7 +194,11 @@
     
     [param setObject:_messageTextView.text forKey:@"text_message"];
     
-    if([_delegate isMemberOfClass:[ProductTalkViewController class]] || [_delegate isMemberOfClass:[InboxTalkViewController class]] || [_delegate isMemberOfClass:[ProductReputationViewController class]] || [_delegate isMemberOfClass:[DetailMyReviewReputationViewController class]]) {
+    if([_delegate isMemberOfClass:[ProductTalkViewController class]] ||
+       [_delegate isMemberOfClass:[InboxTalkViewController class]] ||
+       [_delegate isMemberOfClass:[ProductReputationViewController class]] ||
+       [_delegate isMemberOfClass:[DetailMyReviewReputationViewController class]] ||
+       [_delegate isMemberOfClass:[MyReviewDetailViewController class]]) {
         NSString *tempProductID = strProductID;
         if(tempProductID==nil || [_delegate isMemberOfClass:[ProductTalkViewController class]])
             tempProductID = [((ProductTalkViewController *) _delegate).data objectForKey:kTKPD_PRODUCTIDKEY];
@@ -257,7 +264,7 @@
                             UINavigationController *nav = (UINavigationController *)_delegate;
                             [nav.navigationController popViewControllerAnimated:YES];
                         }
-                        else if([_delegate isMemberOfClass:[ProductReputationViewController class]] || [_delegate isMemberOfClass:[DetailMyReviewReputationViewController class]]) {
+                        else if([_delegate isMemberOfClass:[ProductReputationViewController class]] || [_delegate isMemberOfClass:[DetailMyReviewReputationViewController class]] || [_delegate isMemberOfClass:[MyReviewDetailViewController class]]) {
                             [self.navigationController popViewControllerAnimated:YES];
                         }
                     }
