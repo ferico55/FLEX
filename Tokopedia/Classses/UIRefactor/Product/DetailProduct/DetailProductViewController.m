@@ -2029,8 +2029,6 @@
     _product = [result objectForKey:@""];
     
     
-    [self loadDataOtherProduct];
-    
     BOOL status = [_product.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
@@ -2040,6 +2038,8 @@
             self.table.hidden = YES;
             return;
         }
+        
+        [self loadDataOtherProduct];
         
         //Set icon speed
         [SmileyAndMedal setIconResponseSpeed:_product.result.shop_info.respond_speed.badge withImage:btnKecepatan largeImage:NO];
