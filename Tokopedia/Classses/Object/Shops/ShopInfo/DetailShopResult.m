@@ -38,7 +38,7 @@
                                                                                 withMapping:[Payment mapping]]];
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"address"
                                                                                   toKeyPath:@"address"
-                                                                                withMapping:[Address objectMapping]]];
+                                                                                withMapping:[Address mapping]]];
     return resultMapping;
 }
 @end
