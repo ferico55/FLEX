@@ -271,27 +271,32 @@
 }
 
 -(void)selectInitialSelectedEtalase{
+    NSIndexPath *selected;
     if(_initialSelectedEtalase){
         NSInteger position = [self etalaseListIndexWithId:_initialSelectedEtalase.etalase_id];
         NSInteger otherPosition = [self otherEtalaseListIndexWithId:_initialSelectedEtalase.etalase_id];
         
         if(position != -1){
-            [_tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:position inSection:1]
+            selected = [NSIndexPath indexPathForRow:position inSection:1];
+            [_tableView selectRowAtIndexPath:selected
                                     animated:YES
                               scrollPosition:UITableViewScrollPositionMiddle];
         }else if(otherPosition != -1){
-            [_tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:otherPosition inSection:0]
+            selected = [NSIndexPath indexPathForRow:otherPosition inSection:0];
+            [_tableView selectRowAtIndexPath:selected
                                     animated:YES
                               scrollPosition:UITableViewScrollPositionMiddle];
         }
     }else{
         NSInteger semuaEtalasePosition = [self otherEtalaseListIndexWithId:@"etalase"];
         if(semuaEtalasePosition != -1){
-            [_tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:semuaEtalasePosition inSection:0]
+            selected =[NSIndexPath indexPathForRow:semuaEtalasePosition inSection:0];
+            [_tableView selectRowAtIndexPath:selected
                                     animated:YES
                               scrollPosition:UITableViewScrollPositionMiddle];
         }
     }
+    if(selected != nil) selectedIndexPath = selected;
 }
 
 -(NSInteger)etalaseListIndexWithId:(NSString*)selectedEtalaseId{
@@ -322,6 +327,10 @@
                                              }
                                              [etalaseList addObjectsFromArray:etalase.result.list];
                                              [otherEtalaseList addObjectsFromArray:etalase.result.list_other];
+                                             [_tableView reloadData];
+                                             if(page == 1){
+                                                 [self selectInitialSelectedEtalase];
+                                             }
                                              
                                              uriNext = etalase.result.paging.uri_next;
                                              if (uriNext) {
@@ -329,8 +338,6 @@
                                              }else{
                                                  _tableView.tableFooterView = nil;
                                              }
-                                             
-                                             [_tableView reloadData];
                                          } onFailure:^(NSError *error) {
                                              _tableView.tableFooterView = nil;
                                          }];
