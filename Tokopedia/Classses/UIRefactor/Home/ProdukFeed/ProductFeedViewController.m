@@ -484,6 +484,15 @@ static BOOL scrolledToBottomWithBuffer(CGPoint contentOffset, CGSize contentSize
     _isRequestingProductFeed = NO;
 }
 
+-(void)failToRequestAllFavoriteShopString{
+    [_refreshControl endRefreshing];
+    
+    StickyAlertView *stickyView = [[StickyAlertView alloc] initWithWarningMessages:@[@"Kendala koneksi internet."] delegate:self];
+    [stickyView show];
+    _isFailRequest = YES;
+    _isRequestingProductFeed = NO;
+}
+
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     return [ProductCellSize sizeWithType:1];
 }

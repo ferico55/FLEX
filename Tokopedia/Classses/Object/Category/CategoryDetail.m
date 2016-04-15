@@ -48,9 +48,7 @@
 - (BOOL)isEqual:(CategoryDetail *)object {
     BOOL isEqual = NO;
     @try {
-        if ([self.name isEqualToString:object.name]) {
-            isEqual = YES;
-        } else if ([self.categoryId isEqualToString:object.categoryId]) {
+        if ([self.categoryId isEqualToString:object.categoryId]) {
             isEqual = YES;
         }
     }

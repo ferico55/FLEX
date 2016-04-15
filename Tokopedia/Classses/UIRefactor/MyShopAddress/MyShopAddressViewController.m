@@ -21,13 +21,18 @@
 #import "UITableView+IndexPath.h"
 #import "NSURL+Dictionary.h"
 
+#import "NoResultReusableView.h"
+#import "LoadingView.h"
+
 @interface MyShopAddressViewController ()
 <
     UITableViewDataSource,
     UITableViewDelegate,
     MyShopAddressDetailViewControllerDelegate,
     UIScrollViewDelegate,
-    MGSwipeTableCellDelegate
+    MGSwipeTableCellDelegate,
+    NoResultDelegate,
+    LoadingViewDelegate
 >
 
 @property BOOL isManualSetDefault;
@@ -43,7 +48,8 @@
 @property (strong, nonatomic) IBOutlet UIView *tableFooterView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicatorView;
 @property (strong, nonatomic) UIRefreshControl *refreshControl;
-@property (strong, nonatomic) NoResultView *noResultView;
+@property (strong, nonatomic) NoResultReusableView *noResultView;
+@property (strong, nonatomic) LoadingView *loadingView;
 
 @end
 
@@ -106,12 +112,26 @@
     return _refreshControl;
 }
 
+#pragma mark - Loading view
+
+- (LoadingView *)loadingView {
+    if (_loadingView == nil) {
+        _loadingView = [LoadingView new];
+        _loadingView.delegate = self;
+    }
+    return _loadingView;
+}
+
 #pragma mark - No result view
 
-- (NoResultView *)noResultView {
+- (NoResultReusableView *)noResultView {
     if (_noResultView == nil) {
-        CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, 103);
-        _noResultView = [[NoResultView alloc] initWithFrame:frame];
+        _noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
+        _noResultView.delegate = self;
+        [_noResultView generateAllElements:nil
+                                     title:@"Tidak ada Lokasi Toko"
+                                      desc:@"Segera tambahkan lokasi toko Anda!"
+                                  btnTitle:@"Tambah Lokasi"];
     }
     return _noResultView;
 }
@@ -183,6 +203,11 @@
 #pragma mark - Restkit
 
 - (void)fetchShopAddress {
+    if (_refreshControl.isRefreshing == NO && self.list.count == 0) {
+        [self.activityIndicatorView startAnimating];
+        self.tableView.tableFooterView = _tableFooterView;
+    }
+    
     NSString *baseURL = @"https://ws.tokopedia.com";
     NSString *path = @"/v4/myshop-address/get_location.pl";
     NSDictionary *parameters = @{@"action": @"get_location"};
@@ -202,9 +227,9 @@
                                   }
                                   [self.tableView reloadData];
                               }
-                              onFailure:^(NSError *error) {
-                                  StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[[error localizedDescription]] delegate:self];
-                                  [alert show];
+                              onFailure:^(NSError *errorResult) {
+                                  self.tableView.tableFooterView = self.loadingView;
+                                  [self.tableView reloadData];
                               }];
 }
 
@@ -255,6 +280,11 @@
 #pragma mark - View Action
 
 - (IBAction)didTapAddButton:(id)sender {
+    if (self.list.count == 3) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Anda hanya bisa menambah sampai 3 alamat." message:nil delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+        [alert show];
+        return;
+    }
     MyShopAddressEditViewController *controller = [MyShopAddressEditViewController new];
     controller.data = @{
         kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY],
@@ -332,6 +362,18 @@
     //TODO: Behavior after edit
     [_inputData setObject:[userinfo objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0] forKey:kTKPDDETAIL_DATAINDEXPATHKEY];
     [self refreshView:nil];
+}
+
+#pragma mark - No Result delegate
+
+- (void)buttonDidTapped:(id)sender {
+    [self didTapAddButton:self.navigationItem.rightBarButtonItem];
+}
+
+#pragma mark - Loading view delegate
+
+- (void)pressRetryButton {
+    [self fetchShopAddress];
 }
 
 @end

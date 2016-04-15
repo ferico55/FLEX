@@ -44,6 +44,7 @@ typedef NS_ENUM(NSInteger, PromoRequestSourceType) {
 - (void)requestForProductQuery:(NSString *)query
                     department:(NSString *)department
                           page:(NSInteger)page
+                        source:(NSString *)source
                      onSuccess:(void (^)(NSArray<PromoResult*> *))successCallback
                      onFailure:(void (^)(NSError *))errorCallback;
 

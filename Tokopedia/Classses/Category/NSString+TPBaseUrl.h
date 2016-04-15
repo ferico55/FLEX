@@ -13,6 +13,7 @@
 + (NSString*)basicUrl;
 + (NSString*)aceUrl;
 + (NSString*)v4Url;
++ (NSString*)topAdsUrl;
 + (NSString*)keroUrl;
 
 @end

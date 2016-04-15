@@ -14,7 +14,6 @@
 
 @property (strong, nonatomic) NSString *uri_next;
 @property (strong, nonatomic) NSString *uri_previous;
-@property (strong, nonatomic) RKObjectMapping *mapping;
 
 @property (strong, nonatomic) NSURL *uriNext;
 @property (strong, nonatomic) NSURL *uriPrevious;
