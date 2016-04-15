@@ -306,10 +306,8 @@
         [_objectManager.HTTPClient setDefaultHeader:@"X-Method" value:[hmac getRequestMethod]];
         
         UserAuthentificationManager *userAuth = [UserAuthentificationManager new];
-        NSDictionary *auth = [userAuth getUserLoginData];
-        
-        NSString* userId = [[auth objectForKey:@"user_id"] stringValue];
-        NSString* sessionId = [auth objectForKey:@"device_token"];
+        NSString* userId = [userAuth getUserId];
+        NSString* sessionId = [userAuth getMyDeviceToken];
         
         [_objectManager.HTTPClient setDefaultHeader:@"Tkpd-UserId" value:userId];
         [_objectManager.HTTPClient setDefaultHeader:@"Tkpd-SessionId" value:sessionId];
