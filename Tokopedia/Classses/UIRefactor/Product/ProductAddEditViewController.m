@@ -602,10 +602,14 @@
                     if ([_dataInput objectForKey:DATA_CATEGORY_KEY]) {
                         if ([[_dataInput objectForKey:DATA_CATEGORY_KEY] isKindOfClass:[Breadcrumb class]]) {
                             Breadcrumb *breadcrumb = [_dataInput objectForKey:DATA_CATEGORY_KEY];
-                            departmentTitle = breadcrumb.department_name;
+                            if (![breadcrumb.department_name isEqualToString:@""]) {
+                                departmentTitle = breadcrumb.department_name;
+                            }
                         } else if ([[_dataInput objectForKey:DATA_CATEGORY_KEY] isKindOfClass:[CategoryDetail class]]) {
                             CategoryDetail *category = [_dataInput objectForKey:DATA_CATEGORY_KEY];
-                            departmentTitle = category.name;
+                            if (![category.name isEqualToString:@""]) {
+                                departmentTitle = category.name;
+                            }
                         }
                     }
                     cell.detailTextLabel.text = departmentTitle;
@@ -718,7 +722,14 @@
                     FilterCategoryViewController *controller = [FilterCategoryViewController new];
                     controller.filterType = FilterCategoryTypeProductAddEdit;
                     controller.delegate = self;
-                    controller.selectedCategory = [_dataInput objectForKey:DATA_CATEGORY_KEY];
+                    if ([_dataInput objectForKey:DATA_CATEGORY_KEY]) {
+                        if ([[_dataInput objectForKey:DATA_CATEGORY_KEY] isKindOfClass:[CategoryDetail class]]) {
+                            CategoryDetail *category = [_dataInput objectForKey:DATA_CATEGORY_KEY];
+                            if (![category.name isEqualToString:@""]) {
+                                controller.selectedCategory = category;
+                            }
+                        }
+                    }
                     UINavigationController *navigation = [[UINavigationController new] initWithRootViewController:controller];
                     navigation.navigationBar.translucent = NO;
                     [self.navigationController presentViewController:navigation animated:YES completion:nil];
