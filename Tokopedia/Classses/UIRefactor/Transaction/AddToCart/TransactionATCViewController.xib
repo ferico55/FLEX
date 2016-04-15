@@ -90,16 +90,11 @@
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tapGestureRecognizer id="UWY-kZ-8nS">
-            <connections>
-                <action selector="tap:" destination="-1" id="ytW-D3-ZgN"/>
-            </connections>
-        </tapGestureRecognizer>
         <view contentMode="scaleToFill" id="pLJ-Wv-IeN">
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="1" sectionFooterHeight="1" translatesAutoresizingMaskIntoConstraints="NO" id="RoT-Rb-4aA">
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" keyboardDismissMode="onDrag" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="1" sectionFooterHeight="1" translatesAutoresizingMaskIntoConstraints="NO" id="RoT-Rb-4aA">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="552"/>
                     <animations/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -122,7 +117,7 @@
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
-                        <action selector="tap:" destination="-1" eventType="touchUpInside" id="EVU-33-0wi"/>
+                        <action selector="tapBuy:" destination="-1" eventType="touchUpInside" id="Lid-ZI-fgN"/>
                     </connections>
                 </button>
                 <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="guT-MQ-tD1">
@@ -1018,7 +1013,7 @@
                 </label>
             </subviews>
             <animations/>
-            <color key="backgroundColor" red="0.98039215686274506" green="0.85882352941176465" blue="0.8666666666666667" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="ZrZ-ED-WHQ" firstAttribute="leading" secondItem="tVL-of-Hh8" secondAttribute="leading" constant="15" id="Cbo-4t-Ztf"/>
                 <constraint firstAttribute="bottom" secondItem="ZrZ-ED-WHQ" secondAttribute="bottom" id="iEs-Gq-lDJ"/>

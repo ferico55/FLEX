@@ -9,5 +9,24 @@
 #import "ShippingInfoShipmentPackage.h"
 
 @implementation ShippingInfoShipmentPackage
++(NSDictionary *)attributeMappingDictionary
+{
+    NSArray *keys = @[@"price_total",
+                      @"price",
+                      @"desc",
+                      @"active",
+                      @"name",
+                      @"sp_id"
+                      ];
+    return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
+}
+
++(RKObjectMapping*)mapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+
+    return mapping;
+}
 
 @end

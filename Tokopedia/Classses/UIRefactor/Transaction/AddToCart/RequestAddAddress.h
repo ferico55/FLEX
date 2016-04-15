@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 #import "AddressFormList.h"
+#import "ProfileSettings.h"
 
 @protocol RequestAddAddressDelegate <NSObject>
 @required
@@ -20,5 +21,7 @@
 
 @property (nonatomic, weak) IBOutlet id<RequestAddAddressDelegate> delegate;
 -(void)doRequestWithAddress:(AddressFormList*)address;
+
++(void)fetchAddAddress:(AddressFormList*)address success:(void(^)(ProfileSettingsResult* data, AddressFormList* address))success failure:(void(^)(NSError *error))failure;
 
 @end
