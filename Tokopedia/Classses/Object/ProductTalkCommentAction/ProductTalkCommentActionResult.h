@@ -14,7 +14,7 @@
 @interface ProductTalkCommentActionResult : NSObject
 
 @property (nonatomic, strong) NSString *is_success;
-//@property (nonatomic, strong) NSString *comment_talk_id;
 @property(nonatomic, strong) NSString *comment_id;
 
++ (RKObjectMapping *)mapping;
 @end
