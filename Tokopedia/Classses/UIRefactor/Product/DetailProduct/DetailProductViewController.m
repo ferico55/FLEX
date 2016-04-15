@@ -271,6 +271,7 @@
     NSString *_formattedProductTitle;
     
     NSArray *_constraint;
+    EtalaseList *selectedEtalase;
 }
 
 @synthesize data = _data;
@@ -311,6 +312,7 @@
     _auth = [_userManager getUserLoginData];
     _TKPDNavigator = [NavigateViewController new];
     _otherProductDataSource = [OtherProductDataSource new];
+    selectedEtalase = [EtalaseList new];
     
     _constraint = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[viewContentWarehouse(==0)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(viewContentWarehouse)];
     
@@ -824,6 +826,9 @@
                 controller.shopId =_product.result.shop_info.shop_id;
                 controller.isEditable = NO;
                 controller.showOtherEtalase = NO;
+                controller.enableAddEtalase = YES;
+                
+                [controller setInitialSelectedEtalase:selectedEtalase];
                 [self.navigationController pushViewController:controller animated:YES];
                 break;
             }
@@ -847,6 +852,13 @@
             }
             case UIGestureRecognizerStateEnded: {
                 ProductAddEditViewController *editProductVC = [ProductAddEditViewController new];
+                if(_product.result.product.product_move_to == nil){
+                    if([_product.result.product.product_status intValue] ==PRODUCT_STATE_WAREHOUSE){
+                        _product.result.product.product_move_to = [@(PRODUCT_WAREHOUSE_YES_ID) stringValue];
+                    }else{
+                        _product.result.product.product_move_to = [@(PRODUCT_WAREHOUSE_NO_ID) stringValue];
+                    }
+                }
                 editProductVC.data = @{kTKPDDETAIL_APIPRODUCTIDKEY: _product.result.product.product_id,
                                        kTKPD_AUTHKEY : _auth?:@{},
                                        DATA_PRODUCT_DETAIL_KEY : _product.result.product,
@@ -2155,6 +2167,8 @@
             if([_formattedProductDescription isEqualToString:@"0"])
                 _formattedProductDescription = NO_DESCRIPTION;
             
+            selectedEtalase.etalase_id = [_product.result.product.product_etalase_id stringValue];;
+            selectedEtalase.etalase_name = _product.result.product.product_etalase;
             
             UserAuthentificationManager *userAuthentificationManager = [UserAuthentificationManager new];
             self.navigationItem.rightBarButtonItems = nil;
@@ -3127,7 +3141,8 @@
     }
 }
 
--(void)didSelectEtalase:(EtalaseList *)selectedEtalase{
+-(void)didSelectEtalase:(EtalaseList *)selectedEtalasee{
+    selectedEtalase = selectedEtalasee;
     [_requestMoveTo requestActionMoveToEtalase:_product.result.product.product_id etalaseID:selectedEtalase.etalase_id etalaseName:selectedEtalase.etalase_name];
 }
 
