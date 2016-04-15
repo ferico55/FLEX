@@ -660,7 +660,7 @@
                     transactionVC.wholeSales = _product.result.wholesale_price;
                     transactionVC.productPrice = _product.result.product.product_price;
                     transactionVC.data = @{DATA_DETAIL_PRODUCT_KEY:_product.result};
-        
+                    transactionVC.productID = _product.result.product.product_id;
                     [self.navigationController pushViewController:transactionVC animated:YES];
                 } else {
                     UINavigationController *navigationController = [[UINavigationController alloc] init];

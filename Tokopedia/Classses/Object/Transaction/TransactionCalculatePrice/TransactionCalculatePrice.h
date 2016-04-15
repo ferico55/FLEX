@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "TransactionCalculatePriceResult.h"
 
-@interface TransactionCalculatePrice : NSObject
+@interface TransactionCalculatePrice : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSArray *message_error;
 @property (nonatomic, strong) NSArray *message_status;
