@@ -59,7 +59,7 @@
                                 <constraint firstAttribute="height" constant="1" id="GNo-Fg-FxC"/>
                             </constraints>
                         </view>
-                        <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I0F-UY-vER">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I0F-UY-vER">
                             <rect key="frame" x="250" y="10" width="65" height="30"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
@@ -75,7 +75,7 @@
                                 <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="I39-wL-9HO"/>
+                                <action selector="btnSendTapped" destination="-1" eventType="touchUpInside" id="2b7-jV-hhZ"/>
                             </connections>
                         </button>
                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="6u1-H4-Esw" customClass="RSKGrowingTextView" customModule="Tokopedia" customModuleProvider="target">
@@ -94,6 +94,12 @@
                                 <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Kirim pesanmu di sini.."/>
                                 <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                     <real key="value" value="5"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                    <color key="value" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                    <real key="value" value="0.5"/>
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
                             <connections>
@@ -169,6 +175,11 @@
                                 <constraint firstAttribute="width" constant="50" id="py7-M8-k8c"/>
                                 <constraint firstAttribute="height" constant="50" id="rkc-Il-Q23"/>
                             </constraints>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                    <real key="value" value="25"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
                         </imageView>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Y6T-bo-Y27" userLabel="User Name View" customClass="ViewLabelUser">
                             <rect key="frame" x="75" y="15" width="230" height="22"/>
@@ -239,14 +250,16 @@
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M7G-5x-Pba">
-                            <rect key="frame" x="80" y="39" width="210" height="21"/>
-                            <constraints>
-                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="W8n-Mp-JYW"/>
-                            </constraints>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M7G-5x-Pba" customClass="TTTAttributedLabel">
+                            <rect key="frame" x="80" y="39" width="210" height="46"/>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="lineSpacing">
+                                    <real key="value" value="3"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
                         </label>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -260,6 +273,7 @@
                         <constraint firstAttribute="trailing" secondItem="UoQ-Vj-9Za" secondAttribute="trailing" id="fAR-IY-7Xr"/>
                         <constraint firstItem="UoQ-Vj-9Za" firstAttribute="leading" secondItem="Q1p-YP-EgQ" secondAttribute="trailing" constant="10" id="kY2-gI-O4K"/>
                         <constraint firstItem="Q1p-YP-EgQ" firstAttribute="top" secondItem="Fs7-ML-uQy" secondAttribute="top" constant="15" id="wcQ-nt-WUJ"/>
+                        <constraint firstAttribute="bottom" secondItem="M7G-5x-Pba" secondAttribute="bottom" constant="15" id="zEW-An-opa"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Olh-a7-2Vc" userLabel="Border">
@@ -284,7 +298,7 @@
                 <constraint firstAttribute="bottom" secondItem="Olh-a7-2Vc" secondAttribute="bottom" id="yXs-E8-OTB"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="-245" y="370.5"/>
+            <point key="canvasLocation" x="-245" y="370"/>
         </view>
     </objects>
     <resources>
