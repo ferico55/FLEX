@@ -582,9 +582,7 @@
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    CategoryDetail *category = [_dataInput objectForKey:DATA_CATEGORY_KEY];
     ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
-    
     UITableViewCell* cell = nil;
     if (!_isNodata) {
         switch (indexPath.section) {
@@ -601,8 +599,14 @@
                 }
                 if (indexPath.row == BUTTON_PRODUCT_CATEGORY) {
                     NSString *departmentTitle = @"Pilih Kategori";
-                    if (category.name && ![category.name isEqualToString:@""]) {
-                        departmentTitle = category.name;
+                    if ([_dataInput objectForKey:DATA_CATEGORY_KEY]) {
+                        if ([[_dataInput objectForKey:DATA_CATEGORY_KEY] isKindOfClass:[Breadcrumb class]]) {
+                            Breadcrumb *breadcrumb = [_dataInput objectForKey:DATA_CATEGORY_KEY];
+                            departmentTitle = breadcrumb.department_name;
+                        } else if ([[_dataInput objectForKey:DATA_CATEGORY_KEY] isKindOfClass:[CategoryDetail class]]) {
+                            CategoryDetail *category = [_dataInput objectForKey:DATA_CATEGORY_KEY];
+                            departmentTitle = category.name;
+                        }
                     }
                     cell.detailTextLabel.text = departmentTitle;
                 }
@@ -842,7 +846,9 @@
     }
     if (tag == TAG_REQUEST_LIST_CATALOG) {
         NSString *categoryId = @"";
-        if ([_dataInput objectForKey:DATA_CATEGORY_KEY]) {
+        if ([[_dataInput objectForKey:DATA_CATEGORY_KEY] isKindOfClass:[CategoryDetail class]]) {
+            categoryId = [[_dataInput objectForKey:DATA_CATEGORY_KEY] categoryId];
+        } else if ([[_dataInput objectForKey:DATA_CATEGORY_KEY] isKindOfClass:[CategoryDetail class]]) {
             categoryId = [[_dataInput objectForKey:DATA_CATEGORY_KEY] categoryId];
         }
         NSDictionary *param = @{
