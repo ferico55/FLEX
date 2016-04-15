@@ -10,4 +10,17 @@
 
 @implementation SkipReview
 
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *skipReviewMapping = [RKObjectMapping mappingForClass:[SkipReview class]];
+    
+    [skipReviewMapping addAttributeMappingsFromArray:@[@"status",
+                                                       @"server_process_time"]];
+    
+    [skipReviewMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data"
+                                                                                     toKeyPath:@"data"
+                                                                                   withMapping:[SkipReviewResult mapping]]];
+    
+    return skipReviewMapping;
+}
+
 @end

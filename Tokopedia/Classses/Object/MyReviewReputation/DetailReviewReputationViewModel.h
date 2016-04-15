@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "ReviewResponse.h"
+#import "ReviewImageAttachment.h"
 
 @interface DetailReviewReputationViewModel : NSObject
 
@@ -32,7 +33,7 @@
 @property (nonatomic, weak) NSString *product_status;
 @property (nonatomic, weak) NSString *product_id;
 
-
 @property (nonatomic, weak) ReviewResponse *review_response;
+@property (nonatomic, weak) NSArray *review_image_attachment;
 
 @end

@@ -18,6 +18,9 @@ GeneralAction : NSObject
 @property (nonatomic, strong) NSString *status;
 @property (nonatomic, strong) NSString *server_process_time;
 @property (nonatomic, strong) GeneralActionResult *result;
+@property (nonatomic, strong) GeneralActionResult *data;
+
++ (RKObjectMapping*)mapping;
 
 + (RKObjectMapping *)mapping;
 @end

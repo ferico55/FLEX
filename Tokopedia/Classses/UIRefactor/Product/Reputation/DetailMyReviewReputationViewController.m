@@ -35,6 +35,7 @@
 #import "TokopediaNetworkManager.h"
 #import "UserContainerViewController.h"
 #import "ViewLabelUser.h"
+#import "GiveReviewRatingViewController.h"
 
 #define CCellIdentifier @"cell"
 #define CGetListReputationReview @"get_list_reputation_review"
@@ -55,7 +56,7 @@
     CMPopTipView *cmPopTitpView;
     TokopediaNetworkManager *tokopediaNetworkManager;
     NSString *strUriNext;
-    BOOL isRefreshing, getDataFromMasterInServer;
+    BOOL isRefreshing, getDataFromMasterInServer, isEdit;
     int page, tempTagSkip;
     float heightBtnFooter;
     NSMutableParagraphStyle *style;
@@ -198,7 +199,8 @@
         height += CPaddingTopBottom + CPaddingTopBottom;
     }
     
-    return (CPaddingTopBottom*4) + height + CHeightContentAction + CDiameterImage + tempSizeDesc.height;
+    // Later delete the 60
+    return (CPaddingTopBottom*4) + height + CHeightContentAction + CDiameterImage + tempSizeDesc.height + 60;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -426,12 +428,21 @@
 }
 
 - (void)redirectToGiveReviewViewController:(int)tag {
-    GiveReviewViewController *giveReviewViewController = [GiveReviewViewController new];
+//    GiveReviewViewController *giveReviewViewController = [GiveReviewViewController new];
+//    DetailReputationReview *detailReputationReview = arrList[tag];
+//    
+//    giveReviewViewController.delegate = self;
+//    giveReviewViewController.detailReputationView = detailReputationReview;
+//    [self.navigationController pushViewController:giveReviewViewController animated:YES];
+    
+    GiveReviewRatingViewController *vc = [GiveReviewRatingViewController new];
+//    vc.detailMyReviewReputation = self;
     DetailReputationReview *detailReputationReview = arrList[tag];
     
-    giveReviewViewController.delegate = self;
-    giveReviewViewController.detailReputationView = detailReputationReview;
-    [self.navigationController pushViewController:giveReviewViewController animated:YES];
+    vc.review = detailReputationReview;
+    vc.isEdit = isEdit;
+    
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)reloadTable {
@@ -863,6 +874,7 @@
         [self.navigationController pushViewController:reportViewController animated:YES];
     }
     else {
+        isEdit = YES;
         [self redirectToGiveReviewViewController:(int)((UIButton *) sender).tag];
     }
 }
@@ -873,6 +885,10 @@
         return;
     DetailReputationReview *detailReputationReview = arrList[label.tag];
     [self redirectToProductDetailReputationReview:detailReputationReview];
+}
+
+- (void)goToImageViewerImages:(NSArray *)images atIndexImage:(NSInteger)index atIndexPath:(NSIndexPath *)indexPath {
+    [_TKPDNavigator navigateToShowImageFromViewController:self withImageDictionaries:images imageDescriptions:@[] indexImage:index];
 }
 
 

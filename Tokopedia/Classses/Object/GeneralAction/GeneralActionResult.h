@@ -18,5 +18,6 @@
 @property (nonatomic, strong) NSString *is_success;
 @property (strong, nonatomic) LuckyDeal *ld;
 
-+ (RKObjectMapping *)mapping;
++ (RKObjectMapping*)mapping;
+
 @end

@@ -14,9 +14,12 @@
 #define API_PAGING_KEY                  @"paging"
 #define API_ORDER_KEY                   @"order"
 #define API_ACTION_KEY                  @"action"
+#define API_BOOKING_KEY                 @"booking"
 
 #define API_NEW_ORDER_PATH              @"myshop-order.pl"
 #define API_NEW_ORDER_ACTION_PATH       @"action/myshop-order.pl"
+#define API_PRODUCT_ACTION_PATH         @"action/product.pl"
+
 #define API_GET_NEW_ORDER_KEY           @"get_order_new"
 #define API_GET_NEW_ORDER_PROCESS_KEY   @"get_order_process"
 #define API_GET_NEW_ORDER_STATUS_KEY    @"get_order_status"
@@ -52,6 +55,7 @@
 #define API_LIST_ORDER_CUSTOMER         @"order_customer"
 #define API_LIST_ORDER_PAYMENT          @"order_payment"
 #define API_LIST_ORDER_DETAIL           @"order_detail"
+#define API_LIST_ORDER_SHOP             @"order_shop"
 #define API_LIST_ORDER_AUTO_RESI        @"order_auto_resi"
 #define API_LIST_ORDER_DEADLINE         @"order_deadline"
 #define API_LIST_ORDER_AUTO_AWB         @"order_auto_awb"
@@ -116,6 +120,8 @@
 
 #define API_DEADLINE_PROCESS_DAY_LEFT   @"deadline_process_day_left"
 #define API_DEADLINE_SHIPPING_DAY_LEFT  @"deadline_shipping_day_left"
+#define API_DEADLINE_FINISH_DAY_LEFT    @"deadline_finish_day_left"
+#define API_DEADLINE_FINISH_DATE        @"deadline_finish_date"
 
 #define API_ORDER_DELIVERY_QUANTITY     @"order_deliver_quantity"
 #define API_PRODUCT_PICTURE             @"product_picture"
@@ -168,5 +174,13 @@
 #define API_ADDRESS_STREET              @"address_street"
 #define API_ADDRESS_CITY                @"address_city"
 #define API_ADDRESS_PROVINCE            @"address_province"
+
+#define API_SHOP_ADDRESS_POSTAL         @"address_postal"
+#define API_SHOP_ADDRESS_DISTRICT       @"address_district"
+#define API_SHOP_ADDRESS_CITY           @"address_city"
+#define API_SHOP_ADDRESS_STREET         @"address_street"
+#define API_SHOP_SHIPPER_PHONE          @"shipper_phone"
+#define API_SHOP_ADDRESS_COUNTRY        @"address_country"
+#define API_SHOP_ADDRESS_PROVINCE       @"address_province"
 
 #endif

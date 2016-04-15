@@ -16,7 +16,7 @@
                            @"http://staging.tokopedia.com/ws" : @"Staging",
                            @"http://alpha.tokopedia.com/ws" : @"Alpha",
                            @"http://www.tokopedia.com/ws" : @"Production",
-                           FBTweakValue(@"General", @"Developer's", @"NDVL Base Url", @"http://tn-tonito.tokopedia.ndvl/ws") : @"Developer's"
+                           FBTweakValue(@"General", @"Developer's", @"NDVL Base Url", @"http://lo-lucky.ndvl/ws") : @"Developer's"
                            }
                          ));
 }

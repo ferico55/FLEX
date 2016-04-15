@@ -27,7 +27,8 @@
 
 + (RKObjectMapping *)shopBadgeMapping {
     RKObjectMapping *shopBadgeMapping = [RKObjectMapping mappingForClass:[ShopBadgeLevel class]];
-    [shopBadgeMapping addAttributeMappingsFromArray:@[CLevel, CSet]];
+    [shopBadgeMapping addAttributeMappingsFromArray:@[@"level",
+                                                      @"set"]];
     return shopBadgeMapping;
 }
 @end

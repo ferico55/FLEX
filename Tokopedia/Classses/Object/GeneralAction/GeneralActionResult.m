@@ -13,8 +13,12 @@
 @implementation GeneralActionResult
 
 + (RKObjectMapping *)mapping {
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[GeneralActionResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{@"is_success":@"is_success"}];
-    return resultMapping;
+    RKObjectMapping *generalActionResultMapping = [RKObjectMapping mappingForClass:[GeneralActionResult class]];
+    
+    [generalActionResultMapping addAttributeMappingsFromArray:@[@"feedback_id",
+                                                                @"is_success"]];
+    
+    return generalActionResultMapping;
 }
+
 @end

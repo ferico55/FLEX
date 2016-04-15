@@ -12,9 +12,17 @@
 
 + (RKObjectMapping *)mapping{
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ReviewResult class]];
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"paging" toKeyPath:@"paging" withMapping:[Paging mapping]]];
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"advance_review" toKeyPath:@"advance_review" withMapping:[AdvanceReview mapping]]];
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"list" toKeyPath:@"list" withMapping:[DetailReputationReview mapping]]];
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"paging"
+                                                                                  toKeyPath:@"paging"
+                                                                                withMapping:[Paging mapping]]];
+    
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"advance_review"
+                                                                                  toKeyPath:@"advance_review"
+                                                                                withMapping:[AdvanceReview mapping]]];
+    
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"list"
+                                                                                  toKeyPath:@"list"
+                                                                                withMapping:[DetailReputationReview mapping]]];
     return resultMapping;
 }
 

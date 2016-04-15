@@ -19,6 +19,11 @@
     RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
                                                                                   toKeyPath:kTKPD_APIRESULTKEY
                                                                                 withMapping:[GeneralActionResult mapping]];
+
+	[statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data"
+                                                                                        toKeyPath:@"data"
+                                                                                       withMapping:[GeneralActionResult mapping]]];
+
     [statusMapping addPropertyMapping:resulRel];
     return statusMapping;
 }
