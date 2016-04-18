@@ -1996,9 +1996,17 @@
     NSString *productWeight = product.product_weight;
     NSString *productWeightUnitID = product.product_weight_unit;
 
-    NSInteger departmentID = 0;
-    if ([_dataInput objectForKey:DATA_CATEGORY_KEY]) {
-        departmentID = [[[_dataInput objectForKey:DATA_CATEGORY_KEY] categoryId] integerValue];
+    NSString *departmentID = @"";
+    if ([[_dataInput objectForKey:DATA_CATEGORY_KEY] isKindOfClass:[Breadcrumb class]]) {
+        Breadcrumb *breadcrumb = [_dataInput objectForKey:DATA_CATEGORY_KEY];
+        if (![breadcrumb.department_id isEqualToString:@""]) {
+            departmentID = breadcrumb.department_id;
+        }
+    } else if ([[_dataInput objectForKey:DATA_CATEGORY_KEY] isKindOfClass:[CategoryDetail class]]) {
+        CategoryDetail *category = [_dataInput objectForKey:DATA_CATEGORY_KEY];
+        if (![category.categoryId isEqualToString:@""]) {
+            departmentID = category.categoryId;
+        }
     }
     
     BOOL isPriceCurrencyRupiah = ([productPriceCurrencyID integerValue] == PRICE_CURRENCY_ID_RUPIAH);
@@ -2010,7 +2018,7 @@
     if (productName && ![productName isEqualToString:@""] &&
         productPrice>0 &&
         productWeight>0 &&
-        departmentID>0) {
+        ![departmentID isEqualToString:@""]) {
        
         if (isPriceCurrencyRupiah && [productPrice integerValue]>=MINIMUM_PRICE_RUPIAH &&
             [productPrice integerValue]<=MAXIMUM_PRICE_RUPIAH)
@@ -2058,7 +2066,7 @@
             isValid = NO;
         }
     }
-    if (!(departmentID>0)) {
+    if ([departmentID isEqualToString:@""]) {
         [_errorMessage addObject:ERRORMESSAGE_NULL_CATEGORY];
         isValid = NO;
     }
