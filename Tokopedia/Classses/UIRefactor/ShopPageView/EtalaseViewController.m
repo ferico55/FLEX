@@ -27,6 +27,7 @@
     NSIndexPath *selectedIndexPath;
     UIAlertView *alertView;
     BOOL _isDeleting;
+    BOOL _isLoading;
 }
 
 - (void)viewDidLoad {
@@ -61,6 +62,7 @@
         self.navigationItem.rightBarButtonItem = rightBarButton;
     }
     [self.navigationController setTitle:@"Etalase"];
+    self.title = @"Etalase";
     
     _tableView.tableFooterView = _footerView;
     _tambahEtalaseTextField.delegate = self;
@@ -192,6 +194,10 @@
     }
 }
 
+-(NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return @"Hapus";
+}
+
 #pragma mark - Method
 -(IBAction)cancelButtonTapped:(id)sender
 {
@@ -236,6 +242,7 @@
 #pragma mark - Request
 
 -(void)requestEtalase{
+    _isLoading = YES;
     _tableView.tableFooterView = _footerView;
     if(_showOtherEtalase){
         [self requestCertainShopEtalase];
@@ -268,6 +275,7 @@
                                          } onFailure:^(NSError *error) {
                                              _tableView.tableFooterView = nil;
                                          }];
+    _isLoading = NO;
 }
 
 -(void)selectInitialSelectedEtalase{
@@ -341,6 +349,7 @@
                                          } onFailure:^(NSError *error) {
                                              _tableView.tableFooterView = nil;
                                          }];
+    _isLoading = NO;
 }
 
 #pragma mark - TextField Delegate
@@ -378,6 +387,19 @@
                          }];
     }
 }
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    int maxLength = 128;
+    int textLength = [textField.text length] + [string length] - range.length;
+    
+    if(textLength > maxLength){
+        return NO;
+    }else{
+        return YES;
+    }
+}
+
 - (IBAction)tambahEtalaseButtonTapped:(id)sender {
     UserAuthentificationManager *auth = [UserAuthentificationManager new];
     NSDictionary *loginData = [auth getUserLoginData];
@@ -400,6 +422,8 @@
                                                   [_tableView insertRowsAtIndexPaths:insertIndexPaths withRowAnimation:UITableViewRowAnimationTop];
                                                   [_tableView endUpdates];
                                                   [_tambahEtalaseTextField.delegate textFieldShouldReturn:_tambahEtalaseTextField];
+                                                  StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[@"Sukses menambahkan etalase"] delegate:self];
+                                                  [alert show];
                                               }else{
                                                   [self alertForError:shopSettings.message_error];
                                               }
@@ -431,9 +455,12 @@
                                                      NSArray *operationIndexPaths = [NSArray arrayWithObjects:[NSIndexPath indexPathForRow:selectedIndexPath.row inSection:selectedIndexPath.section], nil];
                                                      
                                                      [_tableView beginUpdates];
-                                                     [_tableView deleteRowsAtIndexPaths:operationIndexPaths withRowAnimation:UITableViewRowAnimationMiddle];
-                                                     [_tableView insertRowsAtIndexPaths:operationIndexPaths withRowAnimation:UITableViewRowAnimationMiddle];
+                                                     [_tableView deleteRowsAtIndexPaths:operationIndexPaths withRowAnimation:UITableViewRowAnimationFade];
+                                                     [_tableView insertRowsAtIndexPaths:operationIndexPaths withRowAnimation:UITableViewRowAnimationFade];
                                                      [_tableView endUpdates];
+                                                     
+                                                     StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[@"Berhasil mengubah nama etalase"] delegate:self];
+                                                     [alert show];
                                                  }else{
                                                      [self alertForError:shopSettings.message_error];
                                                  }
