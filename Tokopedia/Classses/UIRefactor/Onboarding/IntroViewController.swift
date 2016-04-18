@@ -258,6 +258,7 @@ class IntroViewController: UIViewController, EAIntroDelegate {
     
     private func markOnboardingPlayed() {
         NSUserDefaults.standardUserDefaults().setBool(true, forKey: "has_shown_onboarding")
+        NSUserDefaults.standardUserDefaults().synchronize()
     }
     
     @IBAction func btnSearchTapped(sender: AnyObject) {
