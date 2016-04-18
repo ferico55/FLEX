@@ -401,35 +401,40 @@
 }
 
 - (IBAction)tambahEtalaseButtonTapped:(id)sender {
-    UserAuthentificationManager *auth = [UserAuthentificationManager new];
-    NSDictionary *loginData = [auth getUserLoginData];
-    NSString *userId = [loginData objectForKey:@"user_id"]?:@"";
-    [etalaseRequest requestActionAddEtalaseWithName:[_tambahEtalaseTextField text]
-                                             userId:userId
-                                          onSuccess:^(ShopSettings *shopSettings) {
-                                              if(shopSettings.result.is_success == 1){
-                                                  EtalaseList *newEtalase = [EtalaseList new];
-                                                  [newEtalase setEtalase_id:shopSettings.result.etalase_id];
-                                                  [newEtalase setEtalase_name:[_tambahEtalaseTextField text]];
-                                                  [newEtalase setEtalase_num_product:@"0"];
-                                                  [newEtalase setEtalase_total_product:@"0"];
-                                                  
-                                                  [etalaseList insertObject:newEtalase atIndex:0];
-                                                  NSArray *insertIndexPaths = [NSArray arrayWithObjects:
-                                                                               [NSIndexPath indexPathForRow:0 inSection:1],nil
-                                                                               ];
-                                                  [_tableView beginUpdates];
-                                                  [_tableView insertRowsAtIndexPaths:insertIndexPaths withRowAnimation:UITableViewRowAnimationTop];
-                                                  [_tableView endUpdates];
-                                                  [_tambahEtalaseTextField.delegate textFieldShouldReturn:_tambahEtalaseTextField];
-                                                  StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[@"Sukses menambahkan etalase"] delegate:self];
-                                                  [alert show];
-                                              }else{
-                                                  [self alertForError:shopSettings.message_error];
-                                              }
-                                          } onFailure:^(NSError *error) {
-                                              [self alertForError:@[@"Kendala koneksi internet"]];
-                                          }];
+    if(_isLoading){
+        UserAuthentificationManager *auth = [UserAuthentificationManager new];
+        NSDictionary *loginData = [auth getUserLoginData];
+        NSString *userId = [loginData objectForKey:@"user_id"]?:@"";
+        [etalaseRequest requestActionAddEtalaseWithName:[_tambahEtalaseTextField text]
+                                                 userId:userId
+                                              onSuccess:^(ShopSettings *shopSettings) {
+                                                  if(shopSettings.result.is_success == 1){
+                                                      EtalaseList *newEtalase = [EtalaseList new];
+                                                      [newEtalase setEtalase_id:shopSettings.result.etalase_id];
+                                                      [newEtalase setEtalase_name:[_tambahEtalaseTextField text]];
+                                                      [newEtalase setEtalase_num_product:@"0"];
+                                                      [newEtalase setEtalase_total_product:@"0"];
+                                                      
+                                                      [etalaseList insertObject:newEtalase atIndex:0];
+                                                      NSArray *insertIndexPaths = [NSArray arrayWithObjects:
+                                                                                   [NSIndexPath indexPathForRow:0 inSection:1],nil
+                                                                                   ];
+                                                      [_tableView beginUpdates];
+                                                      [_tableView insertRowsAtIndexPaths:insertIndexPaths withRowAnimation:UITableViewRowAnimationTop];
+                                                      [_tableView endUpdates];
+                                                      [_tambahEtalaseTextField.delegate textFieldShouldReturn:_tambahEtalaseTextField];
+                                                      StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[@"Sukses menambahkan etalase"] delegate:self];
+                                                      [alert show];
+                                                  }else{
+                                                      [self alertForError:shopSettings.message_error];
+                                                  }
+                                              } onFailure:^(NSError *error) {
+                                                  [self alertForError:@[@"Kendala koneksi internet"]];
+                                              }];
+    }else{
+        StickyAlertView *alert = [[StickyAlertView alloc]initWithWarningMessages:@[@"Masih ada proses yang sedang berlangsung, tunggu beberapa saat dan coba kembali."] delegate:self];
+        [alert show];
+    }
 }
 
 - (void)requestEditEtalase:(NSString*)name{
