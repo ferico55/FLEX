@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "EDStarRating.h"
 #import "TTTAttributedLabel.h"
+#import "DetailReputationReview.h"
 
 @class DetailReviewReputationViewModel;
 @class ReviewList;
@@ -56,7 +57,7 @@
 @property BOOL isHelpful;
 
 - (void)setReputationModelView:(DetailReviewReputationViewModel*)viewModel;
-- (void)setShopReputationModelView:(ReviewList*)viewModel;
+- (void)setShopReputationModelView:(DetailReputationReview*)viewModel;
 
 
 @end
