@@ -15,6 +15,7 @@
 #import "LoadingView.h"
 #import "NoResultReusableView.h"
 #import "TokopediaNetworkManager.h"
+#import "DepositRequest.h"
 
 @interface DepositSummaryViewController () <UITableViewDataSource, UITableViewDelegate, TKPDAlertViewDelegate, TokopediaNetworkManagerDelegate, LoadingViewDelegate> {
     __weak RKObjectManager *_objectManager;
@@ -51,6 +52,8 @@
     UIBarButtonItem *_barbuttonleft;
     UIBarButtonItem *_barbuttonright;
     LoadingView *loadingView;
+    
+    DepositRequest *_depositRequest;
 }
 
 @property (strong, nonatomic) IBOutlet UITableView *table;
@@ -83,8 +86,7 @@
 }
 
 #pragma mark - Initialization
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     
     self.title = @"Detil Saldo";
@@ -99,7 +101,7 @@
 
 - (void)initBarButton {
     //NSBundle* bundle = [NSBundle mainBundle];
-//    _barbuttonright = [[UIBarButtonItem alloc] initWithTitle:@"Konfirmasi" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+    //    _barbuttonright = [[UIBarButtonItem alloc] initWithTitle:@"Konfirmasi" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
     
     UIImage *infoImage = [UIImage imageNamed:@"icon_info_white.png"];
     
@@ -146,12 +148,12 @@
     
     _table.delegate = self;
     _table.dataSource = self;
-
+    
     _filterDateButton.layer.cornerRadius = 3.0;
     _withdrawalButton.layer.cornerRadius = 3.0;
     _saldoLabel.text = [_data objectForKey:@"total_saldo"];
     _reviewSaldo.text = @"";
-
+    
     
     _page = 1;
     [self disableButtonWithdraw];
@@ -165,11 +167,13 @@
     NSDateComponents *components = [[NSDateComponents alloc] init];
     [components setMonth:-1];
     _oneMonthBeforeNow = [calendar dateByAddingComponents:components
-                                                        toDate:_now
-                                                       options:0];
+                                                   toDate:_now
+                                                  options:0];
     
     [_startDateButton setTitle:[dateFormat stringFromDate:_oneMonthBeforeNow] forState:UIControlStateNormal];
     [_endDateButton setTitle:[dateFormat stringFromDate:_now] forState:UIControlStateNormal];
+    
+    _depositRequest = [DepositRequest new];
     
     self.contentView  = self.view;
     [self initNoResultView];
@@ -199,15 +203,12 @@
         cell = (DepositSummaryCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
         if (cell == nil) {
             cell = [DepositSummaryCell newcell];
-//            ((DepositSummaryCell *) cell).contentView.backgroundColor = [UIColor redColor];
         }
         
         if (_depositSummary.count > indexPath.row) {
             
             DepositSummaryList *depositList = _depositSummary[indexPath.row];
             ((DepositSummaryCell*)cell).indexpath = indexPath;
-            
-//            NSString *timeLabel = [depositList.deposit_date_full substringFromIndex:MAX((int)[depositList.deposit_date_full length]-5, 0)];
             
             [((DepositSummaryCell*)cell).currentSaldo setText:depositList.deposit_saldo_idr];
             if([depositList.deposit_amount integerValue] > 0) {
@@ -216,7 +217,6 @@
                 [((DepositSummaryCell*)cell).depositAmount setTextColor:[UIColor redColor]];
             }
             [((DepositSummaryCell*)cell).depositAmount setText:depositList.deposit_amount_idr];
-//            [((DepositSummaryCell*)cell).depositNotes setText:depositList.deposit_notes];
             [((DepositSummaryCell*)cell).withdrawalTime setText:depositList.deposit_date_full];
             
             
@@ -231,12 +231,12 @@
                                          };
             
             NSAttributedString *depositNotesText = [[NSAttributedString alloc] initWithString:[NSString convertHTML:depositList.deposit_notes]
-                                                                                            attributes:attributes];
+                                                                                   attributes:attributes];
             
             ((DepositSummaryCell*)cell).depositNotes.attributedText = depositNotesText;
             
         } else {
-
+            
         }
     }
     
@@ -248,17 +248,16 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    #ifdef kTKPDPRODUCTHOTLIST_NODATAENABLE
-        return _isNoData ? 1 : _depositSummary.count;
-    #else
-        return _isNoData ? 0 : _depositSummary.count;
-    #endif
-        
+#ifdef kTKPDPRODUCTHOTLIST_NODATAENABLE
+    return _isNoData ? 1 : _depositSummary.count;
+#else
+    return _isNoData ? 0 : _depositSummary.count;
+#endif
+    
 }
 
 #pragma mark - Tableview Delegate
--(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
+-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (_isNoData) {
         cell.backgroundColor = [UIColor whiteColor];
     }
@@ -301,7 +300,91 @@
         [_act stopAnimating];
     }
     
-    [[self getNetworkManager] doRequest];
+    NSDateFormatter *dateFormatStr = [NSDateFormatter new];
+    [dateFormatStr setDateFormat:@"yyyyMMdd"];
+    
+    [_depositRequest requestGetDepositSummaryWithStartDate:_currentStartDate?:[dateFormatStr stringFromDate:_oneMonthBeforeNow]
+                                                   endDate:_currentEndDate?:[dateFormatStr stringFromDate:_now]
+                                                      page:_page
+                                                   perPage:20
+                                                 onSuccess:^(DepositSummaryResult *data) {
+                                                     [_barbuttonright setEnabled:YES];
+                                                     [_depositSummary addObjectsFromArray:data.list];
+                                                     _useableSaldo = data.summary.summary_useable_deposit;
+                                                     _useableSaldoIDR = data.summary.summary_useable_deposit_idr;
+                                                     
+                                                     _totalSaldoTokopedia = data.summary.summary_total_deposit_idr;
+                                                     _holdDepositByCsIDR = data.summary.summary_deposit_hold_by_cs_idr;
+                                                     _holdDepositByTokopedia = data.summary.summary_deposit_hold_tx_1_day_idr;
+                                                     
+                                                     if([data.summary.summary_deposit_hold_tx_1_day integerValue] > 0) {
+                                                         _infoReviewSaldo.tag = 121;
+                                                         
+                                                         if(! [_withdrawalButton viewWithTag:121]) {
+                                                             [_reviewSaldo setText:_holdDepositByTokopedia];
+                                                             CGRect newFrame2 = _filterDateArea.frame;
+                                                             newFrame2.origin.y += 40;
+                                                             _filterDateArea.frame = newFrame2;
+                                                             
+                                                             CGRect newFrame3 = _table.frame;
+                                                             newFrame3.origin.y += 40;
+                                                             _table.frame = newFrame3;
+                                                             
+                                                             [_withdrawalButton addSubview:_infoReviewSaldo];
+                                                             CGRect newFrame4 = _infoReviewSaldo.frame;
+                                                             newFrame4.origin.y += 47;
+                                                             newFrame4.size.width = self.view.bounds.size.width;
+                                                             newFrame4.origin.x = -_withdrawalButton.frame.origin.x;
+                                                             _infoReviewSaldo.frame = newFrame4;
+                                                             
+                                                             constraintHeightSuperHeader.constant = constraintHeightSuperHeader.constant+_infoReviewSaldo.frame.size.height-2;
+                                                             constraintHeightHeader.constant = constraintHeightHeader.constant +_infoReviewSaldo.frame.size.height-2;
+                                                         }
+                                                     }
+                                                     
+                                                     if([data.summary.summary_today_tries integerValue] < [data.summary.summary_daily_tries integerValue] && [data.summary.summary_useable_deposit integerValue] > 0) {
+                                                         [self enableButtonWithdraw];
+                                                     }
+                                                     
+                                                     if (_depositSummary.count > 0) {
+                                                         _isNoData = NO;
+                                                         _uriNext =  data.paging.uri_next;
+                                                         NSURL *url = [NSURL URLWithString:_uriNext];
+                                                         NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
+                                                         
+                                                         NSMutableDictionary *queries = [NSMutableDictionary new];
+                                                         [queries removeAllObjects];
+                                                         for (NSString *keyValuePair in querry)
+                                                         {
+                                                             NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
+                                                             NSString *key = [pairComponents objectAtIndex:0];
+                                                             NSString *value = [pairComponents objectAtIndex:1];
+                                                             
+                                                             [queries setObject:value forKey:key];
+                                                         }
+                                                         
+                                                         _page = [[queries objectForKey:@"page"] integerValue];
+                                                     } else {
+                                                         _isNoData = YES;
+                                                         
+                                                         if(data.error_date) {
+                                                             [_noResultView setNoResultTitle:kTKPDMESSAGE_ERRORMESSAGEDATEKEY];
+                                                         }
+                                                         _table.tableFooterView = _noResultView;
+                                                         
+                                                     }
+                                                     
+                                                     _table.tableHeaderView = nil;
+                                                     
+                                                     [_table reloadData];
+                                                     _isRefreshView = NO;
+                                                     [_refreshControl endRefreshing];
+                                                 }
+                                                 onFailure:^(NSError *errorResult) {
+                                                     
+                                                     
+                                                 }];
+    
 }
 
 - (void)requestSuccess:(id)object withOperation:(RKObjectRequestOperation*)operation {
@@ -340,11 +423,11 @@
                     CGRect newFrame2 = _filterDateArea.frame;
                     newFrame2.origin.y += 40;
                     _filterDateArea.frame = newFrame2;
-                
+                    
                     CGRect newFrame3 = _table.frame;
                     newFrame3.origin.y += 40;
                     _table.frame = newFrame3;
-                
+                    
                     [_withdrawalButton addSubview:_infoReviewSaldo];
                     CGRect newFrame4 = _infoReviewSaldo.frame;
                     newFrame4.origin.y += 47;
@@ -448,18 +531,8 @@
         switch (button.tag) {
             case 10:
             {
-//                if(!_request.isExecuting) {
-                    DepositFormViewController *formViewController = [DepositFormViewController new];
-//                    formViewController.data = @{@"summary_useable_deposit_idr":_useableSaldoIDR, @"summary_useable_deposit":_useableSaldo};
-                
-//                    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:formViewController];
-//                    nav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-//                    [nav.navigationBar setTranslucent:NO];
-//                    
-//                    [self.navigationController presentViewController:nav animated:YES completion:nil];
-                    [self.navigationController pushViewController:formViewController animated:YES];
-//                }
-                
+                DepositFormViewController *formViewController = [DepositFormViewController new];
+                [self.navigationController pushViewController:formViewController animated:YES];
                 break;
             }
                 
@@ -493,7 +566,7 @@
                 datePicker.delegate = self;
                 datePicker.tag = 2;
                 datePicker.currentdate = date;
-
+                
                 [datePicker show];
                 break;
             }
@@ -507,7 +580,7 @@
                 break;
             }
                 
-            case 14 :  {
+            case 14 : {
                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Info Saldo Tokopedia" message:
                                           [NSString stringWithFormat: @"\n -%@ %@\n\n-%@ %@\n%@\n\n-%@ %@\n\n-%@ %@\n\n-%@\n\n-%@",
                                            @" Total Saldo Tokopedia Anda adalah",
@@ -527,7 +600,7 @@
                                                           cancelButtonTitle:@"OK"
                                                           otherButtonTitles:nil];
                 [alertView show];
-
+                
                 break;
             }
                 
@@ -543,8 +616,7 @@
 }
 
 #pragma mark - Memory Manage
-- (void)dealloc
-{
+- (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [tokopediaNetWorkManager requestCancel];
     tokopediaNetWorkManager.delegate = nil;
@@ -558,8 +630,7 @@
 
 #pragma mark - TKPD Alert date picker delegate
 
-- (void)alertView:(TKPDAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
+- (void)alertView:(TKPDAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     AlertDatePickerView *datePicker = (AlertDatePickerView *)alertView;
     NSDate *date = [datePicker.data objectForKey:kTKPDALERTVIEW_DATADATEPICKERKEY];
     
@@ -568,7 +639,7 @@
     
     NSDateFormatter *dateFormatStr = [NSDateFormatter new];
     [dateFormatStr setDateFormat:@"yyyyMMdd"];
-
+    
     if (datePicker.tag == 1) {
         [_startDateButton setTitle:[dateFormatter stringFromDate:date] forState:UIControlStateNormal];
         _currentStartDate = [dateFormatStr stringFromDate:date];
@@ -580,8 +651,7 @@
 
 
 #pragma mark - Method
-- (LoadingView *)getLoadView
-{
+- (LoadingView *)getLoadView {
     if(loadingView == nil)
     {
         loadingView = [LoadingView new];
@@ -591,8 +661,7 @@
     return loadingView;
 }
 
-- (TokopediaNetworkManager *)getNetworkManager
-{
+- (TokopediaNetworkManager *)getNetworkManager {
     if(tokopediaNetWorkManager == nil)
     {
         tokopediaNetWorkManager = [TokopediaNetworkManager new];
@@ -622,30 +691,25 @@
     [_withdrawalButton setAlpha:1];
 }
 
-
-
 #pragma mark - TokopediaNetworkManager Delegate
-- (NSDictionary*)getParameter:(int)tag
-{
+- (NSDictionary*)getParameter:(int)tag {
     NSDateFormatter *dateFormatStr = [NSDateFormatter new];
     [dateFormatStr setDateFormat:@"yyyyMMdd"];
     
     return @{
-                            @"action" : @"get_summary",
-                            @"page"   :   @(_page),
-                            @"limit"  :   @(20),
-                            @"start_date" : _currentStartDate?:[dateFormatStr stringFromDate:_oneMonthBeforeNow],
-                            @"end_date" : _currentEndDate?:[dateFormatStr stringFromDate:_now]
-                            };
+             @"action" : @"get_summary",
+             @"page"   :   @(_page),
+             @"limit"  :   @(20),
+             @"start_date" : _currentStartDate?:[dateFormatStr stringFromDate:_oneMonthBeforeNow],
+             @"end_date" : _currentEndDate?:[dateFormatStr stringFromDate:_now]
+             };
 }
 
-- (NSString*)getPath:(int)tag
-{
+- (NSString*)getPath:(int)tag {
     return @"deposit.pl";
 }
 
-- (id)getObjectManager:(int)tag
-{
+- (id)getObjectManager:(int)tag {
     _objectManager = [RKObjectManager sharedClient];
     
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[DepositSummary class]];
@@ -708,16 +772,14 @@
     return _objectManager;
 }
 
-- (NSString*)getRequestStatus:(id)result withTag:(int)tag
-{
+- (NSString*)getRequestStatus:(id)result withTag:(int)tag {
     NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
     id stat = [resultDict objectForKey:@""];
     
     return ((DepositSummary *) stat).status;
 }
 
-- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag
-{
+- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag {
     [self requestSuccess:successResult withOperation:operation];
     
     [_table reloadData];
@@ -725,21 +787,14 @@
     [_refreshControl endRefreshing];
 }
 
-//- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
-//{
-//    
-//}
-
 - (void)actionBeforeRequest:(int)tag {
     
 }
 
-- (void)actionRequestAsync:(int)tag
-{
+- (void)actionRequestAsync:(int)tag {
 }
 
-- (void)actionAfterFailRequestMaxTries:(int)tag
-{
+- (void)actionAfterFailRequestMaxTries:(int)tag {
     _isRefreshView = NO;
     [_refreshControl endRefreshing];
     _table.tableFooterView = [self getLoadView].view;
@@ -747,8 +802,7 @@
 
 
 #pragma mark - LoadingView Delegate
-- (void)pressRetryButton
-{
+- (void)pressRetryButton {
     [self loadData];
 }
 
