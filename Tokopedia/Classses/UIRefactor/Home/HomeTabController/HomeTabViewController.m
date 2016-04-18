@@ -220,7 +220,7 @@
     _userManager = [UserAuthentificationManager new];
     if([_userManager isLogin]) {
         _isAbleToSwipe = YES;
-        [_scrollView setContentSize:CGSizeMake(_scrollView.frame.size.width*5, 300)];
+        [_scrollView setContentSize:CGSizeMake(self.view.frame.size.width*5, 300)];
         [_scrollView setPagingEnabled:YES];
     } else {
         _isAbleToSwipe = NO;
