@@ -11,7 +11,7 @@
 #import "Paging.h"
 #import "TxOrderStatusList.h"
 
-@interface TxOrderStatusResult : NSObject
+@interface TxOrderStatusResult : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) Paging *paging;
 @property (nonatomic, strong) NSArray *list;

@@ -10,13 +10,15 @@
 #import "AddressForm.h"
 #import "RequestObject.h"
 #import "ProfileSettings.h"
+#import "ImageResult.h"
+#import "UploadImage.h"
 
 @implementation TKPMappingManager
 
 static RKObjectManager *_objectManager;
 
 
-+(RKObjectManager*)objectManagerGetAddress
++ (RKObjectManager*)objectManagerGetAddress
 {
     _objectManager = [RKObjectManager sharedClientHttps];
     static dispatch_once_t oncePredicate;
@@ -32,7 +34,7 @@ static RKObjectManager *_objectManager;
     return  _objectManager;
 }
 
-+(RKObjectManager*)objectManagerEditAddress
++ (RKObjectManager*)objectManagerEditAddress
 {
     _objectManager = [RKObjectManager sharedClientHttps];
     static dispatch_once_t oncePredicate;
@@ -53,5 +55,36 @@ static RKObjectManager *_objectManager;
     return _objectManager;
 }
 
++ (RKObjectManager *)objectManagerUploadImageWithBaseURL:(NSString*)baseURL
+                                             pathPattern:(NSString*)pathPattern {
+    _objectManager = [RKObjectManager sharedClient:baseURL];
+    static dispatch_once_t oncePredicate;
+    //TODO: pake oncePredicate
+//    dispatch_once(&oncePredicate, ^{
+        RKRequestDescriptor *requestDescriptor = [RKRequestDescriptor requestDescriptorWithMapping:[[RequestObjectUploadImage mapping] inverseMapping]
+                                                                                       objectClass:[RequestObjectUploadImage class]
+                                                                                       rootKeyPath:nil
+                                                                                            method:RKRequestMethodPOST];
+        
+        [_objectManager addRequestDescriptor:requestDescriptor];
+//    });
+    
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[ImageResult mapping]
+                                                                                            method:RKRequestMethodPOST
+                                                                                       pathPattern:pathPattern
+                                                                                           keyPath:@""
+                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    RKResponseDescriptor *responseStatusDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[UploadImage mapping]
+                                                                                            method:RKRequestMethodPOST
+                                                                                       pathPattern:pathPattern
+                                                                                           keyPath:@""
+                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    [_objectManager addResponseDescriptor:responseDescriptor];
+    [_objectManager addResponseDescriptor:responseStatusDescriptor];
+    
+    return _objectManager;
+}
 
 @end

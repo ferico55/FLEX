@@ -13,5 +13,22 @@
 - (NSString *)shop_name {
     return [_shop_name kv_decodeHTMLCharacterEntities];
 }
++(NSDictionary *)attributeMappingDictionary
+{
+    NSArray *keys = @[@"shop_uri",
+                      @"shop_id",
+                      @"shop_name",
+                      @"shop_pic"
+                      ];
+    return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
+}
+
++(RKObjectMapping*)mapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+
+    return mapping;
+}
 
 @end

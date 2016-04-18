@@ -119,7 +119,13 @@
                 [_delegate showPopUpLuckyDeal:ld.data.attributes.words];
             }
         }
+        
+        [_delegate finishRequestLD];
     }
+}
+
+-(void)actionAfterFailRequestMaxTries:(int)tag{
+    [_delegate finishRequestLD];
 }
 
 -(void)showLuckyMerchant:(LuckyDealWord*)words
@@ -165,9 +171,5 @@
     [alertLucky show];
 }
 
--(void)actionAfterFailRequestMaxTries:(int)tag
-{
-
-}
 
 @end

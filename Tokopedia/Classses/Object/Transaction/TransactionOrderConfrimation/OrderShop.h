@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface OrderShop : NSObject
+@interface OrderShop : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *shop_uri;
 @property (nonatomic, strong) NSString *shop_id;
