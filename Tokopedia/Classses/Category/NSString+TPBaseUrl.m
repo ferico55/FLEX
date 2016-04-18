@@ -43,6 +43,17 @@
                           ));
 }
 
++ (NSString*)topAdsUrl {
+    return  FBTweakValue(@"General", @"Environment", @"Tokopedia TopAds Url", @"https://ta.tokopedia.com",
+                         (@{
+                            @"https://ta-staging.tokopedia.com" : @"Staging",
+                            @"https://ta-alpha.tokopedia.com" : @"Alpha",
+                            @"https://ta.tokopedia.com" : @"Production",
+                            }
+                          ));
+}
+
+
 + (NSString*)keroUrl {
     return  FBTweakValue(@"General", @"Environment", @"Tokopedia Kero Url", @"https://kero.tokopedia.com",
                          (@{

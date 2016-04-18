@@ -9,5 +9,12 @@
 #import "WholesalePrice.h"
 
 @implementation WholesalePrice
-
++(RKObjectMapping *)mappingForPromo{
+    RKObjectMapping* wholesalePromoMapping = [RKObjectMapping mappingForClass:[WholesalePrice class]];
+    [wholesalePromoMapping addAttributeMappingsFromDictionary:@{@"quantity_min_format":@"wholesale_min",
+                                                                @"quantity_max_format":@"wholesale_max",
+                                                                @"price_format":@"wholesale_price"
+                                                                }];
+    return wholesalePromoMapping;
+}
 @end

@@ -312,6 +312,15 @@
         [_objectManager.HTTPClient setDefaultHeader:@"X-Tkpd-Path" value:[hmac getTkpdPath]];
         [_objectManager.HTTPClient setDefaultHeader:@"X-Method" value:[hmac getRequestMethod]];
         
+        UserAuthentificationManager *userAuth = [UserAuthentificationManager new];
+        NSString* userId = [userAuth getUserId];
+        NSString* sessionId = [userAuth getMyDeviceToken];
+        
+        [_objectManager.HTTPClient setDefaultHeader:@"Tkpd-UserId" value:userId];
+        [_objectManager.HTTPClient setDefaultHeader:@"Tkpd-SessionId" value:sessionId];
+        [_objectManager.HTTPClient setDefaultHeader:@"X-Device" value:@"ios"];
+        
+        
         [_objectManager.HTTPClient setDefaultHeader:@"Authorization" value:[NSString stringWithFormat:@"TKPD %@:%@", @"Tokopedia", signature]];
         [_objectManager.HTTPClient setDefaultHeader:@"X-Tkpd-Authorization" value:[NSString stringWithFormat:@"TKPD %@:%@", @"Tokopedia", signature]];
         
@@ -419,6 +428,7 @@
         errors = @[@"Terjadi kendala pada koneksi internet"];
     } else {
         errors = @[error.localizedDescription];
+        return;
     }
     
     

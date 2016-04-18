@@ -199,6 +199,10 @@
     HelpfulReviewResponse *tempReview = stat;
     reviewResult = tempReview.result;
     
+    for(DetailReputationReview *detailReputation in reviewResult.helpful_reviews){
+        detailReputation.product_id = _productId;
+        detailReputation.review_product_id = _productId;
+    }
     
     [_delegate didReceiveHelpfulReview:reviewResult.helpful_reviews];
     

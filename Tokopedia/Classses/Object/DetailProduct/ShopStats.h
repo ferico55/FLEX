@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "ShopBadgeLevel.h"
 #import "CountRatingResult.h"
 #import "ShopBadgeLevel.h"
 

@@ -10,36 +10,59 @@
 
 @implementation PromoProduct
 
-- (NSString*)shop_name {
-    return [_shop_name kv_decodeHTMLCharacterEntities];
++(RKObjectMapping *)mapping{
+    RKObjectMapping *promoProductMapping = [RKObjectMapping mappingForClass:[PromoProduct class]];
+    [promoProductMapping addAttributeMappingsFromDictionary:@{@"id":@"product_id"}];
+    [promoProductMapping addAttributeMappingsFromArray:@[@"name",
+                                                   @"uri",
+                                                   @"relative_uri",
+                                                   @"price_format",
+                                                   @"count_talk_format",
+                                                   @"count_review_format"
+                                                   ]];
+    [promoProductMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"category"
+                                                                                        toKeyPath:@"category"
+                                                                                      withMapping:[PromoCategory mapping]]];
+    [promoProductMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"wholesale_price"
+                                                                                        toKeyPath:@"wholesale_price"
+                                                                                      withMapping:[WholesalePrice mappingForPromo]]];
+    [promoProductMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"image"
+                                                                                        toKeyPath:@"image"
+                                                                                      withMapping:[PromoProductImage mapping]]];
+    
+    return promoProductMapping;
 }
 
-- (NSString *)product_name {
-    return [_product_name kv_decodeHTMLCharacterEntities];
+- (NSString *)name {
+    return [_name kv_decodeHTMLCharacterEntities];
 }
 
 - (ProductModelView *)viewModel {
+    
     if(_viewModel == nil) {
         ProductModelView *viewModel = [[ProductModelView alloc] init];
-        [viewModel setProductName:self.product_name];
-        [viewModel setProductPrice:self.product_price];
-        [viewModel setProductShop:self.shop_name];
+        [viewModel setProductName:_name];
+        [viewModel setProductPrice:_price_format];
+        /*
+        [viewModel setProductShop:_];
         [viewModel setProductThumbUrl:self.product_image_200];
         [viewModel setProductReview:self.product_review_count];
         [viewModel setProductTalk:self.product_talk_count];
         [viewModel setIsGoldShopProduct:[self.shop_gold_status isEqualToString:@"1"]];
         [viewModel setLuckyMerchantImageURL:self.shop_lucky];
+         */
         _viewModel = viewModel;
     }
+    
     return _viewModel;
 }
 
 - (NSDictionary *)productFieldObjects {
     return @{
              @"id"   : _product_id?:@"",
-             @"name" : _product_name?:@"",
-             @"url"  : _product_url?:@"",
-             @"price" : _product_price?:@""
+             @"name" : _name?:@"",
+             @"url"  : _relative_uri?:@"",
+             @"price" : _price_format?:@""
     };
 }
 

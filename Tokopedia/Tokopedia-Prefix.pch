@@ -68,6 +68,7 @@
     #import "UIViewController+TKPAdditions.h"
     #import "TKPStoreManager.h"
     #import "TKPMappingManager.h"
+    #import "TKPObjectMapping.h"
 
     #import "TPSpotlight.h"
     #import "StickyAlertView+NetworkErrorHandler.h"

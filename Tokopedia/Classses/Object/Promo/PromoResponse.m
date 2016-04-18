@@ -10,4 +10,12 @@
 
 @implementation PromoResponse
 
++(RKObjectMapping *)mapping{
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[PromoResponse class]];
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data"
+                                                                                  toKeyPath:@"data"
+                                                                                withMapping:[PromoResult mapping]]];
+    return statusMapping;
+}
+
 @end

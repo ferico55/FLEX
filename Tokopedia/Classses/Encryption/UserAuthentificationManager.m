@@ -65,7 +65,11 @@
 }
 
 - (NSString*)getMyDeviceToken {
-    return [_auth objectForKey:@"device_token"] ?: @"0";
+    if ([[_auth objectForKey:@"device_token"] isKindOfClass:[NSString class]]) {
+        return [_auth objectForKey:@"device_token"]?: @"0";
+    } else {
+        return [[_auth objectForKey:@"device_token"] stringValue]?: @"0";
+    }
 }
 
 //auto increment from database that had been saved in secure storage

@@ -9,9 +9,13 @@
 #import "PromoProductImage.h"
 
 @implementation PromoProductImage
-
-- (NSString*)product_name {
-    return [_product_name kv_decodeHTMLCharacterEntities];
++(RKObjectMapping *)mapping{
+    RKObjectMapping *promoProductImageMapping = [RKObjectMapping mappingForClass:[PromoProductImage class]];
+    [promoProductImageMapping addAttributeMappingsFromArray:@[@"m_url",
+                                                              @"s_url",
+                                                              @"xs_url"
+                                                              ]];
+    
+    return promoProductImageMapping;
 }
-
 @end

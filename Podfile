@@ -14,8 +14,9 @@ target "Tokopedia" do
     pod 'Rollout.io', '~> 0.14.5'
     pod 'AppsFlyer-SDK', '4.3.7'
     pod 'BlocksKit', '~> 2.2.5'
-    pod 'Tweaks'
-    pod 'UITableView+FDTemplateLayoutCell'
+    pod 'Tweaks', '~> 2.0.0'
+    pod 'UITableView+FDTemplateLayoutCell', '~> 1.4'
+    pod 'FLEX', '~> 2.0', :configurations => ['Debug']
 end
 
 target "TokopediaTests" do
