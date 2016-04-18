@@ -207,14 +207,20 @@
 
 -(IBAction)finishButtonTapped:(id)sender
 {
-    if(!_isEditable){
-        if(selectedIndexPath.section == 0){
-            [_delegate didSelectEtalase:otherEtalaseList[selectedIndexPath.row]];
-        }else{
-            [_delegate didSelectEtalase:etalaseList[selectedIndexPath.row]];
+    if(selectedIndexPath){
+        if(!_isEditable){
+            if(selectedIndexPath.section == 0){
+                [_delegate didSelectEtalase:otherEtalaseList[selectedIndexPath.row]];
+            }else{
+                [_delegate didSelectEtalase:etalaseList[selectedIndexPath.row]];
+            }
+            
         }
+        [self.navigationController popViewControllerAnimated:YES];
+    }else{
+        StickyAlertView *alert = [[StickyAlertView alloc]initWithWarningMessages:@[@"Anda belum memilih atau membuat etalase"] delegate:self];
+        [alert show];
     }
-    [self.navigationController popViewControllerAnimated:YES];
 }
 
 -(IBAction)deleteButtonTapped:(id)sender{
