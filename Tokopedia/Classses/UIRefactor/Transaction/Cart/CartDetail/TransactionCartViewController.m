@@ -775,6 +775,7 @@
     
     NSString *hiddenGatewayString = [[self gtmContainer] stringForKey:GTMHiddenPaymentKey]?:@"-1";
     hiddenGatewayString = ([hiddenGatewayString isEqualToString:@""])?@"-1":hiddenGatewayString;
+    NSArray *hiddenGatewayArray = [hiddenGatewayString componentsSeparatedByString: @","];
     
     NSMutableArray *hiddenGatewayName = [NSMutableArray new];
     NSMutableArray *hiddenGatewayImage = [NSMutableArray new];
@@ -782,6 +783,16 @@
     for (TransactionCartGateway *gateway in _cart.gateway_list) {
         [gatewayListWithoutHiddenPayment addObject:gateway.gateway_name?:@""];
         [gatewayImages addObject:gateway.gateway_image?:@""];
+#ifdef DEBUG
+        
+#else
+        for (NSString *hiddenGateway in hiddenGatewayArray) {
+            if ([gateway.gateway isEqual:@([hiddenGateway integerValue])] && ![hiddenGatewayName containsObject:gateway.gateway_name]) {
+                [hiddenGatewayImage addObject:gateway.gateway_image?:@""];
+                [hiddenGatewayName addObject:gateway.gateway_name];
+            }
+        }
+#endif
     }
     
     [gatewayImages removeObjectsInArray:hiddenGatewayImage];
@@ -799,20 +810,15 @@
 
 -(NSArray *)getGatewayIDNative
 {
-    NSArray *nativeGatewayIDArray = @[
-                                   @(TYPE_GATEWAY_TOKOPEDIA),
-                                   @(TYPE_GATEWAY_TRANSFER_BANK),
-                                   @(TYPE_GATEWAY_MANDIRI_CLICK_PAY),
-                                   @(TYPE_GATEWAY_MANDIRI_E_CASH),
-                                   @(TYPE_GATEWAY_BCA_CLICK_PAY),
-                                   @(TYPE_GATEWAY_BCA_KLIK_BCA),
-                                   @(TYPE_GATEWAY_CC),
-                                   @(TYPE_GATEWAY_INDOMARET),
-                                   @(TYPE_GATEWAY_BRI_EPAY),
-                                   @(TYPE_GATEWAY_INSTALLMENT)
-                                   ];
-
-    return nativeGatewayIDArray;
+    NSString *nativeGatewayIDString = [[self gtmContainer] stringForKey:@"native_gateway_list"]?:@"-1";
+    nativeGatewayIDString = ([nativeGatewayIDString isEqualToString:@""])?@"-1":nativeGatewayIDString;
+    NSArray * nativeGatewayIDArray = [nativeGatewayIDString componentsSeparatedByString: @","];
+    NSMutableArray *listGateway = [NSMutableArray new];
+    for (NSString *gatewayID in nativeGatewayIDArray) {
+        [listGateway addObject:@([gatewayID integerValue])];
+    }
+    
+    return [listGateway copy];
 }
 
 #pragma mark - GTM
