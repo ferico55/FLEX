@@ -9,5 +9,21 @@
 #import "TxOrderPaymentEditOrder.h"
 
 @implementation TxOrderPaymentEditOrder
++(NSDictionary *)attributeMappingDictionary
+{
+    NSArray *keys = @[
+                      @"order_invoice_string",
+                      @"order_invoice"
+                      ];
+    return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
+}
+
++(RKObjectMapping*)mapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+
+    return mapping;
+}
 
 @end

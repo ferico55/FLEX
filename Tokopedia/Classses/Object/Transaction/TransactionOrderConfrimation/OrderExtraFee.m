@@ -9,5 +9,22 @@
 #import "OrderExtraFee.h"
 
 @implementation OrderExtraFee
++(NSDictionary *)attributeMappingDictionary
+{
+    NSArray *keys = @[
+                      @"extra_fee_amount",
+                      @"extra_fee_amount_idr",
+                      @"extra_fee_type"
+                      ];
+    return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
+}
+
++(RKObjectMapping*)mapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+
+    return mapping;
+}
 
 @end

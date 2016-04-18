@@ -14,8 +14,6 @@
 @required
 -(void)shouldCancelOrderAtIndexPath:(NSIndexPath*)indexPath;
 -(void)shouldConfirmOrderAtIndexPath:(NSIndexPath *)indexPath;
-@optional
--(void)selectCellConfirmationAtIndexPath:(NSIndexPath*)indexPath;
 
 @end
 
@@ -37,7 +35,5 @@
 @property (strong, nonatomic)NSIndexPath *indexPath;
 
 + (id)newcell;
-- (void)selectCell;
-- (void)deselectCell;
 
 @end

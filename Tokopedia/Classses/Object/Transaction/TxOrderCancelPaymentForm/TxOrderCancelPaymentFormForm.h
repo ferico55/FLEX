@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface TxOrderCancelPaymentFormForm : NSObject
+@interface TxOrderCancelPaymentFormForm : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *voucher_used;
 @property (nonatomic, strong) NSString *refund;

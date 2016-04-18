@@ -197,6 +197,7 @@
             if(!_confirmationViewController)_confirmationViewController = [TxOrderConfirmationViewController new];
             ((TxOrderConfirmationViewController*)_confirmationViewController).isMultipleSelection = _isMultipleSelect;
             childViewController = _confirmationViewController;
+            [_confirmationViewController removeAllSelected];
             _confirmationViewController.delegate = self;
             break;
         }
@@ -255,7 +256,7 @@
 {
     TxOrderPaymentViewController *vc = [TxOrderPaymentViewController new];
     vc.isConfirmed = YES;
-    vc.paymentID = object.payment_id;
+    vc.paymentID = @[object.payment_id];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

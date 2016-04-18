@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface OrderDetail : NSObject
+@interface OrderDetail : NSObject <TKPObjectMapping>
 
 @property (strong, nonatomic) NSString *detail_insurance_price;
 @property (strong, nonatomic) NSString *detail_open_amount;

@@ -15,6 +15,7 @@
 
 @optional
 -(void)showPopUpLuckyDeal:(LuckyDealWord*)words;
+-(void)finishRequestLD;
 
 @end
 

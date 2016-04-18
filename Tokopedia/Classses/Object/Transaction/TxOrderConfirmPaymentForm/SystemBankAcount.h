@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface SystemBankAcount : NSObject
+@interface SystemBankAcount : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *sysbank_account_number;
 @property (nonatomic, strong) NSString *sysbank_account_name;

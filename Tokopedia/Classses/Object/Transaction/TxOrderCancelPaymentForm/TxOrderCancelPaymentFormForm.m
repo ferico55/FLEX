@@ -9,5 +9,22 @@
 #import "TxOrderCancelPaymentFormForm.h"
 
 @implementation TxOrderCancelPaymentFormForm
++(NSDictionary *)attributeMappingDictionary
+{
+    NSArray *keys = @[
+                      @"voucher_used",
+                      @"refund",
+                      @"vouchers",
+                      @"total_refund"
+                      ];
+    return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
+}
+
++(RKObjectMapping*)mapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+    return mapping;
+}
 
 @end

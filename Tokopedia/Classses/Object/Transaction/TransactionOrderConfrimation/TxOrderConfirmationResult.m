@@ -9,5 +9,19 @@
 #import "TxOrderConfirmationResult.h"
 
 @implementation TxOrderConfirmationResult
++(NSDictionary *)attributeMappingDictionary
+{
+    return nil;
+}
+
++(RKObjectMapping*)mapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"page" toKeyPath:@"page" withMapping:[Paging mapping]]];
+    RKRelationshipMapping *relMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"list" toKeyPath:@"list" withMapping:[TxOrderConfirmationList mapping]];
+    [mapping addPropertyMapping:relMapping];
+    return mapping;
+}
 
 @end
