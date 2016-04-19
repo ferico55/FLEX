@@ -10,6 +10,9 @@
 		2D50139230438B54812D14B9 /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
+		7AC6471A1CC503AD0019F0BB /* SecurityQuestionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AC647191CC503AD0019F0BB /* SecurityQuestionViewController.m */; };
+		7AC6471E1CC60D100019F0BB /* SecurityQuestion.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AC6471D1CC60D100019F0BB /* SecurityQuestion.m */; };
+		7AC647211CC60D1F0019F0BB /* SecurityQuestionResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AC647201CC60D1F0019F0BB /* SecurityQuestionResult.m */; };
 		7ACE9C541BB00956006C4BB7 /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */; };
 		7ACE9C551BB00956006C4BB7 /* FBAudienceNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C4F1BB00956006C4BB7 /* FBAudienceNetwork.framework */; };
 		7ACE9C561BB00956006C4BB7 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C501BB00956006C4BB7 /* FBSDKCoreKit.framework */; };
@@ -2079,6 +2082,8 @@
 		7AE3C1331CC0D32900544984 /* vt-iOSlib-1.0.1.tar.gz in Resources */ = {isa = PBXBuildFile; fileRef = 7AE3B9221CC0D32900544984 /* vt-iOSlib-1.0.1.tar.gz */; };
 		7AE3C1341CC0D32900544984 /* vt-iOSlib-1.0.1.zip in Resources */ = {isa = PBXBuildFile; fileRef = 7AE3B9231CC0D32900544984 /* vt-iOSlib-1.0.1.zip */; };
 		7AE3C1351CC0D32900544984 /* XYPieChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AE3B9261CC0D32900544984 /* XYPieChart.m */; };
+		7AE3C1581CC4F94300544984 /* LoginSecurity.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AE3C1571CC4F94300544984 /* LoginSecurity.m */; };
+		7AE3C15A1CC4FAE700544984 /* SecurityQuestionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AE3C1591CC4FAE700544984 /* SecurityQuestionViewController.xib */; };
 		853A222C1ADD0AB600DD1508 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222B1ADD0AB600DD1508 /* CoreVideo.framework */; };
 		853A222E1ADD0ABC00DD1508 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */; };
 		853A22301ADD0AC800DD1508 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222F1ADD0AC800DD1508 /* CoreMedia.framework */; };
@@ -2152,6 +2157,12 @@
 		7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
+		7AC647181CC503AD0019F0BB /* SecurityQuestionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecurityQuestionViewController.h; sourceTree = "<group>"; };
+		7AC647191CC503AD0019F0BB /* SecurityQuestionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecurityQuestionViewController.m; sourceTree = "<group>"; };
+		7AC6471C1CC60D100019F0BB /* SecurityQuestion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecurityQuestion.h; sourceTree = "<group>"; };
+		7AC6471D1CC60D100019F0BB /* SecurityQuestion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecurityQuestion.m; sourceTree = "<group>"; };
+		7AC6471F1CC60D1F0019F0BB /* SecurityQuestionResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecurityQuestionResult.h; sourceTree = "<group>"; };
+		7AC647201CC60D1F0019F0BB /* SecurityQuestionResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecurityQuestionResult.m; sourceTree = "<group>"; };
 		7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FacebookSDKStrings.bundle; sourceTree = "<group>"; };
 		7ACE9C4F1BB00956006C4BB7 /* FBAudienceNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBAudienceNetwork.framework; sourceTree = "<group>"; };
 		7ACE9C501BB00956006C4BB7 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
@@ -5278,6 +5289,9 @@
 		7AE3B9231CC0D32900544984 /* vt-iOSlib-1.0.1.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "vt-iOSlib-1.0.1.zip"; sourceTree = "<group>"; };
 		7AE3B9251CC0D32900544984 /* XYPieChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XYPieChart.h; sourceTree = "<group>"; };
 		7AE3B9261CC0D32900544984 /* XYPieChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYPieChart.m; sourceTree = "<group>"; };
+		7AE3C1561CC4F94300544984 /* LoginSecurity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginSecurity.h; sourceTree = "<group>"; };
+		7AE3C1571CC4F94300544984 /* LoginSecurity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginSecurity.m; sourceTree = "<group>"; };
+		7AE3C1591CC4FAE700544984 /* SecurityQuestionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SecurityQuestionViewController.xib; sourceTree = "<group>"; };
 		7F9B6E71F79FE95868A4BBAE /* Pods-Tokopedia.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.release.xcconfig"; sourceTree = "<group>"; };
 		853A222B1ADD0AB600DD1508 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
@@ -5411,6 +5425,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7AC6471B1CC60CF50019F0BB /* SecurityQuestion */ = {
+			isa = PBXGroup;
+			children = (
+				7AC6471C1CC60D100019F0BB /* SecurityQuestion.h */,
+				7AC6471D1CC60D100019F0BB /* SecurityQuestion.m */,
+				7AC6471F1CC60D1F0019F0BB /* SecurityQuestionResult.h */,
+				7AC647201CC60D1F0019F0BB /* SecurityQuestionResult.m */,
+			);
+			path = SecurityQuestion;
+			sourceTree = "<group>";
+		};
 		7AE3ABCD1CC0D32400544984 /* Classses */ = {
 			isa = PBXGroup;
 			children = (
@@ -5631,6 +5656,7 @@
 		7AE3AC2C1CC0D32500544984 /* Activation */ = {
 			isa = PBXGroup;
 			children = (
+				7AC6471B1CC60CF50019F0BB /* SecurityQuestion */,
 				7AE3AC2D1CC0D32500544984 /* Create Password */,
 				7AE3AC321CC0D32500544984 /* Login */,
 				7AE3AC371CC0D32500544984 /* Logout */,
@@ -7559,6 +7585,11 @@
 				7AE3B5811CC0D32700544984 /* TxOrder */,
 				7AE3B5D21CC0D32700544984 /* UserPageView */,
 				7AE3B5F11CC0D32700544984 /* ViewModels */,
+				7AE3C1561CC4F94300544984 /* LoginSecurity.h */,
+				7AE3C1571CC4F94300544984 /* LoginSecurity.m */,
+				7AE3C1591CC4FAE700544984 /* SecurityQuestionViewController.xib */,
+				7AC647181CC503AD0019F0BB /* SecurityQuestionViewController.h */,
+				7AC647191CC503AD0019F0BB /* SecurityQuestionViewController.m */,
 			);
 			path = UIRefactor;
 			sourceTree = "<group>";
@@ -11638,6 +11669,7 @@
 				7AE3BF231CC0D32900544984 /* icon_default_shop.jpg in Resources */,
 				7AE3BB601CC0D32900544984 /* AlertListBankView.xib in Resources */,
 				7AE3BDE91CC0D32900544984 /* TransactionCartFormMandiriClickPayViewController.xib in Resources */,
+				7AE3C15A1CC4FAE700544984 /* SecurityQuestionViewController.xib in Resources */,
 				7AE3BE441CC0D32900544984 /* UserPageHeader.xib in Resources */,
 				7AE3BFD01CC0D32900544984 /* icon_pinpoin_toped@3x.png in Resources */,
 				7AE3BD121CC0D32900544984 /* NoResultReusableView.xib in Resources */,
@@ -12390,6 +12422,7 @@
 				7AE3BC321CC0D32900544984 /* HotlistViewController.m in Sources */,
 				7AE3BB671CC0D32900544984 /* AlertLuckyView.m in Sources */,
 				7AE3BE481CC0D32900544984 /* CartModelView.m in Sources */,
+				7AC6471E1CC60D100019F0BB /* SecurityQuestion.m in Sources */,
 				7AE3BE3D1CC0D32900544984 /* ProfileFavoriteShopViewController.m in Sources */,
 				7AE3BC291CC0D32900544984 /* Slide.m in Sources */,
 				7AE3BA0F1CC0D32900544984 /* TotalLikeDislikePost.m in Sources */,
@@ -12700,6 +12733,7 @@
 				7AE3BA7D1CC0D32900544984 /* SearchAWSProduct.m in Sources */,
 				7AE3B9831CC0D32900544984 /* CatalogImages.m in Sources */,
 				BBCB20CE1CB4F16B000C0AE2 /* MoreWrapperViewController.m in Sources */,
+				7AC6471A1CC503AD0019F0BB /* SecurityQuestionViewController.m in Sources */,
 				7AE3BA9A1CC0D32900544984 /* Etalase.m in Sources */,
 				7AE3B9991CC0D32900544984 /* Review.m in Sources */,
 				7AE3BD561CC0D32900544984 /* SearchResultShopViewController.m in Sources */,
@@ -12810,6 +12844,7 @@
 				7AE3BDD01CC0D32900544984 /* TokopediaNetworkManager.m in Sources */,
 				7AE3BB521CC0D32900544984 /* RequestAddress.m in Sources */,
 				7AE3B9C81CC0D32900544984 /* HotlistBannerQuery.m in Sources */,
+				7AC647211CC60D1F0019F0BB /* SecurityQuestionResult.m in Sources */,
 				7AE3B9D11CC0D32900544984 /* HotlistList.m in Sources */,
 				7AE3B99A1CC0D32900544984 /* ReviewList.m in Sources */,
 				7AE3BB2B1CC0D32900544984 /* UploadImageHelperResult.m in Sources */,
@@ -13278,6 +13313,7 @@
 				7AE3BC551CC0D32900544984 /* RequestResolutionCenter.m in Sources */,
 				7AE3BD7A1CC0D32900544984 /* SettingUserPhoneViewController.m in Sources */,
 				7AE3B98A1CC0D32900544984 /* CatalogSpecs.m in Sources */,
+				7AE3C1581CC4F94300544984 /* LoginSecurity.m in Sources */,
 				7AE3BBCF1CC0D32900544984 /* TKPDTabInboxTalkNavigationController.m in Sources */,
 				7AE3BD531CC0D32900544984 /* SearchResultCell.m in Sources */,
 				7AE3BDDC1CC0D32900544984 /* TransactionShipmentATCTableViewCell.m in Sources */,
