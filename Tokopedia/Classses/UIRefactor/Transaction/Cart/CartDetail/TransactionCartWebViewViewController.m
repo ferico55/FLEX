@@ -11,6 +11,8 @@
 #import "TxEmoney.h"
 #import "string_transaction.h"
 #import "RequestCart.h"
+#import "TxOrderTabViewController.h"
+#import "TxOrderStatusViewController.h"
 #import <objc/runtime.h>
 
 #define CLICK_BCA_LOGIN_URL @"https://klikpay.klikbca.com/login.do?action=loginRequest"
@@ -358,15 +360,28 @@
         NSURL *callbackURL = [NSURL URLWithString:_callbackURL];
         if ([request.URL.absoluteString rangeOfString:callbackURL.path].location != NSNotFound) {
             
-            NSDictionary *paramURL = [self dictionaryFromURLString:request.URL.absoluteString];
-
-            [_delegate shouldDoRequestTopPayThxCode:[paramURL objectForKey:@"id"]?:_toppayParam[@"transaction_id"]?:@""];
-            if ([self isModal]) {
-                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-            } else
-            {
-                [self.navigationController popViewControllerAnimated:YES];
+            NSString *html = [webView stringByEvaluatingJavaScriptFromString:@"document.body.outerHTML"];
+            if ([html rangeOfString:@"Konfirmasi Pembayaran"].location != NSNotFound && webView.request.URL.absoluteString != nil) {
+                TxOrderTabViewController *vc = [TxOrderTabViewController new];
+                [self.navigationController pushViewController:vc animated:YES];
+            } else if ([html rangeOfString:@"Status Pemesanan"].location != NSNotFound && webView.request.URL.absoluteString != nil) {
+                TxOrderStatusViewController *vc =[TxOrderStatusViewController new];
+                vc.action = @"get_tx_order_status";
+                vc.viewControllerTitle = @"Status Pemesanan";
+                [self.navigationController pushViewController:vc animated:YES];
+            } else {
+                
+                NSDictionary *paramURL = [self dictionaryFromURLString:request.URL.absoluteString];
+                
+                [_delegate shouldDoRequestTopPayThxCode:[paramURL objectForKey:@"id"]?:_toppayParam[@"transaction_id"]?:@""];
+                if ([self isModal]) {
+                    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                } else
+                {
+                    [self.navigationController popViewControllerAnimated:YES];
+                }
             }
+
             return NO;
         }
     }
@@ -532,11 +547,18 @@
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    self.title = @"";
     
     if (_isSuccessBCA) {
         [_delegate shouldDoRequestBCAClickPay];
     }
 
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    
+    self.title = ([self.title isEqualToString:@""])?@"Pembayaran": self.title;
 }
 
 @end
