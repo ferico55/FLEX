@@ -449,43 +449,48 @@
 }
 
 - (void)requestEditEtalase:(NSString*)name{
-    if(!_isLoading && selectedIndexPath.section == 1){
-        _isLoading = YES;
-        UserAuthentificationManager *auth = [UserAuthentificationManager new];
-        NSDictionary *loginData = [auth getUserLoginData];
-        NSString *userId = [loginData objectForKey:@"user_id"]?:@"";
-        EtalaseList *selectedEtalase = [etalaseList objectAtIndex:selectedIndexPath.row];
-        [etalaseRequest requestActionEditEtalaseWithId:selectedEtalase.etalase_id
-                                                  name:name
-                                                userId:userId
-                                             onSuccess:^(ShopSettings *shopSettings, NSString* name) {
-                                                 if(shopSettings.result.is_success){
-                                                     EtalaseList *selectedEtalase = [etalaseList objectAtIndex:selectedIndexPath.row];
-                                                     EtalaseList *newEtalase = [EtalaseList new];
-                                                     [newEtalase setEtalase_id:selectedEtalase.etalase_id];
-                                                     [newEtalase setEtalase_name:name];
-                                                     [newEtalase setEtalase_num_product:selectedEtalase.etalase_num_product];
-                                                     [newEtalase setEtalase_total_product:selectedEtalase.etalase_total_product];
-                                                     
-                                                     [etalaseList replaceObjectAtIndex:selectedIndexPath.row withObject:newEtalase];
-                                                     
-                                                     NSArray *operationIndexPaths = [NSArray arrayWithObjects:[NSIndexPath indexPathForRow:selectedIndexPath.row inSection:selectedIndexPath.section], nil];
-                                                     
-                                                     [_tableView beginUpdates];
-                                                     [_tableView deleteRowsAtIndexPaths:operationIndexPaths withRowAnimation:UITableViewRowAnimationFade];
-                                                     [_tableView insertRowsAtIndexPaths:operationIndexPaths withRowAnimation:UITableViewRowAnimationFade];
-                                                     [_tableView endUpdates];
-                                                     
-                                                     StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[@"Berhasil mengubah nama etalase"] delegate:self];
-                                                     [alert show];
-                                                 }else{
-                                                     [self alertForError:shopSettings.message_error];
-                                                 }
-                                                 _isLoading = NO;
-                                             } onFailure:^(NSError *error) {
-                                                 [self alertForError:@[@"Kendala koneksi internet"]];
-                                                 _isLoading = NO;
-                                             }];
+    if(!_isLoading){
+        if(selectedIndexPath.section == 1){
+            _isLoading = YES;
+            UserAuthentificationManager *auth = [UserAuthentificationManager new];
+            NSDictionary *loginData = [auth getUserLoginData];
+            NSString *userId = [loginData objectForKey:@"user_id"]?:@"";
+            EtalaseList *selectedEtalase = [etalaseList objectAtIndex:selectedIndexPath.row];
+            [etalaseRequest requestActionEditEtalaseWithId:selectedEtalase.etalase_id
+                                                      name:name
+                                                    userId:userId
+                                                 onSuccess:^(ShopSettings *shopSettings, NSString* name) {
+                                                     if(shopSettings.result.is_success){
+                                                         EtalaseList *selectedEtalase = [etalaseList objectAtIndex:selectedIndexPath.row];
+                                                         EtalaseList *newEtalase = [EtalaseList new];
+                                                         [newEtalase setEtalase_id:selectedEtalase.etalase_id];
+                                                         [newEtalase setEtalase_name:name];
+                                                         [newEtalase setEtalase_num_product:selectedEtalase.etalase_num_product];
+                                                         [newEtalase setEtalase_total_product:selectedEtalase.etalase_total_product];
+                                                         
+                                                         [etalaseList replaceObjectAtIndex:selectedIndexPath.row withObject:newEtalase];
+                                                         
+                                                         NSArray *operationIndexPaths = [NSArray arrayWithObjects:[NSIndexPath indexPathForRow:selectedIndexPath.row inSection:selectedIndexPath.section], nil];
+                                                         
+                                                         [_tableView beginUpdates];
+                                                         [_tableView deleteRowsAtIndexPaths:operationIndexPaths withRowAnimation:UITableViewRowAnimationFade];
+                                                         [_tableView insertRowsAtIndexPaths:operationIndexPaths withRowAnimation:UITableViewRowAnimationFade];
+                                                         [_tableView endUpdates];
+                                                         
+                                                         StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[@"Berhasil mengubah nama etalase"] delegate:self];
+                                                         [alert show];
+                                                     }else{
+                                                         [self alertForError:shopSettings.message_error];
+                                                     }
+                                                     _isLoading = NO;
+                                                 } onFailure:^(NSError *error) {
+                                                     [self alertForError:@[@"Kendala koneksi internet"]];
+                                                     _isLoading = NO;
+                                                 }];
+        }
+    }else{
+        StickyAlertView *alert = [[StickyAlertView alloc]initWithWarningMessages:@[@"Masih ada proses yang sedang berlangsung, tunggu beberapa saat dan coba kembali."] delegate:self];
+        [alert show];
     }
 }
 
@@ -507,11 +512,14 @@
                                                    }else{
                                                        [self alertForError:shopSettings.message_error];
                                                    }
-                                                   _isLoading = YES;
+                                                   _isLoading = NO;
                                                } onFailure:^(NSError *error) {
                                                    [self alertForError:@[@"Kendala koneksi internet"]];
-                                                   _isLoading = YES;
+                                                   _isLoading = NO;
                                                }];
+    }else{
+        StickyAlertView *alert = [[StickyAlertView alloc]initWithWarningMessages:@[@"Masih ada proses yang sedang berlangsung, tunggu beberapa saat dan coba kembali."] delegate:self];
+        [alert show];
     }
 }
 
