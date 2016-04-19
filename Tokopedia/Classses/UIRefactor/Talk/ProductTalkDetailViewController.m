@@ -420,7 +420,7 @@
                             kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : [_data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTIDKEY]
                             };
 
-    [_sendCommentNetworkManager requestWithBaseUrl:kTkpdBaseURLString
+    [_sendCommentNetworkManager requestWithBaseUrl:[NSString basicUrl]
                                               path:kTKPDACTIONTALK_APIPATH
                                             method:RKRequestMethodPOST
                                          parameter:param
@@ -766,7 +766,7 @@
             @"talk_id" : [_data objectForKey:@"talk_id"]
     };
 
-    [_deleteCommentNetworkManager requestWithBaseUrl:kTkpdBaseURLString
+    [_deleteCommentNetworkManager requestWithBaseUrl:[NSString basicUrl]
                                                 path:kTKPDACTIONTALK_APIPATH
                                               method:RKRequestMethodPOST
                                            parameter:param
@@ -908,7 +908,7 @@
             kTKPDDETAIL_APIPAGEKEY : @(_page)
     };
 
-    [_talkCommentNetworkManager requestWithBaseUrl:kTkpdBaseURLString
+    [_talkCommentNetworkManager requestWithBaseUrl:[NSString basicUrl]
                                               path:_urlPath
                                             method:RKRequestMethodPOST
                                          parameter:param

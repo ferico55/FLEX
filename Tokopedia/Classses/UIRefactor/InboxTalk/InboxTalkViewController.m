@@ -243,7 +243,7 @@
 - (void)fetchInboxTalkList {
     [self showLoadingIndicator];
 
-    [_networkManager requestWithBaseUrl:kTkpdBaseURLString
+    [_networkManager requestWithBaseUrl:[NSString basicUrl]
                                    path:KTKPDMESSAGE_TALK
                                  method:RKRequestMethodPOST
                               parameter:[self requestParameter]
