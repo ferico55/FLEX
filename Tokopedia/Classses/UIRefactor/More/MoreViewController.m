@@ -67,6 +67,8 @@
 #import "MoreWrapperViewController.h"
 #import "MoreNavigationController.h"
 
+#import "DepositRequest.h"
+
 #define CTagProfileInfo 12
 #define CTagLP 13
 
@@ -91,6 +93,9 @@
     TokopediaNetworkManager *_LPNetworkManager;
     LoyaltyPointResult *_LPResult;
     TAGContainer *_gtmContainer;
+    
+    DepositRequest *_request;
+    
     NSURL *_deeplinkUrl;
     
 }
@@ -204,6 +209,8 @@
     //Load Deposit
     _depositLabel.hidden = YES;
     _loadingSaldo.hidden = NO;
+    
+    _request = [DepositRequest new];
     
     [self updateSaldoTokopedia:nil];
     [self updateShopInformation];
@@ -982,8 +989,21 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
 }
 
 - (void)updateSaldoTokopedia:(NSNotification*)notification {
-    [self configureRestKit];
-    [self loadDataDeposit];
+//    [self configureRestKit];
+//    [self loadDataDeposit];
+    
+    [_request requestGetDepositOnSuccess:^(DepositResult *result) {
+        _depositLabel.text = result.deposit_total;
+        _depositLabel.hidden = NO;
+        _loadingSaldo.hidden = YES;
+        [_loadingSaldo stopAnimating];
+        _isNoDataDeposit = NO;
+        
+        [_LPNetworkManager doRequest];
+    } onFailure:^(NSError *errorResult) {
+        
+        
+    }];
 }
 
 - (void)updateProfilePicture:(NSNotification *)notification

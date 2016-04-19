@@ -307,84 +307,87 @@
                                                    endDate:_currentEndDate?:[dateFormatStr stringFromDate:_now]
                                                       page:_page
                                                    perPage:20
-                                                 onSuccess:^(DepositSummaryResult *data) {
-                                                     [_barbuttonright setEnabled:YES];
-                                                     [_depositSummary addObjectsFromArray:data.list];
-                                                     _useableSaldo = data.summary.summary_useable_deposit;
-                                                     _useableSaldoIDR = data.summary.summary_useable_deposit_idr;
-                                                     
-                                                     _totalSaldoTokopedia = data.summary.summary_total_deposit_idr;
-                                                     _holdDepositByCsIDR = data.summary.summary_deposit_hold_by_cs_idr;
-                                                     _holdDepositByTokopedia = data.summary.summary_deposit_hold_tx_1_day_idr;
-                                                     
-                                                     if([data.summary.summary_deposit_hold_tx_1_day integerValue] > 0) {
-                                                         _infoReviewSaldo.tag = 121;
-                                                         
-                                                         if(! [_withdrawalButton viewWithTag:121]) {
-                                                             [_reviewSaldo setText:_holdDepositByTokopedia];
-                                                             CGRect newFrame2 = _filterDateArea.frame;
-                                                             newFrame2.origin.y += 40;
-                                                             _filterDateArea.frame = newFrame2;
-                                                             
-                                                             CGRect newFrame3 = _table.frame;
-                                                             newFrame3.origin.y += 40;
-                                                             _table.frame = newFrame3;
-                                                             
-                                                             [_withdrawalButton addSubview:_infoReviewSaldo];
-                                                             CGRect newFrame4 = _infoReviewSaldo.frame;
-                                                             newFrame4.origin.y += 47;
-                                                             newFrame4.size.width = self.view.bounds.size.width;
-                                                             newFrame4.origin.x = -_withdrawalButton.frame.origin.x;
-                                                             _infoReviewSaldo.frame = newFrame4;
-                                                             
-                                                             constraintHeightSuperHeader.constant = constraintHeightSuperHeader.constant+_infoReviewSaldo.frame.size.height-2;
-                                                             constraintHeightHeader.constant = constraintHeightHeader.constant +_infoReviewSaldo.frame.size.height-2;
-                                                         }
-                                                     }
-                                                     
-                                                     if([data.summary.summary_today_tries integerValue] < [data.summary.summary_daily_tries integerValue] && [data.summary.summary_useable_deposit integerValue] > 0) {
-                                                         [self enableButtonWithdraw];
-                                                     }
-                                                     
-                                                     if (_depositSummary.count > 0) {
-                                                         _isNoData = NO;
-                                                         _uriNext =  data.paging.uri_next;
-                                                         NSURL *url = [NSURL URLWithString:_uriNext];
-                                                         NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
-                                                         
-                                                         NSMutableDictionary *queries = [NSMutableDictionary new];
-                                                         [queries removeAllObjects];
-                                                         for (NSString *keyValuePair in querry)
-                                                         {
-                                                             NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
-                                                             NSString *key = [pairComponents objectAtIndex:0];
-                                                             NSString *value = [pairComponents objectAtIndex:1];
-                                                             
-                                                             [queries setObject:value forKey:key];
-                                                         }
-                                                         
-                                                         _page = [[queries objectForKey:@"page"] integerValue];
-                                                     } else {
-                                                         _isNoData = YES;
-                                                         
-                                                         if(data.error_date) {
-                                                             [_noResultView setNoResultTitle:kTKPDMESSAGE_ERRORMESSAGEDATEKEY];
-                                                         }
-                                                         _table.tableFooterView = _noResultView;
-                                                         
-                                                     }
-                                                     
-                                                     _table.tableHeaderView = nil;
-                                                     
-                                                     [_table reloadData];
-                                                     _isRefreshView = NO;
-                                                     [_refreshControl endRefreshing];
+                                                 onSuccess:^(DepositSummaryResult *result) {
+                                                     [self loadTableDataWithResult:result];
                                                  }
                                                  onFailure:^(NSError *errorResult) {
                                                      
-                                                     
                                                  }];
     
+}
+
+- (void)loadTableDataWithResult:(DepositSummaryResult*)result {
+    [_barbuttonright setEnabled:YES];
+    [_depositSummary addObjectsFromArray:result.list];
+    _useableSaldo = result.summary.summary_useable_deposit;
+    _useableSaldoIDR = result.summary.summary_useable_deposit_idr;
+    
+    _totalSaldoTokopedia = result.summary.summary_total_deposit_idr;
+    _holdDepositByCsIDR = result.summary.summary_deposit_hold_by_cs_idr;
+    _holdDepositByTokopedia = result.summary.summary_deposit_hold_tx_1_day_idr;
+    
+    if([result.summary.summary_deposit_hold_tx_1_day integerValue] > 0) {
+        _infoReviewSaldo.tag = 121;
+        
+        if(! [_withdrawalButton viewWithTag:121]) {
+            [_reviewSaldo setText:_holdDepositByTokopedia];
+            CGRect newFrame2 = _filterDateArea.frame;
+            newFrame2.origin.y += 40;
+            _filterDateArea.frame = newFrame2;
+            
+            CGRect newFrame3 = _table.frame;
+            newFrame3.origin.y += 40;
+            _table.frame = newFrame3;
+            
+            [_withdrawalButton addSubview:_infoReviewSaldo];
+            CGRect newFrame4 = _infoReviewSaldo.frame;
+            newFrame4.origin.y += 47;
+            newFrame4.size.width = _header.frame.size.width;
+            newFrame4.origin.x = -_withdrawalButton.frame.origin.x;
+            _infoReviewSaldo.frame = newFrame4;
+            
+            constraintHeightSuperHeader.constant = constraintHeightSuperHeader.constant+_infoReviewSaldo.frame.size.height-2;
+            constraintHeightHeader.constant = constraintHeightHeader.constant +_infoReviewSaldo.frame.size.height-2;
+        }
+    }
+    
+    if([result.summary.summary_today_tries integerValue] < [result.summary.summary_daily_tries integerValue] && [result.summary.summary_useable_deposit integerValue] > 0) {
+        [self enableButtonWithdraw];
+    }
+    
+    if (_depositSummary.count > 0) {
+        _isNoData = NO;
+        _uriNext =  result.paging.uri_next;
+        NSURL *url = [NSURL URLWithString:_uriNext];
+        NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
+        
+        NSMutableDictionary *queries = [NSMutableDictionary new];
+        [queries removeAllObjects];
+        for (NSString *keyValuePair in querry)
+        {
+            NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
+            NSString *key = [pairComponents objectAtIndex:0];
+            NSString *value = [pairComponents objectAtIndex:1];
+            
+            [queries setObject:value forKey:key];
+        }
+        
+        _page = [[queries objectForKey:@"page"] integerValue];
+    } else {
+        _isNoData = YES;
+        
+        if(result.error_date) {
+            [_noResultView setNoResultTitle:kTKPDMESSAGE_ERRORMESSAGEDATEKEY];
+        }
+        _table.tableFooterView = _noResultView;
+        
+    }
+    
+    _table.tableHeaderView = nil;
+    
+    [_table reloadData];
+    _isRefreshView = NO;
+    [_refreshControl endRefreshing];
 }
 
 - (void)requestSuccess:(id)object withOperation:(RKObjectRequestOperation*)operation {

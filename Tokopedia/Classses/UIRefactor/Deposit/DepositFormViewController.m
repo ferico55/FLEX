@@ -12,6 +12,7 @@
 #import "DepositForm.h"
 #import "profile.h"
 #import "string.h"
+#import "DepositRequest.h"
 
 @interface DepositFormViewController () <UITextFieldDelegate, UIScrollViewDelegate> {
     NSString *_clearTotalAmount;
@@ -60,6 +61,7 @@
     
     NSMutableArray *_listBankAccount;
 
+    DepositRequest *_depositRequest;
 }
 
 - (void)configureRestkit;
@@ -161,8 +163,14 @@
     
     _containerScrollView.delegate = self;
 //    [_useableSaldoIDR setText:[_data objectForKey:@"summary_useable_deposit_idr"]];
-    [self configureDepositInfo];
-    [self loadDepositInfo];
+    
+    _depositRequest = [DepositRequest new];
+    
+//    [self configureDepositInfo];
+//    [self loadDepositInfo];
+    
+    [self getWithdrawForm];
+    
     _useableSaldoStr = @"Loading..";
     _chooseAccountButton.enabled = NO;
     
@@ -171,7 +179,8 @@
     [_imgInfo addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionInfo:)]];
 
     [_containerScrollView addSubview:_contentView];
-
+    
+    
 }
 
 #pragma mark - Request Send OTP 
@@ -264,6 +273,22 @@
 }
 
 #pragma mark - Request Deposit Info
+- (void)getWithdrawForm {
+    [_depositRequest requestGetWithdrawFormOnSuccess:^(DepositFormResult *result) {
+        [_useableSaldoIDR setText:result.useable_deposit_idr];
+        _useableSaldoStr = result.useable_deposit;
+        _chooseAccountButton.enabled = YES;
+        [_listBankAccount addObjectsFromArray:result.bank_account];
+        NSString *verifiedState = result.msisdn_verified;
+        
+        [_kodeOTPButton setTitle:[verifiedState isEqualToString:@"1"] ? @"Kirim OTP ke HP" : @"Kirim OTP ke Email"  forState:UIControlStateNormal];
+        
+        [_indicator stopAnimating];
+    } onFailure:^(NSError *errorResult) {
+        
+    }];
+}
+
 - (void)configureDepositInfo {
     _objectDepositFormManager = [RKObjectManager sharedClient];
     
@@ -618,8 +643,27 @@
             case 12 : {
                 if(_requestDepositForm.isExecuting || _requestSendOTP.isExecuting) return;
                 
-                [self configureSendOTPRestkit];
-                [self requestSendOTP];
+//                [self configureSendOTPRestkit];
+//                [self requestSendOTP];
+                
+                
+                [_depositRequest requestSendOTPVerifyBankAccountOnSuccess:^(GeneralAction *action) {
+                    if(action.message_error) {
+                        NSArray *array = action.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
+                        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
+                        [alert show];
+                    }
+                    if ([action.data.is_success isEqualToString:@"1"]) {
+                        NSArray *array = action.message_status?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY, nil];
+                        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:array delegate:self];
+                        [stickyAlertView show];
+                    }
+                    
+                } onFailure:^(NSError *errorResult) {
+                    
+                    
+                }];
+                
                 break;
             }
                 

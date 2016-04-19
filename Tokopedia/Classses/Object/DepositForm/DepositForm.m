@@ -10,4 +10,18 @@
 
 @implementation DepositForm
 
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *depositFormMapping = [RKObjectMapping mappingForClass:[DepositForm class]];
+    
+    [depositFormMapping addAttributeMappingsFromArray:@[@"status",
+                                                        @"message_error",
+                                                        @"server_process_time"]];
+    
+    [depositFormMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data"
+                                                                                       toKeyPath:@"data"
+                                                                                     withMapping:[DepositFormResult mapping]]];
+    
+    return depositFormMapping;
+}
+
 @end
