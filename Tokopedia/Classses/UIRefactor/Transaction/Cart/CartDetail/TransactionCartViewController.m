@@ -693,7 +693,7 @@
 {
     TransactionCartGateway *gateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
     
-    if ([gateway.toppay_flag isEqualToString:@""] && [gateway.toppay_flag isEqualToString:@"0"]) {
+    if ([gateway.toppay_flag isEqualToString:@""] || [gateway.toppay_flag isEqualToString:@"0"]) {
         return NO;
     } else
         return YES;
