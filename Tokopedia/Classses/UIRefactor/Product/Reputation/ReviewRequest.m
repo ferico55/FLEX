@@ -55,6 +55,7 @@
     TokopediaNetworkManager *deleteReputationReviewResponseNetworkManager;
     TokopediaNetworkManager *insertReputationNetworkManager;
     TokopediaNetworkManager *getProductReviewNetworkManager;
+    TokopediaNetworkManager *reportReviewNetworkManager;
     
     NSInteger _counter;
     NSDictionary *_imagesToUpload;
@@ -83,6 +84,7 @@
         deleteReputationReviewResponseNetworkManager = [TokopediaNetworkManager new];
         insertReputationNetworkManager = [TokopediaNetworkManager new];
         getProductReviewNetworkManager = [TokopediaNetworkManager new];
+        reportReviewNetworkManager = [TokopediaNetworkManager new];
     }
     return self;
 }
@@ -369,6 +371,7 @@
     requestObject.image_id = imageID;
     requestObject.token = token;
     requestObject.user_id = [[UserAuthentificationManager new] getUserId];
+    requestObject.web_service = @"1";
     
     UIImage *image = [imageData objectForKey:@"image"];
     NSString *fileName = [imageData objectForKey:@"name"];
@@ -680,6 +683,32 @@
                                              } onFailure:^(NSError *errorResult) {
                                                  errorCallback(errorResult);
                                              }];
+}
+
+- (void)requestReportReviewWithReviewID:(NSString *)reviewID
+                                 shopID:(NSString *)shopID
+                            textMessage:(NSString *)textMessage
+                              onSuccess:(void (^)(GeneralAction *))successCallback
+                              onFailure:(void (^)(NSError *))errorCallback {
+    reportReviewNetworkManager.isParameterNotEncrypted = NO;
+    reportReviewNetworkManager.isUsingHmac = YES;
+    
+    [reportReviewNetworkManager requestWithBaseUrl:[NSString v4Url]
+                                              path:@"/v4/action/review/report_review.pl"
+                                            method:RKRequestMethodGET
+                                         parameter:@{@"review_id" : reviewID,
+                                                     @"shop_id" : shopID,
+                                                     @"text_message" : textMessage}
+                                           mapping:[GeneralAction mapping]
+                                         onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                             NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+                                             GeneralAction *obj = [result objectForKey:@""];
+                                             successCallback(obj);
+                                             
+                                         }
+                                         onFailure:^(NSError *errorResult) {
+                                             errorCallback(errorResult);
+                                         }];
 }
 
 #pragma mark - Product Review Requests

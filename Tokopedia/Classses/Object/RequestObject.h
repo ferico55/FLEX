@@ -45,5 +45,6 @@
 @property (nonatomic, strong) NSString *user_id;
 @property (nonatomic, strong) NSString *payment_id;
 @property (nonatomic, strong) NSString *action;
+@property (nonatomic, strong) NSString *web_service;
 
 @end

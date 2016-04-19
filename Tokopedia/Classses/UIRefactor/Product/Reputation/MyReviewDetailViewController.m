@@ -666,6 +666,33 @@
     return self;
 }
 
+- (void)didFinishWritingReportWithReviewID:(NSString *)reviewID talkID:(NSString *)talkID shopID:(NSString *)shopID textMessage:(NSString *)textMessage {
+    [_reviewRequest requestReportReviewWithReviewID:reviewID
+                                             shopID:shopID
+                                        textMessage:textMessage
+                                          onSuccess:^(GeneralAction *action) {
+                                              if (action.message_error) {
+                                                  NSArray *array = action.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
+                                                  StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
+                                                  [alert show];
+                                              } else {
+                                                  if ([action.data.is_success isEqualToString:@"1"]) {
+                                                      NSArray *array = action.message_status?:[[NSArray alloc] initWithObjects:@"Laporan Kamu telah sukses terkirim", nil];
+                                                      StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:array delegate:self];
+                                                      [stickyAlertView show];
+                                                  } else {
+                                                      StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[@"Gagal kirim report"] delegate:self];
+                                                      [stickyAlertView show];
+                                                  }
+                                              }
+                                              
+                                          }
+                                          onFailure:^(NSError *error) {
+                                              
+                                              
+                                          }];
+}
+
 #pragma mark - Lucky Deal Delegate
 - (void)showPopUpLuckyDeal:(LuckyDealWord *)words {
     [_navigator popUpLuckyDeal:words];

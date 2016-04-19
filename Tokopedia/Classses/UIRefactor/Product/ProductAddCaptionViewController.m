@@ -413,14 +413,15 @@
     return YES;
 }
 
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
-    if(range.length + range.location > textField.text.length) {
-        return NO;
-    }
-    
-    NSUInteger newLength = [textField.text length] + [string length] - range.length;
-    return newLength <= 128;
-}
+//For limiting text field length to 128 characters. Remove the comment if needed.
+//- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+//    if(range.length + range.location > textField.text.length) {
+//        return NO;
+//    }
+//    
+//    NSUInteger newLength = [textField.text length] + [string length] - range.length;
+//    return newLength <= 128;
+//}
 
 #pragma mark - Methods
 - (void)setScrollViewImagesFocusAtIndex:(NSInteger)tag {
