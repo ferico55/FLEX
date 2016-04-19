@@ -43,6 +43,8 @@
 #import "NoResultReusableView.h"
 #import "NSNumberFormatter+IDRFormater.h"
 
+#import "TxOrderTabViewController.h"
+
 #define DurationInstallmentFormat @"%@ bulan (%@)"
 
 @interface TransactionCartViewController ()
