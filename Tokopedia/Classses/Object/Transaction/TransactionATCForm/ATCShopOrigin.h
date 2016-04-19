@@ -22,5 +22,6 @@
 @property (nonatomic, strong) NSString *show_oke;
 @property (nonatomic, strong) NSString *token;
 @property (nonatomic, strong) NSString *avail_shipping_code;
+@property (nonatomic, strong) NSString *name;
 
 @end

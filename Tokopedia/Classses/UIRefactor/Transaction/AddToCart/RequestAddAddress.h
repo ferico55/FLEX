@@ -22,6 +22,6 @@
 @property (nonatomic, weak) IBOutlet id<RequestAddAddressDelegate> delegate;
 -(void)doRequestWithAddress:(AddressFormList*)address;
 
-+(void)fetchAddAddress:(AddressFormList*)address success:(void(^)(ProfileSettingsResult* data, AddressFormList* address))success failure:(void(^)(NSError *error))failure;
++(void)fetchAddAddress:(AddressFormList*)address isFromCart:(NSString*)isFromCart success:(void(^)(ProfileSettingsResult* data, AddressFormList* address))success failure:(void(^)(NSError *error))failure;
 
 @end

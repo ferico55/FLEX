@@ -123,8 +123,8 @@
 -(RKObjectManager*)objectManager
 {
     RKObjectManager *objectManager = [RKObjectManager sharedClient];
-    
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[TransactionBuy mapping]
+    TransactionBuy *transacitonBuy = [TransactionBuy new];
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:transacitonBuy.mapping
                                                                                             method:RKRequestMethodGET
                                                                                        pathPattern:nil
                                                                                            keyPath:@""

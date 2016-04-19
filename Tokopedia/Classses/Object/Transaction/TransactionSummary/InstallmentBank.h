@@ -10,7 +10,7 @@
 
 #import "InstallmentTerm.h"
 
-@interface InstallmentBank : NSObject
+@interface InstallmentBank : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *percentage;
 @property (nonatomic, strong) NSString *bank_id;

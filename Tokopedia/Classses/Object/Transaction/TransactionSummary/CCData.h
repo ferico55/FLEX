@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface CCData : NSObject
+@interface CCData : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *city;
 @property (nonatomic, strong) NSString *postal_code;

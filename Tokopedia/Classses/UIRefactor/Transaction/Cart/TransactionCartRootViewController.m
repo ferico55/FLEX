@@ -85,7 +85,7 @@
     
     _pageController.dataSource = self;
     
-    _pageController.view.frame = CGRectMake(0, _pageControlView.frame.size.height, self.view.frame.size.width, self.view.frame.size.height-_pageControlView.frame.size.height);
+    _pageController.view.frame = _contentView.frame;
     
     [self addChildViewController:_pageController];
     [[self view] addSubview:[_pageController view]];
