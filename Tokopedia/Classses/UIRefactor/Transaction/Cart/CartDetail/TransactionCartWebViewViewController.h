@@ -38,6 +38,7 @@
 @property NSString *toppayQueryString;
 @property NSDictionary *toppayParam;
 @property NSString *paymentID;
+@property NSString *callbackURL;
 
 +(void)pushBCAKlikPayFrom:(UIViewController*)vc cartDetail:(TransactionSummaryDetail*)cartDetail;
 +(void)pushMandiriECashFrom:(UIViewController*)vc cartDetail:(TransactionSummaryDetail*)cartDetail LinkMandiri:(NSString*)linkMandiri;
