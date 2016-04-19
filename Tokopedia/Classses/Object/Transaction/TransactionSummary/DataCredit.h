@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface DataCredit : NSObject
+@interface DataCredit : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *user_email;
 @property (nonatomic, strong) NSString *payment_id;
