@@ -10,4 +10,11 @@
 
 @implementation ManageProduct
 
++ (RKObjectMapping *)objectMapping {
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[self class]];
+    [mapping addAttributeMappingsFromArray:@[@"message_error", @"status", @"server_process_time"]];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data" toKeyPath:@"data" withMapping:[ManageProductResult objectMapping]]];
+    return mapping;
+}
+
 @end

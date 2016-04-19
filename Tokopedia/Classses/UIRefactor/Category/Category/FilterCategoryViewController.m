@@ -15,7 +15,7 @@
 
 @interface FilterCategoryViewController () <TokopediaNetworkManagerDelegate, LoadingViewDelegate>
 
-@property (strong, nonatomic) NSArray *initialCategories;
+@property (strong, nonatomic) NSMutableArray *initialCategories;
 @property BOOL requestError;
 
 @property (strong, nonatomic) LoadingView *loadingView;
@@ -36,8 +36,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"Pilih Kategori";
-    [self setCancelButton];
-    [self setDoneButton];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -45,8 +43,19 @@
     if (self.categories == nil || [self.categories count] == 0) {
         [self loadData];
     } else {
+        if (self.filterType == FilterCategoryTypeSearchProduct) {
+            CategoryDetail *category = [CategoryDetail new];
+            category.categoryId = @"0";
+            category.name = @"Semua Kategori";
+            category.tree = @"1";
+            [self.categories insertObject:category atIndex:0];
+        }
         [self showPresetCategories];
     }
+    if (self == self.navigationController.viewControllers.firstObject) {
+        [self setCancelButton];
+    }
+    [self setDoneButton];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -76,8 +85,13 @@
             doneButton.tintColor = [UIColor whiteColor];
         }
     } else {
-        doneButton.enabled = YES;
-        doneButton.tintColor = [UIColor whiteColor];
+        if (self.selectedCategory) {
+            doneButton.enabled = YES;
+            doneButton.tintColor = [UIColor whiteColor];
+        } else {
+            doneButton.enabled = NO;
+            doneButton.tintColor = [[UIColor whiteColor] colorWithAlphaComponent:0.5];
+        }
     }
 }
 
@@ -86,10 +100,17 @@
 }
 
 - (void)didTapDoneButton {
+    if (self.selectedCategory == nil) {
+        return;
+    }
     if ([self.delegate respondsToSelector:@selector(didSelectCategory:)]) {
         [self.delegate didSelectCategory:self.selectedCategory];
     }
-    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    if (self.navigationItem.leftBarButtonItem == nil) {
+        [self.navigationController popViewControllerAnimated:YES];
+    } else {
+        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 - (void)loadData {
@@ -330,13 +351,20 @@
 - (void)actionAfterRequest:(RKMappingResult *)mappingResult
              withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
     CategoryResponse *response = [mappingResult.dictionary objectForKey:@""];
-    self.initialCategories = response.result.categories;
+    self.initialCategories = [NSMutableArray arrayWithArray:response.result.categories];
+    if (self.filterType == FilterCategoryTypeSearchProduct) {
+        CategoryDetail *category = [CategoryDetail new];
+        category.categoryId = @"0";
+        category.name = @"Semua Kategori";
+        category.tree = @"1";
+        [self.initialCategories insertObject:category atIndex:0];
+    }
     [self expandSelectedCategories];
     [self hidesOtherCategories];
     if (self.selectedCategory) {
         [self scrollToCategory:self.selectedCategory];
-        [self updateDoneButtonAppearance];
     }
+    [self updateDoneButtonAppearance];
     [self.tableView reloadData];
 }
 

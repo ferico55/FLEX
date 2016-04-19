@@ -22,5 +22,6 @@
 @property (nonatomic, strong) NSString *etalase_name;
 @property (nonatomic, strong) NSString *menu_id;
 
++ (RKObjectMapping *)objectMapping;
 
 @end

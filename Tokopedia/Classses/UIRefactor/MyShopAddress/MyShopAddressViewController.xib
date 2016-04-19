@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MyShopAddressViewController">
             <connections>
-                <outlet property="act" destination="g2F-g7-cPx" id="Pm6-lq-5YT"/>
-                <outlet property="footer" destination="Ey4-Vc-KXo" id="kLZ-90-z5Z"/>
-                <outlet property="table" destination="1h2-Gr-QQo" id="kHn-8M-31p"/>
+                <outlet property="activityIndicatorView" destination="g2F-g7-cPx" id="bS8-7d-FLV"/>
+                <outlet property="tableFooterView" destination="Ey4-Vc-KXo" id="if4-Es-8S5"/>
+                <outlet property="tableView" destination="1h2-Gr-QQo" id="HbB-I3-531"/>
                 <outlet property="view" destination="iN0-l3-epB" id="90a-uz-qf1"/>
             </connections>
         </placeholder>
