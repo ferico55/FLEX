@@ -355,7 +355,8 @@
     }
     else
     {
-        if ([request.URL.absoluteString rangeOfString:_callbackURL].location != NSNotFound) {
+        NSURL *callbackURL = [NSURL URLWithString:_callbackURL];
+        if ([request.URL.absoluteString rangeOfString:callbackURL.path].location != NSNotFound) {
             
             NSDictionary *paramURL = [self dictionaryFromURLString:request.URL.absoluteString];
 
