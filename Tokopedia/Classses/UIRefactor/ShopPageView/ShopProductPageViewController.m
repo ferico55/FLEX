@@ -306,6 +306,10 @@ EtalaseViewControllerDelegate
                                forState:UIControlStateNormal];
     }
     
+    if(_initialEtalase){
+        [_detailfilter setObject:_initialEtalase forKey:DATA_ETALASE_KEY];
+    }
+    
     if(_data) {
         [_detailfilter setValue:[_data objectForKey:@"product_etalase_id"] forKey:@"product_etalase_id"];
         [_detailfilter setValue:[_data objectForKey:@"product_etalase_name"] forKey:@"product_etalase_name"];

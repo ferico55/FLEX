@@ -739,6 +739,8 @@
                     container.data = @{kTKPDDETAIL_APISHOPIDKEY:shopid,
                                        kTKPDDETAIL_APISHOPNAMEKEY:_product.result.shop_info.shop_name,
                                        kTKPD_AUTHKEY:_auth?:@{}};
+                    container.initialEtalase = selectedEtalase;
+                    
                     [self.navigationController pushViewController:container animated:YES];
                     
                 }
@@ -2388,6 +2390,13 @@
                                    kTKPD_AUTHKEY:_auth?:[NSNull null],
                                    @"product_etalase_name" : _product.result.product.product_etalase,
                                    @"product_etalase_id" : _product.result.product.product_etalase_id};
+                
+                if([_product.result.product.product_etalase_id respondsToSelector:@selector(stringValue)]){
+                    EtalaseList *initEtalase = [EtalaseList new];
+                    [initEtalase setEtalase_id:[_product.result.product.product_etalase_id stringValue]];
+                    [initEtalase setEtalase_name:_product.result.product.product_etalase];
+                    container.initialEtalase = initEtalase;
+                }
                 [self.navigationController pushViewController:container animated:YES];
             }
             
