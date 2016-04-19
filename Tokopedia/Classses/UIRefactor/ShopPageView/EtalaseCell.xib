@@ -21,7 +21,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bXe-Ym-ASB">
-                        <rect key="frame" x="10" y="12" width="243" height="20"/>
+                        <rect key="frame" x="10" y="15" width="217" height="13"/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
@@ -34,7 +34,10 @@
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="0 Produk" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4tM-5b-ohv">
-                        <rect key="frame" x="237" y="8" width="75" height="27"/>
+                        <rect key="frame" x="235" y="15" width="70" height="13"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="70" id="RYE-Md-i81"/>
+                        </constraints>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
@@ -43,11 +46,18 @@
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="4tM-5b-ohv" secondAttribute="trailing" constant="15" id="DUx-46-UlH"/>
                     <constraint firstAttribute="trailing" secondItem="nG4-c7-j2c" secondAttribute="trailing" constant="15" id="Hu9-rO-R5e"/>
+                    <constraint firstItem="4tM-5b-ohv" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="LWQ-ov-TBP"/>
                     <constraint firstItem="bXe-Ym-ASB" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="SKS-Bz-F5I"/>
                     <constraint firstItem="nG4-c7-j2c" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Vn6-gX-DJh"/>
                     <constraint firstItem="bXe-Ym-ASB" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="dPW-7M-ugU"/>
                     <constraint firstItem="4tM-5b-ohv" firstAttribute="leading" secondItem="bXe-Ym-ASB" secondAttribute="trailing" constant="8" id="qMY-Ai-uDj"/>
+                    <constraint firstAttribute="trailing" secondItem="4tM-5b-ohv" secondAttribute="trailing" constant="8" id="xHj-23-8SC"/>
                 </constraints>
+                <variation key="default">
+                    <mask key="constraints">
+                        <exclude reference="xHj-23-8SC"/>
+                    </mask>
+                </variation>
             </tableViewCellContentView>
             <gestureRecognizers/>
             <connections>
