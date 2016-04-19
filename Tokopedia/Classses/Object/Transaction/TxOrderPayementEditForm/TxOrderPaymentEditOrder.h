@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface TxOrderPaymentEditOrder : NSObject
+@interface TxOrderPaymentEditOrder : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *order_invoice_string;
 @property (nonatomic, strong) NSArray *order_invoice;

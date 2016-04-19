@@ -11,7 +11,7 @@
 #import "TxOrderConfirmedDetailInvoice.h"
 #import "TxOrderConfirmedDetailPayment.h"
 
-@interface TxOrderConfirmedDetailOrder : NSObject
+@interface TxOrderConfirmedDetailOrder : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) TxOrderConfirmedDetailPayment *payment;
 @property (nonatomic, strong) NSArray *detail;

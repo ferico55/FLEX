@@ -65,7 +65,11 @@
 }
 
 - (NSString*)getMyDeviceToken {
-    return [_auth objectForKey:@"device_token"] ?: @"0";
+    if ([[_auth objectForKey:@"device_token"] isKindOfClass:[NSString class]]) {
+        return [_auth objectForKey:@"device_token"]?: @"0";
+    } else {
+        return [[_auth objectForKey:@"device_token"] stringValue]?: @"0";
+    }
 }
 
 //auto increment from database that had been saved in secure storage
@@ -88,16 +92,12 @@
     return [NSString stringWithFormat: @"%@", shopHasTerms]?:@"";
 }
 
--(CategoryDetail *)getLastProductAddCategory
+-(Breadcrumb*)getLastProductAddCategory
 {
-    if ([_auth objectForKey:LAST_CATEGORY_NAME]) {
-        CategoryDetail *category = [CategoryDetail new];
-        category.categoryId = [_auth objectForKey:LAST_CATEGORY_VALUE]?:@"0";
-        category.name = [_auth objectForKey:LAST_CATEGORY_NAME]?:@"";
-        return category;
-    } else {
-        return nil;
-    }
+    Breadcrumb *category = [Breadcrumb new];
+    category.department_id = [_auth objectForKey:LAST_CATEGORY_VALUE]?:@"";
+    category.department_name = [_auth objectForKey:LAST_CATEGORY_NAME]?:@"";
+    return category;
 }
 
 - (NSDictionary *)autoAddParameter:(id)params
@@ -106,7 +106,7 @@
     if (![[self getUserId] isEqualToString:@"0"]) {
         [parameters setValue:[self getUserId] forKey:@"user_id"];
     }
-#if (TARGET_OS_SIMULATOR)
+#ifdef DEBUG
     [parameters setValue:@"SIMULATORDUMMY" forKey:@"device_id"];
 #else
     [parameters setValue:[self getMyDeviceToken] forKey:@"device_id"];

@@ -1065,11 +1065,14 @@ ImageSearchRequestDelegate
     NSInteger page = _start/[startPerPage integerValue];
     
     if(page % 2 == 0){
-        NSString *search =[_params objectForKey:kTKPDSEARCH_DATASEARCHKEY]?:@"";
+        NSString *searchQuery =[_params objectForKey:kTKPDSEARCH_DATASEARCHKEY]?:@"";
         NSString *departmentId =[_params objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY]?:@"";
-        [_promoRequest requestForProductQuery:search
+        NSString *source = [searchQuery isEqualToString:@""]?@"directory":@"search";
+        
+        [_promoRequest requestForProductQuery:searchQuery
                                    department:departmentId
                                          page:page
+                                       source:source
                                     onSuccess:^(NSArray<PromoResult *> *promoResult) {
                                         if (promoResult) {
                                             if(promoResult.count > 2){

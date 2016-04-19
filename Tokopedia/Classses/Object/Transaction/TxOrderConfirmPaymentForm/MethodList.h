@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface MethodList : NSObject
+@interface MethodList : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *method_id;
 @property (nonatomic, strong) NSString *method_name;

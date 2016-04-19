@@ -662,7 +662,7 @@
                     transactionVC.wholeSales = _product.result.wholesale_price;
                     transactionVC.productPrice = _product.result.product.product_price;
                     transactionVC.data = @{DATA_DETAIL_PRODUCT_KEY:_product.result};
-        
+                    transactionVC.productID = _product.result.product.product_id;
                     [self.navigationController pushViewController:transactionVC animated:YES];
                 } else {
                     UINavigationController *navigationController = [[UINavigationController alloc] init];
@@ -2044,8 +2044,6 @@
     _product = [result objectForKey:@""];
     
     
-    [self loadDataOtherProduct];
-    
     BOOL status = [_product.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
@@ -2055,6 +2053,8 @@
             self.table.hidden = YES;
             return;
         }
+        
+        [self loadDataOtherProduct];
         
         //Set icon speed
         [SmileyAndMedal setIconResponseSpeed:_product.result.shop_info.respond_speed.badge withImage:btnKecepatan largeImage:NO];

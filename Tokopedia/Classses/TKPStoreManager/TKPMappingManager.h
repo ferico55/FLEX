@@ -10,7 +10,9 @@
 
 @interface TKPMappingManager: NSObject
 
-+(RKObjectManager*)objectManagerGetAddress;
-+(RKObjectManager*)objectManagerEditAddress;
++ (RKObjectManager*)objectManagerGetAddress;
++ (RKObjectManager*)objectManagerEditAddress;
++ (RKObjectManager*)objectManagerUploadImageWithBaseURL:(NSString*)baseURL
+                                            pathPattern:(NSString*)pathPattern;
 
 @end

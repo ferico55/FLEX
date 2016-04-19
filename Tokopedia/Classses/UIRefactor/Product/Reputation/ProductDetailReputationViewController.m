@@ -596,6 +596,10 @@ MGSwipeTableCellDelegate>
                                                    [[productReputationCell getBtnLike] setTitle:likeDislikePostResult.content.total_like_dislike.total_like forState:UIControlStateNormal];
                                                    [[productReputationCell getBtnDisLike] setTitle:likeDislikePostResult.content.total_like_dislike.total_dislike forState:UIControlStateNormal];
                                                    [self setLikeDislikeActive:_strLikeStatus];
+                                               }else{
+                                                   StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Respon Anda tidak dapat diproses pada ulasan ini."] delegate:self];
+                                                   [alert show];
+                                                   [self setLikeDislikeActive:_strLikeStatus];
                                                }
                                            } onFailure:^(NSError *errorResult) {
                                                [self setLikeDislikeActive:_strLikeStatus];
@@ -611,6 +615,10 @@ MGSwipeTableCellDelegate>
                                                              [[productReputationCell getBtnLike] setTitle:likeDislikePostResult.content.total_like_dislike.total_like forState:UIControlStateNormal];
                                                              [[productReputationCell getBtnDisLike] setTitle:likeDislikePostResult.content.total_like_dislike.total_dislike forState:UIControlStateNormal];
                                                              _strLikeStatus = @"3";
+                                                             [self setLikeDislikeActive:_strLikeStatus];
+                                                         }else{
+                                                             StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Respon Anda tidak dapat diproses pada ulasan ini."] delegate:self];
+                                                             [alert show];
                                                              [self setLikeDislikeActive:_strLikeStatus];
                                                          }
                                                      } onFailure:^(NSError *errorResult) {
@@ -635,10 +643,15 @@ MGSwipeTableCellDelegate>
                                               shopId:_detailReputationReview.shop_id
                                            productId:_detailReputationReview.product_id
                                               userId:[auth objectForKey:@"user_id"]
-                                           onSuccess:^(LikeDislikePostResult *likeDislikePostResult) {                                               if([likeDislikePostResult.is_success isEqualToString:@"1"]){
+                                           onSuccess:^(LikeDislikePostResult *likeDislikePostResult) {
+                                               if([likeDislikePostResult.is_success isEqualToString:@"1"]){
                                                    _strLikeStatus = @"2";
                                                    [[productReputationCell getBtnLike] setTitle:likeDislikePostResult.content.total_like_dislike.total_like forState:UIControlStateNormal];
                                                    [[productReputationCell getBtnDisLike] setTitle:likeDislikePostResult.content.total_like_dislike.total_dislike forState:UIControlStateNormal];
+                                                   [self setLikeDislikeActive:_strLikeStatus];
+                                               }else{
+                                                   StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Respon Anda tidak dapat diproses pada ulasan ini."] delegate:self];
+                                                   [alert show];
                                                    [self setLikeDislikeActive:_strLikeStatus];
                                                }
                                            } onFailure:^(NSError *errorResult) {
@@ -656,6 +669,10 @@ MGSwipeTableCellDelegate>
                                                    [[productReputationCell getBtnLike] setTitle:likeDislikePostResult.content.total_like_dislike.total_like forState:UIControlStateNormal];
                                                    [[productReputationCell getBtnDisLike] setTitle:likeDislikePostResult.content.total_like_dislike.total_dislike forState:UIControlStateNormal];
                                                    _strLikeStatus = @"3";
+                                                   [self setLikeDislikeActive:_strLikeStatus];
+                                               }else{
+                                                   StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Respon Anda tidak dapat diproses pada ulasan ini."] delegate:self];
+                                                   [alert show];
                                                    [self setLikeDislikeActive:_strLikeStatus];
                                                }
                                            } onFailure:^(NSError *errorResult) {

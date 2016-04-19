@@ -25,6 +25,7 @@
 @property (strong, nonatomic) NSString *productNotes;
 @property (strong, nonatomic) NSString *productErrorMessage;
 
+@property BOOL isProductBuyAble;
 @property BOOL isGoldShopProduct;
 
 @end
