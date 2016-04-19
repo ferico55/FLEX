@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface OrderDeadline : NSObject
+@interface OrderDeadline : NSObject <TKPObjectMapping>
 
 @property NSInteger deadline_process_day_left;
 @property NSInteger deadline_shipping_day_left;

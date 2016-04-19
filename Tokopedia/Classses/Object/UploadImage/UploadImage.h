@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 #import "UploadImageResult.h"
+#import "ImageResult.h"
 
 @interface UploadImage : NSObject <TKPObjectMapping>
 
@@ -17,6 +18,6 @@
 @property (nonatomic, strong) NSString *status;
 @property (nonatomic, strong) NSString *server_process_time;
 @property (nonatomic, strong) UploadImageResult *result;
-
+@property (nonatomic, strong) ImageResult *data;
 
 @end
