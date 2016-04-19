@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "Shop.h"
+#import "EtalaseList.h"
 
 @interface ShopContainerViewController : UIViewController<UIPageViewControllerDataSource>
 
@@ -15,6 +16,7 @@
 @property (strong, nonatomic) NSDictionary *data;
 @property CGPoint contentOffset;
 @property (strong, nonatomic) Shop *shop;
+@property (strong, nonatomic) EtalaseList *initialEtalase;
 
 - (void)showPopUp:(NSString *)strText withSender:(id)sender;
 - (UIViewController *)getActiveViewController;

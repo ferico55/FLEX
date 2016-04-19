@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="GothamBook.ttf">
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+        </mutableArray>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EtalaseViewController">
+            <connections>
+                <outlet property="footerView" destination="O3v-JQ-E17" id="59F-iM-tl0"/>
+                <outlet property="tableView" destination="AZY-UW-lxS" id="Bqb-ki-cHS"/>
+                <outlet property="tambahEtalaseButton" destination="4AP-bQ-1Jt" id="rkp-NB-VPZ"/>
+                <outlet property="tambahEtalaseButtonLeftConstraint" destination="Xqc-uB-vaA" id="DRh-ac-VDO"/>
+                <outlet property="tambahEtalaseButtonWidthConstraint" destination="YIr-2L-Css" id="MNv-vP-rhE"/>
+                <outlet property="tambahEtalaseTextField" destination="5DQ-dX-yGb" id="ePB-NE-7xk"/>
+                <outlet property="tambahEtalaseView" destination="BE7-tA-tww" id="eNj-P0-H4p"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="AZY-UW-lxS">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="PEg-Kf-F4q"/>
+                        <outlet property="delegate" destination="-1" id="beQ-tO-kdK"/>
+                    </connections>
+                </tableView>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="AZY-UW-lxS" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="DUn-UH-Pdf"/>
+                <constraint firstItem="AZY-UW-lxS" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="DwI-Kf-kpS"/>
+                <constraint firstAttribute="bottom" secondItem="AZY-UW-lxS" secondAttribute="bottom" id="lcj-iK-xKd"/>
+                <constraint firstAttribute="trailing" secondItem="AZY-UW-lxS" secondAttribute="trailing" id="r4I-Si-bOb"/>
+            </constraints>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+        </view>
+        <view contentMode="scaleToFill" id="BE7-tA-tww">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="61"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Tambah Etalase" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="5DQ-dX-yGb">
+                    <rect key="frame" x="8" y="8" width="226" height="44"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="SVo-qs-LAn"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4AP-bQ-1Jt">
+                    <rect key="frame" x="242" y="18" width="70" height="26"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="70" id="YIr-2L-Css"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                    <state key="normal" title="Tambah">
+                        <color key="titleColor" red="0.20392156862745098" green="0.67450980392156867" blue="0.1803921568627451" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="tambahEtalaseButtonTapped:" destination="-1" eventType="touchUpInside" id="hr2-7s-2bM"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="4AP-bQ-1Jt" secondAttribute="trailing" constant="8" id="C7J-Nt-Ifz"/>
+                <constraint firstItem="4AP-bQ-1Jt" firstAttribute="centerY" secondItem="BE7-tA-tww" secondAttribute="centerY" id="NV7-L0-Nya"/>
+                <constraint firstItem="4AP-bQ-1Jt" firstAttribute="leading" secondItem="5DQ-dX-yGb" secondAttribute="trailing" constant="8" id="Xqc-uB-vaA"/>
+                <constraint firstItem="5DQ-dX-yGb" firstAttribute="leading" secondItem="BE7-tA-tww" secondAttribute="leading" constant="8" id="YbG-hh-lY2"/>
+                <constraint firstItem="5DQ-dX-yGb" firstAttribute="top" secondItem="BE7-tA-tww" secondAttribute="top" constant="8" id="vUg-EW-pyA"/>
+                <constraint firstAttribute="bottom" secondItem="5DQ-dX-yGb" secondAttribute="bottom" constant="8" id="y5E-Qo-8xu"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="y5E-Qo-8xu"/>
+                </mask>
+            </variation>
+            <point key="canvasLocation" x="205" y="41.5"/>
+        </view>
+        <view contentMode="scaleToFill" id="O3v-JQ-E17" userLabel="FooterView">
+            <rect key="frame" x="0.0" y="0.0" width="319" height="34"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="0GT-Tz-Fh6">
+                    <rect key="frame" x="150" y="7" width="20" height="20"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <color key="color" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                </activityIndicatorView>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="0GT-Tz-Fh6" firstAttribute="leading" secondItem="O3v-JQ-E17" secondAttribute="leading" constant="150" id="ZUu-rz-WDL"/>
+                <constraint firstAttribute="bottom" secondItem="0GT-Tz-Fh6" secondAttribute="bottom" constant="7" id="Zz6-KC-qYb"/>
+                <constraint firstAttribute="trailing" secondItem="0GT-Tz-Fh6" secondAttribute="trailing" constant="149" id="jKm-43-lmQ"/>
+                <constraint firstItem="0GT-Tz-Fh6" firstAttribute="top" secondItem="O3v-JQ-E17" secondAttribute="top" constant="7" id="ym8-pN-VQ3"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+        </view>
+    </objects>
+</document>

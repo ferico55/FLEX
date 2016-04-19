@@ -28,10 +28,9 @@
 
 #import "ProfileFavoriteShopViewController.h"
 #import "ProfileContactViewController.h"
-#import "TKPDTabProfileNavigationController.h"
 
 #import "ShopFavoritedViewController.h"
-
+#import "EtalaseViewController.h"
 
 #import "InboxTicketSplitViewController.h"
 #import "InboxMessageViewController.h"
@@ -50,7 +49,6 @@
 #import "UserContainerViewController.h"
 #import "ReputationPageViewController.h"
 #import "ProductListMyShopViewController.h"
-#import "MyShopEtalaseViewController.h"
 #import "InboxResolutionCenterTabViewController.h"
 #import "InboxResolSplitViewController.h"
 #import "NavigateViewController.h"
@@ -70,7 +68,7 @@
 #define CTagProfileInfo 12
 #define CTagLP 13
 
-@interface MoreViewController () <NotificationManagerDelegate, TokopediaNetworkManagerDelegate, SplitReputationVcProtocol> {
+@interface MoreViewController () <NotificationManagerDelegate, TokopediaNetworkManagerDelegate, SplitReputationVcProtocol, EtalaseViewControllerDelegate> {
     NSDictionary *_auth;
     
     Deposit *_deposit;
@@ -638,11 +636,17 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
             vc.hidesBottomBarWhenPushed = YES;
             [wrapperController.navigationController pushViewController:vc animated:YES];
         } else if (indexPath.row == 3) {
-            MyShopEtalaseViewController *vc = [MyShopEtalaseViewController new];
-            vc.data = @{MORE_SHOP_ID : [_auth objectForKey:MORE_SHOP_ID]?:@{},
-                        kTKPD_AUTHKEY:_auth?:@{}};
+            EtalaseViewController *vc = [EtalaseViewController new];
+            vc.delegate = self;
+            vc.isEditable = YES;
+            vc.showOtherEtalase = NO;
+            [vc setEnableAddEtalase:YES];
             vc.hidesBottomBarWhenPushed = YES;
+            
+            NSString* shopId = [_auth objectForKey:MORE_SHOP_ID]?:@{};
+            [vc setShopId:shopId];
             [wrapperController.navigationController pushViewController:vc animated:YES];
+
         }
         
     }

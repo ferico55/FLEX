@@ -248,7 +248,7 @@
                                    path:path
                                  method:RKRequestMethodGET
                               parameter:parameters
-                                mapping:[ShopSettings objectMapping]
+                                mapping:[ShopSettings mapping]
                               onSuccess:^(RKMappingResult *mappingResult,
                                           RKObjectRequestOperation *operation) {
                                   ShopSettings *response = [mappingResult.dictionary objectForKey:@""];
