@@ -10,7 +10,7 @@
 #import "TransactionCartList.h"
 #import "TransactionCartGateway.h"
 
-@interface TransactionCartResult : NSObject
+@interface TransactionCartResult : NSObject <TKPObjectMapping>
 
 @property (nonatomic,strong) NSArray *list;
 @property (nonatomic,strong) NSArray *gateway_list;

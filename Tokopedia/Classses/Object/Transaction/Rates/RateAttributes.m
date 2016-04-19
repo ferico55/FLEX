@@ -18,7 +18,8 @@
                       @"origin_id",
                       @"origin_name",
                       @"destination_id",
-                      @"destination_name"
+                      @"destination_name",
+                      @"weight"
                       ];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }

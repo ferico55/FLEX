@@ -29,7 +29,7 @@
     [self roundTopCornersRadius:5.0f];
 }
 
--(void)roundCorners:(UIRectCorner)corners radius:(CGFloat)radius
+-(void)roundingCorners:(UIRectCorner)corners radius:(CGFloat)radius
 {
     CGRect bounds = self.upperView.bounds;
     UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:bounds
@@ -53,12 +53,12 @@
 
 -(void)roundTopCornersRadius:(CGFloat)radius
 {
-    [self roundCorners:(UIRectCornerTopLeft|UIRectCornerTopRight) radius:radius];
+    [self roundingCorners:(UIRectCornerTopLeft|UIRectCornerTopRight) radius:radius];
 }
 
 -(void)roundBottomCornersRadius:(CGFloat)radius
 {
-    [self roundCorners:(UIRectCornerBottomLeft|UIRectCornerBottomRight) radius:radius];
+    [self roundingCorners:(UIRectCornerBottomLeft|UIRectCornerBottomRight) radius:radius];
 }
 
 - (IBAction)tapKlikDisini:(id)sender {

@@ -11,6 +11,9 @@
 #import "TransactionAction.h"
 #import "TransactionCalculatePrice.h"
 #import "RateResponse.h"
+#import "RequestRates.h"
+#import "RequestEditAddress.h"
+#import "RequestAddAddress.h"
 
 @interface RequestATC : NSObject
 

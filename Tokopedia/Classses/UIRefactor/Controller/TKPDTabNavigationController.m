@@ -554,15 +554,6 @@
     [_data setObject:category.categoryId forKey:@"selected_id"];
 }
 
-//-(void)CategoryMenuViewController:(CategoryMenuViewController *)viewController userInfo:(NSDictionary *)userInfo
-//{
-//    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_DEPARTMENTIDPOSTNOTIFICATIONNAMEKEY
-//                                                        object:nil
-//                                                      userInfo:userInfo];
-//    
-//    [_data setObject:userInfo[kTKPDCONTROLLER_DATADEPARTMENTIDKEY] forKey:@"selected_id"];
-//}
-
 #pragma mark - Notification setsegmentcontroll
 -(void)SetHiddenSegmentController:(NSNotification*)notification
 {

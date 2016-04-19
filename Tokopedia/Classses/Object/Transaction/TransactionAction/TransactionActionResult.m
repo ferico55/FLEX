@@ -13,6 +13,10 @@
 + (NSDictionary *)attributeMappingDictionary {
     NSArray *keys = @[@"is_success",
                       @"cc_agent",
+                      @"parameter",
+                      @"redirect_url",
+                      @"query_string",
+                      @"callback_url"
                       ];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }
@@ -23,6 +27,9 @@
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"ld"
                                                                             toKeyPath:@"ld"
                                                                           withMapping:[LuckyDeal mapping]]];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data"
+                                                                            toKeyPath:@"emoney_data"
+                                                                          withMapping:[TxEMoneyData mapping]]];
     return mapping;
     
 }
