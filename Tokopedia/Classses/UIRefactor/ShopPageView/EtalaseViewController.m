@@ -278,10 +278,11 @@
                                              }else{
                                                  _tableView.tableFooterView = nil;
                                              }
+                                             _isLoading = NO;
                                          } onFailure:^(NSError *error) {
                                              _tableView.tableFooterView = nil;
+                                             _isLoading = NO;
                                          }];
-    _isLoading = NO;
 }
 
 -(void)selectInitialSelectedEtalase{
@@ -352,10 +353,11 @@
                                              }else{
                                                  _tableView.tableFooterView = nil;
                                              }
+                                             _isLoading = NO;
                                          } onFailure:^(NSError *error) {
                                              _tableView.tableFooterView = nil;
+                                             _isLoading = NO;
                                          }];
-    _isLoading = NO;
 }
 
 #pragma mark - TextField Delegate
@@ -407,7 +409,8 @@
 }
 
 - (IBAction)tambahEtalaseButtonTapped:(id)sender {
-    if(_isLoading){
+    if(!_isLoading){
+        _isLoading = YES;
         UserAuthentificationManager *auth = [UserAuthentificationManager new];
         NSDictionary *loginData = [auth getUserLoginData];
         NSString *userId = [loginData objectForKey:@"user_id"]?:@"";
@@ -434,8 +437,10 @@
                                                   }else{
                                                       [self alertForError:shopSettings.message_error];
                                                   }
+                                                  _isLoading = NO;
                                               } onFailure:^(NSError *error) {
                                                   [self alertForError:@[@"Kendala koneksi internet"]];
+                                                  _isLoading = NO;
                                               }];
     }else{
         StickyAlertView *alert = [[StickyAlertView alloc]initWithWarningMessages:@[@"Masih ada proses yang sedang berlangsung, tunggu beberapa saat dan coba kembali."] delegate:self];
@@ -444,7 +449,8 @@
 }
 
 - (void)requestEditEtalase:(NSString*)name{
-    if(selectedIndexPath.section == 1){
+    if(!_isLoading && selectedIndexPath.section == 1){
+        _isLoading = YES;
         UserAuthentificationManager *auth = [UserAuthentificationManager new];
         NSDictionary *loginData = [auth getUserLoginData];
         NSString *userId = [loginData objectForKey:@"user_id"]?:@"";
@@ -475,32 +481,38 @@
                                                  }else{
                                                      [self alertForError:shopSettings.message_error];
                                                  }
+                                                 _isLoading = NO;
                                              } onFailure:^(NSError *error) {
                                                  [self alertForError:@[@"Kendala koneksi internet"]];
+                                                 _isLoading = NO;
                                              }];
     }
 }
 
 - (void)requestDeleteEtalase:(NSIndexPath*) indexPath{
-    EtalaseList *selectedEtalase = [etalaseList objectAtIndex:indexPath.row];
-    UserAuthentificationManager *auth = [UserAuthentificationManager new];
-    NSDictionary *loginData = [auth getUserLoginData];
-    NSString *userId = [loginData objectForKey:@"user_id"]?:@"";
-    [etalaseRequest requestActionDeleteEtalaseWithId:selectedEtalase.etalase_id
-                                              userId:userId
-                                           onSuccess:^(ShopSettings *shopSettings) {
-                                               if(shopSettings.result.is_success == 1){
-                                                   [etalaseList removeObjectAtIndex:indexPath.row];
-                                                   [_tableView beginUpdates];
-                                                   [_tableView deleteRowsAtIndexPaths:[NSMutableArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationBottom];
-                                                   [_tableView endUpdates];
-                                               }else{
-                                                   [self alertForError:shopSettings.message_error];
-                                               }
-                                           } onFailure:^(NSError *error) {
-                                               [self alertForError:@[@"Kendala koneksi internet"]];
-                                           }];
-
+    if(!_isLoading){
+        _isLoading = YES;
+        EtalaseList *selectedEtalase = [etalaseList objectAtIndex:indexPath.row];
+        UserAuthentificationManager *auth = [UserAuthentificationManager new];
+        NSDictionary *loginData = [auth getUserLoginData];
+        NSString *userId = [loginData objectForKey:@"user_id"]?:@"";
+        [etalaseRequest requestActionDeleteEtalaseWithId:selectedEtalase.etalase_id
+                                                  userId:userId
+                                               onSuccess:^(ShopSettings *shopSettings) {
+                                                   if(shopSettings.result.is_success == 1){
+                                                       [etalaseList removeObjectAtIndex:indexPath.row];
+                                                       [_tableView beginUpdates];
+                                                       [_tableView deleteRowsAtIndexPaths:[NSMutableArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationBottom];
+                                                       [_tableView endUpdates];
+                                                   }else{
+                                                       [self alertForError:shopSettings.message_error];
+                                                   }
+                                                   _isLoading = YES;
+                                               } onFailure:^(NSError *error) {
+                                                   [self alertForError:@[@"Kendala koneksi internet"]];
+                                                   _isLoading = YES;
+                                               }];
+    }
 }
 
 - (void)alertForError:(NSArray*)error{
