@@ -570,8 +570,8 @@
 
                     //TODO:: Reload handler
                 }
-                else
-                {
+                else {
+                    
                 }
             }
             else
@@ -614,8 +614,45 @@
                 
             case 11 : {
                 if([self validateFormValue]) {
-                    [self configureRestkit];
-                    [self loadData];
+                    [self disableButton];
+                    [_depositRequest requestDoWithdrawWithBankAccountID:_bankAccountId?:@"0"
+                                                        bankAccountName:_bankAccountName?:@"0"
+                                                      bankAccountNumber:_bankAccountNumber?:@"0"
+                                                             bankBranch:_bankBranch?:@"0"
+                                                                 bankID:_bankId?:@"0"
+                                                               bankName:_bankName?:@"0"
+                                                                OTPCode:_kodeOTP.text?:@"0"
+                                                           userPassword:_tokopediaPassword.text?:@"0"
+                                                         withdrawAmount:_totalAmount.text?:@"0"
+                                                              onSuccess:^(GeneralAction *action) {
+                                                                  [self enableButton];
+                                                                  
+                                                                  if (!action.message_error) {
+                                                                      if ([action.data.is_success isEqualToString:@"1"]) {
+                                                                          [self.navigationController popViewControllerAnimated:YES];
+                                                                          [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadListDeposit" object:nil userInfo:nil];
+                                                                          
+                                                                          [[NSNotificationCenter defaultCenter] postNotificationName:@"updateSaldoTokopedia" object:nil userInfo:nil];
+                                                                          [[NSNotificationCenter defaultCenter] postNotificationName:@"removeButtonWithdraw" object:nil userInfo:nil];
+                                                                          
+                                                                          [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SHOW_RATING_ALERT object:nil];
+                                                                      }
+                                                                  }
+                                                                  
+                                                                  if (action.message_status) {
+                                                                      NSArray *array = action.message_status;//[[NSArray alloc] initWithObjects:KTKPDMESSAGE_DELIVERED, nil];
+                                                                      StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:array delegate:self];
+                                                                      [stickyAlertView show];
+                                                                      [[NSNotificationCenter defaultCenter] postNotificationName:@"removeButtonWithdraw" object:nil userInfo:nil];
+                                                                  } else if(action.message_error) {
+                                                                      NSArray *array = action.message_error;//[[NSArray alloc] initWithObjects:KTKPDMESSAGE_UNDELIVERED, nil];
+                                                                      StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
+                                                                      [alert show];
+                                                                  }
+                                                              }
+                                                              onFailure:^(NSError *errorResult) {
+                                                                  
+                                                              }];
                 }
             }
                 
@@ -642,9 +679,6 @@
                 
             case 12 : {
                 if(_requestDepositForm.isExecuting || _requestSendOTP.isExecuting) return;
-                
-//                [self configureSendOTPRestkit];
-//                [self requestSendOTP];
                 
                 
                 [_depositRequest requestSendOTPVerifyBankAccountOnSuccess:^(GeneralAction *action) {
