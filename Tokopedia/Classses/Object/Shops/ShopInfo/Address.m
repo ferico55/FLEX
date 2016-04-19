@@ -10,14 +10,6 @@
 
 @implementation Address
 
-//- (NSString *)location_phone {
-//    if ([_location_phone isEqualToString:@"0"]) {
-//        return @"-";
-//    } else {
-//        return _location_phone;
-//    }
-//}
-
 - (NSString *)location_address {
     return [_location_address kv_decodeHTMLCharacterEntities];
 }

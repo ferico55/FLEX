@@ -14,10 +14,13 @@
 
 @property (strong, nonatomic) NSString *uri_next;
 @property (strong, nonatomic) NSString *uri_previous;
-@property (strong, nonatomic) RKObjectMapping *mapping;
 
-- (void) encodeWithCoder:(NSCoder *)encoder;
+@property (strong, nonatomic) NSURL *uriNext;
+@property (strong, nonatomic) NSURL *uriPrevious;
+
+- (void)encodeWithCoder:(NSCoder *)encoder;
 - (id)initWithCoder:(NSCoder *)decoder;
 
++ (RKObjectMapping *)mapping;
 
 @end
