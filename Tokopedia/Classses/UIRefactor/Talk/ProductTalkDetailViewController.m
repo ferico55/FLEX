@@ -198,6 +198,11 @@
     [self setHeaderData:_data];
 }
 
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    _talkmessagelabel.preferredMaxLayoutWidth = _talkmessagelabel.frame.size.width;
+}
+
 #pragma mark - Memory Management
 - (void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
