@@ -41,6 +41,8 @@
                 <outlet property="transactionDatelLabel" destination="dtG-y6-elu" id="6Am-Ry-aUi"/>
                 <outlet property="transferCodeLabel" destination="6oL-TT-AGw" id="T9H-oq-Elx"/>
                 <outlet property="view" destination="iN0-l3-epB" id="u3l-7F-FSO"/>
+                <outletCollection property="buttons" destination="50V-4Q-tcu" id="J18-IQ-Y1S"/>
+                <outletCollection property="buttons" destination="1bT-wd-Xxm" id="5HL-tU-1Nt"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -72,7 +74,7 @@
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="naD-kr-dbT"/>
+                                <action selector="tapCancelPayment:" destination="-1" eventType="touchUpInside" id="Xyh-7F-oP8"/>
                             </connections>
                         </button>
                         <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1bT-wd-Xxm">
@@ -94,7 +96,7 @@
                                 </mask>
                             </variation>
                             <connections>
-                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="11H-Cw-xkY"/>
+                                <action selector="tapConfirmPayment:" destination="-1" eventType="touchUpInside" id="ses-63-OwQ"/>
                             </connections>
                         </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HVG-fI-Zek" userLabel="Horizontal Border">

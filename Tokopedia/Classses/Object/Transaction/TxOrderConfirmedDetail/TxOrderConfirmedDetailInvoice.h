@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface TxOrderConfirmedDetailInvoice : NSObject
+@interface TxOrderConfirmedDetailInvoice : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *invoice;
 @property (nonatomic, strong) NSString *url;

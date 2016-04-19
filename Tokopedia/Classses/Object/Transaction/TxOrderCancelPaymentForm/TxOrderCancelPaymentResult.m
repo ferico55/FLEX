@@ -11,5 +11,18 @@
 
 @implementation TxOrderCancelPaymentResult
 
++(NSDictionary *)attributeMappingDictionary
+{
+    return nil;
+}
+
++(RKObjectMapping*)mapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"form" toKeyPath:@"form" withMapping:[TxOrderCancelPaymentFormForm mapping]]];
+
+    return mapping;
+}
+
 
 @end

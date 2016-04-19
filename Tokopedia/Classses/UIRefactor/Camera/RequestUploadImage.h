@@ -39,14 +39,14 @@
 @property BOOL isNotUsingNewAdd;
 
 - (void)requestActionUploadObject:(id)imageObject
-                   generatedHost:(GeneratedHost*)generatedHost
-                          action:(NSString*)action
-                          newAdd:(NSInteger)newAdd
-                       productID:(NSString*)productID
-                       paymentID:(NSString*)paymentID
-                       fieldName:(NSString*)fieldName
-                         success:(void (^)(id imageObject, UploadImage*image))success
-                         failure:(void(^)(id imageObject, NSError *error))failure;
+                    generatedHost:(GeneratedHost*)generatedHost
+                           action:(NSString*)action
+                           newAdd:(NSInteger)newAdd
+                        productID:(NSString*)productID
+                        paymentID:(NSString*)paymentID
+                        fieldName:(NSString*)fieldName
+                          success:(void (^)(id imageObject, UploadImage*image))success
+                          failure:(void(^)(id imageObject, NSError *error))failure;
 
 + (void)requestUploadImage:(UIImage*)image
             withUploadHost:(NSString*)host

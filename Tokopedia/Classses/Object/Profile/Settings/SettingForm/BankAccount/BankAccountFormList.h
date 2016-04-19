@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface BankAccountFormList : NSObject
+@interface BankAccountFormList : NSObject <TKPObjectMapping>
 
 @property (nonatomic) NSInteger bank_id;
 @property (nonatomic, strong) NSString *bank_account_id;

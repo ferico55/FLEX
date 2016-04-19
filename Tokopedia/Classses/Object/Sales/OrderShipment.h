@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface OrderShipment : NSObject
+@interface OrderShipment : NSObject <TKPObjectMapping>
 
 @property (strong, nonatomic) NSString *shipment_logo;
 @property (strong, nonatomic) NSString *shipment_package_id;

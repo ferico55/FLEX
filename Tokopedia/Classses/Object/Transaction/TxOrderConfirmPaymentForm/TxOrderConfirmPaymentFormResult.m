@@ -9,5 +9,18 @@
 #import "TxOrderConfirmPaymentFormResult.h"
 
 @implementation TxOrderConfirmPaymentFormResult
++(NSDictionary *)attributeMappingDictionary
+{
+    return nil;
+}
+
++(RKObjectMapping*)mapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"form" toKeyPath:@"form" withMapping:[TxOrderConfirmPaymentFormForm mapping]]];
+
+    return mapping;
+}
 
 @end
