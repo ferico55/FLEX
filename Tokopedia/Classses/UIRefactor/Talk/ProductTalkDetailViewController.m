@@ -192,6 +192,8 @@
             _talkInputView.hidden = YES;
         }
     }
+
+    _table.tableFooterView = _footer;
     
     [self fetchTalkComments];
 
@@ -901,6 +903,8 @@
 }
 
 - (void)fetchTalkComments {
+    [_act startAnimating];
+
     NSDictionary* param = @{
             kTKPDDETAIL_APIACTIONKEY : _urlAction ?:@"",
             TKPD_TALK_ID : [_data objectForKey:kTKPDTALKCOMMENT_TALKID]?:@(0),
