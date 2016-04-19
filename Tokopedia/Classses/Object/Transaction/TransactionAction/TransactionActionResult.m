@@ -15,7 +15,8 @@
                       @"cc_agent",
                       @"parameter",
                       @"redirect_url",
-                      @"query_string"
+                      @"query_string",
+                      @"callback_url"
                       ];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }

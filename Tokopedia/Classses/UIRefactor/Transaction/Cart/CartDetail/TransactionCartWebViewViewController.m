@@ -94,6 +94,7 @@
     controller.toppayParam = data.parameter;
     controller.gateway = @(gatewayID);
     controller.delegate = vc;
+    controller.callbackURL = data.callback_url;
     controller.title = gatewayName?:@"Pembayaran";
     
     [vc.navigationController pushViewController:controller animated:YES];
@@ -354,7 +355,8 @@
     }
     else
     {
-        if ([request.URL.absoluteString rangeOfString:@"tx-toppay-thanks.pl"].location != NSNotFound) {
+        NSURL *callbackURL = [NSURL URLWithString:_callbackURL];
+        if ([request.URL.absoluteString rangeOfString:callbackURL.path].location != NSNotFound) {
             
             NSDictionary *paramURL = [self dictionaryFromURLString:request.URL.absoluteString];
 
