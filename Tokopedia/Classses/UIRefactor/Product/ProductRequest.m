@@ -16,7 +16,7 @@ setCompletionBlockWithSuccess:(void (^)(ShopSettings *))success
             failure:(void (^)(NSArray *))failure {
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
     networkManager.isUsingHmac = YES;
-    NSString *baseURL = @"https://ws.tokopedia.com";
+    NSString *baseURL = [NSString v4Url];
     NSString *path = @"/v4/action/product/edit_etalase.pl";
     NSDictionary *parameter = @{
         @"product_id":productId,
@@ -47,7 +47,7 @@ setCompletionBlockWithSuccess:(void (^)(ShopSettings *))success
                        failure:(void (^)(NSArray *))failure {
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
     networkManager.isUsingHmac = YES;
-    NSString *baseURL = @"https://ws.tokopedia.com";
+    NSString *baseURL = [NSString v4Url];
     NSString *path = @"/v4/action/product/move_to_warehouse.pl";
     NSDictionary *parameter = @{@"product_id":productId};
     RKObjectMapping *mapping = [ShopSettings objectMapping];
@@ -75,7 +75,7 @@ setCompletionBlockWithSuccess:(void (^)(ShopSettings *response))success
                     failure:(void (^)(NSArray *errorMessages))failure {
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
     networkManager.isUsingHmac = YES;
-    NSString *baseURL = @"https://ws.tokopedia.com";
+    NSString *baseURL = [NSString v4Url];
     NSString *path = @"/v4/action/product/delete_product.pl";
     NSDictionary *parameter = @{@"product_id":productId};
     RKObjectMapping *mapping = [ShopSettings objectMapping];

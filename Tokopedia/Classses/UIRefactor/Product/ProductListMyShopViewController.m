@@ -365,7 +365,7 @@
         [self.act startAnimating];
         self.tableView.tableFooterView = _footer;
     }
-    NSString *baseURL = @"https://ws.tokopedia.com";
+    NSString *baseURL = [NSString v4Url];
     NSString *path = @"/v4/product/manage_product.pl";
     NSDictionary *parameters = [self parameters];
     [_networkManager requestWithBaseUrl:baseURL
