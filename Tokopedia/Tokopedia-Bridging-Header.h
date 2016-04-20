@@ -17,4 +17,5 @@
 #import "NSString+TPBaseUrl.h"
 #import "SecurityQuestion.h"
 #import "SecurityAnswer.h"
+#import "StickyAlertView.h"
 #import <QuartzCore/QuartzCore.h>

@@ -10,6 +10,8 @@
                 <outlet property="answerField" destination="2i9-xJ-Zt0" id="kSs-CT-kKN"/>
                 <outlet property="questionTitle" destination="7YU-C3-gGf" id="O6c-Vg-Gn6"/>
                 <outlet property="questionViewType1" destination="fb3-X1-Rgf" id="lgK-VN-m5o"/>
+                <outlet property="questionViewType2" destination="cvf-SG-bcO" id="Fp2-VA-YDH"/>
+                <outlet property="saveButton" destination="wFY-xc-5XM" id="n2H-ip-uqj"/>
                 <outlet property="view" destination="iN0-l3-epB" id="NnD-FN-Ljw"/>
             </connections>
         </placeholder>

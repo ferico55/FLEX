@@ -12,6 +12,6 @@
 @interface SecurityAnswer : NSObject <TKPObjectMapping>
 
 @property(nonatomic, strong) NSString* status;
-@property(nonatomic, strong) SecurityAnswerResult* result;
+@property(nonatomic, strong) SecurityAnswerResult* data;
 
 @end

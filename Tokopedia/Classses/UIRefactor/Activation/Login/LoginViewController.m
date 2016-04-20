@@ -782,6 +782,9 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
     controller.userID = _login.result.user_id;
 //    controller.deviceID = [secureStorage.keychainDictionary objectForKey:@"device_token"];
     controller.deviceID = @"SECURITYQUESTION";
+    controller.successAnswerCallback = ^(SecurityAnswer* answer) {
+        
+    };
 
     
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
