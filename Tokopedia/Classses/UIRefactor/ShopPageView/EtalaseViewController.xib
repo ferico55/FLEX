@@ -7,7 +7,9 @@
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
             <string>GothamBook</string>
-            <string>GothamBook</string>
+        </mutableArray>
+        <mutableArray key="GothamMedium.ttf">
+            <string>GothamMedium</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -16,8 +18,6 @@
                 <outlet property="footerView" destination="O3v-JQ-E17" id="59F-iM-tl0"/>
                 <outlet property="tableView" destination="AZY-UW-lxS" id="Bqb-ki-cHS"/>
                 <outlet property="tambahEtalaseButton" destination="4AP-bQ-1Jt" id="rkp-NB-VPZ"/>
-                <outlet property="tambahEtalaseButtonLeftConstraint" destination="Xqc-uB-vaA" id="DRh-ac-VDO"/>
-                <outlet property="tambahEtalaseButtonWidthConstraint" destination="YIr-2L-Css" id="MNv-vP-rhE"/>
                 <outlet property="tambahEtalaseTextField" destination="5DQ-dX-yGb" id="ePB-NE-7xk"/>
                 <outlet property="tambahEtalaseView" destination="BE7-tA-tww" id="eNj-P0-H4p"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -28,9 +28,9 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="AZY-UW-lxS">
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="1" sectionFooterHeight="1" translatesAutoresizingMaskIntoConstraints="NO" id="AZY-UW-lxS">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="PEg-Kf-F4q"/>
                         <outlet property="delegate" destination="-1" id="beQ-tO-kdK"/>
@@ -47,47 +47,46 @@
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
         <view contentMode="scaleToFill" id="BE7-tA-tww">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="61"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="54"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Tambah Etalase" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="5DQ-dX-yGb">
-                    <rect key="frame" x="8" y="8" width="226" height="44"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="44" id="SVo-qs-LAn"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
-                    <textInputTraits key="textInputTraits"/>
-                </textField>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4AP-bQ-1Jt">
-                    <rect key="frame" x="242" y="18" width="70" height="26"/>
+                    <rect key="frame" x="242" y="9" width="70" height="36"/>
+                    <color key="backgroundColor" red="0.20392156859999999" green="0.67450980390000004" blue="0.18039215689999999" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="70" id="YIr-2L-Css"/>
+                        <constraint firstAttribute="width" constant="70" id="I3G-N6-fU8"/>
+                        <constraint firstAttribute="height" constant="36" id="k3V-fp-nac"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
+                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <state key="normal" title="Tambah">
-                        <color key="titleColor" red="0.20392156862745098" green="0.67450980392156867" blue="0.1803921568627451" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
                         <action selector="tambahEtalaseButtonTapped:" destination="-1" eventType="touchUpInside" id="hr2-7s-2bM"/>
                     </connections>
                 </button>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder=" Tambah Etalase" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="5DQ-dX-yGb">
+                    <rect key="frame" x="15" y="9" width="215" height="36"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="tintColor" red="0.17647058823529413" green="0.62745098039215685" blue="0.13725490196078433" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="36" id="HgP-hP-6F3"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="4AP-bQ-1Jt" secondAttribute="trailing" constant="8" id="C7J-Nt-Ifz"/>
-                <constraint firstItem="4AP-bQ-1Jt" firstAttribute="centerY" secondItem="BE7-tA-tww" secondAttribute="centerY" id="NV7-L0-Nya"/>
-                <constraint firstItem="4AP-bQ-1Jt" firstAttribute="leading" secondItem="5DQ-dX-yGb" secondAttribute="trailing" constant="8" id="Xqc-uB-vaA"/>
-                <constraint firstItem="5DQ-dX-yGb" firstAttribute="leading" secondItem="BE7-tA-tww" secondAttribute="leading" constant="8" id="YbG-hh-lY2"/>
-                <constraint firstItem="5DQ-dX-yGb" firstAttribute="top" secondItem="BE7-tA-tww" secondAttribute="top" constant="8" id="vUg-EW-pyA"/>
-                <constraint firstAttribute="bottom" secondItem="5DQ-dX-yGb" secondAttribute="bottom" constant="8" id="y5E-Qo-8xu"/>
+                <constraint firstAttribute="trailing" secondItem="4AP-bQ-1Jt" secondAttribute="trailing" constant="8" id="FL5-V0-WyL"/>
+                <constraint firstItem="5DQ-dX-yGb" firstAttribute="centerY" secondItem="BE7-tA-tww" secondAttribute="centerY" id="J3X-l0-hyi"/>
+                <constraint firstItem="4AP-bQ-1Jt" firstAttribute="centerY" secondItem="BE7-tA-tww" secondAttribute="centerY" id="doe-SY-4cs"/>
+                <constraint firstItem="5DQ-dX-yGb" firstAttribute="leading" secondItem="BE7-tA-tww" secondAttribute="leading" constant="15" id="rJR-Dh-tv0"/>
+                <constraint firstItem="4AP-bQ-1Jt" firstAttribute="leading" secondItem="5DQ-dX-yGb" secondAttribute="trailing" constant="12" id="w8I-2c-EtY"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <variation key="default">
-                <mask key="constraints">
-                    <exclude reference="y5E-Qo-8xu"/>
-                </mask>
-            </variation>
-            <point key="canvasLocation" x="205" y="41.5"/>
+            <point key="canvasLocation" x="121" y="29"/>
         </view>
         <view contentMode="scaleToFill" id="O3v-JQ-E17" userLabel="FooterView">
             <rect key="frame" x="0.0" y="0.0" width="319" height="34"/>
