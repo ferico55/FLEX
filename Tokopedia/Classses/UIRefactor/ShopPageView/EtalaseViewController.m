@@ -11,7 +11,7 @@
 #import "LoadingView.h"
 #import "EtalaseRequest.h"
 
-@interface EtalaseViewController ()<UITableViewDataSource, UITableViewDelegate, LoadingViewDelegate, UITextFieldDelegate, UIAlertViewDelegate>
+@interface EtalaseViewController ()<UITableViewDataSource, UITableViewDelegate, LoadingViewDelegate, UITextFieldDelegate, UIAlertViewDelegate, UIScrollViewDelegate>
 
 @end
 
@@ -32,6 +32,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.tambahEtalaseButton.layer.cornerRadius = 2;
+    self.tambahEtalaseTextField.layer.cornerRadius = 2;
     
     etalaseList = [NSMutableArray new];
     otherEtalaseList = [NSMutableArray new];
@@ -61,7 +64,7 @@
                                                                            action:@selector(finishButtonTapped:)];
         self.navigationItem.rightBarButtonItem = rightBarButton;
     }
-    [self.navigationController setTitle:@"Etalase"];
+    
     self.title = @"Etalase";
     
     _tableView.tableFooterView = _footerView;
@@ -81,6 +84,15 @@
     [self requestEtalase];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    if (_enableAddEtalase) {
+        self.tambahEtalaseTextField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 8, 36)];
+        self.tambahEtalaseTextField.leftViewMode = UITextFieldViewModeAlways;
+        self.tableView.tableHeaderView = _tambahEtalaseView;
+    }
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -88,7 +100,6 @@
 
 #pragma mark - UITableView
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    [self hideTambahEtalaseButton];
     [_tambahEtalaseTextField setText:@""];
     selectedIndexPath = indexPath;
     EtalaseList *selectedEtalase = indexPath.section == 0?[otherEtalaseList objectAtIndex:indexPath.row]:[etalaseList objectAtIndex:indexPath.row];
@@ -152,30 +163,28 @@
     }
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    if(section == 0){
-        return 0;
-    }else if(section == 1){
-        return _enableAddEtalase?_tambahEtalaseView.frame.size.height:0;
-    }
-    return 0;
-}
+//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+//    if(section == 0){
+//        return 0;
+//    }else if(section == 1){
+//        return _enableAddEtalase?_tambahEtalaseView.frame.size.height:0;
+//    }
+//    return 0;
+//}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
-    if(section == 0){
+    if (_showOtherEtalase && section == 0) {
         return 10;
-    }else if(section == 1){
-        return 0;
     }
     return 0;
 }
 
-- (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-    if(_enableAddEtalase && section == 1){
-        return _tambahEtalaseView;
-    }
-    return nil;
-}
+//- (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+//    if(_enableAddEtalase && section == 1){
+//        return _tambahEtalaseView;
+//    }
+//    return nil;
+//}
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -188,7 +197,6 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self hideTambahEtalaseButton];
     if (editingStyle== UITableViewCellEditingStyleDelete && indexPath.section == 1) {
         [self requestDeleteEtalase:indexPath];
     }
@@ -224,7 +232,6 @@
 }
 
 -(IBAction)deleteButtonTapped:(id)sender{
-    [self hideTambahEtalaseButton];
     if(_isDeleting){
         [_tableView setEditing:NO animated:YES];
         UIBarButtonItem  *rightBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Hapus"
@@ -365,18 +372,6 @@
     if(textField.tag == 111){
         [_tambahEtalaseTextField setText:@""];
         [_tambahEtalaseTextField resignFirstResponder];
-        [UIView animateWithDuration:1 animations:^{
-        }];
-        [UIView animateWithDuration:2
-                              delay:0
-             usingSpringWithDamping:0
-              initialSpringVelocity:0.1
-                            options:UIViewAnimationOptionCurveEaseIn
-                         animations:^{
-                             [self hideTambahEtalaseButton];
-                         } completion:^(BOOL finished) {
-                             
-                         }];
     }
     return YES;
 }
@@ -529,7 +524,6 @@
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    [self hideTambahEtalaseButton];
     if(buttonIndex == 0){
         //batal
     }else if(buttonIndex == 1){
@@ -541,12 +535,11 @@
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex{
     [_tambahEtalaseTextField resignFirstResponder];
     [_tambahEtalaseTextField setText:@""];
-    [self hideTambahEtalaseButton];
     [_tableView reloadData];
 }
 
-- (void)hideTambahEtalaseButton{
-    _tambahEtalaseButtonLeftConstraint.constant = 0;
-    _tambahEtalaseButtonWidthConstraint.constant = 0;
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    [_tambahEtalaseTextField setText:@""];
+    [_tambahEtalaseTextField resignFirstResponder];
 }
 @end
