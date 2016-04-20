@@ -212,7 +212,7 @@
 		}
 
         if (_list.count > indexPath.row) {
-            ReviewList *list = _list[indexPath.row];
+            DetailReputationReview *list = _list[indexPath.row];
 
             ((GeneralProductReviewCell *)cell).data = list;
             ((GeneralProductReviewCell *)cell).namelabel.text = list.review_user_name;
@@ -452,7 +452,7 @@
                                                           kTKPDREVIEW_APIRESPONSEMESSAGEKEY:kTKPDREVIEW_APIRESPONSEMESSAGEKEY
                                                           }];
 
-    RKObjectMapping *reviewproductownerMapping = [RKObjectMapping mappingForClass:[ReviewProductOwner class]];
+    RKObjectMapping *reviewproductownerMapping = [RKObjectMapping mappingForClass:[ProductOwner class]];
     [reviewproductownerMapping addAttributeMappingsFromDictionary:@{kTKPDREVIEW_APIUSERIDKEY:kTKPDREVIEW_APIUSERIDKEY,
                                                                     kTKPDREVIEW_APIUSERIMAGEKEY:kTKPDREVIEW_APIUSERIMAGEKEY,
                                                                     kTKPDREVIEW_APIUSERNAME:kTKPDREVIEW_APIUSERNAME
@@ -719,7 +719,7 @@
 - (void)GeneralProductReviewCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath {
     NSInteger row = indexpath.row;
     DetailReviewViewController *vc = [DetailReviewViewController new];
-    ReviewList *reviewlist = _list[row];
+    DetailReputationReview *reviewlist = _list[row];
     reviewlist.review_product_name = [_data objectForKey:API_PRODUCT_NAME_KEY];
     reviewlist.review_product_id = [_data objectForKey:API_PRODUCT_ID_KEY];
     reviewlist.review_product_image = [_data objectForKey:kTKPDDETAILPRODUCT_APIIMAGESRCKEY];
@@ -786,7 +786,7 @@
     NSInteger index = [[userinfo objectForKey:@"index"]integerValue];
     NSIndexPath *indexPath = [userinfo objectForKey:@"indexPath"];
     
-    ReviewList *list = _list[index];
+    DetailReputationReview *list = _list[index];
     
     list.review_response.response_message = [userinfo objectForKey:@"review_comment"];
     list.review_response.response_create_time = [userinfo objectForKey:@"review_comment_time"];

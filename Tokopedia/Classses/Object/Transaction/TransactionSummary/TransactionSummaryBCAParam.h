@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface TransactionSummaryBCAParam : NSObject
+@interface TransactionSummaryBCAParam : NSObject <TKPObjectMapping>
 
 @property (nonatomic,strong) NSString *bca_descp;
 @property (nonatomic,strong) NSString *bca_code;

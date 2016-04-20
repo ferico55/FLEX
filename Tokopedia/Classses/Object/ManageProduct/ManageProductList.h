@@ -30,4 +30,6 @@
 @property (nonatomic, strong) NSString *product_currency_symbol;
 @property (nonatomic, strong) NSString *product_no_idr_price;
 
++ (RKObjectMapping *)objectMapping;
+
 @end

@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface CCFee : NSObject
+@interface CCFee : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *charge;
 @property (nonatomic, strong) NSString *charge_idr;

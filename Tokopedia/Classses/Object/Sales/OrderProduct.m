@@ -9,6 +9,34 @@
 #import "OrderProduct.h"
 
 @implementation OrderProduct
++(NSDictionary *)attributeMappingDictionary
+{
+    NSArray *keys = @[
+                      @"order_deliver_quantity",
+                      @"product_picture",
+                      @"product_price",
+                      @"order_detail_id",
+                      @"product_notes",
+                      @"product_status",
+                      @"order_subtotal_price",
+                      @"product_id",
+                      @"product_quantity",
+                      @"product_weight",
+                      @"order_subtotal_price_idr",
+                      @"product_reject_quantity",
+                      @"product_name",
+                      @"product_url"
+                      ];
+    return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
+}
+
++(RKObjectMapping*)mapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+
+    return mapping;
+}
 
 - (ProductModelView *)viewModel {
     if(_viewModel == nil) {

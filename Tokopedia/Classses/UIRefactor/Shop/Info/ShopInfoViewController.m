@@ -18,11 +18,10 @@
 #import "ShopInfoAddressView.h"
 #import "SmileyAndMedal.h"
 #import "ShopFavoritedViewController.h"
-#import "ShopEditViewController.h"
+#import "EditShopViewController.h"
 #import "ShopInfoViewController.h"
 
 //profile
-#import "TKPDTabProfileNavigationController.h"
 //#import "ProfileBiodataViewController.h"
 #import "ProfileContactViewController.h"
 #import "ProfileFavoriteShopViewController.h"
@@ -241,12 +240,8 @@
             }
             case 11:
             {
-                ShopEditViewController *vc = [ShopEditViewController new];
-                vc.data = @{
-                            kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY] && [_data objectForKey:kTKPD_AUTHKEY]!=[NSNull null]?[_data objectForKey:kTKPD_AUTHKEY]:@{},
-                            kTKPDDETAIL_DATASHOPSKEY : _shop.result?:@{}
-                            };
-                [self.navigationController pushViewController:vc animated:YES];
+                EditShopViewController *controller = [EditShopViewController new];
+                [self.navigationController pushViewController:controller animated:YES];
                 break;
             }
             default:

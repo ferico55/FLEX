@@ -23,6 +23,9 @@
 
 #import "ResolutionCenterDetailViewController.h"
 
+#import "RequestCancelResolution.h"
+#import "RequestOrderData.h"
+
 #define TAG_ALERT_REORDER 10
 #define TAG_ALERT_COMPLAIN 11
 #define TAG_ALERT_CONFIRMATION 12
@@ -300,7 +303,14 @@
 
 -(void)shouldCancelComplain:(InboxResolutionCenterList *)resolution atIndexPath:(NSIndexPath *)indexPath
 {
-    [_delegate shouldCancelComplain:resolution atIndexPath:indexPath];
+    NSDictionary *queries = [NSDictionary dictionaryFromURLString:_order.order_button.button_res_center_url];
+    NSString *resolutionID = [queries objectForKey:@"id"];
+    
+    [RequestCancelResolution fetchCancelComplainID:resolutionID detail:resolution success:^(InboxResolutionCenterList *resolution, NSString *uriNext) {
+    } failure:^(NSError *error) {
+        
+    }];
+    
     [_delegate delegateViewController:self];
 
 }

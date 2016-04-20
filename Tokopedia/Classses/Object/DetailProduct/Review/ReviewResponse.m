@@ -14,4 +14,11 @@
     return [_response_message kv_decodeHTMLCharacterEntities];
 }
 
++ (RKObjectMapping *)mapping{
+    RKObjectMapping *reviewResponseMapping = [RKObjectMapping mappingForClass:[ReviewResponse class]];
+    [reviewResponseMapping addAttributeMappingsFromArray:@[@"response_create_time",
+                                                           @"response_message"]];
+    return reviewResponseMapping;
+}
+
 @end

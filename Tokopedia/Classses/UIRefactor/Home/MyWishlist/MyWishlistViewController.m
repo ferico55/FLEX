@@ -24,9 +24,12 @@
 #import "Localytics.h"
 
 #import "RetryCollectionReusableView.h"
+#import "GeneralAction.h"
 #import "Tokopedia-Swift.h"
+#import "UIAlertView+BlocksKit.h"
+#import "TransactionATCViewController.h"
 
-static NSString *wishListCellIdentifier = @"ProductCellIdentifier";
+static NSString *wishListCellIdentifier = @"ProductWishlistCellIdentifier";
 #define normalWidth 320
 #define normalHeight 568
 
@@ -71,6 +74,7 @@ typedef enum TagRequest {
     __weak RKObjectManager *_objectmanager;
     TokopediaNetworkManager *_networkManager;
     NoResultReusableView *_noResultView;
+    UserAuthentificationManager *_userManager;
 }
 
 #pragma mark - Initialization
@@ -101,6 +105,7 @@ typedef enum TagRequest {
     [super viewDidLoad];
     
     self.title = @"Wishlist";
+    _userManager = [[UserAuthentificationManager alloc] init];
     
     double widthMultiplier = [[UIScreen mainScreen]bounds].size.width / normalWidth;
     double heightMultiplier = [[UIScreen mainScreen]bounds].size.height / normalHeight;
@@ -163,7 +168,7 @@ typedef enum TagRequest {
 }
 
 - (void)registerNib {
-    UINib *cellNib = [UINib nibWithNibName:@"ProductCell" bundle:nil];
+    UINib *cellNib = [UINib nibWithNibName:@"ProductWishlistCell" bundle:nil];
     [_collectionView registerNib:cellNib forCellWithReuseIdentifier:wishListCellIdentifier];
     
     UINib *footerNib = [UINib nibWithNibName:@"FooterCollectionReusableView" bundle:nil];
@@ -181,11 +186,29 @@ typedef enum TagRequest {
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     
-    ProductCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:wishListCellIdentifier forIndexPath:indexPath];
+    ProductWishlistCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:wishListCellIdentifier forIndexPath:indexPath];
     
     WishListObjectList *list = [_product objectAtIndex:indexPath.row];
-    cell.productPrice.text = list.product_price;
     [cell setViewModel:list.viewModel];
+    cell.tappedBuyButton = ^(ProductWishlistCell* tappedCell){
+        TransactionATCViewController *transactionVC = [TransactionATCViewController new];
+        transactionVC.productID = list.product_id;
+        transactionVC.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:transactionVC animated:YES];
+    };
+    
+    cell.tappedTrashButton = ^(ProductWishlistCell* tappedCell) {
+        [UIAlertView bk_showAlertViewWithTitle:@"Hapus Wishlist"
+                                       message:[NSString stringWithFormat:@"Anda yakin ingin menghapus %@ dari wishlist ?", list.product_name]
+                             cancelButtonTitle:@"Tidak"
+                             otherButtonTitles:@[@"Yakin"]
+                                       handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
+                                           if(buttonIndex == 1) {
+                                               [self requestRemoveWishlist:list withIndexPath:indexPath];
+                                           }
+                                       }];
+    };
+
     
     //next page if already last cell
     NSInteger row = [self collectionView:collectionView numberOfItemsInSection:indexPath.section] - 1;
@@ -198,27 +221,22 @@ typedef enum TagRequest {
     return cell;
 }
 
+- (void)requestRemoveWishlist:(WishListObjectList*)list withIndexPath:(NSIndexPath*)indexPath {
+    TokopediaNetworkManager *removeWishlistRequest = [[TokopediaNetworkManager alloc] init];
+    removeWishlistRequest.isUsingHmac = YES;
+    [removeWishlistRequest requestWithBaseUrl:@"https://ws.tokopedia.com"
+                                         path:@"/v4/action/wishlist/remove_wishlist_product.pl"
+                                       method:RKRequestMethodGET
+                                    parameter:@{@"product_id" : list.product_id, @"user_id" : [_userManager getUserId]}
+                                      mapping:[self actionRemoveWishlistMapping]
+                                    onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                        [_product removeObjectAtIndex:indexPath.row];
+                                        [_collectionView deleteItemsAtIndexPaths:@[indexPath]];
+                                    } onFailure:nil];
+}
+
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-//    NSInteger numberOfCell;
-//    NSInteger cellHeight;
-//    if(IS_IPAD) {
-//        UIInterfaceOrientation *orientation = [UIDevice currentDevice].orientation;
-//        if(UIInterfaceOrientationIsLandscape(orientation)) {
-//            numberOfCell = 5;
-//        } else {
-//            numberOfCell = 4;
-//        }
-//        cellHeight = 250;
-//    } else {
-//        numberOfCell = 2;
-//        cellHeight = 205 * ([UIScreen mainScreen].bounds.size.height / 568);
-//    }
-//    
-//    CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
-//    CGFloat cellWidth = screenWidth/numberOfCell - 15;
-//    
-//    return CGSizeMake(cellWidth, cellHeight);
-    return [ProductCellSize sizeWithType:1];
+    return [ProductCellSize sizeWishlistCell];
 }
 
 
@@ -246,36 +264,6 @@ typedef enum TagRequest {
     [navigateController navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_image withShopName:product.shop_name];
 }
 
-//- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    
-//    CGSize cellSize = CGSizeMake(0, 0);
-//    CGRect screenRect = [[UIScreen mainScreen] bounds];
-//    
-//    NSInteger cellCount;
-//    float heightRatio;
-//    float widhtRatio;
-//    float inset;
-//    
-//    CGFloat screenWidth = screenRect.size.width;
-//    
-//    cellCount = 2;
-//    heightRatio = 41;
-//    widhtRatio = 29;
-//    inset = 15;
-//    
-//    CGFloat cellWidth;
-//    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
-//        screenWidth = screenRect.size.width/2;
-//        cellWidth = screenWidth/cellCount-inset;
-//    } else {
-//        screenWidth = screenRect.size.width;
-//        cellWidth = screenWidth/cellCount-inset;
-//    }
-//    
-//    cellSize = CGSizeMake(cellWidth, cellWidth*heightRatio/widhtRatio);
-//    return cellSize;
-//}
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
     
@@ -356,7 +344,8 @@ typedef enum TagRequest {
                                                  KTKPDSHOP_LOCATION,
                                                  KTKPDSHOP_NAME,
                                                  KTKPDPRODUCT_NAME,
-                                                 @"shop_lucky"
+                                                 @"shop_lucky",
+                                                 @"product_available"
                                                  ]];
     
     //relation
@@ -489,6 +478,25 @@ typedef enum TagRequest {
 
 - (void)orientationChanged:(NSNotification *)note {
     [_collectionView reloadData];
+}
+
+
+#pragma mark 
+- (RKObjectMapping *)actionRemoveWishlistMapping {
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[GeneralAction class]];
+    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
+                                                        kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
+                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
+    
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[GeneralActionResult class]];
+    [resultMapping addAttributeMappingsFromDictionary:@{kTKPD_APIISSUCCESSKEY:kTKPD_APIISSUCCESSKEY}];
+    
+    //relation
+    RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
+    [statusMapping addPropertyMapping:resulRel];
+    
+    return statusMapping;
 }
 
 

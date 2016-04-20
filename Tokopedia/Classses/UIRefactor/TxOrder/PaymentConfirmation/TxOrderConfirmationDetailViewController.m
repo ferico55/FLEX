@@ -23,6 +23,7 @@
 #import "ListRekeningBank.h"
 
 #import "TransactionCartCell.h"
+#import "RequestOrderData.h"
 
 @interface TxOrderConfirmationDetailViewController ()
 <
@@ -39,6 +40,7 @@
     
     UILabel *_addressLabel;
     UILabel *_remarkLabel;
+    
 }
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UIView *headerView;
@@ -49,6 +51,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *transferCodeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *grandTotalLabel;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintRekeningInfo;
+@property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *buttons;
 
 @end
 
@@ -87,18 +90,18 @@
 }
 
 #pragma mark - View Action
-- (IBAction)tap:(id)sender {
-    UIButton *button = (UIButton*)sender;
-    if (button.tag == 10) {
-        [_delegate shouldCancelOrderAtIndexPath:_indexPath viewController:self];
-    }
-    else
-    {
-        TxOrderConfirmationList *detailOrder = [_data objectForKey:DATA_SELECTED_ORDER_KEY];
-        TxOrderPaymentViewController *vc = [TxOrderPaymentViewController new];
-        vc.data = @{DATA_SELECTED_ORDER_KEY : @[detailOrder]};
-        [self.navigationController pushViewController:vc animated:YES];
-    }
+- (IBAction)tapCancelPayment:(id)sender {
+    
+    [self doRequestDataCancelPayment];
+    
+}
+- (IBAction)tapConfirmPayment:(id)sender {
+    
+    TxOrderConfirmationList *detailOrder = [_data objectForKey:DATA_SELECTED_ORDER_KEY];
+    TxOrderPaymentViewController *vc = [TxOrderPaymentViewController new];
+    vc.paymentID = @[detailOrder.confirmation.confirmation_id];
+    [self.navigationController pushViewController:vc animated:YES];
+    
 }
 
 - (IBAction)tapRekInfo:(id)sender {
@@ -271,11 +274,61 @@
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == 1) {
-        //[self actionCancelConfirmationObject:_objectProcessingCancel];
-        [_delegate didTapAlertCancelOrder];
-        [self.navigationController popViewControllerAnimated:YES];
+        [self doRequestCancelPayment];
     }
-    //[_objectProcessingCancel removeAllObjects];
+}
+
+-(void)doRequestDataCancelPayment{
+    
+    for (UIButton *button in _buttons) {
+        button.enabled = NO;
+    }
+    
+    TxOrderConfirmationList *detailOrder = [_data objectForKey:DATA_SELECTED_ORDER_KEY];
+    NSString * confirmationID = detailOrder.confirmation.confirmation_id?:@"";
+    
+    [RequestOrderData fetchDataCancelConfirmationID:confirmationID Success:^(TxOrderCancelPaymentFormForm *data) {
+        
+        NSString *cancelAlertDesc;
+        NSString *totalRefund = [data.total_refund stringByReplacingOccurrencesOfString:@"Rp" withString:@""];
+        totalRefund = [totalRefund stringByReplacingOccurrencesOfString:@",-" withString:@""];
+        totalRefund = [totalRefund stringByReplacingOccurrencesOfString:@" " withString:@""];
+        if ([totalRefund isEqualToString:@"0"])
+            cancelAlertDesc = @"Apakah anda yakin membatalkan transaksi ini?";
+        else
+            cancelAlertDesc = [NSString stringWithFormat:ALERT_DESCRIPTION_CANCEL_PAYMENT_CONFIRMATION,data.total_refund];
+        
+        UIAlertView *cancelAlert = [[UIAlertView alloc]initWithTitle:ALERT_TITLE_CANCEL_PAYMENT_CONFIRMATION
+                                                             message:cancelAlertDesc
+                                                            delegate:self
+                                                   cancelButtonTitle:@"Tidak"
+                                                   otherButtonTitles:@"Ya", nil];
+        [cancelAlert show];
+        
+        for (UIButton *button in _buttons) {
+            button.enabled = YES;
+        }
+    } failure:^(NSError *error) {
+        for (UIButton *button in _buttons) {
+            button.enabled = YES;
+        }
+    }];
+}
+
+-(void)doRequestCancelPayment{
+    TxOrderConfirmationList *detailOrder = [_data objectForKey:DATA_SELECTED_ORDER_KEY];
+    NSString * confirmationID = detailOrder.confirmation.confirmation_id?:@"";
+    
+    [RequestOrderAction fetchCancelConfirmationID:confirmationID Success:^(TransactionAction *data) {
+        
+        [_delegate didCancelOrder:detailOrder];
+        NSDictionary *userInfo = @{DATA_PAYMENT_CONFIRMATION_COUNT_KEY:@(1)};
+        [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil userInfo:userInfo];
+        [self.navigationController popViewControllerAnimated:YES];
+        
+    } failure:^(NSError *error) {
+        
+    }];
 }
 
 #pragma mark - Header Delegate

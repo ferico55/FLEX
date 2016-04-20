@@ -10,7 +10,7 @@
 
 #import "TransactionVoucherData.h"
 
-@interface TransactionVoucherResult : NSObject
+@interface TransactionVoucherResult : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) TransactionVoucherData *data_voucher;
 

@@ -10,7 +10,7 @@
 #import "TransactionBuyResult.h"
 #import "TKPObjectMapping.h"
 
-@interface TransactionBuy : NSObject <TKPObjectMapping>
+@interface TransactionBuy : NSObject
 
 @property (nonatomic, strong) NSArray *message_error;
 @property (nonatomic, strong) NSArray *message_status;
@@ -18,5 +18,8 @@
 @property (nonatomic, strong) NSString *server_process_time;
 @property (nonatomic, strong) TransactionBuyResult *result;
 
+@property (nonatomic) NSInteger gatewayID;
+
+-(RKObjectMapping *)mapping;
 
 @end

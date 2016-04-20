@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "ProductModelView.h"
 
-@interface OrderProduct : NSObject
+@interface OrderProduct : NSObject <TKPObjectMapping>
 
 @property NSInteger order_deliver_quantity;
 @property (strong, nonatomic) NSString *product_picture;

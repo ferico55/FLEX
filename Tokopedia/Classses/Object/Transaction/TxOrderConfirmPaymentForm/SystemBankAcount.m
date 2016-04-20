@@ -9,5 +9,23 @@
 #import "SystemBankAcount.h"
 
 @implementation SystemBankAcount
++(NSDictionary *)attributeMappingDictionary
+{
+    NSArray *keys = @[@"sysbank_account_number",
+                      @"sysbank_account_name",
+                      @"sysbank_name",
+                      @"sysbank_note",
+                      @"sysbank_id",
+                      ];
+    return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
+}
+
++(RKObjectMapping*)mapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+
+    return mapping;
+}
 
 @end

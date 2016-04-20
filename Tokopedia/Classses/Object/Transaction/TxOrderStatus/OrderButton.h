@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface OrderButton : NSObject
+@interface OrderButton : NSObject <TKPObjectMapping>
 
 @property (nonatomic) NSInteger button_open_dispute;
 @property (nonatomic, strong) NSString *button_res_center_url;

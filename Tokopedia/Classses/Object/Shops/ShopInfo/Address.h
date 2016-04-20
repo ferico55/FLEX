@@ -25,4 +25,6 @@
 @property (nonatomic, strong) NSString *location_fax;
 @property (nonatomic, strong) NSString *location_address_name;
 
++ (RKObjectMapping *)mapping;
+
 @end

@@ -14,5 +14,8 @@
 @property (nonatomic, strong) NSString *etalase_num_product;
 @property (nonatomic, strong) NSString *etalase_name;
 @property (nonatomic, strong) NSString *etalase_total_product;
+@property (nonatomic, strong) NSString *etalase_url;
+
++(RKObjectMapping*)mapping;
 
 @end

@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface OrderHistory : NSObject
+@interface OrderHistory : NSObject <TKPObjectMapping>
 
 @property (strong, nonatomic) NSString *history_status_date;
 @property (strong, nonatomic) NSString *history_status_date_full;

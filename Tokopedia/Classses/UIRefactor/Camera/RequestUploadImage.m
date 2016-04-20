@@ -43,14 +43,14 @@
 }
 
 - (void)requestActionUploadObject:(id)imageObject
-                   generatedHost:(GeneratedHost*)generatedHost
-                          action:(NSString*)action
-                          newAdd:(NSInteger)newAdd
-                       productID:(NSString*)productID
-                       paymentID:(NSString*)paymentID
-                       fieldName:(NSString*)fieldName
-                         success:(void (^)(id imageObject, UploadImage*image))success
-                         failure:(void(^)(id imageObject, NSError *error))failure
+                    generatedHost:(GeneratedHost*)generatedHost
+                           action:(NSString*)action
+                           newAdd:(NSInteger)newAdd
+                        productID:(NSString*)productID
+                        paymentID:(NSString*)paymentID
+                        fieldName:(NSString*)fieldName
+                          success:(void (^)(id imageObject, UploadImage*image))success
+                          failure:(void(^)(id imageObject, NSError *error))failure
 {
     [self configureRestkitUploadPhoto];
     
@@ -92,67 +92,67 @@
                                        queue:[NSOperationQueue mainQueue]
                            completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
                                
-       NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
-       NSString *responsestring = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-       NSLog(@"responsestring %@",responsestring);
-       
-       if ([httpResponse statusCode] == 200) {
-           id parsedData = [RKMIMETypeSerialization objectFromData:data MIMEType:RKMIMETypeJSON error:&error];
-           if (parsedData == nil && error) {
-               [self showErrorMessages:@[@"Upload gambar gagal, mohon dicoba kembali atau gunakan gambar lain."]];
-               failure(imageObject,error);
-               return;
-           }
-           
-           NSMutableDictionary *mappingsDictionary = [[NSMutableDictionary alloc] init];
-           for (RKResponseDescriptor *descriptor in _objectManagerUploadPhoto.responseDescriptors) {
-               [mappingsDictionary setObject:descriptor.mapping forKey:descriptor.keyPath];
-           }
-           
-           RKMapperOperation *mapper = [[RKMapperOperation alloc] initWithRepresentation:parsedData mappingsDictionary:mappingsDictionary];
-           NSError *mappingError = nil;
-           BOOL isMapped = [mapper execute:&mappingError];
-           if (isMapped && !mappingError) {
-               NSLog(@"result %@",[mapper mappingResult]);
-               RKMappingResult *mappingresult = [mapper mappingResult];
-               NSDictionary *result = mappingresult.dictionary;
-               id stat = [result objectForKey:@""];
-               UploadImage *images = stat;
-               BOOL status = [images.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-               
-               if (status) {
-                   if (images.result.file_path || (images.result.upload!=nil && images.result.upload.src)|| images.result.image.pic_src!=nil || images.result.pic_obj!=nil) {
-                       success(imageObject,images);
-                   }
-                   else
-                   {
-                       NSArray *array = images.message_error;
-                       [self showErrorMessages:array?:@[]];
-                       failure(imageObject,error);
-                   }
-               }
-               else
-               {
-                   [self showErrorMessages:@[]];
-                   failure(imageObject, error);
-               }
-           }
-           else
-           {
-               [self showErrorMessages:@[]];
-               failure(imageObject, error);
-           }
-       }
-       else
-       {
-           if ([error code] == NSURLErrorNotConnectedToInternet)
-               [self showErrorMessages:@[@"Tidak ada koneksi internet"]];
-           else
-               [self showErrorMessages:@[]];
-           failure(imageObject, error);
-       }
+                               NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
+                               NSString *responsestring = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                               NSLog(@"responsestring %@",responsestring);
                                
-    }];
+                               if ([httpResponse statusCode] == 200) {
+                                   id parsedData = [RKMIMETypeSerialization objectFromData:data MIMEType:RKMIMETypeJSON error:&error];
+                                   if (parsedData == nil && error) {
+                                       [self showErrorMessages:@[@"Upload gambar gagal, mohon dicoba kembali atau gunakan gambar lain."]];
+                                       failure(imageObject,error);
+                                       return;
+                                   }
+                                   
+                                   NSMutableDictionary *mappingsDictionary = [[NSMutableDictionary alloc] init];
+                                   for (RKResponseDescriptor *descriptor in _objectManagerUploadPhoto.responseDescriptors) {
+                                       [mappingsDictionary setObject:descriptor.mapping forKey:descriptor.keyPath];
+                                   }
+                                   
+                                   RKMapperOperation *mapper = [[RKMapperOperation alloc] initWithRepresentation:parsedData mappingsDictionary:mappingsDictionary];
+                                   NSError *mappingError = nil;
+                                   BOOL isMapped = [mapper execute:&mappingError];
+                                   if (isMapped && !mappingError) {
+                                       NSLog(@"result %@",[mapper mappingResult]);
+                                       RKMappingResult *mappingresult = [mapper mappingResult];
+                                       NSDictionary *result = mappingresult.dictionary;
+                                       id stat = [result objectForKey:@""];
+                                       UploadImage *images = stat;
+                                       BOOL status = [images.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+                                       
+                                       if (status) {
+                                           if (images.result.file_path || (images.result.upload!=nil && images.result.upload.src)|| images.result.image.pic_src!=nil || images.result.pic_obj!=nil) {
+                                               success(imageObject,images);
+                                           }
+                                           else
+                                           {
+                                               NSArray *array = images.message_error;
+                                               [self showErrorMessages:array?:@[]];
+                                               failure(imageObject,error);
+                                           }
+                                       }
+                                       else
+                                       {
+                                           [self showErrorMessages:@[]];
+                                           failure(imageObject, error);
+                                       }
+                                   }
+                                   else
+                                   {
+                                       [self showErrorMessages:@[]];
+                                       failure(imageObject, error);
+                                   }
+                               }
+                               else
+                               {
+                                   if ([error code] == NSURLErrorNotConnectedToInternet)
+                                       [self showErrorMessages:@[@"Tidak ada koneksi internet"]];
+                                   else
+                                       [self showErrorMessages:@[]];
+                                   failure(imageObject, error);
+                               }
+                               
+                           }];
 }
 
 - (void)requestActionUploadPhoto

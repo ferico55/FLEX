@@ -7,8 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "ShopBadgeLevel.h"
 #import "CountRatingResult.h"
-@class ShopBadgeLevel;
+#import "ShopBadgeLevel.h"
 
 #define CShopLastOneMonth @"shop_last_one_month"
 #define CShopLastSixMonth @"shop_last_six_months"
@@ -24,7 +25,7 @@
 #define CShopBadgeLevel @"shop_badge_level"
 #define CTxCountSuccess @"tx_count_success"
 
-@interface ShopStats : NSObject
+@interface ShopStats : NSObject <TKPObjectMapping>
 @property (nonatomic, strong) ShopBadgeLevel *shop_badge_level;
 @property (nonatomic) NSInteger shop_service_rate;
 @property (nonatomic, strong) NSString *shop_service_description;

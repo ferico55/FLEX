@@ -361,63 +361,10 @@
     } else {
         _requestTalkObject = [RKObjectManager sharedClient:_inboxTalkBaseUrl];
     }
-    
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Talk class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TalkResult class]];
-    RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[TalkList class]];
-    
-    [listMapping addAttributeMappingsFromArray:@[
-                                                 TKPD_TALK_PRODUCT_NAME,
-                                                 TKPD_TALK_SHOP_ID,
-                                                 TKPD_TALK_USER_IMG,
-                                                 TKPD_TALK_PRODUCT_STATUS,
-                                                 TKPD_TALK_CREATE_TIME,
-                                                 TKPD_TALK_MESSAGE,
-                                                 TKPD_TALK_FOLLOW_STATUS,
-                                                 TKPD_TALK_READ_STATUS,
-                                                 TKPD_TALK_TOTAL_COMMENT,
-                                                 TKPD_TALK_USER_NAME,
-                                                 TKPD_TALK_PRODUCT_ID,
-                                                 TKPD_TALK_ID,
-                                                 TKPD_TALK_PRODUCT_IMAGE,
-                                                 TKPD_TALK_OWN,
-                                                 TKPD_TALK_USER_ID,
-                                                 TKPD_TALK_USER_LABEL,
-                                                 TKPD_TALK_USER_LABEL_ID
-                                                 ]];
-    
-    
-    RKObjectMapping *reviewUserReputationMapping = [RKObjectMapping mappingForClass:[ReputationDetail class]];
-    [reviewUserReputationMapping addAttributeMappingsFromArray:@[CPositivePercentage,
-                                                                 CNegative,
-                                                                 CNoReputation,
-                                                                 CNeutral,
-                                                                 CPositif]];
-    
-    RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
-    [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDDETAIL_APIURINEXTKEY:kTKPDDETAIL_APIURINEXTKEY}];
-    
-    // Relationship Mapping
-    [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CTalkUserReputation toKeyPath:CTalkUserReputation withMapping:reviewUserReputationMapping]];
-    
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                  toKeyPath:kTKPD_APIRESULTKEY
-                                                                                withMapping:resultMapping]];
-    
-    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APILISTKEY
-                                                                                 toKeyPath:kTKPD_APILISTKEY
-                                                                               withMapping:listMapping];
-    [resultMapping addPropertyMapping:listRel];
-    
-    RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIPAGINGKEY
-                                                                                 toKeyPath:kTKPDDETAIL_APIPAGINGKEY
-                                                                               withMapping:pagingMapping];
-    [resultMapping addPropertyMapping:pageRel];
-    
+
+    RKObjectMapping *statusMapping = [Talk mapping];
+
+
     // register mappings with the provider using a response descriptor
     RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
                                                                                                   method:RKRequestMethodPOST

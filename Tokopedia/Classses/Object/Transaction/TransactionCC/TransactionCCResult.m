@@ -9,5 +9,17 @@
 #import "TransactionCCResult.h"
 
 @implementation TransactionCCResult
++(NSDictionary *)attributeMappingDictionary
+{
+    return nil;
+}
+
++(RKObjectMapping*)mapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data_credit" toKeyPath:@"data_credit" withMapping:[DataCredit mapping]]];
+    return mapping;
+}
 
 @end

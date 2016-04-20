@@ -11,8 +11,10 @@
 #define CCountScoreBad @"count_score_bad"
 #define CCountScoreNeutral @"count_score_neutral"
 
-@interface CountRatingResult : NSObject
+@interface CountRatingResult : NSObject <TKPObjectMapping>
 @property (nonatomic, strong) NSString *count_score_good;
 @property (nonatomic, strong) NSString *count_score_bad;
 @property (nonatomic, strong) NSString *count_score_neutral;
+
++(RKObjectMapping*)mapping;
 @end

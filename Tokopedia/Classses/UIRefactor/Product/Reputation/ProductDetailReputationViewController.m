@@ -1,3 +1,4 @@
+
 //
 //  ProductDetailReputationViewController.m
 //  Tokopedia
@@ -37,6 +38,7 @@
 #import "ViewLabelUser.h"
 #import "NavigateViewController.h"
 #import "NavigationHelper.h"
+#import "ReviewRequest.h"
 
 #define CStringLimitText @"Panjang pesan harus lebih besar dari 5 karakter"
 #define CStringSuccessSentComment @"Anda berhasil memberikan komentar"
@@ -45,8 +47,15 @@
 #define CTagComment 2
 #define CTagHapus 3
 
-@interface ProductDetailReputationViewController ()<productReputationDelegate, TokopediaNetworkManagerDelegate, CMPopTipViewDelegate, HPGrowingTextViewDelegate, ProductDetailReputationDelegate, LoginViewDelegate, SmileyDelegate, MGSwipeTableCellDelegate>
-
+@interface ProductDetailReputationViewController ()<
+productReputationDelegate,
+TokopediaNetworkManagerDelegate,
+CMPopTipViewDelegate,
+HPGrowingTextViewDelegate,
+ProductDetailReputationDelegate,
+LoginViewDelegate,
+SmileyDelegate,
+MGSwipeTableCellDelegate>
 @end
 
 @implementation ProductDetailReputationViewController {
@@ -60,6 +69,8 @@
     NSString *postActionUrl;
     NavigateViewController *_TKPDNavigator;
 
+    ReviewRequest *reviewRequest;
+    TotalLikeDislike *_totalLikeDislike;
     
     __block NSTimer *_timer;
     BOOL isSuccessSentMessage, isDeletingMessage;
@@ -107,23 +118,34 @@
         constraintHeightViewMessage.constant = 0;
     }
     else {
-        if(_detailReputaitonReview != nil) {
-            if(_detailReputaitonReview.product_owner!=nil && _detailReputaitonReview.review_response!=nil && _detailReputaitonReview.review_response.response_create_time!=nil && ![_detailReputaitonReview.review_response.response_create_time isEqualToString:@"0"])
+            if(_detailReputationReview.product_owner!=nil && _detailReputationReview.review_response!=nil && _detailReputationReview.review_response.response_create_time!=nil && ![_detailReputationReview.review_response.response_create_time isEqualToString:@"0"])
                 constraintHeightViewMessage.constant = 0;
-        }
-        else {
-            if(_reviewList.review_product_owner!=nil && _reviewList.review_response!=nil && _reviewList.review_response.response_create_time!=nil && ![_reviewList.review_response.response_create_time isEqualToString:@"0"])
-                constraintHeightViewMessage.constant = 0;
-        }
+        
     }
     
     //check comment can deleted or not
-    if(_detailReputaitonReview!=nil && _detailReputaitonReview.review_response!=nil && _detailReputaitonReview.review_response.response_message!=nil && ![_detailReputaitonReview.review_response.response_message isEqualToString:@"0"]) {
-        _detailReputaitonReview.review_response.canDelete = YES;
+    if(_detailReputationReview!=nil && _detailReputationReview.review_response!=nil && _detailReputationReview.review_response.response_message!=nil && ![_detailReputationReview.review_response.response_message isEqualToString:@"0"]) {
+        _detailReputationReview.review_response.canDelete = YES;
     }
-    else if(_reviewList!=nil && _reviewList.review_response!=nil && _reviewList.review_response.response_message!=nil && ![_reviewList.review_response.response_message isEqualToString:@"0"]) {
-        _reviewList.review_response.canDelete = YES;
-    }
+    
+    reviewRequest = [[ReviewRequest alloc] init];
+    [reviewRequest requestReviewLikeDislikesWithId:_detailReputationReview.review_id
+                                            shopId:_detailReputationReview.shop_id
+                                         onSuccess:^(TotalLikeDislike *totalLikeDislike) {
+                                             _totalLikeDislike = totalLikeDislike;
+                                             _strTotalLike = totalLikeDislike.total_like_dislike.total_like;
+                                             _strTotalDisLike = totalLikeDislike.total_like_dislike.total_dislike;
+                                             _strLikeStatus = totalLikeDislike.like_status;
+                                             if(_detailReputationReview!=nil && [totalLikeDislike.review_id isEqualToString:_detailReputationReview.review_id]) {
+                                                 [productReputationCell setHiddenViewLoad:YES];
+                                                 [productReputationCell.getBtnDisLike setTitle:totalLikeDislike.total_like_dislike.total_dislike forState:UIControlStateNormal];
+                                                 [productReputationCell.getBtnLike setTitle:totalLikeDislike.total_like_dislike.total_like  forState:UIControlStateNormal];
+                                                 
+                                                 [self setLikeDislikeActive:totalLikeDislike.like_status];
+                                             }
+                                         } onFailure:^(NSError *errorResult) {
+                                             
+                                         }];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
@@ -143,14 +165,8 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     if(! isSuccessSentMessage) {
-        if(_detailReputaitonReview != nil) {
-            _detailReputaitonReview.review_response.response_create_time = _detailReputaitonReview.viewModel.review_response.response_create_time = nil;
-            _detailReputaitonReview.review_response.response_message = _detailReputaitonReview.viewModel.review_response.response_message = nil;
-        }
-        else if(_reviewList != nil) {
-            _reviewList.review_response.response_create_time = nil;
-            _reviewList.review_response.response_message = nil;
-        }
+        _detailReputationReview.review_response.response_create_time = _detailReputationReview.viewModel.review_response.response_create_time = nil;
+        _detailReputationReview.review_response.response_message = _detailReputationReview.viewModel.review_response.response_message = nil;
     }
 }
 
@@ -165,16 +181,6 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 #pragma mark - Method View
 - (void)initPopUp:(NSString *)strText withSender:(id)sender withRangeDesc:(NSRange)range
@@ -235,12 +241,12 @@
     
     //Set profile image
     BOOL isResizeSeparatorProduct;
-    NSString *strTempProductID = _detailReputaitonReview==nil? _reviewList.review_product_id : _detailReputaitonReview.product_id;
-    if(((_detailReputaitonReview!=nil && _detailReputaitonReview.review_message!=nil && ![_detailReputaitonReview.review_message isEqualToString:@"0"]) || (_reviewList!=nil && _reviewList.review_message!=nil && ![_reviewList.review_message isEqualToString:@"0"])) && (strTempProductID!=nil && ![strTempProductID isEqualToString:@""])) {
+    NSString *strTempProductID = _detailReputationReview.review_product_id ;
+    if(_isShowingProductView) {
         [productReputationCell initProductCell];
         
 
-        NSString *strTempProductName = (_detailReputaitonReview!=nil)?_detailReputaitonReview.product_name:_reviewList.review_product_name;
+        NSString *strTempProductName = _detailReputationReview.product_name;
         if(strTempProductName==nil || [strTempProductName isEqualToString:@"0"]) {
             [productReputationCell setLabelProductName:@"-"];
             constraintHeightViewMessage.constant = 0;
@@ -254,7 +260,7 @@
         [productReputationCell.contentView addSubview:productReputationCell.getViewSeparatorProduct];
         
         
-        NSString *strProductStatus = (_detailReputaitonReview != nil)?_detailReputaitonReview.product_status:_reviewList.review_product_status;
+        NSString *strProductStatus = _detailReputationReview.review_product_status;
         //check product deleted
         if([strProductStatus isEqualToString:@"1"]) {
             productReputationCell.getLabelProductName.userInteractionEnabled = [NavigationHelper shouldDoDeepNavigation];
@@ -266,7 +272,7 @@
         }
         
         //Set image product
-        NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:(_detailReputaitonReview!=nil)?_detailReputaitonReview.product_image : (_reviewList.product_images==nil? _reviewList.review_product_image:_reviewList.product_images)] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+        NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_detailReputationReview.product_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
         productReputationCell.getProductImage.image = nil;
         [productReputationCell.getProductImage setImageWithURLRequest:userImageRequest placeholderImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_toped_loading_grey" ofType:@"png"]] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
@@ -276,9 +282,8 @@
         } failure:nil];
     }
     
-    
     //Set image profile
-    NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:(_detailReputaitonReview!=nil? (_detailReputaitonReview.user_image==nil? _detailReputaitonReview.review_user_image:_detailReputaitonReview.user_image):_reviewList.review_user_image)] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_detailReputationReview.review_user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     UIImageView *userImageView = productReputationCell.getImageProfile;
     userImageView.image = nil;
     [userImageView setImageWithURLRequest:userImageRequest placeholderImage:[UIImage imageNamed:@"icon_profile_picture.jpeg"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
@@ -287,18 +292,18 @@
         [userImageView setImage:image];
 #pragma clang diagnostic pop
     } failure:nil];
-    [productReputationCell setLabelUser:(_detailReputaitonReview!=nil? _detailReputaitonReview.review_full_name:_reviewList.review_user_name)
-                          withUserLabel:(_detailReputaitonReview!=nil)?_detailReputaitonReview.review_user_label:_reviewList.review_user_label];
+    [productReputationCell setLabelUser:_detailReputationReview.review_user_name
+                          withUserLabel:_detailReputationReview.review_user_label];
     
-    [productReputationCell setPercentage:(_detailReputaitonReview!=nil? _detailReputaitonReview.review_user_reputation.positive_percentage:_reviewList.review_user_reputation.positive_percentage)];
-    [productReputationCell setLabelDate:(_detailReputaitonReview!=nil? (_detailReputaitonReview.review_create_time?:@""):(_reviewList.review_create_time?:@""))];
+    [productReputationCell setPercentage:(_detailReputationReview.review_user_reputation.positive_percentage)];
+    [productReputationCell setLabelDate:_detailReputationReview.review_create_time];
     
-    if(_detailReputaitonReview!=nil && [[self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2] isMemberOfClass:[DetailMyReviewReputationViewController class]]) {
+    if(_detailReputationReview!=nil && [[self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2] isMemberOfClass:[DetailMyReviewReputationViewController class]]) {
         productReputationCell.getViewContentAction.hidden = YES;
     }
     else {
-        NSString *strResponseMessage = (_detailReputaitonReview==nil? _reviewList.review_response.response_message:_detailReputaitonReview.review_response.response_message);
-        NSString *strUserID = (_detailReputaitonReview==nil? _reviewList.review_product_owner.user_id:_detailReputaitonReview.product_owner.user_id);
+        NSString *strResponseMessage = _detailReputationReview.review_response.response_message;
+        NSString *strUserID = _detailReputationReview.product_owner.user_id;
 
         UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
         NSDictionary *auth = [_userManager getUserLoginData];
@@ -318,22 +323,22 @@
         }
         
         //Set loading like dislike
-        if([loadingLikeDislike objectForKey:(_detailReputaitonReview==nil? _reviewList.review_id:_detailReputaitonReview.review_id)]) {
+        if([loadingLikeDislike objectForKey:_detailReputationReview.review_id]) {
             [productReputationCell setHiddenViewLoad:NO];
         }
     }
     
-    [productReputationCell setImageKualitas:[(_detailReputaitonReview!=nil? _detailReputaitonReview.product_rating_point:_reviewList.review_rate_quality) intValue]];
-    [productReputationCell setImageAkurasi:[(_detailReputaitonReview!=nil? _detailReputaitonReview.product_accuracy_point:_reviewList.review_rate_accuracy) intValue]];
-    [productReputationCell setDescription:[NSString convertHTML:(_detailReputaitonReview!=nil? (_detailReputaitonReview.review_message?:@""):(_reviewList.review_message?:@""))]];
+    [productReputationCell setImageKualitas:[_detailReputationReview.product_rating_point intValue]];
+    [productReputationCell setImageAkurasi:[_detailReputationReview.product_accuracy_point intValue]];
+    [productReputationCell setDescription:[NSString convertHTML:_detailReputationReview.review_message]];
     
     if(_strTotalDisLike != nil || ![_strTotalDisLike isEqualToString:@""]) {
         [productReputationCell.getBtnLike setTitle:_strTotalLike forState:UIControlStateNormal];
         [productReputationCell.getBtnDisLike setTitle:_strTotalDisLike forState:UIControlStateNormal];
         [self setLikeDislikeActive:_strLikeStatus];
     }else{
-        [productReputationCell.getBtnLike setTitle:_detailReputaitonReview.review_like_dislike.total_like forState:UIControlStateNormal];
-        [productReputationCell.getBtnDisLike setTitle:_detailReputaitonReview.review_like_dislike.total_dislike forState:UIControlStateNormal];
+        [productReputationCell.getBtnLike setTitle:_detailReputationReview.review_like_dislike.total_like forState:UIControlStateNormal];
+        [productReputationCell.getBtnDisLike setTitle:_detailReputationReview.review_like_dislike.total_dislike forState:UIControlStateNormal];
         [self setLikeDislikeActive:_strLikeStatus];
 
     }
@@ -369,12 +374,12 @@
 
 #pragma mark - Action
 - (void)goToShopView:(id)sender {
-    if([(_detailReputaitonReview!=nil?_detailReputaitonReview.review_user_label:_reviewList.review_user_label) caseInsensitiveCompare:CPenjual] == NSOrderedSame) {
+    if([_detailReputationReview.review_user_label caseInsensitiveCompare:CPenjual] == NSOrderedSame) {
         UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
         NSDictionary *auth = [_userManager getUserLoginData];
 
         ShopContainerViewController *shopContainerViewController = [ShopContainerViewController new];
-        shopContainerViewController.data = @{kTKPDDETAIL_APISHOPIDKEY:(_detailReputaitonReview!=nil?_detailReputaitonReview.shop_id:_reviewList.review_shop_id),
+        shopContainerViewController.data = @{kTKPDDETAIL_APISHOPIDKEY:_detailReputationReview.shop_id,
                                              kTKPD_AUTHKEY:auth?:@{}};
         [self.navigationController pushViewController:shopContainerViewController animated:YES];
     }
@@ -384,7 +389,7 @@
         NSDictionary *auth = [_userManager getUserLoginData];
 
         container.data = @{
-                           @"user_id" : (_detailReputaitonReview==nil? _reviewList.review_user_id:_detailReputaitonReview.review_user_id),
+                           @"user_id" : _detailReputationReview.review_user_id,
                            @"auth" : auth?:[NSNull null]
                            };
         [self.navigationController pushViewController:container animated:YES];
@@ -392,7 +397,12 @@
 }
 
 - (void)goToDetailProduct:(id)sender {
-    [_TKPDNavigator navigateToProductFromViewController:self withName:(_detailReputaitonReview!=nil)?_detailReputaitonReview.product_name:_reviewList.review_product_name withPrice:nil withId:(_detailReputaitonReview==nil? _reviewList.review_product_id:_detailReputaitonReview.product_id) withImageurl:(_detailReputaitonReview!=nil)?_detailReputaitonReview.product_image : (_reviewList.product_images==nil? _reviewList.review_product_image:_reviewList.product_images) withShopName:_detailReputaitonReview!=nil? _detailReputaitonReview.product_owner.shop_name:_reviewList.review_product_owner.user_name];
+    [_TKPDNavigator navigateToProductFromViewController:self
+                                               withName:_detailReputationReview.product_name
+                                              withPrice:nil
+                                                 withId:_detailReputationReview.review_product_id
+                                           withImageurl:_detailReputationReview.product_image
+                                           withShopName:_detailReputationReview.product_owner.shop_name];
 }
 
 - (void)actionVote:(id)sender
@@ -405,7 +415,22 @@
     
     UIViewController *viewController = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
     if([viewController isMemberOfClass:[ProductReputationViewController class]]) {
-        [((ProductReputationViewController *) viewController) requestLikeStatusAgain:_indexPathSelected];
+        [reviewRequest requestReviewLikeDislikesWithId:_detailReputationReview.review_id
+                                                shopId:_detailReputationReview.shop_id
+                                             onSuccess:^(TotalLikeDislike *totalLikeDislike) {
+                                                 _strTotalLike = totalLikeDislike.total_like_dislike.total_like;
+                                                 _strTotalDisLike = totalLikeDislike.total_like_dislike.total_dislike;
+                                                 
+                                                 if([totalLikeDislike.review_id isEqualToString:_detailReputationReview.review_id]) {
+                                                     [productReputationCell setHiddenViewLoad:YES];
+                                                     [productReputationCell.getBtnDisLike setTitle:totalLikeDislike.total_like_dislike.total_dislike forState:UIControlStateNormal];
+                                                     [productReputationCell.getBtnLike setTitle:totalLikeDislike.total_like_dislike.total_like  forState:UIControlStateNormal];
+                                                     
+                                                     [self setLikeDislikeActive:totalLikeDislike.like_status];
+                                                 }
+                                             } onFailure:^(NSError *errorResult) {
+                                                 
+                                             }];
     }
 }
 
@@ -426,24 +451,13 @@
     
     NSDateFormatter *formatter = [NSDateFormatter new];
     formatter.dateFormat = @"yyyy-MM-dd";
-    if(_detailReputaitonReview != nil) {
-        if(_detailReputaitonReview.review_response == nil) {
-            _detailReputaitonReview.review_response = [ReviewResponse new];
+        if(_detailReputationReview.review_response == nil) {
+            _detailReputationReview.review_response = [ReviewResponse new];
         }
         
-        _detailReputaitonReview.review_response.response_create_time = [formatter stringFromDate:[NSDate date]];
-        _detailReputaitonReview.review_response.response_message = strPesan;
-        _detailReputaitonReview.review_response.failedSentMessage = NO;
-    }
-    else {
-        if(_reviewList.review_response == nil) {
-            _reviewList.review_response = [ReviewResponse new];
-        }
-        
-        _reviewList.review_response.response_create_time = [formatter stringFromDate:[NSDate date]];
-        _reviewList.review_response.response_message = strPesan;
-        _reviewList.review_response.failedSentMessage = NO;
-    }
+        _detailReputationReview.review_response.response_create_time = [formatter stringFromDate:[NSDate date]];
+        _detailReputationReview.review_response.response_message = strPesan;
+        _detailReputationReview.review_response.failedSentMessage = NO;
     
     [tableReputation reloadData];
     [[self getNetworkManager:CTagComment] doRequest];
@@ -461,17 +475,10 @@
     if(isDeletingMessage)
         return 0;
     
-    if(_detailReputaitonReview != nil) {
-        if(_detailReputaitonReview.product_owner!=nil && _detailReputaitonReview.review_response!=nil && _detailReputaitonReview.review_response.response_create_time!=nil && ![_detailReputaitonReview.review_response.response_create_time isEqualToString:@"0"])
+        if(_detailReputationReview.product_owner!=nil && _detailReputationReview.review_response!=nil && _detailReputationReview.review_response.response_create_time!=nil && ![_detailReputationReview.review_response.response_create_time isEqualToString:@"0"])
             return 1;
         return 0;
-    }
-    else {
-        if(_reviewList.review_product_owner!=nil && _reviewList.review_response!=nil && _reviewList.review_response.response_create_time!=nil && ![_reviewList.review_response.response_create_time isEqualToString:@"0"])
-            return 1;
-        
-        return 0;
-    }
+    
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -486,23 +493,11 @@
     }
     
     
-    cell.getTvDesc.text = _detailReputaitonReview!=nil? _detailReputaitonReview.review_response.response_message:_reviewList.review_response.response_message;
-    cell.getLblDate.text = _detailReputaitonReview!=nil? _detailReputaitonReview.review_response.response_time_fmt:_reviewList.review_response.response_time_fmt;
-
+    cell.getTvDesc.text = _detailReputationReview.review_response.response_message;
+    cell.getLblDate.text = _detailReputationReview.review_response.response_time_fmt;
     
-    //Set image
-//    NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_detailReputaitonReview!=nil? _detailReputaitonReview.product_owner.user_url:_reviewList.review_product_owner.user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-//    productReputationCell.getProductImage.image = nil;
-//    [productReputationCell.getProductImage setImageWithURLRequest:userImageRequest placeholderImage:[UIImage imageNamed:@"icon_profile_picture.jpeg"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-//#pragma clang diagnostic push
-//#pragma clang diagnostic ignored "-Warc-retain-cycles"
-//        [productReputationCell.getProductImage setImage:image];
-//#pragma clang diagnostic pop
-//    } failure:nil];
-    
-    
-    [cell.getViewLabelUser setText:_detailReputaitonReview!=nil? _detailReputaitonReview.product_owner.full_name:_reviewList.review_product_owner.user_name];
-    [cell.getViewLabelUser setLabelBackground:(_detailReputaitonReview!=nil)?_detailReputaitonReview.review_user_label:_reviewList.review_user_label];
+    [cell.getViewLabelUser setText:_detailReputationReview.product_owner.full_name];
+    [cell.getViewLabelUser setLabelBackground:_detailReputationReview.review_user_label];
     [cell setNeedsUpdateConstraints];
     [cell updateConstraintsIfNeeded];
     
@@ -524,20 +519,19 @@
         NSArray *tempArr = [[NSBundle mainBundle] loadNibNamed:@"ProductDetailReputationCell" owner:nil options:0];
         cell = [tempArr objectAtIndex:0];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.del = self;
         cell.delegate = self;
         cell.getViewLabelUser.userInteractionEnabled = [NavigationHelper shouldDoDeepNavigation];
         [cell.getViewLabelUser addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionTapCellLabelUser:)]];
     }
     
     cell.getViewLabelUser.tag = indexPath.row;
-    cell.getTvDesc.text = _detailReputaitonReview!=nil? _detailReputaitonReview.review_response.response_message:_reviewList.review_response.response_message;
-    cell.getLblDate.text = _detailReputaitonReview!=nil? _detailReputaitonReview.review_response.response_create_time:_reviewList.review_response.response_create_time;
+    cell.getTvDesc.text = _detailReputationReview.review_response.response_message;
+    cell.getLblDate.text = _detailReputationReview.review_response.response_create_time;
     cell.getBtnTryAgain.tag = indexPath.row;
-    cell.getBtnTryAgain.hidden = !(_detailReputaitonReview!=nil? _detailReputaitonReview.review_response.failedSentMessage:_reviewList.review_response.failedSentMessage);
+    cell.getBtnTryAgain.hidden = !(_detailReputationReview.review_response.failedSentMessage);
     
     //Set image
-    NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_detailReputaitonReview!=nil? _detailReputaitonReview.product_owner.shop_img:_reviewList.review_product_owner.user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_detailReputationReview.product_owner.shop_img] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     [cell.getImgProfile setImageWithURLRequest:userImageRequest placeholderImage:[UIImage imageNamed:@"icon_profile_picture.jpeg"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
@@ -548,9 +542,9 @@
     
 
     [cell setStar:_shopBadgeLevel.level withSet:_shopBadgeLevel.set];
-    [cell.getViewLabelUser setText:_detailReputaitonReview!=nil? _detailReputaitonReview.product_owner.shop_name:_reviewList.review_shop_name];
+    [cell.getViewLabelUser setText:_detailReputationReview.review_shop_name];
     [cell.getViewLabelUser setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"Gotham Medium" size:13.0f]];
-    [cell.getViewLabelUser setLabelBackground:(_detailReputaitonReview!=nil)?_detailReputaitonReview.product_owner.user_label:CPenjual];
+    [cell.getViewLabelUser setLabelBackground:(_detailReputationReview!=nil)?_detailReputationReview.product_owner.user_label:CPenjual];
     cell.getViewStar.tag = indexPath.row;
 
     [cell setNeedsUpdateConstraints];
@@ -584,106 +578,109 @@
 }
 
 - (void)actionLike:(id)sender {
+    [productReputationCell disableTouchLikeDislikeButton];
     UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
     NSDictionary *auth = [_userManager getUserLoginData];
 
     if(auth) {
-        NSString *strReviewID = (_detailReputaitonReview==nil)?_reviewList.review_id:_detailReputaitonReview.review_id;
-        int tagRequest = 3;//3 is netral
-        if([dictLikeDislike objectForKey:strReviewID] && ([((TotalLikeDislike *)[dictLikeDislike objectForKey:strReviewID]).like_status isEqualToString:@"3"] || [((TotalLikeDislike *)[dictLikeDislike objectForKey:strReviewID]).like_status isEqualToString:@"0"] || [((TotalLikeDislike *)[dictLikeDislike objectForKey:strReviewID]).like_status isEqualToString:@"2"] || [((TotalLikeDislike *)[dictLikeDislike objectForKey:strReviewID]).like_status isEqualToString:@"2"])) { //2 dislike, 1 like
-            tagRequest = 1;
-            
-            [productReputationCell.getBtnDisLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_dislike" ofType:@"png"]] forState:UIControlStateNormal];
-            [UIView animateWithDuration:0.5 animations:^{
-                productReputationCell.getBtnLike.alpha = 0.0f;
-            } completion:^(BOOL finished) {
-                [productReputationCell.getBtnLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_like_active" ofType:@"png"]] forState:UIControlStateNormal];
-                [UIView animateWithDuration:0.5 animations:^{
-                    productReputationCell.getBtnLike.alpha = 1.0f;
-                }];
-            }];
-            
-            
-            //Set data total
-            ((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).total_like_dislike.total_like = [NSString stringWithFormat:@"%d", ([((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).total_like_dislike.total_like intValue] + 1)];
-            if([((TotalLikeDislike *)[dictLikeDislike objectForKey:strReviewID]).like_status isEqualToString:@"2"]) {
-                ((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).total_like_dislike.total_dislike = [NSString stringWithFormat:@"%d", ([((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).total_like_dislike.total_dislike intValue] - 1)];
-            }
-            ((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).like_status = @"1";
+        //[productReputationCell.getBtnLike setImage:[UIImage imageNamed:@"loading-icon.gif"] forState:UIControlStateNormal];
+        if(_strLikeStatus == nil || [_strLikeStatus isEqualToString:@"3"] || [_strLikeStatus isEqualToString:@"2"]){
+            [reviewRequest actionLikeWithReviewId:_detailReputationReview.review_id
+                                              shopId:_detailReputationReview.shop_id
+                                           productId:_detailReputationReview.product_id
+                                              userId:[auth objectForKey:@"user_id"]
+                                           onSuccess:^(LikeDislikePostResult *likeDislikePostResult) {
+                                               
+                                               if([likeDislikePostResult.is_success isEqualToString:@"1"]){
+                                                   _strLikeStatus = @"1";
+                                                   [[productReputationCell getBtnLike] setTitle:likeDislikePostResult.content.total_like_dislike.total_like forState:UIControlStateNormal];
+                                                   [[productReputationCell getBtnDisLike] setTitle:likeDislikePostResult.content.total_like_dislike.total_dislike forState:UIControlStateNormal];
+                                                   [self setLikeDislikeActive:_strLikeStatus];
+                                               }else{
+                                                   StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Respon Anda tidak dapat diproses pada ulasan ini."] delegate:self];
+                                                   [alert show];
+                                                   [self setLikeDislikeActive:_strLikeStatus];
+                                               }
+                                           } onFailure:^(NSError *errorResult) {
+                                               [self setLikeDislikeActive:_strLikeStatus];
+                                               [self showNetworkFailStickyAlert];
+                                           }];
+        }else{
+            [reviewRequest actionCancelLikeDislikeWithReviewId:_detailReputationReview.review_id
+                                                        shopId:_detailReputationReview.shop_id
+                                                     productId:_detailReputationReview.product_id
+                                                        userId:[auth objectForKey:@"user_id"]
+                                                     onSuccess:^(LikeDislikePostResult *likeDislikePostResult) {
+                                                         if([likeDislikePostResult.is_success isEqualToString:@"1"]){
+                                                             [[productReputationCell getBtnLike] setTitle:likeDislikePostResult.content.total_like_dislike.total_like forState:UIControlStateNormal];
+                                                             [[productReputationCell getBtnDisLike] setTitle:likeDislikePostResult.content.total_like_dislike.total_dislike forState:UIControlStateNormal];
+                                                             _strLikeStatus = @"3";
+                                                             [self setLikeDislikeActive:_strLikeStatus];
+                                                         }else{
+                                                             StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Respon Anda tidak dapat diproses pada ulasan ini."] delegate:self];
+                                                             [alert show];
+                                                             [self setLikeDislikeActive:_strLikeStatus];
+                                                         }
+                                                     } onFailure:^(NSError *errorResult) {
+                                                         [self setLikeDislikeActive:_strLikeStatus];
+                                                         [self showNetworkFailStickyAlert];
+                                                     }];
         }
-        else {
-            if([((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).like_status isEqualToString:@"1"]) {
-                tagRequest = 3;
-                ((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).like_status = @"0";
-                ((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).total_like_dislike.total_like = [NSString stringWithFormat:@"%d", ([((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).total_like_dislike.total_like intValue] - 1)];
-                [productReputationCell.getBtnLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_like" ofType:@"png"]] forState:UIControlStateNormal];
-            }
-            else {
-                tagRequest = 1;
-                ((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).like_status = @"1";
-                ((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).total_like_dislike.total_like = [NSString stringWithFormat:@"%d", ([((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).total_like_dislike.total_like intValue] + 1)];
-                [productReputationCell.getBtnLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_like_active" ofType:@"png"]] forState:UIControlStateNormal];
-            }
-        }
-
-        [productReputationCell.getBtnLike setTitle:((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).total_like_dislike.total_like forState:UIControlStateNormal];
-        [productReputationCell.getBtnDisLike setTitle:((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).total_like_dislike.total_dislike forState:UIControlStateNormal];
-        [loadingLikeDislike setObject:_indexPathSelected forKey:strReviewID];
-        [self doActionLikeDislike:tagRequest withView:productReputationCell.getBtnLike];
-    }
-    else {
+    }else {
         [self showLoginView];
     }
 }
 
 - (void)actionDisLike:(id)sender {
+    [productReputationCell disableTouchLikeDislikeButton];
     UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
     NSDictionary *auth = [_userManager getUserLoginData];
     
     if(auth) {
-        int tagRequest = 3;
-        NSString *strReviewID = (_detailReputaitonReview==nil)?_reviewList.review_id:_detailReputaitonReview.review_id;
-        
-        if([dictLikeDislike objectForKey:strReviewID] && ([((TotalLikeDislike *)[dictLikeDislike objectForKey:strReviewID]).like_status isEqualToString:@"3"] || [((TotalLikeDislike *)[dictLikeDislike objectForKey:strReviewID]).like_status isEqualToString:@"0"] || [((TotalLikeDislike *)[dictLikeDislike objectForKey:strReviewID]).like_status isEqualToString:@"1"])) {
-            tagRequest = 2;
-    
-            [productReputationCell.getBtnLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_like" ofType:@"png"]] forState:UIControlStateNormal];
-            [UIView animateWithDuration:0.5 animations:^{
-                productReputationCell.getBtnDisLike.alpha = 0.0f;
-            } completion:^(BOOL finished) {
-                [productReputationCell.getBtnDisLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_dislike_active" ofType:@"png"]] forState:UIControlStateNormal];
-                [UIView animateWithDuration:0.5 animations:^{
-                    productReputationCell.getBtnDisLike.alpha = 1.0f;
-                }];
-            }];
-            
-            
-            //Set data total
-            ((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).total_like_dislike.total_dislike = [NSString stringWithFormat:@"%d", ([((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).total_like_dislike.total_dislike intValue] + 1)];
-            if([((TotalLikeDislike *)[dictLikeDislike objectForKey:strReviewID]).like_status isEqualToString:@"1"]) {
-                ((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).total_like_dislike.total_like = [NSString stringWithFormat:@"%d", ([((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).total_like_dislike.total_like intValue] - 1)];
-            }
-            ((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).like_status = @"2";
+        //[productReputationCell.getBtnDisLike setImage:[UIImage imageNamed:@"loading-icon.gif"] forState:UIControlStateNormal];
+        if(_strLikeStatus == nil || [_strLikeStatus isEqualToString:@"3"] || [_strLikeStatus isEqualToString:@"1"]){
+            [reviewRequest actionDislikeWithReviewId:_detailReputationReview.review_id
+                                              shopId:_detailReputationReview.shop_id
+                                           productId:_detailReputationReview.product_id
+                                              userId:[auth objectForKey:@"user_id"]
+                                           onSuccess:^(LikeDislikePostResult *likeDislikePostResult) {
+                                               if([likeDislikePostResult.is_success isEqualToString:@"1"]){
+                                                   _strLikeStatus = @"2";
+                                                   [[productReputationCell getBtnLike] setTitle:likeDislikePostResult.content.total_like_dislike.total_like forState:UIControlStateNormal];
+                                                   [[productReputationCell getBtnDisLike] setTitle:likeDislikePostResult.content.total_like_dislike.total_dislike forState:UIControlStateNormal];
+                                                   [self setLikeDislikeActive:_strLikeStatus];
+                                               }else{
+                                                   StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Respon Anda tidak dapat diproses pada ulasan ini."] delegate:self];
+                                                   [alert show];
+                                                   [self setLikeDislikeActive:_strLikeStatus];
+                                               }
+                                           } onFailure:^(NSError *errorResult) {
+                                               [self setLikeDislikeActive:_strLikeStatus];
+                                               [self showNetworkFailStickyAlert];
+                                           }];
+        }else{
+            [reviewRequest actionCancelLikeDislikeWithReviewId:_detailReputationReview.review_id
+                                              shopId:_detailReputationReview.shop_id
+                                           productId:_detailReputationReview.product_id
+                                              userId:[auth objectForKey:@"user_id"]
+                                           onSuccess:^(LikeDislikePostResult *likeDislikePostResult) {
+                                               if([likeDislikePostResult.is_success isEqualToString:@"1"]){
+                                                   _strLikeStatus = @"3";
+                                                   [[productReputationCell getBtnLike] setTitle:likeDislikePostResult.content.total_like_dislike.total_like forState:UIControlStateNormal];
+                                                   [[productReputationCell getBtnDisLike] setTitle:likeDislikePostResult.content.total_like_dislike.total_dislike forState:UIControlStateNormal];
+                                                   _strLikeStatus = @"3";
+                                                   [self setLikeDislikeActive:_strLikeStatus];
+                                               }else{
+                                                   StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Respon Anda tidak dapat diproses pada ulasan ini."] delegate:self];
+                                                   [alert show];
+                                                   [self setLikeDislikeActive:_strLikeStatus];
+                                               }
+                                           } onFailure:^(NSError *errorResult) {
+                                               [self setLikeDislikeActive:_strLikeStatus];
+                                               [self showNetworkFailStickyAlert];
+                                           }];
         }
-        else {
-            if([((TotalLikeDislike *)[dictLikeDislike objectForKey:strReviewID]).like_status isEqualToString:@"2"]) {
-                tagRequest = 3;
-                ((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).like_status = @"0";
-                ((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).total_like_dislike.total_dislike = [NSString stringWithFormat:@"%d", ([((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).total_like_dislike.total_dislike intValue] - 1)];
-                [productReputationCell.getBtnDisLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_dislike" ofType:@"png"]] forState:UIControlStateNormal];
-            }
-            else {
-                tagRequest = 2;
-                ((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).like_status = @"2";
-                ((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).total_like_dislike.total_dislike = [NSString stringWithFormat:@"%d", ([((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).total_like_dislike.total_dislike intValue] + 1)];
-                [productReputationCell.getBtnDisLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_dislike_active" ofType:@"png"]] forState:UIControlStateNormal];
-            }
-        }
         
-        [productReputationCell.getBtnLike setTitle:((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).total_like_dislike.total_like forState:UIControlStateNormal];
-        [productReputationCell.getBtnDisLike setTitle:((TotalLikeDislike *) [dictLikeDislike objectForKey:strReviewID]).total_like_dislike.total_dislike forState:UIControlStateNormal];
-        [loadingLikeDislike setObject:_indexPathSelected forKey:strReviewID];
-        [self doActionLikeDislike:tagRequest withView:productReputationCell.getBtnDisLike];
     }
     else {
         [self showLoginView];
@@ -701,7 +698,12 @@
     int paddingRightLeftContent = 10;
     UIView *viewContentPopUp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (CWidthItemPopUp*3)+paddingRightLeftContent, CHeightItemPopUp)];
     SmileyAndMedal *tempSmileyAndMedal = [SmileyAndMedal new];
-    [tempSmileyAndMedal showPopUpSmiley:viewContentPopUp andPadding:paddingRightLeftContent withReputationNetral:(_detailReputaitonReview!=nil? _detailReputaitonReview.review_user_reputation.neutral:_reviewList.review_user_reputation.neutral) withRepSmile:(_detailReputaitonReview!=nil? _detailReputaitonReview.review_user_reputation.positive:_reviewList.review_user_reputation.positive) withRepSad:(_detailReputaitonReview!=nil? _detailReputaitonReview.review_user_reputation.negative:_reviewList.review_user_reputation.negative) withDelegate:self];
+    [tempSmileyAndMedal showPopUpSmiley:viewContentPopUp
+                             andPadding:paddingRightLeftContent
+                   withReputationNetral:_detailReputationReview.review_user_reputation.neutral
+                           withRepSmile:_detailReputationReview.review_user_reputation.positive
+                             withRepSad:_detailReputationReview.review_user_reputation.negative
+                           withDelegate:self];
     
     //Init pop up
     popTipView = [[CMPopTipView alloc] initWithCustomView:viewContentPopUp];
@@ -715,13 +717,7 @@
 }
 
 - (void)actionTryAgain:(id)sender {
-    if(_detailReputaitonReview != nil) {
-        _detailReputaitonReview.review_response.failedSentMessage = NO;
-    }
-    else {
-        _reviewList.review_response.failedSentMessage = NO;
-    }
-    
+    _detailReputationReview.review_response.failedSentMessage = NO;
     [tableReputation reloadData];
     [[self getNetworkManager:CTagComment] doRequest];
 }
@@ -908,12 +904,12 @@
 
 
 - (void)actionTapCellLabelUser:(UITapGestureRecognizer *)sender {
-    if([(_detailReputaitonReview!=nil)?_detailReputaitonReview.product_owner.user_label:CPenjual caseInsensitiveCompare:CPenjual] == NSOrderedSame) {
+    if([(_detailReputationReview!=nil)?_detailReputationReview.product_owner.user_label:CPenjual caseInsensitiveCompare:CPenjual] == NSOrderedSame) {
         UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
         NSDictionary *auth = [_userManager getUserLoginData];
         
         ShopContainerViewController *shopContainerViewController = [ShopContainerViewController new];
-        shopContainerViewController.data = @{kTKPDDETAIL_APISHOPIDKEY:(_detailReputaitonReview!=nil?_detailReputaitonReview.shop_id:_reviewList.review_shop_id),
+        shopContainerViewController.data = @{kTKPDDETAIL_APISHOPIDKEY:_detailReputationReview.shop_id,
                                              kTKPD_AUTHKEY:auth?:@{}};
         [self.navigationController pushViewController:shopContainerViewController animated:YES];
     }
@@ -923,133 +919,11 @@
         NSDictionary *auth = [_userManager getUserLoginData];
         
         container.data = @{
-                           @"user_id" : (_detailReputaitonReview==nil? _reviewList.review_user_id:_detailReputaitonReview.review_user_id),
+                           @"user_id" : _detailReputationReview.review_user_id,
                            @"auth" : auth?:[NSNull null]
                            };
         [self.navigationController pushViewController:container animated:YES];
     }
-}
-
-- (void)configureRestKitLikeDislike:(RKObjectManager *)objectManager {
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[LikeDislikePost class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{CLStatus:CLStatus,
-                                                        CLServerProcessTime:CLServerProcessTime,
-                                                        CLMessageError:CLMessageError}];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[LikeDislikePostResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{CIsSuccess:CIsSuccess}];
-    
-    RKObjectMapping *totalLikeDislikePostMapping = [RKObjectMapping mappingForClass:[TotalLikeDislikePost class]];
-    RKObjectMapping *detailTotalLikeMapping = [RKObjectMapping mappingForClass:[DetailTotalLikeDislike class]];
-    [detailTotalLikeMapping addAttributeMappingsFromDictionary:@{CTotalLike:CTotalLike,
-                                                                 CTotalDislike:CTotalDislike}];
-    
-    
-    //add relationship mapping
-    [totalLikeDislikePostMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CTotalLikeDislike toKeyPath:CTotalLikeDislike withMapping:detailTotalLikeMapping]];
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CContent toKeyPath:CContent withMapping:totalLikeDislikePostMapping]];
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                  toKeyPath:kTKPD_APIRESULTKEY
-                                                                                withMapping:resultMapping]];
-    
-    // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                                  method:RKRequestMethodPOST
-                                                                                             pathPattern:@"action/review.pl"
-                                                                                                 keyPath:@""
-                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [objectManager addResponseDescriptor:responseDescriptorStatus];
-}
-
-- (void)doActionLikeDislike:(int)likeDislikeTag withView:(UIView *)btnLike {
-    //1 is like
-    //2 is dislike
-    //3 is unlike or undislike
-    RKObjectManager *objectManager = [RKObjectManager sharedClient];
-    [self configureRestKitLikeDislike:objectManager];
-
-    
-    NSString *strReviewID, *strShopID;
-    if(_detailReputaitonReview != nil) {
-        strReviewID = _detailReputaitonReview.review_id;
-        strShopID = _detailReputaitonReview.shop_id;
-    }
-    else {
-        strReviewID = _reviewList.review_id;
-        strShopID = _reviewList.review_shop_id;
-    }
-    
-    NSDictionary* param = @{@"action":@"like_dislike_review",
-                            @"review_id":strReviewID,
-                            @"like_status":@(likeDislikeTag),
-                            @"shop_id":strShopID,
-                            @"product_id":_strProductID};
-    
-    RKObjectRequestOperation *request = [objectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:@"action/review.pl" parameters:[param encrypt]];
-    [request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        NSLog(@"%@", operation.HTTPRequestOperation.responseString);
-        [_timer invalidate];
-        _timer = nil;
-        
-        //Result
-        NSDictionary *result = ((RKMappingResult*) mappingResult).dictionary;
-        LikeDislikePost *likeDislikePost = [result objectForKey:@""];
-        LikeDislikePostResult *likeDislikePostResult = likeDislikePost.result;
-        BOOL status = [likeDislikePostResult.is_success isEqualToString:@"1"];
-        
-        [loadingLikeDislike removeObjectForKey:strReviewID];
-        TotalLikeDislike *totalLikeDislike = [dictLikeDislike objectForKey:strReviewID];
-        if(status) {
-            if(totalLikeDislike) {
-                totalLikeDislike.total_like_dislike.total_like = likeDislikePostResult.content.total_like_dislike.total_like;
-                totalLikeDislike.total_like_dislike.total_dislike = likeDislikePostResult.content.total_like_dislike.total_dislike;
-                totalLikeDislike.like_status = [NSString stringWithFormat:@"%d", likeDislikeTag];
-                _strLikeStatus = totalLikeDislike.like_status;
-                _strTotalLike = totalLikeDislike.total_like_dislike.total_like;
-                _strTotalDisLike = totalLikeDislike.total_like_dislike.total_dislike;
-                
-                //Reload UI
-                [self initTable];
-                UIViewController *viewController = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
-                if([viewController isMemberOfClass:[ProductReputationViewController class]]) {
-                    [((ProductReputationViewController *) viewController) reloadTable];
-                }
-                else if([viewController isMemberOfClass:[ShopContainerViewController class]]) {
-                    viewController = [((ShopContainerViewController *) viewController) getActiveViewController];
-                    if([viewController isMemberOfClass:[ShopReviewPageViewController class]])
-                        [((ShopReviewPageViewController *) viewController) reloadTable];
-                }
-            }
-        }
-        else {
-            if(likeDislikePost.message_error!=nil && likeDislikePost.message_error.count>0) {
-                StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:likeDislikePost.message_error delegate:self];
-                [stickyAlertView show];
-            }
-        }
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        NSLog(@"%@", operation.HTTPRequestOperation.responseString);
-        [_timer invalidate];
-        _timer = nil;
-        [loadingLikeDislike removeObjectForKey:strReviewID];
-    }];
-    
-    if(operationQueueLikeDislike == nil) {
-        operationQueueLikeDislike = [NSOperationQueue new];
-    }
-    [operationQueueLikeDislike addOperation:request];
-    
-    _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeout:) userInfo:strReviewID repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
-}
-
-- (void)requestTimeout:(NSTimer *)timer {
-    [loadingLikeDislike removeObjectForKey:[timer userInfo]];
-    
-    RKObjectRequestOperation *objectReputation = [operationQueueLikeDislike.operations firstObject];
-    [objectReputation cancel];
 }
 
 - (void)showLoginView {
@@ -1093,23 +967,6 @@
     [_objectManager addResponseDescriptor:responseDescriptorStatus];
 }
 
-//- (void)doSendComment {
-//    if(_request.isExecuting) return;
-//    _requestCount++;
-//    
-//    NSDictionary *param = @{@"action" : @"add_comment_review", @"review_id" : _review.review_id, @"text_comment" : _commentReview};
-//    _request = [_objectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:ADD_REVIEW_PATH parameters:[param encrypt]];
-//    
-//    [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-//        [self requestSuccess:mappingResult withOperation:operation];
-//        
-//    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-//        
-//    }];
-//    
-//    [_operationQueue addOperation:_request];
-//}
-
 - (TokopediaNetworkManager *)getNetworkManager:(int)tag {
     if(tag==CTagComment || tag==CTagHapus) {
         if(tokopediaNetworkManager == nil) {
@@ -1128,8 +985,7 @@
     if(likeDislikeObj.result.like_dislike_review.count > 0) {
         TotalLikeDislike *tempTotalLikeDislike = ((TotalLikeDislike *) [likeDislikeObj.result.like_dislike_review firstObject]);
         
-        if((_detailReputaitonReview!=nil && [tempTotalLikeDislike.review_id isEqualToString:_detailReputaitonReview.review_id]) ||
-           (_reviewList!=nil && [tempTotalLikeDislike.review_id isEqualToString:_reviewList.review_id])) {
+        if(_detailReputationReview!=nil && [tempTotalLikeDislike.review_id isEqualToString:_detailReputationReview.review_id]) {
             [productReputationCell setHiddenViewLoad:YES];
             [productReputationCell.getBtnDisLike setTitle:((TotalLikeDislike *) [likeDislikeObj.result.like_dislike_review firstObject]).total_like_dislike.total_dislike  forState:UIControlStateNormal];
             [productReputationCell.getBtnLike setTitle:((TotalLikeDislike *) [likeDislikeObj.result.like_dislike_review firstObject]).total_like_dislike.total_like  forState:UIControlStateNormal];
@@ -1139,16 +995,7 @@
     }
 }
 
-- (void)setLikeDislikeActive:(NSString *)strStatusLike {
-    if(strStatusLike!=nil && [strStatusLike isEqualToString:@"1"]) {
-        [productReputationCell.getBtnLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_like_active" ofType:@"png"]] forState:UIControlStateNormal];
-        [productReputationCell.getBtnDisLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_dislike" ofType:@"png"]] forState:UIControlStateNormal];
-    }
-    else if(strStatusLike!=nil && [strStatusLike isEqualToString:@"2"]) {
-        [productReputationCell.getBtnDisLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_dislike_active" ofType:@"png"]] forState:UIControlStateNormal];
-        [productReputationCell.getBtnLike setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_like" ofType:@"png"]] forState:UIControlStateNormal];
-    }
-}
+
 
 - (void)dismissAllPopTipViews
 {
@@ -1173,19 +1020,19 @@
 {
     NSString *strNReputation = @"0";
     NSString *strText = @"";
-    if(_detailReputaitonReview == nil) {
+    if(_detailReputationReview == nil) {
         strText = [NSString stringWithFormat:@"%@ Poin", strNReputation];
         [self initPopUp:strText withSender:sender withRangeDesc:NSMakeRange(strText.length-4, 4)];
     }
     else {
-        strText = _detailReputaitonReview.product_owner.user_shop_reputation.tooltip;
+        strText = _detailReputationReview.product_owner.user_shop_reputation.tooltip;
         
         if(strText != nil) {
             NSArray *tempStr = [strText componentsSeparatedByString:@" "];
             [self initPopUp:strText withSender:sender withRangeDesc:NSMakeRange(strText.length-((NSString *)[tempStr lastObject]).length, ((NSString *)[tempStr lastObject]).length)];
         }
         else {
-            strNReputation = _detailReputaitonReview.product_owner.shop_reputation_score;
+            strNReputation = _detailReputationReview.product_owner.shop_reputation_score;
             strText = [NSString stringWithFormat:@"%@ Poin", strNReputation];
             [self initPopUp:strText withSender:sender withRangeDesc:NSMakeRange(strText.length-4, 4)];
         }
@@ -1197,68 +1044,37 @@
 - (NSDictionary*)getParameter:(int)tag {
     if(tag == CTagComment) {
         if(_isFromInboxNotification) {
-            if(_detailReputaitonReview != nil) {
                 return @{@"action":@"insert_reputation_review_response",
-                         @"reputation_id":_detailReputaitonReview.reputation_id,
-                         @"shop_id":_detailReputaitonReview.shop_id,
-                         @"review_id":_detailReputaitonReview.review_id,
+                         @"reputation_id":_detailReputationReview.reputation_id,
+                         @"shop_id":_detailReputationReview.shop_id,
+                         @"review_id":_detailReputationReview.review_id,
                          @"response_message":[growTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]};
-            }
-            else if(_reviewList != nil) {
-                return @{@"action":@"insert_reputation_review_response",
-                         @"reputation_id":_reviewList.review_reputation_id,
-                         @"shop_id":_reviewList.review_shop_id,
-                         @"review_id":_reviewList.review_id,
-                         @"response_message":[growTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]};
-            }
+            
         }
         else {
-            if(_detailReputaitonReview != nil) {
                 return @{@"action":@"add_comment_review",
-                     @"reputation_id":_detailReputaitonReview.reputation_id==nil? @"":_detailReputaitonReview.reputation_id,
+                     @"reputation_id":_detailReputationReview.reputation_id==nil? @"":_detailReputationReview.reputation_id,
                      @"product_id":_strProductID,
-                     @"review_id":_detailReputaitonReview.review_id,
+                     @"review_id":_detailReputationReview.review_id,
                      @"text_comment":[growTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]};
-            }
-            else if(_reviewList != nil) {
-                return @{@"action":@"add_comment_review",
-                         @"reputation_id":_reviewList.review_reputation_id==nil? @"":_reviewList.review_reputation_id,
-                         @"product_id":_strProductID,
-                         @"review_id":_reviewList.review_id,
-                         @"text_comment":[growTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]};
-            }
+            
         }
     }
     else if(tag == CTagHapus) {
         if(_isFromInboxNotification) {
-            if(_detailReputaitonReview != nil) {
                 return @{@"action":@"delete_reputation_review_response",
-                         @"reputation_id":_detailReputaitonReview.reputation_id,
-                         @"shop_id":_detailReputaitonReview.shop_id,
-                         @"review_id":_detailReputaitonReview.review_id,
+                         @"reputation_id":_detailReputationReview.reputation_id,
+                         @"shop_id":_detailReputationReview.shop_id,
+                         @"review_id":_detailReputationReview.review_id,
                          @"product_id":_strProductID
                          };
-            }
-            else if(_reviewList != nil) {
-                return @{@"action":@"delete_reputation_review_response",
-                         @"reputation_id":_reviewList.review_reputation_id,
-                         @"shop_id":_reviewList.review_shop_id,
-                         @"review_id":_reviewList.review_id,
-                         @"product_id":_reviewList.review_product_id
-                         };
-            }
+            
         }
         else {
-            if(_detailReputaitonReview != nil) {
                 return @{@"action":@"delete_comment_review",
-                         @"review_id":_detailReputaitonReview.review_id
+                         @"review_id":_detailReputationReview.review_id
                          };
-            }
-            else if(_reviewList != nil) {
-                return @{@"action":@"delete_comment_review",
-                         @"review_id":_reviewList.review_id
-                         };
-            }
+            
         }
     }
     
@@ -1330,57 +1146,38 @@
         if([responseComment.result.is_success isEqualToString:@"1"]) {
             isSuccessSentMessage = YES;
             
-            if(_detailReputaitonReview != nil) {
-                _detailReputaitonReview.review_response.response_create_time = _detailReputaitonReview.viewModel.review_response.response_create_time = responseComment.result.review_response.response_time_fmt;
-                _detailReputaitonReview.review_response.response_message = _detailReputaitonReview.viewModel.review_response.response_message = responseComment.result.review_response.response_message;
-                _detailReputaitonReview.review_response.failedSentMessage = _detailReputaitonReview.viewModel.review_response.failedSentMessage = NO;
-                _detailReputaitonReview.review_response.canDelete = _detailReputaitonReview.viewModel.review_response.canDelete = YES;
+                _detailReputationReview.review_response.response_create_time = _detailReputationReview.viewModel.review_response.response_create_time = responseComment.result.review_response.response_time_fmt;
+                _detailReputationReview.review_response.response_message = _detailReputationReview.viewModel.review_response.response_message = responseComment.result.review_response.response_message;
+                _detailReputationReview.review_response.failedSentMessage = _detailReputationReview.viewModel.review_response.failedSentMessage = NO;
+                _detailReputationReview.review_response.canDelete = _detailReputationReview.viewModel.review_response.canDelete = YES;
                 
                 
                 if(responseComment.result.product_owner != nil) {
-                    _detailReputaitonReview.product_owner.user_label_id = responseComment.result.product_owner.user_label_id;
-                    _detailReputaitonReview.product_owner.user_label = responseComment.result.product_owner.user_label;
+                    _detailReputationReview.product_owner.user_label_id = responseComment.result.product_owner.user_label_id;
+                    _detailReputationReview.product_owner.user_label = responseComment.result.product_owner.user_label;
                     
                     if(_isFromInboxNotification) {
-                        _detailReputaitonReview.product_owner.shop_id = responseComment.result.product_owner.shop_id;
+                        _detailReputationReview.product_owner.shop_id = responseComment.result.product_owner.shop_id;
                         
-                        _detailReputaitonReview.product_owner.user_url = responseComment.result.product_owner.user_url;
-                        _detailReputaitonReview.product_owner.shop_img = responseComment.result.product_owner.shop_img;
-                        _detailReputaitonReview.product_owner.shop_url = responseComment.result.product_owner.shop_url;
-                        _detailReputaitonReview.product_owner.shop_name = responseComment.result.product_owner.shop_name;
-                        _detailReputaitonReview.product_owner.full_name = responseComment.result.product_owner.full_name;
-                        _detailReputaitonReview.product_owner.user_img = responseComment.result.product_owner.user_img;
-                        _detailReputaitonReview.product_owner.user_id = responseComment.result.product_owner.user_id;
-                        _detailReputaitonReview.product_owner.shop_reputation_badge = responseComment.result.product_owner.shop_reputation_badge;
-                        _detailReputaitonReview.product_owner.shop_reputation_score = responseComment.result.product_owner.shop_reputation_score;
+                        _detailReputationReview.product_owner.user_url = responseComment.result.product_owner.user_url;
+                        _detailReputationReview.product_owner.shop_img = responseComment.result.product_owner.shop_img;
+                        _detailReputationReview.product_owner.shop_url = responseComment.result.product_owner.shop_url;
+                        _detailReputationReview.product_owner.shop_name = responseComment.result.product_owner.shop_name;
+                        _detailReputationReview.product_owner.full_name = responseComment.result.product_owner.full_name;
+                        _detailReputationReview.product_owner.user_img = responseComment.result.product_owner.user_img;
+                        _detailReputationReview.product_owner.user_id = responseComment.result.product_owner.user_id;
+                        _detailReputationReview.product_owner.shop_reputation_badge = responseComment.result.product_owner.shop_reputation_badge;
+                        _detailReputationReview.product_owner.shop_reputation_score = responseComment.result.product_owner.shop_reputation_score;
                     }
                     else {
-                        _shopBadgeLevel = _detailReputaitonReview.shop_badge_level = responseComment.result.shop_reputation.reputation_badge_object;
-                        _detailReputaitonReview.product_owner.shop_reputation_score = responseComment.result.shop_reputation.reputation_score;
-                        _detailReputaitonReview.product_owner.shop_id = responseComment.result.shop_id;
-                        _detailReputaitonReview.product_owner.shop_name = responseComment.result.shop_name;
-                        _detailReputaitonReview.product_owner.shop_url = responseComment.result.shop_img_uri;
+                        _shopBadgeLevel = _detailReputationReview.shop_badge_level = responseComment.result.shop_reputation.reputation_badge_object;
+                        _detailReputationReview.product_owner.shop_reputation_score = responseComment.result.shop_reputation.reputation_score;
+                        _detailReputationReview.product_owner.shop_id = responseComment.result.shop_id;
+                        _detailReputationReview.product_owner.shop_name = responseComment.result.shop_name;
+                        _detailReputationReview.product_owner.shop_url = responseComment.result.shop_img_uri;
                     }
                 }
-            }
-            else if(_reviewList != nil) {
-                _reviewList.review_response.response_create_time = responseComment.result.review_response.response_time_ago;
-                _reviewList.review_response.response_message = responseComment.result.review_response.response_message;
-                _reviewList.review_response.failedSentMessage = NO;
-                _reviewList.review_response.canDelete = YES;
-                
-                if(responseComment.result.product_owner != nil) {
-                    _reviewList.review_product_owner.user_name = responseComment.result.product_owner.full_name;
-                    _reviewList.review_product_owner.user_id = responseComment.result.product_owner.user_id;
-                    _reviewList.review_product_owner.user_image = responseComment.result.product_owner.user_img;
-                }
-                
-                //Set badge number
-                if(! _isFromInboxNotification) {
-                    _shopBadgeLevel.level = responseComment.result.shop_reputation.reputation_badge_object.level;
-                    _shopBadgeLevel.set = responseComment.result.shop_reputation.reputation_badge_object.set;
-                }
-            }
+            
             
             StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringSuccessSentComment] delegate:self];
             [stickyAlertView show];
@@ -1402,7 +1199,7 @@
             
             
             //Update Header
-            NSString *strResponseMessage = (_detailReputaitonReview==nil? _reviewList.review_response.response_message:_detailReputaitonReview.review_response.response_message);
+            NSString *strResponseMessage = _detailReputationReview.review_response.response_message;
             if(strResponseMessage==nil || [strResponseMessage isEqualToString:@"0"]) {
                 [productReputationCell.getBtnChat setTitle:[NSString stringWithFormat:@"%@ Komentar", strResponseMessage] forState:UIControlStateNormal];
             }
@@ -1411,12 +1208,8 @@
             }
         }
         else {
-            if(_detailReputaitonReview != nil) {
-                _detailReputaitonReview.review_response.failedSentMessage = YES;
-            }
-            else if(_reviewList != nil) {
-                _reviewList.review_response.failedSentMessage = YES;
-            }
+                _detailReputationReview.review_response.failedSentMessage = YES;
+            
         }
 
         [tableReputation reloadData];
@@ -1424,31 +1217,22 @@
     else if(tag == CTagHapus) {
         isDeletingMessage = NO;
         if(successResult && [((ResponseComment *) [((RKMappingResult *) successResult).dictionary objectForKey:@""]).result.is_success isEqualToString:@"1"]) {
-            if(_detailReputaitonReview != nil) {
-                _detailReputaitonReview.review_response.canDelete = _detailReputaitonReview.viewModel.review_response.canDelete = NO;
-                _detailReputaitonReview.review_response.response_create_time = _detailReputaitonReview.viewModel.review_response.response_create_time = responseComment.result.review_response.response_time_fmt;
-                _detailReputaitonReview.review_response.response_message = _detailReputaitonReview.viewModel.review_response.response_message = responseComment.result.review_response.response_message;
-                _detailReputaitonReview.product_owner.shop_id = responseComment.result.product_owner.shop_id;
-                _detailReputaitonReview.product_owner.user_label_id = responseComment.result.product_owner.user_label_id;
-                _detailReputaitonReview.product_owner.user_url = responseComment.result.product_owner.user_url;
-                _detailReputaitonReview.product_owner.shop_img = responseComment.result.product_owner.shop_img;
-                _detailReputaitonReview.product_owner.shop_url = responseComment.result.product_owner.shop_url;
-                _detailReputaitonReview.product_owner.shop_name = responseComment.result.product_owner.shop_name;
-                _detailReputaitonReview.product_owner.full_name = responseComment.result.product_owner.full_name;
-                _detailReputaitonReview.product_owner.user_img = responseComment.result.product_owner.user_img;
-                _detailReputaitonReview.product_owner.user_label = responseComment.result.product_owner.user_label;
-                _detailReputaitonReview.product_owner.user_id = responseComment.result.product_owner.user_id;
-                _detailReputaitonReview.product_owner.shop_reputation_badge = responseComment.result.product_owner.shop_reputation_badge;
-                _detailReputaitonReview.product_owner.shop_reputation_score = responseComment.result.product_owner.shop_reputation_score;
-            }
-            else if(_reviewList != nil) {
-                _reviewList.review_response.canDelete = NO;
-                _reviewList.review_response.response_create_time = responseComment.result.review_response.response_time_fmt;
-                _reviewList.review_response.response_message = responseComment.result.review_response.response_message;
-                _reviewList.review_product_owner.user_image = responseComment.result.product_owner.user_img;
-                _reviewList.review_product_owner.user_name = responseComment.result.product_owner.full_name;
-                _reviewList.review_product_owner.user_id = responseComment.result.product_owner.user_id;
-            }
+                _detailReputationReview.review_response.canDelete = _detailReputationReview.viewModel.review_response.canDelete = NO;
+                _detailReputationReview.review_response.response_create_time = _detailReputationReview.viewModel.review_response.response_create_time = responseComment.result.review_response.response_time_fmt;
+                _detailReputationReview.review_response.response_message = _detailReputationReview.viewModel.review_response.response_message = responseComment.result.review_response.response_message;
+                _detailReputationReview.product_owner.shop_id = responseComment.result.product_owner.shop_id;
+                _detailReputationReview.product_owner.user_label_id = responseComment.result.product_owner.user_label_id;
+                _detailReputationReview.product_owner.user_url = responseComment.result.product_owner.user_url;
+                _detailReputationReview.product_owner.shop_img = responseComment.result.product_owner.shop_img;
+                _detailReputationReview.product_owner.shop_url = responseComment.result.product_owner.shop_url;
+                _detailReputationReview.product_owner.shop_name = responseComment.result.product_owner.shop_name;
+                _detailReputationReview.product_owner.full_name = responseComment.result.product_owner.full_name;
+                _detailReputationReview.product_owner.user_img = responseComment.result.product_owner.user_img;
+                _detailReputationReview.product_owner.user_label = responseComment.result.product_owner.user_label;
+                _detailReputationReview.product_owner.user_id = responseComment.result.product_owner.user_id;
+                _detailReputationReview.product_owner.shop_reputation_badge = responseComment.result.product_owner.shop_reputation_badge;
+                _detailReputationReview.product_owner.shop_reputation_score = responseComment.result.product_owner.shop_reputation_score;
+            
             
             StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringSuccessRemoveMessage] delegate:self];
             [stickyAlertView show];
@@ -1470,7 +1254,7 @@
             
             
             //Update Header
-            NSString *strResponseMessage = (_detailReputaitonReview==nil? _reviewList.review_response.response_message:_detailReputaitonReview.review_response.response_message);
+            NSString *strResponseMessage = _detailReputationReview.review_response.response_message;
             if(strResponseMessage==nil || [strResponseMessage isEqualToString:@"0"]) {
                 [productReputationCell.getBtnChat setTitle:[NSString stringWithFormat:@"%@ Komentar", strResponseMessage==nil? @"0":strResponseMessage] forState:UIControlStateNormal];
             }
@@ -1484,12 +1268,8 @@
             constraintHeightViewMessage.constant = 50; //50 is default height text message
         }
         else {
-            if(_detailReputaitonReview != nil) {
-                _detailReputaitonReview.review_response.canDelete = YES;
-            }
-            else if(_reviewList != nil) {
-                _reviewList.review_response.canDelete = YES;
-            }
+                _detailReputationReview.review_response.canDelete = YES;
+            
             
             StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringFailedRemoveMessage] delegate:self];
             [stickyAlertView show];
@@ -1512,23 +1292,15 @@
 
 - (void)actionAfterFailRequestMaxTries:(int)tag {
     if(tag == CTagComment) {
-        if(_detailReputaitonReview != nil) {
-            _detailReputaitonReview.review_response.failedSentMessage = YES;
-        }
-        else {
-            _reviewList.review_response.failedSentMessage = YES;
-        }
+            _detailReputationReview.review_response.failedSentMessage = YES;
+        
         
         [tableReputation reloadData];
     }
     else if(tag == CTagHapus) {
         isDeletingMessage = NO;
-        if(_detailReputaitonReview != nil) {
-            _detailReputaitonReview.review_response.canDelete = YES;
-        }
-        else {
-            _reviewList.review_response.canDelete = YES;
-        }
+            _detailReputationReview.review_response.canDelete = YES;
+        
         
         [tableReputation reloadData];
     }
@@ -1555,7 +1327,7 @@
 -(BOOL)swipeTableCell:(MGSwipeTableCell*) cell canSwipe:(MGSwipeDirection) direction;
 {
     //Delete message
-    if((_detailReputaitonReview!=nil? _detailReputaitonReview.review_response.canDelete:_reviewList.review_response.canDelete) && _isMyProduct) {
+    if(_detailReputationReview.review_response.canDelete && _isMyProduct) {
         return YES;
     }
     else {
@@ -1578,12 +1350,8 @@
         
         CGFloat padding = 15;
         MGSwipeButton * trash = [MGSwipeButton buttonWithTitle:@"Hapus" backgroundColor:[UIColor colorWithRed:255/255 green:59/255.0 blue:48/255.0 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
-            if(_detailReputaitonReview != nil) {
-                _detailReputaitonReview.review_response.canDelete = NO;
-            }
-            else {
-                _reviewList.review_response.canDelete = NO;
-            }
+                _detailReputationReview.review_response.canDelete = NO;
+            
             
             isDeletingMessage = YES;
             [tableReputation reloadData];
@@ -1597,4 +1365,23 @@
     
     return nil;
 }
+
+- (void)setLikeDislikeActive:(NSString *)strStatusLike {
+    if(strStatusLike!=nil && [strStatusLike isEqualToString:@"1"]) {
+        [productReputationCell enableLikeButton];
+        [productReputationCell disableDislikeButton];
+    }
+    else if(strStatusLike!=nil && [strStatusLike isEqualToString:@"2"]) {
+        [productReputationCell enableDislikeButton];
+        [productReputationCell disableLikeButton];
+    }else if(strStatusLike != nil && [strStatusLike isEqualToString:@"3"]){
+        [productReputationCell resetLikeDislikeButton];
+    }
+    [productReputationCell enableTouchLikeDislikeButton];
+}
+- (void)showNetworkFailStickyAlert{
+    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Kendala koneksi internet"] delegate:self];
+    [alert show];
+}
+
 @end

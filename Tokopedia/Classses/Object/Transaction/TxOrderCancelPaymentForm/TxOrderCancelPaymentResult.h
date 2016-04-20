@@ -10,7 +10,7 @@
 
 #import "TxOrderCancelPaymentFormForm.h"
 
-@interface TxOrderCancelPaymentResult : NSObject
+@interface TxOrderCancelPaymentResult : NSObject <TKPObjectMapping>
 
 @property (nonatomic,strong)TxOrderCancelPaymentFormForm *form;
 

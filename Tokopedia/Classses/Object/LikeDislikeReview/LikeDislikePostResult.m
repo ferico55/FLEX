@@ -10,4 +10,11 @@
 
 @implementation LikeDislikePostResult
 
++(RKObjectMapping *)mapping{
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[LikeDislikePostResult class]];
+    [resultMapping addAttributeMappingsFromArray:@[@"is_success"]];
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"content" toKeyPath:@"content" withMapping:[TotalLikeDislikePost mapping]]];
+    return resultMapping;
+}
+
 @end

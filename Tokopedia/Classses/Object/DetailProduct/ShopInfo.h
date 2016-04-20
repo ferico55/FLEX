@@ -13,7 +13,7 @@
 #import "TransactionCartGateway.h"
 #define CResponseFast @"respond_speed"
 
-@interface ShopInfo : NSObject
+@interface ShopInfo : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *shop_open_since;
 @property (nonatomic, strong) NSString *shop_location;
@@ -41,6 +41,5 @@
 
 @property (nonatomic) NSArray *shop_pay_gateway;
 @property (nonatomic, strong) NSString *lucky_merchant;
-
 
 @end

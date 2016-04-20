@@ -17,7 +17,7 @@
 #define CProductUri @"product_uri"
 #define CProductPriceFmt @"product_price_fmt"
 
-@interface ProductDetail : NSObject
+@interface ProductDetail : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *product_weight_unit;
 @property (nonatomic, strong) NSString *product_weight_unit_name;
@@ -55,11 +55,13 @@
 @property (nonatomic, strong) NSString *product_total_price;
 @property (nonatomic, strong) NSString *product_total_price_idr;
 @property (nonatomic, strong) NSString *product_pic;
+@property (nonatomic, strong) NSString *product_picture;
 @property (nonatomic, strong) NSString *product_use_insurance;
 @property (nonatomic, strong) NSString *product_cart_id;
 @property (nonatomic, strong) NSString *product_total_weight;
 @property (nonatomic, strong) NSString *product_error_msg;
 @property (nonatomic, strong) NSString *product_price_last;
+@property (nonatomic, strong) NSString *product_cat_name;
 
 @property (nonatomic, strong) ProductModelView *viewModel;
 
