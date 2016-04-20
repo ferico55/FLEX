@@ -18,5 +18,25 @@
     return [_shipper_name kv_decodeHTMLCharacterEntities];
 }
 
++(NSDictionary *)attributeMappingDictionary
+{
+    NSArray *keys = @[
+                      @"shipper_city",
+                      @"shipper_name",
+                      @"receiver_city",
+                      @"send_date",
+                      @"receiver_name",
+                      @"service_code",
+                      @"delivered"
+                      ];
+    return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
+}
+
++(RKObjectMapping*)mapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+    return mapping;
+}
 
 @end

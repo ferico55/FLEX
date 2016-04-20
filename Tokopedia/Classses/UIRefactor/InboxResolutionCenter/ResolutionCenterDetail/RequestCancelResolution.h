@@ -10,24 +10,11 @@
 
 #import "InboxResolutionCenterList.h"
 
-@protocol CancelComplainDelegate <NSObject>
-@required
-- (void)successCancelComplain:(InboxResolutionCenterList*)resolution successStatus:(NSArray*)successStatus;
-- (void)failedCancelComplain:(InboxResolutionCenterList*)resolution errors:(NSArray*)errors;
-
-@end
-
 @interface RequestCancelResolution : NSObject
-
-
-@property (nonatomic, weak) IBOutlet id<CancelComplainDelegate> delegate;
 
 @property InboxResolutionCenterList *resolution;
 @property NSInteger resolutionID;
 @property UIViewController *viewController;
-
-
--(void)doRequest;
 
 +(void)fetchCancelComplainID:(NSString*)complainID
                       detail:(InboxResolutionCenterList*)resolution

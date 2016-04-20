@@ -8,8 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "TrackOrderDetail.h"
+#import "TrackOrderHistory.h"
 
-@interface TrackOrder : NSObject
+@interface TrackOrder : NSObject <TKPObjectMapping>
 
 @property (strong, nonatomic) NSString *change;
 @property (strong, nonatomic) NSString *status;
