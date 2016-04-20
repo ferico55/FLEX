@@ -443,24 +443,10 @@
     [self.indicatorView startAnimating];
     self.navigationItem.rightBarButtonItem = self.disabledSaveButton;
     
-    NSDictionary *parameters;
-    if (self.selectedProvince.cities.count == 0) {
-        // 13 id provinsi jakarta
-        if ([self.selectedProvince.provinceId isEqualToString:@"13"]) {
-            parameters = @{@"district_id":@"5573"};
-        } else {
-            parameters = @{@"district_id":self.selectedProvince.provinceId?:@"0"};
-        }
-    } else if (self.selectedCity.districts.count == 0) {
-        parameters = @{@"district_id":self.selectedCity.cityId?:@"0"};
-    } else {
-        parameters = @{@"district_id":self.selectedDistrict.districtId?:@"0"};
-    }
-    
     [self.networkManager requestWithBaseUrl:@"http://ws-staging.tokopedia.com"
                                        path:@"/v4/myshop-shipment/get_shipping_info.pl"
                                      method:RKRequestMethodGET
-                                  parameter:parameters
+                                  parameter:@{}
                                     mapping:[ShipmentResponse mapping]
                                   onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                       ShipmentResponse *response = [successResult.dictionary objectForKey:@""];
@@ -557,6 +543,13 @@
         @"latitude": latitude?:@"",
         @"longitude": longitude?:@"",
     }];
+
+    if (self.selectedProvince.cities.count == 0) {
+        // 13 id provinsi jakarta
+        if ([self.selectedProvince.provinceId isEqualToString:@"13"]) {
+            [parameters setObject:@"5573" forKey:@"courier_origin"];
+        }
+    }
     
     [parameters addEntriesFromDictionary:additionalParamaters];
     
