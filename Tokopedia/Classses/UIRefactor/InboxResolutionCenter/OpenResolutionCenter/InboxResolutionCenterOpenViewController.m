@@ -11,22 +11,9 @@
 #import "TxOrderStatusViewController.h"
 #import "InboxResolutionCenterOpenViewController.h"
 #import "string_inbox_resolution_center.h"
-#import "detail.h"
-#import "TransactionAction.h"
-
-#import "RequestUploadImage.h"
-#import "UploadImage.h"
-#import "GenerateHost.h"
-#import "camera.h"
 
 #import "GeneralTableViewController.h"
-#import "UserAuthentificationManager.h"
-#import "StickyAlertView.h"
 
-#import "requestGenerateHost.h"
-#import "TKPDPhotoPicker.h"
-
-#import "RequestResolutionCenter.h"
 #import "RequestResolutionData.h"
 
 #define TITLE_APPEAL @"Naik Banding"
@@ -41,11 +28,7 @@
     UITextViewDelegate,
     GeneralTableViewControllerDelegate,
     InboxResolutionCenterOpenViewControllerDelegate,
-    GenerateHostDelegate,
-    RequestUploadImageDelegate,
-    SyncroDelegate,
-    TKPDPhotoPickerDelegate,
-    RequestResolutionCenterDelegate
+    SyncroDelegate
 >
 {
     BOOL _isNodata;
@@ -54,13 +37,7 @@
     UITextField *_activeTextField;
     UITextView *_activeTextView;
     
-    TKPDPhotoPicker *_photoPicker;
-    
-    NSString *_serverID;
-    
     NSMutableArray <DKAsset *>*_selectedImages;
-    
-    RequestResolutionCenter *_requestResolutionCenter;
     
     UIAlertView *_alertCreateReso;
 }
@@ -100,7 +77,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    _generatehost = [GenerateHost new];
     _selectedImages = [NSMutableArray new];
     
     _cancelButtons = [NSArray sortViewsWithTagInArray:_cancelButtons];
@@ -109,7 +85,6 @@
     for(UIButton *btn in _cancelButtons) {
         btn.hidden = YES;
     }
-    
     
     [self setData];
     
@@ -133,15 +108,6 @@
 {
     _controllerTitle = controllerTitle;
     [self adjustNavigationTitle];
-}
-
--(RequestResolutionCenter*)requestResolutionCenter
-{
-    if (!_requestResolutionCenter) {
-        _requestResolutionCenter = [RequestResolutionCenter new];
-        _requestResolutionCenter.delegate = self;
-    }
-    return _requestResolutionCenter;
 }
 
 -(void)adjustNavigationTitle
@@ -807,7 +773,6 @@
     vc.totalRefund = _totalRefund;
     vc.syncroDelegate = self;
     vc.controllerTitle = _controllerTitle;
-    vc.generatehost = _generatehost;
     vc.images = [_selectedImages copy];
     vc.resolutionID = _resolutionID;
     

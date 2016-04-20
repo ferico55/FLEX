@@ -838,16 +838,13 @@
 		45D78D6B1CC75D4500CBA76F /* InboxResolutionCenterComplainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45D7835C1CC75D4200CBA76F /* InboxResolutionCenterComplainViewController.xib */; };
 		45D78D6C1CC75D4500CBA76F /* InboxResolSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D7835E1CC75D4200CBA76F /* InboxResolSplitViewController.m */; };
 		45D78D6D1CC75D4500CBA76F /* InboxResolSplitViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45D7835F1CC75D4200CBA76F /* InboxResolSplitViewController.xib */; };
-		45D78D6E1CC75D4500CBA76F /* InboxResolutionCenterObjectMapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D783611CC75D4200CBA76F /* InboxResolutionCenterObjectMapping.m */; };
 		45D78D6F1CC75D4500CBA76F /* InboxResolutionCenterTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D783631CC75D4200CBA76F /* InboxResolutionCenterTabViewController.m */; };
 		45D78D701CC75D4500CBA76F /* InboxResolutionCenterTabViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45D783641CC75D4200CBA76F /* InboxResolutionCenterTabViewController.xib */; };
 		45D78D711CC75D4500CBA76F /* InboxResolutionCenterOpenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D783671CC75D4200CBA76F /* InboxResolutionCenterOpenViewController.m */; };
 		45D78D721CC75D4500CBA76F /* InboxResolutionCenterOpenViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45D783681CC75D4200CBA76F /* InboxResolutionCenterOpenViewController.xib */; };
 		45D78D731CC75D4500CBA76F /* RequestResoInputAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D7836A1CC75D4200CBA76F /* RequestResoInputAddress.m */; };
 		45D78D741CC75D4500CBA76F /* RequestResolutionAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D7836C1CC75D4200CBA76F /* RequestResolutionAction.m */; };
-		45D78D751CC75D4500CBA76F /* RequestResolutionCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D7836E1CC75D4200CBA76F /* RequestResolutionCenter.m */; };
 		45D78D761CC75D4500CBA76F /* RequestResolutionData.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D783701CC75D4200CBA76F /* RequestResolutionData.m */; };
-		45D78D771CC75D4500CBA76F /* RequestCancelResolution.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D783731CC75D4200CBA76F /* RequestCancelResolution.m */; };
 		45D78D781CC75D4500CBA76F /* ResolutionCenterDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D783751CC75D4200CBA76F /* ResolutionCenterDetailCell.m */; };
 		45D78D791CC75D4500CBA76F /* ResolutionCenterDetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45D783761CC75D4200CBA76F /* ResolutionCenterDetailCell.xib */; };
 		45D78D7A1CC75D4500CBA76F /* ResolutionCenterDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D783781CC75D4200CBA76F /* ResolutionCenterDetailViewController.m */; };
@@ -3739,8 +3736,6 @@
 		45D7835D1CC75D4200CBA76F /* InboxResolSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxResolSplitViewController.h; sourceTree = "<group>"; };
 		45D7835E1CC75D4200CBA76F /* InboxResolSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxResolSplitViewController.m; sourceTree = "<group>"; };
 		45D7835F1CC75D4200CBA76F /* InboxResolSplitViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InboxResolSplitViewController.xib; sourceTree = "<group>"; };
-		45D783601CC75D4200CBA76F /* InboxResolutionCenterObjectMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxResolutionCenterObjectMapping.h; sourceTree = "<group>"; };
-		45D783611CC75D4200CBA76F /* InboxResolutionCenterObjectMapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxResolutionCenterObjectMapping.m; sourceTree = "<group>"; };
 		45D783621CC75D4200CBA76F /* InboxResolutionCenterTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxResolutionCenterTabViewController.h; sourceTree = "<group>"; };
 		45D783631CC75D4200CBA76F /* InboxResolutionCenterTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxResolutionCenterTabViewController.m; sourceTree = "<group>"; };
 		45D783641CC75D4200CBA76F /* InboxResolutionCenterTabViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InboxResolutionCenterTabViewController.xib; sourceTree = "<group>"; };
@@ -3751,12 +3746,8 @@
 		45D7836A1CC75D4200CBA76F /* RequestResoInputAddress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestResoInputAddress.m; sourceTree = "<group>"; };
 		45D7836B1CC75D4200CBA76F /* RequestResolutionAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestResolutionAction.h; sourceTree = "<group>"; };
 		45D7836C1CC75D4200CBA76F /* RequestResolutionAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestResolutionAction.m; sourceTree = "<group>"; };
-		45D7836D1CC75D4200CBA76F /* RequestResolutionCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestResolutionCenter.h; sourceTree = "<group>"; };
-		45D7836E1CC75D4200CBA76F /* RequestResolutionCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestResolutionCenter.m; sourceTree = "<group>"; };
 		45D7836F1CC75D4200CBA76F /* RequestResolutionData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestResolutionData.h; sourceTree = "<group>"; };
 		45D783701CC75D4200CBA76F /* RequestResolutionData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestResolutionData.m; sourceTree = "<group>"; };
-		45D783721CC75D4200CBA76F /* RequestCancelResolution.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestCancelResolution.h; sourceTree = "<group>"; };
-		45D783731CC75D4200CBA76F /* RequestCancelResolution.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestCancelResolution.m; sourceTree = "<group>"; };
 		45D783741CC75D4200CBA76F /* ResolutionCenterDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionCenterDetailCell.h; sourceTree = "<group>"; };
 		45D783751CC75D4200CBA76F /* ResolutionCenterDetailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionCenterDetailCell.m; sourceTree = "<group>"; };
 		45D783761CC75D4200CBA76F /* ResolutionCenterDetailCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ResolutionCenterDetailCell.xib; sourceTree = "<group>"; };
@@ -8475,8 +8466,6 @@
 				45D7835D1CC75D4200CBA76F /* InboxResolSplitViewController.h */,
 				45D7835E1CC75D4200CBA76F /* InboxResolSplitViewController.m */,
 				45D7835F1CC75D4200CBA76F /* InboxResolSplitViewController.xib */,
-				45D783601CC75D4200CBA76F /* InboxResolutionCenterObjectMapping.h */,
-				45D783611CC75D4200CBA76F /* InboxResolutionCenterObjectMapping.m */,
 				45D783621CC75D4200CBA76F /* InboxResolutionCenterTabViewController.h */,
 				45D783631CC75D4200CBA76F /* InboxResolutionCenterTabViewController.m */,
 				45D783641CC75D4200CBA76F /* InboxResolutionCenterTabViewController.xib */,
@@ -8485,8 +8474,6 @@
 				45D7836A1CC75D4200CBA76F /* RequestResoInputAddress.m */,
 				45D7836B1CC75D4200CBA76F /* RequestResolutionAction.h */,
 				45D7836C1CC75D4200CBA76F /* RequestResolutionAction.m */,
-				45D7836D1CC75D4200CBA76F /* RequestResolutionCenter.h */,
-				45D7836E1CC75D4200CBA76F /* RequestResolutionCenter.m */,
 				45D7836F1CC75D4200CBA76F /* RequestResolutionData.h */,
 				45D783701CC75D4200CBA76F /* RequestResolutionData.m */,
 				45D783711CC75D4200CBA76F /* ResolutionCenterDetail */,
@@ -8524,8 +8511,6 @@
 		45D783711CC75D4200CBA76F /* ResolutionCenterDetail */ = {
 			isa = PBXGroup;
 			children = (
-				45D783721CC75D4200CBA76F /* RequestCancelResolution.h */,
-				45D783731CC75D4200CBA76F /* RequestCancelResolution.m */,
 				45D783741CC75D4200CBA76F /* ResolutionCenterDetailCell.h */,
 				45D783751CC75D4200CBA76F /* ResolutionCenterDetailCell.m */,
 				45D783761CC75D4200CBA76F /* ResolutionCenterDetailCell.xib */,
@@ -12855,7 +12840,6 @@
 				45D792581CC75D4500CBA76F /* MarqueeLabel.m in Sources */,
 				45D78EBC1CC75D4500CBA76F /* ShopInfoShipmentCell.m in Sources */,
 				45D78F111CC75D4500CBA76F /* TransactionCartCostView.m in Sources */,
-				45D78D771CC75D4500CBA76F /* RequestCancelResolution.m in Sources */,
 				45D78BC61CC75D4500CBA76F /* AddProductSubmitResult.m in Sources */,
 				45D78BAF1CC75D4500CBA76F /* Notes.m in Sources */,
 				45D78C4E1CC75D4500CBA76F /* DKAssetGroupDetailVC.swift in Sources */,
@@ -13036,7 +13020,6 @@
 				45D78C4B1CC75D4500CBA76F /* TPSpotlight.m in Sources */,
 				45D78AAF1CC75D4500CBA76F /* Talk.m in Sources */,
 				45D78F781CC75D4500CBA76F /* ProductModelView.m in Sources */,
-				45D78D6E1CC75D4500CBA76F /* InboxResolutionCenterObjectMapping.m in Sources */,
 				45D78D3A1CC75D4500CBA76F /* FavoritedShopViewController.m in Sources */,
 				45D78C301CC75D4500CBA76F /* TxOrderPaymentEditForm.m in Sources */,
 				45D78A631CC75D4500CBA76F /* CreatePasswordResult.m in Sources */,
@@ -13335,7 +13318,6 @@
 				45D78AC61CC75D4500CBA76F /* GoogleDistanceMatrixDetail.m in Sources */,
 				45D78B6C1CC75D4500CBA76F /* Reputation.m in Sources */,
 				45D78B141CC75D4500CBA76F /* RatingResult.m in Sources */,
-				45D78D751CC75D4500CBA76F /* RequestResolutionCenter.m in Sources */,
 				45D78B641CC75D4500CBA76F /* PromoProduct.m in Sources */,
 				45D78ECD1CC75D4500CBA76F /* ShopNotesPageViewController.m in Sources */,
 				BBA2937F1CC624AB000630FB /* AppDelegate.m in Sources */,

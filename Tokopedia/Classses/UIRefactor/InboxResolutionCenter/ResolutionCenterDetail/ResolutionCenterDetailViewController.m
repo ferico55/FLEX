@@ -5,13 +5,11 @@
 //  Created by IT Tkpd on 2/26/15.
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
-#import "ReputationDetail.h"
 #import "ResolutionCenterDetailViewController.h"
 #import "ResolutionCenterInputViewController.h"
 #import "ResolutionInputReceiptViewController.h"
 #import "InboxResolutionCenterOpenViewController.h"
 #import "InboxResolutionCenterComplainViewController.h"
-#import "ShopReputation.h"
 
 #import "NavigateViewController.h"
 #import "NavigationHelper.h"
@@ -22,7 +20,6 @@
 #import "ResolutionCenterSystemCell.h"
 
 #import "ResolutionAction.h"
-#import "InboxResolutionCenterObjectMapping.h"
 
 #import "TxOrderStatusDetailViewController.h"
 
@@ -32,10 +29,20 @@
 #import "SettingAddressEditViewController.h"
 
 #import "profile.h"
-#import "string_settings.h"
-#import "AddressFormList.h"
 #import "RequestResoInputAddress.h"
 #import "RequestResolutionData.h"
+
+typedef enum {
+    ACTION_BY_BUYER         = 1,
+    ACTION_BY_SELLER        = 2,
+    ACTION_BY_TOKOPEDIA     = 3
+}TYPE_ACTION_BY;
+
+#define COLOR_BUYER [UIColor colorWithRed:255.f/255.f green:145.f/255.f blue:0.f/255.f alpha:1]
+#define COLOR_SELLER [UIColor colorWithRed:18.f/255.f green:199.f/255.f blue:0.f/255.f alpha:1]
+#define COLOR_TOKOPEDIA [UIColor colorWithRed:117.f/255.f green:117.f/255.f blue:117.f/255.f alpha:1]
+
+#define COLOR_STATUS_DONE [UIColor colorWithRed:117.f/255.f green:117.f/255.f blue:117.f/255.f alpha:1]
 
 #define TAG_ALERT_CANCEL_COMPLAIN 10
 #define TAG_CHANGE_SOLUTION 11
@@ -413,7 +420,7 @@
     if ([sender.titleLabel.text isEqualToString:BUTTON_TITLE_INPUT_ADDRESS]) {
         SettingAddressViewController *addressViewController = [SettingAddressViewController new];
         addressViewController.delegate = self;
-        addressViewController.data = @{DATA_TYPE_KEY:@(TYPE_ADD_EDIT_PROFILE_ADD_RESO),
+        addressViewController.data = @{@"type":@(TYPE_ADD_EDIT_PROFILE_ADD_RESO),
                                        @"conversation" : conversation
                                        };
         [self.navigationController pushViewController:addressViewController animated:YES];
@@ -426,7 +433,7 @@
     if ([sender.titleLabel.text isEqualToString:BUTTON_TITLE_EDIT_ADDRESS]) {
         SettingAddressViewController *addressViewController = [SettingAddressViewController new];
         addressViewController.delegate = self;
-        addressViewController.data = @{DATA_TYPE_KEY:@(TYPE_ADD_EDIT_PROFILE_EDIT_RESO),
+        addressViewController.data = @{@"type":@(TYPE_ADD_EDIT_PROFILE_EDIT_RESO),
                                        @"conversation":conversation
                                        };
         [self.navigationController pushViewController:addressViewController animated:YES];
@@ -1303,7 +1310,7 @@
 {
     BOOL isEditAddress = ([[viewController.data objectForKey:@"type"] integerValue] == TYPE_ADD_EDIT_PROFILE_EDIT_RESO);
 
-    AddressFormList *address = [userInfo objectForKey:DATA_ADDRESS_DETAIL_KEY];
+    AddressFormList *address = [userInfo objectForKey:@"address"];
     ResolutionConversation *conversation = viewController.data[@"conversation"];
 
     if (address.address_id == 0) {

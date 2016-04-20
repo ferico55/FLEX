@@ -12,7 +12,6 @@
 
 #import "InboxResolutionCenterComplainViewController.h"
 #import "InboxResolutionCenterComplainCell.h"
-#import "InboxResolutionCenterObjectMapping.h"
 #import "FilterComplainViewController.h"
 
 #import "ResolutionCenterDetailViewController.h"
@@ -35,6 +34,8 @@
 
 #import "RequestResolutionData.h"
 
+#define COLOR_BLUE_DEFAULT [UIColor colorWithRed:0.f/255.f green:122.f/255.f blue:255.f/255.f alpha:1]
+#define COLOR_PENDING_AMOUNT [UIColor colorWithRed:255.f/255.f green:85.f/255.f blue:0.f/255.f alpha:1]
 #define DATA_SELECTED_RESOLUTION_KEY @"selected_resolution"
 #define DATA_SELECTED_INDEXPATH_RESOLUTION_KEY @"seleted_indexpath_resolution"
 

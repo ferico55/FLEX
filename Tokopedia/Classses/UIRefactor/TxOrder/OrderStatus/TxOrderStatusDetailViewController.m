@@ -23,7 +23,7 @@
 
 #import "ResolutionCenterDetailViewController.h"
 
-#import "RequestCancelResolution.h"
+#import "RequestResolutionData.h"
 #import "RequestOrderData.h"
 
 #define TAG_ALERT_REORDER 10
@@ -306,7 +306,9 @@
     NSDictionary *queries = [NSDictionary dictionaryFromURLString:_order.order_button.button_res_center_url];
     NSString *resolutionID = [queries objectForKey:@"id"];
     
-    [RequestCancelResolution fetchCancelComplainID:resolutionID detail:resolution success:^(InboxResolutionCenterList *resolution, NSString *uriNext) {
+    __block InboxResolutionCenterList *reso = resolution;
+    [RequestResolutionAction fetchCancelResolutionID:resolutionID success:^(ResolutionActionResult *data) {
+        
     } failure:^(NSError *error) {
         
     }];

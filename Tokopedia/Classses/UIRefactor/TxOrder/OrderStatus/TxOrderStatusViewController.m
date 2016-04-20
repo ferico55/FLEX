@@ -35,8 +35,8 @@
 #import "NoResultReusableView.h"
 #import "RequestLDExtension.h"
 #import "RequestResolutionData.h"
-#import "RequestCancelResolution.h"
 #import "RequestOrderData.h"
+#import "RequestResolutionData.h"
 
 #define TAG_ALERT_DELIVERY_CONFIRMATION 10
 #define TAG_ALERT_SUCCESS_DELIVERY_CONFIRM 11
@@ -693,8 +693,9 @@
     NSDictionary *queries = [NSDictionary dictionaryFromURLString:order.order_button.button_res_center_url];
     NSString *resolutionID = [queries objectForKey:@"id"];
     
-    [RequestCancelResolution fetchCancelComplainID:resolutionID detail:resolution success:^(InboxResolutionCenterList *resolution, NSString *uriNext) {
-        [_list removeObject:resolution];
+    __block InboxResolutionCenterList *reso = resolution;
+    [RequestResolutionAction fetchCancelResolutionID:resolutionID success:^(ResolutionActionResult *data) {
+        [_list removeObject:reso];
         [_tableView reloadData];
         [self refreshRequest];
     } failure:^(NSError *error) {

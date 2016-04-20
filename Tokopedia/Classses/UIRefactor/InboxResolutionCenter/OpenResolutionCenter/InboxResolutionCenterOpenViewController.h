@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "TxOrderStatusList.h"
-#import "GenerateHost.h"
 #import "Tokopedia-Swift.h"
 #import "ResolutionConversation.h"
 
@@ -48,7 +47,6 @@
 @property NSString *selectedProblem;
 @property NSString *selectedSolution;
 @property NSArray *uploadedPhotos;
-@property (nonatomic, strong) GenerateHost *generatehost;
 
 @property BOOL isChangeSolution;
 @property BOOL isActionBySeller;
