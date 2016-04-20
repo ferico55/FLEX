@@ -196,13 +196,12 @@
     _table.tableFooterView = _footer;
     
     [self fetchTalkComments];
-
-    [self setHeaderData:_data];
 }
 
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
     _talkmessagelabel.preferredMaxLayoutWidth = _talkmessagelabel.frame.size.width;
+    [self setHeaderData:_data];
 }
 
 #pragma mark - Memory Management
