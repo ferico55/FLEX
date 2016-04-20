@@ -78,6 +78,8 @@ class IntroViewController: UIViewController, EAIntroDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        TPAnalytics.trackScreenName("Onboarding")
+        
         UIApplication.sharedApplication().statusBarStyle = .Default
         
         reRenderLabels()
@@ -263,16 +265,19 @@ class IntroViewController: UIViewController, EAIntroDelegate {
     
     @IBAction func btnSearchTapped(sender: AnyObject) {
         markOnboardingPlayed()
+        TPAnalytics.trackOnBoardingClickButton("Search")
         navigateToMainViewControllerWithPage(.Search)
     }
     
     @IBAction func btnLoginTapped(sender: AnyObject) {
         markOnboardingPlayed()
+        TPAnalytics.trackOnBoardingClickButton("Login")
         navigateToMainViewControllerWithPage(.Login)
     }
     
     @IBAction func btnRegisterTapped(sender: AnyObject) {
         markOnboardingPlayed()
+        TPAnalytics.trackOnBoardingClickButton("Register")
         navigateToMainViewControllerWithPage(.Register)
     }
     
@@ -290,10 +295,13 @@ class IntroViewController: UIViewController, EAIntroDelegate {
                 self.introView.setCurrentPageIndex(5, animated: true)
             }
         })
+        
+        TPAnalytics.trackOnBoardingClickButton("Activate push notification")
     }
     
     @IBAction func btnRejectNotificationTapped(sender: AnyObject) {
         introView.scrollingEnabled = true
         introView.setCurrentPageIndex(5, animated: true)
+        TPAnalytics.trackOnBoardingClickButton("Reject push notification")
     }
 }
