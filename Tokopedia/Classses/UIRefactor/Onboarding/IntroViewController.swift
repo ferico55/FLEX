@@ -247,7 +247,10 @@ class IntroViewController: UIViewController, EAIntroDelegate {
         let nextViewController = MainViewController(page: page)
         
         nextViewController.view.frame = self.view.frame
-        
+
+        //need to call this to prevent stale notification observer
+        introView.hideWithFadeOutDuration(1)
+
         UIView.transitionWithView(
             window,
             duration: 0.5,
