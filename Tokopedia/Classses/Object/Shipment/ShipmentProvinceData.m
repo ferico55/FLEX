@@ -24,14 +24,6 @@
     return mapping;
 }
 
-- (NSString *)name {
-    if ([_name isEqualToString:@""]) {
-        return @"Pilih Provinsi";
-    } else {
-        return _name;
-    }
-}
-
 - (NSArray *)citiesName {
     NSMutableArray *cities = [NSMutableArray new];
     for (ShipmentCityData *city in _cities) {

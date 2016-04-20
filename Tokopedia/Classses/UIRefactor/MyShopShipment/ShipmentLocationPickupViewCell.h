@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TKPDTextView.h"
 
-@interface ShipmentLocationPickupViewCell : UITableViewCell
+@interface ShipmentLocationPickupViewCell : UITableViewCell <UITextViewDelegate>
 
-@property (weak, nonatomic) IBOutlet UITextView *pickupAddressTextView;
+@property (weak, nonatomic) IBOutlet TKPDTextView *pickupAddressTextView;
 @property (weak, nonatomic) IBOutlet UILabel *pickupLocationLabel;
 
 @end

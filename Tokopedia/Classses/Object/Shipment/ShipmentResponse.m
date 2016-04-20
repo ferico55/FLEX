@@ -12,7 +12,7 @@
 
 + (RKObjectMapping *)mapping {
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
-    [mapping addAttributeMappingsFromArray:@[@"status", @"message_error"]];
+    [mapping addAttributeMappingsFromArray:@[@"status", @"message_error", @"message_status"]];
     
     RKRelationshipMapping *dataRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"data" toKeyPath:@"data" withMapping:[ShipmentData mapping]];
     [mapping addPropertyMapping:dataRelationship];

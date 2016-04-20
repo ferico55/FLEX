@@ -10,4 +10,6 @@
 
 @interface ShipmentPostalCodeViewCell : UITableViewCell
 
+@property (weak, nonatomic) IBOutlet UITextField *postalCodeTextField;
+
 @end

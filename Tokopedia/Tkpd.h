@@ -21,11 +21,11 @@
 //    #define kTkpdBaseURLString @"http://www.tx-tonito.dvl/ws"
 //#endif
 //#define kTkpdBaseURLString @"http://new.ws-wendy.ndvl/ws"
-#define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
+#define kTkpdBaseURLString @"http://staging.tokopedia.com/ws"
 //#define kTkpdBaseURLString @"http://new.fp-farissa.ndvl/ws"
 //#define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
 //#define kTkpdBaseURLHttpsString @"https://ws.tokopedia.com/ws"
-#define kTkpdBaseURLHttpsString @"https://ws.tokopedia.com/ws"
+#define kTkpdBaseURLHttpsString @"https://staging.tokopedia.com/ws"
 //#define kTkpdBaseURLHttpsString @"http://new.ws-wendy.ndvl/ws"
 //#define kTkpdBaseURLString @"http://www.ef-risky.dvl/ws"
 

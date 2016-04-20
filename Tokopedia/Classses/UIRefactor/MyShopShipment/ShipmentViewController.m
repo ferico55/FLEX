@@ -10,6 +10,7 @@
 #import "CourierInfoViewController.h"
 #import "GeneralTableViewController.h"
 #import "NavigateViewController.h"
+#import "ShipmentWebViewController.h"
 #import "Tokopedia-Swift.h"
 
 #import "ShipmentLocationViewCell.h"
@@ -20,10 +21,20 @@
 #import "CourierInfoViewCell.h"
 #import "CourierNoteViewCell.h"
 #import "CourierOptionViewCell.h"
+#import "CourierAvailabilityViewCell.h"
+#import "TKPDTextView.h"
 
 #import "ShipmentResponse.h"
+#import "ShopSettings.h"
 
-@interface ShipmentViewController () <GeneralTableViewControllerDelegate, TKPPlacePickerDelegate>
+#import "NSURL+Dictionary.h"
+
+@interface ShipmentViewController ()
+<
+    GeneralTableViewControllerDelegate,
+    ShipmentWebViewDelegate,
+    TKPPlacePickerDelegate
+>
 
 @property (strong, nonatomic) NSArray *couriers;
 @property (strong, nonatomic) NSArray *provinces;
@@ -51,6 +62,7 @@
         self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
         self.navigationItem.backBarButtonItem = self.backButton;
         self.navigationItem.rightBarButtonItem = self.disabledSaveButton;
+        self.refreshControl = self.customRefreshControl;
     }
     return self;
 }
@@ -59,6 +71,7 @@
     [super viewDidLoad];
     [self registerNibs];
     self.networkManager = [TokopediaNetworkManager new];
+    self.networkManager.isUsingHmac = YES;
     [self fetchLogisticFormData];
 }
 
@@ -70,7 +83,11 @@
     [self.tableView registerNib:[UINib nibWithNibName:@"CourierProductViewCell" bundle:nil] forCellReuseIdentifier:@"product"];
     [self.tableView registerNib:[UINib nibWithNibName:@"CourierOptionViewCell" bundle:nil] forCellReuseIdentifier:@"option"];
     [self.tableView registerNib:[UINib nibWithNibName:@"CourierInfoViewCell" bundle:nil] forCellReuseIdentifier:@"info"];
+    [self.tableView registerNib:[UINib nibWithNibName:@"CourierNoteViewCell" bundle:nil] forCellReuseIdentifier:@"note"];
+    [self.tableView registerNib:[UINib nibWithNibName:@"CourierAvailabilityViewCell" bundle:nil] forCellReuseIdentifier:@"availability"];
 }
+
+#pragma mark - Bar button items
 
 - (UIBarButtonItem *)saveButton {
     UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@"Simpan" style:UIBarButtonItemStyleDone target:self action:@selector(saveLogisticData)];
@@ -85,8 +102,23 @@
 }
 
 - (UIBarButtonItem *)backButton {
-    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleDone target:self action:@selector(saveLogisticData)];
+    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleDone target:self action:nil];
     return button;
+}
+
+- (UIBarButtonItem *)loadingView {
+    UIActivityIndicatorView *indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    [indicatorView startAnimating];
+    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithCustomView:indicatorView];
+    return button;
+}
+
+#pragma mark - Refresh Control
+
+- (UIRefreshControl *)customRefreshControl {
+    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+    [refreshControl addTarget:self action:@selector(fetchLogisticFormData) forControlEvents:UIControlEventValueChanged];
+    return refreshControl;
 }
 
 #pragma mark - Table view data source
@@ -105,15 +137,29 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     NSInteger numberOfRows = 0;
     if (section == 0) {
-        numberOfRows = 4;
+        numberOfRows = 1;
+        if (self.provinces.count > 0) {
+            numberOfRows++;
+        }
+        if (self.selectedProvince.cities.count > 0) {
+            numberOfRows++;
+        }
+        if (self.selectedCity.districts.count > 0) {
+            numberOfRows++;
+        }
     } else if (section == 1) {
         numberOfRows = 1;
-    } else {
-        numberOfRows = 2;
-        ShipmentCourierData *courier = [self.couriers objectAtIndex:section - 2];
-        numberOfRows += courier.services.count;
-        if (courier.showsAdditionalOptions) {
-            numberOfRows++;
+    } else if ([self courierAtSection:section]) {
+        ShipmentCourierData *courier = [self courierAtSection:section];
+        if ([courier.available boolValue]) {
+            numberOfRows = 2;
+            ShipmentCourierData *courier = [self.couriers objectAtIndex:section - 2];
+            numberOfRows += courier.services.count;
+            if (courier.showsAdditionalOptions) {
+                numberOfRows++;
+            }
+        } else {
+            numberOfRows = 2;
         }
     }
     return numberOfRows;
@@ -127,6 +173,8 @@
     return height;
 }
 
+#pragma mark - Table view cell
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell;
     if (indexPath.section == 0) {
@@ -139,15 +187,23 @@
         cell = [self pickupCellForRowAtIndexPath:indexPath];
     } else {
         ShipmentCourierData *courier = [self courierAtIndexPath:indexPath];
-        if (indexPath.row == 0) {
-            cell = [self courierNameCellForRowAtIndexPath:indexPath];
-        } else if ([self showsCourierAdditionalOptionAtIndexPath:indexPath]) {
-            cell = [tableView dequeueReusableCellWithIdentifier:@"option"];
-        } else if ([self showsCourierInformationAtIndexPath:indexPath]) {
-            cell = [tableView dequeueReusableCellWithIdentifier:@"info"];
-            cell.textLabel.text = [NSString stringWithFormat:@"Info Tentang %@", courier.name];
+        if ([courier.available boolValue]) {
+            if (indexPath.row == 0) {
+                cell = [self courierNameCellForRowAtIndexPath:indexPath];
+            } else if ([self showsCourierAdditionalOptionAtIndexPath:indexPath]) {
+                cell = [tableView dequeueReusableCellWithIdentifier:@"option"];
+            } else if ([self showsCourierInformationAtIndexPath:indexPath]) {
+                cell = [tableView dequeueReusableCellWithIdentifier:@"info"];
+                cell.textLabel.text = [NSString stringWithFormat:@"Info Tentang %@", courier.name];
+            } else {
+                cell = [self courierServiceCellForRowAtIndexPath:indexPath];
+            }
         } else {
-            cell = [self courierServiceCellForRowAtIndexPath:indexPath];
+            if (indexPath.row == 0) {
+                cell = [self courierNameCellForRowAtIndexPath:indexPath];
+            } else {
+                cell = [self courierServiceAvailabilityCellForRowAtIndexPath:indexPath];
+            }
         }
     }
     return cell;
@@ -157,33 +213,37 @@
     ShipmentLocationViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"location"];
     if (indexPath.row == 0) {
         cell.locationTitleLabel.text = @"Provinsi";
-        cell.locationValueLabel.text = _selectedProvince.name?:_shop.provinceName;
+        cell.locationValueLabel.text = _selectedProvince.name?: _shop.provinceName?: @"Pilih Provinsi";
     } else if (indexPath.row == 1) {
         cell.locationTitleLabel.text = @"Kotamadya";
-        cell.locationValueLabel.text = _selectedCity.name?:_shop.cityName;
+        cell.locationValueLabel.text = _selectedCity.name?: _shop.cityName?: @"Pilih Kotamadya";
     } else if (indexPath.row == 2) {
         cell.locationTitleLabel.text = @"Kecamatan";
-        cell.locationValueLabel.text = _selectedDistrict.name?:_shop.districtName;
+        cell.locationValueLabel.text = _selectedDistrict.name?: _shop.districtName?: @"Pilih Kecamatan";
     }
     return cell;
 }
 
 - (ShipmentPostalCodeViewCell *)postalCellForRowAtIndexPath:(NSIndexPath *)indexPath {
     ShipmentPostalCodeViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"postal"];
+    cell.postalCodeTextField.text = _shop.postalCode;
+    [cell.postalCodeTextField addTarget:self action:@selector(postalCodeTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
     return cell;
 }
 
 - (ShipmentLocationPickupViewCell *)pickupCellForRowAtIndexPath:(NSIndexPath *)indexPath {
     ShipmentLocationPickupViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"pickup"];
-    [cell.pickupAddressTextView setPlaceholder:@"Tulis alamat pickup dengan lengkap"];
-    cell.pickupAddressTextView.text = self.shop.address;
     cell.pickupLocationLabel.text = self.shop.locationAddress;
+    cell.pickupAddressTextView.text = self.shop.address;
+    cell.pickupAddressTextView.placeholder = @"Tulis alamat pickup dengan lengkap";
+    NSNotificationCenter *notification = [NSNotificationCenter defaultCenter];
+    [notification addObserver:self selector:@selector(addressTextViewDidChange:) name:UITextViewTextDidChangeNotification object:cell.pickupAddressTextView];
     return cell;
 }
 
 - (CourierViewCell *)courierNameCellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    ShipmentCourierData *courier = [self courierAtIndexPath:indexPath];
     CourierViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"courier"];
+    ShipmentCourierData *courier = [self courierAtIndexPath:indexPath];
     cell.courierNameLabel.text = courier.name;
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:courier.logo]];
     [cell.courierLogoImageView setImageWithURLRequest:request
@@ -197,12 +257,69 @@
 }
 
 - (CourierProductViewCell *)courierServiceCellForRowAtIndexPath:(NSIndexPath *)indexPath  {
-    ShipmentCourierData *courier = [self courierAtIndexPath:indexPath];
     CourierProductViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"product"];
+    ShipmentCourierData *courier = [self courierAtIndexPath:indexPath];
     ShipmentServiceData *service = [courier.services objectAtIndex:indexPath.row - 1];
     cell.productNameLabel.text = service.name;
+    cell.productSwitch.on = service.active.boolValue;
+    [cell.productSwitch addTarget:self action:@selector(didChangeSwitch:) forControlEvents:UIControlEventValueChanged];
     return cell;
 }
+
+- (CourierAvailabilityViewCell *)courierServiceAvailabilityCellForRowAtIndexPath:(NSIndexPath *)indexPath  {
+    CourierAvailabilityViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"availability"];
+    ShipmentCourierData *courier = [self courierAtIndexPath:indexPath];
+    cell.textLabel.text = [NSString stringWithFormat:@"Kota ini tidak terjangkau oleh  %@", courier.name];
+    [cell.textLabel sizeToFit];
+    return cell;
+}
+
+#pragma mark - Table view for footer in section
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    if (section > 1) {
+        ShipmentCourierData *courier = self.couriers[section-2];
+        if (courier.showsWeightPolicy) {
+            UIView *view = [self courierNoteCellForRowInSection:section];
+            return view.frame.size.height + 15;
+        } else {
+            return 15;
+        }
+    } else {
+        return 15;
+    }
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+    if ([self courierAtSection:section]) {
+        ShipmentCourierData *courier = [self courierAtSection:section];
+        if (courier.showsWeightPolicy) {
+            return [self courierNoteCellForRowInSection:section];
+        } else {
+            return nil;
+        }
+    } else {
+        return nil;
+    }
+}
+
+- (CourierNoteViewCell *)courierNoteCellForRowInSection:(NSInteger)section {
+    ShipmentCourierData *courier = self.couriers[section-2];
+    CourierNoteViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"note"];
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    style.lineSpacing = 6.0;
+    NSDictionary *attributes = @{NSParagraphStyleAttributeName: style};
+    NSString *string = [NSString stringWithFormat:@"Catatan:\n%@", courier.weightPolicy];
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:string attributes:attributes];
+    [attributedString addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"GothamMedium" size:14] range:NSMakeRange(0, 9)];
+    [attributedString addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"GothamBook" size:14] range:NSMakeRange(9, courier.weightPolicy.length)];
+    cell.noteLabel.attributedText = attributedString;
+    cell.noteLabel.numberOfLines = 0;
+    [cell.noteLabel sizeToFit];
+    return cell;
+}
+
+#pragma mark - Table view cell will display
 
 -(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {
@@ -215,6 +332,8 @@
         [cell setLayoutMargins:UIEdgeInsetsZero];
     }
 }
+
+#pragma mark - Table view cell did select
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
@@ -248,6 +367,12 @@
             coordinate = CLLocationCoordinate2DMake(0, 0);
         }
         [NavigateViewController navigateToMap:coordinate type:TypeEditPlace fromViewController:self];
+    } else if ([self showsCourierAdditionalOptionAtIndexPath:indexPath]) {
+        ShipmentCourierData *courier = [self courierAtIndexPath:indexPath];
+        ShipmentWebViewController *controller = [ShipmentWebViewController new];
+        controller.courier = courier;
+        controller.delegate = self;
+        [self.navigationController pushViewController:controller animated:YES];
     } else if ([self showsCourierInformationAtIndexPath:indexPath]) {
         ShipmentCourierData *courier = [self courierAtIndexPath:indexPath];
         CourierInfoViewController *controller = [CourierInfoViewController new];
@@ -256,6 +381,8 @@
         [self.navigationController pushViewController:controller animated:YES];
     }
 }
+
+#pragma mark - Table footer view
 
 - (UIView *)tableFooterView {
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
@@ -266,6 +393,8 @@
     [view addSubview:_indicatorView];
     return view;
 }
+
+#pragma mark - Helpers methods
 
 - (BOOL)isLastIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row == [self.tableView numberOfRowsInSection:indexPath.section] - 1) {
@@ -297,7 +426,15 @@
 }
 
 - (ShipmentCourierData *)courierAtIndexPath:(NSIndexPath *)indexPath {
-    return [self.couriers objectAtIndex:indexPath.section - 2];
+    return [self courierAtSection:indexPath.section];
+}
+
+- (ShipmentCourierData *)courierAtSection:(NSInteger)section {
+    if (section == 0 || section == 1) {
+        return nil;
+    } else {
+        return [self.couriers objectAtIndex:section - 2];        
+    }
 }
 
 #pragma mark - Restkit 
@@ -305,9 +442,23 @@
 - (void)fetchLogisticFormData {
     [self.indicatorView startAnimating];
     self.navigationItem.rightBarButtonItem = self.disabledSaveButton;
-    NSDictionary *parameters = @{@"district_id":self.selectedDistrict.districtId?:@"0"};
-    [self.networkManager requestWithBaseUrl:@"http://new.ph-peter.ndvl"
-                                       path:@"/web-service/v4/myshop-shipment/get_shipping_info.pl"
+    
+    NSDictionary *parameters;
+    if (self.selectedProvince.cities.count == 0) {
+        // 13 id provinsi jakarta
+        if ([self.selectedProvince.provinceId isEqualToString:@"13"]) {
+            parameters = @{@"district_id":@"5573"};
+        } else {
+            parameters = @{@"district_id":self.selectedProvince.provinceId?:@"0"};
+        }
+    } else if (self.selectedCity.districts.count == 0) {
+        parameters = @{@"district_id":self.selectedCity.cityId?:@"0"};
+    } else {
+        parameters = @{@"district_id":self.selectedDistrict.districtId?:@"0"};
+    }
+    
+    [self.networkManager requestWithBaseUrl:@"http://ws-staging.tokopedia.com"
+                                       path:@"/v4/myshop-shipment/get_shipping_info.pl"
                                      method:RKRequestMethodGET
                                   parameter:parameters
                                     mapping:[ShipmentResponse mapping]
@@ -318,6 +469,7 @@
                                       } else {
                                           [self didReceiveLogisticData:response.data];                                          
                                       }
+                                      [self.refreshControl endRefreshing];
                                   }
                                   onFailure:^(NSError *errorResult) {
                                       if (errorResult) {
@@ -325,25 +477,30 @@
                                       } else {
                                           [self didReceiveErrorMessages:@[@"Mohon maaf sedang terjadi gangguan."]];
                                       }
+                                      [self.refreshControl endRefreshing];
                                   }];
 }
 
 - (void)didReceiveLogisticData:(ShipmentData *)data {
     self.couriers = data.courier;
     self.shop = data.shop;
-    self.provinces = data.provinces;
+    
+    if (self.provinces == nil) {
+        self.provinces = data.provinces;
+        [self setProvinceCityDistrict];
+    } else {
+        self.provinces = data.provinces;
+    }
     self.provincesName = data.provincesName;
     
     double latitude = self.shop.latitude;
     double longitude = self.shop.longitude;
     [self showAddressFromLatitude:latitude longitude:longitude];
     
+    self.navigationItem.rightBarButtonItem = self.saveButton;
+
     [self.indicatorView stopAnimating];
     [self.tableView reloadData];
-    
-    [self setProvinceCityDistrict];
-    
-    self.navigationItem.rightBarButtonItem = self.saveButton;
 }
 
 - (void)setProvinceCityDistrict {
@@ -367,22 +524,75 @@
     }
 }
 
+- (void)saveLogisticData {
+    self.navigationItem.rightBarButtonItem = self.loadingView;
+
+    NSMutableDictionary *additionalParamaters = [NSMutableDictionary new];
+    NSMutableDictionary *couriers = [NSMutableDictionary new];
+    for (ShipmentCourierData *courier in self.couriers) {
+        NSMutableDictionary *services = [NSMutableDictionary new];
+        for (ShipmentServiceData *service in courier.services) {
+            if ([service.active boolValue]) {
+                [services setObject:@"1" forKey:service.productId];
+            }
+        }
+        if (services.allValues.count > 0) {
+            [couriers setObject:services forKey:courier.courierId];
+            NSURL *URL = [NSURL URLWithString:courier.URLAdditionalOption];
+            [additionalParamaters addEntriesFromDictionary:URL.parameters];
+        }
+    }
+    
+    NSData *data = [NSJSONSerialization dataWithJSONObject:couriers options:0 error:nil];
+    NSString *shipments_ids = [[NSString alloc] initWithBytes:[data bytes] length:[data length] encoding:NSUTF8StringEncoding];
+    
+    NSString *latitude = [NSString stringWithFormat:@"%f", _shop.latitude];
+    NSString *longitude = [NSString stringWithFormat:@"%f", _shop.longitude];
+    
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithDictionary:@{
+        @"courier_origin": _selectedDistrict.districtId?: _shop.districtId?: @"",
+        @"postal": _shop.postalCode?:@"",
+        @"shipment_ids" : shipments_ids?:@"",
+        @"addr_street": _shop.address?:@"",
+        @"latitude": latitude?:@"",
+        @"longitude": longitude?:@"",
+    }];
+    
+    [parameters addEntriesFromDictionary:additionalParamaters];
+    
+    [self.networkManager requestWithBaseUrl:@"http://ws-staging.tokopedia.com"
+                                       path:@"/v4/action/myshop-shipment/update_shipping_info.pl"
+                                     method:RKRequestMethodGET
+                                  parameter:parameters
+                                    mapping:[ShipmentResponse mapping]
+                                  onSuccess:^(RKMappingResult *mappingResult, RKObjectRequestOperation *operation) {
+                                      ShipmentResponse *response = mappingResult.dictionary[@""];
+                                      if (response.message_status) {
+                                          [self didReceiveSuccessMessages:response.message_status];
+                                      } else if(response.message_error) {
+                                          [self didReceiveErrorMessages:response.message_error];
+                                      }
+                                      self.navigationItem.rightBarButtonItem = self.saveButton;
+                                  }
+                                  onFailure:^(NSError *errorResult) {
+                                      if (errorResult) {
+                                          [self didReceiveErrorMessages:@[errorResult.localizedDescription]];
+                                      } else {
+                                          [self didReceiveErrorMessages:@[@"Mohon maaf sedang terjadi gangguan."]];
+                                      }
+                                      self.navigationItem.rightBarButtonItem = self.saveButton;
+                                  }];
+}
+
 - (void)didReceiveErrorMessages:(NSArray *)errorMessages {
     StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
     [alert show];
     [self.indicatorView stopAnimating];
 }
 
-- (void)saveLogisticData {
-    [self.networkManager requestWithBaseUrl:@""
-                                       path:@""
-                                     method:RKRequestMethodPOST
-                                  parameter:@{}
-                                    mapping:[ShipmentResponse mapping]
-                                  onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                  }
-                                  onFailure:^(NSError *errorResult) {
-                                  }];
+- (void)didReceiveSuccessMessages:(NSArray *)successMessages {
+    StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:self];
+    [alert show];
 }
 
 #pragma mark - General table delegate
@@ -392,14 +602,22 @@
         NSInteger index = [self.provincesName indexOfObject:object];
         self.selectedProvince = [self.provinces objectAtIndex:index];
         self.selectedCity = nil;
-        self.shop.cityName = @"Pilih Kotamadya";
+        self.shop.cityName = nil;
         self.selectedDistrict = nil;
-        self.shop.districtName = @"Pilih Kecamantan";
+        self.shop.districtName = nil;
+        if (self.selectedProvince.cities.count == 0) {
+            self.couriers = @[];
+            [self fetchLogisticFormData];
+        }
     } else if (indexPath.row == 1) {
         NSInteger index = [self.selectedProvince.citiesName indexOfObject:object];
         self.selectedCity = [self.selectedProvince.cities objectAtIndex:index];
         self.selectedDistrict = nil;
-        self.shop.districtName = @"Pilih Kecamatan";
+        self.shop.districtName = nil;
+        if (self.selectedCity.districts.count == 0) {
+            self.couriers = @[];
+            [self fetchLogisticFormData];
+        }
     } else if (indexPath.row == 2) {
         NSInteger index = [self.selectedCity.districtsName indexOfObject:object];
         self.selectedDistrict = [self.selectedCity.districts objectAtIndex:index];
@@ -455,6 +673,66 @@
                                        }
                                        [self.tableView reloadData];
                                    }];
+}
+
+#pragma mark - Web view delegate
+
+- (void)didUpdateCourierAdditionalURL:(NSURL *)additionalURL {
+    NSIndexPath *indexPath = self.tableView.indexPathForSelectedRow;
+    ShipmentCourierData *courier = self.couriers[indexPath.section - 2];
+    courier.URLAdditionalOption = additionalURL.absoluteString;
+}
+
+#pragma mark - Switch action
+
+- (void)didChangeSwitch:(UISwitch *)switchControl {
+    BOOL cellFound = NO;
+    UIView *view = switchControl.superview;
+    while (cellFound == NO) {
+        view = view.superview;
+        if ([view isKindOfClass:[UITableViewCell class]]) {
+            cellFound = YES;
+        }
+    }
+    
+    UITableViewCell *cell = (UITableViewCell *)view;
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+    NSInteger indexOfCourier = indexPath.section - 2;
+    NSInteger indexOfService = indexPath.row - 1;
+    ShipmentCourierData *courier = self.couriers[indexOfCourier];
+    ShipmentServiceData *service = courier.services[indexOfService];
+    service.active = switchControl.isOn? @"1": @"0";
+    
+    [self checkActiveServices];
+}
+
+- (void)checkActiveServices {
+    BOOL activeServiceFound = NO;
+    for (ShipmentCourierData *courier in self.couriers) {
+        for (ShipmentServiceData *service in courier.services) {
+            if ([service.active boolValue]) {
+                activeServiceFound = YES;
+            }
+        }
+    }
+    if (activeServiceFound) {
+        self.navigationItem.rightBarButtonItem = self.saveButton;
+    } else {
+        self.navigationItem.rightBarButtonItem = self.disabledSaveButton;
+    }
+}
+
+#pragma mark - Text field delegate
+
+- (void)postalCodeTextFieldDidChange:(UITextField *)textField {
+    self.shop.postalCode = textField.text;
+}
+
+#pragma mark - Text view notification 
+
+- (void)addressTextViewDidChange:(NSNotification *)notification {
+    TKPDTextView *textView = notification.object;
+    self.shop.address = textView.text;
 }
 
 @end

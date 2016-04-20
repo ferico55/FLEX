@@ -12,14 +12,16 @@
 
 @synthesize showsAdditionalOptions = _showsAdditionalOptions;
 @synthesize showsNote = _showsNote;
+@synthesize showsWeightPolicy = _showsWeightPolicy;
 
 + (RKObjectMapping *)mapping {
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
     NSDictionary *mappings = @{
         @"name" : @"name",
-        @"id" : @"courierId",
+        @"id": @"courierId",
         @"logo" : @"logo",
         @"weight" : @"weight",
+        @"weight_policy": @"weightPolicy",
         @"available" : @"available",
         @"by_zip_code" : @"byZipCode",
         @"url_additional_option" : @"URLAdditionalOption",
@@ -37,10 +39,10 @@
 }
 
 - (BOOL)showsAdditionalOptions {
-    if (![_URLAdditionalOption isEqualToString:@""]) {
-        return YES;
-    } else {
+    if ([_URLAdditionalOption isEqualToString:@""]) {
         return NO;
+    } else {
+        return YES;
     }
 }
 
@@ -49,11 +51,46 @@
 }
 
 - (BOOL)showsNote {
-    if (![_note isEqualToString:@""]) {
+    if ([_note isEqualToString:@""]) {
+        return NO;
+    } else {
         return YES;
+    }
+}
+
+- (void)setShowsWeightPolicy:(BOOL)showsWeightPolicy {
+    _showsWeightPolicy = showsWeightPolicy;
+}
+
+- (BOOL)showsWeightPolicy {
+    if ([_available boolValue]) {
+        if ([_weightPolicy isEqualToString:@""]) {
+            return NO;
+        } else {
+            return YES;
+        }
     } else {
         return NO;
     }
+}
+
+- (BOOL)hasActiveServices {
+    for (ShipmentServiceData *service in self.services) {
+        if ([service.active boolValue]) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
+- (NSString *)activeServiceIds {
+    NSString *ids = @"";
+    for (ShipmentServiceData *service in self.services) {
+        if ([service.active boolValue]) {
+            ids = [NSString stringWithFormat:@"%@,%@,", ids, service.productId];
+        }
+    }
+    return ids;
 }
 
 @end

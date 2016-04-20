@@ -20,12 +20,4 @@
     return mapping;
 }
 
-- (NSString *)name {
-    if ([_name isEqualToString:@""]) {
-        return @"Pilih Distrik";
-    } else {
-        return _name;
-    }
-}
-
 @end

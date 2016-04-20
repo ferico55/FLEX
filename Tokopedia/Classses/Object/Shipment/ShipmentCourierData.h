@@ -15,6 +15,7 @@
 @property (strong, nonatomic) NSString *courierId;
 @property (strong, nonatomic) NSString *logo;
 @property (strong, nonatomic) NSString *weight;
+@property (strong, nonatomic) NSString *weightPolicy;
 @property (strong, nonatomic) NSString *available;
 @property (strong, nonatomic) NSString *byZipCode;
 @property (strong, nonatomic) NSString *URLAdditionalOption;
@@ -23,7 +24,10 @@
 
 @property BOOL showsAdditionalOptions;
 @property BOOL showsNote;
+@property BOOL showsWeightPolicy;
 
 + (RKObjectMapping *)mapping;
+- (BOOL)hasActiveServices;
+- (NSString *)activeServiceIds;
 
 @end
