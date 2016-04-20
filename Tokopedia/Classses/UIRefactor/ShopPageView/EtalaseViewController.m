@@ -76,9 +76,6 @@
     [alertView textFieldAtIndex:0].delegate = self;
     [alertView textFieldAtIndex:0].tag = 222;
     alertView.delegate = self;
-    
-    _tambahEtalaseButtonWidthConstraint.constant = 0;
-    _tambahEtalaseButtonLeftConstraint.constant = 0;
     self.edgesForExtendedLayout = UIRectEdgeNone;
     
     [self requestEtalase];
@@ -376,19 +373,6 @@
     return YES;
 }
 -(void)textFieldDidBeginEditing:(UITextField *)textField{
-    if(textField.tag == 111){
-        [UIView animateWithDuration:2
-                              delay:0
-             usingSpringWithDamping:0
-              initialSpringVelocity:0.1
-                            options:UIViewAnimationOptionCurveEaseIn
-                         animations:^{
-                             [_tambahEtalaseButtonWidthConstraint setConstant:70];
-                             [_tambahEtalaseButtonLeftConstraint setConstant:8];
-                         } completion:^(BOOL finished) {
-                             
-                         }];
-    }
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
