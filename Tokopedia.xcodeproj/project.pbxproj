@@ -10,9 +10,11 @@
 		2D50139230438B54812D14B9 /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
-		7AC6471A1CC503AD0019F0BB /* SecurityQuestionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AC647191CC503AD0019F0BB /* SecurityQuestionViewController.m */; };
 		7AC6471E1CC60D100019F0BB /* SecurityQuestion.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AC6471D1CC60D100019F0BB /* SecurityQuestion.m */; };
 		7AC647211CC60D1F0019F0BB /* SecurityQuestionResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AC647201CC60D1F0019F0BB /* SecurityQuestionResult.m */; };
+		7AC647241CC62EEA0019F0BB /* SecurityAnswer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AC647231CC62EEA0019F0BB /* SecurityAnswer.m */; };
+		7AC647271CC62F0E0019F0BB /* SecurityAnswerResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AC647261CC62F0E0019F0BB /* SecurityAnswerResult.m */; };
+		7AC647291CC7287D0019F0BB /* SecurityQuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC647281CC7287D0019F0BB /* SecurityQuestionViewController.swift */; };
 		7ACE9C541BB00956006C4BB7 /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */; };
 		7ACE9C551BB00956006C4BB7 /* FBAudienceNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C4F1BB00956006C4BB7 /* FBAudienceNetwork.framework */; };
 		7ACE9C561BB00956006C4BB7 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C501BB00956006C4BB7 /* FBSDKCoreKit.framework */; };
@@ -2157,12 +2159,15 @@
 		7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
-		7AC647181CC503AD0019F0BB /* SecurityQuestionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecurityQuestionViewController.h; sourceTree = "<group>"; };
-		7AC647191CC503AD0019F0BB /* SecurityQuestionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecurityQuestionViewController.m; sourceTree = "<group>"; };
 		7AC6471C1CC60D100019F0BB /* SecurityQuestion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecurityQuestion.h; sourceTree = "<group>"; };
 		7AC6471D1CC60D100019F0BB /* SecurityQuestion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecurityQuestion.m; sourceTree = "<group>"; };
 		7AC6471F1CC60D1F0019F0BB /* SecurityQuestionResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecurityQuestionResult.h; sourceTree = "<group>"; };
 		7AC647201CC60D1F0019F0BB /* SecurityQuestionResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecurityQuestionResult.m; sourceTree = "<group>"; };
+		7AC647221CC62EEA0019F0BB /* SecurityAnswer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecurityAnswer.h; sourceTree = "<group>"; };
+		7AC647231CC62EEA0019F0BB /* SecurityAnswer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecurityAnswer.m; sourceTree = "<group>"; };
+		7AC647251CC62F0E0019F0BB /* SecurityAnswerResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecurityAnswerResult.h; sourceTree = "<group>"; };
+		7AC647261CC62F0E0019F0BB /* SecurityAnswerResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecurityAnswerResult.m; sourceTree = "<group>"; };
+		7AC647281CC7287D0019F0BB /* SecurityQuestionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecurityQuestionViewController.swift; sourceTree = "<group>"; };
 		7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FacebookSDKStrings.bundle; sourceTree = "<group>"; };
 		7ACE9C4F1BB00956006C4BB7 /* FBAudienceNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBAudienceNetwork.framework; sourceTree = "<group>"; };
 		7ACE9C501BB00956006C4BB7 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
@@ -5432,6 +5437,10 @@
 				7AC6471D1CC60D100019F0BB /* SecurityQuestion.m */,
 				7AC6471F1CC60D1F0019F0BB /* SecurityQuestionResult.h */,
 				7AC647201CC60D1F0019F0BB /* SecurityQuestionResult.m */,
+				7AC647221CC62EEA0019F0BB /* SecurityAnswer.h */,
+				7AC647231CC62EEA0019F0BB /* SecurityAnswer.m */,
+				7AC647251CC62F0E0019F0BB /* SecurityAnswerResult.h */,
+				7AC647261CC62F0E0019F0BB /* SecurityAnswerResult.m */,
 			);
 			path = SecurityQuestion;
 			sourceTree = "<group>";
@@ -7588,8 +7597,7 @@
 				7AE3C1561CC4F94300544984 /* LoginSecurity.h */,
 				7AE3C1571CC4F94300544984 /* LoginSecurity.m */,
 				7AE3C1591CC4FAE700544984 /* SecurityQuestionViewController.xib */,
-				7AC647181CC503AD0019F0BB /* SecurityQuestionViewController.h */,
-				7AC647191CC503AD0019F0BB /* SecurityQuestionViewController.m */,
+				7AC647281CC7287D0019F0BB /* SecurityQuestionViewController.swift */,
 			);
 			path = UIRefactor;
 			sourceTree = "<group>";
@@ -12588,6 +12596,7 @@
 				7AE3BA901CC0D32900544984 /* SendMessage.m in Sources */,
 				7AE3B9901CC0D32900544984 /* DetailProductResult.m in Sources */,
 				7AE3BD881CC0D32900544984 /* ShopFavoritedCell.m in Sources */,
+				7AC647271CC62F0E0019F0BB /* SecurityAnswerResult.m in Sources */,
 				7AE3B9861CC0D32900544984 /* CatalogMarketPlace.m in Sources */,
 				7AE3BE5A1CC0D32900544984 /* VTCardDetails.m in Sources */,
 				7AE3BA031CC0D32900544984 /* InboxTicketTicket.m in Sources */,
@@ -12733,7 +12742,6 @@
 				7AE3BA7D1CC0D32900544984 /* SearchAWSProduct.m in Sources */,
 				7AE3B9831CC0D32900544984 /* CatalogImages.m in Sources */,
 				BBCB20CE1CB4F16B000C0AE2 /* MoreWrapperViewController.m in Sources */,
-				7AC6471A1CC503AD0019F0BB /* SecurityQuestionViewController.m in Sources */,
 				7AE3BA9A1CC0D32900544984 /* Etalase.m in Sources */,
 				7AE3B9991CC0D32900544984 /* Review.m in Sources */,
 				7AE3BD561CC0D32900544984 /* SearchResultShopViewController.m in Sources */,
@@ -13058,6 +13066,7 @@
 				7AE3BE531CC0D32900544984 /* TalkCell.m in Sources */,
 				7AE3BB0E1CC0D32900544984 /* TxOrderConfirmedResult.m in Sources */,
 				7AE3B9E01CC0D32900544984 /* InboxResolutionCenterResult.m in Sources */,
+				7AC647291CC7287D0019F0BB /* SecurityQuestionViewController.swift in Sources */,
 				7AE3BBF21CC0D32900544984 /* DepositSummaryCell.m in Sources */,
 				7AE3B9691CC0D32900544984 /* CatalogShopAWSProductResult.m in Sources */,
 				7AE3BA861CC0D32900544984 /* SearchAutoCompleteCategory.m in Sources */,
@@ -13286,6 +13295,7 @@
 				7AE3BA701CC0D32900544984 /* OrderDetail.m in Sources */,
 				7AE3BA611CC0D32900544984 /* ReputationResult.m in Sources */,
 				7AE3BB781CC0D32900544984 /* TKPDAlertView.m in Sources */,
+				7AC647241CC62EEA0019F0BB /* SecurityAnswer.m in Sources */,
 				7AE3BE381CC0D32900544984 /* ProfileBiodataShopCell.m in Sources */,
 				7AE3BC5B1CC0D32900544984 /* ResolutionCenterInputViewController.m in Sources */,
 				7AE3BD171CC0D32900544984 /* ChooseProductViewController.m in Sources */,

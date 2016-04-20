@@ -12,4 +12,9 @@
 
 #import "SwipeView.h"
 #import "MiniSlide.h"
+#import <RestKit.h>
+#import "TokopediaNetworkManager.h"
+#import "NSString+TPBaseUrl.h"
+#import "SecurityQuestion.h"
+#import "SecurityAnswer.h"
 #import <QuartzCore/QuartzCore.h>

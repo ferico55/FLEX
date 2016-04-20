@@ -5,14 +5,12 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SecurityQuestionViewController">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SecurityQuestionViewController" customModule="Tokopedia" customModuleProvider="target">
             <connections>
-                <outlet property="otpView" destination="cvf-SG-bcO" id="d5b-DH-Oim"/>
-                <outlet property="phoneField" destination="2i9-xJ-Zt0" id="k34-aO-amB"/>
-                <outlet property="phoneQuestionView" destination="fb3-X1-Rgf" id="6FV-J6-OjO"/>
-                <outlet property="phoneTitle" destination="7YU-C3-gGf" id="641-s1-Z7Y"/>
-                <outlet property="savePhoneButton" destination="wFY-xc-5XM" id="two-5c-sII"/>
-                <outlet property="view" destination="iN0-l3-epB" id="IOK-kc-HGI"/>
+                <outlet property="answerField" destination="2i9-xJ-Zt0" id="kSs-CT-kKN"/>
+                <outlet property="questionTitle" destination="7YU-C3-gGf" id="O6c-Vg-Gn6"/>
+                <outlet property="questionViewType1" destination="fb3-X1-Rgf" id="lgK-VN-m5o"/>
+                <outlet property="view" destination="iN0-l3-epB" id="NnD-FN-Ljw"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -69,7 +67,7 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                     <connections>
-                        <action selector="didTapSavePhoneButton:" destination="-1" eventType="touchUpInside" id="bcE-de-ffM"/>
+                        <action selector="didTapSavePhoneButton:" destination="-1" eventType="touchUpInside" id="sfI-rH-Hrn"/>
                     </connections>
                 </button>
             </subviews>
