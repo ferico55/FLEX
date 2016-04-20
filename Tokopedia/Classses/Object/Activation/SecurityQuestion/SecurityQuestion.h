@@ -13,5 +13,6 @@
 
 @property(nonatomic, strong) NSString* status;
 @property(nonatomic, strong) SecurityQuestionResult* data;
+@property(nonatomic, strong) NSArray* message_error;
 
 @end

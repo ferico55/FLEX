@@ -26,6 +26,7 @@
 @property(nonatomic, strong) NSString* change_to_otp;
 @property(nonatomic, strong) NSString* user_check_security_1;
 @property(nonatomic, strong) NSString* user_check_security_2;
+@property(nonatomic, strong) NSString* error;
 
 
 @end

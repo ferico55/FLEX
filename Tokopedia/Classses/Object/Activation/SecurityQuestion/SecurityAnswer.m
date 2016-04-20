@@ -14,7 +14,7 @@
 + (RKObjectMapping *)mapping {
     RKObjectMapping* mapping = [RKObjectMapping mappingForClass:self];
     
-    [mapping addAttributeMappingsFromDictionary:@{@"status" : @"status"}];
+    [mapping addAttributeMappingsFromDictionary:@{@"status" : @"status", @"message_error" : @"message_error"}];
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data" toKeyPath:@"data" withMapping:[SecurityAnswerResult mapping]]];
     
     return mapping;

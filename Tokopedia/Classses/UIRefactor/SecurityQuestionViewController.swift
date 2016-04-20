@@ -41,23 +41,25 @@ class SecurityQuestionViewController : UIViewController {
                 mapping: SecurityQuestion.mapping(),
                 onSuccess: { (mappingResult, operation) -> Void in
                     let result = mappingResult.dictionary()[""] as! SecurityQuestion
-                    self.didReceiveSecurityResult(result)
+                    self.didReceiveSecurityForm(result)
                 },
                 onFailure: { (errors) -> Void in
                     
             });
     }
     
-    func didReceiveSecurityResult(securityQuestion : SecurityQuestion) {
+    func didReceiveSecurityForm(securityQuestion : SecurityQuestion) {
         _securityQuestion = securityQuestion
         
-        
-        if(securityQuestion.data.question == "1") {
-            self.view .addSubview(questionViewType1)
-            questionTitle.text = securityQuestion.data.title
-            answerField.placeholder = securityQuestion.data.example
+        if((_securityQuestion.message_error) != nil) {
+            let stickyAlert = StickyAlertView.init(errorMessages: _securityQuestion.message_error, delegate: self)
+            stickyAlert.show()
         } else {
-            
+            if(securityQuestion.data.question == "1") {
+                self.view .addSubview(questionViewType1)
+                questionTitle.text = securityQuestion.data.title
+                answerField.placeholder = securityQuestion.data.example
+            }
         }
     }
     
@@ -80,21 +82,27 @@ class SecurityQuestionViewController : UIViewController {
             mapping: SecurityAnswer .mapping(),
             onSuccess: { (mappingResult, operation) -> Void in
                 let answer = mappingResult.dictionary()[""] as! SecurityAnswer
-                
-                if(answer.data.change_to_otp == "1") {
-                    self.switchToOTPView()
-                }
-                
-                if(answer.data.allow_login == "1") {
-                    self.successAnswerCallback(answer)
-                }
-
-
+                self.didAnswerSecurityQuestion(answer)
             },
-            onFailure: {(errors) -> Void in
-                let stickyAlert = StickyAlertView.init(errorMessages: [errors], delegate: self)
-                stickyAlert.show()
-        })
+            onFailure: nil)
+    }
+    
+    func didAnswerSecurityQuestion(answer : SecurityAnswer) {
+        if((answer.message_error) != nil) {
+            let stickyAlert = StickyAlertView.init(errorMessages: answer.message_error, delegate: self)
+            stickyAlert.show()
+        } else if((answer.data.error) == "1") {
+            let stickyAlert = StickyAlertView.init(errorMessages: ["Jawaban yang Anda masukkan tidak sesuai."], delegate: self)
+            stickyAlert.show()
+        }
+        
+        if(answer.data.change_to_otp == "1") {
+            self.switchToOTPView()
+        }
+        
+        if(answer.data.allow_login == "1") {
+            self.successAnswerCallback(answer)
+        }
     }
     
     func switchToOTPView() {
