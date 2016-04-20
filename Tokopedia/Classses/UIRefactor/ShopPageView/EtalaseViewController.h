@@ -24,8 +24,6 @@
 @property (strong, nonatomic) IBOutlet UIView *tambahEtalaseView;
 @property (strong, nonatomic) IBOutlet UITextField *tambahEtalaseTextField;
 @property (strong, nonatomic) IBOutlet UIButton *tambahEtalaseButton;
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *tambahEtalaseButtonLeftConstraint;
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *tambahEtalaseButtonWidthConstraint;
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UIView *footerView;
 
