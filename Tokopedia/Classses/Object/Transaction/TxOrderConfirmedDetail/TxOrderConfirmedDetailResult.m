@@ -9,5 +9,16 @@
 #import "TxOrderConfirmedDetailResult.h"
 
 @implementation TxOrderConfirmedDetailResult
++(NSDictionary *)attributeMappingDictionary
+{
+    return nil;
+}
+
++(RKObjectMapping*)mapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"tx_order_detail" toKeyPath:@"tx_order_detail" withMapping:[TxOrderConfirmedDetailOrder mapping]]];
+    return mapping;
+}
 
 @end

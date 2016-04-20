@@ -150,9 +150,10 @@
 {
 }
 
-+(void)fetchEditAddress:(AddressFormList*)address success:(void(^)(ProfileSettingsResult* data))success failure:(void(^)(NSError* error))failure{
++(void)fetchEditAddress:(AddressFormList*)address isFromCart:(NSString*)isFromCart success:(void(^)(ProfileSettingsResult* data))success failure:(void(^)(NSError* error))failure{
     
     TokopediaNetworkManager *network = [TokopediaNetworkManager new];
+    network.isUsingHmac = YES;
     
     NSString *action = @"edit_address";
     NSString *addressid = [NSString stringWithFormat:@"%zd",address.address_id?:0];
@@ -183,14 +184,14 @@
                            @"district" : district,
                            @"longitude": longitude,
                            @"latitude": latitude,
-                           @"is_from_cart":@"1"
+                           @"is_from_cart":isFromCart
                            };
     
-    [network requestWithBaseUrl:kTkpdBaseURLString
+    [network requestWithBaseUrl:[NSString v4Url]
                            path:@"/v4/action/people/edit_address.pl"
                          method:RKRequestMethodGET
                       parameter:param
-                        mapping:[RequestObjectEditAddress mapping]
+                        mapping:[ProfileSettings mapping]
                       onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
 
                           ProfileSettings *setting = [successResult.dictionary objectForKey:@""];

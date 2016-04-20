@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TransactionCartList.h"
 
 @interface TransactionCartCostView : UIView
 
@@ -18,5 +19,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *infoButton;
 
 +(id)newview;
+-(void)setViewModel:(CartModelView*)viewModel;
 
 @end

@@ -30,6 +30,14 @@
     }
 }
 
+- (NSURL *)uriNext {
+    return [NSURL URLWithString:_uri_next];
+}
+
+- (NSURL *)uriPrevious {
+    return [NSURL URLWithString:_uri_previous];
+}
+
 +(NSDictionary *)attributeMappingDictionary
 {
     NSArray *keys = @[@"uri_next",

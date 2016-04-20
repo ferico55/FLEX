@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface TxOrderConfirmedList : NSObject
+@interface TxOrderConfirmedList : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *order_count;
 @property (nonatomic, strong) NSString *user_account_name;

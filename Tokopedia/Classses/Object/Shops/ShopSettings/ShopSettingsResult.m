@@ -10,4 +10,10 @@
 
 @implementation ShopSettingsResult
 
++ (RKObjectMapping *)objectMapping {
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[self class]];
+    [mapping addAttributeMappingsFromArray:@[@"is_success", @"etalase_id"]];
+    return mapping;
+}
+
 @end

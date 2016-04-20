@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface Veritrans : NSObject
+@interface Veritrans : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *token_url;
 @property (nonatomic, strong) NSString *client_key;

@@ -12,14 +12,17 @@
 
 +(NSArray*)compareShipmentsWS:(NSArray<ShippingInfoShipments*>*)shipmentsWS withShipmentsKero:(NSArray<RateAttributes*>*)shipmentsKero{
     
-    NSMutableArray <ShippingInfoShipments*>*shipmentsAvailable = [NSMutableArray new];
-    for (ShippingInfoShipments *shipment in shipmentsWS) {
-        if ([shipment.shipment_available integerValue] != 0) {
-            [shipmentsAvailable addObject:shipment];
-        }
-    }
+    //shipment.shipment_available nanti pasti 0 semua
+//    NSMutableArray <ShippingInfoShipments*>*shipmentsAvailable = [NSMutableArray new];
+//    for (ShippingInfoShipments *shipment in shipmentsWS) {
+//        if ([shipment.shipment_available integerValue] != 0) {
+//            [shipmentsAvailable addObject:shipment];
+//        }
+//    }
+//    
+//    NSArray <ShippingInfoShipments*>*shipmentAvailable = [shipmentsAvailable copy];
     
-    NSArray <ShippingInfoShipments*>*shipmentAvailable = [shipmentsAvailable copy];
+    NSArray <ShippingInfoShipments*>*shipmentAvailable = shipmentsWS;
     
     NSArray *shipmentWSIDs = [shipmentAvailable valueForKeyPath:@"@distinctUnionOfObjects.shipment_id"];
     NSArray *shipmentKeroIDs = [shipmentsKero valueForKeyPath:@"@distinctUnionOfObjects.shipper_id"];

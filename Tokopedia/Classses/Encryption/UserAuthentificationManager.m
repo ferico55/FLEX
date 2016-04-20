@@ -102,7 +102,7 @@
     if (![[self getUserId] isEqualToString:@"0"]) {
         [parameters setValue:[self getUserId] forKey:@"user_id"];
     }
-#ifdef DEBUG
+#if (TARGET_OS_SIMULATOR)
     [parameters setValue:@"SIMULATORDUMMY" forKey:@"device_id"];
 #else
     [parameters setValue:[self getMyDeviceToken] forKey:@"device_id"];
