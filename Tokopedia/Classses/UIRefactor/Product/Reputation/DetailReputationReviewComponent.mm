@@ -228,7 +228,7 @@ static CKComponent *attachedImages(DetailReputationReview *review, DetailReputat
 }
 
 - (void)didTapAttachedImages:(id)sender {
-    [_delegate didTapAttachedImages:_review withIndex:0];
+    [_delegate didTapAttachedImages:_review withIndex:((CKInsetComponent*)sender).viewContext.view.tag];
 }
 
 - (void)didTapRevieweeReputation:(id)sender {

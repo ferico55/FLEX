@@ -59,7 +59,7 @@
 
 - (void)requestGetListReputationReviewWithReputationID:(NSString*)reputationID
                                      reputationInboxID:(NSString*)reputationInboxID
-                                          isUsingRedis:(NSString*)isUsingRedis
+                                     getDataFromMaster:(NSString*)getDataFromMaster
                                                   role:(NSString*)role
                                               autoRead:(NSString*)autoRead
                                              onSuccess:(void(^)(MyReviewReputationResult* result))successCallback
