@@ -172,6 +172,15 @@ typedef enum TagRequest {
 
     //refresh timer for GTM Container
     _containerTimer = [NSTimer scheduledTimerWithTimeInterval:7200.0f target:self selector:@selector(didRefreshContainer:) userInfo:nil repeats:YES];
+    
+    [self makeSureDeviceTokenExists];
+}
+
+- (void)makeSureDeviceTokenExists {
+    // Perhaps this method should be called at more appropriate places,
+    // such as before logging in and registration.
+    
+    [UserAuthentificationManager ensureDeviceIdExistence];
 }
 
 - (void)viewWillAppear:(BOOL)animated

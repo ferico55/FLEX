@@ -219,4 +219,18 @@
     }
 }
 
++ (void)ensureDeviceIdExistence {
+    // This is done to prevent users from getting kicked after login
+    // that is caused by some devices that don't have device tokens.
+    
+    UserAuthentificationManager* authManager = [UserAuthentificationManager new];
+    NSString* deviceId = [authManager getMyDeviceToken];
+    
+    if ([@"0" isEqualToString:deviceId]) {
+        deviceId = [[NSUUID UUID] UUIDString];
+    }
+    
+    [[TKPDSecureStorage standardKeyChains] setKeychainWithValue:deviceId withKey:kTKPD_DEVICETOKENKEY];
+}
+
 @end
