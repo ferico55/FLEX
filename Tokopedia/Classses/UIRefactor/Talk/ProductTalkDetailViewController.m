@@ -334,7 +334,7 @@
 
     UITapGestureRecognizer *tapUser = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapUser)];
     [_userButton addGestureRecognizer:tapUser];
-    [_userButton setUserInteractionEnabled:YES];
+    [_userButton setUserInteractionEnabled:[NavigationHelper shouldDoDeepNavigation]];
 
     [_talkCommentButtonLarge setTitle:[NSString stringWithFormat:@"%@ Komentar",[data objectForKey:TKPD_TALK_TOTAL_COMMENT]] forState:UIControlStateNormal];
     
