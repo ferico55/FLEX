@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		2D50139230438B54812D14B9 /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */; };
+		7A2958CB1CC88B41006D433E /* SecurityRequestOTP.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2958CA1CC88B41006D433E /* SecurityRequestOTP.m */; };
+		7A2958CE1CC88B55006D433E /* SecurityRequestOTPResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2958CD1CC88B55006D433E /* SecurityRequestOTPResult.m */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
 		7AC6471E1CC60D100019F0BB /* SecurityQuestion.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AC6471D1CC60D100019F0BB /* SecurityQuestion.m */; };
@@ -2157,6 +2159,10 @@
 		2D733D9158C7BF957D514506 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
 		4868E459AB2A65D133732296 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tokopedia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7A2958C91CC88B41006D433E /* SecurityRequestOTP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecurityRequestOTP.h; sourceTree = "<group>"; };
+		7A2958CA1CC88B41006D433E /* SecurityRequestOTP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecurityRequestOTP.m; sourceTree = "<group>"; };
+		7A2958CC1CC88B55006D433E /* SecurityRequestOTPResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecurityRequestOTPResult.h; sourceTree = "<group>"; };
+		7A2958CD1CC88B55006D433E /* SecurityRequestOTPResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecurityRequestOTPResult.m; sourceTree = "<group>"; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		7AC6471C1CC60D100019F0BB /* SecurityQuestion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecurityQuestion.h; sourceTree = "<group>"; };
@@ -5441,6 +5447,10 @@
 				7AC647231CC62EEA0019F0BB /* SecurityAnswer.m */,
 				7AC647251CC62F0E0019F0BB /* SecurityAnswerResult.h */,
 				7AC647261CC62F0E0019F0BB /* SecurityAnswerResult.m */,
+				7A2958C91CC88B41006D433E /* SecurityRequestOTP.h */,
+				7A2958CA1CC88B41006D433E /* SecurityRequestOTP.m */,
+				7A2958CC1CC88B55006D433E /* SecurityRequestOTPResult.h */,
+				7A2958CD1CC88B55006D433E /* SecurityRequestOTPResult.m */,
 			);
 			path = SecurityQuestion;
 			sourceTree = "<group>";
@@ -12620,6 +12630,7 @@
 				7AE3BDFE1CC0D32900544984 /* TransactionCartRootViewController.m in Sources */,
 				7AE3BA271CC0D32900544984 /* NotificationResult.m in Sources */,
 				7AE3B9D91CC0D32900544984 /* InboxMessageDetailResult.m in Sources */,
+				7A2958CE1CC88B55006D433E /* SecurityRequestOTPResult.m in Sources */,
 				7AE3BAE21CC0D32900544984 /* TransactionATCFormDetail.m in Sources */,
 				7AE3B97C1CC0D32900544984 /* DepositFormBankAccountList.m in Sources */,
 				7AE3B9961CC0D32900544984 /* Rating.m in Sources */,
@@ -12776,6 +12787,7 @@
 				7AE3BCBD1CC0D32900544984 /* ProductGalleryViewController.m in Sources */,
 				7AE3BD4F1CC0D32900544984 /* SearchViewController.m in Sources */,
 				7AE3B9E91CC0D32900544984 /* ResolutionCustomer.m in Sources */,
+				7A2958CB1CC88B41006D433E /* SecurityRequestOTP.m in Sources */,
 				7AE3BAA91CC0D32900544984 /* ShipmentPackage.m in Sources */,
 				7AE3B9371CC0D32900544984 /* UIImageEffects.m in Sources */,
 				7AE3BBFD1CC0D32900544984 /* GeneralList1GestureCell.m in Sources */,
