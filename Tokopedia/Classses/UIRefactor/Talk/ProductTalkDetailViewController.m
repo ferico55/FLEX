@@ -200,7 +200,7 @@
 
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
-    _talkmessagelabel.preferredMaxLayoutWidth = _talkmessagelabel.frame.size.width;
+    
     [self setHeaderData:_data];
 }
 
@@ -295,6 +295,16 @@
     [cmPopTitpView presentPointingAtView:button inView:self.view animated:YES];
 }
 
+- (void)resizeHeaderHeightToFitContent {
+    [_header layoutIfNeeded];
+    _talkmessagelabel.preferredMaxLayoutWidth = _talkmessagelabel.frame.size.width;
+    
+    CGFloat height = [_header systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
+    CGRect headerFrame = _header.frame;
+    headerFrame.size.height = height;
+    _header.frame = headerFrame;
+}
+
 -(void)setHeaderData:(NSDictionary*)data
 {
     if(!data) {
@@ -315,16 +325,10 @@
         }
     }
 
-    _talkmessagelabel.text = data[TKPD_TALK_MESSAGE];
-    [_header layoutIfNeeded];
-
-    CGFloat height = [_header systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
-    CGRect headerFrame = _header.frame;
-    headerFrame.size.height = height;
-    _header.frame = headerFrame;
-
-
     self.table.tableHeaderView = self.header;
+    _talkmessagelabel.text = data[TKPD_TALK_MESSAGE];
+    
+    [self resizeHeaderHeightToFitContent];
 
     _talkcreatetimelabel.text = [data objectForKey:TKPD_TALK_CREATE_TIME];
     
