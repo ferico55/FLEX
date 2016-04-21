@@ -16,10 +16,11 @@ PODS:
   - BlocksKit/UIKit (2.2.5):
     - BlocksKit/Core
     - BlocksKit/DynamicDelegate
+  - ComponentKit (0.14)
   - DBPrivacyHelper (0.6.3)
-  - EAIntroView (2.8.1):
-    - EARestrictedScrollView (~> 0.2.0)
-  - EARestrictedScrollView (0.2.0)
+  - EAIntroView (2.8.3):
+    - EARestrictedScrollView (~> 1.1.0)
+  - EARestrictedScrollView (1.1.0)
   - FLEX (2.1.1)
   - Google/Analytics (1.2.1):
     - Google/Core
@@ -78,6 +79,7 @@ PODS:
 DEPENDENCIES:
   - AppsFlyer-SDK (= 4.3.7)
   - BlocksKit (~> 2.2.5)
+  - ComponentKit (~> 0.14)
   - EAIntroView (~> 2.8.0)
   - FLEX (~> 2.0)
   - Google/Analytics
@@ -98,9 +100,10 @@ SPEC CHECKSUMS:
   AFNetworking: cf8e418e16f0c9c7e5c3150d019a3c679d015018
   AppsFlyer-SDK: 185c7d471ed919e9e9a3e370ae9042476f3d6472
   BlocksKit: 7f422b971407001178d181a43b99014ea2591fe6
+  ComponentKit: 11d9177b5e9940c456e7486d8f5a25c26d9ca5f2
   DBPrivacyHelper: c1e033776454dd3e16e8dcedf2e92d4d0a5e56df
-  EAIntroView: 73abfa89caa311f450af876421d950b96679e845
-  EARestrictedScrollView: f86d61e16c61d3e93c84f8e96e83122a2a3b7631
+  EAIntroView: e948c83e642f30010d427e643c18a6f2b529afed
+  EARestrictedScrollView: b0c2a3f92fb2610bb44d71c5e4893777c89e45ef
   FLEX: 27b768fcae23a313a1eb115076d429180ca9b472
   Google: fd33b5fa40fa3aaee5176de49c873a74e3d11dce
   GoogleAnalytics: fcf1f1cad57ae1a9a53520018f0f680ceeeb8b49

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="GothamBook.ttf">
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+        </mutableArray>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="141" id="KGk-i7-Jjw" customClass="InboxReviewCell">
+            <rect key="frame" x="0.0" y="0.0" width="355" height="141"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="355" height="140"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bx1-DA-LiS">
+                        <rect key="frame" x="8" y="8" width="339" height="125"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="X1O-hK-HK2">
+                                <rect key="frame" x="8" y="8" width="50" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="7AV-7u-m0s"/>
+                                    <constraint firstAttribute="height" constant="50" id="p82-qL-kOJ"/>
+                                </constraints>
+                            </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Btm-nW-Yt6" customClass="ViewLabelUser">
+                                <rect key="frame" x="66" y="8" width="212" height="25"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="25" id="8ys-Ln-LxK"/>
+                                </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="nBJ-0c-BCQ" appends="YES" id="Y6h-82-qd9"/>
+                                </connections>
+                            </view>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_unread.png" translatesAutoresizingMaskIntoConstraints="NO" id="8H4-Y5-qYp">
+                                <rect key="frame" x="321" y="8" width="10" height="10"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="10" id="K95-A0-h4n"/>
+                                    <constraint firstAttribute="height" constant="10" id="prO-8W-aDU"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Diubah 15 Jan 2016" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RMf-S4-WMo">
+                                <rect key="frame" x="66" y="58" width="193" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="gcO-WH-xs5"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                                <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0yO-oi-ct6">
+                                <rect key="frame" x="267" y="58" width="64" height="21"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="3 hari" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kka-YQ-IEB">
+                                        <rect key="frame" x="19" y="0.0" width="42" height="21"/>
+                                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_countdown.png" translatesAutoresizingMaskIntoConstraints="NO" id="r0O-dZ-oxt">
+                                        <rect key="frame" x="0.0" y="4" width="14" height="14"/>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="64" id="2uV-IP-jYI"/>
+                                    <constraint firstAttribute="height" constant="21" id="knj-XB-h0s"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tjG-v6-eiO">
+                                <rect key="frame" x="8" y="87" width="323" height="30"/>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                                <state key="normal" title="Beri nilai dan 2 ulasan">
+                                    <color key="titleColor" red="0.23529411764705882" green="0.70196078431372544" blue="0.22352941176470587" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="tapToInboxReviewDetail:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="24g-uz-cE9"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qYn-md-C6c">
+                                <rect key="frame" x="66" y="33" width="100" height="17"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="17" id="9Dy-PK-Q2b"/>
+                                    <constraint firstAttribute="width" constant="100" id="FKO-wn-tPX"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
+                                <inset key="titleEdgeInsets" minX="3" minY="3" maxX="0.0" maxY="0.0"/>
+                                <state key="normal" title="0%" image="icon_smile_small.png">
+                                    <color key="titleColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="tapToReputationDetail:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="cwd-90-Fot"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="RMf-S4-WMo" firstAttribute="top" secondItem="qYn-md-C6c" secondAttribute="bottom" constant="8" id="2Jb-br-2RQ"/>
+                            <constraint firstItem="qYn-md-C6c" firstAttribute="leading" secondItem="X1O-hK-HK2" secondAttribute="trailing" constant="8" id="7BR-4o-qD4"/>
+                            <constraint firstItem="0yO-oi-ct6" firstAttribute="top" secondItem="bx1-DA-LiS" secondAttribute="top" constant="58" id="7V8-nr-7jV"/>
+                            <constraint firstItem="8H4-Y5-qYp" firstAttribute="top" secondItem="bx1-DA-LiS" secondAttribute="top" constant="8" id="8NR-kL-pso"/>
+                            <constraint firstAttribute="trailing" secondItem="tjG-v6-eiO" secondAttribute="trailing" constant="8" id="8uf-Hl-bmx"/>
+                            <constraint firstAttribute="trailing" secondItem="0yO-oi-ct6" secondAttribute="trailing" constant="8" id="9ND-Jp-hC6"/>
+                            <constraint firstItem="tjG-v6-eiO" firstAttribute="leading" secondItem="bx1-DA-LiS" secondAttribute="leading" constant="8" id="9RM-U6-G2l"/>
+                            <constraint firstItem="X1O-hK-HK2" firstAttribute="leading" secondItem="bx1-DA-LiS" secondAttribute="leading" constant="8" id="GA3-BP-54e"/>
+                            <constraint firstItem="X1O-hK-HK2" firstAttribute="top" secondItem="bx1-DA-LiS" secondAttribute="top" constant="8" id="P3M-oz-IE6"/>
+                            <constraint firstAttribute="trailing" secondItem="RMf-S4-WMo" secondAttribute="trailing" constant="80" id="PRt-G7-ysR"/>
+                            <constraint firstItem="tjG-v6-eiO" firstAttribute="top" secondItem="RMf-S4-WMo" secondAttribute="bottom" constant="8" id="SLq-t2-kjA"/>
+                            <constraint firstItem="Btm-nW-Yt6" firstAttribute="top" secondItem="bx1-DA-LiS" secondAttribute="top" constant="8" id="SNU-MH-5Qu"/>
+                            <constraint firstAttribute="trailing" secondItem="8H4-Y5-qYp" secondAttribute="trailing" constant="8" id="jRT-E0-nH0"/>
+                            <constraint firstItem="8H4-Y5-qYp" firstAttribute="leading" secondItem="Btm-nW-Yt6" secondAttribute="trailing" constant="43" id="lGy-1z-IGJ"/>
+                            <constraint firstItem="RMf-S4-WMo" firstAttribute="leading" secondItem="X1O-hK-HK2" secondAttribute="trailing" constant="8" id="lMF-0b-oZ4"/>
+                            <constraint firstItem="Btm-nW-Yt6" firstAttribute="leading" secondItem="X1O-hK-HK2" secondAttribute="trailing" constant="8" id="tk4-dS-9W4"/>
+                            <constraint firstItem="qYn-md-C6c" firstAttribute="top" secondItem="Btm-nW-Yt6" secondAttribute="bottom" id="zQI-76-uqi"/>
+                            <constraint firstAttribute="bottom" secondItem="tjG-v6-eiO" secondAttribute="bottom" constant="8" id="zRm-MX-rlF"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="bx1-DA-LiS" secondAttribute="trailing" constant="8" id="9ij-pH-oPx"/>
+                    <constraint firstItem="bx1-DA-LiS" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="Ypi-yb-7vC"/>
+                    <constraint firstItem="bx1-DA-LiS" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="aiv-iN-yGe"/>
+                    <constraint firstAttribute="bottom" secondItem="bx1-DA-LiS" secondAttribute="bottom" constant="7" id="hWH-8q-6Rn"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <connections>
+                <outlet property="button" destination="tjG-v6-eiO" id="DVc-ce-GE1"/>
+                <outlet property="clockIcon" destination="r0O-dZ-oxt" id="fIA-SM-eYx"/>
+                <outlet property="inboxReviewCellView" destination="bx1-DA-LiS" id="Nru-1U-oEE"/>
+                <outlet property="remainingTimeLabel" destination="kka-YQ-IEB" id="trH-1c-bEC"/>
+                <outlet property="remainingTimeView" destination="0yO-oi-ct6" id="vQs-mA-ff9"/>
+                <outlet property="theirReputation" destination="qYn-md-C6c" id="lwk-39-4lK"/>
+                <outlet property="theirUserImage" destination="X1O-hK-HK2" id="TfO-k3-SBm"/>
+                <outlet property="theirUserName" destination="Btm-nW-Yt6" id="aUX-HE-KV2"/>
+                <outlet property="timestampLabel" destination="RMf-S4-WMo" id="dCi-Ge-oeV"/>
+                <outlet property="unreadIconImage" destination="8H4-Y5-qYp" id="FX8-Yq-G7U"/>
+            </connections>
+            <point key="canvasLocation" x="397.5" y="453"/>
+        </tableViewCell>
+        <tapGestureRecognizer id="nBJ-0c-BCQ">
+            <connections>
+                <action selector="tapToUserDetail:" destination="KGk-i7-Jjw" id="FAB-jC-459"/>
+            </connections>
+        </tapGestureRecognizer>
+    </objects>
+    <resources>
+        <image name="icon_countdown.png" width="30" height="30"/>
+        <image name="icon_smile_small.png" width="14" height="14"/>
+        <image name="icon_unread.png" width="40" height="40"/>
+    </resources>
+</document>

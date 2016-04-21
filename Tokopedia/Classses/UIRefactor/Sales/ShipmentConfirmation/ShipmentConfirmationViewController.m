@@ -475,7 +475,7 @@
                                                       API_SHOP_ADDRESS_CITY,
                                                       API_SHOP_ADDRESS_PROVINCE,
                                                       API_SHOP_ADDRESS_COUNTRY,
-                                                      API_SHOP_ADDRESS_POSTAL
+                                                      API_SHOP_ADDRESS_POSTAL,
                                                       API_SHOP_SHIPPER_PHONE]];
     
     RKObjectMapping *orderDeadlineMapping = [RKObjectMapping mappingForClass:[OrderDeadline class]];

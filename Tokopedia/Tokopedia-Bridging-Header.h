@@ -11,6 +11,7 @@
 #import "ProductModelView.h"
 #import "SwipeView.h"
 #import "MiniSlide.h"
+#import "TPLiveCameraView.h"
 #import <QuartzCore/QuartzCore.h>
 #import <EAIntroView/EAIntroView.h>
 #import "MainViewController.h"

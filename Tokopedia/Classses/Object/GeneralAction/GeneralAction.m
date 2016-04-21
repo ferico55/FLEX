@@ -10,4 +10,17 @@
 
 @implementation GeneralAction
 
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *generalActionMapping = [RKObjectMapping mappingForClass:[GeneralAction class]];
+    
+    [generalActionMapping addAttributeMappingsFromArray:@[@"status",
+                                                          @"server_process_time"]];
+    
+    [generalActionMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data"
+                                                                                        toKeyPath:@"data"
+                                                                                       withMapping:[GeneralActionResult mapping]]];
+    
+    return generalActionMapping;    
+}
+
 @end

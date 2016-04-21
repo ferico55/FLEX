@@ -70,7 +70,7 @@
     _skipButtonY = EA_EMPTY_PROPERTY;
     _skipButtonSideMargin = 10.f;
     _skipButtonAlignment = EAViewAlignmentRight;
-    
+    _limitPageIndex = -1;
     
     [self buildBackgroundImage];
     
@@ -334,6 +334,10 @@
     
     pageView.accessibilityLabel = [NSString stringWithFormat:@"intro_page_%lu",(unsigned long)[self.pages indexOfObject:page]];
     
+    if(page.alpha < 1.f || !page.bgImage) {
+        self.backgroundColor = [UIColor clearColor];
+    }
+
     if(page.customView) {
         [pageView addSubview:page.customView];
         
@@ -420,10 +424,6 @@
         for (UIView *subV in page.subviews) {
             [pageView addSubview:subV];
         }
-    }
-    
-    if(page.alpha < 1.f || !page.bgImage) {
-        self.backgroundColor = [UIColor clearColor];
     }
     
     pageView.alpha = page.alpha;
@@ -625,6 +625,11 @@ CGFloat easeOutValue(CGFloat value) {
     // Increase with 1 page when feature enabled:
     if (self.swipeToExit) {
         numberOfPages = numberOfPages + 1;
+    }
+    
+    // Descrease to limited index when scrolling is restricted:
+    if (self.limitPageIndex != -1) {
+        numberOfPages = self.limitPageIndex + 1;
     }
     
     // Adjust contentSize of ScrollView:
@@ -985,14 +990,16 @@ CGFloat easeOutValue(CGFloat value) {
     }
 }
 
-- (void)limitScrollingToPage:(NSUInteger)lastPageIndex {
-    if (lastPageIndex >= [self.pages count]) {
+- (void)setLimitPageIndex:(NSInteger)limitPageIndex {
+    _limitPageIndex = limitPageIndex;
+    
+    if (limitPageIndex < 0 || limitPageIndex >= self.pages.count) {
+        _limitPageIndex = -1;
         self.scrollingEnabled = YES;
         return;
+    } else {
+        self.scrollView.restrictionArea = CGRectMake(0, 0, (self.limitPageIndex + 1) * self.scrollView.bounds.size.width, self.scrollView.bounds.size.height);
     }
-    
-    _scrollingEnabled = YES;
-    self.scrollView.restrictionArea = CGRectMake(0, 0, (lastPageIndex + 1) * self.scrollView.bounds.size.width, self.scrollView.bounds.size.height);
 }
 
 @end

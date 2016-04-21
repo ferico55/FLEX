@@ -42,29 +42,30 @@
 #import "URLCacheController.h"
 #import "ProductReputationSimpleCell.h"
 #import "ShopPageRequest.h"
+#import "NSString+TPBaseUrl.h"
 
 #define CTagGetTotalLike 1
 #define CTagLike 2
 #define CTagDislike 3
 
 @interface ShopReviewPageViewController () <
-UITableViewDataSource,
-UITableViewDelegate,
-TKPDTabInboxTalkNavigationControllerDelegate,
-TTTAttributedLabelDelegate,
-CMPopTipViewDelegate,
-TokopediaNetworkManagerDelegate,
-LoginViewDelegate,
-ReportViewControllerDelegate,
-//GeneralReviewCellDelegate,
-UIActionSheetDelegate,
-productReputationDelegate,
-ShopPageHeaderDelegate,
-SmileyDelegate,
-UIScrollViewDelegate,
-UIAlertViewDelegate,
-NoResultDelegate,
-ProductReputationSimpleDelegate>
+    UITableViewDataSource,
+    UITableViewDelegate,
+    TKPDTabInboxTalkNavigationControllerDelegate,
+    TTTAttributedLabelDelegate,
+    CMPopTipViewDelegate,
+    TokopediaNetworkManagerDelegate,
+    LoginViewDelegate,
+    ReportViewControllerDelegate,
+    UIActionSheetDelegate,
+    productReputationDelegate,
+    ShopPageHeaderDelegate,
+    SmileyDelegate,
+    UIScrollViewDelegate,
+    UIAlertViewDelegate,
+    NoResultDelegate,
+    ProductReputationSimpleDelegate
+>
 
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (strong, nonatomic) IBOutlet UIView *header;
@@ -116,6 +117,8 @@ ProductReputationSimpleDelegate>
     NSDictionary *_auth;
     Shop *_shop;
     NoResultReusableView *_noResultView;
+    
+    TokopediaNetworkManager *_networkManager;
 }
 
 #pragma mark - Initialization
@@ -220,9 +223,78 @@ ProductReputationSimpleDelegate>
     UINib *cellNib = [UINib nibWithNibName:@"ProductReputationSimpleCell" bundle:nil];
     [_table registerNib:cellNib forCellReuseIdentifier:@"ProductReputationSimpleCellIdentifier"];
     
-    [_refreshControl endRefreshing];
+    _networkManager = [TokopediaNetworkManager new];
+    _networkManager.isUsingHmac = YES;
+    _networkManager.isParameterNotEncrypted = NO;
+    
+    if (!_isRefreshView) {
+        _table.tableFooterView = _footer;
+        [_act startAnimating];
+    }
+    
+    [_networkManager requestWithBaseUrl:[NSString v4Url]
+                                   path:@"/v4/shop/get_shop_review.pl"
+                                 method:RKRequestMethodGET
+                              parameter:@{@"page": @(_page),
+                                          @"per_page" : @(5),
+                                          @"shop_domain" : [_data objectForKey:@"shop_domain"]?:@"",
+                                          @"shop_id" : [_data objectForKey:@"shop_id"]?:@""}
+                                mapping:[Review mapping]
+                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                  NSDictionary *result = successResult.dictionary;
+                                  
+                                  id stats = [result objectForKey:@""];
+                                  
+                                  _review = stats;
+                                  
+                                  NSArray *list = _review.data.list;
+                                  _reviewIsOwner = _review.data.is_owner;
+                                  [_list addObjectsFromArray:list];
+                                  _isNoData = NO;
+                                  
+                                  _uriNext = _review.data.paging.uri_next;
+                                  
+                                  NSURL *url = [NSURL URLWithString:_uriNext];
+                                  NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
+                                  
+                                  NSMutableDictionary *queries = [NSMutableDictionary new];
+                                  [queries removeAllObjects];
+                                  for (NSString *keyValuePair in querry)
+                                  {
+                                      NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
+                                      NSString *key = [pairComponents objectAtIndex:0];
+                                      NSString *value = [pairComponents objectAtIndex:1];
+                                      
+                                      [queries setObject:value forKey:key];
+                                  }
+                                  
+                                  _page = [[queries objectForKey:kTKPDDETAIL_APIPAGEKEY] integerValue];
+                                  NSLog(@"next page : %zd",_page);
+                                  
+                                  [_table reloadData];
+                                  
+                                  if (_list.count == 0) {
+                                      _act.hidden = YES;
+                                      _table.tableFooterView = _noResultView;
+                                  } else {
+                                      [_noResultView removeFromSuperview];
+                                  }
+                                  
+                                  [_timer invalidate];
+                                  _timer = nil;
+                                  [_act stopAnimating];
+                                  _table.hidden = NO;
+                                  _isRefreshView = NO;
+                                  [_refreshControl endRefreshing];
+                              } onFailure:^(NSError *errorResult) {
+                                  
+                                  
+                              }];
+    
     [self initNotification];
-    [self requestReview];
+//    [self configureRestKit];
+//    
+//    [self loadData];
     
 }
 
@@ -235,10 +307,71 @@ ProductReputationSimpleDelegate>
     self.screenName = @"Shop - Review List";
     
     if (!_isRefreshView) {
-        if (_isNoData && _page < 1) {
-            [self requestReview];
-        }
-    }    
+        _table.tableFooterView = _footer;
+        [_act startAnimating];
+        [_networkManager requestWithBaseUrl:[NSString v4Url]
+                                       path:@"/v4/shop/get_shop_review.pl" method:RKRequestMethodGET
+                                  parameter:@{@"page": @(_page),
+                                              @"per_page" : @(5),
+                                              @"shop_domain" : [_data objectForKey:@"shop_domain"]?:@"",
+                                              @"shop_id" : [_data objectForKey:@"shop_id"]?:@""}
+                                    mapping:[Review mapping]
+                                  onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                      NSDictionary *result = successResult.dictionary;
+                                      
+                                      id stats = [result objectForKey:@""];
+                                      
+                                      _review = stats;
+                                      
+                                      NSArray *list = _review.data.list;
+                                      _reviewIsOwner = _review.data.is_owner;
+                                      [_list addObjectsFromArray:list];
+                                      _isNoData = NO;
+                                      
+                                      _uriNext = _review.data.paging.uri_next;
+                                      
+                                      NSURL *url = [NSURL URLWithString:_uriNext];
+                                      NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
+                                      
+                                      NSMutableDictionary *queries = [NSMutableDictionary new];
+                                      [queries removeAllObjects];
+                                      for (NSString *keyValuePair in querry)
+                                      {
+                                          NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
+                                          NSString *key = [pairComponents objectAtIndex:0];
+                                          NSString *value = [pairComponents objectAtIndex:1];
+                                          
+                                          [queries setObject:value forKey:key];
+                                      }
+                                      
+                                      _page = [[queries objectForKey:kTKPDDETAIL_APIPAGEKEY] integerValue];
+                                      NSLog(@"next page : %zd",_page);
+                                      
+                                      [_table reloadData];
+                                      
+                                      if (_list.count == 0) {
+                                          _act.hidden = YES;
+                                          _table.tableFooterView = _noResultView;
+                                      } else {
+                                          [_noResultView removeFromSuperview];
+                                      }
+                                      
+                                      [_timer invalidate];
+                                      _timer = nil;
+                                      [_act stopAnimating];
+                                      _table.hidden = NO;
+                                      _isRefreshView = NO;
+                                      [_refreshControl endRefreshing];
+                                  } onFailure:^(NSError *errorResult) {
+                                      
+                                      
+                                  }];
+
+//        [self configureRestKit];
+//        if (_isNoData && _page < 1) {
+//            [self loadData];
+//        }
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -339,7 +472,69 @@ ProductReputationSimpleDelegate>
     NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] -1;
     if (row == indexPath.row) {
         if (_uriNext != NULL && ![_uriNext isEqualToString:@"0"] && _uriNext != 0) {
-            [self requestReview];
+//            [self configureRestKit];
+//            [self loadData];
+            if (!_isRefreshView) {
+                _table.tableFooterView = _footer;
+                [_act startAnimating];
+            }
+            [_networkManager requestWithBaseUrl:[NSString v4Url]
+                                           path:@"/v4/shop/get_shop_review.pl" method:RKRequestMethodGET
+                                      parameter:@{@"page": @(_page),
+                                                  @"per_page" : @(5),
+                                                  @"shop_domain" : [_data objectForKey:@"shop_domain"]?:@"",
+                                                  @"shop_id" : [_data objectForKey:@"shop_id"]?:@""}
+                                        mapping:[Review mapping]
+                                      onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                          NSDictionary *result = successResult.dictionary;
+                                          
+                                          id stats = [result objectForKey:@""];
+                                          
+                                          _review = stats;
+                                          
+                                          NSArray *list = _review.data.list;
+                                          _reviewIsOwner = _review.data.is_owner;
+                                          [_list addObjectsFromArray:list];
+                                          _isNoData = NO;
+                                          
+                                          _uriNext = _review.data.paging.uri_next;
+                                          
+                                          NSURL *url = [NSURL URLWithString:_uriNext];
+                                          NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
+                                          
+                                          NSMutableDictionary *queries = [NSMutableDictionary new];
+                                          [queries removeAllObjects];
+                                          for (NSString *keyValuePair in querry)
+                                          {
+                                              NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
+                                              NSString *key = [pairComponents objectAtIndex:0];
+                                              NSString *value = [pairComponents objectAtIndex:1];
+                                              
+                                              [queries setObject:value forKey:key];
+                                          }
+                                          
+                                          _page = [[queries objectForKey:kTKPDDETAIL_APIPAGEKEY] integerValue];
+                                          NSLog(@"next page : %zd",_page);
+                                          
+                                          [_table reloadData];
+                                          
+                                          if (_list.count == 0) {
+                                              _act.hidden = YES;
+                                              _table.tableFooterView = _noResultView;
+                                          } else {
+                                              [_noResultView removeFromSuperview];
+                                          }
+                                          
+                                          [_timer invalidate];
+                                          _timer = nil;
+                                          [_act stopAnimating];
+                                          _table.hidden = NO;
+                                          _isRefreshView = NO;
+                                          [_refreshControl endRefreshing];
+                                      } onFailure:^(NSError *errorResult) {
+                                          
+                                          
+                                      }];
         } else {
             _table.tableFooterView = nil;
             [_act stopAnimating];
@@ -380,7 +575,13 @@ ProductReputationSimpleDelegate>
     CGFloat height = 150 + messageLabel.frame.size.height ;
     return height;
      */
-    return 200;
+    DetailReputationReview *review = _list[indexPath.row];
+    if (review.review_image_attachment.count == 0) {
+        return 200;
+    } else {
+        return 263;
+    }
+    
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -468,7 +669,71 @@ ProductReputationSimpleDelegate>
     _isRefreshView = YES;
     
     [_table reloadData];
-    [self requestReview];
+    /** request data **/
+//    [self configureRestKit];
+//    [self loadData];
+    if (!_isRefreshView) {
+        _table.tableFooterView = _footer;
+        [_act startAnimating];
+    }
+    [_networkManager requestWithBaseUrl:[NSString v4Url]
+                                   path:@"/v4/shop/get_shop_review.pl" method:RKRequestMethodGET
+                              parameter:@{@"page": @(_page),
+                                          @"per_page" : @(5),
+                                          @"shop_domain" : [_data objectForKey:@"shop_domain"]?:@"",
+                                          @"shop_id" : [_data objectForKey:@"shop_id"]?:@""}
+                                mapping:[Review mapping]
+                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                  NSDictionary *result = successResult.dictionary;
+                                  
+                                  id stats = [result objectForKey:@""];
+                                  
+                                  _review = stats;
+                                  
+                                  NSArray *list = _review.data.list;
+                                  _reviewIsOwner = _review.data.is_owner;
+                                  [_list addObjectsFromArray:list];
+                                  _isNoData = NO;
+                                  
+                                  _uriNext = _review.data.paging.uri_next;
+                                  
+                                  NSURL *url = [NSURL URLWithString:_uriNext];
+                                  NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
+                                  
+                                  NSMutableDictionary *queries = [NSMutableDictionary new];
+                                  [queries removeAllObjects];
+                                  for (NSString *keyValuePair in querry)
+                                  {
+                                      NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
+                                      NSString *key = [pairComponents objectAtIndex:0];
+                                      NSString *value = [pairComponents objectAtIndex:1];
+                                      
+                                      [queries setObject:value forKey:key];
+                                  }
+                                  
+                                  _page = [[queries objectForKey:kTKPDDETAIL_APIPAGEKEY] integerValue];
+                                  NSLog(@"next page : %zd",_page);
+                                  
+                                  [_table reloadData];
+                                  
+                                  if (_list.count == 0) {
+                                      _act.hidden = YES;
+                                      _table.tableFooterView = _noResultView;
+                                  } else {
+                                      [_noResultView removeFromSuperview];
+                                  }
+                                  
+                                  [_timer invalidate];
+                                  _timer = nil;
+                                  [_act stopAnimating];
+                                  _table.hidden = NO;
+                                  _isRefreshView = NO;
+                                  [_refreshControl endRefreshing];
+                              } onFailure:^(NSError *errorResult) {
+                                  
+                                  
+                              }];
+
 }
 
 #pragma mark - Notification Handler
