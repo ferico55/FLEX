@@ -14,7 +14,9 @@
     RKObjectMapping *generalActionMapping = [RKObjectMapping mappingForClass:[GeneralAction class]];
     
     [generalActionMapping addAttributeMappingsFromArray:@[@"status",
-                                                          @"server_process_time"]];
+                                                          @"server_process_time",
+                                                          @"message_error",
+                                                          @"message_status"]];
     
     [generalActionMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data"
                                                                                         toKeyPath:@"data"

@@ -229,7 +229,7 @@
 
 - (void)requestGetListReputationReviewWithReputationID:(NSString *)reputationID
                                      reputationInboxID:(NSString *)reputationInboxID
-                                          isUsingRedis:(NSString *)isUsingRedis
+                                     getDataFromMaster:(NSString *)getDataFromMaster
                                                   role:(NSString *)role
                                               autoRead:(NSString *)autoRead
                                              onSuccess:(void (^)(MyReviewReputationResult *))successCallback
@@ -240,7 +240,7 @@
     
     NSDictionary *parameter = @{@"reputation_id"        : reputationID,
                                 @"reputation_inbox_id"  : reputationInboxID,
-                                @"n"                    : isUsingRedis,
+                                @"n"                    : getDataFromMaster,
                                 @"buyer_seller"         : role
                                 };
     

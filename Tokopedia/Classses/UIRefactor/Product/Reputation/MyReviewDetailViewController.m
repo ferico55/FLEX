@@ -162,7 +162,7 @@
     _reviewRequest = [ReviewRequest new];
     [_reviewRequest requestGetListReputationReviewWithReputationID:_detailMyInboxReputation.reputation_id
                                                  reputationInboxID:_detailMyInboxReputation.reputation_inbox_id
-                                                      isUsingRedis:_getDataFromMasterInServer
+                                                 getDataFromMaster:_getDataFromMasterInServer
                                                               role:_detailMyInboxReputation.role
                                                           autoRead:_autoRead
                                                          onSuccess:^(MyReviewReputationResult *result) {
@@ -207,10 +207,8 @@
                                                                                  action:@selector(tapToInvoice)]];
     self.navigationItem.titleView = _pageTitleView;
     
-    
-    
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(refreshData)
+                                             selector:@selector(refreshDataWithNotification:)
                                                  name:@"RefreshData"
                                                object:nil];
 }
@@ -295,7 +293,7 @@
 
 #pragma mark - Alert View Delegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == alertView.cancelButtonIndex && (alertView.tag == 10 || alertView.tag == 20 || alertView.tag == 30)) {
+    if (buttonIndex != alertView.cancelButtonIndex && (alertView.tag == 10 || alertView.tag == 20 || alertView.tag == 30)) {
         [_reviewRequest requestInsertReputationWithReputationID:_detailMyInboxReputation.reputation_id
                                                            role:_detailMyInboxReputation.role
                                                           score:_score
@@ -355,7 +353,9 @@
                                                                                                                          delegate:self];
                                                         
                                                         [alert show];
-                                                        [self refreshData];
+                                                        [[NSNotificationCenter defaultCenter] postNotificationName:@"RefreshData"
+                                                                                                            object:nil
+                                                                                                          userInfo:@{@"n" : @"1"}];
                                                     }
                                                     onFailure:^(NSError *error) {
                                                         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Anda gagal melewati ulasan"]
@@ -602,8 +602,8 @@
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
                                                             message:@"Apakah Anda yakin memberi nilai Tidak Puas?"
                                                            delegate:self
-                                                  cancelButtonTitle:@"Ya"
-                                                  otherButtonTitles:@"Tidak", nil];
+                                                  cancelButtonTitle:@"Tidak"
+                                                  otherButtonTitles:@"Ya", nil];
             _score = @"-1";
             alert.tag = 10;
             [alert show];
@@ -620,8 +620,8 @@
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
                                                             message:@"Apakah Anda yakin memberi nilai Tidak Puas?"
                                                            delegate:self
-                                                  cancelButtonTitle:@"Ya"
-                                                  otherButtonTitles:@"Tidak", nil];
+                                                  cancelButtonTitle:@"Tidak"
+                                                  otherButtonTitles:@"Ya", nil];
             _score = @"-1";
             alert.tag = 10;
             [alert show];
@@ -634,8 +634,8 @@
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
                                                     message:@"Apakah Anda yakin memberi nilai Netral?"
                                                    delegate:self
-                                          cancelButtonTitle:@"Ya"
-                                          otherButtonTitles:@"Tidak", nil];
+                                          cancelButtonTitle:@"Tidak"
+                                          otherButtonTitles:@"Ya", nil];
     _score = @"1";
     alert.tag = 20;
     [alert show];
@@ -646,8 +646,8 @@
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
                                                     message:@"Apakah Anda yakin memberi nilai Puas?"
                                                    delegate:self
-                                          cancelButtonTitle:@"Ya"
-                                          otherButtonTitles:@"Tidak", nil];
+                                          cancelButtonTitle:@"Tidak"
+                                          otherButtonTitles:@"Ya", nil];
     _score = @"2";
     alert.tag = 30;
     [alert show];
@@ -702,7 +702,7 @@
 - (void)pressRetryButton {
     [_reviewRequest requestGetListReputationReviewWithReputationID:_detailMyInboxReputation.reputation_id
                                                  reputationInboxID:_detailMyInboxReputation.reputation_inbox_id
-                                                      isUsingRedis:_getDataFromMasterInServer
+                                                 getDataFromMaster:_getDataFromMasterInServer
                                                               role:_detailMyInboxReputation.role
                                                           autoRead:_autoRead
                                                          onSuccess:^(MyReviewReputationResult *result) {
@@ -784,7 +784,53 @@
 - (void)refreshData {
     [_reviewRequest requestGetListReputationReviewWithReputationID:_detailMyInboxReputation.reputation_id
                                                  reputationInboxID:_detailMyInboxReputation.reputation_inbox_id
-                                                      isUsingRedis:_getDataFromMasterInServer
+                                                 getDataFromMaster:_getDataFromMasterInServer
+                                                              role:_detailMyInboxReputation.role
+                                                          autoRead:_autoRead
+                                                         onSuccess:^(MyReviewReputationResult *result) {
+                                                             [_loadingView removeFromSuperview];
+                                                             [_refreshControl endRefreshing];
+                                                             [_reviewList removeAllObjects];
+                                                             
+                                                             if (_page == 0) {
+                                                                 _isRefreshing = NO;
+                                                                 [_dataManager removeAllReviews];
+                                                                 [_dataManager replaceReviews:result.list];
+                                                             } else {
+                                                                 [_dataManager removeAllReviews];
+                                                                 [_dataManager addReviews:result.list];
+                                                             }
+                                                         } onFailure:^(NSError *errorResult) {
+                                                             [_refreshControl endRefreshing];
+                                                             [_reviewList removeAllObjects];
+                                                             [_dataManager removeAllReviews];
+                                                             [self getLoadingView];
+                                                         }];
+    
+    [_header removeFromSuperview];
+    
+    _header = [[MyReviewDetailHeader alloc] initWithInboxDetail:_selectedInbox?:_detailMyInboxReputation
+                                                     imageCache:_imageCache
+                                                       delegate:self
+                                                 smileyDelegate:self];
+    
+    [self setHeaderPosition];
+    
+    _refreshControl = [[UIRefreshControl alloc] init];
+    [_refreshControl addTarget:self
+                        action:@selector(refreshData)
+              forControlEvents:UIControlEventValueChanged];
+    [_header addSubview:_refreshControl];
+}
+
+- (void)refreshDataWithNotification:(NSNotification*)notification {
+    NSDictionary *userInfo = [notification userInfo];
+    
+    NSString *getDataFromMaster = [userInfo objectForKey:@"n"]?:_getDataFromMasterInServer;
+    
+    [_reviewRequest requestGetListReputationReviewWithReputationID:_detailMyInboxReputation.reputation_id
+                                                 reputationInboxID:_detailMyInboxReputation.reputation_inbox_id
+                                                 getDataFromMaster:getDataFromMaster
                                                               role:_detailMyInboxReputation.role
                                                           autoRead:_autoRead
                                                          onSuccess:^(MyReviewReputationResult *result) {
@@ -839,6 +885,10 @@
     _loadingView.frame = frame;
     
     [_collectionView addSubview:_loadingView];
+}
+
+- (void)doRequestGetListReputationReviewWithGetDataFromMaster:(NSString*)getDataFromMaster {
+    
 }
 
 @end
