@@ -443,10 +443,18 @@
     [self.indicatorView startAnimating];
     self.navigationItem.rightBarButtonItem = self.disabledSaveButton;
     
+    NSDictionary *parameters = @{};
+    // 13 id provinsi jakarta
+    if ([self.selectedProvince.provinceId isEqualToString:@"13"]) {
+        parameters = @{@"district_id": @"5573"};
+    } else if (self.selectedDistrict) {
+        parameters = @{@"district_id": _selectedDistrict.districtId};
+    }
+    
     [self.networkManager requestWithBaseUrl:@"http://ws-staging.tokopedia.com"
                                        path:@"/v4/myshop-shipment/get_shipping_info.pl"
                                      method:RKRequestMethodGET
-                                  parameter:@{}
+                                  parameter:parameters
                                     mapping:[ShipmentResponse mapping]
                                   onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                       ShipmentResponse *response = [successResult.dictionary objectForKey:@""];
@@ -513,7 +521,7 @@
 - (void)saveLogisticData {
     self.navigationItem.rightBarButtonItem = self.loadingView;
 
-    NSMutableDictionary *additionalParamaters = [NSMutableDictionary new];
+    NSMutableDictionary *parameters = [NSMutableDictionary new];
     NSMutableDictionary *couriers = [NSMutableDictionary new];
     for (ShipmentCourierData *courier in self.couriers) {
         NSMutableDictionary *services = [NSMutableDictionary new];
@@ -525,7 +533,7 @@
         if (services.allValues.count > 0) {
             [couriers setObject:services forKey:courier.courierId];
             NSURL *URL = [NSURL URLWithString:courier.URLAdditionalOption];
-            [additionalParamaters addEntriesFromDictionary:URL.parameters];
+            [parameters addEntriesFromDictionary:URL.parameters];
         }
     }
     
@@ -535,7 +543,7 @@
     NSString *latitude = [NSString stringWithFormat:@"%f", _shop.latitude];
     NSString *longitude = [NSString stringWithFormat:@"%f", _shop.longitude];
     
-    NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithDictionary:@{
+    [parameters addEntriesFromDictionary:@{
         @"courier_origin": _selectedDistrict.districtId?: _shop.districtId?: @"",
         @"postal": _shop.postalCode?:@"",
         @"shipment_ids" : shipments_ids?:@"",
@@ -544,14 +552,10 @@
         @"longitude": longitude?:@"",
     }];
 
-    if (self.selectedProvince.cities.count == 0) {
-        // 13 id provinsi jakarta
-        if ([self.selectedProvince.provinceId isEqualToString:@"13"]) {
-            [parameters setObject:@"5573" forKey:@"courier_origin"];
-        }
+    // 13 id provinsi jakarta
+    if ([self.selectedProvince.provinceId isEqualToString:@"13"]) {
+        [parameters setObject:@"5573" forKey:@"courier_origin"];
     }
-    
-    [parameters addEntriesFromDictionary:additionalParamaters];
     
     [self.networkManager requestWithBaseUrl:@"http://ws-staging.tokopedia.com"
                                        path:@"/v4/action/myshop-shipment/update_shipping_info.pl"
