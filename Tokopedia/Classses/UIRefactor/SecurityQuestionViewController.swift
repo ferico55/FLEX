@@ -27,11 +27,13 @@ class SecurityQuestionViewController : UIViewController {
     @IBOutlet weak var questionTitle: UILabel!
     @IBOutlet weak var answerField: UITextField!
     @IBOutlet weak var saveButton: UIButton!
+    @IBOutlet weak var infoLabel: UILabel!
     
     @IBOutlet var questionViewType2: UIView!
     @IBOutlet weak var requestOTPButton: UIButton!
     @IBOutlet weak var otpField: UITextField!
     @IBOutlet weak var saveOTPButton: UIButton!
+    @IBOutlet weak var otpInfoLabel: UILabel!
     
     var _networkManager : TokopediaNetworkManager!
     var _securityQuestion : SecurityQuestion!
@@ -42,11 +44,21 @@ class SecurityQuestionViewController : UIViewController {
         
         _networkManager = TokopediaNetworkManager()
         _networkManager.isUsingHmac = true
-        self .doRequestQuestionForm()
+        self .requestQuestionForm()
         
+        self.setLabelSpacing(infoLabel)
+        self.setLabelSpacing(otpInfoLabel)
     }
     
-    func doRequestQuestionForm() {
+    func setLabelSpacing (label : UILabel) {
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = 5
+        let attrString = NSMutableAttributedString(string: label.text!)
+        attrString.addAttribute(NSParagraphStyleAttributeName, value: paragraphStyle, range: NSMakeRange(0, attrString.length))
+        label.attributedText = attrString
+    }
+    
+    func requestQuestionForm() {
         _networkManager .
             requestWithBaseUrl(NSString.v4Url(),
                 path: "/v4/interrupt/get_question_form.pl",
@@ -70,12 +82,18 @@ class SecurityQuestionViewController : UIViewController {
             stickyAlert.show()
         } else {
             if(questionType2 == "0") {
+                //set phone number view
                 self.view .addSubview(questionViewType1)
+                questionViewType1.HVD_fillInSuperViewWithInsets(UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
                 questionTitle.text = securityQuestion.data.title
+                self.setLabelSpacing(questionTitle)
                 answerField.placeholder = securityQuestion.data.example
             } else if(questionType1 == "0"){
+                //set OTP view
+                let buttonTitle = questionType2 == "1" ? "Kirim OTP ke HP" : "Kirim OTP ke Email"
                 self.view .addSubview(questionViewType2)
-                requestOTPButton .setTitle(securityQuestion.data.title, forState: .Normal)
+                questionViewType2.HVD_fillInSuperViewWithInsets(UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
+                requestOTPButton .setTitle(buttonTitle, forState: .Normal)
             }
         }
     }
@@ -125,6 +143,7 @@ class SecurityQuestionViewController : UIViewController {
         
         if(answer.data.allow_login == "1") {
             self.successAnswerCallback(answer)
+            self.navigationController!.dismissViewControllerAnimated(true, completion: nil)
         }
     }
     
@@ -136,7 +155,11 @@ class SecurityQuestionViewController : UIViewController {
                 parameter: ["user_id" : userID, "user_check_question_2" : questionType2],
                 mapping: SecurityRequestOTP .mapping(),
                 onSuccess: { (mappingResult, operation) -> Void in
-                    
+                    let otp = mappingResult.dictionary()[""] as! SecurityRequestOTP
+                    if(otp.data.is_success == "1") {
+                        let stickyAlert = StickyAlertView.init(successMessages: ["Kode OTP sukses terkirim."], delegate: self)
+                        stickyAlert.show()
+                    }
                 },
                 onFailure: nil)
     }
@@ -153,7 +176,7 @@ class SecurityQuestionViewController : UIViewController {
     
     func switchToOTPView() {
         self.view.removeAllSubviews()
-        self .doRequestQuestionForm()
+        self .requestQuestionForm()
     }
 
 }
