@@ -24,16 +24,16 @@ class SecurityQuestionViewController : UIViewController {
     var successAnswerCallback: ((SecurityAnswer) -> Void)!
     
     @IBOutlet var questionViewType1: UIView!
-    @IBOutlet weak var questionTitle: UILabel!
-    @IBOutlet weak var answerField: UITextField!
-    @IBOutlet weak var saveButton: UIButton!
-    @IBOutlet weak var infoLabel: UILabel!
+    @IBOutlet var questionTitle: UILabel!
+    @IBOutlet var answerField: UITextField!
+    @IBOutlet var saveButton: UIButton!
+    @IBOutlet var infoLabel: UILabel!
     
     @IBOutlet var questionViewType2: UIView!
-    @IBOutlet weak var requestOTPButton: UIButton!
-    @IBOutlet weak var otpField: UITextField!
-    @IBOutlet weak var saveOTPButton: UIButton!
-    @IBOutlet weak var otpInfoLabel: UILabel!
+    @IBOutlet var requestOTPButton: UIButton!
+    @IBOutlet var otpField: UITextField!
+    @IBOutlet var saveOTPButton: UIButton!
+    @IBOutlet var otpInfoLabel: UILabel!
     
     var _networkManager : TokopediaNetworkManager!
     var _securityQuestion : SecurityQuestion!

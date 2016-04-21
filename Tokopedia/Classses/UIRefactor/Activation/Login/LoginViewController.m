@@ -66,6 +66,7 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
     
     GPPSignIn *_signIn;
     GTLPlusPerson *_googleUser;
+    UserAuthentificationManager *_userManager;
 }
 
 @property (strong, nonatomic) IBOutlet TextField *emailTextField;
@@ -115,6 +116,7 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
 - (void)viewDidLoad
 {    
     [super viewDidLoad];
+    _userManager = [[UserAuthentificationManager alloc]init];
     
     UIImage *iconToped = [UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE];
     UIImageView *topedImageView = [[UIImageView alloc] initWithImage:iconToped];
@@ -534,10 +536,22 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
     if (status) {
         _isnodata = NO;
         if ([_login.result.status isEqualToString:@"2"]) {
+            TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
             
             [[GPPSignIn sharedInstance] signOut];
             [[GPPSignIn sharedInstance] disconnect];
-
+            
+            if(![_login.result.security.allow_login isEqualToString:@"1"]) {
+                [self checkSecurityQuestion];
+            } else {
+                [self setLoginIdentity];
+                if (_facebookUserData) {
+                    [secureStorage setKeychainWithValue:([_facebookUserData objectForKey:@"email"]?:@"") withKey:kTKPD_USEREMAIL];
+                } else if (_googleUser) {
+                    [secureStorage setKeychainWithValue:(_signIn.userEmail?:@"") withKey:kTKPD_USEREMAIL];
+                }
+            }
+            /**
             TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
             [secureStorage setKeychainWithValue:@(_login.result.is_login) withKey:kTKPD_ISLOGINKEY];
             [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_USERIDKEY];
@@ -611,6 +625,7 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
                                                               userInfo:nil];
             
             [Localytics setValue:@"Yes" forProfileAttribute:@"Is Login"];
+             **/
             
         } else if ([_login.result.status isEqualToString:@"1"]) {
 
@@ -666,7 +681,7 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
             if(![_login.result.security.allow_login isEqualToString:@"1"]) {
                 [self checkSecurityQuestion];
             } else {
-                [self didAllowedToLogin];
+                [self setLoginIdentity];
             }
 
         }
@@ -685,7 +700,7 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
     }
 }
 
-- (void)didAllowedToLogin {
+- (void)setLoginIdentity {
     TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
     [secureStorage setKeychainWithValue:@(_login.result.is_login) withKey:kTKPD_ISLOGINKEY];
     [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_USERIDKEY];
@@ -777,19 +792,15 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
     TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
     [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_USERIDKEY];
 
-    SecurityQuestionViewController *controller = [SecurityQuestionViewController new];
+    SecurityQuestionViewController *controller = [[SecurityQuestionViewController alloc] initWithNibName:@"SecurityQuestionViewController" bundle:nil];
     controller.questionType1 = _login.result.security.user_check_security_1;
     controller.questionType2 = _login.result.security.user_check_security_2;
 
     controller.userID = _login.result.user_id;
-//    controller.deviceID = [secureStorage.keychainDictionary objectForKey:@"device_token"];
-    controller.deviceID = @"1234567890";
+    controller.deviceID = _userManager.getMyDeviceToken;
     controller.successAnswerCallback = ^(SecurityAnswer* answer) {
-        
+        [self setLoginIdentity];
     };
-    
-    
-
     
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
     navigationController.navigationBar.translucent = NO;
