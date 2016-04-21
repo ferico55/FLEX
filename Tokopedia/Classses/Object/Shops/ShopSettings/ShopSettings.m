@@ -9,12 +9,10 @@
 #import "ShopSettings.h"
 
 @implementation ShopSettings
-
-+ (RKObjectMapping *)objectMapping {
-    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[self class]];
-    [mapping addAttributeMappingsFromArray:@[@"message_error", @"message_status", @"status", @"server_process_time"]];
-    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data" toKeyPath:@"result" withMapping:[ShopSettingsResult objectMapping]]];
++(RKObjectMapping *)mapping{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[ShopSettings class]];
+    [mapping addAttributeMappingsFromArray:@[@"message_error", @"status", @"server_process_time"]];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data" toKeyPath:@"result" withMapping:[ShopSettingsResult mapping]]];
     return mapping;
 }
-
 @end

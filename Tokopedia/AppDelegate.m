@@ -23,14 +23,13 @@
 #import <GoogleMaps/GoogleMaps.h>
 #import <Rollout/Rollout.h>
 #import "FBTweakShakeWindow.h"
+#import <JLPermissions/JLNotificationPermission.h>
 
 #ifdef DEBUG
 #import "FlexManager.h"
 #endif
 
 @implementation AppDelegate
-
-@synthesize viewController = _viewController;
 
 #ifdef DEBUG
 - (void)onThreeFingerTap {
@@ -45,18 +44,30 @@
 }
 #endif
 
+- (BOOL)shouldShowOnboarding {
+    BOOL hasShownOnboarding = [[NSUserDefaults standardUserDefaults] boolForKey:@"has_shown_onboarding"];
+    
+    BOOL alwaysShowOnboarding = FBTweakValue(@"Onboarding", @"General", @"Always show onboarding", NO);
+    
+    BOOL shouldShowOnboarding = alwaysShowOnboarding?YES:!hasShownOnboarding;
+    return shouldShowOnboarding;
+}
+
+- (UIViewController*)frontViewController {
+    return [self shouldShowOnboarding]?
+        [[IntroViewController alloc] initWithNibName:@"IntroViewController" bundle:nil]:
+        [MainViewController new];
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [application setStatusBarStyle:UIStatusBarStyleLightContent];
-    
-
     [self hideTitleBackButton];
     
-    _viewController = [MainViewController new];
+    UIViewController* viewController = [self frontViewController];
     _window = [[FBTweakShakeWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     _window.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
     _window.backgroundColor = kTKPDNAVIGATION_NAVIGATIONBGCOLOR;
-    _window.rootViewController = _viewController;
+    _window.rootViewController = viewController;
     [_window makeKeyAndVisible];
     
 #ifdef DEBUG
@@ -79,7 +90,6 @@
         [self configureAppsflyer];
         [self configureAppIndexing];
         [self configureGoogleAnalytics];
-        [self configurePushNotificationsInApplication:application];
         
         [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
 
@@ -171,20 +181,6 @@
 #endif
 }
 
-- (void)configurePushNotificationsInApplication:(UIApplication *)application {
-    // If you are using Localytics Messaging include the following code to register for push notifications
-    if ([application respondsToSelector:@selector(registerUserNotificationSettings:)] ||
-        [application respondsToSelector:@selector(isRegisteredForRemoteNotifications)]) {
-        UIUserNotificationType types = (UIUserNotificationTypeAlert | UIUserNotificationTypeBadge | UIUserNotificationTypeSound);
-        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:types
-                                                                                 categories:nil];
-        [application registerUserNotificationSettings:settings];
-        [application registerForRemoteNotifications];
-    } else {
-        [application registerForRemoteNotificationTypes:(UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound)];
-    }
-}
-
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     [FBSDKAppEvents activateApp];
     [[AppsFlyerTracker sharedTracker]trackAppLaunch];
@@ -192,6 +188,9 @@
 
 - (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
 {
+    [[JLNotificationPermission sharedInstance] notificationResult:deviceToken error:nil];
+
+    
     TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
     
     NSString *deviceTokenString = [[deviceToken description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
@@ -200,7 +199,7 @@
 }
 
 -(void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
-    
+    [[JLNotificationPermission sharedInstance] notificationResult:nil error:error];
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {

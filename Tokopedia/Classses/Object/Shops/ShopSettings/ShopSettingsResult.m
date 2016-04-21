@@ -9,11 +9,9 @@
 #import "ShopSettingsResult.h"
 
 @implementation ShopSettingsResult
-
-+ (RKObjectMapping *)objectMapping {
-    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[self class]];
++(RKObjectMapping *)mapping{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[ShopSettingsResult class]];
     [mapping addAttributeMappingsFromArray:@[@"is_success", @"etalase_id"]];
     return mapping;
 }
-
 @end

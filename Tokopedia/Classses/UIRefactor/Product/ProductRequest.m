@@ -23,7 +23,7 @@ setCompletionBlockWithSuccess:(void (^)(ShopSettings *))success
         @"product_etalase_id":etalase.etalase_id,
         @"product_etalase_name":etalase.etalase_name,
     };
-    RKObjectMapping *mapping = [ShopSettings objectMapping];
+    RKObjectMapping *mapping = [ShopSettings mapping];
     [networkManager requestWithBaseUrl:baseURL
                                   path:path
                                 method:RKRequestMethodGET
@@ -50,7 +50,7 @@ setCompletionBlockWithSuccess:(void (^)(ShopSettings *))success
     NSString *baseURL = [NSString v4Url];
     NSString *path = @"/v4/action/product/move_to_warehouse.pl";
     NSDictionary *parameter = @{@"product_id":productId};
-    RKObjectMapping *mapping = [ShopSettings objectMapping];
+    RKObjectMapping *mapping = [ShopSettings mapping];
     [networkManager requestWithBaseUrl:baseURL
                                   path:path
                                 method:RKRequestMethodGET
@@ -78,7 +78,7 @@ setCompletionBlockWithSuccess:(void (^)(ShopSettings *response))success
     NSString *baseURL = [NSString v4Url];
     NSString *path = @"/v4/action/product/delete_product.pl";
     NSDictionary *parameter = @{@"product_id":productId};
-    RKObjectMapping *mapping = [ShopSettings objectMapping];
+    RKObjectMapping *mapping = [ShopSettings mapping];
     [networkManager requestWithBaseUrl:baseURL
                                   path:path
                                 method:RKRequestMethodGET

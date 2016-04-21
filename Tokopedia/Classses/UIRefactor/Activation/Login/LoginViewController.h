@@ -30,4 +30,6 @@
 
 @property (retain, nonatomic) IBOutlet GPPSignInButton *signInButton;
 
+- (void)navigateToRegister;
+
 @end

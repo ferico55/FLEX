@@ -313,7 +313,7 @@
                                    path:path
                                  method:RKRequestMethodGET
                               parameter:[self parameters]
-                                mapping:[ShopSettings objectMapping]
+                                mapping:[ShopSettings mapping]
                               onSuccess:^(RKMappingResult *mappingResult,
                                           RKObjectRequestOperation *operation) {
                                   [self didReceiveMappingResult:mappingResult];

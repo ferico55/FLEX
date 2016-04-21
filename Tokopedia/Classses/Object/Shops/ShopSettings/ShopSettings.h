@@ -17,6 +17,5 @@
 @property (nonatomic, strong) NSString *server_process_time;
 @property (nonatomic, strong) ShopSettingsResult *result;
 
-+ (RKObjectMapping *)objectMapping;
-
++(RKObjectMapping*)mapping;
 @end

@@ -40,4 +40,6 @@
 + (void)trackLoginUserID:(NSString *)userID;
 + (void)trackExeptionDescription:(NSString *)description;
 
++ (void)trackOnBoardingClickButton:(NSString *)buttonName;
+
 @end

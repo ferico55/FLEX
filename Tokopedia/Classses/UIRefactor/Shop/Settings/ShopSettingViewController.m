@@ -9,7 +9,7 @@
 #import "detail.h"
 #import "DetailShopResult.h"
 #import "ShopSettingViewController.h"
-#import "MyShopEtalaseViewController.h"
+#import "EtalaseViewController.h"
 #import "ProductListMyShopViewController.h"
 #import "MyShopAddressViewController.h"
 #import "MyShopPaymentViewController.h"
@@ -84,10 +84,23 @@
         }
         case 1:
         {
-            //Etalase
-            MyShopEtalaseViewController *vc = [MyShopEtalaseViewController new];
-            vc.data = @{kTKPDDETAIL_APISHOPIDKEY : _shop.info.shop_id?:@"", kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
+            EtalaseViewController *vc = [EtalaseViewController new];
+            vc.isEditable = YES;
+            vc.showOtherEtalase = NO;
+            [vc setEnableAddEtalase:YES];
+            vc.hidesBottomBarWhenPushed = YES;
+            
+            UserAuthentificationManager *_userAuth = [UserAuthentificationManager new];
+            NSString *shopId = [_userAuth getShopId];
+            [vc setShopId:shopId];
+            
+            UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
+            UIColor *backgroundColor = [UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1];
+            nav.navigationBar.backgroundColor = [UIColor colorWithCGColor:backgroundColor.CGColor];
+            nav.navigationBar.translucent = NO;
+            nav.navigationBar.tintColor = [UIColor whiteColor];
             [self.navigationController pushViewController:vc animated:YES];
+
             break;
         }
         case 2:

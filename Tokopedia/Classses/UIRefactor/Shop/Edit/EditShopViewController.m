@@ -135,7 +135,7 @@
                                        path:path
                                      method:RKRequestMethodGET
                                   parameter:parameters
-                                    mapping:[ShopSettings objectMapping]
+                                    mapping:[ShopSettings mapping]
                                   onSuccess:^(RKMappingResult *successResult,
                                               RKObjectRequestOperation *operation) {
                                       [self didReceiveMappingResultForUploadImage:successResult];
@@ -209,7 +209,7 @@
                                        path:path
                                      method:RKRequestMethodGET
                                   parameter:parameters
-                                    mapping:[ShopSettings objectMapping]
+                                    mapping:[ShopSettings mapping]
                                   onSuccess:^(RKMappingResult *mappingResult,
                                               RKObjectRequestOperation *operation) {
                                       ShopSettings *settings = [mappingResult.dictionary objectForKey:@""];

@@ -485,7 +485,7 @@ typedef enum
 
                         NSInteger productPrice = [[[NSNumberFormatter IDRFormarter] numberFromString:product.product_price] integerValue];
 
-                        NSInteger shipmentPackagePrice = [[[NSNumberFormatter IDRFormarter] numberFromString:shipmentPackage.price] integerValue];
+                        NSInteger shipmentPackagePrice = [_selectedShipmentPackage.price integerValue];
                         
                         NSNumber *total = [NSNumber numberWithInteger:(productPrice+shipmentPackagePrice)];
                         NSString *totalPrice = [[NSNumberFormatter IDRFormarter] stringFromNumber:total];

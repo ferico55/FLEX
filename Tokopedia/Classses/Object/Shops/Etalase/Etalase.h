@@ -17,4 +17,5 @@
 @property (nonatomic, strong) NSString *server_process_time;
 @property (nonatomic, strong) EtalaseResult *result;
 
++(RKObjectMapping*)mapping;
 @end
