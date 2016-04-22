@@ -11,7 +11,7 @@
 @implementation NSString (TPBaseUrl)
 
 + (NSString*)basicUrl {
-    return FBTweakValue(@"General", @"Environment", @"Tokopedia Base Url", @"http://www.tokopedia.com/ws",
+    return FBTweakValue(@"Network", @"Environment", @"Tokopedia Base Url", @"http://www.tokopedia.com/ws",
                         (@{
                            @"http://staging.tokopedia.com/ws" : @"Staging",
                            @"http://alpha.tokopedia.com/ws" : @"Alpha",
@@ -23,7 +23,7 @@
 
 
 + (NSString*)aceUrl {
-    return  FBTweakValue(@"General", @"Environment", @"Tokopedia Ace Url", @"https://ace.tokopedia.com",
+    return  FBTweakValue(@"Network", @"Environment", @"Tokopedia Ace Url", @"https://ace.tokopedia.com",
                          (@{
                             @"https://ace-staging.tokopedia.com" : @"Staging",
                             @"https://ace-alpha.tokopedia.com" : @"Alpha",
@@ -34,7 +34,7 @@
 }
 
 + (NSString*)v4Url {
-    return  FBTweakValue(@"General", @"Environment", @"Tokopedia v4 Url", @"https://ws.tokopedia.com",
+    return  FBTweakValue(@"Network", @"Environment", @"Tokopedia v4 Url", @"https://ws.tokopedia.com",
                          (@{
                             @"https://ws-staging.tokopedia.com" : @"Staging",
                             @"https://ws-alpha.tokopedia.com" : @"Alpha",
@@ -44,7 +44,7 @@
 }
 
 + (NSString*)topAdsUrl {
-    return  FBTweakValue(@"General", @"Environment", @"Tokopedia TopAds Url", @"https://ta.tokopedia.com",
+    return  FBTweakValue(@"Network", @"Environment", @"Tokopedia TopAds Url", @"https://ta.tokopedia.com",
                          (@{
                             @"https://ta-staging.tokopedia.com" : @"Staging",
                             @"https://ta-alpha.tokopedia.com" : @"Alpha",
