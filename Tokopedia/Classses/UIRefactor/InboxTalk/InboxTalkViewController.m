@@ -151,7 +151,7 @@
     cell.detailViewController = _detailViewController;
     cell.marksOpenedTalkAsRead = YES;
     cell.isSplitScreen = YES;
-
+    cell.enableDeepNavigation = NO;
     
     [cell setTalkViewModel:list.viewModel];
     
