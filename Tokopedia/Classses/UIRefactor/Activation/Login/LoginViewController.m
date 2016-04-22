@@ -789,24 +789,30 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
 }
 
 - (void)checkSecurityQuestion {
-    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-    [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_USERIDKEY];
-
-//    SecurityQuestionViewController *controller = [[SecurityQuestionViewController alloc] initWithNibName:@"SecurityQuestionViewController" bundle:nil];
-    SecurityQuestionViewController* controller = [SecurityQuestionViewController new];
-    controller.questionType1 = _login.result.security.user_check_security_1;
-    controller.questionType2 = _login.result.security.user_check_security_2;
-
-    controller.userID = _login.result.user_id;
-    controller.deviceID = _userManager.getMyDeviceToken;
-    controller.successAnswerCallback = ^(SecurityAnswer* answer) {
+    if(FBTweakValue(@"Security", @"Question", @"Enabled", YES)) {
+        TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+        [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_USERIDKEY];
+        
+        //    SecurityQuestionViewController *controller = [[SecurityQuestionViewController alloc] initWithNibName:@"SecurityQuestionViewController" bundle:nil];
+        SecurityQuestionViewController* controller = [SecurityQuestionViewController new];
+        controller.questionType1 = _login.result.security.user_check_security_1;
+        controller.questionType2 = _login.result.security.user_check_security_2;
+        
+        controller.userID = _login.result.user_id;
+        controller.deviceID = _userManager.getMyDeviceToken;
+        controller.successAnswerCallback = ^(SecurityAnswer* answer) {
+            [self setLoginIdentity];
+        };
+        
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
+        navigationController.navigationBar.translucent = NO;
+        
+        [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+    } else {
         [self setLoginIdentity];
-    };
+    }
     
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
-    navigationController.navigationBar.translucent = NO;
     
-    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
 }
 
 -(void)requestFailureLogin:(id)object
