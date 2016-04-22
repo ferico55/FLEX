@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 
+@objc(SecurityQuestionViewController)
 class SecurityQuestionViewController : UIViewController {
     /*
         questionType1 = "1" => Phone Number Question
@@ -26,13 +27,11 @@ class SecurityQuestionViewController : UIViewController {
     @IBOutlet var questionViewType1: UIView!
     @IBOutlet var questionTitle: UILabel!
     @IBOutlet var answerField: UITextField!
-    @IBOutlet var saveButton: UIButton!
     @IBOutlet var infoLabel: UILabel!
     
     @IBOutlet var questionViewType2: UIView!
     @IBOutlet var requestOTPButton: UIButton!
     @IBOutlet var otpField: UITextField!
-    @IBOutlet var saveOTPButton: UIButton!
     @IBOutlet var otpInfoLabel: UILabel!
     
     var _networkManager : TokopediaNetworkManager!
@@ -88,12 +87,17 @@ class SecurityQuestionViewController : UIViewController {
                 questionTitle.text = securityQuestion.data.title
                 self.setLabelSpacing(questionTitle)
                 answerField.placeholder = securityQuestion.data.example
+                
+                self.navigationItem.rightBarButtonItem = UIBarButtonItem.init(title: "Konfirmasi", style: .Plain, target: self, action: Selector("didTapSavePhoneButton"))
+                
             } else if(questionType1 == "0"){
                 //set OTP view
                 let buttonTitle = questionType2 == "1" ? "Kirim OTP ke HP" : "Kirim OTP ke Email"
                 self.view .addSubview(questionViewType2)
                 questionViewType2.HVD_fillInSuperViewWithInsets(UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
                 requestOTPButton .setTitle(buttonTitle, forState: .Normal)
+                
+                self.navigationItem.rightBarButtonItem = UIBarButtonItem.init(title: "Konfirmasi", style: .Plain, target: self, action: Selector("didSubmitOTP"))
             }
         }
     }
@@ -103,7 +107,7 @@ class SecurityQuestionViewController : UIViewController {
     }
     
     
-    @IBAction func didTapSavePhoneButton(sender: AnyObject) {
+    func didTapSavePhoneButton() {
         guard let text = answerField.text where !text.isEmpty else {
             let stickyAlert = StickyAlertView.init(errorMessages: ["Jawaban tidak boleh kosong"], delegate: self)
             stickyAlert.show()
@@ -164,7 +168,7 @@ class SecurityQuestionViewController : UIViewController {
                 onFailure: nil)
     }
     
-    @IBAction func didSubmitOTP(sender: AnyObject) {
+    func didSubmitOTP() {
         guard let text = otpField.text where !text.isEmpty else {
             let stickyAlert = StickyAlertView.init(errorMessages: ["Kode OTP tidak boleh kosong"], delegate: self)
             stickyAlert.show()

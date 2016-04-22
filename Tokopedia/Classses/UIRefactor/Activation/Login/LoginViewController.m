@@ -792,7 +792,8 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
     TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
     [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_USERIDKEY];
 
-    SecurityQuestionViewController *controller = [[SecurityQuestionViewController alloc] initWithNibName:@"SecurityQuestionViewController" bundle:nil];
+//    SecurityQuestionViewController *controller = [[SecurityQuestionViewController alloc] initWithNibName:@"SecurityQuestionViewController" bundle:nil];
+    SecurityQuestionViewController* controller = [SecurityQuestionViewController new];
     controller.questionType1 = _login.result.security.user_check_security_1;
     controller.questionType2 = _login.result.security.user_check_security_2;
 

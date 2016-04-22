@@ -14,8 +14,6 @@
             <string>GothamMedium</string>
             <string>GothamMedium</string>
             <string>GothamMedium</string>
-            <string>GothamMedium</string>
-            <string>GothamMedium</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -28,9 +26,7 @@
                 <outlet property="questionTitle" destination="7YU-C3-gGf" id="O6c-Vg-Gn6"/>
                 <outlet property="questionViewType1" destination="fb3-X1-Rgf" id="lgK-VN-m5o"/>
                 <outlet property="questionViewType2" destination="cvf-SG-bcO" id="Fp2-VA-YDH"/>
-                <outlet property="requestOTPButton" destination="70Z-V9-R9p" id="mgw-bj-WM3"/>
-                <outlet property="saveButton" destination="wFY-xc-5XM" id="n2H-ip-uqj"/>
-                <outlet property="saveOTPButton" destination="jJ8-vA-Ww9" id="c1w-vn-CaV"/>
+                <outlet property="requestOTPButton" destination="jJ8-vA-Ww9" id="9Aj-BV-9oz"/>
                 <outlet property="view" destination="iN0-l3-epB" id="NnD-FN-Ljw"/>
             </connections>
         </placeholder>
@@ -66,27 +62,6 @@
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits"/>
                 </textField>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wFY-xc-5XM">
-                    <rect key="frame" x="24" y="293" width="327" height="40"/>
-                    <animations/>
-                    <color key="backgroundColor" red="0.24313725489999999" green="0.66666666669999997" blue="0.14117647059999999" alpha="1" colorSpace="calibratedRGB"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="40" id="Idq-MP-bko"/>
-                        <constraint firstAttribute="width" constant="327" id="qnH-PC-3YF"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="15"/>
-                    <state key="normal" title="Simpan">
-                        <color key="titleColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
-                    </state>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                            <real key="value" value="5"/>
-                        </userDefinedRuntimeAttribute>
-                    </userDefinedRuntimeAttributes>
-                    <connections>
-                        <action selector="didTapSavePhoneButton:" destination="-1" eventType="touchUpInside" id="sfI-rH-Hrn"/>
-                    </connections>
-                </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vil-ej-5Hb">
                     <rect key="frame" x="25" y="54" width="326" height="96"/>
                     <animations/>
@@ -122,9 +97,7 @@
                 <constraint firstAttribute="trailing" secondItem="Vil-ej-5Hb" secondAttribute="trailing" constant="24" id="0bM-S8-5fj"/>
                 <constraint firstAttribute="trailing" secondItem="2i9-xJ-Zt0" secondAttribute="trailing" constant="24" id="2zq-g4-sJK"/>
                 <constraint firstItem="7YU-C3-gGf" firstAttribute="leading" secondItem="fb3-X1-Rgf" secondAttribute="leading" constant="24" id="AaU-1b-3P0"/>
-                <constraint firstItem="wFY-xc-5XM" firstAttribute="top" secondItem="2i9-xJ-Zt0" secondAttribute="bottom" constant="16" id="Qf1-xC-dFd"/>
                 <constraint firstAttribute="trailing" secondItem="xXr-1a-q2a" secondAttribute="trailing" constant="173" id="WOt-qd-XsR"/>
-                <constraint firstItem="wFY-xc-5XM" firstAttribute="leading" secondItem="fb3-X1-Rgf" secondAttribute="leading" constant="24" id="Xoq-TN-k2Y"/>
                 <constraint firstAttribute="bottom" secondItem="Vil-ej-5Hb" secondAttribute="bottom" constant="517" id="ZXZ-RS-7Xi"/>
                 <constraint firstItem="Vil-ej-5Hb" firstAttribute="leading" secondItem="fb3-X1-Rgf" secondAttribute="leading" constant="25" id="bHn-d7-v5x"/>
                 <constraint firstItem="xXr-1a-q2a" firstAttribute="top" secondItem="fb3-X1-Rgf" secondAttribute="top" constant="25" id="hJF-Ed-xxX"/>
@@ -133,7 +106,6 @@
                 <constraint firstAttribute="trailing" secondItem="xXr-1a-q2a" secondAttribute="trailing" constant="173" id="oYF-hb-Vnh"/>
                 <constraint firstItem="Vil-ej-5Hb" firstAttribute="top" secondItem="xXr-1a-q2a" secondAttribute="bottom" constant="8" id="tHB-m1-RDV"/>
                 <constraint firstItem="xXr-1a-q2a" firstAttribute="leading" secondItem="fb3-X1-Rgf" secondAttribute="leading" constant="25" id="vea-Kk-mUr"/>
-                <constraint firstAttribute="trailing" secondItem="wFY-xc-5XM" secondAttribute="trailing" constant="24" id="x6p-0k-Gxi"/>
                 <constraint firstItem="2i9-xJ-Zt0" firstAttribute="top" secondItem="7YU-C3-gGf" secondAttribute="bottom" constant="8" id="z5C-pF-GCy"/>
                 <constraint firstAttribute="trailing" secondItem="7YU-C3-gGf" secondAttribute="trailing" constant="25" id="zg2-ts-hhv"/>
             </constraints>
@@ -172,24 +144,14 @@
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Kode OTP" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="no8-Br-byW">
-                    <rect key="frame" x="24" y="167" width="193" height="30"/>
-                    <animations/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="30" id="qbt-Nn-brl"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <textInputTraits key="textInputTraits"/>
-                </textField>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="70Z-V9-R9p">
-                    <rect key="frame" x="225" y="167" width="125" height="30"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jJ8-vA-Ww9">
+                    <rect key="frame" x="24" y="145" width="325" height="40"/>
                     <animations/>
                     <color key="backgroundColor" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="30" id="OcJ-IC-3Fk"/>
-                        <constraint firstAttribute="width" constant="125" id="qYe-RN-zgQ"/>
+                        <constraint firstAttribute="height" constant="40" id="7GU-8L-efc"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="11"/>
+                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="15"/>
                     <state key="normal" title="OTP">
                         <color key="titleColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
@@ -199,55 +161,44 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                     <connections>
-                        <action selector="didTapRequestOTP:" destination="-1" eventType="touchUpInside" id="Cqv-LQ-hyN"/>
+                        <action selector="didTapRequestOTP:" destination="-1" eventType="touchDragInside" id="Jho-d5-mqF"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jJ8-vA-Ww9">
-                    <rect key="frame" x="25" y="220" width="325" height="40"/>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Masukkan Kode OTP" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="no8-Br-byW">
+                    <rect key="frame" x="25" y="238" width="326" height="30"/>
                     <animations/>
-                    <color key="backgroundColor" red="0.24313725489999999" green="0.66666666669999997" blue="0.14117647059999999" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="40" id="7GU-8L-efc"/>
+                        <constraint firstAttribute="height" constant="30" id="qbt-Nn-brl"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="15"/>
-                    <state key="normal" title="Simpan">
-                        <color key="titleColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
-                    </state>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                            <real key="value" value="5"/>
-                        </userDefinedRuntimeAttribute>
-                    </userDefinedRuntimeAttributes>
-                    <connections>
-                        <action selector="didSubmitOTP:" destination="-1" eventType="touchUpInside" id="wQd-de-l8R"/>
-                    </connections>
-                </button>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
             </subviews>
             <animations/>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="GeT-6j-7wr" secondAttribute="trailing" constant="25" id="1Kr-PP-CUU"/>
+                <constraint firstItem="no8-Br-byW" firstAttribute="top" secondItem="jJ8-vA-Ww9" secondAttribute="bottom" constant="53" id="4cX-ZY-ecd"/>
                 <constraint firstAttribute="trailing" secondItem="no8-Br-byW" secondAttribute="trailing" constant="209" id="5gN-Gn-hka"/>
-                <constraint firstAttribute="trailing" secondItem="70Z-V9-R9p" secondAttribute="trailing" constant="25" id="CbR-sC-J15"/>
                 <constraint firstItem="GeT-6j-7wr" firstAttribute="top" secondItem="EhP-Nl-24X" secondAttribute="bottom" constant="8" id="DbI-yn-5Sy"/>
                 <constraint firstItem="EhP-Nl-24X" firstAttribute="leading" secondItem="cvf-SG-bcO" secondAttribute="leading" constant="25" id="F6L-7x-44c"/>
                 <constraint firstItem="GeT-6j-7wr" firstAttribute="leading" secondItem="cvf-SG-bcO" secondAttribute="leading" constant="24" id="Iqj-H0-LmF"/>
                 <constraint firstItem="jJ8-vA-Ww9" firstAttribute="top" secondItem="no8-Br-byW" secondAttribute="bottom" constant="23" id="R7R-hH-g2y"/>
-                <constraint firstAttribute="trailing" secondItem="jJ8-vA-Ww9" secondAttribute="trailing" constant="25" id="Thh-s3-IY0"/>
-                <constraint firstItem="jJ8-vA-Ww9" firstAttribute="leading" secondItem="cvf-SG-bcO" secondAttribute="leading" constant="25" id="YlW-9P-IKg"/>
-                <constraint firstItem="no8-Br-byW" firstAttribute="leading" secondItem="cvf-SG-bcO" secondAttribute="leading" constant="24" id="bq2-Sl-vAW"/>
+                <constraint firstItem="jJ8-vA-Ww9" firstAttribute="top" secondItem="GeT-6j-7wr" secondAttribute="bottom" constant="-2" id="Svo-9j-RHq"/>
+                <constraint firstAttribute="trailing" secondItem="jJ8-vA-Ww9" secondAttribute="trailing" constant="26" id="Thh-s3-IY0"/>
+                <constraint firstItem="jJ8-vA-Ww9" firstAttribute="leading" secondItem="cvf-SG-bcO" secondAttribute="leading" constant="24" id="YlW-9P-IKg"/>
+                <constraint firstItem="no8-Br-byW" firstAttribute="leading" secondItem="cvf-SG-bcO" secondAttribute="leading" constant="25" id="bq2-Sl-vAW"/>
+                <constraint firstAttribute="trailing" secondItem="no8-Br-byW" secondAttribute="trailing" constant="24" id="df0-Da-skt"/>
                 <constraint firstItem="EhP-Nl-24X" firstAttribute="top" secondItem="cvf-SG-bcO" secondAttribute="top" constant="25" id="ebH-A5-bZl"/>
                 <constraint firstItem="no8-Br-byW" firstAttribute="top" secondItem="GeT-6j-7wr" secondAttribute="bottom" constant="20" id="jz2-pg-JPi"/>
-                <constraint firstItem="70Z-V9-R9p" firstAttribute="leading" secondItem="no8-Br-byW" secondAttribute="trailing" constant="8" id="mnR-m2-75V"/>
-                <constraint firstItem="70Z-V9-R9p" firstAttribute="top" secondItem="GeT-6j-7wr" secondAttribute="bottom" constant="20" id="rGR-kO-7xr"/>
                 <constraint firstAttribute="trailing" secondItem="EhP-Nl-24X" secondAttribute="trailing" constant="25" id="rNJ-RW-oH1"/>
-                <constraint firstItem="70Z-V9-R9p" firstAttribute="leading" secondItem="no8-Br-byW" secondAttribute="trailing" constant="14" id="s3P-o9-s2h"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <variation key="default">
                 <mask key="constraints">
+                    <exclude reference="R7R-hH-g2y"/>
                     <exclude reference="5gN-Gn-hka"/>
-                    <exclude reference="s3P-o9-s2h"/>
+                    <exclude reference="jz2-pg-JPi"/>
                 </mask>
             </variation>
             <point key="canvasLocation" x="756.5" y="1212.5"/>
