@@ -43,6 +43,12 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     IBOutlet UILabel *_productNameLabel;
 }
 
+- (void)setEnableDeepNavigation:(BOOL)enableDeepNavigation {
+    [self.productImageView setUserInteractionEnabled:enableDeepNavigation];
+    [self.userImageView setUserInteractionEnabled:enableDeepNavigation];
+    [self.middleView setUserInteractionEnabled:enableDeepNavigation];
+}
+
 #pragma mark - Initialization
 
 - (void)awakeFromNib {
@@ -62,19 +68,17 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     _navigateController = [NavigateViewController new];
     _isSplitScreen = NO;
     
-    BOOL enableDeepNavigation = [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone;
-    
     UITapGestureRecognizer *productGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapToProduct)];
     [self.productImageView addGestureRecognizer:productGesture];
-    [self.productImageView setUserInteractionEnabled:enableDeepNavigation];
+    self.productImageView.userInteractionEnabled = YES;
     
     UITapGestureRecognizer *userGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapToUser)];
     [self.userImageView addGestureRecognizer:userGesture];
-    [self.userImageView setUserInteractionEnabled:enableDeepNavigation];
+    self.userImageView.userInteractionEnabled = YES;
     
     UITapGestureRecognizer *talkGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapToDetailTalk:)];
     [self.middleView addGestureRecognizer:talkGesture];
-    [self.middleView setUserInteractionEnabled:enableDeepNavigation];
+    self.middleView.userInteractionEnabled = YES;
     
     CGFloat borderWidth = 0.5f;
     

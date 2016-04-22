@@ -91,5 +91,7 @@
 @property (nonatomic, strong) ReputationDetail *selectedTalkReputation;
 @property (strong, nonatomic) ProductTalkDetailViewController *detailViewController;
 
+@property (nonatomic) BOOL enableDeepNavigation;
+
 
 @end
