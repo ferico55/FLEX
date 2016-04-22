@@ -251,8 +251,11 @@ typedef enum
                                [self setProduct:_ATCForm.form.product_detail];
                                [self setAddress:_ATCForm.form.destination];
                                [self setPlacePicker];
-                               [self requestRate];
-                
+                               
+                               if (_ATCForm.form.destination.address_id != 0) {
+                                   [self requestRate];
+                               }
+                            
                                [self adjustViewIsLoading:NO];
                                
                                [_tableView reloadData];
