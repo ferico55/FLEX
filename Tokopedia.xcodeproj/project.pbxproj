@@ -2232,11 +2232,25 @@
 		7ACE9C571BB00956006C4BB7 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C511BB00956006C4BB7 /* FBSDKLoginKit.framework */; };
 		7ACE9C581BB00956006C4BB7 /* FBSDKMessengerShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */; };
 		7ACE9C591BB00956006C4BB7 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C531BB00956006C4BB7 /* FBSDKShareKit.framework */; };
+		850E518B1CCA098C008D5F70 /* OpenShopViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 850E518A1CCA098C008D5F70 /* OpenShopViewController.m */; };
+		850E51941CCA1556008D5F70 /* OpenShopDomainViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 850E51921CCA1556008D5F70 /* OpenShopDomainViewCell.m */; };
+		850E51951CCA1556008D5F70 /* OpenShopDomainViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 850E51931CCA1556008D5F70 /* OpenShopDomainViewCell.xib */; };
+		850E51991CCA161C008D5F70 /* OpenShopImageViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 850E51971CCA161C008D5F70 /* OpenShopImageViewCell.m */; };
+		850E519A1CCA161C008D5F70 /* OpenShopImageViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 850E51981CCA161C008D5F70 /* OpenShopImageViewCell.xib */; };
+		850E519E1CCA1820008D5F70 /* OpenShopNameViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 850E519C1CCA1820008D5F70 /* OpenShopNameViewCell.m */; };
+		850E519F1CCA1820008D5F70 /* OpenShopNameViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 850E519D1CCA1820008D5F70 /* OpenShopNameViewCell.xib */; };
+		851069211CC892280086B47A /* ShopPaymentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 851069201CC892280086B47A /* ShopPaymentViewController.m */; };
+		851069271CC8C02D0086B47A /* UITableView+LoadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 851069261CC8C02D0086B47A /* UITableView+LoadingView.m */; };
+		8510692A1CC8D7D40086B47A /* OpenShopRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 851069291CC8D7D40086B47A /* OpenShopRequest.m */; };
+		8510692D1CC8D9470086B47A /* OpenShopShipment.m in Sources */ = {isa = PBXBuildFile; fileRef = 8510692C1CC8D9470086B47A /* OpenShopShipment.m */; };
+		851069301CC8D9550086B47A /* OpenShopInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 8510692F1CC8D9550086B47A /* OpenShopInfo.m */; };
 		853A222C1ADD0AB600DD1508 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222B1ADD0AB600DD1508 /* CoreVideo.framework */; };
 		853A222E1ADD0ABC00DD1508 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */; };
 		853A22301ADD0AC800DD1508 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222F1ADD0AC800DD1508 /* CoreMedia.framework */; };
 		853A22321ADD0ADB00DD1508 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A22311ADD0ADB00DD1508 /* AVFoundation.framework */; };
 		853A22341ADD0AE300DD1508 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A22331ADD0AE300DD1508 /* libiconv.dylib */; };
+		853D63C01CCDCC840069F90B /* OpenShopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 853D63BE1CCDCC840069F90B /* OpenShopViewController.swift */; };
+		853D63C11CCDCC840069F90B /* OpenShopViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 853D63BF1CCDCC840069F90B /* OpenShopViewController.xib */; };
 		854552271A09C1C200678144 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 854552261A09C1C200678144 /* QuartzCore.framework */; };
 		8565E1DA1B9401E600843388 /* GoogleOpenSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8565E1D81B9401E600843388 /* GoogleOpenSource.framework */; };
 		8565E1DB1B9401E600843388 /* GooglePlus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8565E1D91B9401E600843388 /* GooglePlus.framework */; };
@@ -5631,11 +5645,34 @@
 		7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKMessengerShareKit.framework; sourceTree = "<group>"; };
 		7ACE9C531BB00956006C4BB7 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
 		7F9B6E71F79FE95868A4BBAE /* Pods-Tokopedia.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.release.xcconfig"; sourceTree = "<group>"; };
+		850E51891CCA098C008D5F70 /* OpenShopViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenShopViewController.h; sourceTree = "<group>"; };
+		850E518A1CCA098C008D5F70 /* OpenShopViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenShopViewController.m; sourceTree = "<group>"; };
+		850E51911CCA1556008D5F70 /* OpenShopDomainViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenShopDomainViewCell.h; sourceTree = "<group>"; };
+		850E51921CCA1556008D5F70 /* OpenShopDomainViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenShopDomainViewCell.m; sourceTree = "<group>"; };
+		850E51931CCA1556008D5F70 /* OpenShopDomainViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OpenShopDomainViewCell.xib; sourceTree = "<group>"; };
+		850E51961CCA161C008D5F70 /* OpenShopImageViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenShopImageViewCell.h; sourceTree = "<group>"; };
+		850E51971CCA161C008D5F70 /* OpenShopImageViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenShopImageViewCell.m; sourceTree = "<group>"; };
+		850E51981CCA161C008D5F70 /* OpenShopImageViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OpenShopImageViewCell.xib; sourceTree = "<group>"; };
+		850E519B1CCA1820008D5F70 /* OpenShopNameViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenShopNameViewCell.h; sourceTree = "<group>"; };
+		850E519C1CCA1820008D5F70 /* OpenShopNameViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenShopNameViewCell.m; sourceTree = "<group>"; };
+		850E519D1CCA1820008D5F70 /* OpenShopNameViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OpenShopNameViewCell.xib; sourceTree = "<group>"; };
+		8510691F1CC892280086B47A /* ShopPaymentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopPaymentViewController.h; sourceTree = "<group>"; };
+		851069201CC892280086B47A /* ShopPaymentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopPaymentViewController.m; sourceTree = "<group>"; };
+		851069251CC8C02D0086B47A /* UITableView+LoadingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+LoadingView.h"; sourceTree = "<group>"; };
+		851069261CC8C02D0086B47A /* UITableView+LoadingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+LoadingView.m"; sourceTree = "<group>"; };
+		851069281CC8D7D40086B47A /* OpenShopRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenShopRequest.h; sourceTree = "<group>"; };
+		851069291CC8D7D40086B47A /* OpenShopRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenShopRequest.m; sourceTree = "<group>"; };
+		8510692B1CC8D9470086B47A /* OpenShopShipment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenShopShipment.h; sourceTree = "<group>"; };
+		8510692C1CC8D9470086B47A /* OpenShopShipment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenShopShipment.m; sourceTree = "<group>"; };
+		8510692E1CC8D9550086B47A /* OpenShopInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenShopInfo.h; sourceTree = "<group>"; };
+		8510692F1CC8D9550086B47A /* OpenShopInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenShopInfo.m; sourceTree = "<group>"; };
 		853A222B1ADD0AB600DD1508 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		853A222F1ADD0AC800DD1508 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		853A22311ADD0ADB00DD1508 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		853A22331ADD0AE300DD1508 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
+		853D63BE1CCDCC840069F90B /* OpenShopViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenShopViewController.swift; sourceTree = "<group>"; };
+		853D63BF1CCDCC840069F90B /* OpenShopViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OpenShopViewController.xib; sourceTree = "<group>"; };
 		854552261A09C1C200678144 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		8565E1D81B9401E600843388 /* GoogleOpenSource.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleOpenSource.framework; sourceTree = "<group>"; };
 		8565E1D91B9401E600843388 /* GooglePlus.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GooglePlus.framework; sourceTree = "<group>"; };
@@ -5850,6 +5887,8 @@
 				629A0FB91CC09590009DDBBC /* UITableView+RefreshControl.m */,
 				629A0FBA1CC09590009DDBBC /* UITextView+UITextView_Placeholder.h */,
 				629A0FBB1CC09590009DDBBC /* UITextView+UITextView_Placeholder.m */,
+				851069251CC8C02D0086B47A /* UITableView+LoadingView.h */,
+				851069261CC8C02D0086B47A /* UITableView+LoadingView.m */,
 				629A0FBC1CC09590009DDBBC /* UIViewCategory.swift */,
 			);
 			path = Category;
@@ -8975,6 +9014,8 @@
 				629A16EA1CC09592009DDBBC /* MyShopPaymentCell.xib */,
 				629A16EB1CC09592009DDBBC /* MyShopPaymentViewController.h */,
 				629A16EC1CC09592009DDBBC /* MyShopPaymentViewController.m */,
+				8510691F1CC892280086B47A /* ShopPaymentViewController.h */,
+				851069201CC892280086B47A /* ShopPaymentViewController.m */,
 				629A16ED1CC09592009DDBBC /* MyShopPaymentViewController.xib */,
 			);
 			path = MyShopPayment;
@@ -9746,6 +9787,8 @@
 		629A18C11CC09593009DDBBC /* Create */ = {
 			isa = PBXGroup;
 			children = (
+				851069281CC8D7D40086B47A /* OpenShopRequest.h */,
+				851069291CC8D7D40086B47A /* OpenShopRequest.m */,
 				629A18C21CC09593009DDBBC /* BerhasilBukaTokoViewController.h */,
 				629A18C31CC09593009DDBBC /* BerhasilBukaTokoViewController.m */,
 				629A18C41CC09593009DDBBC /* BerhasilBukaTokoViewController.xib */,
@@ -9757,6 +9800,23 @@
 				629A18CA1CC09593009DDBBC /* ShopDeliveryCell.h */,
 				629A18CB1CC09593009DDBBC /* ShopDeliveryCell.m */,
 				629A18CC1CC09593009DDBBC /* string_create_shop.h */,
+				8510692B1CC8D9470086B47A /* OpenShopShipment.h */,
+				8510692C1CC8D9470086B47A /* OpenShopShipment.m */,
+				8510692E1CC8D9550086B47A /* OpenShopInfo.h */,
+				8510692F1CC8D9550086B47A /* OpenShopInfo.m */,
+				853D63BE1CCDCC840069F90B /* OpenShopViewController.swift */,
+				853D63BF1CCDCC840069F90B /* OpenShopViewController.xib */,
+				850E51891CCA098C008D5F70 /* OpenShopViewController.h */,
+				850E518A1CCA098C008D5F70 /* OpenShopViewController.m */,
+				850E51911CCA1556008D5F70 /* OpenShopDomainViewCell.h */,
+				850E51921CCA1556008D5F70 /* OpenShopDomainViewCell.m */,
+				850E51931CCA1556008D5F70 /* OpenShopDomainViewCell.xib */,
+				850E51961CCA161C008D5F70 /* OpenShopImageViewCell.h */,
+				850E51971CCA161C008D5F70 /* OpenShopImageViewCell.m */,
+				850E51981CCA161C008D5F70 /* OpenShopImageViewCell.xib */,
+				850E519B1CCA1820008D5F70 /* OpenShopNameViewCell.h */,
+				850E519C1CCA1820008D5F70 /* OpenShopNameViewCell.m */,
+				850E519D1CCA1820008D5F70 /* OpenShopNameViewCell.xib */,
 			);
 			path = Create;
 			sourceTree = "<group>";
@@ -11702,6 +11762,7 @@
 				629A24E21CC09598009DDBBC /* icon_problem_new_user.png in Resources */,
 				629A25001CC09598009DDBBC /* icon_sad20.png in Resources */,
 				629A25F41CC09598009DDBBC /* icon_grid_satu@3x.png in Resources */,
+				850E519A1CCA161C008D5F70 /* OpenShopImageViewCell.xib in Resources */,
 				629A22511CC09598009DDBBC /* SettingPasswordViewController.xib in Resources */,
 				629A25A41CC09598009DDBBC /* JakartaMap.png in Resources */,
 				629A21A11CC09598009DDBBC /* DetailMyReviewReputationViewController.xib in Resources */,
@@ -11914,6 +11975,7 @@
 				629A25E31CC09598009DDBBC /* slide2e.png in Resources */,
 				629A25C51CC09598009DDBBC /* logo.png in Resources */,
 				629A239E1CC09598009DDBBC /* default-girl.png in Resources */,
+				850E51951CCA1556008D5F70 /* OpenShopDomainViewCell.xib in Resources */,
 				629A26121CC09598009DDBBC /* ic_more.png in Resources */,
 				629A23371CC09598009DDBBC /* ProductTableViewCell.xib in Resources */,
 				629A24981CC09598009DDBBC /* icon_move_gudang@2x.png in Resources */,
@@ -12322,6 +12384,7 @@
 				629A23CF1CC09598009DDBBC /* icon_button_wishlist_active@2x.png in Resources */,
 				629A21BD1CC09598009DDBBC /* MyReviewReputationCell.xib in Resources */,
 				629A252F1CC09598009DDBBC /* icon_signin@2x.png in Resources */,
+				853D63C11CCDCC840069F90B /* OpenShopViewController.xib in Resources */,
 				629A24921CC09598009DDBBC /* icon_more@2x.png in Resources */,
 				629A21E21CC09598009DDBBC /* ReputationDetailViewController.xib in Resources */,
 				629A25461CC09598009DDBBC /* icon_sold@3x.png in Resources */,
@@ -12359,6 +12422,7 @@
 				629A227D1CC09598009DDBBC /* ShopInfoPaymentCell.xib in Resources */,
 				629A24861CC09598009DDBBC /* icon_medal_gold14@3x.png in Resources */,
 				629A24701CC09598009DDBBC /* icon_medal14@2x.png in Resources */,
+				850E519F1CCA1820008D5F70 /* OpenShopNameViewCell.xib in Resources */,
 				629A23051CC09598009DDBBC /* TxOrderConfirmationViewController.xib in Resources */,
 				629A23821CC09598009DDBBC /* icon_1@2x.png in Resources */,
 				629A26351CC09598009DDBBC /* icon_arrow_down_grey.png in Resources */,
@@ -12936,6 +13000,7 @@
 				629A1E371CC09598009DDBBC /* AdvanceReview.m in Sources */,
 				629A20891CC09598009DDBBC /* TKPDTabInboxMessageNavigationController.m in Sources */,
 				629A22ED1CC09598009DDBBC /* MappingLDExtension.m in Sources */,
+				851069211CC892280086B47A /* ShopPaymentViewController.m in Sources */,
 				629A20D11CC09598009DDBBC /* GeneralTableViewController.m in Sources */,
 				629A20791CC09598009DDBBC /* DataRequest.m in Sources */,
 				629A1E461CC09598009DDBBC /* TalkResult.m in Sources */,
@@ -13330,6 +13395,7 @@
 				629A20C61CC09598009DDBBC /* GeneralReviewCell.m in Sources */,
 				629A22C51CC09598009DDBBC /* TransactionShipmentATCViewController.m in Sources */,
 				629A1F751CC09598009DDBBC /* TKPString.m in Sources */,
+				8510692D1CC8D9470086B47A /* OpenShopShipment.m in Sources */,
 				629A20311CC09598009DDBBC /* AddImageCaptionViewController.swift in Sources */,
 				629A22BB1CC09598009DDBBC /* RequestATC.m in Sources */,
 				629A1F5C1CC09598009DDBBC /* AddProductSubmit.m in Sources */,
@@ -13344,6 +13410,7 @@
 				629A1E191CC09598009DDBBC /* Deposit.m in Sources */,
 				629A265E1CC09598009DDBBC /* MGSwipeButton.m in Sources */,
 				629A21FB1CC09598009DDBBC /* ProductQuantityCell.m in Sources */,
+				850E51991CCA161C008D5F70 /* OpenShopImageViewCell.m in Sources */,
 				629A1DC51CC09598009DDBBC /* ALAsset+Date.m in Sources */,
 				629A1E721CC09598009DDBBC /* HotlistResultInfo.m in Sources */,
 				629A1F251CC09598009DDBBC /* SearchAWSShop.m in Sources */,
@@ -13364,6 +13431,7 @@
 				629A1E541CC09598009DDBBC /* FavoriteShopActionResult.m in Sources */,
 				629A20EB1CC09598009DDBBC /* HotlistCell.m in Sources */,
 				629A1E851CC09598009DDBBC /* ResolutionCenterDetail.m in Sources */,
+				8510692A1CC8D7D40086B47A /* OpenShopRequest.m in Sources */,
 				629A1EF71CC09598009DDBBC /* NotificationFormResult.m in Sources */,
 				629A22D41CC09598009DDBBC /* TransactionCartShippingViewController.m in Sources */,
 				629A22DE1CC09598009DDBBC /* TransactionPaymenViewController.m in Sources */,
@@ -13467,6 +13535,7 @@
 				629A20121CC09598009DDBBC /* AlertInfoView.m in Sources */,
 				629A1EF21CC09598009DDBBC /* BankAccountGetDefaultForm.m in Sources */,
 				629A213D1CC09598009DDBBC /* WebViewController.m in Sources */,
+				850E519E1CCA1820008D5F70 /* OpenShopNameViewCell.m in Sources */,
 				629A21A31CC09598009DDBBC /* DetailReputationReviewHeaderComponent.mm in Sources */,
 				629A1EA61CC09598009DDBBC /* RatingResult.m in Sources */,
 				629A1EE71CC09598009DDBBC /* ProfileInfo.m in Sources */,
@@ -13663,6 +13732,7 @@
 				629A1FAA1CC09598009DDBBC /* TransactionSummaryBCAParam.m in Sources */,
 				629A1EB71CC09598009DDBBC /* ManageProductResult.m in Sources */,
 				629A21A21CC09598009DDBBC /* DetailReputationReviewComponent.mm in Sources */,
+				853D63C01CCDCC840069F90B /* OpenShopViewController.swift in Sources */,
 				629A1FB31CC09598009DDBBC /* TxEMoneyResult.m in Sources */,
 				629A20621CC09598009DDBBC /* FilterCategoryViewController.m in Sources */,
 				629A21141CC09598009DDBBC /* RequestCancelResolution.m in Sources */,
@@ -13688,6 +13758,7 @@
 				629A20EA1CC09598009DDBBC /* HomeFlowLayout.m in Sources */,
 				629A22211CC09598009DDBBC /* ShipmentStatusCell.m in Sources */,
 				629A21E51CC09598009DDBBC /* ReputationMyProductViewController.m in Sources */,
+				851069301CC8D9550086B47A /* OpenShopInfo.m in Sources */,
 				629A1FAC1CC09598009DDBBC /* TransactionSummaryResult.m in Sources */,
 				629A1DCC1CC09598009DDBBC /* NSString+TPBaseUrl.m in Sources */,
 				629A1E4D1CC09598009DDBBC /* ListFavorited.m in Sources */,
@@ -13810,6 +13881,7 @@
 				629A21B31CC09598009DDBBC /* MyReviewDetailDataManager.mm in Sources */,
 				629A1FB11CC09598009DDBBC /* TxEmoney.m in Sources */,
 				629A207A1CC09598009DDBBC /* ContactUsFormCategoryCell.m in Sources */,
+				851069271CC8C02D0086B47A /* UITableView+LoadingView.m in Sources */,
 				629A213F1CC09598009DDBBC /* MyShopAddressDetailViewController.m in Sources */,
 				629A225F1CC09598009DDBBC /* CreateShopViewController.m in Sources */,
 				629A224E1CC09598009DDBBC /* SettingNotificationViewController.m in Sources */,
@@ -13871,10 +13943,12 @@
 				629A1EFE1CC09598009DDBBC /* PromoResponse.m in Sources */,
 				629A22821CC09598009DDBBC /* ShopNotesDetailViewController.m in Sources */,
 				629A1F691CC09598009DDBBC /* JNE.m in Sources */,
+				850E518B1CCA098C008D5F70 /* OpenShopViewController.m in Sources */,
 				629A21091CC09598009DDBBC /* InboxResolutionCenterComplainViewController.m in Sources */,
 				629A1EEC1CC09598009DDBBC /* AddressForm.m in Sources */,
 				629A22FC1CC09598009DDBBC /* TxOrderConfirmationDetailViewController.m in Sources */,
 				629A1FAD1CC09598009DDBBC /* Veritrans.m in Sources */,
+				850E51941CCA1556008D5F70 /* OpenShopDomainViewCell.m in Sources */,
 				629A1EA51CC09598009DDBBC /* RatingResponse.m in Sources */,
 				629A1F011CC09598009DDBBC /* PromoShopImage.m in Sources */,
 				629A21ED1CC09598009DDBBC /* HeaderCollectionReusableView.m in Sources */,
@@ -14152,7 +14226,7 @@
 				GCC_PREFIX_HEADER = "Tokopedia/Tokopedia-Prefix.pch";
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Tokopedia/Tokopedia-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -14199,7 +14273,7 @@
 				GCC_PREFIX_HEADER = "Tokopedia/Tokopedia-Prefix.pch";
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Tokopedia/Tokopedia-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
