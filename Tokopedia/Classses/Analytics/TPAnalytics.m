@@ -330,5 +330,13 @@
     [analytics.dataLayer push:data];
 }
 
++ (void)trackSnapSearchCategory:(NSString *)categoryName {
+    TPAnalytics *analytics = [[self alloc] init];
+    NSDictionary *data = @{
+                           @"event" : @"snapSearchCategory",
+                           @"categoryName" : categoryName,
+                           };
+    [analytics.dataLayer push:data];
+}
 
 @end
