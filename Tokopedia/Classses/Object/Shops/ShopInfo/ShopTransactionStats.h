@@ -24,6 +24,6 @@
 @property (nonatomic, strong) NSString *shop_tx_show_percentage_1_year;
 @property (nonatomic, strong) NSString *shop_tx_success_rate_3_month;
 
-
++(RKObjectMapping*)mapping;
 
 @end

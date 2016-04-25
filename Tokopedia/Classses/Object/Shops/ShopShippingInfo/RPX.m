@@ -9,5 +9,18 @@
 #import "RPX.h"
 
 @implementation RPX
++(NSDictionary *)attributeMappingDictionary
+{
+    NSArray *keys = @[@"whitelisted_idrop",
+                      @"indomaret_logo"];
+    return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
+}
+
++(RKObjectMapping*)mapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+    return mapping;
+}
 
 @end

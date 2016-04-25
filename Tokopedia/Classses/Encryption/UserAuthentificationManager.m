@@ -20,12 +20,8 @@
 {
     self = [super init];
     if (self) {
-        id rootController = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
-        _auth = [NSMutableDictionary dictionaryWithDictionary:((MainViewController*)rootController).auth];
-        if ([_auth objectForKey:@"user_id"] == nil) {
-            TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
-            _auth = [NSMutableDictionary dictionaryWithDictionary:[secureStorage keychainDictionary]];
-        }
+        TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+        _auth = [NSMutableDictionary dictionaryWithDictionary:[secureStorage keychainDictionary]];
     }
     return self;
 }
@@ -65,7 +61,11 @@
 }
 
 - (NSString*)getMyDeviceToken {
-    return [_auth objectForKey:@"device_token"] ?: @"0";
+    if ([[_auth objectForKey:@"device_token"] isKindOfClass:[NSString class]]) {
+        return [_auth objectForKey:@"device_token"]?: @"0";
+    } else {
+        return [[_auth objectForKey:@"device_token"] stringValue]?: @"0";
+    }
 }
 
 //auto increment from database that had been saved in secure storage
@@ -88,16 +88,12 @@
     return [NSString stringWithFormat: @"%@", shopHasTerms]?:@"";
 }
 
--(CategoryDetail *)getLastProductAddCategory
+-(Breadcrumb*)getLastProductAddCategory
 {
-    if ([_auth objectForKey:LAST_CATEGORY_NAME]) {
-        CategoryDetail *category = [CategoryDetail new];
-        category.categoryId = [_auth objectForKey:LAST_CATEGORY_VALUE]?:@"0";
-        category.name = [_auth objectForKey:LAST_CATEGORY_NAME]?:@"";
-        return category;
-    } else {
-        return nil;
-    }
+    Breadcrumb *category = [Breadcrumb new];
+    category.department_id = [_auth objectForKey:LAST_CATEGORY_VALUE]?:@"";
+    category.department_name = [_auth objectForKey:LAST_CATEGORY_NAME]?:@"";
+    return category;
 }
 
 - (NSDictionary *)autoAddParameter:(id)params
@@ -221,6 +217,20 @@
     } else {
         return nil;
     }
+}
+
++ (void)ensureDeviceIdExistence {
+    // This is done to prevent users from getting kicked after login
+    // that is caused by some devices that don't have device tokens.
+    
+    UserAuthentificationManager* authManager = [UserAuthentificationManager new];
+    NSString* deviceId = [authManager getMyDeviceToken];
+    
+    if ([@"0" isEqualToString:deviceId]) {
+        deviceId = [[NSUUID UUID] UUIDString];
+    }
+    
+    [[TKPDSecureStorage standardKeyChains] setKeychainWithValue:deviceId withKey:kTKPD_DEVICETOKENKEY];
 }
 
 @end

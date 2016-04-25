@@ -133,6 +133,14 @@
 
 // MARK: UIImagePickerControllerDelegate methods
 
+-(void)imagePickerControllerDidCancel:(UIImagePickerController *)picker{
+    __weak typeof(self) wself = self;
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [wself.parentViewController dismissViewControllerAnimated:NO completion:nil];
+    });
+}
+
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     [_spinner startAnimating];

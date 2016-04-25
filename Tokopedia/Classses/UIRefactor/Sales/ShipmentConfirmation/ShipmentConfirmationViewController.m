@@ -16,7 +16,6 @@
 #import "FilterShipmentConfirmationViewController.h"
 #import "SubmitShipmentConfirmationViewController.h"
 #import "ChangeCourierViewController.h"
-#import "TKPDTabProfileNavigationController.h"
 #import "CancelShipmentViewController.h"
 #import "NavigateViewController.h"
 #import "ActionOrder.h"
@@ -476,7 +475,7 @@
                                                       API_SHOP_ADDRESS_CITY,
                                                       API_SHOP_ADDRESS_PROVINCE,
                                                       API_SHOP_ADDRESS_COUNTRY,
-                                                      API_SHOP_ADDRESS_POSTAL
+                                                      API_SHOP_ADDRESS_POSTAL,
                                                       API_SHOP_SHIPPER_PHONE]];
     
     RKObjectMapping *orderDeadlineMapping = [RKObjectMapping mappingForClass:[OrderDeadline class]];

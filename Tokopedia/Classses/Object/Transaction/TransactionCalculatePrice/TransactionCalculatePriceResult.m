@@ -9,5 +9,22 @@
 #import "TransactionCalculatePriceResult.h"
 
 @implementation TransactionCalculatePriceResult
++(NSDictionary *)attributeMappingDictionary
+{
+    return nil;
+}
+
++(RKObjectMapping*)mapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"product" toKeyPath:@"product" withMapping:[ProductDetail mapping]]];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"rpx" toKeyPath:@"rpx" withMapping:[RPX mapping]]];
+    
+    RKRelationshipMapping *relMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"shipment" toKeyPath:@"shipment" withMapping:[ShippingInfoShipments mapping]];
+    [mapping addPropertyMapping:relMapping];
+
+    return mapping;
+}
 
 @end

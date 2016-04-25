@@ -30,6 +30,14 @@
     }
 }
 
+- (NSURL *)uriNext {
+    return [NSURL URLWithString:_uri_next];
+}
+
+- (NSURL *)uriPrevious {
+    return [NSURL URLWithString:_uri_previous];
+}
+
 +(NSDictionary *)attributeMappingDictionary
 {
     NSArray *keys = @[@"uri_next",
@@ -37,11 +45,11 @@
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }
 
-+(RKObjectMapping*)mapping
-{
-    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
-    [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
-    return mapping;
++ (RKObjectMapping*)mapping {
+    RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
+    [pagingMapping addAttributeMappingsFromArray:@[@"uri_next",
+                                                   @"uri_previous"]];
+    return pagingMapping;
 }
 
 @end

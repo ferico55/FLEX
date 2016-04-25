@@ -12,7 +12,7 @@
 #import "MethodList.h"
 #import "OrderDetailForm.h"
 
-@interface TxOrderConfirmPaymentFormForm : NSObject
+@interface TxOrderConfirmPaymentFormForm : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSArray *bank_account;
 @property (nonatomic, strong) NSArray *sysbank_account;

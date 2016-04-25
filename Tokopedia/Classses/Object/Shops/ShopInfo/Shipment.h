@@ -17,4 +17,6 @@
 @property (nonatomic, strong) NSString *shipment_image;
 @property (nonatomic, strong) NSString *shipment_name;
 
++(RKObjectMapping*)mapping;
+
 @end

@@ -23,6 +23,7 @@
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
     [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"result" toKeyPath:@"result" withMapping:[UploadImageResult mapping]]];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data" toKeyPath:@"data" withMapping:[ImageResult mapping]]];
     return mapping;
 }
 

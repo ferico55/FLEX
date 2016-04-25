@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface OrderDetailForm : NSObject
+@interface OrderDetailForm : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *order_left_amount_idr;
 @property (nonatomic, strong) NSString *order_deposit_used_idr;

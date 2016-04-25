@@ -37,8 +37,6 @@
 #import "HelpfulReviewResponse.h"
 #import "HelpfulReviewResult.h"
 
-
-
 @interface HelpfulReviewRequest()<TokopediaNetworkManagerDelegate>
 @end
 
@@ -51,8 +49,7 @@
 - (id)init
 {
     self = [super init];
-    if (self)
-    {
+    if (self) {
         
     }
     return self;
@@ -63,9 +60,34 @@
     networkManager.delegate = self;
     networkManager.tagRequest = 1;
     networkManager.isParameterNotEncrypted = NO;
+    networkManager.isUsingHmac = YES;
     
     _productId = productId;
-    [networkManager doRequest];
+//    [networkManager doRequest];
+    
+    [networkManager requestWithBaseUrl:[NSString v4Url]
+                                  path:@"/v4/product/get_helpful_review.pl"
+                                method:RKRequestMethodGET
+                             parameter:@{@"product_id" : _productId}
+                               mapping:[HelpfulReviewResponse mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                 NSDictionary *resultDict = ((RKMappingResult*) successResult).dictionary;
+                                 id stat = [resultDict objectForKey:@""];
+                                 HelpfulReviewResponse *tempReview = stat;
+                                 reviewResult = tempReview.data;
+                                 
+                                 for(DetailReputationReview *detailReputation in reviewResult.list){
+                                     detailReputation.product_id = _productId;
+                                     detailReputation.review_product_id = _productId;
+                                 }
+                                 
+                                 [_delegate didReceiveHelpfulReview:reviewResult.list];
+                             }
+                             onFailure:^(NSError *errorResult) {
+                                 
+                                 
+                             }];
+    
 }
 
 #pragma mark - TokopediaNetworkManager Delegate
@@ -199,6 +221,10 @@
     HelpfulReviewResponse *tempReview = stat;
     reviewResult = tempReview.result;
     
+    for(DetailReputationReview *detailReputation in reviewResult.helpful_reviews){
+        detailReputation.product_id = _productId;
+        detailReputation.review_product_id = _productId;
+    }
     
     [_delegate didReceiveHelpfulReview:reviewResult.helpful_reviews];
     

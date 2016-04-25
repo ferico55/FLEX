@@ -10,4 +10,14 @@
 
 @implementation GenerateHostResult
 
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *generateHostResultMapping = [RKObjectMapping mappingForClass:[GenerateHostResult class]];
+    
+    [generateHostResultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"generated_host"
+                                                                                              toKeyPath:@"generated_host"
+                                                                                            withMapping:[GeneratedHost mapping]]];
+    
+    return generateHostResultMapping;
+}
+
 @end

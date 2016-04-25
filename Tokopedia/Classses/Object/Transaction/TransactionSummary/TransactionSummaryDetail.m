@@ -66,48 +66,51 @@ NSString *const TkpCartCreditCard = @"credit_card";
 //@property (nonatomic, strong) NSArray *installment_bank_option;
 
 + (NSDictionary *)attributeMappingDictionary {
-    NSArray *keys = @[API_CONFIRMATION_CODE_KEY,
-                      API_SUMMARY_GRAN_TOTAL_BEFORE_FEE_IDR_KEY,
-                      API_PROCESSING_KEY,
-                      API_DISCOUNT_GATEWAY_KEY,
-                      API_USER_DEPOSIT_KEY,
-                      API_STATUS_UNIK_KEY,
-                      API_LOCK_MANDIRI_KEY,
-                      API_DEPOSIT_AMOUNT_KEY,
-                      API_VOUCHER_AMOUNT_KEY,
-                      API_GRAND_TOTAL_BEFORE_FEE_KEY,
-                      API_CONFIRMATION_CODE_IDR_KEY,
-                      API_PAYMENT_LEFT_KEY,
-                      API_VOUCHER_AMOUNT_IDR_KEY,
-                      API_CONFIRMATION_DUE_DATE_KEY,
-                      API_DEPOSIT_AFTER_KEY,
-                      API_GRAND_TOTAL_KEY,
-                      API_PAYMENT_LEFT_IDR_KEY,
-                      API_CONFIRMATION_ID_KEY,
-                      API_DEPOSIT_LEFT_KEY,
-                      API_DATA_PARTIAL_KEY,
-                      API_IS_USE_DEPOSIT_KEY,
-                      API_PAYMENT_ID_KEY,
-                      API_IS_USE_OTP_KEY,
-                      API_NOW_DATE_KEY,
-                      API_EMONEY_CODE_KEY,
-                      API_UNIK_KEY,
-                      API_GRAND_TOTAL_IDR_KEY,
-                      API_DEPOSIT_AMOUNT_ID_KEY,
-                      API_GA_DATA_KEY,
-                      API_DISCOUNT_GATEWAY_IDR_KEY,
-                      API_USER_DEFAULT_IDR_KEY,
-                      API_MSISDN_VERIFIED_KEY,
-                      API_GATEWAY_LIST_NAME_KEY,
-                      API_GATEWAY_LIST_ID_KEY,
-                      API_TOKEN_KEY,
-                      API_STEP_KEY,
-                      API_DROPSHIP_LIST_KEY,
+    NSArray *keys = @[
+                      @"voucher_amount_idr",
+                      @"deposit_after",
+                      @"grand_total",
+                      @"payment_left_idr",
+                      @"confirmation_id",
+                      @"step",
+                      @"deposit_left",
+                      @"data_partial",
+                      @"use_deposit",
+                      @"payment_id",
+                      @"use_otp",
+                      @"now_time",
+                      @"emoney_code",
+                      @"unik",
+                      @"grand_total_idr",
+                      @"deposit_amount_idr",
+                      @"ga_data",
+                      @"discount_gateway_idr",
+                      @"user_deposit_idr",
+                      @"msisdn_verified",
+                      @"gateway",
+                      @"conf_code",
+                      @"dropship_list",
+                      @"conf_due_date",
+                      @"token",
+                      @"processing",
+                      @"grand_total_before_fee_idr",
+                      @"discount_gateway",
+                      @"gateway_name",
+                      @"status_unik",
+                      @"user_deposit",
+                      @"lock_mandiri",
+                      @"deposit_amount",
+                      @"voucher_amount",
+                      @"grand_total_before_fee",
+                      @"conf_code_idr",
+                      @"payment_left",
+                      @"transaction_code",
+                      @"bri_website_link",
                       @"klikbca_user",
-                      @"cashback_idr",
-                      @"cashback",
                       @"lp_amount_idr",
-                      @"lp_amount"
+                      @"lp_amount",
+                      @"cashback_idr",
+                      @"cashback"
                       ];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }
@@ -115,7 +118,19 @@ NSString *const TkpCartCreditCard = @"credit_card";
 + (RKObjectMapping *)mapping {
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
     [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
-//    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:TkpCartSummary toKeyPath:TkpCartSummary withMapping:[TransactionCartList mapping]]];
+    
+    RKRelationshipMapping *relMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"carts" toKeyPath:@"carts" withMapping:[TransactionCartList mapping]];
+    [mapping addPropertyMapping:relMapping];
+    
+    RKRelationshipMapping *relInstallmentMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"installment_bank_option" toKeyPath:@"installment_bank_option" withMapping:[InstallmentBank mapping]];
+    [mapping addPropertyMapping:relInstallmentMapping];
+    
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"credit_card" toKeyPath:@"credit_card" withMapping:[CCFee mapping]]];
+    
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"indomaret" toKeyPath:@"indomaret" withMapping:[IndomaretData mapping]]];
+    
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"bca_param" toKeyPath:@"bca_param" withMapping:[TransactionSummaryBCAParam mapping]]];
+    
     return mapping;
 }
 

@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface TxOrderConfirmedDetailPayment : NSObject
+@interface TxOrderConfirmedDetailPayment : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *payment_id;
 @property (nonatomic, strong) NSString *payment_ref;

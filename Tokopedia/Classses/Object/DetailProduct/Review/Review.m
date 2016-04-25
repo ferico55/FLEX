@@ -10,4 +10,29 @@
 
 @implementation Review
 
++ (RKObjectMapping *)mapping{
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Review class]];
+    
+    [statusMapping addAttributeMappingsFromArray:@[@"status",
+                                                   @"server_process_time",
+                                                   @"message_error"]];
+    
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"result"
+                                                                                  toKeyPath:@"result"
+                                                                                withMapping:[ReviewResult mapping]]];
+    
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data"
+                                                                                  toKeyPath:@"data"
+                                                                                withMapping:[ReviewResult mapping]]];
+    
+    return statusMapping;
+}
+
++ (RKObjectMapping *)mapping_v4{
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Review class]];
+    [statusMapping addAttributeMappingsFromArray:@[@"status", @"server_process_time", @"message_error"]];
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data" toKeyPath:@"result" withMapping:[ReviewResult mapping]]];
+    return statusMapping;
+}
+
 @end

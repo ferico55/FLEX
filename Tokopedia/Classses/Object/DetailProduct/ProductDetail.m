@@ -71,4 +71,61 @@
     }
 }
 
++(NSDictionary *)attributeMappingDictionary
+{
+    NSArray *keys = @[
+                      @"product_weight_unit",
+                      @"product_weight_unit_name",
+                      @"product_weight",
+                      @"product_description",
+                      @"product_price",
+                      @"price",
+                      @"product_insurance",
+                      @"product_condition",
+                      @"product_min_order",
+                      @"product_status",
+                      @"product_last_update",
+                      @"product_id",
+                      @"product_price_alert",
+                      @"product_name",
+                      @"product_url",
+                      @"product_uri",
+                      @"product_already_wishlist",
+                      @"product_price_fmt",
+                      @"product_currency_id", //product_price_currency_value(cart)
+                      @"product_currency",    //product_price_currency_value(cart)
+                      @"product_etalase_id",
+                      @"product_move_to",
+                      @"product_etalase",
+                      @"product_department_id",
+                      @"product_short_desc",
+                      @"product_department_tree",
+                      @"product_must_insurance",
+                      @"product_returnable",
+                      @"product_quantity",
+                      @"product_notes",
+                      @"product_price_idr",
+                      @"product_total_price",
+                      @"product_total_price_idr",
+                      @"product_pic",
+                      @"product_use_insurance",
+                      @"product_cart_id",
+                      @"product_total_weight",
+                      @"product_error_msg",
+                      @"product_price_last",
+                      @"product_picture",
+                      @"product_cat_name"
+                      ];
+    return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
+}
+
++(RKObjectMapping*)mapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+
+    return mapping;
+}
+
+
 @end

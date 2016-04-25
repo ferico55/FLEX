@@ -36,4 +36,6 @@
 
 - (ReputationDetail *)reputation;
 
++ (void)ensureDeviceIdExistence;
+
 @end

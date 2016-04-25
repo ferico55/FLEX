@@ -21,4 +21,7 @@
 @property (nonatomic, strong) NSArray *message_error;
 @property (nonatomic, strong) NSString *server_process_time;
 @property (nonatomic, strong) MyReviewReputationResult *result;
+@property (nonatomic, strong) MyReviewReputationResult *data;
+
++ (RKObjectMapping*)mapping;
 @end

@@ -11,5 +11,5 @@
 @interface ProductListMyShopViewController : GAITrackedViewController
 
 @property (nonatomic, strong) NSDictionary *data;
-- (void)setArrayList:(NSArray *)arrList;
+
 @end

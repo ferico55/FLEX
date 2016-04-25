@@ -14,4 +14,5 @@
 @property (nonatomic, strong) NSString *reason;
 @property (nonatomic, strong) NSString *note;
 
++(RKObjectMapping*)mapping;
 @end

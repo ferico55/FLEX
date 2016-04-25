@@ -9,5 +9,12 @@
 #import "Shipment.h"
 
 @implementation Shipment
-
++(RKObjectMapping *)mapping{
+    RKObjectMapping* shipmentMapping = [RKObjectMapping mappingForClass:[Shipment class]];
+    [shipmentMapping addAttributeMappingsFromArray:@[@"shipment_id", @"shipment_image", @"shipment_name"]];
+    [shipmentMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"shipment_package"
+                                                                                            toKeyPath:@"shipment_package"
+                                                                                          withMapping:[ShipmentPackage mapping]]];
+    return shipmentMapping;
+}
 @end

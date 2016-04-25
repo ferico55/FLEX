@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "EDStarRating.h"
 #import "TTTAttributedLabel.h"
+#import "DetailReputationReview.h"
 
 @class DetailReviewReputationViewModel;
 @class ReviewList;
@@ -51,12 +52,16 @@
 @property (strong, nonatomic) IBOutlet UIButton *showMoreButton;
 @property(strong, nonatomic) NSIndexPath *indexPath;
 
+@property (strong, nonatomic) IBOutlet UIView *reviewImageAttachmentView;
+@property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *reviewImageAttachmentPictures;
+
+
 //put flag in cell not in viewmodel because everyone uses different viewmodel and entity
 //cannot put flag in all viewmodel variations!
 @property BOOL isHelpful;
 
 - (void)setReputationModelView:(DetailReviewReputationViewModel*)viewModel;
-- (void)setShopReputationModelView:(ReviewList*)viewModel;
+- (void)setShopReputationModelView:(DetailReputationReview*)viewModel;
 
 
 @end

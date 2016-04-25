@@ -321,4 +321,14 @@
     [analytics.dataLayer push:data];
 }
 
++ (void)trackOnBoardingClickButton:(NSString *)buttonName {
+    TPAnalytics *analytics = [[self alloc] init];
+    NSDictionary *data = @{
+            @"event" : @"onBoardingClick",
+            @"buttonName" : buttonName,
+    };
+    [analytics.dataLayer push:data];
+}
+
+
 @end

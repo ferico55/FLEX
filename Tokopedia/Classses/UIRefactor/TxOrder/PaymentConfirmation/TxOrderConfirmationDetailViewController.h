@@ -8,12 +8,12 @@
 
 #import <UIKit/UIKit.h>
 @class TxOrderConfirmationDetailViewController;
+#import "TxOrderConfirmationList.h"
 
 #pragma mark - Delegate
 @protocol TxOrderConfirmationDetailViewControllerDelegate <NSObject>
 @required
--(void)shouldCancelOrderAtIndexPath:(NSIndexPath *)indexPath viewController:(TxOrderConfirmationDetailViewController*)viewController;
--(void)didTapAlertCancelOrder;
+-(void)didCancelOrder:(TxOrderConfirmationList*)order;
 @end
 
 @interface TxOrderConfirmationDetailViewController : UIViewController

@@ -13,6 +13,7 @@
 #import "stringrestkit.h"
 #import "NavigateViewController.h"
 #import "string_inbox_review.h"
+#import "DetailReputationReview.h"
 
 #pragma mark - General Review Cell
 @implementation GeneralReviewCell
@@ -146,7 +147,7 @@
     NSIndexPath* indexpath = _indexpath;
     UINavigationController *nav = [_delegate navigationController:self withindexpath:indexpath];
     
-    ReviewList *list = (ReviewList *)_data;
+    DetailReputationReview *list = (DetailReputationReview *)_data;
     if(![list.review_product_status isEqualToString:STATE_PRODUCT_BANNED] && ![list.review_product_status isEqualToString:STATE_PRODUCT_DELETED]) {
 //        [navigation navigateToProductFromViewController:nav withProductID:list.review_product_id];
         [navigation navigateToProductFromViewController:nav withName:list.review_product_name withPrice:nil withId:list.review_product_id withImageurl:list.review_product_image withShopName:nil];
@@ -157,7 +158,7 @@
 - (void)tapReview {
     NSIndexPath* indexpath = _indexpath;
     
-    ReviewList *list = (ReviewList*)_data;
+    DetailReputationReview *list = (DetailReputationReview*)_data;
     if([list.review_id isEqualToString:NEW_REVIEW_STATE]) {
         NSIndexPath* indexpath = _indexpath;
         ReviewFormViewController *vc = [ReviewFormViewController new];
@@ -190,7 +191,7 @@
     NSIndexPath* indexpath = _indexpath;
     UINavigationController *nav = [_delegate navigationController:self withindexpath:indexpath];
     
-    ReviewList *list = (ReviewList *)_data;
+    DetailReputationReview *list = (DetailReputationReview *)_data;
     [navigation navigateToProfileFromViewController:nav withUserID:list.review_user_id];
 }
 

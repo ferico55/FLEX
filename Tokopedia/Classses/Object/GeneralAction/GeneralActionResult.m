@@ -10,4 +10,13 @@
 
 @implementation GeneralActionResult
 
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *generalActionResultMapping = [RKObjectMapping mappingForClass:[GeneralActionResult class]];
+    
+    [generalActionResultMapping addAttributeMappingsFromArray:@[@"feedback_id",
+                                                                @"is_success"]];
+    
+    return generalActionResultMapping;
+}
+
 @end

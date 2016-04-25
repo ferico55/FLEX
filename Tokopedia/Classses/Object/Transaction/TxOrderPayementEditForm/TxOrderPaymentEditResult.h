@@ -10,7 +10,7 @@
 
 #import "TxOrderPaymentEditForm.h"
 
-@interface TxOrderPaymentEditResult : NSObject
+@interface TxOrderPaymentEditResult : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) TxOrderPaymentEditForm *form;
 

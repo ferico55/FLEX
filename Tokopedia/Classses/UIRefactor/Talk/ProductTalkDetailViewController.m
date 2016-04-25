@@ -21,12 +21,13 @@
 
 #import "ReportViewController.h"
 #import "NavigateViewController.h"
-
+#import "ShopBadgeLevel.h"
 #import "SmileyAndMedal.h"
 #import "stringrestkit.h"
 #import "string_inbox_talk.h"
 
 #import "NavigationHelper.h"
+#import "ShopBadgeLevel.h"
 
 @interface ProductTalkDetailViewController ()
 <

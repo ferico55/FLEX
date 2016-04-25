@@ -25,6 +25,9 @@
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"result"
                                                                             toKeyPath:@"result"
                                                                           withMapping:[TransactionActionResult mapping]]];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data"
+                                                                            toKeyPath:@"data"
+                                                                          withMapping:[TransactionActionResult mapping]]];
     return mapping;
     
 }

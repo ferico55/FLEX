@@ -16,7 +16,7 @@
                            @"http://staging.tokopedia.com/ws" : @"Staging",
                            @"http://alpha.tokopedia.com/ws" : @"Alpha",
                            @"http://www.tokopedia.com/ws" : @"Production",
-                           FBTweakValue(@"General", @"Developer's", @"NDVL Base Url", @"http://tn-tonito.tokopedia.ndvl/ws") : @"Developer's"
+                           FBTweakValue(@"General", @"Developer's", @"NDVL Base Url", @"http://lo-lucky.ndvl/ws") : @"Developer's"
                            }
                          ));
 }
@@ -39,6 +39,27 @@
                             @"https://ws-staging.tokopedia.com" : @"Staging",
                             @"https://ws-alpha.tokopedia.com" : @"Alpha",
                             @"https://ws.tokopedia.com" : @"Production",
+                            }
+                          ));
+}
+
++ (NSString*)topAdsUrl {
+    return  FBTweakValue(@"General", @"Environment", @"Tokopedia TopAds Url", @"https://ta.tokopedia.com",
+                         (@{
+                            @"https://ta-staging.tokopedia.com" : @"Staging",
+                            @"https://ta-alpha.tokopedia.com" : @"Alpha",
+                            @"https://ta.tokopedia.com" : @"Production",
+                            }
+                          ));
+}
+
+
++ (NSString*)keroUrl {
+    return  FBTweakValue(@"General", @"Environment", @"Tokopedia Kero Url", @"https://kero.tokopedia.com",
+                         (@{
+                            @"https://kero-staging.tokopedia.com" : @"Staging",
+                            @"https://kero-alpha.tokopedia.com" : @"Alpha",
+                            @"https://kero.tokopedia.com" : @"Production",
                             }
                           ));
 }

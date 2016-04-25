@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "EtalaseList.h"
 @class ShopPageHeader;
 
 @interface ShopProductPageViewController : GAITrackedViewController
@@ -17,4 +18,5 @@
 @property (weak, nonatomic) IBOutlet UILabel *screenLabel;
 
 @property (nonatomic, strong) ShopPageHeader *shopPageHeader;
+@property (nonatomic, strong) EtalaseList *initialEtalase;
 @end

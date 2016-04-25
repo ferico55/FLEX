@@ -9,12 +9,13 @@
 #import <Foundation/Foundation.h>
 #import "TransactionATCFormResult.h"
 
-@interface TransactionATCForm : NSObject
+@interface TransactionATCForm : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSArray *message_error;
 @property (nonatomic, strong) NSArray *message_status;
 @property (nonatomic, strong) NSString *status;
 @property (nonatomic, strong) NSString *server_process_time;
 @property (nonatomic, strong) TransactionATCFormResult *result;
+@property (nonatomic, strong) TransactionATCFormResult *data;
 
 @end

@@ -7,8 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "TotalLikeDislike.h"
 #define CLikeDislikeReview @"like_dislike_review"
 
 @interface LikeDislikeResult : NSObject
 @property (nonatomic, strong) NSArray *like_dislike_review;
+
++(RKObjectMapping*) mapping;
 @end
