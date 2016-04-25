@@ -16,7 +16,7 @@
                            @"http://staging.tokopedia.com/ws" : @"Staging",
                            @"http://alpha.tokopedia.com/ws" : @"Alpha",
                            @"http://www.tokopedia.com/ws" : @"Production",
-                           FBTweakValue(@"General", @"Developer's", @"NDVL Base Url", @"http://lo-lucky.ndvl/ws") : @"Developer's"
+                           FBTweakValue(@"Network", @"Developer's", @"NDVL Base Url", @"http://lo-lucky.ndvl/ws") : @"Developer's"
                            }
                          ));
 }
@@ -55,7 +55,7 @@
 
 
 + (NSString*)keroUrl {
-    return  FBTweakValue(@"General", @"Environment", @"Tokopedia Kero Url", @"https://kero.tokopedia.com",
+    return  FBTweakValue(@"Network", @"Environment", @"Tokopedia Kero Url", @"https://kero.tokopedia.com",
                          (@{
                             @"https://kero-staging.tokopedia.com" : @"Staging",
                             @"https://kero-alpha.tokopedia.com" : @"Alpha",
