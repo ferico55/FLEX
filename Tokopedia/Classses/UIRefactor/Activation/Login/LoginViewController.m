@@ -452,10 +452,13 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
     [self configureRestKitLogin];
     
     _requestcount++;
+
+    NSString* securityQuestionUUID = [[[TKPDSecureStorage standardKeyChains] keychainDictionary] objectForKey:@"securityQuestionUUID"];
     
     NSDictionary* param = @{
                             kTKPDLOGIN_APIUSEREMAILKEY : [data objectForKey:kTKPDACTIVATION_DATAEMAILKEY]?:@(0),
-                            kTKPDLOGIN_APIUSERPASSKEY : [data objectForKey:kTKPDACTIVATION_DATAPASSKEY]?:@(0)
+                            kTKPDLOGIN_APIUSERPASSKEY : [data objectForKey:kTKPDACTIVATION_DATAPASSKEY]?:@(0),
+                            @"uuid" : ![securityQuestionUUID isEqualToString:@""] ? securityQuestionUUID : @""
                             };
     
     _barbuttonsignin.enabled = NO;
@@ -496,8 +499,13 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
     
     _requestcount++;
     
+    NSString* securityQuestionUUID = [[[TKPDSecureStorage standardKeyChains] keychainDictionary] objectForKey:@"securityQuestionUUID"];
+    
     NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithDictionary:data];
     [parameters setObject:kTKPDREGISTER_APIDOLOGINKEY forKey:kTKPDREGISTER_APIACTIONKEY];
+    [parameters setObject:(![securityQuestionUUID isEqualToString:@""] ? securityQuestionUUID : @"") forKey:@"uuid"];
+    
+    
     
     NSLog(@"\n\n\n%@\n\n\n", parameters);
     
@@ -806,6 +814,7 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
         controller.userID = _login.result.user_id;
         controller.deviceID = _userManager.getMyDeviceToken;
         controller.successAnswerCallback = ^(SecurityAnswer* answer) {
+            [secureStorage setKeychainWithValue:answer.data.uuid withKey:@"securityQuestionUUID"];
             [self setLoginIdentity];
         };
         
