@@ -202,6 +202,9 @@
     [super viewDidLayoutSubviews];
     
     [self setHeaderData:_data];
+
+    //called to prevent error on iOS 7, haven't found explanation why
+    [self.view layoutIfNeeded];
 }
 
 #pragma mark - Memory Management
