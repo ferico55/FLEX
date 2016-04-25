@@ -70,10 +70,10 @@
                                                                       style:UIBarButtonItemStyleBordered
                                                                      target:self
                                                                      action:@selector(tap:)];
-    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
-    barButtonItem.tag = 10;
-    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+//    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
+//    barButtonItem.tag = 10;
+//    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
+//    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
     barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Selesai"
                                                   style:UIBarButtonItemStyleDone
