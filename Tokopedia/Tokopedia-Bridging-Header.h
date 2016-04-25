@@ -9,8 +9,11 @@
 #import "SearchAWSProduct.h"
 #import "ProductCell.h"
 #import "ProductModelView.h"
-
 #import "SwipeView.h"
 #import "MiniSlide.h"
 #import "TPLiveCameraView.h"
 #import <QuartzCore/QuartzCore.h>
+#import <EAIntroView/EAIntroView.h>
+#import "MainViewController.h"
+#import <JLPermissions/JLNotificationPermission.h>
+#import "TPAnalytics.h"

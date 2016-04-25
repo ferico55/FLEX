@@ -9,8 +9,7 @@
 #import "GeneratedHost.h"
 
 @implementation GeneratedHost
-+(NSDictionary *)attributeMappingDictionary
-{
++ (NSDictionary *)attributeMappingDictionary {
     NSArray *keys = @[
                       @"server_id",
                       @"upload_host",
@@ -19,8 +18,7 @@
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }
 
-+(RKObjectMapping*)mapping
-{
++ (RKObjectMapping*)mapping {
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
     [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
     return mapping;

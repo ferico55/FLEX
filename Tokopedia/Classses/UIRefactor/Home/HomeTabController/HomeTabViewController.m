@@ -220,7 +220,7 @@
     _userManager = [UserAuthentificationManager new];
     if([_userManager isLogin]) {
         _isAbleToSwipe = YES;
-        [_scrollView setContentSize:CGSizeMake(_scrollView.frame.size.width*5, 300)];
+        [_scrollView setContentSize:CGSizeMake(self.view.frame.size.width*5, 300)];
         [_scrollView setPagingEnabled:YES];
     } else {
         _isAbleToSwipe = NO;
@@ -339,6 +339,8 @@
 }
 
 - (void)didSwipeHomePage:(NSNotification*)notification {
+    [_scrollView setFrame:CGRectMake(0, _scrollView.frame.origin.y, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
+    
     NSDictionary *userinfo = notification.userInfo;
     NSInteger index = [[userinfo objectForKey:@"page"]integerValue];
     [self goToPage:index-1];

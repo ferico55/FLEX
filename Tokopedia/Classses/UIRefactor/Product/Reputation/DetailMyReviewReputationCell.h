@@ -25,17 +25,21 @@
 - (void)actionProduct:(id)sender;
 - (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url;
 - (void)initLabelDesc:(TTTAttributedLabel *)lblDesc withText:(NSString *)strDescription;
+- (void)goToImageViewerImages:(NSArray*)images atIndexImage:(NSInteger)index atIndexPath:(NSIndexPath*)indexPath;
 @end
 
 @interface DetailMyReviewReputationCell : UITableViewCell<TTTAttributedLabelDelegate>
 {
     IBOutlet UIView *viewContent, *viewContentStar, *viewContentAction, *viewKualitas, *viewAkurasi, *viewSeparatorContentAction;
+    IBOutlet UIView *viewAttachedImages;
     IBOutlet UIButton *btnProduct, *btnKomentar;
     IBOutlet CustomBtnSkip *btnUbah;
     TTTAttributedLabel *lblDesc;
     IBOutlet UIImageView *imgProduct;
     IBOutlet UILabel *lblKualitas, *lblAkurasi, *lblDate, *labelInfoSkip;
     IBOutletCollection(UIImageView) NSArray *arrImgKualitas, *arrImgAkurasi;
+    IBOutletCollection(UIImageView) NSArray *attachedImages;
+    NSIndexPath *indexPath;
 }
 @property (nonatomic, strong) NSString *strRole;
 @property (nonatomic, unsafe_unretained) id<detailMyReviewReputationCell> delegate;

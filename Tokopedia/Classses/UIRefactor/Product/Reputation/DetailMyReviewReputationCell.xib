@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -21,14 +21,14 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="190" id="KGk-i7-Jjw" customClass="DetailMyReviewReputationCell">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="203"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="263"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="202"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="262"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" id="sKQ-z8-rJJ">
-                        <rect key="frame" x="8" y="8" width="304" height="187"/>
+                        <rect key="frame" x="8" y="8" width="304" height="247"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="YEg-po-8qK">
@@ -54,8 +54,50 @@
                                 <color key="textColor" red="0.41176470588235292" green="0.41176470588235292" blue="0.41176470588235292" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <view contentMode="scaleToFill" id="x21-hX-jYv">
+                                <rect key="frame" x="8" y="99" width="288" height="60"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" tag="10" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_toped_alert.png" id="XgU-AG-QbW" userLabel="1">
+                                        <rect key="frame" x="0.0" y="8" width="44" height="44"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="lcj-wW-kK4" appends="YES" id="yl3-4T-1QA"/>
+                                        </connections>
+                                    </imageView>
+                                    <imageView userInteractionEnabled="NO" tag="11" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_toped_alert.png" id="N68-XT-GtD" userLabel="2">
+                                        <rect key="frame" x="52" y="8" width="44" height="44"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="dpE-nW-DHz" appends="YES" id="GBo-BR-wj5"/>
+                                        </connections>
+                                    </imageView>
+                                    <imageView userInteractionEnabled="NO" tag="12" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_toped_alert.png" id="Nq6-Bf-MNQ" userLabel="3">
+                                        <rect key="frame" x="104" y="8" width="44" height="44"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="xi2-TD-zM2" appends="YES" id="c3h-Og-z7L"/>
+                                        </connections>
+                                    </imageView>
+                                    <imageView userInteractionEnabled="NO" tag="13" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_toped_alert.png" id="bkC-RI-eEN" userLabel="4">
+                                        <rect key="frame" x="156" y="8" width="44" height="44"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="L9v-oS-BUa" appends="YES" id="fgT-69-6oQ"/>
+                                        </connections>
+                                    </imageView>
+                                    <imageView userInteractionEnabled="NO" tag="14" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_toped_alert.png" id="qqp-1T-O1R" userLabel="5">
+                                        <rect key="frame" x="208" y="8" width="44" height="44"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="FUg-ep-sBg" appends="YES" id="WxO-ca-0ui"/>
+                                        </connections>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
                             <view contentMode="scaleToFill" id="2lt-hu-Dyk">
-                                <rect key="frame" x="8" y="99" width="288" height="35"/>
+                                <rect key="frame" x="8" y="159" width="288" height="35"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" id="a3j-OP-0zy">
@@ -135,7 +177,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <view contentMode="scaleToFill" id="XdZ-2m-URX">
-                                <rect key="frame" x="8" y="142" width="288" height="40"/>
+                                <rect key="frame" x="8" y="202" width="288" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Nm8-iL-QrH" customClass="CustomBtnSkip">
@@ -184,6 +226,7 @@
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <gestureRecognizers/>
             <connections>
                 <outlet property="btnKomentar" destination="9yD-gl-3np" id="Qmy-Cm-MqR"/>
                 <outlet property="btnProduct" destination="lsl-qB-e9A" id="bDl-Jy-f5G"/>
@@ -194,6 +237,7 @@
                 <outlet property="lblDate" destination="EdW-zY-xpD" id="fit-0L-qYe"/>
                 <outlet property="lblKualitas" destination="xkh-3z-miA" id="cp3-Mr-4tX"/>
                 <outlet property="viewAkurasi" destination="WE3-XC-pW0" id="HqJ-eD-ka7"/>
+                <outlet property="viewAttachedImages" destination="x21-hX-jYv" id="UiB-q9-wIB"/>
                 <outlet property="viewContent" destination="sKQ-z8-rJJ" id="dGh-eK-DTp"/>
                 <outlet property="viewContentAction" destination="XdZ-2m-URX" id="tS6-WZ-Qhe"/>
                 <outlet property="viewContentStar" destination="2lt-hu-Dyk" id="Y5k-t1-7Cm"/>
@@ -209,16 +253,42 @@
                 <outletCollection property="arrImgAkurasi" destination="mJP-0c-mE1" id="uog-xl-Ihy"/>
                 <outletCollection property="arrImgAkurasi" destination="eLs-WA-Axw" id="Uy0-vF-Fb7"/>
                 <outletCollection property="arrImgAkurasi" destination="PZI-nk-vdu" id="ClE-Zp-Cjg"/>
+                <outletCollection property="attachedImages" destination="qqp-1T-O1R" id="i5S-mt-sCu"/>
+                <outletCollection property="attachedImages" destination="bkC-RI-eEN" id="9Mi-VS-5Te"/>
+                <outletCollection property="attachedImages" destination="Nq6-Bf-MNQ" id="9wF-mc-mBh"/>
+                <outletCollection property="attachedImages" destination="N68-XT-GtD" id="jtJ-ig-mES"/>
+                <outletCollection property="attachedImages" destination="XgU-AG-QbW" id="erG-Hi-t7G"/>
             </connections>
-            <point key="canvasLocation" x="470" y="348"/>
+            <point key="canvasLocation" x="657" y="114.5"/>
         </tableViewCell>
+        <tapGestureRecognizer id="lcj-wW-kK4">
+            <connections>
+                <action selector="gesture:" destination="KGk-i7-Jjw" id="ldb-q4-q0U"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="dpE-nW-DHz">
+            <connections>
+                <action selector="gesture:" destination="KGk-i7-Jjw" id="fgM-ln-rLo"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="xi2-TD-zM2">
+            <connections>
+                <action selector="gesture:" destination="KGk-i7-Jjw" id="tWD-vk-7OT"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="L9v-oS-BUa">
+            <connections>
+                <action selector="gesture:" destination="KGk-i7-Jjw" id="OrG-vK-Epf"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="FUg-ep-sBg">
+            <connections>
+                <action selector="gesture:" destination="KGk-i7-Jjw" id="np8-eh-F1E"/>
+            </connections>
+        </tapGestureRecognizer>
     </objects>
     <resources>
         <image name="icon_star.png" width="20" height="20"/>
+        <image name="icon_toped_alert.png" width="90" height="90"/>
     </resources>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
-    </simulatedMetricsContainer>
 </document>

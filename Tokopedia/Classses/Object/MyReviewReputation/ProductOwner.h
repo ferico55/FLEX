@@ -36,8 +36,15 @@
 @property (nonatomic, strong) NSString *user_label;
 @property (nonatomic, strong) NSString *user_id;
 @property (nonatomic, strong) NSString *shop_reputation_badge;
+
+@property (nonatomic, strong) NSString *user_shop_name;
+@property (nonatomic, strong) NSString *user_name;
+@property (nonatomic, strong) NSString *user_shop_image;
+@property (nonatomic, strong) NSString *user_image;
+
 @property (nonatomic, strong) ShopReputation *user_shop_reputation;
 
-+ (RKObjectMapping*) mapping;
++ (RKObjectMapping*)mapping;
++ (RKObjectMapping*)mappingForInbox;
 
 @end

@@ -14,4 +14,8 @@
 @interface MyReviewReputationResult : NSObject
 @property (nonatomic, strong) NSArray *list;
 @property (nonatomic, strong) Paging *paging;
+@property (nonatomic, strong) NSString *token;
+
++ (RKObjectMapping*)mapping;
+
 @end
