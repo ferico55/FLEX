@@ -458,7 +458,7 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
     NSDictionary* param = @{
                             kTKPDLOGIN_APIUSEREMAILKEY : [data objectForKey:kTKPDACTIVATION_DATAEMAILKEY]?:@(0),
                             kTKPDLOGIN_APIUSERPASSKEY : [data objectForKey:kTKPDACTIVATION_DATAPASSKEY]?:@(0),
-                            @"uuid" : ![securityQuestionUUID isEqualToString:@""] ? securityQuestionUUID : @""
+                            @"uuid" : securityQuestionUUID.length ? securityQuestionUUID : @""
                             };
     
     _barbuttonsignin.enabled = NO;
@@ -503,7 +503,7 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
     
     NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithDictionary:data];
     [parameters setObject:kTKPDREGISTER_APIDOLOGINKEY forKey:kTKPDREGISTER_APIACTIONKEY];
-    [parameters setObject:(![securityQuestionUUID isEqualToString:@""] ? securityQuestionUUID : @"") forKey:@"uuid"];
+    [parameters setObject:(securityQuestionUUID.length ? securityQuestionUUID : @"") forKey:@"uuid"];
     
     
     
