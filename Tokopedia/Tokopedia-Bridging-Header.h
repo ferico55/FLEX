@@ -18,3 +18,8 @@
 #import <EAIntroView/EAIntroView.h>
 #import "MainViewController.h"
 #import <JLPermissions/JLNotificationPermission.h>
+
+#import "OpenShopDomainViewCell.h"
+#import "OpenShopImageViewCell.h"
+#import "OpenShopNameViewCell.h"
+#import "EditShopDescriptionViewCell.h"
