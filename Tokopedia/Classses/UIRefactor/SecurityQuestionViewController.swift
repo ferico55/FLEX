@@ -39,7 +39,7 @@ class SecurityQuestionViewController : UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem.init(title: "Batal", style: .Plain, target: self, action: Selector("didTapBackButton"))
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem.init(title: "Batal", style: .Plain, target: self, action: Selector("didTapBackButton:"))
         
         _networkManager = TokopediaNetworkManager()
         _networkManager.isUsingHmac = true
@@ -102,10 +102,9 @@ class SecurityQuestionViewController : UIViewController {
         }
     }
     
-    func didTapBackButton() {
+    @IBAction func didTapBackButton(sender: AnyObject) {
         self.navigationController!.dismissViewControllerAnimated(true, completion: nil)
     }
-    
     
     func didTapSavePhoneButton() {
         guard let text = answerField.text where !text.isEmpty else {
@@ -179,7 +178,11 @@ class SecurityQuestionViewController : UIViewController {
     }
     
     func switchToOTPView() {
-        self.view.removeAllSubviews()
+        for subview in self.view.subviews {
+            if (subview.viewWithTag(11) != nil) {
+                subview.removeFromSuperview()
+            }
+        }
         self .requestQuestionForm()
     }
 
