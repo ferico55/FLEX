@@ -12,10 +12,10 @@
 #import "MyShopEtalaseViewController.h"
 #import "ProductListMyShopViewController.h"
 #import "MyShopAddressViewController.h"
-#import "MyShopPaymentViewController.h"
 #import "MyShopShipmentTableViewController.h"
 #import "MyShopNoteViewController.h"
 #import "EditShopViewController.h"
+#import "ShopPaymentViewController.h"
 
 @interface ShopSettingViewController ()
 <
@@ -41,7 +41,7 @@
     _menus = @[@"Atur Toko", @"Etalase", @"Produk", @"Lokasi", @"Pengiriman", @"Pembayaran", @"Catatan"];
     
     UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                                      style:UIBarButtonItemStyleBordered
+                                                                      style:UIBarButtonItemStylePlain
                                                                      target:self
                                                                      action:nil];
     self.navigationItem.backBarButtonItem = backBarButton;
@@ -73,14 +73,6 @@
             EditShopViewController *controller = [EditShopViewController new];
             [self.navigationController pushViewController:controller animated:YES];
             break;
-//            ShopEditViewController *vc = [ShopEditViewController new];
-//            vc.data = @{
-//                        kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:@{},
-//                        kTKPDDETAIL_DATASHOPSKEY : _shop?:@{}
-//                        };
-//            [self.navigationController pushViewController:vc animated:YES];
-//
-//            break;
         }
         case 1:
         {
@@ -116,9 +108,8 @@
         case 5:
         {
             //Payment
-            MyShopPaymentViewController *vc = [MyShopPaymentViewController new];
-            vc.data = @{kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
-            [self.navigationController pushViewController:vc animated:YES];
+            ShopPaymentViewController *controller = [ShopPaymentViewController new];
+            [self.navigationController pushViewController:controller animated:YES];
             break;
         }
         case 6:
