@@ -152,6 +152,9 @@
     [AppsFlyerTracker sharedTracker].appsFlyerDevKey = @"SdSopxGtYr9yK8QEjFVHXL";
     [AppsFlyerTracker sharedTracker].appleAppID = @"1001394201";
     [AppsFlyerTracker sharedTracker].currencyCode = @"IDR";
+    #ifdef DEBUG
+    [AppsFlyerTracker sharedTracker].isDebug = YES;
+    #endif
 }
 
 - (void)configureGTMInApplication:(UIApplication *)application withOptions:(NSDictionary *)launchOptions {
