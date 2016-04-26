@@ -86,10 +86,6 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     [self.userImageView addGestureRecognizer:userGesture];
     self.userImageView.userInteractionEnabled = YES;
     
-    UITapGestureRecognizer *talkGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapToDetailTalk:)];
-    [self.middleView addGestureRecognizer:talkGesture];
-    self.middleView.userInteractionEnabled = YES;
-    
     CGFloat borderWidth = 0.5f;
     
     self.view.frame = CGRectInset(self.frame, -borderWidth, -borderWidth);

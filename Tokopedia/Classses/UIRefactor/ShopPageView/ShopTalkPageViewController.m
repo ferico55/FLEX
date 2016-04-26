@@ -26,6 +26,7 @@
 #import "UserAuthentificationManager.h"
 #import "TalkCell.h"
 #import "ShopPageRequest.h"
+#import "ProductTalkDetailViewController.h"
 
 @interface ShopTalkPageViewController () <UITableViewDataSource,
 UITableViewDelegate,
@@ -242,6 +243,15 @@ NoResultDelegate>
     return _isNoData ? 0 : _list.count;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    TalkList *list = [_list objectAtIndex:indexPath.row];
+
+    ProductTalkDetailViewController *viewController = [ProductTalkDetailViewController new];
+    viewController.indexPath = indexPath;
+    viewController.talk = list;
+
+    [self.navigationController pushViewController:viewController animated:YES];
+}
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     TalkList *list = [_list objectAtIndex:indexPath.row];
