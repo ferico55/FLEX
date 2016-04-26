@@ -696,7 +696,12 @@ typedef enum
                             [alertView show];
                             
                             [self pushLocalyticsData];
+                            
                             [TPAnalytics trackAddToCart:_selectedProduct];
+                            
+                            if (self.isSnapSearchProduct) {
+                                [TPAnalytics trackSnapSearchAddToCart:_selectedProduct];
+                            }
                             
                         } failed:^(NSError *error) {
                             [self adjustViewIsLoading:NO];

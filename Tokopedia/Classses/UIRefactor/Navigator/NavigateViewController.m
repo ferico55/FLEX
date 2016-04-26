@@ -211,6 +211,25 @@
     [viewController.navigationController pushViewController:productController animated:YES];
 }
 
+- (void)navigateToProductFromViewController:(UIViewController *)viewController withProduct:(SearchAWSProduct *)product {
+    NSDictionary *loadedData = @{
+        @"product_id": product.product_id?:@"",
+        @"product_name": product.product_name?:@"",
+        @"product_image": product.product_image?:@"",
+        @"product_price":product.product_price?:@"",
+        @"shop_name": product.shop_name?:@""
+    };
+    
+    DetailProductViewController *productController = [DetailProductViewController new];
+    productController.loadedData = loadedData;
+    productController.data = @{@"product_id": product.product_id?:@""};
+    productController.hidesBottomBarWhenPushed = YES;
+    productController.isSnapSearchProduct = YES;
+
+    [viewController.navigationController pushViewController:productController animated:YES];
+}
+
+
 -(void)navigateToInboxTalkFromViewController:(UIViewController *)viewController
 {
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
