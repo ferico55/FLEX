@@ -95,7 +95,7 @@ static CKComponent *revieweeReputation(DetailMyInboxReputation *inbox, MyReviewD
 static CKComponent *remainingTimeLeft(DetailMyInboxReputation *inbox, MyReviewDetailContext *context) {
     ImageStorage *imageCache = context.imageCache;
     
-    NSString *timeLeft = [NSString stringWithFormat:@"Batas waktu ubah nilai %d hari lagi", [inbox.reputation_days_left intValue]];
+    NSString *timeLeft = [NSString stringWithFormat:@"Batas waktu penilaian %d hari lagi", [inbox.reputation_days_left intValue]];
     
     if([inbox.reputation_days_left intValue] > 0 && [inbox.reputation_days_left intValue] < 4) {
         return [CKStackLayoutComponent
