@@ -519,16 +519,26 @@
 }
 
 - (void)saveLogisticData {
+    
+    if (_selectedDistrict == nil) {
+        NSArray *messages = @[@"Kota Asal harus dilengkapi."];
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messages delegate:self];
+        [alert show];
+        return;
+    }
+    
     self.navigationItem.rightBarButtonItem = self.loadingView;
 
     NSMutableDictionary *parameters = [NSMutableDictionary new];
     NSMutableDictionary *couriers = [NSMutableDictionary new];
     for (ShipmentCourierData *courier in self.couriers) {
         NSMutableDictionary *services = [NSMutableDictionary new];
-        for (ShipmentServiceData *service in courier.services) {
-            if ([service.active boolValue]) {
-                [services setObject:@"1" forKey:service.productId];
-            }
+        if ([courier.available boolValue]) {
+            for (ShipmentServiceData *service in courier.services) {
+                if ([service.active boolValue]) {
+                    [services setObject:@"1" forKey:service.productId];
+                }
+            }            
         }
         if (services.allValues.count > 0) {
             [couriers setObject:services forKey:courier.courierId];
@@ -542,6 +552,8 @@
     
     NSString *latitude = [NSString stringWithFormat:@"%f", _shop.latitude];
     NSString *longitude = [NSString stringWithFormat:@"%f", _shop.longitude];
+
+    UserAuthentificationManager *user = [UserAuthentificationManager new];
     
     [parameters addEntriesFromDictionary:@{
         @"courier_origin": _selectedDistrict.districtId?: _shop.districtId?: @"",
@@ -550,6 +562,7 @@
         @"addr_street": _shop.address?:@"",
         @"latitude": latitude?:@"",
         @"longitude": longitude?:@"",
+        @"shop_id": user.getShopId,
     }];
 
     // 13 id provinsi jakarta
@@ -557,7 +570,7 @@
         [parameters setObject:@"5573" forKey:@"courier_origin"];
     }
     
-    [self.networkManager requestWithBaseUrl:@"http://ws-staging.tokopedia.com"
+    [self.networkManager requestWithBaseUrl:@"https://ws-staging.tokopedia.com"
                                        path:@"/v4/action/myshop-shipment/update_shipping_info.pl"
                                      method:RKRequestMethodGET
                                   parameter:parameters
@@ -694,9 +707,12 @@
     
     UITableViewCell *cell = (UITableViewCell *)view;
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+    
     NSInteger indexOfCourier = indexPath.section - 2;
     NSInteger indexOfService = indexPath.row - 1;
+    
     ShipmentCourierData *courier = self.couriers[indexOfCourier];
+    
     ShipmentServiceData *service = courier.services[indexOfService];
     service.active = switchControl.isOn? @"1": @"0";
     
