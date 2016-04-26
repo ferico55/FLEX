@@ -189,6 +189,16 @@
 #endif
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    TalkList* list = _list[indexPath.row];
+
+    ProductTalkDetailViewController *controller = [ProductTalkDetailViewController new];
+    controller.indexPath = indexPath;
+    controller.talk = list;
+
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     TalkList *list = [_list objectAtIndex:indexPath.row];
     list.talk_product_id = _product_id;

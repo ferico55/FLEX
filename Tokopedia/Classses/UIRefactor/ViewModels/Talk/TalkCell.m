@@ -44,6 +44,8 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 }
 
 - (void)setEnableDeepNavigation:(BOOL)enableDeepNavigation {
+    _enableDeepNavigation = enableDeepNavigation;
+
     [self.productImageView setUserInteractionEnabled:enableDeepNavigation];
     [self.userImageView setUserInteractionEnabled:enableDeepNavigation];
     [self.middleView setUserInteractionEnabled:enableDeepNavigation];
@@ -93,15 +95,15 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     self.view.frame = CGRectInset(self.frame, -borderWidth, -borderWidth);
     self.view.layer.borderColor = [UIColor colorWithRed:(231.0/255) green:(231.0/255) blue:(231.0/255) alpha:1.0].CGColor;
     self.view.layer.borderWidth = borderWidth;
-    
-    _totalCommentButton.enabled = _enableDeepNavigation;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    if (_enableDeepNavigation) return;
     _view.backgroundColor = selected ? [UIColor colorWithRed:232 / 255.0 green:245 / 255.0 blue:233 / 255.0 alpha:1] : [UIColor colorWithWhite:249/255.0 alpha:1];
 }
 
 - (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
+    if (_enableDeepNavigation) return;
     _view.backgroundColor = highlighted ? [UIColor colorWithRed:232 / 255.0 green:245 / 255.0 blue:233 / 255.0 alpha:1] : [UIColor colorWithWhite:249/255.0 alpha:1];
 }
 
