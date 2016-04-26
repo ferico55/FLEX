@@ -23,11 +23,13 @@
 #import "NavigateViewController.h"
 #import "ShopBadgeLevel.h"
 #import "SmileyAndMedal.h"
+#import "TalkList.h"
 #import "stringrestkit.h"
 #import "string_inbox_talk.h"
 
 #import "NavigationHelper.h"
 #import "ShopBadgeLevel.h"
+#import "TalkList.h"
 #import <UITableView+FDTemplateLayoutCell/UITableView+FDTemplateLayoutCell.h>
 
 @interface ProductTalkDetailViewController ()
@@ -108,6 +110,8 @@
     }
     
     if(self){
+        _data = [NSMutableDictionary new];
+
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(keyboardWillShow:)
                                                      name:UIKeyboardWillShowNotification
@@ -313,7 +317,7 @@
 
 -(void)setHeaderData:(NSDictionary*)data
 {
-    if(!data) {
+    if(!data || !data.count) {
         [_talkInputView setHidden:YES];
         [_header setHidden:YES];
         return;
@@ -949,6 +953,34 @@
     NSString *text = [_growingtextview.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 
     _sendButton.enabled = text.length > 5;
+}
+
+- (void)setTalk:(TalkList *)list {
+    _talk = list;
+
+    NSDictionary *data = @{
+            TKPD_TALK_MESSAGE:list.talk_message?:@0,
+            TKPD_TALK_USER_IMG:list.talk_user_image?:@0,
+            TKPD_TALK_CREATE_TIME:list.talk_create_time?:@0,
+            TKPD_TALK_USER_NAME:list.talk_user_name?:@0,
+            TKPD_TALK_ID:list.talk_id?:@0,
+            TKPD_TALK_USER_ID:[NSString stringWithFormat:@"%zd", list.talk_user_id]?:@0,
+            TKPD_TALK_TOTAL_COMMENT : list.talk_total_comment?:@0,
+            kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : list.talk_product_id?:@0,
+            TKPD_TALK_SHOP_ID:list.talk_shop_id?:@0,
+            TKPD_TALK_PRODUCT_IMAGE:list.talk_product_image?:@"",
+            TKPD_TALK_PRODUCT_NAME:list.talk_product_name?:@0,
+            TKPD_TALK_PRODUCT_STATUS:list.talk_product_status?:@0,
+            TKPD_TALK_USER_LABEL:list.talk_user_label?:@0,
+            TKPD_TALK_REPUTATION_PERCENTAGE:list.talk_user_reputation?:@0,
+    };
+
+    [_data addEntriesFromDictionary:data];
+}
+
+- (void)setIndexPath:(NSIndexPath *)indexPath {
+    _indexPath = indexPath;
+    [_data addEntriesFromDictionary:@{kTKPDDETAIL_DATAINDEXKEY : @(indexPath.row)?:@0}];
 }
 
 @end

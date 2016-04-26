@@ -164,76 +164,23 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    TalkList* list = _talkList[indexPath.row];
-    
-    NSDictionary *data = @{
-                           TKPD_TALK_MESSAGE:list.talk_message?:@0,
-                           TKPD_TALK_USER_IMG:list.talk_user_image?:@0,
-                           TKPD_TALK_CREATE_TIME:list.talk_create_time?:@0,
-                           TKPD_TALK_USER_NAME:list.talk_user_name?:@0,
-                           TKPD_TALK_ID:list.talk_id?:@0,
-                           TKPD_TALK_USER_ID:[NSString stringWithFormat:@"%zd", list.talk_user_id]?:@0,
-                           TKPD_TALK_TOTAL_COMMENT : list.talk_total_comment?:@0,
-                           kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : list.talk_product_id?:@0,
-                           TKPD_TALK_SHOP_ID:list.talk_shop_id?:@0,
-                           TKPD_TALK_PRODUCT_IMAGE:list.talk_product_image?:@"",
-                           kTKPDDETAIL_DATAINDEXKEY : @(indexPath.row)?:@0,
-                           TKPD_TALK_PRODUCT_NAME:list.talk_product_name?:@0,
-                           TKPD_TALK_PRODUCT_STATUS:list.talk_product_status?:@0,
-                           TKPD_TALK_USER_LABEL:list.talk_user_label?:@0,
-                           TKPD_TALK_REPUTATION_PERCENTAGE:list.talk_user_reputation?:@0,
-                           };
-    
-    NSDictionary *userInfo = @{kTKPDDETAIL_DATAINDEXKEY:@(indexPath.row)};
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateUnreadTalk" object:nil userInfo:userInfo];
-    
-    //TODO remove this delegate stuff
-    UIViewController* containerViewController = (UIViewController*)_delegate;
-    
-    ProductTalkDetailViewController* detailVC = [[ProductTalkDetailViewController alloc] initByMarkingOpenedTalkAsRead:YES];
-    detailVC.data = data;
-    
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        UINavigationController *detailNav = [[UINavigationController alloc]initWithRootViewController:detailVC];
-        detailNav.navigationBar.translucent = NO;
-        [containerViewController.splitViewController replaceDetailViewController:detailNav];
-    } else {
-        [containerViewController.navigationController pushViewController:detailVC animated:YES];
-    }
+    [self showTalkCommentsAtIndexPath:indexPath];
 }
 
 - (void)showTalkCommentsAtIndexPath:(NSIndexPath *)indexPath {
     TalkList* list = _talkList[indexPath.row];
-    
-    NSDictionary *data = @{
-                           TKPD_TALK_MESSAGE:list.talk_message?:@0,
-                           TKPD_TALK_USER_IMG:list.talk_user_image?:@0,
-                           TKPD_TALK_CREATE_TIME:list.talk_create_time?:@0,
-                           TKPD_TALK_USER_NAME:list.talk_user_name?:@0,
-                           TKPD_TALK_ID:list.talk_id?:@0,
-                           TKPD_TALK_USER_ID:[NSString stringWithFormat:@"%zd", list.talk_user_id]?:@0,
-                           TKPD_TALK_TOTAL_COMMENT : list.talk_total_comment?:@0,
-                           kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : list.talk_product_id?:@0,
-                           TKPD_TALK_SHOP_ID:list.talk_shop_id?:@0,
-                           TKPD_TALK_PRODUCT_IMAGE:list.talk_product_image?:@"",
-                           kTKPDDETAIL_DATAINDEXKEY : @(indexPath.row)?:@0,
-                           TKPD_TALK_PRODUCT_NAME:list.talk_product_name?:@0,
-                           TKPD_TALK_PRODUCT_STATUS:list.talk_product_status?:@0,
-                           TKPD_TALK_USER_LABEL:list.talk_user_label?:@0,
-                           TKPD_TALK_REPUTATION_PERCENTAGE:list.talk_user_reputation?:@0,
-                           };
-    
+
     NSDictionary *userInfo = @{kTKPDDETAIL_DATAINDEXKEY:@(indexPath.row)};
-    
+
     [[NSNotificationCenter defaultCenter] postNotificationName:@"updateUnreadTalk" object:nil userInfo:userInfo];
-    
+
     //TODO remove this delegate stuff
     UIViewController* containerViewController = (UIViewController*)_delegate;
-    
+
     ProductTalkDetailViewController* detailVC = [[ProductTalkDetailViewController alloc] initByMarkingOpenedTalkAsRead:YES];
-    detailVC.data = data;
-    
+    detailVC.talk = list;
+    detailVC.indexPath = indexPath;
+
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         UINavigationController *detailNav = [[UINavigationController alloc]initWithRootViewController:detailVC];
         detailNav.navigationBar.translucent = NO;
