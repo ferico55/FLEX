@@ -10,6 +10,7 @@
 
 @interface NSURL (Dictionary)
 
+- (NSDictionary *)parameters;
 - (NSString *)valueForKey:(NSString *)key;
 
 @end
