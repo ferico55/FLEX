@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2D50139230438B54812D14B9 /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */; };
+		625A3C6C1CCF1D0500DFA0DA /* PriceAlertRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 625A3C6B1CCF1D0500DFA0DA /* PriceAlertRequest.m */; };
 		627372D21CC87220002951F8 /* TPAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 627364BB1CC8721C002951F8 /* TPAnalytics.m */; };
 		627372D31CC87220002951F8 /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 627364BE1CC8721C002951F8 /* URLCacheAlert.m */; };
 		627372D41CC87220002951F8 /* URLCacheConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 627364C01CC8721C002951F8 /* URLCacheConnection.m */; };
@@ -2286,6 +2287,8 @@
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
 		2D733D9158C7BF957D514506 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
 		4868E459AB2A65D133732296 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tokopedia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		625A3C6A1CCF1D0500DFA0DA /* PriceAlertRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PriceAlertRequest.h; sourceTree = "<group>"; };
+		625A3C6B1CCF1D0500DFA0DA /* PriceAlertRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PriceAlertRequest.m; sourceTree = "<group>"; };
 		627364BA1CC8721C002951F8 /* TPAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPAnalytics.h; sourceTree = "<group>"; };
 		627364BB1CC8721C002951F8 /* TPAnalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPAnalytics.m; sourceTree = "<group>"; };
 		627364BD1CC8721C002951F8 /* URLCacheAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheAlert.h; sourceTree = "<group>"; };
@@ -8997,6 +9000,8 @@
 				62736C371CC8721E002951F8 /* PriceAlertViewController.m */,
 				62736C381CC8721E002951F8 /* PriceAlertViewController.xib */,
 				62736C391CC8721E002951F8 /* string_price_alert.h */,
+				625A3C6A1CCF1D0500DFA0DA /* PriceAlertRequest.h */,
+				625A3C6B1CCF1D0500DFA0DA /* PriceAlertRequest.m */,
 			);
 			path = PriceAlert;
 			sourceTree = "<group>";
@@ -13313,6 +13318,7 @@
 				627378291CC87221002951F8 /* RequestOrderData.m in Sources */,
 				627374761CC87220002951F8 /* ShopSettingsResult.m in Sources */,
 				627373FD1CC87220002951F8 /* AddressFormList.m in Sources */,
+				625A3C6C1CCF1D0500DFA0DA /* PriceAlertRequest.m in Sources */,
 				627373351CC87220002951F8 /* CatalogInfo.m in Sources */,
 				6273761A1CC87221002951F8 /* InboxResolSplitViewController.m in Sources */,
 				627376231CC87221002951F8 /* RequestCancelResolution.m in Sources */,
