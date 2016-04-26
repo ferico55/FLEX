@@ -47,9 +47,17 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     [self.productImageView setUserInteractionEnabled:enableDeepNavigation];
     [self.userImageView setUserInteractionEnabled:enableDeepNavigation];
     [self.middleView setUserInteractionEnabled:enableDeepNavigation];
+    _totalCommentButton.enabled = enableDeepNavigation;
 }
 
 #pragma mark - Initialization
+
+- (instancetype)initWithCoder:(NSCoder *)coder {
+    if (self = [super initWithCoder:coder]) {
+        _enableDeepNavigation = YES;
+    }
+    return self;
+}
 
 - (void)awakeFromNib {
     // Initialization code
@@ -85,6 +93,8 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     self.view.frame = CGRectInset(self.frame, -borderWidth, -borderWidth);
     self.view.layer.borderColor = [UIColor colorWithRed:(231.0/255) green:(231.0/255) blue:(231.0/255) alpha:1.0].CGColor;
     self.view.layer.borderWidth = borderWidth;
+    
+    _totalCommentButton.enabled = _enableDeepNavigation;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
