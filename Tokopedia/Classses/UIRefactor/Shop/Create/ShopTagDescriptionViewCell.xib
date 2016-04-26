@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="GothamBook.ttf">
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+        </mutableArray>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ShopTagDescriptionViewCell" rowHeight="60" id="KGk-i7-Jjw" customClass="ShopTagDescriptionViewCell" customModule="Tokopedia" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="59.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PJg-VC-yfl">
+                        <rect key="frame" x="268" y="43" width="42" height="16"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="16" id="EKD-Jl-9pq"/>
+                            <constraint firstAttribute="width" constant="42" id="TXo-Yi-wBB"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="2TU-7H-Jij" customClass="RSKPlaceholderTextView" customModule="Tokopedia" customModuleProvider="target">
+                        <rect key="frame" x="10" y="0.0" width="310" height="43"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="43" id="uis-17-9do"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                        <connections>
+                            <outlet property="delegate" destination="KGk-i7-Jjw" id="fnu-Kw-Ok5"/>
+                        </connections>
+                    </textView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="2TU-7H-Jij" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="2bR-s0-oJc"/>
+                    <constraint firstAttribute="trailing" secondItem="PJg-VC-yfl" secondAttribute="trailing" constant="10" id="ATq-Gf-lpg"/>
+                    <constraint firstItem="PJg-VC-yfl" firstAttribute="top" secondItem="2TU-7H-Jij" secondAttribute="bottom" id="GTE-7X-MLq"/>
+                    <constraint firstItem="2TU-7H-Jij" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="g8u-GF-czq"/>
+                    <constraint firstAttribute="trailing" secondItem="2TU-7H-Jij" secondAttribute="trailing" id="uT5-o3-MYn"/>
+                    <constraint firstAttribute="bottom" secondItem="PJg-VC-yfl" secondAttribute="bottom" id="xtC-6r-azm"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="textCountLabel" destination="PJg-VC-yfl" id="sCS-MS-HCq"/>
+                <outlet property="textView" destination="2TU-7H-Jij" id="gEb-c7-2v1"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+</document>
