@@ -476,7 +476,16 @@
 }
 
 - (void)didReceiveLogisticData:(ShipmentData *)data {
-    self.couriers = data.courier;
+    NSArray *couriers = data.courier;
+    for (ShipmentCourierData *courier in couriers) {
+        for (ShipmentServiceData *service in courier.services) {
+            if ([courier.available boolValue] == NO) {
+                service.active = @"0";
+            }
+        }
+    }
+    self.couriers = couriers;
+    
     self.shop = data.shop;
     
     if (self.provinces == nil) {
