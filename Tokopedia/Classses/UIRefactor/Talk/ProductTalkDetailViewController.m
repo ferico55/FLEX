@@ -198,13 +198,14 @@
     }
 
     _table.tableFooterView = _footer;
-    
+
+    _data = [self generateData];
     [self fetchTalkComments];
 }
 
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
-    
+
     [self setHeaderData:_data];
 
     //called to prevent error on iOS 7, haven't found explanation why
@@ -212,6 +213,28 @@
     if (!SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0")) {
         [self.view layoutIfNeeded];
     }
+}
+
+- (NSDictionary *)generateData {
+    if (!_talk || !_indexPath) return nil;
+
+    return @{
+            TKPD_TALK_MESSAGE:_talk.talk_message?:@0,
+            TKPD_TALK_USER_IMG:_talk.talk_user_image?:@0,
+            TKPD_TALK_CREATE_TIME:_talk.talk_create_time?:@0,
+            TKPD_TALK_USER_NAME:_talk.talk_user_name?:@0,
+            TKPD_TALK_ID:_talk.talk_id?:@0,
+            TKPD_TALK_USER_ID:[NSString stringWithFormat:@"%zd", _talk.talk_user_id]?:@0,
+            TKPD_TALK_TOTAL_COMMENT : _talk.talk_total_comment?:@0,
+            kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : _talk.talk_product_id?:@0,
+            TKPD_TALK_SHOP_ID:_talk.talk_shop_id?:@0,
+            TKPD_TALK_PRODUCT_IMAGE:_talk.talk_product_image?:@"",
+            TKPD_TALK_PRODUCT_NAME:_talk.talk_product_name?:@0,
+            TKPD_TALK_PRODUCT_STATUS:_talk.talk_product_status?:@0,
+            TKPD_TALK_USER_LABEL:_talk.talk_user_label?:@0,
+            TKPD_TALK_REPUTATION_PERCENTAGE:_talk.talk_user_reputation?:@0,
+            kTKPDDETAIL_DATAINDEXKEY : @(_indexPath.row)?:@0
+    };
 }
 
 #pragma mark - Memory Management
@@ -974,13 +997,10 @@
             TKPD_TALK_USER_LABEL:list.talk_user_label?:@0,
             TKPD_TALK_REPUTATION_PERCENTAGE:list.talk_user_reputation?:@0,
     };
-
-    [_data addEntriesFromDictionary:data];
 }
 
 - (void)setIndexPath:(NSIndexPath *)indexPath {
     _indexPath = indexPath;
-    [_data addEntriesFromDictionary:@{kTKPDDETAIL_DATAINDEXKEY : @(indexPath.row)?:@0}];
 }
 
 @end

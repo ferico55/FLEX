@@ -17,7 +17,7 @@
 }
 
 - (IBAction)actionSmiley:(id)sender;
-@property (strong, nonatomic) NSMutableDictionary *data;
+@property (strong, nonatomic) NSDictionary *data;
 @property (strong, nonatomic) TalkList *talk;
 @property(strong, nonatomic) NSIndexPath *indexPath;
 
