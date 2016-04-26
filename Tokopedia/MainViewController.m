@@ -686,11 +686,14 @@ typedef enum TagRequest {
     TKPDSecureStorage* storage = [TKPDSecureStorage standardKeyChains];
     _persistBaseUrl = [[storage keychainDictionary] objectForKey:@"AppBaseUrl"]?:kTkpdBaseURLString;
     
+    NSString* securityQuestionUUID = [[storage keychainDictionary] objectForKey:@"securityQuestionUUID"];
+    
     [storage resetKeychain];
     [_auth removeAllObjects];
     
     [storage setKeychainWithValue:_persistToken?:@"" withKey:@"device_token"];
     [storage setKeychainWithValue:_persistBaseUrl?:@"" withKey:@"AppBaseUrl"];
+    [storage setKeychainWithValue:securityQuestionUUID withKey:@"securityQuestionUUID"];
     
     [self removeCacheUser];
     

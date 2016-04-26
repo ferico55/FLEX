@@ -34,6 +34,8 @@
 - (void)navigateToProductFromViewController:(UIViewController *)viewController
                                   promoData:(NSDictionary *)data
                                 productData:(NSDictionary *)productData;
+- (void)navigateToProductFromViewController:(UIViewController *)viewController withProduct:(SearchAWSProduct *)product;
+
 -(void)popUpLuckyDeal:(LuckyDealWord*)words;
 +(void)navigateToInvoiceFromViewController:(UIViewController *)viewController withInvoiceURL:(NSString *)invoiceURL;
 

@@ -15,7 +15,6 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UIView *tableHeaderView;
 @property (strong, nonatomic) NSArray *categories;
-@property (strong, nonatomic) NSDictionary *selectedCategory;
 
 @end
 
@@ -24,7 +23,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"Hasil Pencarian";
-    self.navigationItem.rightBarButtonItem = [self rightButton];
     self.navigationItem.backBarButtonItem = [self backButton];
     self.tableView.tableHeaderView = _tableHeaderView;
     self.categories = [self getCategories];
@@ -39,14 +37,7 @@
     return backButton;
 }
 
-- (UIBarButtonItem *)rightButton {
-    UIBarButtonItem *continueButton = [[UIBarButtonItem alloc] initWithTitle:@"Lanjutkan" style:UIBarButtonItemStyleDone target:self action:@selector(tapContinueButton:)];
-    continueButton.enabled = NO;
-    continueButton.tintColor = [[UIColor whiteColor] colorWithAlphaComponent:0.5];
-    return continueButton;
-}
-
--(NSArray *)getCategories{
+- (NSArray *)getCategories{
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     TAGContainer *gtmContainer = appDelegate.container;
     
@@ -87,36 +78,27 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"categories"];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"categories"];
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     cell.textLabel.text = self.categories[indexPath.row][@"title"];
     cell.textLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
-    if ([_categories[indexPath.row] isEqual:_selectedCategory]) {
-        cell.accessoryType = UITableViewCellAccessoryCheckmark;
-    } else {
-        cell.accessoryType = UITableViewCellAccessoryNone;
-    }
     return cell;
 }
 
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    _selectedCategory = _categories[indexPath.row];
-    [_tableView reloadData];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    self.navigationItem.rightBarButtonItem.enabled = YES;
-    self.navigationItem.rightBarButtonItem.tintColor = [UIColor whiteColor];
-}
-
-- (void)tapContinueButton:(UIBarButtonItem *)sender {
-    [TPAnalytics trackSnapSearchCategory:_selectedCategory[@"title"]];
+    NSDictionary *category = self.categories[indexPath.row];
+    [TPAnalytics trackSnapSearchCategory:category[@"title"]];
     
     SearchResultViewController *controller = [SearchResultViewController new];
     controller.isFromAutoComplete = NO;
     controller.isFromImageSearch = YES;
     controller.title = @"Hasil Pencarian";
     controller.hidesBottomBarWhenPushed = YES;
-    controller.data = @{@"type":@"search_product", @"department_id":_selectedCategory[@"id"]};
+    controller.data = @{@"type": @"search_product", @"department_id": category[@"id"]};
     controller.imageQueryInfo = _imageQuery;
     controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [self.navigationController pushViewController:controller animated:YES];

@@ -658,6 +658,7 @@ OtherProductDelegate
                     transactionVC.productPrice = _product.result.product.product_price;
                     transactionVC.data = @{DATA_DETAIL_PRODUCT_KEY:_product.result};
                     transactionVC.productID = _product.result.product.product_id;
+                    transactionVC.isSnapSearchProduct = _isSnapSearchProduct;
                     [self.navigationController pushViewController:transactionVC animated:YES];
                 } else {
                     UINavigationController *navigationController = [[UINavigationController alloc] init];
