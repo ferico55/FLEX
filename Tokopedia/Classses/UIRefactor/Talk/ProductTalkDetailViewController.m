@@ -204,7 +204,10 @@
     [self setHeaderData:_data];
 
     //called to prevent error on iOS 7, haven't found explanation why
-    [self.view layoutIfNeeded];
+    //if called on iOS 8 or above, this will mess up the layout
+    if (!SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0")) {
+        [self.view layoutIfNeeded];
+    }
 }
 
 #pragma mark - Memory Management
