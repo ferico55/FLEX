@@ -41,13 +41,11 @@
     UserAuthentificationManager *auth = [UserAuthentificationManager new];
     NSString *hash = [[NSString stringWithFormat:@"%@~%@", auth.getUserId, auth.getMyDeviceToken] encryptWithMD5];
     NSString *additionalParameters = [NSString stringWithFormat:@"&shop_id=%@&user_id=%@&device_time=%f&device_id=%@&hash=%@&os_type=2", auth.getShopId, auth.getUserId, [[NSDate new] timeIntervalSince1970], auth.getMyDeviceToken, hash];
-    
     if ([self.courier hasActiveServices]) {
-        additionalParameters = [NSString stringWithFormat:@"%@&service_id=%@", additionalParameters, [self.courier activeServiceIds]];
+        additionalParameters = [additionalParameters stringByAppendingString:[NSString stringWithFormat:@"&service_id=%@", [self.courier activeServiceIds]]];
     } else {
-        additionalParameters = [NSString stringWithFormat:@"%@&service_id=0", additionalParameters];
+        additionalParameters = [additionalParameters stringByAppendingString:@"&service_id=0"];
     }
-    
     NSString *URLString = [NSString stringWithFormat:@"%@%@", _courier.URLAdditionalOption, additionalParameters];
     return [NSURL URLWithString:URLString];
 }
