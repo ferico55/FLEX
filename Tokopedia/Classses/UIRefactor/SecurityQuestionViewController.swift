@@ -78,9 +78,9 @@ class SecurityQuestionViewController : UIViewController, UITextFieldDelegate {
             frame.origin.y -= keyboardFrame.size.height - 20
             self.questionViewType1.frame = frame
             
-            var frame2 = self.questionViewType1.frame
+            var frame2 = self.questionViewType2.frame
             frame2.origin.y -= keyboardFrame.size.height - 20
-            self.questionViewType1.frame = frame2
+            self.questionViewType2.frame = frame2
         })
     }
     

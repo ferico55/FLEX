@@ -201,7 +201,7 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                     <connections>
-                        <action selector="didTapRequestOTP:" destination="-1" eventType="touchDragInside" id="Jho-d5-mqF"/>
+                        <action selector="didTapRequestOTP:" destination="-1" eventType="touchUpInside" id="6Q8-D6-pL1"/>
                     </connections>
                 </button>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Masukkan Kode OTP" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="no8-Br-byW">
