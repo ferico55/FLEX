@@ -87,7 +87,7 @@
     NSString *ids = @"";
     for (ShipmentServiceData *service in self.services) {
         if ([service.active boolValue]) {
-            ids = [NSString stringWithFormat:@"%@,%@,", ids, service.productId];
+            ids = [ids stringByAppendingString:[NSString stringWithFormat:@"%@,", service.productId]];
         }
     }
     return ids;
