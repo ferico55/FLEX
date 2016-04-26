@@ -18,6 +18,7 @@ class OpenShopViewController: UITableViewController {
         tableView.registerNib(UINib(nibName: "OpenShopImageViewCell", bundle: nil), forCellReuseIdentifier: "OpenShopImage")
         tableView.registerNib(UINib(nibName: "OpenShopNameViewCell", bundle: nil), forCellReuseIdentifier: "OpenShopName")
         tableView.registerNib(UINib(nibName: "EditShopDescriptionViewCell", bundle: nil), forCellReuseIdentifier: "shopDescription")
+        tableView.registerNib(UINib(nibName: "ShopTagDescriptionViewCell", bundle: nil), forCellReuseIdentifier: "ShopTagDescriptionViewCell")
     }
 
     override func didReceiveMemoryWarning() {
@@ -55,11 +56,19 @@ class OpenShopViewController: UITableViewController {
                     cell = nameCell
                 }
             } else if indexPath.row == 1 {
-                if let taglineCell = tableView.dequeueReusableCellWithIdentifier("shopDescription") as? EditShopDescriptionViewCell {
+                if let taglineCell = tableView.dequeueReusableCellWithIdentifier("ShopTagDescriptionViewCell") as? ShopTagDescriptionViewCell {
+                    taglineCell.textView.placeholder = "Tulis Slogan"
+                    taglineCell.textView.tag = 1
+                    taglineCell.updateCounterLabel()
+                    NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(shopTaglineHasChanged), name: UITextViewTextDidChangeNotification, object: taglineCell.textView)
                     cell = taglineCell
                 }
             } else if indexPath.row == 2 {
-                if let descriptionCell = tableView.dequeueReusableCellWithIdentifier("shopDescription") as? EditShopDescriptionViewCell {
+                if let descriptionCell = tableView.dequeueReusableCellWithIdentifier("ShopTagDescriptionViewCell") as? ShopTagDescriptionViewCell {
+                    descriptionCell.textView.placeholder = "Tulis Deskripsi"
+                    descriptionCell.textView.tag = 2
+                    descriptionCell.updateCounterLabel()
+                    NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(shopDescriptionHasChanged), name: UITextViewTextDidChangeNotification, object: descriptionCell.textView)
                     cell = descriptionCell
                 }
             }
@@ -94,6 +103,15 @@ class OpenShopViewController: UITableViewController {
     }
     
     func pushToNextPage() -> Void {
+        let controller: ShipmentViewController = ShipmentViewController()
+        self.navigationController?.pushViewController(controller, animated: true)
+    }
+    
+    func shopTaglineHasChanged(notification: NSNotification) -> Void {
+
+    }
+    
+    func shopDescriptionHasChanged(notification: NSNotification) -> Void {
         
     }
     
