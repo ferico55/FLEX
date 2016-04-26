@@ -21,15 +21,11 @@
 
 #import "ReportViewController.h"
 #import "NavigateViewController.h"
-#import "ShopBadgeLevel.h"
 #import "SmileyAndMedal.h"
 #import "TalkList.h"
 #import "stringrestkit.h"
 #import "string_inbox_talk.h"
 
-#import "NavigationHelper.h"
-#import "ShopBadgeLevel.h"
-#import "TalkList.h"
 #import <UITableView+FDTemplateLayoutCell/UITableView+FDTemplateLayoutCell.h>
 
 @interface ProductTalkDetailViewController ()
@@ -106,6 +102,7 @@
     
     if (self) {
         _marksOpenedTalksAsRead = NO;
+        _enableDeepNavigation = YES;
         self.title = kTKPDTITLE_TALK;
     }
     
@@ -178,7 +175,7 @@
         // add gesture to product image
     UITapGestureRecognizer* productGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapProduct)];
     [_talkProductImage addGestureRecognizer:productGesture];
-    [_talkProductImage setUserInteractionEnabled: [NavigationHelper shouldDoDeepNavigation]];
+    [_talkProductImage setUserInteractionEnabled: _enableDeepNavigation];
 
 
     _talkuserimage.layer.cornerRadius = _talkuserimage.bounds.size.width/2.0f;
@@ -371,7 +368,7 @@
 
     UITapGestureRecognizer *tapUser = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapUser)];
     [_userButton addGestureRecognizer:tapUser];
-    [_userButton setUserInteractionEnabled:[NavigationHelper shouldDoDeepNavigation]];
+    [_userButton setUserInteractionEnabled:_enableDeepNavigation];
 
     [_talkCommentButtonLarge setTitle:[NSString stringWithFormat:@"%@ Komentar",[data objectForKey:TKPD_TALK_TOTAL_COMMENT]] forState:UIControlStateNormal];
     
@@ -387,6 +384,7 @@
 
     NSURL *userImageUrl = [NSURL URLWithString:[data objectForKey:TKPD_TALK_USER_IMG]];
     [_talkuserimage setImageWithURL:userImageUrl placeholderImage:[UIImage imageNamed:@"default-boy.png"]];
+    _talkuserimage.userInteractionEnabled = _enableDeepNavigation;
 
     NSURL *productImageUrl = [NSURL URLWithString:[data objectForKey:TKPD_TALK_PRODUCT_IMAGE]];
     [_talkProductImage setImageWithURL:productImageUrl placeholderImage:[UIImage imageNamed:@"default-boy.png"]];
@@ -437,7 +435,7 @@
 #pragma mark - View Action
 
 - (void)tapProduct {
-    if (![NavigationHelper shouldDoDeepNavigation]) {
+    if (!_enableDeepNavigation) {
         return;
     }
     

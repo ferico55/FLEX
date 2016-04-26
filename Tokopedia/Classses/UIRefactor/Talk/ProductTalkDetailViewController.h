@@ -19,7 +19,8 @@
 - (IBAction)actionSmiley:(id)sender;
 @property (strong, nonatomic) NSDictionary *data;
 @property (strong, nonatomic) TalkList *talk;
-@property(strong, nonatomic) NSIndexPath *indexPath;
+@property (strong, nonatomic) NSIndexPath *indexPath;
+@property (nonatomic) BOOL enableDeepNavigation;
 
 -(void)replaceDataSelected:(NSDictionary *)data;
 -(id) initByMarkingOpenedTalkAsRead:(BOOL) marksOpenedTalkAsRead;

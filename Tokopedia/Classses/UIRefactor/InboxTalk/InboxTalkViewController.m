@@ -31,6 +31,7 @@
 #import "NoResultReusableView.h"
 #import "TAGDataLayer.h"
 #import "Tokopedia-Swift.h"
+#import "NavigationHelper.h"
 
 @interface InboxTalkViewController () <UITableViewDataSource, UITableViewDelegate, TKPDTabViewDelegate, UIAlertViewDelegate, TalkCellDelegate>
 
@@ -180,6 +181,7 @@
     ProductTalkDetailViewController* detailVC = [[ProductTalkDetailViewController alloc] initByMarkingOpenedTalkAsRead:YES];
     detailVC.talk = list;
     detailVC.indexPath = indexPath;
+    detailVC.enableDeepNavigation = [NavigationHelper shouldDoDeepNavigation];
 
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         UINavigationController *detailNav = [[UINavigationController alloc]initWithRootViewController:detailVC];
