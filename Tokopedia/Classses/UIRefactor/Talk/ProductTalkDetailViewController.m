@@ -476,7 +476,7 @@
                                          }];
 }
 
-- (void)tapUser {
+- (IBAction)tapUser {
     NSString *userId = [_data objectForKey:@"user_id"];
     if(!userId) {
         userId = [_data objectForKey:@"talk_user_id"];
