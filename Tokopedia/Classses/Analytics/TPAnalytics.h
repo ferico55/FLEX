@@ -42,4 +42,6 @@
 
 + (void)trackOnBoardingClickButton:(NSString *)buttonName;
 
++ (void)trackSnapSearchCategory:(NSString *)categoryName;
+
 @end

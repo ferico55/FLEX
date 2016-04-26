@@ -29,6 +29,8 @@
     self.tableView.tableHeaderView = _tableHeaderView;
     self.categories = [self getCategories];
     self.tableView.allowsMultipleSelection = NO;
+    
+    [TPAnalytics trackScreenName:@"Snap Search Category"];
 }
 
 
@@ -107,6 +109,8 @@
 }
 
 - (void)tapContinueButton:(UIBarButtonItem *)sender {
+    [TPAnalytics trackSnapSearchCategory:_selectedCategory[@"title"]];
+    
     SearchResultViewController *controller = [SearchResultViewController new];
     controller.isFromAutoComplete = NO;
     controller.isFromImageSearch = YES;
