@@ -10,14 +10,14 @@ import Foundation
 import UIKit
 
 @objc(SecurityQuestionViewController)
-class SecurityQuestionViewController : UIViewController {
+class SecurityQuestionViewController : UIViewController, UITextFieldDelegate {
     /*
-        questionType1 = "1" => Phone Number Question
-        questionType1 = "2" => Account Number Question
-
-        questionType2 = "1" => OTP to email
-        questionType2 = "2" => OTP to phone
-    */
+     questionType1 = "1" => Phone Number Question
+     questionType1 = "2" => Account Number Question
+     
+     questionType2 = "1" => OTP to email
+     questionType2 = "2" => OTP to phone
+     */
     var questionType1 : String!
     var questionType2 : String!
     var userID : String!
@@ -47,6 +47,56 @@ class SecurityQuestionViewController : UIViewController {
         
         self.setLabelSpacing(infoLabel)
         self.setLabelSpacing(otpInfoLabel)
+        answerField.delegate = self
+        otpField.delegate = self
+        
+        let tap = UITapGestureRecognizer.init(target: self, action: #selector(dismissKeyboard))
+        self.view .addGestureRecognizer(tap)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(didKeyboardShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(didKeyboardHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
+    }
+    
+    func dismissKeyboard() {
+        answerField.resignFirstResponder()
+        otpField.resignFirstResponder()
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        answerField.resignFirstResponder()
+        otpField.resignFirstResponder()
+        
+        return true
+    }
+    
+    func didKeyboardShow(notification : NSNotification) {
+        var info = notification.userInfo!
+        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
+        
+        UIView.animateWithDuration(0.5, animations: { () -> Void in
+            var frame = self.questionViewType1.frame
+            frame.origin.y -= keyboardFrame.size.height - 20
+            self.questionViewType1.frame = frame
+            
+            var frame2 = self.questionViewType1.frame
+            frame2.origin.y -= keyboardFrame.size.height - 20
+            self.questionViewType1.frame = frame2
+        })
+    }
+    
+    func didKeyboardHide(notification : NSNotification) {
+        var info = notification.userInfo!
+        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
+        
+        UIView.animateWithDuration(0.1, animations: { () -> Void in
+            var frame = self.questionViewType1.frame
+            frame.origin.y += keyboardFrame.size.height - 20
+            self.questionViewType1.frame = frame
+            
+            var frame2 = self.questionViewType2.frame
+            frame2.origin.y += keyboardFrame.size.height - 20
+            self.questionViewType2.frame = frame2
+        })
     }
     
     func setLabelSpacing (label : UILabel) {
@@ -60,16 +110,16 @@ class SecurityQuestionViewController : UIViewController {
     func requestQuestionForm() {
         _networkManager .
             requestWithBaseUrl(NSString.v4Url(),
-                path: "/v4/interrupt/get_question_form.pl",
-                method: .GET,
-                parameter: ["user_check_security_1" : questionType1, "user_check_security_2" : questionType2, "user_id" : userID, "device_id" : deviceID],
-                mapping: SecurityQuestion.mapping(),
-                onSuccess: { (mappingResult, operation) -> Void in
-                    let result = mappingResult.dictionary()[""] as! SecurityQuestion
-                    self.didReceiveSecurityForm(result)
+                               path: "/v4/interrupt/get_question_form.pl",
+                               method: .GET,
+                               parameter: ["user_check_security_1" : questionType1, "user_check_security_2" : questionType2, "user_id" : userID, "device_id" : deviceID],
+                               mapping: SecurityQuestion.mapping(),
+                               onSuccess: { (mappingResult, operation) -> Void in
+                                let result = mappingResult.dictionary()[""] as! SecurityQuestion
+                                self.didReceiveSecurityForm(result)
                 },
-                onFailure: { (errors) -> Void in
-                    
+                               onFailure: { (errors) -> Void in
+                                
             });
     }
     
@@ -118,15 +168,15 @@ class SecurityQuestionViewController : UIViewController {
     
     func submitSecurityAnswer(answer : String) {
         _networkManager.requestWithBaseUrl(NSString.v4Url(),
-            path: "/v4/action/interrupt/answer_question.pl",
-            method: .GET,
-            parameter: ["question" : _securityQuestion.data.question, "answer" : answer, "user_check_security_1" : questionType1, "user_check_security_2" : questionType2, "user_id" : userID],
-            mapping: SecurityAnswer .mapping(),
-            onSuccess: { (mappingResult, operation) -> Void in
-                let answer = mappingResult.dictionary()[""] as! SecurityAnswer
-                self.didReceiveAnswerRespond(answer)
+                                           path: "/v4/action/interrupt/answer_question.pl",
+                                           method: .GET,
+                                           parameter: ["question" : _securityQuestion.data.question, "answer" : answer, "user_check_security_1" : questionType1, "user_check_security_2" : questionType2, "user_id" : userID],
+                                           mapping: SecurityAnswer .mapping(),
+                                           onSuccess: { (mappingResult, operation) -> Void in
+                                            let answer = mappingResult.dictionary()[""] as! SecurityAnswer
+                                            self.didReceiveAnswerRespond(answer)
             },
-            onFailure: nil)
+                                           onFailure: nil)
     }
     
     func didReceiveAnswerRespond(answer : SecurityAnswer) {
@@ -153,18 +203,18 @@ class SecurityQuestionViewController : UIViewController {
     @IBAction func didTapRequestOTP(sender: AnyObject) {
         _networkManager .
             requestWithBaseUrl(NSString.v4Url(),
-                path: "/v4/action/interrupt/request_otp.pl",
-                method: .GET,
-                parameter: ["user_id" : userID, "user_check_question_2" : questionType2],
-                mapping: SecurityRequestOTP .mapping(),
-                onSuccess: { (mappingResult, operation) -> Void in
-                    let otp = mappingResult.dictionary()[""] as! SecurityRequestOTP
-                    if(otp.data.is_success == "1") {
-                        let stickyAlert = StickyAlertView.init(successMessages: ["Kode OTP sukses terkirim."], delegate: self)
-                        stickyAlert.show()
-                    }
+                               path: "/v4/action/interrupt/request_otp.pl",
+                               method: .GET,
+                               parameter: ["user_id" : userID, "user_check_question_2" : questionType2],
+                               mapping: SecurityRequestOTP .mapping(),
+                               onSuccess: { (mappingResult, operation) -> Void in
+                                let otp = mappingResult.dictionary()[""] as! SecurityRequestOTP
+                                if(otp.data.is_success == "1") {
+                                    let stickyAlert = StickyAlertView.init(successMessages: ["Kode OTP sukses terkirim."], delegate: self)
+                                    stickyAlert.show()
+                                }
                 },
-                onFailure: nil)
+                               onFailure: nil)
     }
     
     func didSubmitOTP() {
@@ -185,5 +235,5 @@ class SecurityQuestionViewController : UIViewController {
         }
         self .requestQuestionForm()
     }
-
+    
 }
