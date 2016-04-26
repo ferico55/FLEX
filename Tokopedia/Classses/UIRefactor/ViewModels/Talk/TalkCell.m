@@ -303,80 +303,6 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     [self dismissAllPopTipViews];
 }
 
-#pragma mark - Unfollow In Action
-- (NSDictionary *)getParameter:(int)tag {
-    if (tag == RequestFollowTalk) {
-        NSDictionary* param = @{
-                                kTKPDDETAIL_ACTIONKEY : TKPD_FOLLOW_TALK_ACTION,
-                                kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : _unfollowTalk.talk_product_id,
-                                TKPD_TALK_ID:_unfollowTalk.talk_id?:@0,
-                                @"shop_id":_unfollowTalk.talk_shop_id
-                                };
-        
-        return param;
-    } else if (tag == RequestDeleteTalk) {
-        NSDictionary* param = @{
-                                kTKPDDETAIL_ACTIONKEY : TKPD_DELETE_TALK_ACTION,
-                                kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : _deleteTalk.talk_product_id,
-                                TKPD_TALK_ID:_deleteTalk.talk_id?:@0,
-                                kTKPDDETAILSHOP_APISHOPID : _deleteTalk.talk_shop_id
-                                };
-        return param;
-    }
-    
-    return nil;
-}
-
-- (NSString *)getPath:(int)tag {
-    if (tag == RequestFollowTalk || tag == RequestDeleteTalk) {
-        return @"action/talk.pl";
-    }
-    
-    return nil;
-}
-
-- (id)getObjectManager:(int)tag {
-    if(tag == RequestFollowTalk || tag == RequestDeleteTalk) {
-        _objectUnfollowmanager =  [RKObjectManager sharedClient];
-        
-        RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[GeneralAction class]];
-        [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                            kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                            kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-        
-        RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[GeneralActionResult class]];
-        [resultMapping addAttributeMappingsFromDictionary:@{kTKPD_APIISSUCCESSKEY:kTKPD_APIISSUCCESSKEY}];
-        
-        //relation
-        RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
-        [statusMapping addPropertyMapping:resulRel];
-        
-        
-        //register mappings with the provider using a response descriptor
-        RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST
-                                                                                                 pathPattern:@"action/talk.pl" keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-        
-        [_objectUnfollowmanager addResponseDescriptor:responseDescriptorStatus];
-        
-        return _objectUnfollowmanager;
-    }
-    
-    return nil;
-}
-
-- (NSString *)getRequestStatus:(RKMappingResult *)mappingResult withTag:(int)tag {
-    if(tag == RequestFollowTalk || tag == RequestDeleteTalk) {
-        GeneralAction *action = [mappingResult.dictionary objectForKey:@""];
-        return action.status;
-    }
-    
-    return nil;
-}
-
-- (void)actionBeforeRequest:(int)tag {
-    
-}
-
 - (void)actionAfterRequest:(RKMappingResult *)mappingResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
     if(tag == RequestFollowTalk || tag == RequestDeleteTalk) {
         GeneralAction *generalAction = [mappingResult.dictionary objectForKey:@""];
@@ -422,10 +348,6 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
             [stickyAlert show];
         }
     }
-}
-
-- (void)actionAfterFailRequestMaxTries:(int)tag {
-    
 }
 
 #pragma mark - Animate Follow Button
