@@ -7,11 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Tokopedia-Swift.h"
 
 #pragma mark - Filter Location View Controller Delegate
 @protocol FilterLocationViewControllerDelegate <NSObject>
 @required
 -(void)FilterLocationViewController:(UIViewController*)viewcontroller withdata:(NSDictionary*)data;
+-(void)didSelectLocationFilter:(FilterObject *)selectedLocation;
 
 @end
 

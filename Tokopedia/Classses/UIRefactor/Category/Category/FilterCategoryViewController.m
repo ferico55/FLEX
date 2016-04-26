@@ -267,6 +267,10 @@
     self.selectedCategory = category;
     [self expandSelectedCategories];
     [self scrollToCategory:category];
+    
+    if ([self.delegate respondsToSelector:@selector(didSelectCategoryFilter:)]) {
+        [self.delegate didSelectCategoryFilter:self.selectedCategory];
+    }
 }
 
 - (void)deselectCategory:(CategoryDetail *)selectedCategory {

@@ -39,13 +39,18 @@
     [backBarButtonItem setTintColor:[UIColor whiteColor]];
     self.navigationItem.leftBarButtonItem = backBarButtonItem;
     
-    UIBarButtonItem *doneBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Selesai" style:UIBarButtonItemStylePlain target:self action:@selector(dismissViewController)];
+    UIBarButtonItem *doneBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Selesai" style:UIBarButtonItemStylePlain target:self action:@selector(done)];
     [doneBarButtonItem setTintColor:[UIColor whiteColor]];
     self.navigationItem.rightBarButtonItem = doneBarButtonItem;
     
 //    self.tabBarWidth = _tabBarWidth;
 //    _tabBar.autoresizingMask = UIViewAutoresizingFlexibleHeight;
 //    [self.view addSubview:_tabBar];
+}
+
+-(void)done{
+    [_delegate done];
+    [self dismissViewController];
 }
 
 - (void)dismissViewController{

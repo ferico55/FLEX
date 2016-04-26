@@ -112,9 +112,8 @@ static NSString const *rows = @"12";
     NSIndexPath *_sortIndexPath;
     
     NSArray *_initialCategories;
-    CategoryDetail *_selectedCategory;
     TokopediaNetworkManager *_requestHotlistManager;
-    
+    QueryObject *_selectedFilter;
 }
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageview;
@@ -289,7 +288,7 @@ static NSString const *rows = @"12";
 - (void)didTapFilterSubCategoryButton {
     FilterCategoryViewController *controller = [FilterCategoryViewController new];
     controller.filterType = FilterCategoryTypeHotlist;
-    controller.selectedCategory = _selectedCategory;
+    controller.selectedCategory = _selectedFilter.selectedCategory;
     controller.categories = [_initialCategories mutableCopy];
     controller.delegate = self;
     UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:controller];
@@ -308,10 +307,16 @@ static NSString const *rows = @"12";
 
 - (IBAction)didTapFilterButton:(id)sender {
     FilterController *filter = [FilterController new];
-    [filter addCategoryWithType:FilterCategoryTypeHotlist selectedCategory:_selectedCategory categoryList:[_initialCategories mutableCopy]];
-    [filter addFilterShopWithSelectedShop:@"Semua Toko"];
-    [filter addFilterLocationWithSelectedLocation:@""];
-    [filter CreateFilterFromController:self];
+    [filter addCategoryWithType:FilterCategoryTypeHotlist selectedCategory:_selectedFilter.selectedCategory categoryList:[_initialCategories mutableCopy]];
+    [filter addFilterShopWithSelectedShop:_selectedFilter.selectedShop?:[FilterObject new]];
+    [filter addFilterLocationWithSelectedLocation:_selectedFilter.selectedLocation?:[FilterObject new]];
+    [filter addFilterPrice:_selectedFilter.selectedPrice?:[FilterObject new]];
+    [filter addFilterConditionWithSelectedCondition:_selectedFilter.selectedCondition?:[FilterObject new]];
+    
+    [filter createFilterFromController:self completion:^(QueryObject *dataFilter) {
+        _selectedFilter = dataFilter;
+        [self refreshView:nil];
+    }];
     
 //    FilterViewController *vc = [FilterViewController new];
 //    vc.delegate = self;
@@ -539,7 +544,7 @@ static NSString const *rows = @"12";
 
 #pragma mark - Category Delegate
 - (void)didSelectCategory:(CategoryDetail *)category {
-    _selectedCategory = category;
+    _selectedFilter.selectedCategory = category;
     [_detailfilter setObject:category.categoryId forKey:@"department_id"];
     [self refreshView:nil];
 }
@@ -910,13 +915,14 @@ static NSString const *rows = @"12";
                              @"start" : @(_start),
                              @"rows" : rows,
                              @"ob" : [_detailfilter objectForKey:kTKPDHOME_APIORDERBYKEY]?:@"",
-                             @"sc" : [_detailfilter objectForKey:kTKPDHOME_APIDEPARTMENTIDKEY]?:@"",
-                             @"floc" :[_detailfilter objectForKey:kTKPDHOME_APILOCATIONKEY]?:@"",
-                             @"fshop" :[_detailfilter objectForKey:kTKPDHOME_APISHOPTYPEKEY]?:@"",
-                             @"pmin" :[_detailfilter objectForKey:kTKPDHOME_APIPRICEMINKEY]?:@"",
-                             @"pmax" :[_detailfilter objectForKey:kTKPDHOME_APIPRICEMAXKEY]?:@"",
+                             @"sc" : _selectedFilter.selectedCategory.categoryId?:@"",
+                             @"floc" :_selectedFilter.selectedLocation.filterID?:@"",
+                             @"fshop" :_selectedFilter.selectedShop.filterID?:@"",
+                             @"pmin" :_selectedFilter.selectedPrice.priceMin?:@"",
+                             @"pmax" :_selectedFilter.selectedPrice.priceMax?:@"",
                              @"hashtag" : [self isInitialRequest] ? @"true" : @"",
                              @"breadcrumb" :  [self isInitialRequest] ? @"true" : @"",
+                             @"condition" : _selectedFilter.selectedCondition.filterID?:@""
                              };
                              
      return param;

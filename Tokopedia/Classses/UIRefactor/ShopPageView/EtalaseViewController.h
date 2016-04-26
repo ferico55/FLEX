@@ -11,6 +11,7 @@
 
 @protocol EtalaseViewControllerDelegate <NSObject>
 -(void)didSelectEtalase:(EtalaseList*)selectedEtalase;
+-(void)didSelectEtalaseFilter:(EtalaseList*)selectedEtalase;
 @end
 
 @interface EtalaseViewController : UIViewController

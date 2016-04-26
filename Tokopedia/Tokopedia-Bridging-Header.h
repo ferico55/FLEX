@@ -17,3 +17,5 @@
 #import "MainViewController.h"
 #import <JLPermissions/JLNotificationPermission.h>
 #import "TPAnalytics.h"
+#import "CategoryDetail.h"
+#import "EtalaseList.h"

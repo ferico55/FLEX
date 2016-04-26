@@ -172,7 +172,9 @@
                                        kTKPDFILTER_APILOCATIONNAMEKEY :  _locationnames[indexpath.row]?:@"none",
                                        kTKPDFILTERLOCATION_DATAINDEXPATHKEY:indexpath
                                        };
-                [_delegate FilterLocationViewController:self withdata:data];
+                if ([self.delegate respondsToSelector:@selector(FilterLocationViewController:withdata:)]) {
+                    [_delegate FilterLocationViewController:self withdata:data];
+                }
                 [self.navigationController popViewControllerAnimated:YES];
                 break;
             }
@@ -252,6 +254,14 @@
 {
     //[self.navigationController dismissViewControllerAnimated:YES completion:nil];
     [_selectedlocation setObject:indexpath forKey:kTKPDFILTER_DATAINDEXPATHKEY];
+
+    if ([self.delegate respondsToSelector:@selector(didSelectLocationFilter:)]) {
+        FilterObject *object = [FilterObject new];
+        object.title = _locationnames[indexpath.row];
+        object.filterID = _locationvalues[indexpath.row];
+        [self.delegate didSelectLocationFilter:object];
+    }
+    
     [_table reloadData];
 }
 

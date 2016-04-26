@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		2D50139230438B54812D14B9 /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */; };
+		455A90261CCF0CBF00F07529 /* FilterTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455A90251CCF0CBF00F07529 /* FilterTableViewController.swift */; };
+		455A90281CCF0F7C00F07529 /* FilterObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455A90271CCF0F7C00F07529 /* FilterObject.swift */; };
+		455A902C1CCF2D3D00F07529 /* QueryObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455A902B1CCF2D3D00F07529 /* QueryObject.swift */; };
+		455A902E1CCF52EC00F07529 /* FilterPriceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455A902D1CCF52EC00F07529 /* FilterPriceViewController.swift */; };
 		45AE89AF1CCDD9F1006520C3 /* TPAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 45AE7B8C1CCDD9ED006520C3 /* TPAnalytics.m */; };
 		45AE89B01CCDD9F1006520C3 /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 45AE7B8F1CCDD9ED006520C3 /* URLCacheAlert.m */; };
 		45AE89B11CCDD9F1006520C3 /* URLCacheConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 45AE7B911CCDD9ED006520C3 /* URLCacheConnection.m */; };
@@ -2291,6 +2295,10 @@
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
 		2D733D9158C7BF957D514506 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
+		455A90251CCF0CBF00F07529 /* FilterTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterTableViewController.swift; sourceTree = "<group>"; };
+		455A90271CCF0F7C00F07529 /* FilterObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterObject.swift; sourceTree = "<group>"; };
+		455A902B1CCF2D3D00F07529 /* QueryObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueryObject.swift; sourceTree = "<group>"; };
+		455A902D1CCF52EC00F07529 /* FilterPriceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterPriceViewController.swift; sourceTree = "<group>"; };
 		45AE7B8B1CCDD9ED006520C3 /* TPAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPAnalytics.h; sourceTree = "<group>"; };
 		45AE7B8C1CCDD9ED006520C3 /* TPAnalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPAnalytics.m; sourceTree = "<group>"; };
 		45AE7B8E1CCDD9ED006520C3 /* URLCacheAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheAlert.h; sourceTree = "<group>"; };
@@ -11496,6 +11504,10 @@
 				45AE92551CCDDDAE006520C3 /* README.md */,
 				45AE925D1CCDEE3E006520C3 /* FilterController.h */,
 				45AE925E1CCDEE3E006520C3 /* FilterController.m */,
+				455A90251CCF0CBF00F07529 /* FilterTableViewController.swift */,
+				455A902D1CCF52EC00F07529 /* FilterPriceViewController.swift */,
+				455A90271CCF0F7C00F07529 /* FilterObject.swift */,
+				455A902B1CCF2D3D00F07529 /* QueryObject.swift */,
 			);
 			path = MHVerticalTabBarController;
 			sourceTree = "<group>";
@@ -13188,6 +13200,7 @@
 				45AE8C231CCDD9F2006520C3 /* AddCaptionTextFieldCell.swift in Sources */,
 				45AE8CE71CCDD9F2006520C3 /* HotlistResultViewController.m in Sources */,
 				45AE8A2B1CCDD9F1006520C3 /* ReviewResult.m in Sources */,
+				455A902E1CCF52EC00F07529 /* FilterPriceViewController.swift in Sources */,
 				45AE8CCD1CCDD9F2006520C3 /* HistoryProductViewController.m in Sources */,
 				45AE8EC51CCDD9F2006520C3 /* TransactionCartShippingViewController.m in Sources */,
 				45AE8B9F1CCDD9F1006520C3 /* TxEmoney.m in Sources */,
@@ -13342,6 +13355,7 @@
 				45AE8D541CCDD9F2006520C3 /* PriceAlertCell.m in Sources */,
 				45AE89EF1CCDD9F1006520C3 /* AddressDistrict.m in Sources */,
 				45AE8CCF1CCDD9F2006520C3 /* HomeTabHeaderViewController.m in Sources */,
+				455A902C1CCF2D3D00F07529 /* QueryObject.swift in Sources */,
 				45AE8DE41CCDD9F2006520C3 /* OrderRejectExplanationViewController.m in Sources */,
 				45AE8E651CCDD9F2006520C3 /* ShopInfoAddressView.m in Sources */,
 				45AE8B351CCDD9F1006520C3 /* NotesList.m in Sources */,
@@ -13842,6 +13856,7 @@
 				45AE8A151CCDD9F1006520C3 /* CatalogPrice.m in Sources */,
 				45AE8C171CCDD9F2006520C3 /* AlertRateView.m in Sources */,
 				45AE8B791CCDD9F1006520C3 /* ShipmentAvailable.m in Sources */,
+				455A90281CCF0F7C00F07529 /* FilterObject.swift in Sources */,
 				45AE8A621CCDD9F1006520C3 /* InboxMessageAction.m in Sources */,
 				45AE92491CCDD9F2006520C3 /* EDStarRating.m in Sources */,
 				45AE8AB31CCDD9F1006520C3 /* SkipReviewResult.m in Sources */,
@@ -14004,6 +14019,7 @@
 				45AE8EED1CCDD9F2006520C3 /* TxOrderConfirmationDetailViewController.m in Sources */,
 				45AE8AE81CCDD9F1006520C3 /* PromoCategory.m in Sources */,
 				45AE8A4A1CCDD9F1006520C3 /* GoogleDistanceMatrixRow.m in Sources */,
+				455A90261CCF0CBF00F07529 /* FilterTableViewController.swift in Sources */,
 				45AE8E2B1CCDD9F2006520C3 /* SettingAddressViewController.m in Sources */,
 				45AE8B621CCDD9F1006520C3 /* Tiki.m in Sources */,
 				45AE8A5C1CCDD9F1006520C3 /* Hotlist.m in Sources */,

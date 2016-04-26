@@ -13,14 +13,17 @@
 #import "MHVerticalTabBarController.h"
 #import "FilterLocationViewController.h"
 #import "GeneralTableViewController.h"
+#import "Tokopedia-Swift.h"
 
-@interface FilterController : NSObject
+@interface FilterController : NSObject <FilterCategoryViewDelegate, EtalaseViewControllerDelegate, MHVerticalTabBarControllerDelegate, FilterLocationViewControllerDelegate>
 
 -(void)addCategoryWithType:(FilterCategoryType)type selectedCategory:(CategoryDetail*)selectedCategory categoryList:(NSArray*)categoryList;
 -(void)addEtalaseWithShopID:(NSString*)shopID selectedEtalase:(EtalaseList*)selectedEtalase;
--(void)addFilterShopWithSelectedShop:(NSString*)selectedShop;
--(void)addFilterLocationWithSelectedLocation:(NSString*)selectedLocation;
+-(void)addFilterShopWithSelectedShop:(FilterObject*)selectedShop;
+-(void)addFilterLocationWithSelectedLocation:(FilterObject*)selectedLocation;
+-(void)addFilterPrice:(FilterObject*)filter;
+-(void)addFilterConditionWithSelectedCondition:(FilterObject*)selectedCondition;
 
--(void)CreateFilterFromController:(UIViewController*)controller;
+-(void)createFilterFromController:(UIViewController*)controller completion:(void (^)(QueryObject *))completion;
 
 @end

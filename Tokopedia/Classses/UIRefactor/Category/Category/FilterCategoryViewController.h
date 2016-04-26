@@ -19,6 +19,7 @@ typedef NS_ENUM(NSInteger, FilterCategoryType) {
 @protocol FilterCategoryViewDelegate <NSObject>
 
 - (void)didSelectCategory:(CategoryDetail *)category;
+- (void)didSelectCategoryFilter:(CategoryDetail *)category;
 
 @end
 
