@@ -162,9 +162,6 @@
                                             <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
-                                        <connections>
-                                            <action selector="tapToDetailTalk:" destination="jrh-HM-K0p" eventType="touchUpInside" id="Tei-6n-3gH"/>
-                                        </connections>
                                     </button>
                                     <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bFw-JB-SgW">
                                         <rect key="frame" x="151" y="0.0" width="149" height="40"/>

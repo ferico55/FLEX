@@ -97,9 +97,6 @@
                                             <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
-                                        <connections>
-                                            <action selector="tapToDetailTalk:" destination="gpV-C8-7Bp" eventType="touchUpInside" id="sbX-84-M4D"/>
-                                        </connections>
                                     </button>
                                     <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aYV-dm-i5C">
                                         <rect key="frame" x="151" y="0.0" width="149" height="40"/>

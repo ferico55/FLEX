@@ -57,7 +57,6 @@
 
 
 - (void)setTalkViewModel:(TalkModelView*)modelView;
-- (void)tapToDetailTalk:(UITableViewCell*)cell;
 
 @property (weak, nonatomic) IBOutlet UIImageView *userImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *unreadImageView;
