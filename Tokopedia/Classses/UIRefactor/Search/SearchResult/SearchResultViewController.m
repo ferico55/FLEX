@@ -463,7 +463,16 @@ ImageSearchRequestDelegate
         [self.navigationController pushViewController:vc animated:YES];
     } else {
         [TPAnalytics trackProductClick:product];
-        [navigateController navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_image withShopName:product.shop_name];
+        if (_isFromImageSearch) {
+            [navigateController navigateToProductFromViewController:self withProduct:product];
+        } else {
+            [navigateController navigateToProductFromViewController:self
+                                                           withName:product.product_name
+                                                          withPrice:product.product_price
+                                                             withId:product.product_id
+                                                       withImageurl:product.product_image
+                                                       withShopName:product.shop_name];
+        }
     }
 }
 

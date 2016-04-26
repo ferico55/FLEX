@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "TAGDataLayer.h"
 #import "TAGManager.h"
+#import "ProductDetail.h"
 
 @interface TPAnalytics : NSObject
 
@@ -41,5 +42,8 @@
 + (void)trackExeptionDescription:(NSString *)description;
 
 + (void)trackOnBoardingClickButton:(NSString *)buttonName;
+
++ (void)trackSnapSearchCategory:(NSString *)categoryName;
++ (void)trackSnapSearchAddToCart:(ProductDetail *)product;
 
 @end

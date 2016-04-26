@@ -13,7 +13,6 @@
 #import "List.h"
 #import "PromoProduct.h"
 #import "TransactionCartList.h"
-#import "ProductDetail.h"
 #import "PromoResult.h"
 
 @interface TPAnalytics ()
@@ -330,5 +329,22 @@
     [analytics.dataLayer push:data];
 }
 
++ (void)trackSnapSearchCategory:(NSString *)categoryName {
+    TPAnalytics *analytics = [[self alloc] init];
+    NSDictionary *data = @{
+        @"event" : @"snapSearchCategory",
+        @"categoryName" : categoryName,
+    };
+    [analytics.dataLayer push:data];
+}
+
++ (void)trackSnapSearchAddToCart:(ProductDetail *)product {
+    TPAnalytics *analytics = [[self alloc] init];
+    NSDictionary *data = @{
+        @"event": @"snapSearchAddToCart",
+        @"productId": product.product_id,
+    };
+    [analytics.dataLayer push:data];
+}
 
 @end
