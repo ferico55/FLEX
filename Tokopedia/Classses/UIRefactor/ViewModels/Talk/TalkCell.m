@@ -184,10 +184,25 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     [self followAnimateZoomOut:self.unfollowButton];
     
     _unfollowNetworkManager = [TokopediaNetworkManager new];
-    _unfollowNetworkManager.delegate = self;
-    _unfollowNetworkManager.tagRequest = RequestFollowTalk;
-    
-    [_unfollowNetworkManager doRequest];
+
+    NSDictionary* parameter = @{
+            kTKPDDETAIL_ACTIONKEY : TKPD_FOLLOW_TALK_ACTION,
+            kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : _unfollowTalk.talk_product_id,
+            TKPD_TALK_ID:_unfollowTalk.talk_id?:@0,
+            @"shop_id":_unfollowTalk.talk_shop_id
+    };
+
+    [_unfollowNetworkManager requestWithBaseUrl:[NSString basicUrl]
+                                           path:@"action/talk.pl"
+                                         method:RKRequestMethodPOST
+                                      parameter:parameter
+                                        mapping:[GeneralAction mapping]
+                                      onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                          [self actionAfterRequest:successResult withOperation:operation withTag:RequestFollowTalk];
+                                      }
+                                      onFailure:^(NSError *errorResult) {
+
+                                      }];
 }
 
 - (IBAction)tapToMoreMenu:(id)sender {
@@ -448,9 +463,25 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
         _deleteTalk = talkList[row];
         
         _deleteNetworkManager = [TokopediaNetworkManager new];
-        _deleteNetworkManager.delegate = self;
-        _deleteNetworkManager.tagRequest = RequestDeleteTalk;
-        [_deleteNetworkManager doRequest];
+
+        NSDictionary *parameter = @{
+                kTKPDDETAIL_ACTIONKEY : TKPD_DELETE_TALK_ACTION,
+                kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : _deleteTalk.talk_product_id,
+                TKPD_TALK_ID:_deleteTalk.talk_id?:@0,
+                kTKPDDETAILSHOP_APISHOPID : _deleteTalk.talk_shop_id
+        };
+
+        [_deleteNetworkManager requestWithBaseUrl:[NSString basicUrl]
+                                             path:@"action/talk.pl"
+                                           method:RKRequestMethodPOST
+                                        parameter:parameter
+                                          mapping:[GeneralAction mapping]
+                                        onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                            [self actionAfterRequest:successResult withOperation:operation withTag:RequestDeleteTalk];
+                                        }
+                                        onFailure:^(NSError *errorResult) {
+
+                                        }];
     }
 }
 
