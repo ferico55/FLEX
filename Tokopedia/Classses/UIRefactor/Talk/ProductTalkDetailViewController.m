@@ -172,9 +172,6 @@
                                                                          action:nil];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
 
-        // add gesture to product image
-    UITapGestureRecognizer* productGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapProduct)];
-    [_talkProductImage addGestureRecognizer:productGesture];
     [_talkProductImage setUserInteractionEnabled: _enableDeepNavigation];
 
 
@@ -366,8 +363,6 @@
     [_userButton setText:[data objectForKey:TKPD_TALK_USER_NAME]];
     [_userButton setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"GothamMedium" size:14.0f]];
 
-    UITapGestureRecognizer *tapUser = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapUser)];
-    [_userButton addGestureRecognizer:tapUser];
     [_userButton setUserInteractionEnabled:_enableDeepNavigation];
 
     [_talkCommentButtonLarge setTitle:[NSString stringWithFormat:@"%@ Komentar",[data objectForKey:TKPD_TALK_TOTAL_COMMENT]] forState:UIControlStateNormal];
@@ -390,9 +385,7 @@
     [_talkProductImage setImageWithURL:productImageUrl placeholderImage:[UIImage imageNamed:@"default-boy.png"]];
 
     _productNameLabel.text = [_data objectForKey:TKPD_TALK_PRODUCT_NAME];
-    _productNameLabel.userInteractionEnabled = YES;
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapProduct)];
-    [_productNameLabel addGestureRecognizer:tap];
+    _productNameLabel.userInteractionEnabled = _enableDeepNavigation;
 }
 
 #pragma mark - Request and Mapping
@@ -434,7 +427,7 @@
 
 #pragma mark - View Action
 
-- (void)tapProduct {
+- (IBAction)tapProduct {
     if (!_enableDeepNavigation) {
         return;
     }
