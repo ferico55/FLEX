@@ -35,23 +35,26 @@ class entryCell: UITableViewCell
 class FilterPriceViewController: UIViewController ,UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
     
     private var tableView: UITableView = UITableView()
-    var price : FilterObject = FilterObject()
+    var price : FilterPrice = FilterPrice()
     
     private var lastSelectedIndexPath : NSIndexPath = NSIndexPath.init(forRow: 0, inSection: 0)
     
-    var completionHandler:(FilterObject)->Void = {(arg:FilterObject) -> Void in}
+    var completionHandler:(FilterPrice)->Void = {(arg:FilterPrice) -> Void in}
     
-    func createFilterPrice(price: FilterObject, onCompletion: ((FilterObject) -> Void)) {
+    init(price: FilterPrice, onCompletion: ((FilterPrice) -> Void)){
         completionHandler = onCompletion
         self.price = price
+        
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    }
-    
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
+        
         tableView = UITableView.init(frame: CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height), style: .Plain)
         
         tableView.delegate      =   self
@@ -60,9 +63,16 @@ class FilterPriceViewController: UIViewController ,UITableViewDelegate, UITableV
         tableView.registerClass(entryCell.self, forCellReuseIdentifier: "cell")
         tableView.tableFooterView = UIView.init(frame: CGRectMake(0, 0, 1, 1))
         tableView.keyboardDismissMode = .OnDrag
-
-
+        
+        
         self.view.addSubview(tableView)
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        tableView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)
+
     }
     
     
@@ -79,23 +89,30 @@ class FilterPriceViewController: UIViewController ,UITableViewDelegate, UITableV
         
         if indexPath.row == 0 {
             cell.textField.placeholder = "Harga Minimum"
+            cell.textField.text = price.priceMin
             cell.textField.tag = 0
         } else {
             cell.textField.placeholder = "Harga Maximum"
+            cell.textField.text = price.priceMax
             cell.textField.tag = 1
         }
         
         return cell
     }
     
-    func textFieldDidEndEditing(textField: UITextField) {
+    func  textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+        
+        let newString = (textField.text! as NSString).stringByReplacingCharactersInRange(range, withString: string)
+        
         if textField.tag == 0{
-            price.priceMin = textField.text!
+            price.priceMin = "\(newString)"
         }
         if textField.tag == 1 {
-            price.priceMax = textField.text!
+            price.priceMax = "\(newString)"
         }
         completionHandler(price)
+        
+        return true
     }
     
 }

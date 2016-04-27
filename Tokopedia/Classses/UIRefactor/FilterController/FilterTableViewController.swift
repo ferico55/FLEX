@@ -19,27 +19,35 @@ class FilterTableViewController: UIViewController ,UITableViewDelegate, UITableV
     private var lastSelectedIndexPath : NSIndexPath = NSIndexPath.init(forRow: 0, inSection: 0)
     
     var completionHandler:(FilterObject)->Void = {(arg:FilterObject) -> Void in}
-
-    func createTableView(items:[FilterObject],selectedObject:FilterObject, onCompletion: ((FilterObject) -> Void)) {
+    
+    init(items:[FilterObject],selectedObject:FilterObject, onCompletion: ((FilterObject) -> Void)){
         completionHandler = onCompletion
         self.items = items
         self.selectedObject = selectedObject
+        
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-    }
-    
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
         tableView = UITableView.init(frame: CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height), style: .Plain)
-
+        
         tableView.delegate      =   self
         tableView.dataSource    =   self
         
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
         tableView.tableFooterView = UIView.init(frame: CGRectMake(0, 0, 1, 1))
         self.view.addSubview(tableView)
+    }
+
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        tableView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)
     }
     
 

@@ -10,6 +10,7 @@
 #import "Etalase.h"
 
 @protocol EtalaseViewControllerDelegate <NSObject>
+@optional
 -(void)didSelectEtalase:(EtalaseList*)selectedEtalase;
 -(void)didSelectEtalaseFilter:(EtalaseList*)selectedEtalase;
 @end

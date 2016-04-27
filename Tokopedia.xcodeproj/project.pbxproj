@@ -572,15 +572,10 @@
 		455AA09D1CCF835900F07529 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 455A95081CCF835500F07529 /* LICENSE */; };
 		455AA09E1CCF835900F07529 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 455A95091CCF835500F07529 /* README.md */; };
 		455AA09F1CCF835900F07529 /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = 455A950B1CCF835500F07529 /* iCarousel.m */; };
-		455AA0A01CCF835900F07529 /* FilterController.m in Sources */ = {isa = PBXBuildFile; fileRef = 455A950E1CCF835500F07529 /* FilterController.m */; };
-		455AA0A11CCF835900F07529 /* FilterObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455A950F1CCF835500F07529 /* FilterObject.swift */; };
-		455AA0A21CCF835900F07529 /* FilterPriceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455A95101CCF835500F07529 /* FilterPriceViewController.swift */; };
-		455AA0A31CCF835900F07529 /* FilterTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455A95111CCF835500F07529 /* FilterTableViewController.swift */; };
 		455AA0A41CCF835900F07529 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 455A95121CCF835500F07529 /* LICENSE */; };
 		455AA0A51CCF835900F07529 /* MHVerticalTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 455A95141CCF835500F07529 /* MHVerticalTabBar.m */; };
 		455AA0A61CCF835900F07529 /* MHVerticalTabBarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 455A95161CCF835500F07529 /* MHVerticalTabBarButton.m */; };
 		455AA0A71CCF835900F07529 /* MHVerticalTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 455A95181CCF835500F07529 /* MHVerticalTabBarController.m */; };
-		455AA0A81CCF835900F07529 /* QueryObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455A95191CCF835500F07529 /* QueryObject.swift */; };
 		455AA0A91CCF835900F07529 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 455A951A1CCF835500F07529 /* README.md */; };
 		455AA0AA1CCF835900F07529 /* RSKGrowingTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455A951B1CCF835500F07529 /* RSKGrowingTextView.swift */; };
 		455AA0AB1CCF835900F07529 /* RSKPlaceholderTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455A951C1CCF835500F07529 /* RSKPlaceholderTextView.swift */; };
@@ -2228,6 +2223,10 @@
 		455AA7151CCF835900F07529 /* vt-iOSlib-1.0.1.tar.gz in Resources */ = {isa = PBXBuildFile; fileRef = 455A9E671CCF835900F07529 /* vt-iOSlib-1.0.1.tar.gz */; };
 		455AA7161CCF835900F07529 /* vt-iOSlib-1.0.1.zip in Resources */ = {isa = PBXBuildFile; fileRef = 455A9E681CCF835900F07529 /* vt-iOSlib-1.0.1.zip */; };
 		455AA7171CCF835900F07529 /* XYPieChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 455A9E6B1CCF835900F07529 /* XYPieChart.m */; };
+		45D9BED61CD0C3E000302E4A /* FilterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D9BED01CD0C3E000302E4A /* FilterController.swift */; };
+		45D9BED71CD0C3E000302E4A /* FilterObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D9BED11CD0C3E000302E4A /* FilterObject.swift */; };
+		45D9BED81CD0C3E000302E4A /* FilterPriceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D9BED21CD0C3E000302E4A /* FilterPriceViewController.swift */; };
+		45D9BED91CD0C3E000302E4A /* FilterTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D9BED31CD0C3E000302E4A /* FilterTableViewController.swift */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
 		7ACE9C541BB00956006C4BB7 /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */; };
@@ -3420,11 +3419,6 @@
 		455A95091CCF835500F07529 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		455A950A1CCF835500F07529 /* iCarousel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iCarousel.h; sourceTree = "<group>"; };
 		455A950B1CCF835500F07529 /* iCarousel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iCarousel.m; sourceTree = "<group>"; };
-		455A950D1CCF835500F07529 /* FilterController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilterController.h; sourceTree = "<group>"; };
-		455A950E1CCF835500F07529 /* FilterController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilterController.m; sourceTree = "<group>"; };
-		455A950F1CCF835500F07529 /* FilterObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterObject.swift; sourceTree = "<group>"; };
-		455A95101CCF835500F07529 /* FilterPriceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterPriceViewController.swift; sourceTree = "<group>"; };
-		455A95111CCF835500F07529 /* FilterTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterTableViewController.swift; sourceTree = "<group>"; };
 		455A95121CCF835500F07529 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		455A95131CCF835500F07529 /* MHVerticalTabBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MHVerticalTabBar.h; sourceTree = "<group>"; };
 		455A95141CCF835500F07529 /* MHVerticalTabBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MHVerticalTabBar.m; sourceTree = "<group>"; };
@@ -3432,7 +3426,6 @@
 		455A95161CCF835500F07529 /* MHVerticalTabBarButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MHVerticalTabBarButton.m; sourceTree = "<group>"; };
 		455A95171CCF835500F07529 /* MHVerticalTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MHVerticalTabBarController.h; sourceTree = "<group>"; };
 		455A95181CCF835500F07529 /* MHVerticalTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MHVerticalTabBarController.m; sourceTree = "<group>"; };
-		455A95191CCF835500F07529 /* QueryObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueryObject.swift; sourceTree = "<group>"; };
 		455A951A1CCF835500F07529 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		455A951B1CCF835500F07529 /* RSKGrowingTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RSKGrowingTextView.swift; sourceTree = "<group>"; };
 		455A951C1CCF835500F07529 /* RSKPlaceholderTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RSKPlaceholderTextView.swift; sourceTree = "<group>"; };
@@ -5643,6 +5636,10 @@
 		455A9E681CCF835900F07529 /* vt-iOSlib-1.0.1.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "vt-iOSlib-1.0.1.zip"; sourceTree = "<group>"; };
 		455A9E6A1CCF835900F07529 /* XYPieChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XYPieChart.h; sourceTree = "<group>"; };
 		455A9E6B1CCF835900F07529 /* XYPieChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYPieChart.m; sourceTree = "<group>"; };
+		45D9BED01CD0C3E000302E4A /* FilterController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterController.swift; sourceTree = "<group>"; };
+		45D9BED11CD0C3E000302E4A /* FilterObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterObject.swift; sourceTree = "<group>"; };
+		45D9BED21CD0C3E000302E4A /* FilterPriceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterPriceViewController.swift; sourceTree = "<group>"; };
+		45D9BED31CD0C3E000302E4A /* FilterTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterTableViewController.swift; sourceTree = "<group>"; };
 		4868E459AB2A65D133732296 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tokopedia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
@@ -7935,11 +7932,6 @@
 		455A950C1CCF835500F07529 /* MHVerticalTabBarController */ = {
 			isa = PBXGroup;
 			children = (
-				455A950D1CCF835500F07529 /* FilterController.h */,
-				455A950E1CCF835500F07529 /* FilterController.m */,
-				455A950F1CCF835500F07529 /* FilterObject.swift */,
-				455A95101CCF835500F07529 /* FilterPriceViewController.swift */,
-				455A95111CCF835500F07529 /* FilterTableViewController.swift */,
 				455A95121CCF835500F07529 /* LICENSE */,
 				455A95131CCF835500F07529 /* MHVerticalTabBar.h */,
 				455A95141CCF835500F07529 /* MHVerticalTabBar.m */,
@@ -7947,7 +7939,6 @@
 				455A95161CCF835500F07529 /* MHVerticalTabBarButton.m */,
 				455A95171CCF835500F07529 /* MHVerticalTabBarController.h */,
 				455A95181CCF835500F07529 /* MHVerticalTabBarController.m */,
-				455A95191CCF835500F07529 /* QueryObject.swift */,
 				455A951A1CCF835500F07529 /* README.md */,
 			);
 			path = MHVerticalTabBarController;
@@ -7989,6 +7980,7 @@
 				455A96311CCF835500F07529 /* Controller */,
 				455A96481CCF835500F07529 /* CustomViews */,
 				455A96681CCF835500F07529 /* Deeplink */,
+				45D9BECF1CD0C3E000302E4A /* FilterController */,
 				455A966B1CCF835500F07529 /* Deposit */,
 				455A967E1CCF835500F07529 /* DigitalGoodsDataSource.swift */,
 				455A967F1CCF835500F07529 /* ForgotPassword */,
@@ -11561,6 +11553,17 @@
 			path = XYPieChart;
 			sourceTree = "<group>";
 		};
+		45D9BECF1CD0C3E000302E4A /* FilterController */ = {
+			isa = PBXGroup;
+			children = (
+				45D9BED01CD0C3E000302E4A /* FilterController.swift */,
+				45D9BED11CD0C3E000302E4A /* FilterObject.swift */,
+				45D9BED21CD0C3E000302E4A /* FilterPriceViewController.swift */,
+				45D9BED31CD0C3E000302E4A /* FilterTableViewController.swift */,
+			);
+			path = FilterController;
+			sourceTree = "<group>";
+		};
 		BBA285A31CC624A1000630FB /* Tokopedia */ = {
 			isa = PBXGroup;
 			children = (
@@ -13171,7 +13174,6 @@
 				455AA2511CCF835900F07529 /* AttachedPicture.m in Sources */,
 				455AA15D1CCF835900F07529 /* TableViewScrollAndSwipe.m in Sources */,
 				455AA0FB1CCF835900F07529 /* GenerateHostRequest.m in Sources */,
-				455AA0A11CCF835900F07529 /* FilterObject.swift in Sources */,
 				455AA1901CCF835900F07529 /* FavoritedShopCell.m in Sources */,
 				455AA3191CCF835900F07529 /* EditShopDescriptionViewCell.m in Sources */,
 				455AA2CF1CCF835900F07529 /* DetailShipmentStatusCell.m in Sources */,
@@ -13456,7 +13458,6 @@
 				455AA36B1CCF835900F07529 /* TKPPlacePickerViewController.swift in Sources */,
 				455AA2131CCF835900F07529 /* IntroViewController.swift in Sources */,
 				455A9E741CCF835900F07529 /* NSDictionaryCategory.m in Sources */,
-				455AA0A21CCF835900F07529 /* FilterPriceViewController.swift in Sources */,
 				455A9EAC1CCF835900F07529 /* SecurityAnswerResult.m in Sources */,
 				455AA2781CCF835900F07529 /* ProductReputationCell.m in Sources */,
 				455A9EA61CCF835900F07529 /* SendOTPResult.m in Sources */,
@@ -13477,6 +13478,7 @@
 				455AA2011CCF835900F07529 /* MyShopEtalaseEditViewController.m in Sources */,
 				455A9FAF1CCF835900F07529 /* PromoResult.m in Sources */,
 				455AA1001CCF835900F07529 /* RequestUploadImageValidation.m in Sources */,
+				45D9BED71CD0C3E000302E4A /* FilterObject.swift in Sources */,
 				455AA37D1CCF835900F07529 /* TransactionShipmentATCTableViewCell.m in Sources */,
 				455AA1CE1CCF835900F07529 /* ResolutionCenterDetailCell.m in Sources */,
 				455AA0DB1CCF835900F07529 /* AlertPhoneVerification.m in Sources */,
@@ -13693,7 +13695,6 @@
 				455AA2B51CCF835900F07529 /* OrderDetailProductCell.m in Sources */,
 				455AA3621CCF835900F07529 /* ProductTalkViewController.m in Sources */,
 				455AA00A1CCF835900F07529 /* ShopProductPageResult.m in Sources */,
-				455AA0A01CCF835900F07529 /* FilterController.m in Sources */,
 				455A9F431CCF835900F07529 /* InboxReviewList.m in Sources */,
 				455AA2351CCF835900F07529 /* ProductReviewDetailViewController.m in Sources */,
 				455A9FF41CCF835900F07529 /* NoteDetail.m in Sources */,
@@ -13723,7 +13724,6 @@
 				455AA1971CCF835900F07529 /* HomeTabHeaderViewController.m in Sources */,
 				455A9F751CCF835900F07529 /* SkipReview.m in Sources */,
 				455A9EA41CCF835900F07529 /* LogoutResult.m in Sources */,
-				455AA0A31CCF835900F07529 /* FilterTableViewController.swift in Sources */,
 				455AA23B1CCF835900F07529 /* ProductAddCaptionViewController.m in Sources */,
 				455AA1EF1CCF835900F07529 /* MiniSlide.m in Sources */,
 				455A9EE51CCF835900F07529 /* ProductDetail.m in Sources */,
@@ -13853,6 +13853,7 @@
 				455AA3BE1CCF835900F07529 /* TxOrderConfirmationShipmentCell.m in Sources */,
 				455AA2631CCF835900F07529 /* ImageStorage.m in Sources */,
 				455AA03A1CCF835900F07529 /* TransactionAddressShippingResult.m in Sources */,
+				45D9BED81CD0C3E000302E4A /* FilterPriceViewController.swift in Sources */,
 				455A9F051CCF835900F07529 /* FavoriteShopActionResult.m in Sources */,
 				455A9F1B1CCF835900F07529 /* DepartmentChild.m in Sources */,
 				455AA14F1CCF835900F07529 /* CollectionScrollAndSwipe.m in Sources */,
@@ -13881,7 +13882,6 @@
 				455A9EF41CCF835900F07529 /* TalkCommentList.m in Sources */,
 				455AA19F1CCF835900F07529 /* ProductInfoTableViewController.m in Sources */,
 				455A9E901CCF835900F07529 /* RKObjectManagerCategory.m in Sources */,
-				455AA0A81CCF835900F07529 /* QueryObject.swift in Sources */,
 				455AA0A71CCF835900F07529 /* MHVerticalTabBarController.m in Sources */,
 				455AA3FA1CCF835900F07529 /* VTAddress.m in Sources */,
 				455A9F1D1CCF835900F07529 /* DepartmentTree.m in Sources */,
@@ -13996,6 +13996,7 @@
 				455AA0961CCF835900F07529 /* DKAssetGroupDetailVC.swift in Sources */,
 				455AA0A91CCF835900F07529 /* README.md in Sources */,
 				455AA0E21CCF835900F07529 /* AlertVerifyOTP.m in Sources */,
+				45D9BED61CD0C3E000302E4A /* FilterController.swift in Sources */,
 				455AA1101CCF835900F07529 /* CatalogViewController.m in Sources */,
 				455A9FA91CCF835900F07529 /* PrivacyFormPrivacy.m in Sources */,
 				455A9F941CCF835900F07529 /* FavoriteShop.m in Sources */,
@@ -14105,6 +14106,7 @@
 				455A9F5D1CCF835900F07529 /* LikeDislikePostResult.m in Sources */,
 				455A9F041CCF835900F07529 /* FavoriteShopAction.m in Sources */,
 				455A9E791CCF835900F07529 /* NSStringCategory.m in Sources */,
+				45D9BED91CD0C3E000302E4A /* FilterTableViewController.swift in Sources */,
 				455A9F6B1CCF835900F07529 /* DetailReviewReputationViewModel.m in Sources */,
 				455A9E9B1CCF835900F07529 /* RSA.m in Sources */,
 				455A9ED01CCF835900F07529 /* DepositSummaryDetail.m in Sources */,

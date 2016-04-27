@@ -53,7 +53,6 @@
 #import "UIActivityViewController+Extensions.h"
 #import "Tokopedia-Swift.h"
 #import "TokopediaNetworkManager.h"
-#import "FilterController.h"
 
 #define CTagGeneralProductCollectionView @"ProductCell"
 #define CTagGeneralProductIdentifier @"ProductCellIdentifier"
@@ -306,18 +305,22 @@ static NSString const *rows = @"12";
 }
 
 - (IBAction)didTapFilterButton:(id)sender {
-    FilterController *filter = [FilterController new];
-    [filter addCategoryWithType:FilterCategoryTypeHotlist selectedCategory:_selectedFilter.selectedCategory categoryList:[_initialCategories mutableCopy]];
-    [filter addFilterShopWithSelectedShop:_selectedFilter.selectedShop?:[FilterObject new]];
-    [filter addFilterLocationWithSelectedLocation:_selectedFilter.selectedLocation?:[FilterObject new]];
-    [filter addFilterPrice:_selectedFilter.selectedPrice?:[FilterObject new]];
-    [filter addFilterConditionWithSelectedCondition:_selectedFilter.selectedCondition?:[FilterObject new]];
-    
-    [filter createFilterFromController:self completion:^(QueryObject *dataFilter) {
-        _selectedFilter = dataFilter;
-        [self refreshView:nil];
-    }];
-    
+    FilterType *type = [FilterType new];
+
+    FilterController *controller =
+    [[FilterController alloc] initWithCategoryType:FilterCategoryTypeHotlist
+                                      categoryList:[_initialCategories mutableCopy]
+                                           filters:@[type.Category, type.Shop, type.Location, type.Price, type. Condition]
+                                    selectedFilter:_selectedFilter?:[QueryObject new]
+                                       presentedVC:self
+                                      onCompletion:^(QueryObject * filter) {
+                                          
+                                          _selectedFilter = filter;
+                                          [self refreshView:nil];
+                                          
+                                      }];
+
+
 //    FilterViewController *vc = [FilterViewController new];
 //    vc.delegate = self;
 //    vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPEHOTLISTVIEWKEY),
