@@ -17,6 +17,7 @@
 #import "RKObjectManager.h"
 #import "string_price_alert.h"
 #import "TokopediaNetworkManager.h"
+#import "PriceAlertRequest.h"
 
 #define CTagEditPriceAlert 1
 #define CTagAddPriceAlert 2
@@ -30,6 +31,8 @@
     
     UIBarButtonItem *rightBarButtonItem;
     BOOL isEditCatalog;
+    
+    PriceAlertRequest *_request;
 }
 @end
 
@@ -54,6 +57,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    _request = [PriceAlertRequest new];
+    
     if(_detailPriceAlert!=nil && ![_detailPriceAlert.pricealert_price isEqualToString:@"Rp 0"]) {
         NSString *tempStr = [_detailPriceAlert.pricealert_price stringByReplacingOccurrencesOfString:@"Rp " withString:@""];
         tempStr = [tempStr stringByReplacingOccurrencesOfString:@"." withString:@""];
@@ -78,8 +84,6 @@
     }
     else
         [self initNavigation:YES];
-    
-    
     
     //Set line space
     NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
@@ -154,13 +158,65 @@
 //    }
 //    else {
         if(_catalogInfo != nil) {
-            [[self getNetworkManager:CTagAddCatalogPriceAlert] doRequest];
+//            [[self getNetworkManager:CTagAddCatalogPriceAlert] doRequest];
+            
+            [_request requestAddCatalogPriceAlertWithCatalogID:_catalogInfo.catalog_id
+                                               priceAlertPrice:[self getPriceAlert]
+                                                     onSuccess:^(GeneralActionResult *result) {
+                                                         StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[(isEditCatalog? CStringSuccessEditPriceCatalog:CStringSuccessAddPriceCatalog)] delegate:self];
+                                                         [stickyAlertView show];
+                                                         
+                                                         //Update DetailPriceAlert ViewController
+                                                         UIViewController *viewController = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
+                                                         if([viewController isMemberOfClass:[CatalogViewController class]]) {
+                                                             _catalogInfo.catalog_pricealert_price = [txtPrice.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+                                                             [((CatalogViewController *) viewController) updatePriceAlert:[self formatRupiah:[txtPrice.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]]];
+                                                         }
+                                                         [self.navigationController popViewControllerAnimated:YES];
+                                                     }
+                                                     onFailure:^(NSError *error) {
+                                                         StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringFailedAddCatalogPriceAlert] delegate:self];                                                         [stickyAlertView show];
+                                                         [self setLoadingDoingAction:NO];
+                                                     }];
         }
         else if(_productDetail != nil) {
-            [[self getNetworkManager:CTagAddPriceAlert] doRequest];
+//            [[self getNetworkManager:CTagAddPriceAlert] doRequest];
+            
+            [_request requestAddProductPriceAlertWithProductID:_productDetail.product_id
+                                               priceAlertPrice:[self getPriceAlert]
+                                                     onSuccess:^(GeneralActionResult *result) {
+                                                         UIViewController *tempViewController = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
+                                                         if([tempViewController isMemberOfClass:[DetailProductViewController class]]) {
+                                                             [((DetailProductViewController *) tempViewController) setBackgroundPriceAlert:YES];
+                                                         }
+                                                         
+                                                         StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringSuccessAddPrice] delegate:self];
+                                                         [stickyAlertView show];
+                                                         [self.navigationController popViewControllerAnimated:YES];
+                                                     }
+                                                     onFailure:^(NSError *error) {
+                                                         StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringFailedAddPriceAlert] delegate:self];
+                                                         [stickyAlertView show];
+                                                         [self setLoadingDoingAction:NO];
+                                                     }];
         }
         else if(_detailPriceAlert != nil) {
-            [[self getNetworkManager:CTagEditPriceAlert] doRequest];
+//            [[self getNetworkManager:CTagEditPriceAlert] doRequest];
+            
+            [_request requestEditInboxPriceAlertWithPriceAlertID:_detailPriceAlert.pricealert_id
+                                                 priceAlertPrice:[self getPriceAlert]
+                                                       onSuccess:^(GeneralActionResult *result) {
+                                                           [[NSNotificationCenter defaultCenter] postNotificationName:@"TkpdUpdatePriceAlert" object:nil userInfo:@{@"price":[self formatRupiah:[txtPrice.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]]}];
+                                                           
+                                                           StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringSuccessEditPriceAlert] delegate:self];
+                                                           [stickyAlertView show];
+                                                           [self.navigationController popViewControllerAnimated:YES];
+                                                       }
+                                                       onFailure:^(NSError *error) {
+                                                           StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringFailedEditPriceAlert] delegate:self];
+                                                           [stickyAlertView show];
+                                                           [self setLoadingDoingAction:NO];
+                                                       }];
         }
         
         [self setLoadingDoingAction:YES];

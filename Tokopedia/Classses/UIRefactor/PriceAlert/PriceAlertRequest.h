@@ -22,4 +22,19 @@
                                         onSuccess:(void (^)(GeneralActionResult *result))successCallback
                                         onFailure:(void (^)(NSError *error))errorCallback;
 
+- (void)requestAddCatalogPriceAlertWithCatalogID:(NSString *)catalogID
+                                 priceAlertPrice:(NSString *)priceAlertPrice
+                                       onSuccess:(void (^)(GeneralActionResult *result))successCallback
+                                       onFailure:(void (^)(NSError *error))errorCallback;
+
+- (void)requestAddProductPriceAlertWithProductID:(NSString *)productID
+                                 priceAlertPrice:(NSString *)priceAlertPrice
+                                       onSuccess:(void (^)(GeneralActionResult *result))successCallback
+                                       onFailure:(void (^)(NSError *error))errorCallback;
+
+- (void)requestEditInboxPriceAlertWithPriceAlertID:(NSString *)priceAlertID
+                                   priceAlertPrice:(NSString *)priceAlertPrice
+                                         onSuccess:(void (^)(GeneralActionResult *result))successCallback
+                                         onFailure:(void (^)(NSError *error))errorCallback;
+
 @end

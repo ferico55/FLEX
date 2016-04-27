@@ -14,6 +14,9 @@
 @implementation PriceAlertRequest {
     TokopediaNetworkManager *getPriceAlertNetworkManager;
     TokopediaNetworkManager *deletePriceAlertNetworkManager;
+    TokopediaNetworkManager *addCatalogPriceAlertNetworkManager;
+    TokopediaNetworkManager *addProductPriceAlertNetworkManager;
+    TokopediaNetworkManager *editInboxPriceAlertNetworkManager;
 }
 
 - (id)init {
@@ -22,6 +25,9 @@
     if (self) {
         getPriceAlertNetworkManager = [TokopediaNetworkManager new];
         deletePriceAlertNetworkManager = [TokopediaNetworkManager new];
+        addCatalogPriceAlertNetworkManager = [TokopediaNetworkManager new];
+        addProductPriceAlertNetworkManager = [TokopediaNetworkManager new];
+        editInboxPriceAlertNetworkManager = [TokopediaNetworkManager new];
     }
     
     return self;
@@ -74,6 +80,75 @@
                                              onFailure:^(NSError *errorResult) {
                                                  errorCallback(errorResult);
                                              }];
+}
+
+- (void)requestAddCatalogPriceAlertWithCatalogID:(NSString *)catalogID
+                                 priceAlertPrice:(NSString *)priceAlertPrice
+                                       onSuccess:(void (^)(GeneralActionResult *))successCallback
+                                       onFailure:(void (^)(NSError *))errorCallback {
+    addCatalogPriceAlertNetworkManager.isParameterNotEncrypted = NO;
+    addCatalogPriceAlertNetworkManager.isUsingHmac = YES;
+    
+    [addCatalogPriceAlertNetworkManager requestWithBaseUrl:[NSString v4Url]
+                                                      path:@"/v4/action/pricealert/add_catalog_price_alert.pl"
+                                                    method:RKRequestMethodGET
+                                                 parameter:@{@"catalog_id" : catalogID,
+                                                             @"pricealert_price" :priceAlertPrice}
+                                                   mapping:[GeneralAction mapping]
+                                                 onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                                     NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+                                                     GeneralAction *obj = [result objectForKey:@""];
+                                                     successCallback(obj.data);
+                                                 }
+                                                 onFailure:^(NSError *errorResult) {
+                                                     errorCallback(errorResult);
+                                                 }];
+}
+
+- (void)requestAddProductPriceAlertWithProductID:(NSString *)productID
+                                 priceAlertPrice:(NSString *)priceAlertPrice
+                                       onSuccess:(void (^)(GeneralActionResult *))successCallback
+                                       onFailure:(void (^)(NSError *))errorCallback {
+    addProductPriceAlertNetworkManager.isParameterNotEncrypted = NO;
+    addProductPriceAlertNetworkManager.isUsingHmac = YES;
+    
+    [addProductPriceAlertNetworkManager requestWithBaseUrl:[NSString v4Url]
+                                                      path:@"/v4/action/pricealert/add_product_price_alert.pl"
+                                                    method:RKRequestMethodGET
+                                                 parameter:@{@"product_id" : productID,
+                                                             @"pricealert_price" :priceAlertPrice}
+                                                   mapping:[GeneralAction mapping]
+                                                 onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                                     NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+                                                     GeneralAction *obj = [result objectForKey:@""];
+                                                     successCallback(obj.data);
+                                                 }
+                                                 onFailure:^(NSError *errorResult) {
+                                                     errorCallback(errorResult);
+                                                 }];
+}
+
+- (void)requestEditInboxPriceAlertWithPriceAlertID:(NSString *)priceAlertID
+                                   priceAlertPrice:(NSString *)priceAlertPrice
+                                         onSuccess:(void (^)(GeneralActionResult *))successCallback
+                                         onFailure:(void (^)(NSError *))errorCallback {
+    editInboxPriceAlertNetworkManager.isParameterNotEncrypted = NO;
+    editInboxPriceAlertNetworkManager.isUsingHmac = YES;
+    
+    [editInboxPriceAlertNetworkManager requestWithBaseUrl:[NSString v4Url]
+                                                      path:@"/v4/action/pricealert/edit_inbox_price_alert.pl"
+                                                    method:RKRequestMethodGET
+                                                parameter:@{@"pricealert_id" : priceAlertID,
+                                                            @"pricealert_price" :priceAlertPrice}
+                                                   mapping:[GeneralAction mapping]
+                                                 onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                                     NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+                                                     GeneralAction *obj = [result objectForKey:@""];
+                                                     successCallback(obj.data);
+                                                 }
+                                                 onFailure:^(NSError *errorResult) {
+                                                     errorCallback(errorResult);
+                                                 }];
 }
 
 @end
