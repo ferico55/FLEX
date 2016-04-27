@@ -38,7 +38,6 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 
 @implementation TalkCell
 {
-    BOOL _isFollowingTalk;
     IBOutlet NSLayoutConstraint* commentButtonTrailingToVerticalBorder;
     IBOutlet UILabel *_productNameLabel;
 }
@@ -155,12 +154,11 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 }
 
 - (void)setTalkFollowStatus:(BOOL)talkFollowStatus {
-    _isFollowingTalk = talkFollowStatus;
     [self adjustFollowButton];
 }
 
 - (void)adjustFollowButton {
-    if (_isFollowingTalk) {
+    if (_talk.talk_follow_status) {
         [_unfollowButton setTitle:@"Berhenti Ikuti" forState:UIControlStateNormal];
         [_unfollowButton setImage:[UIImage imageNamed:@"icon_diskusi_unfollow_grey"] forState:UIControlStateNormal];
         
@@ -195,7 +193,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
                                       parameter:parameter
                                         mapping:[GeneralAction mapping]
                                       onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                          [self actionAfterRequest:successResult withOperation:operation withTag:RequestFollowTalk];
+                                          [self actionAfterRequest:successResult withTag:RequestFollowTalk];
                                       }
                                       onFailure:^(NSError *errorResult) {
 
@@ -296,7 +294,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     [self dismissAllPopTipViews];
 }
 
-- (void)actionAfterRequest:(RKMappingResult *)mappingResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
+- (void)actionAfterRequest:(RKMappingResult *)mappingResult withTag:(int)tag {
     if(tag == RequestFollowTalk || tag == RequestDeleteTalk) {
         GeneralAction *generalAction = [mappingResult.dictionary objectForKey:@""];
         if(generalAction.message_error!=nil && generalAction.message_error.count>0) {
@@ -304,7 +302,6 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
             [stickyAlert show];
         } else {
             NSArray *successMessages = [[NSMutableArray alloc] init];
-            _isFollowingTalk = !_isFollowingTalk;
             
             [self adjustFollowButton];
 
@@ -312,14 +309,10 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 				successMessages = @[@"Anda berhasil menghapus diskusi ini."];
                 [_delegate tapToDeleteTalk:self];
 			} else {
-            	if(_isFollowingTalk) {
-                	successMessages = @[@"Anda berhasil mengikuti diskusi ini."];
-	            } else {
-    	            successMessages = @[@"Anda batal mengikuti diskusi ini."];
-        	    }
+                successMessages = @[_talk.talk_follow_status ? @"Anda berhasil mengikuti diskusi ini." : @"Anda batal mengikuti diskusi ini."];
 
-                _talk.talk_follow_status = _isFollowingTalk;
                 _talk.viewModel = nil;
+                _talk.talk_follow_status = !_talk.talk_follow_status;
 
                 [self setTalkViewModel:_talk.viewModel];
 			}
@@ -374,7 +367,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
                                         parameter:parameter
                                           mapping:[GeneralAction mapping]
                                         onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                            [self actionAfterRequest:successResult withOperation:operation withTag:RequestDeleteTalk];
+                                            [self actionAfterRequest:successResult withTag:RequestDeleteTalk];
                                         }
                                         onFailure:^(NSError *errorResult) {
 
