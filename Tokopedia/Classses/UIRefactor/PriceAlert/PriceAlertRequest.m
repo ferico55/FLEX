@@ -9,9 +9,11 @@
 #import "PriceAlertRequest.h"
 #import "TokopediaNetworkManager.h"
 #import "PriceAlert.h"
+#import "GeneralAction.h"
 
 @implementation PriceAlertRequest {
     TokopediaNetworkManager *getPriceAlertNetworkManager;
+    TokopediaNetworkManager *deletePriceAlertNetworkManager;
 }
 
 - (id)init {
@@ -19,6 +21,7 @@
     
     if (self) {
         getPriceAlertNetworkManager = [TokopediaNetworkManager new];
+        deletePriceAlertNetworkManager = [TokopediaNetworkManager new];
     }
     
     return self;
@@ -47,6 +50,30 @@
                                           onFailure:^(NSError *errorResult) {
                                               errorCallback(errorResult);
                                           }];
+}
+
+- (void)requestDeletePriceAlertWithPriceAlertType:(NSString *)priceAlertType
+                                     priceAlertID:(NSString *)priceAlertID
+                                        onSuccess:(void (^)(GeneralActionResult *))successCallback
+                                        onFailure:(void (^)(NSError *))errorCallback {
+    deletePriceAlertNetworkManager.isParameterNotEncrypted = NO;
+    deletePriceAlertNetworkManager.isUsingHmac = YES;
+    
+    NSString *path = [priceAlertType isEqualToString:@"1"]?@"/v4/action/pricealert/delete_product_price_alert.pl":@"/v4/action/pricealert/delete_catalog_price_alert.pl";
+    
+    [deletePriceAlertNetworkManager requestWithBaseUrl:[NSString v4Url]
+                                                  path:path
+                                                method:RKRequestMethodGET
+                                             parameter:@{@"pricealert_id" : priceAlertID}
+                                               mapping:[GeneralAction mapping]
+                                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                                 NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+                                                 GeneralAction *obj = [result objectForKey:@""];
+                                                 successCallback(obj.data);
+                                             }
+                                             onFailure:^(NSError *errorResult) {
+                                                 errorCallback(errorResult);
+                                             }];
 }
 
 @end

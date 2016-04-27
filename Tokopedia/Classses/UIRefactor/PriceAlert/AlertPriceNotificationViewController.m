@@ -681,8 +681,35 @@
         if(buttonIndex == 1) {
             [self deletingPriceAlert:YES];
             tempPriceAlert = [arrList objectAtIndex:alertView.tag];
-            [[self getNetworkManager:CTagDeletePriceAlert] doRequest];
-            
+            [_request requestDeletePriceAlertWithPriceAlertType:tempPriceAlert.pricealert_type
+                                                   priceAlertID:tempPriceAlert.pricealert_id
+                                                      onSuccess:^(GeneralActionResult *result) {
+                                                          if ([result.is_success isEqualToString:@"1"]) {
+                                                              StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringSuccessRemovePriceAlert] delegate:self];
+                                                              [stickyAlertView show];
+                                                              
+                                                              [arrList removeObject:tempPriceAlert];
+                                                              NSMutableIndexSet *section = [[NSMutableIndexSet alloc] init];
+                                                              [section addIndex:0];
+                                                              [_table reloadSections:section withRowAnimation:UITableViewRowAnimationFade];
+                                                              tempPriceAlert = nil;
+                                                              
+                                                              if(arrList.count > 0){
+                                                                  [_noResultView removeFromSuperview];
+                                                              }else{
+                                                                  [_table addSubview:_noResultView];
+                                                              }
+                                                          } else {
+                                                              StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringFailedDeletePriceAlert] delegate:self];
+                                                              [stickyAlertView show];
+                                                          }
+                                                          
+                                                          [self deletingPriceAlert:NO];
+                                                      }
+                                                      onFailure:^(NSError *error) {
+                                                          
+                                                          
+                                                      }];
         }
         
         objTagConfirmDelete = nil;

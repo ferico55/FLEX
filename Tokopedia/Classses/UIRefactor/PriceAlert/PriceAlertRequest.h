@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "PriceAlertResult.h"
+#import "GeneralActionResult.h"
 
 @interface PriceAlertRequest : NSObject
 
@@ -15,5 +16,10 @@
                                         page:(NSInteger)page
                                    onSuccess:(void(^)(PriceAlertResult *result))successCallback
                                    onFailure:(void(^)(NSError *error))errorCallback;
+
+- (void)requestDeletePriceAlertWithPriceAlertType:(NSString *)priceAlertType
+                                     priceAlertID:(NSString *)priceAlertID
+                                        onSuccess:(void (^)(GeneralActionResult *result))successCallback
+                                        onFailure:(void (^)(NSError *error))errorCallback;
 
 @end
