@@ -476,9 +476,6 @@
 }
 
 - (void)didReceiveLogisticData:(ShipmentData *)data {
-<<<<<<< HEAD
-    self.couriers = data.courier;
-=======
     NSArray *couriers = data.courier;
     for (ShipmentCourierData *courier in couriers) {
         for (ShipmentServiceData *service in courier.services) {
@@ -488,8 +485,6 @@
         }
     }
     self.couriers = couriers;
-    
->>>>>>> feature/logistic
     self.shop = data.shop;
     
     if (self.provinces == nil) {
@@ -532,36 +527,25 @@
 }
 
 - (void)saveLogisticData {
-<<<<<<< HEAD
-=======
-    
-    if (_selectedDistrict == nil) {
+    if (![self.selectedProvince.provinceId isEqualToString:@"13"] && _selectedDistrict == nil) {
         NSArray *messages = @[@"Kota Asal harus dilengkapi."];
         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messages delegate:self];
         [alert show];
         return;
     }
     
->>>>>>> feature/logistic
     self.navigationItem.rightBarButtonItem = self.loadingView;
 
     NSMutableDictionary *parameters = [NSMutableDictionary new];
     NSMutableDictionary *couriers = [NSMutableDictionary new];
     for (ShipmentCourierData *courier in self.couriers) {
         NSMutableDictionary *services = [NSMutableDictionary new];
-<<<<<<< HEAD
-        for (ShipmentServiceData *service in courier.services) {
-            if ([service.active boolValue]) {
-                [services setObject:@"1" forKey:service.productId];
-            }
-=======
         if ([courier.available boolValue]) {
             for (ShipmentServiceData *service in courier.services) {
                 if ([service.active boolValue]) {
                     [services setObject:@"1" forKey:service.productId];
                 }
             }            
->>>>>>> feature/logistic
         }
         if (services.allValues.count > 0) {
             [couriers setObject:services forKey:courier.courierId];
@@ -570,28 +554,24 @@
         }
     }
     
-    NSData *data = [NSJSONSerialization dataWithJSONObject:couriers options:0 error:nil];
-    NSString *shipments_ids = [[NSString alloc] initWithBytes:[data bytes] length:[data length] encoding:NSUTF8StringEncoding];
+    if (couriers.allValues.count > 0) {
+        NSData *data = [NSJSONSerialization dataWithJSONObject:couriers options:0 error:nil];
+        NSString *shipments_ids = [[NSString alloc] initWithBytes:[data bytes] length:[data length] encoding:NSUTF8StringEncoding];
+        [parameters setObject:shipments_ids forKey:@"shipment_ids"];
+    }
     
     NSString *latitude = [NSString stringWithFormat:@"%f", _shop.latitude];
     NSString *longitude = [NSString stringWithFormat:@"%f", _shop.longitude];
-<<<<<<< HEAD
-=======
 
     UserAuthentificationManager *user = [UserAuthentificationManager new];
->>>>>>> feature/logistic
     
     [parameters addEntriesFromDictionary:@{
         @"courier_origin": _selectedDistrict.districtId?: _shop.districtId?: @"",
         @"postal": _shop.postalCode?:@"",
-        @"shipment_ids" : shipments_ids?:@"",
         @"addr_street": _shop.address?:@"",
         @"latitude": latitude?:@"",
         @"longitude": longitude?:@"",
-<<<<<<< HEAD
-=======
         @"shop_id": user.getShopId,
->>>>>>> feature/logistic
     }];
 
     // 13 id provinsi jakarta
@@ -599,11 +579,7 @@
         [parameters setObject:@"5573" forKey:@"courier_origin"];
     }
     
-<<<<<<< HEAD
-    [self.networkManager requestWithBaseUrl:@"http://ws-staging.tokopedia.com"
-=======
     [self.networkManager requestWithBaseUrl:@"https://ws-staging.tokopedia.com"
->>>>>>> feature/logistic
                                        path:@"/v4/action/myshop-shipment/update_shipping_info.pl"
                                      method:RKRequestMethodGET
                                   parameter:parameters
@@ -740,18 +716,11 @@
     
     UITableViewCell *cell = (UITableViewCell *)view;
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-<<<<<<< HEAD
+
     NSInteger indexOfCourier = indexPath.section - 2;
     NSInteger indexOfService = indexPath.row - 1;
+
     ShipmentCourierData *courier = self.couriers[indexOfCourier];
-=======
-    
-    NSInteger indexOfCourier = indexPath.section - 2;
-    NSInteger indexOfService = indexPath.row - 1;
-    
-    ShipmentCourierData *courier = self.couriers[indexOfCourier];
-    
->>>>>>> feature/logistic
     ShipmentServiceData *service = courier.services[indexOfService];
     service.active = switchControl.isOn? @"1": @"0";
     
