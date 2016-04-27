@@ -98,6 +98,7 @@
     controller.delegate = vc;
     controller.callbackURL = data.callback_url;
     controller.title = gatewayName?:@"Pembayaran";
+    controller.gatewayCode = gatewayName;
     
     [vc.navigationController pushViewController:controller animated:YES];
 }
@@ -360,6 +361,8 @@
         NSURL *callbackURL = [NSURL URLWithString:_callbackURL];
         if ([request.URL.absoluteString rangeOfString:callbackURL.path].location != NSNotFound) {
             
+            [TPAnalytics trackScreenName:[NSString stringWithFormat:@"Thank you page - %@", _gatewayCode]];
+
             NSString *html = [webView stringByEvaluatingJavaScriptFromString:@"document.body.outerHTML"];
             if ([html rangeOfString:@"Konfirmasi Pembayaran"].location != NSNotFound && webView.request.URL.absoluteString != nil) {
                 TxOrderTabViewController *vc = [TxOrderTabViewController new];
