@@ -136,8 +136,7 @@
     /** init notification*/
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateTotalComment:) name:@"UpdateTotalComment" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateTalk:) name:@"UpdateTalk" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateDeletedTalk:) name:@"TokopediaDeleteInboxTalk" object:nil];
-    
+
     [self configureRestKit];
     [self loadData];
 }
@@ -573,10 +572,8 @@
     }
 }
 
-- (void)updateDeletedTalk:(NSNotification*)notification {
-    NSDictionary *userInfo = notification.userInfo;
-    NSInteger index = [[userInfo objectForKey:@"index"] integerValue];
-    
+- (void)tapToDeleteTalk:(UITableViewCell *)cell {
+    NSInteger index = [_table indexPathForCell:cell].row;
     [_list removeObjectAtIndex:index];
     [_table reloadData];
 }

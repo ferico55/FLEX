@@ -119,11 +119,6 @@ NoResultDelegate>
 
 - (void)initNotification {
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(deleteTalk:)
-                                                 name:@"TokopediaDeleteInboxTalk"
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(updateTalkHeaderPosition:)
                                                  name:@"updateTalkHeaderPosition" object:nil];
     
@@ -365,13 +360,10 @@ NoResultDelegate>
     }
 }
 
-- (void)deleteTalk:(NSNotification *)notification {
-    NSDictionary *userinfo = notification.userInfo;
-    NSInteger index = [[userinfo objectForKey:kTKPDDETAIL_DATAINDEXKEY] integerValue];
-    if(index > _list.count) return;
+- (void)tapToDeleteTalk:(UITableViewCell *)cell {
+    NSInteger index = [_table indexPathForCell:cell].row;
     [_list removeObjectAtIndex:index];
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
-    [_table deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    [_table reloadData];
 }
 
 - (void)updateTalkHeaderPosition:(NSNotification *)notification

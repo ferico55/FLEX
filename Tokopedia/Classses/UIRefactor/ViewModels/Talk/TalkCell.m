@@ -323,17 +323,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 
 			if (tag == RequestDeleteTalk) {
 				successMessages = @[@"Anda berhasil menghapus diskusi ini."];
-
-                NSDictionary *userInfo = @{@"index" : @(_deleteIndexPath.row)};
-
-                //use delegate to prevent broadcast to multiple view controllers at once
-                if ([_delegate respondsToSelector:@selector(tapToDeleteTalk:)]) {
-                    [_delegate tapToDeleteTalk:self];
-                } else {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:@"TokopediaDeleteInboxTalk"
-                                                                        object:nil
-                                                                      userInfo:userInfo];
-                }
+                [_delegate tapToDeleteTalk:self];
 			} else {
             	if(_isFollowingTalk) {
                 	successMessages = @[@"Anda berhasil mengikuti diskusi ini."];

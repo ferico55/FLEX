@@ -75,7 +75,6 @@
 - (void)initNotification {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateTotalComment:) name:@"UpdateTotalComment" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadDataSource:) name:TKPDTabNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateDeletedTalk:) name:@"TokopediaDeleteInboxTalk" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUnreadTalk:) name:@"updateUnreadTalk" object:nil];
 }
 
@@ -258,13 +257,6 @@
         list.viewModel = nil;
         [_table reloadData];
     }
-}
-
-- (void)updateDeletedTalk:(NSNotification*)notification {
-    NSDictionary *userInfo = notification.userInfo;
-    NSInteger index = [[userInfo objectForKey:@"index"] integerValue];
-    [_talkList removeObjectAtIndex:index];
-    [_table reloadData];
 }
 
 - (void)updateUnreadTalk : (NSNotification*)notification {
