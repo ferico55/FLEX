@@ -78,6 +78,8 @@ class IntroViewController: UIViewController, EAIntroDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        TPAnalytics.trackScreenName("Onboarding")
+        
         UIApplication.sharedApplication().statusBarStyle = .Default
         
         reRenderLabels()
@@ -245,7 +247,10 @@ class IntroViewController: UIViewController, EAIntroDelegate {
         let nextViewController = MainViewController(page: page)
         
         nextViewController.view.frame = self.view.frame
-        
+
+        //need to call this to prevent stale notification observer
+        introView.hideWithFadeOutDuration(1)
+
         UIView.transitionWithView(
             window,
             duration: 0.5,
@@ -258,20 +263,24 @@ class IntroViewController: UIViewController, EAIntroDelegate {
     
     private func markOnboardingPlayed() {
         NSUserDefaults.standardUserDefaults().setBool(true, forKey: "has_shown_onboarding")
+        NSUserDefaults.standardUserDefaults().synchronize()
     }
     
     @IBAction func btnSearchTapped(sender: AnyObject) {
         markOnboardingPlayed()
+        TPAnalytics.trackOnBoardingClickButton("Search")
         navigateToMainViewControllerWithPage(.Search)
     }
     
     @IBAction func btnLoginTapped(sender: AnyObject) {
         markOnboardingPlayed()
+        TPAnalytics.trackOnBoardingClickButton("Login")
         navigateToMainViewControllerWithPage(.Login)
     }
     
     @IBAction func btnRegisterTapped(sender: AnyObject) {
         markOnboardingPlayed()
+        TPAnalytics.trackOnBoardingClickButton("Register")
         navigateToMainViewControllerWithPage(.Register)
     }
     
@@ -289,10 +298,13 @@ class IntroViewController: UIViewController, EAIntroDelegate {
                 self.introView.setCurrentPageIndex(5, animated: true)
             }
         })
+        
+        TPAnalytics.trackOnBoardingClickButton("Activate push notification")
     }
     
     @IBAction func btnRejectNotificationTapped(sender: AnyObject) {
         introView.scrollingEnabled = true
         introView.setCurrentPageIndex(5, animated: true)
+        TPAnalytics.trackOnBoardingClickButton("Reject push notification")
     }
 }

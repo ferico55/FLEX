@@ -29,6 +29,7 @@
 
 @property NSDictionary *CCParam;
 @property NSNumber *gateway;
+@property (strong, nonatomic) NSString *gatewayCode;
 @property BOOL isVeritrans;
 @property NSString *token;
 @property NSString *URLString;
@@ -38,6 +39,7 @@
 @property NSString *toppayQueryString;
 @property NSDictionary *toppayParam;
 @property NSString *paymentID;
+@property NSString *callbackURL;
 
 +(void)pushBCAKlikPayFrom:(UIViewController*)vc cartDetail:(TransactionSummaryDetail*)cartDetail;
 +(void)pushMandiriECashFrom:(UIViewController*)vc cartDetail:(TransactionSummaryDetail*)cartDetail LinkMandiri:(NSString*)linkMandiri;

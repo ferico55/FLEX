@@ -11,13 +11,14 @@
 
 #import "ProductListMyShopFilterViewController.h"
 #import "GeneralTableViewController.h"
-#import "MyShopEtalaseFilterViewController.h"
+#import "EtalaseViewController.h"
+#import "CategoryMenuViewController.h"
 #import "FilterCategoryViewController.h"
 
 @interface ProductListMyShopFilterViewController ()
 <
     GeneralTableViewControllerDelegate,
-    MyShopEtalaseFilterViewControllerDelegate,
+EtalaseViewControllerDelegate,
     FilterCategoryViewDelegate
 >
 {
@@ -108,12 +109,17 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if (indexPath.row == 0) {
-        MyShopEtalaseFilterViewController *controller = [MyShopEtalaseFilterViewController new];
-        controller.delegate = self;
-        controller.data = @{kTKPD_SHOPIDKEY:_shopID,
-                            DATA_PRESENTED_ETALASE_TYPE_KEY : @(PRESENTED_ETALASE_MANAGE_PRODUCT)};
-        [self.navigationController pushViewController:controller animated:YES];
+    if (indexPath.row == 0) {        
+        EtalaseViewController *vc = [EtalaseViewController new];
+        vc.delegate = self;
+        vc.isEditable = NO;
+        vc.showOtherEtalase = YES;
+        vc.initialSelectedEtalase = _etalase;
+        
+        [vc setShopId:_shopID];
+        [self.navigationController pushViewController:vc animated:YES];
+        
+        
     } else if (indexPath.row == 1) {
         FilterCategoryViewController *controller = [FilterCategoryViewController new];
         controller.filterType = FilterCategoryTypeSearchProduct;
@@ -216,13 +222,13 @@
 
 #pragma mark - Myshop etalase filter delegate
 
-- (void)MyShopEtalaseFilterViewController:(MyShopEtalaseFilterViewController *)viewController withUserInfo:(NSDictionary *)userInfo
-{
-    _etalase = [userInfo objectForKey:DATA_ETALASE_KEY];
+-(void)didSelectEtalase:(EtalaseList *)selectedEtalase{
+    _etalase = selectedEtalase;
     
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
     cell.detailTextLabel.text = _etalase.etalase_name;
 }
+
 
 #pragma mark - Category menu delegate
 

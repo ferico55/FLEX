@@ -307,13 +307,13 @@
     if ([self isValidInput] == NO) {
         return;
     }
-    NSString *baseURL = @"https://ws.tokopedia.com";
+    NSString *baseURL = [NSString v4Url];
     NSString *path = _type == 2? @"/v4/action/myshop-address/add_location.pl": @"/v4/action/myshop-address/edit_location.pl";
     [_networkManager requestWithBaseUrl:baseURL
                                    path:path
                                  method:RKRequestMethodGET
                               parameter:[self parameters]
-                                mapping:[ShopSettings objectMapping]
+                                mapping:[ShopSettings mapping]
                               onSuccess:^(RKMappingResult *mappingResult,
                                           RKObjectRequestOperation *operation) {
                                   [self didReceiveMappingResult:mappingResult];

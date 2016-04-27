@@ -273,7 +273,8 @@ TokopediaNetworkManagerDelegate
                                                                  if ([aViewController isKindOfClass:[MyReviewDetailViewController class]]) {
                                                                      [self.navigationController popToViewController:aViewController animated:YES];
                                                                      [[NSNotificationCenter defaultCenter] postNotificationName:@"RefreshData"
-                                                                                                                         object:nil];
+                                                                                                                         object:nil
+                                                                                                                       userInfo:@{@"n" : @"1"}];
                                                                  }
                                                              }
                                                          }
@@ -305,7 +306,8 @@ TokopediaNetworkManagerDelegate
                                                                        if ([aViewController isKindOfClass:[MyReviewDetailViewController class]]) {
                                                                            [self.navigationController popToViewController:aViewController animated:YES];
                                                                            [[NSNotificationCenter defaultCenter] postNotificationName:@"RefreshData"
-                                                                                                                               object:nil];
+                                                                                                                               object:nil
+                                                                                                                             userInfo:@{@"n" : @"1"}];
                                                                        }
                                                                    }
                                                                }

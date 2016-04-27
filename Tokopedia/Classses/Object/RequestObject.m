@@ -67,7 +67,8 @@
                                  @"token"    : @"token",
                                  @"user_id"  : @"user_id",
                                  @"payment_id": @"payment_id",
-                                 @"action" : @"action"
+                                 @"action" : @"action",
+                                 @"web_service" : @"web_service"
                                  };
     
     return dictionary;

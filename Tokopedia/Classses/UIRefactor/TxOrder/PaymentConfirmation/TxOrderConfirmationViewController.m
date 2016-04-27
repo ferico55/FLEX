@@ -24,7 +24,7 @@
 #import "LoadingView.h"
 #import "RequestOrderData.h"
 
-@interface TxOrderConfirmationViewController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate ,TxOrderConfirmationCellDelegate, TxOrderConfirmationDetailViewControllerDelegate, TokopediaNetworkManagerDelegate, LoadingViewDelegate>
+@interface TxOrderConfirmationViewController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate ,TxOrderConfirmationCellDelegate, TxOrderConfirmationDetailViewControllerDelegate, LoadingViewDelegate>
 {
     NSInteger _page;
     NSMutableArray<TxOrderConfirmationList*>*_list;
@@ -35,12 +35,9 @@
     
     NSString *_URINext;
     
-    NSOperationQueue *_operationQueue;
-    
-    __weak RKObjectManager *_objectManagerCancelPayment;
-    __weak RKManagedObjectRequestOperation *_requestCancelPayment;
-    
     LoadingView *_loadingView;
+    UIAlertView *_loadingAlert;
+    
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -59,7 +56,6 @@
     
     _list = [NSMutableArray new];
     _dataInput = [NSMutableDictionary new];
-    _operationQueue = [NSOperationQueue new];
     
     _refreshControl = [[UIRefreshControl alloc] init];
     _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
@@ -76,6 +72,14 @@
     _loadingView.delegate = self;
     
     [self doRequestListconfirmation];
+    _loadingAlert = [[UIAlertView alloc]initWithTitle:nil message:@"Processing" delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
+
+}
+
+-(void)removeAllSelected{
+    for (int i = 0; i<_list.count; i++) {
+        _list[i].isSelectedPayment = NO;
+    }
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -229,7 +233,7 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (_isMultipleSelection) {
-        _list[indexPath.row].isSelectedPayment = YES;
+        _list[indexPath.row].isSelectedPayment = !_list[indexPath.row].isSelectedPayment;
         [_tableView reloadData];
     }
     else {
@@ -263,8 +267,16 @@
 {
     if (!_isMultipleSelection) {
         _list[indexPath.row].isSelectedPayment = YES;
+        NSString *cancelAlertDesc = @"Apakah anda yakin membatalkan transaksi ini?";
+        if ([_list[indexPath.row].confirmation.deposit_amount_plain integerValue]>0)
+            cancelAlertDesc = [NSString stringWithFormat:@"Apakah anda yakin membatalkan transaksi ini?\nSaldo Tokopedia yang akan dikembalikan adalah sebesar: %@",_list[indexPath.row].confirmation.deposit_amount];
         
-        [self doRequestGetDataCancelConfirmation:@[_list[indexPath.row]]];
+        UIAlertView *cancelAlert = [[UIAlertView alloc]initWithTitle:ALERT_TITLE_CANCEL_PAYMENT_CONFIRMATION
+                                                             message:cancelAlertDesc
+                                                            delegate:self
+                                                   cancelButtonTitle:@"Tidak"
+                                                   otherButtonTitles:@"Ya", nil];
+        [cancelAlert show];
     }
 }
 
@@ -384,11 +396,13 @@
         [confirmationIDs addObject:order.confirmation.confirmation_id];
     }
     
-    [_tableView reloadData];
+    [_loadingAlert show];
     
     NSString * confirmationID = [[confirmationIDs valueForKey:@"description"] componentsJoinedByString:@"~"]?:@"";
     
     [RequestOrderData fetchDataCancelConfirmationID:confirmationID Success:^(TxOrderCancelPaymentFormForm *data) {
+        
+        [_loadingAlert dismissWithClickedButtonIndex:0 animated:YES];
         
         NSString *cancelAlertDesc;
         NSString *totalRefund = [data.total_refund stringByReplacingOccurrencesOfString:@"Rp" withString:@""];
@@ -405,9 +419,6 @@
                                                    cancelButtonTitle:@"Tidak"
                                                    otherButtonTitles:@"Ya", nil];
         [cancelAlert show];
-        NSDictionary *userInfo = @{DATA_PAYMENT_CONFIRMATION_COUNT_KEY:@(objects.count)};
-        [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil userInfo:userInfo];
-
         [_refreshControl endRefreshing];
     } failure:^(NSError *error) {
         [_refreshControl endRefreshing];

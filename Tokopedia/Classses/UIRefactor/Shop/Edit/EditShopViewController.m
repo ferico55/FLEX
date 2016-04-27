@@ -120,7 +120,7 @@
 #pragma mark - Restkit
 
 - (void)uploadShopImage {
-    NSString *baseURL = @"https://ws.tokopedia.com";
+    NSString *baseURL = [NSString v4Url];
     NSString *path = @"/v4/action/myshop-info/update_shop_picture.pl";
     
     NSDictionary *parameters = @{
@@ -135,7 +135,7 @@
                                        path:path
                                      method:RKRequestMethodGET
                                   parameter:parameters
-                                    mapping:[ShopSettings objectMapping]
+                                    mapping:[ShopSettings mapping]
                                   onSuccess:^(RKMappingResult *successResult,
                                               RKObjectRequestOperation *operation) {
                                       [self didReceiveMappingResultForUploadImage:successResult];
@@ -171,7 +171,7 @@
 }
 
 - (void)fetchShopInformation {
-    NSString *baseURL = @"https://ws.tokopedia.com";
+    NSString *baseURL = [NSString v4Url];
     NSString *path = @"/v4/myshop-info/get_shop_info.pl";
     [self.networkManager requestWithBaseUrl:baseURL
                                        path:path
@@ -195,7 +195,7 @@
 
 - (void)saveShopInformation {
     self.navigationItem.rightBarButtonItem = self.loadingView;
-    NSString *baseURL = @"https://ws.tokopedia.com";
+    NSString *baseURL = [NSString v4Url];
     NSString *path = @"/v4/action/myshop-info/update_shop_info.pl";
     ShopInfoResult *shop = _dataSource.shop;
     NSDictionary *parameters = @{
@@ -209,7 +209,7 @@
                                        path:path
                                      method:RKRequestMethodGET
                                   parameter:parameters
-                                    mapping:[ShopSettings objectMapping]
+                                    mapping:[ShopSettings mapping]
                                   onSuccess:^(RKMappingResult *mappingResult,
                                               RKObjectRequestOperation *operation) {
                                       ShopSettings *settings = [mappingResult.dictionary objectForKey:@""];

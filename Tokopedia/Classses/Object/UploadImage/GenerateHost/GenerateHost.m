@@ -7,7 +7,6 @@
 //
 
 #import "GenerateHost.h"
-#import "GenerateHostResult.h"
 
 @implementation GenerateHost
 

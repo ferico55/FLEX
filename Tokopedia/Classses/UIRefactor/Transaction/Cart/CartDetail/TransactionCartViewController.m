@@ -43,6 +43,8 @@
 #import "NoResultReusableView.h"
 #import "NSNumberFormatter+IDRFormater.h"
 
+#import "TxOrderTabViewController.h"
+
 #define DurationInstallmentFormat @"%@ bulan (%@)"
 
 @interface TransactionCartViewController ()
@@ -693,7 +695,7 @@
 {
     TransactionCartGateway *gateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
     
-    if ([gateway.toppay_flag isEqualToString:@""] && [gateway.toppay_flag isEqualToString:@"0"]) {
+    if ([gateway.toppay_flag isEqualToString:@""] || [gateway.toppay_flag isEqualToString:@"0"]) {
         return NO;
     } else
         return YES;
@@ -775,6 +777,7 @@
     
     NSString *hiddenGatewayString = [[self gtmContainer] stringForKey:GTMHiddenPaymentKey]?:@"-1";
     hiddenGatewayString = ([hiddenGatewayString isEqualToString:@""])?@"-1":hiddenGatewayString;
+    NSArray *hiddenGatewayArray = [hiddenGatewayString componentsSeparatedByString: @","];
     
     NSMutableArray *hiddenGatewayName = [NSMutableArray new];
     NSMutableArray *hiddenGatewayImage = [NSMutableArray new];
@@ -782,6 +785,16 @@
     for (TransactionCartGateway *gateway in _cart.gateway_list) {
         [gatewayListWithoutHiddenPayment addObject:gateway.gateway_name?:@""];
         [gatewayImages addObject:gateway.gateway_image?:@""];
+#ifdef DEBUG
+        
+#else
+        for (NSString *hiddenGateway in hiddenGatewayArray) {
+            if ([gateway.gateway isEqual:@([hiddenGateway integerValue])] && ![hiddenGatewayName containsObject:gateway.gateway_name]) {
+                [hiddenGatewayImage addObject:gateway.gateway_image?:@""];
+                [hiddenGatewayName addObject:gateway.gateway_name];
+            }
+        }
+#endif
     }
     
     [gatewayImages removeObjectsInArray:hiddenGatewayImage];
@@ -799,20 +812,15 @@
 
 -(NSArray *)getGatewayIDNative
 {
-    NSArray *nativeGatewayIDArray = @[
-                                   @(TYPE_GATEWAY_TOKOPEDIA),
-                                   @(TYPE_GATEWAY_TRANSFER_BANK),
-                                   @(TYPE_GATEWAY_MANDIRI_CLICK_PAY),
-                                   @(TYPE_GATEWAY_MANDIRI_E_CASH),
-                                   @(TYPE_GATEWAY_BCA_CLICK_PAY),
-                                   @(TYPE_GATEWAY_BCA_KLIK_BCA),
-                                   @(TYPE_GATEWAY_CC),
-                                   @(TYPE_GATEWAY_INDOMARET),
-                                   @(TYPE_GATEWAY_BRI_EPAY),
-                                   @(TYPE_GATEWAY_INSTALLMENT)
-                                   ];
-
-    return nativeGatewayIDArray;
+    NSString *nativeGatewayIDString = [[self gtmContainer] stringForKey:@"native_gateway_list"]?:@"-1";
+    nativeGatewayIDString = ([nativeGatewayIDString isEqualToString:@""])?@"-1":nativeGatewayIDString;
+    NSArray * nativeGatewayIDArray = [nativeGatewayIDString componentsSeparatedByString: @","];
+    NSMutableArray *listGateway = [NSMutableArray new];
+    for (NSString *gatewayID in nativeGatewayIDArray) {
+        [listGateway addObject:@([gatewayID integerValue])];
+    }
+    
+    return [listGateway copy];
 }
 
 #pragma mark - GTM
@@ -2395,7 +2403,7 @@
                                 saldo:_saldoTokopediaAmountTextField.text
                           voucherCode:voucherCode success:^(TransactionActionResult *data) {
                               
-                              [TransactionCartWebViewViewController pushToppayFrom:self data:data gatewayID:[_cartSummary.gateway integerValue] gatewayName:_cartSummary.gateway_name];
+                              [TransactionCartWebViewViewController pushToppayFrom:self data:data gatewayID:[_cartSummary.gateway integerValue] gatewayName:data.parameter[@"gateway_code"]];
                               _popFromToppay = YES;
                               [self isLoading:NO];
 

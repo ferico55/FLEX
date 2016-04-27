@@ -10,7 +10,7 @@
 
 #import "GenerateHostResult.h"
 
-@interface GenerateHost : NSObject <TKPObjectMapping>
+@interface GenerateHost : NSObject
 
 @property (nonatomic, strong) NSArray *message_error;
 @property (nonatomic, strong) NSString *status;

@@ -20,6 +20,7 @@
 #import "ResponseCommentResult.h"
 #import "GeneralActionResult.h"
 #import "ReviewResult.h"
+#import "GeneralAction.h"
 
 @interface ReviewRequest : NSObject
 - (void)requestReviewLikeDislikesWithId:(NSString *)reviewId
@@ -58,7 +59,7 @@
 
 - (void)requestGetListReputationReviewWithReputationID:(NSString*)reputationID
                                      reputationInboxID:(NSString*)reputationInboxID
-                                          isUsingRedis:(NSString*)isUsingRedis
+                                     getDataFromMaster:(NSString*)getDataFromMaster
                                                   role:(NSString*)role
                                               autoRead:(NSString*)autoRead
                                              onSuccess:(void(^)(MyReviewReputationResult* result))successCallback
@@ -131,5 +132,11 @@
                                    onFailure:(void(^)(NSError *error))errorCallback;
 
 - (int)requestGetProductReviewNextPageFromUri:(NSString*)uri;
+
+- (void)requestReportReviewWithReviewID:(NSString*)reviewID
+                                 shopID:(NSString*)shopID
+                            textMessage:(NSString*)textMessage
+                              onSuccess:(void(^)(GeneralAction *action))successCallback
+                              onFailure:(void(^)(NSError *error))errorCallback;
 
 @end

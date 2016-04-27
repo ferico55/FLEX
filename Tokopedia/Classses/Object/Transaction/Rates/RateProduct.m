@@ -17,7 +17,9 @@
                       @"shipper_product_name",
                       @"shipper_product_desc",
                       @"price",
-                      @"formatted_price"
+                      @"formatted_price",
+                      @"ut",
+                      @"check_sum"
                       ];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }

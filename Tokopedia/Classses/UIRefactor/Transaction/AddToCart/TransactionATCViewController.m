@@ -8,11 +8,7 @@
 
 #import "Tokopedia-swift.h"
 
-#import "string_alert.h"
-#import "string_transaction.h"
-
 #import "AlertPickerView.h"
-#import "StickyAlertView.h"
 
 #import "SettingAddressViewController.h"
 #import "TransactionATCViewController.h"
@@ -22,16 +18,33 @@
 #import "TransactionShipmentATCTableViewController.h"
 #import "PlacePickerViewController.h"
 #import "NavigateViewController.h"
-#import "Localytics.h"
-
-#import "RequestEditAddress.h"
-#import "RequestAddAddress.h"
 #import "RequestATC.h"
-#import "RequestRates.h"
+#import "ATCPushLocalytics.h"
 
 #import "NSNumberFormatter+IDRFormater.h"
 
 @import GoogleMaps;
+
+typedef enum
+{
+    TAG_BUTTON_TRANSACTION_DEFAULT = 0,
+    TAG_BUTTON_TRANSACTION_QUANTITY = 2,
+    TAG_BUTTON_TRANSACTION_NOTE = 3,
+    //Section1
+    TAG_BUTTON_TRANSACTION_ADDRESS = 0,
+    TAG_BUTTON_TRANSACTION_PIN_LOCATION = 2,
+    TAG_BUTTON_TRANSACTION_SHIPPING_AGENT = 3,
+    TAG_BUTTON_TRANSACTION_SERVICE_TYPE = 4,
+    TAG_BUTTON_TRANSACTION_INSURANCE = 5,
+    //Section2
+    TAG_BUTTON_TRANSACTION_PRODUCT_FIRST_PRICE = 0,
+    TAG_BUTTON_TRANSACTION_PRODUCT_PRICE = 1,
+    TAG_BUTTON_TRANSACTION_SHIPMENT_COST = 2,
+    TAG_BUTTON_TRANSACTION_TOTAL = 3,
+    TAG_BUTTON_TRANSACTION_BUY = 14
+}TAG_BUTTON_TRANSACTION;
+
+#define ARRAY_INSURACE @[@{DATA_NAME_KEY:@"Ya", DATA_VALUE_KEY:@(1)}, @{DATA_NAME_KEY:@"Tidak", DATA_VALUE_KEY:@(0)}]
 
 #pragma mark - Transaction Add To Cart View Controller
 
@@ -122,7 +135,7 @@
     
     /** adjust refresh control **/
     _refreshControl = [[UIRefreshControl alloc] init];
-    _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
+    _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@""];
     [_refreshControl addTarget:self action:@selector(refreshView)forControlEvents:UIControlEventValueChanged];
     [_tableView addSubview:_refreshControl];
     
@@ -238,8 +251,15 @@
                                [self setProduct:_ATCForm.form.product_detail];
                                [self setAddress:_ATCForm.form.destination];
                                [self setPlacePicker];
-                               [self requestRate];
+                               
+                               if (_ATCForm.form.destination.address_id != 0) {
+                                   [self requestRate];
+                               }
+                            
+                               [self adjustViewIsLoading:NO];
+                               
                                [_tableView reloadData];
+                               
                            } failed:^(NSError *error) {
                                [self adjustViewIsLoading:NO];
                            }];
@@ -276,6 +296,7 @@
 }
 
 -(void)requestRate{
+    _isFinishRequesting = NO;
     
     AddressFormList *address = _selectedAddress;
     
@@ -467,7 +488,7 @@
 
                         NSInteger productPrice = [[[NSNumberFormatter IDRFormarter] numberFromString:product.product_price] integerValue];
 
-                        NSInteger shipmentPackagePrice = [[[NSNumberFormatter IDRFormarter] numberFromString:shipmentPackage.price] integerValue];
+                        NSInteger shipmentPackagePrice = [_selectedShipmentPackage.price integerValue];
                         
                         NSNumber *total = [NSNumber numberWithInteger:(productPrice+shipmentPackagePrice)];
                         NSString *totalPrice = [[NSNumberFormatter IDRFormarter] stringFromNumber:total];
@@ -575,7 +596,7 @@
                 {
                     SettingAddressViewController *addressViewController = [SettingAddressViewController new];
                     addressViewController.delegate = self;
-                    addressViewController.data = @{DATA_TYPE_KEY:@(TYPE_ADD_EDIT_PROFILE_ATC),
+                    addressViewController.data = @{@"type":@(TYPE_ADD_EDIT_PROFILE_ATC),
                                                    @"address":address?:[AddressFormList new]};
                     [self.navigationController pushViewController:addressViewController animated:YES];
                 }
@@ -675,7 +696,12 @@
                             [alertView show];
                             
                             [self pushLocalyticsData];
+                            
                             [TPAnalytics trackAddToCart:_selectedProduct];
+                            
+                            if (self.isSnapSearchProduct) {
+                                [TPAnalytics trackSnapSearchAddToCart:_selectedProduct];
+                            }
                             
                         } failed:^(NSError *error) {
                             [self adjustViewIsLoading:NO];
@@ -933,7 +959,7 @@ replacementString:(NSString*)string
         if (shippingID == 0)
         {
             isValid = NO;
-            [errorMessage addObject:ERRORMESSAGE_NULL_CART_SHIPPING_AGENT];
+            [errorMessage addObject:@"Agen kurir harus diisi."];
         }
     }
     
@@ -999,32 +1025,15 @@ replacementString:(NSString*)string
 }
 
 - (void)pushLocalyticsData {
+    
     ProductDetail *product = _selectedProduct;
-    //TODO:: Product Category
-//    NSArray *categories = [[_data objectForKey:@"product"] breadcrumb];
-//    Breadcrumb *lastCategory = [categories objectAtIndex:categories.count - 1];
-    NSString *productId = product.product_id;
     NSCharacterSet *notAllowedChars = [NSCharacterSet characterSetWithCharactersInString:@"Rp."];
     NSString *productPrice = [[product.product_price componentsSeparatedByCharactersInSet:notAllowedChars] componentsJoinedByString:@""];
     NSInteger totalPrice = [productPrice integerValue] * [self.productQuantityTextField.text integerValue];
-    NSString *total = [NSString stringWithFormat:@"%zd", totalPrice];
-    NSString *productQuantity = _productQuantityTextField.text;
-    
-    NSDictionary *attributes = @{
-                                 @"Product Id" : productId,
-                                 @"Product Category" : _ATCForm.form.product_detail.product_cat_name?:@"",
-                                 @"Price Per Item" : productPrice,
-                                 @"Price Total" : total,
-                                 @"Quantity" : productQuantity
-                                 };
-    
-    [Localytics tagEvent:@"Event : Add To Cart" attributes:attributes];
-    
-    NSString *profileAttribute = @"Profile : Last date has product in cart";
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"MM-dd-yyyy"];
-    NSString *currentDate = [dateFormatter stringFromDate:[NSDate date]];
-    [Localytics setValue:currentDate forProfileAttribute:profileAttribute withScope:LLProfileScopeApplication];
+    product.product_total_price = [NSString stringWithFormat:@"%zd",totalPrice];
+    product.product_quantity =_productQuantityTextField.text;
+
+    [ATCPushLocalytics pushLocalyticsATCProduct:product];
 }
 
 @end

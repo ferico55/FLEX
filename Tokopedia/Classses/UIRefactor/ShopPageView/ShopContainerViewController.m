@@ -154,6 +154,9 @@
     
     _shopProductViewController = [ShopProductPageViewController new];
     _shopProductViewController.data = _data;
+    if(_initialEtalase){
+        _shopProductViewController.initialEtalase = _initialEtalase;
+    }
     
     _shopTalkViewController = [ShopTalkPageViewController new];
     _shopTalkViewController.data = _data;

@@ -40,13 +40,18 @@
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
     [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
     
-    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"shop_badge_level" toKeyPath:@"shop_badge_level" withMapping:[ShopBadgeLevel mapping]]];
-    
-    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"shop_last_one_month" toKeyPath:@"shop_last_one_month" withMapping:[CountRatingResult mapping]]];
-    
-    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"shop_last_six_months" toKeyPath:@"shop_last_six_months" withMapping:[CountRatingResult mapping]]];
-    
-    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"shop_last_twelve_months" toKeyPath:@"shop_last_twelve_months" withMapping:[CountRatingResult mapping]]];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"shop_badge_level"
+                                                                           toKeyPath:@"shop_badge_level"
+                                                                          withMapping:[ShopBadgeLevel mapping]]];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"shop_last_one_month"
+                                                                            toKeyPath:@"shop_last_one_month"
+                                                                          withMapping:[CountRatingResult mapping]]];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"shop_last_six_months"
+                                                                            toKeyPath:@"shop_last_six_months"
+                                                                          withMapping:[CountRatingResult mapping]]];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"shop_last_twelve_months"
+                                                                            toKeyPath:@"shop_last_twelve_months"
+                                                                          withMapping:[CountRatingResult mapping]]];
     
     return mapping;
 }

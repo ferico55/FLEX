@@ -13,7 +13,7 @@
 @property (strong,nonatomic) NSDictionary *data;
 @property (strong,nonatomic) NSArray *wholeSales;
 @property (strong,nonatomic) NSString *productPrice;
-
 @property (strong,nonatomic) NSString *productID;
+@property BOOL isSnapSearchProduct;
 
 @end

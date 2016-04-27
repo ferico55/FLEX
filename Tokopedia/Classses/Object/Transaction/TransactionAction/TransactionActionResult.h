@@ -19,5 +19,6 @@
 @property (strong, nonatomic) NSDictionary *parameter;
 @property (strong, nonatomic) NSString *query_string;
 @property (strong, nonatomic) NSString *redirect_url;
+@property (strong, nonatomic) NSString *callback_url;
 
 @end

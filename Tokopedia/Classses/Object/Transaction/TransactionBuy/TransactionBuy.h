@@ -10,7 +10,7 @@
 #import "TransactionBuyResult.h"
 #import "TKPObjectMapping.h"
 
-@interface TransactionBuy : NSObject <TKPObjectMapping>
+@interface TransactionBuy : NSObject
 
 @property (nonatomic, strong) NSArray *message_error;
 @property (nonatomic, strong) NSArray *message_status;

@@ -208,7 +208,7 @@
         self.tableView.tableFooterView = _tableFooterView;
     }
     
-    NSString *baseURL = @"https://ws.tokopedia.com";
+    NSString *baseURL = [NSString v4Url];
     NSString *path = @"/v4/myshop-address/get_location.pl";
     NSDictionary *parameters = @{@"action": @"get_location"};
     [_networkManager requestWithBaseUrl:baseURL
@@ -234,7 +234,7 @@
 }
 
 - (void)removeShopAddress {
-    NSString *baseURL = @"https://ws.tokopedia.com";
+    NSString *baseURL = [NSString v4Url];
     NSString *path = @"/v4/action/myshop-address/delete_location.pl";
     Address *address = [_inputData objectForKey:kTKPDDETAIL_DATADELETEDOBJECTKEY];
     NSDictionary *parameters = @{@"location_address_id": address.location_address_id};
@@ -248,7 +248,7 @@
                                    path:path
                                  method:RKRequestMethodGET
                               parameter:parameters
-                                mapping:[ShopSettings objectMapping]
+                                mapping:[ShopSettings mapping]
                               onSuccess:^(RKMappingResult *mappingResult,
                                           RKObjectRequestOperation *operation) {
                                   ShopSettings *response = [mappingResult.dictionary objectForKey:@""];

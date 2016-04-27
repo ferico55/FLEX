@@ -9,10 +9,6 @@
 #import "GenerateHostResult.h"
 
 @implementation GenerateHostResult
-+(NSDictionary *)attributeMappingDictionary
-{
-    return nil;
-}
 
 + (RKObjectMapping *)mapping {
     RKObjectMapping *generateHostResultMapping = [RKObjectMapping mappingForClass:[GenerateHostResult class]];

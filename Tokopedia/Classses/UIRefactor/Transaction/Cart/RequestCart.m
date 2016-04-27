@@ -396,12 +396,14 @@
 }
 
 +(void)fetchBCAClickPaySuccess:(void (^)(TransactionBuyResult *data))success error:(void (^)(NSError *error))error{
+    TransactionBuy *transactionBuy = [TransactionBuy new];
+    
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
     [networkManager requestWithBaseUrl:[NSString basicUrl]
                                   path:@"tx-payment-bcaklikpay.pl"
                                 method:RKRequestMethodPOST
                              parameter:@{}
-                               mapping:[TransactionBuy mapping]
+                               mapping:transactionBuy.mapping
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
         NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
         id stat = [result objectForKey:@""];

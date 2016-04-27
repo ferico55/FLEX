@@ -11,20 +11,18 @@
 @implementation GeneralAction
 
 + (RKObjectMapping *)mapping {
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[GeneralAction class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-
-    RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                  toKeyPath:kTKPD_APIRESULTKEY
-                                                                                withMapping:[GeneralActionResult mapping]];
-
-	[statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data"
+    RKObjectMapping *generalActionMapping = [RKObjectMapping mappingForClass:[GeneralAction class]];
+    
+    [generalActionMapping addAttributeMappingsFromArray:@[@"status",
+                                                          @"server_process_time",
+                                                          @"message_error",
+                                                          @"message_status"]];
+    
+    [generalActionMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data"
                                                                                         toKeyPath:@"data"
                                                                                        withMapping:[GeneralActionResult mapping]]];
-
-    [statusMapping addPropertyMapping:resulRel];
-    return statusMapping;
+    
+    return generalActionMapping;    
 }
+
 @end

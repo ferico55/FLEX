@@ -172,6 +172,15 @@ typedef enum TagRequest {
 
     //refresh timer for GTM Container
     _containerTimer = [NSTimer scheduledTimerWithTimeInterval:7200.0f target:self selector:@selector(didRefreshContainer:) userInfo:nil repeats:YES];
+    
+    [self makeSureDeviceTokenExists];
+}
+
+- (void)makeSureDeviceTokenExists {
+    // Perhaps this method should be called at more appropriate places,
+    // such as before logging in and registration.
+    
+    [UserAuthentificationManager ensureDeviceIdExistence];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -334,6 +343,11 @@ typedef enum TagRequest {
     _tabBarController.viewControllers = controllers;
     _tabBarController.delegate = self;
     //tabBarController.tabBarItem.title = nil;
+    
+    NSInteger pageIndex = [self pageIndex];
+    
+    _tabBarController.selectedIndex = pageIndex;
+    
     [self adjusttabbar];
 }
 
@@ -520,10 +534,6 @@ typedef enum TagRequest {
     [proxy setShadowImage:[[UIImage alloc] init]];
     
 #endif
-    
-    NSInteger pageIndex = [self pageIndex];
-    
-    _tabBarController.selectedIndex = pageIndex;
     // redirect to home after login or register
 //    _tabBarController.selectedViewController=[_tabBarController.viewControllers objectAtIndex:0];
 }
@@ -676,11 +686,14 @@ typedef enum TagRequest {
     TKPDSecureStorage* storage = [TKPDSecureStorage standardKeyChains];
     _persistBaseUrl = [[storage keychainDictionary] objectForKey:@"AppBaseUrl"]?:kTkpdBaseURLString;
     
+    NSString* securityQuestionUUID = [[storage keychainDictionary] objectForKey:@"securityQuestionUUID"];
+    
     [storage resetKeychain];
     [_auth removeAllObjects];
     
     [storage setKeychainWithValue:_persistToken?:@"" withKey:@"device_token"];
     [storage setKeychainWithValue:_persistBaseUrl?:@"" withKey:@"AppBaseUrl"];
+    [storage setKeychainWithValue:securityQuestionUUID withKey:@"securityQuestionUUID"];
     
     [self removeCacheUser];
     

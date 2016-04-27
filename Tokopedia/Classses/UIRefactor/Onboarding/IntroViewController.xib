@@ -531,12 +531,18 @@ lewat aplikasi Tokopedia!</string>
                         </constraint>
                         <constraint firstAttribute="width" secondItem="g0w-RE-hWs" secondAttribute="height" multiplier="179:227" id="S9r-1P-wW2"/>
                     </constraints>
+                    <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
+                        <rect key="frame" x="250" y="213" width="270" height="343"/>
+                    </variation>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Yuk Belanja di Tokopedia Sekarang!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="297" translatesAutoresizingMaskIntoConstraints="NO" id="8Zl-mE-4rT">
                     <rect key="frame" x="255" y="640" width="258" height="40"/>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="22"/>
                     <color key="textColor" red="0.38431372549999998" green="0.38431372549999998" blue="0.38431372549999998" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
+                    <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
+                        <rect key="frame" x="269" y="640" width="231" height="52"/>
+                    </variation>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uuk-gb-hek">
                     <rect key="frame" x="85" y="700" width="598" height="44"/>
@@ -559,7 +565,8 @@ lewat aplikasi Tokopedia!</string>
                             <exclude reference="hlu-Kr-m65"/>
                         </mask>
                     </variation>
-                    <variation key="heightClass=regular-widthClass=regular">
+                    <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
+                        <rect key="frame" x="184" y="712" width="400" height="44"/>
                         <mask key="constraints">
                             <include reference="hlu-Kr-m65"/>
                         </mask>
@@ -578,7 +585,7 @@ lewat aplikasi Tokopedia!</string>
                                 <constraint firstAttribute="height" constant="44" id="Gi5-mK-7wo"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
-                            <state key="normal" title="I'm New">
+                            <state key="normal" title="Daftar">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <userDefinedRuntimeAttributes>
@@ -596,7 +603,7 @@ lewat aplikasi Tokopedia!</string>
                                 <constraint firstAttribute="height" constant="44" id="Kuq-hJ-xf9"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
-                            <state key="normal" title="Login">
+                            <state key="normal" title="Masuk">
                                 <color key="titleColor" red="0.2274509804" green="0.70196078429999997" blue="0.22352941179999999" alpha="1" colorSpace="calibratedRGB"/>
                             </state>
                             <userDefinedRuntimeAttributes>
@@ -632,6 +639,9 @@ lewat aplikasi Tokopedia!</string>
                         <constraint firstItem="rbf-Ej-xB8" firstAttribute="leading" secondItem="K5h-vk-9RE" secondAttribute="leading" id="fr4-gX-AqK"/>
                         <constraint firstItem="rbf-Ej-xB8" firstAttribute="trailing" secondItem="Bcb-TM-8mW" secondAttribute="leading" id="hKC-LG-h1u"/>
                     </constraints>
+                    <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
+                        <rect key="frame" x="184" y="776" width="400" height="44"/>
+                    </variation>
                 </view>
             </subviews>
             <constraints>
@@ -672,7 +682,7 @@ lewat aplikasi Tokopedia!</string>
         <image name="onboarding_4b.png" width="390" height="115"/>
         <image name="onboarding_4c.png" width="251" height="254"/>
         <image name="onboarding_4d.png" width="107" height="78"/>
-        <image name="onboarding_6.png" width="358" height="453"/>
+        <image name="onboarding_6.png" width="370" height="474"/>
         <image name="onboarding_toped_1a.png" width="460" height="388"/>
         <image name="slide2_phone.png" width="365" height="388"/>
         <image name="slide2b.png" width="127" height="130"/>

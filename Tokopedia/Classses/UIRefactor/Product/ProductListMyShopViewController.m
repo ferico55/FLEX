@@ -18,14 +18,13 @@
 #import "ShopSettings.h"
 #import "DetailProductViewController.h"
 #import "ProductAddEditViewController.h"
-#import "MyShopEtalaseFilterViewController.h"
+#import "EtalaseViewController.h"
 #import "ProductListMyShopFilterViewController.h"
-
-#import "MyShopEtalaseFilterViewController.h"
 
 #import "SortViewController.h"
 #import "FilterViewController.h"
 #import "RequestMoveTo.h"
+#import "EtalaseViewController.h"
 
 #import "TokopediaNetworkManager.h"
 #import "NavigateViewController.h"
@@ -39,18 +38,18 @@
 
 #import "ProductRequest.h"
 
+
 @interface ProductListMyShopViewController ()
 <
-    UITableViewDataSource,
-    UITableViewDelegate,
-    UISearchBarDelegate,
-    MGSwipeTableCellDelegate,
-    SortViewControllerDelegate,
-    MyShopEtalaseFilterViewControllerDelegate,
-    ProductListMyShopFilterDelegate,
-    MyShopEtalaseFilterViewControllerDelegate,
-    LoadingViewDelegate,
-    NoResultDelegate
+UITableViewDataSource,
+UITableViewDelegate,
+UISearchBarDelegate,
+MGSwipeTableCellDelegate,
+SortViewControllerDelegate,
+ProductListMyShopFilterDelegate,
+EtalaseViewControllerDelegate,
+LoadingViewDelegate,
+NoResultDelegate
 >
 {
     NSInteger _page;
@@ -79,6 +78,7 @@
     NSIndexPath *_sortIndexPath;
     
     TokopediaNetworkManager *_networkManager;
+    NSIndexPath *selectedIndexPath;
 }
 
 @property (weak, nonatomic) IBOutlet UISearchBar *searchbar;
@@ -134,7 +134,7 @@
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.isUsingHmac = YES;
     [self fetchProductData];
-
+    
     /// adjust refresh control
     _refreshControl = [[UIRefreshControl alloc] init];
     _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
@@ -161,7 +161,7 @@
                  object:nil];
     
     [self initNoResultView];
-
+    
     TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
     _auth = [secureStorage keychainDictionary];
     
@@ -268,7 +268,7 @@
     [_searchbar resignFirstResponder];
     
     ManageProductList *list = _products[indexPath.row];
-
+    
     [_TKPDNavigator navigateToProductFromViewController:self withName:list.product_name withPrice:nil withId:[NSString stringWithFormat:@"%ld", (long)list.product_id] withImageurl:list.product_image withShopName:[_auth objectForKey:@"shop_name"]];
 }
 
@@ -373,18 +373,18 @@
                                  method:RKRequestMethodGET
                               parameter:parameters
                                 mapping:[ManageProduct objectMapping]
-                                  onSuccess:^(RKMappingResult *mappingResult,
-                                              RKObjectRequestOperation *operation) {
-                                      [self didReceiveMappingResult:mappingResult];
+                              onSuccess:^(RKMappingResult *mappingResult,
+                                          RKObjectRequestOperation *operation) {
+                                  [self didReceiveMappingResult:mappingResult];
+                              }
+                              onFailure:^(NSError *error) {
+                                  StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[[error localizedDescription]] delegate:self];
+                                  [alert show];
+                                  if (_page == 1) {
+                                      [_refreshControl endRefreshing];
+                                      [self.tableView setContentOffset:CGPointZero animated:YES];
                                   }
-                                  onFailure:^(NSError *error) {
-                                      StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[[error localizedDescription]] delegate:self];
-                                      [alert show];
-                                      if (_page == 1) {
-                                          [_refreshControl endRefreshing];
-                                          [self.tableView setContentOffset:CGPointZero animated:YES];
-                                      }
-                                  }];
+                              }];
 }
 
 - (void)didReceiveMappingResult:(RKMappingResult *)mappingResult {
@@ -415,9 +415,9 @@
                 [_noResultView hideButton:YES];
             }
         } else {
-                [_noResultView setNoResultTitle:@"Toko Anda belum mempunyai produk"];
-                [_noResultView setNoResultDesc:@"Segera tambahkan produk ke toko Anda"];
-                [_noResultView hideButton:NO];
+            [_noResultView setNoResultTitle:@"Toko Anda belum mempunyai produk"];
+            [_noResultView setNoResultDesc:@"Segera tambahkan produk ke toko Anda"];
+            [_noResultView hideButton:NO];
         }
         self.tableView.tableFooterView = _noResultView;
     }
@@ -441,17 +441,17 @@
     NSString *productCondition = [_dataFilter objectForKey:API_MANAGE_PRODUCT_CONDITION_KEY]?:@"";
     
     NSDictionary *parameters = @{
-        @"shop_id": @(shopID),
-        @"limit": @(_limit),
-        @"page": @(_page),
-        @"sort": orderByID,
-        @"etalase_id": etalase,
-        @"department_id": departmentID,
-        @"catalog_id": catalogID,
-        @"picture_status": pictureStatus,
-        @"condition": productCondition,
-        @"keyword": keyword,
-    };
+                                 @"shop_id": @(shopID),
+                                 @"limit": @(_limit),
+                                 @"page": @(_page),
+                                 @"sort": orderByID,
+                                 @"etalase_id": etalase,
+                                 @"department_id": departmentID,
+                                 @"catalog_id": catalogID,
+                                 @"picture_status": pictureStatus,
+                                 @"condition": productCondition,
+                                 @"keyword": keyword,
+                                 };
     return parameters;
 }
 
@@ -470,10 +470,10 @@
 }
 
 - (void)deleteListAtIndexPath:(NSIndexPath *)indexPath {
+    ManageProductList *product = _products[indexPath.row];
     [self.products removeObjectAtIndex:indexPath.row];
     [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
-    ManageProductList *product = _products[indexPath.row];
     NSString *productId = [NSString stringWithFormat:@"%d", product.product_id];
     [ProductRequest deleteProductWithId:productId
           setCompletionBlockWithSuccess:^(ShopSettings *response) {
@@ -524,30 +524,19 @@
 }
 
 #pragma mark - Etalase Delegate
-- (void)MyShopEtalaseFilterViewController:(MyShopEtalaseFilterViewController *)viewController
-                            withUserInfo:(NSDictionary *)userInfo {
-    if (viewController.tag == 0) {
-        EtalaseList *etalase = [userInfo objectForKey:DATA_ETALASE_KEY];
-        [_dataFilter setObject:etalase.etalase_id?:@"" forKey:API_PRODUCT_ETALASE_ID_KEY];
-        [_dataFilter setObject:etalase.etalase_name forKey:API_PRODUCT_ETALASE_NAME_KEY];
-        NSIndexPath *indexpath = [userInfo objectForKey:kTKPDDETAILETALASE_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-        [_dataFilter setObject:indexpath forKey:kTKPDDETAILETALASE_DATAINDEXPATHKEY];
-        [self refreshView];
-    } else {
-        EtalaseList *etalase = [userInfo objectForKey:DATA_ETALASE_KEY];
-        ManageProductList *product = _products[viewController.tag-10];
-        NSString *productId = [NSString stringWithFormat:@"%ld", (long)product.product_id];
-        [ProductRequest moveProduct:productId
-                          toEtalase:etalase
-      setCompletionBlockWithSuccess:^(ShopSettings *response) {
-          product.product_etalase = etalase.etalase_name;
-          product.product_status = [NSString stringWithFormat:@"%d", PRODUCT_STATE_ACTIVE];
-          [self.tableView reloadData];
-      } failure:^(NSArray *errorMessages) {
-          StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
-          [alert show];
-      }];
-    }
+-(void)didSelectEtalase:(EtalaseList *)selectedEtalase{
+    ManageProductList *product = _products[selectedIndexPath.row];
+    NSString *productId = [NSString stringWithFormat:@"%ld", (long)product.product_id];
+    [ProductRequest moveProduct:productId
+                      toEtalase:selectedEtalase
+  setCompletionBlockWithSuccess:^(ShopSettings *response) {
+      product.product_etalase = selectedEtalase.etalase_name;
+      product.product_status = [NSString stringWithFormat:@"%d", PRODUCT_STATE_ACTIVE];
+      [self.tableView reloadData];
+  } failure:^(NSArray *errorMessages) {
+      StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
+      [alert show];
+  }];
 }
 
 #pragma mark - Notification
@@ -573,13 +562,13 @@
    swipeButtonsForDirection:(MGSwipeDirection)direction
               swipeSettings:(MGSwipeSettings *)swipeSettings
           expansionSettings:(MGSwipeExpansionSettings *) expansionSettings {
-
+    
     _isNeedToSearch = NO;
     
     [_searchbar resignFirstResponder];
     
     swipeSettings.transition = MGSwipeTransitionStatic;
-
+    
     //-1 not expand, 0 expand
     expansionSettings.buttonIndex = -1;
     
@@ -663,14 +652,15 @@
                                                       welf.lastActionIndexPath = indexPath;
                                                       // Move To Etalase
                                                       UserAuthentificationManager *userAuthentificationManager = [UserAuthentificationManager new];
-                                                      MyShopEtalaseFilterViewController *controller = [MyShopEtalaseFilterViewController new];
-                                                      controller.tag = indexPath.row+10;
+                                                      selectedIndexPath = indexPath;
+                                                      EtalaseViewController *controller = [EtalaseViewController new];
                                                       controller.delegate = self;
-                                                      controller.data = @{
-                                                        kTKPD_SHOPIDKEY: [userAuthentificationManager getShopId],
-                                                        DATA_PRESENTED_ETALASE_TYPE_KEY: @(PRESENTED_ETALASE_ADD_PRODUCT)
-                                                      };
+                                                      controller.shopId =[userAuthentificationManager getShopId];
+                                                      controller.isEditable = NO;
+                                                      controller.showOtherEtalase = NO;
+                                                      controller.enableAddEtalase = YES;
                                                       [self.navigationController pushViewController:controller animated:YES];
+                                                      
                                                       return YES;
                                                   }];
     [button.titleLabel setFont:FONT_GOTHAM_BOOK_13];
@@ -684,20 +674,20 @@
                                            backgroundColor:backgroundColor
                                                    padding:padding
                                                   callback:^BOOL(MGSwipeTableCell *sender) {
-        ManageProductList *list = _products[indexPath.row];
-        ProductAddEditViewController *controller = [ProductAddEditViewController new];
-        controller.data = @{
-            kTKPDDETAIL_APIPRODUCTIDKEY: @(list.product_id),
-            kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY]?:@{},
-            DATA_PRODUCT_DETAIL_KEY: list,
-            DATA_TYPE_ADD_EDIT_PRODUCT_KEY: @(TYPE_ADD_EDIT_PRODUCT_COPY),
-            DATA_IS_GOLD_MERCHANT: @(0) //TODO:: Change Value
-        };
-        UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:controller];
-        navigation.navigationBar.translucent = NO;
-        [self.navigationController presentViewController:navigation animated:YES completion:nil];
-        return YES;
-    }];
+                                                      ManageProductList *list = _products[indexPath.row];
+                                                      ProductAddEditViewController *controller = [ProductAddEditViewController new];
+                                                      controller.data = @{
+                                                                          kTKPDDETAIL_APIPRODUCTIDKEY: @(list.product_id),
+                                                                          kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY]?:@{},
+                                                                          DATA_PRODUCT_DETAIL_KEY: list,
+                                                                          DATA_TYPE_ADD_EDIT_PRODUCT_KEY: @(TYPE_ADD_EDIT_PRODUCT_COPY),
+                                                                          DATA_IS_GOLD_MERCHANT: @(0) //TODO:: Change Value
+                                                                          };
+                                                      UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:controller];
+                                                      navigation.navigationBar.translucent = NO;
+                                                      [self.navigationController presentViewController:navigation animated:YES completion:nil];
+                                                      return YES;
+                                                  }];
     [button.titleLabel setFont:FONT_GOTHAM_BOOK_13];
     return button;
 }

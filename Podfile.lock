@@ -18,9 +18,9 @@ PODS:
     - BlocksKit/DynamicDelegate
   - ComponentKit (0.14)
   - DBPrivacyHelper (0.6.3)
-  - EAIntroView (2.8.2):
-    - EARestrictedScrollView (~> 0.2.0)
-  - EARestrictedScrollView (0.2.0)
+  - EAIntroView (2.8.3):
+    - EARestrictedScrollView (~> 1.1.0)
+  - EARestrictedScrollView (1.1.0)
   - FLEX (2.1.1)
   - Google/Analytics (1.2.1):
     - Google/Core
@@ -102,8 +102,8 @@ SPEC CHECKSUMS:
   BlocksKit: 7f422b971407001178d181a43b99014ea2591fe6
   ComponentKit: 11d9177b5e9940c456e7486d8f5a25c26d9ca5f2
   DBPrivacyHelper: c1e033776454dd3e16e8dcedf2e92d4d0a5e56df
-  EAIntroView: c45c4cd533cb760800a165115bc3d1fcaff3d5bb
-  EARestrictedScrollView: f86d61e16c61d3e93c84f8e96e83122a2a3b7631
+  EAIntroView: e948c83e642f30010d427e643c18a6f2b529afed
+  EARestrictedScrollView: b0c2a3f92fb2610bb44d71c5e4893777c89e45ef
   FLEX: 27b768fcae23a313a1eb115076d429180ca9b472
   Google: fd33b5fa40fa3aaee5176de49c873a74e3d11dce
   GoogleAnalytics: fcf1f1cad57ae1a9a53520018f0f680ceeeb8b49
