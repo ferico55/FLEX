@@ -32,7 +32,6 @@
 - (void)tapToFollowTalk:(UITableViewCell *)cell withButton:(UIButton *)button;
 - (void)tapToDeleteTalk:(UITableViewCell *)cell;
 
-- (void)cell:(TalkCell *)cell updateTalkStatusAtIndexPath:(NSIndexPath *)path following:(BOOL)following;
 @end
 
 @interface TalkCell : UITableViewCell <UIActionSheetDelegate, SmileyDelegate, CMPopTipViewDelegate, ReportViewControllerDelegate> {
@@ -44,7 +43,6 @@
 
     TokopediaNetworkManager *_unfollowNetworkManager;
     TokopediaNetworkManager *_deleteNetworkManager;
-    __weak RKObjectManager *_objectUnfollowmanager;
 }
 
 @property (weak, nonatomic) IBOutlet UIImageView *userImageView;
@@ -56,7 +54,6 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *totalCommentButton;
 @property (weak, nonatomic) IBOutlet UIButton *unfollowButton;
-@property (weak, nonatomic) IBOutlet UIButton *productButton;
 @property (weak, nonatomic) IBOutlet UIButton *moreActionButton;
 @property (weak, nonatomic) IBOutlet UIButton *reputationButton;
 @property (weak, nonatomic) IBOutlet ViewLabelUser *userButton;
