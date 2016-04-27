@@ -83,6 +83,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *productNameLabel;
 @property (weak, nonatomic) IBOutlet UIButton *talkCommentButtonLarge;
 
+@property (strong, nonatomic) NSDictionary *data;
+
 @end
 
 @implementation ProductTalkDetailViewController
