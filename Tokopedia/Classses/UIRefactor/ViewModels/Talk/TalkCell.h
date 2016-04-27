@@ -42,8 +42,6 @@
     UserAuthentificationManager *_userManager;
     CMPopTipView *_popTipView;
 
-    TalkList *_reportTalk;
-
     TokopediaNetworkManager *_unfollowNetworkManager;
     TokopediaNetworkManager *_deleteNetworkManager;
     __weak RKObjectManager *_objectUnfollowmanager;

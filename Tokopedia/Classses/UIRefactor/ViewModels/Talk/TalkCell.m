@@ -379,9 +379,9 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 - (NSDictionary *)getParameter {
     return @{
              @"action" : @"report_product_talk",
-             @"talk_id" : _reportTalk.talk_id?:@(0),
-             @"shop_id" : _reportTalk.talk_shop_id?:@(0),
-             @"product_id" : _reportTalk.talk_product_id?:@(0)
+             @"talk_id" : _talk.talk_id?:@(0),
+             @"shop_id" : _talk.talk_shop_id?:@(0),
+             @"product_id" : _talk.talk_product_id?:@(0)
              };
 }
 
