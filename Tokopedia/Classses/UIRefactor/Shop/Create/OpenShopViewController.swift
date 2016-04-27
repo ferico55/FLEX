@@ -8,8 +8,10 @@
 
 import UIKit
 
-class OpenShopViewController: UITableViewController {
-        
+class OpenShopViewController: UITableViewController, UITextFieldDelegate {
+    
+    var imagePicker: TKPDPhotoPicker!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Buka Toko"
@@ -45,9 +47,14 @@ class OpenShopViewController: UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("OpenShopDomain") as! OpenShopDomainViewCell
         if indexPath.section == 0 {
-
+            if let domainCell = tableView.dequeueReusableCellWithIdentifier("OpenShopDomain") as? OpenShopDomainViewCell {
+                domainCell.domainTextField.addTarget(self, action: #selector(OpenShopViewController.shopDomainDidChange(_:)), forControlEvents: UIControlEvents.EditingChanged)
+                domainCell.domainTextField.delegate = self
+                cell = domainCell
+            }
         } else if indexPath.section == 1 {
             if let imageCell = tableView.dequeueReusableCellWithIdentifier("OpenShopImage") as? OpenShopImageViewCell {
+                imageCell.changeImageButton.addTarget(self, action: #selector(OpenShopViewController.didTapChangeImageButton(_:)), forControlEvents: .TouchUpInside)
                 cell = imageCell
             }
         } else if indexPath.section == 2 {
@@ -60,7 +67,7 @@ class OpenShopViewController: UITableViewController {
                     taglineCell.textView.placeholder = "Tulis Slogan"
                     taglineCell.textView.tag = 1
                     taglineCell.updateCounterLabel()
-                    NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(shopTaglineHasChanged), name: UITextViewTextDidChangeNotification, object: taglineCell.textView)
+                    NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(shopTaglineDidChange), name: UITextViewTextDidChangeNotification, object: taglineCell.textView)
                     cell = taglineCell
                 }
             } else if indexPath.row == 2 {
@@ -68,7 +75,7 @@ class OpenShopViewController: UITableViewController {
                     descriptionCell.textView.placeholder = "Tulis Deskripsi"
                     descriptionCell.textView.tag = 2
                     descriptionCell.updateCounterLabel()
-                    NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(shopDescriptionHasChanged), name: UITextViewTextDidChangeNotification, object: descriptionCell.textView)
+                    NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(shopDescriptionDidChange), name: UITextViewTextDidChangeNotification, object: descriptionCell.textView)
                     cell = descriptionCell
                 }
             }
@@ -78,9 +85,7 @@ class OpenShopViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("OpenShopDomain") as! OpenShopDomainViewCell
-        if indexPath.section == 0 {
-        
-        } else if indexPath.section == 1 {
+        if indexPath.section == 1 {
             if let imageCell = tableView.dequeueReusableCellWithIdentifier("OpenShopImage") as? OpenShopImageViewCell {
                 cell = imageCell
             }
@@ -107,12 +112,28 @@ class OpenShopViewController: UITableViewController {
         self.navigationController?.pushViewController(controller, animated: true)
     }
     
-    func shopTaglineHasChanged(notification: NSNotification) -> Void {
+    func shopTaglineDidChange(notification: NSNotification) -> Void {
 
     }
     
-    func shopDescriptionHasChanged(notification: NSNotification) -> Void {
+    func shopDescriptionDidChange(notification: NSNotification) -> Void {
         
+    }
+    
+    func shopDomainDidChange(textField: UITextField) -> Void {
+        
+    }
+    
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+        if range.location < 22 {
+            return false
+        } else {
+            return true
+        }
+    }
+    
+    func didTapChangeImageButton(button: UIButton) -> Void {
+        imagePicker = TKPDPhotoPicker.init(parentViewController: self, pickerTransistionStyle: .CoverVertical)
     }
     
 }

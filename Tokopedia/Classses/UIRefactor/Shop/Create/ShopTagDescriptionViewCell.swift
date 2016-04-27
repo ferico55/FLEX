@@ -16,6 +16,7 @@ class ShopTagDescriptionViewCell: UITableViewCell, UITextViewDelegate {
     override func awakeFromNib() {
         super.awakeFromNib()
         updateCounterLabel()
+        textView.placeholderColor = UIColor(red: 199.0/255.0, green: 199.0/255.0, blue: 205.0/255.0, alpha: 1.0)
         textView.font = UIFont(name: "GothamBook", size: 14)
     }
 

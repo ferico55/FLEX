@@ -25,3 +25,4 @@
 #import "EditShopDescriptionViewCell.h"
 
 #import "ShipmentViewController.h"
+#import "TKPDPhotoPicker.h"
