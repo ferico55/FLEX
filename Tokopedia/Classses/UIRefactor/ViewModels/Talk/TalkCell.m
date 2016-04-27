@@ -180,21 +180,15 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 #pragma mark - Tap Button
 
 - (IBAction)tapToFollowTalk:(id)sender {
-    _unfollowIndexPath = [[_delegate getTable] indexPathForCell:self];
-    
-    NSInteger row = _unfollowIndexPath.row;
-    NSMutableArray *talkList = [_delegate getTalkList];
-    _unfollowTalk = talkList[row];
-    
     [self followAnimateZoomOut:self.unfollowButton];
     
     _unfollowNetworkManager = [TokopediaNetworkManager new];
 
     NSDictionary* parameter = @{
             kTKPDDETAIL_ACTIONKEY : TKPD_FOLLOW_TALK_ACTION,
-            kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : _unfollowTalk.talk_product_id,
-            TKPD_TALK_ID:_unfollowTalk.talk_id?:@0,
-            @"shop_id":_unfollowTalk.talk_shop_id
+            kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : _talk.talk_product_id,
+            TKPD_TALK_ID:_talk.talk_id?:@0,
+            @"shop_id":_talk.talk_shop_id
     };
 
     [_unfollowNetworkManager requestWithBaseUrl:[NSString basicUrl]

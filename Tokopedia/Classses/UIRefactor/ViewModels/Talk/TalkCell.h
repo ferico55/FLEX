@@ -41,8 +41,7 @@
     NavigateViewController *_navigateController;
     UserAuthentificationManager *_userManager;
     CMPopTipView *_popTipView;
-    
-    TalkList *_unfollowTalk;
+
     TalkList *_reportTalk;
     
     NSIndexPath *_unfollowIndexPath;
