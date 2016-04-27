@@ -46,8 +46,7 @@
     
     NSIndexPath *_unfollowIndexPath;
     NSIndexPath *_deleteIndexPath;
-    NSIndexPath *_reportIndexPath;
-    
+
     TokopediaNetworkManager *_unfollowNetworkManager;
     TokopediaNetworkManager *_deleteNetworkManager;
     __weak RKObjectManager *_objectUnfollowmanager;

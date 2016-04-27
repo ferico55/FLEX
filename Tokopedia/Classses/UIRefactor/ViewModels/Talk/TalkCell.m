@@ -234,14 +234,11 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 }
 
 - (void)tapToReport {
-    _reportIndexPath = [[_delegate getTable] indexPathForCell:self];
     ReportViewController *_reportController = [ReportViewController new];
     _reportController.delegate = self;
-    NSMutableArray *talkList = [_delegate getTalkList];
-    
-    _reportTalk = talkList[_reportIndexPath.row];
-    _reportController.strProductID = _reportTalk.talk_product_id;
-    _reportController.strShopID = _reportTalk.talk_shop_id;
+
+    _reportController.strProductID = _talk.talk_product_id;
+    _reportController.strShopID = _talk.talk_shop_id;
     
     TKPDTabViewController *controller = [_delegate getNavigationController:self];
     [controller.navigationController pushViewController:_reportController animated:YES];
