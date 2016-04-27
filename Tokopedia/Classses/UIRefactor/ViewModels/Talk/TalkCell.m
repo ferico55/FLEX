@@ -170,6 +170,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 
 - (void)setTalk:(TalkList *)talk {
     _talk = talk;
+    _selectedTalkUserID = [NSString stringWithFormat:@"%ld", (long)talk.talk_user_id];
     [self setTalkViewModel:talk.viewModel];
 }
 
