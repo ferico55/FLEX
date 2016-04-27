@@ -43,7 +43,6 @@
     CMPopTipView *_popTipView;
     
     TalkList *_unfollowTalk;
-    TalkList *_deleteTalk;
     TalkList *_reportTalk;
     
     NSIndexPath *_unfollowIndexPath;

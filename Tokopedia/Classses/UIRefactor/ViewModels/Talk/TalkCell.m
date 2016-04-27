@@ -375,17 +375,13 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     //delete talk
     if(buttonIndex == 1) {
-        NSInteger row = [_deleteIndexPath row];
-        NSMutableArray *talkList = [_delegate getTalkList];
-        _deleteTalk = talkList[row];
-        
         _deleteNetworkManager = [TokopediaNetworkManager new];
 
         NSDictionary *parameter = @{
                 kTKPDDETAIL_ACTIONKEY : TKPD_DELETE_TALK_ACTION,
-                kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : _deleteTalk.talk_product_id,
-                TKPD_TALK_ID:_deleteTalk.talk_id?:@0,
-                kTKPDDETAILSHOP_APISHOPID : _deleteTalk.talk_shop_id
+                kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : _talk.talk_product_id,
+                TKPD_TALK_ID:_talk.talk_id?:@0,
+                kTKPDDETAILSHOP_APISHOPID : _talk.talk_shop_id
         };
 
         [_deleteNetworkManager requestWithBaseUrl:[NSString basicUrl]
