@@ -212,7 +212,7 @@
     cell.selectedTalkProductID = list.talk_product_id;
     cell.selectedTalkReputation = list.talk_user_reputation;
     
-    [cell setTalkViewModel:list.viewModel];
+    cell.talk = list;
     
     //next page if already last cell
     NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1;

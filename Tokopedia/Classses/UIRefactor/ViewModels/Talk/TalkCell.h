@@ -56,7 +56,7 @@
 }
 
 
-- (void)setTalkViewModel:(TalkModelView*)modelView;
+
 
 @property (weak, nonatomic) IBOutlet UIImageView *userImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *unreadImageView;
@@ -91,6 +91,7 @@
 @property (strong, nonatomic) ProductTalkDetailViewController *detailViewController;
 
 @property (nonatomic) BOOL enableDeepNavigation;
+@property (strong, nonatomic) TalkList* talk;
 
 
 @end

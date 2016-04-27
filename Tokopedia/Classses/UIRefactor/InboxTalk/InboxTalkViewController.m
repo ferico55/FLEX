@@ -150,7 +150,7 @@
     cell.isSplitScreen = YES;
     cell.enableDeepNavigation = NO;
     
-    [cell setTalkViewModel:list.viewModel];
+    cell.talk = list;
     
     //next page if already last cell
     NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1;

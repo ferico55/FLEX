@@ -172,6 +172,11 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     }
 }
 
+- (void)setTalk:(TalkList *)talk {
+    _talk = talk;
+    [self setTalkViewModel:talk.viewModel];
+}
+
 #pragma mark - Tap Button
 
 - (IBAction)tapToFollowTalk:(id)sender {
