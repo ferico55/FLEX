@@ -314,7 +314,25 @@
                                    maxSelected:(5 - _tempUploadedPictures.count)
                                 selectedAssets:_selectedAssets
                                     completion:^(NSArray<DKAsset *> *asset) {
-                                        if (asset.count > 0) {
+                                        if (asset.count == 0) {
+                                            if (_attachedPictures.count > 0) {
+                                                dispatch_async(dispatch_get_main_queue(), ^{
+                                                    NSMutableArray *temp = [_tempUploadedPictures mutableCopy];
+                                                    _selectedAssets = [NSArray new];
+                                                    
+                                                    ProductAddCaptionViewController *vc = [ProductAddCaptionViewController new];
+                                                    vc.delegate = self;
+                                                    vc.attachedPictures = temp;
+                                                    vc.isEdit = _isEdit;
+                                                    vc.selectedAssets = asset;
+                                                    vc.uploadedPictures = _uploadedPictures;
+                                                    vc.tempUploadedPictures = _tempUploadedPictures;
+                                                    vc.selectedImageTag = sender.view.tag;
+                                                    
+                                                    [self.navigationController pushViewController:vc animated:NO];
+                                                });
+                                            }
+                                        } else if (asset.count > 0) {
                                             dispatch_async(dispatch_get_main_queue(), ^{
                                                 NSMutableArray *temp = [_tempUploadedPictures mutableCopy];
                                                 

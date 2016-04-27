@@ -107,7 +107,7 @@
         imageTag = imageTag - 1;
     }
     
-    [self setDataWithImageTag:imageTag];
+    [self setDataWithImageTag:_attachedPicts.count-1];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -120,6 +120,11 @@
     }
     
     _imageCaptionTextField.text = ((AttachedPicture*)_attachedPicts[imageTag]).imageDescription;
+    
+    for (UIImageView *imageView in _attachedImages) {
+        imageView.image = nil;
+        imageView.userInteractionEnabled = NO;
+    }
     
     for (int ii = 0; ii < _attachedPicts.count; ii++) {
         AttachedPicture *pict = _attachedPicts[ii];
@@ -274,7 +279,30 @@
                                        maxSelected:(5 - _tempUploadedPicts.count)
                                     selectedAssets:_selectedAssets
                                         completion:^(NSArray<DKAsset *> *asset) {
-                                            if (asset.count > 0) {
+                                            if (asset.count == 0) {
+                                                dispatch_async(dispatch_get_main_queue(), ^{
+                                                    _selectedAssets = [NSArray new];
+                                                    if (_tempUploadedPicts.count > 0) {
+                                                        NSMutableArray *temp = [NSMutableArray new];
+                                                        [temp addObjectsFromArray:_attachedPicts];
+                                                        for (AttachedPicture *pict in temp) {
+                                                            if ([pict.isPreviouslyUploaded isEqualToString:@"0"]) {
+                                                                [_attachedPicts removeObject:pict];
+                                                            }
+                                                        }
+                                                        [self setDataWithImageTag:_tempUploadedPicts.count - 1];
+                                                    } else {
+                                                        [_attachedPicts removeAllObjects];
+                                                        
+                                                        [_delegate updateAttachedPictures:_attachedPicts
+                                                                           selectedAssets:_selectedAssets
+                                                                         uploadedPictures:_uploadedPicts
+                                                                     tempUploadedPictures:_tempUploadedPicts];
+                                                        [self.navigationController popViewControllerAnimated:YES];
+                                                    }
+
+                                                });
+                                            } else if (asset.count > 0) {
                                                 dispatch_async(dispatch_get_main_queue(), ^{
                                                     NSMutableArray *temp = [_tempUploadedPicts mutableCopy];
                                                     _selectedAssets = asset;
@@ -317,7 +345,7 @@
                                                         imageTag = imageTag - 1;
                                                     }
                                                     
-                                                    [self setDataWithImageTag:imageTag];
+                                                    [self setDataWithImageTag:_attachedPicts.count - 1];
                                                     
                                                 });
                                             }
