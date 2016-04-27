@@ -106,12 +106,6 @@
     _fixedSpace = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:self action:nil];
     _fixedSpace.width = 15;
     
-    _unfavoriteBarButton.enabled = NO;
-    _favoriteBarButton.enabled = NO;
-    _messageBarButton.enabled = NO;
-    _settingBarButton.enabled = NO;
-    _addProductBarButton.enabled = NO;
-    _infoBarButton.enabled = NO;
 }
 
 - (UIBarButtonItem*)createBarButton:(CGRect)frame withImage:(UIImage*)image withAction:(SEL)action {
@@ -190,17 +184,23 @@
     [self requestShopInfo];
     [self.pageController didMoveToParentViewController:self];
     [self setScrollEnabled:NO forPageViewController:_pageController];
+    [self initBarButton];
+    [self disableAllButtons];
+}
+
+-(void)disableAllButtons{
+    _unfavoriteBarButton.enabled = NO;
+    _favoriteBarButton.enabled = NO;
+    _messageBarButton.enabled = NO;
+    _settingBarButton.enabled = NO;
+    _addProductBarButton.enabled = NO;
+    _infoBarButton.enabled = NO;
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    [self initBarButton];
 }
 
 #pragma  - UIPageViewController Methods
