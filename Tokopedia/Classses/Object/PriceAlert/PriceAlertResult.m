@@ -10,4 +10,25 @@
 
 @implementation PriceAlertResult
 
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[PriceAlertResult class]];
+    
+    [mapping addAttributeMappingsFromArray:@[@"catalog_id",
+                                             @"total_product"]];
+    
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"department"
+                                                                            toKeyPath:@"department"
+                                                                          withMapping:[Breadcrumb mapping]]];
+    
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"paging"
+                                                                            toKeyPath:@"paging"
+                                                                          withMapping:[Paging mapping]]];
+    
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"list"
+                                                                            toKeyPath:@"list"
+                                                                          withMapping:[DetailPriceAlert mapping]]];
+    
+    return mapping;
+}
+
 @end

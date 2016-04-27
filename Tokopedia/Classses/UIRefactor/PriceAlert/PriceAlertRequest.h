@@ -7,7 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "PriceAlertResult.h"
 
 @interface PriceAlertRequest : NSObject
+
+- (void)requestGetPriceAlertWithDepartmentID:(NSString*)departmentID
+                                        page:(NSInteger)page
+                                   onSuccess:(void(^)(PriceAlertResult *result))successCallback
+                                   onFailure:(void(^)(NSError *error))errorCallback;
 
 @end

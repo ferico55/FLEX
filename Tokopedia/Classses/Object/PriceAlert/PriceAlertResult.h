@@ -7,9 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-@class Paging;
-@class Breadcrumb;
-@class DetailPriceAlert;
+#import "Paging.h"
+#import "Breadcrumb.h"
+#import "DetailPriceAlert.h"
+
 #define CPriceAlertDetail @"price_alert_detail"
 #define CCatalogID @"catalog_id"
 #define CTotalProduct @"total_product"
@@ -21,4 +22,7 @@
 @property (nonatomic, strong) DetailPriceAlert *price_alert_detail;
 @property (nonatomic, strong) NSString *catalog_id;
 @property (nonatomic, strong) NSString *total_product;
+
++ (RKObjectMapping*)mapping;
+
 @end

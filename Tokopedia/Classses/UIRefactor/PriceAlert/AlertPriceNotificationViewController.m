@@ -23,6 +23,7 @@
 #import "string_price_alert.h"
 #import "TokopediaNetworkManager.h"
 #import "DetailPriceAlertViewController.h"
+#import "PriceAlertRequest.h"
 
 #define CPriceAlertCell @"PriceAlertCell"
 #define CDetailPriceAlertTableViewCell @"DetailPriceAlertTableViewCell"
@@ -49,6 +50,8 @@
     NSMutableArray *arrList, *arrDepartment;
     PriceAlert *priceAlert;
     DetailPriceAlert *tempPriceAlert;
+    
+    PriceAlertRequest *_request;
     
     NSObject *objTagConfirmDelete;
     int nSelectedDepartment, lastSelectedDepartment;
@@ -82,8 +85,12 @@
     
     [self initNoResultView];
     
+    _request = [PriceAlertRequest new];
+    
     _table.tableFooterView = [self getActivityIndicator];
-    [[self getNetworkManager:CTagGetPriceAlert] doRequest];
+    
+    [self getPriceAlert];
+//    [[self getNetworkManager:CTagGetPriceAlert] doRequest];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:CstringFilter style:UIBarButtonItemStylePlain target:self action:@selector(actionShowKategory:)];
 }
 
@@ -171,7 +178,8 @@
     }
     else if(arrList.count-1==indexPath.row && page>1 && !tokopediaNetworkManager.getObjectRequest.isExecuting) {
         _table.tableFooterView = [self getActivityIndicator];
-        [[self getNetworkManager:CTagGetPriceAlert] doRequest];
+//        [[self getNetworkManager:CTagGetPriceAlert] doRequest];
+        [self getPriceAlert];
     }
 }
 
@@ -208,8 +216,6 @@
     [cell setPriceNotification:[self getPrice:detailPriceAlert.pricealert_price]];
     [cell setLowPrice:detailPriceAlert.pricealert_price_min];
     
-    
-    
     return cell;
 }
 
@@ -245,6 +251,79 @@
 
 
 #pragma mark - Method
+- (void)getPriceAlert {
+    NSString *departmentID = @"";
+    
+    if (nSelectedDepartment > 0) {
+        departmentID = ((Breadcrumb*)[arrDepartment objectAtIndex:nSelectedDepartment]).department_id;
+    }
+    
+    [_request requestGetPriceAlertWithDepartmentID:departmentID
+                                              page:page
+                                         onSuccess:^(PriceAlertResult *result) {
+                                             _table.allowsSelection = YES;
+                                             _table.tableFooterView = nil;
+                                             if(result.list != nil) {
+                                                 if(page == 1) {
+                                                     arrList = [[NSMutableArray alloc] initWithArray:result.list];
+                                                 }
+                                                 else {
+                                                     [arrList addObjectsFromArray:result.list];
+                                                 }
+                                                 result.list = nil;
+                                                 
+                                                 if(priceAlert.result.department != nil) {
+                                                     if(arrDepartment == nil) {
+                                                         arrDepartment = [[NSMutableArray alloc] initWithArray:result.department];
+                                                         Breadcrumb *breadCrumb = [Breadcrumb new];
+                                                         breadCrumb.department_id = @"-1";
+                                                         breadCrumb.department_name = CStringAllCategory;
+                                                         [arrDepartment insertObject:breadCrumb atIndex:0];
+                                                         result.department = nil;
+                                                     }
+                                                     
+                                                     if(![result.paging.uri_next isEqualToString:@"0"]) {
+                                                         NSURL *url = [NSURL URLWithString:result.paging.uri_next];
+                                                         NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
+                                                         NSMutableDictionary *queries = [NSMutableDictionary new];
+                                                         for (NSString *keyValuePair in querry)
+                                                         {
+                                                             NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
+                                                             NSString *key = [pairComponents objectAtIndex:0];
+                                                             NSString *value = [pairComponents objectAtIndex:1];
+                                                             
+                                                             [queries setObject:value forKey:key];
+                                                         }
+                                                         
+                                                         page = [[queries objectForKey:@"page"] intValue];
+                                                     }
+                                                     else {
+                                                         page = 1;
+                                                     }
+                                                 }
+                                             }
+                                             
+                                             
+                                             if(arrList==nil || arrList.count==0) {
+                                                 [_table addSubview:_noResultView];
+                                             }else{
+                                                 [_noResultView removeFromSuperview];
+                                             }
+                                             
+                                             
+                                             if(_table.delegate == nil) {
+                                                 _table.delegate = self;
+                                                 _table.dataSource = self;
+                                             }
+                                             
+                                             [_table reloadData];
+                                         }
+                                         onFailure:^(NSError *error) {
+                                             
+                                             
+                                         }];
+}
+
 - (void)refreshView:(id)sender {
     [refreshControl endRefreshing];
     if(tokopediaNetworkManager.getObjectRequest.isExecuting || rkObjectManager!=nil) {
@@ -256,7 +335,8 @@
         page = 1;
         
         _table.allowsSelection = NO;
-        [[self getNetworkManager:CTagGetPriceAlert] doRequest];
+//        [[self getNetworkManager:CTagGetPriceAlert] doRequest];
+        [self getPriceAlert];
     }
 }
 
@@ -575,7 +655,8 @@
         lastSelectedDepartment = nSelectedDepartment;
         nSelectedDepartment = row;
         page = 1;
-        [[self getNetworkManager:CTagGetPriceAlert] doRequest];
+//        [[self getNetworkManager:CTagGetPriceAlert] doRequest];
+        [self getPriceAlert];
     }
     
     [self.navigationController popViewControllerAnimated:YES];
@@ -589,7 +670,8 @@
     }
     else {
         _table.tableFooterView = [self getActivityIndicator];
-        [[self getNetworkManager:CTagGetPriceAlert] doRequest];
+//        [[self getNetworkManager:CTagGetPriceAlert] doRequest];
+        [self getPriceAlert];
     }
 }
 
@@ -600,6 +682,7 @@
             [self deletingPriceAlert:YES];
             tempPriceAlert = [arrList objectAtIndex:alertView.tag];
             [[self getNetworkManager:CTagDeletePriceAlert] doRequest];
+            
         }
         
         objTagConfirmDelete = nil;
