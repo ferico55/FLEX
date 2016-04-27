@@ -306,11 +306,6 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
         if(generalAction.message_error!=nil && generalAction.message_error.count>0) {
             StickyAlertView *stickyAlert = [[StickyAlertView alloc] initWithErrorMessages:generalAction.message_error delegate:self];
             [stickyAlert show];
-            
-            UITableView *table = [_delegate getTable];
-            [table beginUpdates];
-            [table reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-            [table endUpdates];
         } else {
             NSArray *successMessages = [[NSMutableArray alloc] init];
             _isFollowingTalk = !_isFollowingTalk;
