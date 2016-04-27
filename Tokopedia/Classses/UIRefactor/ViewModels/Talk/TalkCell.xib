@@ -64,6 +64,11 @@
                                             <constraint firstAttribute="width" constant="50" id="gy8-FJ-b2f"/>
                                             <constraint firstAttribute="height" constant="50" id="mS5-XT-ez8"/>
                                         </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="25"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0SD-ZE-iBV" customClass="ViewLabelUser">
                                         <rect key="frame" x="68" y="10" width="200" height="20"/>

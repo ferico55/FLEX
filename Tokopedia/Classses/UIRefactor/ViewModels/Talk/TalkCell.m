@@ -124,22 +124,12 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     }
 
     [self setTalkFollowStatus:[modelView.followStatus isEqualToString:@"1"] ? YES : NO];
-    
-    NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:modelView.userImage] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-    self.userImageView.image = nil;
-    [self.userImageView setImageWithURLRequest:userImageRequest placeholderImage:[UIImage imageNamed:@"default-boy.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-        [self.userImageView setImage:image];
-        self.userImageView.layer.cornerRadius = self.userImageView.frame.size.width/2;
-    } failure:nil];
-    
-    NSURLRequest *productImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:modelView.productImage] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-    self.productImageView.image = nil;
-    [self.productImageView setImageWithURLRequest:productImageRequest placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-        [self.productImageView setImage:image];
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-        [self.productImageView setImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"]];
-        [self.productImageView setContentMode:UIViewContentModeCenter];
-    }];
+
+    [_userImageView setImageWithURL:[NSURL URLWithString:modelView.userImage]
+                   placeholderImage:[UIImage imageNamed:@"default-boy.png"]];
+
+    [_productImageView setImageWithURL:[NSURL URLWithString:modelView.productImage]
+                      placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"]];
     
     _productNameLabel.text = modelView.productName;
 
