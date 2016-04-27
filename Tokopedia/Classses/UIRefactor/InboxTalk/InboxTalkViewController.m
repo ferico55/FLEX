@@ -141,7 +141,6 @@
     
     TalkCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TalkCellIdentifier" forIndexPath:indexPath];
     cell.delegate = self;
-    cell.selectedTalkShopID = list.talk_shop_id;
     cell.selectedTalkUserID = [NSString stringWithFormat:@"%ld", (long)list.talk_user_id];
     cell.selectedTalkProductID = list.talk_product_id;
     cell.selectedTalkReputation = list.talk_user_reputation;

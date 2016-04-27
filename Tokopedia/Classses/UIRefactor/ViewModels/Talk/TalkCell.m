@@ -202,7 +202,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 
 - (IBAction)tapToMoreMenu:(id)sender {
     NSMutableArray *titles = [[NSMutableArray alloc] init];
-    if([_myShopID isEqualToString:_selectedTalkShopID] || [_myUserID isEqualToString:_selectedTalkUserID]) {
+    if([_myShopID isEqualToString:_talk.talk_shop_id] || [_myUserID isEqualToString:_selectedTalkUserID]) {
         [titles addObject:@"Hapus"];
     } else {
         [titles addObject:@"Lapor"];
@@ -245,7 +245,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     NSInteger cancelButtonIndex = actionSheet.cancelButtonIndex;
     
     if (buttonIndex == 0) {
-        if([_myShopID isEqualToString:_selectedTalkShopID] || [_myUserID isEqualToString:_selectedTalkUserID]) {
+        if([_myShopID isEqualToString:_talk.talk_shop_id] || [_myUserID isEqualToString:_selectedTalkUserID]) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:PROMPT_DELETE_TALK message:PROMPT_DELETE_TALK_MESSAGE delegate:self cancelButtonTitle:BUTTON_CANCEL otherButtonTitles:nil];
             
             [alert addButtonWithTitle:BUTTON_OK];
