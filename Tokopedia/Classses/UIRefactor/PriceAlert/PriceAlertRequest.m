@@ -17,6 +17,7 @@
     TokopediaNetworkManager *addCatalogPriceAlertNetworkManager;
     TokopediaNetworkManager *addProductPriceAlertNetworkManager;
     TokopediaNetworkManager *editInboxPriceAlertNetworkManager;
+    TokopediaNetworkManager *removeProductPriceAlertNetworkManager;
 }
 
 - (id)init {
@@ -28,6 +29,7 @@
         addCatalogPriceAlertNetworkManager = [TokopediaNetworkManager new];
         addProductPriceAlertNetworkManager = [TokopediaNetworkManager new];
         editInboxPriceAlertNetworkManager = [TokopediaNetworkManager new];
+        removeProductPriceAlertNetworkManager = [TokopediaNetworkManager new];
     }
     
     return self;
@@ -136,19 +138,40 @@
     editInboxPriceAlertNetworkManager.isUsingHmac = YES;
     
     [editInboxPriceAlertNetworkManager requestWithBaseUrl:[NSString v4Url]
-                                                      path:@"/v4/action/pricealert/edit_inbox_price_alert.pl"
-                                                    method:RKRequestMethodGET
+                                                     path:@"/v4/action/pricealert/edit_inbox_price_alert.pl"
+                                                   method:RKRequestMethodGET
                                                 parameter:@{@"pricealert_id" : priceAlertID,
                                                             @"pricealert_price" :priceAlertPrice}
-                                                   mapping:[GeneralAction mapping]
-                                                 onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                                     NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
-                                                     GeneralAction *obj = [result objectForKey:@""];
-                                                     successCallback(obj.data);
-                                                 }
-                                                 onFailure:^(NSError *errorResult) {
-                                                     errorCallback(errorResult);
-                                                 }];
+                                                  mapping:[GeneralAction mapping]
+                                                onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                                    NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+                                                    GeneralAction *obj = [result objectForKey:@""];
+                                                    successCallback(obj.data);
+                                                }
+                                                onFailure:^(NSError *errorResult) {
+                                                    errorCallback(errorResult);
+                                                }];
+}
+
+- (void)requestRemoveProductPriceAlertWithProductID:(NSString *)productID
+                                          onSuccess:(void (^)(GeneralAction *))successCallback
+                                          onFailure:(void (^)(NSError *))errorCallback {
+    removeProductPriceAlertNetworkManager.isParameterNotEncrypted = NO;
+    removeProductPriceAlertNetworkManager.isUsingHmac = YES;
+    
+    [removeProductPriceAlertNetworkManager requestWithBaseUrl:[NSString v4Url]
+                                                         path:@"/v4/action/pricealert/remove_product_price_alert.pl"
+                                                       method:RKRequestMethodGET
+                                                    parameter:@{@"product_id" : productID}
+                                                      mapping:[GeneralAction mapping]
+                                                    onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                                        NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+                                                        GeneralAction *obj = [result objectForKey:@""];
+                                                        successCallback(obj);
+                                                    }
+                                                    onFailure:^(NSError *errorResult) {
+                                                        errorCallback(errorResult);
+                                                    }];
 }
 
 @end
