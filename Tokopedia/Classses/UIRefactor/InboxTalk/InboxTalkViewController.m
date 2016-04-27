@@ -196,18 +196,8 @@
     return self.table;
 }
 
-- (NSMutableArray *)getTalkList {
-    return _talkList;
-}
-
 - (id)getNavigationController:(UITableViewCell *)cell {
     return _delegate;
-}
-
-- (void)updateTalkStatusAtIndexPath:(NSIndexPath *)indexPath following:(BOOL)following {
-    TalkList *talk = _talkList[indexPath.row];
-    talk.talk_follow_status = following;
-    talk.viewModel = nil;
 }
 
 - (void)tapToDeleteTalk:(UITableViewCell *)cell {

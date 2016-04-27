@@ -248,7 +248,6 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     
     if (buttonIndex == 0) {
         if([_myShopID isEqualToString:_selectedTalkShopID] || [_myUserID isEqualToString:_selectedTalkUserID]) {
-            _deleteIndexPath = [[_delegate getTable] indexPathForCell:self];
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:PROMPT_DELETE_TALK message:PROMPT_DELETE_TALK_MESSAGE delegate:self cancelButtonTitle:BUTTON_CANCEL otherButtonTitles:nil];
             
             [alert addButtonWithTitle:BUTTON_OK];
@@ -300,7 +299,6 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 - (void)actionAfterRequest:(RKMappingResult *)mappingResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
     if(tag == RequestFollowTalk || tag == RequestDeleteTalk) {
         GeneralAction *generalAction = [mappingResult.dictionary objectForKey:@""];
-        NSIndexPath *indexPath = (tag == RequestFollowTalk) ? _unfollowIndexPath : _deleteIndexPath;
         if(generalAction.message_error!=nil && generalAction.message_error.count>0) {
             StickyAlertView *stickyAlert = [[StickyAlertView alloc] initWithErrorMessages:generalAction.message_error delegate:self];
             [stickyAlert show];
@@ -320,8 +318,10 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     	            successMessages = @[@"Anda batal mengikuti diskusi ini."];
         	    }
 
-                if ([_delegate respondsToSelector:@selector(updateTalkStatusAtIndexPath:following:)])
-                    [_delegate updateTalkStatusAtIndexPath:indexPath following:_isFollowingTalk];
+                _talk.talk_follow_status = _isFollowingTalk;
+                _talk.viewModel = nil;
+
+                [self setTalkViewModel:_talk.viewModel];
 			}
             StickyAlertView *stickyAlert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:[_delegate getNavigationController:self]];
             [stickyAlert show];

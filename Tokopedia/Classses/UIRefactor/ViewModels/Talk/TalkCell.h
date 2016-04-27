@@ -19,20 +19,20 @@
 @class ProductTalkDetailViewController;
 @class TalkList;
 @class ReportViewController;
+@class TalkCell;
 
 @protocol TalkCellDelegate <NSObject>
 
 @required
 - (id)getNavigationController:(UITableViewCell *)cell;
 - (UITableView*)getTable;
-- (NSMutableArray*)getTalkList;
 
 @optional
 - (void)tapToReportTalk:(UITableViewCell *)cell;
 - (void)tapToFollowTalk:(UITableViewCell *)cell withButton:(UIButton *)button;
 - (void)tapToDeleteTalk:(UITableViewCell *)cell;
 
-- (void)updateTalkStatusAtIndexPath:(NSIndexPath *)path following:(BOOL)following;
+- (void)cell:(TalkCell *)cell updateTalkStatusAtIndexPath:(NSIndexPath *)path following:(BOOL)following;
 @end
 
 @interface TalkCell : UITableViewCell <UIActionSheetDelegate, SmileyDelegate, CMPopTipViewDelegate, ReportViewControllerDelegate> {
@@ -43,17 +43,11 @@
     CMPopTipView *_popTipView;
 
     TalkList *_reportTalk;
-    
-    NSIndexPath *_unfollowIndexPath;
-    NSIndexPath *_deleteIndexPath;
 
     TokopediaNetworkManager *_unfollowNetworkManager;
     TokopediaNetworkManager *_deleteNetworkManager;
     __weak RKObjectManager *_objectUnfollowmanager;
 }
-
-
-
 
 @property (weak, nonatomic) IBOutlet UIImageView *userImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *unreadImageView;

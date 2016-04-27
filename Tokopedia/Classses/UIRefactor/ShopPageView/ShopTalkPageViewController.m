@@ -442,7 +442,4 @@ NoResultDelegate>
     return _table;
 }
 
-- (NSMutableArray *)getTalkList {
-    return _list;
-}
 @end
