@@ -52,6 +52,7 @@
     UIAlertView *_loadingAlertView;
     
     UIRefreshControl *_refreshControl;
+    NSString *_invoice;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -404,22 +405,21 @@
             CGFloat height = [_section0Cell[indexPath.row] frame].size.height;
             if (indexPath.row == 0)
             {
-                UILabel *invoiceLabel = [_section0Cell[indexPath.row] detailTextLabel];
-                invoiceLabel.numberOfLines = 0;
-                NSString *textString = invoiceLabel.text;
-                [invoiceLabel setCustomAttributedText:textString];
+                NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+                style.lineSpacing = 6.0;
                 
-                //Calculate the expected size based on the font and linebreak mode of your label
-                CGSize maximumLabelSize = CGSizeMake(190,9999);
+                NSDictionary *attributes = @{
+                                             NSFontAttributeName: FONT_GOTHAM_BOOK_16,
+                                             NSParagraphStyleAttributeName: style,
+                                             };
                 
-                CGSize expectedLabelSize = [textString sizeWithFont:invoiceLabel.font
-                                                  constrainedToSize:maximumLabelSize
-                                                      lineBreakMode:invoiceLabel.lineBreakMode];
+                NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:_invoice?:@""
+                                                                                     attributes:attributes];
                 
-                //adjust the label the the new height.
-                CGRect newFrame = invoiceLabel.frame;
-                newFrame.size.height = expectedLabelSize.height + 26;
-                return newFrame.size.height;
+                CGRect rect = [attributedText boundingRectWithSize:(CGSize){[UIScreen mainScreen].bounds.size.width - 60, CGFLOAT_MAX}
+                                                           options:NSStringDrawingUsesLineFragmentOrigin
+                                                           context:nil];
+                return rect.size.height + 14;
             }
             else return height;
         }
@@ -803,16 +803,13 @@
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"dd MMMM yyyy"];
     NSString *paymentDateString = [formatter stringFromDate:paymentDate];
-    
-    NSArray *invoices =(_isConfirmed)?formIsConfirmed.order.order_invoice:[form.order.order_invoice componentsSeparatedByString:@","];
-    NSString *invoice = [[invoices valueForKey:@"description"] componentsJoinedByString:@",\n"];
 
     NSString *bankAccountString = selectedBank.bank_account_name?:@"Pilih Akun Bank";
     
     if (cell == _section0Cell[0]) {
         UILabel *invoiceLabel = [_section0Cell[indexPath.row] detailTextLabel];
-        textString = invoice;
-        [invoiceLabel setCustomAttributedText:invoice];
+        textString = _invoice;
+        [invoiceLabel setCustomAttributedText:_invoice];
     }
     if (cell == _section0Cell[1]) {
         textString = (_isConfirmed)?formIsConfirmed.payment.order_left_amount_idr:form.order.order_left_amount_idr;
@@ -1033,6 +1030,9 @@
     NSString *dateString = [NSString stringWithFormat:@"%@ %@ %@",form.payment.order_payment_day,form.payment.order_payment_month,form.payment.order_payment_year];
     NSDate *paymentDate = [dateFormatter dateFromString:dateString]?:[NSDate date];
     [_dataInput setObject:paymentDate forKey:DATA_PAYMENT_DATE_KEY];
+    
+    NSString *invoice = [[form.order.order_invoice valueForKey:@"description"] componentsJoinedByString:@",\n"];
+    _invoice = invoice;
 }
 
 -(void)setDefaultDataConfirmation:(TxOrderConfirmPaymentFormForm*)form
@@ -1057,6 +1057,9 @@
     }
     [_dataInput setObject:selectedMethod forKey:DATA_SELECTED_PAYMENT_METHOD_KEY];
     [_dataInput setObject:form forKey:DATA_DETAIL_ORDER_CONFIRMATION_KEY];
+    
+    NSString *invoice = [[[form.order.order_invoice componentsSeparatedByString:@","] valueForKey:@"description"] componentsJoinedByString:@",\n"];
+    _invoice = invoice;
 }
 
 #pragma mark - General View Controller
