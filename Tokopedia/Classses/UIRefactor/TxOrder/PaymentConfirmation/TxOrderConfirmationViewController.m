@@ -220,7 +220,11 @@
     
     if (_isMultipleSelection)
     {
-        cell.selectionButton.selected = detailOrder.isSelectedPayment;
+        if (detailOrder.isSelectedPayment){
+            [cell.selectionButton setImage:[UIImage imageNamed:@"Icon_check_green_bg.png"] forState:UIControlStateNormal];
+        } else {
+            [cell.selectionButton setImage:[UIImage imageNamed:@"Icon_check_grey_bg.png"] forState:UIControlStateNormal];
+        }
         [cell.cancelConfirmationButton setTintColor:unSelectColor];
         [cell.frameView setBackgroundColor:detailOrder.isSelectedPayment?selectedColor:unSelectColor];
     }
