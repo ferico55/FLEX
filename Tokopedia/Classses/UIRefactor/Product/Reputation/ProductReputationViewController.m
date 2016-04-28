@@ -273,7 +273,7 @@ static NSInteger userViewHeight = 70;
     
     [reviewRequest requestGetProductReviewWithProductID:_strProductID
                                              monthRange:monthRange
-                                                   page:@(0)
+                                                   page:@(page)
                                            shopAccuracy:shopAccuracy
                                             shopQuality:shopQuality
                                              shopDomain:_strShopDomain
