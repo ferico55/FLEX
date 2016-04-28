@@ -312,7 +312,7 @@ static CKComponent *myScore(DetailMyInboxReputation *inbox, MyReviewDetailContex
                                                                    @"smiley_neutral":[imageCache cachedImageWithDescription:@"IconNeutral"],
                                                                    @"smiley_bad":[imageCache cachedImageWithDescription:@"IconSad"],
                                                                    @"smiley_good":[imageCache cachedImageWithDescription:@"IconSmile"],
-                                                                   @"smiley_none":[inbox.reputation_progress isEqualToString:@"2"]?[imageCache cachedImageWithDescription:@"IconReviewLocked"]:[imageCache cachedImageWithDescription:@"IconQuestionMark"],
+                                                                   @"smiley_none":([inbox.reputation_progress isEqualToString:@"2"]||[inbox.reputation_progress isEqualToString:@"3"])?[imageCache cachedImageWithDescription:@"IconReviewLocked"]:[imageCache cachedImageWithDescription:@"IconQuestionMark"],
                                                                    @"grey_question_mark":[imageCache cachedImageWithDescription:@"IconQuestionMark"],
                                                                    @"blue_question_mark":[imageCache cachedImageWithDescription:@"IconChecklist"]
                                                                    };
