@@ -89,25 +89,25 @@
 //                                             selector:@selector(didReceiveDeeplinkUrl:)
 //                                                 name:@"didReceiveDeeplinkUrl" object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLoggedIn) name:TKPDUserDidLoginNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLoggedOut) name:kTKPDACTIVATION_DIDAPPLICATIONLOGGEDOUTNOTIFICATION object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLoggedIn) name:TKPDUserDidLoginNotification object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLoggedOut) name:kTKPDACTIVATION_DIDAPPLICATIONLOGGEDOUTNOTIFICATION object:nil];
    
 }
 
-- (void)didLoggedIn {
-    _scrollView.translatesAutoresizingMaskIntoConstraints = YES;
-    CGRect frame = _scrollView.frame;
-    frame.origin.y = 44;
-    frame.size.height = self.view.frame.size.height-44;
-    _scrollView.frame = frame;
+//- (void)didLoggedIn {
+//    _scrollView.translatesAutoresizingMaskIntoConstraints = YES;
+//    CGRect frame = _scrollView.frame;
+//    frame.origin.y = 44;
+//    frame.size.height = self.view.frame.size.height-44;
+//    _scrollView.frame = frame;
+//
+////    [_scrollView HVD_fillInSuperViewWithInsets:UIEdgeInsetsMake(44, 0, 0, 0)];
+//}
 
-//    [_scrollView HVD_fillInSuperViewWithInsets:UIEdgeInsetsMake(44, 0, 0, 0)];
-}
-
-- (void)didLoggedOut {
-    _scrollView.translatesAutoresizingMaskIntoConstraints = YES;
-    [_scrollView HVD_fillInSuperViewWithInsets:UIEdgeInsetsZero];
-}
+//- (void)didLoggedOut {
+//    _scrollView.translatesAutoresizingMaskIntoConstraints = YES;
+//    [_scrollView HVD_fillInSuperViewWithInsets:UIEdgeInsetsZero];
+//}
 
 #pragma mark - Lifecycle
 
