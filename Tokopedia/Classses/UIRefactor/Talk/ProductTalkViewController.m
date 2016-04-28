@@ -207,9 +207,6 @@
     
     TalkCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TalkProductCellIdentifier" forIndexPath:indexPath];
     cell.delegate = self;
-    cell.selectedTalkProductID = list.talk_product_id;
-    cell.selectedTalkReputation = list.talk_user_reputation;
-    
     cell.talk = list;
     
     //next page if already last cell

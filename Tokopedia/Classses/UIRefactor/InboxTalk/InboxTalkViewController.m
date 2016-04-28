@@ -141,11 +141,6 @@
     
     TalkCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TalkCellIdentifier" forIndexPath:indexPath];
     cell.delegate = self;
-    cell.selectedTalkProductID = list.talk_product_id;
-    cell.selectedTalkReputation = list.talk_user_reputation;
-    cell.detailViewController = _detailViewController;
-    cell.marksOpenedTalkAsRead = YES;
-    cell.isSplitScreen = YES;
     cell.enableDeepNavigation = NO;
     
     cell.talk = list;

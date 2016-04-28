@@ -75,8 +75,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     _myShopID = [NSString stringWithFormat:@"%@", [_userManager getShopId]];
     _myUserID = [NSString stringWithFormat:@"%@", [_userManager getUserId]];
     _navigateController = [NavigateViewController new];
-    _isSplitScreen = NO;
-    
+
     UITapGestureRecognizer *productGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapToProduct)];
     [self.productImageView addGestureRecognizer:productGesture];
     self.productImageView.userInteractionEnabled = YES;
@@ -171,7 +170,9 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 - (void)setTalk:(TalkList *)talk {
     _talk = talk;
     _selectedTalkUserID = [NSString stringWithFormat:@"%ld", (long)talk.talk_user_id];
+    _selectedTalkProductID = _talk.talk_product_id;
     [self setTalkViewModel:talk.viewModel];
+    _selectedTalkReputation = _talk.talk_user_reputation;
 }
 
 #pragma mark - Tap Button

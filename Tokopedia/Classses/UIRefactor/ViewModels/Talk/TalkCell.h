@@ -68,13 +68,8 @@
 @property (nonatomic, strong) NSString *selectedTalkUserID;
 @property (nonatomic, strong) NSString *selectedTalkShopID;
 @property (nonatomic, strong) NSString *selectedTalkProductID;
-@property BOOL marksOpenedTalkAsRead;
-
-//========== This is a property to configure split screen on iPad
-@property (nonatomic) BOOL isSplitScreen;
 
 @property (nonatomic, strong) ReputationDetail *selectedTalkReputation;
-@property (strong, nonatomic) ProductTalkDetailViewController *detailViewController;
 
 @property (nonatomic) BOOL enableDeepNavigation;
 @property (strong, nonatomic) TalkList* talk;
