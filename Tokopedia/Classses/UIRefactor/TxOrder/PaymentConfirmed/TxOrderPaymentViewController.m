@@ -407,19 +407,23 @@
                 UILabel *invoiceLabel = [_section0Cell[indexPath.row] detailTextLabel];
                 invoiceLabel.numberOfLines = 0;
                 NSString *textString = invoiceLabel.text;
-                [invoiceLabel setCustomAttributedText:textString];
                 
-                //Calculate the expected size based on the font and linebreak mode of your label
-                CGSize maximumLabelSize = CGSizeMake(190,9999);
+                NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+                style.lineSpacing = 6.0;
+                style.alignment = invoiceLabel.textAlignment;
                 
-                CGSize expectedLabelSize = [textString sizeWithFont:invoiceLabel.font
-                                                  constrainedToSize:maximumLabelSize
-                                                      lineBreakMode:invoiceLabel.lineBreakMode];
+                NSDictionary *attributes = @{
+                                             NSFontAttributeName: FONT_GOTHAM_BOOK_16,
+                                             NSParagraphStyleAttributeName: style,
+                                             };
                 
-                //adjust the label the the new height.
-                CGRect newFrame = invoiceLabel.frame;
-                newFrame.size.height = expectedLabelSize.height + 26;
-                return newFrame.size.height;
+                NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:textString?:@""
+                                                                                     attributes:attributes];
+                
+                CGRect rect = [attributedText boundingRectWithSize:(CGSize){[UIScreen mainScreen].bounds.size.width - 60, CGFLOAT_MAX}
+                                                           options:NSStringDrawingUsesLineFragmentOrigin
+                                                           context:nil];
+                return rect.size.height + 14;
             }
             else return height;
         }
