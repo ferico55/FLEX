@@ -209,6 +209,11 @@ class SecurityQuestionViewController : UIViewController, UITextFieldDelegate {
                                mapping: SecurityRequestOTP .mapping(),
                                onSuccess: { (mappingResult, operation) -> Void in
                                 let otp = mappingResult.dictionary()[""] as! SecurityRequestOTP
+                                if((otp.message_error) != nil) {
+                                    let stickyAlert = StickyAlertView.init(errorMessages: otp.message_error, delegate: self)
+                                    stickyAlert.show()
+                                }
+                                
                                 if(otp.data.is_success == "1") {
                                     let stickyAlert = StickyAlertView.init(successMessages: ["Kode OTP sukses terkirim."], delegate: self)
                                     stickyAlert.show()

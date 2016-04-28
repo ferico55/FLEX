@@ -14,7 +14,6 @@
             <string>GothamMedium</string>
             <string>GothamMedium</string>
             <string>GothamMedium</string>
-            <string>GothamMedium</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -35,51 +34,8 @@
         <view contentMode="scaleToFill" id="iN0-l3-epB">
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-            <subviews>
-                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="no-result.png" translatesAutoresizingMaskIntoConstraints="NO" id="1AI-pj-wKL">
-                    <rect key="frame" x="136" y="139" width="102" height="98"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="102" id="3rq-Ds-HXN"/>
-                        <constraint firstAttribute="height" constant="98" id="6Fz-OX-VR9"/>
-                    </constraints>
-                </imageView>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Suk-as-ylt">
-                    <rect key="frame" x="48" y="272" width="278" height="40"/>
-                    <color key="backgroundColor" red="0.24313725489999999" green="0.66666666669999997" blue="0.14117647059999999" alpha="1" colorSpace="calibratedRGB"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="40" id="KUB-9J-7Dy"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="15"/>
-                    <state key="normal" title="Kembali ke Beranda">
-                        <color key="titleColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
-                    </state>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                            <real key="value" value="5"/>
-                        </userDefinedRuntimeAttribute>
-                    </userDefinedRuntimeAttributes>
-                    <connections>
-                        <action selector="didTapBackButton:" destination="-1" eventType="touchUpInside" id="ZxA-GE-7Ro"/>
-                    </connections>
-                </button>
-            </subviews>
             <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="calibratedRGB"/>
-            <constraints>
-                <constraint firstAttribute="trailing" secondItem="1AI-pj-wKL" secondAttribute="trailing" constant="137" id="3xy-hv-9zg"/>
-                <constraint firstAttribute="trailing" secondItem="Suk-as-ylt" secondAttribute="trailing" constant="49" id="Lo7-id-BOe"/>
-                <constraint firstItem="1AI-pj-wKL" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="139" id="OrO-vh-fsx"/>
-                <constraint firstItem="Suk-as-ylt" firstAttribute="top" secondItem="1AI-pj-wKL" secondAttribute="bottom" constant="35" id="cDn-x4-w37"/>
-                <constraint firstItem="1AI-pj-wKL" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="136" id="gJ6-2H-7P3"/>
-                <constraint firstItem="1AI-pj-wKL" firstAttribute="centerX" secondItem="Suk-as-ylt" secondAttribute="centerX" id="jC2-OV-hVO"/>
-                <constraint firstItem="Suk-as-ylt" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="48" id="mi9-7Y-nBJ"/>
-            </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <variation key="default">
-                <mask key="constraints">
-                    <exclude reference="3xy-hv-9zg"/>
-                    <exclude reference="gJ6-2H-7P3"/>
-                </mask>
-            </variation>
         </view>
         <view tag="11" contentMode="scaleToFill" id="fb3-X1-Rgf">
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
@@ -247,7 +203,4 @@
             <point key="canvasLocation" x="756.5" y="1212.5"/>
         </view>
     </objects>
-    <resources>
-        <image name="no-result.png" width="65" height="62"/>
-    </resources>
 </document>
