@@ -254,7 +254,7 @@ static CKComponent* score(DetailMyInboxReputation *inbox, MyReviewDetailContext 
                                            }];
     
     
-    if ([inbox.reputation_progress isEqualToString:@"2"] && [inbox.my_score_image isEqualToString:@"smiley_none"]) {
+    if (([inbox.reputation_progress isEqualToString:@"2"] || [inbox.reputation_progress isEqualToString:@"3"]) && [inbox.their_score_image isEqualToString:@"smiley_none"]) {
         return smileyLocked;
     }
     
@@ -366,7 +366,7 @@ static CKComponent *myScore(DetailMyInboxReputation *inbox, MyReviewDetailContex
                          {
                              [CKImageComponent
                               newWithImage:[myScoreImageNameByType objectForKey:inbox.my_score_image]
-                              size:{([inbox.reputation_progress isEqualToString:@"2"] && [inbox.my_score_image isEqualToString:@"smiley_none"])?24.7:20,20}]
+                              size:{(([inbox.reputation_progress isEqualToString:@"2"] || [inbox.reputation_progress isEqualToString:@"3"]) && [inbox.my_score_image isEqualToString:@"smiley_none"])?24.7:20,20}]
                          },
                          {
                              revieweeEditedLabel(inbox)
