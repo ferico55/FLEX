@@ -19,21 +19,45 @@ class FilterType: NSObject {
 }
 
 
-class FilterObject: NSObject {
+class FilterObject: NSObject, NSCopying {
     
     var filterID : NSString = "0"
     var title : NSString = ""
     
+    required override init() {
+    }
+    
+    required init(_ model: FilterObject) {
+        filterID = model.filterID
+        title = model.title
+    }
+    
+    func copyWithZone(zone: NSZone) -> AnyObject {
+        return self.dynamicType.init(self)
+    }
 }
 
-class FilterPrice: NSObject {
+class FilterPrice: NSObject, NSCopying {
     
     var priceMin:String = ""
     var priceMax:String = ""
     var priceGrosir: Bool = false
+    
+    required override init() {
+    }
+    
+    required init(_ model: FilterPrice) {
+        priceMin = model.priceMin
+        priceMax = model.priceMax
+        priceGrosir = model.priceGrosir
+    }
+    
+    func copyWithZone(zone: NSZone) -> AnyObject {
+        return self.dynamicType.init(self)
+    }
 }
 
-class QueryObject: NSObject {
+class QueryObject: NSObject, NSCopying {
     
     var selectedCategory:CategoryDetail = CategoryDetail()
     var selectedEtalase:EtalaseList = EtalaseList()
@@ -41,4 +65,20 @@ class QueryObject: NSObject {
     var selectedLocation:FilterObject = FilterObject()
     var selectedPrice : FilterPrice = FilterPrice()
     var selectedCondition : FilterObject = FilterObject()
+    
+    required override init() {
+    }
+    
+    required init(_ model: QueryObject) {
+        selectedCategory = model.selectedCategory
+        selectedEtalase = model.selectedEtalase
+        selectedShop = model.selectedShop
+        selectedLocation = model.selectedLocation
+        selectedPrice = model.selectedPrice
+        selectedCondition = model.selectedCondition
+    }
+    
+    func copyWithZone(zone: NSZone) -> AnyObject {
+        return self.dynamicType.init(self)
+    }
 }

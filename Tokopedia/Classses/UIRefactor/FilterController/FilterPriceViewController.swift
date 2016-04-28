@@ -43,7 +43,7 @@ class FilterPriceViewController: UIViewController ,UITableViewDelegate, UITableV
     
     init(price: FilterPrice, onCompletion: ((FilterPrice) -> Void)){
         completionHandler = onCompletion
-        self.price = price
+        self.price = price.copy() as! FilterPrice
         
         super.init(nibName: nil, bundle: nil)
     }

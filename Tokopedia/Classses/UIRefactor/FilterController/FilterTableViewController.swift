@@ -23,7 +23,7 @@ class FilterTableViewController: UIViewController ,UITableViewDelegate, UITableV
     init(items:[FilterObject],selectedObject:FilterObject, onCompletion: ((FilterObject) -> Void)){
         completionHandler = onCompletion
         self.items = items
-        self.selectedObject = selectedObject
+        self.selectedObject = selectedObject.copy() as! FilterObject
         
         super.init(nibName: nil, bundle: nil)
     }

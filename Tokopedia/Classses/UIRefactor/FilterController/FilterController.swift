@@ -22,7 +22,7 @@ import UIKit
     init(categoryType: FilterCategoryType, categoryList: NSArray, filters:[NSInteger], selectedFilter:QueryObject, presentedVC:(UIViewController), onCompletion: ((QueryObject) -> Void)){
         self.categoryType = categoryType
         self.categoryList = categoryList
-        self.filter = selectedFilter
+        self.filter = selectedFilter.copy() as! QueryObject
         self.completionHandler = onCompletion
         
         super.init()
@@ -33,7 +33,7 @@ import UIKit
     init(categoryType: FilterCategoryType, categoryList: NSArray, shopID:String, filters:[NSInteger], selectedFilter:QueryObject, presentedVC:(UIViewController), onCompletion: ((QueryObject) -> Void)){
         self.categoryType = categoryType
         self.categoryList = categoryList
-        self.filter = selectedFilter
+        self.filter = selectedFilter.copy() as! QueryObject
         self.shopID = shopID
         self.completionHandler = onCompletion
         
@@ -43,7 +43,7 @@ import UIKit
     }
     
     init(shopID:String, filters:[NSInteger], selectedFilter:QueryObject, presentedVC:(UIViewController), onCompletion: ((QueryObject) -> Void)){
-        self.filter = selectedFilter
+        self.filter = selectedFilter.copy() as! QueryObject
         self.shopID = shopID
         self.completionHandler = onCompletion
         
@@ -53,7 +53,7 @@ import UIKit
     }
     
     init(filters:[NSInteger], selectedFilter:QueryObject, presentedVC:(UIViewController), onCompletion: ((QueryObject) -> Void)){
-        self.filter = selectedFilter
+        self.filter = selectedFilter.copy() as! QueryObject
         self.completionHandler = onCompletion
         
         super.init()
@@ -219,7 +219,7 @@ import UIKit
     
     // MARK: - MHVerticalTabBarController Delegate
     func done() {
-        completionHandler(filter)
+        completionHandler(self.filter)
     }
 
     func tabBarController(tabBarController: MHVerticalTabBarController!, didSelectViewController viewController: UIViewController!) {
