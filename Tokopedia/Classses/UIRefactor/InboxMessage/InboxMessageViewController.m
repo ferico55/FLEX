@@ -281,7 +281,7 @@
             KTKPDMESSAGE_DATAELEMENTKEY : joinedArr,
     };
 
-    [_messageActionNetworkManager requestWithBaseUrl:kTkpdBaseURLString
+    [_messageActionNetworkManager requestWithBaseUrl:[NSString basicUrl]
                                                 path:KTKPDMESSAGEPRODUCTACTION_PATHURL
                                               method:RKRequestMethodPOST
                                            parameter:param

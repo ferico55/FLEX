@@ -913,14 +913,13 @@
                                         </label>
                                         <segmentedControl opaque="NO" tag="12" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="FsQ-ax-DlM">
                                             <rect key="frame" x="8" y="34" width="285" height="29"/>
-                                            <animations/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="28" id="X6T-G4-bfa"/>
                                             </constraints>
                                             <segments>
                                                 <segment title="1 Bulan"/>
                                                 <segment title="3 Bulan"/>
-                                                <segment title="6 Bulan"/>
+                                                <segment title="12 Bulan"/>
                                             </segments>
                                             <connections>
                                                 <action selector="actionSegmented:" destination="-1" eventType="valueChanged" id="Fyt-LD-qBm"/>
