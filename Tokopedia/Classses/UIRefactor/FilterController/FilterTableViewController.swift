@@ -41,6 +41,7 @@ class FilterTableViewController: UIViewController ,UITableViewDelegate, UITableV
         
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
         tableView.tableFooterView = UIView.init(frame: CGRectMake(0, 0, 1, 1))
+
         self.view.addSubview(tableView)
     }
 
@@ -61,14 +62,13 @@ class FilterTableViewController: UIViewController ,UITableViewDelegate, UITableV
         let font = UIFont.init(name: "GothamBook", size: 13)
         cell.textLabel?.font = font
         cell.textLabel?.text = self.items[indexPath.row].title as String
-        
+        cell.tintColor = UIColor.init(colorLiteralRed: 66/255, green: 189/255, blue: 65/255, alpha: 1)
         if (Int(self.items[indexPath.row].filterID as String) == Int(selectedObject.filterID as String)) {
             cell.accessoryType = .Checkmark
             lastSelectedIndexPath = indexPath
         } else {
             cell.accessoryType = .None
         }
-        
         cell.selectionStyle = .None
         return cell
         
