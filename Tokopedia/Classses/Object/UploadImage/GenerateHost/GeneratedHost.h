@@ -8,10 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
-@interface GeneratedHost : NSObject
+@interface GeneratedHost : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *server_id;
 @property (nonatomic, strong) NSString *upload_host;
 @property (nonatomic) NSInteger user_id;
+
++ (RKObjectMapping*)mapping;
 
 @end

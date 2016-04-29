@@ -89,25 +89,25 @@
 //                                             selector:@selector(didReceiveDeeplinkUrl:)
 //                                                 name:@"didReceiveDeeplinkUrl" object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLoggedIn) name:TKPDUserDidLoginNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLoggedOut) name:kTKPDACTIVATION_DIDAPPLICATIONLOGGEDOUTNOTIFICATION object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLoggedIn) name:TKPDUserDidLoginNotification object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLoggedOut) name:kTKPDACTIVATION_DIDAPPLICATIONLOGGEDOUTNOTIFICATION object:nil];
    
 }
 
-- (void)didLoggedIn {
-    _scrollView.translatesAutoresizingMaskIntoConstraints = YES;
-    CGRect frame = _scrollView.frame;
-    frame.origin.y = 44;
-    frame.size.height = self.view.frame.size.height-44;
-    _scrollView.frame = frame;
+//- (void)didLoggedIn {
+//    _scrollView.translatesAutoresizingMaskIntoConstraints = YES;
+//    CGRect frame = _scrollView.frame;
+//    frame.origin.y = 44;
+//    frame.size.height = self.view.frame.size.height-44;
+//    _scrollView.frame = frame;
+//
+////    [_scrollView HVD_fillInSuperViewWithInsets:UIEdgeInsetsMake(44, 0, 0, 0)];
+//}
 
-//    [_scrollView HVD_fillInSuperViewWithInsets:UIEdgeInsetsMake(44, 0, 0, 0)];
-}
-
-- (void)didLoggedOut {
-    _scrollView.translatesAutoresizingMaskIntoConstraints = YES;
-    [_scrollView HVD_fillInSuperViewWithInsets:UIEdgeInsetsZero];
-}
+//- (void)didLoggedOut {
+//    _scrollView.translatesAutoresizingMaskIntoConstraints = YES;
+//    [_scrollView HVD_fillInSuperViewWithInsets:UIEdgeInsetsZero];
+//}
 
 #pragma mark - Lifecycle
 
@@ -220,7 +220,7 @@
     _userManager = [UserAuthentificationManager new];
     if([_userManager isLogin]) {
         _isAbleToSwipe = YES;
-        [_scrollView setContentSize:CGSizeMake(_scrollView.frame.size.width*5, 300)];
+        [_scrollView setContentSize:CGSizeMake(self.view.frame.size.width*5, 300)];
         [_scrollView setPagingEnabled:YES];
     } else {
         _isAbleToSwipe = NO;
@@ -339,6 +339,8 @@
 }
 
 - (void)didSwipeHomePage:(NSNotification*)notification {
+    [_scrollView setFrame:CGRectMake(0, _scrollView.frame.origin.y, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
+    
     NSDictionary *userinfo = notification.userInfo;
     NSInteger index = [[userinfo objectForKey:@"page"]integerValue];
     [self goToPage:index-1];

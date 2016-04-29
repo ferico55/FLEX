@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "TxOrderConfirmPaymentFormForm.h"
 
-@interface TxOrderConfirmPaymentFormResult : NSObject
+@interface TxOrderConfirmPaymentFormResult : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) TxOrderConfirmPaymentFormForm *form;
 

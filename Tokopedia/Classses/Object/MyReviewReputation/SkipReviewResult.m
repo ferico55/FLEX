@@ -10,4 +10,12 @@
 
 @implementation SkipReviewResult
 
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *skipReviewResultMapping = [RKObjectMapping mappingForClass:[SkipReviewResult class]];
+    
+    [skipReviewResultMapping addAttributeMappingsFromArray:@[@"is_success"]];
+    
+    return skipReviewResultMapping;
+}
+
 @end

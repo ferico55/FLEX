@@ -69,8 +69,20 @@
 @property (nonatomic, strong) NSString *reputation_progress;
 @property (nonatomic, strong) NSString *my_score_image;
 @property (nonatomic, strong) NSString *their_score_image;
+@property (nonatomic, strong) NSString *reputation_days_left;
+
+@property (nonatomic, strong) NSString *review_status_description;
+@property (nonatomic, strong) NSString *reputation_days_left_fmt;
+@property (nonatomic, strong) NSString *buyer_id;
+@property (nonatomic, strong) NSString *is_reviewer_score_edited;
+@property (nonatomic, strong) NSString *is_reviewee_score_edited;
+@property (nonatomic, strong) NSString *is_edited;
+@property (nonatomic, strong) NSString *show_reputation_day;
+@property (nonatomic, strong) NSString *create_time_fmt_ws;
 
 @property (nonatomic, strong) ReputationDetail *user_reputation;
 @property (nonatomic, strong) MyReviewReputationViewModel *viewModel;
 @property (nonatomic, strong) ShopBadgeLevel *shop_badge_level;
+
++ (RKObjectMapping*)mapping;
 @end

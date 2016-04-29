@@ -11,14 +11,15 @@
 
 #import "ProductListMyShopFilterViewController.h"
 #import "GeneralTableViewController.h"
-#import "MyShopEtalaseFilterViewController.h"
+#import "EtalaseViewController.h"
 #import "CategoryMenuViewController.h"
+#import "FilterCategoryViewController.h"
 
 @interface ProductListMyShopFilterViewController ()
 <
     GeneralTableViewControllerDelegate,
-    MyShopEtalaseFilterViewControllerDelegate,
-    CategoryMenuViewDelegate
+EtalaseViewControllerDelegate,
+    FilterCategoryViewDelegate
 >
 {
     EtalaseList *_etalase;
@@ -27,6 +28,7 @@
     NSString *_catalogValue;
     NSString *_pictureValue;
     NSString *_conditionValue;
+    CategoryDetail *_selectedCategory;
 }
 @end
 
@@ -107,23 +109,23 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if (indexPath.row == 0) {
-        MyShopEtalaseFilterViewController *controller = [MyShopEtalaseFilterViewController new];
-        controller.delegate = self;
-        controller.data = @{kTKPD_SHOPIDKEY:_shopID,
-                            DATA_PRESENTED_ETALASE_TYPE_KEY : @(PRESENTED_ETALASE_MANAGE_PRODUCT)};
-        [self.navigationController pushViewController:controller animated:YES];
-    } else if (indexPath.row == 1) {
-        CategoryMenuViewController *controller = [CategoryMenuViewController new];
-        controller.delegate = self;
-        controller.data = @{
-                            DATA_CATEGORY_MENU_PREVIOUS_VIEW_TYPE:@(CATEGORY_MENU_PREVIOUS_VIEW_ADD_PRODUCT)
-                            };
-        controller.selectedCategoryID = [_breadcrumb.department_id integerValue];
-        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:controller];
-        nav.navigationBar.translucent = NO;
+    if (indexPath.row == 0) {        
+        EtalaseViewController *vc = [EtalaseViewController new];
+        vc.delegate = self;
+        vc.isEditable = NO;
+        vc.showOtherEtalase = YES;
+        vc.initialSelectedEtalase = _etalase;
         
-        [self.navigationController presentViewController:nav animated:YES completion:nil];
+        [vc setShopId:_shopID];
+        [self.navigationController pushViewController:vc animated:YES];
+        
+        
+    } else if (indexPath.row == 1) {
+        FilterCategoryViewController *controller = [FilterCategoryViewController new];
+        controller.filterType = FilterCategoryTypeSearchProduct;
+        controller.delegate = self;
+        controller.selectedCategory = _selectedCategory;
+        [self.navigationController pushViewController:controller animated:YES];
     } else if (indexPath.row == 2) {
         GeneralTableViewController *controller = [GeneralTableViewController new];
         controller.objects = @[
@@ -220,25 +222,22 @@
 
 #pragma mark - Myshop etalase filter delegate
 
-- (void)MyShopEtalaseFilterViewController:(MyShopEtalaseFilterViewController *)viewController withUserInfo:(NSDictionary *)userInfo
-{
-    _etalase = [userInfo objectForKey:DATA_ETALASE_KEY];
+-(void)didSelectEtalase:(EtalaseList *)selectedEtalase{
+    _etalase = selectedEtalase;
     
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
     cell.detailTextLabel.text = _etalase.etalase_name;
 }
 
+
 #pragma mark - Category menu delegate
 
--(void)CategoryMenuViewController:(CategoryMenuViewController *)viewController userInfo:(NSDictionary *)userInfo
-{
-    NSString * departmentID = [userInfo objectForKey:kTKPDCATEGORY_DATADEPARTMENTIDKEY];
-    _departmentName = [userInfo objectForKey:kTKPDCATEGORY_DATATITLEKEY];
-    
-    _breadcrumb.department_name = _departmentName;
-    _breadcrumb.department_id = departmentID;
-    
-    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
-    cell.detailTextLabel.text = _departmentName;
+- (void)didSelectCategory:(CategoryDetail *)category {
+    _selectedCategory = category;
+    _departmentName = category.name;
+    _breadcrumb.department_id = category.categoryId;
+    _breadcrumb.department_name = category.name;
+    [self.tableView reloadData];
 }
+
 @end

@@ -1042,6 +1042,10 @@
     if ([conversation.show_edit_addr_button integerValue]==1) {
         buttonCount +=1;
     }
+    
+    if ([self isShowTrackAndEditButton:conversation]) {
+        buttonCount +=2;
+    }
 
     if (conversation.isAddedConversation) {
         if([_resolutionDetail.resolution_last.last_show_accept_button integerValue] == 1)

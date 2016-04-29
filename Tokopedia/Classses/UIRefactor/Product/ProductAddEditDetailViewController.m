@@ -18,7 +18,7 @@
 #import "sortfiltershare.h"
 #import "AlertPickerView.h"
 #import "ProductAddEditDetailViewController.h"
-#import "MyShopEtalaseFilterViewController.h"
+#import "EtalaseViewController.h"
 #import "ProductEditWholesaleViewController.h"
 #import "MyShopEtalaseEditViewController.h"
 #import "MyShopNoteViewController.h"
@@ -36,7 +36,7 @@
     UITableViewDelegate,
     UITextViewDelegate,
     TKPDAlertViewDelegate,
-    MyShopEtalaseFilterViewControllerDelegate,
+    EtalaseViewControllerDelegate,
     ProductEditWholesaleViewControllerDelegate,
     TokopediaNetworkManagerDelegate
 >
@@ -532,16 +532,13 @@
                         EtalaseList *newEtalase = [EtalaseList new];
                         newEtalase.etalase_name = product.product_etalase;
                         newEtalase.etalase_id = [product.product_etalase_id stringValue];
-                        NSIndexPath *indexpath = [_dataInput objectForKey:kTKPDDETAILETALASE_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-                        MyShopEtalaseFilterViewController *etalaseViewController = [MyShopEtalaseFilterViewController new];
-//                        NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
-                        
-                        etalaseViewController.data = @{kTKPDDETAIL_APISHOPIDKEY:[_userManager getShopId],
-                                                       kTKPDFILTER_DATAINDEXPATHKEY: indexpath,
-                                                       DATA_PRESENTED_ETALASE_TYPE_KEY : @(PRESENTED_ETALASE_ADD_PRODUCT),
-                                                       ETALASE_OBJECT_SELECTED_KEY : newEtalase
-                                                       };
+                        EtalaseViewController *etalaseViewController = [EtalaseViewController new];
+                        etalaseViewController.isEditable = NO;
+                        etalaseViewController.showOtherEtalase = NO;
+                        etalaseViewController.shopId = [_userManager getShopId];
+                        etalaseViewController.initialSelectedEtalase = newEtalase;
                         etalaseViewController.delegate = self;
+                        [etalaseViewController setEnableAddEtalase:YES];
                         [self.navigationController pushViewController:etalaseViewController animated:YES];
                     }
                     break;
@@ -1516,17 +1513,15 @@
 }
 
 #pragma mark - Product Etalase Delegate
--(void)MyShopEtalaseFilterViewController:(MyShopEtalaseFilterViewController *)viewController withUserInfo:(NSDictionary *)userInfo
-{
-    EtalaseList *etalase = [userInfo objectForKey:DATA_ETALASE_KEY];
+
+-(void)didSelectEtalase:(EtalaseList *)selectedEtalase{
     ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
-    product.product_etalase_id = @([etalase.etalase_id integerValue]);
-    product.product_etalase = etalase.etalase_name;
+    product.product_etalase_id = @([selectedEtalase.etalase_id integerValue]);
+    product.product_etalase = selectedEtalase.etalase_name;
     [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
-    NSIndexPath *indexpath = [userInfo objectForKey:kTKPDDETAILETALASE_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-    [_dataInput setObject:indexpath forKey:kTKPDDETAILETALASE_DATAINDEXPATHKEY];
     
     [_tableView reloadData];
+
 }
 
 #pragma mark - Product Wholesale View Controller Delegate

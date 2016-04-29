@@ -434,7 +434,7 @@
                     [_withdrawalButton addSubview:_infoReviewSaldo];
                     CGRect newFrame4 = _infoReviewSaldo.frame;
                     newFrame4.origin.y += 47;
-                    newFrame4.size.width = self.view.bounds.size.width;
+                    newFrame4.size.width = _header.frame.size.width;
                     newFrame4.origin.x = -_withdrawalButton.frame.origin.x;
                     _infoReviewSaldo.frame = newFrame4;
                     

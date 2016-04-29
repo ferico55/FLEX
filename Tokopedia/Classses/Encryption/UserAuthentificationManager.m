@@ -20,12 +20,8 @@
 {
     self = [super init];
     if (self) {
-        id rootController = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
-        _auth = [NSMutableDictionary dictionaryWithDictionary:((MainViewController*)rootController).auth];
-        if ([_auth objectForKey:@"user_id"] == nil) {
-            TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
-            _auth = [NSMutableDictionary dictionaryWithDictionary:[secureStorage keychainDictionary]];
-        }
+        TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+        _auth = [NSMutableDictionary dictionaryWithDictionary:[secureStorage keychainDictionary]];
     }
     return self;
 }
@@ -65,11 +61,15 @@
 }
 
 - (NSString*)getMyDeviceToken {
+#ifdef TARGET_OS_SIMULATOR
+    return @"SIMULATORDUMMY";
+#else
     if ([[_auth objectForKey:@"device_token"] isKindOfClass:[NSString class]]) {
         return [_auth objectForKey:@"device_token"]?: @"0";
     } else {
         return [[_auth objectForKey:@"device_token"] stringValue]?: @"0";
     }
+#endif
 }
 
 //auto increment from database that had been saved in secure storage
@@ -106,11 +106,8 @@
     if (![[self getUserId] isEqualToString:@"0"]) {
         [parameters setValue:[self getUserId] forKey:@"user_id"];
     }
-#if (TARGET_OS_SIMULATOR)
-    [parameters setValue:@"SIMULATORDUMMY" forKey:@"device_id"];
-#else
+
     [parameters setValue:[self getMyDeviceToken] forKey:@"device_id"];
-#endif
     [parameters setValue:@"2" forKey:@"os_type"];
     
     NSString *hash;
@@ -221,6 +218,20 @@
     } else {
         return nil;
     }
+}
+
++ (void)ensureDeviceIdExistence {
+    // This is done to prevent users from getting kicked after login
+    // that is caused by some devices that don't have device tokens.
+    
+    UserAuthentificationManager* authManager = [UserAuthentificationManager new];
+    NSString* deviceId = [authManager getMyDeviceToken];
+    
+    if ([@"0" isEqualToString:deviceId]) {
+        deviceId = [[NSUUID UUID] UUIDString];
+    }
+    
+    [[TKPDSecureStorage standardKeyChains] setKeychainWithValue:deviceId withKey:kTKPD_DEVICETOKENKEY];
 }
 
 @end

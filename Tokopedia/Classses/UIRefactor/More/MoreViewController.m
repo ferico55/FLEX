@@ -28,10 +28,9 @@
 
 #import "ProfileFavoriteShopViewController.h"
 #import "ProfileContactViewController.h"
-#import "TKPDTabProfileNavigationController.h"
 
 #import "ShopFavoritedViewController.h"
-
+#import "EtalaseViewController.h"
 
 #import "InboxTicketSplitViewController.h"
 #import "InboxMessageViewController.h"
@@ -50,7 +49,6 @@
 #import "UserContainerViewController.h"
 #import "ReputationPageViewController.h"
 #import "ProductListMyShopViewController.h"
-#import "MyShopEtalaseViewController.h"
 #import "InboxResolutionCenterTabViewController.h"
 #import "InboxResolSplitViewController.h"
 #import "NavigateViewController.h"
@@ -72,7 +70,7 @@
 #define CTagProfileInfo 12
 #define CTagLP 13
 
-@interface MoreViewController () <NotificationManagerDelegate, TokopediaNetworkManagerDelegate, SplitReputationVcProtocol> {
+@interface MoreViewController () <NotificationManagerDelegate, TokopediaNetworkManagerDelegate, SplitReputationVcProtocol, EtalaseViewControllerDelegate> {
     NSDictionary *_auth;
     
     Deposit *_deposit;
@@ -599,7 +597,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
         NSString *url_ = _LPResult.uri;
         NSURL *url = [NSURL URLWithString:url_];
         WebViewController *webViewController = [WebViewController new];
-        NSString *webViewStrUrl =[NSString stringWithFormat:@"http://%@/js/wvlogin?uid=%@&token=%@&url=%@?%@",  [url host],userID,currentDeviceId,[url path],[url query]]; //[url scheme], [url host]
+        NSString *webViewStrUrl =[NSString stringWithFormat:@"https://js.tokopedia.com/wvlogin?uid=%@&token=%@&url=%@?%@", userID,currentDeviceId,[url path],[url query]]; //[url scheme], [url host]
 //        NSString *webViewStrUrl =[NSString stringWithFormat:@"%@://%@/js/wvlogin?uid=%@&token=%@&url=%@?%@", @"http", @"m.tokopedia.com",userID,currentDeviceId,@"/lp.pl",@"flag_app=1"]; //[url scheme], [url host]
         webViewController.isLPWebView = YES;
         webViewController.strURL = webViewStrUrl;
@@ -645,11 +643,17 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
             vc.hidesBottomBarWhenPushed = YES;
             [wrapperController.navigationController pushViewController:vc animated:YES];
         } else if (indexPath.row == 3) {
-            MyShopEtalaseViewController *vc = [MyShopEtalaseViewController new];
-            vc.data = @{MORE_SHOP_ID : [_auth objectForKey:MORE_SHOP_ID]?:@{},
-                        kTKPD_AUTHKEY:_auth?:@{}};
+            EtalaseViewController *vc = [EtalaseViewController new];
+            vc.delegate = self;
+            vc.isEditable = YES;
+            vc.showOtherEtalase = NO;
+            [vc setEnableAddEtalase:YES];
             vc.hidesBottomBarWhenPushed = YES;
+            
+            NSString* shopId = [_auth objectForKey:MORE_SHOP_ID]?:@{};
+            [vc setShopId:shopId];
             [wrapperController.navigationController pushViewController:vc animated:YES];
+
         }
         
     }
@@ -1035,9 +1039,9 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
 
 #pragma mark - Email delegate
 - (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
-
     [self dismissViewControllerAnimated:YES completion:^() {
         [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
+        self.tableView.frame = CGRectMake(0, 0, self.tableView.frame.size.width, self.tableView.frame.size.height);
     }];
 }
 

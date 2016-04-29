@@ -16,7 +16,6 @@
 #import "FilterShipmentConfirmationViewController.h"
 #import "SubmitShipmentConfirmationViewController.h"
 #import "ChangeCourierViewController.h"
-#import "TKPDTabProfileNavigationController.h"
 #import "CancelShipmentViewController.h"
 #import "NavigateViewController.h"
 #import "ActionOrder.h"
@@ -46,12 +45,12 @@
     BOOL _isNoData;
     BOOL _isRefreshView;
     
-    __weak RKObjectManager *_objectManager;
-    __weak RKManagedObjectRequestOperation *_request;
+    RKObjectManager *_objectManager;
+    RKManagedObjectRequestOperation *_request;
     RKResponseDescriptor *_responseDescriptorStatus;
     
-    __weak RKObjectManager *_actionObjectManager;
-    __weak RKManagedObjectRequestOperation *_actionRequest;
+    RKObjectManager *_actionObjectManager;
+    RKManagedObjectRequestOperation *_actionRequest;
     RKResponseDescriptor *_responseActionDescriptorStatus;
     
     NSOperationQueue *_operationQueue;
@@ -476,7 +475,7 @@
                                                       API_SHOP_ADDRESS_CITY,
                                                       API_SHOP_ADDRESS_PROVINCE,
                                                       API_SHOP_ADDRESS_COUNTRY,
-                                                      API_SHOP_ADDRESS_POSTAL
+                                                      API_SHOP_ADDRESS_POSTAL,
                                                       API_SHOP_SHIPPER_PHONE]];
     
     RKObjectMapping *orderDeadlineMapping = [RKObjectMapping mappingForClass:[OrderDeadline class]];
@@ -655,10 +654,7 @@
         
         [_activityIndicator startAnimating];
         
-        _request = [_objectManager appropriateObjectRequestOperationWithObject:self
-                                                                        method:RKRequestMethodPOST
-                                                                          path:API_NEW_ORDER_PATH
-                                                                    parameters:[param encrypt]];
+        _request = [_objectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_NEW_ORDER_PATH parameters:[param encrypt]];
         
         NSLog(@"\n\n\n\n%@\n\n\n\n", _request);
 

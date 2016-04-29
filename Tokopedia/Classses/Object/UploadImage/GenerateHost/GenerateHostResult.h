@@ -10,8 +10,10 @@
 
 #import "GeneratedHost.h"
 
-@interface GenerateHostResult : NSObject
+@interface GenerateHostResult : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) GeneratedHost *generated_host;
+
++ (RKObjectMapping*)mapping;
 
 @end

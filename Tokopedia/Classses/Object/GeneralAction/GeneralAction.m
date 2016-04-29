@@ -15,14 +15,14 @@
     
     [generalActionMapping addAttributeMappingsFromArray:@[@"status",
                                                           @"server_process_time",
-                                                          @"message_status",
-                                                          @"message_error"]];
+                                                          @"message_error",
+                                                          @"message_status"]];
     
     [generalActionMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data"
-                                                                                         toKeyPath:@"data"
+                                                                                        toKeyPath:@"data"
                                                                                        withMapping:[GeneralActionResult mapping]]];
     
-    return generalActionMapping;
+    return generalActionMapping;    
 }
 
 @end

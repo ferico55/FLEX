@@ -9,6 +9,8 @@
 #import "camera.h"
 #import "CameraCollectionViewController.h"
 #import "CameraCollectionCell.h"
+#import "ProductAddCaptionViewController.h"
+#import "GiveReviewViewController.h"
 #import "TKPDLiveCameraTableViewCell.h"
 #import "TKPDPhotoPicker.h"
 
@@ -169,6 +171,7 @@ NSString *const TKPDCameraAlbumListLiveVideoCellIdentifier = @"TKPDCameraAlbumLi
     };
 
     [assetsLibrary enumerateGroupsWithTypes:ALAssetsGroupAll usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
+        [group setAssetsFilter:[ALAssetsFilter allPhotos]];
         [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
             if(result)
             {
@@ -322,8 +325,24 @@ NSString *const TKPDCameraAlbumListLiveVideoCellIdentifier = @"TKPDCameraAlbumLi
             }
         }
     }
-    [_delegate didDismissController:self withUserInfo:@{@"selected_images":[_selectedImages copy], @"selected_indexpath":arrayIndexPath}];
-    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    if (_isAddReviewImage && _selectedImages.count > 0) {
+        ProductAddCaptionViewController *vc = [ProductAddCaptionViewController new];
+        vc.selectedImages = [_selectedImages copy];
+        vc.selectedIndexPaths = arrayIndexPath;
+        vc.delegate = _delegate;
+        vc.review = _review;
+        vc.imagesCaptions = _attachedImagesCaptions;
+        [self.navigationController pushViewController:vc animated:YES];
+    } else if (_isAddMoreReviewImage) {
+        [_delegate didReceiveImageWithSelectedImages:[_selectedImages copy]
+                                  selectedIndexPaths:arrayIndexPath
+                              attachedImagesCaptions:_attachedImagesCaptions];
+        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+
+    } else {
+        [_delegate didDismissController:self withUserInfo:@{@"selected_images":[_selectedImages copy], @"selected_indexpath":arrayIndexPath}];
+        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 

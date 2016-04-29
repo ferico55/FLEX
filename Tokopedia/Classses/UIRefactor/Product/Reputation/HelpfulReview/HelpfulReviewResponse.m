@@ -10,4 +10,18 @@
 
 @implementation HelpfulReviewResponse
 
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *helpfulReviewResponseMapping = [RKObjectMapping mappingForClass:[HelpfulReviewResponse class]];
+    
+    [helpfulReviewResponseMapping addAttributeMappingsFromArray:@[@"status",
+                                                                  @"server_process_time",
+                                                                  @"config"]];
+    
+    [helpfulReviewResponseMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data"
+                                                                                                 toKeyPath:@"data"
+                                                                                               withMapping:[HelpfulReviewResult mapping]]];
+    
+    return helpfulReviewResponseMapping;
+}
+
 @end

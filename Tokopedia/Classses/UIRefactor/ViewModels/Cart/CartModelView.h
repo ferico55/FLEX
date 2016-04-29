@@ -12,5 +12,11 @@
 
 @property (strong, nonatomic) NSString *cartIsPriceChanged;
 @property (strong, nonatomic) NSString *cartShopName;
+@property (strong, nonatomic) NSString *isLuckyMerchant;
+@property (strong, nonatomic) NSString *logiscticFee;
+@property (strong, nonatomic) NSString *totalProductPriceIDR;
+@property (strong, nonatomic) NSString *insuranceFee;
+@property (strong, nonatomic) NSString *shippingRateIDR;
+@property (strong, nonatomic) NSString *totalAmountIDR;
 
 @end

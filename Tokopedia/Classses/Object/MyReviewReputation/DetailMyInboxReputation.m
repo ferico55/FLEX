@@ -8,6 +8,8 @@
 
 #import "DetailMyInboxReputation.h"
 #import "MyReviewReputationViewModel.h"
+#import "ShopBadgeLevel.h"
+#import "ReputationDetail.h"
 
 @implementation DetailMyInboxReputation
 
@@ -44,4 +46,58 @@
     
     return _viewModel;
 }
+
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *detailMyInboxReputationMapping = [RKObjectMapping mappingForClass:[DetailMyInboxReputation class]];
+    
+    [detailMyInboxReputationMapping addAttributeMappingsFromArray:@[@"their_score_image",
+                                                                    @"create_time_fmt",
+                                                                    @"invoice_uri",
+                                                                    @"review_status_description",
+                                                                    @"order_id",
+                                                                    @"reviewee_role",
+                                                                    @"buyer_id",
+                                                                    @"invoice_ref_num",
+                                                                    @"shop_id",
+                                                                    @"create_time_ago",
+                                                                    @"reviewee_name",
+                                                                    @"read_status",
+                                                                    @"buyer_score",
+                                                                    @"inbox_id",
+                                                                    @"my_score_image",
+                                                                    @"role",
+                                                                    @"reviewee_picture",
+                                                                    @"is_reviewer_score_edited",
+                                                                    @"reputation_progress",
+                                                                    @"auto_read",
+                                                                    @"show_reviewee_score",
+                                                                    @"reviewee_score",
+                                                                    @"reviewee_score_status",
+                                                                    @"reputation_id",
+                                                                    @"updated_reputation_review",
+                                                                    @"unassessed_reputation_review",
+                                                                    @"is_edited",
+                                                                    @"reputation_days_left_fmt",
+                                                                    @"reputation_inbox_id",
+                                                                    @"show_reputation_day",
+                                                                    @"score_edit_time_fmt",
+                                                                    @"is_reviewee_score_edited",
+                                                                    @"reviewee_uri",
+                                                                    @"seller_score",
+                                                                    @"reputation_days_left",
+                                                                    @"reputation_score",
+                                                                    @"show_bookmark",
+                                                                    @"create_time_fmt_ws"]];
+    
+    [detailMyInboxReputationMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"user_reputation"
+                                                                                                   toKeyPath:@"user_reputation"
+                                                                                                 withMapping:[ReputationDetail mapping]]];
+    
+    [detailMyInboxReputationMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"shop_badge_level"
+                                                                                                   toKeyPath:@"shop_badge_level"
+                                                                                                 withMapping:[ShopBadgeLevel mapping]]];
+    
+    return detailMyInboxReputationMapping;
+}
+
 @end

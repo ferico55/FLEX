@@ -248,9 +248,8 @@ TKPDAlertViewDelegate
         NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
         ProfileEdit *profile = [result objectForKey:@""];
         NSString *sPhone =profile.result.data_user.user_phone;
-        NSString *formatted = [NSString stringWithFormat: @"%@ %@ %@", [sPhone substringWithRange:NSMakeRange(0,4)],[sPhone substringWithRange:NSMakeRange(4,4)],
-                               [sPhone substringWithRange:NSMakeRange(8,sPhone.length -4 -4)]];
-        [_phoneLabel setText:formatted];
+        
+        [_phoneLabel setText:sPhone];
         _phone = profile.result.data_user.user_phone;
         _verifyButton.enabled = YES;
         [_verifyButton setBackgroundColor:[UIColor colorWithRed:0.07 green:0.78 blue:0 alpha:1]];

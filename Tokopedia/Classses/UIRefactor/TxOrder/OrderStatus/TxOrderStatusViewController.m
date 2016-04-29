@@ -27,7 +27,6 @@
 #import "string_tx_order.h"
 
 #import "TxOrderStatus.h"
-#import "TxOrderObjectMapping.h"
 #import "NoResultView.h"
 
 #import "TextMenu.h"
@@ -37,6 +36,8 @@
 #import "NoResultReusableView.h"
 #import "RequestLDExtension.h"
 
+#import "RequestOrderData.h"
+
 #define TAG_ALERT_DELIVERY_CONFIRMATION 10
 #define TAG_ALERT_SUCCESS_DELIVERY_CONFIRM 11
 #define TAG_ALERT_REORDER 12
@@ -45,26 +46,16 @@
 #define DATA_ORDER_REORDER_KEY @"data_reorder"
 #define DATA_ORDER_COMPLAIN_KEY @"data_complain"
 
-@interface TxOrderStatusViewController () <UITableViewDataSource, UITableViewDelegate, TxOrderStatusCellDelegate, UIAlertViewDelegate, FilterSalesTransactionListDelegate, TxOrderStatusDetailViewControllerDelegate, TrackOrderViewControllerDelegate, TokopediaNetworkManagerDelegate, ResolutionCenterDetailViewControllerDelegate, CancelComplainDelegate, InboxResolutionCenterOpenViewControllerDelegate, LoadingViewDelegate, NoResultDelegate, requestLDExttensionDelegate>
+@interface TxOrderStatusViewController () <UITableViewDataSource, UITableViewDelegate, TxOrderStatusCellDelegate, UIAlertViewDelegate, FilterSalesTransactionListDelegate, TxOrderStatusDetailViewControllerDelegate, TrackOrderViewControllerDelegate, ResolutionCenterDetailViewControllerDelegate, CancelComplainDelegate, InboxResolutionCenterOpenViewControllerDelegate, LoadingViewDelegate, NoResultDelegate, requestLDExttensionDelegate>
 {
     NSMutableArray *_list;
-    NSOperationQueue *_operationQueue;
     NSString *_URINext;
     
     NSInteger _page;
     
     BOOL _isNodata;
     
-    TxOrderObjectMapping *_mapping;
-    
     UIRefreshControl *_refreshControll;
-    
-    __weak RKObjectManager *_objectManager;
-    __weak RKManagedObjectRequestOperation *_request;
-    __weak RKObjectManager *_objectManagerFinishOrder;
-    __weak RKManagedObjectRequestOperation *_requestFinishOrder;
-    __weak RKObjectManager *_objectManagerReOrder;
-    __weak RKManagedObjectRequestOperation *_requestReOrder;
     
     NSString *_transactionFilter;
     
@@ -74,7 +65,6 @@
     NSInteger _totalButtonsShow;
     
     NavigateViewController *_navigate;
-    TokopediaNetworkManager *_networkManager;
     
     TxOrderStatusList *_selectedTrackOrder;
     LoadingView *_loadingView;
@@ -144,8 +134,6 @@
     self.navigationItem.backBarButtonItem = backBarButtonItem;
     
     _list = [NSMutableArray new];
-    _mapping = [TxOrderObjectMapping new];
-    _operationQueue = [NSOperationQueue new];
     _objectsConfirmRequest = [NSMutableArray new];
     
     _refreshControll = [[UIRefreshControl alloc] init];
@@ -153,18 +141,9 @@
     [_refreshControll addTarget:self action:@selector(refreshRequest)forControlEvents:UIControlEventValueChanged];
     [_tableView addSubview:_refreshControll];
     
-    _networkManager = [TokopediaNetworkManager new];
-    _networkManager.delegate = self;
-    [_networkManager doRequest];
-    
     [self initNoResultView];
 
     if ([_action  isEqual: ACTION_GET_TX_ORDER_LIST] && !_isCanceledPayment) {
-//        _filterView.hidden = NO;
-//        UIEdgeInsets inset = _tableView.contentInset;
-//        inset.bottom += _filterView.frame.size.height;
-//        _tableView.contentInset = inset;
-//        _tableView.scrollIndicatorInsets = inset;
         UIBarButtonItem *barButton = [[UIBarButtonItem alloc]initWithTitle:@"Filter" style:UIBarButtonItemStyleDone target:self action:@selector(tap:)];
         self.navigationItem.rightBarButtonItem = barButton;
     }
@@ -181,30 +160,7 @@
     _loadingView = [LoadingView new];
     _loadingView.delegate = self;
     
-//    LuckyDeal *ld = [LuckyDeal new];
-//    LuckyDealAttributes *att = [LuckyDealAttributes new];
-//    LuckyDealData *data = [LuckyDealData new];
-//    att.token = @"Tokopedia Clover:q62yPVXnFRbDr9jh9wdBFhjU/DA=";
-//    att.extid = 1;
-//    att.code = 12400877;
-//    att.ut = 1448420536;
-//    data.ld_id = 1299609;
-//    data.type = 1;
-//    data.attributes = att;
-//    ld.data = data;
-//    ld.url =@"https://clover-staging.tokopedia.com/badge/member/extend/v1";
-//
-    
-    //TODO:: REMOVE THIS
-//    _requestLD = [RequestLDExtension new];
-//    _requestLD.delegate = self;
-//    _requestLD.luckyDeal = ld;
-//    [_requestLD doRequestMemberExtendURLString:@""];
-//    UIAlertView *alertSuccess = [[UIAlertView alloc]initWithTitle:nil message:@"Transaksi Anda sudah selesai! Silakan berikan Rating & Review sesuai tingkat kepuasan Anda atas pelayanan toko. Terima kasih sudah berbelanja di Tokopedia!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-//    [alertSuccess show];
-//    alertSuccess.tag = TAG_ALERT_SUCCESS_DELIVERY_CONFIRM;
-//    [self refreshRequest];
-//    [[NSNotificationCenter defaultCenter]postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil];
+    [self doRequestList];
 }
 
 - (void)didChangePreferredContentSize:(NSNotification *)notification
@@ -228,16 +184,6 @@
         [TPAnalytics trackScreenName:@"Purchase - Transaction List"];
         self.screenName = @"Purchase - Transaction List";
     }
-    
-    _networkManager.delegate = self;
-}
-
-
--(void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    [_networkManager requestCancel];
-    _networkManager.delegate = nil;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -249,9 +195,6 @@
 {
     [[NSNotificationCenter defaultCenter]removeObserver:self];
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
-    [_networkManager requestCancel];
-    _networkManager.delegate = nil;
-    _networkManager = nil;
 }
 
 -(IBAction)tap:(id)sender
@@ -289,26 +232,20 @@
 
 -(void)confirmDelivery:(TxOrderStatusList *)order atIndexPath:(NSIndexPath*)indexPath
 {
-    NSMutableDictionary *object = [NSMutableDictionary new];
-    [object setObject:order forKey:DATA_ORDER_DELIVERY_CONFIRM];
-    [object setObject:indexPath forKey:DATA_INDEXPATH_DELIVERY_CONFIRM];
-    
     [_list removeObject:order];
     [_tableView reloadData];
-    
-    [self configureRestKitFinishOrder];
-    [self requestFinishOrder:object];
+
+    [self doRequestFinishOrder:order];
 }
 
--(void)complainOrder:(TxOrderStatusList *)order
-{
+-(void)complainOrder:(TxOrderStatusList *)order{
     
 }
 
 -(void)reOrder:(TxOrderStatusList *)order atIndexPath:(NSIndexPath *)indexPath
 {
-    [self configureRestKitReOrder];
-    [self requestReOrder:order];
+    [self doRequestReorder:order];
+    
 }
 
 #pragma mark - Filter Delegate
@@ -452,16 +389,6 @@
     }
     if ([self isShowThreeButtonsOrder:order])
         cell.threeButtonsView.hidden = NO;
-    
-//    if ([self isShowTwoButtonsOrder:order] ||
-//        [self isShowThreeButtonsOrder:order] ||
-//        [self isShowButtonSeeComplainOrder:order] ||
-//        [self isShowButtonSeeComplainOrder:order] ||
-//        [self isShowButtonReorder:order]) {
-//        [cell.buttonsConstraintHeight makeObjectsPerformSelector:@selector(setConstant:)withObject:@(44)];
-//    } else {
-//        [cell.buttonsConstraintHeight makeObjectsPerformSelector:@selector(setConstant:)withObject:@(0)];
-//    }
 
     cell.indexPath = indexPath;
 
@@ -557,244 +484,93 @@
         NSLog(@"%ld", (long)row);
         
         if (_URINext != NULL && ![_URINext isEqualToString:@"0"] && _URINext != 0) {
-            [_networkManager doRequest];
-            //[self configureRestKit];
-            //[self request];
+            [self doRequestList];
         }
     }
 }
 
 
 #pragma mark - Request Get Transaction Order Payment Confirmation
-//-(void)cancel
-//{
-//    [_request cancel];
-//    //_request = nil;
-//    [_objectManager.operationQueue cancelAllOperations];
-//    _objectManager = nil;
-//}
 
--(id)getObjectManager:(int)tag
-//-(void)configureRestKit
-{
-    _objectManager = [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[TxOrderStatus class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TxOrderStatusResult class]];
-    
-    RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
-    [pagingMapping addAttributeMappingsFromDictionary:@{kTKPD_APIURINEXTKEY:kTKPD_APIURINEXTKEY,
-                                                        }];
-    
-    RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[TxOrderStatusList class]];
-    
-    RKObjectMapping *orderDetailMapping = [_mapping orderDetailMapping];
-    RKObjectMapping *orderDeadlineMapping = [_mapping orderDeadlineMapping];
-    RKObjectMapping *orderProductMapping = [_mapping orderProductsMapping];
-    RKObjectMapping *orderShopMapping = [_mapping orderShopMapping];
-    RKObjectMapping *orderShipmentMapping = [_mapping orderShipmentsMapping];
-    RKObjectMapping *orderLastMapping = [_mapping orderLastMapping];
-    RKObjectMapping *orderButtonMapping = [_mapping orderButtonMapping];
-    RKObjectMapping *orderHistoryMapping = [_mapping orderHistoryMapping];
-    RKObjectMapping *orderDestinationMapping = [_mapping orderDestinationMapping];
-    
-    
-    RKRelationshipMapping *resultRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                   toKeyPath:kTKPD_APIRESULTKEY
-                                                                                 withMapping:resultMapping];
-    
-    RKRelationshipMapping *listRel =[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APILISTKEY
-                                                                                toKeyPath:kTKPD_APILISTKEY
-                                                                              withMapping:listMapping];
-    
-    RKRelationshipMapping *pagingRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIPAGINGKEY
-                                                                                   toKeyPath:kTKPD_APIPAGINGKEY
-                                                                                 withMapping:pagingMapping];
-    
-    RKRelationshipMapping *orderDetailRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_ORDER_LIST_DETAIL_KEY
-                                                                                        toKeyPath:API_ORDER_LIST_DETAIL_KEY
-                                                                                      withMapping:orderDetailMapping];
-    
-    RKRelationshipMapping *orderDeadlineRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_ORDER_LIST_DEADLINE_KEY
-                                                                                              toKeyPath:API_ORDER_LIST_DEADLINE_KEY
-                                                                                            withMapping:orderDeadlineMapping];
-    
-    RKRelationshipMapping *orderproductsRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_ORDER_LIST_PRODUCTS_KEY
-                                                                                          toKeyPath:API_ORDER_LIST_PRODUCTS_KEY
-                                                                                        withMapping:orderProductMapping];
-    
-    RKRelationshipMapping *orderButtonRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_ORDER_LIST_BUTTON_KEY
-                                                                                      toKeyPath:API_ORDER_LIST_BUTTON_KEY
-                                                                                    withMapping:orderButtonMapping];
-    
-    RKRelationshipMapping *orderShopRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_ORDER_LIST_SHOP_KEY
-                                                                                      toKeyPath:API_ORDER_LIST_SHOP_KEY
-                                                                                    withMapping:orderShopMapping];
-    
-    RKRelationshipMapping *orderShipmentRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_ORDER_LIST_SHIPMENT_KEY
-                                                                                          toKeyPath:API_ORDER_LIST_SHIPMENT_KEY
-                                                                                        withMapping:orderShipmentMapping];
-    
-    RKRelationshipMapping *orderLastRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_ORDER_LIST_LAST_KEY
-                                                                                      toKeyPath:API_ORDER_LIST_LAST_KEY
-                                                                                    withMapping:orderLastMapping];
-    
-    RKRelationshipMapping *orderHistoryRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_ORDER_LIST_HISTORY_KEY
-                                                                                      toKeyPath:API_ORDER_LIST_HISTORY_KEY
-                                                                                    withMapping:orderHistoryMapping];
-    
-    RKRelationshipMapping *orderDestinationRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_ORDER_LIST_DESTINATION_KEY
-                                                                                         toKeyPath:API_ORDER_LIST_DESTINATION_KEY
-                                                                                       withMapping:orderDestinationMapping];
+-(void)doRequestList{
 
-    [statusMapping addPropertyMapping:resultRel];
-    
-    [resultMapping addPropertyMapping:listRel];
-    [resultMapping addPropertyMapping:pagingRel];
-    
-    [listMapping addPropertyMapping:orderDetailRel];
-    [listMapping addPropertyMapping:orderDeadlineRel];
-    [listMapping addPropertyMapping:orderproductsRel];
-    [listMapping addPropertyMapping:orderShopRel];
-    [listMapping addPropertyMapping:orderButtonRel];
-    [listMapping addPropertyMapping:orderShipmentRel];
-    [listMapping addPropertyMapping:orderLastRel];
-    [listMapping addPropertyMapping:orderHistoryRel];
-    [listMapping addPropertyMapping:orderDestinationRel];
-    
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                            method:RKRequestMethodPOST
-                                                                                       pathPattern:API_PATH_TX_ORDER
-                                                                                           keyPath:@""
-                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectManager addResponseDescriptor:responseDescriptor];
-    
-    return _objectManager;
+    if (![_refreshControll isRefreshing]) {
+        _tableView.tableFooterView = _footer;
+        [_act startAnimating];
+    }
+    if ([_action isEqualToString:@"get_tx_order_status"]) {
+        [self doRequestStatusList];
+    } else if([_action isEqualToString:@"get_tx_order_deliver"]){
+        [self doRequestDeliverList];
+    }else{
+        [self doRequestTransactionList];
+    }
+
 }
 
--(NSDictionary *)getParameter:(int)tag
-{
+-(void)doRequestTransactionList{
     NSString *filterInvoice = [_dataInput objectForKey:API_INVOICE_KEY]?:@"";
     NSString *filterStartDate = [_dataInput objectForKey:API_TRANSACTION_START_DATE_KEY]?:@"";
     NSString *filterEndDate = [_dataInput objectForKey:API_TRANSACTION_END_DATE_KEY]?:@"";
     NSString *filterStatus = (_isCanceledPayment)?@"5":[_dataInput objectForKey:API_TRANSACTION_STATUS_KEY]?:@"";
     
-    NSDictionary* param = @{API_ACTION_KEY : _action,
-                            API_PAGE_KEY : @(_page),
-                            API_INVOICE_KEY : filterInvoice,
-                            API_TRANSACTION_START_DATE_KEY:filterStartDate,
-                            API_TRANSACTION_END_DATE_KEY : filterEndDate,
-                            API_TRANSACTION_STATUS_KEY : filterStatus
-                            };
-    return param;
+    [RequestOrderData fetchListTransactionPage:_page invoice:filterInvoice startDate:filterStartDate endDate:filterEndDate status:filterStatus success:^(NSArray *list, NSInteger nextPage, NSString* uriNext) {
+        [self adjustList:list nextPage:nextPage uriNext:uriNext];
+    } failure:^(NSError *error) {
+        [self failedFetch];
+    }];
 }
 
--(NSString *)getPath:(int)tag
-{
-    return API_PATH_TX_ORDER;
+-(void)doRequestDeliverList{
+    [RequestOrderData fetchListOrderDeliverPage:_page success:^(NSArray *list, NSInteger nextPage, NSString *uriNext) {
+        [self adjustList:list nextPage:nextPage uriNext:uriNext];
+    } failure:^(NSError *error) {
+        [self failedFetch];
+    }];
 }
 
--(void)actionBeforeRequest:(int)tag
-{
-    if (![_refreshControll isRefreshing]) {
-        _tableView.tableFooterView = _footer;
-        [_act startAnimating];
-        
-    }
+-(void)doRequestStatusList{
+    [RequestOrderData fetchListOrderStatusPage:_page success:^(NSArray *list, NSInteger nextPage, NSString *uriNext) {
+        [self adjustList:list nextPage:nextPage uriNext:uriNext];
+    } failure:^(NSError *error) {
+        [self failedFetch];
+    }];
 }
 
--(NSString *)getRequestStatus:(id)result withTag:(int)tag
-{
-    NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
-    id stat = [resultDict objectForKey:@""];
-    TxOrderStatus *order = stat;
-    
-    return order.status;
-}
-
--(void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag
-{
+-(void)failedFetch{
     [_act stopAnimating];
     [_refreshControll endRefreshing];
-    if (_page == 1) {
-        _tableView.contentOffset = CGPointZero;
-    }
-    
-    NSDictionary *resultDict = ((RKMappingResult*)successResult).dictionary;
-    id stat = [resultDict objectForKey:@""];
-    TxOrderStatus *order = stat;
-    
     [_noResultView removeFromSuperview];
-    
-    if(order.message_error)
-    {
-        NSArray *array = order.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
-        [alert show];
-    }
-    else{
-        if (_page == 1) {
-            [_list removeAllObjects];
-        }
-        
-        [_list addObjectsFromArray:order.result.list];
-        
-        if (_list.count >0) {
-            _isNodata = NO;
-            _URINext =  order.result.paging.uri_next;
-            NSURL *url = [NSURL URLWithString:_URINext];
-            NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
-            
-            NSMutableDictionary *queries = [NSMutableDictionary new];
-            [queries removeAllObjects];
-            for (NSString *keyValuePair in querry)
-            {
-                NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
-                NSString *key = [pairComponents objectAtIndex:0];
-                NSString *value = [pairComponents objectAtIndex:1];
-                
-                [queries setObject:value forKey:key];
-            }
-            
-            _page = [[queries objectForKey:API_PAGE_KEY] integerValue];
-            _tableView.tableFooterView = nil;
-        } else {
-            if ([self isUsingAnyFilter]) {
-                [_noResultView setNoResultTitle:[NSString stringWithFormat:@"Belum ada transaksi untuk tanggal %@ - %@", [_dataInput objectForKey:API_TRANSACTION_START_DATE_KEY], [_dataInput objectForKey:API_TRANSACTION_END_DATE_KEY]]];
-                [_noResultView hideButton:YES];
-            } else {
-                [_noResultView setNoResultTitle:@"Belum ada transaksi"];
-                [_noResultView hideButton:YES];
-            }
-            
-            [_tableView addSubview:_noResultView];
-
-        }
-        
-        [_tableView reloadData];
-    }
-}
-
--(void)actionAfterFailRequestMaxTries:(int)tag
-{
-    [_act stopAnimating];
-    [_refreshControll endRefreshing];
-    
-    [_noResultView removeFromSuperview];
-    
-    if (_page == 1) {
-        _tableView.contentOffset = CGPointZero;
-    }
-    
     _tableView.tableFooterView = _loadingView.view;
+}
+
+-(void)adjustList:(NSArray*)list nextPage:(NSInteger)nextPage uriNext:(NSString*)uriNext{
+    
+    if (_page == 1) {
+        [_list removeAllObjects];
+    }
+    [_list addObjectsFromArray:list];
+    if (_list.count >0) {
+        _isNodata = NO;
+        _URINext =  uriNext;
+        _page = nextPage;
+        _tableView.tableFooterView = nil;
+        [_noResultView removeFromSuperview];
+    } else {
+        if ([self isUsingAnyFilter]) {
+            [_noResultView setNoResultTitle:[NSString stringWithFormat:@"Belum ada transaksi untuk tanggal %@ - %@", [_dataInput objectForKey:API_TRANSACTION_START_DATE_KEY], [_dataInput objectForKey:API_TRANSACTION_END_DATE_KEY]]];
+            [_noResultView hideButton:YES];
+        } else {
+            [_noResultView setNoResultTitle:@"Belum ada transaksi"];
+            [_noResultView hideButton:YES];
+        }
+        
+        [_tableView addSubview:_noResultView];
+    }
+    
+    [_act stopAnimating];
+    [_refreshControll endRefreshing];
+    [_tableView reloadData];
 }
 
 #pragma mark - loading view delegate
@@ -802,290 +578,74 @@
 {
     [_act startAnimating];
     _tableView.tableFooterView = _footer;
-    [_networkManager doRequest];
+    [self doRequestList];
 }
 
 
 #pragma mark - Request Delivery Finish Order
--(void)cancelFinishOrder
-{
-    [_requestFinishOrder cancel];
-    //_requestFinishOrder = nil;
-    [_objectManagerFinishOrder.operationQueue cancelAllOperations];
-    _objectManagerFinishOrder = nil;
-}
-
--(void)configureRestKitFinishOrder
-{
-    _objectManagerFinishOrder = [RKObjectManager sharedClient];
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[TransactionAction mapping]
-                                                                                            method:RKRequestMethodPOST
-                                                                                       pathPattern:API_PATH_ACTION_TX_ORDER
-                                                                                           keyPath:@""
-                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectManagerFinishOrder addResponseDescriptor:responseDescriptor];
-    
-}
-
--(void)requestFinishOrder:(id)object
-{
-    NSDictionary *selectedObject = (NSDictionary*)object;
-    
-    TxOrderStatusList *order = [selectedObject objectForKey:DATA_ORDER_DELIVERY_CONFIRM];
-    NSIndexPath *indexPath = [selectedObject objectForKey:DATA_INDEXPATH_DELIVERY_CONFIRM];
-    
-    NSMutableDictionary *processingObject = [NSMutableDictionary new];
-    [processingObject setObject:order forKey:DATA_ORDER_DELIVERY_CONFIRM];
-    [processingObject setObject:indexPath forKey:DATA_INDEXPATH_DELIVERY_CONFIRM];
-    
-    [_objectsConfirmRequest addObject:processingObject];
-    
-    if (_requestFinishOrder.isExecuting) return;
-    
-    NSTimer *timer;
-    
-    NSString *action = ACTION_DELIVERY_FINISH_ORDER;
+-(void)doRequestFinishOrder:(TxOrderStatusList*)order{
     if ([_action isEqualToString:@"get_tx_order_deliver"]) {
-        action = ACTION_DETIVERY_CONFIRM;
+        [self confirmDeliveryOrderDeliver:order];
+    } else {
+        [self confirmDeliveryOrderStatus:order];
     }
-    
-    NSDictionary* param = @{API_ACTION_KEY : action,
-                            API_ORDER_ID_KEY : order.order_detail.detail_order_id};
-
-    _requestFinishOrder = [_objectManagerFinishOrder appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_PATH_ACTION_TX_ORDER parameters:[param encrypt]];
-    
-    [_requestFinishOrder setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestSuccessFinishOrder:object
-                          withOperation:operation
-                      withMappingResult:mappingResult];
-        [_objectsConfirmRequest removeObject:processingObject];
-        [timer invalidate];
-        [_act stopAnimating];
-        [self requestProcessFinishOrder];
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [self failedConfirmDelivery:object];
-        [self requestFailureFinishOrder:error];
-        [timer invalidate];
-        [_act stopAnimating];
-        [_objectsConfirmRequest removeObject:processingObject];
-        [self requestProcessFinishOrder];
-    }];
-    
-    [_operationQueue addOperation:_requestFinishOrder];
-    
-    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutFinishOrder) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 
--(void)requestSuccessFinishOrder:(NSDictionary*)object withOperation:(RKObjectRequestOperation *)operation withMappingResult:(RKMappingResult*)mappingResult
-{
-    NSDictionary *result = mappingResult.dictionary;
-    id stat = [result objectForKey:@""];
-    TransactionAction *order = stat;
-    BOOL status = [order.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if (status) {
-        if (order.result.is_success == 1) {
+-(void)confirmDeliveryOrderStatus:(TxOrderStatusList*)order{
+    [RequestOrderAction fetchConfirmDeliveryOrderStatus:order success:^(TxOrderStatusList *order, TransactionActionResult* data) {
+        if (data.ld.url) {
+            _requestLD = [RequestLDExtension new];
+            _requestLD.luckyDeal = data.ld;
+            _requestLD.delegate = self;
+            [_requestLD doRequestMemberExtendURLString:data.ld.url];
+        } else {
             UIAlertView *alertSuccess = [[UIAlertView alloc]initWithTitle:nil message:@"Transaksi Anda sudah selesai! Silakan berikan Rating & Review sesuai tingkat kepuasan Anda atas pelayanan toko. Terima kasih sudah berbelanja di Tokopedia!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alertSuccess show];
             alertSuccess.tag = TAG_ALERT_SUCCESS_DELIVERY_CONFIRM;
-            [self refreshRequest];
             [[NSNotificationCenter defaultCenter]postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil];
         }
-        else
-        {
-            [self failedConfirmDelivery:object];
-            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:order.message_error?:@[@"Permintaan anda gagal. Mohon coba kembali"] delegate:self];
-            StickyAlertView *alertDelegate = [[StickyAlertView alloc] initWithErrorMessages:order.message_error?:@[@"Permintaan anda gagal. Mohon coba kembali"] delegate:_detailViewController];
-            [alertDelegate show];
-            [alert show];
-        }
-        
-        if (order.result.ld.url) {
+    } failure:^(NSError *error, TxOrderStatusList* order) {
+        [self failedConfirmDelivery:order];
+    }];
+}
+
+-(void)confirmDeliveryOrderDeliver:(TxOrderStatusList*)order{
+    [RequestOrderAction fetchConfirmDeliveryOrderDeliver:order success:^(TxOrderStatusList *order, TransactionActionResult* data) {
+        if (data.ld.url) {
             _requestLD = [RequestLDExtension new];
-            _requestLD.luckyDeal = order.result.ld;
+            _requestLD.luckyDeal = data.ld;
             _requestLD.delegate = self;
-            [_requestLD doRequestMemberExtendURLString:order.result.ld.url];
+            [_requestLD doRequestMemberExtendURLString:data.ld.url];
+        } else {
+            UIAlertView *alertSuccess = [[UIAlertView alloc]initWithTitle:nil message:@"Transaksi Anda sudah selesai! Silakan berikan Rating & Review sesuai tingkat kepuasan Anda atas pelayanan toko. Terima kasih sudah berbelanja di Tokopedia!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alertSuccess show];
+            alertSuccess.tag = TAG_ALERT_SUCCESS_DELIVERY_CONFIRM;
+            [[NSNotificationCenter defaultCenter]postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil];
         }
-    }
-    else
-    {
-        [self failedConfirmDelivery:object];
-        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Permintaan anda gagal. Mohon coba kembali"] delegate:self];
-        [alert show];
-        StickyAlertView *alertDelegate = [[StickyAlertView alloc] initWithErrorMessages:order.message_error?:@[@"Permintaan anda gagal. Mohon coba kembali"] delegate:_detailViewController];
-        [alertDelegate show];
-    }
+    } failure:^(NSError *error, TxOrderStatusList* order) {
+        [self failedConfirmDelivery:order];
+    }];
 }
 
--(void)requestFailureFinishOrder:(id)object
-{
-    NSError *error = object;
 
-    NSArray *errors;
-    if(error.code == -1011) {
-        errors = @[@"Mohon maaf, terjadi kendala pada server"];
-    } else if (error.code==-1009 || error.code==-999) {
-        errors = @[@"Tidak ada koneksi internet"];
-    } else {
-        errors = @[error.localizedDescription];
-    }
-    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errors delegate:self];
-    [alert show];
-}
-
--(void)requestProcessFinishOrder
-{
-    if ([_objectsConfirmRequest count]>0) {
-        [self configureRestKitFinishOrder];
-        [self requestFinishOrder:[_objectsConfirmRequest firstObject]];
-    }
-}
-
--(void)requestTimeoutFinishOrder
-{
-    [self cancelFinishOrder];
+-(void)finishRequestLD{
+    UIAlertView *alertSuccess = [[UIAlertView alloc]initWithTitle:nil message:@"Transaksi Anda sudah selesai! Silakan berikan Rating & Review sesuai tingkat kepuasan Anda atas pelayanan toko. Terima kasih sudah berbelanja di Tokopedia!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [alertSuccess show];
+    alertSuccess.tag = TAG_ALERT_SUCCESS_DELIVERY_CONFIRM;
+    [[NSNotificationCenter defaultCenter]postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil];
 }
 
 #pragma mark - Request ReOrder
--(void)cancelReOrder
-{
-    [_requestReOrder cancel];
-    //_requestReOrder = nil;
-    [_objectManagerReOrder.operationQueue cancelAllOperations];
-    _objectManagerReOrder = nil;
-}
-
--(void)configureRestKitReOrder
-{
-    _objectManagerReOrder = [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[TransactionAction class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TransactionActionResult class]];
-    [resultMapping addAttributeMappingsFromArray:@[API_IS_SUCCESS_KEY]];
-    
-    
-    RKRelationshipMapping *resultRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                   toKeyPath:kTKPD_APIRESULTKEY
-                                                                                 withMapping:resultMapping];
-    [statusMapping addPropertyMapping:resultRel];
-    
-    
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                            method:RKRequestMethodPOST
-                                                                                       pathPattern:API_PATH_ACTION_TX_ORDER
-                                                                                           keyPath:@""
-                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectManagerReOrder addResponseDescriptor:responseDescriptor];
-    
-}
-
--(void)requestReOrder:(TxOrderStatusList*)order
-{
-    if (_requestReOrder.isExecuting) return;
-    
-    NSTimer *timer;
-    
-    NSDictionary* param = @{API_ACTION_KEY : ACTION_RE_ORDER,
-                            API_ORDER_ID_KEY : order.order_detail.detail_order_id};
-
-//#if DEBUG
-//    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-//    NSDictionary* auth = [secureStorage keychainDictionary];
-//    
-//    NSString *userID = [auth objectForKey:kTKPD_USERIDKEY];
-//    
-//    NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
-//    [paramDictionary addEntriesFromDictionary:param];
-//    [paramDictionary setObject:@"off" forKey:@"enc_dec"];
-//    [paramDictionary setObject:userID?:@"" forKey:kTKPD_USERIDKEY];
-//    
-//    _requestReOrder = [_objectManagerReOrder appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_PATH_ACTION_TX_ORDER parameters:paramDictionary];
-//#else
-    _requestReOrder = [_objectManagerReOrder appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_PATH_ACTION_TX_ORDER parameters:[param encrypt]];
-//#endif
-    
-    [_requestReOrder setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestSuccessReOrder:order
-                          withOperation:operation
-                      withMappingResult:mappingResult];
-        [timer invalidate];
+-(void)doRequestReorder:(TxOrderStatusList*)order{
+    [RequestOrderAction fetchReorder:order success:^(TxOrderStatusList *order, TransactionActionResult *data) {
         [_act stopAnimating];
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [self requestFailureReOrder:order withError:error];
-        [timer invalidate];
+        TransactionCartRootViewController *vc = [TransactionCartRootViewController new];
+        [self.navigationController pushViewController:vc animated:YES];
+        
+    } failure:^(NSError *error, TxOrderStatusList *order) {
         [_act stopAnimating];
     }];
-    
-    [_operationQueue addOperation:_requestReOrder];
-    
-    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutReOrder) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
-
--(void)requestSuccessReOrder:(TxOrderStatusList*)object withOperation:(RKObjectRequestOperation *)operation withMappingResult:(RKMappingResult*)mappingResult
-{
-    NSDictionary *result = mappingResult.dictionary;
-    id stat = [result objectForKey:@""];
-    TransactionAction *order = stat;
-    BOOL status = [order.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if (status) {
-        if (order.result.is_success == 1) {
-            TransactionCartRootViewController *vc = [TransactionCartRootViewController new];
-            [self.navigationController pushViewController:vc animated:YES];
-        }
-        else
-        {
-            if(order.message_error)
-            {
-                NSMutableArray *errors = [order.message_error mutableCopy];
-                for (int i = 0; i<errors.count; i++) {
-                    if ([order.message_error[i] rangeOfString:@"Alamat"].location == NSNotFound) {
-                    //if ([order.message_error[i] containsString:@"Alamat"]) {
-                        [errors replaceObjectAtIndex:i withObject:@"Pesan ulang tidak dapat dilakukan karena alamat tidak valid."];
-                    }
-                }
-                NSArray *array = errors?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
-                [alert show];
-            }        }
-    }
-    else
-    {
-        [self requestFailureReOrder:object withError:nil];
-    }
-}
-
-
--(void)requestFailureReOrder:(TxOrderStatusList*)order withError:(NSError*)error
-{
-    if ([error code] != NSURLErrorCancelled) {
-        NSString *errorDescription = error.localizedDescription;
-        UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-        [errorAlert show];
-    }
-}
-
--(void)requestProcessReOrder
-{
-
-}
-
--(void)requestTimeoutReOrder
-{
-    [self cancelReOrder];
-}
-
 
 #pragma mark - Cell Delegate
 -(void)trackOrderAtIndexPath:(NSIndexPath *)indexPath
@@ -1131,45 +691,21 @@
 -(void)shouldCancelComplain:(InboxResolutionCenterList *)resolution atIndexPath:(NSIndexPath *)indexPath
 {
     TxOrderStatusList *order = _list[indexPath.row];
-    RequestCancelResolution *request = [self requestCancelComlpain];
     NSDictionary *queries = [NSDictionary dictionaryFromURLString:order.order_button.button_res_center_url];
     NSString *resolutionID = [queries objectForKey:@"id"];
-    request.resolutionID = [resolutionID integerValue];
-    request.delegate = self;
-    request.resolution = resolution;
-    [request doRequest];
-}
-
--(RequestCancelResolution*)requestCancelComlpain
-{
-    if (!_requestCancelComplain) {
-        _requestCancelComplain = [RequestCancelResolution new];
-        _requestCancelComplain.delegate = self;
-    }
     
-    return _requestCancelComplain;
+    [RequestCancelResolution fetchCancelComplainID:resolutionID detail:resolution success:^(InboxResolutionCenterList *resolution, NSString *uriNext) {
+        [_list removeObject:resolution];
+        [_tableView reloadData];
+        [self refreshRequest];
+    } failure:^(NSError *error) {
+        
+    }];
 }
 
--(void)successCancelComplain:(InboxResolutionCenterList *)resolution successStatus:(NSArray *)successStatus
+-(void)failedConfirmDelivery:(TxOrderStatusList*)order
 {
-    StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:successStatus?:@[@"Anda telah berhasil membatalkan komplain"] delegate:self];
-    [alert show];
-    [_list removeObject:resolution];
-    [_tableView reloadData];
-    [self refreshRequest];
-}
-
--(void)failedCancelComplain:(InboxResolutionCenterList *)resolution errors:(NSArray *)errors
-{
-    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errors delegate:self];
-    [alert show];
-}
-
--(void)failedConfirmDelivery:(NSDictionary*)object
-{
-    TxOrderStatusList *order = [object objectForKey:DATA_ORDER_DELIVERY_CONFIRM];
-    NSIndexPath *indexPath = [object objectForKey:DATA_INDEXPATH_DELIVERY_CONFIRM];
-    [_list insertObject:order atIndex:indexPath.row];
+    [_list insertObject:order atIndex:0];
     [_tableView reloadData];
 }
 
@@ -1217,8 +753,7 @@
     {
         if (buttonIndex == 1) {
             TxOrderStatusList *order = [_dataInput objectForKey:DATA_ORDER_REORDER_KEY];
-            [self configureRestKitReOrder];
-            [self requestReOrder:order];
+            [self doRequestReorder:order];
         }
     }
     else if (alertView.tag == TAG_ALERT_COMPLAIN)
@@ -1385,12 +920,7 @@
 -(void)refreshRequest
 {
     _page = 1;
-
-    _networkManager.delegate = self;
-    [_refreshControll beginRefreshing];
-    [_tableView setContentOffset:CGPointMake(0, -_refreshControll.frame.size.height) animated:YES];
-    [_networkManager doRequest];
-    [_act stopAnimating];
+    [self doRequestList];
 }
 
 -(void)statusDetailAtIndexPath:(NSIndexPath *)indexPath

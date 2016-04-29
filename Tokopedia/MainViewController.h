@@ -21,7 +21,16 @@
 #pragma mark -
 #pragma mark MainViewController
 
+typedef NS_ENUM(NSInteger, MainViewControllerPage) {
+    MainViewControllerPageDefault,
+    MainViewControllerPageSearch,
+    MainViewControllerPageLogin,
+    MainViewControllerPageRegister
+};
+
 @interface MainViewController : UIViewController
+
+- (instancetype)initWithPage:(MainViewControllerPage)page;
 
 @property (nonatomic, strong) NSDictionary *data;
 @property (nonatomic, strong) NSMutableDictionary *auth;

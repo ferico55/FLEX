@@ -12,7 +12,6 @@
 #import "ShopFavoritedViewController.h"
 #import "ShopFavoritedCell.h"
 
-#import "TKPDTabProfileNavigationController.h"
 #import "ProfileFavoriteShopViewController.h"
 #import "ProfileContactViewController.h"
 

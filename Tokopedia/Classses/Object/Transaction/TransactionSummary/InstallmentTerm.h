@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface InstallmentTerm : NSObject
+@interface InstallmentTerm : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *total_price;
 @property (nonatomic, strong) NSString *monthly_price;

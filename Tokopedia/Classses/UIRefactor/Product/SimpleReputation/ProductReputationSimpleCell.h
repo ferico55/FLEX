@@ -52,6 +52,10 @@
 @property (strong, nonatomic) IBOutlet UIButton *showMoreButton;
 @property(strong, nonatomic) NSIndexPath *indexPath;
 
+@property (strong, nonatomic) IBOutlet UIView *reviewImageAttachmentView;
+@property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *reviewImageAttachmentPictures;
+
+
 //put flag in cell not in viewmodel because everyone uses different viewmodel and entity
 //cannot put flag in all viewmodel variations!
 @property BOOL isHelpful;

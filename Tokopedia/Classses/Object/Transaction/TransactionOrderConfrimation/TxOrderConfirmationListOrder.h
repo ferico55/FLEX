@@ -14,7 +14,7 @@
 #import "OrderDestination.h"
 #import "OrderDetail.h"
 
-@interface TxOrderConfirmationListOrder : NSObject
+@interface TxOrderConfirmationListOrder : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *order_JOB_status;
 @property (nonatomic, strong) NSArray *order_products;

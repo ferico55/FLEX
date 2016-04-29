@@ -11,7 +11,7 @@
 #import "SystemBankAcount.h"
 
 
-@interface TxOrderPaymentEditSystemBank : NSObject
+@interface TxOrderPaymentEditSystemBank : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSArray *sysbank_list;
 @property (nonatomic, strong) NSString *sysbank_id_chosen;
