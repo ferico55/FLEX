@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2D50139230438B54812D14B9 /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */; };
+		6255CA491CD34AD800F76BBE /* DepositRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 6255CA481CD34AD800F76BBE /* DepositRequest.m */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
 		7AB61F031CCF5E62005C1130 /* TPAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AB610DB1CCF5E5D005C1130 /* TPAnalytics.m */; };
@@ -2295,6 +2296,8 @@
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
 		2D733D9158C7BF957D514506 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
 		4868E459AB2A65D133732296 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tokopedia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6255CA481CD34AD800F76BBE /* DepositRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DepositRequest.m; sourceTree = "<group>"; };
+		6255CA4A1CD34AEB00F76BBE /* DepositRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DepositRequest.h; sourceTree = "<group>"; };
 		7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
@@ -8466,6 +8469,8 @@
 		7AB617041CCF5E5F005C1130 /* Deposit */ = {
 			isa = PBXGroup;
 			children = (
+				6255CA4A1CD34AEB00F76BBE /* DepositRequest.h */,
+				6255CA481CD34AD800F76BBE /* DepositRequest.m */,
 				7AB617051CCF5E5F005C1130 /* DepositFormAccountBankViewController.h */,
 				7AB617061CCF5E5F005C1130 /* DepositFormAccountBankViewController.m */,
 				7AB617071CCF5E5F005C1130 /* DepositFormAccountBankViewController.xib */,
@@ -13333,6 +13338,7 @@
 				7AB61F561CCF5E62005C1130 /* CategoryObj.m in Sources */,
 				7AB623731CCF5E63005C1130 /* SearchResultShopCell.m in Sources */,
 				7AB622FD1CCF5E63005C1130 /* MyReviewReputationCell.m in Sources */,
+				6255CA491CD34AD800F76BBE /* DepositRequest.m in Sources */,
 				7AB61F2B1CCF5E62005C1130 /* UIScrollViewCategory.swift in Sources */,
 				7AB623E41CCF5E63005C1130 /* FilterLocationViewCell.m in Sources */,
 				7AB624151CCF5E63005C1130 /* TransactionCartCostView.m in Sources */,
