@@ -474,6 +474,11 @@
     [self.tableView reloadData];
 }
 
+-(void)resetSelectedFilter{
+    _selectedCategory = nil;
+    [self.tableView reloadData];
+}
+
 #pragma mark - Loading view delegate
 
 - (void)pressRetryButton {

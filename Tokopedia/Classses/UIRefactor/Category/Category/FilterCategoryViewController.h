@@ -31,4 +31,6 @@ typedef NS_ENUM(NSInteger, FilterCategoryType) {
 @property (weak, nonatomic) id<FilterCategoryViewDelegate> delegate;
 @property FilterCategoryType filterType;
 
+-(void)resetSelectedFilter;
+
 @end

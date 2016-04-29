@@ -70,6 +70,7 @@ import UIKit
         controller.tabBarWidth = 120
         controller.tabBarItemHeight = 44
         controller.viewControllers = listControllers as [AnyObject]
+        controller.showResetButton = true
         
         let navigation: UINavigationController = UINavigationController.init(rootViewController: controller)
         navigation.navigationBar.translucent = false
@@ -126,7 +127,7 @@ import UIKit
         object2.filterID = "1";
         items.addObject(object2)
         
-        let controller: FilterTableViewController = FilterTableViewController.init(items: items.copy() as! [FilterObject], selectedObject: filter.selectedShop) { (selectedShop) in
+        let controller: FilterTableViewController = FilterTableViewController.init(items: items.copy() as! [FilterObject], selectedObject: filter.selectedShop, showSearchBar: false) { (selectedShop) in
             self.filter.selectedShop = selectedShop
         }
 
@@ -153,7 +154,7 @@ import UIKit
             items.addObject(object)
         }
         
-        let controller: FilterTableViewController = FilterTableViewController.init(items: items.copy() as! [FilterObject], selectedObject: filter.selectedLocation) { (selectedLocation) in
+        let controller: FilterTableViewController = FilterTableViewController.init(items: items.copy() as! [FilterObject], selectedObject: filter.selectedLocation, showSearchBar: true) { (selectedLocation) in
             self.filter.selectedLocation = selectedLocation
         }
 
@@ -187,7 +188,7 @@ import UIKit
         object3.filterID = "2";
         items.addObject(object3)
         
-        let controller: FilterTableViewController = FilterTableViewController.init(items: items.copy() as! [FilterObject], selectedObject: filter.selectedCondition) { (selectedCondition) in
+        let controller: FilterTableViewController = FilterTableViewController.init(items: items.copy() as! [FilterObject], selectedObject: filter.selectedCondition, showSearchBar: false) { (selectedCondition) in
             self.filter.selectedCondition = selectedCondition
         }
         
@@ -220,6 +221,10 @@ import UIKit
     // MARK: - MHVerticalTabBarController Delegate
     func done() {
         completionHandler(self.filter)
+    }
+    func didTapResetButton(button: UIButton!) {
+        self.filter = QueryObject()
+        listControllers.forEach { $0.resetSelectedFilter() }
     }
 
     func tabBarController(tabBarController: MHVerticalTabBarController!, didSelectViewController viewController: UIViewController!) {

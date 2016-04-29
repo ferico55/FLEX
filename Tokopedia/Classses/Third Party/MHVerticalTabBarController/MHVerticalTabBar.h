@@ -20,6 +20,9 @@
  */
 - (void)tabBar:(MHVerticalTabBar *)tabBar didSelectItem:(UITabBarItem *)item;
 
+@optional
+- (void)didTapResetButton:(UIButton*)button;
+
 @end
 
 @interface MHVerticalTabBar : UIScrollView

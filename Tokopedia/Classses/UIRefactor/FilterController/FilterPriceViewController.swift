@@ -157,6 +157,11 @@ class FilterPriceViewController: UIViewController ,UITableViewDelegate, UITableV
         return true
     }
     
+    func resetSelectedFilter() -> Void {
+        price = FilterPrice()
+        tableView.reloadData()
+    }
+    
 }
 
 

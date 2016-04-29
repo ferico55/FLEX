@@ -21,9 +21,10 @@
 /**
  Delegate method that gets called when a view controller is selected.
  */
+@optional
 - (void)tabBarController:(MHVerticalTabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController;
-
 -(void)done;
+- (void)didTapResetButton:(UIButton*)button;
 @end
 
 @interface MHVerticalTabBarController : UIViewController <MHVerticalTabBarDelegate>

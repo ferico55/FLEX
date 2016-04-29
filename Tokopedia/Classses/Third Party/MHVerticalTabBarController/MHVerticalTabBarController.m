@@ -193,5 +193,11 @@
 }
 
 
+-(void)didTapResetButton:(UIButton *)button{
+    if ([_delegate respondsToSelector:@selector(didTapResetButton:)]){
+        [_delegate didTapResetButton:button];
+    }
+    
+}
 
 @end

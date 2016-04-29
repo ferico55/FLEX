@@ -41,13 +41,38 @@
     _selectedBackgroundView = [[UIView alloc] initWithFrame:rect];
     _selectedBackgroundView.backgroundColor = [UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1.0];
     [self addSubview:_selectedBackgroundView];
-        
+    
     _labelAttributes = @{
         NSForegroundColorAttributeName : [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:1.0],
         NSFontAttributeName : FONT_GOTHAM_BOOK_13
     };
     
     _tabBarItemHeight = 44;
+    _showResetButton = false;
+}
+
+-(void)setShowResetButton:(BOOL)showResetButton{
+    if (showResetButton) {
+        UIButton *resetButton = [[UIButton alloc] initWithFrame:CGRectMake(5, self.frame.size.height - 45 - 60, self.frame.size.width - 10, 30)];
+        [resetButton setTitle:@"Reset" forState:UIControlStateNormal];
+        [resetButton setBackgroundColor:[UIColor whiteColor]];
+        [resetButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        resetButton.titleLabel.font = FONT_GOTHAM_BOOK_12;
+        UIColor *color = [UIColor colorWithRed:(188.0/255.0f) green:(187/255.0f) blue:(193.0/255.0f) alpha:1.0f];
+        resetButton.layer.borderColor = color.CGColor;
+        resetButton.layer.borderWidth = 1;
+        resetButton.layer.cornerRadius = 5;
+        [resetButton addTarget:self action:@selector(tapResetButton:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [self addSubview:resetButton];
+        [self bringSubviewToFront:resetButton];
+    }
+}
+
+-(void)tapResetButton:(UIButton*)button{
+    if ([_tabBarDelegate respondsToSelector:@selector(didTapResetButton:)]) {
+        [_tabBarDelegate didTapResetButton:button];
+    }
 }
 
 - (void)layoutSubviews {
