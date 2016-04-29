@@ -533,11 +533,11 @@
 
     UITableViewHeaderFooterView *view = [tableView dequeueReusableCellWithIdentifier:CCellIdentifier];
     if (view == nil) {
-        view = [[UITableViewHeaderFooterView alloc] initWithFrame:CGRectMake(0, 0, tableView.bounds.size.width, 98)];
+        view = [[UITableViewHeaderFooterView alloc] initWithFrame:CGRectMake(0, 0, tableView.bounds.size.width, 74)];
         view.backgroundColor = tableView.backgroundColor;
         view.contentView.backgroundColor = tableView.backgroundColor;
         
-        UIView *viewContent = [[UIView alloc] initWithFrame:CGRectMake(8, 8, tableView.bounds.size.width-(8*2), 90)];
+        UIView *viewContent = [[UIView alloc] initWithFrame:CGRectMake(8, 8, tableView.bounds.size.width-(8*2), 66)];
         viewContent.backgroundColor = [UIColor whiteColor];
         viewContent.tag = CHeaderViewContent;
         [view.contentView addSubview:viewContent];
@@ -583,61 +583,6 @@
         btnSmiley.titleLabel.font = btnLokasi.titleLabel.font;
         [btnSmiley setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [viewContent addSubview:btnSmiley];
-        
-        
-        //SetRate
-        UILabel *lblKecepatan = [[UILabel alloc] initWithFrame:CGRectMake(0, imgHeader.frame.origin.y+imgHeader.bounds.size.height+3, viewContent.bounds.size.width/2.0f, 12)];
-        lblKecepatan.text = CStringKecepatan;
-        lblKecepatan.textAlignment = NSTextAlignmentCenter;
-        lblKecepatan.font = [UIFont fontWithName:@"GothamBook" size:13.0f];
-        [viewContent addSubview:lblKecepatan];
-        
-        UIView *viewKecepatan = [[UIView alloc] initWithFrame:CGRectMake(0, lblKecepatan.frame.origin.y+lblKecepatan.bounds.size.height, lblKecepatan.bounds.size.width, 12)];
-        viewKecepatan.tag = CTagKecepatan;
-        int x = (viewKecepatan.bounds.size.width-(viewKecepatan.bounds.size.height*5))/2.0f;
-        for(int i=0;i<5;i++) {
-            UIImageView *imgStar = [[UIImageView alloc] initWithFrame:CGRectMake(x, 0, viewKecepatan.bounds.size.height, viewKecepatan.bounds.size.height)];
-            x += imgStar.bounds.size.width;
-            [viewKecepatan addSubview:imgStar];
-        }
-        [viewContent addSubview:viewKecepatan];
-
-        //Akurasi
-        UILabel *lblAkurasi = [[UILabel alloc] initWithFrame:CGRectMake(lblKecepatan.bounds.size.width, lblKecepatan.frame.origin.y, lblKecepatan.bounds.size.width, lblKecepatan.bounds.size.height)];
-        lblAkurasi.text = CStringAKurasi;
-        lblAkurasi.textAlignment = lblKecepatan.textAlignment;
-        lblAkurasi.font = lblKecepatan.font;
-        [viewContent addSubview:lblAkurasi];
-        UIView *viewAkurasi = [[UIView alloc] initWithFrame:CGRectMake(viewKecepatan.bounds.size.width, lblAkurasi.frame.origin.y+lblAkurasi.bounds.size.height, lblAkurasi.bounds.size.width, 12)];
-        viewAkurasi.tag = CTagAkurasi;
-
-        x = (viewAkurasi.bounds.size.width-(viewAkurasi.bounds.size.height*5))/2.0f;
-        for(int i=0;i<5;i++) {
-            UIImageView *imgStar = [[UIImageView alloc] initWithFrame:CGRectMake(x, 0, viewAkurasi.bounds.size.height, viewAkurasi.bounds.size.height)];
-            x += imgStar.bounds.size.width;
-            [viewAkurasi addSubview:imgStar];
-        }
-        [viewContent addSubview:viewAkurasi];
-        
-        
-//        //Layanan
-//        UILabel *lblPelayanan = [[UILabel alloc] initWithFrame:CGRectMake(lblAkurasi.frame.origin.x+lblAkurasi.bounds.size.width, lblKecepatan.frame.origin.y, lblKecepatan.bounds.size.width, lblKecepatan.bounds.size.height)];
-//        lblPelayanan.text = CStringPelayanan;
-//        lblPelayanan.textAlignment = lblAkurasi.textAlignment;
-//        lblPelayanan.font = lblAkurasi.font;
-//        [viewContent addSubview:lblPelayanan];
-//        
-//        [viewContent addSubview:lblAkurasi];
-//        UIView *viewLayanan = [[UIView alloc] initWithFrame:CGRectMake(viewAkurasi.frame.origin.x+viewAkurasi.bounds.size.width, lblPelayanan.frame.origin.y+lblPelayanan.bounds.size.height, lblPelayanan.bounds.size.width, 12)];
-//        viewLayanan.tag = CTagPelayanan;
-//        
-//        x = (viewLayanan.bounds.size.width-(viewLayanan.bounds.size.height*5))/2.0f;
-//        for(int i=0;i<5;i++) {
-//            UIImageView *imgStar = [[UIImageView alloc] initWithFrame:CGRectMake(x, 0, viewLayanan.bounds.size.height, viewLayanan.bounds.size.height)];
-//            x += imgStar.bounds.size.width;
-//            [viewLayanan addSubview:imgStar];
-//        }
-//        [viewContent addSubview:viewLayanan];
     }
     
     CatalogShops *catalogShop = [catalogList objectAtIndex:section];
@@ -662,54 +607,14 @@
     
     //Smiley
     BtnSmiley *btnSmiley = (BtnSmiley *)[tempViewContent viewWithTag:CTagSmiley];
-    [SmileyAndMedal generateMedalWithLevel:catalogShop.shop_reputation_badge.reputation_badge_object.level withSet:catalogShop.shop_reputation_badge.reputation_badge_object.set withImage:btnSmiley isLarge:NO];
+    [SmileyAndMedal generateMedalWithLevel:catalogShop.shop_reputation_badge.reputation_badge_object.level withSet:catalogShop.shop_reputation_badge.reputation_badge.set withImage:btnSmiley isLarge:NO];
     btnSmiley.intTag = (int)section;
     
-    
-    //Akurasi
-    UIView *viewAkurasi = (UIView *)[tempViewContent viewWithTag:CTagAkurasi];
-    for(int i=0;i<viewAkurasi.subviews.count;i++) {
-        UIImageView *tempImg = [viewAkurasi.subviews objectAtIndex:i];
-        
-        if (i < catalogShop.shop_rate_accuracy) {
-            tempImg.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_star_active" ofType:@"png"]];
-        }
-        else {
-            tempImg.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_star" ofType:@"png"]];
-        }
-    }
-    
-    //Speed
-    UIView *viewKecepatan = (UIView *)[tempViewContent viewWithTag:CTagKecepatan];
-    for(int i=0;i<viewKecepatan.subviews.count;i++) {
-        UIImageView *tempImg = [viewKecepatan.subviews objectAtIndex:i];
-        
-        if (i < catalogShop.shop_rate_speed) {
-            tempImg.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_star_active" ofType:@"png"]];
-        }
-        else {
-            tempImg.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_star" ofType:@"png"]];
-        }
-    }
-    
-    //Pelayanan
-//    UIView *viewPelayanan = (UIView *)[tempViewContent viewWithTag:CTagPelayanan];
-//    for(int i=0;i<viewPelayanan.subviews.count;i++) {
-//        UIImageView *tempImg = [viewPelayanan.subviews objectAtIndex:i];
-//        
-//        if (i < catalogShop.shop_rate_service) {
-//            tempImg.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_star_active" ofType:@"png"]];
-//        }
-//        else {
-//            tempImg.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_star" ofType:@"png"]];
-//        }
-//    }
-//    
     return view;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 98;
+    return 74;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
