@@ -170,7 +170,6 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 - (void)setTalk:(TalkList *)talk {
     _talk = talk;
     _selectedTalkUserID = [NSString stringWithFormat:@"%ld", (long)talk.talk_user_id];
-    _selectedTalkProductID = _talk.talk_product_id;
     [self setTalkViewModel:talk.viewModel];
     _selectedTalkReputation = _talk.talk_user_reputation;
 }
@@ -221,8 +220,13 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 
 - (void)tapToProduct {
     UINavigationController *controller = [_delegate getNavigationController:self];
-//    [_navigateController navigateToProductFromViewController:controller withProductID:_selectedTalkProductID];
-    [_navigateController navigateToProductFromViewController:controller withName:nil withPrice:nil withId:_selectedTalkProductID withImageurl:nil withShopName:nil];
+
+    [_navigateController navigateToProductFromViewController:controller
+                                                    withName:nil
+                                                   withPrice:nil
+                                                      withId:_talk.talk_product_id
+                                                withImageurl:nil
+                                                withShopName:nil];
     
 }
 
