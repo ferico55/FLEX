@@ -10,27 +10,64 @@ import UIKit
 
 class entryCell: UITableViewCell
 {
-    //Locals
-    var textField : UITextField = UITextField()
+    var textFieldMin : UITextField = UITextField()
+    var textFieldMax : UITextField = UITextField()
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String!)
     {
-        //First Call Super
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        //Initialize Text Field
-        self.textField = UITextField(frame: CGRect(x: 15, y: 0, width: self.frame.size.width, height: self.frame.size.height));
+        self.textFieldMin = UITextField(frame: CGRect(x: 15, y: 0, width: self.frame.size.width/2 - 50, height: 30));
+        self.textFieldMax = UITextField(frame: CGRect(x: textFieldMin.frame.size.width + textFieldMin.frame.origin.x + 5, y: 0, width: self.frame.size.width/2 - 50, height: 30));
+        
+        let font = UIFont.init(name: "GothamBook", size: 13)
+        self.textFieldMin.font = font
+        self.textFieldMax.font = font
+        
+        self.textFieldMin.placeholder = "Minimum"
+        self.textFieldMax.placeholder = "Maximum"
+        
+        textFieldMin.borderStyle = .RoundedRect
+        textFieldMax.borderStyle = .RoundedRect
+        
+        textFieldMin.tag = 0
+        textFieldMax.tag = 1
         
         //Add TextField to SubView
-        self.addSubview(self.textField)
+        self.addSubview(self.textFieldMin)
+        self.addSubview(self.textFieldMax)
     }
     
     required init(coder aDecoder: NSCoder)
     {
-        //Just Call Super
         super.init(coder: aDecoder)!
     }
 }
+
+class switchCell: UITableViewCell
+{
+    var switchView : UISwitch = UISwitch()
+    
+    override init(style: UITableViewCellStyle, reuseIdentifier: String!)
+    {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        self.switchView = UISwitch.init(frame: CGRectZero)
+        
+        self.accessoryView = self.switchView
+        
+        let line : UIView = UIView.init(frame: CGRectMake(15, 0, self.frame.size.width, 1))
+        line.backgroundColor = UIColor.init(colorLiteralRed: 188/255, green: 187/255, blue: 193/255, alpha: 1)
+
+        self .addSubview(line)
+    }
+    
+    required init(coder aDecoder: NSCoder)
+    {
+        super.init(coder: aDecoder)!
+    }
+}
+
 
 class FilterPriceViewController: UIViewController ,UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
     
@@ -60,10 +97,13 @@ class FilterPriceViewController: UIViewController ,UITableViewDelegate, UITableV
         tableView.delegate      =   self
         tableView.dataSource    =   self
         
-        tableView.registerClass(entryCell.self, forCellReuseIdentifier: "cell")
+        tableView.registerClass(entryCell.self, forCellReuseIdentifier: "defaultCell")
+        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.registerClass(switchCell.self, forCellReuseIdentifier: "switchCell")
+        
         tableView.tableFooterView = UIView.init(frame: CGRectMake(0, 0, 1, 1))
         tableView.keyboardDismissMode = .OnDrag
-        
+        tableView.separatorStyle = .None
         
         self.view.addSubview(tableView)
     }
@@ -77,24 +117,26 @@ class FilterPriceViewController: UIViewController ,UITableViewDelegate, UITableV
     
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        return 3
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        let cell:entryCell = tableView.dequeueReusableCellWithIdentifier("cell")! as! entryCell
-        let font = UIFont.init(name: "GothamBook", size: 13)
-        cell.textField.font = font
-        cell.textField.delegate = self
+        var cell:UITableViewCell = UITableViewCell()
         
         if indexPath.row == 0 {
-            cell.textField.placeholder = "Harga Minimum"
-            cell.textField.text = price.priceMin
-            cell.textField.tag = 0
-        } else {
-            cell.textField.placeholder = "Harga Maximum"
-            cell.textField.text = price.priceMax
-            cell.textField.tag = 1
+            cell = UITableViewCell.init(style: .Default, reuseIdentifier: "defaultCell")
+            let font = UIFont.init(name: "GothamBook", size: 13)
+            cell.textLabel?.font = font
+
+            cell.textLabel?.text = "Harga Barang"
+        } else if indexPath.row == 1 {
+            cell = entryCell.init(style: .Default, reuseIdentifier: "cell")
+        } else if indexPath.row == 2 {
+            cell = switchCell.init(style: .Default, reuseIdentifier: "switchCell")
+            cell.textLabel?.text = "Harga Grosir"
+            let font = UIFont.init(name: "GothamBook", size: 13)
+            cell.textLabel?.font = font
         }
         
         return cell
