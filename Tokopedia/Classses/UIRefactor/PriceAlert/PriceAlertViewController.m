@@ -24,8 +24,7 @@
 #define CTagAddCatalogPriceAlert 3
 
 
-@interface PriceAlertViewController ()<TokopediaNetworkManagerDelegate>
-{
+@interface PriceAlertViewController ()<TokopediaNetworkManagerDelegate> {
     TokopediaNetworkManager *tokopediaNetworkManager;
     RKObjectManager *rkObjectManager;
     
@@ -38,8 +37,7 @@
 
 @implementation PriceAlertViewController
 
-- (NSString *)formatRupiah:(NSString *)strRupiah
-{
+- (NSString *)formatRupiah:(NSString *)strRupiah {
     if([strRupiah isEqualToString:@""]) {
         strRupiah = @"0";
     }
@@ -119,8 +117,7 @@
 */
 
 #pragma mark - Setup View
-- (void)initNavigation:(BOOL)isNew
-{
+- (void)initNavigation:(BOOL)isNew {
     self.navigationItem.title = CStringNotificationHarga;
     rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:(isNew?CStringSave:CStringUbah) style:UIBarButtonItemStylePlain target:self action:@selector(actionTambah:)];;
     self.navigationItem.rightBarButtonItem = rightBarButtonItem;
@@ -129,8 +126,7 @@
 
 
 #pragma mark - Method
-- (NSString *)getPriceAlert
-{
+- (NSString *)getPriceAlert {
     NSString *tempPrice = [txtPrice.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     if([tempPrice isEqualToString:@""])
         return @"";
@@ -138,8 +134,7 @@
         return tempPrice;
 }
 
-- (TokopediaNetworkManager *)getNetworkManager:(int)tag
-{
+- (TokopediaNetworkManager *)getNetworkManager:(int)tag {
     if(tokopediaNetworkManager == nil) {
         tokopediaNetworkManager = [TokopediaNetworkManager new];
         tokopediaNetworkManager.delegate = self;
@@ -149,20 +144,12 @@
     return tokopediaNetworkManager;
 }
 
-- (void)actionTambah:(id)sender
-{
-//    StickyAlertView *stickyAlertView;
-//    if(txtPrice.text==nil || [[txtPrice.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] isEqualToString:@""]) {
-//        stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringFillPrice] delegate:self];
-//        [stickyAlertView show];
-//    }
-//    else {
+- (void)actionTambah:(id)sender {
         if(_catalogInfo != nil) {
-//            [[self getNetworkManager:CTagAddCatalogPriceAlert] doRequest];
-            
             [_request requestAddCatalogPriceAlertWithCatalogID:_catalogInfo.catalog_id
                                                priceAlertPrice:[self getPriceAlert]
                                                      onSuccess:^(GeneralActionResult *result) {
+                                                         [self setLoadingDoingAction:NO];
                                                          StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[(isEditCatalog? CStringSuccessEditPriceCatalog:CStringSuccessAddPriceCatalog)] delegate:self];
                                                          [stickyAlertView show];
                                                          
@@ -178,13 +165,11 @@
                                                          StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringFailedAddCatalogPriceAlert] delegate:self];                                                         [stickyAlertView show];
                                                          [self setLoadingDoingAction:NO];
                                                      }];
-        }
-        else if(_productDetail != nil) {
-//            [[self getNetworkManager:CTagAddPriceAlert] doRequest];
-            
+        } else if(_productDetail != nil) {
             [_request requestAddProductPriceAlertWithProductID:_productDetail.product_id
                                                priceAlertPrice:[self getPriceAlert]
                                                      onSuccess:^(GeneralActionResult *result) {
+                                                         [self setLoadingDoingAction:NO];
                                                          UIViewController *tempViewController = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
                                                          if([tempViewController isMemberOfClass:[DetailProductViewController class]]) {
                                                              [((DetailProductViewController *) tempViewController) setBackgroundPriceAlert:YES];
@@ -199,13 +184,11 @@
                                                          [stickyAlertView show];
                                                          [self setLoadingDoingAction:NO];
                                                      }];
-        }
-        else if(_detailPriceAlert != nil) {
-//            [[self getNetworkManager:CTagEditPriceAlert] doRequest];
-            
+        } else if(_detailPriceAlert != nil) {
             [_request requestEditInboxPriceAlertWithPriceAlertID:_detailPriceAlert.pricealert_id
                                                  priceAlertPrice:[self getPriceAlert]
                                                        onSuccess:^(GeneralActionResult *result) {
+                                                           [self setLoadingDoingAction:NO];
                                                            [[NSNotificationCenter defaultCenter] postNotificationName:@"TkpdUpdatePriceAlert" object:nil userInfo:@{@"price":[self formatRupiah:[txtPrice.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]]}];
                                                            
                                                            StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringSuccessEditPriceAlert] delegate:self];
@@ -218,13 +201,9 @@
                                                            [self setLoadingDoingAction:NO];
                                                        }];
         }
-        
-        [self setLoadingDoingAction:YES];
-//    }
 }
 
-- (void)setLoadingDoingAction:(BOOL)isDoingAction
-{
+- (void)setLoadingDoingAction:(BOOL)isDoingAction {
     if(isDoingAction) {
         txtPrice.enabled = NO;
         UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
@@ -241,8 +220,7 @@
 
 
 #pragma mark - TokopediaNetworkManager Delegate
-- (NSDictionary*)getParameter:(int)tag
-{
+- (NSDictionary*)getParameter:(int)tag {
     if(tag == CTagAddCatalogPriceAlert) {
         return @{CAction:CAddCatalogPriceAlert, CCatalogID:_catalogInfo.catalog_id, CPriceAlertPrice:[self getPriceAlert]};
     }
@@ -256,13 +234,11 @@
     return nil;
 }
 
-- (NSString*)getPath:(int)tag
-{
+- (NSString*)getPath:(int)tag {
     return [NSString stringWithFormat:@"%@/%@", CAction, CPriceAlertPL];
 }
 
-- (id)getObjectManager:(int)tag
-{
+- (id)getObjectManager:(int)tag {
     rkObjectManager = [RKObjectManager sharedClient];
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[GeneralAction class]];
     [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
@@ -284,14 +260,12 @@
     return rkObjectManager;
 }
 
-- (NSString*)getRequestStatus:(id)result withTag:(int)tag
-{
+- (NSString*)getRequestStatus:(id)result withTag:(int)tag {
     GeneralAction *generalAction = [((RKMappingResult *) result).dictionary objectForKey:@""];
     return generalAction.status;
 }
 
-- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag
-{
+- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag {
     [self setLoadingDoingAction:NO];
     GeneralAction *generalAction = [((RKMappingResult *) successResult).dictionary objectForKey:@""];
     if(tag == CTagAddCatalogPriceAlert) {
@@ -343,17 +317,13 @@
     }
 }
 
-- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
-{}
+- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {}
 
-- (void)actionBeforeRequest:(int)tag
-{}
+- (void)actionBeforeRequest:(int)tag {}
 
-- (void)actionRequestAsync:(int)tag
-{}
+- (void)actionRequestAsync:(int)tag {}
 
-- (void)actionAfterFailRequestMaxTries:(int)tag
-{
+- (void)actionAfterFailRequestMaxTries:(int)tag {
     StickyAlertView *stickyAlertView;
     if(tag == CTagAddCatalogPriceAlert) {
         stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringFailedAddCatalogPriceAlert] delegate:self];

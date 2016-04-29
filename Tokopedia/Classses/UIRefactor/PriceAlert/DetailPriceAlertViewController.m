@@ -138,7 +138,6 @@
     [self.view bringSubviewToFront:viewLineHeader];
     [self.view layoutIfNeeded];
     [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
-//    [[self getNetworkManager:CTagGetDetailPriceList] doRequest];
     [self getPriceAlertDetail];
     [self isGettingCatalogList:YES];
     
@@ -148,7 +147,6 @@
         constraintWidthUrutkan.constant = 0;
         constraintWidthFilter.constant = self.view.bounds.size.width;
         constraintWidthSeparatorButton.constant = 0;
-        //        [btnFilter setTitle:CstringFilter forState:UIControlStateNormal];
         btnFilter.titleLabel.font = [UIFont fontWithName:CGothamBook size:15.0f];
         [btnFilter setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     }
@@ -199,9 +197,6 @@
         departmentViewController.selectedIndex = nSelectedSort;
         departmentViewController.tag = CTagSort;
         departmentViewController.navigationItem.title = CStringSort;
-//        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:departmentViewController];
-//        navController.navigationBar.translucent = NO;
-//        [self presentViewController:navController animated:YES completion:nil];
         [self.navigationController pushViewController:departmentViewController animated:YES];
     }
 }
@@ -214,9 +209,6 @@
         departmentViewController.selectedIndex = nSelectedFilter;
         departmentViewController.tag = CTagFilter;
         departmentViewController.navigationItem.title = CstringFilter;
-//        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:departmentViewController];
-//        navController.navigationBar.translucent = NO;
-//        [self presentViewController:navController animated:YES completion:nil];
         [self.navigationController pushViewController:departmentViewController animated:YES];
     }
 }
@@ -475,7 +467,6 @@
     [catalogList removeAllObjects];
     [tblDetailPriceAlert reloadData];
     [self isGettingCatalogList:YES];
-//    [[self getNetworkManager:CTagGetDetailPriceList] doRequest];
     [self getPriceAlertDetail];
 }
 
@@ -607,7 +598,7 @@
     
     //Smiley
     BtnSmiley *btnSmiley = (BtnSmiley *)[tempViewContent viewWithTag:CTagSmiley];
-    [SmileyAndMedal generateMedalWithLevel:catalogShop.shop_reputation_badge.reputation_badge_object.level withSet:catalogShop.shop_reputation_badge.reputation_badge.set withImage:btnSmiley isLarge:NO];
+    [SmileyAndMedal generateMedalWithLevel:catalogShop.shop_reputation_badge.reputation_badge_object.level withSet:catalogShop.shop_reputation_badge.reputation_badge_object.set withImage:btnSmiley isLarge:NO];
     btnSmiley.intTag = (int)section;
     
     return view;
@@ -628,7 +619,6 @@
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section==catalogList.count-1 && page>1 && (!tokopediaNetworkManager.getObjectRequest.isExecuting && objectManager==nil) && tblDetailPriceAlert.tableFooterView==nil) {
         [self isGettingCatalogList:YES];
-//        [[self getNetworkManager:CTagGetDetailPriceList] doRequest];
         [self getPriceAlertDetail];
     }
 }

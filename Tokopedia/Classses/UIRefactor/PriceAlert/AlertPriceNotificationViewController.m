@@ -227,9 +227,6 @@
         departmentViewController.navigationItem.title = CStringCategory;
         departmentViewController.arrList = arrDepartment;
         departmentViewController.selectedIndex = nSelectedDepartment;
-        //        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:departmentViewController];
-        //        navController.navigationBar.translucent = NO;
-        //        [self presentViewController:navController animated:YES completion:nil];
         [self.navigationController pushViewController:departmentViewController animated:YES];
     }
 }
@@ -272,7 +269,7 @@
                                                  }
                                                  result.list = nil;
                                                  
-                                                 if(priceAlert.result.department != nil) {
+                                                 if(result.department != nil) {
                                                      if(arrDepartment == nil) {
                                                          arrDepartment = [[NSMutableArray alloc] initWithArray:result.department];
                                                          Breadcrumb *breadCrumb = [Breadcrumb new];

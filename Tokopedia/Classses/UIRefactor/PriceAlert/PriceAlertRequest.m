@@ -10,6 +10,7 @@
 #import "TokopediaNetworkManager.h"
 #import "PriceAlert.h"
 #import "GeneralAction.h"
+#import "StickyAlertView+NetworkErrorHandler.h"
 
 @implementation PriceAlertRequest {
     TokopediaNetworkManager *getPriceAlertNetworkManager;
@@ -79,7 +80,6 @@
                                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                                  NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
                                                  GeneralAction *obj = [result objectForKey:@""];
-                                                 successCallback(obj.data);
                                              }
                                              onFailure:^(NSError *errorResult) {
                                                  errorCallback(errorResult);
@@ -148,7 +148,11 @@
                                                 onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                                     NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
                                                     GeneralAction *obj = [result objectForKey:@""];
-                                                    successCallback(obj.data);
+                                                    if ([obj.data.is_success isEqualToString:@"1"]) {
+                                                        successCallback(obj.data);
+                                                    } else {
+                                                        [StickyAlertView showErrorMessage:obj.message_error];
+                                                    }
                                                 }
                                                 onFailure:^(NSError *errorResult) {
                                                     errorCallback(errorResult);
