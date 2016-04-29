@@ -338,7 +338,7 @@
         //}
 
     }
-    else if ((gateway == TYPE_GATEWAY_CC || gateway == TYPE_GATEWAY_INSTALLMENT)&& !_isVeritrans)
+    else if (gateway == TYPE_GATEWAY_CC || gateway == TYPE_GATEWAY_INSTALLMENT)
     {
         
     }
