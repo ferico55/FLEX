@@ -117,6 +117,8 @@
     _userManager = [UserAuthentificationManager new];
 
     _getInboxListNetworkManager = [TokopediaNetworkManager new];
+    _getInboxListNetworkManager.isUsingHmac = YES;
+    
     _messageActionNetworkManager = [TokopediaNetworkManager new];
 
     _loadingView = [LoadingView new];
@@ -161,17 +163,16 @@
 - (void)fetchInboxMessages {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"disableButtonRead" object:nil userInfo:nil];
 
-    NSDictionary* param =@{kTKPDHOME_APIACTIONKEY:KTKPDMESSAGE_ACTIONGETMESSAGE,
-            kTKPDHOME_APILIMITPAGEKEY : @(kTKPDHOMEHOTLIST_LIMITPAGE),
+    NSDictionary* param =@{
             kTKPDHOME_APIPAGEKEY:@(_page),
             KTKPDMESSAGE_FILTERKEY:_readstatus?_readstatus:@"",
             KTKPDMESSAGE_KEYWORDKEY:_keyword?_keyword:@"",
             KTKPDMESSAGE_NAVKEY:[_data objectForKey:@"nav"]?:@""
     };
 
-    [_getInboxListNetworkManager requestWithBaseUrl:[NSString basicUrl]
-                                               path:KTKPDMESSAGE_PATHURL
-                                             method:RKRequestMethodPOST
+    [_getInboxListNetworkManager requestWithBaseUrl:[NSString v4Url]
+                                               path:@"/v4/inbox-message/get_inbox_message.pl"
+                                             method:RKRequestMethodGET
                                           parameter:param
                                             mapping:[InboxMessage mapping]
                                           onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
