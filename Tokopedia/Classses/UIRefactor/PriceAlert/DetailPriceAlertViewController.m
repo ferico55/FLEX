@@ -38,6 +38,7 @@
 #import "TokopediaNetworkManager.h"
 #import "TransactionATCViewController.h"
 #import "NavigateViewController.h"
+#import "PriceAlertRequest.h"
 #define CCellIdentifier @"cell"
 
 #define CTagGetDetailPriceList 1
@@ -55,7 +56,6 @@
 #define CTagSort 1
 #define CTagFilter 2
 
-
 @interface BtnSmiley : UIButton
 @property (nonatomic) int intTag;
 @end
@@ -64,13 +64,7 @@
 @synthesize intTag;
 @end
 
-
-
-
-
-
-@interface DetailPriceAlertViewController ()<TokopediaNetworkManagerDelegate, LoginViewDelegate, LoadingViewDelegate, DepartmentListDelegate, CMPopTipViewDelegate>
-{
+@interface DetailPriceAlertViewController ()<TokopediaNetworkManagerDelegate, LoginViewDelegate, LoadingViewDelegate, DepartmentListDelegate, CMPopTipViewDelegate> {
     CMPopTipView *cmPopTitpView;
     NSMutableArray *catalogList;
     PriceAlertCell *priceAlertCell;
@@ -84,13 +78,14 @@
     LoadingView *loadingView;
     NavigateViewController *_TKPDNavigator;
     int nSelectedFilter, nSelectedSort, page;
+    
+    PriceAlertRequest *_request;
 }
 
 @end
 
 @implementation DetailPriceAlertViewController
-- (void)dealloc
-{
+- (void)dealloc {
     [self deallocNetworkManager];
 }
 
@@ -115,6 +110,8 @@
     [priceAlertCell.contentView removeConstraint:priceAlertCell.getConstraintY];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notificationUpdatePriceAlert:) name:@"TkpdUpdatePriceAlert" object:nil];
+    
+    _request = [PriceAlertRequest new];
     
     //Set Header
     [self setHeader];
@@ -141,12 +138,13 @@
     [self.view bringSubviewToFront:viewLineHeader];
     [self.view layoutIfNeeded];
     [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
-    [[self getNetworkManager:CTagGetDetailPriceList] doRequest];
+//    [[self getNetworkManager:CTagGetDetailPriceList] doRequest];
+    [self getPriceAlertDetail];
     [self isGettingCatalogList:YES];
     
     
     tblDetailPriceAlert.allowsSelection = NO;
-    if([_detailPriceAlert.pricealert_type isEqualToString:@"1"]) {//Catalog
+    if ([_detailPriceAlert.pricealert_type isEqualToString:@"1"]) {//Catalog
         constraintWidthUrutkan.constant = 0;
         constraintWidthFilter.constant = self.view.bounds.size.width;
         constraintWidthSeparatorButton.constant = 0;
@@ -174,14 +172,13 @@
 
 
 #pragma mark - Action View
-- (void)actionDetailProduct:(id)sender
-{
-    if(strTempProductID != nil) {
+- (void)actionDetailProduct:(id)sender {
+    if (strTempProductID != nil) {
         [self deallocNetworkManager];
         [self showActivityIndicatorGetProductDetail:NO];
     }
     
-    if([_detailPriceAlert.pricealert_type isEqualToString:@"1"]) {
+    if ([_detailPriceAlert.pricealert_type isEqualToString:@"1"]) {
         [self redirectToDetailProduct:nil];
     }
     else {
@@ -194,9 +191,8 @@
     }
 }
 
-- (void)actionSort:(id)sender
-{
-    if(tblDetailPriceAlert.delegate != nil) {
+- (void)actionSort:(id)sender {
+    if (tblDetailPriceAlert.delegate != nil) {
         departmentViewController = [DepartmentTableViewController new];
         departmentViewController.del = self;
         departmentViewController.arrList = @[CStringPembaruanTerakhir, CStringProductTerjual, CStringUlasan, CStringHargaTerendah, CStringHargaTertinggi];
@@ -210,9 +206,8 @@
     }
 }
 
-- (void)actionFilter:(id)sender
-{
-    if(tblDetailPriceAlert.delegate != nil) {
+- (void)actionFilter:(id)sender {
+    if (tblDetailPriceAlert.delegate != nil) {
         departmentViewController = [DepartmentTableViewController new];
         departmentViewController.del = self;
         departmentViewController.arrList = @[CStringSemuaKondisi, CStringBaru, CStringBekas];
@@ -226,8 +221,7 @@
     }
 }
 
-- (void)actionShopName:(id)sender
-{
+- (void)actionShopName:(id)sender {
     TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
     NSDictionary *_auth = [secureStorage keychainDictionary];
     CatalogShops *catalogShop = [catalogList objectAtIndex:((CustomButton *) sender).tagIndexPath.section];
@@ -238,19 +232,17 @@
     [self.navigationController pushViewController:shopContainerViewController animated:YES];
 }
 
-- (void)actionProductName:(id)sender
-{
+- (void)actionProductName:(id)sender {
     [self redirectToDetailProduct:((ProductDetail *) [((CatalogShops *) [catalogList objectAtIndex:((CustomButton *) sender).tagIndexPath.section]).product_list objectAtIndex:((CustomButton *) sender).tagIndexPath.row])];
 }
 
-- (void)actionBuy:(id)sender
-{
+- (void)actionBuy:(id)sender {
     CustomButton *btnBuy = (CustomButton *)sender;
     TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
     NSDictionary *_auth = [secureStorage keychainDictionary];
     ProductDetail *tempProductDetail = [((CatalogShops *) [catalogList objectAtIndex:btnBuy.tagIndexPath.section]).product_list objectAtIndex:btnBuy.tagIndexPath.row];
     
-    if(_auth) {
+    if (_auth) {
         strTempProductID = tempProductDetail.product_id;
         [self showActivityIndicatorGetProductDetail:YES];
         [[self getNetworkManager:CTagGetProductDetail] doRequest];
@@ -273,14 +265,74 @@
 - (void)actionSmiley:(BtnSmiley *)btnSmile {
     CatalogShops *catalogShops = [catalogList objectAtIndex:btnSmile.intTag];
     
-    NSString *strText = [NSString stringWithFormat:@"%@ %@", catalogShops.shop_reputation.shop_reputation_score==nil||[catalogShops.shop_reputation.shop_reputation_score isEqualToString:@""]? @"0":catalogShops.shop_reputation.shop_reputation_score, CStringPoin];
+    NSString *strText = [NSString stringWithFormat:@"%@ %@", catalogShops.shop_reputation_badge.reputation_score==nil||[catalogShops.shop_reputation_badge.reputation_score isEqualToString:@""]? @"0":catalogShops.shop_reputation_badge.reputation_score, CStringPoin];
     [self initPopUp:strText withSender:btnSmile withRangeDesc:NSMakeRange(strText.length-CStringPoin.length, CStringPoin.length)];
 }
 
 
 #pragma mark - Method
-- (void)initPopUp:(NSString *)strText withSender:(id)sender withRangeDesc:(NSRange)range
-{
+- (void)getPriceAlertDetail {
+    NSInteger filter = 0;
+    
+    if (nSelectedFilter > 0) {
+        filter = (NSInteger) nSelectedFilter;
+    }
+    
+    [_request requestGetPriceAlertDetailWithPriceAlertID:_detailPriceAlert.pricealert_id?:@""
+                                               condition:filter
+                                                 orderBy:((NSInteger) nSelectedSort) + 1
+                                                    page:(NSInteger) page
+                                               onSuccess:^(PriceAlertResult *result) {
+                                                   if (page == 1) {
+                                                       catalogList = [NSMutableArray arrayWithArray:result.list_catalog_shop];
+                                                       [tblDetailPriceAlert scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
+                                                   } else {
+                                                       [catalogList addObjectsFromArray:result.list_catalog_shop];
+                                                   }
+                                                   
+                                                   [self isGettingCatalogList:NO];
+                                                   
+                                                   if (catalogList==nil || catalogList.count==0) {
+                                                       [tblDetailPriceAlert addSubview:[self getNoResultView]];
+                                                   } else if (noResultView != nil) {
+                                                       [noResultView.view removeFromSuperview];
+                                                       noResultView = nil;
+                                                   }
+                                                   
+                                                   if (tblDetailPriceAlert.delegate == nil) {
+                                                       tblDetailPriceAlert.delegate = self;
+                                                       tblDetailPriceAlert.dataSource = self;
+                                                   }
+                                                   
+                                                   
+                                                   if (![result.paging.uri_next isEqualToString:@"0"]) {
+                                                       NSURL *url = [NSURL URLWithString:result.paging.uri_next];
+                                                       NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
+                                                       NSMutableDictionary *queries = [NSMutableDictionary new];
+                                                       for (NSString *keyValuePair in querry) {
+                                                           NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
+                                                           NSString *key = [pairComponents objectAtIndex:0];
+                                                           NSString *value = [pairComponents objectAtIndex:1];
+                                                           
+                                                           [queries setObject:value forKey:key];
+                                                       }
+                                                       
+                                                       page = [[queries objectForKey:@"page"] intValue];
+                                                   }
+                                                   else {
+                                                       page = 1;
+                                                   }
+                                                   
+                                                   
+                                                   [tblDetailPriceAlert reloadData];
+                                               }
+                                               onFailure:^(NSError *error) {
+                                                   [self isGettingCatalogList:NO];
+                                                   [self showRetryLoadCatalog:YES withTag:1];
+                                               }];
+}
+
+- (void)initPopUp:(NSString *)strText withSender:(id)sender withRangeDesc:(NSRange)range {
     UILabel *lblShow = [[UILabel alloc] init];
     CGFloat fontSize = 13;
     UIFont *boldFont = [UIFont boldSystemFontOfSize:fontSize];
@@ -316,30 +368,26 @@
 }
 
 
-- (BOOL)canRedirectView
-{
+- (BOOL)canRedirectView {
     UIViewController *viewController = [self.navigationController.viewControllers lastObject];
     return [viewController isMemberOfClass:[self class]];
 }
 
-- (void)deallocNetworkManager
-{
+- (void)deallocNetworkManager {
     tokopediaNetworkManager.delegate = nil;
     [tokopediaNetworkManager requestCancel];
     tokopediaNetworkManager = nil;
 }
 
-- (void)continueProcessBuy:(DetailProductResult *)productDetail
-{
+- (void)continueProcessBuy:(DetailProductResult *)productDetail {
     TransactionATCViewController *transactionVC = [TransactionATCViewController new];
     transactionVC.data = @{DATA_DETAIL_PRODUCT_KEY:productDetail};
     transactionVC.productID = productDetail.product.product_id;
     [self.navigationController pushViewController:transactionVC animated:YES];
 }
 
-- (void)isGettingCatalogList:(BOOL)isLoad
-{
-    if(isLoad) {
+- (void)isGettingCatalogList:(BOOL)isLoad {
+    if (isLoad) {
         tblDetailPriceAlert.tableFooterView = [self getActivityIndicator];
     }
     else {
@@ -349,9 +397,8 @@
     }
 }
 
-- (void)showRetryLoadCatalog:(BOOL)retryLoadCatalog withTag:(int)tag
-{
-    if(retryLoadCatalog) {
+- (void)showRetryLoadCatalog:(BOOL)retryLoadCatalog withTag:(int)tag {
+    if (retryLoadCatalog) {
         tblDetailPriceAlert.tableFooterView = [self getLoadingView:tag].view;
     }
     else {
@@ -360,9 +407,8 @@
     }
 }
 
-- (LoadingView *)getLoadingView:(int)tag
-{
-    if(loadingView == nil) {
+- (LoadingView *)getLoadingView:(int)tag {
+    if (loadingView == nil) {
         loadingView = [LoadingView new];
         loadingView.delegate = self;
     }
@@ -371,9 +417,8 @@
     return loadingView;
 }
 
-- (UIActivityIndicatorView *)getActivityIndicator
-{
-    if(activityIndicatorView == nil) {
+- (UIActivityIndicatorView *)getActivityIndicator {
+    if (activityIndicatorView == nil) {
         activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         activityIndicatorView.frame = CGRectMake(0, 10, 40, 40);
         [activityIndicatorView startAnimating];
@@ -382,9 +427,8 @@
     return activityIndicatorView;
 }
 
-- (void)showActivityIndicatorGetProductDetail:(BOOL)show
-{
-    if(show) {
+- (void)showActivityIndicatorGetProductDetail:(BOOL)show {
+    if (show) {
         tblDetailPriceAlert.userInteractionEnabled = NO;
         activityIndicatorLoadProductDetail = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
         activityIndicatorLoadProductDetail.color = [UIColor blackColor];
@@ -400,18 +444,16 @@
     }
 }
 
-- (NoResultView *)getNoResultView
-{
-    if(noResultView == nil) {
+- (NoResultView *)getNoResultView {
+    if (noResultView == nil) {
         noResultView = [[NoResultView alloc] initWithFrame:CGRectMake(0, 0, tblDetailPriceAlert.frame.size.width, 200)];
     }
     
     return noResultView;
 }
 
-- (TokopediaNetworkManager *)getNetworkManager:(int)tag
-{
-    if(tokopediaNetworkManager == nil) {
+- (TokopediaNetworkManager *)getNetworkManager:(int)tag {
+    if (tokopediaNetworkManager == nil) {
         tokopediaNetworkManager = [TokopediaNetworkManager new];
         tokopediaNetworkManager.delegate = self;
     }
@@ -421,26 +463,24 @@
 }
 
 
-- (NSString *)getPrice:(NSString *)strTempPrice
-{
+- (NSString *)getPrice:(NSString *)strTempPrice {
     return [strTempPrice isEqualToString:@"Rp 0"]? CStringAllPrice:strTempPrice;
 }
 
 
-- (void)updatePriceAlert:(NSString *)strPrice
-{
+- (void)updatePriceAlert:(NSString *)strPrice {
     _detailPriceAlert.pricealert_price = [self getPrice:strPrice];
     [priceAlertCell setPriceNotification:_detailPriceAlert.pricealert_price];
     
     [catalogList removeAllObjects];
     [tblDetailPriceAlert reloadData];
     [self isGettingCatalogList:YES];
-    [[self getNetworkManager:CTagGetDetailPriceList] doRequest];
+//    [[self getNetworkManager:CTagGetDetailPriceList] doRequest];
+    [self getPriceAlertDetail];
 }
 
 
-- (void)setContentValue
-{
+- (void)setContentValue {
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 5.0;
     NSDictionary *attributes = @{NSParagraphStyleAttributeName: style};
@@ -448,9 +488,9 @@
     priceAlertCell.getBtnProductName.titleLabel.attributedText = myString;
     
     CGSize tempSize = [priceAlertCell.getBtnProductName.titleLabel sizeThatFits:CGSizeMake(priceAlertCell.getBtnProductName.bounds.size.width, 9999)];
-    if((priceAlertCell.getConstraintHeigthProductName.constant*2) < tempSize.height)
+    if ((priceAlertCell.getConstraintHeigthProductName.constant*2) < tempSize.height)
         priceAlertCell.getConstraintHeigthProductName.constant += priceAlertCell.getConstraintHeigthProductName.constant;
-    else if(tempSize.height > priceAlertCell.getConstraintHeigthProductName.constant)
+    else if (tempSize.height > priceAlertCell.getConstraintHeigthProductName.constant)
         priceAlertCell.getConstraintHeigthProductName.constant = tempSize.height;
     
     [priceAlertCell setImageProduct:_imageHeader?:nil];
@@ -463,14 +503,13 @@
     [[priceAlertCell getBtnProductName] addTarget:self action:@selector(actionDetailProduct:) forControlEvents:UIControlEventTouchUpInside];
 }
 
-- (void)actionUbah:(id)sender
-{
-    if(strTempProductID != nil) {
+- (void)actionUbah:(id)sender {
+    if (strTempProductID != nil) {
         [self deallocNetworkManager];
         [self showActivityIndicatorGetProductDetail:NO];
     }
     
-    if([self canRedirectView]) {
+    if ([self canRedirectView]) {
         PriceAlertViewController *priceAlertViewController = [PriceAlertViewController new];
         priceAlertViewController.detailPriceAlert = _detailPriceAlert;
         [self.navigationController pushViewController:priceAlertViewController animated:YES];
@@ -478,25 +517,22 @@
 }
 
 #pragma mark - UITableView Delegate And DataSource
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return catalogList.count;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return ((CatalogShops *) [catalogList objectAtIndex:section]).product_list.count;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     int diameterImage = 50;
     int diameterGold = 20;
     int padding = 8;
     int heightProductName = 17;
 
     UITableViewHeaderFooterView *view = [tableView dequeueReusableCellWithIdentifier:CCellIdentifier];
-    if(view == nil) {
+    if (view == nil) {
         view = [[UITableViewHeaderFooterView alloc] initWithFrame:CGRectMake(0, 0, tableView.bounds.size.width, 98)];
         view.backgroundColor = tableView.backgroundColor;
         view.contentView.backgroundColor = tableView.backgroundColor;
@@ -626,7 +662,7 @@
     
     //Smiley
     BtnSmiley *btnSmiley = (BtnSmiley *)[tempViewContent viewWithTag:CTagSmiley];
-    [SmileyAndMedal generateMedalWithLevel:catalogShop.shop_reputation.shop_badge_level.level withSet:catalogShop.shop_reputation.shop_badge_level.set withImage:btnSmiley isLarge:NO];
+    [SmileyAndMedal generateMedalWithLevel:catalogShop.shop_reputation_badge.reputation_badge_object.level withSet:catalogShop.shop_reputation_badge.reputation_badge_object.set withImage:btnSmiley isLarge:NO];
     btnSmiley.intTag = (int)section;
     
     
@@ -635,7 +671,7 @@
     for(int i=0;i<viewAkurasi.subviews.count;i++) {
         UIImageView *tempImg = [viewAkurasi.subviews objectAtIndex:i];
         
-        if(i < catalogShop.shop_rate_accuracy) {
+        if (i < catalogShop.shop_rate_accuracy) {
             tempImg.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_star_active" ofType:@"png"]];
         }
         else {
@@ -648,7 +684,7 @@
     for(int i=0;i<viewKecepatan.subviews.count;i++) {
         UIImageView *tempImg = [viewKecepatan.subviews objectAtIndex:i];
         
-        if(i < catalogShop.shop_rate_speed) {
+        if (i < catalogShop.shop_rate_speed) {
             tempImg.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_star_active" ofType:@"png"]];
         }
         else {
@@ -661,7 +697,7 @@
 //    for(int i=0;i<viewPelayanan.subviews.count;i++) {
 //        UIImageView *tempImg = [viewPelayanan.subviews objectAtIndex:i];
 //        
-//        if(i < catalogShop.shop_rate_service) {
+//        if (i < catalogShop.shop_rate_service) {
 //            tempImg.image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_star_active" ofType:@"png"]];
 //        }
 //        else {
@@ -672,33 +708,29 @@
     return view;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     return 98;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 144.0f;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if(indexPath.section==catalogList.count-1 && page>1 && (!tokopediaNetworkManager.getObjectRequest.isExecuting && objectManager==nil) && tblDetailPriceAlert.tableFooterView==nil) {
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section==catalogList.count-1 && page>1 && (!tokopediaNetworkManager.getObjectRequest.isExecuting && objectManager==nil) && tblDetailPriceAlert.tableFooterView==nil) {
         [self isGettingCatalogList:YES];
-        [[self getNetworkManager:CTagGetDetailPriceList] doRequest];
+//        [[self getNetworkManager:CTagGetDetailPriceList] doRequest];
+        [self getPriceAlertDetail];
     }
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     DetailPriceAlertTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CCellIdentifier];
-    if(cell == nil) {
+    if (cell == nil) {
         NSArray *arrPriceAlert = [[NSBundle mainBundle] loadNibNamed:@"DetailPriceAlertTableViewCell" owner:nil options:0];
         cell = [arrPriceAlert objectAtIndex:0];
     }
@@ -715,22 +747,21 @@
 
 
 #pragma mark - TokopediaNetworkManager Delegate
-- (NSDictionary*)getParameter:(int)tag
-{
-    if(tag == CTagGetDetailPriceList) {
+- (NSDictionary*)getParameter:(int)tag {
+    if (tag == CTagGetDetailPriceList) {
         NSMutableDictionary *param = [NSMutableDictionary new];
         [param setObject:CGetPriceAlertDetail forKey:CAction];
         [param setObject:_detailPriceAlert.pricealert_id?:@"" forKey:CPriceAlertID];
         [param setObject:@(page) forKey:CPage];
         
-        if(nSelectedFilter > 0) {
+        if (nSelectedFilter > 0) {
             [param setObject:@(nSelectedFilter) forKey:CCondition];
         }
         [param setObject:@(nSelectedSort+1) forKey:CSort];
         
         return param;
     }
-    else if(tag == CTagGetProductDetail) {
+    else if (tag == CTagGetProductDetail) {
         return @{
                  kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETDETAILACTIONKEY,
                  kTKPDDETAIL_APIPRODUCTIDKEY : strTempProductID
@@ -740,21 +771,19 @@
     return nil;
 }
 
-- (NSString*)getPath:(int)tag
-{
-    if(tag == CTagGetDetailPriceList) {
+- (NSString*)getPath:(int)tag {
+    if (tag == CTagGetDetailPriceList) {
         return CInboxPriceAlert;
     }
-    else if(tag == CTagGetProductDetail) {
+    else if (tag == CTagGetProductDetail) {
         return kTKPDDETAILPRODUCT_APIPATH;
     }
     
     return nil;
 }
 
-- (id)getObjectManager:(int)tag
-{
-    if(tag == CTagGetDetailPriceList) {
+- (id)getObjectManager:(int)tag {
+    if (tag == CTagGetDetailPriceList) {
         objectManager = [RKObjectManager sharedClient];
         
         // setup object mappings
@@ -853,7 +882,7 @@
         
         return objectManager;
     }
-    else if(tag == CTagGetProductDetail) {
+    else if (tag == CTagGetProductDetail) {
         objectManager = [RKObjectManager sharedClient];
         
         // setup object mappings
@@ -978,13 +1007,12 @@
     return nil;
 }
 
-- (NSString*)getRequestStatus:(id)result withTag:(int)tag
-{
-    if(tag == CTagGetDetailPriceList) {
+- (NSString*)getRequestStatus:(id)result withTag:(int)tag {
+    if (tag == CTagGetDetailPriceList) {
         PriceAlert *priceAlert = [((RKMappingResult *) result).dictionary objectForKey:@""];
         return priceAlert.status;
     }
-    else if(tag == CTagGetProductDetail) {
+    else if (tag == CTagGetProductDetail) {
         Product *product = [((RKMappingResult *) result).dictionary objectForKey:@""];
         return product.status;
     }
@@ -992,12 +1020,11 @@
     return nil;
 }
 
-- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag
-{
+- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag {
     objectManager = nil;
-    if(tag == CTagGetDetailPriceList) {
+    if (tag == CTagGetDetailPriceList) {
         PriceAlert *priceAlert = [((RKMappingResult *) successResult).dictionary objectForKey:@""];
-        if(page == 1) {
+        if (page == 1) {
             catalogList = [NSMutableArray arrayWithArray:priceAlert.result.list];
             [tblDetailPriceAlert scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
         }
@@ -1006,26 +1033,25 @@
         }
         [self isGettingCatalogList:NO];
         
-        if(catalogList==nil || catalogList.count==0) {
+        if (catalogList==nil || catalogList.count==0) {
             [tblDetailPriceAlert addSubview:[self getNoResultView]];
         }
-        else if(noResultView != nil) {
+        else if (noResultView != nil) {
             [noResultView.view removeFromSuperview];
             noResultView = nil;
         }
         
-        if(tblDetailPriceAlert.delegate == nil) {
+        if (tblDetailPriceAlert.delegate == nil) {
             tblDetailPriceAlert.delegate = self;
             tblDetailPriceAlert.dataSource = self;
         }
         
         
-        if(! [priceAlert.result.paging.uri_next isEqualToString:@"0"]) {
+        if (! [priceAlert.result.paging.uri_next isEqualToString:@"0"]) {
             NSURL *url = [NSURL URLWithString:priceAlert.result.paging.uri_next];
             NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
             NSMutableDictionary *queries = [NSMutableDictionary new];
-            for (NSString *keyValuePair in querry)
-            {
+            for (NSString *keyValuePair in querry) {
                 NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
                 NSString *key = [pairComponents objectAtIndex:0];
                 NSString *value = [pairComponents objectAtIndex:1];
@@ -1042,39 +1068,35 @@
         
         [tblDetailPriceAlert reloadData];
     }
-    else if(tag == CTagGetProductDetail) {
+    else if (tag == CTagGetProductDetail) {
         strTempProductID = nil;
         Product *product = [((RKMappingResult *) successResult).dictionary objectForKey:@""];
         [self showActivityIndicatorGetProductDetail:NO];
         
         
-        if([self canRedirectView]) {
+        if ([self canRedirectView]) {
             [self continueProcessBuy:product.result];
         }
     }
 }
 
-- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
-{
+- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
 }
 
-- (void)actionBeforeRequest:(int)tag
-{
+- (void)actionBeforeRequest:(int)tag {
 
 }
 
-- (void)actionRequestAsync:(int)tag
-{
+- (void)actionRequestAsync:(int)tag {
 }
 
-- (void)actionAfterFailRequestMaxTries:(int)tag
-{
+- (void)actionAfterFailRequestMaxTries:(int)tag {
     objectManager = nil;
-    if(tag == CTagGetDetailPriceList) {
+    if (tag == CTagGetDetailPriceList) {
         [self isGettingCatalogList:NO];
         [self showRetryLoadCatalog:YES withTag:tag];
     }
-    else if(tag == CTagGetProductDetail) {
+    else if (tag == CTagGetProductDetail) {
         strTempProductID = nil;
         StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringFailedBuyProduct, CStringNoInternet] delegate:self];
         [stickyAlertView show];
@@ -1085,24 +1107,22 @@
 
 
 #pragma mark - LoginView Delegate
-- (void)redirectViewController:(id)viewController
-{
+- (void)redirectViewController:(id)viewController {
     
 }
 
-- (void)cancelLoginView
-{
+- (void)cancelLoginView {
 
 }
 
 
 #pragma mark - LoadingView Delegate
-- (void)pressRetryButton
-{
+- (void)pressRetryButton {
     switch (loadingView.tag) {
         case CTagGetDetailPriceList:
             [self isGettingCatalogList:YES];
-            [[self getNetworkManager:CTagGetDetailPriceList] doRequest];
+//            [[self getNetworkManager:CTagGetDetailPriceList] doRequest];
+            [self getPriceAlertDetail];
             break;
         default:
             break;
@@ -1111,22 +1131,21 @@
 
 
 #pragma mark - Department Delegate
-- (void)didFinishSelectedAtRow:(int)row
-{
-    if(departmentViewController.tag == CTagFilter) {
+- (void)didFinishSelectedAtRow:(int)row {
+    if (departmentViewController.tag == CTagFilter) {
         nSelectedFilter = row;
     }
-    else if(departmentViewController.tag == CTagSort) {
+    else if (departmentViewController.tag == CTagSort) {
         nSelectedSort = row;
     }
 
     page = 1;
-    [[self getNetworkManager:CTagGetDetailPriceList] doRequest];
+//    [[self getNetworkManager:CTagGetDetailPriceList] doRequest];
+    [self getPriceAlertDetail];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (void)didCancel
-{
+- (void)didCancel {
     [self dismissViewControllerAnimated:YES completion:^{
         departmentViewController = nil;
     }];
@@ -1134,15 +1153,13 @@
 
 
 #pragma mark - CMPopTipView Delegate
-- (void)dismissAllPopTipViews
-{
+- (void)dismissAllPopTipViews {
     [cmPopTitpView dismissAnimated:YES];
     cmPopTitpView = nil;
 }
 
 
-- (void)popTipViewWasDismissedByUser:(CMPopTipView *)popTipView
-{
+- (void)popTipViewWasDismissedByUser:(CMPopTipView *)popTipView {
     [self dismissAllPopTipViews];
 }
 

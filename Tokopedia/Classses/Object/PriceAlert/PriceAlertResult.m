@@ -7,6 +7,7 @@
 //
 
 #import "PriceAlertResult.h"
+#import "CatalogShops.h"
 
 @implementation PriceAlertResult
 
@@ -27,6 +28,10 @@
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"list"
                                                                             toKeyPath:@"list"
                                                                           withMapping:[DetailPriceAlert mapping]]];
+    
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"list"
+                                                                            toKeyPath:@"list_catalog_shop"
+                                                                          withMapping:[CatalogShops mapping]]];
     
     return mapping;
 }

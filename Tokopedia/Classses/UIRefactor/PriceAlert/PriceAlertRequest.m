@@ -18,6 +18,7 @@
     TokopediaNetworkManager *addProductPriceAlertNetworkManager;
     TokopediaNetworkManager *editInboxPriceAlertNetworkManager;
     TokopediaNetworkManager *removeProductPriceAlertNetworkManager;
+    TokopediaNetworkManager *getPriceAlertDetailNetworkManager;
 }
 
 - (id)init {
@@ -30,6 +31,7 @@
         addProductPriceAlertNetworkManager = [TokopediaNetworkManager new];
         editInboxPriceAlertNetworkManager = [TokopediaNetworkManager new];
         removeProductPriceAlertNetworkManager = [TokopediaNetworkManager new];
+        getPriceAlertDetailNetworkManager = [TokopediaNetworkManager new];
     }
     
     return self;
@@ -172,6 +174,33 @@
                                                     onFailure:^(NSError *errorResult) {
                                                         errorCallback(errorResult);
                                                     }];
+}
+
+- (void)requestGetPriceAlertDetailWithPriceAlertID:(NSString *)priceAlertID
+                                         condition:(NSInteger)condition
+                                           orderBy:(NSInteger)orderBy
+                                              page:(NSInteger)page
+                                         onSuccess:(void (^)(PriceAlertResult *))successCallback
+                                         onFailure:(void (^)(NSError *))errorCallback {
+    getPriceAlertDetailNetworkManager.isParameterNotEncrypted = NO;
+    getPriceAlertDetailNetworkManager.isUsingHmac = YES;
+    
+    [getPriceAlertDetailNetworkManager requestWithBaseUrl:[NSString v4Url]
+                                                     path:@"/v4/inbox-price-alert/get_price_alert_detail.pl"
+                                                   method:RKRequestMethodGET
+                                                parameter:@{@"pricealert_id" : priceAlertID,
+                                                            @"condition" : @(condition),
+                                                            @"order_by" : @(orderBy),
+                                                            @"page" : @(page)}
+                                                  mapping:[PriceAlert mapping]
+                                                onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                                    NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+                                                    PriceAlert *obj = [result objectForKey:@""];
+                                                    successCallback(obj.data);
+                                                }
+                                                onFailure:^(NSError *errorResult) {
+                                                    errorCallback(errorResult);
+                                                }];
 }
 
 @end

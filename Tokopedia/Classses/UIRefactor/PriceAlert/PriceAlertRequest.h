@@ -42,4 +42,11 @@
                                           onSuccess:(void (^)(GeneralAction *obj))successCallback
                                           onFailure:(void (^)(NSError *error))errorCallback;
 
+- (void)requestGetPriceAlertDetailWithPriceAlertID:(NSString *)priceAlertID
+                                         condition:(NSInteger)condition
+                                           orderBy:(NSInteger)orderBy
+                                              page:(NSInteger)page
+                                         onSuccess:(void(^)(PriceAlertResult *result))successCallback
+                                         onFailure:(void(^)(NSError *error))errorCallback;
+
 @end
