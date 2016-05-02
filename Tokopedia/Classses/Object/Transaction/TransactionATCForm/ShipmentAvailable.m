@@ -67,7 +67,10 @@
                     }
                 }
                 shipment.products = [shipmentPackages copy];
-                [shipments addObject:shipment];
+                
+                if (shipment.products.count >0 ) {
+                    [shipments addObject:shipment];
+                }
             }
         }
     }

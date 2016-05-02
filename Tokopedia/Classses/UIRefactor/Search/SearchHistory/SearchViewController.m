@@ -652,6 +652,8 @@ NSString *const SearchDomainHotlist = @"Hotlist";
 #pragma mark - Image search
 
 - (void)takePhoto:(UIButton *)sender {
+    [TPAnalytics trackScreenName:@"Snap Search Camera"];
+    
     UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
     imagePicker.delegate = self;
     imagePicker.allowsEditing = YES;

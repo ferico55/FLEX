@@ -658,6 +658,7 @@ OtherProductDelegate
                     transactionVC.productPrice = _product.result.product.product_price;
                     transactionVC.data = @{DATA_DETAIL_PRODUCT_KEY:_product.result};
                     transactionVC.productID = _product.result.product.product_id;
+                    transactionVC.isSnapSearchProduct = _isSnapSearchProduct;
                     [self.navigationController pushViewController:transactionVC animated:YES];
                 } else {
                     UINavigationController *navigationController = [[UINavigationController alloc] init];
@@ -1190,11 +1191,16 @@ OtherProductDelegate
     [((DetailProductInfoCell*)cell).etalasebutton setTitle:_product.result.product.product_etalase forState:UIControlStateNormal];
     
     NSArray *breadcrumbs = _product.result.breadcrumb;
-    for (int i = 0; i<breadcrumbs.count; i++) {
-        Breadcrumb *breadcrumb = breadcrumbs[i];
+    for (int i = 0; i<3; i++) {
         UIButton *button = [cell.categorybuttons objectAtIndex:i];
-        button.hidden = NO;
-        [button setTitle:breadcrumb.department_name forState:UIControlStateNormal];
+        if (i < breadcrumbs.count) {
+            Breadcrumb *breadcrumb = breadcrumbs[i];
+            button.hidden = NO;
+            [button setTitle:breadcrumb.department_name forState:UIControlStateNormal];
+        } else {
+            button.hidden = YES;
+            [button setTitle:@"" forState:UIControlStateNormal];
+        }
     }
     if ([_product.result.product.product_status integerValue]==PRODUCT_STATE_WAREHOUSE || [_product.result.product.product_status integerValue]==PRODUCT_STATE_PENDING)
         [cell.etalasebutton setTitle:@"-" forState:UIControlStateNormal];

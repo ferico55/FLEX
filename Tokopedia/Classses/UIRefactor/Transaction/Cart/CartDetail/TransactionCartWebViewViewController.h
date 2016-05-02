@@ -29,6 +29,7 @@
 
 @property NSDictionary *CCParam;
 @property NSNumber *gateway;
+@property (strong, nonatomic) NSString *gatewayCode;
 @property BOOL isVeritrans;
 @property NSString *token;
 @property NSString *URLString;

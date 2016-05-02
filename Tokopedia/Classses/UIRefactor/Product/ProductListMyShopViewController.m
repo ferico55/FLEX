@@ -470,10 +470,10 @@ NoResultDelegate
 }
 
 - (void)deleteListAtIndexPath:(NSIndexPath *)indexPath {
+    ManageProductList *product = _products[indexPath.row];
     [self.products removeObjectAtIndex:indexPath.row];
     [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
-    ManageProductList *product = _products[indexPath.row];
     NSString *productId = [NSString stringWithFormat:@"%d", product.product_id];
     [ProductRequest deleteProductWithId:productId
           setCompletionBlockWithSuccess:^(ShopSettings *response) {
