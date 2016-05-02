@@ -751,24 +751,4 @@
     [navigateController navigateToProfileFromViewController:self withUserID:userId];
 }
 
--(void)replaceDataSelected:(NSDictionary *)data
-{
-    _data = data;
-    
-    if (data) {
-        _page = 1;
-    
-        [self configureRestKit];
-        [self loadData];
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"markAsReadMessage" object:nil userInfo:@{@"index_path" : [_data objectForKey:@"index_path"], @"read_status" : @"1"}];
-    }
-    else {
-        [_act stopAnimating];
-        [_table reloadData];
-    }
-    
-    _messagingview.hidden = _data == nil;
-}
-
 @end
