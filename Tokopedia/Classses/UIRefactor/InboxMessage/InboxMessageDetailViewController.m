@@ -58,7 +58,9 @@
     NSString *_messagePostUrl;
     NSString *_messageActionBaseUrl;
     NSString *_messageActionPostUrl;
-    
+
+    TokopediaNetworkManager *_fetchConversationNetworkManager;
+
     __weak RKObjectManager *_objectmanager;
     __weak RKObjectManager *_objectmanageraction;
     __weak RKManagedObjectRequestOperation *_request;
@@ -102,7 +104,9 @@
                                                                       style:UIBarButtonItemStyleBordered
                                                                      target:self
                                                                      action:@selector(tap:)];
-    
+
+    _fetchConversationNetworkManager = [TokopediaNetworkManager new];
+
     _textView.delegate = self;
     
     if (_data) {
@@ -296,74 +300,6 @@
     }
     
     return messageSize.height + 2*[InboxMessageDetailCell textMarginVertical] + 30.0f;
-}
-
-#pragma mark - Request and Mapping
-- (void) configureRestKit {
-    // initialize RestKit
-    if([_messageBaseUrl isEqualToString:kTkpdBaseURLString] || [_messageBaseUrl isEqualToString:@""]) {
-        _objectmanager = [RKObjectManager sharedClient];
-    } else {
-        _objectmanager = [RKObjectManager sharedClient:_messageBaseUrl];
-    }
-    
-    //register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:[InboxMessageDetail mapping]
-                                                                                                  method:RKRequestMethodPOST
-                                                                                             pathPattern:[_messagePostUrl isEqualToString:@""] ? KTKPDMESSAGE_PATHURL : _messagePostUrl
-                                                                                                 keyPath:@""
-                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectmanager addResponseDescriptor:responseDescriptorStatus];
-}
-
-
-
-- (void) loadData {
-    if (_request.isExecuting) return;
-    
-    // create a new one, this one is expired or we've never gotten it
-    if (!_isrefreshview) {
-        _table.tableHeaderView = _header;
-        [_act startAnimating];
-    }
-    
-    NSDictionary* param = @{kTKPDHOME_APIACTIONKEY:KTKPDMESSAGE_ACTIONGETDETAIL,
-                            kTKPDHOME_APIPAGEKEY : @(_page),
-                            kTKPDHOME_APILIMITPAGEKEY : KTKPDMESSAGE_LIMITVALUE,
-                            KTKPDMESSAGE_IDKEY:[_data objectForKey:KTKPDMESSAGE_IDKEY]?:@"",
-                            KTKPDMESSAGE_NAVKEY : [_data objectForKey:KTKPDMESSAGE_NAVKEY]?:@"",
-                            };
-    
-    _requestcount ++;
-    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:[_messagePostUrl isEqualToString:@""] ? KTKPDMESSAGE_PATHURL : _messagePostUrl parameters:[param encrypt]];
-    
-    
-    
-    [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestsuccess:mappingResult withOperation:operation];
-      
-        [_table reloadData];
-        _isrefreshview = NO;
-        [_refreshControl endRefreshing];
-        [_timer invalidate];
-        _timer = nil;
-        
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        /** failure **/
-        _table.tableFooterView = nil;
-        _isrefreshview = NO;
-        [_refreshControl endRefreshing];
-        [_timer invalidate];
-        _timer = nil;
-    }];
-    
-    [_operationQueue addOperation:_request];
-    
-    _timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
-
-    
 }
 
 - (void)requestsendmessage:(id)object withOperation:(RKObjectRequestOperation*)operation {
@@ -588,8 +524,35 @@
 }
 
 - (void)fetchInboxMessageConversations {
-    [self configureRestKit];
-    [self loadData];
+    if (!_isrefreshview) {
+        _table.tableHeaderView = _header;
+        [_act startAnimating];
+    }
+
+    NSDictionary* param = @{kTKPDHOME_APIACTIONKEY:KTKPDMESSAGE_ACTIONGETDETAIL,
+            kTKPDHOME_APIPAGEKEY : @(_page),
+            kTKPDHOME_APILIMITPAGEKEY : KTKPDMESSAGE_LIMITVALUE,
+            KTKPDMESSAGE_IDKEY:[_data objectForKey:KTKPDMESSAGE_IDKEY]?:@"",
+            KTKPDMESSAGE_NAVKEY : [_data objectForKey:KTKPDMESSAGE_NAVKEY]?:@"",
+    };
+
+    [_fetchConversationNetworkManager requestWithBaseUrl:[NSString basicUrl]
+                                                    path:KTKPDMESSAGE_PATHURL
+                                                  method:RKRequestMethodPOST
+                                               parameter:param
+                                                 mapping:[InboxMessageDetail mapping]
+                                               onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                                   [self requestsuccess:successResult withOperation:operation];
+
+                                                   [_table reloadData];
+                                                   _isrefreshview = NO;
+                                                   [_refreshControl endRefreshing];
+                                               }
+                                               onFailure:^(NSError *errorResult) {
+                                                   _table.tableFooterView = nil;
+                                                   _isrefreshview = NO;
+                                                   [_refreshControl endRefreshing];
+                                               }];
 }
 
 -(void) keyboardWillShow:(NSNotification *)note{
