@@ -320,8 +320,8 @@
     
 }
 
-- (void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation*)operation {
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
+- (void)requestsuccess:(RKMappingResult *)object {
+    NSDictionary *result = object.dictionary;
     id info = [result objectForKey:@""];
     InboxMessageDetail *messagelist = info;
     
@@ -542,7 +542,7 @@
                                                parameter:param
                                                  mapping:[InboxMessageDetail mapping]
                                                onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                                   [self requestsuccess:successResult withOperation:operation];
+                                                   [self requestsuccess:successResult];
 
                                                    [_table reloadData];
                                                    _isrefreshview = NO;
