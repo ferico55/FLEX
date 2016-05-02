@@ -310,7 +310,7 @@ static NSString const *rows = @"12";
     FilterController *controller =
     [[FilterController alloc] initWithCategoryType:FilterCategoryTypeHotlist
                                       categoryList:[_initialCategories mutableCopy]
-                                           filters:@[type.Category, type.Shop, type.Location, type.Price, type. Condition]
+                                           filters:@[type.Category, type.Shop, type.Location, type.Price, type.shipment, type. Condition, type.preorder]
                                     selectedFilter:_selectedFilter?:[QueryObject new]
                                        presentedVC:self
                                       onCompletion:^(QueryObject * filter) {

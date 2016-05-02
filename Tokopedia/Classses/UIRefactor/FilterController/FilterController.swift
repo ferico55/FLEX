@@ -100,6 +100,10 @@ import UIKit
                 self.addCondition()
             case type.Price:
                 self.addPrice()
+            case type.shipment:
+                self.addShipment()
+            case type.preorder:
+                self.addPreOrder()
             default: break
             }
         }
@@ -195,7 +199,45 @@ import UIKit
         controller.tabBarItem.title = "Kondisi";
         listControllers .addObject(controller)
     }
-
+    
+    private func addPreOrder(){
+        let items:NSMutableArray = NSMutableArray();
+        let object1:FilterObject = FilterObject();
+        object1.title = "Semua";
+        object1.filterID = "0";
+        items.addObject(object1)
+        let object2:FilterObject = FilterObject();
+        object2.title = "Preorder";
+        object2.filterID = "1";
+        items.addObject(object2)
+        
+        let controller: FilterTableViewController = FilterTableViewController.init(items: items.copy() as! [FilterObject], selectedObject: filter.selectedCondition, showSearchBar: false) { (selectedCondition) in
+            self.filter.selectedCondition = selectedCondition
+        }
+        
+        controller.tabBarItem.title = "Preorder";
+        listControllers .addObject(controller)
+    }
+    
+    private func addShipment(){
+        let items:NSMutableArray = NSMutableArray();
+        let object1:FilterObject = FilterObject();
+        object1.title = "Semua";
+        object1.filterID = "0";
+        items.addObject(object1)
+        let object2:FilterObject = FilterObject();
+        object2.title = "JNE";
+        object2.filterID = "1";
+        items.addObject(object2)
+        
+        let controller: FilterTableViewController = FilterTableViewController.init(items: items.copy() as! [FilterObject], selectedObject: filter.selectedCondition, showSearchBar: false) { (selectedCondition) in
+            self.filter.selectedCondition = selectedCondition
+        }
+        
+        controller.tabBarItem.title = "Pengiriman";
+        listControllers .addObject(controller)
+    }
+    
     private func addEtalase(shopID:String) {
         let controller : EtalaseViewController = EtalaseViewController()
         controller.delegate = self;

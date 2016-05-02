@@ -16,6 +16,8 @@ class FilterType: NSObject {
     var Location: NSNumber = 3
     var Condition: NSNumber = 4
     var Price: NSNumber = 5
+    var shipment: NSNumber = 6
+    var preorder : NSNumber = 7
 }
 
 
