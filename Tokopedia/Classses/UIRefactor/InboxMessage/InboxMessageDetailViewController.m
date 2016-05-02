@@ -324,115 +324,84 @@
     NSDictionary *result = object.dictionary;
     id info = [result objectForKey:@""];
     InboxMessageDetail *messagelist = info;
-    
-    BOOL status = [messagelist.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if(status) {
-        
-        
-        if(_page > 1) {
-            NSMutableArray *_loadedmessages;
-            _loadedmessages = [NSMutableArray new];
-            
-            NSArray* reversedArray = [[messagelist.result.list reverseObjectEnumerator] allObjects];
-            [_loadedmessages addObjectsFromArray: reversedArray];
-            [_loadedmessages addObjectsFromArray:_messages];
-            [_messages removeAllObjects];
-            [_messages addObjectsFromArray:_loadedmessages];
-        } else {
-            [_messages removeAllObjects];
-            NSArray* reversedArray = [[messagelist.result.list reverseObjectEnumerator] allObjects];
-            [_messages addObjectsFromArray: reversedArray];
-            
-            NSArray *between = messagelist.result.conversation_between?:@[];
-            NSMutableArray *between_name;
-            between_name = [NSMutableArray new];
-            
-            for(int i=0;i<between.count;i++) {
-                InboxMessageDetailBetween *m_between = between[i];
-                [between_name addObject:m_between.user_name?:@""];
-            }
-            
-            NSString *btw;
-            if (between_name.count == 2) {
-                btw = [NSString stringWithFormat:@"Antara : %@ dan %@", between_name[1], between_name[0]];
-            } else {
-                btw = [NSString stringWithFormat:@"Antara : %@", [between_name componentsJoinedByString:@", "]];
-            }
-            
-            UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 206, 44)];
-            
-            label.numberOfLines = 2;
-            label.font = [UIFont systemFontOfSize: 11.0f];
-            label.textAlignment = NSTextAlignmentCenter;
-            label.textColor = [UIColor whiteColor];
-            
-            NSString *title = [NSString stringWithFormat:@"%@\n%@", [_data objectForKey:KTKPDMESSAGE_TITLEKEY], btw];
 
-            _titleLabel.text = [_data objectForKey:KTKPDMESSAGE_TITLEKEY];
-            _participantsLabel.text = btw;
+    if(_page > 1) {
+        NSMutableArray *_loadedmessages;
+        _loadedmessages = [NSMutableArray new];
 
-            NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:title];
-            [attributedText addAttribute:NSFontAttributeName
-                                   value:[UIFont boldSystemFontOfSize: 16.0f]
-                                   range:NSMakeRange(0, [[_data objectForKey:KTKPDMESSAGE_TITLEKEY] length])];
-
-            
-            label.attributedText = attributedText;
-
-            [_table setContentOffset:CGPointMake(0, CGFLOAT_MAX)];
-        }
-        
-        if (_messages.count >0) {
-            _isnodata = NO;
-            _urinext =  messagelist.result.paging.uri_next;
-
-            if([_urinext isEqualToString:@"0"] || !_urinext) {
-                [self hidebuttonmore:YES];
-            } else {
-                [self showbuttonmore];
-            }
-            
-            NSURL *url = [NSURL URLWithString:_urinext];
-            NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
-            
-            NSMutableDictionary *queries = [NSMutableDictionary new];
-            [queries removeAllObjects];
-            for (NSString *keyValuePair in querry)
-            {
-                NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
-                NSString *key = [pairComponents objectAtIndex:0];
-                NSString *value = [pairComponents objectAtIndex:1];
-                
-                [queries setObject:value forKey:key];
-            }
-            
-            _page = [[queries objectForKey:kTKPDHOME_APIPAGEKEY] integerValue];
-        }
+        NSArray* reversedArray = [[messagelist.result.list reverseObjectEnumerator] allObjects];
+        [_loadedmessages addObjectsFromArray: reversedArray];
+        [_loadedmessages addObjectsFromArray:_messages];
+        [_messages removeAllObjects];
+        [_messages addObjectsFromArray:_loadedmessages];
     } else {
-        [self cancel];
-        NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
-        if ([(NSError*)object code] == NSURLErrorCancelled) {
-            if (_requestcount<kTKPDREQUESTCOUNTMAX) {
-                NSLog(@" ==== REQUESTCOUNT %zd =====",_requestcount);
-                _table.tableHeaderView = _footer;
-                [_act startAnimating];
+        [_messages removeAllObjects];
+        NSArray* reversedArray = [[messagelist.result.list reverseObjectEnumerator] allObjects];
+        [_messages addObjectsFromArray: reversedArray];
 
-                [self performSelector:@selector(fetchInboxMessageConversations)
-                           withObject:nil
-                           afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-            }
-            else
-            {
-                [_act stopAnimating];
-                _table.tableHeaderView = nil;
-            }
+        NSArray *between = messagelist.result.conversation_between?:@[];
+        NSMutableArray *between_name;
+        between_name = [NSMutableArray new];
+
+        for(int i=0;i<between.count;i++) {
+            InboxMessageDetailBetween *m_between = between[i];
+            [between_name addObject:m_between.user_name?:@""];
         }
-        else
+
+        NSString *btw;
+        if (between_name.count == 2) {
+            btw = [NSString stringWithFormat:@"Antara : %@ dan %@", between_name[1], between_name[0]];
+        } else {
+            btw = [NSString stringWithFormat:@"Antara : %@", [between_name componentsJoinedByString:@", "]];
+        }
+
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 206, 44)];
+
+        label.numberOfLines = 2;
+        label.font = [UIFont systemFontOfSize: 11.0f];
+        label.textAlignment = NSTextAlignmentCenter;
+        label.textColor = [UIColor whiteColor];
+
+        NSString *title = [NSString stringWithFormat:@"%@\n%@", [_data objectForKey:KTKPDMESSAGE_TITLEKEY], btw];
+
+        _titleLabel.text = [_data objectForKey:KTKPDMESSAGE_TITLEKEY];
+        _participantsLabel.text = btw;
+
+        NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:title];
+        [attributedText addAttribute:NSFontAttributeName
+                               value:[UIFont boldSystemFontOfSize: 16.0f]
+                               range:NSMakeRange(0, [[_data objectForKey:KTKPDMESSAGE_TITLEKEY] length])];
+
+
+        label.attributedText = attributedText;
+
+        [_table setContentOffset:CGPointMake(0, CGFLOAT_MAX)];
+    }
+    if (_messages.count >0) {
+        _isnodata = NO;
+        _urinext =  messagelist.result.paging.uri_next;
+
+        if([_urinext isEqualToString:@"0"] || !_urinext) {
+            [self hidebuttonmore:YES];
+        } else {
+            [self showbuttonmore];
+        }
+
+        NSURL *url = [NSURL URLWithString:_urinext];
+        NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
+
+        NSMutableDictionary *queries = [NSMutableDictionary new];
+        [queries removeAllObjects];
+        for (NSString *keyValuePair in querry)
         {
-            [_act stopAnimating];
-            _table.tableHeaderView = nil;
+            NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
+            NSString *key = [pairComponents objectAtIndex:0];
+            NSString *value = [pairComponents objectAtIndex:1];
+
+            [queries setObject:value forKey:key];
         }
+
+        _page = [[queries objectForKey:kTKPDHOME_APIPAGEKEY] integerValue];
     }
 }
 
