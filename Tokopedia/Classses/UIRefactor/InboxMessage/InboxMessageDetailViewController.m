@@ -147,8 +147,7 @@
     self.navigationItem.titleView = _titleView;
 
     if (_data) {
-        [self configureRestKit];
-        [self loadData];
+        [self fetchInboxMessageConversations];
     }
 }
 
@@ -482,8 +481,10 @@
                 NSLog(@" ==== REQUESTCOUNT %zd =====",_requestcount);
                 _table.tableHeaderView = _footer;
                 [_act startAnimating];
-                [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-                [self performSelector:@selector(loadData) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+
+                [self performSelector:@selector(fetchInboxMessageConversations)
+                           withObject:nil
+                           afterDelay:kTKPDREQUEST_DELAYINTERVAL];
             }
             else
             {
@@ -530,8 +531,7 @@
         switch (btn.tag) {
             case 10: {
                 [self hidebuttonmore:NO];
-                [self configureRestKit];
-                [self loadData];
+                [self fetchInboxMessageConversations];
                 break;
             }
                 
@@ -585,6 +585,11 @@
                 break;
         }
     }
+}
+
+- (void)fetchInboxMessageConversations {
+    [self configureRestKit];
+    [self loadData];
 }
 
 -(void) keyboardWillShow:(NSNotification *)note{
