@@ -171,7 +171,7 @@
 #pragma mark - UITableView DataSource
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return _data? _messages.count:0;
+    return _messages.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -201,76 +201,52 @@
     return trimmedString;
 }
 
--(void)configureCell:(id)aCell atIndexPath:(NSIndexPath*)indexPath {
-    InboxMessageDetailCell *cell = (InboxMessageDetailCell*)aCell;
-    if(_messages.count > indexPath.row) {
-        InboxMessageDetailList *message = _messages[indexPath.row];
-        
-        UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
-        
-        NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-        style.lineSpacing = 4.0;
-        style.alignment = NSTextAlignmentLeft;
-        
-        NSDictionary *attributes = @{NSForegroundColorAttributeName: [UIColor whiteColor],
-                                     NSFontAttributeName: font,
-                                     NSParagraphStyleAttributeName: style,
-                                     };
-        NSString *string = message.message_reply;
-        string = [self stringReplaceAhrefWithUrl:string];
-        NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:string attributes:attributes];
-        
-        cell.messageLabel.attributedText = attributedText;
-//        cell.messageLabel.text = message.message_reply;
-        UITapGestureRecognizer *tapUser = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapUser:)];
-
-        [cell.avatarImageView addGestureRecognizer:tapUser];
-        [cell.avatarImageView setUserInteractionEnabled:[NavigationHelper shouldDoDeepNavigation]];
-        cell.avatarImageView.tag = [message.user_id integerValue];
-        cell.viewLabelUser.text = message.user_name;
-        
-        //Set user label
-//        if([message.user_label isEqualToString:CPenjual]) {
-//            [cell.viewLabelUser setColor:CTagPenjual];
-//        }
-//        else if([message.user_label isEqualToString:CPembeli]) {
-//            [cell.viewLabelUser setColor:CTagPembeli];
-//        }
-//        else if([message.user_label isEqualToString:CAdministrator]) {
-//            [cell.viewLabelUser setColor:CTagAdministrator];
-//        }
-//        else if([message.user_label isEqualToString:CPengguna]) {
-//            [cell.viewLabelUser setColor:CTagPengguna];
-//        }
-        [cell.viewLabelUser setLabelBackground:message.user_label];
-
-        if([message.message_action isEqualToString:@"1"]) {
-            if(message.is_just_sent) {
-                cell.timeLabel.text = @"Kirim...";
-            } else {
-                cell.timeLabel.text = message.message_reply_time_fmt;
-            }
-            
-            cell.sent = YES;
-            cell.avatarImageView.image = nil;
+-(void)configureCell:(InboxMessageDetailCell *)cell atIndexPath:(NSIndexPath*)indexPath {
+    InboxMessageDetailList *message = _messages[indexPath.row];
+    UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    style.lineSpacing = 4.0;
+    style.alignment = NSTextAlignmentLeft;
+    NSDictionary *attributes = @{NSForegroundColorAttributeName: [UIColor whiteColor],
+                                 NSFontAttributeName: font,
+                                 NSParagraphStyleAttributeName: style,
+                                 };
+    NSString *string = message.message_reply;
+    string = [self stringReplaceAhrefWithUrl:string];
+    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:string attributes:attributes];
+    cell.messageLabel.attributedText = attributedText;
+    UITapGestureRecognizer *tapUser = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapUser:)];
+    [cell.avatarImageView addGestureRecognizer:tapUser];
+    [cell.avatarImageView setUserInteractionEnabled:[NavigationHelper shouldDoDeepNavigation]];
+    cell.avatarImageView.tag = [message.user_id integerValue];
+    cell.viewLabelUser.text = message.user_name;
+    [cell.viewLabelUser setLabelBackground:message.user_label];
+    if([message.message_action isEqualToString:@"1"]) {
+        if(message.is_just_sent) {
+            cell.timeLabel.text = @"Kirim...";
         } else {
-            cell.sent = NO;
-            cell.avatarImageView.image = nil;
-            cell.messageLabel.textColor = [UIColor blackColor];
             cell.timeLabel.text = message.message_reply_time_fmt;
-            
-            if([message.user_image isEqualToString:@"0"]) {
-                cell.avatarImageView.image = [UIImage imageNamed:@"default-boy.png"];
-            } else {
-                NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:message.user_image]
-                                                              cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                                          timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-                [cell.avatarImageView setImageWithURLRequest:request
-                                            placeholderImage:[UIImage imageNamed:@"default-boy.png"]
-                                                     success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                    [cell.avatarImageView setImage:image];
-                } failure:nil];
-            }
+        }
+
+        cell.sent = YES;
+        cell.avatarImageView.image = nil;
+    } else {
+        cell.sent = NO;
+        cell.avatarImageView.image = nil;
+        cell.messageLabel.textColor = [UIColor blackColor];
+        cell.timeLabel.text = message.message_reply_time_fmt;
+
+        if([message.user_image isEqualToString:@"0"]) {
+            cell.avatarImageView.image = [UIImage imageNamed:@"default-boy.png"];
+        } else {
+            NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:message.user_image]
+                                                          cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                      timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+            [cell.avatarImageView setImageWithURLRequest:request
+                                        placeholderImage:[UIImage imageNamed:@"default-boy.png"]
+                                                 success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                [cell.avatarImageView setImage:image];
+            } failure:nil];
         }
     }
 }
