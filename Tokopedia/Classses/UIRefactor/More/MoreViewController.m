@@ -1019,9 +1019,9 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
 
 #pragma mark - Email delegate
 - (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
-
     [self dismissViewControllerAnimated:YES completion:^() {
         [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
+        self.tableView.frame = CGRectMake(0, 0, self.tableView.frame.size.width, self.tableView.frame.size.height);
     }];
 }
 

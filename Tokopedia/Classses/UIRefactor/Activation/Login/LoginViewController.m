@@ -554,7 +554,7 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
             [[GPPSignIn sharedInstance] signOut];
             [[GPPSignIn sharedInstance] disconnect];
             
-            if(![_login.result.security.allow_login isEqualToString:@"1"]) {
+            if(_login.result.security && ![_login.result.security.allow_login isEqualToString:@"1"]) {
                 [self checkSecurityQuestion];
             } else {
                 [self setLoginIdentity];
@@ -691,7 +691,7 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
     if (status) {
         _isnodata = NO;
         if (_login.result.is_login) {
-            if(![_login.result.security.allow_login isEqualToString:@"1"]) {
+            if(_login.result.security && ![_login.result.security.allow_login isEqualToString:@"1"]) {
                 [self checkSecurityQuestion];
             } else {
                 [self setLoginIdentity];
