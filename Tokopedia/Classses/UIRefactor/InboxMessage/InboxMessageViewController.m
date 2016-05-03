@@ -120,6 +120,7 @@
     _getInboxListNetworkManager.isUsingHmac = YES;
     
     _messageActionNetworkManager = [TokopediaNetworkManager new];
+    _messageActionNetworkManager.isUsingHmac = YES;
 
     _loadingView = [LoadingView new];
     _loadingView.delegate = self;
@@ -282,9 +283,16 @@
             KTKPDMESSAGE_DATAELEMENTKEY : joinedArr,
     };
 
-    [_messageActionNetworkManager requestWithBaseUrl:[NSString basicUrl]
-                                                path:KTKPDMESSAGEPRODUCTACTION_PATHURL
-                                              method:RKRequestMethodPOST
+    NSDictionary<NSString*, NSString*>* pathByAction = @{
+            KTKPDMESSAGE_ACTIONARCHIVEMESSAGE: @"/v4/action/message/archive_messages.pl",
+            KTKPDMESSAGE_ACTIONDELETEMESSAGE: @"/v4/action/message/delete_messages.pl",
+            KTKPDMESSAGE_ACTIONMOVETOINBOXMESSAGE: @"/v4/action/message/move_to_inbox.pl",
+            KTKPDMESSAGE_ACTIONDELETEFOREVERMESSAGE: @"/v4/action/message/delete_forever_messages.pl"
+    };
+
+    [_messageActionNetworkManager requestWithBaseUrl:[NSString v4Url]
+                                                path:pathByAction[action]
+                                              method:RKRequestMethodGET
                                            parameter:param
                                              mapping:[InboxMessageAction mapping]
                                            onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
