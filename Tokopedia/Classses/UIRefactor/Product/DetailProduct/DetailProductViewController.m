@@ -569,12 +569,12 @@ OtherProductDelegate
                 // Move To warehouse
                 if ([_product.result.product.product_status integerValue] == PRODUCT_STATE_BANNED ||
                     [_product.result.product.product_status integerValue] == PRODUCT_STATE_PENDING) {
-                    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Tidak dapat menggudangkan produk. Produk sedang dalam pengawasan."] delegate:self];
+                    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Permintaan Anda tidak dapat diproses, produk sedang dalam pengawasan."] delegate:self];
                     [alert show];
                 }
                 else
                 {
-                    UIAlertView *alert =[[UIAlertView alloc]initWithTitle:@"Apakah Anda yakin gudangkan produk?" message:nil delegate:self cancelButtonTitle:@"Tidak" otherButtonTitles:@"Ya", nil];
+                    UIAlertView *alert =[[UIAlertView alloc]initWithTitle:@"Apakah Anda yakin ingin mengubah produk menjadi tidak dijual?" message:nil delegate:self cancelButtonTitle:@"Tidak" otherButtonTitles:@"Ya", nil];
                     [alert show];
                 }
                 break;
@@ -789,12 +789,12 @@ OtherProductDelegate
                 // Move To warehouse
                 if ([_product.result.product.product_status integerValue] == PRODUCT_STATE_BANNED ||
                     [_product.result.product.product_status integerValue] == PRODUCT_STATE_PENDING) {
-                    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Tidak dapat menggudangkan produk. Produk sedang dalam pengawasan."] delegate:self];
+                    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Permintaan Anda tidak dapat diproses, produk sedang dalam pengawasan."] delegate:self];
                     [alert show];
                 }
                 else
                 {
-                    UIAlertView *alert =[[UIAlertView alloc]initWithTitle:@"Apakah Anda yakin gudangkan produk?" message:nil delegate:self cancelButtonTitle:@"Tidak" otherButtonTitles:@"Ya", nil];
+                    UIAlertView *alert =[[UIAlertView alloc]initWithTitle:@"Apakah Anda yakin ingin mengubah produk menjadi tidak dijual?" message:nil delegate:self cancelButtonTitle:@"Tidak" otherButtonTitles:@"Ya", nil];
                     [alert show];
                 }
                 break;
