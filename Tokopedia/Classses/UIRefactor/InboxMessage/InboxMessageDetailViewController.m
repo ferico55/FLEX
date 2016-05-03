@@ -50,22 +50,10 @@
     
     NSString *_urinext;
     UIRefreshControl *_refreshControl;
-    NSInteger _requestcount;
-    NSInteger _requestsendcount;
-    NSTimer *_timer;
-    
-    NSString *_messageBaseUrl;
-    NSString *_messagePostUrl;
-    NSString *_messageActionBaseUrl;
-    NSString *_messageActionPostUrl;
 
     TokopediaNetworkManager *_fetchConversationNetworkManager;
+    TokopediaNetworkManager *_sendMessageNetworkManager;
 
-    __weak RKObjectManager *_objectmanager;
-    __weak RKObjectManager *_objectmanageraction;
-    __weak RKManagedObjectRequestOperation *_request;
-    __weak RKManagedObjectRequestOperation *_requestsend;
-    NSOperationQueue *_operationQueue;
     TAGContainer *_gtmContainer;
 }
 
@@ -106,6 +94,7 @@
                                                                      action:@selector(tap:)];
 
     _fetchConversationNetworkManager = [TokopediaNetworkManager new];
+    _sendMessageNetworkManager = [TokopediaNetworkManager new];
 
     _textView.delegate = self;
     
@@ -119,7 +108,6 @@
         [_act stopAnimating];
     }
 
-    _operationQueue = [NSOperationQueue new];
     _page = 1;
     
     /** set table view datasource and delegate **/
@@ -133,12 +121,7 @@
     UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
     TagManagerHandler *gtmHandler = [TagManagerHandler new];
     [gtmHandler pushDataLayer:@{@"user_id" : [_userManager getUserId]}];
-    
-    _messageBaseUrl = [[self gtmContainer] stringForKey:GTMKeyInboxMessageBase];
-    _messagePostUrl = [[self gtmContainer] stringForKey:GTMKeyInboxMessagePost];
-    _messageActionBaseUrl = [[self gtmContainer] stringForKey:GTMKeyActionInboxMessageBase];
-    _messageActionPostUrl = [[self gtmContainer] stringForKey:GTMKeyActionInboxMessagePost];
-    
+
     if (_messages.count > 0) {
         _isnodata = NO;
     }
@@ -168,9 +151,6 @@
 
 - (void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
-    [_request cancel];
-    [_operationQueue cancelAllOperations];
-    [_timer invalidate];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -472,7 +452,6 @@
                                   atScrollPosition:UITableViewScrollPositionTop
                                           animated:YES];
                     
-                    [self configureActionRestkit];
                     [self doSendMessage:_textView.text];
                     
                     _textView.text = nil;
@@ -569,38 +548,6 @@
     [UIView commitAnimations];
 }
 
-#pragma mark - action
--(void) configureActionRestkit {
-    if([_messageActionBaseUrl isEqualToString:kTkpdBaseURLString] || [_messageActionBaseUrl isEqualToString:@""]) {
-        _objectmanageraction = [RKObjectManager sharedClient];
-    } else {
-        _objectmanageraction = [RKObjectManager sharedClient:_messageBaseUrl];
-    }
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[InboxMessageAction class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[InboxMessageActionResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{kTKPD_APIISSUCCESSKEY:kTKPD_APIISSUCCESSKEY}];
-    
-    //relation
-    RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
-    [statusMapping addPropertyMapping:resulRel];
-    
-    
-    //register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                                  method:RKRequestMethodPOST
-                                                                                             pathPattern:[_messageActionPostUrl isEqualToString:@""] ? KTKPDMESSAGEPRODUCTACTION_PATHURL : _messageActionPostUrl
-                                                                                                 keyPath:@""
-                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectmanageraction addResponseDescriptor:responseDescriptorStatus];
-}
-
 - (void) showbuttonmore {
     [_act stopAnimating];
     
@@ -620,49 +567,36 @@
 }
 
 -(void) doSendMessage:(id)message_reply {
-    NSDictionary* param = @{kTKPDHOME_APIACTIONKEY:KTKPDMESSAGE_ACTIONREPLYMESSAGE,
-                            kTKPDHOME_APIMESSAGEREPLYKEY:message_reply,
-                            KTKPDMESSAGE_IDKEY:[_data objectForKey:KTKPDMESSAGE_IDKEY],
-                            
-                            };
-    
-    _requestsendcount ++;
-    _requestsend = [_objectmanageraction appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:[_messageActionPostUrl isEqualToString:@""] ? KTKPDMESSAGEPRODUCTACTION_PATHURL : _messageActionPostUrl parameters:[param encrypt]];
-
     if (_onMessagePosted) {
         _onMessagePosted(_textView.text);
     }
 
     [_textView resignFirstResponder];
-    
-    [_requestsend setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestsendmessage:mappingResult withOperation:operation];
-        
-        [_table reloadData];
-        _isrefreshview = NO;
-        [_refreshControl endRefreshing];
-        [_timer invalidate];
-        _timer = nil;
-        
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        /** failure **/
-//                [self requestfailure:error];
-        
-        _table.tableFooterView = nil;
-        _isrefreshview = NO;
-        [_refreshControl endRefreshing];
-        [_timer invalidate];
-        _timer = nil;
-    }];
 
-    [_operationQueue addOperation:_requestsend];
-    
-    _timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestsendtimeout) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
-}
+    NSDictionary* param = @{
+            kTKPDHOME_APIACTIONKEY:KTKPDMESSAGE_ACTIONREPLYMESSAGE,
+            kTKPDHOME_APIMESSAGEREPLYKEY:message_reply,
+            KTKPDMESSAGE_IDKEY:[_data objectForKey:KTKPDMESSAGE_IDKEY],
+    };
 
-- (void)requestsendtimeout {
-    
+    [_sendMessageNetworkManager
+            requestWithBaseUrl:[NSString basicUrl]
+                          path:KTKPDMESSAGEPRODUCTACTION_PATHURL
+                        method:RKRequestMethodPOST
+                     parameter:param
+                       mapping:[InboxMessageAction mapping]
+                     onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                         [self requestsendmessage:successResult withOperation:operation];
+
+                         [_table reloadData];
+                         _isrefreshview = NO;
+                         [_refreshControl endRefreshing];
+                     }
+                     onFailure:^(NSError *errorResult) {
+                         _table.tableFooterView = nil;
+                         _isrefreshview = NO;
+                         [_refreshControl endRefreshing];
+                     }];
 }
 
 #pragma mark - TextView Delegate
