@@ -97,6 +97,7 @@
     _fetchConversationNetworkManager.isUsingHmac = YES;
 
     _sendMessageNetworkManager = [TokopediaNetworkManager new];
+    _sendMessageNetworkManager.isUsingHmac = YES;
 
     _textView.delegate = self;
     
@@ -582,9 +583,9 @@
     };
 
     [_sendMessageNetworkManager
-            requestWithBaseUrl:[NSString basicUrl]
-                          path:KTKPDMESSAGEPRODUCTACTION_PATHURL
-                        method:RKRequestMethodPOST
+            requestWithBaseUrl:[NSString v4Url]
+                          path:@"/v4/action/message/reply_message.pl"
+                        method:RKRequestMethodGET
                      parameter:param
                        mapping:[InboxMessageAction mapping]
                      onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
