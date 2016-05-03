@@ -178,77 +178,16 @@
     
     static NSString* cellIdentifier = @"messagingCell";
     
-//    InboxMessageDetailCell * cell = (InboxMessageDetailCell*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    InboxMessageDetailCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     
-    UITableViewCell *cell = nil;
     if (cell == nil) {
         cell = [[InboxMessageDetailCell alloc] initMessagingCellWithReuseIdentifier:cellIdentifier];
     }
-    [self configureCell:cell atIndexPath:indexPath];
-    
-    return cell;
-}
 
-- (NSString *)stringReplaceAhrefWithUrl:(NSString *)string
-{
-    NSString *leadingTrailingWhiteSpacesPattern = @"<a[^>]+href=\"(.*?)\"[^>]*>.*?</a>";
-    
-    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:leadingTrailingWhiteSpacesPattern options:NSRegularExpressionCaseInsensitive error:NULL];
-    
-    NSRange stringRange = NSMakeRange(0, string.length);
-    NSString *trimmedString = [regex stringByReplacingMatchesInString:string options:NSMatchingReportProgress range:stringRange withTemplate:@"$1"];
-    
-    return trimmedString;
-}
-
--(void)configureCell:(InboxMessageDetailCell *)cell atIndexPath:(NSIndexPath*)indexPath {
     InboxMessageDetailList *message = _messages[indexPath.row];
-    UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
-    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 4.0;
-    style.alignment = NSTextAlignmentLeft;
-    NSDictionary *attributes = @{NSForegroundColorAttributeName: [UIColor whiteColor],
-                                 NSFontAttributeName: font,
-                                 NSParagraphStyleAttributeName: style,
-                                 };
-    NSString *string = message.message_reply;
-    string = [self stringReplaceAhrefWithUrl:string];
-    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:string attributes:attributes];
-    cell.messageLabel.attributedText = attributedText;
-    UITapGestureRecognizer *tapUser = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapUser:)];
-    [cell.avatarImageView addGestureRecognizer:tapUser];
-    [cell.avatarImageView setUserInteractionEnabled:[NavigationHelper shouldDoDeepNavigation]];
-    cell.avatarImageView.tag = [message.user_id integerValue];
-    cell.viewLabelUser.text = message.user_name;
-    [cell.viewLabelUser setLabelBackground:message.user_label];
-    if([message.message_action isEqualToString:@"1"]) {
-        if(message.is_just_sent) {
-            cell.timeLabel.text = @"Kirim...";
-        } else {
-            cell.timeLabel.text = message.message_reply_time_fmt;
-        }
+    cell.message = message;
 
-        cell.sent = YES;
-        cell.avatarImageView.image = nil;
-    } else {
-        cell.sent = NO;
-        cell.avatarImageView.image = nil;
-        cell.messageLabel.textColor = [UIColor blackColor];
-        cell.timeLabel.text = message.message_reply_time_fmt;
-
-        if([message.user_image isEqualToString:@"0"]) {
-            cell.avatarImageView.image = [UIImage imageNamed:@"default-boy.png"];
-        } else {
-            NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:message.user_image]
-                                                          cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                                      timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-            [cell.avatarImageView setImageWithURLRequest:request
-                                        placeholderImage:[UIImage imageNamed:@"default-boy.png"]
-                                                 success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                [cell.avatarImageView setImage:image];
-            } failure:nil];
-        }
-    }
+    return cell;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
