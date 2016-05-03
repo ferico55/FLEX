@@ -17,18 +17,12 @@
 @interface DepositFormViewController () <UITextFieldDelegate, UIScrollViewDelegate> {
     NSString *_clearTotalAmount;
     
-    __weak RKObjectManager *_objectManager;
-    __weak RKManagedObjectRequestOperation *_request;
     NSOperationQueue *_operationQueue;
     NSInteger _requestCount;
     
-    __weak RKObjectManager *_objectDepositFormManager;
-    __weak RKManagedObjectRequestOperation *_requestDepositForm;
     NSOperationQueue *_operationDepositFormQueue;
     NSInteger _requestDepositFormCount;
     
-    __weak RKObjectManager *_objectSendOTPManager;
-    __weak RKManagedObjectRequestOperation *_requestSendOTP;
     NSOperationQueue *_operationSendOTPQueue;
     NSInteger *_requestSendOTPCount;
     
@@ -63,12 +57,6 @@
 
     DepositRequest *_depositRequest;
 }
-
-- (void)configureRestkit;
-- (void)cancelCurrentAction;
-- (void)loadData;
-- (void)requestFail;
-- (void)requestTimeout;
 
 @property (strong, nonatomic) IBOutlet UILabel *useableSaldoIDR;
 @property (strong, nonatomic) IBOutlet UILabel *useableSaldo;
@@ -112,8 +100,6 @@
 }
 
 - (void)initBarButton {
-    //NSBundle* bundle = [NSBundle mainBundle];
-    
     _barbuttonleft = [[UIBarButtonItem alloc] initWithTitle:@"Batal" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
     [_barbuttonleft setTintColor:[UIColor whiteColor]];
     [_barbuttonleft setTag:10];
@@ -162,12 +148,8 @@
     _listBankAccount = [NSMutableArray new];
     
     _containerScrollView.delegate = self;
-//    [_useableSaldoIDR setText:[_data objectForKey:@"summary_useable_deposit_idr"]];
     
     _depositRequest = [DepositRequest new];
-    
-//    [self configureDepositInfo];
-//    [self loadDepositInfo];
     
     [self getWithdrawForm];
     
@@ -179,97 +161,6 @@
     [_imgInfo addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionInfo:)]];
 
     [_containerScrollView addSubview:_contentView];
-    
-    
-}
-
-#pragma mark - Request Send OTP 
-- (void)configureSendOTPRestkit {
-    _objectSendOTPManager =  [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[GeneralAction class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[GeneralActionResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{kTKPD_APIISSUCCESSKEY:kTKPD_APIISSUCCESSKEY}];
-    
-    //relation
-    RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
-    [statusMapping addPropertyMapping:resulRel];
-    
-    //register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:@"action/deposit.pl" keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectSendOTPManager addResponseDescriptor:responseDescriptorStatus];
-}
-
-- (void)requestSendOTP {
-    if(_requestSendOTP.isExecuting) return;
-    
-    _requestSendOTPCount++;
-    NSDictionary *param = @{
-                            @"action" : @"send_otp_verify_bank_account"
-                            };
-    
-    NSTimer *timer;
-    _requestSendOTP = [_objectSendOTPManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:@"action/deposit.pl" parameters:[param encrypt]];
-    
-    [_requestSendOTP setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestSuccessSendOTP:mappingResult withOperation:operation];
-        
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [self requestFailSendOTP:error];
-    }];
-    
-    [_operationSendOTPQueue addOperation:_requestSendOTP];
-    
-    timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutSendOTP) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-}
-
-- (void)requestSuccessSendOTP:(id)object withOperation:(RKObjectRequestOperation*)operation {
-    if (object) {
-        if ([object isKindOfClass:[RKMappingResult class]]) {
-            NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            id info = [result objectForKey:@""];
-            GeneralAction *action = info;
-            NSString *statusstring = action.status;
-            BOOL status = [statusstring isEqualToString:kTKPDREQUEST_OKSTATUS];
-            
-            if (status) {
-                if(action.message_error)
-                {
-                    NSArray *array = action.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
-                    [alert show];
-                }
-                if ([action.result.is_success isEqualToString:@"1"]) {
-                    NSArray *array = action.message_status?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY, nil];
-                    StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:array delegate:self];
-                    [stickyAlertView show];
-                }
-            }
-        }
-    }
-    else
-    {
-        NSError *error = object;
-        NSString *errorDescription = error.localizedDescription;
-        UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-        [errorAlert show];
-    }
-}
-
-- (void)requestFailSendOTP:(id)error {
-    
-}
-
-- (void)requestTimeoutSendOTP {
-    
 }
 
 #pragma mark - Request Deposit Info
@@ -289,183 +180,9 @@
     }];
 }
 
-- (void)configureDepositInfo {
-    _objectDepositFormManager = [RKObjectManager sharedClient];
-    
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[DepositForm class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{
-                                                       kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                       kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                       kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                       kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[DepositFormResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{
-                                                       @"msisdn_verified" : @"msisdn_verified",
-                                                       @"useable_deposit" : @"useable_deposit",
-                                                       @"useable_deposit_idr" : @"useable_deposit_idr"
-                                                       }];
-    
-    RKObjectMapping *bankAccountListMapping = [RKObjectMapping mappingForClass:[DepositFormBankAccountList class]];
-    [bankAccountListMapping addAttributeMappingsFromArray:@[kTKPDPROFILESETTING_APIBANKIDKEY,
-                                                           API_BANK_NAME_KEY,
-                                                           API_BANK_ACCOUNT_NAME_KEY,
-                                                           kTKPDPROFILESETTING_APIBANKACCOUNTNUMBERKEY,
-                                                           kTKPDPROFILESETTING_APIBANKBRANCHKEY,
-                                                           API_BANK_ACCOUNT_ID_KEY,
-                                                           kTKPDPROFILESETTING_APIISDEFAULTBANKKEY,
-                                                           kTKPDPROFILESETTING_APIISVERIFIEDBANKKEY
-                                                           ]];
-    
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    
-    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"bank_account" toKeyPath:@"bank_account" withMapping:bankAccountListMapping];
-    [resultMapping addPropertyMapping:listRel];
-    
-    // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:@"deposit.pl" keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectDepositFormManager addResponseDescriptor:responseDescriptor];
-}
-
-
-- (void)loadDepositInfo {
-    if(_requestDepositForm.isExecuting) return;
-    
-    _requestDepositFormCount++;
-    
-    NSDictionary *param = @{
-                            @"action" : @"get_withdraw_form"
-                            };
-    
-    NSTimer *timer;
-    _requestDepositForm = [_objectDepositFormManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:@"deposit.pl" parameters:[param encrypt]];
-    
-    [_requestDepositForm setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [_indicator stopAnimating];
-        [self requestDepositInfoSuccess:mappingResult withOperation:operation];
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [self requestDepositInfoFail:error];
-    }];
-    
-    [_operationDepositFormQueue addOperation:_requestDepositForm];
-    
-    timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestDepositInfoTimeout) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-    
-}
-
-- (void)requestDepositInfoSuccess:(id)object withOperation:(RKObjectRequestOperation *)operation {
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id info = [result objectForKey:@""];
-    DepositForm *depositForm = info;
-    NSString *statusstring = depositForm.status;
-    BOOL status = [statusstring isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if (status) {
-        [self requestDepositInfoProceed:object];
-    }
-}
-
-- (void)requestDepositInfoFail:(id)object {
-    [self requestDepositInfoProceed:object];
-}
-
-- (void)requestDepositInfoProceed:(id)object {
-    if (object) {
-        if ([object isKindOfClass:[RKMappingResult class]]) {
-            NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            id info = [result objectForKey:@""];
-            DepositForm *depositForm = info;
-
-            NSString *statusstring = depositForm.status;
-            BOOL status = [statusstring isEqualToString:kTKPDREQUEST_OKSTATUS];
-            
-            if (status) {
-                [_useableSaldoIDR setText:depositForm.result.useable_deposit_idr];
-                _useableSaldoStr = depositForm.result.useable_deposit;
-                _chooseAccountButton.enabled = YES;
-                [_listBankAccount addObjectsFromArray:depositForm.result.bank_account];
-                NSString *verifiedState = depositForm.result.msisdn_verified;
-                
-                [_kodeOTPButton setTitle:[verifiedState isEqualToString:@"1"] ? @"Kirim OTP ke HP" : @"Kirim OTP ke Email"  forState:UIControlStateNormal];
-            }
-        }else{
-            [self cancelRequestDepositInfo];
-            NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
-            if ([(NSError*)object code] == NSURLErrorCancelled) {
-                if (_requestDepositFormCount<kTKPDREQUESTCOUNTMAX) {
-
-                    //[_act startAnimating];
-                    [self performSelector:@selector(configureDepositInfo) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-                    [self performSelector:@selector(loadDepositInfo) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-                }
-                else
-                {
-                    NSError *error = object;
-                    NSString *errorDescription = error.localizedDescription;
-                    if(error.code == -1011) {
-                        errorDescription = CStringFailedInServer;
-                    } else if (error.code==-1009 || error.code==-999) {
-                        errorDescription = CStringNoConnection;
-                    }
-                    
-                    UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-                    [errorAlert show];
-                }
-            }
-            else
-            {
-                NSError *error = object;
-                NSString *errorDescription = error.localizedDescription;
-                UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-                [errorAlert show];
-            }
-        }
-        
-    }
-}
-
-- (void)requestDepositInfoTimeout {
-    [self cancelRequestDepositInfo];
-}
-
-- (void)cancelRequestDepositInfo {
-    [_requestDepositForm cancel];
-    _requestDepositForm = nil;
-    
-    [_objectDepositFormManager.operationQueue cancelAllOperations];
-    _objectDepositFormManager = nil;
-}
-
 #pragma mark - Gesture Action
 - (void)actionInfo:(UIGestureRecognizer *)gesture {
     [_infoButton sendActionsForControlEvents:UIControlEventTouchUpInside];
-}
-
-
-#pragma mark - Request + Restkit Init
-- (void)configureRestkit {
-    _objectManager =  [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[GeneralAction class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[GeneralActionResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{kTKPD_APIISSUCCESSKEY:kTKPD_APIISSUCCESSKEY}];
-    
-    //relation
-    RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
-    [statusMapping addPropertyMapping:resulRel];
-
-    //register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:@"action/deposit.pl" keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectManager addResponseDescriptor:responseDescriptorStatus];
 }
 
 - (void)disableButton {
@@ -476,121 +193,6 @@
 - (void)enableButton {
     [_barbuttonleft setEnabled:YES];
     [_barbuttonright setEnabled:YES];
-}
-
-- (void)loadData {
-    if(_request.isExecuting) return;
-    
-    _requestCount++;
-    
-    NSDictionary *param = @{
-                            @"action" : @"do_withdraw",
-                            @"withdraw_amount" : _totalAmount.text?:@"0",
-                            @"bank_account_id" : _bankAccountId?:@"0",
-                            @"user_password" : _tokopediaPassword.text?:@"0",
-                            @"bank_account_name" : _bankAccountName?:@"0",
-                            @"otp_code" : _kodeOTP.text?:@"0",
-                            @"bank_account_number" : _bankAccountNumber?:@"0",
-                            @"bank_id" : _bankId?:@"0",
-                            @"bank_name" : _bankName?:@"0",
-                            @"bank_branch" : _bankBranch?:@"0"
-                            };
-    
-    [self disableButton];
-    _request = [_objectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:@"action/deposit.pl" parameters:[param encrypt]];
-    
-    [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestSuccess:mappingResult withOperation:operation];
-        
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        
-    }];
-    
-    [_operationQueue addOperation:_request];
-    
-    NSTimer *timer;
-    timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeout) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-}
-
-- (void)requestSuccess:(id)object withOperation:operation {
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id stats = [result objectForKey:@""];
-    GeneralAction *action = stats;
-    BOOL status = [action.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if (status) {
-        [self requestProceed:object];
-    }
-}
-
-- (void)requestProceed:(id)object {
-    [self enableButton];
-    
-    if (object) {
-        if ([object isKindOfClass:[RKMappingResult class]]) {
-            NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            id stat = [result objectForKey:@""];
-            GeneralAction *action = stat;
-            BOOL status = [action.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-            
-            if (status) {
-                if (!action.message_error) {
-                    if ([action.result.is_success isEqualToString:@"1"]) {
-                        [self.navigationController popViewControllerAnimated:YES];
-                        [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadListDeposit" object:nil userInfo:nil];
-                        
-                        [[NSNotificationCenter defaultCenter] postNotificationName:@"updateSaldoTokopedia" object:nil userInfo:nil];
-                        [[NSNotificationCenter defaultCenter] postNotificationName:@"removeButtonWithdraw" object:nil userInfo:nil];
-                        
-                        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SHOW_RATING_ALERT object:nil];
-                    }
-                }
-                if (action.message_status) {
-                    NSArray *array = action.message_status;//[[NSArray alloc] initWithObjects:KTKPDMESSAGE_DELIVERED, nil];
-                    StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:array delegate:self];
-                    [stickyAlertView show];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:@"removeButtonWithdraw" object:nil userInfo:nil];
-                }
-                else if(action.message_error)
-                {
-                    NSArray *array = action.message_error;//[[NSArray alloc] initWithObjects:KTKPDMESSAGE_UNDELIVERED, nil];
-                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
-                    [alert show];
-                }
-                
-            }
-        }
-        else{
-            
-            [self cancelCurrentAction];
-            NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
-            if ([(NSError*)object code] == NSURLErrorCancelled) {
-                if (_requestCount<kTKPDREQUESTCOUNTMAX) {
-
-                    //TODO:: Reload handler
-                }
-                else {
-                    
-                }
-            }
-            else
-            {
-            }
-        }
-    }
-}
-
-- (void)requestFail {
-    
-}
-
-- (void)requestTimeout {
-    
-}
-
-- (void)cancelCurrentAction {
-    
 }
 
 #pragma mark - IBAction
@@ -640,12 +242,12 @@
                                                                   }
                                                                   
                                                                   if (action.message_status) {
-                                                                      NSArray *array = action.message_status;//[[NSArray alloc] initWithObjects:KTKPDMESSAGE_DELIVERED, nil];
+                                                                      NSArray *array = action.message_status;
                                                                       StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:array delegate:self];
                                                                       [stickyAlertView show];
                                                                       [[NSNotificationCenter defaultCenter] postNotificationName:@"removeButtonWithdraw" object:nil userInfo:nil];
                                                                   } else if(action.message_error) {
-                                                                      NSArray *array = action.message_error;//[[NSArray alloc] initWithObjects:KTKPDMESSAGE_UNDELIVERED, nil];
+                                                                      NSArray *array = action.message_error;
                                                                       StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
                                                                       [alert show];
                                                                   }
@@ -678,9 +280,6 @@
             }
                 
             case 12 : {
-                if(_requestDepositForm.isExecuting || _requestSendOTP.isExecuting) return;
-                
-                
                 [_depositRequest requestSendOTPVerifyBankAccountOnSuccess:^(GeneralAction *action) {
                     if(action.message_error) {
                         NSArray *array = action.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
@@ -738,7 +337,6 @@
     _accountIndexPath = [_userinfo objectForKey:@"indexpath"];
     
     _bankAccountId = [_userinfo objectForKey:@"bank_account_id"];
-//    _isVerifiedAccount = [_userinfo objectForKey:@"is_verified_account"];
     
     if([[_userinfo objectForKey:@"is_verified_account"] integerValue] == 1) {
         _otpViewArea.hidden = YES;

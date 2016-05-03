@@ -17,9 +17,7 @@
 #import "TokopediaNetworkManager.h"
 #import "DepositRequest.h"
 
-@interface DepositSummaryViewController () <UITableViewDataSource, UITableViewDelegate, TKPDAlertViewDelegate, TokopediaNetworkManagerDelegate, LoadingViewDelegate> {
-    __weak RKObjectManager *_objectManager;
-    TokopediaNetworkManager *tokopediaNetWorkManager;
+@interface DepositSummaryViewController () <UITableViewDataSource, UITableViewDelegate, TKPDAlertViewDelegate, LoadingViewDelegate> {
     NSOperationQueue *_operationQueue;
     
     UIRefreshControl *_refreshControl;
@@ -100,9 +98,6 @@
 }
 
 - (void)initBarButton {
-    //NSBundle* bundle = [NSBundle mainBundle];
-    //    _barbuttonright = [[UIBarButtonItem alloc] initWithTitle:@"Konfirmasi" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    
     UIImage *infoImage = [UIImage imageNamed:@"icon_info_white.png"];
     
     CGRect frame = CGRectMake(0, 0, 20, 20);
@@ -185,13 +180,11 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
 }
 
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-    [tokopediaNetWorkManager requestCancel];
 }
 
 #pragma mark - DataSource Delegate
@@ -253,7 +246,6 @@
 #else
     return _isNoData ? 0 : _depositSummary.count;
 #endif
-    
 }
 
 #pragma mark - Tableview Delegate
@@ -290,7 +282,6 @@
 
 #pragma mark - Request + Restkit Init
 - (void)loadData {
-    if([self getNetworkManager].getObjectRequest.isExecuting) return;
     if (!_isRefreshView) {
         _table.tableFooterView = _footer;
         [_act startAnimating];
@@ -311,7 +302,7 @@
                                                      [self loadTableDataWithResult:result];
                                                  }
                                                  onFailure:^(NSError *errorResult) {
-                                                     
+                                                     _table.tableFooterView = [self getLoadView].view;
                                                  }];
     
 }
@@ -389,111 +380,6 @@
     _isRefreshView = NO;
     [_refreshControl endRefreshing];
 }
-
-- (void)requestSuccess:(id)object withOperation:(RKObjectRequestOperation*)operation {
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id info = [result objectForKey:@""];
-    DepositSummary *depositSummary = info;
-    BOOL status = [depositSummary.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if(status) {
-        [self requestProceed:object];
-    }
-}
-
-- (void)requestProceed:(id)object {
-    if (object) {
-        NSDictionary *result = ((RKMappingResult*)object).dictionary;
-        id stat = [result objectForKey:@""];
-        DepositSummary *depositsummary = stat;
-        BOOL status = [depositsummary.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-        
-        if (status) {
-            [_barbuttonright setEnabled:YES];
-            [_depositSummary addObjectsFromArray: depositsummary.result.list];
-            _useableSaldo = depositsummary.result.summary.summary_useable_deposit;
-            _useableSaldoIDR = depositsummary.result.summary.summary_useable_deposit_idr;
-            
-            _totalSaldoTokopedia = depositsummary.result.summary.summary_total_deposit_idr;
-            _holdDepositByCsIDR = depositsummary.result.summary.summary_deposit_hold_by_cs_idr;
-            _holdDepositByTokopedia = depositsummary.result.summary.summary_deposit_hold_tx_1_day_idr;
-            
-            if([depositsummary.result.summary.summary_deposit_hold_tx_1_day integerValue] > 0) {
-                _infoReviewSaldo.tag = 121;
-                
-                if(! [_withdrawalButton viewWithTag:121]) {
-                    [_reviewSaldo setText:_holdDepositByTokopedia];
-                    CGRect newFrame2 = _filterDateArea.frame;
-                    newFrame2.origin.y += 40;
-                    _filterDateArea.frame = newFrame2;
-                    
-                    CGRect newFrame3 = _table.frame;
-                    newFrame3.origin.y += 40;
-                    _table.frame = newFrame3;
-                    
-                    [_withdrawalButton addSubview:_infoReviewSaldo];
-                    CGRect newFrame4 = _infoReviewSaldo.frame;
-                    newFrame4.origin.y += 47;
-                    newFrame4.size.width = _header.frame.size.width;
-                    newFrame4.origin.x = -_withdrawalButton.frame.origin.x;
-                    _infoReviewSaldo.frame = newFrame4;
-                    
-                    constraintHeightSuperHeader.constant = constraintHeightSuperHeader.constant+_infoReviewSaldo.frame.size.height-2;
-                    constraintHeightHeader.constant = constraintHeightHeader.constant +_infoReviewSaldo.frame.size.height-2;
-                }
-            }
-            
-            if([depositsummary.result.summary.summary_today_tries integerValue] < [depositsummary.result.summary.summary_daily_tries integerValue] && [depositsummary.result.summary.summary_useable_deposit integerValue] > 0) {
-                [self enableButtonWithdraw];
-            }
-            
-            if (_depositSummary.count >0) {
-                _isNoData = NO;
-                _uriNext =  depositsummary.result.paging.uri_next;
-                NSURL *url = [NSURL URLWithString:_uriNext];
-                NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
-                
-                NSMutableDictionary *queries = [NSMutableDictionary new];
-                [queries removeAllObjects];
-                for (NSString *keyValuePair in querry)
-                {
-                    NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
-                    NSString *key = [pairComponents objectAtIndex:0];
-                    NSString *value = [pairComponents objectAtIndex:1];
-                    
-                    [queries setObject:value forKey:key];
-                }
-                
-                _page = [[queries objectForKey:@"page"] integerValue];
-            } else {
-                _isNoData = YES;
-                
-                if(depositsummary.result.error_date) {
-                    [_noResultView setNoResultTitle:kTKPDMESSAGE_ERRORMESSAGEDATEKEY];
-                }
-                _table.tableFooterView = _noResultView;
-                
-            }
-            
-            _table.tableHeaderView = nil;
-        }
-    }
-    
-}
-
-- (void)requestFail:(id)error {
-    
-}
-
-- (void)requestTimeout {
-    
-}
-
-- (void)cancelCurrentAction {
-    
-}
-
-
 
 #pragma mark - IBAction
 -(IBAction)tap:(id)sender {
@@ -621,9 +507,6 @@
 #pragma mark - Memory Manage
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [tokopediaNetWorkManager requestCancel];
-    tokopediaNetWorkManager.delegate = nil;
-    tokopediaNetWorkManager = nil;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -664,17 +547,6 @@
     return loadingView;
 }
 
-- (TokopediaNetworkManager *)getNetworkManager {
-    if(tokopediaNetWorkManager == nil)
-    {
-        tokopediaNetWorkManager = [TokopediaNetworkManager new];
-        tokopediaNetWorkManager.delegate = self;
-    }
-    
-    return tokopediaNetWorkManager;
-}
-
-
 #pragma mark - Notification Action
 - (void)reloadListDeposit:(NSNotification*)notification  {
     _table.tableHeaderView = _footer;
@@ -693,116 +565,6 @@
     _withdrawalButton.enabled = YES;
     [_withdrawalButton setAlpha:1];
 }
-
-#pragma mark - TokopediaNetworkManager Delegate
-- (NSDictionary*)getParameter:(int)tag {
-    NSDateFormatter *dateFormatStr = [NSDateFormatter new];
-    [dateFormatStr setDateFormat:@"yyyyMMdd"];
-    
-    return @{
-             @"action" : @"get_summary",
-             @"page"   :   @(_page),
-             @"limit"  :   @(20),
-             @"start_date" : _currentStartDate?:[dateFormatStr stringFromDate:_oneMonthBeforeNow],
-             @"end_date" : _currentEndDate?:[dateFormatStr stringFromDate:_now]
-             };
-}
-
-- (NSString*)getPath:(int)tag {
-    return @"deposit.pl";
-}
-
-- (id)getObjectManager:(int)tag {
-    _objectManager = [RKObjectManager sharedClient];
-    
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[DepositSummary class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[DepositSummaryResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{@"end_date" : @"end_date", @"start_date" : @"start_date", @"error_date" : @"error_date"}];
-    
-    RKObjectMapping *summaryDetailMapping = [RKObjectMapping mappingForClass:[DepositSummaryDetail class]];
-    [summaryDetailMapping addAttributeMappingsFromDictionary:@{
-                                                               API_SUMMARY_HOLD_DEPOSIT_IDR:API_SUMMARY_HOLD_DEPOSIT_IDR,
-                                                               API_SUMMARY_TOTAL_DEPOSIT_IDR:API_SUMMARY_TOTAL_DEPOSIT_IDR,
-                                                               API_SUMMARY_TOTAL_DEPOSIT:API_SUMMARY_TOTAL_DEPOSIT,
-                                                               API_SUMMARY_DEPOSIT_HOLD_TX_1DAY:API_SUMMARY_DEPOSIT_HOLD_TX_1DAY,
-                                                               API_SUMMARY_TODAY_TRIES:API_SUMMARY_TODAY_TRIES,
-                                                               API_SUMMARY_USEABLE_DEPOSIT_IDR:API_SUMMARY_USEABLE_DEPOSIT_IDR,
-                                                               API_SUMMARY_USEABLE_DEPOSIT:API_SUMMARY_USEABLE_DEPOSIT,
-                                                               API_SUMMARY_DEPOSIT_HOLD_TX_1DAY_IDR:API_SUMMARY_DEPOSIT_HOLD_TX_1DAY_IDR,
-                                                               API_SUMMARY_HOLD_DEPOSIT:API_SUMMARY_HOLD_DEPOSIT,
-                                                               API_SUMMARY_DAILY_TRIES:API_SUMMARY_DAILY_TRIES,
-                                                               API_SUMMARY_DEPOSIT_HOLD_BY_CS:API_SUMMARY_DEPOSIT_HOLD_BY_CS,
-                                                               API_SUMMARY_DEPOSIT_HOLD_BY_CS_IDR:API_SUMMARY_DEPOSIT_HOLD_BY_CS_IDR
-                                                               }];
-    
-    RKObjectMapping *listDepositMapping = [RKObjectMapping mappingForClass:[DepositSummaryList class]];
-    [listDepositMapping addAttributeMappingsFromArray:@[API_DEPOSIT_ID,
-                                                        API_DEPOSIT_SALDO_IDR,
-                                                        API_DEPOSIT_DATE_FULL,
-                                                        API_DEPOSIT_AMOUNT,
-                                                        API_DEPOSIT_AMOUNT_IDR,
-                                                        API_DEPOSIT_TYPE,
-                                                        API_DEPOSIT_DATE,
-                                                        API_DEPOSIT_WITHDRAW_DATE,
-                                                        API_DEPOSIT_WITHDRAW_STATUS,
-                                                        API_DEPOSIT_STATUS]];
-    
-    RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
-    [pagingMapping addAttributeMappingsFromDictionary:@{kTKPD_APIURINEXTKEY:kTKPD_APIURINEXTKEY}];
-    
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    
-    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APILISTKEY toKeyPath:kTKPD_APILISTKEY withMapping:listDepositMapping];
-    [resultMapping addPropertyMapping:listRel];
-    
-    RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIPAGINGKEY toKeyPath:kTKPD_APIPAGINGKEY withMapping:pagingMapping];
-    [resultMapping addPropertyMapping:pageRel];
-    
-    RKRelationshipMapping *summaryDetailRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"summary" toKeyPath:@"summary" withMapping:summaryDetailMapping];
-    [resultMapping addPropertyMapping:summaryDetailRel];
-    
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                            method:RKRequestMethodPOST
-                                                                                       pathPattern:@"deposit.pl" keyPath:@""
-                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectManager addResponseDescriptor:responseDescriptor];
-    return _objectManager;
-}
-
-- (NSString*)getRequestStatus:(id)result withTag:(int)tag {
-    NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
-    id stat = [resultDict objectForKey:@""];
-    
-    return ((DepositSummary *) stat).status;
-}
-
-- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag {
-    [self requestSuccess:successResult withOperation:operation];
-    
-    [_table reloadData];
-    _isRefreshView = NO;
-    [_refreshControl endRefreshing];
-}
-
-- (void)actionBeforeRequest:(int)tag {
-    
-}
-
-- (void)actionRequestAsync:(int)tag {
-}
-
-- (void)actionAfterFailRequestMaxTries:(int)tag {
-    _isRefreshView = NO;
-    [_refreshControl endRefreshing];
-    _table.tableFooterView = [self getLoadView].view;
-}
-
 
 #pragma mark - LoadingView Delegate
 - (void)pressRetryButton {
