@@ -316,8 +316,13 @@
                                              [_table reloadData];
                                          }
                                          onFailure:^(NSError *error) {
-                                             
-                                             
+                                             if(_table.allowsSelection) {
+                                                 _table.tableFooterView = [self getLoadView:CTagGetPriceAlert].view;
+                                             }
+                                             else {
+                                                 _table.allowsSelection = YES;
+                                                 page = latestPage;
+                                             }
                                          }];
 }
 
@@ -652,7 +657,6 @@
         lastSelectedDepartment = nSelectedDepartment;
         nSelectedDepartment = row;
         page = 1;
-//        [[self getNetworkManager:CTagGetPriceAlert] doRequest];
         [self getPriceAlert];
     }
     
@@ -667,7 +671,6 @@
     }
     else {
         _table.tableFooterView = [self getActivityIndicator];
-//        [[self getNetworkManager:CTagGetPriceAlert] doRequest];
         [self getPriceAlert];
     }
 }
@@ -704,8 +707,8 @@
                                                           [self deletingPriceAlert:NO];
                                                       }
                                                       onFailure:^(NSError *error) {
-                                                          
-                                                          
+                                                          tempPriceAlert = nil;
+                                                          [self deletingPriceAlert:NO];
                                                       }];
         }
         
