@@ -94,6 +94,8 @@
                                                                      action:@selector(tap:)];
 
     _fetchConversationNetworkManager = [TokopediaNetworkManager new];
+    _fetchConversationNetworkManager.isUsingHmac = YES;
+
     _sendMessageNetworkManager = [TokopediaNetworkManager new];
 
     _textView.delegate = self;
@@ -484,9 +486,9 @@
             KTKPDMESSAGE_NAVKEY : [_data objectForKey:KTKPDMESSAGE_NAVKEY]?:@"",
     };
 
-    [_fetchConversationNetworkManager requestWithBaseUrl:[NSString basicUrl]
-                                                    path:KTKPDMESSAGE_PATHURL
-                                                  method:RKRequestMethodPOST
+    [_fetchConversationNetworkManager requestWithBaseUrl:[NSString v4Url]
+                                                    path:@"/v4/inbox-message/get_inbox_detail_message.pl"
+                                                  method:RKRequestMethodGET
                                                parameter:param
                                                  mapping:[InboxMessageDetail mapping]
                                                onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
