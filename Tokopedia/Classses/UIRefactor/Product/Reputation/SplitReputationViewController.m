@@ -17,9 +17,14 @@
         [splitViewController setPreferredDisplayMode:UISplitViewControllerDisplayModeAllVisible];
     }
     
+    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+    NSDictionary *auth = [secureStorage keychainDictionary];
+    auth = [auth mutableCopy];
+    
     SegmentedReviewReputationViewController *segmentedReputationViewController = [SegmentedReviewReputationViewController new];
     segmentedReputationViewController.hidesBottomBarWhenPushed = YES;
     segmentedReputationViewController.splitVC = self;
+    segmentedReputationViewController.userHasShop = ([auth objectForKey:@"shop_id"] && [[auth objectForKey:@"shop_id"] integerValue] > 0);
 
     //Set Navigation Master and Detail
     UINavigationController *masterVC = [[UINavigationController alloc] initWithRootViewController:segmentedReputationViewController];

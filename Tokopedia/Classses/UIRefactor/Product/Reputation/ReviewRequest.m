@@ -199,18 +199,25 @@
 - (void)requestGetInboxReputationWithNavigation:(NSString *)navigation
                                            page:(NSNumber *)page
                                          filter:(NSString *)filter
+                                        keyword:(NSString *)keyword
                                       onSuccess:(void (^)(InboxReputationResult *))successCallback
                                       onFailure:(void (^)(NSError *))errorCallback {
     getInboxReputationNetworkManager.isParameterNotEncrypted = NO;
     getInboxReputationNetworkManager.isUsingHmac = YES;
     
+    NSMutableDictionary *parameter = [[NSMutableDictionary alloc] initWithDictionary:@{@"filter" : filter,
+                                                                                       @"nav"    : navigation,
+                                                                                       @"page"   : page
+                                                                                       }];
+    
+    if (![keyword isEqualToString:@""]) {
+        [parameter setObject:keyword forKey:@"keyword"];
+    }
+    
     [getInboxReputationNetworkManager requestWithBaseUrl:[NSString v4Url]
                                                     path:@"/v4/inbox-reputation/get_inbox_reputation.pl"
                                                   method:RKRequestMethodGET
-                                               parameter:@{@"filter" : filter,
-                                                           @"nav"    : navigation,
-                                                           @"page"   : page
-                                                           }
+                                               parameter:parameter
                                                  mapping:[InboxReputation mapping]
                                                onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                                    NSDictionary *result = ((RKMappingResult*)successResult).dictionary;

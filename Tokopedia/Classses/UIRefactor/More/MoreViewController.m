@@ -668,6 +668,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
             else  {
                 SegmentedReviewReputationViewController *segmentedReputationViewController = [SegmentedReviewReputationViewController new];
                 segmentedReputationViewController.hidesBottomBarWhenPushed = YES;
+                segmentedReputationViewController.userHasShop = ([_auth objectForKey:@"shop_id"] && [[_auth objectForKey:@"shop_id"] integerValue] > 0);
                 [wrapperController.navigationController pushViewController:segmentedReputationViewController animated:YES];
             }
             

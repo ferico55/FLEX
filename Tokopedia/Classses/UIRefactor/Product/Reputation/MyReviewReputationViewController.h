@@ -13,6 +13,7 @@
     IBOutlet UIActivityIndicatorView *activityIndicator;
     IBOutlet UIView *viewFooter, *viewShadow;
     IBOutlet UITableView *tableContent;
+    IBOutlet UISearchBar *_searchBar;
 }
 
 
