@@ -292,7 +292,7 @@
 
     [_messageActionNetworkManager requestWithBaseUrl:[NSString v4Url]
                                                 path:pathByAction[action]
-                                              method:RKRequestMethodGET
+                                              method:RKRequestMethodPOST
                                            parameter:param
                                              mapping:[InboxMessageAction mapping]
                                            onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {

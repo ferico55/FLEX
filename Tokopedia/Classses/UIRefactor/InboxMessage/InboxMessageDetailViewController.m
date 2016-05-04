@@ -500,7 +500,7 @@
     [_sendMessageNetworkManager
             requestWithBaseUrl:[NSString v4Url]
                           path:@"/v4/action/message/reply_message.pl"
-                        method:RKRequestMethodGET
+                        method:RKRequestMethodPOST
                      parameter:param
                        mapping:[InboxMessageAction mapping]
                      onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
