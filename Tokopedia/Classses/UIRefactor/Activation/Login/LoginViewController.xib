@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -25,7 +25,7 @@
                 <outlet property="formViewWidthConstraint" destination="BP0-Wz-plQ" id="4qi-Ca-lPf"/>
                 <outlet property="googleButtonTopConstraint" destination="Irh-Py-eGe" id="skI-Cy-Q6W"/>
                 <outlet property="googleButtonWidthConstraint" destination="LHj-Z9-lu0" id="gZk-Vj-ft1"/>
-                <outlet property="googleSignInButton" destination="ZJo-Ux-VUD" id="31A-6s-0go"/>
+                <outlet property="googleSignInButton" destination="ZJo-Ux-VUD" id="Mwx-OD-4bR"/>
                 <outlet property="loadingView" destination="QfQ-ON-DwI" id="aQb-OX-Tg9"/>
                 <outlet property="loginButton" destination="BjJ-ah-R04" id="dvv-2B-Ufl"/>
                 <outlet property="passwordTextField" destination="rJv-0e-sEO" id="wTA-pJ-GR0"/>
@@ -110,12 +110,43 @@
                                 <constraint firstAttribute="height" constant="42" id="V0G-Ye-6nW"/>
                             </constraints>
                         </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZJo-Ux-VUD" userLabel="Google View" customClass="GPPSignInButton">
-                            <rect key="frame" x="152" y="192" width="138" height="44"/>
+                        <view tag="12" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZJo-Ux-VUD" userLabel="Google View">
+                            <rect key="frame" x="152" y="192" width="138" height="40"/>
+                            <subviews>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_google_new.png" translatesAutoresizingMaskIntoConstraints="NO" id="Qig-vj-lca">
+                                    <rect key="frame" x="10" y="10" width="20" height="20"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="20" id="k94-Gh-YZB"/>
+                                        <constraint firstAttribute="width" constant="20" id="s3l-a3-4zD"/>
+                                    </constraints>
+                                </imageView>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sign in" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jbz-ww-Xaf">
+                                    <rect key="frame" x="44" y="10" width="50" height="20"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="50" id="90c-oW-D63"/>
+                                        <constraint firstAttribute="height" constant="20" id="SdR-jK-8lG"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
+                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
+                                <constraint firstItem="jbz-ww-Xaf" firstAttribute="centerX" secondItem="ZJo-Ux-VUD" secondAttribute="centerX" id="Dw4-Vj-Z3g"/>
+                                <constraint firstItem="jbz-ww-Xaf" firstAttribute="centerY" secondItem="Qig-vj-lca" secondAttribute="centerY" id="G3B-1d-UEv"/>
                                 <constraint firstAttribute="width" constant="137.5" id="LHj-Z9-lu0"/>
-                                <constraint firstAttribute="height" constant="44" id="gME-sW-Wzr"/>
+                                <constraint firstItem="Qig-vj-lca" firstAttribute="leading" secondItem="ZJo-Ux-VUD" secondAttribute="leading" constant="10" id="gK2-u0-tMS"/>
+                                <constraint firstAttribute="height" constant="40" id="tJf-NR-uhk"/>
                             </constraints>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                    <real key="value" value="3"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <outletCollection property="gestureRecognizers" destination="pZv-5d-akP" appends="YES" id="9ja-m6-mGv"/>
+                            </connections>
                         </view>
                     </subviews>
                     <constraints>
@@ -172,10 +203,16 @@
             <connections>
                 <outletCollection property="gestureRecognizers" destination="MgA-86-nNw" appends="YES" id="HJr-tV-zMC"/>
             </connections>
-            <point key="canvasLocation" x="97" y="156"/>
+            <point key="canvasLocation" x="448" y="157"/>
         </view>
+        <tapGestureRecognizer id="pZv-5d-akP">
+            <connections>
+                <action selector="tap:" destination="-1" id="gNY-MU-MU6"/>
+            </connections>
+        </tapGestureRecognizer>
     </objects>
     <resources>
+        <image name="icon_google_new.png" width="30" height="30"/>
         <image name="screen_login" width="640" height="1136"/>
     </resources>
 </document>

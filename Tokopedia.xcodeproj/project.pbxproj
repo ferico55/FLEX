@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		2D50139230438B54812D14B9 /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */; };
+		6214D5291CE082920060C9B2 /* icon_google_new.png in Resources */ = {isa = PBXBuildFile; fileRef = 6214D5261CE082920060C9B2 /* icon_google_new.png */; };
+		6214D52A1CE082920060C9B2 /* icon_google_new@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6214D5271CE082920060C9B2 /* icon_google_new@2x.png */; };
+		6214D52B1CE082920060C9B2 /* icon_google_new@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6214D5281CE082920060C9B2 /* icon_google_new@3x.png */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
 		7AB61F031CCF5E62005C1130 /* TPAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AB610DB1CCF5E5D005C1130 /* TPAnalytics.m */; };
@@ -2295,6 +2298,9 @@
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
 		2D733D9158C7BF957D514506 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
 		4868E459AB2A65D133732296 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tokopedia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6214D5261CE082920060C9B2 /* icon_google_new.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_google_new.png; sourceTree = "<group>"; };
+		6214D5271CE082920060C9B2 /* icon_google_new@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_google_new@2x.png"; sourceTree = "<group>"; };
+		6214D5281CE082920060C9B2 /* icon_google_new@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_google_new@3x.png"; sourceTree = "<group>"; };
 		7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
@@ -10480,6 +10486,9 @@
 		7AB61BCF1CCF5E60005C1130 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				6214D5261CE082920060C9B2 /* icon_google_new.png */,
+				6214D5271CE082920060C9B2 /* icon_google_new@2x.png */,
+				6214D5281CE082920060C9B2 /* icon_google_new@3x.png */,
 				7AB61BD01CCF5E60005C1130 /* attached_image_placeholder.png */,
 				7AB61BD11CCF5E60005C1130 /* attached_image_placeholder@2x.png */,
 				7AB61BD21CCF5E60005C1130 /* attached_image_placeholder@3x.png */,
@@ -11993,6 +12002,7 @@
 				7AB625601CCF5E63005C1130 /* icon_contact_us_arrow@3x.png in Resources */,
 				7AB623CC1CCF5E63005C1130 /* EtalaseCell.xib in Resources */,
 				7AB625201CCF5E63005C1130 /* icon_category.png in Resources */,
+				6214D52A1CE082920060C9B2 /* icon_google_new@2x.png in Resources */,
 				7AB6262E1CCF5E63005C1130 /* icon_questionmark_blue.png in Resources */,
 				7AB627311CCF5E63005C1130 /* icon_filter@3x.png in Resources */,
 				7AB626EC1CCF5E63005C1130 /* location.png in Resources */,
@@ -12277,6 +12287,7 @@
 				7AB621611CCF5E62005C1130 /* AlertListFilterView.xib in Resources */,
 				7AB622661CCF5E63005C1130 /* DetailReviewViewController.xib in Resources */,
 				7AB625581CCF5E63005C1130 /* icon_comment_bubble.png in Resources */,
+				6214D5291CE082920060C9B2 /* icon_google_new.png in Resources */,
 				7AB623C81CCF5E63005C1130 /* SendMessageViewController.xib in Resources */,
 				7AB627741CCF5E63005C1130 /* icon_arrow_down_grey.png in Resources */,
 				7AB6230E1CCF5E63005C1130 /* ReviewSummaryViewController.xib in Resources */,
@@ -12520,6 +12531,7 @@
 				7AB626111CCF5E63005C1130 /* icon_order_check-01@2x.png in Resources */,
 				7AB622971CCF5E63005C1130 /* MyShopPaymentViewController.xib in Resources */,
 				7AB625221CCF5E63005C1130 /* icon_category@3x.png in Resources */,
+				6214D52B1CE082920060C9B2 /* icon_google_new@3x.png in Resources */,
 				7AB626821CCF5E63005C1130 /* icon_smile_small@3x.png in Resources */,
 				7AB624581CCF5E63005C1130 /* TxOrderConfirmedCell.xib in Resources */,
 				7AB624A71CCF5E63005C1130 /* camera-icon@2x.png in Resources */,

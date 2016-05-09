@@ -112,8 +112,8 @@
         name = _fullName;
     } else if (_facebookUserData) {
         name = [_facebookUserData objectForKey:@"name"];
-    } else if (![_googleUser.name.givenName isEqualToString:@""]) {
-        name = [_googleUser.name.givenName stringByAppendingFormat:@" %@", _googleUser.name.familyName];
+    } else if (_gidGoogleUser) {
+        name = _gidGoogleUser.profile.name;
     }
     _fullNameTextField.text = name;
     
@@ -123,9 +123,8 @@
         email = _email;
     } else if (_facebookUserData) {
         email = [_facebookUserData objectForKey:@"email"];
-    } else if (_googleUser) {
-        GPPSignIn *signIn = [GPPSignIn sharedInstance];
-        email = signIn.userEmail;
+    } else if (_gidGoogleUser) {
+        email = _gidGoogleUser.profile.email;
     }
     _emailTextField.text = email;
     _emailTextField.enabled = NO;
@@ -666,7 +665,7 @@
             [Localytics setValue:@"Yes" forProfileAttribute:@"Is Login"];
             
             NSDictionary *trackerValues;
-            if (_googleUser) {
+            if (_gidGoogleUser) {
                 trackerValues = @{AFEventParamRegistrationMethod : @"Google Registration"};
             } else if (_facebookUserData) {
                 trackerValues = @{AFEventParamRegistrationMethod : @"Facebook Registration"};

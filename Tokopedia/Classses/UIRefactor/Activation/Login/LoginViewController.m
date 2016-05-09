@@ -34,13 +34,17 @@
 #import "Localytics.h"
 #import "Tokopedia-Swift.h"
 
-static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn34n.apps.googleusercontent.com";
+#import <GoogleSignIn/GoogleSignIn.h>
+
+static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jdpts.apps.googleusercontent.com";
 
 @interface LoginViewController ()
 <
     FBSDKLoginButtonDelegate,
     LoginViewDelegate,
-    CreatePasswordDelegate
+    CreatePasswordDelegate,
+    GIDSignInUIDelegate,
+    GIDSignInDelegate
 >
 {
     UITextField *_activetextfield;
@@ -66,6 +70,7 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
     
     GPPSignIn *_signIn;
     GTLPlusPerson *_googleUser;
+    GIDGoogleUser *_gidGoogleUser;
     UserAuthentificationManager *_userManager;
 }
 
@@ -79,7 +84,9 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
 @property (weak, nonatomic) IBOutlet UIImageView *screenLogin;
 @property (weak, nonatomic) IBOutlet UIButton *forgetPasswordButton;
 
-@property (retain, nonatomic) IBOutlet GPPSignInButton *googleSignInButton;
+//@property (retain, nonatomic) IBOutlet GPPSignInButton *googleSignInButton;
+//@property (strong, nonatomic) IBOutlet GIDSignInButton *googleSignInButton;
+@property (strong, nonatomic) IBOutlet UIView *googleSignInButton;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *formViewMarginTopConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *formViewWidthConstraint;
@@ -158,7 +165,14 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
     _signIn.delegate = self;
     [_signIn trySilentAuthentication];
     
-    [self.googleSignInButton setStyle:kGPPSignInButtonStyleStandard];
+    GIDSignIn *signIn = [GIDSignIn sharedInstance];
+    signIn.shouldFetchBasicProfile = YES;
+    signIn.clientID = kClientId;
+    signIn.scopes = @[ @"profile", @"email" ];
+    signIn.delegate = self;
+    signIn.uiDelegate = self;
+    
+//    [self.googleSignInButton setStyle:kGIDSignInButtonStyleStandard];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -282,6 +296,8 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
                 break;
         }
         
+    } else if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
+        [[GIDSignIn sharedInstance] signIn];
     }
 }
 #pragma mark - Memory Management
@@ -560,7 +576,7 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
                 [self setLoginIdentity];
                 if (_facebookUserData) {
                     [secureStorage setKeychainWithValue:([_facebookUserData objectForKey:@"email"]?:@"") withKey:kTKPD_USEREMAIL];
-                } else if (_googleUser) {
+                } else if (_gidGoogleUser) {
                     [secureStorage setKeychainWithValue:(_signIn.userEmail?:@"") withKey:kTKPD_USEREMAIL];
                 }
             }
@@ -653,13 +669,13 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
             controller.delegate = self;
             if (_facebookUserData) {
                 controller.facebookUserData = _facebookUserData;
-            } else if (_googleUser) {
-                controller.googleUser = _googleUser;
-                NSString *fullName;
-                if (_googleUser.name.givenName.length > 0) {
-                    fullName = [_googleUser.name.givenName stringByAppendingFormat:@" %@", _googleUser.name.familyName];
-                }
-                controller.fullName = fullName;
+            } else if (_gidGoogleUser) {
+                controller.gidGoogleUser = _gidGoogleUser;
+//                NSString *fullName;
+//                if (_googleUser.name.givenName.length > 0) {
+//                    fullName = [_googleUser.name.givenName stringByAppendingFormat:@" %@", _googleUser.name.familyName];
+//                }
+                controller.fullName = _gidGoogleUser.profile.name;
                 controller.email = _signIn.authentication.userEmail;
             }
             
@@ -1114,7 +1130,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
         self.formViewMarginTopConstraint.constant = 280;
         self.formViewWidthConstraint.constant = 500;
         constant =  (self.formViewWidthConstraint.constant / 2) - 10;
-        [self.googleSignInButton setStyle:kGPPSignInButtonStyleWide];
+//        [self.googleSignInButton setStyle:kGIDSignInButtonStyleStandard];
         facebookButtonTitle = @"Sign in with Facebook";
         self.facebookButtonTopConstraint.constant = 30;
         self.googleButtonTopConstraint.constant = 29;
@@ -1136,6 +1152,27 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
     [self.googleSignInButton layoutIfNeeded];
     
     [self.view layoutSubviews];
+}
+
+#pragma mark - Google Sign In Delegate
+- (void)signIn:(GIDSignIn *)signIn didSignInForUser:(GIDGoogleUser *)user withError:(NSError *)error {
+    NSDictionary *data = @{
+                           kTKPDLOGIN_API_APP_TYPE_KEY     : @"2",
+                           kTKPDLOGIN_API_EMAIL_KEY        : user.profile.email,
+                           kTKPDLOGIN_API_NAME_KEY         : user.profile.name,
+                           kTKPDLOGIN_API_ID_KEY           : user.userID,
+                           kTKPDLOGIN_API_BIRTHDAY_KEY     : @"",
+                           kTKPDLOGIN_API_GENDER_KEY       : @"",
+                           };
+    
+//    _googleUser = person;
+    _gidGoogleUser = user;
+    
+    [self requestThirdAppUser:data];
+}
+
+- (void)signIn:(GIDSignIn *)signIn didDisconnectWithUser:(GIDGoogleUser *)user withError:(NSError *)error {
+    
 }
 
 @end
