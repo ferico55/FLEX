@@ -61,15 +61,11 @@
 }
 
 - (NSString*)getMyDeviceToken {
-#ifdef TARGET_OS_SIMULATOR
-    return @"SIMULATORDUMMY";
-#else
     if ([[_auth objectForKey:@"device_token"] isKindOfClass:[NSString class]]) {
         return [_auth objectForKey:@"device_token"]?: @"0";
     } else {
         return [[_auth objectForKey:@"device_token"] stringValue]?: @"0";
     }
-#endif
 }
 
 //auto increment from database that had been saved in secure storage
