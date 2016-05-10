@@ -42,7 +42,7 @@
     return output;
 }
 
-- (NSString *)generateSignatureWithMethod:(NSString *)method tkpdPath:(NSString *)path parameter:(NSDictionary *)parameter date:(NSString *)date {
+- (NSString *)generateSignatureWithMethod:(NSString*)method tkpdPath:(NSString*)path parameter:(NSDictionary*)parameter{
     NSString *output;
     NSString *secret = @"web_service_v4";
     
@@ -52,8 +52,7 @@
     [self setTkpdPath:path];
     [self setSecret:secret];
 
-    NSString *stringToSign = [NSString stringWithFormat:@"%@\n%@\n%@\n%@\n%@", method, [self getParameterMD5], [self getContentType],
-                    date, [self getTkpdPath]];
+    NSString *stringToSign = [NSString stringWithFormat:@"%@\n%@\n%@\n%@\n%@", method, [self getParameterMD5], [self getContentType], [self getDate], [self getTkpdPath]];
 //    NSString *stringToSign = @"POST\n1234567890asdfghjkl\napplication/x-www-form-urlencoded\nThu, 27 Aug 2015 17:59:05 +0700\n/v4/home/get_hotlist.pl";
 
     
@@ -119,7 +118,7 @@
 }
 
 - (NSString*)getContentType {
-    return @"application/x-www-form-urlencoded; charset=utf-8";
+    return @"application/x-www-form-urlencoded";
 }
 
 - (void)setContentType:(NSString*)contentType {
