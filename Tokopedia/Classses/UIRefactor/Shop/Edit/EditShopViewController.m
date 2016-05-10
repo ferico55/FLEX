@@ -27,6 +27,7 @@
 #import "detail.h"
 
 #import "ShopInfoResponse.h"
+#import "CloseShopViewController.h"
 
 @interface EditShopViewController ()
 <
@@ -277,11 +278,16 @@
 }
 
 - (void)didTapShopStatus {
+    /*
     EditShopStatusViewController *controller = [EditShopStatusViewController new];
     controller.shopIsClosed = _dataSource.shop.isClosed;
     controller.closedNote = _dataSource.shop.closed_detail.note;
     controller.closedUntil = _dataSource.shop.closed_detail.until;
     controller.delegate = self;
+     */
+    CloseShopViewController *controller = [CloseShopViewController new];
+    
+    
     [self.navigationController pushViewController:controller animated:YES];
 }
 

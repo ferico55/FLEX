@@ -2264,6 +2264,8 @@
 		BBA29BAC1CC624AC000630FB /* Tokopedia-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BBA2937B1CC624AB000630FB /* Tokopedia-Info.plist */; };
 		BBA29BAD1CC624AC000630FB /* Tokopedia.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = BBA2937D1CC624AB000630FB /* Tokopedia.entitlements */; };
 		BBA29BAE1CC624AC000630FB /* Tokopedia.xcworkspace in Resources */ = {isa = PBXBuildFile; fileRef = BBA2937E1CC624AB000630FB /* Tokopedia.xcworkspace */; };
+		BBFEEEAD1CE04855004D4DCB /* CloseShopViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBFEEEAB1CE04855004D4DCB /* CloseShopViewController.m */; };
+		BBFEEEAE1CE04855004D4DCB /* CloseShopViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBFEEEAC1CE04855004D4DCB /* CloseShopViewController.xib */; };
 		F25F6F270D531ED13A92CDB9 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4868E459AB2A65D133732296 /* libPods-Tokopedia.a */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
 		FC23B85A1ACD659900879D75 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8581ACD659900879D75 /* Fabric.framework */; };
@@ -5680,6 +5682,9 @@
 		BBA2937C1CC624AB000630FB /* Tokopedia-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Tokopedia-Prefix.pch"; sourceTree = "<group>"; };
 		BBA2937D1CC624AB000630FB /* Tokopedia.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Tokopedia.entitlements; sourceTree = "<group>"; };
 		BBA2937E1CC624AB000630FB /* Tokopedia.xcworkspace */ = {isa = PBXFileReference; lastKnownFileType = wrapper.workspace; path = Tokopedia.xcworkspace; sourceTree = "<group>"; };
+		BBFEEEAA1CE04855004D4DCB /* CloseShopViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CloseShopViewController.h; sourceTree = "<group>"; };
+		BBFEEEAB1CE04855004D4DCB /* CloseShopViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CloseShopViewController.m; sourceTree = "<group>"; };
+		BBFEEEAC1CE04855004D4DCB /* CloseShopViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CloseShopViewController.xib; sourceTree = "<group>"; };
 		C8A1445074FECD393EA18C17 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		FC23B8571ACD659900879D75 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		FC23B8581ACD659900879D75 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
@@ -9778,6 +9783,9 @@
 				7AB61A2F1CCF5E60005C1130 /* EditShopTypeViewCell.xib */,
 				7AB61A301CCF5E60005C1130 /* EditShopViewController.h */,
 				7AB61A311CCF5E60005C1130 /* EditShopViewController.m */,
+				BBFEEEAA1CE04855004D4DCB /* CloseShopViewController.h */,
+				BBFEEEAB1CE04855004D4DCB /* CloseShopViewController.m */,
+				BBFEEEAC1CE04855004D4DCB /* CloseShopViewController.xib */,
 			);
 			path = Edit;
 			sourceTree = "<group>";
@@ -12483,6 +12491,7 @@
 				7AB622D41CCF5E63005C1130 /* ProductEditWholesaleViewController.xib in Resources */,
 				7AB626C61CCF5E63005C1130 /* icon_urutkan_alt.png in Resources */,
 				7AB624541CCF5E63005C1130 /* TxOrderConfirmedButtonArrowCell.xib in Resources */,
+				BBFEEEAE1CE04855004D4DCB /* CloseShopViewController.xib in Resources */,
 				7AB6269B1CCF5E63005C1130 /* icon_speed_neutral_large.png in Resources */,
 				7AB6217D1CCF5E62005C1130 /* CameraAlbumListCell.xib in Resources */,
 				7AB6265C1CCF5E63005C1130 /* icon_shop.png in Resources */,
@@ -13100,6 +13109,7 @@
 				7AB61F831CCF5E62005C1130 /* ReviewProductOwner.m in Sources */,
 				7AB620731CCF5E62005C1130 /* SearchAutoCompleteCategory.m in Sources */,
 				7AB61FC51CCF5E62005C1130 /* ResolutionActionResult.m in Sources */,
+				BBFEEEAD1CE04855004D4DCB /* CloseShopViewController.m in Sources */,
 				7AB620E51CCF5E62005C1130 /* OrderExtraFee.m in Sources */,
 				7AB620201CCF5E62005C1130 /* ProductTalkCommentAction.m in Sources */,
 				7AB623281CCF5E63005C1130 /* ReputationMyReviewViewController.m in Sources */,
