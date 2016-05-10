@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -27,10 +27,10 @@
                 <outlet property="facebookButtonWidthConstraint" destination="xfb-jo-Dg6" id="EVd-Nu-LDl"/>
                 <outlet property="facebookLoginActivityIndicator" destination="qR5-xw-F6Q" id="gDd-sd-YV6"/>
                 <outlet property="facebookLoginView" destination="Vwu-wq-o6E" id="kG4-CL-OcM"/>
-                <outlet property="googleButtonTopConstraint" destination="WKx-v2-9ra" id="3qg-d7-mRl"/>
                 <outlet property="googleButtonWidthConstraint" destination="NkN-Xb-QUf" id="x9M-Ek-hjI"/>
+                <outlet property="googleSignInLabel" destination="1eB-PE-g0r" id="NGf-H1-QH8"/>
                 <outlet property="loadingView" destination="XHS-ID-Xcp" id="R2A-f8-cDg"/>
-                <outlet property="signInButton" destination="fho-Hq-qD3" id="PKy-hG-L3e"/>
+                <outlet property="signInButton" destination="fho-Hq-qD3" id="rvF-U8-gvO"/>
                 <outlet property="signUpButton" destination="y3x-eA-9Vz" id="4PS-nz-c44"/>
                 <outlet property="texfieldfullname" destination="W9c-XX-w7W" id="Kae-l7-km9"/>
                 <outlet property="textfieldconfirmpass" destination="1GC-F6-b5V" id="gSg-jY-kCb"/>
@@ -226,18 +226,54 @@
                     </constraints>
                 </activityIndicatorView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vwu-wq-o6E" userLabel="Facebook Login View">
-                    <rect key="frame" x="15" y="478" width="137.5" height="44"/>
+                    <rect key="frame" x="15" y="478" width="138" height="40"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="VkF-3V-DZa"/>
                         <constraint firstAttribute="width" constant="137.5" id="xfb-jo-Dg6"/>
                     </constraints>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="VkF-3V-DZa"/>
+                        </mask>
+                    </variation>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fho-Hq-qD3" userLabel="Google View" customClass="GPPSignInButton">
-                    <rect key="frame" x="615" y="477" width="138" height="44"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fho-Hq-qD3" userLabel="Google View">
+                    <rect key="frame" x="615" y="478" width="138" height="40"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_google_new.png" translatesAutoresizingMaskIntoConstraints="NO" id="QHL-a8-Iq8">
+                            <rect key="frame" x="10" y="10" width="20" height="20"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="20" id="OaU-Ul-7Ql"/>
+                                <constraint firstAttribute="width" constant="20" id="dzq-Ji-dbH"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sign in" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1eB-PE-g0r">
+                            <rect key="frame" x="45" y="10" width="48" height="20"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="20" id="cYA-V6-6n8"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="15"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="44" id="FfI-2d-0BR"/>
+                        <constraint firstItem="1eB-PE-g0r" firstAttribute="centerY" secondItem="fho-Hq-qD3" secondAttribute="centerY" id="1Xc-j2-pS6"/>
+                        <constraint firstAttribute="height" constant="40" id="FfI-2d-0BR"/>
                         <constraint firstAttribute="width" constant="137.5" id="NkN-Xb-QUf"/>
+                        <constraint firstItem="1eB-PE-g0r" firstAttribute="centerX" secondItem="fho-Hq-qD3" secondAttribute="centerX" id="j6Z-s6-ddP"/>
+                        <constraint firstItem="QHL-a8-Iq8" firstAttribute="leading" secondItem="fho-Hq-qD3" secondAttribute="leading" constant="10" id="kor-KR-w7z"/>
+                        <constraint firstItem="1eB-PE-g0r" firstAttribute="centerY" secondItem="QHL-a8-Iq8" secondAttribute="centerY" id="uz4-QC-OwV"/>
                     </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="3"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="G8m-jA-Obf" appends="YES" id="1yQ-FZ-Grz"/>
+                    </connections>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oqv-1f-U1p">
                     <rect key="frame" x="42" y="364" width="128" height="12"/>
@@ -304,7 +340,6 @@
                     <variation key="heightClass=regular-widthClass=regular" constant="-1"/>
                 </constraint>
                 <constraint firstItem="ekn-6v-JpQ" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="15" id="TiC-dh-MRi"/>
-                <constraint firstItem="fho-Hq-qD3" firstAttribute="top" secondItem="y3x-eA-9Vz" secondAttribute="bottom" constant="35" id="WKx-v2-9ra"/>
                 <constraint firstItem="oqv-1f-U1p" firstAttribute="leading" secondItem="Om5-rq-kus" secondAttribute="trailing" constant="2" id="Wlf-pA-4Zq">
                     <variation key="heightClass=regular-widthClass=regular" constant="226"/>
                 </constraint>
@@ -326,6 +361,7 @@
                 <constraint firstItem="W9c-XX-w7W" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="15" id="iRY-Dv-erG"/>
                 <constraint firstAttribute="trailing" secondItem="dh2-Tl-g6u" secondAttribute="trailing" constant="15" id="iVO-KY-jkg"/>
                 <constraint firstAttribute="trailing" secondItem="fho-Hq-qD3" secondAttribute="trailing" constant="15" id="jA2-jN-FaR"/>
+                <constraint firstItem="fho-Hq-qD3" firstAttribute="bottom" secondItem="Vwu-wq-o6E" secondAttribute="bottom" id="jwZ-pN-fpl"/>
                 <constraint firstItem="95o-gu-FPH" firstAttribute="top" secondItem="1GC-F6-b5V" secondAttribute="bottom" constant="22" id="pzG-uR-FJE"/>
                 <constraint firstItem="W9c-XX-w7W" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="15" id="qYZ-dU-Bq1"/>
                 <constraint firstAttribute="trailing" secondItem="ekn-6v-JpQ" secondAttribute="trailing" constant="15" id="sV4-9X-vWj"/>
@@ -333,6 +369,7 @@
                 <constraint firstItem="Fzr-EG-EzD" firstAttribute="leading" secondItem="7Jh-lC-alZ" secondAttribute="trailing" constant="3" id="tnV-0K-ica">
                     <variation key="heightClass=regular-widthClass=regular" constant="3"/>
                 </constraint>
+                <constraint firstItem="fho-Hq-qD3" firstAttribute="top" secondItem="Vwu-wq-o6E" secondAttribute="top" id="vCX-pr-mxD"/>
                 <constraint firstItem="y3x-eA-9Vz" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="15" id="w88-Ql-stW"/>
                 <constraint firstItem="dh2-Tl-g6u" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="15" id="wiP-qp-sZ3"/>
                 <constraint firstItem="7Jh-lC-alZ" firstAttribute="leading" secondItem="oqv-1f-U1p" secondAttribute="trailing" constant="3" id="xys-Md-Hbz">
@@ -343,9 +380,15 @@
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="iPad"/>
             <point key="canvasLocation" x="91" y="-392"/>
         </view>
+        <tapGestureRecognizer id="G8m-jA-Obf">
+            <connections>
+                <action selector="tap:" destination="-1" id="eha-Av-P7U"/>
+            </connections>
+        </tapGestureRecognizer>
     </objects>
     <resources>
         <image name="icon_checkmark_green-01.png" width="20" height="20"/>
         <image name="icon_circle.png" width="20" height="20"/>
+        <image name="icon_google_new.png" width="30" height="30"/>
     </resources>
 </document>

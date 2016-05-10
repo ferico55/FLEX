@@ -375,18 +375,21 @@
         gender = @"2";
     }
     
-    NSDictionary *parameters = @{
-                                 kTKPDREGISTER_APIACTIONKEY         : kTKPDREGISTER_APICREATE_PASSWORD_KEY,
-                                 API_NEW_PASSWORD_KEY               : _passwordTextField.text,
-                                 API_CONFIRM_PASSWORD_KEY           : _confirmPasswordTextfield.text,
-                                 API_REGISTER_TOS_KEY               : @"1",
-                                 API_MSISDN_KEY                     : _phoneNumberTextField.text,
-                                 API_BIRTHDAY_DAY_KEY               : [dataComponents objectAtIndex:0],
-                                 API_BIRTHDAY_MONTH_KEY             : [dataComponents objectAtIndex:1],
-                                 API_BIRTHDAY_YEAR_KEY              : [dataComponents objectAtIndex:2],
-                                 API_GENDER_KEY                     : gender,
-                                 API_FULL_NAME_KEY                  : _fullNameTextField.text,
-                                 };
+    NSMutableDictionary *param = [NSMutableDictionary new];
+    [param setObject:kTKPDREGISTER_APICREATE_PASSWORD_KEY forKey:kTKPDREGISTER_APIACTIONKEY];
+    [param setObject:_passwordTextField.text forKey:API_NEW_PASSWORD_KEY];
+    [param setObject:_confirmPasswordTextfield.text forKey:API_CONFIRM_PASSWORD_KEY];
+    [param setObject:@"1" forKey:API_REGISTER_TOS_KEY];
+    [param setObject:_phoneNumberTextField.text forKey:API_MSISDN_KEY];
+    [param setObject:[dataComponents objectAtIndex:0] forKey:API_BIRTHDAY_DAY_KEY];
+    [param setObject:[dataComponents objectAtIndex:1] forKey:API_BIRTHDAY_MONTH_KEY];
+    [param setObject:[dataComponents objectAtIndex:2] forKey:API_BIRTHDAY_YEAR_KEY];
+    if (![gender isEqualToString:@""]) {
+        [param setObject:gender forKey:API_GENDER_KEY];
+    }
+    [param setObject:_fullNameTextField.text forKey:API_FULL_NAME_KEY];
+    
+    NSDictionary *parameters = [NSDictionary dictionaryWithDictionary:param];
 
     NSLog(@"%@", parameters);
     NSLog(@"%@", [parameters encrypt]);

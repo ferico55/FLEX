@@ -9,11 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "LoginViewController.h"
 #import <GooglePlus/GooglePlus.h>
+#import <GoogleSignIn/GoogleSignIn.h>
 
 @class GPPSignInButton;
 
-@interface RegisterViewController : GAITrackedViewController <GPPSignInDelegate>
+@interface RegisterViewController : GAITrackedViewController <GPPSignInDelegate, GIDSignInDelegate, GIDSignInUIDelegate>
 
-@property (retain, nonatomic) IBOutlet GPPSignInButton *signInButton;
+//@property (retain, nonatomic) IBOutlet GPPSignInButton *signInButton;
 
 @end

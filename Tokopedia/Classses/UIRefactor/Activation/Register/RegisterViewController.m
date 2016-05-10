@@ -30,7 +30,9 @@
 
 #import "TAGDataLayer.h"
 
-static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn34n.apps.googleusercontent.com";
+#import <GoogleSignIn/GoogleSignIn.h>
+
+static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jdpts.apps.googleusercontent.com";
 
 #pragma mark - Register View Controller
 @interface RegisterViewController ()
@@ -40,7 +42,9 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
     UIAlertViewDelegate,
     CreatePasswordDelegate,
     TKPDAlertViewDelegate,
-    FBSDKLoginButtonDelegate
+    FBSDKLoginButtonDelegate,
+    GIDSignInUIDelegate,
+    GPPSignInDelegate
 >
 {    
     UITextField *_activetextfield;
@@ -71,6 +75,7 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
     
     GPPSignIn *_signIn;
     GTLPlusPerson *_googleUser;
+    GIDGoogleUser *_gidGoogleUser;
 }
 
 @property (weak, nonatomic) IBOutlet TextField *texfieldfullname;
@@ -86,6 +91,7 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
 @property (weak, nonatomic) IBOutlet UIView *facebookLoginView;
 @property (strong, nonatomic) IBOutlet UIView *contentView;
 @property (weak, nonatomic) IBOutlet UIButton *signUpButton;
+@property (strong, nonatomic) IBOutlet UIView *signInButton;
 
 @property (weak, nonatomic) IBOutlet UIView *loadingView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *facebookLoginActivityIndicator;
@@ -94,6 +100,7 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *facebookButtonTopConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *googleButtonWidthConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *googleButtonTopConstraint;
+@property (strong, nonatomic) IBOutlet UILabel *googleSignInLabel;
 @property (strong, nonatomic) FBSDKLoginButton *loginView;
 
 - (IBAction)tap:(id)sender;
@@ -155,7 +162,7 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
     _signIn.delegate = self;
     [_signIn trySilentAuthentication];
     
-    [_signInButton setStyle:kGPPSignInButtonStyleStandard];
+//    [_signInButton setStyle:kGPPSignInButtonStyleStandard];
 
     _loginView = [[FBSDKLoginButton alloc] init];
     _loginView.delegate = self;
@@ -344,6 +351,8 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
                 [_datainput setObject:@(NO) forKey:kTKPDACTIVATION_DATAISAGREEKEY];
             }
         }
+    } else if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
+        [[GIDSignIn sharedInstance] signIn];
     }
 }
 
@@ -722,7 +731,7 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
 
 #pragma mark - Facebook login delegate
 
-- (void)  loginButton:(FBSDKLoginButton *)loginButton
+- (void) loginButton:(FBSDKLoginButton *)loginButton
 didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                 error:(NSError *)error {
     if (error) {
@@ -1078,9 +1087,8 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
         contentViewMarginTop = 134;
         self.facebookButtonTopConstraint.constant = 26;
         self.googleButtonTopConstraint.constant = 25;
-        [_signInButton setStyle:kGPPSignInButtonStyleWide];
         facebookButtonTitle = @"Sign in with Facebook";
-        
+        _googleSignInLabel.text = @"Sign in with Google";
     }
     
     contentViewFrame.size.width = contentViewWidth;
@@ -1101,6 +1109,28 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
     [_facebookLoginView addSubview:_loginView];
 
     [_loginView layoutIfNeeded];
+}
+
+#pragma mark - Google Sign In Delegate
+- (void)signIn:(GIDSignIn *)signIn didSignInForUser:(GIDGoogleUser *)user withError:(NSError *)error {
+    if (user) {
+        NSDictionary *data = @{
+                               kTKPDLOGIN_API_APP_TYPE_KEY     : @"2",
+                               kTKPDLOGIN_API_EMAIL_KEY        : user.profile.email,
+                               kTKPDLOGIN_API_NAME_KEY         : user.profile.name,
+                               kTKPDLOGIN_API_ID_KEY           : user.userID,
+                               kTKPDLOGIN_API_BIRTHDAY_KEY     : @"",
+                               kTKPDLOGIN_API_GENDER_KEY       : @"",
+                               };
+        
+        _gidGoogleUser = user;
+        
+        [self requestThirdAppUser:data];
+    }
+}
+
+- (void)signIn:(GIDSignIn *)signIn didDisconnectWithUser:(GIDGoogleUser *)user withError:(NSError *)error {
+    
 }
 
 @end
