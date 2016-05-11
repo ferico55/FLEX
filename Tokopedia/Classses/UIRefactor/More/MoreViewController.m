@@ -492,7 +492,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 8;
+    return 9;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -779,7 +779,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
         }
     }
     
-    else if (indexPath.section == 6) {
+    else if (indexPath.section == 7) {
         if(indexPath.row == 0) {
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
             [[NSNotificationCenter defaultCenter] postNotificationName:kTKPDACTIVATION_DIDAPPLICATIONLOGOUTNOTIFICATION
