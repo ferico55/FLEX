@@ -474,7 +474,11 @@
                                                                 message:nil
                                                                delegate:self
                                                       cancelButtonTitle:@"Batal"
-                                                      otherButtonTitles:@"Pesanan barang habis", @"Barang tidak dapat dikirim", @"Lainnya", nil];
+                                                      otherButtonTitles:@"Persediaan barang habis",
+                                                                        @"Varian tidak tersedia",
+                                                                        @"Salah harga/berat",
+                                                                        @"Toko sedang tutup",
+                                                                        @"Lainnya", nil];
             alertView.tag = 3;
             [alertView show];
             
@@ -532,14 +536,21 @@
                                                   completion:nil];
             
         } else if (buttonIndex == 2) {
-            
             [self requestActionType:@"reject"
-                             reason:@"Barang tidak dapat dikirim"
+                             reason:@"Varian pada barang yang dipesan tidak tersedia."
                            products:_selectedTransaction.order_products
                     productQuantity:nil];
-            
         } else if (buttonIndex == 3) {
-            
+            [self requestActionType:@"reject"
+                             reason:@"Terdapat kesalahan harga atau berat pada barang yang dipesan."
+                           products:_selectedTransaction.order_products
+                    productQuantity:nil];
+        } else if (buttonIndex == 4) {
+            [self requestActionType:@"reject"
+                             reason:@"Toko sedang tutup."
+                           products:_selectedTransaction.order_products
+                    productQuantity:nil];
+        } else if (buttonIndex == 5) {
             UINavigationController *navigationController = [[UINavigationController alloc] init];
             navigationController.navigationBar.translucent = NO;
             OrderRejectExplanationViewController *controller = [[OrderRejectExplanationViewController alloc] init];
@@ -548,7 +559,6 @@
             [self.navigationController presentViewController:navigationController
                                                     animated:YES
                                                   completion:nil];
-        
         }
         
     } else if (alertView.tag == 4) {
