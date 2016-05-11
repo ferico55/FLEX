@@ -73,12 +73,13 @@
     
     if(self.isUsingHmac) {
         TkpdHMAC *hmac = [TkpdHMAC new];
-        NSString *signature = [hmac generateSignatureWithMethod:[self getStringRequestMethod:requestMethod] tkpdPath:[_delegate getPath:self.tagRequest] parameter:[_delegate getParameter:self.tagRequest] date:nil];
+        NSString* date = [hmac getDate];
+        NSString *signature = [hmac generateSignatureWithMethod:[self getStringRequestMethod:requestMethod] tkpdPath:[_delegate getPath:self.tagRequest] parameter:[_delegate getParameter:self.tagRequest] date:date];
         
         [_objectManager.HTTPClient setDefaultHeader:@"Request-Method" value:[hmac getRequestMethod]];
         [_objectManager.HTTPClient setDefaultHeader:@"Content-MD5" value:[hmac getParameterMD5]];
         [_objectManager.HTTPClient setDefaultHeader:@"Content-Type" value:[hmac getContentType]];
-        [_objectManager.HTTPClient setDefaultHeader:@"Date" value:[hmac getDate]];
+        [_objectManager.HTTPClient setDefaultHeader:@"Date" value:date];
         [_objectManager.HTTPClient setDefaultHeader:@"X-Tkpd-Path" value:[hmac getTkpdPath]];
         [_objectManager.HTTPClient setDefaultHeader:@"X-Method" value:[hmac getRequestMethod]];
         
