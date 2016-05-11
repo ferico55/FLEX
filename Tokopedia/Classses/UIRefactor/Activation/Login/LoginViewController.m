@@ -520,7 +520,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     NSString* securityQuestionUUID = [[[TKPDSecureStorage standardKeyChains] keychainDictionary] objectForKey:@"securityQuestionUUID"];
     
     NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithDictionary:data];
-    [parameters setObject:kTKPDREGISTER_APIDOLOGINKEY forKey:kTKPDREGISTER_APIACTIONKEY];
+//    [parameters setObject:kTKPDREGISTER_APIDOLOGINKEY forKey:kTKPDREGISTER_APIACTIONKEY];
     [parameters setObject:(securityQuestionUUID.length ? securityQuestionUUID : @"") forKey:@"uuid"];
     
     
@@ -922,7 +922,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 
 #pragma mark - Facebook login delegate
 
-- (void)  loginButton:(FBSDKLoginButton *)loginButton
+- (void) loginButton:(FBSDKLoginButton *)loginButton
 didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                 error:(NSError *)error {
     if (error) {
@@ -969,6 +969,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
             kTKPDLOGIN_API_BIRTHDAY_KEY     : birthday,
             kTKPDLOGIN_API_GENDER_KEY       : gender,
             kTKPDLOGIN_API_FB_TOKEN_KEY     : accessToken.tokenString?:@"",
+            @"action" : @"do_login"
         };
 
         [self requestThirdAppUser:parameters];
@@ -1175,6 +1176,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                                kTKPDLOGIN_API_ID_KEY           : user.userID,
                                kTKPDLOGIN_API_BIRTHDAY_KEY     : @"",
                                kTKPDLOGIN_API_GENDER_KEY       : @"",
+                               @"action" : @"do_login_plus"
                                };
         
         //    _googleUser = person;
