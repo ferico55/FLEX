@@ -183,7 +183,7 @@
     BOOL hasLoadViewWillAppear, isValidDomain, hasSetImgGambar;
     RKObjectManager *objectManager;
     TokopediaNetworkManager *tokopediaNetworkManager;
-    NSMutableDictionary *dictContentPhoto;
+    NSDictionary *dictContentPhoto;
     MyShopShipmentTableViewController *controller;
     
     UIImageView *tempImage;
@@ -841,14 +841,22 @@
     imgGambar.image = [dict objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
     [self checkValidation:nil withSlogan:nil withDesc:nil];
 
-    
-    NSMutableDictionary *dictContent = [NSMutableDictionary new];
-    dictContentPhoto = [NSMutableDictionary dictionaryWithObjectsAndKeys:dictContent, DATA_SELECTED_PHOTO_KEY, nil];
-    
-    NSMutableDictionary *dictPhoto = [NSMutableDictionary new];
-    [dictContent setObject:dictPhoto forKey:kTKPDCAMERA_DATAPHOTOKEY];
-    [dictPhoto setObject:[dict objectForKey:DATA_CAMERA_IMAGEDATA] forKey:DATA_CAMERA_IMAGEDATA];
-    [dictPhoto setObject:strImageName forKey:DATA_CAMERA_IMAGENAME];
+    NSDictionary *dictContent = @{
+        @"photo": @{
+            @"cameraimagedata": [dict objectForKey:DATA_CAMERA_IMAGEDATA],
+            @"cameraimagename": strImageName
+        }
+    };
+
+    dictContentPhoto = @{
+        @"data_selected_photo": @{
+            @"photo": @{
+                @"cameraimagedata": [dict objectForKey:@"cameraimagedata"],
+                @"cameraimagename": strImageName
+            }
+        }
+    };
+
     [tempImage removeFromSuperview];
     tempImage = nil;
 }

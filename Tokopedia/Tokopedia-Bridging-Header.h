@@ -35,3 +35,9 @@
 #import "ShipmentViewController.h"
 
 #import "TPAnalytics.h"
+
+#import "AddShop.h"
+#import "RequestUploadImage.h"
+#import "RequestGenerateHost.h"
+#import "UserAuthentificationManager.h"
+

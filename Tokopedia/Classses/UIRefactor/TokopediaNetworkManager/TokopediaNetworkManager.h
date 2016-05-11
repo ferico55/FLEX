@@ -83,5 +83,7 @@ DEPRECATED_ATTRIBUTE
                   onSuccess:(void(^)(RKMappingResult* successResult, RKObjectRequestOperation* operation))successCallback
                   onFailure:(void(^)(NSError* errorResult)) errorCallback;
 
+- (void)requestWithBaseURL:(NSString *)baseUrl;
+
 
 @end

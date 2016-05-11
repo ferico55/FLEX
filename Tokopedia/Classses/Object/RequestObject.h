@@ -47,4 +47,9 @@
 @property (nonatomic, strong) NSString *action;
 @property (nonatomic, strong) NSString *web_service;
 
+@property (nonatomic, strong) NSString *logo;
+@property (nonatomic, strong) NSString *add_new;
+@property (nonatomic, strong) NSString *resolution;
+@property (nonatomic, strong) NSString *server_id;
+
 @end

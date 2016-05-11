@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "ActionOrderResult.h"
 
-@interface ActionOrder : NSObject
+@interface ActionOrder : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *status;
 @property (nonatomic, strong) NSArray *message_status;

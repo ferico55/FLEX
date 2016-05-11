@@ -10,6 +10,7 @@
 #import "UploadImage.h"
 #import "ImageResult.h"
 #import "GenerateHost.h"
+#import "RequestObject.h"
 
 #define DATA_SELECTED_IMAGE_VIEW_KEY @"data_selected_image_view"
 #define DATA_SELECTED_PHOTO_KEY @"data_selected_photo"

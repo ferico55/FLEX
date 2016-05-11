@@ -18,7 +18,10 @@
                                                         @"server_id",
                                                         @"pic_src",
                                                         @"pic_obj",
-                                                        @"message_error"]];
+                                                        @"message_error",
+                                                        @"src"]];
+    
+    [imageResultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"image" toKeyPath:@"image" withMapping:[UploadDataImage mapping]]];
     
     return imageResultMapping;
 }

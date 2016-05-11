@@ -12,7 +12,7 @@
 
 - (void)awakeFromNib {
     [super awakeFromNib];
-    self.shopImageView.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    self.shopImageView.layer.borderColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.5].CGColor;
     self.shopImageView.layer.borderWidth = 1;
     self.shopImageView.layer.cornerRadius = self.shopImageView.frame.size.width / 2;
 }
