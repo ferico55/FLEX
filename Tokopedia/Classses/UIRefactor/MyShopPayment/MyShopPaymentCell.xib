@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -19,7 +19,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="220"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kqP-WY-wxe" id="Srd-3C-ZOM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="123"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="219.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="0Ex-rf-vgh">
@@ -50,6 +50,7 @@
                 </subviews>
                 <constraints>
                     <constraint firstItem="0Ex-rf-vgh" firstAttribute="leading" secondItem="Srd-3C-ZOM" secondAttribute="leading" constant="125" id="60n-HJ-3Lh"/>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="HwM-AJ-T7g" secondAttribute="bottom" constant="20" id="6Zg-Tm-57h"/>
                     <constraint firstItem="TBA-9b-4g5" firstAttribute="top" secondItem="0Ex-rf-vgh" secondAttribute="bottom" constant="9" id="6gM-bc-h5B"/>
                     <constraint firstItem="0Ex-rf-vgh" firstAttribute="top" secondItem="Srd-3C-ZOM" secondAttribute="top" constant="20" id="JWS-nJ-53l"/>
                     <constraint firstItem="HwM-AJ-T7g" firstAttribute="leading" secondItem="Srd-3C-ZOM" secondAttribute="leading" constant="15" id="UcS-Ao-uX0"/>
@@ -67,9 +68,4 @@
             </connections>
         </tableViewCell>
     </objects>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
-    </simulatedMetricsContainer>
 </document>

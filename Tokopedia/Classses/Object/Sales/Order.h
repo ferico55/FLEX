@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "OrderResult.h"
 
-@interface Order : NSObject
+@interface Order : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *status;
 @property (nonatomic, strong) NSString *server_process_time;

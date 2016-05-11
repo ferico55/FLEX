@@ -10,8 +10,9 @@
 #import "Paging.h"
 #import "OrderOrder.h"
 #import "OrderBooking.h"
+#import "OrderTransaction.h"
 
-@interface OrderResult : NSObject
+@interface OrderResult : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSMutableArray *list;
 @property (nonatomic, strong) Paging *paging;

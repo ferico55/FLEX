@@ -10,4 +10,10 @@
 
 @implementation ActionOrder
 
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[self class]];
+    [mapping addAttributeMappingsFromArray:@[@"status", @"message_status", @"message_error", @"server_process_time"]];
+    return mapping;
+}
+
 @end

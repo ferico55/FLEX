@@ -17,4 +17,10 @@
     return address_street;
 }
 
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[self class]];
+    [mapping addAttributeMappingsFromArray:@[@"address_postal", @"address_district", @"address_city", @"shipper_phone", @"address_country", @"address_province", @"address_street"]];
+    return mapping;
+}
+
 @end

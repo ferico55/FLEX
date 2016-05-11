@@ -14,7 +14,8 @@ NSInteger const maxNumberOfCharacterForDescription = 120;
 @implementation EditShopDescriptionViewCell
 
 - (void)awakeFromNib {
-
+    [super awakeFromNib];
+    [self updateCountLabel];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -54,7 +55,7 @@ NSInteger const maxNumberOfCharacterForDescription = 120;
             }
         } else {
             if (text.length == 0) {
-                textView.placeholderLabel.text = @"Tulis Deskripsis";
+                textView.placeholderLabel.text = @"Tulis Deskripsi";
             } else {
                 textView.placeholderLabel.text = @"";
             }

@@ -65,6 +65,8 @@
 #import "MoreWrapperViewController.h"
 #import "MoreNavigationController.h"
 
+#import "Tokopedia-Swift.h"
+
 #define CTagProfileInfo 12
 #define CTagLP 13
 
@@ -978,11 +980,9 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
 
 
 #pragma mark - Action
-- (IBAction)actionCreateShop:(id)sender
-{
-    CreateShopViewController *createShopViewController = [CreateShopViewController new];
-    createShopViewController.moreViewController = self;
-    [self pushViewController:createShopViewController];
+- (IBAction)actionCreateShop:(id)sender {
+    OpenShopViewController *controller = [[OpenShopViewController alloc] init];
+    [self pushViewController:controller];
 }
 
 - (void)updateSaldoTokopedia:(NSNotification*)notification {

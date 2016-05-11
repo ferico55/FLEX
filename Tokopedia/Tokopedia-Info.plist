@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>GoogleAppVerification</key>
-	<string>nzFcEhDnwLGkiEJOQ3ETmdbjoKs4tUQzh5ucFoIYQRk</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -75,7 +73,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1.0</string>
+	<string>DEVEL</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -94,6 +92,8 @@
 	<string>126665634029576</string>
 	<key>FacebookDisplayName</key>
 	<string>Tokopedia</string>
+	<key>GoogleAppVerification</key>
+	<string>nzFcEhDnwLGkiEJOQ3ETmdbjoKs4tUQzh5ucFoIYQRk</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>fbapi</string>
