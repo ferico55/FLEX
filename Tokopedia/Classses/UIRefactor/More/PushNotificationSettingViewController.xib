@@ -7,6 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PushNotificationSettingViewController">
             <connections>
+                <outlet property="switcher" destination="mzr-ZW-e46" id="Bqh-NP-X04"/>
                 <outlet property="view" destination="iN0-l3-epB" id="ev7-Hg-uu6"/>
             </connections>
         </placeholder>

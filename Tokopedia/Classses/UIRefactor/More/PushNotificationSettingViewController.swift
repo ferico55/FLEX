@@ -10,6 +10,7 @@ import UIKit
 
 @objc(PushNotificationSettingViewController)
 class PushNotificationSettingViewController: UIViewController {
+    @IBOutlet var switcher: UISwitch!
     
     @IBAction func switchValueChanged(settingSwitch: UISwitch) {
         if (settingSwitch.on) {
@@ -28,12 +29,46 @@ class PushNotificationSettingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        NSNotificationCenter.defaultCenter()
+            .addObserver(
+                self,
+                selector: #selector(applicationDidBecomeActive),
+                name: UIApplicationDidBecomeActiveNotification,
+                object: nil)
     }
 
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        toggleSwitch()
+    }
+    
+    func toggleSwitch() {
+        guard #available(iOS 8, *) else { return }
+        
+        let isPermissionAuthorized = JLNotificationPermission.sharedInstance().authorizationStatus() == .PermissionAuthorized
+        
+        
+        let hasTurnedOnNotifications = UIApplication.sharedApplication()
+            .currentUserNotificationSettings()!.types != .None
+        
+        let shouldEnableSwitch = isPermissionAuthorized && hasTurnedOnNotifications
+        
+        switcher.on = shouldEnableSwitch
+    }
+    
+    
+    func applicationDidBecomeActive(notification: NSNotification) {
+        toggleSwitch()
+    }
+    
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
 
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
 }
