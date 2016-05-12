@@ -56,7 +56,7 @@
     NSURLRequest *request = [NSURLRequest requestWithURL:URL];
     NSMutableURLRequest *mutableRequest = [request mutableCopy];
     TkpdHMAC *hmac = [TkpdHMAC new];
-    NSString *signature = [hmac generateSignatureWithMethod:@"GET" tkpdPath:URL.path parameter:URL.parameters];
+    NSString *signature = [hmac generateSignatureWithMethod:@"GET" tkpdPath:URL.path parameter:URL.parameters date:[hmac getDate]];
     
     [mutableRequest addValue:[hmac getRequestMethod] forHTTPHeaderField:@"Request-Method"];
     [mutableRequest addValue:[hmac getParameterMD5] forHTTPHeaderField:@"Content-MD5"];

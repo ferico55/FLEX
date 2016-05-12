@@ -349,7 +349,7 @@
                                                             message:nil
                                                            delegate:self
                                                   cancelButtonTitle:@"Batal"
-                                                  otherButtonTitles:@"Pesanan barang habis", @"Barang tidak dapat dikirim", @"Lainnya", nil];
+                                                  otherButtonTitles:@"Persediaan barang habis", @"Varian tidak tersedia", @"Salah harga/berat", @"Toko sedang tutup", @"Lainnya", nil];
         alertView.tag = 3;
         [alertView show];
     }
@@ -436,7 +436,7 @@
                                                                 message:nil
                                                                delegate:self
                                                       cancelButtonTitle:@"Batal"
-                                                      otherButtonTitles:@"Pesanan barang habis", @"Barang tidak dapat dikirim", @"Lainnya", nil];
+                                                      otherButtonTitles:@"Persediaan barang habis", @"Varian tidak tersedia", @"Salah harga/berat", @"Toko sedang tutup", @"Lainnya", nil];
             alertView.tag = 3;
             [alertView show];
         } else if (buttonIndex == 2) {
@@ -454,8 +454,12 @@
         if (buttonIndex == 1) {
             [self showChooseAcceptedProductPage];
         } else if (buttonIndex == 2) {
-            [self requestActionType:@"reject" reason:@"Barang tidak dapat dikirim" products:self.selectedOrder.order_products productQuantity:nil];
+            [self requestActionType:@"reject" reason:@"Varian dari barang yang dipesan tidak tersedia." products:self.selectedOrder.order_products productQuantity:nil];
         } else if (buttonIndex == 3) {
+            [self requestActionType:@"reject" reason:@"Terdapat kesalahan harga/berat pada barang yang dipesan." products:self.selectedOrder.order_products productQuantity:nil];
+        } else if (buttonIndex == 4) {
+            [self requestActionType:@"reject" reason:@"Toko sedang tutup." products:self.selectedOrder.order_products productQuantity:nil];
+        } else if (buttonIndex == 5) {
             [self showRejectOrderPage];
         }
     }

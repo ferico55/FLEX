@@ -683,7 +683,7 @@ typedef enum TagRequest {
                                                                 message:nil
                                                                delegate:self
                                                       cancelButtonTitle:@"Batal"
-                                                      otherButtonTitles:@"Pesanan barang habis", @"Barang tidak dapat dikirim", @"Lainnya", nil];
+                                                      otherButtonTitles:@"Persediaan barang habis", @"Varian tidak tersedia", @"Salah harga/berat", @"Toko sedang tutup", @"Lainnya", nil];
             alertView.tag = 3;
             [alertView show];
             
@@ -753,7 +753,7 @@ typedef enum TagRequest {
                                                                 message:nil
                                                                delegate:self
                                                       cancelButtonTitle:@"Batal"
-                                                      otherButtonTitles:@"Pesanan barang habis", @"Barang tidak dapat dikirim", @"Lainnya", nil];
+                                                      otherButtonTitles:@"Persediaan barang habis", @"Varian tidak tersedia", @"Salah harga/berat", @"Toko sedang tutup", @"Lainnya", nil];
             alertView.tag = 3;
             [alertView show];
             
@@ -816,13 +816,31 @@ typedef enum TagRequest {
         } else if (buttonIndex == 2) {
             
             [self.delegate didReceiveActionType:@"reject"
-                                         reason:@"Barang tidak dapat dikirim"
+                                         reason:@"Varian dari barang yang dipesan tidak tersedia."
                                        products:_transaction.order_products
                                 productQuantity:nil];
             
             [self.navigationController popViewControllerAnimated:YES];
             
         } else if (buttonIndex == 3) {
+            
+            [self.delegate didReceiveActionType:@"reject"
+                                         reason:@"Terdapat kesalahan harga/berat pada barang yang dipesan."
+                                       products:_transaction.order_products
+                                productQuantity:nil];
+            
+            [self.navigationController popViewControllerAnimated:YES];
+            
+        } else if (buttonIndex == 4) {
+            
+            [self.delegate didReceiveActionType:@"reject"
+                                         reason:@"Toko sedang tutup."
+                                       products:_transaction.order_products
+                                productQuantity:nil];
+            
+            [self.navigationController popViewControllerAnimated:YES];
+            
+        } else if (buttonIndex == 5) {
             
             UINavigationController *navigationController = [[UINavigationController alloc] init];
             navigationController.navigationBar.translucent = NO;
