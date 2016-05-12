@@ -2253,6 +2253,8 @@
 		925A20191CE43D29000AC5FA /* icon_audio.png in Resources */ = {isa = PBXBuildFile; fileRef = 925A20161CE43D29000AC5FA /* icon_audio.png */; };
 		925A201A1CE43D29000AC5FA /* icon_audio@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 925A20171CE43D29000AC5FA /* icon_audio@2x.png */; };
 		925A201B1CE43D29000AC5FA /* icon_audio@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 925A20181CE43D29000AC5FA /* icon_audio@3x.png */; };
+		925A201D1CE4409A000AC5FA /* PushNotificationSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925A201C1CE4409A000AC5FA /* PushNotificationSettingViewController.swift */; };
+		925A201F1CE4413F000AC5FA /* PushNotificationSettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 925A201E1CE4413F000AC5FA /* PushNotificationSettingViewController.xib */; };
 		BBA2937F1CC624AB000630FB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BBA285A51CC624A1000630FB /* AppDelegate.m */; };
 		BBA298CE1CC624AC000630FB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BBA290691CC624A5000630FB /* InfoPlist.strings */; };
 		BBA298CF1CC624AC000630FB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BBA2906B1CC624A5000630FB /* GoogleService-Info.plist */; };
@@ -5660,6 +5662,8 @@
 		925A20161CE43D29000AC5FA /* icon_audio.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_audio.png; sourceTree = "<group>"; };
 		925A20171CE43D29000AC5FA /* icon_audio@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_audio@2x.png"; sourceTree = "<group>"; };
 		925A20181CE43D29000AC5FA /* icon_audio@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_audio@3x.png"; sourceTree = "<group>"; };
+		925A201C1CE4409A000AC5FA /* PushNotificationSettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushNotificationSettingViewController.swift; sourceTree = "<group>"; };
+		925A201E1CE4413F000AC5FA /* PushNotificationSettingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PushNotificationSettingViewController.xib; sourceTree = "<group>"; };
 		AAA12C6A69BF6CB5F8EE3287 /* Pods-Tokopedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug.xcconfig"; sourceTree = "<group>"; };
 		BBA285A41CC624A1000630FB /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		BBA285A51CC624A1000630FB /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -8921,6 +8925,8 @@
 				7AB618191CCF5E5F005C1130 /* WebViewController.h */,
 				7AB6181A1CCF5E5F005C1130 /* WebViewController.m */,
 				7AB6181B1CCF5E5F005C1130 /* WebViewController.xib */,
+				925A201C1CE4409A000AC5FA /* PushNotificationSettingViewController.swift */,
+				925A201E1CE4413F000AC5FA /* PushNotificationSettingViewController.xib */,
 			);
 			path = More;
 			sourceTree = "<group>";
@@ -12221,6 +12227,7 @@
 				7AB622441CCF5E62005C1130 /* InboxMessageDetailCell.xib in Resources */,
 				7AB625431CCF5E63005C1130 /* icon_checklist.png in Resources */,
 				7AB625A01CCF5E63005C1130 /* icon_login.png in Resources */,
+				925A201F1CE4413F000AC5FA /* PushNotificationSettingViewController.xib in Resources */,
 				7AB625851CCF5E63005C1130 /* icon_grid_dua@2x.png in Resources */,
 				7AB625FC1CCF5E63005C1130 /* icon_neutral_sad@3x.png in Resources */,
 				7AB627601CCF5E63005C1130 /* icon_hotlist_active.png in Resources */,
@@ -14047,6 +14054,7 @@
 				7AB61F321CCF5E62005C1130 /* RSA.m in Sources */,
 				7AB621F81CCF5E62005C1130 /* DepositSummaryViewController.m in Sources */,
 				7AB61F671CCF5E62005C1130 /* DepositSummaryDetail.m in Sources */,
+				925A201D1CE4409A000AC5FA /* PushNotificationSettingViewController.swift in Sources */,
 				7AB6206F1CCF5E62005C1130 /* ImageSearchResponseData.m in Sources */,
 				7AB622881CCF5E63005C1130 /* MyShopAddressEditViewController.m in Sources */,
 				7AB624881CCF5E63005C1130 /* VTBaseTransaction.m in Sources */,

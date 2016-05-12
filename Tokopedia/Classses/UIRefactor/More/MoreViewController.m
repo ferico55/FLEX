@@ -65,6 +65,8 @@
 #import "MoreWrapperViewController.h"
 #import "MoreNavigationController.h"
 
+#import "Tokopedia-Swift.h"
+
 #define CTagProfileInfo 12
 #define CTagLP 13
 
@@ -777,6 +779,11 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
             
             [wrapperController presentViewController:controller animated:YES completion:nil];
         }
+    }
+    
+    else if (indexPath.section == 6) {
+        PushNotificationSettingViewController* viewController = [PushNotificationSettingViewController new];
+        [wrapperController.navigationController pushViewController:viewController animated:YES];
     }
     
     else if (indexPath.section == 7) {
