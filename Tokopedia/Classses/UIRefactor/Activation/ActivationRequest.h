@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "GeneralActionResult.h"
+#import "CreatePassword.h"
 #import "LoginResult.h"
 #import "Login.h"
 
@@ -22,7 +22,7 @@
                             birthdayMonth:(NSString*)birthdayMonth
                              birthdayYear:(NSString*)birthdayYear
                               registerTOS:(NSString*)registerTOS
-                                onSuccess:(void(^)(GeneralActionResult *result))successCallback
+                                onSuccess:(void(^)(CreatePassword *result))successCallback
                                 onFailure:(void(^)(NSError *errorResult))errorCallback;
 
 - (void)requestDoLoginPlusWithAppType:(NSString*)appType
@@ -38,5 +38,9 @@
                             onSuccess:(void(^)(Login *result))successCallback
                             onFailure:(void(^)(NSError *error))errorCallback;
 
+- (void)requestLoginWithUserEmail:(NSString*)email
+                     userPassword:(NSString*)password
+                        onSuccess:(void(^)(Login *result))successCallback
+                        onFailure:(void(^)(NSError *error))errorCallback;
 
 @end
