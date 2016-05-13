@@ -65,6 +65,8 @@
 #import "MoreWrapperViewController.h"
 #import "MoreNavigationController.h"
 
+#import <JLPermissions/JLNotificationPermission.h>
+
 #import "Tokopedia-Swift.h"
 
 #define CTagProfileInfo 12
@@ -93,6 +95,7 @@
     TAGContainer *_gtmContainer;
     NSURL *_deeplinkUrl;
     
+    BOOL _shouldDisplayPushNotificationCell;
 }
 
 @property (weak, nonatomic) IBOutlet UILabel *depositLabel;
@@ -209,6 +212,26 @@
     [self updateShopInformation];
     [self configureGTM];
     [self.tableView setShowsVerticalScrollIndicator:NO];
+    
+    [self togglePushNotificationCellVisibility];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(appDidResume)
+                                                 name:UIApplicationDidBecomeActiveNotification
+                                               object:nil];
+}
+
+- (void)appDidResume {
+    [self togglePushNotificationCellVisibility];
+}
+
+- (void)togglePushNotificationCellVisibility {
+    BOOL isPushNotificationAuthorized = [JLNotificationPermission sharedInstance].authorizationStatus != JLPermissionDenied;
+    BOOL isBadgeNotificationTurnedOn = [UIApplication sharedApplication].currentUserNotificationSettings.types & UIUserNotificationTypeBadge;
+    
+    _shouldDisplayPushNotificationCell = isPushNotificationAuthorized && isBadgeNotificationTurnedOn;
+    
+    [self.tableView reloadData];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -534,7 +557,7 @@
             break;
             
         case 6:
-            return 1;
+            return _shouldDisplayPushNotificationCell?1:0;
             break;
             
         case 7 :
