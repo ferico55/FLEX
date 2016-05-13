@@ -409,11 +409,8 @@
             }
             else if (indexPath.row == BUTTON_PRODUCT_ETALASE_DETAIL)
             {
-                cell.detailTextLabel.textColor = (isProductWarehouse)?[UIColor grayColor]:[UIColor colorWithRed:(0.f/255.f) green:122.f/255.f blue:255.f/255.f alpha:1];
-                if (isProductWarehouse)
-                    cell.detailTextLabel.text = @"-";
-                else
-                    cell.detailTextLabel.text = ([product.product_etalase isEqualToString:@"0"]||!product.product_etalase)?@"Pilih Etalase":product.product_etalase;
+                //cell.detailTextLabel.textColor = (isProductWarehouse)?[UIColor grayColor]:[UIColor colorWithRed:(0.f/255.f) green:122.f/255.f blue:255.f/255.f alpha:1];
+                cell.detailTextLabel.text = ([product.product_etalase isEqualToString:@"0"]||!product.product_etalase)?@"Pilih Etalase":product.product_etalase;
             }
             break;
         case 2:
@@ -527,7 +524,7 @@
                 }
                 case BUTTON_PRODUCT_ETALASE_DETAIL:
                 {
-                    if (!isProductWarehouse) {
+                    //if (!isProductWarehouse) {
                         ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
                         EtalaseList *newEtalase = [EtalaseList new];
                         newEtalase.etalase_name = product.product_etalase;
@@ -540,7 +537,7 @@
                         etalaseViewController.delegate = self;
                         [etalaseViewController setEnableAddEtalase:YES];
                         [self.navigationController pushViewController:etalaseViewController animated:YES];
-                    }
+                    //}
                     break;
                 }
             }
@@ -1257,7 +1254,8 @@
     NSString *minimumOrder = product.product_min_order?:@"";
     NSString *productInsurance = product.product_must_insurance?:@"";
     
-    NSString *moveToWarehouse = [product.product_etalase_id isEqual:@(0)]?PRODUCT_MOVETO_WAREHOUSE_ID:@"1";
+    //NSString *moveToWarehouse = [product.product_etalase_id isEqual:@(0)]?PRODUCT_MOVETO_WAREHOUSE_ID:@"1";
+    NSString *moveToWarehouse = product.product_move_to;
     
     NSNumber *etalaseUserInfoID = product.product_etalase_id;
     //if ([etalaseUserInfoID isEqual:@(0)]) {
@@ -1490,10 +1488,12 @@
             NSInteger index = [[alertView.data objectForKey:DATA_INDEX_KEY] integerValue];
             NSString *value = [ARRAY_PRODUCT_MOVETO_ETALASE[index] objectForKey:DATA_VALUE_KEY];
             product.product_move_to = value;//([value integerValue]==1)?@"0":value;
+            /*
             if (index == 0) {
                 product.product_etalase_id = @(0);
                 product.product_etalase = nil;
             }
+             */
             [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
             [_tableView reloadData];
             break;
