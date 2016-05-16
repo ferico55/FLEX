@@ -229,7 +229,7 @@
     BOOL isPushNotificationAuthorized = [JLNotificationPermission sharedInstance].authorizationStatus != JLPermissionDenied;
     BOOL isBadgeNotificationTurnedOn = [UIApplication sharedApplication].currentUserNotificationSettings.types & UIUserNotificationTypeBadge;
     
-    _shouldDisplayPushNotificationCell = isPushNotificationAuthorized && isBadgeNotificationTurnedOn;
+    _shouldDisplayPushNotificationCell = !isPushNotificationAuthorized || !isBadgeNotificationTurnedOn;
     
     [self.tableView reloadData];
 }
