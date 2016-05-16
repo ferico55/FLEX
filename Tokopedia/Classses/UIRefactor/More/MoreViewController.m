@@ -805,8 +805,15 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
     }
     
     else if (indexPath.section == 6) {
-        PushNotificationSettingViewController* viewController = [PushNotificationSettingViewController new];
-        [wrapperController.navigationController pushViewController:viewController animated:YES];
+        JLAuthorizationStatus permissionStatus = [JLNotificationPermission sharedInstance].authorizationStatus;
+        if (permissionStatus == JLPermissionNotDetermined) {
+            [JLNotificationPermission sharedInstance].extraAlertEnabled = false;
+            [[JLNotificationPermission sharedInstance] authorize: ^(NSString *deviceId, NSError *error) {
+                [self.tableView reloadData];
+            }];
+        } else {
+            [[JLNotificationPermission sharedInstance] displayAppSystemSettings];
+        }
     }
     
     else if (indexPath.section == 7) {
