@@ -170,13 +170,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     _signIn.delegate = self;
     [_signIn trySilentAuthentication];
     
-    GIDSignIn *signIn = [GIDSignIn sharedInstance];
-    signIn.shouldFetchBasicProfile = YES;
-    signIn.clientID = kClientId;
-    signIn.scopes = @[ @"profile", @"email" ];
-    signIn.delegate = self;
-    signIn.uiDelegate = self;
-    
     _activationRequest = [ActivationRequest new];
     
 //    [self.googleSignInButton setStyle:kGIDSignInButtonStyleStandard];
@@ -211,6 +204,18 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
                                              selector:@selector(updateFormViewAppearance)
                                                  name:kTKPDForceUpdateFacebookButton
                                                object:nil];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    GIDSignIn *signIn = [GIDSignIn sharedInstance];
+    signIn.shouldFetchBasicProfile = YES;
+    signIn.clientID = kClientId;
+    signIn.scopes = @[ @"profile", @"email" ];
+    signIn.delegate = self;
+    signIn.uiDelegate = self;
+    signIn.allowsSignInWithWebView = YES;
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -1175,14 +1180,6 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
         _facebookLoginButton.hidden = YES;
         self.googleSignInButton.hidden = YES;
         [_activityIndicator startAnimating];
-        NSDictionary *data = @{
-                               kTKPDLOGIN_API_APP_TYPE_KEY     : @"2",
-                               kTKPDLOGIN_API_EMAIL_KEY        : user.profile.email,
-                               kTKPDLOGIN_API_NAME_KEY         : user.profile.name,
-                               kTKPDLOGIN_API_ID_KEY           : user.userID,
-                               kTKPDLOGIN_API_BIRTHDAY_KEY     : @"",
-                               kTKPDLOGIN_API_GENDER_KEY       : @""
-                               };
         
         _gidGoogleUser = user;
         

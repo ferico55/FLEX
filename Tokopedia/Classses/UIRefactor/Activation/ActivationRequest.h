@@ -40,6 +40,7 @@
 
 - (void)requestLoginWithUserEmail:(NSString*)email
                      userPassword:(NSString*)password
+                             uuid:(NSString*)uuid
                         onSuccess:(void(^)(Login *result))successCallback
                         onFailure:(void(^)(NSError *error))errorCallback;
 

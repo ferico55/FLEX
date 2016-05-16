@@ -176,6 +176,18 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
                                                object:nil];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    GIDSignIn *signIn = [GIDSignIn sharedInstance];
+    signIn.shouldFetchBasicProfile = YES;
+    signIn.clientID = kClientId;
+    signIn.scopes = @[ @"profile", @"email" ];
+    signIn.delegate = self;
+    signIn.uiDelegate = self;
+    signIn.allowsSignInWithWebView = YES;
+}
+
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
@@ -938,13 +950,13 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
             controller.delegate = self;
             if (_facebookUserData) {
                 controller.facebookUserData = _facebookUserData;
-            } else if (_googleUser) {
-                controller.googleUser = _googleUser;
-                NSString *fullName;
-                if (_googleUser.name.givenName.length > 0) {
-                    fullName = [_googleUser.name.givenName stringByAppendingFormat:@" %@", _googleUser.name.familyName];
-                }
-                controller.fullName = fullName;
+            } else if (_gidGoogleUser) {
+                controller.gidGoogleUser = _gidGoogleUser;
+//                NSString *fullName;
+//                if (_googleUser.name.givenName.length > 0) {
+//                    fullName = [_googleUser.name.givenName stringByAppendingFormat:@" %@", _googleUser.name.familyName];
+//                }
+                controller.fullName = _gidGoogleUser.profile.name;
                 controller.email = _signIn.authentication.userEmail;
             }
             

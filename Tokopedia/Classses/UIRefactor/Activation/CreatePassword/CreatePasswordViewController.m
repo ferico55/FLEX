@@ -602,6 +602,7 @@
 - (void)requestLogin {
     [_activationRequest requestLoginWithUserEmail:_emailTextField.text?:@"0"
                                      userPassword:_passwordTextField.text?:@"0"
+                                             uuid:@""
                                         onSuccess:^(Login *result) {
                                             _login = result;
                                             

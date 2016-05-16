@@ -107,6 +107,7 @@
 
 - (void)requestLoginWithUserEmail:(NSString *)email
                      userPassword:(NSString *)password
+                             uuid:(NSString *)uuid
                         onSuccess:(void (^)(Login *))successCallback
                         onFailure:(void (^)(NSError *))errorCallback {
     loginNetworkManager.isParameterNotEncrypted = NO;
@@ -116,7 +117,8 @@
                                        path:@"/v4/session/login.pl"
                                      method:RKRequestMethodGET
                                   parameter:@{@"user_email" : email,
-                                              @"user_password" : password}
+                                              @"user_password" : password,
+                                              @"uuid" : uuid}
                                     mapping:[Login mapping]
                                   onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                       NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
