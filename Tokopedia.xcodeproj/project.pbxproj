@@ -2253,6 +2253,8 @@
 		925A20191CE43D29000AC5FA /* icon_audio.png in Resources */ = {isa = PBXBuildFile; fileRef = 925A20161CE43D29000AC5FA /* icon_audio.png */; };
 		925A201A1CE43D29000AC5FA /* icon_audio@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 925A20171CE43D29000AC5FA /* icon_audio@2x.png */; };
 		925A201B1CE43D29000AC5FA /* icon_audio@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 925A20181CE43D29000AC5FA /* icon_audio@3x.png */; };
+		92C1AAA21CE9804D007D48D6 /* ActivatePushInstructionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92C1AAA01CE9804D007D48D6 /* ActivatePushInstructionViewController.swift */; };
+		92C1AAA31CE9804D007D48D6 /* ActivatePushInstructionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 92C1AAA11CE9804D007D48D6 /* ActivatePushInstructionViewController.xib */; };
 		BBA2937F1CC624AB000630FB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BBA285A51CC624A1000630FB /* AppDelegate.m */; };
 		BBA298CE1CC624AC000630FB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BBA290691CC624A5000630FB /* InfoPlist.strings */; };
 		BBA298CF1CC624AC000630FB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BBA2906B1CC624A5000630FB /* GoogleService-Info.plist */; };
@@ -5660,6 +5662,8 @@
 		925A20161CE43D29000AC5FA /* icon_audio.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_audio.png; sourceTree = "<group>"; };
 		925A20171CE43D29000AC5FA /* icon_audio@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_audio@2x.png"; sourceTree = "<group>"; };
 		925A20181CE43D29000AC5FA /* icon_audio@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_audio@3x.png"; sourceTree = "<group>"; };
+		92C1AAA01CE9804D007D48D6 /* ActivatePushInstructionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivatePushInstructionViewController.swift; sourceTree = "<group>"; };
+		92C1AAA11CE9804D007D48D6 /* ActivatePushInstructionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActivatePushInstructionViewController.xib; sourceTree = "<group>"; };
 		AAA12C6A69BF6CB5F8EE3287 /* Pods-Tokopedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug.xcconfig"; sourceTree = "<group>"; };
 		BBA285A41CC624A1000630FB /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		BBA285A51CC624A1000630FB /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -8921,6 +8925,8 @@
 				7AB618191CCF5E5F005C1130 /* WebViewController.h */,
 				7AB6181A1CCF5E5F005C1130 /* WebViewController.m */,
 				7AB6181B1CCF5E5F005C1130 /* WebViewController.xib */,
+				92C1AAA01CE9804D007D48D6 /* ActivatePushInstructionViewController.swift */,
+				92C1AAA11CE9804D007D48D6 /* ActivatePushInstructionViewController.xib */,
 			);
 			path = More;
 			sourceTree = "<group>";
@@ -12041,6 +12047,7 @@
 				7AB6278B1CCF5E63005C1130 /* icon_more_grey@2x.png in Resources */,
 				7AB622B51CCF5E63005C1130 /* DetailProductViewController.xib in Resources */,
 				7AB625A51CCF5E63005C1130 /* icon_love@2x.png in Resources */,
+				92C1AAA31CE9804D007D48D6 /* ActivatePushInstructionViewController.xib in Resources */,
 				7AB61F311CCF5E62005C1130 /* public_key.der in Resources */,
 				7AB622051CCF5E62005C1130 /* GeneralPhotoProductCell.xib in Resources */,
 				7AB6275F1CCF5E63005C1130 /* icon_hotlist@3x.png in Resources */,
@@ -13933,6 +13940,7 @@
 				7AB6219F1CCF5E62005C1130 /* FilterCatalogViewController.m in Sources */,
 				7AB623FA1CCF5E63005C1130 /* MaintenanceViewController.m in Sources */,
 				7AB621AC1CCF5E62005C1130 /* CategoryMenuViewCell.m in Sources */,
+				92C1AAA21CE9804D007D48D6 /* ActivatePushInstructionViewController.swift in Sources */,
 				7AB621391CCF5E62005C1130 /* SwipeView.m in Sources */,
 				7AB620401CCF5E62005C1130 /* PrivacyFormPrivacy.m in Sources */,
 				7AB6202B1CCF5E62005C1130 /* FavoriteShop.m in Sources */,
