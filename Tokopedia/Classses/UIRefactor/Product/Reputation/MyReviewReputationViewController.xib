@@ -9,6 +9,7 @@
             <connections>
                 <outlet property="activityIndicator" destination="J6N-1B-eAg" id="7zw-dE-6Ei"/>
                 <outlet property="searchBar" destination="GZq-Nj-BAI" id="zAy-eZ-2tF"/>
+                <outlet property="searchBarView" destination="iBy-kW-Dkm" id="36H-6K-gjl"/>
                 <outlet property="tableContent" destination="njY-4s-47d" id="nrF-tl-n6F"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="viewFooter" destination="uzx-2T-W2a" id="5iE-mx-FOq"/>
@@ -22,7 +23,7 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iBy-kW-Dkm">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                     <subviews>
-                        <searchBar contentMode="redraw" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GZq-Nj-BAI">
+                        <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="GZq-Nj-BAI">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                             <color key="barTintColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
@@ -31,7 +32,11 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
+                        <constraint firstAttribute="trailing" secondItem="GZq-Nj-BAI" secondAttribute="trailing" id="EAs-r0-KsD"/>
+                        <constraint firstItem="GZq-Nj-BAI" firstAttribute="top" secondItem="iBy-kW-Dkm" secondAttribute="top" id="ar8-FA-Xxv"/>
+                        <constraint firstAttribute="bottom" secondItem="GZq-Nj-BAI" secondAttribute="bottom" id="dzZ-nP-MdZ"/>
                         <constraint firstAttribute="height" constant="44" id="ozp-Am-pjK"/>
+                        <constraint firstItem="GZq-Nj-BAI" firstAttribute="leading" secondItem="iBy-kW-Dkm" secondAttribute="leading" id="yLv-vf-92G"/>
                     </constraints>
                 </view>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="153" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="njY-4s-47d">

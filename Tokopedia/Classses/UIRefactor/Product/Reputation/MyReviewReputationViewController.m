@@ -112,7 +112,6 @@
     tableContent.allowsSelection = UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad;
     tableContent.backgroundColor = [UIColor colorWithRed:231/255.0f green:231/255.0f blue:231/255.0f alpha:1.0f];
     
-    
     refreshControl = [[UIRefreshControl alloc] init];
     refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
     [refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
@@ -123,6 +122,8 @@
     _searchBar.showsCancelButton = NO;
     _searchBar.layer.borderColor = [[UIColor colorWithRed:231.0/255 green:231.0/255 blue:231.0/255 alpha:1.0] CGColor];
     [_searchBar setBackgroundImage:[UIImage new]];
+    
+    
     
     if ([strNav isEqualToString:@"inbox-reputation"]) {
         _searchBar.placeholder = @"Cari Invoice / Penjual / Pembeli";
@@ -135,6 +136,7 @@
     [self loadMoreData:YES];
     
     _reviewRequest = [[ReviewRequest alloc] init];
+    
     [self getInboxReputation];
 }
 
@@ -150,6 +152,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
     [tableContent reloadData];
     
     if(arrList.count > 0){
@@ -159,6 +162,14 @@
             [firstCell setSelected:YES];
         }
     }
+}
+
+- (void)viewDidLayoutSubviews {
+    CGRect screenRect = tableContent.frame;
+    CGRect frame = searchBarView.frame;
+    frame.size.width = screenRect.size.width;
+    searchBarView.frame = frame;
+    _searchBar.frame = frame;
 }
 
 /*
@@ -340,6 +351,11 @@
 }
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
+    CGRect screenRect = tableContent.frame;
+    CGRect frame = searchBarView.frame;
+    frame.size.width = screenRect.size.width;
+    searchBarView.frame = frame;
+    _searchBar.frame = frame;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
     [searchBar setShowsCancelButton:YES animated:YES];
     return YES;
 }
