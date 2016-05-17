@@ -508,21 +508,20 @@
             }
                 
             case 14 :  {
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Info Saldo Tokopedia" message:
-                                          [NSString stringWithFormat: @"\n -%@ %@\n\n-%@ %@\n%@\n\n-%@ %@\n\n-%@ %@\n\n-%@\n\n-%@",
-                                           @" Total Saldo Tokopedia Anda adalah",
-                                           _totalSaldoTokopedia,
-                                           @" Saldo Tokopedia Anda yang sedang kami review sebesar",
-                                           _holdDepositByTokopedia,
-                                           @" Saldo ini sedang kami review dan akan di kembalikan ke Akun Tokopedia Anda dalam 3 x 24 jam",
-                                           @" Saldo Tokopedia Anda yang sedang di tahan oleh Tokopedia sebesar",
-                                           _holdDepositByCsIDR,
-                                           @" Saldo Tokopedia yang dapat Anda tarik sebesar",
-                                           _useableSaldoIDR,
-                                           @" Anda hanya dapat melakukan penarikan dana sebanyak 1x dalam 1 hari",
-                                           @" Untuk hari ini Anda dapat melakukan penarikan dana sebanyak 1x lagi"
-                                           ]
-                                          
+                NSMutableString *infoSaldo = [NSMutableString stringWithFormat:@"\n -%@ %@", @" Total Saldo Tokopedia Anda adalah", _totalSaldoTokopedia];
+                
+                if (![_holdDepositByTokopedia isEqualToString:@"Rp 0"]) {
+                    [infoSaldo appendString:[NSString stringWithFormat:@"\n\n-%@ %@\n%@", @" Saldo Tokopedia Anda yang sedang kami review sebesar", _holdDepositByTokopedia, @" Saldo ini sedang kami review dan akan dikembalikan ke Akun Tokopedia Anda dalam 3 x 24 jam"]];
+                }
+                
+                if (![_holdDepositByCsIDR isEqualToString:@"Rp 0"]) {
+                    [infoSaldo appendString:[NSString stringWithFormat:@"\n\n-%@ %@", @" Saldo Tokopedia Anda yang sedang ditahan oleh Tokopedia sebesar", _holdDepositByCsIDR]];
+                }
+                
+                [infoSaldo appendString:[NSString stringWithFormat:@"\n\n-%@ %@", @" Saldo Tokopedia yang dapat Anda tarik sebesar", _useableSaldoIDR]];
+                
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Info Saldo Tokopedia"
+                                                                    message:infoSaldo
                                                                    delegate:nil
                                                           cancelButtonTitle:@"OK"
                                                           otherButtonTitles:nil];
