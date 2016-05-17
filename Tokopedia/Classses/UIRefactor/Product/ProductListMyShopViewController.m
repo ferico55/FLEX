@@ -616,17 +616,17 @@ NoResultDelegate
     CGFloat padding = 0;
     UIColor *backgroundColor = [UIColor colorWithRed:0 green:122/255.0 blue:255.0/255 alpha:1.0];
     __weak typeof(self) welf = self;
-    MGSwipeButton *button = [MGSwipeButton buttonWithTitle:BUTTON_MOVE_TO_WAREHOUSE
+    MGSwipeButton *button = [MGSwipeButton buttonWithTitle:@"Stok Kosong"
                                            backgroundColor:backgroundColor
                                                    padding:padding
                                                   callback:^BOOL(MGSwipeTableCell *sender) {
                                                       NSInteger productStatus = [product.product_status integerValue];
                                                       if (productStatus == PRODUCT_STATE_BANNED || productStatus == PRODUCT_STATE_PENDING) {
-                                                          NSArray *errorMessages = @[@"Tidak dapat menggudangkan produk. Produk sedang dalam pengawasan."];
+                                                          NSArray *errorMessages = @[@"Tidak dapat mengubah status produk. Produk sedang dalam pengawasan."];
                                                           StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
                                                           [alert show];
                                                       } else {
-                                                          UIAlertView *alert =[[UIAlertView alloc] initWithTitle:@"Apakah Anda yakin gudangkan produk?"
+                                                          UIAlertView *alert =[[UIAlertView alloc] initWithTitle:@"Apakah stok produk ini kosong?"
                                                                                                          message:nil
                                                                                                         delegate:self
                                                                                                cancelButtonTitle:@"Tidak"
@@ -717,7 +717,7 @@ NoResultDelegate
         [ProductRequest moveProductToWarehouse:productId
                  setCompletionBlockWithSuccess:^(ShopSettings *response) {
                      [self moveProductToWirehouse];
-                     [self showSuccessMessages:@[@"Anda telah berhasil menggudangkan produk"]];
+                     [self showSuccessMessages:@[@"Status produk berhasil diubah"]];
                  } failure:^(NSArray *errorMessages) {
                      [self showErrorMessages:errorMessages];
                  }];

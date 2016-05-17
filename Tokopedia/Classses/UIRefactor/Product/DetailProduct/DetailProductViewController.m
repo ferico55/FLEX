@@ -794,7 +794,7 @@ OtherProductDelegate
                 }
                 else
                 {
-                    UIAlertView *alert =[[UIAlertView alloc]initWithTitle:@"Apakah Anda yakin ingin mengubah produk menjadi tidak dijual?" message:nil delegate:self cancelButtonTitle:@"Tidak" otherButtonTitles:@"Ya", nil];
+                    UIAlertView *alert =[[UIAlertView alloc]initWithTitle:@"Apakah stok produk ini kosong?" message:nil delegate:self cancelButtonTitle:@"Tidak" otherButtonTitles:@"Ya", nil];
                     [alert show];
                 }
                 break;
@@ -3162,7 +3162,7 @@ OtherProductDelegate
     [ProductRequest moveProduct:productId
                       toEtalase:selectedEtalase
   setCompletionBlockWithSuccess:^(ShopSettings *response) {
-      NSArray *messages = @[@"Anda telah berhasil memindahkan produk ke etalase"];
+      NSArray *messages = @[@"Produk berhasil tampil di etalase"];
       StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:messages delegate:self];
       [alert show];
       [[NSNotificationCenter defaultCenter] postNotificationName:ADD_PRODUCT_POST_NOTIFICATION_NAME
