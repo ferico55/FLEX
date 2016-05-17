@@ -825,7 +825,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
             viewController.viewControllerDidClosed = ^{
                 [[JLNotificationPermission sharedInstance] displayAppSystemSettings];
             };
-            [self presentViewController:viewController animated:YES completion:nil];
+            [_wrapperViewController presentViewController:viewController animated:YES completion:nil];
         }
     }
     
