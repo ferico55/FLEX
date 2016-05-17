@@ -225,11 +225,19 @@
     [self togglePushNotificationCellVisibility];
 }
 
+- (BOOL)isBadgeNotificationTurnedOn {
+    UIApplication *application = [UIApplication sharedApplication];
+    if ([application respondsToSelector:@selector(currentUserNotificationSettings)]) {
+        return application.currentUserNotificationSettings.types & UIUserNotificationTypeBadge;
+    } else {
+        return application.enabledRemoteNotificationTypes & UIRemoteNotificationTypeBadge;
+    }
+}
+
 - (void)togglePushNotificationCellVisibility {
     BOOL isPushNotificationAuthorized = [JLNotificationPermission sharedInstance].authorizationStatus != JLPermissionDenied;
-    BOOL isBadgeNotificationTurnedOn = [UIApplication sharedApplication].currentUserNotificationSettings.types & UIUserNotificationTypeBadge;
     
-    _shouldDisplayPushNotificationCell = !isPushNotificationAuthorized || !isBadgeNotificationTurnedOn;
+    _shouldDisplayPushNotificationCell = !isPushNotificationAuthorized || ![self isBadgeNotificationTurnedOn];
     
     [self.tableView reloadData];
 }
