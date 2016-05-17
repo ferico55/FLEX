@@ -2250,6 +2250,9 @@
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
 		85C494BF1AD790DD008A314A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BE1AD790DD008A314A /* libz.dylib */; };
 		85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494C01AD790E4008A314A /* CoreData.framework */; };
+		BB6C71221CEACBC700428332 /* CloseShopRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = BB6C71211CEACBC700428332 /* CloseShopRequest.m */; };
+		BB6C71251CEAD0FD00428332 /* CloseShopResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = BB6C71241CEAD0FD00428332 /* CloseShopResponse.m */; };
+		BB6C71281CEAD25700428332 /* CloseShopResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BB6C71271CEAD25700428332 /* CloseShopResult.m */; };
 		BBA2937F1CC624AB000630FB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BBA285A51CC624A1000630FB /* AppDelegate.m */; };
 		BBA298CE1CC624AC000630FB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BBA290691CC624A5000630FB /* InfoPlist.strings */; };
 		BBA298CF1CC624AC000630FB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BBA2906B1CC624A5000630FB /* GoogleService-Info.plist */; };
@@ -5657,6 +5660,12 @@
 		85C494BE1AD790DD008A314A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		85C494C01AD790E4008A314A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		AAA12C6A69BF6CB5F8EE3287 /* Pods-Tokopedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug.xcconfig"; sourceTree = "<group>"; };
+		BB6C71201CEACBC700428332 /* CloseShopRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CloseShopRequest.h; sourceTree = "<group>"; };
+		BB6C71211CEACBC700428332 /* CloseShopRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CloseShopRequest.m; sourceTree = "<group>"; };
+		BB6C71231CEAD0FD00428332 /* CloseShopResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CloseShopResponse.h; sourceTree = "<group>"; };
+		BB6C71241CEAD0FD00428332 /* CloseShopResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CloseShopResponse.m; sourceTree = "<group>"; };
+		BB6C71261CEAD25700428332 /* CloseShopResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CloseShopResult.h; sourceTree = "<group>"; };
+		BB6C71271CEAD25700428332 /* CloseShopResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CloseShopResult.m; sourceTree = "<group>"; };
 		BBA285A41CC624A1000630FB /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		BBA285A51CC624A1000630FB /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		BBA2906A1CC624A5000630FB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -9786,6 +9795,12 @@
 				BBFEEEAA1CE04855004D4DCB /* CloseShopViewController.h */,
 				BBFEEEAB1CE04855004D4DCB /* CloseShopViewController.m */,
 				BBFEEEAC1CE04855004D4DCB /* CloseShopViewController.xib */,
+				BB6C71201CEACBC700428332 /* CloseShopRequest.h */,
+				BB6C71211CEACBC700428332 /* CloseShopRequest.m */,
+				BB6C71231CEAD0FD00428332 /* CloseShopResponse.h */,
+				BB6C71241CEAD0FD00428332 /* CloseShopResponse.m */,
+				BB6C71261CEAD25700428332 /* CloseShopResult.h */,
+				BB6C71271CEAD25700428332 /* CloseShopResult.m */,
 			);
 			path = Edit;
 			sourceTree = "<group>";
@@ -13417,6 +13432,7 @@
 				7AB620B11CCF5E62005C1130 /* JNE.m in Sources */,
 				7AB61F8C1CCF5E62005C1130 /* TalkCommentResult.m in Sources */,
 				7AB620251CCF5E62005C1130 /* ChangePhoneNumberResult.m in Sources */,
+				BB6C71251CEAD0FD00428332 /* CloseShopResponse.m in Sources */,
 				7AB620181CCF5E62005C1130 /* NotifyLBLM.m in Sources */,
 				7AB620351CCF5E62005C1130 /* AddressFormResult.m in Sources */,
 				7AB6226E1CCF5E63005C1130 /* InboxTalkSplitViewController.m in Sources */,
@@ -13641,6 +13657,7 @@
 				7AB6200A1CCF5E62005C1130 /* ResponseCommentResult.m in Sources */,
 				7AB621C41CCF5E62005C1130 /* ContactUsFormDataCollector.m in Sources */,
 				7AB622831CCF5E63005C1130 /* SalesViewController.m in Sources */,
+				BB6C71281CEAD25700428332 /* CloseShopResult.m in Sources */,
 				7AB624511CCF5E63005C1130 /* TxOrderConfirmedBankCell.m in Sources */,
 				7AB620371CCF5E62005C1130 /* BankAccountFormList.m in Sources */,
 				7AB61F0A1CCF5E62005C1130 /* NSData+Encryption.m in Sources */,
@@ -13814,6 +13831,7 @@
 				7AB622101CCF5E62005C1130 /* GeneralSwitchCell.m in Sources */,
 				7AB624231CCF5E63005C1130 /* TransactionCCDetailViewController.m in Sources */,
 				7AB6239B1CCF5E63005C1130 /* SettingUserPhoneViewController.m in Sources */,
+				BB6C71221CEACBC700428332 /* CloseShopRequest.m in Sources */,
 				7AB622CE1CCF5E63005C1130 /* ProductCellSize.swift in Sources */,
 				7AB6234F1CCF5E63005C1130 /* CancelShipmentViewController.m in Sources */,
 				7AB61FB41CCF5E62005C1130 /* DepartmentTree.m in Sources */,
