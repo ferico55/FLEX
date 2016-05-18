@@ -1231,7 +1231,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                                                 } else if ([result.result.status isEqualToString:@"1"]) {
                                                     
                                                     TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-                                                    [secureStorage setKeychainWithValue:@(result.result.is_login) withKey:kTKPD_ISLOGINKEY];
+                                                    [secureStorage setKeychainWithValue:@(NO) withKey:kTKPD_ISLOGINKEY];
                                                     [secureStorage setKeychainWithValue:result.result.user_id withKey:kTKPD_TMP_USERIDKEY];
                                                     
                                                     [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];
