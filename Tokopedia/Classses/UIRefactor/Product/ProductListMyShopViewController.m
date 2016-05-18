@@ -547,7 +547,7 @@ NoResultDelegate
 
 - (void)moveProductToWirehouse {
     ManageProductList *product = [_products objectAtIndex:_lastActionIndexPath.row];
-    product.product_etalase = @"Gudang";
+    product.product_etalase = @"Stok Kosong";
     product.product_status = [NSString stringWithFormat:@"%d", PRODUCT_STATE_WAREHOUSE];
     [self.tableView reloadData];
 }
