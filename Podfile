@@ -21,6 +21,7 @@ target "Tokopedia" do
     pod 'EAIntroView', '~> 2.8.0'
     pod 'JLPermissions/Notification'
     pod 'Google/SignIn'
+    pod 'FBSDKLoginKit'
 end
 
 target "TokopediaTests" do

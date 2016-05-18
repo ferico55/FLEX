@@ -2226,8 +2226,6 @@
 		7AB627A41CCF5E63005C1130 /* XYPieChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AB61F021CCF5E62005C1130 /* XYPieChart.m */; };
 		7ACE9C541BB00956006C4BB7 /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */; };
 		7ACE9C551BB00956006C4BB7 /* FBAudienceNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C4F1BB00956006C4BB7 /* FBAudienceNetwork.framework */; };
-		7ACE9C561BB00956006C4BB7 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C501BB00956006C4BB7 /* FBSDKCoreKit.framework */; };
-		7ACE9C571BB00956006C4BB7 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C511BB00956006C4BB7 /* FBSDKLoginKit.framework */; };
 		7ACE9C581BB00956006C4BB7 /* FBSDKMessengerShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */; };
 		7ACE9C591BB00956006C4BB7 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C531BB00956006C4BB7 /* FBSDKShareKit.framework */; };
 		853A222C1ADD0AB600DD1508 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222B1ADD0AB600DD1508 /* CoreVideo.framework */; };
@@ -5634,8 +5632,6 @@
 		7AB61F021CCF5E62005C1130 /* XYPieChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYPieChart.m; sourceTree = "<group>"; };
 		7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FacebookSDKStrings.bundle; sourceTree = "<group>"; };
 		7ACE9C4F1BB00956006C4BB7 /* FBAudienceNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBAudienceNetwork.framework; sourceTree = "<group>"; };
-		7ACE9C501BB00956006C4BB7 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
-		7ACE9C511BB00956006C4BB7 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKMessengerShareKit.framework; sourceTree = "<group>"; };
 		7ACE9C531BB00956006C4BB7 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
 		7F9B6E71F79FE95868A4BBAE /* Pods-Tokopedia.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.release.xcconfig"; sourceTree = "<group>"; };
@@ -5715,13 +5711,11 @@
 				85A18BDE1BAFCE4A002F1382 /* Fabric.framework in Frameworks */,
 				FC36DF8B19B0656400AF74C1 /* UIKit.framework in Frameworks */,
 				FCA7751119F6609E0041CFE1 /* SystemConfiguration.framework in Frameworks */,
-				7ACE9C561BB00956006C4BB7 /* FBSDKCoreKit.framework in Frameworks */,
 				85C494BB1AD790BA008A314A /* Security.framework in Frameworks */,
 				8565E1E71B9404D900843388 /* MediaPlayer.framework in Frameworks */,
 				8565E1E51B9404D100843388 /* CoreText.framework in Frameworks */,
 				FC36DF8919B0656400AF74C1 /* CoreGraphics.framework in Frameworks */,
 				7AB6279A1CCF5E63005C1130 /* libAdIdAccess.a in Frameworks */,
-				7ACE9C571BB00956006C4BB7 /* FBSDKLoginKit.framework in Frameworks */,
 				8565E1E31B9404C600843388 /* CoreMotion.framework in Frameworks */,
 				8565E1E11B9404BF00843388 /* CoreLocation.framework in Frameworks */,
 				FC36DF8719B0656400AF74C1 /* Foundation.framework in Frameworks */,
@@ -11575,8 +11569,6 @@
 			children = (
 				7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */,
 				7ACE9C4F1BB00956006C4BB7 /* FBAudienceNetwork.framework */,
-				7ACE9C501BB00956006C4BB7 /* FBSDKCoreKit.framework */,
-				7ACE9C511BB00956006C4BB7 /* FBSDKLoginKit.framework */,
 				7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */,
 				7ACE9C531BB00956006C4BB7 /* FBSDKShareKit.framework */,
 				85A18BDF1BAFD257002F1382 /* StoreKit.framework */,

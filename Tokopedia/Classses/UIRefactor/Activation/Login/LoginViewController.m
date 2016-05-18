@@ -191,6 +191,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     _passwordTextField.isBottomRoundCorner = YES;
     
     FBSDKLoginManager *loginManager = [[FBSDKLoginManager alloc] init];
+    loginManager.loginBehavior = FBSDKLoginBehaviorNative;
     [loginManager logOut];
     [FBSDKAccessToken setCurrentAccessToken:nil];
     
