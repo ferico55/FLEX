@@ -55,7 +55,8 @@
                                                     @"id" : userID,
                                                     @"name" : name,
                                                     @"os_type" : osType,
-                                                    @"picture" : picture}
+                                                    @"picture" : picture,
+                                                    @"uuid" : uuid}
                                           mapping:[Login mapping]
                                         onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                             NSDictionary *result = ((RKMappingResult*)successResult).dictionary;

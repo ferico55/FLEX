@@ -32,6 +32,8 @@
 
 #import <GoogleSignIn/GoogleSignIn.h>
 
+#import "ActivationRequest.h"
+
 static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jdpts.apps.googleusercontent.com";
 
 #pragma mark - Register View Controller
@@ -76,6 +78,8 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     GPPSignIn *_signIn;
     GTLPlusPerson *_googleUser;
     GIDGoogleUser *_gidGoogleUser;
+    
+    ActivationRequest *_activationRequest;
 }
 
 @property (weak, nonatomic) IBOutlet TextField *texfieldfullname;
@@ -167,6 +171,8 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     _loginView = [[FBSDKLoginButton alloc] init];
     _loginView.delegate = self;
     _loginView.readPermissions = @[@"public_profile", @"email", @"user_birthday"];
+    
+    _activationRequest = [ActivationRequest new];
 
     [_container addSubview:_contentView];
     
@@ -943,7 +949,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
 
             TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
             [secureStorage setKeychainWithValue:@(_login.result.is_login) withKey:kTKPD_ISLOGINKEY];
-            [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_TMP_USERIDKEY];
+//            [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_TMP_USERIDKEY];
 
             CreatePasswordViewController *controller = [CreatePasswordViewController new];
             controller.login = _login;
@@ -1126,23 +1132,125 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
 #pragma mark - Google Sign In Delegate
 - (void)signIn:(GIDSignIn *)signIn didSignInForUser:(GIDGoogleUser *)user withError:(NSError *)error {
     if (user) {
-        NSDictionary *data = @{
-                               kTKPDLOGIN_API_APP_TYPE_KEY     : @"2",
-                               kTKPDLOGIN_API_EMAIL_KEY        : user.profile.email,
-                               kTKPDLOGIN_API_NAME_KEY         : user.profile.name,
-                               kTKPDLOGIN_API_ID_KEY           : user.userID,
-                               kTKPDLOGIN_API_BIRTHDAY_KEY     : @"",
-                               kTKPDLOGIN_API_GENDER_KEY       : @"",
-                               };
-        
         _gidGoogleUser = user;
         
-        [self requestThirdAppUser:data];
+        [self requestLoginGoogleWithUser:user];
     }
 }
 
 - (void)signIn:(GIDSignIn *)signIn didDisconnectWithUser:(GIDGoogleUser *)user withError:(NSError *)error {
     
+}
+
+#pragma mark - Activation Request
+- (void)requestLoginGoogleWithUser:(GIDGoogleUser *)user {
+    NSString *securityQuestionUUID = [[[TKPDSecureStorage standardKeyChains] keychainDictionary] objectForKey:@"securityQuestionUUID"];
+    NSString *uuid = securityQuestionUUID.length ? securityQuestionUUID : @"";
+    
+    [_activationRequest requestDoLoginPlusWithAppType:@"2"
+                                             birthday:@""
+                                             deviceID:@""
+                                                email:user.profile.email
+                                               gender:@""
+                                               userID:user.userID
+                                                 name:user.profile.name
+                                               osType:@""
+                                              picture:@""
+                                                 uuid:uuid
+                                            onSuccess:^(Login *result) {
+                                                _login = result;
+                                                BOOL status = [_login.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+                                                if (status) {
+                                                    _isnodata = NO;
+                                                    if ([_login.result.status isEqualToString:@"2"]) {
+                                                        
+                                                        [[GPPSignIn sharedInstance] signOut];
+                                                        [[GPPSignIn sharedInstance] disconnect];
+                                                        
+                                                        TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+                                                        [secureStorage setKeychainWithValue:@(_login.result.is_login) withKey:kTKPD_ISLOGINKEY];
+                                                        [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_USERIDKEY];
+                                                        [secureStorage setKeychainWithValue:_login.result.full_name withKey:kTKPD_FULLNAMEKEY];
+                                                        
+                                                        if(_login.result.user_image != nil) {
+                                                            [secureStorage setKeychainWithValue:_login.result.user_image withKey:kTKPD_USERIMAGEKEY];
+                                                        }
+                                                        
+                                                        [secureStorage setKeychainWithValue:_login.result.shop_id withKey:kTKPD_SHOPIDKEY];
+                                                        [secureStorage setKeychainWithValue:_login.result.shop_name withKey:kTKPD_SHOPNAMEKEY];
+                                                        
+                                                        if(_login.result.shop_avatar != nil) {
+                                                            [secureStorage setKeychainWithValue:_login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
+                                                        }
+                                                        [secureStorage setKeychainWithValue:@(_login.result.shop_is_gold) withKey:kTKPD_SHOPISGOLD];
+                                                        [secureStorage setKeychainWithValue:_login.result.device_token_id withKey:kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY];
+                                                        [secureStorage setKeychainWithValue:_login.result.msisdn_is_verified withKey:kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY];
+                                                        [secureStorage setKeychainWithValue:_login.result.msisdn_show_dialog withKey:kTKPDLOGIN_API_MSISDN_SHOW_DIALOG_KEY];
+                                                        [secureStorage setKeychainWithValue:_login.result.shop_has_terms withKey:kTKPDLOGIN_API_HAS_TERM_KEY];
+                                                        
+                                                        if ([self.navigationController.viewControllers[0] isKindOfClass:[LoginViewController class]]) {
+                                                            LoginViewController *loginController = (LoginViewController *)self.navigationController.viewControllers[0];
+                                                            if (loginController.isPresentedViewController && [loginController.delegate respondsToSelector:@selector(redirectViewController:)]) {
+                                                                [loginController.delegate redirectViewController:loginController.redirectViewController];
+                                                                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                                                            } else {
+                                                                [self.tabBarController setSelectedIndex:0];
+                                                                [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
+                                                                                                                    object:nil
+                                                                                                                  userInfo:nil];
+                                                            }
+                                                        } else if ([self.navigationController.viewControllers[0] isKindOfClass:[TransactionCartRootViewController class]]) {
+                                                            [self.navigationController popViewControllerAnimated:YES];
+                                                            [self.tabBarController setSelectedIndex:3];
+                                                            [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
+                                                                                                                object:nil
+                                                                                                              userInfo:nil];
+                                                        }
+                                                        
+                                                        [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification object:nil];
+                                                        
+                                                        [Localytics setValue:@"Yes" forProfileAttribute:@"Is Login"];
+                                                    } else if ([_login.result.status isEqualToString:@"1"]) {
+                                                        
+                                                        TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+                                                        [secureStorage setKeychainWithValue:@(NO) withKey:kTKPD_ISLOGINKEY];
+                                                        
+                                                        CreatePasswordViewController *controller = [CreatePasswordViewController new];
+                                                        controller.login = _login;
+                                                        controller.delegate = self;
+                                                        if (_facebookUserData) {
+                                                            controller.facebookUserData = _facebookUserData;
+                                                        } else if (_gidGoogleUser) {
+                                                            controller.gidGoogleUser = _gidGoogleUser;
+                                                            controller.fullName = _gidGoogleUser.profile.name;
+                                                            controller.email = _signIn.authentication.userEmail;
+                                                        }
+                                                        
+                                                        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
+                                                        navigationController.navigationBar.translucent = NO;
+                                                        
+                                                        [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+                                                        
+                                                    }
+                                                    else {
+                                                        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:_login.message_error
+                                                                                                                       delegate:self];
+                                                        [alert show];
+                                                        [self cancel];
+                                                    }
+                                                } else {
+                                                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Sign in gagal silahkan coba lagi."]
+                                                                                                                   delegate:self];
+                                                    [alert show];
+                                                    [self cancel];
+                                                }
+                                            }
+                                            onFailure:^(NSError *error) {
+                                                _texfieldfullname.enabled = YES;
+                                                _act.hidden = YES;
+                                                [_act stopAnimating];
+                                                [self cancel];
+                                            }];
 }
 
 @end

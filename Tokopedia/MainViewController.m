@@ -678,8 +678,10 @@ typedef enum TagRequest {
     [loginManager logOut];
     [FBSDKAccessToken setCurrentAccessToken:nil];
     
-    [[GPPSignIn sharedInstance] signOut];
-    [[GPPSignIn sharedInstance] disconnect];
+//    [[GPPSignIn sharedInstance] signOut];
+//    [[GPPSignIn sharedInstance] disconnect];
+    [[GIDSignIn sharedInstance] signOut];
+    [[GIDSignIn sharedInstance] disconnect];
 
     [_logoutRequestManager doRequest];
     

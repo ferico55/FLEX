@@ -392,7 +392,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
                                                         kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY   : kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY,
                                                         kTKPDLOGIN_API_MSISDN_SHOW_DIALOG_KEY   : kTKPDLOGIN_API_MSISDN_SHOW_DIALOG_KEY,
                                                         kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY : kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY,
-                                                         kTKPDLOGIN_API_HAS_TERM_KEY : kTKPDLOGIN_API_HAS_TERM_KEY
+                                                        kTKPDLOGIN_API_HAS_TERM_KEY : kTKPDLOGIN_API_HAS_TERM_KEY
                                                         }];
     
     RKObjectMapping *userReputationMapping = [RKObjectMapping mappingForClass:[ReputationDetail class]];
@@ -674,7 +674,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 
             TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
             [secureStorage setKeychainWithValue:@(_login.result.is_login) withKey:kTKPD_ISLOGINKEY];
-            [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_TMP_USERIDKEY];
+//            [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_TMP_USERIDKEY];
             
             [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];
 
@@ -1232,7 +1232,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                                                     
                                                     TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
                                                     [secureStorage setKeychainWithValue:@(NO) withKey:kTKPD_ISLOGINKEY];
-                                                    [secureStorage setKeychainWithValue:result.result.user_id withKey:kTKPD_TMP_USERIDKEY];
+//                                                    [secureStorage setKeychainWithValue:result.result.user_id withKey:kTKPD_TMP_USERIDKEY];
                                                     
                                                     [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];
                                                     

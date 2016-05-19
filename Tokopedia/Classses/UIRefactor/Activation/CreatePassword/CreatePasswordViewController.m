@@ -225,8 +225,10 @@
         FBSDKLoginManager *loginManager = [[FBSDKLoginManager alloc] init];
         [loginManager logOut];
         [FBSDKAccessToken setCurrentAccessToken:nil];
-        [[GPPSignIn sharedInstance] signOut];
-        [[GPPSignIn sharedInstance] disconnect];
+//        [[GPPSignIn sharedInstance] signOut];
+//        [[GPPSignIn sharedInstance] disconnect];
+        [[GIDSignIn sharedInstance] signOut];
+        [[GIDSignIn sharedInstance] disconnect];
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
     } else if ([sender isKindOfClass:[UIButton class]]) {
         UIButton *button = (UIButton *)sender;
