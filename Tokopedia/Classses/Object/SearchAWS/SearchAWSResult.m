@@ -11,7 +11,7 @@
 #import "Hashtags.h"
 #import "Breadcrumb.h"
 #import "Paging.h"
-#import "CategoryDetail.h"
+#import "Tokopedia-Swift.h"
 
 @implementation SearchAWSResult
 

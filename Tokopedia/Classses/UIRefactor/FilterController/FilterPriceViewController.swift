@@ -8,34 +8,31 @@
 
 import UIKit
 
-class entryCell: UITableViewCell
+class textFieldCell: UITableViewCell
 {
-    var textFieldMin : UITextField = UITextField()
-    var textFieldMax : UITextField = UITextField()
+    var textField : UITextField = UITextField()
+    var titleLabel : UILabel = UILabel()
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String!)
     {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        self.textFieldMin = UITextField(frame: CGRect(x: 15, y: 0, width: self.frame.size.width/2 - 50, height: 30));
-        self.textFieldMax = UITextField(frame: CGRect(x: textFieldMin.frame.size.width + textFieldMin.frame.origin.x + 5, y: 0, width: self.frame.size.width/2 - 50, height: 30));
+        self.titleLabel = UILabel.init(frame: CGRect(x:15, y:10, width: self.frame.size.width, height:15))
+        self.textField = UITextField(frame: CGRect(x: 20, y: self.titleLabel.frame.size.height+self.titleLabel.frame.origin.y, width: self.frame.size.width-100, height: 30));
         
-        let font = UIFont.init(name: "GothamBook", size: 13)
-        self.textFieldMin.font = font
-        self.textFieldMax.font = font
+        let fontTextField = UIFont.init(name: "GothamBook", size: 13)
+        self.textField.font = fontTextField
         
-        self.textFieldMin.placeholder = "Minimum"
-        self.textFieldMax.placeholder = "Maximum"
+        let fontTitle = UIFont.init(name: "GothamBook", size: 13)
+        self.titleLabel.font = fontTitle
+        self.titleLabel.textColor = UIColor.grayColor()
         
-        textFieldMin.borderStyle = .RoundedRect
-        textFieldMax.borderStyle = .RoundedRect
-        
-        textFieldMin.tag = 0
-        textFieldMax.tag = 1
+        self.textField.borderStyle = UITextBorderStyle.None
+        self.textField.keyboardType = UIKeyboardType.NumberPad
         
         //Add TextField to SubView
-        self.addSubview(self.textFieldMin)
-        self.addSubview(self.textFieldMax)
+        self.addSubview(self.textField)
+        self.addSubview(self.titleLabel)
     }
     
     required init(coder aDecoder: NSCoder)
@@ -47,19 +44,25 @@ class entryCell: UITableViewCell
 class switchCell: UITableViewCell
 {
     var switchView : UISwitch = UISwitch()
+    var completionHandler:(Bool)->Void = {(arg:Bool) -> Void in}
     
-    override init(style: UITableViewCellStyle, reuseIdentifier: String!)
+    init(style: UITableViewCellStyle, reuseIdentifier: String!, onCompletion: ((Bool) -> Void))
     {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
+        completionHandler = onCompletion
+        
         self.switchView = UISwitch.init(frame: CGRectZero)
+        self.switchView.addTarget(self, action: "switchChanged:", forControlEvents: UIControlEvents.ValueChanged)
         
         self.accessoryView = self.switchView
         
-        let line : UIView = UIView.init(frame: CGRectMake(15, 0, self.frame.size.width, 1))
-        line.backgroundColor = UIColor.init(colorLiteralRed: 188/255, green: 187/255, blue: 193/255, alpha: 1)
-
-        self .addSubview(line)
+        let font = UIFont.init(name: "GothamBook", size: 13)
+        self.textLabel?.font = font
+    }
+    
+    func switchChanged(sender:UISwitch) -> Void {
+        completionHandler(sender.on)
     }
     
     required init(coder aDecoder: NSCoder)
@@ -97,13 +100,13 @@ class FilterPriceViewController: UIViewController ,UITableViewDelegate, UITableV
         tableView.delegate      =   self
         tableView.dataSource    =   self
         
-        tableView.registerClass(entryCell.self, forCellReuseIdentifier: "defaultCell")
+        tableView.registerClass(textFieldCell.self, forCellReuseIdentifier: "defaultCell")
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
         tableView.registerClass(switchCell.self, forCellReuseIdentifier: "switchCell")
         
         tableView.tableFooterView = UIView.init(frame: CGRectMake(0, 0, 1, 1))
+        tableView.tableHeaderView = UIView.init(frame: CGRectMake(0, 0, 1, 10))
         tableView.keyboardDismissMode = .OnDrag
-        tableView.separatorStyle = .None
         
         self.view.addSubview(tableView)
     }
@@ -112,7 +115,18 @@ class FilterPriceViewController: UIViewController ,UITableViewDelegate, UITableV
         super.viewWillAppear(animated)
         
         tableView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)
-
+        
+    }
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        switch indexPath.row {
+        case 0:
+            return 55;
+        case 1:
+            return 55;
+        default:
+            return 44;
+        }
     }
     
     
@@ -125,20 +139,23 @@ class FilterPriceViewController: UIViewController ,UITableViewDelegate, UITableV
         var cell:UITableViewCell = UITableViewCell()
         
         if indexPath.row == 0 {
-            cell = UITableViewCell.init(style: .Default, reuseIdentifier: "defaultCell")
-            let font = UIFont.init(name: "GothamBook", size: 13)
-            cell.textLabel?.font = font
-
-            cell.textLabel?.text = "Harga Barang"
+            cell = textFieldCell.init(style: .Default, reuseIdentifier: "cell")
+            (cell as! textFieldCell).titleLabel.text = "Harga Minimum"
+            (cell as! textFieldCell).textField.tag = 0
+            (cell as! textFieldCell).textField.delegate = self
         } else if indexPath.row == 1 {
-            cell = entryCell.init(style: .Default, reuseIdentifier: "cell")
+            cell = textFieldCell.init(style: .Default, reuseIdentifier: "cell")
+            (cell as! textFieldCell).titleLabel.text = "Harga Maximum"
+            (cell as! textFieldCell).textField.tag = 1
+            (cell as! textFieldCell).textField.delegate = self
         } else if indexPath.row == 2 {
-            cell = switchCell.init(style: .Default, reuseIdentifier: "switchCell")
+            cell = switchCell.init(style: .Default, reuseIdentifier: "switchCell", onCompletion: { (switchOn) in
+                self.price.priceWholesale = switchOn
+                self.completionHandler(self.price)
+            })
             cell.textLabel?.text = "Harga Grosir"
-            let font = UIFont.init(name: "GothamBook", size: 13)
-            cell.textLabel?.font = font
         }
-        
+        cell.selectionStyle = .None
         return cell
     }
     

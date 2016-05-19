@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @class MHVerticalTabBar;
+@class MHVerticalTabBarButton;
 
 /*
  Tab bar delegate
@@ -48,12 +49,12 @@
 /**
  An `NSArray` of the the `MHVerticalTabBarButton` objects.
  */
-@property (nonatomic, copy) NSArray *tabBarButtons;
+@property (nonatomic, copy) NSArray <MHVerticalTabBarButton*>*tabBarButtons;
 
 /**
- An `NSArray` of the the `UITabBarButtonItem` objects.
+ An `NSArray` of the the `UITabBarItem` objects.
  */
-@property (nonatomic, copy) NSArray *items;
+@property (nonatomic, copy) NSArray<UITabBarItem*> *items;
 
 /**
  `NSAttributedString` label attributes that are applied to all buttons by default.

@@ -7,8 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
-#import "CategoryResult.h"
+#import "Tokopedia-Swift.h"
 
 @interface CategoryObj : NSObject
 

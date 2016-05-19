@@ -8,20 +8,22 @@
 
 import UIKit
 
-@objc class FilterController: NSObject, FilterCategoryViewDelegate, EtalaseViewControllerDelegate,MHVerticalTabBarControllerDelegate {
+@objc class FilterController: NSObject, EtalaseViewControllerDelegate,MHVerticalTabBarControllerDelegate {
     
     private var filter: QueryObject = QueryObject()
-    private var listControllers : NSMutableArray = NSMutableArray()
+    private var listControllers : [UIViewController] = []
     private var completionHandler:(QueryObject)->Void = {(arg:QueryObject) -> Void in}
 
-    private var categoryType: FilterCategoryType = .Hotlist
-    private var categoryList: NSArray = []
+    private var categoryType: CategoryFilterType = .Hotlist
+    private var categoryList: [CategoryDetail] = []
     private var shopID: String = ""
+    private let tabBarController:MHVerticalTabBarController = MHVerticalTabBarController()
+
     
     // MARK: - Custom Init
-    init(categoryType: FilterCategoryType, categoryList: NSArray, filters:[NSInteger], selectedFilter:QueryObject, presentedVC:(UIViewController), onCompletion: ((QueryObject) -> Void)){
+    init(categoryType: CategoryFilterType, categoryList: NSArray, filters:[NSInteger], selectedFilter:QueryObject, presentedVC:(UIViewController), onCompletion: ((QueryObject) -> Void)){
         self.categoryType = categoryType
-        self.categoryList = categoryList
+        self.categoryList = categoryList as! [CategoryDetail]
         self.filter = selectedFilter.copy() as! QueryObject
         self.completionHandler = onCompletion
         
@@ -30,9 +32,9 @@ import UIKit
         self .presentController(filters, selectedFilter: selectedFilter, presentedVC: presentedVC)
     }
     
-    init(categoryType: FilterCategoryType, categoryList: NSArray, shopID:String, filters:[NSInteger], selectedFilter:QueryObject, presentedVC:(UIViewController), onCompletion: ((QueryObject) -> Void)){
+    init(categoryType: CategoryFilterType, categoryList: NSArray, shopID:String, filters:[NSInteger], selectedFilter:QueryObject, presentedVC:(UIViewController), onCompletion: ((QueryObject) -> Void)){
         self.categoryType = categoryType
-        self.categoryList = categoryList
+        self.categoryList = categoryList as! [CategoryDetail]
         self.filter = selectedFilter.copy() as! QueryObject
         self.shopID = shopID
         self.completionHandler = onCompletion
@@ -64,15 +66,14 @@ import UIKit
     private func presentController(filters:[NSInteger], selectedFilter:QueryObject, presentedVC:(UIViewController)){
         self.adjustControllers(filters)
         
-        let controller:MHVerticalTabBarController = MHVerticalTabBarController()
-        controller.delegate = self
-        controller.title = "Filter"
-        controller.tabBarWidth = 120
-        controller.tabBarItemHeight = 44
-        controller.viewControllers = listControllers as [AnyObject]
-        controller.showResetButton = true
+        tabBarController.delegate = self
+        tabBarController.title = "Filter"
+        tabBarController.tabBarWidth = 120
+        tabBarController.tabBarItemHeight = 44
+        tabBarController.viewControllers = listControllers as [AnyObject]
+        tabBarController.showResetButton = true
         
-        let navigation: UINavigationController = UINavigationController.init(rootViewController: controller)
+        let navigation: UINavigationController = UINavigationController.init(rootViewController: tabBarController)
         navigation.navigationBar.translucent = false
         presentedVC.navigationController!.presentViewController(navigation, animated: true, completion: nil)
     }
@@ -109,136 +110,166 @@ import UIKit
         }
     }
     
-    private func addCategory(type:FilterCategoryType, categoryList:NSArray)  {
-        let controller : FilterCategoryViewController = FilterCategoryViewController()
-        controller.filterType = type
-        controller.selectedCategory = filter.selectedCategory
-        controller.categories = categoryList.mutableCopy() as! NSMutableArray
-        controller.delegate = self
+    private func addCategory(type:CategoryFilterType, categoryList:NSArray)  {
+        
+        self .adjustImageTabBarButton(filter.selectedCategory.count)
+        
+        let controller : CategoryFilterViewController = CategoryFilterViewController.init(selectedCategories: filter.selectedCategory, filterType: .Hotlist, initialCategories:self.categoryList) { (selectedCategory) in
+            self.filter.selectedCategory = selectedCategory
+            self .adjustImageTabBarButton(selectedCategory.count)
+        }
         
         controller.tabBarItem.title = "Kategori"
-        listControllers .addObject(controller)
+
+        listControllers .append(controller)
     }
     
     private func addShop(){
-        let items:NSMutableArray = NSMutableArray();
-        let object1:FilterObject = FilterObject();
-        object1.title = "Semua Toko";
-        object1.filterID = "0";
-        items.addObject(object1)
-        let object2:FilterObject = FilterObject();
-        object2.title = "Gold Merchant";
-        object2.filterID = "1";
-        items.addObject(object2)
         
-        let controller: FilterTableViewController = FilterTableViewController.init(items: items.copy() as! [FilterObject], selectedObject: filter.selectedShop, showSearchBar: false) { (selectedShop) in
-            self.filter.selectedShop = selectedShop
-        }
+        self .adjustImageTabBarButton(filter.selectedShop.count)
 
+        let object:FilterObject = FilterObject();
+        object.title = "Gold Merchant";
+        object.filterID = "1";
+        
+        let controller: FilterSwitchViewController = FilterSwitchViewController.init(items: [object], selectedObjects: filter.selectedShop) { (selectedShop) in
+            self.filter.selectedShop = selectedShop
+            self .adjustImageTabBarButton(selectedShop.count)
+        }
+        
         controller.tabBarItem.title = "Toko";
-        listControllers .addObject(controller)
+
+        listControllers .append(controller)
     }
     
     private func addLocation(){
-        let items:NSMutableArray = NSMutableArray();
-        let names:NSMutableArray = NSMutableArray();
-        names.addObject("Semua Lokasi")
-        names.addObject("Jabodetabek")
-        names.addObjectsFromArray(DBManager.getSharedInstance().LoadDataQueryLocationName("select d.district_name from ws_district d WHERE d.district_id IN (select distinct d.district_id from ws_shipping_city sc LEFT JOIN ws_district d ON sc.district_id = d.district_id order by d.district_name) order by d.district_name"))
         
-        let id:NSMutableArray = NSMutableArray();
-        id.addObject("0")
-        id.addObject("2210,2228,5573,1940,1640,2197")
-        id.addObjectsFromArray(DBManager.getSharedInstance().LoadDataQueryLocationName("select distinct sc.district_id from ws_shipping_city sc, ws_district d where sc.district_id = d.district_id order by d.district_name"))
-        
-        for (index, _) in names.enumerate() {
-            let object : FilterObject = FilterObject()
-            object.title = names[Int(index as NSNumber)] as! NSString
-            object.filterID = id[Int(index as NSNumber)] as! NSString
-            items.addObject(object)
-        }
-        
-        let controller: FilterTableViewController = FilterTableViewController.init(items: items.copy() as! [FilterObject], selectedObject: filter.selectedLocation, showSearchBar: true) { (selectedLocation) in
-            self.filter.selectedLocation = selectedLocation
-        }
+        self .adjustImageTabBarButton(filter.selectedLocation.count)
 
-        
+        let controller : LocationFilterViewController = LocationFilterViewController.init(selectedObjects:filter.selectedLocation) { (selectedLocation) in
+            self.filter.selectedLocation = selectedLocation
+            self .adjustImageTabBarButton(selectedLocation.count)
+        }
+                
         controller.tabBarItem.title = "Lokasi";
-        listControllers .addObject(controller)
+
+        listControllers .append(controller)
     }
     
     private func addPrice(){
         
+        if (Int(filter.selectedPrice.priceMax) == 0 && Int(filter.selectedPrice.priceMax) == 0 && filter.selectedPrice.priceWholesale == false){
+            self .adjustImageTabBarButton(0)
+        } else {
+            self .adjustImageTabBarButton(1)
+        }
+        
         let controller:FilterPriceViewController = FilterPriceViewController.init(price: filter.selectedPrice) { (selectedPrice) in
             self.filter.selectedPrice = selectedPrice
+            if (Int(selectedPrice.priceMax) == 0 && Int(selectedPrice.priceMax) == 0 && selectedPrice.priceWholesale == false){
+                self .adjustImageTabBarButton(0)
+            } else {
+                self .adjustImageTabBarButton(1)
+            }
         }
 
         controller.tabBarItem.title = "Harga";
-        listControllers .addObject(controller)
+
+        listControllers .append(controller)
     }
     
     private func addCondition(){
         let items:NSMutableArray = NSMutableArray();
         let object1:FilterObject = FilterObject();
-        object1.title = "Semua Kondisi";
-        object1.filterID = "0";
+        object1.title = "Baru";
+        object1.filterID = "1";
         items.addObject(object1)
         let object2:FilterObject = FilterObject();
-        object2.title = "Baru";
-        object2.filterID = "1";
+        object2.title = "Bekas";
+        object2.filterID = "2";
         items.addObject(object2)
-        let object3:FilterObject = FilterObject();
-        object3.title = "Bekas";
-        object3.filterID = "2";
-        items.addObject(object3)
         
-        let controller: FilterTableViewController = FilterTableViewController.init(items: items.copy() as! [FilterObject], selectedObject: filter.selectedCondition, showSearchBar: false) { (selectedCondition) in
+        let controller: FilterTableViewController = FilterTableViewController.init(items: items.copy() as! [FilterObject], selectedObjects: filter.selectedCondition, showSearchBar: false) { (selectedCondition) in
             self.filter.selectedCondition = selectedCondition
+            self .adjustImageTabBarButton(selectedCondition.count)
+
         }
         
         controller.tabBarItem.title = "Kondisi";
-        listControllers .addObject(controller)
+
+        listControllers .append(controller)
     }
     
     private func addPreOrder(){
-        let items:NSMutableArray = NSMutableArray();
-        let object1:FilterObject = FilterObject();
-        object1.title = "Semua";
-        object1.filterID = "0";
-        items.addObject(object1)
-        let object2:FilterObject = FilterObject();
-        object2.title = "Preorder";
-        object2.filterID = "1";
-        items.addObject(object2)
+        let object:FilterObject = FilterObject();
+        object.title = "Preorder";
+        object.filterID = "1";
         
-        let controller: FilterTableViewController = FilterTableViewController.init(items: items.copy() as! [FilterObject], selectedObject: filter.selectedCondition, showSearchBar: false) { (selectedCondition) in
-            self.filter.selectedCondition = selectedCondition
+        let controller: FilterSwitchViewController = FilterSwitchViewController.init(items: [object], selectedObjects: filter.selectedShop) { (selectedShop) in
+            self.filter.selectedShop = selectedShop
+            self .adjustImageTabBarButton(selectedShop.count)
+
         }
         
         controller.tabBarItem.title = "Preorder";
-        listControllers .addObject(controller)
+
+        listControllers .append(controller)
     }
     
     private func addShipment(){
+        
+        self .adjustImageTabBarButton(filter.selectedShipping.count)
+
         let items:NSMutableArray = NSMutableArray();
+        let object:FilterObject = FilterObject();
+        object.title = "SiCepat";
+        object.filterID = "11";
+        items.addObject(object)
         let object1:FilterObject = FilterObject();
-        object1.title = "Semua";
-        object1.filterID = "0";
+        object1.title = "JNE";
+        object1.filterID = "1";
         items.addObject(object1)
         let object2:FilterObject = FilterObject();
-        object2.title = "JNE";
-        object2.filterID = "1";
+        object2.title = "TIKI";
+        object2.filterID = "2";
         items.addObject(object2)
+        let object3:FilterObject = FilterObject();
+        object3.title = "RPX";
+        object3.filterID = "3";
+        items.addObject(object3)
+        let object4:FilterObject = FilterObject();
+        object4.title = "Wahana";
+        object4.filterID = "6";
+        items.addObject(object4)
+        let object5:FilterObject = FilterObject();
+        object5.title = "First";
+        object5.filterID = "9";
+        items.addObject(object5)
+        let object6:FilterObject = FilterObject();
+        object6.title = "Pos Indonesia";
+        object6.filterID = "4";
+        items.addObject(object6)
+        let object7:FilterObject = FilterObject();
+        object7.title = "Cahaya";
+        object7.filterID = "7";
+        items.addObject(object7)
+        let object8:FilterObject = FilterObject();
+        object8.title = "Pandu";
+        object8.filterID = "8";
+        items.addObject(object8)
         
-        let controller: FilterTableViewController = FilterTableViewController.init(items: items.copy() as! [FilterObject], selectedObject: filter.selectedCondition, showSearchBar: false) { (selectedCondition) in
-            self.filter.selectedCondition = selectedCondition
+        let controller: FilterTableViewController = FilterTableViewController.init(items: items.copy() as! [FilterObject], selectedObjects: filter.selectedShipping, showSearchBar: false) { (selectedShipping) in
+            self.filter.selectedShipping = selectedShipping
+            self .adjustImageTabBarButton(selectedShipping.count)
         }
         
         controller.tabBarItem.title = "Pengiriman";
-        listControllers .addObject(controller)
+        listControllers .append(controller)
     }
+
     
     private func addEtalase(shopID:String) {
+        
         let controller : EtalaseViewController = EtalaseViewController()
         controller.delegate = self;
         controller.shopId = shopID;
@@ -247,12 +278,25 @@ import UIKit
         controller.enableAddEtalase = false;
         
         controller.tabBarItem.title = "Etalase";
-        listControllers .addObject(controller)
+        listControllers .append(controller)
     }
     
-    // MARK: - Filter Category Delegate
-    func didSelectCategoryFilter(category: CategoryDetail!) {
-        self.filter.selectedCategory = category
+    private func adjustImageTabBarButton(dataCount:Int){
+        if dataCount > 0 {
+            
+            let button : MHVerticalTabBarButton = self.tabBarController.tabBar.tabBarButtons[Int(self.tabBarController.selectedIndex)];
+            button.imageView.image = UIImage.init(named: "icon_unread.png")
+        }
+        else {
+            var index : Int = Int(self.tabBarController.selectedIndex)
+            if index == Int(UInt8.max){
+                index = 0
+            }
+            if self.tabBarController.tabBar.tabBarButtons?.isEmpty == false {
+                let button : MHVerticalTabBarButton = self.tabBarController.tabBar.tabBarButtons[index];
+                button.imageView.image = UIImage()
+            }
+        }
     }
     
     // MARK: - Filter Etalase Delegate
@@ -266,10 +310,9 @@ import UIKit
     }
     func didTapResetButton(button: UIButton!) {
         self.filter = QueryObject()
-        listControllers.forEach { $0.resetSelectedFilter() }
+//        listControllers.forEach { $0.resetSelectedFilter() }
     }
 
     func tabBarController(tabBarController: MHVerticalTabBarController!, didSelectViewController viewController: UIViewController!) {
-        
     }
 }

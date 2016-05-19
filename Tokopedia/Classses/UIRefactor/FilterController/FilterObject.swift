@@ -25,6 +25,7 @@ class FilterObject: NSObject, NSCopying {
     
     var filterID : NSString = "0"
     var title : NSString = ""
+    var isSelected : Bool = false
     
     required override init() {
     }
@@ -32,6 +33,7 @@ class FilterObject: NSObject, NSCopying {
     required init(_ model: FilterObject) {
         filterID = model.filterID
         title = model.title
+        isSelected = model.isSelected
     }
     
     func copyWithZone(zone: NSZone) -> AnyObject {
@@ -41,9 +43,9 @@ class FilterObject: NSObject, NSCopying {
 
 class FilterPrice: NSObject, NSCopying {
     
-    var priceMin:String = ""
-    var priceMax:String = ""
-    var priceGrosir: Bool = false
+    var priceMin:String = "0"
+    var priceMax:String = "0"
+    var priceWholesale: Bool = false
     
     required override init() {
     }
@@ -51,7 +53,7 @@ class FilterPrice: NSObject, NSCopying {
     required init(_ model: FilterPrice) {
         priceMin = model.priceMin
         priceMax = model.priceMax
-        priceGrosir = model.priceGrosir
+        priceWholesale = model.priceWholesale
     }
     
     func copyWithZone(zone: NSZone) -> AnyObject {
@@ -61,12 +63,13 @@ class FilterPrice: NSObject, NSCopying {
 
 class QueryObject: NSObject, NSCopying {
     
-    var selectedCategory:CategoryDetail = CategoryDetail()
+    var selectedCategory:[CategoryDetail] = []
     var selectedEtalase:EtalaseList = EtalaseList()
-    var selectedShop:FilterObject = FilterObject()
-    var selectedLocation:FilterObject = FilterObject()
+    var selectedShop:[FilterObject] = []
+    var selectedLocation:[FilterObject] = []
     var selectedPrice : FilterPrice = FilterPrice()
-    var selectedCondition : FilterObject = FilterObject()
+    var selectedCondition : [FilterObject] = []
+    var selectedShipping : [FilterObject] = []
     
     required override init() {
     }

@@ -53,6 +53,7 @@
 #import "UIActivityViewController+Extensions.h"
 #import "Tokopedia-Swift.h"
 #import "TokopediaNetworkManager.h"
+#import "UserAuthentificationManager.h"
 
 #define CTagGeneralProductCollectionView @"ProductCell"
 #define CTagGeneralProductIdentifier @"ProductCellIdentifier"
@@ -912,20 +913,28 @@ static NSString const *rows = @"12";
 }
 
 - (NSDictionary*)parameters {
+    NSString *selectedLocations = [[_selectedFilter.selectedLocation valueForKey:@"filterID"] componentsJoinedByString:@","];
+    NSString *selectedShops = [[_selectedFilter.selectedShop valueForKey:@"filterID"] componentsJoinedByString:@","];
+    NSString *selectedCondition = [[_selectedFilter.selectedCondition valueForKey:@"filterID"] componentsJoinedByString:@","];
+    NSString *selectedShipping = [[_selectedFilter.selectedShipping valueForKey:@"filterID"] componentsJoinedByString:@","];
+    NSString *selectedCategory = [[_selectedFilter.selectedCategory valueForKey:@"categoryId"] componentsJoinedByString:@","];
+
      NSDictionary* param = @{
                              @"device":@"ios",
                              @"q" : [_detailfilter objectForKey:kTKPDHOME_DATAQUERYKEY]?:[_data objectForKey:kTKPDHOME_DATAQUERYKEY],
                              @"start" : @(_start),
                              @"rows" : rows,
                              @"ob" : [_detailfilter objectForKey:kTKPDHOME_APIORDERBYKEY]?:@"",
-                             @"sc" : _selectedFilter.selectedCategory.categoryId?:@"",
-                             @"floc" :_selectedFilter.selectedLocation.filterID?:@"",
-                             @"fshop" :_selectedFilter.selectedShop.filterID?:@"",
+                             @"sc" : selectedCategory?:@"",
+                             @"floc" :selectedLocations?:@"",
+                             @"fshop" :selectedShops?:@"",
                              @"pmin" :_selectedFilter.selectedPrice.priceMin?:@"",
                              @"pmax" :_selectedFilter.selectedPrice.priceMax?:@"",
                              @"hashtag" : [self isInitialRequest] ? @"true" : @"",
                              @"breadcrumb" :  [self isInitialRequest] ? @"true" : @"",
-                             @"condition" : _selectedFilter.selectedCondition.filterID?:@""
+                             @"condition" : selectedCondition?:@"",
+                             @"shipping" : selectedShipping?:@"",
+                             @"wholesale" : @(_selectedFilter.selectedPrice.priceWholesale)?:@""
                              };
                              
      return param;

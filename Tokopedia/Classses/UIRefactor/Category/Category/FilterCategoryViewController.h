@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "CategoryDetail.h"
+#import "Tokopedia-Swift.h"
 
 typedef NS_ENUM(NSInteger, FilterCategoryType) {
     FilterCategoryTypeHotlist,

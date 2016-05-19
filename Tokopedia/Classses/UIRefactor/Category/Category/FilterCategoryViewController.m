@@ -7,7 +7,7 @@
 //
 
 #import "FilterCategoryViewController.h"
-#import "CategoryResponse.h"
+#import "Tokopedia-swift.h"
 #import "FilterCategoryViewCell.h"
 #import "LoadingView.h"
 
@@ -238,7 +238,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+//    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     CategoryDetail *category = [self.categories objectAtIndex:indexPath.row];
     if (self.filterType == FilterCategoryTypeCategory ||
         self.filterType == FilterCategoryTypeHotlist ||

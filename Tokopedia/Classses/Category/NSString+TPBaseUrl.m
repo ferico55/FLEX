@@ -64,4 +64,14 @@
                           ));
 }
 
++ (NSString*)hadesUrl {
+    return  FBTweakValue(@"Network", @"Environment", @"Tokopedia Hades Url", @"https://hades.tokopedia.com",
+                         (@{
+                            @"https://hades-staging.tokopedia.com" : @"Staging",
+                            @"https://hades-alpha.tokopedia.com" : @"Alpha",
+                            @"https://hades.tokopedia.com" : @"Production",
+                            }
+                          ));
+}
+
 @end

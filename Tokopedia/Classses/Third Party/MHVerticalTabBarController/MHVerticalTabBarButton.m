@@ -45,7 +45,7 @@
     _titleLabel.textAlignment = NSTextAlignmentCenter;
     
     _imageView = [[UIImageView alloc] init];
-    _imageView.contentMode = UIViewContentModeCenter;
+    _imageView.contentMode = UIViewContentModeScaleAspectFit;
     
     _titleOffset = CGSizeZero;
     _imageOffset = CGSizeZero;
@@ -77,18 +77,21 @@
 
     if ([_titleLabel.attributedText length] > 0) {
         if (CGSizeEqualToSize(_titleOffset, CGSizeZero)) {
-            _titleLabel.frame = CGRectOffset(self.bounds, 0, _imageView.image.size.height * 0.6);
+            _titleLabel.frame = CGRectOffset(self.bounds, 0, 0);
         }
         else {
             _titleLabel.frame = CGRectOffset(self.bounds, self.titleOffset.width, self.titleOffset.height);
         }
         
-        if (CGSizeEqualToSize(_imageOffset, CGSizeZero)) {
-            _imageView.frame = CGRectOffset(self.bounds, 0, _imageView.image.size.height * -0.2);
-        }
-        else {
-            _imageView.frame = CGRectOffset(self.bounds, self.imageOffset.width, self.imageOffset.height);
-        }
+        _imageView.frame = CGRectMake(10, self.bounds.size.height/2-5, 8, 8);
+
+        
+//        if (CGSizeEqualToSize(_imageOffset, CGSizeZero)) {
+//            _imageView.frame = CGRectOffset(self.bounds, 0, _imageView.image.size.height * -0.2);
+//        }
+//        else {
+//            _imageView.frame = CGRectOffset(self.bounds, self.imageOffset.width, self.imageOffset.height);
+//        }
     }
     else {
         _imageView.frame = self.bounds;

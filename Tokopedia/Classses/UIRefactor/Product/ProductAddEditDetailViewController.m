@@ -29,6 +29,7 @@
 #import "GAIDictionaryBuilder.h"
 #import "CatalogAddProduct.h"
 #import "UserAuthentificationManager.h"
+#import "Tokopedia-Swift.h"
 
 @interface ProductAddEditDetailViewController ()
 <
