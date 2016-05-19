@@ -8,6 +8,7 @@
 
 #import "CloseShopViewController.h"
 #import "AlertDatePickerView.h"
+#import "CloseShopRequest.h"
 
 typedef NS_ENUM(NSInteger, CenterViewType){
     CenterViewAturJadwalButton,
@@ -25,10 +26,15 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
 @property CenterViewType centerViewType;
 @end
 
-@implementation CloseShopViewController
+@implementation CloseShopViewController{
+    CloseShopRequest *_closeShopRequest;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    _closeShopRequest = [CloseShopRequest new];
+    
+    
     //self.scrollView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
     [_scrollView setScrollEnabled:YES];
     _scrollView.delegate = self;
@@ -97,6 +103,16 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
     datePicker.delegate = self;
     datePicker.isSetMinimumDate = YES;
     [datePicker show];
+}
+- (IBAction)submitButtonTapped:(id)sender {
+    [_closeShopRequest requestActionCloseShopFromNowUntil:@"20/05/2016"
+                                                closeNote:@"asd"
+                                                onSuccess:^(CloseShopResponse *result) {
+        
+    }
+                                                onFailure:^(NSError *error) {
+        
+    }];
 }
 
 

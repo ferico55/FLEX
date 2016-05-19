@@ -9,16 +9,19 @@
 #import <Foundation/Foundation.h>
 #import "CloseShopResponse.h"
 @interface CloseShopRequest : NSObject
--(void)requestActionCloseShopWithUserId:(NSString*)shopId
-                                      from:(NSString*)dateFrom
-                                     until:(NSString*)dateUntil
-                                 closeNote:(NSString*)closeNote
-                                 onSuccess:(void (^)(CloseShopResponse*))successCallback
-                                 onFailure:(void (^)(NSError *))errorCallback;
+-(void)requestActionCloseShopFromNowUntil:(NSString*)dateUntil
+                                closeNote:(NSString*)closeNote
+                                onSuccess:(void (^)(CloseShopResponse*))successCallback
+                                onFailure:(void (^)(NSError *))errorCallback;
 
 -(void)requestActionOpenShopWithUserId:(NSString*)shopId
                               onSuccess:(void (^)(CloseShopResponse*))successCallback
                               onFailure:(void (^)(NSError *))errorCallback;
 
--(void)requestActionExtendShopWith
+-(void)requestActionCloseShopFrom:(NSString*)dateFrom
+                            until:(NSString*)dateUntil
+                        closeNote:(NSString*)closeNote
+                        onSuccess:(void (^)(CloseShopResponse*))successCallback
+                        onFailure:(void (^)(NSError *))errorCallback;
+
 @end
