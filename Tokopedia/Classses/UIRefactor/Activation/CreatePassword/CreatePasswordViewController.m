@@ -721,6 +721,7 @@
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
     if (textField == _dateOfBirthTextField) {
         AlertDatePickerView *datePicker = [AlertDatePickerView newview];
+        datePicker.data = @{kTKPDALERTVIEW_DATATYPEKEY:@(kTKPDALERT_DATAALERTTYPEREGISTERKEY)};
         datePicker.isSetMinimumDate = YES;
         datePicker.delegate = self;
         datePicker.tag = 12;
