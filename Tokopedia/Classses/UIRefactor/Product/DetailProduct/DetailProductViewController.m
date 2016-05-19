@@ -1225,7 +1225,8 @@ OtherProductDelegate
     else if(tag == CTagOtherProduct)
         return @{@"shop_id" : _product.result.shop_info.shop_id,
                  @"device" : @"ios",
-                 @"-id" : _product.result.product.product_id
+                 @"-id" : _product.result.product.product_id,
+                 @"source":@"other_product"
                  };
     else if(tag == CTagFavorite)
     {
@@ -1282,7 +1283,7 @@ OtherProductDelegate
         return [_detailProductPostUrl isEqualToString:@""] ? kTKPDDETAILPRODUCT_APIPATH : _detailProductPostUrl;
     else if(tag == CTagOtherProduct)
         //return [_detailProductPostUrl isEqualToString:@""] ? kTKPDDETAILPRODUCT_APIPATH : _detailProductPostUrl;
-        return @"search/v1/product";
+        return @"/search/v1/product";
     else if(tag == CTagFavorite)
         return @"action/favorite-shop.pl";
     else if(tag == CTagUnWishList)
@@ -1485,7 +1486,7 @@ OtherProductDelegate
     else if(tag == CTagOtherProduct)
     {
         //_objectOtherProductManager = [RKObjectManager sharedClient];
-        _objectOtherProductManager = [RKObjectManager sharedClient:@"http://ace.tokopedia.com/"];
+        _objectOtherProductManager = [RKObjectManager sharedClient:[NSString aceUrl]];
         
         
         RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[SearchAWS class]];

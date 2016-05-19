@@ -897,7 +897,14 @@ static NSString const *rows = @"12";
 }
 
 - (NSDictionary*)parameters {
-     NSDictionary* param = @{
+    NSString *source = @"";
+    if(_isFromAutoComplete){
+        source = @"jahe";
+    }else{
+        source = @"hot_product";
+    }
+    
+    NSDictionary* param = @{
                              @"device":@"ios",
                              @"q" : [_detailfilter objectForKey:kTKPDHOME_DATAQUERYKEY]?:[_data objectForKey:kTKPDHOME_DATAQUERYKEY],
                              @"start" : @(_start),
@@ -910,7 +917,9 @@ static NSString const *rows = @"12";
                              @"pmax" :[_detailfilter objectForKey:kTKPDHOME_APIPRICEMAXKEY]?:@"",
                              @"hashtag" : [self isInitialRequest] ? @"true" : @"",
                              @"breadcrumb" :  [self isInitialRequest] ? @"true" : @"",
+                             @"source" : source
                              };
+    
                              
      return param;
 }

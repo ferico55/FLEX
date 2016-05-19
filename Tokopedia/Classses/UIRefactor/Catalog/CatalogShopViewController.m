@@ -332,7 +332,7 @@
 #pragma mark - Network manager delegate
 
 - (NSString *)getPath:(int)tag {
-    return @"search/v1/catalog/product";
+    return @"/search/v1/catalog/product";
 }
 
 - (NSDictionary *)getParameter:(int)tag {
@@ -343,16 +343,15 @@
     
     [parameters setObject:_catalog.result.catalog_info.catalog_id?:@"" forKey:@"ctg_id"];
     [parameters setObject:_condition?:@"" forKey:API_FILTER_CONDITION_KEY];
-    //[parameters setObject:_location?:@"" forKey:API_FILTER_LOCATION_KEY];
-    //[parameters setObject:_orderBy?:@"" forKey:API_FILTER_ORDER_BY_KEY];
     [parameters setObject:_location?:@"" forKey:@"floc"];
     [parameters setObject:_orderBy?:@"" forKey:@"ob"];
+    [parameters setObject:@"catalog" forKey:@"source"];
     
     return parameters;
 }
 
 - (id)getObjectManager:(int)tag {
-    _objectManager = [RKObjectManager sharedClient:@"http://ace.tokopedia.com/"];
+    _objectManager = [RKObjectManager sharedClient:[NSString aceUrl]];
     
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[CatalogShopAWS class]];
     [statusMapping addAttributeMappingsFromArray:@[@"status", @"message_error", @"server_process_time"]];
