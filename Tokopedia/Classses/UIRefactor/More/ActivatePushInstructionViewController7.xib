@@ -50,10 +50,10 @@
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="General Settings Icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="AS7-g3-J6J">
                     <rect key="frame" x="30" y="105" width="31" height="31"/>
                 </imageView>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="General Settings Icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="ZYA-0M-BPJ">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Notifications Settings Icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="ZYA-0M-BPJ">
                     <rect key="frame" x="30" y="166" width="31" height="31"/>
                 </imageView>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="General Settings Icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="k5D-C7-Kwg">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tokopedia.png" translatesAutoresizingMaskIntoConstraints="NO" id="k5D-C7-Kwg">
                     <rect key="frame" x="30" y="227" width="31" height="31"/>
                 </imageView>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="activate_push_3.png" translatesAutoresizingMaskIntoConstraints="NO" id="cvK-mS-f3i">
@@ -132,8 +132,10 @@
     </objects>
     <resources>
         <image name="General Settings Icon.png" width="31" height="31"/>
+        <image name="Notifications Settings Icon.png" width="31" height="31"/>
         <image name="activate_push_2.png" width="260" height="27"/>
         <image name="activate_push_3.png" width="260" height="27"/>
         <image name="icon_close_circle.png" width="19" height="19"/>
+        <image name="tokopedia.png" width="31" height="31"/>
     </resources>
 </document>
