@@ -2265,6 +2265,9 @@
 		92C1AAA21CE9804D007D48D6 /* ActivatePushInstructionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92C1AAA01CE9804D007D48D6 /* ActivatePushInstructionViewController.swift */; };
 		92C1AAA31CE9804D007D48D6 /* ActivatePushInstructionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 92C1AAA11CE9804D007D48D6 /* ActivatePushInstructionViewController.xib */; };
 		92C2E71A1CEEEADF00FB403A /* ActivatePushInstructionViewController7.xib in Resources */ = {isa = PBXBuildFile; fileRef = 92C2E7191CEEEADF00FB403A /* ActivatePushInstructionViewController7.xib */; };
+		92C2E71E1CEEF04A00FB403A /* General Settings Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 92C2E71B1CEEF04A00FB403A /* General Settings Icon.png */; };
+		92C2E71F1CEEF04A00FB403A /* General Settings Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 92C2E71C1CEEF04A00FB403A /* General Settings Icon@2x.png */; };
+		92C2E7201CEEF04A00FB403A /* General Settings Icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 92C2E71D1CEEF04A00FB403A /* General Settings Icon@3x.png */; };
 		92C8FC121CEAD24B0097354B /* icon_close_circle.png in Resources */ = {isa = PBXBuildFile; fileRef = 92C8FC0F1CEAD24B0097354B /* icon_close_circle.png */; };
 		92C8FC131CEAD24B0097354B /* icon_close_circle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 92C8FC101CEAD24B0097354B /* icon_close_circle@2x.png */; };
 		92C8FC141CEAD24B0097354B /* icon_close_circle@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 92C8FC111CEAD24B0097354B /* icon_close_circle@3x.png */; };
@@ -5687,6 +5690,9 @@
 		92C1AAA01CE9804D007D48D6 /* ActivatePushInstructionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivatePushInstructionViewController.swift; sourceTree = "<group>"; };
 		92C1AAA11CE9804D007D48D6 /* ActivatePushInstructionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActivatePushInstructionViewController.xib; sourceTree = "<group>"; };
 		92C2E7191CEEEADF00FB403A /* ActivatePushInstructionViewController7.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActivatePushInstructionViewController7.xib; sourceTree = "<group>"; };
+		92C2E71B1CEEF04A00FB403A /* General Settings Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "General Settings Icon.png"; sourceTree = "<group>"; };
+		92C2E71C1CEEF04A00FB403A /* General Settings Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "General Settings Icon@2x.png"; sourceTree = "<group>"; };
+		92C2E71D1CEEF04A00FB403A /* General Settings Icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "General Settings Icon@3x.png"; sourceTree = "<group>"; };
 		92C8FC0F1CEAD24B0097354B /* icon_close_circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_close_circle.png; sourceTree = "<group>"; };
 		92C8FC101CEAD24B0097354B /* icon_close_circle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_close_circle@2x.png"; sourceTree = "<group>"; };
 		92C8FC111CEAD24B0097354B /* icon_close_circle@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_close_circle@3x.png"; sourceTree = "<group>"; };
@@ -10519,6 +10525,9 @@
 		7AB61BCF1CCF5E60005C1130 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				92C2E71B1CEEF04A00FB403A /* General Settings Icon.png */,
+				92C2E71C1CEEF04A00FB403A /* General Settings Icon@2x.png */,
+				92C2E71D1CEEF04A00FB403A /* General Settings Icon@3x.png */,
 				9264CA8B1CEAF4830096353D /* activate_push_3.png */,
 				9264CA8C1CEAF4830096353D /* activate_push_3@2x.png */,
 				9264CA8D1CEAF4830096353D /* activate_push_3@3x.png */,
@@ -12275,6 +12284,7 @@
 				7AB625431CCF5E63005C1130 /* icon_checklist.png in Resources */,
 				7AB625A01CCF5E63005C1130 /* icon_login.png in Resources */,
 				7AB625851CCF5E63005C1130 /* icon_grid_dua@2x.png in Resources */,
+				92C2E71F1CEEF04A00FB403A /* General Settings Icon@2x.png in Resources */,
 				7AB625FC1CCF5E63005C1130 /* icon_neutral_sad@3x.png in Resources */,
 				7AB627601CCF5E63005C1130 /* icon_hotlist_active.png in Resources */,
 				7AB6224C1CCF5E62005C1130 /* FilterComplainViewController.xib in Resources */,
@@ -12402,6 +12412,7 @@
 				7AB627221CCF5E63005C1130 /* slide2e.png in Resources */,
 				7AB625B11CCF5E63005C1130 /* icon_medal@2x.png in Resources */,
 				7AB627021CCF5E63005C1130 /* image-1.png in Resources */,
+				92C2E71E1CEEF04A00FB403A /* General Settings Icon.png in Resources */,
 				7AB622131CCF5E62005C1130 /* GeneralTalkCommentCell.xib in Resources */,
 				7AB624E91CCF5E63005C1130 /* icon-search-camera.png in Resources */,
 				7AB627291CCF5E63005C1130 /* pin_poin_toped_60.png in Resources */,
@@ -12724,6 +12735,7 @@
 				7AB624461CCF5E63005C1130 /* TxOrderConfirmationDetailViewController.xib in Resources */,
 				7AB627321CCF5E63005C1130 /* icon_grid_dua@3x.png in Resources */,
 				7AB626D91CCF5E63005C1130 /* icon_search_active.png in Resources */,
+				92C2E7201CEEF04A00FB403A /* General Settings Icon@3x.png in Resources */,
 				7AB627891CCF5E63005C1130 /* icon_lihat_komplain@2x.png in Resources */,
 				7AB6269C1CCF5E63005C1130 /* icon_speed_neutral_large@2x.png in Resources */,
 				7AB622911CCF5E63005C1130 /* MyShopNoteDetailViewController.xib in Resources */,
