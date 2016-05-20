@@ -178,7 +178,7 @@ typedef enum
 
 #define BUTTON_DELETE_TITLE @"Hapus"
 #define BUTTON_MOVE_TO_WAREHOUSE @"Gudangkan"
-#define BUTTON_MOVE_TO_ETALASE @"Pindah ke\nEtalase"
+#define BUTTON_MOVE_TO_ETALASE @"Stok \nTersedia"
 #define BUTTON_EDIT_PRODUCT @" Edit "
 #define BUTTON_DUPLICATE_PRODUCT @"Salin"
 #define BUTTON_MOVE_ETALASE @"Ubah\nEtalase"

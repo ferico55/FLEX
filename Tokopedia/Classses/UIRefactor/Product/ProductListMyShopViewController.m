@@ -90,6 +90,7 @@ NoResultDelegate
 
 @property (strong, nonatomic) NSURL *uriNext;
 @property (strong, nonatomic) NSIndexPath *lastActionIndexPath;
+@property BOOL isMovingToGudang;
 
 @end
 
@@ -628,10 +629,11 @@ NoResultDelegate
                                                       } else {
                                                           UIAlertView *alert =[[UIAlertView alloc] initWithTitle:@"Apakah stok produk ini kosong?"
                                                                                                          message:nil
-                                                                                                        delegate:self
+                                                                                                        delegate:welf
                                                                                                cancelButtonTitle:@"Tidak"
                                                                                                otherButtonTitles:@"Ya", nil];
                                                           alert.tag = indexPath.row;
+                                                          welf.isMovingToGudang = YES;
                                                           [alert show];
                                                       }
                                                       welf.lastActionIndexPath = indexPath;
@@ -650,16 +652,18 @@ NoResultDelegate
                                                    padding:padding
                                                   callback:^BOOL(MGSwipeTableCell *sender) {
                                                       welf.lastActionIndexPath = indexPath;
-                                                      // Move To Etalase
-                                                      UserAuthentificationManager *userAuthentificationManager = [UserAuthentificationManager new];
+                                                      
+                                                      
+                                                      UIAlertView *alert =[[UIAlertView alloc] initWithTitle:@"Apakah stok produk ini tersedia?"
+                                                                                                     message:nil
+                                                                                                    delegate:welf
+                                                                                           cancelButtonTitle:@"Tidak"
+                                                                                           otherButtonTitles:@"Ya", nil];
+                                                      alert.tag = indexPath.row;
+                                                      welf.isMovingToGudang = NO;
+                                                      [alert show];
                                                       selectedIndexPath = indexPath;
-                                                      EtalaseViewController *controller = [EtalaseViewController new];
-                                                      controller.delegate = self;
-                                                      controller.shopId =[userAuthentificationManager getShopId];
-                                                      controller.isEditable = NO;
-                                                      controller.showOtherEtalase = NO;
-                                                      controller.enableAddEtalase = YES;
-                                                      [self.navigationController pushViewController:controller animated:YES];
+                                                      
                                                       
                                                       return YES;
                                                   }];
@@ -711,16 +715,29 @@ NoResultDelegate
 }
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 1) {
-        ManageProductList *list = _products[alertView.tag];
-        NSString *productId = [NSString stringWithFormat:@"%d", list.product_id];
-        [ProductRequest moveProductToWarehouse:productId
-                 setCompletionBlockWithSuccess:^(ShopSettings *response) {
-                     [self moveProductToWirehouse];
-                     [self showSuccessMessages:@[@"Status produk berhasil diubah"]];
-                 } failure:^(NSArray *errorMessages) {
-                     [self showErrorMessages:errorMessages];
-                 }];
+    if(self.isMovingToGudang){
+        if (buttonIndex == 1) {
+            ManageProductList *list = _products[alertView.tag];
+            NSString *productId = [NSString stringWithFormat:@"%d", list.product_id];
+            [ProductRequest moveProductToWarehouse:productId
+                     setCompletionBlockWithSuccess:^(ShopSettings *response) {
+                         [self moveProductToWirehouse];
+                         [self showSuccessMessages:@[@"Status produk berhasil diubah"]];
+                     } failure:^(NSArray *errorMessages) {
+                         [self showErrorMessages:errorMessages];
+                     }];
+        }
+    }else{
+        // Move To Etalase
+        UserAuthentificationManager *userAuthentificationManager = [UserAuthentificationManager new];
+        
+        EtalaseViewController *controller = [EtalaseViewController new];
+        controller.delegate = self;
+        controller.shopId =[userAuthentificationManager getShopId];
+        controller.isEditable = NO;
+        controller.showOtherEtalase = NO;
+        controller.enableAddEtalase = YES;
+        [self.navigationController pushViewController:controller animated:YES];
     }
 }
 
