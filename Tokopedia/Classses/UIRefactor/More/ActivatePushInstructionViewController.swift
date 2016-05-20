@@ -13,6 +13,24 @@ class ActivatePushInstructionViewController: UIViewController {
 
     var viewControllerDidClosed: (() -> Void)?
     
+    private static var nibName: String {
+        get {
+            if #available(iOS 8, *) {
+                return "ActivatePushInstructionViewController"
+            }
+            
+            return "ActivatePushInstructionViewController7"
+        }
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("Just use init()")
+    }
+
+    init() {
+        super.init(nibName: ActivatePushInstructionViewController.nibName, bundle: nil)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
