@@ -813,20 +813,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
     }
     
     else if (indexPath.section == 6) {
-        JLAuthorizationStatus permissionStatus = [JLNotificationPermission sharedInstance].authorizationStatus;
-        if (permissionStatus == JLPermissionNotDetermined) {
-            [JLNotificationPermission sharedInstance].extraAlertEnabled = false;
-            [[JLNotificationPermission sharedInstance] authorize: ^(NSString *deviceId, NSError *error) {
-                [self.tableView reloadData];
-            }];
-        } else {
-            ActivatePushInstructionViewController *viewController = [ActivatePushInstructionViewController new];
-            
-            viewController.viewControllerDidClosed = ^{
-                [[JLNotificationPermission sharedInstance] displayAppSystemSettings];
-            };
-            [_wrapperViewController presentViewController:viewController animated:YES completion:nil];
-        }
+        [self activatePushNotification];
     }
     
     else if (indexPath.section == 7) {
@@ -840,6 +827,26 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
     }
     
     _wrapperViewController.hidesBottomBarWhenPushed = NO;
+}
+
+- (void)activatePushNotification {
+    JLNotificationPermission *permission = [JLNotificationPermission sharedInstance];
+    
+    JLAuthorizationStatus permissionStatus = permission.authorizationStatus;
+    
+    if (permissionStatus == JLPermissionNotDetermined) {
+        permission.extraAlertEnabled = false;
+        [permission authorize: ^(NSString *deviceId, NSError *error) {
+            [self togglePushNotificationCellVisibility];
+        }];
+    } else {
+        ActivatePushInstructionViewController *viewController = [ActivatePushInstructionViewController new];
+        
+        viewController.viewControllerDidClosed = ^{
+            [[JLNotificationPermission sharedInstance] displayAppSystemSettings];
+        };
+        [_wrapperViewController presentViewController:viewController animated:YES completion:nil];
+    }
 }
 
 -(void)pushIOSFeedback
