@@ -28,12 +28,18 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
 
 @implementation CloseShopViewController{
     CloseShopRequest *_closeShopRequest;
+    NSDate* _dateMulaiDari;
+    NSDate* _dateSampaiDengan;
+    BOOL textViewInitialValue;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     _closeShopRequest = [CloseShopRequest new];
     
+    //DUMMY
+    _scheduleDetail = [ClosedScheduleDetail new];
+    _scheduleDetail.close_status = CLOSE_STATUS_OPEN;    
     
     //self.scrollView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
     [_scrollView setScrollEnabled:YES];
@@ -42,7 +48,6 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
     _scrollViewHeight.constant = [UIScreen mainScreen].bounds.size.height;
     
     CGFloat borderWidth = 2.0f;
-    
     CALayer * externalBorder = [CALayer layer];
     externalBorder.frame = CGRectMake(-1, -1, _formView.frame.size.width+2, _formView.frame.size.height+2);
     externalBorder.borderColor = [UIColor blackColor].CGColor;
@@ -54,12 +59,16 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
     
     _centerViewType = CenterViewAturJadwalButton;
     
+    textViewInitialValue = YES;
+    UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(textViewTapped:)];
+    [_catatanTextView addGestureRecognizer:gestureRecognizer];
+    
+    
     [_centerView addSubview:_aturJadwalTutupView];
     [_centerView addSubview:_formView];
     [_centerView addSubview:_loadingView];
     [_centerView addSubview:_successView];
     [self adjustView];
-    [self setMulaiDariButtonToToday];
     
 }
 
@@ -80,11 +89,13 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
 }
 - (IBAction)tutupSekarangSwitchValueChanged:(id)sender {
     if([_tutupSekarangSwitch isOn]){
-        //_mulaiDariView.backgroundColor = [UIColor grayColor];
+        _dateMulaiDari = [NSDate date];
+        if(_dateSampaiDengan && _dateSampaiDengan < _dateMulaiDari){
+            _dateSampaiDengan = nil;
+        }
+        [self setDateButton];
         [_mulaiDariButton setEnabled:NO];
-        [self setMulaiDariButtonToToday];
     }else{
-        //_mulaiDariView.backgroundColor = [UIColor whiteColor];
         [_mulaiDariButton setEnabled:YES];
     }
 }
@@ -102,6 +113,8 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
     datePicker.tag = AlertDatePickerSampaiDengan;
     datePicker.delegate = self;
     datePicker.isSetMinimumDate = YES;
+    
+    datePicker.startDate = [self addDays:1 toNSDate:_dateMulaiDari];
     [datePicker show];
 }
 - (IBAction)submitButtonTapped:(id)sender {
@@ -121,15 +134,52 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
 #pragma mark - Date Picker Delegate
 -(void)alertView:(TKPDAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {    
     NSDate *date = [alertView.data objectForKey:@"datepicker"];
-    NSCalendarUnit calendarUnit = NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit;
-    NSDateComponents *components = [[NSCalendar currentCalendar] components:calendarUnit fromDate:date];
-    NSString *dateString = [NSString stringWithFormat:@"%zd/%zd/%zd", [components day], [components month], [components year]];
-    
     if(alertView.tag == AlertDatePickerMulaiDari){
-        [_mulaiDariButton setTitle:dateString forState:UIControlStateNormal];
+        _dateMulaiDari = date;
+        if(_dateSampaiDengan && _dateSampaiDengan < _dateMulaiDari){
+            _dateSampaiDengan = nil;
+        }
+        [self setDateButton];
     }else if(alertView.tag == AlertDatePickerSampaiDengan){
-        [_sampaiDenganButton setTitle:dateString forState:UIControlStateNormal];
+        _dateSampaiDengan = date;
+        [self setDateButton];
     }
+}
+
+-(NSString*)stringFromNSDate:(NSDate*)date{
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"dd/MM/YYYY"];
+    return [formatter stringFromDate:date];
+}
+
+-(NSDate*)addDays:(NSInteger)days toNSDate:(NSDate*)date{
+    return [date dateByAddingTimeInterval:60*60*24*days];
+}
+
+-(void)setDateButton{
+    if(_dateMulaiDari){
+        [_mulaiDariButton setTitle:[self stringFromNSDate:_dateMulaiDari]
+                          forState:UIControlStateNormal];
+    }else{
+        [_mulaiDariButton setTitle:@"Pilih Tanggal"
+                          forState:UIControlStateNormal];
+    }
+    if(_dateSampaiDengan){
+        [_sampaiDenganButton setTitle:[self stringFromNSDate:_dateSampaiDengan]
+                             forState:UIControlStateNormal];
+    }else{
+        [_sampaiDenganButton setTitle:@"Pilih Tanggal"
+                             forState:UIControlStateNormal];
+    }
+}
+
+#pragma mark - TextView
+-(void)textViewTapped:(UITapGestureRecognizer*)gestureRecognizer{
+    if(textViewInitialValue){
+        [_catatanTextView setText:@""];
+        textViewInitialValue = NO;
+    }
+    
 }
 
 #pragma mark - ScrollView delegate
@@ -138,14 +188,6 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
 }
 
 # pragma mark - Toggle View
-
--(void)setMulaiDariButtonToToday{
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"dd/MM/yyyy"];
-    [_mulaiDariButton setTitle:[formatter stringFromDate:[NSDate date]]
-                      forState:UIControlStateNormal];
-}
-
 - (void)adjustView{
     if(_centerViewType == CenterViewAturJadwalButton){
         [_aturJadwalTutupView setHidden:NO];
@@ -195,5 +237,8 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
         _centerView = CenterViewAturJadwalButton;
         [self adjustView];
     }
+    
+    //DESIGN CENTER VIEW
+    
 }
 @end

@@ -8,8 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "TKPDTextView.h"
+#import "ClosedScheduleDetail.h"
 
 @interface CloseShopViewController : UIViewController
+@property (strong, nonatomic) ClosedScheduleDetail *scheduleDetail;
+
+
 @property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *scrollViewHeight;
 

@@ -2267,6 +2267,7 @@
 		BBA29BAC1CC624AC000630FB /* Tokopedia-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BBA2937B1CC624AB000630FB /* Tokopedia-Info.plist */; };
 		BBA29BAD1CC624AC000630FB /* Tokopedia.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = BBA2937D1CC624AB000630FB /* Tokopedia.entitlements */; };
 		BBA29BAE1CC624AC000630FB /* Tokopedia.xcworkspace in Resources */ = {isa = PBXBuildFile; fileRef = BBA2937E1CC624AB000630FB /* Tokopedia.xcworkspace */; };
+		BBBE25F81CF2EF80004B917D /* ClosedScheduleDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = BBBE25F71CF2EF80004B917D /* ClosedScheduleDetail.m */; };
 		BBFEEEAD1CE04855004D4DCB /* CloseShopViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBFEEEAB1CE04855004D4DCB /* CloseShopViewController.m */; };
 		BBFEEEAE1CE04855004D4DCB /* CloseShopViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBFEEEAC1CE04855004D4DCB /* CloseShopViewController.xib */; };
 		F25F6F270D531ED13A92CDB9 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4868E459AB2A65D133732296 /* libPods-Tokopedia.a */; };
@@ -5691,6 +5692,8 @@
 		BBA2937C1CC624AB000630FB /* Tokopedia-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Tokopedia-Prefix.pch"; sourceTree = "<group>"; };
 		BBA2937D1CC624AB000630FB /* Tokopedia.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Tokopedia.entitlements; sourceTree = "<group>"; };
 		BBA2937E1CC624AB000630FB /* Tokopedia.xcworkspace */ = {isa = PBXFileReference; lastKnownFileType = wrapper.workspace; path = Tokopedia.xcworkspace; sourceTree = "<group>"; };
+		BBBE25F61CF2EF80004B917D /* ClosedScheduleDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClosedScheduleDetail.h; sourceTree = "<group>"; };
+		BBBE25F71CF2EF80004B917D /* ClosedScheduleDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClosedScheduleDetail.m; sourceTree = "<group>"; };
 		BBFEEEAA1CE04855004D4DCB /* CloseShopViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CloseShopViewController.h; sourceTree = "<group>"; };
 		BBFEEEAB1CE04855004D4DCB /* CloseShopViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CloseShopViewController.m; sourceTree = "<group>"; };
 		BBFEEEAC1CE04855004D4DCB /* CloseShopViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CloseShopViewController.xib; sourceTree = "<group>"; };
@@ -9801,6 +9804,8 @@
 				BB6C71241CEAD0FD00428332 /* CloseShopResponse.m */,
 				BB6C71261CEAD25700428332 /* CloseShopResult.h */,
 				BB6C71271CEAD25700428332 /* CloseShopResult.m */,
+				BBBE25F61CF2EF80004B917D /* ClosedScheduleDetail.h */,
+				BBBE25F71CF2EF80004B917D /* ClosedScheduleDetail.m */,
 			);
 			path = Edit;
 			sourceTree = "<group>";
@@ -13280,6 +13285,7 @@
 				7AB622DC1CCF5E63005C1130 /* ProductWishlistCell.swift in Sources */,
 				7AB621191CCF5E62005C1130 /* GenerateHost.m in Sources */,
 				7AB61FE71CCF5E62005C1130 /* InboxTicketPaging.m in Sources */,
+				BBBE25F81CF2EF80004B917D /* ClosedScheduleDetail.m in Sources */,
 				7AB620311CCF5E62005C1130 /* ProfileSettings.m in Sources */,
 				7AB624271CCF5E63005C1130 /* TransactionPaymenViewController.m in Sources */,
 				7AB6242C1CCF5E63005C1130 /* TransactionCartResultViewController.m in Sources */,
