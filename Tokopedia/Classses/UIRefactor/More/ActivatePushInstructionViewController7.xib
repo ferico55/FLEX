@@ -24,8 +24,8 @@
                         <action selector="didTapCloseButton:" destination="-1" eventType="touchUpInside" id="fiH-90-wcQ"/>
                     </connections>
                 </button>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Aktifkan Notifikasi" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TK4-2t-SFz">
-                    <rect key="frame" x="88" y="43" width="145" height="21"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Aktifkan Notifikasi" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TK4-2t-SFz">
+                    <rect key="frame" x="88" y="42" width="145" height="21"/>
                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
@@ -33,8 +33,8 @@
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="27"/>
                     </variation>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Untuk mengaktifkan notifikasi harap mengikuti langkah berikut:" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BSx-Mw-b0e">
-                    <rect key="frame" x="35" y="86" width="250" height="35"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Untuk mengaktifkan notifikasi harap mengikuti langkah berikut:" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BSx-Mw-b0e">
+                    <rect key="frame" x="35" y="85" width="250" height="35"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="250" id="hB6-Xn-REl">
                             <variation key="heightClass=regular-widthClass=regular" constant="350"/>
@@ -47,8 +47,8 @@
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="22"/>
                     </variation>
                 </label>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="General Settings Icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="AS7-g3-J6J">
-                    <rect key="frame" x="30" y="133" width="31" height="31"/>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="General Settings Icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="AS7-g3-J6J">
+                    <rect key="frame" x="51" y="132" width="31" height="31"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="AS7-g3-J6J" secondAttribute="height" multiplier="1:1" id="Z9r-d1-GzQ"/>
                         <constraint firstAttribute="width" constant="45" id="fRk-sT-qY5"/>
@@ -66,8 +66,8 @@
                         </mask>
                     </variation>
                 </imageView>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="tokopedia.png" translatesAutoresizingMaskIntoConstraints="NO" id="k5D-C7-Kwg">
-                    <rect key="frame" x="30" y="255" width="31" height="31"/>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tokopedia.png" translatesAutoresizingMaskIntoConstraints="NO" id="k5D-C7-Kwg">
+                    <rect key="frame" x="51" y="254" width="31" height="31"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="k5D-C7-Kwg" secondAttribute="height" multiplier="1:1" id="Cmw-Un-3zu"/>
                     </constraints>
@@ -82,11 +82,11 @@
                         </mask>
                     </variation>
                 </imageView>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="activate_push_3.png" translatesAutoresizingMaskIntoConstraints="NO" id="cvK-mS-f3i">
-                    <rect key="frame" x="30" y="425" width="260" height="27"/>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="activate_push_3.png" translatesAutoresizingMaskIntoConstraints="NO" id="cvK-mS-f3i">
+                    <rect key="frame" x="30" y="424" width="260" height="27"/>
                 </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Buka iPhone Setting Anda" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t14-Mu-eiE">
-                    <rect key="frame" x="69" y="140" width="176" height="18"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Buka iPhone Setting Anda" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t14-Mu-eiE">
+                    <rect key="frame" x="90" y="139" width="176" height="18"/>
                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
@@ -94,8 +94,8 @@
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="22"/>
                     </variation>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Lalu pilih Notifications" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wab-PR-a43">
-                    <rect key="frame" x="69" y="201" width="148" height="18"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lalu pilih Notifications" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wab-PR-a43">
+                    <rect key="frame" x="90" y="200" width="148" height="18"/>
                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
@@ -103,8 +103,8 @@
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="22"/>
                     </variation>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Kemudian pilih aplikasi Tokopedia" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pUx-Pk-yaD">
-                    <rect key="frame" x="69" y="262" width="212" height="17"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kemudian pilih aplikasi Tokopedia" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pUx-Pk-yaD">
+                    <rect key="frame" x="90" y="261" width="212" height="17"/>
                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
@@ -112,8 +112,8 @@
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="22"/>
                     </variation>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Aktifkan pilihan notifikasi" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OXM-iL-QzU">
-                    <rect key="frame" x="30" y="316" width="166" height="18"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="4. Aktifkan pilihan notifikasi" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OXM-iL-QzU">
+                    <rect key="frame" x="30" y="315" width="183" height="18"/>
                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
@@ -121,8 +121,8 @@
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="22"/>
                     </variation>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Pastikan Badge Icon anda aktif" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RaF-M6-esw">
-                    <rect key="frame" x="30" y="399" width="209" height="18"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="5. Pastikan Badge Icon anda aktif" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RaF-M6-esw">
+                    <rect key="frame" x="30" y="398" width="226" height="18"/>
                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
@@ -130,14 +130,14 @@
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="22"/>
                     </variation>
                 </label>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="activate_push_2.png" translatesAutoresizingMaskIntoConstraints="NO" id="RTr-h9-ME5">
-                    <rect key="frame" x="30" y="342" width="260" height="27"/>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="activate_push_2.png" translatesAutoresizingMaskIntoConstraints="NO" id="RTr-h9-ME5">
+                    <rect key="frame" x="30" y="341" width="260" height="27"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="RTr-h9-ME5" secondAttribute="height" multiplier="260:27" id="ldj-2W-k6l"/>
                     </constraints>
                 </imageView>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="Notifications Settings Icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="ZYA-0M-BPJ">
-                    <rect key="frame" x="30" y="194" width="31" height="31"/>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Notifications Settings Icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="ZYA-0M-BPJ">
+                    <rect key="frame" x="51" y="193" width="31" height="31"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="ZYA-0M-BPJ" secondAttribute="height" multiplier="1:1" id="Eqf-XV-NzB"/>
                     </constraints>
@@ -152,6 +152,33 @@
                         </mask>
                     </variation>
                 </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e2B-wP-HQf">
+                    <rect key="frame" x="30" y="139" width="13" height="18"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
+                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                    <variation key="heightClass=regular-widthClass=regular">
+                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="22"/>
+                    </variation>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P67-Go-RDb">
+                    <rect key="frame" x="30" y="199" width="13" height="18"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
+                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                    <variation key="heightClass=regular-widthClass=regular">
+                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="22"/>
+                    </variation>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M4b-9u-d6e">
+                    <rect key="frame" x="30" y="261" width="13" height="18"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
+                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                    <variation key="heightClass=regular-widthClass=regular">
+                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="22"/>
+                    </variation>
+                </label>
             </subviews>
             <color key="backgroundColor" red="0.17254901959999999" green="0.70588235290000001" blue="0.4431372549" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
@@ -162,6 +189,9 @@
                 <constraint firstItem="0ct-AJ-2LE" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="topMargin" constant="30" id="73v-WH-KAW">
                     <variation key="heightClass=regular-widthClass=regular" constant="40"/>
                 </constraint>
+                <constraint firstItem="k5D-C7-Kwg" firstAttribute="leading" secondItem="M4b-9u-d6e" secondAttribute="trailing" constant="8" id="7hq-BC-99C"/>
+                <constraint firstItem="P67-Go-RDb" firstAttribute="centerY" secondItem="ZYA-0M-BPJ" secondAttribute="centerY" id="9gs-yI-ddV"/>
+                <constraint firstItem="e2B-wP-HQf" firstAttribute="centerY" secondItem="AS7-g3-J6J" secondAttribute="centerY" id="Acu-E0-aHe"/>
                 <constraint firstItem="BSx-Mw-b0e" firstAttribute="top" secondItem="TK4-2t-SFz" secondAttribute="bottom" constant="22" id="Cho-aX-KBM">
                     <variation key="heightClass=regular-widthClass=regular" constant="33"/>
                 </constraint>
@@ -171,6 +201,7 @@
                 <constraint firstAttribute="trailingMargin" secondItem="0ct-AJ-2LE" secondAttribute="trailing" id="J7X-9D-q6k"/>
                 <constraint firstItem="pUx-Pk-yaD" firstAttribute="centerY" secondItem="k5D-C7-Kwg" secondAttribute="centerY" id="KPQ-eT-Cdd"/>
                 <constraint firstItem="cvK-mS-f3i" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="L70-J0-omj"/>
+                <constraint firstItem="M4b-9u-d6e" firstAttribute="leading" secondItem="RTr-h9-ME5" secondAttribute="leading" id="OSj-qH-Oaf"/>
                 <constraint firstItem="RTr-h9-ME5" firstAttribute="leading" secondItem="RaF-M6-esw" secondAttribute="leading" id="OYa-8B-yoq"/>
                 <constraint firstItem="k5D-C7-Kwg" firstAttribute="top" secondItem="ZYA-0M-BPJ" secondAttribute="bottom" constant="30" id="PPM-2l-wzV">
                     <variation key="heightClass=regular-widthClass=regular" constant="45"/>
@@ -178,16 +209,17 @@
                 <constraint firstItem="cvK-mS-f3i" firstAttribute="top" secondItem="RaF-M6-esw" secondAttribute="bottom" constant="8" id="U70-Z7-e7f">
                     <variation key="heightClass=regular-widthClass=regular" constant="12"/>
                 </constraint>
+                <constraint firstItem="AS7-g3-J6J" firstAttribute="leading" secondItem="e2B-wP-HQf" secondAttribute="trailing" constant="8" id="UvO-Cs-ysw"/>
                 <constraint firstItem="cvK-mS-f3i" firstAttribute="width" secondItem="cvK-mS-f3i" secondAttribute="height" multiplier="260:27" id="WYs-Dd-kYM"/>
                 <constraint firstItem="RaF-M6-esw" firstAttribute="top" secondItem="RTr-h9-ME5" secondAttribute="bottom" constant="30" id="ZIn-qe-hjE">
                     <variation key="heightClass=regular-widthClass=regular" constant="45"/>
                 </constraint>
+                <constraint firstItem="M4b-9u-d6e" firstAttribute="centerY" secondItem="k5D-C7-Kwg" secondAttribute="centerY" id="aBH-33-Nt5"/>
                 <constraint firstItem="OXM-iL-QzU" firstAttribute="top" secondItem="k5D-C7-Kwg" secondAttribute="bottom" constant="30" id="aV5-nG-d9f">
                     <variation key="heightClass=regular-widthClass=regular" constant="45"/>
                 </constraint>
                 <constraint firstItem="TK4-2t-SFz" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="abr-OL-C34"/>
                 <constraint firstItem="RaF-M6-esw" firstAttribute="leading" secondItem="cvK-mS-f3i" secondAttribute="leading" id="dpo-0i-AXM"/>
-                <constraint firstItem="k5D-C7-Kwg" firstAttribute="leading" secondItem="OXM-iL-QzU" secondAttribute="leading" id="evF-eo-czE"/>
                 <constraint firstItem="AS7-g3-J6J" firstAttribute="top" secondItem="BSx-Mw-b0e" secondAttribute="bottom" constant="12" id="gcX-z9-SXD">
                     <variation key="heightClass=regular-widthClass=regular" constant="25"/>
                 </constraint>
@@ -195,6 +227,7 @@
                 <constraint firstItem="ZYA-0M-BPJ" firstAttribute="leading" secondItem="AS7-g3-J6J" secondAttribute="leading" id="jbM-qV-dKD"/>
                 <constraint firstItem="BSx-Mw-b0e" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="jqX-6o-o1g"/>
                 <constraint firstItem="TK4-2t-SFz" firstAttribute="centerY" secondItem="0ct-AJ-2LE" secondAttribute="centerY" id="mpF-Tg-pK7"/>
+                <constraint firstItem="ZYA-0M-BPJ" firstAttribute="leading" secondItem="P67-Go-RDb" secondAttribute="trailing" constant="8" id="okz-BF-d83"/>
                 <constraint firstItem="t14-Mu-eiE" firstAttribute="leading" secondItem="AS7-g3-J6J" secondAttribute="trailing" constant="8" id="pJz-Vh-lY6"/>
                 <constraint firstItem="OXM-iL-QzU" firstAttribute="leading" secondItem="RTr-h9-ME5" secondAttribute="leading" id="pqf-KC-CO5"/>
                 <constraint firstItem="RTr-h9-ME5" firstAttribute="width" secondItem="AS7-g3-J6J" secondAttribute="height" multiplier="260:31" id="qmc-aG-0tz"/>
@@ -212,7 +245,7 @@
                     <include reference="Cho-aX-KBM"/>
                 </mask>
             </variation>
-            <point key="canvasLocation" x="360" y="335"/>
+            <point key="canvasLocation" x="372" y="366"/>
         </view>
     </objects>
     <resources>
