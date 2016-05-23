@@ -94,7 +94,7 @@
     
     [sendOTPRequest requestWithBaseUrl:[NSString v4Url]
                                   path:@"/v4/action/deposit/send_otp_verify_bank_account.pl"
-                                method:RKRequestMethodGET
+                                method:RKRequestMethodPOST
                              parameter:@{}
                                mapping:[GeneralAction mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
@@ -143,7 +143,7 @@
     
     [doWithdrawRequest requestWithBaseUrl:[NSString v4Url]
                                      path:@"/v4/action/deposit/do_withdraw.pl"
-                                   method:RKRequestMethodGET
+                                   method:RKRequestMethodPOST
                                 parameter:@{@"bank_account_id" : bankAccountID,
                                             @"bank_account_name" : bankAccountName,
                                             @"bank_account_number" : bankAccountNumber,

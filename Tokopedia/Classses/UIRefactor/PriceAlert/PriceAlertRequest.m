@@ -74,7 +74,7 @@
     
     [deletePriceAlertNetworkManager requestWithBaseUrl:[NSString v4Url]
                                                   path:path
-                                                method:RKRequestMethodGET
+                                                method:RKRequestMethodPOST
                                              parameter:@{@"pricealert_id" : priceAlertID}
                                                mapping:[GeneralAction mapping]
                                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
@@ -95,7 +95,7 @@
     
     [addCatalogPriceAlertNetworkManager requestWithBaseUrl:[NSString v4Url]
                                                       path:@"/v4/action/pricealert/add_catalog_price_alert.pl"
-                                                    method:RKRequestMethodGET
+                                                    method:RKRequestMethodPOST
                                                  parameter:@{@"catalog_id" : catalogID,
                                                              @"pricealert_price" :priceAlertPrice}
                                                    mapping:[GeneralAction mapping]
@@ -118,7 +118,7 @@
     
     [addProductPriceAlertNetworkManager requestWithBaseUrl:[NSString v4Url]
                                                       path:@"/v4/action/pricealert/add_product_price_alert.pl"
-                                                    method:RKRequestMethodGET
+                                                    method:RKRequestMethodPOST
                                                  parameter:@{@"product_id" : productID,
                                                              @"pricealert_price" :priceAlertPrice}
                                                    mapping:[GeneralAction mapping]
