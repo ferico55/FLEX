@@ -14,36 +14,36 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+            <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0ct-AJ-2LE">
-                    <rect key="frame" x="293" y="28" width="19" height="22"/>
+                    <rect key="frame" x="741" y="28" width="19" height="22"/>
                     <state key="normal" image="icon_close_circle.png"/>
                     <connections>
                         <action selector="didTapCloseButton:" destination="-1" eventType="touchUpInside" id="fiH-90-wcQ"/>
                     </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Aktifkan Notifikasi" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TK4-2t-SFz">
-                    <rect key="frame" x="88" y="29" width="145" height="21"/>
+                    <rect key="frame" x="312" y="29" width="145" height="21"/>
                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
-                    <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
-                        <rect key="frame" x="328" y="31" width="113" height="17"/>
+                    <variation key="heightClass=regular-widthClass=regular">
+                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="27"/>
                     </variation>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Untuk mengaktifkan notifikasi harap mengikuti langkah berikut:" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="250" translatesAutoresizingMaskIntoConstraints="NO" id="BSx-Mw-b0e">
-                    <rect key="frame" x="38" y="72" width="245" height="35"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Untuk mengaktifkan notifikasi harap mengikuti langkah berikut:" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="350" translatesAutoresizingMaskIntoConstraints="NO" id="BSx-Mw-b0e">
+                    <rect key="frame" x="262" y="72" width="245" height="35"/>
                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
-                    <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
-                        <rect key="frame" x="260" y="70" width="250" height="40"/>
+                    <variation key="heightClass=regular-widthClass=regular">
+                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="22"/>
                     </variation>
                 </label>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="General Settings Icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="AS7-g3-J6J">
-                    <rect key="frame" x="30" y="119" width="31" height="31"/>
+                    <rect key="frame" x="254" y="119" width="31" height="31"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="AS7-g3-J6J" secondAttribute="height" multiplier="1:1" id="Z9r-d1-GzQ"/>
                         <constraint firstAttribute="width" constant="45" id="fRk-sT-qY5"/>
@@ -54,8 +54,7 @@
                             <exclude reference="fRk-sT-qY5"/>
                         </mask>
                     </variation>
-                    <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
-                        <rect key="frame" x="195" y="105" width="45" height="45"/>
+                    <variation key="heightClass=regular-widthClass=regular">
                         <mask key="constraints">
                             <include reference="Z9r-d1-GzQ"/>
                             <include reference="fRk-sT-qY5"/>
@@ -63,7 +62,7 @@
                     </variation>
                 </imageView>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tokopedia.png" translatesAutoresizingMaskIntoConstraints="NO" id="k5D-C7-Kwg">
-                    <rect key="frame" x="30" y="241" width="31" height="31"/>
+                    <rect key="frame" x="254" y="241" width="31" height="31"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="k5D-C7-Kwg" secondAttribute="height" multiplier="1:1" id="Cmw-Un-3zu"/>
                     </constraints>
@@ -72,75 +71,68 @@
                             <exclude reference="Cmw-Un-3zu"/>
                         </mask>
                     </variation>
-                    <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
-                        <rect key="frame" x="195" y="255" width="45" height="45"/>
+                    <variation key="heightClass=regular-widthClass=regular">
                         <mask key="constraints">
                             <include reference="Cmw-Un-3zu"/>
                         </mask>
                     </variation>
                 </imageView>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="activate_push_3.png" translatesAutoresizingMaskIntoConstraints="NO" id="cvK-mS-f3i">
-                    <rect key="frame" x="30" y="411" width="260" height="27"/>
-                    <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
-                        <rect key="frame" x="195" y="441" width="378" height="40"/>
-                    </variation>
+                    <rect key="frame" x="254" y="411" width="260" height="27"/>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Buka iPhone Setting Anda" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t14-Mu-eiE">
-                    <rect key="frame" x="69" y="126" width="176" height="18"/>
+                    <rect key="frame" x="293" y="126" width="176" height="18"/>
                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
-                    <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
-                        <rect key="frame" x="248" y="121" width="183" height="13"/>
+                    <variation key="heightClass=regular-widthClass=regular">
+                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="22"/>
                     </variation>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lalu pilih Notifications" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wab-PR-a43">
-                    <rect key="frame" x="69" y="187" width="148" height="18"/>
+                    <rect key="frame" x="293" y="187" width="148" height="18"/>
                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
-                    <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
-                        <rect key="frame" x="248" y="196" width="155" height="13"/>
+                    <variation key="heightClass=regular-widthClass=regular">
+                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="22"/>
                     </variation>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kemudian pilih aplikasi Tokopedia" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pUx-Pk-yaD">
-                    <rect key="frame" x="69" y="248" width="212" height="17"/>
+                    <rect key="frame" x="293" y="248" width="212" height="17"/>
                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
-                    <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
-                        <rect key="frame" x="248" y="272" width="220" height="12"/>
+                    <variation key="heightClass=regular-widthClass=regular">
+                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="22"/>
                     </variation>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Aktifkan pilihan notifikasi" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OXM-iL-QzU">
-                    <rect key="frame" x="30" y="302" width="166" height="18"/>
+                    <rect key="frame" x="254" y="302" width="166" height="18"/>
                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
-                    <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
-                        <rect key="frame" x="195" y="330" width="175" height="13"/>
+                    <variation key="heightClass=regular-widthClass=regular">
+                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="22"/>
                     </variation>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pastikan Badge Icon anda aktif" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RaF-M6-esw">
-                    <rect key="frame" x="30" y="385" width="209" height="18"/>
+                    <rect key="frame" x="254" y="385" width="209" height="18"/>
                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
-                    <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
-                        <rect key="frame" x="195" y="420" width="215" height="13"/>
+                    <variation key="heightClass=regular-widthClass=regular">
+                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="22"/>
                     </variation>
                 </label>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="activate_push_2.png" translatesAutoresizingMaskIntoConstraints="NO" id="RTr-h9-ME5">
-                    <rect key="frame" x="30" y="328" width="260" height="27"/>
+                    <rect key="frame" x="254" y="328" width="260" height="27"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="RTr-h9-ME5" secondAttribute="height" multiplier="260:27" id="ldj-2W-k6l"/>
                     </constraints>
-                    <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
-                        <rect key="frame" x="195" y="351" width="378" height="39"/>
-                    </variation>
                 </imageView>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Notifications Settings Icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="ZYA-0M-BPJ">
-                    <rect key="frame" x="30" y="180" width="31" height="31"/>
+                    <rect key="frame" x="254" y="180" width="31" height="31"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="ZYA-0M-BPJ" secondAttribute="height" multiplier="1:1" id="Eqf-XV-NzB"/>
                     </constraints>
@@ -149,8 +141,7 @@
                             <exclude reference="Eqf-XV-NzB"/>
                         </mask>
                     </variation>
-                    <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
-                        <rect key="frame" x="195" y="180" width="45" height="45"/>
+                    <variation key="heightClass=regular-widthClass=regular">
                         <mask key="constraints">
                             <include reference="Eqf-XV-NzB"/>
                         </mask>
@@ -163,22 +154,38 @@
                 <constraint firstItem="ZYA-0M-BPJ" firstAttribute="width" secondItem="AS7-g3-J6J" secondAttribute="height" multiplier="1:1" id="1jm-oB-FLx"/>
                 <constraint firstItem="k5D-C7-Kwg" firstAttribute="width" secondItem="AS7-g3-J6J" secondAttribute="height" multiplier="1:1" id="443-oK-IE7"/>
                 <constraint firstItem="t14-Mu-eiE" firstAttribute="centerY" secondItem="AS7-g3-J6J" secondAttribute="centerY" id="5Jv-cH-Tub"/>
-                <constraint firstItem="0ct-AJ-2LE" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="topMargin" constant="20" id="73v-WH-KAW"/>
-                <constraint firstItem="BSx-Mw-b0e" firstAttribute="top" secondItem="TK4-2t-SFz" secondAttribute="bottom" constant="22" id="Cho-aX-KBM"/>
-                <constraint firstItem="RTr-h9-ME5" firstAttribute="top" secondItem="OXM-iL-QzU" secondAttribute="bottom" constant="8" id="DAW-bS-sRG"/>
+                <constraint firstItem="0ct-AJ-2LE" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="topMargin" constant="20" id="73v-WH-KAW">
+                    <variation key="heightClass=regular-widthClass=regular" constant="40"/>
+                </constraint>
+                <constraint firstItem="BSx-Mw-b0e" firstAttribute="top" secondItem="TK4-2t-SFz" secondAttribute="bottom" constant="22" id="Cho-aX-KBM">
+                    <variation key="heightClass=regular-widthClass=regular" constant="33"/>
+                </constraint>
+                <constraint firstItem="RTr-h9-ME5" firstAttribute="top" secondItem="OXM-iL-QzU" secondAttribute="bottom" constant="8" id="DAW-bS-sRG">
+                    <variation key="heightClass=regular-widthClass=regular" constant="12"/>
+                </constraint>
                 <constraint firstAttribute="trailingMargin" secondItem="0ct-AJ-2LE" secondAttribute="trailing" id="J7X-9D-q6k"/>
                 <constraint firstItem="pUx-Pk-yaD" firstAttribute="centerY" secondItem="k5D-C7-Kwg" secondAttribute="centerY" id="KPQ-eT-Cdd"/>
                 <constraint firstItem="cvK-mS-f3i" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="L70-J0-omj"/>
                 <constraint firstItem="RTr-h9-ME5" firstAttribute="leading" secondItem="RaF-M6-esw" secondAttribute="leading" id="OYa-8B-yoq"/>
-                <constraint firstItem="k5D-C7-Kwg" firstAttribute="top" secondItem="ZYA-0M-BPJ" secondAttribute="bottom" constant="30" id="PPM-2l-wzV"/>
-                <constraint firstItem="cvK-mS-f3i" firstAttribute="top" secondItem="RaF-M6-esw" secondAttribute="bottom" constant="8" id="U70-Z7-e7f"/>
+                <constraint firstItem="k5D-C7-Kwg" firstAttribute="top" secondItem="ZYA-0M-BPJ" secondAttribute="bottom" constant="30" id="PPM-2l-wzV">
+                    <variation key="heightClass=regular-widthClass=regular" constant="45"/>
+                </constraint>
+                <constraint firstItem="cvK-mS-f3i" firstAttribute="top" secondItem="RaF-M6-esw" secondAttribute="bottom" constant="8" id="U70-Z7-e7f">
+                    <variation key="heightClass=regular-widthClass=regular" constant="12"/>
+                </constraint>
                 <constraint firstItem="cvK-mS-f3i" firstAttribute="width" secondItem="cvK-mS-f3i" secondAttribute="height" multiplier="260:27" id="WYs-Dd-kYM"/>
-                <constraint firstItem="RaF-M6-esw" firstAttribute="top" secondItem="RTr-h9-ME5" secondAttribute="bottom" constant="30" id="ZIn-qe-hjE"/>
-                <constraint firstItem="OXM-iL-QzU" firstAttribute="top" secondItem="k5D-C7-Kwg" secondAttribute="bottom" constant="30" id="aV5-nG-d9f"/>
+                <constraint firstItem="RaF-M6-esw" firstAttribute="top" secondItem="RTr-h9-ME5" secondAttribute="bottom" constant="30" id="ZIn-qe-hjE">
+                    <variation key="heightClass=regular-widthClass=regular" constant="45"/>
+                </constraint>
+                <constraint firstItem="OXM-iL-QzU" firstAttribute="top" secondItem="k5D-C7-Kwg" secondAttribute="bottom" constant="30" id="aV5-nG-d9f">
+                    <variation key="heightClass=regular-widthClass=regular" constant="45"/>
+                </constraint>
                 <constraint firstItem="TK4-2t-SFz" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="abr-OL-C34"/>
                 <constraint firstItem="RaF-M6-esw" firstAttribute="leading" secondItem="cvK-mS-f3i" secondAttribute="leading" id="dpo-0i-AXM"/>
                 <constraint firstItem="k5D-C7-Kwg" firstAttribute="leading" secondItem="OXM-iL-QzU" secondAttribute="leading" id="evF-eo-czE"/>
-                <constraint firstItem="AS7-g3-J6J" firstAttribute="top" secondItem="BSx-Mw-b0e" secondAttribute="bottom" constant="12" id="gcX-z9-SXD"/>
+                <constraint firstItem="AS7-g3-J6J" firstAttribute="top" secondItem="BSx-Mw-b0e" secondAttribute="bottom" constant="12" id="gcX-z9-SXD">
+                    <variation key="heightClass=regular-widthClass=regular" constant="25"/>
+                </constraint>
                 <constraint firstItem="pUx-Pk-yaD" firstAttribute="leading" secondItem="k5D-C7-Kwg" secondAttribute="trailing" constant="8" id="iI2-Dh-RLg"/>
                 <constraint firstItem="ZYA-0M-BPJ" firstAttribute="leading" secondItem="AS7-g3-J6J" secondAttribute="leading" id="jbM-qV-dKD"/>
                 <constraint firstItem="BSx-Mw-b0e" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="jqX-6o-o1g"/>
@@ -187,12 +194,19 @@
                 <constraint firstItem="OXM-iL-QzU" firstAttribute="leading" secondItem="RTr-h9-ME5" secondAttribute="leading" id="pqf-KC-CO5"/>
                 <constraint firstItem="RTr-h9-ME5" firstAttribute="width" secondItem="AS7-g3-J6J" secondAttribute="height" multiplier="260:31" id="qmc-aG-0tz"/>
                 <constraint firstItem="Wab-PR-a43" firstAttribute="centerY" secondItem="ZYA-0M-BPJ" secondAttribute="centerY" id="ugc-M2-GGM"/>
-                <constraint firstItem="ZYA-0M-BPJ" firstAttribute="top" secondItem="AS7-g3-J6J" secondAttribute="bottom" constant="30" id="xy7-L2-ZQQ"/>
+                <constraint firstItem="ZYA-0M-BPJ" firstAttribute="top" secondItem="AS7-g3-J6J" secondAttribute="bottom" constant="30" id="xy7-L2-ZQQ">
+                    <variation key="heightClass=regular-widthClass=regular" constant="45"/>
+                </constraint>
                 <constraint firstItem="Wab-PR-a43" firstAttribute="leading" secondItem="ZYA-0M-BPJ" secondAttribute="trailing" constant="8" id="z5o-cA-ylt"/>
                 <constraint firstItem="cvK-mS-f3i" firstAttribute="width" secondItem="AS7-g3-J6J" secondAttribute="height" multiplier="260:31" id="zEh-OE-U7Z"/>
             </constraints>
             <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
-            <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="iPad"/>
+            <variation key="heightClass=regular-widthClass=regular">
+                <mask key="constraints">
+                    <include reference="Cho-aX-KBM"/>
+                </mask>
+            </variation>
             <point key="canvasLocation" x="360" y="335"/>
         </view>
     </objects>
