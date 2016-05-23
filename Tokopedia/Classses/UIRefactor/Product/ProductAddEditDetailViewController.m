@@ -319,17 +319,15 @@
     
     NSString *etalaseName = product.product_etalase?:@"";
     
-    if ([moveToWarehouse integerValue] == 1)
-    {
-        if (isNewEtalase && (etalaseName == nil || [etalaseName isEqualToString:@""])) {
-            isValid = NO;
-            [errorMessages addObject:@"Nama etalase belum diisi"];
-        }
-        if (!isNewEtalase && [etalaseID integerValue] == 0) {
-            isValid = NO;
-            [errorMessages addObject:@"Etalase belum dipilih"];
-        }
+    if (isNewEtalase && (etalaseName == nil || [etalaseName isEqualToString:@""])) {
+        isValid = NO;
+        [errorMessages addObject:@"Nama etalase belum diisi"];
     }
+    if (!isNewEtalase && [etalaseID integerValue] == 0) {
+        isValid = NO;
+        [errorMessages addObject:@"Etalase belum dipilih"];
+    }
+    
     
     if (!isValid) {
         StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessages delegate:self];
