@@ -795,6 +795,7 @@ OtherProductDelegate
                 else
                 {
                     UIAlertView *alert =[[UIAlertView alloc]initWithTitle:@"Apakah stok produk ini kosong?" message:nil delegate:self cancelButtonTitle:@"Tidak" otherButtonTitles:@"Ya", nil];
+                    alert.tag = 1;
                     [alert show];
                 }
                 break;
@@ -819,15 +820,11 @@ OtherProductDelegate
             }
             case UIGestureRecognizerStateEnded: {
                 // Move To Etalase
-                EtalaseViewController *controller = [EtalaseViewController new];
-                controller.delegate = self;
-                controller.shopId =_product.result.shop_info.shop_id;
-                controller.isEditable = NO;
-                controller.showOtherEtalase = NO;
-                controller.enableAddEtalase = YES;
                 
-                [controller setInitialSelectedEtalase:selectedEtalase];
-                [self.navigationController pushViewController:controller animated:YES];
+                UIAlertView *alert =[[UIAlertView alloc]initWithTitle:@"Apakah stok produk ini tersedia?" message:nil delegate:self cancelButtonTitle:@"Tidak" otherButtonTitles:@"Ya", nil];
+                alert.tag = 2;
+                [alert show];
+                
                 break;
             }
                 
@@ -3146,14 +3143,28 @@ OtherProductDelegate
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (buttonIndex == 1) {
-        NSString *productId = _product.result.product.product_id;
-        [ProductRequest moveProductToWarehouse:productId
-                 setCompletionBlockWithSuccess:^(ShopSettings *response) {
-                     
-                 } failure:^(NSArray *errorMessages) {
-                     
-                 }];
+    if(alertView.tag == 1){
+        if (buttonIndex == 1) {
+            NSString *productId = _product.result.product.product_id;
+            [ProductRequest moveProductToWarehouse:productId
+                     setCompletionBlockWithSuccess:^(ShopSettings *response) {
+                         
+                     } failure:^(NSArray *errorMessages) {
+                         
+                     }];
+        }
+    }else{
+        if(buttonIndex == 1){
+            EtalaseViewController *controller = [EtalaseViewController new];
+            controller.delegate = self;
+            controller.shopId =_product.result.shop_info.shop_id;
+            controller.isEditable = NO;
+            controller.showOtherEtalase = NO;
+            controller.enableAddEtalase = YES;
+            
+            [controller setInitialSelectedEtalase:selectedEtalase];
+            [self.navigationController pushViewController:controller animated:YES];
+        }
     }
 }
 -(void)didSelectEtalase:(EtalaseList *)selectedEtalasee{

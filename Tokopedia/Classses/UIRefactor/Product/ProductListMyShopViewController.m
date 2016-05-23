@@ -728,16 +728,18 @@ NoResultDelegate
                      }];
         }
     }else{
-        // Move To Etalase
-        UserAuthentificationManager *userAuthentificationManager = [UserAuthentificationManager new];
-        
-        EtalaseViewController *controller = [EtalaseViewController new];
-        controller.delegate = self;
-        controller.shopId =[userAuthentificationManager getShopId];
-        controller.isEditable = NO;
-        controller.showOtherEtalase = NO;
-        controller.enableAddEtalase = YES;
-        [self.navigationController pushViewController:controller animated:YES];
+        if(buttonIndex == 1){
+            // Move To Etalase
+            UserAuthentificationManager *userAuthentificationManager = [UserAuthentificationManager new];
+            
+            EtalaseViewController *controller = [EtalaseViewController new];
+            controller.delegate = self;
+            controller.shopId =[userAuthentificationManager getShopId];
+            controller.isEditable = NO;
+            controller.showOtherEtalase = NO;
+            controller.enableAddEtalase = YES;
+            [self.navigationController pushViewController:controller animated:YES];
+        }
     }
 }
 
