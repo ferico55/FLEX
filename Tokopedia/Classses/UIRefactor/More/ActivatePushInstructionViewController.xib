@@ -3,15 +3,10 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
@@ -31,49 +26,41 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1ZD-rx-cPg">
-                    <rect key="frame" x="741" y="20" width="19" height="22"/>
+                    <rect key="frame" x="293" y="20" width="19" height="22"/>
                     <state key="normal" image="icon_close_circle.png"/>
                     <connections>
                         <action selector="didTapCloseButton:" destination="-1" eventType="touchUpInside" id="Zgc-yJ-cBI"/>
                     </connections>
                 </button>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="activate_push_1.png" translatesAutoresizingMaskIntoConstraints="NO" id="uJC-mB-ZgT">
-                    <rect key="frame" x="254" y="85" width="260" height="196"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="390" id="Ow8-Y6-1Ee"/>
-                        <constraint firstAttribute="width" secondItem="uJC-mB-ZgT" secondAttribute="height" multiplier="65:49" id="Rfe-dR-nDW"/>
-                    </constraints>
-                    <variation key="default">
-                        <mask key="constraints">
-                            <exclude reference="Ow8-Y6-1Ee"/>
-                        </mask>
-                    </variation>
-                    <variation key="heightClass=regular-widthClass=regular">
-                        <mask key="constraints">
-                            <include reference="Ow8-Y6-1Ee"/>
-                        </mask>
-                    </variation>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="activate_push_1.png" translatesAutoresizingMaskIntoConstraints="NO" id="uJC-mB-ZgT">
+                    <rect key="frame" x="30" y="97" width="260" height="196"/>
                 </imageView>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="activate_push_3.png" translatesAutoresizingMaskIntoConstraints="NO" id="efZ-x7-P37">
-                    <rect key="frame" x="254" y="391" width="260" height="27"/>
-                    <constraints>
-                        <constraint firstAttribute="width" secondItem="efZ-x7-P37" secondAttribute="height" multiplier="260:27" id="UBr-Vm-4Bd"/>
-                    </constraints>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="activate_push_3.png" translatesAutoresizingMaskIntoConstraints="NO" id="efZ-x7-P37">
+                    <rect key="frame" x="30" y="403" width="260" height="27"/>
                 </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3. Pastikan badge icon anda aktif" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8so-jH-pIG">
-                    <rect key="frame" x="196" y="362" width="230" height="13"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1. Aktifkan Notifikasi melalui setting di perangkat anda" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AnE-cW-JZg">
+                    <rect key="frame" x="20" y="56" width="281" height="33"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="281" id="5Ba-JY-zcv"/>
+                    </constraints>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3. Pastikan badge icon anda aktif" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lRI-xq-hRS">
-                    <rect key="frame" x="20" y="374" width="230" height="13"/>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="18"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="2. Kemudian aktifkan pilihan notifikasi" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gnc-Py-38m">
+                    <rect key="frame" x="20" y="306" width="263" height="13"/>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mMc-Oo-o6X">
-                    <rect key="frame" x="343" y="982" width="82" height="26"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="3. Pastikan badge icon anda aktif" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8so-jH-pIG">
+                    <rect key="frame" x="20" y="374" width="230" height="13"/>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mMc-Oo-o6X">
+                    <rect key="frame" x="119" y="438" width="82" height="26"/>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
                     <state key="normal" title="AKTIFKAN">
                         <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -82,48 +69,12 @@
                         <action selector="didTapCloseButton:" destination="-2" eventType="touchUpInside" id="h2c-LY-7T5"/>
                     </connections>
                 </button>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="activate_push_2.png" translatesAutoresizingMaskIntoConstraints="NO" id="HOo-dm-eLQ">
-                    <rect key="frame" x="254" y="323" width="260" height="27"/>
-                    <constraints>
-                        <constraint firstAttribute="width" secondItem="HOo-dm-eLQ" secondAttribute="height" multiplier="260:27" id="Cjg-2R-EhI"/>
-                    </constraints>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="activate_push_2.png" translatesAutoresizingMaskIntoConstraints="NO" id="HOo-dm-eLQ">
+                    <rect key="frame" x="30" y="335" width="260" height="27"/>
                 </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Aktifkan Notifikasi" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dtq-8d-WwW" userLabel="Aktifkan Notifikasi - iPhone">
-                    <rect key="frame" x="316" y="24" width="137" height="14"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Aktifkan Notifikasi" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dtq-8d-WwW">
+                    <rect key="frame" x="100" y="22" width="121" height="18"/>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
-                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Aktifkan Notifikasi" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h8P-ho-fqj">
-                    <rect key="frame" x="92" y="24" width="137" height="14"/>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="18"/>
-                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2. Kemudian aktifkan pilihan notifikasi" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gnc-Py-38m">
-                    <rect key="frame" x="196" y="294" width="263" height="13"/>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
-                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2. Kemudian aktifkan pilihan notifikasi" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LYc-Oe-xXg">
-                    <rect key="frame" x="20" y="306" width="263" height="13"/>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="18"/>
-                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1. Aktifkan Notifikasi melalui setting di perangkat anda" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KON-jw-DAP">
-                    <rect key="frame" x="20" y="54" width="281" height="25"/>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="18"/>
-                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1. Aktifkan Notifikasi melalui setting di perangkat anda" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AnE-cW-JZg">
-                    <rect key="frame" x="196" y="54" width="377" height="13"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="281" id="5Ba-JY-zcv"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -131,94 +82,26 @@
             <color key="backgroundColor" red="0.17254901960784313" green="0.70588235294117641" blue="0.44313725490196076" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstItem="Gnc-Py-38m" firstAttribute="leading" secondItem="AnE-cW-JZg" secondAttribute="leading" id="3O1-LT-2g1"/>
-                <constraint firstItem="LYc-Oe-xXg" firstAttribute="top" secondItem="uJC-mB-ZgT" secondAttribute="bottom" constant="26" id="6yI-u6-FkU"/>
-                <constraint firstItem="h8P-ho-fqj" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="8L4-bG-AXz"/>
                 <constraint firstItem="Dtq-8d-WwW" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="A4Y-yJ-rc8"/>
                 <constraint firstItem="HOo-dm-eLQ" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="A4a-kD-U5v"/>
                 <constraint firstItem="HOo-dm-eLQ" firstAttribute="top" secondItem="Gnc-Py-38m" secondAttribute="bottom" constant="16" id="ARj-m5-Aoh"/>
                 <constraint firstItem="8so-jH-pIG" firstAttribute="top" secondItem="HOo-dm-eLQ" secondAttribute="bottom" constant="12" id="DpB-su-Lok"/>
                 <constraint firstItem="uJC-mB-ZgT" firstAttribute="top" secondItem="AnE-cW-JZg" secondAttribute="bottom" constant="18" id="KjN-8p-2Rw"/>
-                <constraint firstItem="lRI-xq-hRS" firstAttribute="top" secondItem="HOo-dm-eLQ" secondAttribute="bottom" constant="26" id="MPE-gZ-hlZ"/>
-                <constraint firstItem="h8P-ho-fqj" firstAttribute="centerY" secondItem="1ZD-rx-cPg" secondAttribute="centerY" id="NQ2-Z4-L4D"/>
-                <constraint firstItem="HOo-dm-eLQ" firstAttribute="leading" secondItem="uJC-mB-ZgT" secondAttribute="leading" id="Nsr-OV-SgH"/>
-                <constraint firstItem="1ZD-rx-cPg" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="R2p-nM-aFB">
-                    <variation key="heightClass=regular-widthClass=regular" constant="40"/>
-                </constraint>
-                <constraint firstItem="lRI-xq-hRS" firstAttribute="leading" secondItem="LYc-Oe-xXg" secondAttribute="leading" id="V4y-96-UGO"/>
-                <constraint firstItem="uJC-mB-ZgT" firstAttribute="top" secondItem="KON-jw-DAP" secondAttribute="bottom" constant="18" id="VEd-IA-C2a"/>
-                <constraint firstItem="AnE-cW-JZg" firstAttribute="top" secondItem="h8P-ho-fqj" secondAttribute="bottom" constant="16" id="Vd4-qT-W5E"/>
-                <constraint firstItem="efZ-x7-P37" firstAttribute="leading" secondItem="HOo-dm-eLQ" secondAttribute="leading" id="WYB-Yu-FZD"/>
+                <constraint firstItem="1ZD-rx-cPg" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="R2p-nM-aFB"/>
                 <constraint firstItem="AnE-cW-JZg" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="WeP-DV-HUg"/>
                 <constraint firstItem="efZ-x7-P37" firstAttribute="top" secondItem="8so-jH-pIG" secondAttribute="bottom" constant="16" id="add-5t-GPS"/>
                 <constraint firstItem="8so-jH-pIG" firstAttribute="leading" secondItem="Gnc-Py-38m" secondAttribute="leading" id="cBJ-hF-qJV"/>
-                <constraint firstItem="KON-jw-DAP" firstAttribute="top" secondItem="h8P-ho-fqj" secondAttribute="bottom" constant="32" id="cFr-0B-CdE"/>
                 <constraint firstItem="1ZD-rx-cPg" firstAttribute="trailing" secondItem="i5M-Pr-FkT" secondAttribute="trailingMargin" id="hTc-jb-tFb"/>
-                <constraint firstItem="KON-jw-DAP" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="inV-4p-5Zd"/>
                 <constraint firstItem="uJC-mB-ZgT" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="jf6-Vt-fDO"/>
                 <constraint firstItem="Gnc-Py-38m" firstAttribute="top" secondItem="uJC-mB-ZgT" secondAttribute="bottom" constant="13" id="lVu-ra-jKf"/>
                 <constraint firstItem="1ZD-rx-cPg" firstAttribute="centerY" secondItem="Dtq-8d-WwW" secondAttribute="centerY" id="laS-yW-h2y"/>
-                <constraint firstItem="HOo-dm-eLQ" firstAttribute="top" secondItem="LYc-Oe-xXg" secondAttribute="bottom" constant="16" id="qgu-4T-jUh"/>
-                <constraint firstItem="efZ-x7-P37" firstAttribute="top" secondItem="lRI-xq-hRS" secondAttribute="bottom" constant="16" id="sIq-YL-ELI"/>
                 <constraint firstItem="mMc-Oo-o6X" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="tYa-cL-lps"/>
-                <constraint firstItem="LYc-Oe-xXg" firstAttribute="leading" secondItem="KON-jw-DAP" secondAttribute="leading" id="uGM-Nb-WCc"/>
                 <constraint firstItem="efZ-x7-P37" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="vcl-vP-tlP"/>
                 <constraint firstItem="AnE-cW-JZg" firstAttribute="top" secondItem="Dtq-8d-WwW" secondAttribute="bottom" constant="16" id="vi8-5D-sDF"/>
-                <constraint firstItem="KON-jw-DAP" firstAttribute="leading" secondItem="Gnc-Py-38m" secondAttribute="leading" id="vuF-M4-Lg4"/>
                 <constraint firstAttribute="bottom" secondItem="mMc-Oo-o6X" secondAttribute="bottom" constant="16" id="y93-7E-IoG"/>
             </constraints>
-            <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
-            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="iPad"/>
-            <variation key="default">
-                <mask key="subviews">
-                    <exclude reference="lRI-xq-hRS"/>
-                    <exclude reference="h8P-ho-fqj"/>
-                    <exclude reference="LYc-Oe-xXg"/>
-                    <exclude reference="KON-jw-DAP"/>
-                </mask>
-                <mask key="constraints">
-                    <exclude reference="Vd4-qT-W5E"/>
-                    <exclude reference="cFr-0B-CdE"/>
-                    <exclude reference="inV-4p-5Zd"/>
-                    <exclude reference="vuF-M4-Lg4"/>
-                    <exclude reference="VEd-IA-C2a"/>
-                    <exclude reference="8L4-bG-AXz"/>
-                    <exclude reference="NQ2-Z4-L4D"/>
-                    <exclude reference="6yI-u6-FkU"/>
-                    <exclude reference="uGM-Nb-WCc"/>
-                    <exclude reference="qgu-4T-jUh"/>
-                    <exclude reference="MPE-gZ-hlZ"/>
-                    <exclude reference="V4y-96-UGO"/>
-                    <exclude reference="sIq-YL-ELI"/>
-                </mask>
-            </variation>
-            <variation key="heightClass=regular-widthClass=regular">
-                <mask key="subviews">
-                    <exclude reference="8so-jH-pIG"/>
-                    <include reference="lRI-xq-hRS"/>
-                    <exclude reference="Dtq-8d-WwW"/>
-                    <include reference="h8P-ho-fqj"/>
-                    <exclude reference="Gnc-Py-38m"/>
-                    <include reference="LYc-Oe-xXg"/>
-                    <include reference="KON-jw-DAP"/>
-                    <exclude reference="AnE-cW-JZg"/>
-                </mask>
-                <mask key="constraints">
-                    <include reference="Vd4-qT-W5E"/>
-                    <include reference="cFr-0B-CdE"/>
-                    <include reference="inV-4p-5Zd"/>
-                    <include reference="vuF-M4-Lg4"/>
-                    <include reference="VEd-IA-C2a"/>
-                    <include reference="8L4-bG-AXz"/>
-                    <include reference="NQ2-Z4-L4D"/>
-                    <include reference="6yI-u6-FkU"/>
-                    <include reference="uGM-Nb-WCc"/>
-                    <include reference="qgu-4T-jUh"/>
-                    <include reference="MPE-gZ-hlZ"/>
-                    <include reference="V4y-96-UGO"/>
-                    <include reference="sIq-YL-ELI"/>
-                </mask>
-            </variation>
-            <point key="canvasLocation" x="298" y="363"/>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="207" y="418"/>
         </view>
     </objects>
     <resources>
