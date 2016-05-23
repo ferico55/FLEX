@@ -64,6 +64,7 @@
 #import "UIActivityViewController+Extensions.h"
 #import "MoreWrapperViewController.h"
 #import "MoreNavigationController.h"
+#import "CloseShopViewController.h"
 
 #define CTagProfileInfo 12
 #define CTagLP 13
@@ -599,8 +600,13 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
     }
     
     if (indexPath.section == 1 && indexPath.row == 0) {
+        /*
         NavigateViewController *navigateController = [NavigateViewController new];
         [navigateController navigateToProfileFromViewController:wrapperController withUserID:[_auth objectForKey:MORE_USER_ID]];
+         */
+        
+        CloseShopViewController *controller = [CloseShopViewController new];
+        [wrapperController.navigationController pushViewController:controller animated:YES];
     }
     
     else if (indexPath.section == 1 && indexPath.row == 1) {
