@@ -21,7 +21,7 @@
     UserAuthentificationManager *_userManager;
 }
 
-- (NSString *)generateSignatureWithMethod:(NSString*)method tkpdPath:(NSString*)path parameter:(NSDictionary*)parameter;
+- (NSString *)generateSignatureWithMethod:(NSString *)method tkpdPath:(NSString *)path parameter:(NSDictionary *)parameter date:(NSString *)date;
 - (NSString *)getRequestMethod;
 - (NSString *)getParameterMD5;
 - (NSString *)getContentType;
