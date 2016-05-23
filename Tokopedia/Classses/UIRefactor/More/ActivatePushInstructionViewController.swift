@@ -13,6 +13,14 @@ class ActivatePushInstructionViewController: UIViewController {
 
     var viewControllerDidClosed: (() -> Void)?
     
+    
+    @IBOutlet var aktifkanButton: UIButton? {
+        didSet {
+            aktifkanButton?.layer.borderColor = UIColor.whiteColor().CGColor
+            aktifkanButton?.layer.borderWidth = 1
+        }
+    }
+    
     private static var nibName: String {
         get {
             if #available(iOS 8, *) {
