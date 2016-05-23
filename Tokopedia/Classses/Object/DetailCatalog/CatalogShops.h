@@ -52,6 +52,7 @@
 
 @property (nonatomic, strong) NSArray *product_list;
 @property (nonatomic, strong) ShopReputation *shop_reputation_badge;
+@property (nonatomic, strong) ShopStats *shop_reputation;
 
 + (RKObjectMapping *)mapping;
 

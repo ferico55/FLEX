@@ -39,7 +39,7 @@
                                                                           withMapping:[ProductDetail mapping]]];
     
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"shop_reputation"
-                                                                            toKeyPath:@"shop_reputation_badge"
+                                                                            toKeyPath:@"shop_reputation"
                                                                           withMapping:[ShopReputation mapping]]];
     
     return mapping;
