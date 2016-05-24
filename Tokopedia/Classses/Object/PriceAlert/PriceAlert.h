@@ -7,11 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
-@class PriceAlertResult;
+#import "PriceAlertResult.h"
 
 @interface PriceAlert : NSObject
 @property (nonatomic, strong) NSArray *message_error;
 @property (nonatomic, strong) NSString *status;
 @property (nonatomic, strong) NSString *server_process_time;
 @property (nonatomic, strong) PriceAlertResult *result;
+@property (nonatomic, strong) PriceAlertResult *data;
+
++ (RKObjectMapping*)mapping;
+
 @end

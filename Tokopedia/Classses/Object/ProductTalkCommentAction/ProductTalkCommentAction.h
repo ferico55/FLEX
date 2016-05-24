@@ -17,4 +17,5 @@
 @property (nonatomic, strong) NSString *server_process_time;
 @property (nonatomic, strong) ProductTalkCommentActionResult *result;
 
++ (RKObjectMapping *)mapping;
 @end

@@ -14,4 +14,6 @@
 @property(nonatomic, strong) NSString* user_check_security_1;
 @property(nonatomic, strong) NSString* user_check_security_2;
 
++ (RKObjectMapping*)mapping;
+
 @end

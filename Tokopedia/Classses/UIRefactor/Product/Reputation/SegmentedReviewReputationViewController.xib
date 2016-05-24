@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -19,6 +19,7 @@
                 <outlet property="constTopCheckList" destination="wOW-BK-Pni" id="lSK-QX-Eem"/>
                 <outlet property="lblDescChangeReviewStyle" destination="2JF-P5-PQS" id="o5J-8P-czD"/>
                 <outlet property="segmentedControl" destination="vGY-1r-Uj8" id="byE-7x-328"/>
+                <outlet property="segmentedControlView" destination="6tI-XD-QAo" id="oye-qQ-6JM"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="viewContent" destination="HuT-IP-FUl" id="uSj-f9-Ra5"/>
                 <outlet property="viewContentAction" destination="rqw-2G-26z" id="nb0-W0-upf"/>
@@ -178,7 +179,7 @@
                 <constraint firstAttribute="trailing" secondItem="rqw-2G-26z" secondAttribute="trailing" id="xD3-nx-b6v"/>
                 <constraint firstItem="rqw-2G-26z" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="yUT-po-6LV"/>
             </constraints>
-            <point key="canvasLocation" x="414" y="314"/>
+            <point key="canvasLocation" x="104" y="398"/>
         </view>
         <tapGestureRecognizer id="KUA-Ze-Rje">
             <connections>

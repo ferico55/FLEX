@@ -44,6 +44,22 @@ extension UIView {
             layer.shadowRadius = newValue
         }
     }
+
+    @IBInspectable var borderWidth : CGFloat {
+        get {
+            return layer.borderWidth
+        } set {
+            layer.borderWidth = newValue
+        }
+    }
+
+    @IBInspectable var borderColor : UIColor {
+        get {
+            return UIColor(CGColor: layer.borderColor!)
+        } set {
+            layer.borderColor = newValue.CGColor
+        }
+    }
     
     func removeAllSubviews() {
         subviews.forEach({view in

@@ -14,4 +14,12 @@
     return [_deposit_total kv_decodeHTMLCharacterEntities];
 }
 
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *depositResultMapping = [RKObjectMapping mappingForClass:[DepositResult class]];
+    
+    [depositResultMapping addAttributeMappingsFromArray:@[@"deposit_total"]];
+    
+    return depositResultMapping;
+}
+
 @end

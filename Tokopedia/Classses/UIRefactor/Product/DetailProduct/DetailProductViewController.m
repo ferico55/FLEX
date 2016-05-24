@@ -91,6 +91,8 @@
 
 #import "OtherProductDataSource.h"
 
+#import "PriceAlertRequest.h"
+
 #pragma mark - CustomButton Expand Desc
 @interface CustomButtonExpandDesc : UIButton
 @property (nonatomic) int objSection;
@@ -270,6 +272,8 @@ OtherProductDelegate
     
     NSArray *_constraint;
     EtalaseList *selectedEtalase;
+    
+    PriceAlertRequest *_request;
 }
 
 @synthesize data = _data;
@@ -342,6 +346,8 @@ OtherProductDelegate
     tokopediaNetworkManagerWishList = [TokopediaNetworkManager new];
     tokopediaNetworkManagerWishList.delegate = self;
     tokopediaNetworkManagerWishList.tagRequest = CTagWishList;
+    
+    _request = [PriceAlertRequest new];
     
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                           style:UIBarButtonItemStyleBordered
@@ -2597,7 +2603,21 @@ OtherProductDelegate
         }
         else {
             [self setRequestingAction:btnPriceAlert isLoading:YES];
-            [tokopediaNetworkManagerPriceAlert doRequest];
+//            [tokopediaNetworkManagerPriceAlert doRequest];
+            [_request requestRemoveProductPriceAlertWithProductID:_product.result.product.product_id
+                                                        onSuccess:^(GeneralAction *obj) {
+                                                            if([obj.data.is_success isEqualToString:@"1"]) {
+                                                                StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringSuccessRemovePriceAlert] delegate:self];
+                                                                [stickyAlertView show];
+                                                                
+                                                                _product.result.product.product_price_alert = @"0";
+                                                                [self setBackgroundPriceAlert:[_product.result.product.product_price_alert isEqualToString:@"x"]];
+                                                            }
+                                                            [self setRequestingAction:btnPriceAlert isLoading:NO];
+                                                        }
+                                                        onFailure:^(NSError *error) {
+                                                            [self setRequestingAction:btnPriceAlert isLoading:NO];
+                                                        }];
         }
     } else {
         UINavigationController *navigationController = [[UINavigationController alloc] init];

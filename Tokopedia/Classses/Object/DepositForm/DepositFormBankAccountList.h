@@ -19,4 +19,6 @@
 @property (nonatomic) NSInteger is_default_bank;
 @property (nonatomic) NSInteger is_verified_account;
 
++ (RKObjectMapping*)mapping;
+
 @end

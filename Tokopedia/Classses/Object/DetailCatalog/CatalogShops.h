@@ -8,7 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import "ProductList.h"
-@class ShopStats;
+#import "ShopReputation.h"
+#import "ShopStats.h"
 
 #define CShopUri @"shop_uri"
 #define CShopRateAccuracy @"shop_rate_accuracy"
@@ -50,5 +51,9 @@
 @property (nonatomic, strong) NSString *shop_lucky;
 
 @property (nonatomic, strong) NSArray *product_list;
+@property (nonatomic, strong) ShopReputation *shop_reputation_badge;
 @property (nonatomic, strong) ShopStats *shop_reputation;
+
++ (RKObjectMapping *)mapping;
+
 @end

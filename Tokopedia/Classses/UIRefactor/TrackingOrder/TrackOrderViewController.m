@@ -241,7 +241,7 @@
         receiverNameLabel.text = _trackingOrder.detail.receiver_name?:@"";
     }
     
-    if ([_trackingOrder.order_status integerValue] == ORDER_SHIPPING_TRACKER_INVALID) {
+    if ([_trackingOrder.order_status integerValue] == ORDER_SHIPPING_TRACKER_INVALID || [_trackingOrder.invalid integerValue] == 1) {
         _tableView.tableHeaderView = _invalidHeaderView;
     }
     

@@ -18,4 +18,15 @@
     return _user_check_security_2 ?:@"0";
 }
 
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[LoginSecurity class]];
+    
+    [mapping addAttributeMappingsFromArray:@[@"allow_login",
+                                             @"user_check_security_1",
+                                             @"user_check_security_2"]];
+    
+    return mapping;
+}
+
+
 @end

@@ -122,7 +122,7 @@
     actionLikeNetworkManager.isUsingHmac = YES;
     [actionLikeNetworkManager requestWithBaseUrl:[NSString v4Url]
                                             path:@"/v4/action/review/like_dislike_review.pl"
-                                          method:RKRequestMethodGET
+                                          method:RKRequestMethodPOST
                                        parameter:@{@"product_id"  : productId,
                                                    @"review_id"   : reviewId,
                                                    @"shop_id"     : shopId,
@@ -150,7 +150,7 @@
     actionDislikeNetworkManager.isUsingHmac = YES;
     [actionDislikeNetworkManager requestWithBaseUrl:[NSString v4Url]
                                                path:@"/v4/action/review/like_dislike_review.pl"
-                                             method:RKRequestMethodGET
+                                             method:RKRequestMethodPOST
                                           parameter:@{@"product_id"  : productId,
                                                       @"review_id"   : reviewId,
                                                       @"shop_id"     : shopId,
@@ -178,7 +178,7 @@
     actionCancelLikeDislikeNetworkManager.isUsingHmac = YES;
     [actionCancelLikeDislikeNetworkManager requestWithBaseUrl:[NSString v4Url]
                                                          path:@"/v4/action/review/like_dislike_review.pl"
-                                                       method:RKRequestMethodGET
+                                                       method:RKRequestMethodPOST
                                                     parameter:@{@"product_id"  : productId,
                                                                 @"review_id"   : reviewId,
                                                                 @"shop_id"     : shopId,
@@ -199,18 +199,25 @@
 - (void)requestGetInboxReputationWithNavigation:(NSString *)navigation
                                            page:(NSNumber *)page
                                          filter:(NSString *)filter
+                                        keyword:(NSString *)keyword
                                       onSuccess:(void (^)(InboxReputationResult *))successCallback
                                       onFailure:(void (^)(NSError *))errorCallback {
     getInboxReputationNetworkManager.isParameterNotEncrypted = NO;
     getInboxReputationNetworkManager.isUsingHmac = YES;
     
+    NSMutableDictionary *parameter = [[NSMutableDictionary alloc] initWithDictionary:@{@"filter" : filter,
+                                                                                       @"nav"    : navigation,
+                                                                                       @"page"   : page
+                                                                                       }];
+    
+    if (![keyword isEqualToString:@""]) {
+        [parameter setObject:keyword forKey:@"keyword"];
+    }
+    
     [getInboxReputationNetworkManager requestWithBaseUrl:[NSString v4Url]
                                                     path:@"/v4/inbox-reputation/get_inbox_reputation.pl"
                                                   method:RKRequestMethodGET
-                                               parameter:@{@"filter" : filter,
-                                                           @"nav"    : navigation,
-                                                           @"page"   : page
-                                                           }
+                                               parameter:parameter
                                                  mapping:[InboxReputation mapping]
                                                onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                                    NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
@@ -299,7 +306,7 @@
     
     [submitReviewWithImageNetworkManager requestWithBaseUrl:[NSString v4Url]
                                                        path:@"/v4/action/reputation/insert_reputation_review_validation.pl"
-                                                     method:RKRequestMethodGET
+                                                     method:RKRequestMethodPOST
                                                   parameter:@{@"product_id" : productID,
                                                               @"rate_accuracy" : @(accuracyRate),
                                                               @"rate_quality" : @(qualityRate),
@@ -424,7 +431,7 @@
     
     [productReviewSubmitNetworkManager requestWithBaseUrl:[NSString v4Url]
                                                      path:path
-                                                   method:RKRequestMethodGET
+                                                   method:RKRequestMethodPOST
                                                 parameter:@{@"post_key" : postKey?:@"",
                                                             @"file_uploaded" : uploaded?:@""}
                                                   mapping:[SubmitReview mapping]
@@ -484,7 +491,7 @@
     
     [editReviewWithImageNetworkManager requestWithBaseUrl:[NSString v4Url]
                                                      path:@"/v4/action/reputation/edit_reputation_review_validation.pl"
-                                                   method:RKRequestMethodGET
+                                                   method:RKRequestMethodPOST
                                                 parameter:@{@"product_id" : productID,
                                                             @"rate_accuracy" : @(accuracyRate),
                                                             @"rate_quality" : @(qualityRate),
@@ -567,7 +574,7 @@
     
     [editReputationReviewSubmitNetworkManager requestWithBaseUrl:[NSString v4Url]
                                                             path:@"/v4/action/reputation/edit_reputation_review_submit.pl"
-                                                          method:RKRequestMethodGET
+                                                          method:RKRequestMethodPOST
                                                        parameter:@{@"post_key" : postKey?:@"",
                                                                    @"file_uploaded" : uploaded?:@""}
                                                          mapping:[SubmitReview mapping]
@@ -596,7 +603,7 @@
     
     [skipProductReviewNetworkManager requestWithBaseUrl:[NSString v4Url]
                                                    path:@"/v4/action/reputation/skip_reputation_review.pl"
-                                                 method:RKRequestMethodGET
+                                                 method:RKRequestMethodPOST
                                               parameter:@{@"product_id" : productID,
                                                           @"reputation_id" : reputationID,
                                                           @"shop_id" : shopID}
@@ -622,7 +629,7 @@
     
     [insertReputationReviewResponseNetworkManager requestWithBaseUrl:[NSString v4Url]
                                                                 path:@"/v4/action/reputation/insert_reputation_review_response.pl"
-                                                              method:RKRequestMethodGET
+                                                              method:RKRequestMethodPOST
                                                            parameter:@{@"reputation_id" : reputationID,
                                                                        @"response_message" : responseMessage,
                                                                        @"review_id" : reviewID,
@@ -647,7 +654,7 @@
     
     [deleteReputationReviewResponseNetworkManager requestWithBaseUrl:[NSString v4Url]
                                                                 path:@"/v4/action/reputation/delete_reputation_review_response.pl"
-                                                              method:RKRequestMethodGET
+                                                              method:RKRequestMethodPOST
                                                            parameter:@{@"reputation_id" : reputationID,
                                                                        @"review_id" : reviewID,
                                                                        @"shop_id" : shopID}
@@ -671,7 +678,7 @@
     
     [insertReputationNetworkManager requestWithBaseUrl:[NSString v4Url]
                                                   path:@"/v4/action/reputation/insert_reputation.pl"
-                                                method:RKRequestMethodGET
+                                                method:RKRequestMethodPOST
                                              parameter:@{@"buyer_seller"     : role,
                                                          @"reputation_id"    : reputationID,
                                                          @"reputation_score" : score}
@@ -695,7 +702,7 @@
     
     [reportReviewNetworkManager requestWithBaseUrl:[NSString v4Url]
                                               path:@"/v4/action/review/report_review.pl"
-                                            method:RKRequestMethodGET
+                                            method:RKRequestMethodPOST
                                          parameter:@{@"review_id" : reviewID,
                                                      @"shop_id" : shopID,
                                                      @"text_message" : textMessage}

@@ -51,11 +51,11 @@
     [self setParameterMD5:parameter];
     [self setTkpdPath:path];
     [self setSecret:secret];
-
+    
     NSString *stringToSign = [NSString stringWithFormat:@"%@\n%@\n%@\n%@\n%@", method, [self getParameterMD5], [self getContentType],
-                    date, [self getTkpdPath]];
-//    NSString *stringToSign = @"POST\n1234567890asdfghjkl\napplication/x-www-form-urlencoded\nThu, 27 Aug 2015 17:59:05 +0700\n/v4/home/get_hotlist.pl";
-
+                              date, [self getTkpdPath]];
+    //    NSString *stringToSign = @"POST\n1234567890asdfghjkl\napplication/x-www-form-urlencoded\nThu, 27 Aug 2015 17:59:05 +0700\n/v4/home/get_hotlist.pl";
+    
     
     const char *cKey = [secret cStringUsingEncoding:NSASCIIStringEncoding];
     const char *cData = [stringToSign cStringUsingEncoding:NSUTF8StringEncoding];

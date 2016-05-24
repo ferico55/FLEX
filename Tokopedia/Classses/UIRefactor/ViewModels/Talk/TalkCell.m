@@ -38,12 +38,27 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 
 @implementation TalkCell
 {
-    BOOL _isFollowingTalk;
     IBOutlet NSLayoutConstraint* commentButtonTrailingToVerticalBorder;
     IBOutlet UILabel *_productNameLabel;
 }
 
+- (void)setEnableDeepNavigation:(BOOL)enableDeepNavigation {
+    _enableDeepNavigation = enableDeepNavigation;
+
+    [self.productImageView setUserInteractionEnabled:enableDeepNavigation];
+    [self.userImageView setUserInteractionEnabled:enableDeepNavigation];
+    [self.middleView setUserInteractionEnabled:enableDeepNavigation];
+    _totalCommentButton.enabled = enableDeepNavigation;
+}
+
 #pragma mark - Initialization
+
+- (instancetype)initWithCoder:(NSCoder *)coder {
+    if (self = [super initWithCoder:coder]) {
+        _enableDeepNavigation = YES;
+    }
+    return self;
+}
 
 - (void)awakeFromNib {
     // Initialization code
@@ -60,21 +75,14 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     _myShopID = [NSString stringWithFormat:@"%@", [_userManager getShopId]];
     _myUserID = [NSString stringWithFormat:@"%@", [_userManager getUserId]];
     _navigateController = [NavigateViewController new];
-    _isSplitScreen = NO;
-    
-    BOOL enableDeepNavigation = [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone;
-    
+
     UITapGestureRecognizer *productGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapToProduct)];
     [self.productImageView addGestureRecognizer:productGesture];
-    [self.productImageView setUserInteractionEnabled:enableDeepNavigation];
+    self.productImageView.userInteractionEnabled = YES;
     
     UITapGestureRecognizer *userGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapToUser)];
     [self.userImageView addGestureRecognizer:userGesture];
-    [self.userImageView setUserInteractionEnabled:enableDeepNavigation];
-    
-    UITapGestureRecognizer *talkGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapToDetailTalk:)];
-    [self.middleView addGestureRecognizer:talkGesture];
-    [self.middleView setUserInteractionEnabled:enableDeepNavigation];
+    self.userImageView.userInteractionEnabled = YES;
     
     CGFloat borderWidth = 0.5f;
     
@@ -84,10 +92,12 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    if (_enableDeepNavigation) return;
     _view.backgroundColor = selected ? [UIColor colorWithRed:232 / 255.0 green:245 / 255.0 blue:233 / 255.0 alpha:1] : [UIColor colorWithWhite:249/255.0 alpha:1];
 }
 
 - (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
+    if (_enableDeepNavigation) return;
     _view.backgroundColor = highlighted ? [UIColor colorWithRed:232 / 255.0 green:245 / 255.0 blue:233 / 255.0 alpha:1] : [UIColor colorWithWhite:249/255.0 alpha:1];
 }
 
@@ -112,22 +122,12 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     }
 
     [self setTalkFollowStatus:[modelView.followStatus isEqualToString:@"1"] ? YES : NO];
-    
-    NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:modelView.userImage] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-    self.userImageView.image = nil;
-    [self.userImageView setImageWithURLRequest:userImageRequest placeholderImage:[UIImage imageNamed:@"default-boy.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-        [self.userImageView setImage:image];
-        self.userImageView.layer.cornerRadius = self.userImageView.frame.size.width/2;
-    } failure:nil];
-    
-    NSURLRequest *productImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:modelView.productImage] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-    self.productImageView.image = nil;
-    [self.productImageView setImageWithURLRequest:productImageRequest placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-        [self.productImageView setImage:image];
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-        [self.productImageView setImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"]];
-        [self.productImageView setContentMode:UIViewContentModeCenter];
-    }];
+
+    [_userImageView setImageWithURL:[NSURL URLWithString:modelView.userImage]
+                   placeholderImage:[UIImage imageNamed:@"default-boy.png"]];
+
+    [_productImageView setImageWithURL:[NSURL URLWithString:modelView.productImage]
+                      placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"]];
     
     _productNameLabel.text = modelView.productName;
 
@@ -137,20 +137,27 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     
     if(modelView.userReputation.no_reputation != nil && [modelView.userReputation.no_reputation isEqualToString:@"1"]) {
         [self.reputationButton setTitle:@"" forState:UIControlStateNormal];
-        [self.reputationButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_neutral_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
+
+        [self.reputationButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle]
+                pathForResource:@"icon_neutral_smile_small" ofType:@"png"]]
+                               forState:UIControlStateNormal];
     } else {
-        [self.reputationButton setTitle:[NSString stringWithFormat:@"%@%%", modelView.userReputation.positive_percentage==nil? @"0":modelView.userReputation.positive_percentage] forState:UIControlStateNormal];
-        [self.reputationButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_smile_small" ofType:@"png"]] forState:UIControlStateNormal];
+        [self.reputationButton setTitle:[NSString stringWithFormat:@"%@%%", modelView.userReputation.positive_percentage==nil? @"0":modelView.userReputation.positive_percentage]
+                               forState:UIControlStateNormal];
+
+        [self.reputationButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle]
+                        pathForResource:@"icon_smile_small"
+                                 ofType:@"png"]]
+                               forState:UIControlStateNormal];
     }
 }
 
 - (void)setTalkFollowStatus:(BOOL)talkFollowStatus {
-    _isFollowingTalk = talkFollowStatus;
     [self adjustFollowButton];
 }
 
 - (void)adjustFollowButton {
-    if (_isFollowingTalk) {
+    if (_talk.talk_follow_status) {
         [_unfollowButton setTitle:@"Berhenti Ikuti" forState:UIControlStateNormal];
         [_unfollowButton setImage:[UIImage imageNamed:@"icon_diskusi_unfollow_grey"] forState:UIControlStateNormal];
         
@@ -160,70 +167,43 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     }
 }
 
-#pragma mark - Tap Button
-- (IBAction)tapToDetailTalk:(UITableViewCell*)cell {
-    NSIndexPath *indexPath = [[_delegate getTable] indexPathForCell:self];
-    
-    NSInteger row = indexPath.row;
-    NSMutableArray *talkList = [_delegate getTalkList];
-    TalkList *list = talkList[row];
-
-    NSDictionary *data = @{
-                           TKPD_TALK_MESSAGE:list.talk_message?:@0,
-                           TKPD_TALK_USER_IMG:list.talk_user_image?:@0,
-                           TKPD_TALK_CREATE_TIME:list.talk_create_time?:@0,
-                           TKPD_TALK_USER_NAME:list.talk_user_name?:@0,
-                           TKPD_TALK_ID:list.talk_id?:@0,
-                           TKPD_TALK_USER_ID:[NSString stringWithFormat:@"%zd", list.talk_user_id]?:@0,
-                           TKPD_TALK_TOTAL_COMMENT : list.talk_total_comment?:@0,
-                           kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : list.talk_product_id?:@0,
-                           TKPD_TALK_SHOP_ID:list.talk_shop_id?:@0,
-                           TKPD_TALK_PRODUCT_IMAGE:list.talk_product_image?:@"",
-                           kTKPDDETAIL_DATAINDEXKEY : @(row)?:@0,
-                           TKPD_TALK_PRODUCT_NAME:list.talk_product_name?:@0,
-                           TKPD_TALK_PRODUCT_STATUS:list.talk_product_status?:@0,
-                           TKPD_TALK_USER_LABEL:list.talk_user_label?:@0,
-                           TKPD_TALK_REPUTATION_PERCENTAGE:list.talk_user_reputation?:@0,
-                           };
-    
-    NSDictionary *userinfo;
-    userinfo = @{kTKPDDETAIL_DATAINDEXKEY:@(row)};
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateUnreadTalk" object:nil userInfo:userinfo];
-    
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad && _isSplitScreen) {
-        if (![data isEqualToDictionary:_detailViewController.data]) {
-            [_detailViewController replaceDataSelected:data];
-        }
-    }
-    else {
-        ProductTalkDetailViewController *vc = [[ProductTalkDetailViewController alloc] initByMarkingOpenedTalkAsRead:_marksOpenedTalkAsRead];
-        vc.data = data;
-
-        UIViewController *controller = [_delegate getNavigationController:self];
-        [controller.navigationController pushViewController:vc animated:YES];
-
-    }
+- (void)setTalk:(TalkList *)talk {
+    _talk = talk;
+    _selectedTalkUserID = [NSString stringWithFormat:@"%ld", (long)talk.talk_user_id];
+    [self setTalkViewModel:talk.viewModel];
+    _selectedTalkReputation = _talk.talk_user_reputation;
 }
 
+#pragma mark - Tap Button
+
 - (IBAction)tapToFollowTalk:(id)sender {
-    _unfollowIndexPath = [[_delegate getTable] indexPathForCell:self];
-    
-    NSInteger row = _unfollowIndexPath.row;
-    NSMutableArray *talkList = [_delegate getTalkList];
-    _unfollowTalk = talkList[row];
-    
     [self followAnimateZoomOut:self.unfollowButton];
     
     _unfollowNetworkManager = [TokopediaNetworkManager new];
-    _unfollowNetworkManager.delegate = self;
-    _unfollowNetworkManager.tagRequest = RequestFollowTalk;
-    
-    [_unfollowNetworkManager doRequest];
+
+    NSDictionary* parameter = @{
+            kTKPDDETAIL_ACTIONKEY : TKPD_FOLLOW_TALK_ACTION,
+            kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : _talk.talk_product_id,
+            TKPD_TALK_ID:_talk.talk_id?:@0,
+            @"shop_id":_talk.talk_shop_id
+    };
+
+    [_unfollowNetworkManager requestWithBaseUrl:[NSString basicUrl]
+                                           path:@"action/talk.pl"
+                                         method:RKRequestMethodPOST
+                                      parameter:parameter
+                                        mapping:[GeneralAction mapping]
+                                      onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                          [self actionAfterRequest:successResult withTag:RequestFollowTalk];
+                                      }
+                                      onFailure:^(NSError *errorResult) {
+
+                                      }];
 }
 
 - (IBAction)tapToMoreMenu:(id)sender {
     NSMutableArray *titles = [[NSMutableArray alloc] init];
-    if([_myShopID isEqualToString:_selectedTalkShopID] || [_myUserID isEqualToString:_selectedTalkUserID]) {
+    if([_myShopID isEqualToString:_talk.talk_shop_id] || [_myUserID isEqualToString:_selectedTalkUserID]) {
         [titles addObject:@"Hapus"];
     } else {
         [titles addObject:@"Lapor"];
@@ -240,8 +220,13 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 
 - (void)tapToProduct {
     UINavigationController *controller = [_delegate getNavigationController:self];
-//    [_navigateController navigateToProductFromViewController:controller withProductID:_selectedTalkProductID];
-    [_navigateController navigateToProductFromViewController:controller withName:nil withPrice:nil withId:_selectedTalkProductID withImageurl:nil withShopName:nil];
+
+    [_navigateController navigateToProductFromViewController:controller
+                                                    withName:nil
+                                                   withPrice:nil
+                                                      withId:_talk.talk_product_id
+                                                withImageurl:nil
+                                                withShopName:nil];
     
 }
 
@@ -251,14 +236,11 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 }
 
 - (void)tapToReport {
-    _reportIndexPath = [[_delegate getTable] indexPathForCell:self];
     ReportViewController *_reportController = [ReportViewController new];
     _reportController.delegate = self;
-    NSMutableArray *talkList = [_delegate getTalkList];
-    
-    _reportTalk = talkList[_reportIndexPath.row];
-    _reportController.strProductID = _reportTalk.talk_product_id;
-    _reportController.strShopID = _reportTalk.talk_shop_id;
+
+    _reportController.strProductID = _talk.talk_product_id;
+    _reportController.strShopID = _talk.talk_shop_id;
     
     TKPDTabViewController *controller = [_delegate getNavigationController:self];
     [controller.navigationController pushViewController:_reportController animated:YES];
@@ -269,8 +251,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     NSInteger cancelButtonIndex = actionSheet.cancelButtonIndex;
     
     if (buttonIndex == 0) {
-        if([_myShopID isEqualToString:_selectedTalkShopID] || [_myUserID isEqualToString:_selectedTalkUserID]) {
-            _deleteIndexPath = [[_delegate getTable] indexPathForCell:self];
+        if([_myShopID isEqualToString:_talk.talk_shop_id] || [_myUserID isEqualToString:_selectedTalkUserID]) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:PROMPT_DELETE_TALK message:PROMPT_DELETE_TALK_MESSAGE delegate:self cancelButtonTitle:BUTTON_CANCEL otherButtonTitles:nil];
             
             [alert addButtonWithTitle:BUTTON_OK];
@@ -319,129 +300,32 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     [self dismissAllPopTipViews];
 }
 
-#pragma mark - Unfollow In Action
-- (NSDictionary *)getParameter:(int)tag {
-    if (tag == RequestFollowTalk) {
-        NSDictionary* param = @{
-                                kTKPDDETAIL_ACTIONKEY : TKPD_FOLLOW_TALK_ACTION,
-                                kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : _unfollowTalk.talk_product_id,
-                                TKPD_TALK_ID:_unfollowTalk.talk_id?:@0,
-                                @"shop_id":_unfollowTalk.talk_shop_id
-                                };
-        
-        return param;
-    } else if (tag == RequestDeleteTalk) {
-        NSDictionary* param = @{
-                                kTKPDDETAIL_ACTIONKEY : TKPD_DELETE_TALK_ACTION,
-                                kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : _deleteTalk.talk_product_id,
-                                TKPD_TALK_ID:_deleteTalk.talk_id?:@0,
-                                kTKPDDETAILSHOP_APISHOPID : _deleteTalk.talk_shop_id
-                                };
-        return param;
-    }
-    
-    return nil;
-}
-
-- (NSString *)getPath:(int)tag {
-    if (tag == RequestFollowTalk || tag == RequestDeleteTalk) {
-        return @"action/talk.pl";
-    }
-    
-    return nil;
-}
-
-- (id)getObjectManager:(int)tag {
-    if(tag == RequestFollowTalk || tag == RequestDeleteTalk) {
-        _objectUnfollowmanager =  [RKObjectManager sharedClient];
-        
-        RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[GeneralAction class]];
-        [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                            kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                            kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-        
-        RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[GeneralActionResult class]];
-        [resultMapping addAttributeMappingsFromDictionary:@{kTKPD_APIISSUCCESSKEY:kTKPD_APIISSUCCESSKEY}];
-        
-        //relation
-        RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
-        [statusMapping addPropertyMapping:resulRel];
-        
-        
-        //register mappings with the provider using a response descriptor
-        RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST
-                                                                                                 pathPattern:@"action/talk.pl" keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-        
-        [_objectUnfollowmanager addResponseDescriptor:responseDescriptorStatus];
-        
-        return _objectUnfollowmanager;
-    }
-    
-    return nil;
-}
-
-- (NSString *)getRequestStatus:(RKMappingResult *)mappingResult withTag:(int)tag {
-    if(tag == RequestFollowTalk || tag == RequestDeleteTalk) {
-        GeneralAction *action = [mappingResult.dictionary objectForKey:@""];
-        return action.status;
-    }
-    
-    return nil;
-}
-
-- (void)actionBeforeRequest:(int)tag {
-    
-}
-
-- (void)actionAfterRequest:(RKMappingResult *)mappingResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
+- (void)actionAfterRequest:(RKMappingResult *)mappingResult withTag:(int)tag {
     if(tag == RequestFollowTalk || tag == RequestDeleteTalk) {
         GeneralAction *generalAction = [mappingResult.dictionary objectForKey:@""];
-        NSIndexPath *indexPath = (tag == RequestFollowTalk) ? _unfollowIndexPath : _deleteIndexPath;
         if(generalAction.message_error!=nil && generalAction.message_error.count>0) {
             StickyAlertView *stickyAlert = [[StickyAlertView alloc] initWithErrorMessages:generalAction.message_error delegate:self];
             [stickyAlert show];
-            
-            UITableView *table = [_delegate getTable];
-            [table beginUpdates];
-            [table reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-            [table endUpdates];
         } else {
             NSArray *successMessages = [[NSMutableArray alloc] init];
-            _isFollowingTalk = !_isFollowingTalk;
             
             [self adjustFollowButton];
 
 			if (tag == RequestDeleteTalk) {
 				successMessages = @[@"Anda berhasil menghapus diskusi ini."];
-
-                NSDictionary *userInfo = @{@"index" : @(_deleteIndexPath.row)};
-
-                //use delegate to prevent broadcast to multiple view controllers at once
-                if ([_delegate respondsToSelector:@selector(tapToDeleteTalk:)]) {
-                    [_delegate tapToDeleteTalk:self];
-                } else {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:@"TokopediaDeleteInboxTalk"
-                                                                        object:nil
-                                                                      userInfo:userInfo];
-                }
+                [_delegate tapToDeleteTalk:self];
 			} else {
-            	if(_isFollowingTalk) {
-                	successMessages = @[@"Anda berhasil mengikuti diskusi ini."];
-	            } else {
-    	            successMessages = @[@"Anda batal mengikuti diskusi ini."];
-        	    }
+                successMessages = @[_talk.talk_follow_status ? @"Anda berhasil mengikuti diskusi ini." : @"Anda batal mengikuti diskusi ini."];
 
-                if ([_delegate respondsToSelector:@selector(updateTalkStatusAtIndexPath:following:)])
-                    [_delegate updateTalkStatusAtIndexPath:indexPath following:_isFollowingTalk];
+                _talk.viewModel = nil;
+                _talk.talk_follow_status = !_talk.talk_follow_status;
+
+                [self setTalkViewModel:_talk.viewModel];
 			}
             StickyAlertView *stickyAlert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:[_delegate getNavigationController:self]];
             [stickyAlert show];
         }
     }
-}
-
-- (void)actionAfterFailRequestMaxTries:(int)tag {
-    
 }
 
 #pragma mark - Animate Follow Button
@@ -474,14 +358,26 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     //delete talk
     if(buttonIndex == 1) {
-        NSInteger row = [_deleteIndexPath row];
-        NSMutableArray *talkList = [_delegate getTalkList];
-        _deleteTalk = talkList[row];
-        
         _deleteNetworkManager = [TokopediaNetworkManager new];
-        _deleteNetworkManager.delegate = self;
-        _deleteNetworkManager.tagRequest = RequestDeleteTalk;
-        [_deleteNetworkManager doRequest];
+
+        NSDictionary *parameter = @{
+                kTKPDDETAIL_ACTIONKEY : TKPD_DELETE_TALK_ACTION,
+                kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : _talk.talk_product_id,
+                TKPD_TALK_ID:_talk.talk_id?:@0,
+                kTKPDDETAILSHOP_APISHOPID : _talk.talk_shop_id
+        };
+
+        [_deleteNetworkManager requestWithBaseUrl:[NSString basicUrl]
+                                             path:@"action/talk.pl"
+                                           method:RKRequestMethodPOST
+                                        parameter:parameter
+                                          mapping:[GeneralAction mapping]
+                                        onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                            [self actionAfterRequest:successResult withTag:RequestDeleteTalk];
+                                        }
+                                        onFailure:^(NSError *errorResult) {
+
+                                        }];
     }
 }
 
@@ -489,9 +385,9 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 - (NSDictionary *)getParameter {
     return @{
              @"action" : @"report_product_talk",
-             @"talk_id" : _reportTalk.talk_id?:@(0),
-             @"shop_id" : _reportTalk.talk_shop_id?:@(0),
-             @"product_id" : _reportTalk.talk_product_id?:@(0)
+             @"talk_id" : _talk.talk_id?:@(0),
+             @"shop_id" : _talk.talk_shop_id?:@(0),
+             @"product_id" : _talk.talk_product_id?:@(0)
              };
 }
 

@@ -23,4 +23,6 @@
 @property (nonatomic, strong) NSString *summary_deposit_hold_by_cs;
 @property (nonatomic, strong) NSString *summary_deposit_hold_by_cs_idr;
 
++ (RKObjectMapping*)mapping;
+
 @end

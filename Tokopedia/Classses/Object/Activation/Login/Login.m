@@ -10,4 +10,18 @@
 
 @implementation Login
 
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[Login class]];
+    
+    [mapping addAttributeMappingsFromArray:@[@"status",
+                                             @"server_process_time",
+                                             @"message_error"]];
+    
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data"
+                                                                            toKeyPath:@"result"
+                                                                          withMapping:[LoginResult mapping]]];
+    
+    return mapping;    
+}
+
 @end
