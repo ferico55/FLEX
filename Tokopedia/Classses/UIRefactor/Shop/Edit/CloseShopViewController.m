@@ -9,6 +9,7 @@
 #import "CloseShopViewController.h"
 #import "AlertDatePickerView.h"
 #import "CloseShopRequest.h"
+#define CENTER_VIEW_NORMAL_HEIGHT 330
 
 typedef NS_ENUM(NSInteger, CenterViewType){
     CenterViewAturJadwalButton,
@@ -22,7 +23,35 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
     AlertDatePickerSampaiDengan
 };
 
-@interface CloseShopViewController ()<TKPDAlertViewDelegate, UIScrollViewDelegate>
+@interface CloseShopViewController ()<TKPDAlertViewDelegate, UIScrollViewDelegate, UITextViewDelegate>
+@property (strong, nonatomic) IBOutlet UILabel *tutupTokoSekarangLabel;
+@property (strong, nonatomic) IBOutlet UIImageView *scheduleIcon;
+@property (strong, nonatomic) IBOutlet UIView *batalView;
+
+@property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *scrollViewHeight;
+
+@property (strong, nonatomic) IBOutlet UIView *formView;
+@property (strong, nonatomic) IBOutlet UIButton *batalButton;
+@property (strong, nonatomic) IBOutlet UISwitch *tutupSekarangSwitch;
+@property (strong, nonatomic) IBOutlet UIView *mulaiDariView;
+@property (strong, nonatomic) IBOutlet UIButton *mulaiDariButton;
+@property (strong, nonatomic) IBOutlet UIButton *sampaiDenganButton;
+@property (strong, nonatomic) IBOutlet TKPDTextView *catatanTextView;
+@property (strong, nonatomic) IBOutlet UIButton *ubahButtonCenter;
+@property (strong, nonatomic) IBOutlet UIButton *ubahButtonRight;
+@property (strong, nonatomic) IBOutlet UIButton *hapusButton;
+@property (strong, nonatomic) IBOutlet UIButton *submitButton;
+
+@property (strong, nonatomic) IBOutlet UIView *centerView;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *centerViewHeight;
+
+@property (strong, nonatomic) IBOutlet UIView *aturJadwalTutupView;
+@property (strong, nonatomic) IBOutlet UIButton *aturJadwalTutupButton;
+
+@property (strong, nonatomic) IBOutlet UIView *loadingView;
+
+@property (strong, nonatomic) IBOutlet UIView *successView;
 @property CenterViewType centerViewType;
 @end
 
@@ -39,7 +68,7 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
     
     //DUMMY
     _scheduleDetail = [ClosedScheduleDetail new];
-    _scheduleDetail.close_status = CLOSE_STATUS_OPEN;    
+    _scheduleDetail.close_status = CLOSE_STATUS_CLOSED;
     
     //self.scrollView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
     [_scrollView setScrollEnabled:YES];
@@ -60,9 +89,6 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
     _centerViewType = CenterViewAturJadwalButton;
     
     textViewInitialValue = YES;
-    UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(textViewTapped:)];
-    [_catatanTextView addGestureRecognizer:gestureRecognizer];
-    
     
     [_centerView addSubview:_aturJadwalTutupView];
     [_centerView addSubview:_formView];
@@ -121,14 +147,12 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
     [_closeShopRequest requestActionCloseShopFromNowUntil:@"20/05/2016"
                                                 closeNote:@"asd"
                                                 onSuccess:^(CloseShopResponse *result) {
-        
-    }
+                                                    
+                                                }
                                                 onFailure:^(NSError *error) {
-        
-    }];
+                                                    
+                                                }];
 }
-
-
 
 
 #pragma mark - Date Picker Delegate
@@ -173,13 +197,13 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
     }
 }
 
-#pragma mark - TextView
--(void)textViewTapped:(UITapGestureRecognizer*)gestureRecognizer{
+#pragma mark - TextView Delegate
+
+-(void)textViewDidBeginEditing:(UITextView *)textView{
     if(textViewInitialValue){
         [_catatanTextView setText:@""];
         textViewInitialValue = NO;
     }
-    
 }
 
 #pragma mark - ScrollView delegate
@@ -239,6 +263,42 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
     }
     
     //DESIGN CENTER VIEW
-    
+    if(_scheduleDetail.close_status == CLOSE_STATUS_OPEN){
+        _tutupTokoSekarangLabel.text = @"Tutup Toko Sekarang";
+        [_tutupSekarangSwitch setHidden:NO];
+        [_scheduleIcon setHidden:YES];
+        [_batalView setHidden:NO];
+        _centerViewHeight.constant = CENTER_VIEW_NORMAL_HEIGHT;
+        
+        [_submitButton setHidden:NO];
+        [_hapusButton setHidden:YES];
+        [_ubahButtonRight setHidden:YES];
+        [_ubahButtonCenter setHidden:YES];
+        
+    }else if(_scheduleDetail.close_status == CLOSE_STATUS_CLOSED){
+        _tutupTokoSekarangLabel.text = @"JADWAL TUTUP";
+        [_tutupSekarangSwitch setHidden:YES];
+        [_scheduleIcon setHidden:NO];
+        [_batalView setHidden:YES];
+        _centerViewHeight.constant = CENTER_VIEW_NORMAL_HEIGHT - _batalView.frame.size.height;
+        
+        //button
+        [_submitButton setHidden:YES];
+        [_hapusButton setHidden:YES];
+        [_ubahButtonRight setHidden:YES];
+        [_ubahButtonCenter setHidden:NO];
+    }else{
+        _tutupTokoSekarangLabel.text = @"JADWAL TUTUP";
+        [_tutupSekarangSwitch setHidden:YES];
+        [_scheduleIcon setHidden:NO];
+        [_batalView setHidden:YES];
+        _centerViewHeight.constant = CENTER_VIEW_NORMAL_HEIGHT - _batalView.frame.size.height;
+        
+        [_submitButton setHidden:YES];
+        [_hapusButton setHidden:NO];
+        [_ubahButtonRight setHidden:NO];
+        [_ubahButtonCenter setHidden:YES];
+    }
+
 }
 @end
