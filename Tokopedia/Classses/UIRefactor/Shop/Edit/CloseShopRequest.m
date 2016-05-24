@@ -24,7 +24,7 @@
     _networkManager.isUsingHmac = YES;
     [_networkManager requestWithBaseUrl:[NSString v4Url]
                                    path:@"/v4/action/myshop-info/update_shop_close.pl"
-                                 method:RKRequestMethodGET
+                                 method:RKRequestMethodPOST
                               parameter:@{@"closed_note":closeNote,
                                           @"close_end":dateUntil,
                                           @"close_action":@(CLOSE_SHOP_ACTION_CLOSE)
@@ -43,7 +43,7 @@
     _networkManager.isUsingHmac = YES;
     [_networkManager requestWithBaseUrl:[NSString v4Url]
                                    path:@"/v4/action/myshop-info/update_shop_close.pl"
-                                 method:RKRequestMethodGET
+                                 method:RKRequestMethodPOST
                               parameter:@{@"close_action":@(CLOSE_SHOP_ACTION_OPEN)
                                           }
                                 mapping:[CloseShopResponse mapping]
@@ -55,6 +55,61 @@
                               }];
 }
 
+-(void)requestActionCloseShopFrom:(NSString *)dateFrom until:(NSString *)dateUntil closeNote:(NSString *)closeNote onSuccess:(void (^)(CloseShopResponse *))successCallback onFailure:(void (^)(NSError *))errorCallback{
+    _networkManager = [TokopediaNetworkManager new];
+    _networkManager.isUsingHmac = YES;
+    [_networkManager requestWithBaseUrl:[NSString v4Url]
+                                   path:@"/v4/action/myshop-info/update_shop_close.pl"
+                                 method:RKRequestMethodPOST
+                              parameter:@{@"close_action"   :@(CLOSE_SHOP_ACTION_SET_SCHEDULE),
+                                          @"closed_note"    :closeNote,
+                                          @"close_start"    :dateFrom,
+                                          @"close_end"      :dateUntil
+                                          }
+                                mapping:[CloseShopResponse mapping]
+                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                  CloseShopResponse *result = [successResult.dictionary objectForKey:@""];
+                                  successCallback(result);
+                              } onFailure:^(NSError *errorResult) {
+                                  errorCallback(errorResult);
+                              }];
+}
+
+-(void)requestActionAbortCloseScheduleOnSuccess:(void (^)(CloseShopResponse *))successCallback onFailure:(void (^)(NSError *))errorCallback{
+    _networkManager = [TokopediaNetworkManager new];
+    _networkManager.isUsingHmac = YES;
+    [_networkManager requestWithBaseUrl:[NSString v4Url]
+                                   path:@"/v4/action/myshop-info/update_shop_close.pl"
+                                 method:RKRequestMethodPOST
+                              parameter:@{@"close_action"   :@(CLOSE_SHOP_ACTION_ABORT_SCHEDULE)
+                                          }
+                                mapping:[CloseShopResponse mapping]
+                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                  CloseShopResponse *result = [successResult.dictionary objectForKey:@""];
+                                  successCallback(result);
+                              } onFailure:^(NSError *errorResult) {
+                                  errorCallback(errorResult);
+                              }];
+}
+
+-(void)requestActionExtendCloseShopUntil:(NSString *)dateUntil closeNote:(NSString *)closeNote onSuccess:(void (^)(CloseShopResponse *))successCallback onFailure:(void (^)(NSError *))errorCallback{
+    _networkManager = [TokopediaNetworkManager new];
+    _networkManager.isUsingHmac = YES;
+    [_networkManager requestWithBaseUrl:[NSString v4Url]
+                                   path:@"/v4/action/myshop-info/update_shop_close.pl"
+                                 method:RKRequestMethodPOST
+                              parameter:@{@"close_action"   :@(CLOSE_SHOP_ACTION_EXTEND_SCHEDULE),
+                                          @"closed_note"    :closeNote,
+                                          @"close_end"      :dateUntil
+                                          }
+                                mapping:[CloseShopResponse mapping]
+                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                  CloseShopResponse *result = [successResult.dictionary objectForKey:@""];
+                                  successCallback(result);
+                              } onFailure:^(NSError *errorResult) {
+                                  errorCallback(errorResult);
+                              }];
+}
 
 @end
 

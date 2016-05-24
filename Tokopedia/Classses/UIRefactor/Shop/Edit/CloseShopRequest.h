@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "CloseShopResponse.h"
 @interface CloseShopRequest : NSObject
+//all date will be dd/MM/YYYY
 -(void)requestActionCloseShopFromNowUntil:(NSString*)dateUntil
                                 closeNote:(NSString*)closeNote
                                 onSuccess:(void (^)(CloseShopResponse*))successCallback
@@ -23,5 +24,13 @@
                         closeNote:(NSString*)closeNote
                         onSuccess:(void (^)(CloseShopResponse*))successCallback
                         onFailure:(void (^)(NSError *))errorCallback;
+
+-(void)requestActionAbortCloseScheduleOnSuccess:(void (^)(CloseShopResponse*))successCallback
+                                      onFailure:(void (^)(NSError *))errorCallback;
+
+-(void)requestActionExtendCloseShopUntil:(NSString*)dateUntil
+                               closeNote:(NSString*)closeNote
+                               onSuccess:(void (^)(CloseShopResponse*))successCallback
+                               onFailure:(void (^)(NSError *))errorCallback;
 
 @end
