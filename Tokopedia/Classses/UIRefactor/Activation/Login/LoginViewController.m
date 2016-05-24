@@ -172,6 +172,8 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     
     _activationRequest = [ActivationRequest new];
     
+    googleSignInButton.layer.shadowOffset = CGSizeMake(1, 1);
+    
 //    [self.googleSignInButton setStyle:kGIDSignInButtonStyleStandard];
 }
 
@@ -310,8 +312,11 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
         }
         
     } else if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
-        _signInLabel.highlighted = YES;
-        [[GIDSignIn sharedInstance] signIn];
+        UITapGestureRecognizer *gesture = (UITapGestureRecognizer *)sender;
+        if (gesture.view.tag == 12) {
+            _signInLabel.highlighted = YES;
+            [[GIDSignIn sharedInstance] signIn];
+        }        
     }
 }
 #pragma mark - Memory Management

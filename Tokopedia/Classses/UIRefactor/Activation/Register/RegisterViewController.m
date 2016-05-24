@@ -172,6 +172,8 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     _loginView.delegate = self;
     _loginView.readPermissions = @[@"public_profile", @"email", @"user_birthday"];
     
+    _signInButton.layer.shadowOffset = CGSizeMake(1, 1);
+    
     _activationRequest = [ActivationRequest new];
 
     [_container addSubview:_contentView];
@@ -370,7 +372,10 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
             }
         }
     } else if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
-        [[GIDSignIn sharedInstance] signIn];
+        UITapGestureRecognizer *gesture = (UITapGestureRecognizer *)sender;
+        if (gesture.view.tag == 12) {
+            [[GIDSignIn sharedInstance] signIn];
+        }
     }
 }
 
