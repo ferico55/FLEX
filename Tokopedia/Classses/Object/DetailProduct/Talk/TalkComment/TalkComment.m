@@ -18,9 +18,10 @@
                                                         kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY
                                                         }];
 
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data"
                                                                                   toKeyPath:kTKPD_APIRESULTKEY
                                                                                 withMapping:[TalkCommentResult mapping]]];
     return statusMapping;
 }
+
 @end

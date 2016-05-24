@@ -144,6 +144,8 @@
 
 
     _talkCommentNetworkManager = [TokopediaNetworkManager new];
+    _talkCommentNetworkManager.isUsingHmac = YES;
+
     _sendCommentNetworkManager = [TokopediaNetworkManager new];
     _deleteCommentNetworkManager = [TokopediaNetworkManager new];
 
@@ -160,11 +162,11 @@
     _auth = [auth mutableCopy];
 
     if(_marksOpenedTalksAsRead) {
-        _urlPath = kTKPDINBOX_TALK_APIPATH;
+        _urlPath = @"/v4/inbox-talk/get_inbox_detail_talk.pl";
         _urlAction = kTKPDDETAIL_APIGETINBOXDETAIL;
         
     } else {
-        _urlPath = kTKPDDETAILTALK_APIPATH;
+        _urlPath = @"/v4/talk/get_comment_by_talk_id.pl";
         _urlAction = kTKPDDETAIL_APIGETCOMMENTBYTALKID;
     }
     
@@ -941,9 +943,9 @@
             kTKPDDETAIL_APIPAGEKEY : @(_page)
     };
 
-    [_talkCommentNetworkManager requestWithBaseUrl:[NSString basicUrl]
+    [_talkCommentNetworkManager requestWithBaseUrl:[NSString v4Url]
                                               path:_urlPath
-                                            method:RKRequestMethodPOST
+                                            method:RKRequestMethodGET
                                          parameter:param
                                            mapping:[TalkComment mapping]
                                          onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
