@@ -84,20 +84,15 @@ class FilterTableViewCell: UITableViewCell
     private var categories : [CategoryDetail] = []
     private var selectedCategories : [CategoryDetail] = []
     private var filterType : CategoryFilterType?
-    
-    
     private var tableView : UITableView = UITableView()
     private var lastSelectedIndexPath : NSIndexPath?
-    
-    
     private var completionHandler:([CategoryDetail])->Void = {(arg:[CategoryDetail]) -> Void in}
-    
     private var refreshControl : UIRefreshControl = UIRefreshControl()
     
     init(selectedCategories:[CategoryDetail], filterType:CategoryFilterType, initialCategories:[CategoryDetail], onCompletion: (([CategoryDetail]) -> Void)){
         completionHandler = onCompletion
-        self.selectedCategories = selectedCategories
-        self.initialCategories = initialCategories
+        self.selectedCategories =  selectedCategories.map { ($0.copy() as! CategoryDetail) }
+        self.initialCategories = initialCategories.map { ($0.copy() as! CategoryDetail) }
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -130,31 +125,35 @@ class FilterTableViewCell: UITableViewCell
         } else {
             self.showPresetCategories()
             self.addCategories(self.initialCategories)
+            if selectedCategories.count>0 {
+                self.expandSelectedCategories()
+            }
+        }
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        if selectedCategories.count>0 {
+            self.completionHandler(self.selectedCategories)
         }
     }
     
     override func viewDidLayoutSubviews() {
         tableView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)
-
     }
     
     func showPresetCategories() {
         for category in self.initialCategories {
+            category.isSelected = false
             for childCategory in category.child {
+                childCategory.isSelected = false
                 childCategory.parent = category.categoryId;
                 for lastCategory in childCategory.child {
                     lastCategory.parent = childCategory.categoryId;
+                    lastCategory.isSelected = false
                 }
             }
-
         }
-//
-//        self.initialCategories = self.categories;
-//        if self.selectedCategories.count > 0
-//        {
-////            self.expandSelectedCategories()
-//        }
-
     }
 
     func refresh(sender:AnyObject) {
@@ -167,6 +166,9 @@ class FilterTableViewCell: UITableViewCell
             self.refreshControl.endRefreshing()
             
             self.addCategories(categories)
+            if self.selectedCategories.count>0 {
+                self.expandSelectedCategories()
+            }
             
         }) { (error) in
                 self.tableView.setContentOffset(CGPointZero, animated:true)
@@ -201,6 +203,14 @@ class FilterTableViewCell: UITableViewCell
         return 1
     }
     
+    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        
+        let category : CategoryDetail = categories[indexPath.row]
+        if category.isSelected {
+            cell.setSelected(true, animated: false)
+        }
+    }
+    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell:FilterTableViewCell = tableView.dequeueReusableCellWithIdentifier("cell")! as! FilterTableViewCell
@@ -228,11 +238,6 @@ class FilterTableViewCell: UITableViewCell
         
         cell.label .setCustomAttributedText( category.name as String )
         
-        var selectedIDs : [String] = []
-        for object in self.selectedCategories {
-            selectedIDs.append(object.categoryId as String)
-        }
-        
         let customColorView = UIView()
         customColorView.backgroundColor = UIColor.clearColor()
         cell.selectedBackgroundView =  customColorView;
@@ -242,12 +247,21 @@ class FilterTableViewCell: UITableViewCell
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
+        let cell:FilterTableViewCell = tableView.cellForRowAtIndexPath(indexPath) as! FilterTableViewCell
+        
         let category:CategoryDetail = self.categories[indexPath.row]
         
         if category.isExpanded == true {
             self.doCollapseCategory(category)
         } else {
             self.doExpandCategory(category)
+        }
+        
+        if category.isExpanded {
+            cell.setArrowDirection(.Up)
+        } else {
+            cell.setArrowDirection(.Down)
         }
         
         category.isSelected = !category.isSelected
@@ -312,6 +326,7 @@ class FilterTableViewCell: UITableViewCell
                 self.tableView.deleteRowsAtIndexPaths([NSIndexPath.init(forRow:location , inSection: 0)], withRowAnimation: .Automatic)
                 self.tableView.endUpdates()
                 
+                
                 for (_,categoryChild) in category.child.enumerate() {
                     categoryChild.isExpanded = false
                     if categoryChild.parent == category.categoryId {
@@ -325,9 +340,64 @@ class FilterTableViewCell: UITableViewCell
                         }
                     }
                 }
-
             }
         }
+    }
+    
+    func expandSelectedCategories(){
+        for category in self.initialCategories {
+            for selectedCategory in self.selectedCategories {
+                if category.categoryId == selectedCategory.categoryId {
+                    category.isSelected = true
+                } else {
+                    self.expandChildCategory(category)
+                }
+            }
+        }
+    }
+    
+    func expandChildCategory(category:(CategoryDetail)) {
+        for childCategory in category.child {
+            for selectedCategory in self.selectedCategories {
+                if childCategory.categoryId == selectedCategory.categoryId {
+                    childCategory.isSelected = true
+                    self.addCategoryChild(category)
+                } else {
+                    self.expandLastCategory(childCategory, parentCategory: category)
+                }
+            }
+        }
+
+    }
+    
+    func expandLastCategory(category:(CategoryDetail), parentCategory:(CategoryDetail)) {
+        for lastCategory in category.child {
+            for selectedCategory in self.selectedCategories {
+                if lastCategory.categoryId == selectedCategory.categoryId {
+                    lastCategory.isSelected = true
+                    self.addCategoryChild(parentCategory)
+                    self.addCategoryChild(category)
+                }
+            }
+        }
+    }
+    
+    
+    func addCategoryChild(parentCategory:(CategoryDetail)) {
+        parentCategory.isExpanded = true
+        
+        let location : Int  = self.categories.indexOf(parentCategory)! + 1
+        var indexPaths : [NSIndexPath] = []
+        self.tableView.beginUpdates()
+        for (index, categorychild) in parentCategory.child.enumerate() {
+            if self.categories.contains(categorychild) == false {
+                categorychild.isExpanded = false
+                self.categories.insert(categorychild, atIndex: location + index)
+                indexPaths.append(NSIndexPath.init(forRow:location+index , inSection: 0))
+            }
+        }
+        tableView.insertRowsAtIndexPaths(indexPaths, withRowAnimation: .Automatic)
+        tableView.endUpdates()
     }
     
     //Mark: - reset Filter

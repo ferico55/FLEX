@@ -8,7 +8,7 @@
 
 import UIKit
 
-@objc class CategoryDetail: NSObject, TKPObjectMapping {
+@objc class CategoryDetail: NSObject, TKPObjectMapping, NSCopying {
 
     var d_id :String = String() {
         didSet {
@@ -36,28 +36,28 @@ import UIKit
     var hasChildCategories : Bool = true
     var isSelected : Bool = false
     
-//    required override init() {
-//    }
-//    
-//    required init(_ model: CategoryDetail) {
-//        self.categoryId = model.categoryId
-//        self.name = model.name
-//        self.weight = model.weight
-//        self.parent = model.parent
-//        self.tree = model.tree
-//        self.has_catalog = model.has_catalog
-//        self.identifier = model.identifier
-//        self.url = model.url
-//        self.child = model.child
-//        self.isExpanded = model.isExpanded
-//        self.isLastCategory = model.isLastCategory
-//        self.hasChildCategories = model.hasChildCategories
-//        self.isSelected = model.isSelected
-//    }
-//    
-//    func copyWithZone(zone: NSZone) -> AnyObject {
-//        return self.dynamicType.init(self)
-//    }
+    required override init() {
+    }
+    
+    required init(_ model: CategoryDetail) {
+        self.categoryId = model.categoryId
+        self.name = model.name
+        self.weight = model.weight
+        self.parent = model.parent
+        self.tree = model.tree
+        self.has_catalog = model.has_catalog
+        self.identifier = model.identifier
+        self.url = model.url
+        self.child = model.child
+        self.isExpanded = model.isExpanded
+        self.isLastCategory = model.isLastCategory
+        self.hasChildCategories = model.hasChildCategories
+        self.isSelected = model.isSelected
+    }
+    
+    func copyWithZone(zone: NSZone) -> AnyObject {
+        return self.dynamicType.init(self)
+    }
     
     @objc internal class func attributeMappingDictionary() -> [NSObject : AnyObject]! {
         return ["name":"name",
