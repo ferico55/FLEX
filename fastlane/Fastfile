@@ -4,7 +4,7 @@ default_platform :ios
 
 def build_app
   project_file = 'Tokopedia.xcodeproj'
-  #increment_build_number(xcodeproj: project_file)
+  increment_build_number(xcodeproj: project_file)
 
   gym(scheme: "Tokopedia")  
 
