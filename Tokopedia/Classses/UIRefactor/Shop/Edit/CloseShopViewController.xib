@@ -23,6 +23,7 @@
             <string>GothamMedium</string>
             <string>GothamMedium</string>
             <string>GothamMedium</string>
+            <string>GothamMedium</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -34,7 +35,9 @@
                 <outlet property="catatanTextView" destination="hfV-RT-0Ig" id="wV6-mR-IUB"/>
                 <outlet property="centerView" destination="hId-2L-GU3" id="Ft5-Ds-hQ2"/>
                 <outlet property="centerViewHeight" destination="lvY-hu-DqC" id="I03-52-qDB"/>
+                <outlet property="formHeaderView" destination="NVE-Cl-Gtb" id="cBA-V2-ENG"/>
                 <outlet property="formView" destination="RwZ-F8-oxE" id="qNc-5F-wO9"/>
+                <outlet property="jadwalTutupHeaderView" destination="IJt-wI-Ddz" id="T0S-Vd-S0R"/>
                 <outlet property="loadingView" destination="1su-HI-0hf" id="Hu5-Hg-LDM"/>
                 <outlet property="mulaiDariButton" destination="py2-OZ-C1r" id="OWV-zh-qe7"/>
                 <outlet property="mulaiDariView" destination="XbR-Q9-Ys3" id="qOh-Qy-evb"/>
@@ -43,6 +46,7 @@
                 <outlet property="scrollViewHeight" destination="XTt-QE-m6L" id="vWw-DN-i35"/>
                 <outlet property="successView" destination="EXq-8h-EyI" id="Pc0-d0-ADH"/>
                 <outlet property="tutupSekarangSwitch" destination="0wO-EB-Nq1" id="FaD-tQ-Mcz"/>
+                <outlet property="tutupSekarangView" destination="OCt-Zy-ria" id="z6w-hu-sGg"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -118,14 +122,14 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QvF-wN-21u">
                             <rect key="frame" x="0.0" y="95" width="320" height="60"/>
                             <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tfb-Yo-C2j">
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tfb-Yo-C2j">
                                     <rect key="frame" x="10" y="8" width="300" height="44"/>
                                     <color key="backgroundColor" red="0.20392156859999999" green="0.67450980390000004" blue="0.18039215689999999" alpha="1" colorSpace="calibratedRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="44" id="Z2X-Wu-KQC"/>
                                     </constraints>
-                                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="15"/>
-                                    <state key="normal" title="Buka Toko">
+                                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
+                                    <state key="normal" title=" Buka Toko">
                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                 </button>
@@ -246,34 +250,42 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="260" y="792"/>
         </view>
-        <view contentMode="scaleToFill" id="RwZ-F8-oxE">
+        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OCt-Zy-ria">
+            <rect key="frame" x="0.0" y="0.0" width="304" height="44"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tutup Toko Sekarang" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ldx-tu-HVr">
+                    <rect key="frame" x="8" y="16" width="231" height="12"/>
+                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0wO-EB-Nq1">
+                    <rect key="frame" x="247" y="6" width="51" height="31"/>
+                    <connections>
+                        <action selector="tutupSekarangSwitchValueChanged:" destination="-1" eventType="valueChanged" id="BJo-sf-70R"/>
+                    </connections>
+                </switch>
+            </subviews>
+            <color key="backgroundColor" red="0.99963909387588501" green="1" blue="0.99975615739822388" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="ldx-tu-HVr" firstAttribute="leading" secondItem="OCt-Zy-ria" secondAttribute="leading" constant="8" id="49A-P5-9u7"/>
+                <constraint firstItem="0wO-EB-Nq1" firstAttribute="leading" secondItem="ldx-tu-HVr" secondAttribute="trailing" constant="8" id="jqk-tA-DYt"/>
+                <constraint firstItem="ldx-tu-HVr" firstAttribute="centerY" secondItem="OCt-Zy-ria" secondAttribute="centerY" id="mdr-Eb-hNR"/>
+                <constraint firstAttribute="trailing" secondItem="0wO-EB-Nq1" secondAttribute="trailing" constant="8" id="mgS-Xg-wgP"/>
+                <constraint firstItem="0wO-EB-Nq1" firstAttribute="centerY" secondItem="OCt-Zy-ria" secondAttribute="centerY" id="sNM-8i-Wqo"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="787" y="121"/>
+        </view>
+        <view clipsSubviews="YES" contentMode="scaleToFill" id="RwZ-F8-oxE">
             <rect key="frame" x="0.0" y="0.0" width="304" height="312"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OCt-Zy-ria">
+                <view autoresizesSubviews="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NVE-Cl-Gtb">
                     <rect key="frame" x="0.0" y="0.0" width="304" height="44"/>
-                    <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tutup Toko Sekarang" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ldx-tu-HVr">
-                            <rect key="frame" x="8" y="16" width="231" height="12"/>
-                            <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
-                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0wO-EB-Nq1">
-                            <rect key="frame" x="247" y="6" width="51" height="31"/>
-                            <connections>
-                                <action selector="tutupSekarangSwitchValueChanged:" destination="-1" eventType="valueChanged" id="BJo-sf-70R"/>
-                            </connections>
-                        </switch>
-                    </subviews>
-                    <color key="backgroundColor" red="0.99963909387588501" green="1" blue="0.99975615739822388" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="backgroundColor" red="0.99958986043930054" green="0.83478254079818726" blue="0.83393263816833496" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
-                        <constraint firstItem="ldx-tu-HVr" firstAttribute="leading" secondItem="OCt-Zy-ria" secondAttribute="leading" constant="8" id="49A-P5-9u7"/>
-                        <constraint firstAttribute="height" constant="44" id="9Q7-ag-UDq"/>
-                        <constraint firstItem="0wO-EB-Nq1" firstAttribute="leading" secondItem="ldx-tu-HVr" secondAttribute="trailing" constant="8" id="jqk-tA-DYt"/>
-                        <constraint firstItem="ldx-tu-HVr" firstAttribute="centerY" secondItem="OCt-Zy-ria" secondAttribute="centerY" id="mdr-Eb-hNR"/>
-                        <constraint firstAttribute="trailing" secondItem="0wO-EB-Nq1" secondAttribute="trailing" constant="8" id="mgS-Xg-wgP"/>
-                        <constraint firstItem="0wO-EB-Nq1" firstAttribute="centerY" secondItem="OCt-Zy-ria" secondAttribute="centerY" id="sNM-8i-Wqo"/>
+                        <constraint firstAttribute="height" constant="44" id="7YU-M9-JGG"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XbR-Q9-Ys3">
@@ -282,7 +294,7 @@
                         <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="py2-OZ-C1r">
                             <rect key="frame" x="8" y="22" width="136" height="34"/>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
-                            <state key="normal" title="2/5/2016"/>
+                            <state key="normal" title="Pilih Tanggal"/>
                             <connections>
                                 <action selector="mulaiDariButtonTapped:" destination="-1" eventType="touchUpInside" id="X1u-c7-UcS"/>
                             </connections>
@@ -314,11 +326,11 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zGy-Tp-fok">
-                    <rect key="frame" x="152" y="44" width="1" height="60"/>
+                    <rect key="frame" x="152" y="44" width="1" height="59"/>
                     <color key="backgroundColor" red="0.51372549019607838" green="0.51372549019607838" blue="0.51372549019607838" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="1" id="jI5-js-AQ9"/>
-                        <constraint firstAttribute="height" constant="60" id="noI-p7-A9D"/>
+                        <constraint firstAttribute="height" constant="59" id="noI-p7-A9D"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cJE-gU-dtu">
@@ -428,7 +440,7 @@
                         <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JCg-PO-xMI">
                             <rect key="frame" x="8" y="22" width="136" height="34"/>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
-                            <state key="normal" title="Pilih tanggal"/>
+                            <state key="normal" title="Pilih Tanggal"/>
                             <connections>
                                 <action selector="sampaiDenganButtonTapped:" destination="-1" eventType="touchUpInside" id="HN8-Wj-3QD"/>
                             </connections>
@@ -461,20 +473,22 @@
                 <constraint firstItem="YZy-Zv-S87" firstAttribute="leading" secondItem="RwZ-F8-oxE" secondAttribute="leading" id="6Wd-OV-4Aa"/>
                 <constraint firstItem="E3a-Kb-7td" firstAttribute="top" secondItem="e1f-hS-Gfe" secondAttribute="bottom" id="6k2-xf-c16"/>
                 <constraint firstItem="zGy-Tp-fok" firstAttribute="centerX" secondItem="RwZ-F8-oxE" secondAttribute="centerX" id="6ya-j7-5FE"/>
-                <constraint firstItem="XbR-Q9-Ys3" firstAttribute="top" secondItem="OCt-Zy-ria" secondAttribute="bottom" id="7Cy-Et-K9m"/>
-                <constraint firstItem="Rmq-jL-cNU" firstAttribute="top" secondItem="OCt-Zy-ria" secondAttribute="bottom" id="87x-PZ-EN5"/>
+                <constraint firstItem="Rmq-jL-cNU" firstAttribute="top" secondItem="NVE-Cl-Gtb" secondAttribute="bottom" id="804-AQ-lep"/>
                 <constraint firstAttribute="trailing" secondItem="YZy-Zv-S87" secondAttribute="trailing" id="9cT-dX-8ZU"/>
-                <constraint firstItem="OCt-Zy-ria" firstAttribute="leading" secondItem="RwZ-F8-oxE" secondAttribute="leading" id="BZn-aV-KzH"/>
+                <constraint firstItem="NVE-Cl-Gtb" firstAttribute="top" secondItem="RwZ-F8-oxE" secondAttribute="top" id="BLF-31-DiR"/>
                 <constraint firstItem="bt8-Kq-lyF" firstAttribute="top" secondItem="4s1-lQ-eoJ" secondAttribute="bottom" id="EnG-mw-AhD"/>
                 <constraint firstItem="MH6-7v-BMS" firstAttribute="top" secondItem="Rmq-jL-cNU" secondAttribute="bottom" id="Ewi-H7-WWV"/>
                 <constraint firstItem="e1f-hS-Gfe" firstAttribute="top" secondItem="YZy-Zv-S87" secondAttribute="bottom" id="Gp3-3R-muL"/>
+                <constraint firstItem="NVE-Cl-Gtb" firstAttribute="leading" secondItem="RwZ-F8-oxE" secondAttribute="leading" id="HgF-dr-Ruh"/>
                 <constraint firstItem="YZy-Zv-S87" firstAttribute="top" secondItem="bt8-Kq-lyF" secondAttribute="bottom" id="Ivh-CR-yBP"/>
                 <constraint firstItem="bt8-Kq-lyF" firstAttribute="leading" secondItem="RwZ-F8-oxE" secondAttribute="leading" id="Qbc-SQ-11h"/>
+                <constraint firstItem="XbR-Q9-Ys3" firstAttribute="top" secondItem="NVE-Cl-Gtb" secondAttribute="bottom" id="QfH-k9-EUM"/>
                 <constraint firstItem="E3a-Kb-7td" firstAttribute="leading" secondItem="RwZ-F8-oxE" secondAttribute="leading" id="Tco-Iv-V6I"/>
                 <constraint firstAttribute="trailing" secondItem="Rmq-jL-cNU" secondAttribute="trailing" id="WRd-Eh-bs9"/>
                 <constraint firstItem="zGy-Tp-fok" firstAttribute="leading" secondItem="XbR-Q9-Ys3" secondAttribute="trailing" id="Z1p-0r-JPV"/>
                 <constraint firstAttribute="trailing" secondItem="cJE-gU-dtu" secondAttribute="trailing" id="ZbN-Y2-q8d"/>
                 <constraint firstItem="4s1-lQ-eoJ" firstAttribute="top" secondItem="cJE-gU-dtu" secondAttribute="bottom" id="ZwP-VC-HR1"/>
+                <constraint firstAttribute="trailing" secondItem="NVE-Cl-Gtb" secondAttribute="trailing" id="cLQ-IP-BTN"/>
                 <constraint firstItem="MH6-7v-BMS" firstAttribute="width" secondItem="XbR-Q9-Ys3" secondAttribute="width" id="cb3-tB-jK0"/>
                 <constraint firstAttribute="trailing" secondItem="MH6-7v-BMS" secondAttribute="trailing" id="fAJ-fc-foF"/>
                 <constraint firstAttribute="trailing" secondItem="bt8-Kq-lyF" secondAttribute="trailing" id="frd-5Z-rd2"/>
@@ -485,10 +499,8 @@
                 <constraint firstItem="e1f-hS-Gfe" firstAttribute="leading" secondItem="RwZ-F8-oxE" secondAttribute="leading" id="qXL-u0-Rzp"/>
                 <constraint firstItem="cJE-gU-dtu" firstAttribute="top" secondItem="MH6-7v-BMS" secondAttribute="bottom" id="sRq-n7-vxK"/>
                 <constraint firstAttribute="trailing" secondItem="4s1-lQ-eoJ" secondAttribute="trailing" id="tUk-Ug-tsD"/>
-                <constraint firstItem="zGy-Tp-fok" firstAttribute="top" secondItem="OCt-Zy-ria" secondAttribute="bottom" id="vmU-Ij-RIu"/>
-                <constraint firstItem="OCt-Zy-ria" firstAttribute="top" secondItem="RwZ-F8-oxE" secondAttribute="top" id="wPI-Ms-dse"/>
+                <constraint firstItem="zGy-Tp-fok" firstAttribute="top" secondItem="RwZ-F8-oxE" secondAttribute="top" constant="44" id="uKT-Gk-Tm1"/>
                 <constraint firstAttribute="trailing" secondItem="E3a-Kb-7td" secondAttribute="trailing" id="xPj-zD-hNc"/>
-                <constraint firstAttribute="trailing" secondItem="OCt-Zy-ria" secondAttribute="trailing" id="z6i-X9-Il0"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <variation key="default">
@@ -522,9 +534,28 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="787" y="824"/>
         </view>
+        <view contentMode="scaleToFill" id="IJt-wI-Ddz">
+            <rect key="frame" x="0.0" y="0.0" width="304" height="42"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="JADWAL TUTUP" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wRF-gk-kmM">
+                    <rect key="frame" x="8" y="13" width="240" height="21"/>
+                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="top_bg1.png" translatesAutoresizingMaskIntoConstraints="NO" id="gbg-Vd-huK">
+                    <rect key="frame" x="265" y="8" width="30" height="30"/>
+                </imageView>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="787" y="208"/>
+        </view>
     </objects>
     <resources>
         <image name="ic_checkmark_green_24.png" width="24" height="24"/>
         <image name="loading-icon.gif" width="20" height="20"/>
+        <image name="top_bg1.png" width="10" height="10"/>
     </resources>
 </document>

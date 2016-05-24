@@ -18,6 +18,9 @@
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *scrollViewHeight;
 
 @property (strong, nonatomic) IBOutlet UIView *formView;
+@property (strong, nonatomic) IBOutlet UIView *tutupSekarangView;
+@property (strong, nonatomic) IBOutlet UIView *jadwalTutupHeaderView;
+@property (strong, nonatomic) IBOutlet UIView *formHeaderView;
 @property (strong, nonatomic) IBOutlet UIButton *batalButton;
 @property (strong, nonatomic) IBOutlet UISwitch *tutupSekarangSwitch;
 @property (strong, nonatomic) IBOutlet UIView *mulaiDariView;
