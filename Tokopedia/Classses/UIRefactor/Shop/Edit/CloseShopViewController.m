@@ -239,12 +239,6 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
     }
     
     //DESIGN CENTER VIEW
-    [_formHeaderView.subviews makeObjectsPerformSelector: @selector(removeFromSuperview)];
-    if(_scheduleDetail.close_status == CLOSE_STATUS_OPEN){
-        _tutupSekarangView.center = _formHeaderView.center;
-        [_formHeaderView addSubview:_tutupSekarangView];
-    }else{
-        [_formHeaderView addSubview:_jadwalTutupHeaderView];
-    }
+    
 }
 @end
