@@ -10,4 +10,18 @@
 
 @implementation CreatePassword
 
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[CreatePassword class]];
+    
+    [mapping addAttributeMappingsFromArray:@[@"status",
+                                             @"server_process_time",
+                                             @"message_error"]];
+    
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data"
+                                                                            toKeyPath:@"result"
+                                                                          withMapping:[CreatePasswordResult mapping]]];
+    
+    return mapping;
+}
+
 @end

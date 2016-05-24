@@ -12,6 +12,7 @@
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import <GooglePlus/GooglePlus.h>
 #import <GoogleOpenSource/GoogleOpenSource.h>
+#import <GoogleSignIn/GoogleSignIn.h>
 
 @protocol CreatePasswordDelegate <NSObject>
 
@@ -25,6 +26,7 @@
 @property (weak, nonatomic) id<CreatePasswordDelegate> delegate;
 @property (strong, nonatomic) NSDictionary *facebookUserData;
 @property GTLPlusPerson *googleUser;
+@property GIDGoogleUser *gidGoogleUser;
 @property (strong, nonatomic) NSString *email;
 @property (strong, nonatomic) NSString *fullName;
 

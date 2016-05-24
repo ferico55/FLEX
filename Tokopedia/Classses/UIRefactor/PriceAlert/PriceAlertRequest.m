@@ -80,6 +80,7 @@
                                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                                  NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
                                                  GeneralAction *obj = [result objectForKey:@""];
+                                                 successCallback(obj.data);
                                              }
                                              onFailure:^(NSError *errorResult) {
                                                  errorCallback(errorResult);
@@ -141,7 +142,7 @@
     
     [editInboxPriceAlertNetworkManager requestWithBaseUrl:[NSString v4Url]
                                                      path:@"/v4/action/pricealert/edit_inbox_price_alert.pl"
-                                                   method:RKRequestMethodGET
+                                                   method:RKRequestMethodPOST
                                                 parameter:@{@"pricealert_id" : priceAlertID,
                                                             @"pricealert_price" :priceAlertPrice}
                                                   mapping:[GeneralAction mapping]
@@ -167,7 +168,7 @@
     
     [removeProductPriceAlertNetworkManager requestWithBaseUrl:[NSString v4Url]
                                                          path:@"/v4/action/pricealert/remove_product_price_alert.pl"
-                                                       method:RKRequestMethodGET
+                                                       method:RKRequestMethodPOST
                                                     parameter:@{@"product_id" : productID}
                                                       mapping:[GeneralAction mapping]
                                                     onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
