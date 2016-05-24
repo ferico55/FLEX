@@ -18,6 +18,7 @@ end
 
 platform :ios do
   before_all do
+    ensure_git_status_clean
     ENV["SLACK_URL"] = "https://hooks.slack.com/services/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"
     #cocoapods
   end
@@ -30,7 +31,7 @@ platform :ios do
   desc "Submit a new Beta Build to Apple TestFlight"
   desc "This will also make sure the profile is up to date"
   lane :beta do
-    gym(scheme: "Tokopedia")
+    build_app
     pilot
   end
 
