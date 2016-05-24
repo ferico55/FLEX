@@ -43,7 +43,7 @@ class LocationFilterViewController: UIViewController {
 
         self.view.addSubview(self.tableView)
         
-        filterDatasource =   FilterListDataSource.init(tableView: tableView, showSearchBar: true) { (selectedLocation) in
+        filterDatasource =   FilterListDataSource.init(tableView: tableView, showSearchBar: true, selectedObjects:self.selectedObjects) { (selectedLocation) in
             
             self.completionHandler(selectedLocation)
         }
@@ -61,6 +61,13 @@ class LocationFilterViewController: UIViewController {
     
     func refresh(sender:AnyObject) {
         self .requestCity()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        if selectedObjects.count>0 {
+            self.completionHandler(self.selectedObjects)
+        }
     }
 
     override func viewWillAppear(animated: Bool) {

@@ -70,6 +70,7 @@ class QueryObject: NSObject, NSCopying {
     var selectedPrice : FilterPrice = FilterPrice()
     var selectedCondition : [FilterObject] = []
     var selectedShipping : [FilterObject] = []
+    var selectedPreorder:[FilterObject] = []
     
     required override init() {
     }
@@ -81,6 +82,8 @@ class QueryObject: NSObject, NSCopying {
         selectedLocation = model.selectedLocation
         selectedPrice = model.selectedPrice
         selectedCondition = model.selectedCondition
+        selectedShipping = model.selectedShipping
+        selectedPreorder = model.selectedPreorder
     }
     
     func copyWithZone(zone: NSZone) -> AnyObject {

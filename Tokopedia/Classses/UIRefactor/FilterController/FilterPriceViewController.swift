@@ -46,13 +46,14 @@ class switchCell: UITableViewCell
     var switchView : UISwitch = UISwitch()
     var completionHandler:(Bool)->Void = {(arg:Bool) -> Void in}
     
-    init(style: UITableViewCellStyle, reuseIdentifier: String!, onCompletion: ((Bool) -> Void))
+    init(style: UITableViewCellStyle, reuseIdentifier: String!, isSelected:Bool, onCompletion: ((Bool) -> Void))
     {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         completionHandler = onCompletion
         
         self.switchView = UISwitch.init(frame: CGRectZero)
+        self.switchView.on = isSelected
         self.switchView.addTarget(self, action: "switchChanged:", forControlEvents: UIControlEvents.ValueChanged)
         
         self.accessoryView = self.switchView
@@ -141,15 +142,25 @@ class FilterPriceViewController: UIViewController ,UITableViewDelegate, UITableV
         if indexPath.row == 0 {
             cell = textFieldCell.init(style: .Default, reuseIdentifier: "cell")
             (cell as! textFieldCell).titleLabel.text = "Harga Minimum"
+            var priceMin = price.priceMin;
+            if Int(price.priceMin) == 0 {
+                priceMin = ""
+            }
+            (cell as! textFieldCell).textField.text = priceMin
             (cell as! textFieldCell).textField.tag = 0
             (cell as! textFieldCell).textField.delegate = self
         } else if indexPath.row == 1 {
             cell = textFieldCell.init(style: .Default, reuseIdentifier: "cell")
             (cell as! textFieldCell).titleLabel.text = "Harga Maximum"
+            var priceMax = price.priceMax;
+            if Int(price.priceMax) == 0 {
+                priceMax = ""
+            }
+            (cell as! textFieldCell).textField.text = priceMax
             (cell as! textFieldCell).textField.tag = 1
             (cell as! textFieldCell).textField.delegate = self
         } else if indexPath.row == 2 {
-            cell = switchCell.init(style: .Default, reuseIdentifier: "switchCell", onCompletion: { (switchOn) in
+            cell = switchCell.init(style: .Default, reuseIdentifier: "switchCell",isSelected:self.price.priceWholesale, onCompletion: { (switchOn) in
                 self.price.priceWholesale = switchOn
                 self.completionHandler(self.price)
             })

@@ -23,11 +23,12 @@ class FilterListDataSource: NSObject, UITableViewDelegate, UITableViewDataSource
     
     private var completionHandler:([FilterObject])->Void = {(arg:[FilterObject]) -> Void in}
     
-    init(tableView:UITableView, showSearchBar:Bool, onCompletion: (([FilterObject]) -> Void)) {
+    init(tableView:UITableView, showSearchBar:Bool,selectedObjects:[FilterObject], onCompletion: (([FilterObject]) -> Void)) {
         super.init()
         
         completionHandler = onCompletion
         self.showSearchBar = showSearchBar
+        self.selectedObjects = selectedObjects
         
         self.tableView = tableView
         
@@ -96,11 +97,7 @@ class FilterListDataSource: NSObject, UITableViewDelegate, UITableViewDataSource
         cell.disableSelected = false
         cell.setPading(10)
         
-        var selectedIDs : [String] = [""]
-        for object in selectedObjects {
-            selectedIDs.append(object.filterID as String)
-        }
-        if selectedIDs.contains(item.filterID as String) {
+        if item.isSelected {
             tableView .selectRowAtIndexPath(indexPath, animated: true, scrollPosition: .Bottom)
         }
         
@@ -116,11 +113,13 @@ class FilterListDataSource: NSObject, UITableViewDelegate, UITableViewDataSource
         items[indexPath.row].isSelected = !items[indexPath.row].isSelected
         
         if items[indexPath.row].isSelected {
+            items[indexPath.row].isSelected = true
             selectedObjects.append(items[indexPath.row])
         } else{
             self.tableView!.deselectRowAtIndexPath(indexPath, animated: false)
             for (index, selected) in selectedObjects.enumerate() {
                 if selected.filterID == items[indexPath.row].filterID {
+                    items[indexPath.row].isSelected = false
                     selectedObjects.removeAtIndex(index)
                 }
             }
@@ -178,6 +177,11 @@ class FilterListDataSource: NSObject, UITableViewDelegate, UITableViewDataSource
         
         var indexPaths : [NSIndexPath] = []
         for (index,item) in items.enumerate() {
+            self.selectedObjects.forEach({ (selectedItem) in
+                if item.filterID == selectedItem.filterID {
+                    item.isSelected = true;
+                }
+            })
             self.items.append(item)
             indexPaths.append(NSIndexPath.init(forRow:index , inSection: 0))
         }
@@ -185,5 +189,7 @@ class FilterListDataSource: NSObject, UITableViewDelegate, UITableViewDataSource
         self.tableView!.beginUpdates()
         self.tableView!.insertRowsAtIndexPaths(indexPaths, withRowAnimation: .Automatic)
         self.tableView!.endUpdates()
+        
+        
     }
 }

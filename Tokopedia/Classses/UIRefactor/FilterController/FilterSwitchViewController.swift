@@ -24,8 +24,8 @@ class FilterSwitchViewController: UIViewController ,UITableViewDelegate, UITable
     
     init(items:[FilterObject],selectedObjects:[FilterObject], onCompletion: (([FilterObject]) -> Void)){
         completionHandler = onCompletion
-        self.items = items
-        self.selectedObjects = selectedObjects
+        self.items = items.map { ($0.copy() as! FilterObject) }
+        self.selectedObjects = selectedObjects.map { ($0.copy() as! FilterObject) }
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -48,6 +48,15 @@ class FilterSwitchViewController: UIViewController ,UITableViewDelegate, UITable
         tableView.keyboardDismissMode = .OnDrag
         
         self.view.addSubview(tableView)
+        
+        self.items.forEach { (item) in
+            self.selectedObjects.forEach({ (selectedItem) in
+                if item.filterID == selectedItem.filterID {
+                    item.isSelected = true;
+                }
+            })
+        }
+        
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -63,13 +72,15 @@ class FilterSwitchViewController: UIViewController ,UITableViewDelegate, UITable
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        let cell:switchCell = switchCell.init(style: .Default, reuseIdentifier: "switchCell", onCompletion: { (switchOn) in
+        let cell:switchCell = switchCell.init(style: .Default, reuseIdentifier: "switchCell",isSelected:self.items[indexPath.row].isSelected, onCompletion: { (switchOn) in
             if switchOn{
+                self.items[indexPath.row].isSelected = true;
                 self.selectedObjects.append(self.items[indexPath.row])
             } else {
                 var removedIndex : Int = 0
                 for (index, element) in self.selectedObjects.enumerate(){
                     if element.filterID == self.items[indexPath.row].filterID {
+                        self.items[indexPath.row].isSelected = false
                         removedIndex = index
                     }
                 }

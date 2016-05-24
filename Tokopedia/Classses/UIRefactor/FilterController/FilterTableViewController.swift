@@ -37,12 +37,11 @@ class FilterTableViewController: UIViewController {
         tableView.dataSource = filterDatasource
         tableView.delegate = filterDatasource
         
-        filterDatasource =   FilterListDataSource.init(tableView: tableView, showSearchBar: self.showSearchBar) { (selectedLocation) in
+        filterDatasource =   FilterListDataSource.init(tableView: tableView, showSearchBar: self.showSearchBar, selectedObjects:self.selectedObjects) { (selectedLocation) in
             
             self.completionHandler(selectedLocation)
         }
         filterDatasource.addItems(self.items)
-        filterDatasource.selectedObjects = self.selectedObjects
         filterDatasource.searchBarPlaceholder = "Cari \(self.tabBarItem!.title!)"
         
         self.view.addSubview(self.tableView)
@@ -53,6 +52,13 @@ class FilterTableViewController: UIViewController {
         
         tableView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)
 
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        if selectedObjects.count>0 {
+            self.completionHandler(self.selectedObjects)
+        }
     }
     
     //Mark: - reset Filter
