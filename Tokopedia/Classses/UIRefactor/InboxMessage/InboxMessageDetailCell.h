@@ -10,6 +10,8 @@
 #define KTKPDMESSAGE_DETAILCELLIDENTIFIER @"InboxMessageDetailCellIdentifier"
 #import <UIKit/UIKit.h>
 #import "ViewLabelUser.h"
+
+@class InboxMessageDetailList;
 #define CHeightUserLabel 27
 
 @protocol InboxMessageDetailCellDelegate <NSObject>
@@ -46,6 +48,8 @@
 @property (assign) BOOL sent;
 @property (assign) BOOL just_being_sent;
 
+
+@property(nonatomic, strong) InboxMessageDetailList *message;
 
 /**Returns the text margin in horizontal direction.
  @return CGFloat containing the horizontal text margin.

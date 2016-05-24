@@ -14,7 +14,4 @@
 @property (strong, nonatomic) NSDictionary *data;
 @property (copy) void(^onMessagePosted)(NSString* replyMessage);
 
--(void)replaceDataSelected:(NSDictionary*)data;
-
-
 @end
