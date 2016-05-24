@@ -68,10 +68,11 @@ import UIKit
         
         tabBarController.delegate = self
         tabBarController.title = "Filter"
-        tabBarController.tabBarWidth = 120
+        tabBarController.tabBarWidth = 110
         tabBarController.tabBarItemHeight = 44
         tabBarController.viewControllers = listControllers as [AnyObject]
         tabBarController.showResetButton = true
+        tabBarController.selectedIndex = 0
         
         let navigation: UINavigationController = UINavigationController.init(rootViewController: tabBarController)
         navigation.navigationBar.translucent = false
@@ -112,11 +113,16 @@ import UIKit
     
     private func addCategory(type:CategoryFilterType, categoryList:NSArray)  {
         
-        self .adjustImageTabBarButton(filter.selectedCategory.count)
-        
         let controller : CategoryFilterViewController = CategoryFilterViewController.init(selectedCategories: filter.selectedCategory, filterType: .Hotlist, initialCategories:self.categoryList) { (selectedCategory) in
             self.filter.selectedCategory = selectedCategory
             self .adjustImageTabBarButton(selectedCategory.count)
+        }
+        
+        if filter.selectedCategory.count > 0 {
+            controller.tabBarItem.image = UIImage.init(named: "icon_unread.png")
+        }
+        else {
+            controller.tabBarItem.image = UIImage()
         }
         
         controller.tabBarItem.title = "Kategori"
@@ -126,15 +132,19 @@ import UIKit
     
     private func addShop(){
         
-        self .adjustImageTabBarButton(filter.selectedShop.count)
-
         let object:FilterObject = FilterObject();
         object.title = "Gold Merchant";
-        object.filterID = "1";
+        object.filterID = "2";
         
         let controller: FilterSwitchViewController = FilterSwitchViewController.init(items: [object], selectedObjects: filter.selectedShop) { (selectedShop) in
             self.filter.selectedShop = selectedShop
             self .adjustImageTabBarButton(selectedShop.count)
+        }
+        if filter.selectedShop.count > 0 {
+            controller.tabBarItem.image = UIImage.init(named: "icon_unread.png")
+        }
+        else {
+            controller.tabBarItem.image = UIImage()
         }
         
         controller.tabBarItem.title = "Toko";
@@ -143,27 +153,24 @@ import UIKit
     }
     
     private func addLocation(){
-        
-        self .adjustImageTabBarButton(filter.selectedLocation.count)
-
         let controller : LocationFilterViewController = LocationFilterViewController.init(selectedObjects:filter.selectedLocation) { (selectedLocation) in
             self.filter.selectedLocation = selectedLocation
             self .adjustImageTabBarButton(selectedLocation.count)
         }
-                
+        
+        if filter.selectedLocation.count > 0 {
+            controller.tabBarItem.image = UIImage.init(named: "icon_unread.png")
+        }
+        else {
+            controller.tabBarItem.image = UIImage()
+        }
+        
         controller.tabBarItem.title = "Lokasi";
 
         listControllers .append(controller)
     }
     
     private func addPrice(){
-        
-        if (Int(filter.selectedPrice.priceMax) == 0 && Int(filter.selectedPrice.priceMax) == 0 && filter.selectedPrice.priceWholesale == false){
-            self .adjustImageTabBarButton(0)
-        } else {
-            self .adjustImageTabBarButton(1)
-        }
-        
         let controller:FilterPriceViewController = FilterPriceViewController.init(price: filter.selectedPrice) { (selectedPrice) in
             self.filter.selectedPrice = selectedPrice
             if (Int(selectedPrice.priceMax) == 0 && Int(selectedPrice.priceMax) == 0 && selectedPrice.priceWholesale == false){
@@ -172,7 +179,11 @@ import UIKit
                 self .adjustImageTabBarButton(1)
             }
         }
-
+        if (Int(filter.selectedPrice.priceMax) == 0 && Int(filter.selectedPrice.priceMax) == 0 && filter.selectedPrice.priceWholesale == false){
+            controller.tabBarItem.image = UIImage()
+        } else {
+            controller.tabBarItem.image = UIImage.init(named: "icon_unread.png")
+        }
         controller.tabBarItem.title = "Harga";
 
         listControllers .append(controller)
@@ -194,7 +205,12 @@ import UIKit
             self .adjustImageTabBarButton(selectedCondition.count)
 
         }
-        
+        if filter.selectedCondition.count > 0 {
+            controller.tabBarItem.image = UIImage.init(named: "icon_unread.png")
+        }
+        else {
+            controller.tabBarItem.image = UIImage()
+        }
         controller.tabBarItem.title = "Kondisi";
 
         listControllers .append(controller)
@@ -205,12 +221,17 @@ import UIKit
         object.title = "Preorder";
         object.filterID = "1";
         
-        let controller: FilterSwitchViewController = FilterSwitchViewController.init(items: [object], selectedObjects: filter.selectedShop) { (selectedShop) in
-            self.filter.selectedShop = selectedShop
-            self .adjustImageTabBarButton(selectedShop.count)
+        let controller: FilterSwitchViewController = FilterSwitchViewController.init(items: [object], selectedObjects: filter.selectedPreorder) { (selectedPreorder) in
+            self.filter.selectedPreorder = selectedPreorder
+            self .adjustImageTabBarButton(selectedPreorder.count)
 
         }
-        
+        if filter.selectedPreorder.count > 0 {
+            controller.tabBarItem.image = UIImage.init(named: "icon_unread.png")
+        }
+        else {
+            controller.tabBarItem.image = UIImage()
+        }
         controller.tabBarItem.title = "Preorder";
 
         listControllers .append(controller)
@@ -262,7 +283,12 @@ import UIKit
             self.filter.selectedShipping = selectedShipping
             self .adjustImageTabBarButton(selectedShipping.count)
         }
-        
+        if filter.selectedShipping.count > 0 {
+            controller.tabBarItem.image = UIImage.init(named: "icon_unread.png")
+        }
+        else {
+            controller.tabBarItem.image = UIImage()
+        }
         controller.tabBarItem.title = "Pengiriman";
         listControllers .append(controller)
     }
@@ -278,14 +304,25 @@ import UIKit
         controller.enableAddEtalase = false;
         
         controller.tabBarItem.title = "Etalase";
+        if filter.selectedCategory.count > 0 {
+            controller.tabBarItem.image = UIImage.init(named: "icon_unread.png")
+        }
+        else {
+            controller.tabBarItem.image = UIImage()
+        }
         listControllers .append(controller)
     }
     
     private func adjustImageTabBarButton(dataCount:Int){
         if dataCount > 0 {
-            
-            let button : MHVerticalTabBarButton = self.tabBarController.tabBar.tabBarButtons[Int(self.tabBarController.selectedIndex)];
-            button.imageView.image = UIImage.init(named: "icon_unread.png")
+            var index : Int = Int(self.tabBarController.selectedIndex)
+            if index == Int(UInt8.max){
+                index = 0
+            }
+            if self.tabBarController.tabBar.tabBarButtons?.isEmpty == false {
+                let button : MHVerticalTabBarButton = self.tabBarController.tabBar.tabBarButtons[Int(self.tabBarController.selectedIndex)];
+                button.imageView.image = UIImage.init(named: "icon_unread.png")
+            }
         }
         else {
             var index : Int = Int(self.tabBarController.selectedIndex)
