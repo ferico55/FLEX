@@ -76,7 +76,6 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
     self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width, 1000);
     _scrollViewHeight.constant = [UIScreen mainScreen].bounds.size.height;
     
-    CGFloat borderWidth = 2.0f;
     CALayer * externalBorder = [CALayer layer];
     externalBorder.frame = CGRectMake(-1, -1, _formView.frame.size.width+2, _formView.frame.size.height+2);
     externalBorder.borderColor = [UIColor blackColor].CGColor;
@@ -144,14 +143,27 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
     [datePicker show];
 }
 - (IBAction)submitButtonTapped:(id)sender {
-    [_closeShopRequest requestActionCloseShopFromNowUntil:@"20/05/2016"
-                                                closeNote:@"asd"
-                                                onSuccess:^(CloseShopResponse *result) {
-                                                    
-                                                }
-                                                onFailure:^(NSError *error) {
-                                                    
-                                                }];
+    _centerViewType = CenterViewLoadingView;
+    if([_tutupSekarangSwitch isOn]){
+        [_closeShopRequest requestActionCloseShopFromNowUntil:[self stringFromNSDate:_dateSampaiDengan]
+                                                    closeNote:_catatanTextView.text
+                                                    onSuccess:^(CloseShopResponse *result) {
+                                                        _centerViewType = CenterViewSuccessView;
+                                                    }
+                                                    onFailure:^(NSError *error) {
+                                                        
+                                                    }];
+    }else{
+        [_closeShopRequest requestActionCloseShopFrom:[self stringFromNSDate:_dateMulaiDari]
+                                                until:[self stringFromNSDate:_dateSampaiDengan]
+                                            closeNote:_catatanTextView.text
+                                            onSuccess:^(CloseShopResponse *result) {
+            
+        }
+                                            onFailure:^(NSError *error) {
+            
+                                            }];
+    }
 }
 
 
