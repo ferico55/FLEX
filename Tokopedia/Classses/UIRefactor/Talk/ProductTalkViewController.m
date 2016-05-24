@@ -136,8 +136,7 @@
     /** init notification*/
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateTotalComment:) name:@"UpdateTotalComment" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateTalk:) name:@"UpdateTalk" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateDeletedTalk:) name:@"TokopediaDeleteInboxTalk" object:nil];
-    
+
     [self configureRestKit];
     [self loadData];
 }
@@ -189,6 +188,16 @@
 #endif
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    TalkList* list = _list[indexPath.row];
+
+    ProductTalkDetailViewController *controller = [ProductTalkDetailViewController new];
+    controller.indexPath = indexPath;
+    controller.talk = list;
+
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     TalkList *list = [_list objectAtIndex:indexPath.row];
     list.talk_product_id = _product_id;
@@ -198,12 +207,7 @@
     
     TalkCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TalkProductCellIdentifier" forIndexPath:indexPath];
     cell.delegate = self;
-    cell.selectedTalkShopID = list.talk_shop_id;
-    cell.selectedTalkUserID = [NSString stringWithFormat:@"%ld", (long)list.talk_user_id];
-    cell.selectedTalkProductID = list.talk_product_id;
-    cell.selectedTalkReputation = list.talk_user_reputation;
-    
-    [cell setTalkViewModel:list.viewModel];
+    cell.talk = list;
     
     //next page if already last cell
     NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1;
@@ -469,54 +473,6 @@
 
 
 #pragma mark - Delegate
-- (void)GeneralTalkCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath {
-    ProductTalkDetailViewController *vc = [ProductTalkDetailViewController new];
-    NSInteger row = indexpath.row;
-    TalkList *list = _list[row];
-    ReputationDetail *tempReputationDetail;
-    if(list.talk_user_reputation == nil) {
-        TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-        NSDictionary* auth = [secureStorage keychainDictionary];
-        auth = [auth mutableCopy];
-        if(auth) {
-            NSInteger userId = [[auth objectForKey:@"user_id"] integerValue];
-            if(list.talk_user_id == userId) {
-                UserAuthentificationManager *user = [UserAuthentificationManager new];
-                tempReputationDetail = user.reputation;
-            }
-        }
-    }
-    
-    NSMutableDictionary *dictData = [NSMutableDictionary new];
-    [dictData setObject:list.talk_message?:@0 forKey:TKPD_TALK_MESSAGE];
-    [dictData setObject:list.talk_user_image?:@0 forKey:TKPD_TALK_USER_IMG];
-    [dictData setObject:list.talk_create_time?:@0 forKey:TKPD_TALK_CREATE_TIME];
-    [dictData setObject:list.talk_user_name?:@0 forKey:TKPD_TALK_USER_NAME];
-    [dictData setObject:list.talk_id?:@0 forKey:TKPD_TALK_ID];
-    [dictData setObject:[NSString stringWithFormat:@"%d", list.talk_user_id] forKey:TKPD_TALK_USER_ID];
-    [dictData setObject:list.talk_total_comment?:@0 forKey:TKPD_TALK_TOTAL_COMMENT];
-    [dictData setObject:list.talk_shop_id?:@0 forKey:TKPD_TALK_SHOP_ID];
-    [dictData setObject:_product_id forKey:kTKPDDETAILPRODUCT_APIPRODUCTIDKEY];
-    [dictData setObject:[_data objectForKey:@"talk_product_status"] forKey:TKPD_TALK_PRODUCT_STATUS];
-    [dictData setObject:[_data objectForKey:@"talk_product_image"] forKey:TKPD_TALK_PRODUCT_IMAGE];
-    [dictData setObject:[_data objectForKey:@"product_name"] forKey:TKPD_TALK_PRODUCT_NAME];
-    
-    //utk notification, apabila total comment bertambah, maka list ke INDEX akan berubah pula
-    [dictData setObject:@(row)?:@0 forKey:kTKPDDETAIL_DATAINDEXKEY];
-    
-    if(list.talk_user_reputation!=nil && list.talk_user_label!=nil) {
-        [dictData setObject:list.talk_user_label forKey:TKPD_TALK_USER_LABEL];
-        [dictData setObject:list.talk_user_reputation forKey:TKPD_TALK_REPUTATION_PERCENTAGE];
-    }
-    else if(tempReputationDetail != nil){
-        [dictData setObject:@"Pengguna" forKey:TKPD_TALK_USER_LABEL];
-        [dictData setObject:tempReputationDetail forKey:TKPD_TALK_REPUTATION_PERCENTAGE];
-    }
-    
-    vc.data = dictData;
-    [self.navigationController pushViewController:vc animated:YES];
-    
-}
 
 - (id)navigationController:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath {
     return self;
@@ -563,10 +519,8 @@
     }
 }
 
-- (void)updateDeletedTalk:(NSNotification*)notification {
-    NSDictionary *userInfo = notification.userInfo;
-    NSInteger index = [[userInfo objectForKey:@"index"] integerValue];
-    
+- (void)tapToDeleteTalk:(UITableViewCell *)cell {
+    NSInteger index = [_table indexPathForCell:cell].row;
     [_list removeObjectAtIndex:index];
     [_table reloadData];
 }
@@ -652,10 +606,6 @@
 
 - (UITableView *)getTable {
     return _table;
-}
-
-- (NSMutableArray *)getTalkList {
-    return _list;
 }
 
 @end

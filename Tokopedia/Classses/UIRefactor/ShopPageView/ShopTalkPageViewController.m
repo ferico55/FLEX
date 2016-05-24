@@ -26,6 +26,7 @@
 #import "UserAuthentificationManager.h"
 #import "TalkCell.h"
 #import "ShopPageRequest.h"
+#import "ProductTalkDetailViewController.h"
 
 @interface ShopTalkPageViewController () <UITableViewDataSource,
 UITableViewDelegate,
@@ -117,11 +118,6 @@ NoResultDelegate>
 }
 
 - (void)initNotification {
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(deleteTalk:)
-                                                 name:@"TokopediaDeleteInboxTalk"
-                                               object:nil];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(updateTalkHeaderPosition:)
                                                  name:@"updateTalkHeaderPosition" object:nil];
@@ -242,18 +238,22 @@ NoResultDelegate>
     return _isNoData ? 0 : _list.count;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    TalkList *list = [_list objectAtIndex:indexPath.row];
+
+    ProductTalkDetailViewController *viewController = [ProductTalkDetailViewController new];
+    viewController.indexPath = indexPath;
+    viewController.talk = list;
+
+    [self.navigationController pushViewController:viewController animated:YES];
+}
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     TalkList *list = [_list objectAtIndex:indexPath.row];
     
     TalkCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TalkCellIdentifier" forIndexPath:indexPath];
     cell.delegate = self;
-    cell.selectedTalkShopID = list.talk_shop_id;
-    cell.selectedTalkUserID = [NSString stringWithFormat:@"%ld", (long)list.talk_user_id];
-    cell.selectedTalkProductID = list.talk_product_id;
-    cell.selectedTalkReputation = list.talk_user_reputation;
-    
-    [cell setTalkViewModel:list.viewModel];
+    cell.talk = list;
     
     //next page if already last cell
     NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1;
@@ -355,13 +355,10 @@ NoResultDelegate>
     }
 }
 
-- (void)deleteTalk:(NSNotification *)notification {
-    NSDictionary *userinfo = notification.userInfo;
-    NSInteger index = [[userinfo objectForKey:kTKPDDETAIL_DATAINDEXKEY] integerValue];
-    if(index > _list.count) return;
+- (void)tapToDeleteTalk:(UITableViewCell *)cell {
+    NSInteger index = [_table indexPathForCell:cell].row;
     [_list removeObjectAtIndex:index];
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
-    [_table deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    [_table reloadData];
 }
 
 - (void)updateTalkHeaderPosition:(NSNotification *)notification
@@ -440,7 +437,4 @@ NoResultDelegate>
     return _table;
 }
 
-- (NSMutableArray *)getTalkList {
-    return _list;
-}
 @end
