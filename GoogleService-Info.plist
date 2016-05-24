@@ -2,27 +2,29 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>TRACKING_ID</key>
-	<string>UA-9801603-16</string>
-	<key>CLIENT_ID</key>
-	<string>207058340430-6kpu936jehumnndk83l4hlk4lfb3r9g8.apps.googleusercontent.com</string>
-	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.207058340430-6kpu936jehumnndk83l4hlk4lfb3r9g8</string>
-	<key>PLIST_VERSION</key>
-	<string>1</string>
-	<key>BUNDLE_ID</key>
-	<string>com.tokopedia.Tokopedia</string>
-	<key>IS_ADS_ENABLED</key>
-	<false/>
-	<key>IS_ANALYTICS_ENABLED</key>
-	<true/>
-	<key>IS_APPINVITE_ENABLED</key>
-	<false/>
-	<key>IS_GCM_ENABLED</key>
-	<false/>
-	<key>IS_SIGNIN_ENABLED</key>
-	<true/>
-	<key>GOOGLE_APP_ID</key>
-	<string>1:207058340430:ios:55f6b8d71789b7d3</string>
+    <key>TRACKING_ID</key>
+    <string>UA-9801603-16</string>
+    <key>CLIENT_ID</key>
+    <string>781027717105-80ej97sd460pi0ea3hie21o9vn9jdpts.apps.googleusercontent.com</string>
+    <key>REVERSED_CLIENT_ID</key>
+    <string>com.googleusercontent.apps.781027717105-80ej97sd460pi0ea3hie21o9vn9jdpts</string>
+    <key>PLIST_VERSION</key>
+    <string>1</string>
+    <key>BUNDLE_ID</key>
+    <string>com.tokopedia.Tokopedia</string>
+    <key>PROJECT_ID</key>
+    <string>tokopedia-5a151</string>
+    <key>IS_ADS_ENABLED</key>
+    <false/>
+    <key>IS_ANALYTICS_ENABLED</key>
+    <true/>
+    <key>IS_APPINVITE_ENABLED</key>
+    <false/>
+    <key>IS_GCM_ENABLED</key>
+    <false/>
+    <key>IS_SIGNIN_ENABLED</key>
+    <true/>
+    <key>GOOGLE_APP_ID</key>
+    <string>1:781027717105:ios:55f6b8d71789b7d3</string>
 </dict>
 </plist>

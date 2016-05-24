@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <GooglePlus/GooglePlus.h>
+#import <GoogleSignIn/GoogleSignIn.h>
 
 @class GPPSignInButton;
 
@@ -20,7 +21,7 @@
 
 @end
 
-@interface LoginViewController : GAITrackedViewController <UITextFieldDelegate, GPPSignInDelegate>
+@interface LoginViewController : GAITrackedViewController <UITextFieldDelegate, GPPSignInDelegate, GIDSignInDelegate, GIDSignInUIDelegate>
 
 @property (strong,nonatomic) NSDictionary *data;
 @property BOOL isPresentedViewController;

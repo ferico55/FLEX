@@ -18,6 +18,7 @@
 #import "WebViewController.h"
 #import "Localytics.h"
 #import "AppsFlyerTracker.h"
+#import "ActivationRequest.h"
 
 @interface CreatePasswordViewController ()
 <
@@ -42,6 +43,7 @@
 
     RKObjectManager *_objectManagerLogin;
     RKManagedObjectRequestOperation *_requestLogin;
+    ActivationRequest *_activationRequest;
 }
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
@@ -112,8 +114,8 @@
         name = _fullName;
     } else if (_facebookUserData) {
         name = [_facebookUserData objectForKey:@"name"];
-    } else if (![_googleUser.name.givenName isEqualToString:@""]) {
-        name = [_googleUser.name.givenName stringByAppendingFormat:@" %@", _googleUser.name.familyName];
+    } else if (_gidGoogleUser) {
+        name = _gidGoogleUser.profile.name;
     }
     _fullNameTextField.text = name;
     
@@ -123,9 +125,8 @@
         email = _email;
     } else if (_facebookUserData) {
         email = [_facebookUserData objectForKey:@"email"];
-    } else if (_googleUser) {
-        GPPSignIn *signIn = [GPPSignIn sharedInstance];
-        email = signIn.userEmail;
+    } else if (_gidGoogleUser) {
+        email = _gidGoogleUser.profile.email;
     }
     _emailTextField.text = email;
     _emailTextField.enabled = NO;
@@ -159,6 +160,8 @@
     [nc addObserver:self selector:@selector(keyboardWillHide:)
                name:UIKeyboardWillHideNotification
              object:nil];
+    
+    _activationRequest = [ActivationRequest new];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -222,8 +225,10 @@
         FBSDKLoginManager *loginManager = [[FBSDKLoginManager alloc] init];
         [loginManager logOut];
         [FBSDKAccessToken setCurrentAccessToken:nil];
-        [[GPPSignIn sharedInstance] signOut];
-        [[GPPSignIn sharedInstance] disconnect];
+//        [[GPPSignIn sharedInstance] signOut];
+//        [[GPPSignIn sharedInstance] disconnect];
+        [[GIDSignIn sharedInstance] signOut];
+        [[GIDSignIn sharedInstance] disconnect];
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
     } else if ([sender isKindOfClass:[UIButton class]]) {
         UIButton *button = (UIButton *)sender;
@@ -279,7 +284,7 @@
                 StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
                 [alert show];
             } else {
-                [self request];
+                [self requestChangePassword];
             }
         }
     } else if ([sender isKindOfClass:[UISegmentedControl class]]) {
@@ -376,18 +381,21 @@
         gender = @"2";
     }
     
-    NSDictionary *parameters = @{
-                                 kTKPDREGISTER_APIACTIONKEY         : kTKPDREGISTER_APICREATE_PASSWORD_KEY,
-                                 API_NEW_PASSWORD_KEY               : _passwordTextField.text,
-                                 API_CONFIRM_PASSWORD_KEY           : _confirmPasswordTextfield.text,
-                                 API_REGISTER_TOS_KEY               : @"1",
-                                 API_MSISDN_KEY                     : _phoneNumberTextField.text,
-                                 API_BIRTHDAY_DAY_KEY               : [dataComponents objectAtIndex:0],
-                                 API_BIRTHDAY_MONTH_KEY             : [dataComponents objectAtIndex:1],
-                                 API_BIRTHDAY_YEAR_KEY              : [dataComponents objectAtIndex:2],
-                                 API_GENDER_KEY                     : gender,
-                                 API_FULL_NAME_KEY                  : _fullNameTextField.text,
-                                 };
+    NSMutableDictionary *param = [NSMutableDictionary new];
+    [param setObject:kTKPDREGISTER_APICREATE_PASSWORD_KEY forKey:kTKPDREGISTER_APIACTIONKEY];
+    [param setObject:_passwordTextField.text forKey:API_NEW_PASSWORD_KEY];
+    [param setObject:_confirmPasswordTextfield.text forKey:API_CONFIRM_PASSWORD_KEY];
+    [param setObject:@"1" forKey:API_REGISTER_TOS_KEY];
+    [param setObject:_phoneNumberTextField.text forKey:API_MSISDN_KEY];
+    [param setObject:[dataComponents objectAtIndex:0] forKey:API_BIRTHDAY_DAY_KEY];
+    [param setObject:[dataComponents objectAtIndex:1] forKey:API_BIRTHDAY_MONTH_KEY];
+    [param setObject:[dataComponents objectAtIndex:2] forKey:API_BIRTHDAY_YEAR_KEY];
+    if (![gender isEqualToString:@""]) {
+        [param setObject:gender forKey:API_GENDER_KEY];
+    }
+    [param setObject:_fullNameTextField.text forKey:API_FULL_NAME_KEY];
+    
+    NSDictionary *parameters = [NSDictionary dictionaryWithDictionary:param];
 
     NSLog(@"%@", parameters);
     NSLog(@"%@", [parameters encrypt]);
@@ -496,6 +504,179 @@
     _signupButton.layer.opacity = 1;
 }
 
+#pragma mark - Activation Request
+- (void)enableTextFields {
+    _emailTextField.enabled = NO;
+    _emailTextField.layer.opacity = 0.7;
+    
+    _passwordTextField.enabled = YES;
+    _passwordTextField.layer.opacity = 1;
+    
+    _confirmPasswordTextfield.enabled = YES;
+    _confirmPasswordTextfield.layer.opacity = 1;
+    
+    _dateOfBirthTextField.enabled = YES;
+    _dateOfBirthTextField.layer.opacity = 1;
+    
+    _phoneNumberTextField.enabled = YES;
+    _phoneNumberTextField.layer.opacity = 1;
+    
+    [_activityIndicatorView stopAnimating];
+    _activityIndicatorView.hidden = YES;
+    
+    _signupButton.enabled = YES;
+    _signupButton.layer.opacity = 1;
+}
+
+- (void)requestChangePassword {
+    _emailTextField.enabled = NO;
+    _emailTextField.layer.opacity = 0.7;
+    
+    _passwordTextField.enabled = NO;
+    _passwordTextField.layer.opacity = 0.7;
+    
+    _confirmPasswordTextfield.enabled = NO;
+    _confirmPasswordTextfield.layer.opacity = 0.7;
+    
+    _dateOfBirthTextField.enabled = NO;
+    _dateOfBirthTextField.layer.opacity = 0.7;
+    
+    _phoneNumberTextField.enabled = NO;
+    _phoneNumberTextField.layer.opacity = 0.7;
+    
+    [_activityIndicatorView startAnimating];
+    _activityIndicatorView.hidden = NO;
+    
+    _signupButton.enabled = NO;
+    _signupButton.layer.opacity = 0.7;
+    
+    NSArray *dataComponents = [_dateOfBirthTextField.text componentsSeparatedByString:@"/"];
+    
+    NSString *gender = @"";
+    if ([[_facebookUserData objectForKey:@"gender"] isEqualToString:@"male"]) {
+        gender = @"1";
+    } else if ([[_facebookUserData objectForKey:@"gender"] isEqualToString:@"female"]) {
+        gender = @"2";
+    }
+    
+    [_activationRequest requestCreatePasswordWithFullName:_fullNameTextField.text
+                                                   gender:gender
+                                              newPassword:_passwordTextField.text
+                                          confirmPassword:_confirmPasswordTextfield.text
+                                                   msisdn:_phoneNumberTextField.text
+                                             birthdayDate:[dataComponents objectAtIndex:0]
+                                            birthdayMonth:[dataComponents objectAtIndex:1]
+                                             birthdayYear:[dataComponents objectAtIndex:2]
+                                              registerTOS:@"1"
+                                                onSuccess:^(CreatePassword *result) {
+                                                    _createPassword = result;
+                                                    
+                                                    BOOL status = [_createPassword.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+                                                    if (status && [_createPassword.result.is_success boolValue]) {
+                                                        
+                                                        TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+                                                        [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_USERIDKEY];
+                                                        [secureStorage setKeychainWithValue:_fullNameTextField.text withKey:kTKPD_FULLNAMEKEY];
+                                                        [secureStorage setKeychainWithValue:@(YES) withKey:kTKPD_ISLOGINKEY];
+                                                        
+                                                        [self requestLogin];
+                                                        
+                                                    } else if (_createPassword.message_error) {
+                                                        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:_createPassword.message_error
+                                                                                                                       delegate:self];
+                                                        [alert show];
+                                                        [self enableTextFields];
+                                                    } else {
+                                                        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Registrasi gagal silahkan coba lagi."]
+                                                                                                                       delegate:self];
+                                                        [alert show];
+                                                        [self enableTextFields];
+                                                    }
+                                                    
+                                                    _signupButton.enabled = YES;
+                                                    _signupButton.layer.opacity = 1;
+                                                }
+                                                onFailure:^(NSError *errorResult) {
+                                                    [self enableTextFields];
+                                                }];
+}
+
+- (void)requestLogin {
+    [_activationRequest requestLoginWithUserEmail:_emailTextField.text?:@"0"
+                                     userPassword:_passwordTextField.text?:@"0"
+                                             uuid:@""
+                                        onSuccess:^(Login *result) {
+                                            _login = result;
+                                            
+                                            BOOL status = [_login.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+                                            if (status) {
+                                                if (_login.result.is_login) {
+                                                    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+                                                    [secureStorage setKeychainWithValue:@(_login.result.is_login) withKey:kTKPD_ISLOGINKEY];
+                                                    [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_USERIDKEY];
+                                                    [secureStorage setKeychainWithValue:_login.result.full_name withKey:kTKPD_FULLNAMEKEY];
+                                                    
+                                                    if(_login.result.user_image != nil) {
+                                                        [secureStorage setKeychainWithValue:_login.result.user_image withKey:kTKPD_USERIMAGEKEY];
+                                                    }
+                                                    
+                                                    [secureStorage setKeychainWithValue:_login.result.shop_id withKey:kTKPD_SHOPIDKEY];
+                                                    [secureStorage setKeychainWithValue:_login.result.shop_name withKey:kTKPD_SHOPNAMEKEY];
+                                                    
+                                                    if(_login.result.shop_avatar != nil) {
+                                                        [secureStorage setKeychainWithValue:_login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
+                                                    }
+                                                    
+                                                    [secureStorage setKeychainWithValue:@(_login.result.shop_is_gold) withKey:kTKPD_SHOPISGOLD];
+                                                    [secureStorage setKeychainWithValue:_login.result.msisdn_is_verified withKey:kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY];
+                                                    [secureStorage setKeychainWithValue:_login.result.msisdn_show_dialog withKey:kTKPDLOGIN_API_MSISDN_SHOW_DIALOG_KEY];
+                                                    [secureStorage setKeychainWithValue:_login.result.device_token_id?:@"" withKey:kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY];
+                                                    [secureStorage setKeychainWithValue:_login.result.shop_has_terms withKey:kTKPDLOGIN_API_HAS_TERM_KEY];
+                                                    
+                                                    [self.tabBarController setSelectedIndex:0];
+                                                    
+                                                    [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
+                                                                                                        object:nil
+                                                                                                      userInfo:nil];
+                                                    
+                                                    [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification
+                                                                                                        object:nil];
+                                                    
+                                                    [Localytics setValue:@"Yes" forProfileAttribute:@"Is Login"];
+                                                    
+                                                    NSDictionary *trackerValues;
+                                                    if (_gidGoogleUser) {
+                                                        trackerValues = @{AFEventParamRegistrationMethod : @"Google Registration"};
+                                                    } else if (_facebookUserData) {
+                                                        trackerValues = @{AFEventParamRegistrationMethod : @"Facebook Registration"};
+                                                    } else {
+                                                        trackerValues = @{};
+                                                    }
+                                                    
+                                                    [[AppsFlyerTracker sharedTracker] trackEvent:AFEventCompleteRegistration withValues:trackerValues];
+                                                    
+                                                    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                                                    
+                                                } else {
+                                                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:_login.message_error
+                                                                                                                   delegate:self];
+                                                    [alert show];
+                                                }
+                                            }
+                                            else
+                                            {
+                                                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Sign in gagal silahkan coba lagi."]
+                                                                                                               delegate:self];
+                                                [alert show];
+                                            }
+                                        }
+                                        onFailure:^(NSError *error) {
+                                            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Sign in gagal silahkan coba lagi."]
+                                                                                                           delegate:self];
+                                            [alert show];
+                                        }];
+}
+
 #pragma mark - Keyboard Notification
 
 - (void)keyboardWillShow:(NSNotification *)notification {
@@ -540,6 +721,7 @@
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
     if (textField == _dateOfBirthTextField) {
         AlertDatePickerView *datePicker = [AlertDatePickerView newview];
+        datePicker.data = @{kTKPDALERTVIEW_DATATYPEKEY:@(kTKPDALERT_DATAALERTTYPEREGISTERKEY)};
         datePicker.isSetMinimumDate = YES;
         datePicker.delegate = self;
         datePicker.tag = 12;
@@ -666,7 +848,7 @@
             [Localytics setValue:@"Yes" forProfileAttribute:@"Is Login"];
             
             NSDictionary *trackerValues;
-            if (_googleUser) {
+            if (_gidGoogleUser) {
                 trackerValues = @{AFEventParamRegistrationMethod : @"Google Registration"};
             } else if (_facebookUserData) {
                 trackerValues = @{AFEventParamRegistrationMethod : @"Facebook Registration"};

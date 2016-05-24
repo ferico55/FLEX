@@ -16,11 +16,21 @@ PODS:
   - BlocksKit/UIKit (2.2.5):
     - BlocksKit/Core
     - BlocksKit/DynamicDelegate
+  - Bolts (1.7.0):
+    - Bolts/AppLinks (= 1.7.0)
+    - Bolts/Tasks (= 1.7.0)
+  - Bolts/AppLinks (1.7.0):
+    - Bolts/Tasks
+  - Bolts/Tasks (1.7.0)
   - ComponentKit (0.14)
   - DBPrivacyHelper (0.6.3)
   - EAIntroView (2.8.3):
     - EARestrictedScrollView (~> 1.1.0)
   - EARestrictedScrollView (1.1.0)
+  - FBSDKCoreKit (4.11.0):
+    - Bolts (~> 1.7)
+  - FBSDKLoginKit (4.11.0):
+    - FBSDKCoreKit
   - FLEX (2.1.1)
   - Google/Analytics (1.2.1):
     - Google/Core
@@ -30,13 +40,26 @@ PODS:
     - GoogleNetworkingUtilities (~> 1.0)
     - GoogleSymbolUtilities (~> 1.0)
     - GoogleUtilities (~> 1.1)
+  - Google/SignIn (1.2.1):
+    - Google/Core
+    - GoogleSignIn (~> 2.0)
   - GoogleAnalytics (3.13.0)
   - GoogleAppIndexing (2.0.1)
+  - GoogleAppUtilities (1.1.0):
+    - GoogleSymbolUtilities (~> 1.0)
+  - GoogleAuthUtilities (1.0.1):
+    - GoogleNetworkingUtilities (~> 1.0)
+    - GoogleSymbolUtilities (~> 1.0)
   - GoogleInterchangeUtilities (1.1.0):
     - GoogleSymbolUtilities (~> 1.0)
   - GoogleMaps (1.10.5)
   - GoogleNetworkingUtilities (1.0.0):
     - GoogleSymbolUtilities (~> 1.0)
+  - GoogleSignIn (2.4.0):
+    - GoogleAppUtilities (~> 1.0)
+    - GoogleAuthUtilities (~> 1.0)
+    - GoogleNetworkingUtilities (~> 1.0)
+    - GoogleUtilities (~> 1.0)
   - GoogleSymbolUtilities (1.0.3)
   - GoogleTagManager (3.12.1):
     - GoogleAnalytics (~> 3.13.0)
@@ -81,8 +104,10 @@ DEPENDENCIES:
   - BlocksKit (~> 2.2.5)
   - ComponentKit (~> 0.14)
   - EAIntroView (~> 2.8.0)
+  - FBSDKLoginKit
   - FLEX (~> 2.0)
   - Google/Analytics
+  - Google/SignIn
   - GoogleAppIndexing
   - GoogleMaps
   - GoogleTagManager
@@ -100,17 +125,23 @@ SPEC CHECKSUMS:
   AFNetworking: cf8e418e16f0c9c7e5c3150d019a3c679d015018
   AppsFlyer-SDK: 185c7d471ed919e9e9a3e370ae9042476f3d6472
   BlocksKit: 7f422b971407001178d181a43b99014ea2591fe6
+  Bolts: a0058fa3b331c5a1e4402d534f2dae36dbff31e4
   ComponentKit: 11d9177b5e9940c456e7486d8f5a25c26d9ca5f2
   DBPrivacyHelper: c1e033776454dd3e16e8dcedf2e92d4d0a5e56df
   EAIntroView: e948c83e642f30010d427e643c18a6f2b529afed
   EARestrictedScrollView: b0c2a3f92fb2610bb44d71c5e4893777c89e45ef
+  FBSDKCoreKit: 686ac982723a14ec9ddb85e2f81235d7706c891b
+  FBSDKLoginKit: bade9fc78277764149ccc5bfaadbf13c83175c6a
   FLEX: 27b768fcae23a313a1eb115076d429180ca9b472
   Google: fd33b5fa40fa3aaee5176de49c873a74e3d11dce
   GoogleAnalytics: fcf1f1cad57ae1a9a53520018f0f680ceeeb8b49
   GoogleAppIndexing: aa25aeb2eed109032529e88f99fd3f512cdfc685
+  GoogleAppUtilities: 974598e8ed618c74ead33541d9caffbc3d144266
+  GoogleAuthUtilities: 049ffd3a297cdffd271451b82fd4e75304f15ef3
   GoogleInterchangeUtilities: d7f7174176fbcf9710f696f1acebad4dbd98ac03
   GoogleMaps: da51c62c338c2d9c47cdad470a0d1e0e4b8544e4
   GoogleNetworkingUtilities: 292992ab31b7b4ba32809a0e8b40e324cdfb2c0c
+  GoogleSignIn: 79929b51e6299c69f1197bbd9c7a1367d523ecd8
   GoogleSymbolUtilities: 82ad9f93d3615244b3f4ce440f5ab2515e8b4f56
   GoogleTagManager: d93ce3ea323b5989f07c7cf24a59e69ed36841b6
   GoogleUtilities: 8ed9134debe11719097881711464752900668f10

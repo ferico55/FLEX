@@ -240,11 +240,11 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     NSString *destPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
     destPath = [destPath stringByAppendingPathComponent:kTKPDSEARCH_SEARCHHISTORYPATHKEY];
     
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    if (![fileManager fileExistsAtPath:destPath]) {
-        NSString *sourcePath = [[NSBundle mainBundle] pathForResource:@"history_search" ofType:@"plist"];
-        [fileManager copyItemAtPath:sourcePath toPath:destPath error:nil];
-    }
+//    NSFileManager *fileManager = [NSFileManager defaultManager];
+//    if (![fileManager fileExistsAtPath:destPath]) {
+//        NSString *sourcePath = [[NSBundle mainBundle] pathForResource:@"history_search" ofType:@"plist"];
+//        [fileManager copyItemAtPath:sourcePath toPath:destPath error:nil];
+//    }
     
     [_historyResult writeToFile:destPath atomically:YES];
     

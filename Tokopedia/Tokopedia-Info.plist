@@ -71,6 +71,14 @@
 				<string>com.tokopedia.Tokopedia</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.781027717105-80ej97sd460pi0ea3hie21o9vn9jdpts</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1.0</string>

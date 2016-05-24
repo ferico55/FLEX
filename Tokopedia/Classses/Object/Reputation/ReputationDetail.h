@@ -21,4 +21,5 @@
 @property (nonatomic, strong) NSString *no_reputation;
 
 + (RKObjectMapping*) mapping;
+
 @end
