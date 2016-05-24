@@ -715,10 +715,10 @@ NoResultDelegate
 }
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    ManageProductList *selectedProduct = _products[alertView.tag];
     if(self.isMovingToGudang){
         if (buttonIndex == 1) {
-            ManageProductList *list = _products[alertView.tag];
-            NSString *productId = [NSString stringWithFormat:@"%d", list.product_id];
+            NSString *productId = [NSString stringWithFormat:@"%d", selectedProduct.product_id];
             [ProductRequest moveProductToWarehouse:productId
                      setCompletionBlockWithSuccess:^(ShopSettings *response) {
                          [self moveProductToWirehouse];
@@ -738,6 +738,12 @@ NoResultDelegate
             controller.isEditable = NO;
             controller.showOtherEtalase = NO;
             controller.enableAddEtalase = YES;
+            
+            EtalaseList *selectedEtalase = [EtalaseList new];
+            selectedEtalase.etalase_id = selectedProduct.product_etalase_id;
+            selectedEtalase.etalase_name = selectedProduct.product_etalase;
+            controller.initialSelectedEtalase = selectedEtalase;
+            
             [self.navigationController pushViewController:controller animated:YES];
         }
     }
