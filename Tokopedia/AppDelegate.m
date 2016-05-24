@@ -24,6 +24,7 @@
 #import <Rollout/Rollout.h>
 #import "FBTweakShakeWindow.h"
 #import <JLPermissions/JLNotificationPermission.h>
+#import <GoogleSignIn/GoogleSignIn.h>
 
 #ifdef DEBUG
 #import "FlexManager.h"
@@ -230,6 +231,8 @@
                                                               sourceApplication:sourceApplication
                                                                      annotation:annotation];
     if (shouldOpenURL) {
+        return YES;
+    } else if ([[GIDSignIn sharedInstance] handleURL:url sourceApplication:sourceApplication annotation:annotation]) {
         return YES;
     } else if ([GPPURLHandler handleURL:url sourceApplication:sourceApplication annotation:annotation]) {
         return YES;

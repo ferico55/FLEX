@@ -46,7 +46,7 @@
 #define CTagInsertReputation 2
 
 
-@interface MyReviewReputationViewController ()<TokopediaNetworkManagerDelegate, LoadingViewDelegate, MyReviewReputationDelegate, AlertRateDelegate, CMPopTipViewDelegate, SmileyDelegate, NoResultDelegate, requestLDExttensionDelegate, InboxReviewCellDelegate>
+@interface MyReviewReputationViewController ()<TokopediaNetworkManagerDelegate, LoadingViewDelegate, MyReviewReputationDelegate, AlertRateDelegate, CMPopTipViewDelegate, SmileyDelegate, NoResultDelegate, requestLDExttensionDelegate, InboxReviewCellDelegate, UISearchBarDelegate>
 @end
 
 @implementation MyReviewReputationViewController
@@ -73,6 +73,7 @@
     TAGContainer *_gtmContainer;
     NSString *baseUrl, *baseActionUrl;
     NSString *postUrl, *postActionUrl;
+    NSString *_keyword;
     
     RequestLDExtension *_requestLD;
     NavigateViewController *_navigate;
@@ -106,6 +107,7 @@
     [self configureGTM];
     _navigate = [NavigateViewController new];
     currentFilter = @"all";
+    _keyword = @"";
     page = 0;
     tableContent.allowsSelection = UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad;
     tableContent.backgroundColor = [UIColor colorWithRed:231/255.0f green:231/255.0f blue:231/255.0f alpha:1.0f];
@@ -116,55 +118,26 @@
     [tableContent addSubview:refreshControl];
     [self initNoResultView];
     
+    _searchBar.delegate = self;
+    _searchBar.showsCancelButton = NO;
+    _searchBar.layer.borderColor = [[UIColor colorWithRed:231.0/255 green:231.0/255 blue:231.0/255 alpha:1.0] CGColor];
+    [_searchBar setBackgroundImage:[UIImage new]];
+    
+    
+    
+    if ([strNav isEqualToString:@"inbox-reputation"]) {
+        _searchBar.placeholder = @"Cari Invoice / Penjual / Pembeli";
+    } else if ([strNav isEqualToString:@"inbox-reputation-my-product"]) {
+        _searchBar.placeholder = @"Cari Invoice / Pembeli";
+    } else if ([strNav isEqualToString:@"inbox-reputation-my-review"]) {
+        _searchBar.placeholder = @"Cari Invoice / Penjual";
+    }
+    
     [self loadMoreData:YES];
     
     _reviewRequest = [[ReviewRequest alloc] init];
-    [_reviewRequest requestGetInboxReputationWithNavigation:strNav
-                                                       page:@(page)
-                                                     filter:_segmentedReviewReputationViewController.getSelectedFilter
-                                                  onSuccess:^(InboxReputationResult *result) {
-                                                      if (page == 0) {
-                                                          isRefreshing = NO;
-                                                          arrList = [[NSMutableArray alloc] initWithArray:result.list];
-                                                      } else {
-                                                          [arrList addObjectsFromArray:result.list];
-                                                      }
-                                                      
-                                                      strUriNext = result.paging.uri_next;
-                                                      page = [_reviewRequest getNextPageFromUri:strUriNext];
-                                                      
-                                                      //Check any data or not
-                                                      if(arrList.count == 0) {
-                                                          if([currentFilter isEqualToString:@"all"]) {
-                                                              if([strNav isEqualToString:@"inbox-reputation-my-product"]) {
-                                                                  [_noResultView setNoResultTitle:@"Belum ada ulasan"];
-                                                              } else if([strNav isEqualToString:@"inbox-reputation-my-review"]) {
-                                                                  [_noResultView setNoResultTitle:@"Anda belum memberikan ulasan pada produk apapun"];
-                                                              } else {
-                                                                  [_noResultView setNoResultTitle:@"Belum ada ulasan"];
-                                                              }
-                                                          } else if([currentFilter isEqualToString:@"not-read"]) {
-                                                              [_noResultView setNoResultTitle:@"Anda sudah membaca semua ulasan"];
-                                                          } else if([currentFilter isEqualToString:@"not-review"]) {
-                                                              [_noResultView setNoResultTitle:@"Anda sudah memberikan ulasan"];
-                                                          }
-                                                          tableContent.tableFooterView = _noResultView;
-                                                      } else {
-                                                          [self loadMoreData:NO];
-                                                          [_noResultView removeFromSuperview];
-                                                      }
-                                                      if(tableContent.delegate == nil) {
-                                                          tableContent.delegate = self;
-                                                          tableContent.dataSource = self;
-                                                      }
-
-                                                      [self showFirstDataOnFirstShowInIpad];
-                                                      
-                                                      [tableContent reloadData];
-                                                  }
-                                                  onFailure:^(NSError *errorResult) {
-                                                      tableContent.tableFooterView = [self getLoadView].view;
-                                                  }];
+    
+    [self getInboxReputation];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -179,6 +152,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
     [tableContent reloadData];
     
     if(arrList.count > 0){
@@ -188,6 +162,14 @@
             [firstCell setSelected:YES];
         }
     }
+}
+
+- (void)viewDidLayoutSubviews {
+    CGRect screenRect = tableContent.frame;
+    CGRect frame = searchBarView.frame;
+    frame.size.width = screenRect.size.width;
+    searchBarView.frame = frame;
+    _searchBar.frame = frame;
 }
 
 /*
@@ -307,6 +289,112 @@
     return nil;
 }
 
+- (void)getInboxReputation {
+    [_reviewRequest requestGetInboxReputationWithNavigation:strNav
+                                                       page:@(page)
+                                                     filter:_segmentedReviewReputationViewController.getSelectedFilter
+                                                    keyword:_keyword
+                                                  onSuccess:^(InboxReputationResult *result) {
+                                                      if (page == 0) {
+                                                          isRefreshing = NO;
+                                                          arrList = [[NSMutableArray alloc] initWithArray:result.list];
+                                                      } else {
+                                                          [arrList addObjectsFromArray:result.list];
+                                                      }
+                                                      
+                                                      strUriNext = result.paging.uri_next;
+                                                      page = [_reviewRequest getNextPageFromUri:strUriNext];
+                                                      
+                                                      //Check any data or not
+                                                      if(arrList.count == 0) {
+                                                          if([currentFilter isEqualToString:@"all"]) {
+                                                              if([strNav isEqualToString:@"inbox-reputation-my-product"]) {
+                                                                  [_noResultView setNoResultTitle:@"Belum ada ulasan"];
+                                                              } else if([strNav isEqualToString:@"inbox-reputation-my-review"]) {
+                                                                  [_noResultView setNoResultTitle:@"Anda belum memberikan ulasan pada produk apapun"];
+                                                              } else {
+                                                                  [_noResultView setNoResultTitle:@"Belum ada ulasan"];
+                                                              }
+                                                          } else if([currentFilter isEqualToString:@"not-read"]) {
+                                                              [_noResultView setNoResultTitle:@"Anda sudah membaca semua ulasan"];
+                                                          } else if([currentFilter isEqualToString:@"not-review"]) {
+                                                              [_noResultView setNoResultTitle:@"Anda sudah memberikan ulasan"];
+                                                          }
+                                                          tableContent.tableFooterView = _noResultView;
+                                                      } else {
+                                                          [self loadMoreData:NO];
+                                                          [_noResultView removeFromSuperview];
+                                                      }
+                                                      if(tableContent.delegate == nil) {
+                                                          tableContent.delegate = self;
+                                                          tableContent.dataSource = self;
+                                                      }
+                                                      
+                                                      [self showFirstDataOnFirstShowInIpad];
+                                                      
+                                                      [tableContent reloadData];
+                                                  }
+                                                  onFailure:^(NSError *errorResult) {
+                                                      tableContent.tableFooterView = [self getLoadView].view;
+                                                  }];
+}
+
+#pragma mark - UIScrollView Delegate
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+    _keyword = searchBar.text;
+    page = 0;
+    [_searchBar resignFirstResponder];
+    [arrList removeAllObjects];
+    [tableContent reloadData];
+    [self loadMoreData:YES];
+    [self getInboxReputation];
+}
+
+- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
+    CGRect screenRect = tableContent.frame;
+    CGRect frame = searchBarView.frame;
+    frame.size.width = screenRect.size.width;
+    searchBarView.frame = frame;
+    _searchBar.frame = frame;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+    [searchBar setShowsCancelButton:YES animated:YES];
+    return YES;
+}
+
+- (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar {
+    [searchBar setShowsCancelButton:NO animated:YES];
+    return YES;
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+    [_searchBar setText:@""];
+    [_searchBar resignFirstResponder];
+    
+    _keyword = @"";
+    page = 0;
+    
+    [arrList removeAllObjects];
+    [tableContent reloadData];
+    [self loadMoreData:YES];
+    [self getInboxReputation];
+}
+
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
+    [_searchBar setShowsCancelButton:YES animated:YES];
+    
+    UITextField *searchBarTextField = nil;
+    
+    for (UIView *subView in _searchBar.subviews){
+        for (UIView *secondSubView in subView.subviews){
+            if ([secondSubView isKindOfClass:[UITextField class]])
+            {
+                searchBarTextField = (UITextField *)secondSubView;
+                break;
+            }
+        }
+    }
+    
+    searchBarTextField.enablesReturnKeyAutomatically = NO;
+}
 
 #pragma mark - UITableView Delegate and DataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -323,56 +411,7 @@
     if(arrList!=nil && arrList.count-1 == indexPath.row) {
         if (strUriNext!=nil && ![strUriNext isEqualToString:@"0"]) {
             [self loadMoreData:YES];
-            [_reviewRequest requestGetInboxReputationWithNavigation:strNav
-                                                               page:@(page)
-                                                             filter:_segmentedReviewReputationViewController.getSelectedFilter
-                                                          onSuccess:^(InboxReputationResult *result) {
-                                                              if (page == 0) {
-                                                                  isRefreshing = NO;
-                                                                  arrList = [[NSMutableArray alloc] initWithArray:result.list];
-                                                              } else {
-                                                                  [arrList addObjectsFromArray:result.list];
-                                                              }
-                                                              
-                                                              strUriNext = result.paging.uri_next;
-                                                              page = [_reviewRequest getNextPageFromUri:strUriNext];
-                                                              
-                                                              //Check any data or not
-                                                              if(arrList.count == 0) {
-                                                                  if([currentFilter isEqualToString:@"all"]){
-                                                                      if([strNav isEqualToString:@"inbox-reputation-my-product"]){
-                                                                          [_noResultView setNoResultTitle:@"Belum ada ulasan"];
-                                                                      }else if([strNav isEqualToString:@"inbox-reputation-my-review"]){
-                                                                          [_noResultView setNoResultTitle:@"Anda belum memberikan ulasan pada produk apapun"];
-                                                                      }else{
-                                                                          [_noResultView setNoResultTitle:@"Belum ada ulasan"];
-                                                                      }
-                                                                  }else if([currentFilter isEqualToString:@"not-read"]){
-                                                                      [_noResultView setNoResultTitle:@"Anda sudah membaca semua ulasan"];
-                                                                  }else if([currentFilter isEqualToString:@"not-review"]){
-                                                                      [_noResultView setNoResultTitle:@"Anda sudah memberikan ulasan"];
-                                                                  }
-                                                                  tableContent.tableFooterView = _noResultView;
-                                                              }
-                                                              else{
-                                                                  [self loadMoreData:NO];
-                                                                  [_noResultView removeFromSuperview];
-                                                              }
-                                                              if(tableContent.delegate == nil) {
-                                                                  tableContent.delegate = self;
-                                                                  tableContent.dataSource = self;
-                                                              }
-                                                              
-                                                              [self showFirstDataOnFirstShowInIpad];
-                                                              
-                                                              [tableContent reloadData];
-                                                              
-//                                                              UITableViewCell *firstCell = [tableContent cellForRowAtIndexPath:indexPath];
-//                                                              [firstCell setSelected:YES];
-                                                          }
-                                                          onFailure:^(NSError *errorResult) {
-                                                              tableContent.tableFooterView = [self getLoadView].view;
-                                                          }];
+            [self getInboxReputation];
         }
     }
 }
@@ -776,53 +815,7 @@
 - (void)pressRetryButton
 {
     [self loadMoreData:YES];
-    [_reviewRequest requestGetInboxReputationWithNavigation:strNav
-                                                       page:@(page)
-                                                     filter:_segmentedReviewReputationViewController.getSelectedFilter
-                                                  onSuccess:^(InboxReputationResult *result) {
-                                                      if (page == 0) {
-                                                          isRefreshing = NO;
-                                                          arrList = [[NSMutableArray alloc] initWithArray:result.list];
-                                                      } else {
-                                                          [arrList addObjectsFromArray:result.list];
-                                                      }
-                                                      
-                                                      strUriNext = result.paging.uri_next;
-                                                      page = [_reviewRequest getNextPageFromUri:strUriNext];
-                                                      
-                                                      //Check any data or not
-                                                      if(arrList.count == 0) {
-                                                          if([currentFilter isEqualToString:@"all"]){
-                                                              if([strNav isEqualToString:@"inbox-reputation-my-product"]){
-                                                                  [_noResultView setNoResultTitle:@"Belum ada ulasan"];
-                                                              }else if([strNav isEqualToString:@"inbox-reputation-my-review"]){
-                                                                  [_noResultView setNoResultTitle:@"Anda belum memberikan ulasan pada produk apapun"];
-                                                              }else{
-                                                                  [_noResultView setNoResultTitle:@"Belum ada ulasan"];
-                                                              }
-                                                          }else if([currentFilter isEqualToString:@"not-read"]){
-                                                              [_noResultView setNoResultTitle:@"Anda sudah membaca semua ulasan"];
-                                                          }else if([currentFilter isEqualToString:@"not-review"]){
-                                                              [_noResultView setNoResultTitle:@"Anda sudah memberikan ulasan"];
-                                                          }
-                                                          tableContent.tableFooterView = _noResultView;
-                                                      }
-                                                      else{
-                                                          [self loadMoreData:NO];
-                                                          [_noResultView removeFromSuperview];
-                                                      }
-                                                      if(tableContent.delegate == nil) {
-                                                          tableContent.delegate = self;
-                                                          tableContent.dataSource = self;
-                                                      }
-                                                      
-                                                      [self showFirstDataOnFirstShowInIpad];
-                                                      
-                                                      [tableContent reloadData];
-                                                  }
-                                                  onFailure:^(NSError *errorResult) {
-                                                      tableContent.tableFooterView = [self getLoadView].view;
-                                                  }];
+    [self getInboxReputation];
 }
 
 #pragma mark - Action
@@ -834,53 +827,7 @@
     [arrList removeAllObjects];
     [tableContent reloadData];
     [self loadMoreData:YES];
-    [_reviewRequest requestGetInboxReputationWithNavigation:strNav
-                                                       page:@(page)
-                                                     filter:_segmentedReviewReputationViewController.getSelectedFilter
-                                                  onSuccess:^(InboxReputationResult *result) {
-                                                      if (page == 0) {
-                                                          isRefreshing = NO;
-                                                          arrList = [[NSMutableArray alloc] initWithArray:result.list];
-                                                      } else {
-                                                          [arrList addObjectsFromArray:result.list];
-                                                      }
-                                                      
-                                                      strUriNext = result.paging.uri_next;
-                                                      page = [_reviewRequest getNextPageFromUri:strUriNext];
-                                                      
-                                                      //Check any data or not
-                                                      if(arrList.count == 0) {
-                                                          if([currentFilter isEqualToString:@"all"]){
-                                                              if([strNav isEqualToString:@"inbox-reputation-my-product"]){
-                                                                  [_noResultView setNoResultTitle:@"Belum ada ulasan"];
-                                                              }else if([strNav isEqualToString:@"inbox-reputation-my-review"]){
-                                                                  [_noResultView setNoResultTitle:@"Anda belum memberikan ulasan pada produk apapun"];
-                                                              }else{
-                                                                  [_noResultView setNoResultTitle:@"Belum ada ulasan"];
-                                                              }
-                                                          }else if([currentFilter isEqualToString:@"not-read"]){
-                                                              [_noResultView setNoResultTitle:@"Anda sudah membaca semua ulasan"];
-                                                          }else if([currentFilter isEqualToString:@"not-review"]){
-                                                              [_noResultView setNoResultTitle:@"Anda sudah memberikan ulasan"];
-                                                          }
-                                                          tableContent.tableFooterView = _noResultView;
-                                                      }
-                                                      else{
-                                                          [self loadMoreData:NO];
-                                                          [_noResultView removeFromSuperview];
-                                                      }
-                                                      if(tableContent.delegate == nil) {
-                                                          tableContent.delegate = self;
-                                                          tableContent.dataSource = self;
-                                                      }
-                                                      
-                                                      [self showFirstDataOnFirstShowInIpad];
-                                                      
-                                                      [tableContent reloadData];
-                                                  }
-                                                  onFailure:^(NSError *errorResult) {
-                                                      tableContent.tableFooterView = [self getLoadView].view;
-                                                  }];
+    [self getInboxReputation];
 }
 
 - (void)actionBelumDibaca:(id)sender {
@@ -891,53 +838,7 @@
     [arrList removeAllObjects];
     [tableContent reloadData];
     [self loadMoreData:YES];
-    [_reviewRequest requestGetInboxReputationWithNavigation:strNav
-                                                       page:@(page)
-                                                     filter:_segmentedReviewReputationViewController.getSelectedFilter
-                                                  onSuccess:^(InboxReputationResult *result) {
-                                                      if (page == 0) {
-                                                          isRefreshing = NO;
-                                                          arrList = [[NSMutableArray alloc] initWithArray:result.list];
-                                                      } else {
-                                                          [arrList addObjectsFromArray:result.list];
-                                                      }
-                                                      
-                                                      strUriNext = result.paging.uri_next;
-                                                      page = [_reviewRequest getNextPageFromUri:strUriNext];
-                                                      
-                                                      //Check any data or not
-                                                      if(arrList.count == 0) {
-                                                          if([currentFilter isEqualToString:@"all"]){
-                                                              if([strNav isEqualToString:@"inbox-reputation-my-product"]){
-                                                                  [_noResultView setNoResultTitle:@"Belum ada ulasan"];
-                                                              }else if([strNav isEqualToString:@"inbox-reputation-my-review"]){
-                                                                  [_noResultView setNoResultTitle:@"Anda belum memberikan ulasan pada produk apapun"];
-                                                              }else{
-                                                                  [_noResultView setNoResultTitle:@"Belum ada ulasan"];
-                                                              }
-                                                          }else if([currentFilter isEqualToString:@"not-read"]){
-                                                              [_noResultView setNoResultTitle:@"Anda sudah membaca semua ulasan"];
-                                                          }else if([currentFilter isEqualToString:@"not-review"]){
-                                                              [_noResultView setNoResultTitle:@"Anda sudah memberikan ulasan"];
-                                                          }
-                                                          tableContent.tableFooterView = _noResultView;
-                                                      }
-                                                      else{
-                                                          [self loadMoreData:NO];
-                                                          [_noResultView removeFromSuperview];
-                                                      }
-                                                      if(tableContent.delegate == nil) {
-                                                          tableContent.delegate = self;
-                                                          tableContent.dataSource = self;
-                                                      }
-                                                      
-                                                      [self showFirstDataOnFirstShowInIpad];
-                                                      
-                                                      [tableContent reloadData];
-                                                  }
-                                                  onFailure:^(NSError *errorResult) {
-                                                      tableContent.tableFooterView = [self getLoadView].view;
-                                                  }];
+    [self getInboxReputation];
 }
 
 - (void)actionBelumDireview:(id)sender {
@@ -948,53 +849,7 @@
     [arrList removeAllObjects];
     [tableContent reloadData];
     [self loadMoreData:YES];
-    [_reviewRequest requestGetInboxReputationWithNavigation:strNav
-                                                       page:@(page)
-                                                     filter:_segmentedReviewReputationViewController.getSelectedFilter
-                                                  onSuccess:^(InboxReputationResult *result) {
-                                                      if (page == 0) {
-                                                          isRefreshing = NO;
-                                                          arrList = [[NSMutableArray alloc] initWithArray:result.list];
-                                                      } else {
-                                                          [arrList addObjectsFromArray:result.list];
-                                                      }
-                                                      
-                                                      strUriNext = result.paging.uri_next;
-                                                      page = [_reviewRequest getNextPageFromUri:strUriNext];
-                                                      
-                                                      //Check any data or not
-                                                      if(arrList.count == 0) {
-                                                          if([currentFilter isEqualToString:@"all"]){
-                                                              if([strNav isEqualToString:@"inbox-reputation-my-product"]){
-                                                                  [_noResultView setNoResultTitle:@"Belum ada ulasan"];
-                                                              }else if([strNav isEqualToString:@"inbox-reputation-my-review"]){
-                                                                  [_noResultView setNoResultTitle:@"Anda belum memberikan ulasan pada produk apapun"];
-                                                              }else{
-                                                                  [_noResultView setNoResultTitle:@"Belum ada ulasan"];
-                                                              }
-                                                          }else if([currentFilter isEqualToString:@"not-read"]){
-                                                              [_noResultView setNoResultTitle:@"Anda sudah membaca semua ulasan"];
-                                                          }else if([currentFilter isEqualToString:@"not-review"]){
-                                                              [_noResultView setNoResultTitle:@"Anda sudah memberikan ulasan"];
-                                                          }
-                                                          tableContent.tableFooterView = _noResultView;
-                                                      }
-                                                      else{
-                                                          [self loadMoreData:NO];
-                                                          [_noResultView removeFromSuperview];
-                                                      }
-                                                      if(tableContent.delegate == nil) {
-                                                          tableContent.delegate = self;
-                                                          tableContent.dataSource = self;
-                                                      }
-                                                      
-                                                      [self showFirstDataOnFirstShowInIpad];
-                                                      
-                                                      [tableContent reloadData];
-                                                  }
-                                                  onFailure:^(NSError *errorResult) {
-                                                      tableContent.tableFooterView = [self getLoadView].view;
-                                                  }];
+    [self getInboxReputation];
 }
 
 #pragma mark - Inbox Review Cell Delegate

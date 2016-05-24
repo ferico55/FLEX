@@ -593,8 +593,8 @@
         //[productReputationCell.getBtnLike setImage:[UIImage imageNamed:@"loading-icon.gif"] forState:UIControlStateNormal];
         if(_strLikeStatus == nil || [_strLikeStatus isEqualToString:@"3"] || [_strLikeStatus isEqualToString:@"2"]){
             [reviewRequest actionLikeWithReviewId:_detailReputationReview.review_id
-                                           shopId:_detailReputationReview.shop_id
-                                        productId:_detailReputationReview.product_id
+                                           shopId:_detailReputationReview.shop_id?:_detailReputationReview.review_shop_id
+                                        productId:_detailReputationReview.product_id?:_detailReputationReview.review_product_id
                                            userId:[auth objectForKey:@"user_id"]
                                         onSuccess:^(LikeDislikePostResult *likeDislikePostResult) {
                                             
@@ -614,8 +614,8 @@
                                         }];
         }else{
             [reviewRequest actionCancelLikeDislikeWithReviewId:_detailReputationReview.review_id
-                                                        shopId:_detailReputationReview.shop_id
-                                                     productId:_detailReputationReview.product_id
+                                                        shopId:_detailReputationReview.shop_id?:_detailReputationReview.review_shop_id
+                                                     productId:_detailReputationReview.product_id?:_detailReputationReview.review_product_id
                                                         userId:[auth objectForKey:@"user_id"]
                                                      onSuccess:^(LikeDislikePostResult *likeDislikePostResult) {
                                                          if([likeDislikePostResult.is_success isEqualToString:@"1"]){
@@ -647,8 +647,8 @@
         //[productReputationCell.getBtnDisLike setImage:[UIImage imageNamed:@"loading-icon.gif"] forState:UIControlStateNormal];
         if(_strLikeStatus == nil || [_strLikeStatus isEqualToString:@"3"] || [_strLikeStatus isEqualToString:@"1"]){
             [reviewRequest actionDislikeWithReviewId:_detailReputationReview.review_id
-                                              shopId:_detailReputationReview.shop_id
-                                           productId:_detailReputationReview.product_id
+                                              shopId:_detailReputationReview.shop_id?:_detailReputationReview.review_shop_id
+                                           productId:_detailReputationReview.product_id?:_detailReputationReview.review_product_id
                                               userId:[auth objectForKey:@"user_id"]
                                            onSuccess:^(LikeDislikePostResult *likeDislikePostResult) {
                                                if([likeDislikePostResult.is_success isEqualToString:@"1"]){
@@ -667,8 +667,8 @@
                                            }];
         }else{
             [reviewRequest actionCancelLikeDislikeWithReviewId:_detailReputationReview.review_id
-                                                        shopId:_detailReputationReview.shop_id
-                                                     productId:_detailReputationReview.product_id
+                                                        shopId:_detailReputationReview.shop_id?:_detailReputationReview.review_shop_id
+                                                     productId:_detailReputationReview.product_id?:_detailReputationReview.review_product_id
                                                         userId:[auth objectForKey:@"user_id"]
                                                      onSuccess:^(LikeDislikePostResult *likeDislikePostResult) {
                                                          if([likeDislikePostResult.is_success isEqualToString:@"1"]){

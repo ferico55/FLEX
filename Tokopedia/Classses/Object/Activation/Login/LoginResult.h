@@ -35,4 +35,6 @@
 
 @property (nonatomic, strong) ReputationDetail *user_reputation;
 
++ (RKObjectMapping *)mapping;
+
 @end

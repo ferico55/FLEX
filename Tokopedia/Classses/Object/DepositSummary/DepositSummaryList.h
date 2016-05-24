@@ -21,4 +21,6 @@
 @property (nonatomic, strong) NSString *deposit_withdraw_status;
 @property (nonatomic, strong) NSString *deposit_notes;
 
++ (RKObjectMapping*)mapping;
+
 @end
