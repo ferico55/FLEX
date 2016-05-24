@@ -918,6 +918,7 @@ static NSString const *rows = @"12";
     NSString *selectedCondition = [[_selectedFilter.selectedCondition valueForKey:@"filterID"] componentsJoinedByString:@","];
     NSString *selectedShipping = [[_selectedFilter.selectedShipping valueForKey:@"filterID"] componentsJoinedByString:@","];
     NSString *selectedCategory = [[_selectedFilter.selectedCategory valueForKey:@"categoryId"] componentsJoinedByString:@","];
+    NSString *selectedPreoder = [[_selectedFilter.selectedPreorder valueForKey:@"filterID"] componentsJoinedByString:@","];
 
      NSDictionary* param = @{
                              @"device":@"ios",
@@ -934,7 +935,8 @@ static NSString const *rows = @"12";
                              @"breadcrumb" :  [self isInitialRequest] ? @"true" : @"",
                              @"condition" : selectedCondition?:@"",
                              @"shipping" : selectedShipping?:@"",
-                             @"wholesale" : @(_selectedFilter.selectedPrice.priceWholesale)?:@""
+                             @"wholesale" : @(_selectedFilter.selectedPrice.priceWholesale)?:@"",
+                             @"preorder" : selectedPreoder?:@""
                              };
                              
      return param;
