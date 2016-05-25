@@ -180,6 +180,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     [self followAnimateZoomOut:self.unfollowButton];
     
     _unfollowNetworkManager = [TokopediaNetworkManager new];
+    _unfollowNetworkManager.isUsingHmac = YES;
 
     NSDictionary* parameter = @{
             kTKPDDETAIL_ACTIONKEY : TKPD_FOLLOW_TALK_ACTION,
@@ -188,8 +189,8 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
             @"shop_id":_talk.talk_shop_id
     };
 
-    [_unfollowNetworkManager requestWithBaseUrl:[NSString basicUrl]
-                                           path:@"action/talk.pl"
+    [_unfollowNetworkManager requestWithBaseUrl:[NSString v4Url]
+                                           path:@"/v4/action/talk/follow_product_talk.pl"
                                          method:RKRequestMethodPOST
                                       parameter:parameter
                                         mapping:[GeneralAction mapping]
