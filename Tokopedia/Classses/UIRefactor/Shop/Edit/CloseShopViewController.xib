@@ -36,6 +36,7 @@
                 <outlet property="aturJadwalTutupView" destination="YoK-M8-8fr" id="esp-BB-zeK"/>
                 <outlet property="batalButton" destination="Obd-nH-Oru" id="mmd-Y9-4hS"/>
                 <outlet property="batalView" destination="E3a-Kb-7td" id="Drv-6a-0XT"/>
+                <outlet property="bukaTokoButton" destination="tfb-Yo-C2j" id="epV-Er-5Vz"/>
                 <outlet property="catatanTextView" destination="hfV-RT-0Ig" id="wV6-mR-IUB"/>
                 <outlet property="centerView" destination="hId-2L-GU3" id="Ft5-Ds-hQ2"/>
                 <outlet property="centerViewHeight" destination="lvY-hu-DqC" id="I03-52-qDB"/>
@@ -48,11 +49,14 @@
                 <outlet property="scheduleIcon" destination="w5U-bg-4pd" id="sYg-uI-ugo"/>
                 <outlet property="scrollView" destination="ueC-zE-qsc" id="4DG-K2-Fyh"/>
                 <outlet property="scrollViewHeight" destination="XTt-QE-m6L" id="vWw-DN-i35"/>
+                <outlet property="shopScheduleDescriptionLabel" destination="soI-Np-UU5" id="RUq-Zp-3N1"/>
+                <outlet property="shopStatusIndicator" destination="cS9-O4-2Th" id="0GI-mP-r6a"/>
+                <outlet property="shopStatusLabel" destination="R1P-UM-Iko" id="bnb-Oo-cMR"/>
                 <outlet property="submitButton" destination="pyH-U8-Dd0" id="h0h-Ms-gH4"/>
                 <outlet property="successView" destination="EXq-8h-EyI" id="Pc0-d0-ADH"/>
                 <outlet property="tutupSekarangSwitch" destination="0wO-EB-Nq1" id="FaD-tQ-Mcz"/>
                 <outlet property="tutupTokoSekarangLabel" destination="ldx-tu-HVr" id="bIN-Em-m96"/>
-                <outlet property="ubahButtonCenter" destination="PqH-tt-f4z" id="ZbZ-4r-NdH"/>
+                <outlet property="ubahButtonCenter" destination="PqH-tt-f4z" id="HQi-iZ-TkM"/>
                 <outlet property="ubahButtonRight" destination="PFG-Q6-dlf" id="onC-iN-PVa"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -68,7 +72,7 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BFf-wm-KAs">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="94"/>
                             <subviews>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="cS9-O4-2Th">
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_open.png" translatesAutoresizingMaskIntoConstraints="NO" id="cS9-O4-2Th">
                                     <rect key="frame" x="8" y="12" width="70" height="70"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="70" id="YYS-0H-gEg"/>
@@ -139,6 +143,9 @@
                                     <state key="normal" title="Buka Toko">
                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
+                                    <connections>
+                                        <action selector="bukaTokoTapped:" destination="-1" eventType="touchUpInside" id="eoj-5K-oP8"/>
+                                    </connections>
                                 </button>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -327,14 +334,14 @@
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rmq-jL-cNU">
                     <rect key="frame" x="0.0" y="44" width="304" height="1"/>
-                    <color key="backgroundColor" red="0.58431372549019611" green="0.58431372549019611" blue="0.58431372549019611" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.93391817808151245" green="0.93405234813690186" blue="0.93388873338699341" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="1" id="z7g-lV-OeV"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zGy-Tp-fok">
                     <rect key="frame" x="152" y="44" width="1" height="60"/>
-                    <color key="backgroundColor" red="0.51372549019607838" green="0.51372549019607838" blue="0.51372549019607838" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.91764705879999997" green="0.91764705879999997" blue="0.91764705879999997" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="1" id="jI5-js-AQ9"/>
                         <constraint firstAttribute="height" constant="60" id="noI-p7-A9D"/>
@@ -342,7 +349,7 @@
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cJE-gU-dtu">
                     <rect key="frame" x="0.0" y="105" width="304" height="1"/>
-                    <color key="backgroundColor" red="0.4392156862745098" green="0.4392156862745098" blue="0.4392156862745098" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.91764705879999997" green="0.91764705879999997" blue="0.91764705879999997" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="1" id="Ebv-6Q-tbX"/>
                     </constraints>
@@ -377,7 +384,7 @@
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bt8-Kq-lyF">
                     <rect key="frame" x="0.0" y="206" width="304" height="1"/>
-                    <color key="backgroundColor" red="0.4392156862745098" green="0.4392156862745098" blue="0.4392156862745098" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.91764705879999997" green="0.91764705879999997" blue="0.91764705879999997" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="1" id="zIs-m4-o1s"/>
                     </constraints>
@@ -405,6 +412,9 @@
                             <state key="normal" title=" Ubah" image="icon_like.png">
                                 <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
+                            <connections>
+                                <action selector="ubahButtonCenterTapped:" destination="-1" eventType="touchUpInside" id="QB4-mT-Sh8"/>
+                            </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PFG-Q6-dlf" userLabel="Ubah">
                             <rect key="frame" x="154" y="23" width="150" height="14"/>
@@ -412,6 +422,9 @@
                             <state key="normal" title=" Ubah" image="icon_like.png">
                                 <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
+                            <connections>
+                                <action selector="ubahButtonRightTapped:" destination="-1" eventType="touchUpInside" id="eNe-aM-hkO"/>
+                            </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RmX-Yr-XuP">
                             <rect key="frame" x="0.0" y="23" width="150" height="14"/>
@@ -422,6 +435,9 @@
                             <state key="normal" title="Hapus" image="icon_view.png">
                                 <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
+                            <connections>
+                                <action selector="hapusButtonTapped:" destination="-1" eventType="touchUpInside" id="ZbR-CL-Tgw"/>
+                            </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" red="0.99963909387588501" green="1" blue="0.99975615739822388" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -441,7 +457,7 @@
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e1f-hS-Gfe">
                     <rect key="frame" x="0.0" y="267" width="304" height="1"/>
-                    <color key="backgroundColor" red="0.36470588235294116" green="0.36470588235294116" blue="0.36470588235294116" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.91764705879999997" green="0.91764705879999997" blue="0.91764705879999997" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="1" id="h5I-C8-1ls"/>
                     </constraints>
@@ -575,6 +591,7 @@
     <resources>
         <image name="ic_checkmark_green_24.png" width="24" height="24"/>
         <image name="icon_like.png" width="14" height="14"/>
+        <image name="icon_open.png" width="60" height="60"/>
         <image name="icon_view.png" width="14" height="14"/>
         <image name="loading-icon.gif" width="20" height="20"/>
     </resources>

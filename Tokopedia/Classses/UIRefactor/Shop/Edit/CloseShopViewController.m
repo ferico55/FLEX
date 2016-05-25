@@ -24,6 +24,11 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
 };
 
 @interface CloseShopViewController ()<TKPDAlertViewDelegate, UIScrollViewDelegate, UITextViewDelegate>
+@property (strong, nonatomic) IBOutlet UIButton *bukaTokoButton;
+@property (strong, nonatomic) IBOutlet UIImageView *shopStatusIndicator;
+@property (strong, nonatomic) IBOutlet UILabel *shopStatusLabel;
+@property (strong, nonatomic) IBOutlet UILabel *shopScheduleDescriptionLabel;
+
 @property (strong, nonatomic) IBOutlet UILabel *tutupTokoSekarangLabel;
 @property (strong, nonatomic) IBOutlet UIImageView *scheduleIcon;
 @property (strong, nonatomic) IBOutlet UIView *batalView;
@@ -70,6 +75,8 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
     _scheduleDetail = [ClosedScheduleDetail new];
     _scheduleDetail.close_status = CLOSE_STATUS_CLOSED;
     
+    
+    
     //self.scrollView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
     [_scrollView setScrollEnabled:YES];
     _scrollView.delegate = self;
@@ -78,7 +85,7 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
     
     CALayer * externalBorder = [CALayer layer];
     externalBorder.frame = CGRectMake(-1, -1, _formView.frame.size.width+2, _formView.frame.size.height+2);
-    externalBorder.borderColor = [UIColor blackColor].CGColor;
+    externalBorder.borderColor = [UIColor colorWithRed:0.914 green:0.914 blue:0.914 alpha:1].CGColor;
     externalBorder.borderWidth = 1.0;
     
     [_formView.layer addSublayer:externalBorder];
@@ -165,7 +172,23 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
                                             }];
     }
 }
+- (IBAction)ubahButtonCenterTapped:(id)sender {
+    
+}
 
+- (IBAction)ubahButtonRightTapped:(id)sender {
+}
+
+- (IBAction)hapusButtonTapped:(id)sender {
+}
+
+- (IBAction)bukaTokoTapped:(id)sender {
+    [_closeShopRequest requestActionOpenShopOnSuccess:^(CloseShopResponse *result) {
+        
+    } onFailure:^(NSError *error) {
+        
+    }];
+}
 
 #pragma mark - Date Picker Delegate
 -(void)alertView:(TKPDAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {    
@@ -280,25 +303,38 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
         [_tutupSekarangSwitch setHidden:NO];
         [_scheduleIcon setHidden:YES];
         [_batalView setHidden:NO];
-        _centerViewHeight.constant = CENTER_VIEW_NORMAL_HEIGHT;
         
+        //button in form footer
         [_submitButton setHidden:NO];
         [_hapusButton setHidden:YES];
         [_ubahButtonRight setHidden:YES];
         [_ubahButtonCenter setHidden:YES];
+        
+        _shopStatusLabel.text = @"Buka";
+        _shopStatusIndicator.image = [UIImage imageNamed:@"icon_open.png"];
+        _shopScheduleDescriptionLabel.text = @"Tidak ada jadwal";
+        
+        //button buka toko
+        [_bukaTokoButton setEnabled:NO];
         
     }else if(_scheduleDetail.close_status == CLOSE_STATUS_CLOSED){
         _tutupTokoSekarangLabel.text = @"JADWAL TUTUP";
         [_tutupSekarangSwitch setHidden:YES];
         [_scheduleIcon setHidden:NO];
         [_batalView setHidden:YES];
-        _centerViewHeight.constant = CENTER_VIEW_NORMAL_HEIGHT - _batalView.frame.size.height;
         
-        //button
+        //button in form footer
         [_submitButton setHidden:YES];
         [_hapusButton setHidden:YES];
         [_ubahButtonRight setHidden:YES];
         [_ubahButtonCenter setHidden:NO];
+        
+        _shopStatusLabel.text = @"Tutup";
+        _shopStatusIndicator.image = [UIImage imageNamed:@"icon_closed.png"];
+        _shopScheduleDescriptionLabel.text = [NSString stringWithFormat:@"Sampai dengan %@, 23:59 WIB", _scheduleDetail.close_end];
+        
+        //button buka toko
+        [_bukaTokoButton setEnabled:YES];
     }else{
         _tutupTokoSekarangLabel.text = @"JADWAL TUTUP";
         [_tutupSekarangSwitch setHidden:YES];
@@ -306,11 +342,18 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
         [_batalView setHidden:YES];
         _centerViewHeight.constant = CENTER_VIEW_NORMAL_HEIGHT - _batalView.frame.size.height;
         
+        //button in form footer
         [_submitButton setHidden:YES];
         [_hapusButton setHidden:NO];
         [_ubahButtonRight setHidden:NO];
         [_ubahButtonCenter setHidden:YES];
+        
+        _shopStatusLabel.text = @"Buka";
+        _shopStatusIndicator.image = [UIImage imageNamed:@"icon_open.png"];
+        _shopScheduleDescriptionLabel.text = [NSString stringWithFormat:@"Jadwal Tutup %@", _scheduleDetail.close_start];
+        
+        //button buka toko
+        [_bukaTokoButton setEnabled:NO];
     }
-
 }
 @end

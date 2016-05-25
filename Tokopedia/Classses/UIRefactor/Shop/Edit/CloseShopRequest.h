@@ -15,8 +15,7 @@
                                 onSuccess:(void (^)(CloseShopResponse*))successCallback
                                 onFailure:(void (^)(NSError *))errorCallback;
 
--(void)requestActionOpenShopWithUserId:(NSString*)shopId
-                              onSuccess:(void (^)(CloseShopResponse*))successCallback
+-(void)requestActionOpenShopOnSuccess:(void (^)(CloseShopResponse*))successCallback
                               onFailure:(void (^)(NSError *))errorCallback;
 
 -(void)requestActionCloseShopFrom:(NSString*)dateFrom

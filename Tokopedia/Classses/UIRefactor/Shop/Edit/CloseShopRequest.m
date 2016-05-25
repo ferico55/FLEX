@@ -38,7 +38,7 @@
                               }];
 }
 
--(void)requestActionOpenShopWithUserId:(NSString *)shopId onSuccess:(void (^)(CloseShopResponse *))successCallback onFailure:(void (^)(NSError *))errorCallback{
+-(void)requestActionOpenShopOnSuccess:(void (^)(CloseShopResponse *))successCallback onFailure:(void (^)(NSError *))errorCallback{
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.isUsingHmac = YES;
     [_networkManager requestWithBaseUrl:[NSString v4Url]
