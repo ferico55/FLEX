@@ -19,6 +19,7 @@ end
 platform :ios do
   before_all do
     ensure_git_status_clean
+    slack_url = "https://hooks.slack.com/services/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"
     ENV["SLACK_URL"] = "https://hooks.slack.com/services/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"
     #cocoapods
   end
