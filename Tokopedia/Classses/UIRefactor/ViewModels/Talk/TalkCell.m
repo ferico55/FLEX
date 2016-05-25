@@ -359,6 +359,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     //delete talk
     if(buttonIndex == 1) {
         _deleteNetworkManager = [TokopediaNetworkManager new];
+        _deleteNetworkManager.isUsingHmac = YES;
 
         NSDictionary *parameter = @{
                 kTKPDDETAIL_ACTIONKEY : TKPD_DELETE_TALK_ACTION,
@@ -367,8 +368,8 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
                 kTKPDDETAILSHOP_APISHOPID : _talk.talk_shop_id
         };
 
-        [_deleteNetworkManager requestWithBaseUrl:[NSString basicUrl]
-                                             path:@"action/talk.pl"
+        [_deleteNetworkManager requestWithBaseUrl:[NSString v4Url]
+                                             path:@"/v4/action/talk/delete_product_talk.pl"
                                            method:RKRequestMethodPOST
                                         parameter:parameter
                                           mapping:[GeneralAction mapping]
