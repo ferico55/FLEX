@@ -150,6 +150,7 @@
     _sendCommentNetworkManager.isUsingHmac = YES;
 
     _deleteCommentNetworkManager = [TokopediaNetworkManager new];
+    _deleteCommentNetworkManager.isUsingHmac = YES;
 
     _list = [NSMutableArray new];
 
@@ -801,8 +802,8 @@
             @"talk_id" : [_data objectForKey:@"talk_id"]
     };
 
-    [_deleteCommentNetworkManager requestWithBaseUrl:[NSString basicUrl]
-                                                path:kTKPDACTIONTALK_APIPATH
+    [_deleteCommentNetworkManager requestWithBaseUrl:[NSString v4Url]
+                                                path:@"/v4/action/talk/delete_comment_talk.pl"
                                               method:RKRequestMethodPOST
                                            parameter:param
                                              mapping:[GeneralAction mapping]
@@ -840,7 +841,7 @@
         [alert show];
     }
     
-    if ([generalaction.result.is_success isEqualToString:@"1"]) {
+    if ([generalaction.data.is_success isEqualToString:@"1"]) {
         NSArray *array =  [[NSArray alloc] initWithObjects:CStringBerhasilMenghapusKomentarDiskusi, nil];
         StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:array delegate:self];
         [stickyAlertView show];
