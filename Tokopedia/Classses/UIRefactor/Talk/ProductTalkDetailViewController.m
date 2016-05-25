@@ -147,6 +147,8 @@
     _talkCommentNetworkManager.isUsingHmac = YES;
 
     _sendCommentNetworkManager = [TokopediaNetworkManager new];
+    _sendCommentNetworkManager.isUsingHmac = YES;
+
     _deleteCommentNetworkManager = [TokopediaNetworkManager new];
 
     _list = [NSMutableArray new];
@@ -453,8 +455,8 @@
                             kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : [_data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTIDKEY]
                             };
 
-    [_sendCommentNetworkManager requestWithBaseUrl:[NSString basicUrl]
-                                              path:kTKPDACTIONTALK_APIPATH
+    [_sendCommentNetworkManager requestWithBaseUrl:[NSString v4Url]
+                                              path:@"/v4/action/talk/add_comment_talk.pl"
                                             method:RKRequestMethodPOST
                                          parameter:param
                                            mapping:[ProductTalkCommentAction mapping]
