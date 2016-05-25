@@ -78,10 +78,12 @@
     
     SearchResultViewController *vc = [SearchResultViewController new];
     vc.hidesBottomBarWhenPushed = YES;
+    vc.isFromDirectory = YES;
     vc.data =@{categoryIdKey : categoryId,categoryNameKey : categoryName, searchTypeKey:@"search_product"};
     
     SearchResultViewController *vc1 = [SearchResultViewController new];
     vc1.hidesBottomBarWhenPushed = YES;
+    vc1.isFromDirectory = YES;
     vc1.data =@{categoryIdKey : categoryId,categoryNameKey : categoryName, searchTypeKey:@"search_catalog"};
     
     SearchResultShopViewController *vc2 = [SearchResultShopViewController new];

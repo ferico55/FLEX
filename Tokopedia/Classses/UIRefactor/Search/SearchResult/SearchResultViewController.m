@@ -699,6 +699,13 @@ ImageSearchRequestDelegate
         [parameter setObject:startPerPage forKey:@"rows"];
         [parameter setObject:@(_start) forKey:@"start"];
         [parameter setObject:@"true" forKey:@"breadcrumb"];
+        if(_isFromAutoComplete){
+            [parameter setObject:@"jahe" forKey:@"source"];
+        }else if(_isFromDirectory){
+            [parameter setObject:@"directory" forKey:@"source"];
+        }else{
+            [parameter setObject:@"search" forKey:@"source"];
+        }
     }
     return parameter;
 }
@@ -718,7 +725,7 @@ ImageSearchRequestDelegate
 
 #pragma mark - requestWithBaseUrl
 - (void)requestSearch {
-    [_networkManager requestWithBaseUrl:@"https://ace.tokopedia.com"
+    [_networkManager requestWithBaseUrl:[NSString aceUrl]
                                    path:[[self pathUrls] objectForKey:[_data objectForKey:@"type"]]
                                  method:RKRequestMethodGET
                               parameter:[self getParameter]
