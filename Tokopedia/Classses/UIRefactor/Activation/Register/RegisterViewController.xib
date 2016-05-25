@@ -14,6 +14,9 @@
             <string>GothamMedium</string>
             <string>GothamMedium</string>
         </mutableArray>
+        <mutableArray key="Roboto-Medium.ttf">
+            <string>Roboto-Medium</string>
+        </mutableArray>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RegisterViewController">
@@ -237,38 +240,60 @@
                         </mask>
                     </variation>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fho-Hq-qD3" userLabel="Google View">
+                <view tag="12" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fho-Hq-qD3" userLabel="Google View">
                     <rect key="frame" x="615" y="478" width="138" height="40"/>
                     <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_google_new.png" translatesAutoresizingMaskIntoConstraints="NO" id="QHL-a8-Iq8">
-                            <rect key="frame" x="10" y="10" width="20" height="20"/>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8Eg-hs-Z5D">
+                            <rect key="frame" x="1" y="1" width="38" height="38"/>
+                            <subviews>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_google_new.png" translatesAutoresizingMaskIntoConstraints="NO" id="QHL-a8-Iq8">
+                                    <rect key="frame" x="10" y="10" width="18" height="18"/>
+                                </imageView>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="20" id="OaU-Ul-7Ql"/>
-                                <constraint firstAttribute="width" constant="20" id="dzq-Ji-dbH"/>
+                                <constraint firstAttribute="width" constant="38" id="223-XM-Ei7"/>
+                                <constraint firstAttribute="height" constant="38" id="EYf-qg-Re4"/>
+                                <constraint firstAttribute="trailing" secondItem="QHL-a8-Iq8" secondAttribute="trailing" constant="10" id="TUG-Y9-QEe"/>
+                                <constraint firstItem="QHL-a8-Iq8" firstAttribute="leading" secondItem="8Eg-hs-Z5D" secondAttribute="leading" constant="10" id="UxX-c0-KdB"/>
+                                <constraint firstItem="QHL-a8-Iq8" firstAttribute="top" secondItem="8Eg-hs-Z5D" secondAttribute="top" constant="10" id="kql-AS-4ns"/>
+                                <constraint firstAttribute="bottom" secondItem="QHL-a8-Iq8" secondAttribute="bottom" constant="10" id="rpu-HV-bzH"/>
                             </constraints>
-                        </imageView>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                    <real key="value" value="3"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sign in" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1eB-PE-g0r">
-                            <rect key="frame" x="45" y="10" width="48" height="20"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="20" id="cYA-V6-6n8"/>
-                            </constraints>
-                            <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="15"/>
-                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <rect key="frame" x="50" y="12" width="43" height="17"/>
+                            <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="14"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" red="0.86666666670000003" green="0.29411764709999999" blue="0.22352941179999999" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
+                        <constraint firstAttribute="bottom" secondItem="8Eg-hs-Z5D" secondAttribute="bottom" constant="1" id="0Gg-HT-jGc"/>
                         <constraint firstItem="1eB-PE-g0r" firstAttribute="centerY" secondItem="fho-Hq-qD3" secondAttribute="centerY" id="1Xc-j2-pS6"/>
+                        <constraint firstItem="8Eg-hs-Z5D" firstAttribute="top" secondItem="fho-Hq-qD3" secondAttribute="top" constant="1" id="9Fv-yN-zTP"/>
                         <constraint firstAttribute="height" constant="40" id="FfI-2d-0BR"/>
                         <constraint firstAttribute="width" constant="137.5" id="NkN-Xb-QUf"/>
-                        <constraint firstItem="1eB-PE-g0r" firstAttribute="centerX" secondItem="fho-Hq-qD3" secondAttribute="centerX" id="j6Z-s6-ddP"/>
-                        <constraint firstItem="QHL-a8-Iq8" firstAttribute="leading" secondItem="fho-Hq-qD3" secondAttribute="leading" constant="10" id="kor-KR-w7z"/>
-                        <constraint firstItem="1eB-PE-g0r" firstAttribute="centerY" secondItem="QHL-a8-Iq8" secondAttribute="centerY" id="uz4-QC-OwV"/>
+                        <constraint firstItem="8Eg-hs-Z5D" firstAttribute="leading" secondItem="fho-Hq-qD3" secondAttribute="leading" constant="1" id="WnR-pu-6EQ"/>
+                        <constraint firstItem="1eB-PE-g0r" firstAttribute="centerX" secondItem="fho-Hq-qD3" secondAttribute="centerX" constant="2.5" id="j6Z-s6-ddP"/>
                     </constraints>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                             <real key="value" value="3"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="color" keyPath="shadowColor">
+                            <color key="value" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="shadowOpacity">
+                            <real key="value" value="1"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="shadowRadius">
+                            <real key="value" value="1"/>
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                     <connections>

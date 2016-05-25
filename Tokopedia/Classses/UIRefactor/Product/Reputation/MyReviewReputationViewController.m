@@ -307,19 +307,24 @@
                                                       
                                                       //Check any data or not
                                                       if(arrList.count == 0) {
-                                                          if([currentFilter isEqualToString:@"all"]) {
-                                                              if([strNav isEqualToString:@"inbox-reputation-my-product"]) {
-                                                                  [_noResultView setNoResultTitle:@"Belum ada ulasan"];
-                                                              } else if([strNav isEqualToString:@"inbox-reputation-my-review"]) {
-                                                                  [_noResultView setNoResultTitle:@"Anda belum memberikan ulasan pada produk apapun"];
-                                                              } else {
-                                                                  [_noResultView setNoResultTitle:@"Belum ada ulasan"];
+                                                          if ([_keyword isEqualToString:@""]) {
+                                                              if([currentFilter isEqualToString:@"all"]) {
+                                                                  if([strNav isEqualToString:@"inbox-reputation-my-product"]) {
+                                                                      [_noResultView setNoResultTitle:@"Belum ada ulasan"];
+                                                                  } else if([strNav isEqualToString:@"inbox-reputation-my-review"]) {
+                                                                      [_noResultView setNoResultTitle:@"Anda belum memberikan ulasan pada produk apapun"];
+                                                                  } else {
+                                                                      [_noResultView setNoResultTitle:@"Belum ada ulasan"];
+                                                                  }
+                                                              } else if([currentFilter isEqualToString:@"not-read"]) {
+                                                                  [_noResultView setNoResultTitle:@"Anda sudah membaca semua ulasan"];
+                                                              } else if([currentFilter isEqualToString:@"not-review"]) {
+                                                                  [_noResultView setNoResultTitle:@"Anda sudah memberikan ulasan"];
                                                               }
-                                                          } else if([currentFilter isEqualToString:@"not-read"]) {
-                                                              [_noResultView setNoResultTitle:@"Anda sudah membaca semua ulasan"];
-                                                          } else if([currentFilter isEqualToString:@"not-review"]) {
-                                                              [_noResultView setNoResultTitle:@"Anda sudah memberikan ulasan"];
+                                                          } else {
+                                                              [_noResultView setNoResultTitle:@"Hasil pencarian tidak ditemukan"];
                                                           }
+                                                          
                                                           tableContent.tableFooterView = _noResultView;
                                                       } else {
                                                           [self loadMoreData:NO];
