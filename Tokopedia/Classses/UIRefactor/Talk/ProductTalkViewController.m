@@ -75,15 +75,7 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *productnamelabel;
 @property (weak, nonatomic) IBOutlet UILabel *pricelabel;
-
-
--(void)cancel;
--(void)configureRestKit;
--(void)loadData;
--(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation*)operation;
--(void)requestfailure:(id)object;
--(void)requestprocess:(id)object;
--(void)requesttimeout;
+@property (strong, nonatomic) TokopediaNetworkManager *networkManager;
 
 -(IBAction)tap:(id)sender;
 
@@ -105,7 +97,10 @@
 #pragma mark - View Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
+    _networkManager = [TokopediaNetworkManager new];
+    _networkManager.isUsingHmac = YES;
+
     _list = [NSMutableArray new];
     _operationQueue = [NSOperationQueue new];
     _userManager = [UserAuthentificationManager new];
@@ -137,7 +132,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateTotalComment:) name:@"UpdateTotalComment" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateTalk:) name:@"UpdateTalk" object:nil];
 
-    [self configureRestKit];
     [self loadData];
 }
 
@@ -213,7 +207,6 @@
     NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1;
     if (row == indexPath.row) {
         if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
-            [self configureRestKit];
             [self loadData];
         }
     }
@@ -268,98 +261,38 @@
     _objectmanager = nil;
 }
 
-- (void)configureRestKit {
-    // initialize RestKit
-    _objectmanager =  [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Talk class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TalkResult class]];
-    
-    RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[TalkList class]];
-    [listMapping addAttributeMappingsFromArray:@[
-                                                 TKPD_TALK_TOTAL_COMMENT,
-                                                 TKPD_TALK_USER_IMG,
-                                                 TKPD_TALK_USER_NAME,
-                                                 TKPD_TALK_ID,
-                                                 TKPD_TALK_CREATE_TIME,
-                                                 TKPD_TALK_MESSAGE,
-                                                 TKPD_TALK_FOLLOW_STATUS,
-                                                 TKPD_TALK_SHOP_ID,
-                                                 TKPD_TALK_USER_ID,
-                                                 TKPD_TALK_USER_LABEL_ID,
-                                                 TKPD_TALK_USER_LABEL,
-                                                 TKPD_TALK_OWN
-                                                 ]];
-    
-    RKObjectMapping *reviewUserReputationMapping = [RKObjectMapping mappingForClass:[ReputationDetail class]];
-    [reviewUserReputationMapping addAttributeMappingsFromArray:@[CPositivePercentage,
-                                                                 CNoReputation,
-                                                                 CNegative,
-                                                                 CNeutral,
-                                                                 CPositif]];
-
-    
-    RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
-    [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDDETAIL_APIURINEXTKEY:kTKPDDETAIL_APIURINEXTKEY}];
-    
-    // Relationship Mapping
-    [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CTalkUserReputation toKeyPath:CTalkUserReputation withMapping:reviewUserReputationMapping]];
-
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APILISTKEY toKeyPath:kTKPD_APILISTKEY withMapping:listMapping];
-    [resultMapping addPropertyMapping:listRel];
-    
-    RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIPAGINGKEY toKeyPath:kTKPDDETAIL_APIPAGINGKEY withMapping:pagingMapping];
-    [resultMapping addPropertyMapping:pageRel];
-    
-    // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDDETAILPRODUCT_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-
-    [_objectmanager addResponseDescriptor:responseDescriptorStatus];
-}
-
 - (void)loadData {
-    if (_request.isExecuting) return;
-    _requestcount++;
-    
-	NSDictionary* param = @{
-                            kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETPRODUCTTALKKEY,
-                            kTKPDDETAIL_APIPRODUCTIDKEY : [_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@(0),
-                            kTKPDDETAIL_APIPAGEKEY : @(_page)?:@1,
-                            kTKPDDETAIL_APILIMITKEY : @kTKPDDETAILDEFAULT_LIMITPAGE
-                            };
-    
+    NSDictionary* param = @{
+            kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETPRODUCTTALKKEY,
+            kTKPDDETAIL_APIPRODUCTIDKEY : [_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@(0),
+            kTKPDDETAIL_APIPAGEKEY : @(_page)?:@1,
+            kTKPDDETAIL_APILIMITKEY : @kTKPDDETAILDEFAULT_LIMITPAGE
+    };
+
     if (!_isrefreshview) {
         _table.tableFooterView = _footer;
         [_act startAnimating];
     }
-    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILPRODUCT_APIPATH parameters:[param encrypt]];
-    [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [_timer invalidate];
-        _timer = nil;
-        [_act stopAnimating];
-        _table.hidden = NO;
-        _isrefreshview = NO;
-        [_refreshControl endRefreshing];
-        [self requestsuccess:mappingResult withOperation:operation];
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [_timer invalidate];
-        _timer = nil;
-        [_act stopAnimating];
-        _table.hidden = NO;
-        _isrefreshview = NO;
-        [_refreshControl endRefreshing];
-        [self requestfailure:error];
-    }];
-    [_operationQueue addOperation:_request];
-    
-    _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+
+    [_networkManager requestWithBaseUrl:[NSString v4Url]
+                                   path:@"/v4/product/get_product_talk.pl"
+                                 method:RKRequestMethodPOST
+                              parameter:param
+                                mapping:[Talk mapping]
+                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                  [_act stopAnimating];
+                                  _table.hidden = NO;
+                                  _isrefreshview = NO;
+                                  [_refreshControl endRefreshing];
+                                  [self requestsuccess:successResult withOperation:operation];
+                              }
+                              onFailure:^(NSError *errorResult) {
+                                  [_act stopAnimating];
+                                  _table.hidden = NO;
+                                  _isrefreshview = NO;
+                                  [_refreshControl endRefreshing];
+                                  [self requestfailure:errorResult];
+                              }];
 }
 
 - (void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation *)operation {
@@ -433,7 +366,6 @@
                     NSLog(@" ==== REQUESTCOUNT %zd =====",_requestcount);
                     _table.tableFooterView = _footer;
                     [_act startAnimating];
-                    [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
                     [self performSelector:@selector(loadData) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
                 }
                 else
@@ -498,7 +430,6 @@
     
     [_table reloadData];
     /** request data **/
-    [self configureRestKit];
     [self loadData];
 }
 
