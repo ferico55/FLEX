@@ -40,6 +40,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 {
     IBOutlet NSLayoutConstraint* commentButtonTrailingToVerticalBorder;
     IBOutlet UILabel *_productNameLabel;
+    TokopediaNetworkManager *_reportNetworkManager;
 }
 
 - (void)setEnableDeepNavigation:(BOOL)enableDeepNavigation {
@@ -401,5 +402,32 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     return [_delegate getNavigationController:self];
 }
 
+- (void)didFinishWritingReportWithReviewID:(NSString *)reviewID
+                                    talkID:(NSString *)talkID
+                                    shopID:(NSString *)shopID
+                               textMessage:(NSString *)textMessage {
+    _reportNetworkManager = [TokopediaNetworkManager new];
+    _reportNetworkManager.isUsingHmac = YES;
+
+    NSDictionary *parameter = @{
+            @"action" : @"report_product_talk",
+            @"talk_id" : _talk.talk_id?:@(0),
+            @"shop_id" : _talk.talk_shop_id?:@(0),
+            @"product_id" : _talk.talk_product_id?:@(0),
+            @"text_message": textMessage
+    };
+
+    [_reportNetworkManager requestWithBaseUrl:[NSString v4Url]
+                                         path:@"/v4/action/talk/report_product_talk.pl"
+                                       method:RKRequestMethodPOST
+                                    parameter:parameter
+                                      mapping:[GeneralAction mapping]
+                                    onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+
+                                    }
+                                    onFailure:^(NSError *errorResult) {
+
+                                    }];
+}
 
 @end
