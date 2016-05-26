@@ -61,8 +61,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *pricelabel;
 @property (strong, nonatomic) TokopediaNetworkManager *networkManager;
 
--(IBAction)tap:(id)sender;
-
 @end
 
 @implementation ProductTalkViewController
@@ -135,20 +133,26 @@
         NSBundle *bundle = [NSBundle mainBundle];
         UIBarButtonItem *addButton;
         UIImage *imgadd = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:@"icon_shop_addproduct" ofType:@"png"]];
-        if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
-            UIImage * image = [imgadd imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-            addButton = [[UIBarButtonItem alloc] initWithImage:image
-                                                         style:UIBarButtonItemStylePlain
-                                                        target:self
-                                                        action:@selector(tap:)];
-        } else {
-            addButton = [[UIBarButtonItem alloc] initWithImage:imgadd style:UIBarButtonItemStylePlain
-                                                        target:self
-                                                        action:@selector(tap:)];
-        }
-        [addButton setTag:11];
+
+        UIImage * image = [imgadd imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        addButton = [[UIBarButtonItem alloc] initWithImage:image
+                                                 style:UIBarButtonItemStylePlain
+                                                target:self
+                                                action:@selector(createNewDiscussion)];
         self.navigationItem.rightBarButtonItem = addButton;
     }
+}
+
+- (void)createNewDiscussion {
+    ProductTalkFormViewController *vc = [ProductTalkFormViewController new];
+    vc.data = @{
+            kTKPDDETAIL_APIPRODUCTIDKEY:[_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@(0),
+            kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY:[_data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY]?:@(0),
+            kTKPDDETAILPRODUCT_APIIMAGESRCKEY:[_data objectForKey:kTKPDDETAILPRODUCT_APIIMAGESRCKEY]?:@(0),
+            TKPD_TALK_SHOP_ID:[_data objectForKey:TKPD_TALK_SHOP_ID]?:@(0),
+
+    };
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - Table View Data Source
@@ -190,34 +194,6 @@
     }
     
     return cell;
-}
-
-#pragma mark - View Action
-- (IBAction)tap:(id)sender {
-    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
-        UIBarButtonItem *btn = (UIBarButtonItem*)sender;
-        switch (btn.tag) {
-            case 10: {
-                [self.navigationController popViewControllerAnimated:YES];
-                break;
-            }
-            case 11 : {
-                //add new talk
-                ProductTalkFormViewController *vc = [ProductTalkFormViewController new];
-                vc.data = @{
-                            kTKPDDETAIL_APIPRODUCTIDKEY:[_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@(0),
-                            kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY:[_data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY]?:@(0),
-                            kTKPDDETAILPRODUCT_APIIMAGESRCKEY:[_data objectForKey:kTKPDDETAILPRODUCT_APIIMAGESRCKEY]?:@(0),
-                            TKPD_TALK_SHOP_ID:[_data objectForKey:TKPD_TALK_SHOP_ID]?:@(0),
-                            
-                            };
-                [self.navigationController pushViewController:vc animated:YES];
-                break;
-            }
-            default:
-                break;
-        }
-    }
 }
 
 #pragma mark - Memory Management
