@@ -272,23 +272,7 @@
 
     if([_list count] > 0) {
         _urinext =  _talk.result.paging.uri_next;
-        NSURL *url = [NSURL URLWithString:_urinext];
-        NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
-
-        NSMutableDictionary *queries = [NSMutableDictionary new];
-        [queries removeAllObjects];
-        for (NSString *keyValuePair in querry)
-        {
-            NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
-            NSString *key = [pairComponents objectAtIndex:0];
-            NSString *value = [pairComponents objectAtIndex:1];
-
-            [queries setObject:value forKey:key];
-        }
-
-        _page = [[queries objectForKey:kTKPDDETAIL_APIPAGEKEY] integerValue];
-        NSLog(@"next page : %zd", _page);
-
+        _page = [[_networkManager splitUriToPage:_urinext] integerValue];
 
         _isnodata = NO;
         [_table reloadData];
