@@ -29,12 +29,6 @@
 
 @implementation ProductTalkFormViewController {
     UIRefreshControl *_refreshControl;
-    __weak RKObjectManager *_objectmanager;
-    __weak RKManagedObjectRequestOperation *_request;
-    
-    NSInteger _requestcount;
-    NSTimer *_timer;
-    NSOperationQueue *_operationQueue;
 
     TokopediaNetworkManager *_networkManager;
 }
@@ -79,10 +73,6 @@
     _talkfield.delegate = self;
     _talkfield.text = kTKPDMESSAGE_PLACEHOLDER;
     _talkfield.textColor = [UIColor lightGrayColor]; //optional
-    
-    _operationQueue = [NSOperationQueue new];
-    
-    
 }
 
 - (void)textViewDidBeginEditing:(UITextView *)textView
@@ -200,7 +190,6 @@
             }
             
             case 11 : {
-                if (_request.isExecuting) return;
                 if(_talkfield.text.length < 6 || [_talkfield.text isEqualToString:kTKPDMESSAGE_PLACEHOLDER]) {
                     NSArray *array = [[NSArray alloc] initWithObjects:KTKPDMESSAGE_EMPTYFORM2, nil];
                     StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
@@ -217,25 +206,6 @@
                 break;
         }
         
-    }
-    
-    if([sender isKindOfClass:[UIButton class]]) {
-        UIButton *button = (UIButton*)sender;
-        
-        switch (button.tag) {
-            case 10: {
-                
-                break;
-            }
-                
-            case 11 : {
-                if (_request.isExecuting) return;
-                [self doProductTalkForm];
-                break;
-            }
-            default:
-                break;
-        }
     }
 }
 
