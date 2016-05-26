@@ -190,7 +190,7 @@
             }
             
             case 11 : {
-                if(_talkfield.text.length < 6 || [_talkfield.text isEqualToString:kTKPDMESSAGE_PLACEHOLDER]) {
+                if(_talkfield.text.length < 5 || [_talkfield.text isEqualToString:kTKPDMESSAGE_PLACEHOLDER]) {
                     NSArray *array = [[NSArray alloc] initWithObjects:KTKPDMESSAGE_EMPTYFORM2, nil];
                     StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
                     [alert show];
