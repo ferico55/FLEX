@@ -31,6 +31,7 @@
     UIRefreshControl *_refreshControl;
 
     TokopediaNetworkManager *_networkManager;
+    UIBarButtonItem *_sendButton;
 }
 
 
@@ -56,7 +57,6 @@
     }
     
     UIBarButtonItem *barbuttonleft;
-    UIBarButtonItem *barbuttonright;
     //NSBundle* bundle = [NSBundle mainBundle];
     
     barbuttonleft = [[UIBarButtonItem alloc] initWithTitle:@"Batal" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
@@ -64,11 +64,11 @@
     [barbuttonleft setTag:10];
     self.navigationItem.leftBarButtonItem = barbuttonleft;
     
-    barbuttonright = [[UIBarButtonItem alloc] initWithTitle:@"Kirim" style:UIBarButtonItemStyleDone target:(self) action:@selector(tap:)];
-    [barbuttonright setTintColor:[UIColor whiteColor]];
-    [barbuttonright setTag:11];
+    _sendButton = [[UIBarButtonItem alloc] initWithTitle:@"Kirim" style:UIBarButtonItemStyleDone target:(self) action:@selector(tap:)];
+    [_sendButton setTintColor:[UIColor whiteColor]];
+    [_sendButton setTag:11];
     
-    self.navigationItem.rightBarButtonItem = barbuttonright;
+    self.navigationItem.rightBarButtonItem = _sendButton;
     
     _talkfield.delegate = self;
     _talkfield.text = kTKPDMESSAGE_PLACEHOLDER;
@@ -123,6 +123,8 @@
 }
 
 -(void)doProductTalkForm {
+    _sendButton.enabled = NO;
+
     NSDictionary* param = @{
                             kTKPDTALK_TALKMESSAGE:_talkfield.text,
                             kTKPDMESSAGE_PRODUCTIDKEY:[_data objectForKey:kTKPDMESSAGE_PRODUCTIDKEY]
@@ -136,9 +138,10 @@
                               onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                   [self requestsuccess:successResult withOperation:operation];
                                   [_refreshControl endRefreshing];
+                                  _sendButton.enabled = YES;
                               }
                               onFailure:^(NSError *errorResult) {
-
+                                  _sendButton.enabled = YES;
                               }];
 }
 
