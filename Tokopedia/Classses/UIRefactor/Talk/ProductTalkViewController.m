@@ -246,7 +246,7 @@
 
     [_networkManager requestWithBaseUrl:[NSString v4Url]
                                    path:@"/v4/product/get_product_talk.pl"
-                                 method:RKRequestMethodPOST
+                                 method:RKRequestMethodGET
                               parameter:param
                                 mapping:[Talk mapping]
                               onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
