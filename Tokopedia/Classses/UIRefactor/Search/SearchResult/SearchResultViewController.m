@@ -144,6 +144,7 @@ ImageSearchRequestDelegate
     BOOL _isFailRequest;
     
     NSIndexPath *_sortIndexPath;
+    NSArray *_initialBreadcrumb;
 }
 
 #pragma mark - Initialization
@@ -556,17 +557,30 @@ ImageSearchRequestDelegate
         case 11:
         {
             // Action Filter Button
-            FilterViewController *vc = [FilterViewController new];
-            if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY])
-                vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPEPRODUCTVIEWKEY),
-                            kTKPDFILTER_DATAFILTERKEY: _params
-                            };
-            else
-                vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPECATALOGVIEWKEY),
-                            kTKPDFILTER_DATAFILTERKEY: _params};
-            vc.delegate = self;
-            UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
-            [self.navigationController presentViewController:nav animated:YES completion:nil];
+            FilterType *type = [FilterType new];
+            FilterController *controller =
+            [[FilterController alloc] initWithCategoryType:0
+                                              categoryList:_initialBreadcrumb
+                                                   filters:@[type.Category, type.Shop, type.Location, type.Price, type.shipment, type. Condition, type.preorder]
+                                            selectedFilter:[QueryObject new]
+                                               presentedVC:self
+                                              onCompletion:^(QueryObject * filter) {
+                                                  
+//                                                  _selectedFilter = filter;
+//                                                  [self refreshView:nil];
+                                                  
+                                              }];
+//            FilterViewController *vc = [FilterViewController new];
+//            if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY])
+//                vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPEPRODUCTVIEWKEY),
+//                            kTKPDFILTER_DATAFILTERKEY: _params
+//                            };
+//            else
+//                vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPECATALOGVIEWKEY),
+//                            kTKPDFILTER_DATAFILTERKEY: _params};
+//            vc.delegate = self;
+//            UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
+//            [self.navigationController presentViewController:nav animated:YES completion:nil];
             break;
         }
         case 12:
@@ -718,7 +732,7 @@ ImageSearchRequestDelegate
 
 #pragma mark - requestWithBaseUrl
 - (void)requestSearch {
-    [_networkManager requestWithBaseUrl:@"https://ace.tokopedia.com"
+    [_networkManager requestWithBaseUrl:[NSString aceUrl]
                                    path:[[self pathUrls] objectForKey:[_data objectForKey:@"type"]]
                                  method:RKRequestMethodGET
                               parameter:[self getParameter]
@@ -733,7 +747,7 @@ ImageSearchRequestDelegate
     NSDictionary *pathDictionary = @{
                                      @"search_catalog" : @"/search/v1/catalog",
                                      @"search_shop" : @"/search/v1/shop",
-                                     @"search_product" : @"/search/v1/product"
+                                     @"search_product" : @"/search/v2.1/product"
                                      };
     return pathDictionary;
 }
@@ -819,6 +833,7 @@ ImageSearchRequestDelegate
     
     [self reloadView];
     
+    _initialBreadcrumb = search.result.breadcrumb;
     if ([_delegate respondsToSelector:@selector(updateCategories:)]) {
         [_delegate updateCategories:search.result.breadcrumb];
     }
