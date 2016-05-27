@@ -33,6 +33,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 @interface TalkCell ()
 
 @property (strong, nonatomic) NSDictionary *messageAttribute;
+@property (strong, nonatomic) ReportViewController *reportController;
 
 @end
 
@@ -238,7 +239,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 }
 
 - (void)tapToReport {
-    ReportViewController *_reportController = [ReportViewController new];
+    _reportController = [ReportViewController new];
     _reportController.delegate = self;
 
     _reportController.strProductID = _talk.talk_product_id;
@@ -423,7 +424,21 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
                                     parameter:parameter
                                       mapping:[GeneralAction mapping]
                                     onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                        [_reportController.navigationController popViewControllerAnimated:YES];
 
+                                        GeneralAction *action = successResult.dictionary[@""];
+
+                                        if (action.data.is_success.boolValue) {
+                                            StickyAlertView *alertView = [[StickyAlertView alloc] initWithSuccessMessages:@[SUCCESS_REPORT_TALK]
+                                                                                                                 delegate:_reportController];
+
+                                            [alertView show];
+                                        } else {
+                                            StickyAlertView *alertView = [[StickyAlertView alloc] initWithErrorMessages:action.message_error
+                                                                                                               delegate:_reportController];
+
+                                            [alertView show];
+                                        }
                                     }
                                     onFailure:^(NSError *errorResult) {
 

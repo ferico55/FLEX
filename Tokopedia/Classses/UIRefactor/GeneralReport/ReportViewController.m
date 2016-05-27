@@ -182,7 +182,7 @@
                                                talkID:_strCommentTalkID
                                                shopID:_strShopID
                                           textMessage:_messageTextView.text];
-        [self.navigationController popViewControllerAnimated:YES];
+//        [self.navigationController popViewControllerAnimated:YES];
     } else {
         if(_request.isExecuting)return;
         
