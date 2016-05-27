@@ -2233,6 +2233,9 @@
 		45D9BED71CD0C3E000302E4A /* FilterObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D9BED11CD0C3E000302E4A /* FilterObject.swift */; };
 		45D9BED81CD0C3E000302E4A /* FilterPriceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D9BED21CD0C3E000302E4A /* FilterPriceViewController.swift */; };
 		45D9BED91CD0C3E000302E4A /* FilterTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D9BED31CD0C3E000302E4A /* FilterTableViewController.swift */; };
+		45F8E5821CF8058D00887D8E /* RequestFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F8E5811CF8058D00887D8E /* RequestFilter.swift */; };
+		45F8E5841CF8080A00887D8E /* FilterResponseObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F8E5831CF8080A00887D8E /* FilterResponseObject.swift */; };
+		45F8E5861CF8241200887D8E /* ShipmentFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F8E5851CF8241200887D8E /* ShipmentFilterViewController.swift */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
 		7ACE9C541BB00956006C4BB7 /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */; };
@@ -5648,6 +5651,9 @@
 		45D9BED11CD0C3E000302E4A /* FilterObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterObject.swift; sourceTree = "<group>"; };
 		45D9BED21CD0C3E000302E4A /* FilterPriceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterPriceViewController.swift; sourceTree = "<group>"; };
 		45D9BED31CD0C3E000302E4A /* FilterTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterTableViewController.swift; sourceTree = "<group>"; };
+		45F8E5811CF8058D00887D8E /* RequestFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestFilter.swift; sourceTree = "<group>"; };
+		45F8E5831CF8080A00887D8E /* FilterResponseObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterResponseObject.swift; sourceTree = "<group>"; };
+		45F8E5851CF8241200887D8E /* ShipmentFilterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShipmentFilterViewController.swift; sourceTree = "<group>"; };
 		4868E459AB2A65D133732296 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tokopedia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
@@ -11568,8 +11574,11 @@
 				45D9BED31CD0C3E000302E4A /* FilterTableViewController.swift */,
 				45AB6CA81CE04C77000E2F3B /* FilterSwitchViewController.swift */,
 				452C95D51CE3061D003F016D /* RequestShippingCity.swift */,
+				45F8E5811CF8058D00887D8E /* RequestFilter.swift */,
 				451E1D731CE4363D0040037E /* FilterListDataSource.swift */,
 				452C95D71CE327D9003F016D /* LocationFilterViewController.swift */,
+				45F8E5851CF8241200887D8E /* ShipmentFilterViewController.swift */,
+				45F8E5831CF8080A00887D8E /* FilterResponseObject.swift */,
 			);
 			path = FilterController;
 			sourceTree = "<group>";
@@ -13095,6 +13104,7 @@
 				455AA02F1CCF835900F07529 /* RateProduct.m in Sources */,
 				455A9F651CCF835900F07529 /* LoyaltyPointResult.m in Sources */,
 				455A9FFA1CCF835900F07529 /* Address.m in Sources */,
+				45F8E5841CF8080A00887D8E /* FilterResponseObject.swift in Sources */,
 				455A9F321CCF835900F07529 /* InboxResolutionPendingAmount.m in Sources */,
 				455A9EE01CCF835900F07529 /* CountRatingResult.m in Sources */,
 				455AA07C1CCF835900F07529 /* TxOrderPaymentEditSystemBank.m in Sources */,
@@ -13758,6 +13768,7 @@
 				455AA0391CCF835900F07529 /* TransactionAddressShippingForm.m in Sources */,
 				455A9F951CCF835900F07529 /* FavoriteShopResult.m in Sources */,
 				455A9FBF1CCF835900F07529 /* Order.m in Sources */,
+				45F8E5861CF8241200887D8E /* ShipmentFilterViewController.swift in Sources */,
 				455AA2E61CCF835900F07529 /* SearchResultShopCell.m in Sources */,
 				455AA2661CCF835900F07529 /* MedalComponent.mm in Sources */,
 				BBA2937F1CC624AB000630FB /* AppDelegate.m in Sources */,
@@ -13810,6 +13821,7 @@
 				455AA2F61CCF835900F07529 /* SettingAddressViewController.m in Sources */,
 				455AA04C1CCF835900F07529 /* TransactionEditAddressFormResult.m in Sources */,
 				455AA20F1CCF835900F07529 /* NotificationBarButton.m in Sources */,
+				45F8E5821CF8058D00887D8E /* RequestFilter.swift in Sources */,
 				455AA05B1CCF835900F07529 /* TransactionSummaryBCAParam.m in Sources */,
 				455A9E701CCF835900F07529 /* ALAsset+Date.m in Sources */,
 				455AA14C1CCF835900F07529 /* TKPDTabViewController.m in Sources */,

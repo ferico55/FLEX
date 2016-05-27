@@ -239,50 +239,11 @@ import UIKit
     
     private func addShipment(){
         
-        self .adjustImageTabBarButton(filter.selectedShipping.count)
-
-        let items:NSMutableArray = NSMutableArray();
-        let object:FilterObject = FilterObject();
-        object.title = "SiCepat";
-        object.filterID = "11";
-        items.addObject(object)
-        let object1:FilterObject = FilterObject();
-        object1.title = "JNE";
-        object1.filterID = "1";
-        items.addObject(object1)
-        let object2:FilterObject = FilterObject();
-        object2.title = "TIKI";
-        object2.filterID = "2";
-        items.addObject(object2)
-        let object3:FilterObject = FilterObject();
-        object3.title = "RPX";
-        object3.filterID = "3";
-        items.addObject(object3)
-        let object4:FilterObject = FilterObject();
-        object4.title = "Wahana";
-        object4.filterID = "6";
-        items.addObject(object4)
-        let object5:FilterObject = FilterObject();
-        object5.title = "First";
-        object5.filterID = "9";
-        items.addObject(object5)
-        let object6:FilterObject = FilterObject();
-        object6.title = "Pos Indonesia";
-        object6.filterID = "4";
-        items.addObject(object6)
-        let object7:FilterObject = FilterObject();
-        object7.title = "Cahaya";
-        object7.filterID = "7";
-        items.addObject(object7)
-        let object8:FilterObject = FilterObject();
-        object8.title = "Pandu";
-        object8.filterID = "8";
-        items.addObject(object8)
-        
-        let controller: FilterTableViewController = FilterTableViewController.init(items: items.copy() as! [FilterObject], selectedObjects: filter.selectedShipping, showSearchBar: false) { (selectedShipping) in
-            self.filter.selectedShipping = selectedShipping
-            self .adjustImageTabBarButton(selectedShipping.count)
+        let controller : ShipmentFilterViewController = ShipmentFilterViewController.init(selectedObjects: filter.selectedShipping) { (selectedShipment) in
+            self.filter.selectedShipping = selectedShipment
+            self .adjustImageTabBarButton(selectedShipment.count)
         }
+        
         if filter.selectedShipping.count > 0 {
             controller.tabBarItem.image = UIImage.init(named: "icon_unread.png")
         }

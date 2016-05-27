@@ -21,7 +21,7 @@ class FilterType: NSObject {
 }
 
 
-class FilterObject: NSObject, NSCopying {
+class FilterObject: NSObject, NSCopying, TKPObjectMapping {
     
     var filterID : NSString = "0"
     var title : NSString = ""
@@ -38,6 +38,17 @@ class FilterObject: NSObject, NSCopying {
     
     func copyWithZone(zone: NSZone) -> AnyObject {
         return self.dynamicType.init(self)
+    }
+    
+    static func attributeMappingDictionary() -> [NSObject : AnyObject]! {
+        return ["id" : "filterID", "name" : "title"]
+    }
+    
+    static func mapping() -> RKObjectMapping! {
+        let mapping : RKObjectMapping = RKObjectMapping.init(forClass: self)
+        mapping.addAttributeMappingsFromDictionary(self.attributeMappingDictionary())
+        
+        return mapping
     }
 }
 
