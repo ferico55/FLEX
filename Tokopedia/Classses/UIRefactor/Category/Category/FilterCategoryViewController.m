@@ -288,11 +288,11 @@
 #pragma mark - Tokopedia network
 
 - (NSString *)getPath:(int)tag {
-    return @"v0/categories";
+    return @"v1/categories";
 }
 
 - (NSDictionary *)getParameter:(int)tag {
-    return @{};
+    return @{@"filter":@"type==tree"};
 }
 
 - (int)getRequestMethod:(int)tag {

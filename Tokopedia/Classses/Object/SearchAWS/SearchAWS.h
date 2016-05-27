@@ -15,6 +15,6 @@
 @property (strong, nonatomic) NSString *status;
 @property (strong, nonatomic) NSString *server_process_time;
 @property (strong, nonatomic) SearchAWSResult *result;
-
+@property (strong, nonatomic) SearchAWSResult *data;
 
 @end
