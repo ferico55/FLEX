@@ -9,7 +9,7 @@
 #import "CloseShopViewController.h"
 #import "AlertDatePickerView.h"
 #import "CloseShopRequest.h"
-#define CENTER_VIEW_NORMAL_HEIGHT 330
+#define CENTER_VIEW_NORMAL_HEIGHT 305
 
 typedef NS_ENUM(NSInteger, CenterViewType){
     CenterViewAturJadwalButton,
@@ -47,6 +47,8 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
 @property (strong, nonatomic) IBOutlet UIButton *ubahButtonRight;
 @property (strong, nonatomic) IBOutlet UIButton *hapusButton;
 @property (strong, nonatomic) IBOutlet UIButton *submitButton;
+@property (strong, nonatomic) IBOutlet UIView *catatanView;
+@property (strong, nonatomic) IBOutlet UIView *sampaiDenganView;
 
 @property (strong, nonatomic) IBOutlet UIView *centerView;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *centerViewHeight;
@@ -58,6 +60,7 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
 
 @property (strong, nonatomic) IBOutlet UIView *successView;
 @property CenterViewType centerViewType;
+@property BOOL isFormEnabled;
 @end
 
 @implementation CloseShopViewController{
@@ -65,16 +68,12 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
     NSDate* _dateMulaiDari;
     NSDate* _dateSampaiDengan;
     BOOL textViewInitialValue;
+    BOOL useAnimation;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     _closeShopRequest = [CloseShopRequest new];
-    
-    //DUMMY
-    _scheduleDetail = [ClosedScheduleDetail new];
-    _scheduleDetail.close_status = CLOSE_STATUS_CLOSED;
-    
     
     
     //self.scrollView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
@@ -92,7 +91,13 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
     _formView.layer.masksToBounds = NO;
     [_tutupSekarangSwitch setOn:NO];
     
-    _centerViewType = CenterViewAturJadwalButton;
+    if(_scheduleDetail.close_status == CLOSE_STATUS_OPEN){
+        _centerViewType = CenterViewAturJadwalButton;
+        _isFormEnabled = YES;
+    }else{
+        _centerViewType = CenterViewFormView;
+        _isFormEnabled = NO;
+    }
     
     textViewInitialValue = YES;
     
@@ -100,6 +105,7 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
     [_centerView addSubview:_formView];
     [_centerView addSubview:_loadingView];
     [_centerView addSubview:_successView];
+    useAnimation = YES;
     [self adjustView];
     
 }
@@ -113,10 +119,16 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
 #pragma mark - Button Action
 - (IBAction)aturJadwalTutupButtonTapped:(id)sender {
     _centerViewType = CenterViewFormView;
+    _isFormEnabled = YES;
+    useAnimation = YES;
     [self adjustView];
 }
 - (IBAction)batalButtonTapped:(id)sender {
-    _centerViewType = CenterViewAturJadwalButton;
+    _isFormEnabled = NO;
+    if(_scheduleDetail.close_status == CLOSE_STATUS_OPEN){
+        _centerViewType = CenterViewAturJadwalButton;
+        useAnimation = YES;
+    }
     [self adjustView];
 }
 - (IBAction)tutupSekarangSwitchValueChanged:(id)sender {
@@ -173,13 +185,17 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
     }
 }
 - (IBAction)ubahButtonCenterTapped:(id)sender {
-    
+    _isFormEnabled = YES;
+    [self adjustView];
 }
 
 - (IBAction)ubahButtonRightTapped:(id)sender {
+    _isFormEnabled = YES;
+    [self adjustView];
 }
 
 - (IBAction)hapusButtonTapped:(id)sender {
+    
 }
 
 - (IBAction)bukaTokoTapped:(id)sender {
@@ -253,33 +269,32 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
         [_formView setHidden:YES];
         [_loadingView setHidden:YES];
         [_successView setHidden:YES];
+        _centerViewHeight.constant = _aturJadwalTutupView.frame.size.height;
         [_centerView bringSubviewToFront:_aturJadwalTutupView];
-        _centerViewHeight.constant = 0;
-        [UIView animateWithDuration:10
-                              delay:0
-             usingSpringWithDamping:3
-              initialSpringVelocity:0.2
-                            options:UIViewAnimationOptionCurveEaseOut
-                         animations:^
-         {
-             _centerViewHeight.constant = _aturJadwalTutupView.frame.size.height;
-         }completion:nil];
+        
+        if(useAnimation){
+            [_centerView setAlpha:0];
+            [UIView animateWithDuration:0.6f animations:^{
+                [_centerView setAlpha:1];
+            }];
+            useAnimation = NO;
+        }
+        
     }else if(_centerViewType == CenterViewFormView){
         [_aturJadwalTutupView setHidden:YES];
         [_formView setHidden:NO];
         [_loadingView setHidden:YES];
         [_successView setHidden:YES];
+        _centerViewHeight.constant = _formView.frame.size.height;
         [_centerView bringSubviewToFront:_formView];
-        _centerViewHeight.constant = 0;
-        [UIView animateWithDuration:10
-                              delay:0
-             usingSpringWithDamping:3
-              initialSpringVelocity:0.2
-                            options:UIViewAnimationOptionCurveEaseOut
-                         animations:^
-         {
-             _centerViewHeight.constant = _formView.frame.size.height;
-         }completion:nil];
+        
+        if(useAnimation){
+            [_centerView setAlpha:0];
+            [UIView animateWithDuration:0.6f animations:^{
+                [_centerView setAlpha:1];
+            }];
+            useAnimation = NO;
+        }
     }else if(_centerViewType == CenterViewLoadingView){
         [_aturJadwalTutupView setHidden:YES];
         [_formView setHidden:YES];
@@ -302,7 +317,6 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
         _tutupTokoSekarangLabel.text = @"Tutup Toko Sekarang";
         [_tutupSekarangSwitch setHidden:NO];
         [_scheduleIcon setHidden:YES];
-        [_batalView setHidden:NO];
         
         //button in form footer
         [_submitButton setHidden:NO];
@@ -321,13 +335,19 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
         _tutupTokoSekarangLabel.text = @"JADWAL TUTUP";
         [_tutupSekarangSwitch setHidden:YES];
         [_scheduleIcon setHidden:NO];
-        [_batalView setHidden:YES];
         
         //button in form footer
-        [_submitButton setHidden:YES];
-        [_hapusButton setHidden:YES];
-        [_ubahButtonRight setHidden:YES];
-        [_ubahButtonCenter setHidden:NO];
+        if(_isFormEnabled){
+            [_submitButton setHidden:NO];
+            [_hapusButton setHidden:YES];
+            [_ubahButtonRight setHidden:YES];
+            [_ubahButtonCenter setHidden:YES];
+        }else{
+            [_submitButton setHidden:YES];
+            [_hapusButton setHidden:YES];
+            [_ubahButtonRight setHidden:YES];
+            [_ubahButtonCenter setHidden:NO];
+        }
         
         _shopStatusLabel.text = @"Tutup";
         _shopStatusIndicator.image = [UIImage imageNamed:@"icon_closed.png"];
@@ -335,18 +355,27 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
         
         //button buka toko
         [_bukaTokoButton setEnabled:YES];
+        
+        [_mulaiDariButton setTitle:_scheduleDetail.close_start forState:UIControlStateNormal];
+        [_sampaiDenganButton setTitle:_scheduleDetail.close_end forState:UIControlStateNormal];
     }else{
+        //OPEN WITH CLOSE SCHEDULE
         _tutupTokoSekarangLabel.text = @"JADWAL TUTUP";
         [_tutupSekarangSwitch setHidden:YES];
         [_scheduleIcon setHidden:NO];
-        [_batalView setHidden:YES];
-        _centerViewHeight.constant = CENTER_VIEW_NORMAL_HEIGHT - _batalView.frame.size.height;
         
         //button in form footer
-        [_submitButton setHidden:YES];
-        [_hapusButton setHidden:NO];
-        [_ubahButtonRight setHidden:NO];
-        [_ubahButtonCenter setHidden:YES];
+        if(_isFormEnabled){
+            [_submitButton setHidden:YES];
+            [_hapusButton setHidden:NO];
+            [_ubahButtonRight setHidden:NO];
+            [_ubahButtonCenter setHidden:YES];
+        }else{
+            [_submitButton setHidden:YES];
+            [_hapusButton setHidden:NO];
+            [_ubahButtonRight setHidden:NO];
+            [_ubahButtonCenter setHidden:YES];
+        }
         
         _shopStatusLabel.text = @"Buka";
         _shopStatusIndicator.image = [UIImage imageNamed:@"icon_open.png"];
@@ -354,6 +383,35 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
         
         //button buka toko
         [_bukaTokoButton setEnabled:NO];
+        
+        [_mulaiDariButton setTitle:_scheduleDetail.close_start forState:UIControlStateNormal];
+        [_sampaiDenganButton setTitle:_scheduleDetail.close_end forState:UIControlStateNormal];
+    }
+    
+    //SETTING BUTTON BATAL
+    if(_isFormEnabled){
+        _centerViewHeight.constant = CENTER_VIEW_NORMAL_HEIGHT;
+        
+        [_mulaiDariButton setEnabled:YES];
+        [_sampaiDenganButton setEnabled:YES];
+        _catatanTextView.editable = YES;
+        
+        [_mulaiDariView setBackgroundColor:[UIColor colorWithRed:1 green:1 blue:1 alpha:1]];
+        [_sampaiDenganView setBackgroundColor:[UIColor colorWithRed:1 green:1 blue:1 alpha:1]];
+        [_catatanView setBackgroundColor:[UIColor colorWithRed:1 green:1 blue:1 alpha:1]];
+        [_catatanTextView setBackgroundColor:[UIColor colorWithRed:1 green:1 blue:1 alpha:1]];
+        
+    }else{
+        _centerViewHeight.constant = CENTER_VIEW_NORMAL_HEIGHT - 44;
+        
+        [_mulaiDariButton setEnabled:NO];
+        [_sampaiDenganButton setEnabled:NO];
+        _catatanTextView.editable = NO;
+        
+        [_mulaiDariView setBackgroundColor:[UIColor colorWithRed:0.968 green:0.968 blue:0.968 alpha:1]];
+        [_sampaiDenganView setBackgroundColor:[UIColor colorWithRed:0.968 green:0.968 blue:0.968 alpha:1]];
+        [_catatanView setBackgroundColor:[UIColor colorWithRed:0.968 green:0.968 blue:0.968 alpha:1]];
+        [_catatanTextView setBackgroundColor:[UIColor colorWithRed:0.968 green:0.968 blue:0.968 alpha:1]];
     }
 }
 @end
