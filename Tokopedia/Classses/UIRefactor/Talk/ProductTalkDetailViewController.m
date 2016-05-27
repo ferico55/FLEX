@@ -66,6 +66,7 @@
     TokopediaNetworkManager *_talkCommentNetworkManager;
     TokopediaNetworkManager *_sendCommentNetworkManager;
     TokopediaNetworkManager *_deleteCommentNetworkManager;
+    TokopediaNetworkManager *_reportNetworkManager;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
@@ -100,7 +101,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     
-    
+
     
     if (self) {
         _marksOpenedTalksAsRead = NO;
@@ -151,6 +152,9 @@
 
     _deleteCommentNetworkManager = [TokopediaNetworkManager new];
     _deleteCommentNetworkManager.isUsingHmac = YES;
+
+    _reportNetworkManager = [TokopediaNetworkManager new];
+    _reportNetworkManager.isUsingHmac = YES;
 
     _list = [NSMutableArray new];
 
@@ -872,6 +876,50 @@
 
 
 #pragma mark - Report Delegate
+- (void)didFinishWritingReportWithReviewID:(NSString *)reviewID
+                                    talkID:(NSString *)talkID
+                                    shopID:(NSString *)shopID
+                               textMessage:(NSString *)textMessage {
+
+    NSDictionary *parameter = @{
+            @"action" : _reportAction,
+            @"talk_id" : [_data objectForKey:kTKPDTALKCOMMENT_TALKID]?:@(0),
+            @"talk_comment_id" : [_datainput objectForKey:@"comment_id"]?:@(0),
+            @"product_id" : [_data objectForKey:@"product_id"],
+            @"text_message": textMessage
+    };
+
+    [_reportNetworkManager requestWithBaseUrl:[NSString v4Url]
+                                         path:@"/v4/action/talk/report_comment_talk.pl"
+                                       method:RKRequestMethodPOST
+                                    parameter:parameter
+                                      mapping:[GeneralAction mapping]
+                                    onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                        [self.navigationController popToViewController:self animated:YES];
+
+                                        // need to do dispatch because this view controller's window is nil until the report view controller
+                                        // is popped from navigation stack
+                                        dispatch_async(dispatch_get_main_queue(), ^{
+                                            GeneralAction *action = successResult.dictionary[@""];
+                                            if (action.data.is_success.boolValue) {
+                                                StickyAlertView *alertView = [[StickyAlertView alloc] initWithSuccessMessages:@[SUCCESS_REPORT_TALK]
+                                                                                                                     delegate:self];
+
+                                                [alertView show];
+                                            } else {
+                                                StickyAlertView *alertView = [[StickyAlertView alloc] initWithErrorMessages:action.message_error
+                                                                                                                   delegate:self];
+
+                                                [alertView show];
+                                            }
+                                        });
+
+                                    }
+                                    onFailure:^(NSError *errorResult) {
+
+                                    }];
+}
+
 - (NSDictionary *)getParameter {
     return @{
              @"action" : _reportAction,
@@ -888,22 +936,23 @@
 - (UIViewController *)didReceiveViewController {
     return self;
 }
-
 #pragma mark - LoginView Delegate
+
 - (void)redirectViewController:(id)viewController {
 
 }
-
 #pragma mark - Notification Delegate
+
 - (void)userDidLogin:(NSNotification*)notification {
     _userManager = [UserAuthentificationManager new];
 }
 
 - (void)userDidLogout:(NSNotification*)notification {
-    _userManager = [UserAuthentificationManager new];    
+    _userManager = [UserAuthentificationManager new];
 }
-
 #pragma mark - CMPopTipView Delegate
+
+
 - (void)dismissAllPopTipViews
 {
     [cmPopTitpView dismissAnimated:YES];
@@ -915,9 +964,8 @@
 {
     [self dismissAllPopTipViews];
 }
-
-
 #pragma mark - Smiley Delegate
+
 - (void)actionVote:(id)sender {
     [self dismissAllPopTipViews];
 }
@@ -925,7 +973,7 @@
 -(void)replaceDataSelected:(NSDictionary *)data
 {
     _data = data;
-    
+
     if (data) {
         _page = 1;
         [_list removeAllObjects];
