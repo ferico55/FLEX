@@ -44,6 +44,7 @@
 #import "NSNumberFormatter+IDRFormater.h"
 
 #import "TxOrderTabViewController.h"
+#import "SwiftOverlays.h"
 
 #define DurationInstallmentFormat @"%@ bulan (%@)"
 
@@ -952,7 +953,7 @@
         if (gateway == -1) {
             isValid = NO;
             [messageError addObject:ERRORMESSAGE_NULL_CART_PAYMENT];
-            //[self swipePaymentMethod];
+            [UIViewController showNotificationOnTopOfStatusBar:_paymentMethodView duration:4.0 animated:YES];
             [self swipeView:_paymentMethodView];
         }
         if (gateway == TYPE_GATEWAY_CC) {
