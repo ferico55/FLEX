@@ -300,7 +300,8 @@
     [_objectManager.HTTPClient setDefaultHeader:@"Accept-Language" value:@"id-ID"];
     NSString *xDevice = [NSString stringWithFormat:@"ios-%@",appVersion];
     [_objectManager.HTTPClient setDefaultHeader:@"X-Device" value:xDevice];
-    
+    [_objectManager.HTTPClient setDefaultHeader:@"Accept-Encoding" value:@"gzip"];
+
     if(self.isUsingHmac) {
         TkpdHMAC *hmac = [TkpdHMAC new];
         NSString *signature = [hmac generateSignatureWithMethod:[self getStringRequestMethod:method] tkpdPath:path parameter:parameter];
