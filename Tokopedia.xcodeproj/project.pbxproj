@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		2D50139230438B54812D14B9 /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */; };
+		62650C491CF8563D002B32EB /* CustomErrorMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 62650C471CF8563D002B32EB /* CustomErrorMessageView.m */; };
+		62650C4A1CF8563D002B32EB /* CustomErrorMessageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 62650C481CF8563D002B32EB /* CustomErrorMessageView.xib */; };
 		62D7EC851CF3FD7E00BEAFD4 /* TPAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 62D7DE541CF3FD7A00BEAFD4 /* TPAnalytics.m */; };
 		62D7EC861CF3FD7E00BEAFD4 /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 62D7DE571CF3FD7A00BEAFD4 /* URLCacheAlert.m */; };
 		62D7EC871CF3FD7E00BEAFD4 /* URLCacheConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 62D7DE591CF3FD7A00BEAFD4 /* URLCacheConnection.m */; };
@@ -2299,6 +2301,9 @@
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
 		2D733D9158C7BF957D514506 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
 		4868E459AB2A65D133732296 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tokopedia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		62650C461CF8563D002B32EB /* CustomErrorMessageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomErrorMessageView.h; sourceTree = "<group>"; };
+		62650C471CF8563D002B32EB /* CustomErrorMessageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomErrorMessageView.m; sourceTree = "<group>"; };
+		62650C481CF8563D002B32EB /* CustomErrorMessageView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomErrorMessageView.xib; sourceTree = "<group>"; };
 		62D7DE531CF3FD7A00BEAFD4 /* TPAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPAnalytics.h; sourceTree = "<group>"; };
 		62D7DE541CF3FD7A00BEAFD4 /* TPAnalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPAnalytics.m; sourceTree = "<group>"; };
 		62D7DE561CF3FD7A00BEAFD4 /* URLCacheAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheAlert.h; sourceTree = "<group>"; };
@@ -8095,6 +8100,9 @@
 		62D7E3691CF3FD7B00BEAFD4 /* Alert */ = {
 			isa = PBXGroup;
 			children = (
+				62650C461CF8563D002B32EB /* CustomErrorMessageView.h */,
+				62650C471CF8563D002B32EB /* CustomErrorMessageView.m */,
+				62650C481CF8563D002B32EB /* CustomErrorMessageView.xib */,
 				62D7E36A1CF3FD7B00BEAFD4 /* AlertBaseUrl.h */,
 				62D7E36B1CF3FD7B00BEAFD4 /* AlertBaseUrl.m */,
 				62D7E36C1CF3FD7B00BEAFD4 /* AlertBaseUrl.xib */,
@@ -12584,6 +12592,7 @@
 				62D7F2971CF3FD7E00BEAFD4 /* icon_button_wishlist_nonactive@3x.png in Resources */,
 				62D7F33C1CF3FD7E00BEAFD4 /* icon_medal_bronze14.png in Resources */,
 				62D7F4D91CF3FD7F00BEAFD4 /* ic_more.png in Resources */,
+				62650C4A1CF8563D002B32EB /* CustomErrorMessageView.xib in Resources */,
 				62D7F2A11CF3FD7E00BEAFD4 /* icon_cart.png in Resources */,
 				62D7F4A01CF3FD7E00BEAFD4 /* onboarding_toped_1a.png in Resources */,
 				62D7F38D1CF3FD7E00BEAFD4 /* icon_neutral_smile_small@3x.png in Resources */,
@@ -13146,6 +13155,7 @@
 				62D7EFC51CF3FD7E00BEAFD4 /* InboxMessageCell.m in Sources */,
 				62D7ED051CF3FD7E00BEAFD4 /* ReviewProductOwner.m in Sources */,
 				62D7F1771CF3FD7E00BEAFD4 /* PlacePickerViewController.m in Sources */,
+				62650C491CF8563D002B32EB /* CustomErrorMessageView.m in Sources */,
 				62D7EDF51CF3FD7E00BEAFD4 /* SearchAutoCompleteCategory.m in Sources */,
 				62D7F0821CF3FD7E00BEAFD4 /* MyReviewReputationCell.m in Sources */,
 				62D7F07B1CF3FD7E00BEAFD4 /* MyReviewDetailHeaderComponent.mm in Sources */,
