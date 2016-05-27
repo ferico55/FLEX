@@ -33,7 +33,7 @@ static failedCompletionBlock failedRequest;
     networkManager.isUsingHmac = YES;
     [networkManager requestWithBaseUrl:[NSString v4Url]
                                   path:@"/v4/action/resolution-center/cancel_resolution.pl"
-                                method:RKRequestMethodGET
+                                method:RKRequestMethodPOST
                              parameter:param
                                mapping:[ResolutionAction mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
@@ -105,7 +105,7 @@ static failedCompletionBlock failedRequest;
     NSString *uploadImageBaseURL = [NSString stringWithFormat:@"https://%@",uploadHost];
     [networkManager requestWithBaseUrl:uploadImageBaseURL
                                   path:@"/web-service/v4/action/upload-image-helper/create_resolution_picture.pl"
-                                method:RKRequestMethodGET
+                                method:RKRequestMethodPOST
                              parameter:param
                                mapping:[ResolutionAction mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
@@ -198,7 +198,7 @@ static failedCompletionBlock failedRequest;
     
     [networkManager requestWithBaseUrl:[NSString v4Url]
                                   path:@"/v4/action/resolution-center/create_resolution_validation.pl"
-                                method:RKRequestMethodGET
+                                method:RKRequestMethodPOST
                              parameter:param
                                mapping:[ResolutionAction mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
@@ -226,7 +226,7 @@ static failedCompletionBlock failedRequest;
     
     [networkManager requestWithBaseUrl:[NSString v4Url]
                                   path:@"/v4/action/resolution-center/create_resolution_submit.pl"
-                                method:RKRequestMethodGET
+                                method:RKRequestMethodPOST
                              parameter:param
                                mapping:[ResolutionAction mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
@@ -381,7 +381,7 @@ static failedCompletionBlock failedRequest;
     
     [networkManager requestWithBaseUrl:[NSString v4Url]
                                   path:@"/v4/action/resolution-center/reply_conversation_validation.pl"
-                                method:RKRequestMethodGET
+                                method:RKRequestMethodPOST
                              parameter:param
                                mapping:[ResolutionAction mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
@@ -410,7 +410,7 @@ static failedCompletionBlock failedRequest;
     
     [networkManager requestWithBaseUrl:[NSString v4Url]
                                   path:@"/v4/action/resolution-center/reply_conversation_submit.pl"
-                                method:RKRequestMethodGET
+                                method:RKRequestMethodPOST
                              parameter:param
                                mapping:[ResolutionAction mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
@@ -562,7 +562,7 @@ static failedCompletionBlock failedRequest;
     
     [networkManager requestWithBaseUrl:[NSString v4Url]
                                   path:@"/v4/action/resolution-center/reject_admin_resolution_validation.pl"
-                                method:RKRequestMethodGET
+                                method:RKRequestMethodPOST
                              parameter:param
                                mapping:[ResolutionAction mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
@@ -591,7 +591,7 @@ static failedCompletionBlock failedRequest;
     
     [networkManager requestWithBaseUrl:[NSString v4Url]
                                   path:@"/v4/action/resolution-center/reject_admin_resolution_submit.pl"
-                                method:RKRequestMethodGET
+                                method:RKRequestMethodPOST
                              parameter:param
                                mapping:[ResolutionAction mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
@@ -677,7 +677,7 @@ static failedCompletionBlock failedRequest;
     
     [networkManager requestWithBaseUrl:[NSString v4Url]
                                   path:@"/v4/action/resolution-center/report_resolution.pl"
-                                method:RKRequestMethodGET
+                                method:RKRequestMethodPOST
                              parameter:@{@"resolution_id": resolutionID?:@""}
                                mapping:[ResolutionAction mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
@@ -716,7 +716,7 @@ static failedCompletionBlock failedRequest;
     
     [networkManager requestWithBaseUrl:[NSString v4Url]
                                   path:@"/v4/action/resolution-center/input_resi_resolution.pl"
-                                method:RKRequestMethodGET
+                                method:RKRequestMethodPOST
                              parameter:param
                                mapping:[ResolutionAction mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
@@ -757,7 +757,7 @@ static failedCompletionBlock failedRequest;
     
     [networkManager requestWithBaseUrl:[NSString v4Url]
                                   path:@"/v4/action/resolution-center/edit_resi_resolution.pl"
-                                method:RKRequestMethodGET
+                                method:RKRequestMethodPOST
                              parameter:param
                                mapping:[ResolutionAction mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
@@ -792,7 +792,7 @@ static failedCompletionBlock failedRequest;
     
     [networkManager requestWithBaseUrl:[NSString v4Url]
                                   path:@"/v4/action/resolution-center/accept_resolution.pl"
-                                method:RKRequestMethodGET
+                                method:RKRequestMethodPOST
                              parameter:param
                                mapping:[ResolutionAction mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
@@ -826,7 +826,7 @@ static failedCompletionBlock failedRequest;
     
     [networkManager requestWithBaseUrl:[NSString v4Url]
                                   path:@"/v4/action/resolution-center/finish_resolution_retur.pl"
-                                method:RKRequestMethodGET
+                                method:RKRequestMethodPOST
                              parameter:param
                                mapping:[ResolutionAction mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
@@ -860,7 +860,7 @@ static failedCompletionBlock failedRequest;
     
     [networkManager requestWithBaseUrl:[NSString v4Url]
                                   path:@"/v4/action/resolution-center/accept_admin_resolution.pl"
-                                method:RKRequestMethodGET
+                                method:RKRequestMethodPOST
                              parameter:param
                                mapping:[ResolutionAction mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
