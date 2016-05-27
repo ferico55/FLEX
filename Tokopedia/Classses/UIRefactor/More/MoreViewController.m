@@ -65,6 +65,7 @@
 #import "MoreWrapperViewController.h"
 #import "MoreNavigationController.h"
 #import "CloseShopViewController.h"
+#import "ClosedScheduleDetail.h"
 
 #define CTagProfileInfo 12
 #define CTagLP 13
@@ -604,22 +605,48 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
         NavigateViewController *navigateController = [NavigateViewController new];
         [navigateController navigateToProfileFromViewController:wrapperController withUserID:[_auth objectForKey:MORE_USER_ID]];
          */
+        ClosedScheduleDetail *_scheduleDetail = [ClosedScheduleDetail new];
+        _scheduleDetail.close_status = CLOSE_STATUS_OPEN;
+        _scheduleDetail.close_start = @"23/08/16";
+        _scheduleDetail.close_end = @"27/08/16";
         
         CloseShopViewController *controller = [CloseShopViewController new];
+        controller.scheduleDetail = _scheduleDetail;
         [wrapperController.navigationController pushViewController:controller animated:YES];
+        
     }
     
     else if (indexPath.section == 1 && indexPath.row == 1) {
+        /*
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         PurchaseViewController *purchaseController = [storyboard instantiateViewControllerWithIdentifier:@"PurchaseViewController"];
         purchaseController.notification = _notifManager.notification;
         [wrapperController.navigationController pushViewController:purchaseController animated:YES];
+         */
+        ClosedScheduleDetail *_scheduleDetail = [ClosedScheduleDetail new];
+        _scheduleDetail.close_status = CLOSE_STATUS_CLOSED;
+        _scheduleDetail.close_start = @"23/08/16";
+        _scheduleDetail.close_end = @"27/08/16";
+        
+        CloseShopViewController *controller = [CloseShopViewController new];
+        controller.scheduleDetail = _scheduleDetail;
+        [wrapperController.navigationController pushViewController:controller animated:YES];
     }
     else if(indexPath.section==1 && indexPath.row==2) {
+        /*
         UINavigationController *tempNavController = (UINavigationController *) [wrapperController.tabBarController.viewControllers firstObject];
         [((HomeTabViewController *)[tempNavController.viewControllers firstObject]) setIndexPage:2];
         [wrapperController.tabBarController setSelectedIndex:0];
         [((HomeTabViewController *)[tempNavController.viewControllers firstObject]) redirectToWishList];
+        */
+        ClosedScheduleDetail *_scheduleDetail = [ClosedScheduleDetail new];
+        _scheduleDetail.close_status = CLOSE_STATUS_CLOSE_SCHEDULED;
+        _scheduleDetail.close_start = @"23/08/16";
+        _scheduleDetail.close_end = @"27/08/16";
+        
+        CloseShopViewController *controller = [CloseShopViewController new];
+        controller.scheduleDetail = _scheduleDetail;
+        [wrapperController.navigationController pushViewController:controller animated:YES];
     }
     
     else if (indexPath.section == 2) {
