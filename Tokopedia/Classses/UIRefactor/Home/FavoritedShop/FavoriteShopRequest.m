@@ -108,7 +108,7 @@ typedef NS_ENUM(NSInteger, FavoriteShopRequestType){
     }else if(tag == FavoriteShopRequestDoFavorite){
         return @"/v4/action/favorite-shop/fav_shop.pl";
     }else if(tag == FavoriteShopRequestGetProductFeed){
-        return @"search/v1/product";
+        return @"search/v2.1/product";
     }else if(tag == FavoriteShopRequestAll){
         return @"/v4/home/get_list_fave_shop_id.pl";
     }

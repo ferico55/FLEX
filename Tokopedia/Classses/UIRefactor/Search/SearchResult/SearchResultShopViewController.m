@@ -620,7 +620,7 @@ static NSString const *rows = @"12";
 - (id)getObjectManager:(int)tag
 {
 
-    _objectmanager = [RKObjectManager sharedClient:@"https://ace.tokopedia.com/"];
+    _objectmanager = [RKObjectManager sharedClient:[NSString aceUrl]];
     
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[SearchItem class]];
