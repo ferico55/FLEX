@@ -50,6 +50,7 @@
 
 
 @property(nonatomic, strong) InboxMessageDetailList *message;
+@property(copy) void(^onTapUser)(NSString* userId);
 
 /**Returns the text margin in horizontal direction.
  @return CGFloat containing the horizontal text margin.

@@ -175,7 +175,8 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
+    __weak __typeof(self) weakSelf = self;
+
     static NSString* cellIdentifier = @"messagingCell";
     
     InboxMessageDetailCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
@@ -186,6 +187,9 @@
 
     InboxMessageDetailList *message = _messages[indexPath.row];
     cell.message = message;
+    cell.onTapUser = ^(NSString *userId) {
+        [weakSelf showUserWithId:userId];
+    };
 
     return cell;
 }
@@ -532,11 +536,8 @@
     _buttonsend.enabled = message.length > 5;
 }
 
-#pragma mark - Tap User
-- (void)tapUser:(id)sender{
+- (void)showUserWithId:(NSString *)userId {
     NavigateViewController *navigateController = [NavigateViewController new];
-    UITapGestureRecognizer *tap = (UITapGestureRecognizer*)sender;
-    NSString *userId = [NSString stringWithFormat:@"%ld", (long)tap.view.tag];
     [navigateController navigateToProfileFromViewController:self withUserID:userId];
 }
 
