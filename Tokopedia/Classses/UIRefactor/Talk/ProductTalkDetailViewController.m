@@ -711,8 +711,10 @@
             MGSwipeButton * report = [MGSwipeButton buttonWithTitle:@"Laporkan" backgroundColor:[UIColor colorWithRed:0 green:122/255.0 blue:255.05 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
                 _reportAction = @"report_comment_talk";
                 ReportViewController *reportController = [ReportViewController new];
+
+                __weak __typeof(self) weakSelf = self;
                 reportController.onFinishWritingReport = ^(NSString *message) {
-                    [self reportCommentWithMessage:message];
+                    [weakSelf reportCommentWithMessage:message];
                 };
 
                 [self.navigationController pushViewController:reportController animated:YES];

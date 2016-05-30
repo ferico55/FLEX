@@ -244,7 +244,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     _reportController.strProductID = _talk.talk_product_id;
     _reportController.strShopID = _talk.talk_shop_id;
 
-    __typeof(self) weakSelf = self;
+    __weak __typeof(self) weakSelf = self;
     _reportController.onFinishWritingReport = ^(NSString *message) {
         [weakSelf reportTalkWithMessage:message];
     };
