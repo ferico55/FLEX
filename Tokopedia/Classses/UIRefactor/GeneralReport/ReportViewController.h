@@ -25,7 +25,7 @@
 
 @interface ReportViewController : UIViewController
 
-@property (copy, nonatomic) void (^onFinishWritingReport)(NSString*);
+@property (copy, nonatomic) void (^onFinishWritingReport)(NSString* message);
 
 @property (weak, nonatomic) id<ReportViewControllerDelegate> delegate;
 @property (nonatomic, strong) NSString *strProductID;

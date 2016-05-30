@@ -35,7 +35,6 @@
     UIScrollViewDelegate,
     UITextViewDelegate,
     MGSwipeTableCellDelegate,
-    ReportViewControllerDelegate,
     LoginViewDelegate,
     GeneralTalkCommentCellDelegate,
     SmileyDelegate,
@@ -712,7 +711,10 @@
             MGSwipeButton * report = [MGSwipeButton buttonWithTitle:@"Laporkan" backgroundColor:[UIColor colorWithRed:0 green:122/255.0 blue:255.05 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
                 _reportAction = @"report_comment_talk";
                 ReportViewController *reportController = [ReportViewController new];
-                reportController.delegate = self;
+                reportController.onFinishWritingReport = ^(NSString *message) {
+                    [self reportCommentWithMessage:message];
+                };
+
                 [self.navigationController pushViewController:reportController animated:YES];
                 return YES;
             }];
@@ -876,10 +878,8 @@
 
 
 #pragma mark - Report Delegate
-- (void)didFinishWritingReportWithReviewID:(NSString *)reviewID
-                                    talkID:(NSString *)talkID
-                                    shopID:(NSString *)shopID
-                               textMessage:(NSString *)textMessage {
+
+- (void)reportCommentWithMessage:(NSString *)textMessage {
 
     NSDictionary *parameter = @{
             @"action" : _reportAction,
@@ -920,22 +920,6 @@
                                     }];
 }
 
-- (NSDictionary *)getParameter {
-    return @{
-             @"action" : _reportAction,
-             @"talk_id" : [_data objectForKey:kTKPDTALKCOMMENT_TALKID]?:@(0),
-             @"talk_comment_id" : [_datainput objectForKey:@"comment_id"]?:@(0),
-             @"product_id" : [_data objectForKey:@"product_id"],
-             };
-}
-
-- (NSString *)getPath {
-    return @"action/talk.pl";
-}
-
-- (UIViewController *)didReceiveViewController {
-    return self;
-}
 #pragma mark - LoginView Delegate
 
 - (void)redirectViewController:(id)viewController {
