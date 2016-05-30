@@ -39,7 +39,6 @@
     MyReviewDetailHeaderDelegate,
     MyReviewDetailHeaderSmileyDelegate,
     UIActionSheetDelegate,
-    ReportViewControllerDelegate,
     UIAlertViewDelegate,
     requestLDExttensionDelegate,
     LoadingViewDelegate,
@@ -260,6 +259,8 @@
 
 #pragma mark - Action Sheet Delegate
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    __weak __typeof(self) weakSelf = self;
+
     if (buttonIndex == 0) {
         if (actionSheet.tag == 100) {
             GiveReviewRatingViewController *vc = [GiveReviewRatingViewController new];
@@ -270,7 +271,10 @@
             [self.navigationController pushViewController:vc animated:YES];
         } else if (actionSheet.tag == 200) {
             ReportViewController *vc = [ReportViewController new];
-            vc.delegate = self;
+            vc.onFinishWritingReport = ^(NSString *message) {
+                [weakSelf reportReviewWithMessage:message];
+            };
+
             vc.strProductID = _selectedReview.product_id;
             vc.strShopID = _selectedReview.shop_id;
             vc.strReviewID = _selectedReview.review_id;
@@ -653,22 +657,9 @@
     [alert show];
 }
 
-#pragma mark - Report View Delegate
-- (NSDictionary *)getParameter {
-    return nil;
-}
-
-- (NSString *)getPath {
-    return @"action/review.pl";
-}
-
-- (UIViewController *)didReceiveViewController {
-    return self;
-}
-
-- (void)didFinishWritingReportWithReviewID:(NSString *)reviewID talkID:(NSString *)talkID shopID:(NSString *)shopID textMessage:(NSString *)textMessage {
-    [_reviewRequest requestReportReviewWithReviewID:reviewID
-                                             shopID:shopID
+- (void)reportReviewWithMessage:(NSString *)textMessage {
+    [_reviewRequest requestReportReviewWithReviewID:_selectedReview.review_id
+                                             shopID:_selectedReview.shop_id
                                         textMessage:textMessage
                                           onSuccess:^(GeneralAction *action) {
                                               [self.navigationController popViewControllerAnimated:YES];

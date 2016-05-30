@@ -15,12 +15,6 @@
 - (NSString*)getPath;
 - (UIViewController*)didReceiveViewController;
 
-@optional
-- (void)didFinishWritingReportWithReviewID:(NSString*)reviewID
-                                    talkID:(NSString*)talkID
-                                    shopID:(NSString*)shopID
-                               textMessage:(NSString*)textMessage;
-
 @end
 
 @interface ReportViewController : UIViewController

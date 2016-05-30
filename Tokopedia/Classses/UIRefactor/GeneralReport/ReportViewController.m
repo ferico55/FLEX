@@ -142,14 +142,7 @@
 
 
 - (void)sendReport {
-    if ([_delegate respondsToSelector:@selector(didFinishWritingReportWithReviewID:talkID:shopID:textMessage:)])
-    [_delegate didFinishWritingReportWithReviewID:_strReviewID
-                                           talkID:_strCommentTalkID
-                                           shopID:_strShopID
-                                      textMessage:_messageTextView.text];
-
-    else
-        self.onFinishWritingReport(_messageTextView.text);
+    self.onFinishWritingReport(_messageTextView.text);
 }
 
 // implement this to dismiss login view controller (-_-")
