@@ -27,11 +27,13 @@
             <string>GothamMedium</string>
             <string>GothamMedium</string>
             <string>GothamMedium</string>
+            <string>GothamMedium</string>
         </mutableArray>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CloseShopViewController">
             <connections>
+                <outlet property="activityIndicator" destination="7iQ-M0-FDG" id="2hG-3n-Z3T"/>
                 <outlet property="aturJadwalTutupButton" destination="TrK-cP-Aax" id="AaX-Uo-iKN"/>
                 <outlet property="aturJadwalTutupView" destination="YoK-M8-8fr" id="esp-BB-zeK"/>
                 <outlet property="batalButton" destination="Obd-nH-Oru" id="mmd-Y9-4hS"/>
@@ -273,7 +275,7 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OCt-Zy-ria">
                     <rect key="frame" x="0.0" y="0.0" width="304" height="44"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Tutup Toko Sekarang" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ldx-tu-HVr">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tutup Toko Sekarang" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ldx-tu-HVr">
                             <rect key="frame" x="8" y="16" width="231" height="12"/>
                             <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -307,7 +309,7 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XbR-Q9-Ys3">
                     <rect key="frame" x="0.0" y="44" width="152" height="60"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="py2-OZ-C1r">
+                        <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="py2-OZ-C1r">
                             <rect key="frame" x="8" y="22" width="136" height="34"/>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                             <state key="normal" title="Pilih Tanggal"/>
@@ -315,7 +317,7 @@
                                 <action selector="mulaiDariButtonTapped:" destination="-1" eventType="touchUpInside" id="X1u-c7-UcS"/>
                             </connections>
                         </button>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Mulai dari" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sf2-nN-cgC">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mulai dari" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sf2-nN-cgC">
                             <rect key="frame" x="8" y="8" width="136" height="10"/>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -359,15 +361,15 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4s1-lQ-eoJ">
                     <rect key="frame" x="0.0" y="106" width="304" height="100"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Catatan" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cgE-2o-1A6">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Catatan" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cgE-2o-1A6">
                             <rect key="frame" x="8" y="4" width="47" height="11"/>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" text="Tulis catatan tutup toko" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="hfV-RT-0Ig" customClass="TKPDTextView">
+                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="hfV-RT-0Ig" customClass="TKPDTextView">
                             <rect key="frame" x="8" y="23" width="288" height="69"/>
-                            <color key="backgroundColor" red="0.99963909387588501" green="1" blue="0.99975615739822388" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -408,7 +410,7 @@
                                 <action selector="submitButtonTapped:" destination="-1" eventType="touchUpInside" id="If4-d1-pTh"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PqH-tt-f4z">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PqH-tt-f4z">
                             <rect key="frame" x="124" y="23" width="56" height="14"/>
                             <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
                             <state key="normal" title=" Ubah" image="icon_like.png">
@@ -418,7 +420,7 @@
                                 <action selector="ubahButtonCenterTapped:" destination="-1" eventType="touchUpInside" id="QB4-mT-Sh8"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PFG-Q6-dlf" userLabel="Ubah">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PFG-Q6-dlf" userLabel="Ubah">
                             <rect key="frame" x="154" y="23" width="150" height="14"/>
                             <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
                             <state key="normal" title=" Ubah" image="icon_like.png">
@@ -428,7 +430,7 @@
                                 <action selector="ubahButtonRightTapped:" destination="-1" eventType="touchUpInside" id="eNe-aM-hkO"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RmX-Yr-XuP">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RmX-Yr-XuP">
                             <rect key="frame" x="0.0" y="23" width="150" height="14"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="150" id="qez-Y6-Dbe"/>
@@ -492,7 +494,7 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MH6-7v-BMS">
                     <rect key="frame" x="152" y="45" width="152" height="60"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JCg-PO-xMI">
+                        <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JCg-PO-xMI">
                             <rect key="frame" x="8" y="22" width="136" height="34"/>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                             <state key="normal" title="Pilih Tanggal"/>
@@ -500,7 +502,7 @@
                                 <action selector="sampaiDenganButtonTapped:" destination="-1" eventType="touchUpInside" id="HN8-Wj-3QD"/>
                             </connections>
                         </button>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Sampai dengan" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ue7-qT-RgL">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sampai dengan" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ue7-qT-RgL">
                             <rect key="frame" x="8" y="8" width="136" height="10"/>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -519,7 +521,7 @@
                     </constraints>
                 </view>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="0.99963909387588501" green="1" blue="0.99975615739822388" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="XbR-Q9-Ys3" firstAttribute="leading" secondItem="RwZ-F8-oxE" secondAttribute="leading" id="1eN-Ne-RhJ"/>
                 <constraint firstItem="MH6-7v-BMS" firstAttribute="leading" secondItem="zGy-Tp-fok" secondAttribute="trailing" constant="1" id="5HF-yD-VKQ"/>
@@ -568,32 +570,48 @@
             <rect key="frame" x="0.0" y="0.0" width="304" height="77"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="loading-icon.gif" translatesAutoresizingMaskIntoConstraints="NO" id="eIv-0m-hxr">
-                    <rect key="frame" x="141" y="28" width="22" height="21"/>
-                </imageView>
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="7iQ-M0-FDG">
+                    <rect key="frame" x="143" y="28" width="20" height="20"/>
+                </activityIndicatorView>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="644" y="662.5"/>
         </view>
         <view contentMode="scaleToFill" id="EXq-8h-EyI">
-            <rect key="frame" x="0.0" y="0.0" width="304" height="72"/>
+            <rect key="frame" x="0.0" y="0.0" width="304" height="87"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="ic_checkmark_green_24.png" translatesAutoresizingMaskIntoConstraints="NO" id="ERu-sb-YiW">
-                    <rect key="frame" x="130" y="13" width="45" height="46"/>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_check_green.png" translatesAutoresizingMaskIntoConstraints="NO" id="ERu-sb-YiW">
+                    <rect key="frame" x="130" y="14" width="45" height="45"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="45" id="JdC-xJ-fXs"/>
+                        <constraint firstAttribute="width" constant="45" id="pfR-S1-RDh"/>
+                    </constraints>
                 </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Saved!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bIg-DG-8Lh">
+                    <rect key="frame" x="8" y="67" width="288" height="12"/>
+                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="bIg-DG-8Lh" firstAttribute="top" secondItem="ERu-sb-YiW" secondAttribute="bottom" constant="8" id="MOS-Os-s7I"/>
+                <constraint firstItem="bIg-DG-8Lh" firstAttribute="leading" secondItem="EXq-8h-EyI" secondAttribute="leading" constant="8" id="NIi-AY-aZy"/>
+                <constraint firstItem="ERu-sb-YiW" firstAttribute="centerX" secondItem="EXq-8h-EyI" secondAttribute="centerX" id="gv4-uN-1EU"/>
+                <constraint firstAttribute="trailing" secondItem="bIg-DG-8Lh" secondAttribute="trailing" constant="8" id="tuw-Rf-QRo"/>
+                <constraint firstItem="ERu-sb-YiW" firstAttribute="top" secondItem="EXq-8h-EyI" secondAttribute="top" constant="14" id="yTu-aB-2cP"/>
+            </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="644" y="785"/>
+            <point key="canvasLocation" x="644" y="792.5"/>
         </view>
     </objects>
     <resources>
         <image name="ic_checkmark_green_24.png" width="24" height="24"/>
+        <image name="icon_check_green.png" width="60" height="60"/>
         <image name="icon_like.png" width="14" height="14"/>
         <image name="icon_open.png" width="60" height="60"/>
         <image name="icon_view.png" width="14" height="14"/>
-        <image name="loading-icon.gif" width="20" height="20"/>
     </resources>
 </document>

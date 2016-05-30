@@ -57,6 +57,7 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
 @property (strong, nonatomic) IBOutlet UIButton *aturJadwalTutupButton;
 
 @property (strong, nonatomic) IBOutlet UIView *loadingView;
+@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 @property (strong, nonatomic) IBOutlet UIView *successView;
 @property CenterViewType centerViewType;
@@ -74,7 +75,7 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
 - (void)viewDidLoad {
     [super viewDidLoad];
     _closeShopRequest = [CloseShopRequest new];
-    
+    [_activityIndicator startAnimating];
     
     //self.scrollView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
     [_scrollView setScrollEnabled:YES];
@@ -162,28 +163,46 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
     [datePicker show];
 }
 - (IBAction)submitButtonTapped:(id)sender {
-    _centerViewType = CenterViewLoadingView;
-    if([_tutupSekarangSwitch isOn]){
-        [_closeShopRequest requestActionCloseShopFromNowUntil:[self stringFromNSDate:_dateSampaiDengan]
-                                                    closeNote:_catatanTextView.text
-                                                    onSuccess:^(CloseShopResponse *result) {
-                                                        _centerViewType = CenterViewSuccessView;
-                                                    }
-                                                    onFailure:^(NSError *error) {
-                                                        
-                                                    }];
-    }else{
-        [_closeShopRequest requestActionCloseShopFrom:[self stringFromNSDate:_dateMulaiDari]
-                                                until:[self stringFromNSDate:_dateSampaiDengan]
-                                            closeNote:_catatanTextView.text
-                                            onSuccess:^(CloseShopResponse *result) {
-            
+    if([self validateForm]){
+        _centerViewType = CenterViewLoadingView;
+        [self adjustView];
+        if([_tutupSekarangSwitch isOn]){
+            [_closeShopRequest requestActionCloseShopFromNowUntil:[self stringFromNSDate:_dateSampaiDengan]
+                                                        closeNote:_catatanTextView.text
+                                                        onSuccess:^(CloseShopResponse *result) {
+                                                            if(result.data.is_success){
+                                                                _centerViewType = CenterViewSuccessView;
+                                                                _scheduleDetail.close_status = CLOSE_STATUS_CLOSED;
+                                                                _scheduleDetail.close_start = [self stringFromNSDate:_dateMulaiDari];
+                                                                _scheduleDetail.close_end = [self stringFromNSDate:_dateSampaiDengan];
+                                                                
+                                                                [self adjustView];
+                                                            }else{
+                                                                
+                                                            }
+                                                            
+                                                            _centerViewType = CenterViewFormView;
+                                                            [self performSelector:@selector(adjustView) withObject:nil afterDelay:2.0];
+                                                        }
+                                                        onFailure:^(NSError *error) {
+                                                            
+                                                        }];
+        }else{
+            [_closeShopRequest requestActionCloseShopFrom:[self stringFromNSDate:_dateMulaiDari]
+                                                    until:[self stringFromNSDate:_dateSampaiDengan]
+                                                closeNote:_catatanTextView.text
+                                                onSuccess:^(CloseShopResponse *result) {
+                                                    
+                                                }
+                                                onFailure:^(NSError *error) {
+                                                    
+                                                }];
         }
-                                            onFailure:^(NSError *error) {
-            
-                                            }];
+    }else{
+        
     }
 }
+
 - (IBAction)ubahButtonCenterTapped:(id)sender {
     _isFormEnabled = YES;
     [self adjustView];
@@ -195,15 +214,56 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
 }
 
 - (IBAction)hapusButtonTapped:(id)sender {
-    
+    _centerViewType = CenterViewLoadingView;
+    [self adjustView];
 }
 
 - (IBAction)bukaTokoTapped:(id)sender {
+    useAnimation = YES;
+    _centerViewType = CenterViewLoadingView;
+    [self adjustView];
     [_closeShopRequest requestActionOpenShopOnSuccess:^(CloseShopResponse *result) {
-        
+        if(result.data.is_success){
+            _scheduleDetail.close_status = CLOSE_STATUS_OPEN;
+            
+            useAnimation = YES;
+            _centerViewType = CenterViewSuccessView;
+            [self adjustView];
+        }else{
+            
+        }
     } onFailure:^(NSError *error) {
-        
+        StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Kendala koneksi internet"] delegate:self];
+        [alert show];
     }];
+}
+
+- (BOOL)validateForm{
+    BOOL isValidationSuccess = YES;
+    if(_dateMulaiDari == nil){
+        [_mulaiDariView setBackgroundColor:[UIColor colorWithRed:1 green:0.912 blue:0.912 alpha:1]];
+        isValidationSuccess = NO;
+    }else{
+        [_mulaiDariView setBackgroundColor:[UIColor whiteColor]];
+    }
+    
+    if(_dateSampaiDengan == nil){
+        [_sampaiDenganView setBackgroundColor:[UIColor colorWithRed:1 green:0.912 blue:0.912 alpha:1]];
+        isValidationSuccess = NO;
+    }else{
+        [_sampaiDenganView setBackgroundColor:[UIColor whiteColor]];
+    }
+    
+    if(_catatanTextView.text == nil || [_catatanTextView.text isEqualToString:@""]){
+        [_catatanView setBackgroundColor:[UIColor colorWithRed:1 green:0.912 blue:0.912 alpha:1]];
+        [_catatanTextView setBackgroundColor:[UIColor colorWithRed:1 green:0.912 blue:0.912 alpha:1]];
+        isValidationSuccess = NO;
+    }else{
+        [_catatanView setBackgroundColor:[UIColor colorWithRed:1 green:1 blue:1 alpha:1]];
+        [_catatanTextView setBackgroundColor:[UIColor colorWithRed:1 green:1 blue:1 alpha:1]];
+    }
+    
+    return isValidationSuccess;
 }
 
 #pragma mark - Date Picker Delegate
