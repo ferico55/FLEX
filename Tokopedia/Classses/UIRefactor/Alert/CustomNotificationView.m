@@ -1,14 +1,16 @@
 //
-//  CustomErrorMessageView.m
+//  CustomNotificationView.m
 //  Tokopedia
 //
 //  Created by Kenneth Vincent on 5/23/16.
 //  Copyright © 2016 TOKOPEDIA. All rights reserved.
 //
 
-#import "CustomErrorMessageView.h"
+#import "CustomNotificationView.h"
 
-@implementation CustomErrorMessageView
+@implementation CustomErrorMessageView {
+    IBOutlet NSLayoutConstraint *_actionButtonHeight;
+}
 
 /*
 // Only override drawRect: if you perform custom drawing.
@@ -36,8 +38,19 @@
     _errorMessageLabel.text = text;
 }
 
+- (void)hideActionButton {
+    _actionButtonHeight.constant = 0;
+    [_actionButton setHidden:YES];
+    [self setNeedsLayout];
+    [self layoutIfNeeded];
+}
+
 - (IBAction)tapCloseButtom:(id)sender {
-    [_delegate tapCloseButton];
+    [_delegate didTapCloseButton];
+}
+
+- (IBAction)tapActionButton:(id)sender {
+    [_delegate didTapActionButton];
 }
 
 @end
