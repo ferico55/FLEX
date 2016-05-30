@@ -689,6 +689,7 @@
 -(NSArray*) swipeTableCell:(MGSwipeTableCell*) cell swipeButtonsForDirection:(MGSwipeDirection)direction
              swipeSettings:(MGSwipeSettings*) swipeSettings expansionSettings:(MGSwipeExpansionSettings*) expansionSettings
 {
+    __weak __typeof(self) weakSelf = self;
     
     swipeSettings.transition = MGSwipeTransitionStatic;
     expansionSettings.buttonIndex = -1; //-1 not expand, 0 expand
@@ -712,18 +713,17 @@
                 _reportAction = @"report_comment_talk";
                 ReportViewController *reportController = [ReportViewController new];
 
-                __weak __typeof(self) weakSelf = self;
                 reportController.onFinishWritingReport = ^(NSString *message) {
                     [weakSelf reportCommentWithMessage:message];
                 };
 
-                [self.navigationController pushViewController:reportController animated:YES];
+                [weakSelf.navigationController pushViewController:reportController animated:YES];
                 return YES;
             }];
             return @[report];
         } else {
             MGSwipeButton * trash = [MGSwipeButton buttonWithTitle:@"Hapus" backgroundColor:[UIColor colorWithRed:255/255 green:59/255.0 blue:48/255.0 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
-                [self deleteCommentTalkAtIndexPath:indexPath];
+                [weakSelf deleteCommentTalkAtIndexPath:indexPath];
                 return YES;
             }];
             
