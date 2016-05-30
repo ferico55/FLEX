@@ -12,8 +12,8 @@
 +(RKObjectMapping *)mapping{
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[CloseShopResponse class]];
     [mapping addAttributeMappingsFromArray:@[@"status",@"server_process_time"]];
-    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"result"
-                                                                            toKeyPath:@"result"
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data"
+                                                                            toKeyPath:@"data"
                                                                           withMapping:[CloseShopResult mapping]]];
     
     return mapping;

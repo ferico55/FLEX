@@ -11,8 +11,7 @@
 @implementation CloseShopResult
 +(RKObjectMapping *)mapping{
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[CloseShopResult class]];
-    [mapping addAttributeMappingsFromArray:@[@"is_success"]];
-    
+    [mapping addAttributeMappingsFromArray:@[@"is_success"]];    
     return mapping;
 
 }

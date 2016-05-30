@@ -43,7 +43,7 @@
     _networkManager.isUsingHmac = YES;
     [_networkManager requestWithBaseUrl:[NSString v4Url]
                                    path:@"/v4/action/myshop-info/update_shop_close.pl"
-                                 method:RKRequestMethodPOST
+                                 method:RKRequestMethodGET
                               parameter:@{@"close_action":@(CLOSE_SHOP_ACTION_OPEN)
                                           }
                                 mapping:[CloseShopResponse mapping]
