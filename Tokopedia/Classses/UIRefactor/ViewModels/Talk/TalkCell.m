@@ -322,7 +322,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 				successMessages = @[@"Anda berhasil menghapus diskusi ini."];
                 [_delegate tapToDeleteTalk:self];
 			} else {
-                successMessages = @[_talk.talk_follow_status ? @"Anda berhasil mengikuti diskusi ini." : @"Anda batal mengikuti diskusi ini."];
+                successMessages = @[!_talk.talk_follow_status ? @"Anda berhasil mengikuti diskusi ini." : @"Anda batal mengikuti diskusi ini."];
 
                 _talk.viewModel = nil;
                 _talk.talk_follow_status = !_talk.talk_follow_status;
