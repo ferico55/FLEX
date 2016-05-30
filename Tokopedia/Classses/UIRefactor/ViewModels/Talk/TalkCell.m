@@ -240,10 +240,14 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 
 - (void)tapToReport {
     _reportController = [ReportViewController new];
-    _reportController.delegate = self;
 
     _reportController.strProductID = _talk.talk_product_id;
     _reportController.strShopID = _talk.talk_shop_id;
+
+    __typeof(self) weakSelf = self;
+    _reportController.onFinishWritingReport = ^(NSString *message) {
+        [weakSelf reportTalkWithMessage:message];
+    };
     
     TKPDTabViewController *controller = [_delegate getNavigationController:self];
     [controller.navigationController pushViewController:_reportController animated:YES];
@@ -385,28 +389,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     }
 }
 
-#pragma mark - ReportViewController Delegate
-- (NSDictionary *)getParameter {
-    return @{
-             @"action" : @"report_product_talk",
-             @"talk_id" : _talk.talk_id?:@(0),
-             @"shop_id" : _talk.talk_shop_id?:@(0),
-             @"product_id" : _talk.talk_product_id?:@(0)
-             };
-}
-
-- (NSString *)getPath {
-    return @"action/talk.pl";
-}
-
-- (UIViewController *)didReceiveViewController {
-    return [_delegate getNavigationController:self];
-}
-
-- (void)didFinishWritingReportWithReviewID:(NSString *)reviewID
-                                    talkID:(NSString *)talkID
-                                    shopID:(NSString *)shopID
-                               textMessage:(NSString *)textMessage {
+- (void)reportTalkWithMessage:(NSString *)textMessage {
     _reportNetworkManager = [TokopediaNetworkManager new];
     _reportNetworkManager.isUsingHmac = YES;
 
