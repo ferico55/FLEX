@@ -15,7 +15,8 @@ typedef NS_ENUM(NSInteger, CenterViewType){
     CenterViewAturJadwalButton,
     CenterViewFormView,
     CenterViewLoadingView,
-    CenterViewSuccessView
+    CenterViewSuccessView,
+    CenterViewFailView
 };
 
 typedef NS_ENUM(NSInteger, AlertDatePickerType){
@@ -60,6 +61,11 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 @property (strong, nonatomic) IBOutlet UIView *successView;
+
+@property (strong, nonatomic) IBOutlet UIView *failView;
+@property (strong, nonatomic) IBOutlet UILabel *failLabel;
+
+
 @property CenterViewType centerViewType;
 @property BOOL isFormEnabled;
 @end
@@ -106,6 +112,7 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
     [_centerView addSubview:_formView];
     [_centerView addSubview:_loadingView];
     [_centerView addSubview:_successView];
+    [_centerView addSubview:_failView];
     useAnimation = YES;
     [self adjustView];
     
@@ -175,31 +182,55 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
                                                                 _scheduleDetail.close_status = CLOSE_STATUS_CLOSED;
                                                                 _scheduleDetail.close_start = [self stringFromNSDate:_dateMulaiDari];
                                                                 _scheduleDetail.close_end = [self stringFromNSDate:_dateSampaiDengan];
-                                                                
+                                                                _isFormEnabled = NO;
                                                                 [self adjustView];
                                                             }else{
-                                                                
+                                                                _centerViewType = CenterViewFailView;
+                                                                [self setFailLabelTextWithError:result.message_error];
+                                                                [self adjustView];
                                                             }
                                                             
                                                             _centerViewType = CenterViewFormView;
                                                             [self performSelector:@selector(adjustView) withObject:nil afterDelay:2.0];
                                                         }
                                                         onFailure:^(NSError *error) {
+                                                            _centerViewType = CenterViewFailView;
+                                                            [self setFailLabelTextWithError:@[@"Kendala koneksi internet"]];
+                                                            [self adjustView];
                                                             
+                                                            _centerViewType = CenterViewFormView;
+                                                            [self performSelector:@selector(adjustView) withObject:nil afterDelay:2.0];
                                                         }];
         }else{
             [_closeShopRequest requestActionCloseShopFrom:[self stringFromNSDate:_dateMulaiDari]
                                                     until:[self stringFromNSDate:_dateSampaiDengan]
                                                 closeNote:_catatanTextView.text
                                                 onSuccess:^(CloseShopResponse *result) {
+                                                    if(result.data.is_success){
+                                                        _centerViewType = CenterViewSuccessView;
+                                                        _scheduleDetail.close_status = CLOSE_STATUS_CLOSED;
+                                                        _scheduleDetail.close_start = [self stringFromNSDate:_dateMulaiDari];
+                                                        _scheduleDetail.close_end = [self stringFromNSDate:_dateSampaiDengan];
+                                                        _isFormEnabled = NO;
+                                                        [self adjustView];
+                                                    }else{
+                                                        _centerViewType = CenterViewFailView;
+                                                        [self setFailLabelTextWithError:result.message_error];
+                                                        [self adjustView];
+                                                    }
                                                     
+                                                    _centerViewType = CenterViewFormView;
+                                                    [self performSelector:@selector(adjustView) withObject:nil afterDelay:2.0];
                                                 }
                                                 onFailure:^(NSError *error) {
+                                                    _centerViewType = CenterViewFailView;
+                                                    [self setFailLabelTextWithError:@[@"Kendala koneksi internet"]];
+                                                    [self adjustView];
                                                     
+                                                    _centerViewType = CenterViewFormView;
+                                                    [self performSelector:@selector(adjustView) withObject:nil afterDelay:2.0];
                                                 }];
         }
-    }else{
-        
     }
 }
 
@@ -315,6 +346,10 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
         [_catatanTextView setText:@""];
         textViewInitialValue = NO;
     }
+    
+    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, 200, 0.0);
+    _scrollView.contentInset = contentInsets;
+    _scrollView.scrollIndicatorInsets = contentInsets;
 }
 
 #pragma mark - ScrollView delegate
@@ -329,6 +364,7 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
         [_formView setHidden:YES];
         [_loadingView setHidden:YES];
         [_successView setHidden:YES];
+        [_failView setHidden:YES];
         _centerViewHeight.constant = _aturJadwalTutupView.frame.size.height;
         [_centerView bringSubviewToFront:_aturJadwalTutupView];
         
@@ -345,6 +381,7 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
         [_formView setHidden:NO];
         [_loadingView setHidden:YES];
         [_successView setHidden:YES];
+        [_failView setHidden:YES];
         _centerViewHeight.constant = _formView.frame.size.height;
         [_centerView bringSubviewToFront:_formView];
         
@@ -360,12 +397,21 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
         [_formView setHidden:YES];
         [_loadingView setHidden:NO];
         [_successView setHidden:YES];
+        [_failView setHidden:YES];
         [_centerView bringSubviewToFront:_loadingView];
     }else if(_centerViewType == CenterViewSuccessView){
         [_aturJadwalTutupView setHidden:YES];
         [_formView setHidden:YES];
         [_loadingView setHidden:YES];
         [_successView setHidden:NO];
+        [_failView setHidden:YES];
+        [_centerView bringSubviewToFront:_successView];
+    }else if(_centerViewType == CenterViewFailView){
+        [_aturJadwalTutupView setHidden:YES];
+        [_formView setHidden:YES];
+        [_loadingView setHidden:YES];
+        [_successView setHidden:YES];
+        [_failView setHidden:NO];
         [_centerView bringSubviewToFront:_successView];
     }else{
         _centerView = CenterViewAturJadwalButton;
@@ -474,4 +520,30 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
         [_catatanTextView setBackgroundColor:[UIColor colorWithRed:0.968 green:0.968 blue:0.968 alpha:1]];
     }
 }
+
+- (void)setFailLabelTextWithError:(NSArray *)texts{
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    style.lineSpacing = 3.0;
+    [style setAlignment:NSTextAlignmentCenter];
+    
+    NSDictionary *dict = @{NSParagraphStyleAttributeName  : style
+                           };
+    
+    NSMutableDictionary *attributes = [[NSMutableDictionary alloc] initWithDictionary:dict];
+    
+    NSString *joinedString = @"";
+    if ([texts count] > 1) {
+        joinedString = [NSString stringWithFormat:@"\u25CF %@", [[texts valueForKey:@"description"] componentsJoinedByString:@"\n\u25CF "]];
+    } else if ([texts count] == 1){
+        joinedString = [texts objectAtIndex:0]?:@"";
+    } else {
+        joinedString = @"";
+    }
+    
+    joinedString = [NSString convertHTML:joinedString];
+    _failLabel.attributedText = [[NSAttributedString alloc] initWithString:joinedString  attributes:attributes];
+    _failLabel.numberOfLines = 0;
+    [_failLabel sizeToFit];
+}
+
 @end

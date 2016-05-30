@@ -43,6 +43,8 @@
                 <outlet property="catatanView" destination="4s1-lQ-eoJ" id="FXd-8I-vH5"/>
                 <outlet property="centerView" destination="hId-2L-GU3" id="Ft5-Ds-hQ2"/>
                 <outlet property="centerViewHeight" destination="lvY-hu-DqC" id="I03-52-qDB"/>
+                <outlet property="failLabel" destination="xwR-AE-NFn" id="bP9-vz-KBp"/>
+                <outlet property="failView" destination="Mcs-f7-JbY" id="wxO-vu-K4z"/>
                 <outlet property="formView" destination="RwZ-F8-oxE" id="qNc-5F-wO9"/>
                 <outlet property="hapusButton" destination="RmX-Yr-XuP" id="Aro-Cc-tpG"/>
                 <outlet property="loadingView" destination="1su-HI-0hf" id="Hu5-Hg-LDM"/>
@@ -266,7 +268,7 @@
                 <constraint firstItem="TrK-cP-Aax" firstAttribute="top" secondItem="YoK-M8-8fr" secondAttribute="top" constant="8" id="qdr-JA-Qpi"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="260" y="792"/>
+            <point key="canvasLocation" x="268" y="791"/>
         </view>
         <view contentMode="scaleToFill" id="RwZ-F8-oxE">
             <rect key="frame" x="0.0" y="0.0" width="304" height="312"/>
@@ -564,7 +566,7 @@
                     <exclude reference="5HF-yD-VKQ"/>
                 </mask>
             </variation>
-            <point key="canvasLocation" x="644" y="409"/>
+            <point key="canvasLocation" x="633" y="244"/>
         </view>
         <view contentMode="scaleToFill" id="1su-HI-0hf">
             <rect key="frame" x="0.0" y="0.0" width="304" height="77"/>
@@ -575,7 +577,7 @@
                 </activityIndicatorView>
             </subviews>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="644" y="662.5"/>
+            <point key="canvasLocation" x="633" y="486.5"/>
         </view>
         <view contentMode="scaleToFill" id="EXq-8h-EyI">
             <rect key="frame" x="0.0" y="0.0" width="304" height="87"/>
@@ -604,7 +606,36 @@
                 <constraint firstItem="ERu-sb-YiW" firstAttribute="top" secondItem="EXq-8h-EyI" secondAttribute="top" constant="14" id="yTu-aB-2cP"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="644" y="792.5"/>
+            <point key="canvasLocation" x="633" y="615.5"/>
+        </view>
+        <view contentMode="scaleToFill" id="Mcs-f7-JbY">
+            <rect key="frame" x="0.0" y="0.0" width="304" height="100"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_order_cancel.png" translatesAutoresizingMaskIntoConstraints="NO" id="Tgp-aw-wEU">
+                    <rect key="frame" x="130" y="17" width="45" height="45"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="45" id="B1V-4N-5Vi"/>
+                        <constraint firstAttribute="width" constant="45" id="TIo-XJ-axt"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xwR-AE-NFn">
+                    <rect key="frame" x="8" y="70" width="288" height="17"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="Tgp-aw-wEU" firstAttribute="top" secondItem="Mcs-f7-JbY" secondAttribute="top" constant="17" id="0Tz-Wt-eNG"/>
+                <constraint firstItem="xwR-AE-NFn" firstAttribute="leading" secondItem="Mcs-f7-JbY" secondAttribute="leading" constant="8" id="7bp-5r-NuP"/>
+                <constraint firstItem="Tgp-aw-wEU" firstAttribute="centerX" secondItem="Mcs-f7-JbY" secondAttribute="centerX" id="mQd-zQ-UoY"/>
+                <constraint firstItem="xwR-AE-NFn" firstAttribute="top" secondItem="Tgp-aw-wEU" secondAttribute="bottom" constant="8" id="oZf-o8-fOR"/>
+                <constraint firstAttribute="trailing" secondItem="xwR-AE-NFn" secondAttribute="trailing" constant="8" id="yxY-0y-L9H"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="633" y="756"/>
         </view>
     </objects>
     <resources>
@@ -612,6 +643,7 @@
         <image name="icon_check_green.png" width="60" height="60"/>
         <image name="icon_like.png" width="14" height="14"/>
         <image name="icon_open.png" width="60" height="60"/>
+        <image name="icon_order_cancel.png" width="14" height="14"/>
         <image name="icon_view.png" width="14" height="14"/>
     </resources>
 </document>
