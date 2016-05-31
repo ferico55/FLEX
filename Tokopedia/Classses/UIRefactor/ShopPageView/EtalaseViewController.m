@@ -160,28 +160,12 @@
     }
 }
 
-//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-//    if(section == 0){
-//        return 0;
-//    }else if(section == 1){
-//        return _enableAddEtalase?_tambahEtalaseView.frame.size.height:0;
-//    }
-//    return 0;
-//}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
     if (_showOtherEtalase && section == 0) {
         return 10;
     }
     return 0;
 }
-
-//- (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-//    if(_enableAddEtalase && section == 1){
-//        return _tambahEtalaseView;
-//    }
-//    return nil;
-//}
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
