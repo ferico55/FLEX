@@ -17,17 +17,30 @@
 }
 
 - (void)setViewModel:(ProductModelView *)viewModel {
-    [self.productName setText:viewModel.productName];
+//    [self.productName setText:viewModel.productName];
+    
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    style.lineSpacing = 4.0;
+    
+    NSDictionary *attributes = @{
+                                 NSFontAttributeName            : [UIFont fontWithName:@"GothamMedium" size:12],
+                                 NSParagraphStyleAttributeName  : style,
+                                 NSForegroundColorAttributeName : [UIColor colorWithRed:10.0/255.0 green:126.0/255.0 blue:7.0/255.0 alpha:1],
+                                 };
+    
+    self.productName.attributedText = [[NSAttributedString alloc] initWithString:viewModel.productName attributes:attributes];
+    
     [self.productPrice setText:viewModel.productPrice];
     [self.productShop setText:viewModel.productShop];
+    [self.shopLocation setText:viewModel.shopLocation];
+    self.grosirLabel.layer.masksToBounds = YES;
+    self.preorderLabel.layer.masksToBounds = YES;
     
     if(!viewModel.productShop || [viewModel.productShop isEqualToString:@"0"]) {
         [self.productShop setHidden:YES];
     }
     self.goldShopBadge.hidden = viewModel.isGoldShopProduct? NO : YES;
-    
-    _constraintGoldBadge.constant = viewModel.isGoldShopProduct?_goldShopBadge.frame.size.width:0;
-    _constraintSpaceGoldBadge.constant = viewModel.isGoldShopProduct?2:0;
+    self.luckyBadgePosition.constant = viewModel.isGoldShopProduct ? 1 : -15;
     
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:viewModel.productThumbUrl] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     

@@ -12,6 +12,7 @@ import Foundation
     class func sizeWithType(cellType : Int) -> CGSize {
         var numberOfCell: CGFloat
         var cellHeight: CGFloat
+        let screenWidth = UIScreen.mainScreen().bounds.size.width
         
         if(UIDevice.currentDevice().userInterfaceIdiom == .Pad) {
             //two column
@@ -28,7 +29,9 @@ import Foundation
         } else {
             if(cellType == 1) {
                 numberOfCell = 2
-                cellHeight = (UIScreen.mainScreen().bounds.size.width / numberOfCell) - 15 + 60
+                let cellWidth = screenWidth/numberOfCell - 15
+                cellHeight = cellWidth + 105
+                
             } else if(cellType == 2) {
                 numberOfCell = 3
                 cellHeight = UIScreen.mainScreen().bounds.size.width / 3 - 15
@@ -38,7 +41,7 @@ import Foundation
             }
         }
         
-        let screenWidth = UIScreen.mainScreen().bounds.size.width
+        
         let cellWidth = screenWidth/numberOfCell - 15
         
         
