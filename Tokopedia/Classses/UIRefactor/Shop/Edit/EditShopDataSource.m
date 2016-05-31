@@ -8,13 +8,9 @@
 
 #import "EditShopDataSource.h"
 
-#import "EditShopTypeViewCell.h"
-#import "EditShopImageViewCell.h"
-#import "EditShopDescriptionViewCell.h"
-
 @implementation EditShopDataSource
 
-NSInteger const SectionForShopTagDescription = 2;
+NSInteger const SectionForShopTagDescription = 0;
 
 #pragma mark - Table view data source
 
@@ -33,17 +29,17 @@ NSInteger const SectionForShopTagDescription = 2;
          cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = nil;
     if (indexPath.section == 0) {
-        cell = [self tableView:tableView shopTypeCellForRowAtIndexPath:indexPath];
-    } else if (indexPath.section == 1) {
-        cell = [self tableView:tableView shopImageCellForRowAtIndexPath:indexPath];
-    } else if (indexPath.section == 2) {
         if (indexPath.row == 0) {
             cell = [self tableView:tableView shopNameCellForRowAtIndexPath:indexPath];
         } else {
             cell = [self tableView:tableView shopDescriptionCellForRowAtIndexPath:indexPath];
         }
-    } else if (indexPath.section == 3) {
+    } else if (indexPath.section == 1) {
+        cell = [self tableView:tableView shopImageCellForRowAtIndexPath:indexPath];
+    } else if (indexPath.section == 2) {
         cell = [self tableView:tableView shopStatusCellForRowAtIndexPath:indexPath];
+    } else if (indexPath.section == 3) {
+        cell = [self tableView:tableView shopTypeCellForRowAtIndexPath:indexPath];
     }
     return cell;
 }
@@ -51,8 +47,9 @@ NSInteger const SectionForShopTagDescription = 2;
 - (EditShopTypeViewCell *)tableView:(UITableView *)tableView shopTypeCellForRowAtIndexPath:(NSIndexPath *)indexPath {
     EditShopTypeViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"shopType"];
     if ([self.shop.info.shop_is_gold boolValue]) {
-        [cell showsGoldMerchantBadge];
-    }    
+        
+    }
+    cell.delegate = self;
     return cell;
 }
 
@@ -126,16 +123,28 @@ NSInteger const SectionForShopTagDescription = 2;
     return cell;
 }
 
+- (UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
+    UIView* footer;
+    if(section == 2){
+        footer = [[UIView alloc]initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 100)];
+        UILabel *label = [[UILabel alloc]init];
+        label.text = @"lorem ipsum woty";
+        [footer addSubview:label];
+        return footer;
+    }
+    return footer;
+}
+
 #pragma mark - Table view delegate
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     NSString *title;
-    if (section == 0) {
-        title = @"Keanggotaan";
-    } else if (section == 1) {
+    if (section == 1) {
         title = @"Gambar Toko";
     } else if (section == 2) {
-        title = @"Informasi Toko";
+        title = @"Status";
+    } else if (section == 3) {
+        title = @"Keanggotaan";
     }
     return title;
 }
@@ -165,7 +174,9 @@ NSInteger const SectionForShopTagDescription = 2;
     } else if ([indexPath isEqual:[self indexPathForShopTag]]) {
         return 60;
     } else if ([indexPath isEqual:[self indexPathForShopDescription]]) {
-        return 80;
+        return 100;
+    } else if (indexPath.section == 3){
+        return 100;
     }
     return 44;
 }
@@ -173,7 +184,7 @@ NSInteger const SectionForShopTagDescription = 2;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 1) {
         [self.delegate didTapShopPhoto];
-    } else if (indexPath.section == 3) {
+    } else if (indexPath.section == 2) {
         [self.delegate didTapShopStatus];
     }
 }
@@ -183,11 +194,16 @@ NSInteger const SectionForShopTagDescription = 2;
 }
 
 - (NSIndexPath *)indexPathForShopTag {
-    return [NSIndexPath indexPathForRow:1 inSection:2];
+    return [NSIndexPath indexPathForRow:1 inSection:0];
 }
 
 - (NSIndexPath *)indexPathForShopDescription {
-    return [NSIndexPath indexPathForRow:2 inSection:2];
+    return [NSIndexPath indexPathForRow:2 inSection:0];
+}
+
+#pragma mark - Delegate
+-(void)merchantInfoButtonTapped{
+    [_delegate didTapMerchantInfo];
 }
 
 #pragma mark - Notification 

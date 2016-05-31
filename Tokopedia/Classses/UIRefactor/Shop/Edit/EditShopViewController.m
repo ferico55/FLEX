@@ -29,6 +29,8 @@
 #import "ShopInfoResponse.h"
 #import "CloseShopViewController.h"
 
+#import "WebViewController.h"
+
 @interface EditShopViewController ()
 <
     EditShopStatusDelegate,
@@ -290,6 +292,15 @@
     
     
     [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)didTapMerchantInfo{
+    WebViewController *webViewController = [WebViewController new];
+    NSString *webViewStrUrl =@"https://gold.tokopedia.com";
+    webViewController.isLPWebView = NO;
+    webViewController.strURL = webViewStrUrl;
+    webViewController.strTitle = @"Gold Merchant";
+    [self.navigationController pushViewController:webViewController animated:YES];
 }
 
 #pragma mark - Generate Host
