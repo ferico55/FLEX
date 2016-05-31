@@ -28,6 +28,7 @@
             <string>GothamMedium</string>
             <string>GothamMedium</string>
             <string>GothamMedium</string>
+            <string>GothamMedium</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -248,7 +249,7 @@
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TrK-cP-Aax">
                     <rect key="frame" x="8" y="8" width="288" height="44"/>
-                    <color key="backgroundColor" red="0.26767507195472717" green="0.74666720628738403" blue="0.26747497916221619" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="backgroundColor" red="0.5679466724395752" green="0.56839281320571899" blue="0.56801575422286987" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="Xg7-UE-KYL"/>
                     </constraints>
@@ -271,7 +272,7 @@
             <point key="canvasLocation" x="268" y="791"/>
         </view>
         <view contentMode="scaleToFill" id="RwZ-F8-oxE">
-            <rect key="frame" x="0.0" y="0.0" width="304" height="312"/>
+            <rect key="frame" x="0.0" y="0.0" width="304" height="306"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OCt-Zy-ria">
@@ -321,7 +322,7 @@
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mulai dari" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sf2-nN-cgC">
                             <rect key="frame" x="8" y="8" width="136" height="10"/>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -400,7 +401,7 @@
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pyH-U8-Dd0">
                             <rect key="frame" x="10" y="8" width="284" height="44"/>
-                            <color key="backgroundColor" red="0.26767507195472717" green="0.74666720628738403" blue="0.26747497916221619" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="backgroundColor" red="0.45098039215686275" green="0.45098039215686275" blue="0.45098039215686275" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="44" id="efz-KL-TD8"/>
                             </constraints>
@@ -469,10 +470,10 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="E3a-Kb-7td">
-                    <rect key="frame" x="0.0" y="268" width="304" height="44"/>
+                    <rect key="frame" x="0.0" y="268" width="304" height="40"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Obd-nH-Oru">
-                            <rect key="frame" x="12" y="7" width="280" height="30"/>
+                            <rect key="frame" x="12" y="5" width="280" height="30"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="30" id="Ziy-xh-gtx"/>
                             </constraints>
@@ -489,7 +490,7 @@
                     <constraints>
                         <constraint firstItem="Obd-nH-Oru" firstAttribute="centerY" secondItem="E3a-Kb-7td" secondAttribute="centerY" id="1yR-af-ZNr"/>
                         <constraint firstItem="Obd-nH-Oru" firstAttribute="leading" secondItem="E3a-Kb-7td" secondAttribute="leading" constant="12" id="39z-MP-Fa6"/>
-                        <constraint firstAttribute="height" constant="44" id="49P-xn-cxa"/>
+                        <constraint firstAttribute="height" constant="40" id="49P-xn-cxa"/>
                         <constraint firstAttribute="trailing" secondItem="Obd-nH-Oru" secondAttribute="trailing" constant="12" id="6j3-vJ-7Vm"/>
                     </constraints>
                 </view>
@@ -497,7 +498,7 @@
                     <rect key="frame" x="152" y="45" width="152" height="60"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JCg-PO-xMI">
-                            <rect key="frame" x="8" y="22" width="136" height="34"/>
+                            <rect key="frame" x="8" y="23" width="136" height="33"/>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                             <state key="normal" title="Pilih Tanggal"/>
                             <connections>
@@ -506,7 +507,7 @@
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sampai dengan" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ue7-qT-RgL">
                             <rect key="frame" x="8" y="8" width="136" height="10"/>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -566,7 +567,7 @@
                     <exclude reference="5HF-yD-VKQ"/>
                 </mask>
             </variation>
-            <point key="canvasLocation" x="633" y="244"/>
+            <point key="canvasLocation" x="633" y="243"/>
         </view>
         <view contentMode="scaleToFill" id="1su-HI-0hf">
             <rect key="frame" x="0.0" y="0.0" width="304" height="77"/>
@@ -620,8 +621,8 @@
                     </constraints>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xwR-AE-NFn">
-                    <rect key="frame" x="8" y="70" width="288" height="17"/>
-                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
+                    <rect key="frame" x="8" y="70" width="288" height="12"/>
+                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>

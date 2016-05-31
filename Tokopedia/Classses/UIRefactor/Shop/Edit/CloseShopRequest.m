@@ -22,6 +22,7 @@
 -(void)requestActionCloseShopFromNowUntil:(NSString *)dateUntil closeNote:(NSString *)closeNote onSuccess:(void (^)(CloseShopResponse *))successCallback onFailure:(void (^)(NSError *))errorCallback{
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.isUsingHmac = YES;
+    _networkManager.isUsingDefaultError = NO;
     [_networkManager requestWithBaseUrl:[NSString v4Url]
                                    path:@"/v4/action/myshop-info/update_shop_close.pl"
                                  method:RKRequestMethodPOST
@@ -41,6 +42,7 @@
 -(void)requestActionOpenShopOnSuccess:(void (^)(CloseShopResponse *))successCallback onFailure:(void (^)(NSError *))errorCallback{
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.isUsingHmac = YES;
+    _networkManager.isUsingDefaultError = NO;
     [_networkManager requestWithBaseUrl:[NSString v4Url]
                                    path:@"/v4/action/myshop-info/update_shop_close.pl"
                                  method:RKRequestMethodGET
@@ -58,6 +60,7 @@
 -(void)requestActionCloseShopFrom:(NSString *)dateFrom until:(NSString *)dateUntil closeNote:(NSString *)closeNote onSuccess:(void (^)(CloseShopResponse *))successCallback onFailure:(void (^)(NSError *))errorCallback{
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.isUsingHmac = YES;
+    _networkManager.isUsingDefaultError = NO;
     [_networkManager requestWithBaseUrl:[NSString v4Url]
                                    path:@"/v4/action/myshop-info/update_shop_close.pl"
                                  method:RKRequestMethodPOST
@@ -78,6 +81,7 @@
 -(void)requestActionAbortCloseScheduleOnSuccess:(void (^)(CloseShopResponse *))successCallback onFailure:(void (^)(NSError *))errorCallback{
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.isUsingHmac = YES;
+    _networkManager.isUsingDefaultError = NO;
     [_networkManager requestWithBaseUrl:[NSString v4Url]
                                    path:@"/v4/action/myshop-info/update_shop_close.pl"
                                  method:RKRequestMethodPOST
@@ -95,6 +99,7 @@
 -(void)requestActionExtendCloseShopUntil:(NSString *)dateUntil closeNote:(NSString *)closeNote onSuccess:(void (^)(CloseShopResponse *))successCallback onFailure:(void (^)(NSError *))errorCallback{
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.isUsingHmac = YES;
+    _networkManager.isUsingDefaultError = NO;
     [_networkManager requestWithBaseUrl:[NSString v4Url]
                                    path:@"/v4/action/myshop-info/update_shop_close.pl"
                                  method:RKRequestMethodPOST
