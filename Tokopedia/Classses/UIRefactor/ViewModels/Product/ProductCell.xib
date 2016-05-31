@@ -201,6 +201,7 @@
             <connections>
                 <outlet property="goldShopBadge" destination="UFM-a3-IJN" id="lpf-a6-oCb"/>
                 <outlet property="grosirLabel" destination="zSL-Us-50U" id="47l-q1-0SI"/>
+                <outlet property="locationImage" destination="Ywu-mc-7Di" id="2jn-2i-dgc"/>
                 <outlet property="luckyBadgePosition" destination="51I-SQ-yJp" id="H37-tp-8qm"/>
                 <outlet property="luckyMerchantBadge" destination="XZW-2v-ESw" id="U43-MR-FwP"/>
                 <outlet property="preorderLabel" destination="1gS-9i-9D3" id="fak-c8-Tfi"/>

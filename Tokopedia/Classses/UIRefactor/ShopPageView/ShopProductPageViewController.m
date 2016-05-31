@@ -408,7 +408,9 @@ EtalaseViewControllerDelegate
     } else if (self.cellType == UITableViewCellTypeTwoColumn) {
         cellid = @"ProductCellIdentifier";
         cell = (ProductCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
+        
         [(ProductCell*)cell setViewModel:list.viewModel];
+        ((ProductCell*)cell).locationImage.hidden = YES;
     } else {
         cellid = @"ProductThumbCellIdentifier";
         cell = (ProductThumbCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
@@ -442,7 +444,12 @@ EtalaseViewControllerDelegate
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-   return [ProductCellSize sizeWithType:4];
+    if(_cellType == UITableViewCellTypeTwoColumn) {
+        CGSize normalSize = [ProductCellSize sizeWithType:self.cellType];
+        return CGSizeMake(normalSize.width, normalSize.height - 45);
+    } else {
+        return [ProductCellSize sizeWithType:self.cellType];
+    }
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
