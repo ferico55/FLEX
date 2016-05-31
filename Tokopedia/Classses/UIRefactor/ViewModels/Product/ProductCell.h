@@ -22,6 +22,7 @@
 @property (strong, nonatomic) IBOutlet UIImageView *goldShopBadge;
 @property (weak, nonatomic) IBOutlet UIImageView *luckyMerchantBadge;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *luckyBadgePosition;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *preorderPosition;
 @property (weak, nonatomic) IBOutlet UILabel *shopLocation;
 @property (weak, nonatomic) IBOutlet UILabel *grosirLabel;
 @property (weak, nonatomic) IBOutlet UILabel *preorderLabel;

@@ -20,7 +20,7 @@
 @property (nonatomic, strong) NSString *product_image_full;
 @property (nonatomic, strong) NSString *product_image;
 @property (nonatomic, strong) NSString *product_price;
-@property (nonatomic, strong) NSString *product_wholesale;
+//@property (nonatomic, strong) NSString *product_wholesale;
 @property (nonatomic, strong) NSString *shop_location;
 @property (nonatomic, strong) NSString *shop_url;
 @property (nonatomic, strong) NSString *shop_gold_status;
@@ -34,6 +34,9 @@
 
 @property (nonatomic, strong) NSString *shop_id;
 @property (nonatomic, strong) NSString *condition;
+
+@property BOOL product_preorder;
+@property BOOL product_wholesale;
 
 //catalog
 @property (nonatomic, strong) NSString *catalog_id;

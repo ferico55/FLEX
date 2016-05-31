@@ -204,6 +204,7 @@
                 <outlet property="luckyBadgePosition" destination="51I-SQ-yJp" id="H37-tp-8qm"/>
                 <outlet property="luckyMerchantBadge" destination="XZW-2v-ESw" id="U43-MR-FwP"/>
                 <outlet property="preorderLabel" destination="1gS-9i-9D3" id="fak-c8-Tfi"/>
+                <outlet property="preorderPosition" destination="12v-8V-Tnq" id="hKd-gH-vys"/>
                 <outlet property="productImage" destination="Tn9-gR-GHT" id="6SG-Qk-VGd"/>
                 <outlet property="productName" destination="ZXj-s2-9Ow" id="wOb-t5-fWN"/>
                 <outlet property="productPrice" destination="mlD-8n-5Cw" id="SXa-LS-3vo"/>

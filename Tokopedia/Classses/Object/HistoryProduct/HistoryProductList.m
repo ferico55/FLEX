@@ -28,6 +28,8 @@
         [viewModel setProductThumbUrl:self.product_image];
         [viewModel setIsGoldShopProduct:[self.shop_gold_status isEqualToString:@"1"]];
         [viewModel setLuckyMerchantImageURL:self.shop_lucky];
+        [viewModel setIsProductPreorder:self.product_preorder];
+        [viewModel setShopLocation:self.shop_location];
         
         _viewModel = viewModel;
     }

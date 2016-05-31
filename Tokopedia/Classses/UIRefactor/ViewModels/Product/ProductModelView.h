@@ -28,5 +28,7 @@
 
 @property BOOL isProductBuyAble;
 @property BOOL isGoldShopProduct;
+@property BOOL isWholesale;
+@property BOOL isProductPreorder;
 
 @end

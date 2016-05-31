@@ -41,6 +41,11 @@
     }
     self.goldShopBadge.hidden = viewModel.isGoldShopProduct? NO : YES;
     self.luckyBadgePosition.constant = viewModel.isGoldShopProduct ? 1 : -15;
+    self.preorderLabel.hidden = viewModel.isProductPreorder ? NO : YES;
+    self.grosirLabel.hidden = viewModel.isWholesale ? NO : YES;
+    
+    self.preorderPosition.constant = !viewModel.isWholesale ? -42 : 3;
+    
     
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:viewModel.productThumbUrl] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     
