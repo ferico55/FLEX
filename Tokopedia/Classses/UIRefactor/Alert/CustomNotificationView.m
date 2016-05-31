@@ -8,8 +8,11 @@
 
 #import "CustomNotificationView.h"
 
-@implementation CustomErrorMessageView {
+@implementation CustomNotificationView {
     IBOutlet NSLayoutConstraint *_actionButtonHeight;
+    IBOutlet NSLayoutConstraint *_closeButtonWidth;
+    
+    
 }
 
 /*
@@ -21,7 +24,7 @@
 */
 
 + (id)newView {
-    NSArray* a = [[NSBundle mainBundle] loadNibNamed:@"CustomErrorMessageView" owner:nil options:0];
+    NSArray* a = [[NSBundle mainBundle] loadNibNamed:@"CustomNotificationView" owner:nil options:0];
     for (id o in a) {
         if ([o isKindOfClass:[self class]]) {
             return o;
@@ -34,23 +37,28 @@
     [super awakeFromNib];
 }
 
-- (void)setErrorMessageLabelWithText:(NSString *)text {
-    _errorMessageLabel.text = text;
+- (void)setMessageLabelWithText:(NSString *)text {
+    _messageLabel.text = text;
+}
+
+- (void)setActionButtonLabelWithText:(NSString *)text {
+    _actionButton.titleLabel.text = text;
 }
 
 - (void)hideActionButton {
     _actionButtonHeight.constant = 0;
     [_actionButton setHidden:YES];
+    [_actionButton setUserInteractionEnabled:NO];
     [self setNeedsLayout];
     [self layoutIfNeeded];
 }
 
-- (IBAction)tapCloseButtom:(id)sender {
-    [_delegate didTapCloseButton];
-}
-
-- (IBAction)tapActionButton:(id)sender {
-    [_delegate didTapActionButton];
+- (void)hideCloseButton {
+    _closeButtonWidth.constant = 0;
+    [_closeButton setHidden:YES];
+    [_closeButton setUserInteractionEnabled:NO];
+    [self setNeedsLayout];
+    [self layoutIfNeeded];
 }
 
 @end

@@ -22,7 +22,9 @@
 @property (strong, nonatomic) IBOutlet UIButton *actionButton;
 
 + (id)newView;
-- (void)setErrorMessageLabelWithText:(NSString *)text;
+- (void)setMessageLabelWithText:(NSString *)text;
+- (void)setActionButtonLabelWithText:(NSString *)text;
 - (void)hideActionButton;
+- (void)hideCloseButton;
 
 @end

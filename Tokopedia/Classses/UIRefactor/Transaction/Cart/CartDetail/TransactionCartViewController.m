@@ -45,6 +45,11 @@
 
 #import "TxOrderTabViewController.h"
 #import "SwiftOverlays.h"
+#import "CustomNotificationView.h"
+
+#import "NSStringCategory.h"
+
+#import "Tokopedia-Swift.h"
 
 #define DurationInstallmentFormat @"%@ bulan (%@)"
 
@@ -953,8 +958,7 @@
         if (gateway == -1) {
             isValid = NO;
             [messageError addObject:ERRORMESSAGE_NULL_CART_PAYMENT];
-            [UIViewController showNotificationOnTopOfStatusBar:_paymentMethodView duration:4.0 animated:YES];
-            [self swipeView:_paymentMethodView];
+            [self tapChoosePayment:self];
         }
         if (gateway == TYPE_GATEWAY_CC) {
             return [CartValidation isValidInputCCCart:_cart];
@@ -1020,12 +1024,16 @@
     
     NSLog(@"%d",isValid);
     if (!isValid) {
-        [StickyAlertView showErrorMessage:[messageError copy]];
+        [UIViewController showNotification:[NSString joinStringsWithBullets:[messageError copy]]
+                                      type:0
+                                  duration:4.0
+                               buttonTitle:nil
+                               dismissable:YES
+                                    action:nil];
     }
 
     return  isValid;
 }
-
 
 -(void)adjustDropshipperListParam;
 {
@@ -1078,6 +1086,15 @@
             [partialListParam setObject:_list[i].cart_is_partial?:@"0" forKey:partialDetailKey];
     }
     [_dataInput setObject:partialListParam forKey:DATA_PARTIAL_LIST_KEY];
+}
+
+#pragma mark - Custom Error Message View Delegate
+- (void)didTapCloseButton {
+    [self removeAllOverlays];
+}
+
+- (void)didTapActionButton {
+    
 }
 
 #pragma mark - Cell Delegate

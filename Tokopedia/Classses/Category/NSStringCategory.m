@@ -164,5 +164,9 @@
     return price;
 }
 
++ (NSString *)joinStringsWithBullets:(NSArray *)strings {
+    return [NSString stringWithFormat:@"\u25CF %@", [[strings valueForKey:@"description"] componentsJoinedByString:@"\n\u25CF "]];
+}
+
 
 @end
