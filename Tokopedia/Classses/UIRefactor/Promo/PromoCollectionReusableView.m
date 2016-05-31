@@ -13,7 +13,7 @@
 #import "WebViewController.h"
 
 typedef NS_ENUM(NSInteger, PromoCellHeight) {
-    PromoNormalCellHeight = 260,
+    PromoNormalCellHeight = 300,
     PromoNormalCellHeightSix = 310,
     PromoNormalCellHeightSixPlus = 340,
     PromoThumbnailCellHeight = 160,
@@ -256,27 +256,43 @@ TKPDAlertViewDelegate
     NSInteger cellCount = 0;
     float heightRatio = 0, widhtRatio = 0, inset = 0;
     CGFloat screenWidth = screenRect.size.width;
+    
+    CGFloat cellWidth;
+    CGFloat cellHeight;
     if (_collectionViewCellType == PromoCollectionViewCellTypeNormal) {
         cellCount = 2;
-        heightRatio = 41;
-        widhtRatio = 29;
         inset = 15;
+        
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
+            screenWidth = screenRect.size.width/2;
+            cellWidth = screenWidth/cellCount-inset;
+        } else {
+            screenWidth = screenRect.size.width;
+            cellWidth = screenWidth/cellCount-inset;
+        }
+        cellHeight = cellWidth + 105;
+        
     } else if (_collectionViewCellType == PromoCollectionViewCellTypeThumbnail) {
         cellCount = 3;
         heightRatio = 1;
         widhtRatio = 1;
         inset = 14;
+        
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
+            screenWidth = screenRect.size.width/2;
+            cellWidth = screenWidth/cellCount-inset;
+        } else {
+            screenWidth = screenRect.size.width;
+            cellWidth = screenWidth/cellCount-inset;
+        }
+        
+        cellHeight = cellWidth*heightRatio/widhtRatio;
     }
-    CGFloat cellWidth;
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
-        screenWidth = screenRect.size.width/2;
-        cellWidth = screenWidth/cellCount-inset;
-    } else {
-        screenWidth = screenRect.size.width;
-        cellWidth = screenWidth/cellCount-inset;
-    }
-    cellSize = CGSizeMake(cellWidth, cellWidth*heightRatio/widhtRatio);
+    
+    
+    cellSize = CGSizeMake(cellWidth, cellHeight);
     return cellSize;
 }
+
 
 @end

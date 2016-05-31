@@ -44,6 +44,7 @@
          [viewModel setProductTalk:_product.count_talk_format];
          [viewModel setIsGoldShopProduct:_shop.gold_shop];
          [viewModel setLuckyMerchantImageURL:_shop.lucky_shop];
+        [viewModel setShopLocation:_shop.location];
         
         _viewModel = viewModel;
     }
