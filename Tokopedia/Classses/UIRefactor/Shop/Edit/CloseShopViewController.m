@@ -10,6 +10,7 @@
 #import "AlertDatePickerView.h"
 #import "CloseShopRequest.h"
 #define CENTER_VIEW_NORMAL_HEIGHT 305
+#define VIEW_TRANSITION_DELAY 2
 
 typedef NS_ENUM(NSInteger, CenterViewType){
     CenterViewAturJadwalButton,
@@ -191,7 +192,7 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
                                                             }
                                                             
                                                             _centerViewType = CenterViewFormView;
-                                                            [self performSelector:@selector(adjustView) withObject:nil afterDelay:2.0];
+                                                            [self performSelector:@selector(adjustView) withObject:nil afterDelay:VIEW_TRANSITION_DELAY];
                                                         }
                                                         onFailure:^(NSError *error) {
                                                             _centerViewType = CenterViewFailView;
@@ -199,7 +200,7 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
                                                             [self adjustView];
                                                             
                                                             _centerViewType = CenterViewFormView;
-                                                            [self performSelector:@selector(adjustView) withObject:nil afterDelay:2.0];
+                                                            [self performSelector:@selector(adjustView) withObject:nil afterDelay:VIEW_TRANSITION_DELAY];
                                                         }];
         }else{
             [_closeShopRequest requestActionCloseShopFrom:[self stringFromNSDate:_dateMulaiDari]
@@ -220,7 +221,7 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
                                                     }
                                                     
                                                     _centerViewType = CenterViewFormView;
-                                                    [self performSelector:@selector(adjustView) withObject:nil afterDelay:2.0];
+                                                    [self performSelector:@selector(adjustView) withObject:nil afterDelay:VIEW_TRANSITION_DELAY];
                                                 }
                                                 onFailure:^(NSError *error) {
                                                     _centerViewType = CenterViewFailView;
@@ -228,7 +229,7 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
                                                     [self adjustView];
                                                     
                                                     _centerViewType = CenterViewFormView;
-                                                    [self performSelector:@selector(adjustView) withObject:nil afterDelay:2.0];
+                                                    [self performSelector:@selector(adjustView) withObject:nil afterDelay:VIEW_TRANSITION_DELAY];
                                                 }];
         }
     }
@@ -247,6 +248,32 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
 - (IBAction)hapusButtonTapped:(id)sender {
     _centerViewType = CenterViewLoadingView;
     [self adjustView];
+    
+    [_closeShopRequest requestActionAbortCloseScheduleOnSuccess:^(CloseShopResponse *result) {
+        if(result.data.is_success){
+            _centerViewType = CenterViewSuccessView;
+            _scheduleDetail.close_status = CLOSE_STATUS_OPEN;
+            _scheduleDetail.close_start = [self stringFromNSDate:_dateMulaiDari];
+            _scheduleDetail.close_end = [self stringFromNSDate:_dateSampaiDengan];
+            _isFormEnabled = NO;
+            [self adjustView];
+        }else{
+            _centerViewType = CenterViewFailView;
+            [self setFailLabelTextWithError:result.message_error];
+            [self adjustView];
+        }
+        
+        _centerViewType = CenterViewFormView;
+        [self performSelector:@selector(adjustView) withObject:nil afterDelay:VIEW_TRANSITION_DELAY];
+
+    } onFailure:^(NSError *error) {
+        _centerViewType = CenterViewFailView;
+        [self setFailLabelTextWithError:@[@"Kendala koneksi internet"]];
+        [self adjustView];
+        
+        _centerViewType = CenterViewFormView;
+        [self performSelector:@selector(adjustView) withObject:nil afterDelay:VIEW_TRANSITION_DELAY];
+    }];
 }
 
 - (IBAction)bukaTokoTapped:(id)sender {
@@ -261,11 +288,20 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
             _centerViewType = CenterViewSuccessView;
             [self adjustView];
         }else{
-            
+            _centerViewType = CenterViewFailView;
+            [self setFailLabelTextWithError:result.message_error];
+            [self adjustView];
         }
+        _centerViewType = CenterViewFormView;
+        [self performSelector:@selector(adjustView) withObject:nil afterDelay:VIEW_TRANSITION_DELAY];
     } onFailure:^(NSError *error) {
-        StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Kendala koneksi internet"] delegate:self];
-        [alert show];
+        _centerViewType = CenterViewFailView;
+        [self setFailLabelTextWithError:@[@"Kendala koneksi internet"]];
+        [self adjustView];
+        
+        _centerViewType = CenterViewFormView;
+        [self performSelector:@selector(adjustView) withObject:nil afterDelay:VIEW_TRANSITION_DELAY];
+
     }];
 }
 
@@ -436,6 +472,7 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
         
         //button buka toko
         [_bukaTokoButton setEnabled:NO];
+        [_bukaTokoButton setBackgroundColor:[UIColor colorWithRed:0.592 green:0.592 blue:0.592 alpha:1]];
         
     }else if(_scheduleDetail.close_status == CLOSE_STATUS_CLOSED){
         _tutupTokoSekarangLabel.text = @"JADWAL TUTUP";
@@ -461,6 +498,7 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
         
         //button buka toko
         [_bukaTokoButton setEnabled:YES];
+        [_bukaTokoButton setBackgroundColor:[UIColor colorWithRed:0.236 green:0.714 blue:0.235 alpha:1]];
         
         [_mulaiDariButton setTitle:_scheduleDetail.close_start forState:UIControlStateNormal];
         [_sampaiDenganButton setTitle:_scheduleDetail.close_end forState:UIControlStateNormal];
@@ -489,6 +527,7 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
         
         //button buka toko
         [_bukaTokoButton setEnabled:NO];
+        [_bukaTokoButton setBackgroundColor:[UIColor colorWithRed:0.592 green:0.592 blue:0.592 alpha:1]];
         
         [_mulaiDariButton setTitle:_scheduleDetail.close_start forState:UIControlStateNormal];
         [_sampaiDenganButton setTitle:_scheduleDetail.close_end forState:UIControlStateNormal];

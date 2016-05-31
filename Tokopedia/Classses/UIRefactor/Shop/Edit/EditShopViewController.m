@@ -286,6 +286,7 @@
     controller.delegate = self;
      */
     CloseShopViewController *controller = [CloseShopViewController new];
+    controller.scheduleDetail = _dataSource.shop.closed_schedule_detail;
     
     
     [self.navigationController pushViewController:controller animated:YES];

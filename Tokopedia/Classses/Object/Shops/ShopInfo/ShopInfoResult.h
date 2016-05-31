@@ -10,6 +10,7 @@
 #import "ShopEditInfo.h"
 #import "ShopCloseDetail.h"
 #import "ShopInfoImage.h"
+#import "ClosedScheduleDetail.h"
 
 @interface ShopInfoResult : NSObject
 
@@ -17,6 +18,7 @@
 @property (strong, nonatomic) NSString *is_allow;
 @property (strong, nonatomic) ShopCloseDetail *closed_detail;
 @property (strong, nonatomic) ShopInfoImage *image;
+@property (strong, nonatomic) ClosedScheduleDetail *closed_schedule_detail;
 
 @property BOOL isOpen;
 @property BOOL isClosed;

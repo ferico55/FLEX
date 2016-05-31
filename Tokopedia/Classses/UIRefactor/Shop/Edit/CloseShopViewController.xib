@@ -141,7 +141,7 @@
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tfb-Yo-C2j">
                                     <rect key="frame" x="10" y="8" width="300" height="44"/>
-                                    <color key="backgroundColor" red="0.20392156859999999" green="0.67450980390000004" blue="0.18039215689999999" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="backgroundColor" red="0.26767507195472717" green="0.74666720628738403" blue="0.26747497916221619" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="44" id="Z2X-Wu-KQC"/>
                                     </constraints>
@@ -248,7 +248,7 @@
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TrK-cP-Aax">
                     <rect key="frame" x="8" y="8" width="288" height="44"/>
-                    <color key="backgroundColor" red="0.44705882352941179" green="0.44705882352941179" blue="0.44705882352941179" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.26767507195472717" green="0.74666720628738403" blue="0.26747497916221619" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="Xg7-UE-KYL"/>
                     </constraints>
@@ -400,7 +400,7 @@
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pyH-U8-Dd0">
                             <rect key="frame" x="10" y="8" width="284" height="44"/>
-                            <color key="backgroundColor" red="0.52156862745098043" green="0.52156862745098043" blue="0.52156862745098043" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" red="0.26767507195472717" green="0.74666720628738403" blue="0.26747497916221619" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="44" id="efz-KL-TD8"/>
                             </constraints>

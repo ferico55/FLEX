@@ -17,4 +17,6 @@
 @property (nonatomic, strong) NSString* close_start;
 @property NSInteger close_status;
 
++(RKObjectMapping*)mapping;
+
 @end
