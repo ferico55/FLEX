@@ -31,6 +31,7 @@
         [viewModel setProductTalk:self.product_talk_count];
         [viewModel setIsGoldShopProduct:[self.shop_gold_status isEqualToString:@"1"]?YES:NO];
         [viewModel setLuckyMerchantImageURL:self.shop_lucky];
+        [viewModel setShopLocation:self.shop_location];
         
         _viewModel = viewModel;
     }
