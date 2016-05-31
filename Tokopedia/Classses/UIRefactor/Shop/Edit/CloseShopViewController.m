@@ -581,8 +581,7 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
     [style setAlignment:NSTextAlignmentCenter];
     
     NSDictionary *dict = @{NSParagraphStyleAttributeName  : style,
-                           NSFontAttributeName            : _failLabel.font,
-                           NSalig
+                           NSFontAttributeName            : _failLabel.font
                            };
     
     NSMutableDictionary *attributes = [[NSMutableDictionary alloc] initWithDictionary:dict];
