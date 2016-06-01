@@ -20,7 +20,7 @@
 @property (strong, nonatomic) NSString *shop_is_closed_note;
 @property (strong, nonatomic) NSString *shop_is_closed_reason;
 @property (strong, nonatomic) NSString *shop_is_closed_until;
-@property (strong, nonatomic) NSString *shop_is_gold;
+@property BOOL shop_is_gold;
 @property (strong, nonatomic) NSString *shop_is_owner;
 @property (strong, nonatomic) NSString *shop_location;
 @property (strong, nonatomic) NSString *shop_name;
@@ -31,6 +31,7 @@
 @property (strong, nonatomic) NSString *shop_tagline;
 @property (strong, nonatomic) NSString *shop_total_favorit;
 @property (strong, nonatomic) NSString *shop_url;
+@property (strong, nonatomic) NSString *shop_gold_expired_time;
 
 + (RKObjectMapping *)mapping;
 

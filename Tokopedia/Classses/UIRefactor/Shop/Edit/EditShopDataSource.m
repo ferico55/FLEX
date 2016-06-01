@@ -46,9 +46,7 @@ NSInteger const SectionForShopTagDescription = 0;
 
 - (EditShopTypeViewCell *)tableView:(UITableView *)tableView shopTypeCellForRowAtIndexPath:(NSIndexPath *)indexPath {
     EditShopTypeViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"shopType"];
-    if ([self.shop.info.shop_is_gold boolValue]) {
-        
-    }
+    [cell initializeInterfaceWithGoldMerchantStatus:self.shop.info.shop_is_gold expiryDate:self.shop.info.shop_gold_expired_time];
     cell.delegate = self;
     return cell;
 }
@@ -123,16 +121,37 @@ NSInteger const SectionForShopTagDescription = 0;
     return cell;
 }
 
-- (UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
-    UIView* footer;
-    if(section == 2){
-        footer = [[UIView alloc]initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 100)];
-        UILabel *label = [[UILabel alloc]init];
-        label.text = @"lorem ipsum woty";
-        [footer addSubview:label];
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+    UIView *footer;
+    if(section == 2 && !(_shop.closed_schedule_detail.close_status == CLOSE_STATUS_OPEN)){
+        footer = [[UIView alloc]initWithFrame:CGRectMake(15, 8, 320, 40)];
+        footer.backgroundColor = [UIColor clearColor];
+        
+        UILabel *lbl = [[UILabel alloc]initWithFrame:footer.frame];
+        lbl.backgroundColor = [UIColor clearColor];
+        
+        if(_shop.closed_schedule_detail.close_status == CLOSE_STATUS_CLOSED){
+            lbl.text = [NSString stringWithFormat:@"Toko akan buka kembali pada %@, 23:59.", _shop.closed_schedule_detail.close_end];
+        }else{
+            lbl.text = [NSString stringWithFormat:@"Toko akan tutup pada %@, 00:00.", _shop.closed_schedule_detail.close_start];
+        }
+        lbl.textAlignment = NSTextAlignmentLeft;
+        lbl.font = [UIFont fontWithName:@"Gotham Book" size:12.0];
+        [lbl setNumberOfLines:0];
+        [lbl sizeToFit];
+        [footer addSubview:lbl];
+        
         return footer;
     }
     return footer;
+}
+
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    if(_shop.closed_schedule_detail.close_status == CLOSE_STATUS_CLOSED || _shop.closed_schedule_detail.close_status == CLOSE_STATUS_CLOSE_SCHEDULED){
+        return 40.0;
+    }
+    return 0;
 }
 
 #pragma mark - Table view delegate

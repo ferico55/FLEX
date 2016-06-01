@@ -34,6 +34,7 @@
                           @"shop_tagline",
                           @"shop_total_favorite",
                           @"shop_url",
+                          @"shop_gold_expired_time"
                           ];
     [mapping addAttributeMappingsFromArray:mappings];
     return mapping;
