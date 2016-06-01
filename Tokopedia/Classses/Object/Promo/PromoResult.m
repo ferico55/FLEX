@@ -39,7 +39,7 @@
         [viewModel setProductPrice:_product.price_format];
         
          [viewModel setProductShop:_shop.name];
-         [viewModel setProductThumbUrl:_product.image.m_url];
+         [viewModel setProductThumbUrl:_product.image.s_url];
          [viewModel setProductReview:_product.count_review_format];
          [viewModel setProductTalk:_product.count_talk_format];
          [viewModel setIsGoldShopProduct:_shop.gold_shop];
