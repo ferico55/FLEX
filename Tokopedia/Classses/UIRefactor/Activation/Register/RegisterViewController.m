@@ -140,7 +140,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     [super viewDidLoad];
     
     _datainput = [NSMutableDictionary new];
-    [_datainput setObject:@"3" forKey:kTKPDREGISTER_APIGENDERKEY];
 
     _operationQueue =[NSOperationQueue new];
     
@@ -165,8 +164,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     _signIn.scopes = @[ kGTLAuthScopePlusLogin ];
     _signIn.delegate = self;
     [_signIn trySilentAuthentication];
-    
-//    [_signInButton setStyle:kGPPSignInButtonStyleStandard];
 
     _loginView = [[FBSDKLoginButton alloc] init];
     _loginView.delegate = self;

@@ -217,6 +217,41 @@
     [super didReceiveMemoryWarning];
 }
 
+#pragma mark - Methods
+- (NSString *)getBirthdayDate {
+    if ([_dateOfBirthTextField.text isEqualToString:@""]) {
+        return @"1";
+    }
+    
+    return [_dateOfBirthTextField.text componentsSeparatedByString:@"/"][0];
+}
+
+- (NSString *)getBirthdayMonth {
+    if ([_dateOfBirthTextField.text isEqualToString:@""]) {
+        return @"1";
+    }
+    
+    return [_dateOfBirthTextField.text componentsSeparatedByString:@"/"][1];
+}
+
+- (NSString *)getBirthdayYear {
+    if ([_dateOfBirthTextField.text isEqualToString:@""]) {
+        return @"1";
+    }
+    
+    return [_dateOfBirthTextField.text componentsSeparatedByString:@"/"][2];
+}
+
+- (NSString *)getGender {
+    if ([[_facebookUserData objectForKey:@"gender"] isEqualToString:@"male"]) {
+        return @"1";
+    } else if ([[_facebookUserData objectForKey:@"gender"] isEqualToString:@"female"]) {
+        return @"2";
+    } else {
+        return @"3";
+    }
+}
+
 #pragma mark - Actions
 
 - (IBAction)tap:(id)sender
@@ -544,32 +579,14 @@
     _signupButton.enabled = NO;
     _signupButton.layer.opacity = 0.7;
     
-    NSString *birthdayDate = @"1";
-    NSString *birthdayMonth = @"1";
-    NSString *birthdayYear = @"1";
-    
-    if (![_dateOfBirthTextField.text isEqualToString:@""]) {
-        NSArray *dataComponents = [_dateOfBirthTextField.text componentsSeparatedByString:@"/"];
-        birthdayDate = [dataComponents objectAtIndex:0];
-        birthdayMonth = [dataComponents objectAtIndex:1];
-        birthdayYear = [dataComponents objectAtIndex:2];
-    }
-    
-    NSString *gender = @"3";
-    if ([[_facebookUserData objectForKey:@"gender"] isEqualToString:@"male"]) {
-        gender = @"1";
-    } else if ([[_facebookUserData objectForKey:@"gender"] isEqualToString:@"female"]) {
-        gender = @"2";
-    }
-    
     [_activationRequest requestCreatePasswordWithFullName:_fullNameTextField.text
-                                                   gender:gender
+                                                   gender:[self getGender]
                                               newPassword:_passwordTextField.text
                                           confirmPassword:_confirmPasswordTextfield.text
                                                    msisdn:_phoneNumberTextField.text
-                                             birthdayDate:birthdayDate
-                                            birthdayMonth:birthdayMonth
-                                             birthdayYear:birthdayYear
+                                             birthdayDate:[self getBirthdayDate]
+                                            birthdayMonth:[self getBirthdayMonth]
+                                             birthdayYear:[self getBirthdayYear]
                                               registerTOS:@"1"
                                                 onSuccess:^(CreatePassword *result) {
                                                     _createPassword = result;
