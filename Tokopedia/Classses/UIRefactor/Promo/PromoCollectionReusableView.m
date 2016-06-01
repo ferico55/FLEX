@@ -18,7 +18,7 @@ typedef NS_ENUM(NSInteger, PromoCellHeight) {
     PromoNormalCellHeightSixPlus = 340,
     PromoThumbnailCellHeight = 160,
     PromoThumbnailCellHeightSix = 180,
-    PromoThumbnailCellHeightSixPlus = 190,
+    PromoThumbnailCellHeightSixPlus = 451,
 };
 
 @interface PromoCollectionReusableView ()
@@ -222,13 +222,13 @@ TKPDAlertViewDelegate
         if (type == PromoCollectionViewCellTypeNormal) {
             height = PromoNormalCellHeight;
         } else if (type == PromoCollectionViewCellTypeThumbnail) {
-            height = PromoThumbnailCellHeight;
+            height = PromoThumbnailCellHeightSixPlus;
         }
     } else if (IS_IPHONE_6) {
         if (type == PromoCollectionViewCellTypeNormal) {
             height = PromoNormalCellHeightSix;
         } else if (type == PromoCollectionViewCellTypeThumbnail) {
-            height = PromoThumbnailCellHeightSix;
+            height = PromoThumbnailCellHeightSixPlus;
         }
     } else if (IS_IPHONE_6P) {
         if (type == PromoCollectionViewCellTypeNormal) {
@@ -253,15 +253,14 @@ TKPDAlertViewDelegate
 - (CGSize)itemSize {
     CGSize cellSize = CGSizeMake(0, 0);
     CGRect screenRect = [[UIScreen mainScreen] bounds];
-    NSInteger cellCount = 0;
-    float heightRatio = 0, widhtRatio = 0, inset = 0;
+    NSInteger cellCount = 1;
+    CGFloat inset = 15;
     CGFloat screenWidth = screenRect.size.width;
     
     CGFloat cellWidth;
     CGFloat cellHeight;
     if (_collectionViewCellType == PromoCollectionViewCellTypeNormal) {
         cellCount = 2;
-        inset = 15;
         
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
             screenWidth = screenRect.size.width/2;
@@ -273,11 +272,6 @@ TKPDAlertViewDelegate
         cellHeight = cellWidth + 105;
         
     } else if (_collectionViewCellType == PromoCollectionViewCellTypeThumbnail) {
-        cellCount = 3;
-        heightRatio = 1;
-        widhtRatio = 1;
-        inset = 14;
-        
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
             screenWidth = screenRect.size.width/2;
             cellWidth = screenWidth/cellCount-inset;
@@ -286,7 +280,7 @@ TKPDAlertViewDelegate
             cellWidth = screenWidth/cellCount-inset;
         }
         
-        cellHeight = cellWidth*heightRatio/widhtRatio;
+        cellHeight = 90;
     }
     
     
