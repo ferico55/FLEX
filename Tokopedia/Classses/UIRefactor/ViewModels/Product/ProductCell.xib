@@ -60,7 +60,7 @@
                                 <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="42" id="KNe-Dc-IEI"/>
-                                    <constraint firstAttribute="height" constant="15" id="ybJ-Tb-fNS"/>
+                                    <constraint firstAttribute="height" constant="18" id="ybJ-Tb-fNS"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -75,7 +75,7 @@
                                 <rect key="frame" x="51" y="195" width="60" height="18"/>
                                 <color key="backgroundColor" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="15" id="6Kt-2D-DWq"/>
+                                    <constraint firstAttribute="height" constant="18" id="6Kt-2D-DWq"/>
                                     <constraint firstAttribute="width" constant="60" id="no7-lF-yKf"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
@@ -88,7 +88,7 @@
                                 </userDefinedRuntimeAttributes>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="i12-7L-Tfh">
-                                <rect key="frame" x="6" y="216" width="133" height="0.5"/>
+                                <rect key="frame" x="6" y="215" width="50" height="0.5"/>
                                 <color key="backgroundColor" red="0.82352941180000006" green="0.82352941180000006" blue="0.82352941180000006" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="0.5" id="5o5-CW-sT8"/>
@@ -148,12 +148,12 @@
                             <constraint firstItem="Ywu-mc-7Di" firstAttribute="leading" secondItem="Ymv-Zs-D1n" secondAttribute="leadingMargin" constant="-2" id="DZp-te-gjU"/>
                             <constraint firstAttribute="bottom" secondItem="18h-Q2-lJK" secondAttribute="bottom" constant="4.5" id="F6V-lo-mKE"/>
                             <constraint firstItem="ZXj-s2-9Ow" firstAttribute="top" secondItem="Tn9-gR-GHT" secondAttribute="bottom" constant="5" id="HYw-Lv-7kj"/>
-                            <constraint firstItem="mlD-8n-5Cw" firstAttribute="top" secondItem="ZXj-s2-9Ow" secondAttribute="bottom" id="JCX-u5-eZ0"/>
+                            <constraint firstItem="mlD-8n-5Cw" firstAttribute="top" secondItem="ZXj-s2-9Ow" secondAttribute="bottom" constant="-1" id="JCX-u5-eZ0"/>
                             <constraint firstAttribute="bottom" secondItem="Uc5-k1-Ud2" secondAttribute="bottom" constant="17.5" id="Mq7-FX-65W"/>
                             <constraint firstItem="ZXj-s2-9Ow" firstAttribute="leading" secondItem="Ymv-Zs-D1n" secondAttribute="leading" constant="6" id="NrL-m6-jdr"/>
                             <constraint firstItem="zSL-Us-50U" firstAttribute="top" secondItem="mlD-8n-5Cw" secondAttribute="bottom" constant="1" id="O3A-0d-y0x"/>
                             <constraint firstItem="18h-Q2-lJK" firstAttribute="leading" secondItem="Ywu-mc-7Di" secondAttribute="trailing" id="OK1-MN-oFX"/>
-                            <constraint firstItem="i12-7L-Tfh" firstAttribute="top" secondItem="zSL-Us-50U" secondAttribute="bottom" constant="5" id="Q68-vX-U3f"/>
+                            <constraint firstItem="i12-7L-Tfh" firstAttribute="top" secondItem="zSL-Us-50U" secondAttribute="bottom" constant="2" id="Q68-vX-U3f"/>
                             <constraint firstAttribute="trailing" secondItem="Uc5-k1-Ud2" secondAttribute="trailing" constant="6" id="SSl-93-SM0"/>
                             <constraint firstItem="Ywu-mc-7Di" firstAttribute="centerY" secondItem="18h-Q2-lJK" secondAttribute="centerY" id="UCG-YX-1f5"/>
                             <constraint firstItem="Tn9-gR-GHT" firstAttribute="leading" secondItem="Ymv-Zs-D1n" secondAttribute="leading" id="ZBM-1S-KOJ"/>
@@ -163,7 +163,7 @@
                             <constraint firstAttribute="trailing" secondItem="Tn9-gR-GHT" secondAttribute="trailing" id="dP3-7b-8nr"/>
                             <constraint firstItem="mlD-8n-5Cw" firstAttribute="top" secondItem="ZXj-s2-9Ow" secondAttribute="bottom" constant="-3" id="eMQ-GR-DJq"/>
                             <constraint firstItem="i12-7L-Tfh" firstAttribute="leading" secondItem="Ymv-Zs-D1n" secondAttribute="leading" constant="6" id="j9T-VY-y6U"/>
-                            <constraint firstAttribute="trailing" secondItem="i12-7L-Tfh" secondAttribute="trailing" constant="6" id="jqo-He-2je"/>
+                            <constraint firstAttribute="trailing" secondItem="i12-7L-Tfh" secondAttribute="trailing" constant="89" id="jqo-He-2je"/>
                             <constraint firstItem="Tn9-gR-GHT" firstAttribute="top" secondItem="Ymv-Zs-D1n" secondAttribute="top" id="lyf-He-toy"/>
                             <constraint firstItem="Uc5-k1-Ud2" firstAttribute="leading" secondItem="Ymv-Zs-D1n" secondAttribute="leading" constant="6" id="mnY-pY-8ML"/>
                             <constraint firstItem="UFM-a3-IJN" firstAttribute="leading" secondItem="Ymv-Zs-D1n" secondAttribute="leading" constant="128" id="sgB-cn-2Q8"/>

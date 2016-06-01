@@ -33,15 +33,11 @@ import Foundation
                 cellHeight = cellWidth + 105
                 
             } else if(cellType == 2) {
-                numberOfCell = 3
-                cellHeight = UIScreen.mainScreen().bounds.size.width / 3 - 15
-            } else if(cellType == 3) {
+                numberOfCell = 1
+                cellHeight = 93
+            } else {
                 numberOfCell = 1
                 cellHeight = UIScreen.mainScreen().bounds.size.width + 100
-            } else {
-                numberOfCell = 2
-                let cellWidth = screenWidth/numberOfCell - 15
-                cellHeight = cellWidth + 45
             }
         }
         
