@@ -24,14 +24,14 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Badges_gold_merchant" translatesAutoresizingMaskIntoConstraints="NO" id="yw8-Az-tTv">
-                        <rect key="frame" x="292" y="8" width="20" height="20"/>
+                        <rect key="frame" x="284" y="8" width="20" height="20"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="20" id="Wvg-8a-tIi"/>
                             <constraint firstAttribute="height" constant="20" id="o0r-nN-Xjt"/>
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Regular Merchant" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Id6-n1-rvl">
-                        <rect key="frame" x="8" y="8" width="276" height="20"/>
+                        <rect key="frame" x="15" y="8" width="261" height="20"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="20" id="Z3P-39-K0O"/>
                         </constraints>
@@ -47,7 +47,7 @@
                         </constraints>
                     </view>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1zE-d0-xVh">
-                        <rect key="frame" x="8" y="67" width="304" height="24"/>
+                        <rect key="frame" x="15" y="67" width="297" height="28"/>
                         <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
                         <state key="normal" title="Tentang Gold Merchant">
                             <color key="titleColor" red="0.074509803921568626" green="0.56862745098039214" blue="0.054901960784313725" alpha="1" colorSpace="calibratedRGB"/>
@@ -57,7 +57,7 @@
                         </connections>
                     </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Anda belum berlangganan Gold Merchant" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GU0-s8-yFm">
-                        <rect key="frame" x="8" y="32" width="304" height="18"/>
+                        <rect key="frame" x="15" y="32" width="297" height="18"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="18" id="Xe7-0c-rrU"/>
                         </constraints>
@@ -67,15 +67,15 @@
                     </label>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="GU0-s8-yFm" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="1ph-hs-OMe"/>
-                    <constraint firstItem="1zE-d0-xVh" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="3D0-gn-4qY"/>
+                    <constraint firstItem="GU0-s8-yFm" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="1ph-hs-OMe"/>
+                    <constraint firstItem="1zE-d0-xVh" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="3D0-gn-4qY"/>
                     <constraint firstItem="vqx-xM-Ue2" firstAttribute="top" secondItem="GU0-s8-yFm" secondAttribute="bottom" constant="8" id="4Fe-KF-aSI"/>
                     <constraint firstAttribute="trailing" secondItem="1zE-d0-xVh" secondAttribute="trailing" constant="8" id="ARg-Xn-faO"/>
                     <constraint firstItem="yw8-Az-tTv" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="D3m-Re-Uvh"/>
                     <constraint firstAttribute="trailing" secondItem="GU0-s8-yFm" secondAttribute="trailing" constant="8" id="FFk-h2-CRc"/>
-                    <constraint firstAttribute="trailing" secondItem="yw8-Az-tTv" secondAttribute="trailing" constant="8" id="XRd-9U-FUQ"/>
+                    <constraint firstAttribute="trailing" secondItem="yw8-Az-tTv" secondAttribute="trailing" constant="16" id="XRd-9U-FUQ"/>
                     <constraint firstItem="Id6-n1-rvl" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="bD6-b5-nhJ"/>
-                    <constraint firstItem="Id6-n1-rvl" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="ccn-jC-Q0W"/>
+                    <constraint firstItem="Id6-n1-rvl" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="ccn-jC-Q0W"/>
                     <constraint firstItem="yw8-Az-tTv" firstAttribute="leading" secondItem="Id6-n1-rvl" secondAttribute="trailing" constant="8" id="fur-wT-DUU"/>
                     <constraint firstAttribute="trailing" secondItem="vqx-xM-Ue2" secondAttribute="trailing" id="jGx-QS-NQ1"/>
                     <constraint firstItem="vqx-xM-Ue2" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="jNC-RC-hMr"/>
