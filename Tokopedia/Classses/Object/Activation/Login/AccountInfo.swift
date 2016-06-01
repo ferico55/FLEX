@@ -8,8 +8,8 @@
 
 import UIKit
 
-@objc(UserInfo)
-class UserInfo: NSObject {
+@objc(AccountInfo)
+class AccountInfo: NSObject {
     var userId: String!
     
     class func mapping() -> RKObjectMapping {
