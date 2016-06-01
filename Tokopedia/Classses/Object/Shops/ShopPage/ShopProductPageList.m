@@ -54,6 +54,8 @@
         [viewModel setProductTalk:self.product_talk_count];
         [viewModel setIsGoldShopProduct:[self.shop_gold_status isEqualToString:@"1"]?YES:NO];
         [viewModel setLuckyMerchantImageURL:self.shop_lucky];
+        [viewModel setIsProductPreorder:self.product_preorder];
+        [viewModel setIsWholesale:self.product_wholesale];
         
         _viewModel = viewModel;
     }

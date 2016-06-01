@@ -415,6 +415,8 @@ EtalaseViewControllerDelegate
         cellid = @"ProductThumbCellIdentifier";
         cell = (ProductThumbCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
         [(ProductThumbCell*)cell setViewModel:list.viewModel];
+        ((ProductThumbCell*)cell).locationIcon.hidden = YES;
+        ((ProductThumbCell*)cell).shopName.hidden = YES;
     }
     
     //next page if already last cell
