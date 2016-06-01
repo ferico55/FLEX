@@ -181,7 +181,7 @@
         
         if ([viewModel.productErrorMessage isEqualToString:@"Produk ini berada di gudang"]) {
             
-            self.errorProductLabel.text = @"GUDANG";
+            self.errorProductLabel.text = @"KOSONG";
             
         }
         
