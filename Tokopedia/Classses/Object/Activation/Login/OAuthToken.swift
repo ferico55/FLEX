@@ -16,6 +16,9 @@ class OAuthToken: NSObject {
         let mapping = RKObjectMapping(forClass: self)
         mapping.addAttributeMappingsFromDictionary([
             "access_token": "accessToken",
+            "token_type": "tokenType",
+            "expires_in": "expiry",
+            "refresh_token": "refreshToken"
         ])
 
         return mapping
