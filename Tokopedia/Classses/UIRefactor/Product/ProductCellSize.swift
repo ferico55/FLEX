@@ -16,15 +16,18 @@ import Foundation
         
         if(UIDevice.currentDevice().userInterfaceIdiom == .Pad) {
             //two column
+            var cellWidth: CGFloat
             if(cellType == 1) {
                 numberOfCell = 4
-                cellHeight = 250
+                cellWidth = screenWidth/numberOfCell - 15
+                cellHeight = cellWidth + 105
             } else if(cellType == 2) {
-                numberOfCell = 6
-                cellHeight = 150
+                numberOfCell = 2
+                cellHeight = 93
             } else {
                 numberOfCell = 2
-                cellHeight = 450
+                cellWidth = screenWidth/numberOfCell - 15
+                cellHeight = cellWidth + 90
             }
         } else {
             if(cellType == 1) {

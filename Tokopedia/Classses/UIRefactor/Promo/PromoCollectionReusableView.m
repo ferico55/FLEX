@@ -240,7 +240,7 @@ TKPDAlertViewDelegate
         if (type == PromoCollectionViewCellTypeNormal) {
             height = PromoNormalCellHeightSixPlus;
         } else if (type == PromoCollectionViewCellTypeThumbnail) {
-            height = PromoThumbnailCellHeightSixPlus;
+            height = PromoThumbnailCellHeightSixPlus / 2 + 10;
         }
     }
     return height;

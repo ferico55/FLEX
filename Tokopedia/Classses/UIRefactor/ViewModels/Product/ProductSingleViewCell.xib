@@ -34,12 +34,15 @@
                                 <rect key="frame" x="0.0" y="0.0" width="300" height="300"/>
                                 <color key="backgroundColor" red="0.90196078430000004" green="0.90196078430000004" blue="0.90196078430000004" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
+                                    <constraint firstAttribute="width" secondItem="xYp-Qr-lkc" secondAttribute="height" multiplier="1:1" id="AsC-nJ-eq9"/>
                                     <constraint firstAttribute="width" constant="300" id="L86-3c-7SZ"/>
                                     <constraint firstAttribute="height" constant="300" id="UUm-Zn-ufL"/>
                                     <constraint firstAttribute="width" secondItem="xYp-Qr-lkc" secondAttribute="height" multiplier="150:157" id="WR0-Wy-cOh"/>
                                 </constraints>
                                 <variation key="default">
                                     <mask key="constraints">
+                                        <exclude reference="L86-3c-7SZ"/>
+                                        <exclude reference="UUm-Zn-ufL"/>
                                         <exclude reference="WR0-Wy-cOh"/>
                                     </mask>
                                 </variation>
