@@ -225,8 +225,6 @@
         FBSDKLoginManager *loginManager = [[FBSDKLoginManager alloc] init];
         [loginManager logOut];
         [FBSDKAccessToken setCurrentAccessToken:nil];
-//        [[GPPSignIn sharedInstance] signOut];
-//        [[GPPSignIn sharedInstance] disconnect];
         [[GIDSignIn sharedInstance] signOut];
         [[GIDSignIn sharedInstance] disconnect];
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
@@ -259,10 +257,6 @@
                 [errorMessages addObject:@"Konfirmasi Kata Sandi harus diisi"];
             } else if (_confirmPasswordTextfield.text.length < 6) {
                 [errorMessages addObject:@"Konfirmasi Kata Sandi terlalu pendek, minimum 6 karakter"];
-            }
-            
-            if ([_dateOfBirthTextField.text isEqualToString:@""]) {
-                [errorMessages addObject:@"Tanggal lahir harus diisi"];
             }
             
             if ([_phoneNumberTextField.text isEqualToString:@""]) {
@@ -550,9 +544,18 @@
     _signupButton.enabled = NO;
     _signupButton.layer.opacity = 0.7;
     
-    NSArray *dataComponents = [_dateOfBirthTextField.text componentsSeparatedByString:@"/"];
+    NSString *birthdayDate = @"1";
+    NSString *birthdayMonth = @"1";
+    NSString *birthdayYear = @"1";
     
-    NSString *gender = @"";
+    if (![_dateOfBirthTextField.text isEqualToString:@""]) {
+        NSArray *dataComponents = [_dateOfBirthTextField.text componentsSeparatedByString:@"/"];
+        birthdayDate = [dataComponents objectAtIndex:0];
+        birthdayMonth = [dataComponents objectAtIndex:1];
+        birthdayYear = [dataComponents objectAtIndex:2];
+    }
+    
+    NSString *gender = @"3";
     if ([[_facebookUserData objectForKey:@"gender"] isEqualToString:@"male"]) {
         gender = @"1";
     } else if ([[_facebookUserData objectForKey:@"gender"] isEqualToString:@"female"]) {
@@ -564,9 +567,9 @@
                                               newPassword:_passwordTextField.text
                                           confirmPassword:_confirmPasswordTextfield.text
                                                    msisdn:_phoneNumberTextField.text
-                                             birthdayDate:[dataComponents objectAtIndex:0]
-                                            birthdayMonth:[dataComponents objectAtIndex:1]
-                                             birthdayYear:[dataComponents objectAtIndex:2]
+                                             birthdayDate:birthdayDate
+                                            birthdayMonth:birthdayMonth
+                                             birthdayYear:birthdayYear
                                               registerTOS:@"1"
                                                 onSuccess:^(CreatePassword *result) {
                                                     _createPassword = result;
