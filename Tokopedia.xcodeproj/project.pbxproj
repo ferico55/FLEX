@@ -2258,6 +2258,7 @@
 		923B9DC61D0165E5002B3792 /* VTItemDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 923B982E1D0165E4002B3792 /* VTItemDetails.m */; };
 		923B9DC71D0165E5002B3792 /* VTToken.m in Sources */ = {isa = PBXBuildFile; fileRef = 923B98301D0165E4002B3792 /* VTToken.m */; };
 		923B9DC81D0165E5002B3792 /* VTTransactionDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 923B98321D0165E4002B3792 /* VTTransactionDetails.m */; };
+		923B9DCA1D016844002B3792 /* AccountInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 923B9DC91D016844002B3792 /* AccountInfo.swift */; };
 		BBA2937F1CC624AB000630FB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BBA285A51CC624A1000630FB /* AppDelegate.m */; };
 		BBA298CE1CC624AC000630FB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BBA290691CC624A5000630FB /* InfoPlist.strings */; };
 		BBA298CF1CC624AC000630FB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BBA2906B1CC624A5000630FB /* GoogleService-Info.plist */; };
@@ -5673,6 +5674,7 @@
 		923B98301D0165E4002B3792 /* VTToken.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTToken.m; sourceTree = "<group>"; };
 		923B98311D0165E4002B3792 /* VTTransactionDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTTransactionDetails.h; sourceTree = "<group>"; };
 		923B98321D0165E4002B3792 /* VTTransactionDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTTransactionDetails.m; sourceTree = "<group>"; };
+		923B9DC91D016844002B3792 /* AccountInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountInfo.swift; sourceTree = "<group>"; };
 		AAA12C6A69BF6CB5F8EE3287 /* Pods-Tokopedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug.xcconfig"; sourceTree = "<group>"; };
 		BBA285A41CC624A1000630FB /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		BBA285A51CC624A1000630FB /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -7073,6 +7075,7 @@
 		923B8DAB1D0165E1002B3792 /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				923B9DC91D016844002B3792 /* AccountInfo.swift */,
 				923B8DAC1D0165E1002B3792 /* Login.h */,
 				923B8DAD1D0165E1002B3792 /* Login.m */,
 				923B8DAE1D0165E1002B3792 /* LoginResult.h */,
@@ -13068,6 +13071,7 @@
 				923B9DA41D0165E5002B3792 /* ProfileFavoriteShopViewController.m in Sources */,
 				923B98F41D0165E4002B3792 /* InboxMessageResult.m in Sources */,
 				923B99D71D0165E4002B3792 /* AddProductValidation.m in Sources */,
+				923B9DCA1D016844002B3792 /* AccountInfo.swift in Sources */,
 				923B9A691D0165E4002B3792 /* RSKPlaceholderTextView.swift in Sources */,
 				923B99721D0165E4002B3792 /* PrivacyFormResult.m in Sources */,
 				923B9D391D0165E5002B3792 /* ATCPushLocalytics.m in Sources */,
