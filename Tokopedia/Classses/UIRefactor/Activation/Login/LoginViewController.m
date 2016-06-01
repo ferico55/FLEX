@@ -78,6 +78,8 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     ActivationRequest *_activationRequest;
 
     TokopediaNetworkManager *_networkManager;
+    TokopediaNetworkManager *_marketplaceNetworkManager;
+    TokopediaNetworkManager *_getUserInfoNetworkManager;
 }
 
 @property (strong, nonatomic) IBOutlet TextField *emailTextField;
@@ -132,7 +134,12 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     [super viewDidLoad];
     _userManager = [[UserAuthentificationManager alloc]init];
     _networkManager = [TokopediaNetworkManager new];
+
+    _marketplaceNetworkManager = [TokopediaNetworkManager new];
+    _marketplaceNetworkManager.isUsingHmac = YES;
     
+    _getUserInfoNetworkManager = [TokopediaNetworkManager new];
+
     UIImage *iconToped = [UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE];
     UIImageView *topedImageView = [[UIImageView alloc] initWithImage:iconToped];
     self.navigationItem.titleView = topedImageView;
@@ -328,17 +335,65 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
                             @"password": pass
                     };
 
+    /**
+     [_objectManager.HTTPClient setDefaultHeader:@"Authorization" value:@"Basic N2VhOTE5MTgyZmY6YjM2Y2JmOTA0ZDE0YmJmOTBlN2YyNTQzMTU5NWEzNjQ="];
+     */
+    NSDictionary *header = @{@"Authorization": @"Basic N2VhOTE5MTgyZmY6YjM2Y2JmOTA0ZDE0YmJmOTBlN2YyNTQzMTU5NWEzNjQ="};
+    
     [_networkManager requestNotObfuscatedWithBaseUrl:@"https://accounts-alpha.tokopedia.com"
                                                 path:@"/token"
                                               method:RKRequestMethodPOST
+                                              header:header
                                            parameter:parameters
                                              mapping:[OAuthToken mapping]
                                            onSuccess:^(RKMappingResult *result, RKObjectRequestOperation *operation) {
-
+                                               OAuthToken *oAuthToken = result.dictionary[@""];
+                                               [self getUserInfoWithOAuthToken:oAuthToken];
                                            }
                                            onFailure:^(NSError *error) {
 
                                            }];
+}
+
+- (void)getUserInfoWithOAuthToken:(OAuthToken *)oAuthToken {
+    /*
+     NSString* securityQuestionUUID = [[[TKPDSecureStorage standardKeyChains] keychainDictionary] objectForKey:@"securityQuestionUUID"];
+     
+     NSDictionary* param = @{
+         kTKPDLOGIN_APIUSEREMAILKEY : [data objectForKey:kTKPDACTIVATION_DATAEMAILKEY]?:@(0),
+         kTKPDLOGIN_APIUSERPASSKEY : [data objectForKey:kTKPDACTIVATION_DATAPASSKEY]?:@(0),
+         @"uuid" : securityQuestionUUID.length ? securityQuestionUUID : @""
+     };
+     */
+//    
+//    [_marketplaceNetworkManager requestWithBaseUrl:[NSString v4Url]
+//                                              path:@"/v4/session/make_login.pl"
+//                                            method:RKRequestMethodPOST
+//                                         parameter:nil
+//                                           mapping:[Login mapping]
+//                                         onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+//
+//                                         }
+//                                         onFailure:^(NSError *errorResult) {
+//
+//                                         }];
+    
+    NSDictionary *header = @{
+                             @"Authorization": [NSString stringWithFormat:@"%@ %@", oAuthToken.tokenType, oAuthToken.accessToken]
+                             };
+    
+    [_getUserInfoNetworkManager requestNotObfuscatedWithBaseUrl:@"https://accounts-alpha.tokopedia.com"
+                                                           path:@"/info"
+                                                         method:RKRequestMethodGET
+                                                         header:header
+                                                      parameter:@{}
+                                                        mapping:[AccountInfo mapping]
+                                                      onSuccess:^(RKMappingResult *mappingResult, RKObjectRequestOperation *operation) {
+                                                          
+                                                      }
+                                                      onFailure:^(NSError *error) {
+                                                          
+                                                      }];
 }
 
 #pragma mark - Memory Management

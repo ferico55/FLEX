@@ -411,6 +411,7 @@
 - (void)requestNotObfuscatedWithBaseUrl:(NSString *)baseUrl
                                    path:(NSString *)path
                                  method:(RKRequestMethod)method
+                                 header:(NSDictionary<NSString *, NSString *> *)header
                               parameter:(NSDictionary<NSString *,NSString *> *)parameter
                                 mapping:(RKObjectMapping *)mapping
                               onSuccess:(void (^)(RKMappingResult *, RKObjectRequestOperation *))successCallback
@@ -433,7 +434,10 @@
     [_objectManager.HTTPClient setDefaultHeader:@"Accept-Language" value:@"id-ID"];
     NSString *xDevice = [NSString stringWithFormat:@"ios-%@",appVersion];
     [_objectManager.HTTPClient setDefaultHeader:@"X-Device" value:xDevice];
-    [_objectManager.HTTPClient setDefaultHeader:@"Authorization" value:@"Basic N2VhOTE5MTgyZmY6YjM2Y2JmOTA0ZDE0YmJmOTBlN2YyNTQzMTU5NWEzNjQ="];
+    
+    [header bk_each:^(NSString *key, NSString *value) {
+        [_objectManager.HTTPClient setDefaultHeader:key value:value];
+    }];
 
     if(self.isUsingHmac) {
         TkpdHMAC *hmac = [TkpdHMAC new];

@@ -86,6 +86,7 @@ DEPRECATED_ATTRIBUTE
 - (void)requestNotObfuscatedWithBaseUrl:(NSString *)baseUrl
                                    path:(NSString *)path
                                  method:(RKRequestMethod)method
+                                 header:(NSDictionary<NSString *, NSString *> *)header
                               parameter:(NSDictionary<NSString *,NSString *> *)parameter
                                 mapping:(RKObjectMapping *)mapping
                               onSuccess:(void (^)(RKMappingResult *, RKObjectRequestOperation *))successCallback
