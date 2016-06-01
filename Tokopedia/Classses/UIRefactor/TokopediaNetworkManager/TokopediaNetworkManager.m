@@ -408,6 +408,130 @@
 
 }
 
+- (void)requestNotObfuscatedWithBaseUrl:(NSString *)baseUrl
+                                   path:(NSString *)path
+                                 method:(RKRequestMethod)method
+                              parameter:(NSDictionary<NSString *,NSString *> *)parameter
+                                mapping:(RKObjectMapping *)mapping
+                              onSuccess:(void (^)(RKMappingResult *, RKObjectRequestOperation *))successCallback
+                              onFailure:(void (^)(NSError *))errorCallback {
+    if(_objectRequest.isExecuting) return;
+
+    _requestCount ++;
+
+    _objectManager  = [RKObjectManager sharedClient:baseUrl];
+    RKResponseDescriptor* responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:mapping
+                                                                                                  method:method
+                                                                                             pathPattern:path
+                                                                                                 keyPath:@""
+                                                                                             statusCodes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(200, 100)]];
+    [_objectManager addResponseDescriptor:responseDescriptorStatus];
+
+
+    NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    [_objectManager.HTTPClient setDefaultHeader:@"X-APP-VERSION" value:appVersion];
+    [_objectManager.HTTPClient setDefaultHeader:@"Accept-Language" value:@"id-ID"];
+    NSString *xDevice = [NSString stringWithFormat:@"ios-%@",appVersion];
+    [_objectManager.HTTPClient setDefaultHeader:@"X-Device" value:xDevice];
+    [_objectManager.HTTPClient setDefaultHeader:@"Authorization" value:@"Basic N2VhOTE5MTgyZmY6YjM2Y2JmOTA0ZDE0YmJmOTBlN2YyNTQzMTU5NWEzNjQ="];
+
+    if(self.isUsingHmac) {
+        TkpdHMAC *hmac = [TkpdHMAC new];
+        NSString* date = [hmac getDate];
+        NSString *signature = [hmac generateSignatureWithMethod:[self getStringRequestMethod:method] tkpdPath:path parameter:parameter date:date];
+
+        [_objectManager.HTTPClient setDefaultHeader:@"Request-Method" value:[hmac getRequestMethod]];
+        [_objectManager.HTTPClient setDefaultHeader:@"Content-MD5" value:[hmac getParameterMD5]];
+        [_objectManager.HTTPClient setDefaultHeader:@"Content-Type" value:[hmac getContentType]];
+        [_objectManager.HTTPClient setDefaultHeader:@"Date" value:date];
+        [_objectManager.HTTPClient setDefaultHeader:@"X-Tkpd-Path" value:[hmac getTkpdPath]];
+        [_objectManager.HTTPClient setDefaultHeader:@"X-Method" value:[hmac getRequestMethod]];
+
+        UserAuthentificationManager *userAuth = [UserAuthentificationManager new];
+        NSString* userId = [userAuth getUserId];
+        NSString* sessionId = [userAuth getMyDeviceToken];
+
+        [_objectManager.HTTPClient setDefaultHeader:@"Tkpd-UserId" value:userId];
+        [_objectManager.HTTPClient setDefaultHeader:@"Tkpd-SessionId" value:sessionId];
+        [_objectManager.HTTPClient setDefaultHeader:@"X-Device" value:@"ios"];
+
+        _objectRequest = [_objectManager appropriateObjectRequestOperationWithObject:nil
+                                                                              method:method
+                                                                                path:path
+                                                                          parameters:[parameter autoParameters]];
+    } else {
+        NSDictionary *parameters = parameter;
+        _objectRequest = [_objectManager appropriateObjectRequestOperationWithObject:nil
+                                                                              method:method
+                                                                                path:path
+                                                                          parameters:parameters];
+    }
+
+
+    [_requestTimer invalidate];
+    _requestTimer = nil;
+    [_objectRequest setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+#ifdef DEBUG
+        NSLog(@"Response string : %@", operation.HTTPRequestOperation.responseString);
+        NSLog(@"Request body %@", [[NSString alloc] initWithData:[operation.HTTPRequestOperation.request HTTPBody]  encoding:NSUTF8StringEncoding]);
+#endif
+
+        NSDictionary* resultDict = mappingResult.dictionary;
+        NSObject* mappedResult = [resultDict objectForKey:@""];
+
+        if ([mappedResult respondsToSelector:@selector(status)]) {
+            NSString* status = [mappedResult performSelector:@selector(status)];
+
+            if([status isEqualToString:@"OK"]) {
+                successCallback(mappingResult, operation);
+            } else if ([status isEqualToString:@"INVALID_REQUEST"]) {
+
+            } else if ([status isEqualToString:@"UNDER_MAINTENANCE"]) {
+                [self requestMaintenance];
+            } else if ([status isEqualToString:@"REQUEST_DENIED"]) {
+                NSLog(@"xxxxxxxxx REQUEST DENIED xxxxxxxxx");
+                [[NSNotificationCenter defaultCenter] postNotificationName:TkpdNotificationForcedLogout object:nil userInfo:@{}];
+            }
+        } else {
+            successCallback(mappingResult, operation);
+        }
+
+        [_requestTimer invalidate];
+        _requestTimer = nil;
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        NSLog(@"Request body %@", [[NSString alloc] initWithData:[operation.HTTPRequestOperation.request HTTPBody]  encoding:NSUTF8StringEncoding]);
+
+        NSInteger requestCountMax = _maxTries?:kTKPDREQUESTCOUNTMAX;
+        if(_requestCount < requestCountMax) {
+            //cancelled request
+            if(error.code == -999) {
+                [self requestWithBaseUrl:baseUrl
+                                    path:path
+                                  method:method
+                               parameter:parameter
+                                 mapping:mapping
+                               onSuccess:successCallback
+                               onFailure:errorCallback];
+            } else {
+                [self handleErrorWithCallback:errorCallback error:error];
+            }
+        } else {
+            [self handleErrorWithCallback:errorCallback error:error];
+        }
+
+    }];
+
+    [_operationQueue addOperation:_objectRequest];
+    NSTimeInterval timeInterval = _timeInterval ? _timeInterval : kTKPDREQUEST_TIMEOUTINTERVAL;
+
+    __weak typeof(self) weakSelf = self;
+    _requestTimer = [NSTimer bk_scheduledTimerWithTimeInterval:timeInterval block:^(NSTimer* timer) {
+        [weakSelf requestCancel];
+    } repeats:NO];
+    [[NSRunLoop currentRunLoop] addTimer:_requestTimer forMode:NSRunLoopCommonModes];
+
+}
+
 - (void)handleErrorWithCallback:(void (^)(NSError *))errorCallback error:(NSError *)error {
     if (errorCallback) {
         errorCallback(error);
