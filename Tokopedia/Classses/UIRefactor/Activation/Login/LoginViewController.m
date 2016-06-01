@@ -76,6 +76,8 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     UserAuthentificationManager *_userManager;
     
     ActivationRequest *_activationRequest;
+
+    TokopediaNetworkManager *_networkManager;
 }
 
 @property (strong, nonatomic) IBOutlet TextField *emailTextField;
@@ -129,6 +131,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 {    
     [super viewDidLoad];
     _userManager = [[UserAuthentificationManager alloc]init];
+    _networkManager = [TokopediaNetworkManager new];
     
     UIImage *iconToped = [UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE];
     UIImageView *topedImageView = [[UIImageView alloc] initWithImage:iconToped];
@@ -289,15 +292,13 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
                 }
                 
                 if (valid) {
-                    NSDictionary *userinfo = @{kTKPDACTIVATION_DATAEMAILKEY : email, kTKPDACTIVATION_DATAPASSKEY : pass};
-                    [self configureRestKitLogin];
-                    [self requestActionLogin:userinfo];
+                    [self doLoginWithEmail:email pass:pass];
                 }
                 else{
                     StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messages delegate:self];
                     [alert show];
                 }
-                
+
                 NSLog(@"message : %@", messages);
                 break;
             }
@@ -319,6 +320,27 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
         }        
     }
 }
+
+- (void)doLoginWithEmail:(NSString *)email pass:(NSString *)pass {
+    NSDictionary *parameters = @{
+                            @"grant_type": @"password",
+                            @"username": email,
+                            @"password": pass
+                    };
+
+    [_networkManager requestNotObfuscatedWithBaseUrl:@"https://accounts-alpha.tokopedia.com"
+                                                path:@"/token"
+                                              method:RKRequestMethodPOST
+                                           parameter:parameters
+                                             mapping:[OAuthToken mapping]
+                                           onSuccess:^(RKMappingResult *result, RKObjectRequestOperation *operation) {
+
+                                           }
+                                           onFailure:^(NSError *error) {
+
+                                           }];
+}
+
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
