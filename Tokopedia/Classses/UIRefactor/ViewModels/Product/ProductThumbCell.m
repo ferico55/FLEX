@@ -12,15 +12,6 @@
 
 @interface ProductThumbCell()
 
-@property (strong, nonatomic) IBOutlet UIImageView *goldShopBadge;
-@property (strong, nonatomic) IBOutlet UIImageView *productImage;
-@property (weak, nonatomic) IBOutlet UIImageView *luckyMerchantBadge;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintGoldBadge;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintSpaceGoldBadge;
-
-
-+ (id)initCell;
-
 @end
 
 @implementation ProductThumbCell
@@ -30,11 +21,29 @@
 }
 
 - (void)setViewModel:(ProductModelView *)viewModel {
-
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    style.lineSpacing = 4.0;
+    
+    NSDictionary *attributes = @{
+                                 NSFontAttributeName            : [UIFont fontWithName:@"GothamMedium" size:12],
+                                 NSParagraphStyleAttributeName  : style,
+                                 NSForegroundColorAttributeName : [UIColor colorWithRed:10.0/255.0 green:126.0/255.0 blue:7.0/255.0 alpha:1],
+                                 };
+    
+    self.productName.attributedText = [[NSAttributedString alloc] initWithString:viewModel.productName attributes:attributes];
+    self.productPrice.text = viewModel.productPrice;
+    self.shopName.text = viewModel.productShop;
+    self.shopLocation.text = viewModel.shopLocation;
+    self.preorderLabel.hidden = viewModel.isProductPreorder ? NO : YES;
+    self.grosirLabel.hidden = viewModel.isWholesale ? NO : YES;
     self.goldShopBadge.hidden = viewModel.isGoldShopProduct ? NO : YES;
+    self.grosirIconLocation.constant = viewModel.isProductPreorder ? 4 : -50;
+    self.luckyIconLocation.constant = viewModel.isGoldShopProduct ? 1 : -19;
+    
+    self.grosirLabel.layer.masksToBounds = YES;
+    self.preorderLabel.layer.masksToBounds = YES;
 
-    _constraintGoldBadge.constant = viewModel.isGoldShopProduct?_goldShopBadge.frame.size.width:0;
-    _constraintSpaceGoldBadge.constant = viewModel.isGoldShopProduct?2:0;
+    
 
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:viewModel.productThumbUrl] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     [self.productImage setContentMode:UIViewContentModeCenter];
