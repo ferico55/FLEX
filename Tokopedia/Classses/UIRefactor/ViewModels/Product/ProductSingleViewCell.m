@@ -21,8 +21,12 @@
 @property (strong, nonatomic) IBOutlet UILabel *productName;
 @property (strong, nonatomic) IBOutlet UIImageView *goldShopBadge;
 @property (weak, nonatomic) IBOutlet UIImageView *luckyMerchantBadge;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintGoldBadge;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintSpaceGoldBadge;
+@property (weak, nonatomic) IBOutlet UILabel* shopLocation;
+@property (weak, nonatomic) IBOutlet UILabel* grosirLabel;
+@property (weak, nonatomic) IBOutlet UILabel* preorderLabel;
+@property (weak, nonatomic) IBOutlet UIImageView* locationIcon;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint* luckyIconPosition;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint* grosirPosition;
 
 @end
 
@@ -38,8 +42,13 @@
     [self.productShop setText:viewModel.productShop];
     [self.goldShopBadge setHidden:viewModel.isGoldShopProduct ? NO : YES];
     
-    _constraintGoldBadge.constant = viewModel.isGoldShopProduct?_goldShopBadge.frame.size.width:0;
-    _constraintSpaceGoldBadge.constant = viewModel.isGoldShopProduct?2:0;
+    self.luckyIconPosition.constant = viewModel.isGoldShopProduct ? 5 : -20;
+    self.shopLocation.text = viewModel.shopLocation;
+    self.grosirLabel.layer.masksToBounds = YES;
+    self.preorderLabel.layer.masksToBounds = YES;
+    self.preorderLabel.hidden = viewModel.isProductPreorder ? NO : YES;
+    self.grosirLabel.hidden = viewModel.isWholesale ? NO : YES;
+    self.grosirPosition.constant = viewModel.isProductPreorder ? 5 : -64;
 
     [self.productInfoLabel setText:[NSString stringWithFormat:@"%@ Diskusi - %@ Ulasan", viewModel.productTalk, viewModel.productReview]];
     

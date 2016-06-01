@@ -37,7 +37,7 @@ import Foundation
                 cellHeight = 93
             } else {
                 numberOfCell = 1
-                cellHeight = UIScreen.mainScreen().bounds.size.width + 100
+                cellHeight = UIScreen.mainScreen().bounds.size.width + 70
             }
         }
         
