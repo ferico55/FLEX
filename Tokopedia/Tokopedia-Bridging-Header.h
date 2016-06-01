@@ -12,7 +12,7 @@
 #import "SwipeView.h"
 #import "MiniSlide.h"
 #import "TPLiveCameraView.h"
-#import <RestKit.h>
+#import <RestKit/RestKit.h>
 #import "TokopediaNetworkManager.h"
 #import "NSString+TPBaseUrl.h"
 #import "SecurityQuestion.h"
