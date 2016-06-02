@@ -35,8 +35,13 @@
 @property (nonatomic, strong) NSString *shop_id;
 @property (nonatomic, strong) NSString *condition;
 
-@property BOOL product_preorder;
-@property BOOL product_wholesale;
+// this is happen because product_wholesale from API is integer format
+// we have to fix API Spec first
+@property NSInteger product_wholesale;
+@property NSInteger product_preorder;
+
+@property (nonatomic, assign) BOOL is_product_preorder;
+@property (nonatomic, assign) BOOL is_product_wholesale;
 
 //catalog
 @property (nonatomic, strong) NSString *catalog_id;

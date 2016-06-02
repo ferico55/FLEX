@@ -20,6 +20,14 @@
     return [_product_name kv_decodeHTMLCharacterEntities];
 }
 
+- (BOOL)is_product_wholesale {
+    return _product_wholesale == 1? YES : NO;
+}
+
+- (BOOL)is_product_preorder {
+    return _product_preorder == 1? YES : NO;
+}
+
 - (ProductModelView *)viewModel {
     if(!_viewModel) {
         ProductModelView *viewModel = [[ProductModelView alloc] init];
@@ -32,8 +40,8 @@
         [viewModel setIsGoldShopProduct:[self.shop_gold_status isEqualToString:@"1"]?YES:NO];
         [viewModel setLuckyMerchantImageURL:self.shop_lucky];
         [viewModel setShopLocation:self.shop_location];
-        [viewModel setIsProductPreorder:self.product_preorder];
-        [viewModel setIsWholesale:self.product_wholesale];
+        [viewModel setIsProductPreorder:self.is_product_preorder];
+        [viewModel setIsWholesale:self.is_product_wholesale];
         
         _viewModel = viewModel;
     }

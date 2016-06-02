@@ -278,7 +278,7 @@ typedef enum TagRequest {
                                                  kTKPDDETAILPRODUCT_APIPRODUCTIMAGEKEY,
                                                  API_PRODUCT_NAME_KEY,
                                                  @"shop_lucky",
-                                                 @"product_preorder"
+                                                 @"product_preorder", @"product_wholesale"
                                                  ]];
     
     //relation
