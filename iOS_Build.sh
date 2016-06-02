@@ -14,7 +14,7 @@ rm -rf "./JenkinsIPAExport"
 
 mkdir "./JenkinsIPAExport"
 
-xcodebuild -exportArchive -exportFormat IPA -exportProvisioningProfile Ad\ Hoc\ Distribution -archivePath ./JenkinsArchive/Tokopedia.xcarchive -exportPath ./JenkinsIPAExport/Tokopedia.ipa
+xcodebuild -exportArchive -exportFormat IPA -exportProvisioningProfile AdHoc\ Distribution\ New -archivePath ./JenkinsArchive/Tokopedia.xcarchive -exportPath ./JenkinsIPAExport/Tokopedia.ipa
 
 
 #Write Release Notes to Crashlytics
