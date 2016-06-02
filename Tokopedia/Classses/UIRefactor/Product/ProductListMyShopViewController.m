@@ -90,6 +90,7 @@ NoResultDelegate
 
 @property (strong, nonatomic) NSURL *uriNext;
 @property (strong, nonatomic) NSIndexPath *lastActionIndexPath;
+@property BOOL isMovingToGudang;
 
 @end
 
@@ -365,7 +366,7 @@ NoResultDelegate
         [self.act startAnimating];
         self.tableView.tableFooterView = _footer;
     }
-    NSString *baseURL = @"https://ws.tokopedia.com";
+    NSString *baseURL = [NSString v4Url];
     NSString *path = @"/v4/product/manage_product.pl";
     NSDictionary *parameters = [self parameters];
     [_networkManager requestWithBaseUrl:baseURL
@@ -547,7 +548,7 @@ NoResultDelegate
 
 - (void)moveProductToWirehouse {
     ManageProductList *product = [_products objectAtIndex:_lastActionIndexPath.row];
-    product.product_etalase = @"Gudang";
+    product.product_etalase = @"Stok Kosong";
     product.product_status = [NSString stringWithFormat:@"%d", PRODUCT_STATE_WAREHOUSE];
     [self.tableView reloadData];
 }
@@ -616,22 +617,23 @@ NoResultDelegate
     CGFloat padding = 0;
     UIColor *backgroundColor = [UIColor colorWithRed:0 green:122/255.0 blue:255.0/255 alpha:1.0];
     __weak typeof(self) welf = self;
-    MGSwipeButton *button = [MGSwipeButton buttonWithTitle:BUTTON_MOVE_TO_WAREHOUSE
+    MGSwipeButton *button = [MGSwipeButton buttonWithTitle:@"Stok Kosong"
                                            backgroundColor:backgroundColor
                                                    padding:padding
                                                   callback:^BOOL(MGSwipeTableCell *sender) {
                                                       NSInteger productStatus = [product.product_status integerValue];
                                                       if (productStatus == PRODUCT_STATE_BANNED || productStatus == PRODUCT_STATE_PENDING) {
-                                                          NSArray *errorMessages = @[@"Tidak dapat menggudangkan produk. Produk sedang dalam pengawasan."];
+                                                          NSArray *errorMessages = @[@"Tidak dapat mengubah status produk. Produk sedang dalam pengawasan."];
                                                           StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
                                                           [alert show];
                                                       } else {
-                                                          UIAlertView *alert =[[UIAlertView alloc] initWithTitle:@"Apakah Anda yakin gudangkan produk?"
+                                                          UIAlertView *alert =[[UIAlertView alloc] initWithTitle:@"Apakah stok produk ini kosong?"
                                                                                                          message:nil
-                                                                                                        delegate:self
+                                                                                                        delegate:welf
                                                                                                cancelButtonTitle:@"Tidak"
                                                                                                otherButtonTitles:@"Ya", nil];
                                                           alert.tag = indexPath.row;
+                                                          welf.isMovingToGudang = YES;
                                                           [alert show];
                                                       }
                                                       welf.lastActionIndexPath = indexPath;
@@ -650,16 +652,18 @@ NoResultDelegate
                                                    padding:padding
                                                   callback:^BOOL(MGSwipeTableCell *sender) {
                                                       welf.lastActionIndexPath = indexPath;
-                                                      // Move To Etalase
-                                                      UserAuthentificationManager *userAuthentificationManager = [UserAuthentificationManager new];
+                                                      
+                                                      
+                                                      UIAlertView *alert =[[UIAlertView alloc] initWithTitle:@"Apakah stok produk ini tersedia?"
+                                                                                                     message:nil
+                                                                                                    delegate:welf
+                                                                                           cancelButtonTitle:@"Tidak"
+                                                                                           otherButtonTitles:@"Ya", nil];
+                                                      alert.tag = indexPath.row;
+                                                      welf.isMovingToGudang = NO;
+                                                      [alert show];
                                                       selectedIndexPath = indexPath;
-                                                      EtalaseViewController *controller = [EtalaseViewController new];
-                                                      controller.delegate = self;
-                                                      controller.shopId =[userAuthentificationManager getShopId];
-                                                      controller.isEditable = NO;
-                                                      controller.showOtherEtalase = NO;
-                                                      controller.enableAddEtalase = YES;
-                                                      [self.navigationController pushViewController:controller animated:YES];
+                                                      
                                                       
                                                       return YES;
                                                   }];
@@ -711,16 +715,37 @@ NoResultDelegate
 }
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 1) {
-        ManageProductList *list = _products[alertView.tag];
-        NSString *productId = [NSString stringWithFormat:@"%d", list.product_id];
-        [ProductRequest moveProductToWarehouse:productId
-                 setCompletionBlockWithSuccess:^(ShopSettings *response) {
-                     [self moveProductToWirehouse];
-                     [self showSuccessMessages:@[@"Anda telah berhasil menggudangkan produk"]];
-                 } failure:^(NSArray *errorMessages) {
-                     [self showErrorMessages:errorMessages];
-                 }];
+    ManageProductList *selectedProduct = _products[alertView.tag];
+    if(self.isMovingToGudang){
+        if (buttonIndex == 1) {
+            NSString *productId = [NSString stringWithFormat:@"%d", selectedProduct.product_id];
+            [ProductRequest moveProductToWarehouse:productId
+                     setCompletionBlockWithSuccess:^(ShopSettings *response) {
+                         [self moveProductToWirehouse];
+                         [self showSuccessMessages:@[@"Status produk berhasil diubah"]];
+                     } failure:^(NSArray *errorMessages) {
+                         [self showErrorMessages:errorMessages];
+                     }];
+        }
+    }else{
+        if(buttonIndex == 1){
+            // Move To Etalase
+            UserAuthentificationManager *userAuthentificationManager = [UserAuthentificationManager new];
+            
+            EtalaseViewController *controller = [EtalaseViewController new];
+            controller.delegate = self;
+            controller.shopId =[userAuthentificationManager getShopId];
+            controller.isEditable = NO;
+            controller.showOtherEtalase = NO;
+            controller.enableAddEtalase = YES;
+            
+            EtalaseList *selectedEtalase = [EtalaseList new];
+            selectedEtalase.etalase_id = selectedProduct.product_etalase_id;
+            selectedEtalase.etalase_name = selectedProduct.product_etalase;
+            controller.initialSelectedEtalase = selectedEtalase;
+            
+            [self.navigationController pushViewController:controller animated:YES];
+        }
     }
 }
 

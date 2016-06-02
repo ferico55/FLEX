@@ -38,7 +38,8 @@
                                              @"product_url",
                                              @"product_name",
                                              @"product_currency_symbol",
-                                             @"product_no_idr_price"]];
+                                             @"product_no_idr_price",
+                                             @"product_etalase_id"]];
     return mapping;
 }
 
