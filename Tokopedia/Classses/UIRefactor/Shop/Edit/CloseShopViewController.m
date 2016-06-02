@@ -66,6 +66,7 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
 @property (strong, nonatomic) IBOutlet UIView *failView;
 @property (strong, nonatomic) IBOutlet UILabel *failLabel;
 
+@property (strong, nonatomic) IBOutlet UILabel *explanationLabel;
 
 @property CenterViewType centerViewType;
 @property BOOL isFormEnabled;
@@ -87,12 +88,26 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
 - (void)viewDidLoad {
     [super viewDidLoad];
     _closeShopRequest = [CloseShopRequest new];
-    [self initializeView];
     
+}
+
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    
+    if(_scheduleDetail.close_start && ![_scheduleDetail.close_start isEqualToString:@""]){
+        _dateMulaiDari = [self NSDatefromString:_scheduleDetail.close_start];
+    }
+    if(_scheduleDetail.close_end && ![_scheduleDetail.close_end isEqualToString:@""]){
+        _dateSampaiDengan = [self NSDatefromString:_scheduleDetail.close_end];
+    }
+    
+    [self initializeView];
 }
 
 -(void)initializeView{
     [_activityIndicator startAnimating];
+    [self registerForKeyboardNotifications];
+    
     lightGray = [UIColor colorWithRed:0.882 green:0.882 blue:0.882 alpha:1];
     darkGray = [UIColor colorWithRed:0.533 green:0.533 blue:0.533 alpha:1];
     positiveGreen = [UIColor colorWithRed:0.206 green:0.684 blue:0.235 alpha:1];
@@ -109,6 +124,21 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
     //externalBorder.borderColor = [UIColor colorWithRed:0.914 green:0.914 blue:0.914 alpha:1].CGColor;
     externalBorder.borderColor = darkGray.CGColor;
     externalBorder.borderWidth = 1.0;
+    
+    NSMutableParagraphStyle *paragraphStyle = [NSMutableParagraphStyle new];
+    paragraphStyle.lineSpacing              = 5.0f;
+    
+    UIFont *gothamTwelve = [UIFont fontWithName:@"GothamBook" size:12.0f];
+    
+    NSMutableAttributedString *attribString = [[NSMutableAttributedString alloc]initWithString:_explanationLabel.text];
+    [attribString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [_explanationLabel.text length])];
+    [attribString addAttribute:NSFontAttributeName value:gothamTwelve range:NSMakeRange(0, [_explanationLabel.text length])];
+    
+    _explanationLabel.attributedText = attribString;
+    _explanationLabel.numberOfLines = 0;
+    [_explanationLabel sizeToFit];
+
+    [_catatanTextView setText:_closedNote];
     
     [_formView.layer addSublayer:externalBorder];
     _formView.layer.masksToBounds = NO;
@@ -131,6 +161,16 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
     [_centerView addSubview:_failView];
     useAnimation = YES;
     [self adjustView];
+}
+
+- (void)registerForKeyboardNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWasShown:)
+                                                 name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillBeHidden:)
+                                                 name:UIKeyboardWillHideNotification object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -168,20 +208,26 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
 }
 - (IBAction)mulaiDariButtonTapped:(id)sender {
     AlertDatePickerView *datePicker = [AlertDatePickerView newview];
-    datePicker.data = @{kTKPDALERTVIEW_DATATYPEKEY:@(kTKPDALERT_DATAALERTTYPESHOPEDITKEY)};
+    datePicker.data = @{kTKPDALERTVIEW_DATATYPEKEY:@(kTKPDALERT_DATAALERTTYPECLOSESHOPKEY)};
     datePicker.tag = AlertDatePickerMulaiDari;
     datePicker.delegate = self;
     datePicker.isSetMinimumDate = YES;
+    
+    datePicker.startDate = [self addDays:1 toNSDate:[NSDate date]];
     [datePicker show];
 }
 - (IBAction)sampaiDenganButtonTapped:(id)sender {
     AlertDatePickerView *datePicker = [AlertDatePickerView newview];
-    datePicker.data = @{kTKPDALERTVIEW_DATATYPEKEY:@(kTKPDALERT_DATAALERTTYPESHOPEDITKEY)};
+    datePicker.data = @{kTKPDALERTVIEW_DATATYPEKEY:@(kTKPDALERT_DATAALERTTYPECLOSESHOPKEY)};
     datePicker.tag = AlertDatePickerSampaiDengan;
     datePicker.delegate = self;
     datePicker.isSetMinimumDate = YES;
     
-    datePicker.startDate = [self addDays:1 toNSDate:_dateMulaiDari];
+    if(_dateMulaiDari){
+        datePicker.startDate = [self addDays:1 toNSDate:_dateMulaiDari];
+    }else{
+        datePicker.startDate = [self addDays:1 toNSDate:[NSDate date]];
+    }
     [datePicker show];
 }
 - (IBAction)submitButtonTapped:(id)sender {
@@ -205,8 +251,11 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
                                                                 [self adjustView];
                                                             }
                                                             
+                                                            [self.delegate didChangeShopStatus];
+                                                            
                                                             _centerViewType = CenterViewFormView;
                                                             [self performSelector:@selector(adjustView) withObject:nil afterDelay:VIEW_TRANSITION_DELAY];
+                                                            [_tutupSekarangSwitch setOn:NO];
                                                         }
                                                         onFailure:^(NSError *error) {
                                                             _centerViewType = CenterViewFailView;
@@ -217,34 +266,86 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
                                                             [self performSelector:@selector(adjustView) withObject:nil afterDelay:VIEW_TRANSITION_DELAY];
                                                         }];
         }else{
-            [_closeShopRequest requestActionCloseShopFrom:[self stringFromNSDate:_dateMulaiDari]
-                                                    until:[self stringFromNSDate:_dateSampaiDengan]
-                                                closeNote:_catatanTextView.text
-                                                onSuccess:^(CloseShopResponse *result) {
-                                                    if(result.data.is_success){
-                                                        _centerViewType = CenterViewSuccessView;
-                                                        _scheduleDetail.close_status = CLOSE_STATUS_CLOSE_SCHEDULED;
-                                                        _scheduleDetail.close_start = [self stringFromNSDate:_dateMulaiDari];
-                                                        _scheduleDetail.close_end = [self stringFromNSDate:_dateSampaiDengan];
-                                                        _isFormEnabled = NO;
-                                                        [self adjustView];
-                                                    }else{
-                                                        _centerViewType = CenterViewFailView;
-                                                        [self setFailLabelTextWithError:result.message_error];
-                                                        [self adjustView];
+            if(_scheduleDetail.close_status == CLOSE_STATUS_OPEN){
+                [_closeShopRequest requestActionCloseShopFrom:[self stringFromNSDate:_dateMulaiDari]
+                                                        until:[self stringFromNSDate:_dateSampaiDengan]
+                                                    closeNote:_catatanTextView.text
+                                                    onSuccess:^(CloseShopResponse *result) {
+                                                        if(result.data.is_success){
+                                                            _centerViewType = CenterViewSuccessView;
+                                                            _scheduleDetail.close_status = CLOSE_STATUS_CLOSE_SCHEDULED;
+                                                            _scheduleDetail.close_start = [self stringFromNSDate:_dateMulaiDari];
+                                                            _scheduleDetail.close_end = [self stringFromNSDate:_dateSampaiDengan];
+                                                            _isFormEnabled = NO;
+                                                            [self adjustView];
+                                                        }else{
+                                                            _centerViewType = CenterViewFailView;
+                                                            [self setFailLabelTextWithError:result.message_error];
+                                                            [self adjustView];
+                                                        }
+                                                        [self.delegate didChangeShopStatus];
+                                                        _centerViewType = CenterViewFormView;
+                                                        [self performSelector:@selector(adjustView) withObject:nil afterDelay:VIEW_TRANSITION_DELAY];
                                                     }
-                                                    
-                                                    _centerViewType = CenterViewFormView;
-                                                    [self performSelector:@selector(adjustView) withObject:nil afterDelay:VIEW_TRANSITION_DELAY];
-                                                }
-                                                onFailure:^(NSError *error) {
-                                                    _centerViewType = CenterViewFailView;
-                                                    [self setFailLabelTextWithError:@[@"Kendala koneksi internet"]];
-                                                    [self adjustView];
-                                                    
-                                                    _centerViewType = CenterViewFormView;
-                                                    [self performSelector:@selector(adjustView) withObject:nil afterDelay:VIEW_TRANSITION_DELAY];
-                                                }];
+                                                    onFailure:^(NSError *error) {
+                                                        _centerViewType = CenterViewFailView;
+                                                        [self setFailLabelTextWithError:@[@"Kendala koneksi internet"]];
+                                                        [self adjustView];
+                                                        
+                                                        _centerViewType = CenterViewFormView;
+                                                        [self performSelector:@selector(adjustView) withObject:nil afterDelay:VIEW_TRANSITION_DELAY];
+                                                    }];
+            }else if(_scheduleDetail.close_status == CLOSE_STATUS_CLOSED){
+                [_closeShopRequest requestActionExtendCloseShopUntil:[self stringFromNSDate:_dateSampaiDengan]
+                                                           closeNote:_catatanTextView.text
+                                                           onSuccess:^(CloseShopResponse *result) {
+                                                               if(result.data.is_success){
+                                                                   _centerViewType = CenterViewSuccessView;
+                                                                   _scheduleDetail.close_status = CLOSE_STATUS_CLOSED;
+                                                                   _scheduleDetail.close_start = [self stringFromNSDate:_dateMulaiDari];
+                                                                   _scheduleDetail.close_end = [self stringFromNSDate:_dateSampaiDengan];
+                                                                   _isFormEnabled = NO;
+                                                                   [self adjustView];
+                                                               }else{
+                                                                   _centerViewType = CenterViewFailView;
+                                                                   [self setFailLabelTextWithError:result.message_error];
+                                                                   [self adjustView];
+                                                               }
+                                                               [self.delegate didChangeShopStatus];
+                                                               _centerViewType = CenterViewFormView;
+                                                               [self performSelector:@selector(adjustView) withObject:nil afterDelay:VIEW_TRANSITION_DELAY];
+                                                           } onFailure:^(NSError *error) {
+                                                               _centerViewType = CenterViewFailView;
+                                                               [self setFailLabelTextWithError:@[@"Kendala koneksi internet"]];
+                                                               [self adjustView];
+                                                               
+                                                               _centerViewType = CenterViewFormView;
+                                                               [self performSelector:@selector(adjustView) withObject:nil afterDelay:VIEW_TRANSITION_DELAY];
+                                                           }];
+            }else if(_scheduleDetail.close_status == CLOSE_STATUS_CLOSE_SCHEDULED){
+                [_closeShopRequest requestActionCloseShopFrom:[self stringFromNSDate:_dateMulaiDari]
+                                                        until:[self stringFromNSDate:_dateSampaiDengan]
+                                                    closeNote:_catatanTextView.text
+                                                    onSuccess:^(CloseShopResponse *result) {
+                                                        if(result.data.is_success){
+                                                            _centerViewType = CenterViewSuccessView;
+                                                            _scheduleDetail.close_status = CLOSE_STATUS_CLOSE_SCHEDULED;
+                                                            _scheduleDetail.close_start = [self stringFromNSDate:_dateMulaiDari];
+                                                            _scheduleDetail.close_end = [self stringFromNSDate:_dateSampaiDengan];
+                                                            _isFormEnabled = NO;
+                                                            [self adjustView];
+                                                        }else{
+                                                            _centerViewType = CenterViewFailView;
+                                                            [self setFailLabelTextWithError:result.message_error];
+                                                            [self adjustView];
+                                                        }
+                                                        [self.delegate didChangeShopStatus];
+                                                        _centerViewType = CenterViewFormView;
+                                                        [self performSelector:@selector(adjustView) withObject:nil afterDelay:VIEW_TRANSITION_DELAY];
+                                                    } onFailure:^(NSError *error) {
+                                                        
+                                                    }];
+            }
         }
     }
 }
@@ -307,6 +408,7 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
             [self setFailLabelTextWithError:result.message_error];
             [self adjustView];
         }
+        [self.delegate didChangeShopStatus];
         _centerViewType = CenterViewFormView;
         [self performSelector:@selector(adjustView) withObject:nil afterDelay:VIEW_TRANSITION_DELAY];
     } onFailure:^(NSError *error) {
@@ -353,7 +455,7 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
     NSDate *date = [alertView.data objectForKey:@"datepicker"];
     if(alertView.tag == AlertDatePickerMulaiDari){
         _dateMulaiDari = date;
-        if(_dateSampaiDengan && _dateSampaiDengan < _dateMulaiDari){
+        if(_dateSampaiDengan && ([_dateSampaiDengan compare:_dateMulaiDari] == NSOrderedAscending)){
             _dateSampaiDengan = nil;
         }
         [self setDateButton];
@@ -367,6 +469,18 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"dd/MM/YYYY"];
     return [formatter stringFromDate:date];
+}
+
+-(NSDate*)NSDatefromString:(NSString*)date{
+    static NSDateFormatter *dateFormatter;
+    if (!dateFormatter)
+    {
+        dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
+        [dateFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+        [dateFormatter setDateFormat:@"dd/MM/yyyy"];
+    }
+    return [dateFormatter dateFromString:date];
 }
 
 -(NSDate*)addDays:(NSInteger)days toNSDate:(NSDate*)date{
@@ -397,20 +511,44 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
         [_catatanTextView setText:@""];
         textViewInitialValue = NO;
     }
+}
+
+- (void)keyboardWasShown:(NSNotification*)aNotification
+{
+    NSDictionary* info = [aNotification userInfo];
+    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
+    _scrollView.contentInset = contentInsets;
+    _scrollView.scrollIndicatorInsets = contentInsets;
     
-    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, 200, 0.0);
+    CGRect aRect = self.view.frame;
+    aRect.size.height -= kbSize.height;
+    if (!CGRectContainsPoint(aRect, _catatanTextView.frame.origin) ) {
+        CGPoint scrollPoint = CGPointMake(0.0, _catatanTextView.frame.origin.y+kbSize.height);
+        [_scrollView setContentOffset:scrollPoint animated:YES];
+    }
+}
+
+// Called when the UIKeyboardWillHideNotification is sent
+- (void)keyboardWillBeHidden:(NSNotification*)aNotification
+{
+    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
     _scrollView.contentInset = contentInsets;
     _scrollView.scrollIndicatorInsets = contentInsets;
 }
 
 #pragma mark - ScrollView delegate
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView{
-    [self.view endEditing:YES];
+    
+}
+
+-(void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView{
 }
 
 # pragma mark - Toggle View
 - (void)adjustView{
     if(_centerViewType == CenterViewAturJadwalButton){
+        _centerViewHeight.constant = _aturJadwalTutupView.frame.size.height;
         [_aturJadwalTutupView setHidden:NO];
         [_formView setHidden:YES];
         [_loadingView setHidden:YES];
@@ -428,12 +566,16 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
         }
         
     }else if(_centerViewType == CenterViewFormView){
+        if(_isFormEnabled){
+            _centerViewHeight.constant = _formView.frame.size.height;
+        }else{
+            _centerViewHeight.constant = _formView.frame.size.height - _batalView.frame.size.height - 6;
+        }
         [_aturJadwalTutupView setHidden:YES];
         [_formView setHidden:NO];
         [_loadingView setHidden:YES];
         [_successView setHidden:YES];
         [_failView setHidden:YES];
-        _centerViewHeight.constant = _formView.frame.size.height;
         [_centerView bringSubviewToFront:_formView];
         
         if(useAnimation){
@@ -444,6 +586,7 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
             useAnimation = NO;
         }
     }else if(_centerViewType == CenterViewLoadingView){
+        _centerViewHeight.constant = _loadingView.frame.size.height;
         [_aturJadwalTutupView setHidden:YES];
         [_formView setHidden:YES];
         [_loadingView setHidden:NO];
@@ -451,6 +594,7 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
         [_failView setHidden:YES];
         [_centerView bringSubviewToFront:_loadingView];
     }else if(_centerViewType == CenterViewSuccessView){
+        _centerViewHeight.constant = _successView.frame.size.height;
         [_aturJadwalTutupView setHidden:YES];
         [_formView setHidden:YES];
         [_loadingView setHidden:YES];
@@ -458,6 +602,7 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
         [_failView setHidden:YES];
         [_centerView bringSubviewToFront:_successView];
     }else if(_centerViewType == CenterViewFailView){
+        _centerViewHeight.constant = _successView.frame.size.height;
         [_aturJadwalTutupView setHidden:YES];
         [_formView setHidden:YES];
         [_loadingView setHidden:YES];
@@ -493,6 +638,7 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
         _tutupTokoSekarangLabel.text = @"JADWAL TUTUP";
         [_tutupSekarangSwitch setHidden:YES];
         [_scheduleIcon setHidden:NO];
+        [_scheduleIcon setImage:[UIImage imageNamed:@"icon_time_green.png"]];
         
         //button in form footer
         if(_isFormEnabled){
@@ -522,12 +668,13 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
         _tutupTokoSekarangLabel.text = @"JADWAL TUTUP";
         [_tutupSekarangSwitch setHidden:YES];
         [_scheduleIcon setHidden:NO];
+        [_scheduleIcon setImage:[UIImage imageNamed:@"icon_time_grey.png"]];
         
         //button in form footer
         if(_isFormEnabled){
-            [_submitButton setHidden:YES];
-            [_hapusButton setHidden:NO];
-            [_ubahButtonRight setHidden:NO];
+            [_submitButton setHidden:NO];
+            [_hapusButton setHidden:YES];
+            [_ubahButtonRight setHidden:YES];
             [_ubahButtonCenter setHidden:YES];
         }else{
             [_submitButton setHidden:YES];
@@ -550,20 +697,21 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
     
     //SETTING BUTTON BATAL
     if(_isFormEnabled){
-        _centerViewHeight.constant = CENTER_VIEW_NORMAL_HEIGHT;
-        
-        [_mulaiDariButton setEnabled:YES];
+        if(_scheduleDetail.close_status == CLOSE_STATUS_CLOSED){
+            [_mulaiDariButton setEnabled:NO];
+            [_mulaiDariView setBackgroundColor:lightGray];
+        }else{
+            [_mulaiDariButton setEnabled:YES];
+            [_mulaiDariView setBackgroundColor:[UIColor whiteColor]];
+        }
         [_sampaiDenganButton setEnabled:YES];
         _catatanTextView.editable = YES;
         
-        [_mulaiDariView setBackgroundColor:[UIColor whiteColor]];
         [_sampaiDenganView setBackgroundColor:[UIColor whiteColor]];
         [_catatanView setBackgroundColor:[UIColor whiteColor]];
         [_catatanTextView setBackgroundColor:[UIColor whiteColor]];
         
     }else{
-        _centerViewHeight.constant = CENTER_VIEW_NORMAL_HEIGHT - 44;
-        
         [_mulaiDariButton setEnabled:NO];
         [_sampaiDenganButton setEnabled:NO];
         _catatanTextView.editable = NO;
@@ -576,16 +724,6 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
 }
 
 - (void)setFailLabelTextWithError:(NSArray *)texts{
-    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 3.0;
-    [style setAlignment:NSTextAlignmentCenter];
-    
-    NSDictionary *dict = @{NSParagraphStyleAttributeName  : style,
-                           NSFontAttributeName            : _failLabel.font
-                           };
-    
-    NSMutableDictionary *attributes = [[NSMutableDictionary alloc] initWithDictionary:dict];
-    
     NSString *joinedString = @"";
     if ([texts count] > 1) {
         joinedString = [NSString stringWithFormat:@"\u25CF %@", [[texts valueForKey:@"description"] componentsJoinedByString:@"\n\u25CF "]];
@@ -595,8 +733,18 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
         joinedString = @"";
     }
     
+    NSMutableParagraphStyle *paragraphStyle = [NSMutableParagraphStyle new];
+    paragraphStyle.alignment                = NSTextAlignmentCenter;
+    paragraphStyle.lineSpacing              = 5.0f;
+    
     joinedString = [NSString convertHTML:joinedString];
-    _failLabel.attributedText = [[NSAttributedString alloc] initWithString:joinedString  attributes:attributes];
+    UIFont *gothamTwelve = [UIFont fontWithName:@"GothamBook" size:12.0f];
+    
+    NSMutableAttributedString *attribString = [[NSMutableAttributedString alloc]initWithString:joinedString];
+    [attribString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [joinedString length])];
+    [attribString addAttribute:NSFontAttributeName value:gothamTwelve range:NSMakeRange(0, [joinedString length])];
+    
+    _failLabel.attributedText = attribString;
     _failLabel.numberOfLines = 0;
     [_failLabel sizeToFit];
 }

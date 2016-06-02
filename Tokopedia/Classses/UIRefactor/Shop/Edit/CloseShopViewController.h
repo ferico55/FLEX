@@ -10,8 +10,15 @@
 #import "TKPDTextView.h"
 #import "ClosedScheduleDetail.h"
 
+@protocol CloseShopDelegate <NSObject>
+-(void)didChangeShopStatus;
+@end
+
 @interface CloseShopViewController : UIViewController
+
+@property (nonatomic, weak) id<CloseShopDelegate> delegate;
 @property (strong, nonatomic) ClosedScheduleDetail *scheduleDetail;
+@property (strong, nonatomic) NSString *closedNote;
 
 
 

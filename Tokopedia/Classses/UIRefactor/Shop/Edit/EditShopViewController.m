@@ -36,7 +36,8 @@
     EditShopStatusDelegate,
     EditShopDelegate,
     TKPDPhotoPickerDelegate,
-    GenerateHostDelegate
+    GenerateHostDelegate,
+    CloseShopDelegate
 >
 
 @property (strong, nonatomic) TKPDPhotoPicker *photoPicker;
@@ -44,6 +45,7 @@
 @property (strong, nonatomic) TokopediaNetworkManager *networkManager;
 @property (strong, nonatomic) GeneratedHost *generatedHost;
 @property (strong, nonatomic) UploadImageResult *uploadImageObject;
+@property (strong, nonatomic) CloseShopViewController *closeShopController;
 
 @end
 
@@ -71,6 +73,9 @@
     
     self.tableView.dataSource = _dataSource;
     self.tableView.delegate = _dataSource;
+    
+    _closeShopController = [[CloseShopViewController alloc]init];
+    _closeShopController.delegate = self;
     
     [self registerNibs];
     
@@ -280,18 +285,14 @@
 }
 
 - (void)didTapShopStatus {
-    /*
-    EditShopStatusViewController *controller = [EditShopStatusViewController new];
-    controller.shopIsClosed = _dataSource.shop.isClosed;
-    controller.closedNote = _dataSource.shop.closed_detail.note;
-    controller.closedUntil = _dataSource.shop.closed_detail.until;
-    controller.delegate = self;
-     */
-    CloseShopViewController *controller = [CloseShopViewController new];
-    controller.scheduleDetail = _dataSource.shop.closed_schedule_detail;
+    _closeShopController.scheduleDetail = _dataSource.shop.closed_schedule_detail;
+    _closeShopController.closedNote = _dataSource.shop.closed_detail.note;
     
-    
-    [self.navigationController pushViewController:controller animated:YES];
+    [self.navigationController pushViewController:_closeShopController animated:YES];
+}
+
+-(void)didChangeShopStatus{
+    [self fetchShopInformation];
 }
 
 - (void)didTapMerchantInfo{
