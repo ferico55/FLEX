@@ -509,13 +509,14 @@
         if(_requestCount < requestCountMax) {
             //cancelled request
             if(error.code == -999) {
-                [self requestWithBaseUrl:baseUrl
-                                    path:path
-                                  method:method
-                               parameter:parameter
-                                 mapping:mapping
-                               onSuccess:successCallback
-                               onFailure:errorCallback];
+                [self requestNotObfuscatedWithBaseUrl:baseUrl
+                                                 path:path
+                                               method:method
+                                               header:header
+                                            parameter:parameter
+                                              mapping:mapping
+                                            onSuccess:successCallback
+                                            onFailure:errorCallback];
             } else {
                 [self handleErrorWithCallback:errorCallback error:error];
             }
