@@ -185,6 +185,19 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     [FBSDKAppEvents activateApp];
     [[AppsFlyerTracker sharedTracker]trackAppLaunch];
+    
+    // we always refresh device token, to recover from a bug in 1.80
+    // that causes every device to use 'SIMULATORDUMMY'.
+    // this is also a solution to retrieve device token after a user
+    // activates push notification from iOS settings.
+    [self refreshDeviceTokenIfAuthorized];
+}
+
+- (void)refreshDeviceTokenIfAuthorized {
+    JLNotificationPermission* permission = [JLNotificationPermission sharedInstance];
+    if (permission.authorizationStatus == JLPermissionAuthorized) {
+        [permission authorize:nil];
+    }
 }
 
 - (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
