@@ -365,18 +365,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
          @"uuid" : securityQuestionUUID.length ? securityQuestionUUID : @""
      };
      */
-//    
-//    [_marketplaceNetworkManager requestWithBaseUrl:[NSString v4Url]
-//                                              path:@"/v4/session/make_login.pl"
-//                                            method:RKRequestMethodPOST
-//                                         parameter:nil
-//                                           mapping:[Login mapping]
-//                                         onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-//
-//                                         }
-//                                         onFailure:^(NSError *errorResult) {
-//
-//                                         }];
     
     NSDictionary *header = @{
                              @"Authorization": [NSString stringWithFormat:@"%@ %@", oAuthToken.tokenType, oAuthToken.accessToken]
@@ -389,11 +377,40 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
                                                       parameter:@{}
                                                         mapping:[AccountInfo mapping]
                                                       onSuccess:^(RKMappingResult *mappingResult, RKObjectRequestOperation *operation) {
-                                                          
+                                                          [self authenticateToMarketplaceWithAccountInfo:mappingResult.dictionary[@""]
+                                                                                              oAuthToken:oAuthToken];
                                                       }
                                                       onFailure:^(NSError *error) {
                                                           
                                                       }];
+}
+
+- (void)authenticateToMarketplaceWithAccountInfo:(AccountInfo *)accountInfo
+                                      oAuthToken:(OAuthToken *)oAuthToken {
+    TKPDSecureStorage *storage = [TKPDSecureStorage standardKeyChains];
+    [storage setKeychainWithValue:accountInfo.userId withKey:@"tmp_user_id"];
+    
+    NSDictionary *header = @{
+                             @"Authorization": [NSString stringWithFormat:@"%@ %@", oAuthToken.tokenType, oAuthToken.accessToken]
+                             };
+    
+    NSDictionary *parameter = @{
+                                    @"uuid": @""
+                                };
+    
+    [_marketplaceNetworkManager requestWithBaseUrl:[NSString v4Url]
+                                              path:@"/v4/session/make_login.pl"
+                                            method:RKRequestMethodPOST
+                                            header:header
+                                         parameter:parameter
+                                           mapping:[Login mapping]
+                                         onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                             [self requestSuccessLogin:successResult withOperation:operation];
+                                         }
+                                         onFailure:^(NSError *errorResult) {
+                                             
+                                         }];
+
 }
 
 #pragma mark - Memory Management
