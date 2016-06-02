@@ -977,10 +977,12 @@
             {
                 isValid = NO;
                 [messageError addObject:@"Jumlah Saldo Tokopedia yang Anda masukkan terlalu banyak. Gunakan Pembayaran Saldo Tokopedia apabila mencukupi."];
+                [self swipeView:_saldoTextFieldCell];
             }
             if ([deposit integerValue]> [self depositAmountUser]) {
                 isValid = NO;
                 [messageError addObject:@"Saldo Tokopedia Anda tidak mencukupi."];
+                [self swipeView:_saldoTextFieldCell];
             }
         }
     }
@@ -1024,12 +1026,12 @@
     
     NSLog(@"%d",isValid);
     if (!isValid) {
-        [UIViewController showNotification:[NSString joinStringsWithBullets:[messageError copy]]
-                                      type:0
-                                  duration:4.0
-                               buttonTitle:nil
-                               dismissable:YES
-                                    action:nil];
+        [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:[messageError copy]]
+                                                 type:0
+                                             duration:4.0
+                                          buttonTitle:nil
+                                          dismissable:YES
+                                               action:nil];
     }
 
     return  isValid;

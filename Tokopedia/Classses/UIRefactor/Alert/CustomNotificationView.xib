@@ -13,7 +13,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="CustomNotificationView">
-            <rect key="frame" x="0.0" y="0.0" width="337" height="106"/>
+            <rect key="frame" x="0.0" y="0.0" width="337" height="114"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Keranjang belanja tidak benar. Coba refresh kembali halaman ini." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C1F-AX-jF1">
@@ -52,7 +52,7 @@
                 <constraint firstAttribute="trailing" secondItem="CJg-Zt-GQC" secondAttribute="trailing" constant="8" id="176-up-8ck"/>
                 <constraint firstItem="CJg-Zt-GQC" firstAttribute="leading" secondItem="C1F-AX-jF1" secondAttribute="trailing" constant="8" id="5ef-q5-0me"/>
                 <constraint firstItem="C1F-AX-jF1" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="24" id="8af-am-O9J"/>
-                <constraint firstAttribute="bottom" secondItem="j0V-pj-mVK" secondAttribute="bottom" constant="8" id="DPp-WB-IEg"/>
+                <constraint firstAttribute="bottom" secondItem="j0V-pj-mVK" secondAttribute="bottom" constant="16" id="DPp-WB-IEg"/>
                 <constraint firstItem="CJg-Zt-GQC" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="LnO-KF-7aX"/>
                 <constraint firstItem="C1F-AX-jF1" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="24" id="bBB-Xq-rPa"/>
                 <constraint firstItem="j0V-pj-mVK" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="plg-89-8vj"/>

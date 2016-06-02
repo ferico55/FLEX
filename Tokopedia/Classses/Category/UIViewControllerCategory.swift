@@ -10,14 +10,17 @@ import Foundation
 import UIKit
 
 extension UIViewController {
-    class func showNotification(message: String,
-                                type: Int,
-                                duration: NSTimeInterval,
-                                buttonTitle: String?,
-                                dismissable: Bool,
-                                action: (() -> Void)?) {
+    class func showNotificationWithMessage(message: String,
+                                           type: Int,
+                                           duration: NSTimeInterval,
+                                           buttonTitle: String?,
+                                           dismissable: Bool,
+                                           action: (() -> Void)?) {
         let view = CustomNotificationView.newView()
         
+        view.actionButton.layer.borderColor = UIColor.whiteColor().CGColor
+        view.actionButton.layer.borderWidth = 1.0
+        view.actionButton.clipsToBounds = true
         view.setMessageLabelWithText(message as String)
         
         if buttonTitle == nil {

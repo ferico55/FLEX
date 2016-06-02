@@ -8,6 +8,7 @@
 
 #import "RequestCart.h"
 #import "NSNumberFormatter+IDRFormater.h"
+#import "Tokopedia-Swift.h"
 
 @implementation RequestCart
 
@@ -190,7 +191,13 @@
        NSDictionary *result = successResult.dictionary;
        TransactionVoucher *cart = [result objectForKey:@""];
        if (cart.message_error.count>0) {
-           [StickyAlertView showErrorMessage:cart.message_error];
+//           [StickyAlertView showErrorMessage:cart.message_error];
+           [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:cart.message_error]
+                                                    type:0
+                                                duration:4.0
+                                             buttonTitle:nil
+                                             dismissable:YES
+                                                  action:nil];
            error (nil);
        } else
            success(cart.result.data_voucher);

@@ -9,6 +9,7 @@
 #import "CartValidation.h"
 #import "NSNumberFormatter+IDRFormater.h"
 #import "string_transaction.h"
+#import "Tokopedia-Swift.h"
 
 @implementation CartValidation
 
@@ -18,14 +19,18 @@
     
     NSMutableArray *errorMessages = [NSMutableArray new];
     
-//    NSString *voucherCode = [_dataInput objectForKey:API_VOUCHER_CODE_KEY];
     if (!(voucherCode) || [voucherCode isEqualToString:@""]) {
         isValid = NO;
         [errorMessages addObject:@"Masukkan kode voucher terlebih dahulu."];
     }
     
     if (!isValid) {
-        [StickyAlertView showErrorMessage:errorMessages];
+        [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:errorMessages]
+                                                 type:0
+                                             duration:4.0
+                                          buttonTitle:nil
+                                          dismissable:YES
+                                               action:nil];
     }
     
     return  isValid;
@@ -41,7 +46,14 @@
     }
     
     if (!isvalid) {
-        [StickyAlertView showErrorMessage:errorMessage];
+        [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:errorMessage]
+                                                 type:0
+                                             duration:4.0
+                                          buttonTitle:@"Belanja Lagi"
+                                          dismissable:YES
+                                               action:^{
+                                                   [[NSNotificationCenter defaultCenter] postNotificationName:@"navigateToPageInTabBar" object:@"1"];
+                                               }];
     }
     
     return isvalid;
@@ -49,7 +61,7 @@
 
 +(NSString *)errorMessageMinimumPaymenCC{
     NSString *minimum = [[NSNumberFormatter IDRFormarter] stringFromNumber:[NSNumber numberWithInteger:[CartValidation minimumPaymentCC]]];
-    return [NSString stringWithFormat:@"Minimum pembayaran untuk kartu kredit adalah %@ .",minimum];
+    return [NSString stringWithFormat:@"Minimum pembayaran untuk kartu kredit adalah %@.",minimum];
 }
 
 +(NSInteger)minimumPaymentCC{
@@ -65,7 +77,14 @@
     }
     
     if (!isvalid) {
-        [StickyAlertView showErrorMessage:errorMessage];
+        [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:errorMessage]
+                                                 type:0
+                                             duration:4.0
+                                          buttonTitle:@"Belanja Lagi"
+                                          dismissable:YES
+                                               action:^{
+                                                   [[NSNotificationCenter defaultCenter] postNotificationName:@"navigateToPageInTabBar" object:@"1"];
+                                               }];
     }
     
     return isvalid;
@@ -73,7 +92,7 @@
 
 +(NSString *)errorMessageMinimumPaymenKlikBCA{
     NSString *minimum = [[NSNumberFormatter IDRFormarter] stringFromNumber:[NSNumber numberWithInteger:[CartValidation minimumPaymentKlikBCA]]];
-    return [NSString stringWithFormat:@"Minimum pembayaran untuk kartu kredit adalah %@ .",minimum];
+    return [NSString stringWithFormat:@"Minimum pembayaran untuk Klik BCA adalah %@.",minimum];
 }
 
 
@@ -91,7 +110,14 @@
     }
     
     if (!isvalid) {
-        [StickyAlertView showErrorMessage:errorMessage];
+        [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:errorMessage]
+                                                 type:0
+                                             duration:4.0
+                                          buttonTitle:@"Belanja Lagi"
+                                          dismissable:YES
+                                               action:^{
+                                                   [[NSNotificationCenter defaultCenter] postNotificationName:@"navigateToPageInTabBar" object:@"1"];
+                                               }];
     }
     
     return isvalid;
