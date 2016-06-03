@@ -10,4 +10,18 @@
 
 @implementation TalkComment
 
++ (RKObjectMapping *)mapping {
+    // setup object mappings
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[TalkComment class]];
+    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
+                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY
+                                                        }];
+
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data"
+                                                                                  toKeyPath:kTKPD_APIRESULTKEY
+                                                                                withMapping:[TalkCommentResult mapping]]];
+    return statusMapping;
+}
+
 @end

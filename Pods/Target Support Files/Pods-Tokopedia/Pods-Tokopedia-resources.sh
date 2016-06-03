@@ -68,6 +68,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_resource "DBPrivacyHelper/DBPrivacyHelper/DBPrivacyHelperLocalizations/zh-Hant.lproj"
   install_resource "GoogleAppIndexing/Resources/GoogleAppIndexingResources.bundle"
   install_resource "GoogleMaps/Frameworks/GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle"
+  install_resource "GoogleSignIn/Resources/GoogleSignIn.bundle"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_resource "DBPrivacyHelper/DBPrivacyHelper/DBPrivacyHelperAssets.xcassets"
@@ -80,6 +81,7 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_resource "DBPrivacyHelper/DBPrivacyHelper/DBPrivacyHelperLocalizations/zh-Hant.lproj"
   install_resource "GoogleAppIndexing/Resources/GoogleAppIndexingResources.bundle"
   install_resource "GoogleMaps/Frameworks/GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle"
+  install_resource "GoogleSignIn/Resources/GoogleSignIn.bundle"
 fi
 
 mkdir -p "${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"

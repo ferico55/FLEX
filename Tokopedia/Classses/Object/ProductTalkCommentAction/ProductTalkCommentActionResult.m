@@ -6,8 +6,15 @@
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 
+#import "ProductTalkCommentAction.h"
+#import "ProductTalkDetailViewController.h"
 #import "ProductTalkCommentActionResult.h"
 
 @implementation ProductTalkCommentActionResult
 
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ProductTalkCommentActionResult class]];
+    [resultMapping addAttributeMappingsFromDictionary:@{@"is_success":@"is_success", CFieldCommentID:CFieldCommentID}];
+    return resultMapping;
+}
 @end

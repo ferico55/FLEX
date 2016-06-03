@@ -17,10 +17,15 @@
                                                         }];
 
 
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data"
                                                                                   toKeyPath:kTKPD_APIRESULTKEY
                                                                                 withMapping:[TalkResult mapping]]];
     return statusMapping;
+}
+
+- (void)setData:(TalkResult *)data {
+    _data = data;
+    self.result = data;
 }
 
 +(RKObjectMapping *)mapping_v4{

@@ -67,6 +67,12 @@
 #import "CloseShopViewController.h"
 #import "ClosedScheduleDetail.h"
 
+#import "DepositRequest.h"
+
+#import <JLPermissions/JLNotificationPermission.h>
+
+#import "Tokopedia-Swift.h"
+
 #define CTagProfileInfo 12
 #define CTagLP 13
 
@@ -91,8 +97,12 @@
     TokopediaNetworkManager *_LPNetworkManager;
     LoyaltyPointResult *_LPResult;
     TAGContainer *_gtmContainer;
+    
+    DepositRequest *_request;
+    
     NSURL *_deeplinkUrl;
     
+    BOOL _shouldDisplayPushNotificationCell;
 }
 
 @property (weak, nonatomic) IBOutlet UILabel *depositLabel;
@@ -205,10 +215,40 @@
     _depositLabel.hidden = YES;
     _loadingSaldo.hidden = NO;
     
+    _request = [DepositRequest new];
+    
     [self updateSaldoTokopedia:nil];
     [self updateShopInformation];
     [self configureGTM];
     [self.tableView setShowsVerticalScrollIndicator:NO];
+    
+    [self togglePushNotificationCellVisibility];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(appDidResume)
+                                                 name:UIApplicationDidBecomeActiveNotification
+                                               object:nil];
+}
+
+- (void)appDidResume {
+    [self togglePushNotificationCellVisibility];
+}
+
+- (BOOL)isBadgeNotificationTurnedOn {
+    UIApplication *application = [UIApplication sharedApplication];
+    if ([application respondsToSelector:@selector(currentUserNotificationSettings)]) {
+        return application.currentUserNotificationSettings.types & UIUserNotificationTypeBadge;
+    } else {
+        return application.enabledRemoteNotificationTypes & UIRemoteNotificationTypeBadge;
+    }
+}
+
+- (void)togglePushNotificationCellVisibility {
+    BOOL isPushNotificationAuthorized = [JLNotificationPermission sharedInstance].authorizationStatus != JLPermissionDenied;
+    
+    _shouldDisplayPushNotificationCell = !isPushNotificationAuthorized || ![self isBadgeNotificationTurnedOn];
+    
+    [self.tableView reloadData];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -494,7 +534,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 8;
+    return 9;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -534,7 +574,7 @@
             break;
             
         case 6:
-            return 1;
+            return _shouldDisplayPushNotificationCell?1:0;
             break;
             
         case 7 :
@@ -701,6 +741,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
             else  {
                 SegmentedReviewReputationViewController *segmentedReputationViewController = [SegmentedReviewReputationViewController new];
                 segmentedReputationViewController.hidesBottomBarWhenPushed = YES;
+                segmentedReputationViewController.userHasShop = ([_auth objectForKey:@"shop_id"] && [[_auth objectForKey:@"shop_id"] integerValue] > 0);
                 [wrapperController.navigationController pushViewController:segmentedReputationViewController animated:YES];
             }
             
@@ -813,6 +854,10 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
     }
     
     else if (indexPath.section == 6) {
+        [self activatePushNotification];
+    }
+    
+    else if (indexPath.section == 7) {
         if(indexPath.row == 0) {
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
             [[NSNotificationCenter defaultCenter] postNotificationName:kTKPDACTIVATION_DIDAPPLICATIONLOGOUTNOTIFICATION
@@ -823,6 +868,26 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
     }
     
     _wrapperViewController.hidesBottomBarWhenPushed = NO;
+}
+
+- (void)activatePushNotification {
+    JLNotificationPermission *permission = [JLNotificationPermission sharedInstance];
+    
+    JLAuthorizationStatus permissionStatus = permission.authorizationStatus;
+    
+    if (permissionStatus == JLPermissionNotDetermined) {
+        permission.extraAlertEnabled = false;
+        [permission authorize: ^(NSString *deviceId, NSError *error) {
+            [self togglePushNotificationCellVisibility];
+        }];
+    } else {
+        ActivatePushInstructionViewController *viewController = [ActivatePushInstructionViewController new];
+        
+        viewController.viewControllerDidClosed = ^{
+            [[JLNotificationPermission sharedInstance] displayAppSystemSettings];
+        };
+        [_wrapperViewController presentViewController:viewController animated:YES completion:nil];
+    }
 }
 
 -(void)pushIOSFeedback
@@ -857,100 +922,6 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
                                                                        delegate:self];
         [alert show];
     }
-}
-
-#pragma mark - Reskit
-
-- (void)configureRestKit
-{
-    // initialize RestKit
-    _depositObjectManager =  [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Deposit class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[DepositResult class]];
-    [resultMapping addAttributeMappingsFromArray:@[TKPD_DEPOSIT_TOTAL,]];
-    
-    // Relationship Mapping
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                  toKeyPath:kTKPD_APIRESULTKEY
-                                                                                withMapping:resultMapping]];
-    
-    // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                                  method:RKRequestMethodPOST
-                                                                                             pathPattern:API_DEPOSIT_PATH
-                                                                                                 keyPath:@""
-                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_depositObjectManager addResponseDescriptor:responseDescriptorStatus];
-}
-#pragma mark - Deposit Reskit methods
-
-- (void)loadDataDeposit
-{
-    if (_depositRequest.isExecuting) return;
-    
-    _depositRequestCount++;
-    
-    NSDictionary *param = @{API_DEPOSIT_ACTION : API_DEPOSIT_GET_DETAIL};
-    
-    _depositRequest = [_depositObjectManager appropriateObjectRequestOperationWithObject:self
-                                                                                  method:RKRequestMethodPOST
-                                                                                    path:API_DEPOSIT_PATH
-                                                                              parameters:[param encrypt]];
-    
-    [_requestTimer invalidate];
-    _requestTimer = nil;
-    [_depositRequest setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestsuccess:mappingResult withOperation:operation];
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [self requestfailure:error];
-    }];
-    
-    [_operationQueue addOperation:_depositRequest];
-    _requestTimer = [NSTimer scheduledTimerWithTimeInterval:16.0 target:self selector:@selector(requestTimeout) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:_requestTimer forMode:NSRunLoopCommonModes];
-}
-
-- (void)requestTimeout {
-    [self requestCancel];
-    if(_depositRequestCount < kTKPDREQUESTCOUNTMAX) {
-        [self updateSaldoTokopedia:nil];
-    }
-}
-
-- (void)requestCancel {
-    [_depositRequest cancel];
-    _depositRequest = nil;
-    
-    [_depositObjectManager.operationQueue cancelAllOperations];
-    _depositObjectManager = nil;
-    
-}
-
--(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation *)operation
-{
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    if (result) {
-        Deposit *deposit = [result objectForKey:@""];
-        _depositLabel.text = deposit.result.deposit_total;
-        _depositLabel.hidden = NO;
-        _loadingSaldo.hidden = YES;
-        [_loadingSaldo stopAnimating];
-        _isNoDataDeposit = NO;
-
-        [_LPNetworkManager doRequest];
-    }
-}
-
-- (void)requestfailure:(NSError *)error
-{
-    
 }
 
 #pragma mark - Notification Manager
@@ -1004,7 +975,6 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
-    [self requestCancel];
     [_LPNetworkManager requestCancel];
     [[NSNotificationCenter defaultCenter] removeObserver: self];
 }
@@ -1019,8 +989,18 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
 }
 
 - (void)updateSaldoTokopedia:(NSNotification*)notification {
-    [self configureRestKit];
-    [self loadDataDeposit];
+    [_request requestGetDepositOnSuccess:^(DepositResult *result) {
+        _depositLabel.text = result.deposit_total;
+        _depositLabel.hidden = NO;
+        _loadingSaldo.hidden = YES;
+        [_loadingSaldo stopAnimating];
+        _isNoDataDeposit = NO;
+        
+        [_LPNetworkManager doRequest];
+    } onFailure:^(NSError *errorResult) {
+        
+        
+    }];
 }
 
 - (void)updateProfilePicture:(NSNotification *)notification

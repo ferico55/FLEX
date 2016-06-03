@@ -10,4 +10,17 @@
 
 @implementation Deposit
 
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *depositMapping = [RKObjectMapping mappingForClass:[Deposit class]];
+    
+    [depositMapping addAttributeMappingsFromArray:@[@"status",
+                                                    @"server_process_time"]];
+    
+    [depositMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data"
+                                                                                   toKeyPath:@"data"
+                                                                                 withMapping:[DepositResult mapping]]];
+    
+    return depositMapping;
+}
+
 @end

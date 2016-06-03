@@ -19,7 +19,7 @@
                                                           @"message_status"]];
     
     [generalActionMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data"
-                                                                                        toKeyPath:@"data"
+                                                                                         toKeyPath:@"data"
                                                                                        withMapping:[GeneralActionResult mapping]]];
     
     return generalActionMapping;    

@@ -10,4 +10,17 @@
 
 @implementation DepositSummary : NSObject
 
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *depositSummaryMapping = [RKObjectMapping mappingForClass:[DepositSummary class]];
+    
+    [depositSummaryMapping addAttributeMappingsFromArray:@[@"status",
+                                                           @"server_process_time"]];
+    
+    [depositSummaryMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data"
+                                                                                          toKeyPath:@"data"
+                                                                                        withMapping:[DepositSummaryResult mapping]]];
+    
+    return depositSummaryMapping;
+}
+
 @end

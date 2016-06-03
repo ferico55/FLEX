@@ -45,7 +45,9 @@
 @property (nonatomic, strong) NSString *pricealert_id;
 @property (nonatomic, strong) NSString *pricealert_product_id;
 @property (nonatomic, strong) NSString *pricealert_time;
-
+@property (nonatomic, strong) NSString *pricealert_shop_domain;
+@property (nonatomic, strong) NSString *pricealert_shop_location;
+@property (nonatomic, strong) NSString *pricealert_shop_id;
 
 @property (nonatomic, strong) NSString *pricealert_item_image;
 @property (nonatomic, strong) NSString *pricealert_item_name;
@@ -59,4 +61,7 @@
 @property (nonatomic, strong) NSString *pricealert_item_uri;
 @property (nonatomic, strong) NSString *pricealert_catalog_name;
 @property (nonatomic, strong) NSString *pricealert_catalog_status;
+
++ (RKObjectMapping*)mapping;
+
 @end

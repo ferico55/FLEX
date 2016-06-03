@@ -41,6 +41,35 @@ static CKComponent* reviewerEditedLabel(DetailMyInboxReputation *inbox) {
             size:{}];
 }
 
+static CKComponent* giveReviewLabel(DetailMyInboxReputation *inbox) {
+    NSString *label;
+    
+    if ([inbox.role isEqualToString:@"2"]) {
+        if ((([inbox.reputation_progress isEqualToString:@"2"] || [inbox.reputation_progress isEqualToString:@"3"]) && [inbox.their_score_image isEqualToString:@"smiley_none"]) || [inbox.buyer_score isEqualToString:@"2"]) {
+            label = @"Nilai untuk Pembeli:";
+        } else {
+            label = @"Beri Nilai Pembeli:";
+        }
+    } else {
+        if ((([inbox.reputation_progress isEqualToString:@"2"] || [inbox.reputation_progress isEqualToString:@"3"]) && [inbox.their_score_image isEqualToString:@"smiley_none"]) || [inbox.seller_score isEqualToString:@"2"]) {
+            label = @"Nilai untuk Penjual:";
+        } else {
+            label = @"Beri Nilai Penjual:";
+        }
+    }
+    
+    
+    return [CKLabelComponent
+            newWithLabelAttributes:{
+                .string = label,
+                .font = [UIFont fontWithName:@"Gotham Medium" size:14.0]
+            }
+            viewAttributes:{
+                {@selector(setBackgroundColor:), [UIColor clearColor]}
+            }
+            size:{}];
+}
+
 static CKComponent* score(DetailMyInboxReputation *inbox, MyReviewDetailContext *context) {
     ImageStorage *imageCache = context.imageCache;
     std::vector<CKStackLayoutComponentChild> smileys;
@@ -63,7 +92,7 @@ static CKComponent* score(DetailMyInboxReputation *inbox, MyReviewDetailContext 
                                             style:{
                                                 .direction = CKStackLayoutDirectionVertical,
                                                 .alignItems = CKStackLayoutAlignItemsCenter,
-                                                .spacing = 16
+                                                .spacing = 10
                                             }
                                             children:{
                                                 {
@@ -93,7 +122,7 @@ static CKComponent* score(DetailMyInboxReputation *inbox, MyReviewDetailContext 
                                              style:{
                                                  .direction = CKStackLayoutDirectionVertical,
                                                  .alignItems = CKStackLayoutAlignItemsCenter,
-                                                 .spacing = 16
+                                                 .spacing = 10
                                              }
                                              children:{
                                                  {
@@ -120,7 +149,7 @@ static CKComponent* score(DetailMyInboxReputation *inbox, MyReviewDetailContext 
                                          style:{
                                              .direction = CKStackLayoutDirectionVertical,
                                              .alignItems = CKStackLayoutAlignItemsCenter,
-                                             .spacing = 16
+                                             .spacing = 10
                                          }
                                          children:{
                                              {
@@ -150,7 +179,7 @@ static CKComponent* score(DetailMyInboxReputation *inbox, MyReviewDetailContext 
                                                  style:{
                                                      .direction = CKStackLayoutDirectionVertical,
                                                      .alignItems = CKStackLayoutAlignItemsCenter,
-                                                     .spacing = 16
+                                                     .spacing = 10
                                                  }
                                                  children:{
                                                      {
@@ -177,7 +206,7 @@ static CKComponent* score(DetailMyInboxReputation *inbox, MyReviewDetailContext 
                                              style:{
                                                  .direction = CKStackLayoutDirectionVertical,
                                                  .alignItems = CKStackLayoutAlignItemsCenter,
-                                                 .spacing = 16
+                                                 .spacing = 10
                                              }
                                              children:{
                                                  {
@@ -207,7 +236,7 @@ static CKComponent* score(DetailMyInboxReputation *inbox, MyReviewDetailContext 
                                                style:{
                                                    .direction = CKStackLayoutDirectionVertical,
                                                    .alignItems = CKStackLayoutAlignItemsCenter,
-                                                   .spacing = 16
+                                                   .spacing = 10
                                                }
                                                children:{
                                                    {
@@ -234,7 +263,7 @@ static CKComponent* score(DetailMyInboxReputation *inbox, MyReviewDetailContext 
                                            style:{
                                                .direction = CKStackLayoutDirectionVertical,
                                                .alignItems = CKStackLayoutAlignItemsCenter,
-                                               .spacing = 16
+                                               .spacing = 10
                                            }
                                            children:{
                                                {
@@ -300,7 +329,7 @@ static CKComponent* score(DetailMyInboxReputation *inbox, MyReviewDetailContext 
             style:{
                 .direction = CKStackLayoutDirectionHorizontal,
                 .justifyContent = CKStackLayoutJustifyContentCenter,
-                .spacing = 16
+                .spacing = 10
             }
             children:smileys];
 }
@@ -448,15 +477,7 @@ static CKComponent *myScore(DetailMyInboxReputation *inbox, MyReviewDetailContex
                       }
                       children:{
                           {
-                              [CKLabelComponent
-                               newWithLabelAttributes:{
-                                   .string = [inbox.reviewee_role isEqualToString:@"2"]?@"Beri Nilai Penjual:":@"Beri Nilai Pembeli:",
-                                   .font = [UIFont fontWithName:@"Gotham Medium" size:14.0]
-                               }
-                               viewAttributes:{
-                                   {@selector(setBackgroundColor:), backgroundColor}
-                               }
-                               size:{}]
+                              giveReviewLabel(inbox)
                           },
                           {
                               reviewerEditedLabel(inbox)

@@ -1,0 +1,2 @@
+fastlane beta
+echo "OK"

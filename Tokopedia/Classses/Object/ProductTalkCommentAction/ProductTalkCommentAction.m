@@ -10,4 +10,18 @@
 
 @implementation ProductTalkCommentAction : NSObject
 
++ (RKObjectMapping *)mapping {
+    // setup object mappings
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ProductTalkCommentAction class]];
+    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
+                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
+
+    //relation
+    RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"data"
+                                                                                  toKeyPath:kTKPD_APIRESULTKEY
+                                                                                withMapping:[ProductTalkCommentActionResult mapping]];
+    [statusMapping addPropertyMapping:resulRel];
+    return statusMapping;
+}
 @end

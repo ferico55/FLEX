@@ -10,4 +10,18 @@
 
 @implementation PriceAlert
 
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[PriceAlert class]];
+    
+    [mapping addAttributeMappingsFromArray:@[@"status",
+                                             @"server_process_time",
+                                             @"message_error"]];
+    
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data"
+                                                                            toKeyPath:@"data"
+                                                                          withMapping:[PriceAlertResult mapping]]];
+    
+    return mapping;
+}
+
 @end

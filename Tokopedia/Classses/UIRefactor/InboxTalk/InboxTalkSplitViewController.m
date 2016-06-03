@@ -12,7 +12,7 @@
 #import "InboxTalkViewController.h"
 #import "ProductTalkDetailViewController.h"
 
-@interface InboxTalkSplitViewController ()
+@interface InboxTalkSplitViewController () <UISplitViewControllerDelegate>
 
 @property (strong, nonatomic) UISplitViewController *splitViewController;
 
@@ -51,21 +51,20 @@
     
     //Grab a reference to the LeftViewController and get the first monster in the list.
     ProductTalkDetailViewController *detailVC = [[ProductTalkDetailViewController alloc] initByMarkingOpenedTalkAsRead:YES];
-    detailVC.masterViewController = controller;
-    
+
     UINavigationController *detailNav = [[UINavigationController alloc]initWithRootViewController:detailVC];
     detailNav.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
     detailNav.navigationBar.translucent = NO;
     detailNav.navigationBar.tintColor = [UIColor whiteColor];
-    
+
     allTalk.detailViewController = detailVC;
     followingTalk.detailViewController = detailVC;
     myProductTalk.detailViewController = detailVC;
-    
+
     self.view.frame = [UIScreen mainScreen].bounds;
     
     self.splitViewController = [[UISplitViewController alloc] init];
-    self.splitViewController.delegate = detailVC;
+    self.splitViewController.delegate = self;
     self.splitViewController.viewControllers = [NSArray arrayWithObjects:masterNav, detailNav, nil];
     
     if ([self.splitViewController respondsToSelector:@selector(setPreferredDisplayMode:)]) {
@@ -95,6 +94,11 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 
+}
+
+- (BOOL)splitViewController:(UISplitViewController *)svc shouldHideViewController:(UIViewController *)vc inOrientation:(UIInterfaceOrientation)orientation
+{
+    return NO;
 }
 
 @end
