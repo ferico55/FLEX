@@ -819,18 +819,14 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     if (status) {
         _isnodata = NO;
         if (_login.result.is_login) {
+            [self setLoginIdentity];
+        }
+        else{
             if(_login.result.security && ![_login.result.security.allow_login isEqualToString:@"1"]) {
                 [self checkSecurityQuestion];
             } else {
-                [self setLoginIdentity];
+                [StickyAlertView showErrorMessage:_login.message_error];
             }
-
-        }
-        else{
-            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:_login.message_error
-                                                                           delegate:self];
-            [alert show];
-            [self cancelLogin];
         }
     }
     else {
