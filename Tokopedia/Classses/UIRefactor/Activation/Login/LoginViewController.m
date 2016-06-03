@@ -1055,45 +1055,44 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
 }
 
 - (void)didReceiveFacebookUserData:(id)data {
+    _facebookUserData = data;
     
-        _facebookUserData = data;
-
-        NSString *gender = @"";
-        if ([[data objectForKey:@"gender"] isEqualToString:@"male"]) {
-            gender = @"1";
-        } else if ([[data objectForKey:@"gender"] isEqualToString:@"female"]) {
-            gender = @"2";
-        }
-
-        NSString *email = [data objectForKey:@"email"]?:@"";
-        NSString *name = [data objectForKey:@"name"]?:@"";
-        NSString *userId = [data objectForKey:@"id"]?:@"";
-        NSString *birthday = [data objectForKey:@"birthday"]?:@"";
-
-        FBSDKAccessToken *accessToken = [FBSDKAccessToken currentAccessToken];
-
-        NSDictionary *parameters = @{
-            kTKPDLOGIN_API_APP_TYPE_KEY     : @"1",
-            kTKPDLOGIN_API_EMAIL_KEY        : email,
-            kTKPDLOGIN_API_NAME_KEY         : name,
-            kTKPDLOGIN_API_ID_KEY           : userId,
-            kTKPDLOGIN_API_BIRTHDAY_KEY     : birthday,
-            kTKPDLOGIN_API_GENDER_KEY       : gender,
-            kTKPDLOGIN_API_FB_TOKEN_KEY     : accessToken.tokenString?:@"",
-            @"action" : @"do_login"
-        };
-
-        [self requestThirdAppUser:parameters];
-
-        _loadingView.hidden = NO;
-        _emailTextField.hidden = YES;
-        _passwordTextField.hidden = YES;
-        _loginButton.hidden = YES;
-        _forgetPasswordButton.hidden = YES;
-        _facebookLoginButton.hidden = YES;
-        self.googleSignInButton.hidden = YES;
-        
-        [_activityIndicator startAnimating];
+    NSString *gender = @"";
+    if ([[data objectForKey:@"gender"] isEqualToString:@"male"]) {
+        gender = @"1";
+    } else if ([[data objectForKey:@"gender"] isEqualToString:@"female"]) {
+        gender = @"2";
+    }
+    
+    NSString *email = [data objectForKey:@"email"]?:@"";
+    NSString *name = [data objectForKey:@"name"]?:@"";
+    NSString *userId = [data objectForKey:@"id"]?:@"";
+    NSString *birthday = [data objectForKey:@"birthday"]?:@"";
+    
+    FBSDKAccessToken *accessToken = [FBSDKAccessToken currentAccessToken];
+    
+    NSDictionary *parameters = @{
+                                 kTKPDLOGIN_API_APP_TYPE_KEY     : @"1",
+                                 kTKPDLOGIN_API_EMAIL_KEY        : email,
+                                 kTKPDLOGIN_API_NAME_KEY         : name,
+                                 kTKPDLOGIN_API_ID_KEY           : userId,
+                                 kTKPDLOGIN_API_BIRTHDAY_KEY     : birthday,
+                                 kTKPDLOGIN_API_GENDER_KEY       : gender,
+                                 kTKPDLOGIN_API_FB_TOKEN_KEY     : accessToken.tokenString?:@"",
+                                 @"action" : @"do_login"
+                                 };
+    
+    [self requestThirdAppUser:parameters];
+    
+    _loadingView.hidden = NO;
+    _emailTextField.hidden = YES;
+    _passwordTextField.hidden = YES;
+    _loginButton.hidden = YES;
+    _forgetPasswordButton.hidden = YES;
+    _facebookLoginButton.hidden = YES;
+    self.googleSignInButton.hidden = YES;
+    
+    [_activityIndicator startAnimating];
 }
 
 - (void)loginButtonDidLogOut:(FBSDKLoginButton *)loginButton {
