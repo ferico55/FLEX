@@ -189,7 +189,7 @@ ImageSearchRequestDelegate
     CGFloat headerHeight = [PromoCollectionReusableView collectionViewHeightForType:_promoCellType];
     [_flowLayout setHeaderReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, headerHeight)];
     [_flowLayout setFooterReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 50)];
-    [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 10, 10)];
+//    [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 10, 10)];
     
     [_collectionView setCollectionViewLayout:_flowLayout];
     [_collectionView setAlwaysBounceVertical:YES];
