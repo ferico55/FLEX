@@ -37,6 +37,7 @@
 #import <GoogleSignIn/GoogleSignIn.h>
 
 #import "ActivationRequest.h"
+#import "NSString+TPBaseUrl.h"
 
 static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jdpts.apps.googleusercontent.com";
 
@@ -80,6 +81,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     TokopediaNetworkManager *_networkManager;
     TokopediaNetworkManager *_marketplaceNetworkManager;
     TokopediaNetworkManager *_getUserInfoNetworkManager;
+    TokopediaNetworkManager *_thirdPartySignInNetworkManager;
 }
 
 @property (strong, nonatomic) IBOutlet TextField *emailTextField;
@@ -139,6 +141,8 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     _marketplaceNetworkManager.isUsingHmac = YES;
     
     _getUserInfoNetworkManager = [TokopediaNetworkManager new];
+    
+    _thirdPartySignInNetworkManager = [TokopediaNetworkManager new];
 
     UIImage *iconToped = [UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE];
     UIImageView *topedImageView = [[UIImageView alloc] initWithImage:iconToped];
@@ -326,6 +330,11 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
             [[GIDSignIn sharedInstance] signIn];
         }        
     }
+}
+
+- (NSDictionary *)basicAuthorizationHeader {
+//    return @{@"Authorization": @"Basic MTAwMTo3YzcxNDFjMTk3Zjg5Nzg3MWViM2I1YWY3MWU1YWVjNzAwMzYzMzU1YTc5OThhNGUxMmMzNjAwYzdkMzE="};
+    return @{@"Authorization": @"Basic N2VhOTE5MTgyZmY6YjM2Y2JmOTA0ZDE0YmJmOTBlN2YyNTQzMTU5NWEzNjQ="};
 }
 
 - (void)doLoginWithEmail:(NSString *)email pass:(NSString *)pass {
@@ -1072,7 +1081,9 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                                  @"action" : @"do_login"
                                  };
     
-    [self requestThirdAppUser:parameters];
+    [self thirdPartySignInWithUserId:userId
+                               email:email
+                            provider:@"1"];
     
     _loadingView.hidden = NO;
     _emailTextField.hidden = YES;
@@ -1083,6 +1094,30 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
     self.googleSignInButton.hidden = YES;
     
     [_activityIndicator startAnimating];
+}
+
+- (void)thirdPartySignInWithUserId:(NSString *)userId
+                             email:(NSString *)email
+                          provider:(NSString *)provider {
+    NSDictionary *parameter = @{
+                                @"grant_type": @"extension",
+                                @"social_id": userId,
+                                @"social_type": provider,
+                                @"email": email
+                                };
+    
+    [_thirdPartySignInNetworkManager requestNotObfuscatedWithBaseUrl:[NSString accountsUrl]
+                                                                path:@"/token"
+                                                              method:RKRequestMethodPOST
+                                                              header:[self basicAuthorizationHeader]
+                                                           parameter:parameter
+                                                             mapping:[OAuthToken mapping]
+                                                           onSuccess:^(RKMappingResult *mappingResult, RKObjectRequestOperation *operation) {
+                                                               [self getUserInfoWithOAuthToken:mappingResult.dictionary[@""]];
+                                                           }
+                                                           onFailure:^(NSError *error) {
+                                                               
+                                                           }];
 }
 
 - (void)loginButtonDidLogOut:(FBSDKLoginButton *)loginButton {
