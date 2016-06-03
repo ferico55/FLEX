@@ -64,4 +64,14 @@
                           ));
 }
 
++ (NSString*)accountsUrl {
+    return  FBTweakValue(@"Network", @"Environment", @"Tokopedia Accounts Url", @"https://accounts.tokopedia.com",
+                         (@{
+                            @"https://accounts-staging.tokopedia.com" : @"Staging",
+                            @"https://accounts-alpha.tokopedia.com" : @"Alpha",
+                            @"https://accounts.tokopedia.com" : @"Production",
+                            }
+                          ));
+}
+
 @end
