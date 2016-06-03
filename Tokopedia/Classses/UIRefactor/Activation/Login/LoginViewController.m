@@ -347,9 +347,9 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     /**
      [_objectManager.HTTPClient setDefaultHeader:@"Authorization" value:@"Basic N2VhOTE5MTgyZmY6YjM2Y2JmOTA0ZDE0YmJmOTBlN2YyNTQzMTU5NWEzNjQ="];
      */
-    NSDictionary *header = @{@"Authorization": @"Basic MTAwMTo3YzcxNDFjMTk3Zjg5Nzg3MWViM2I1YWY3MWU1YWVjNzAwMzYzMzU1YTc5OThhNGUxMmMzNjAwYzdkMzE="};
+    NSDictionary *header = [self basicAuthorizationHeader];
     
-    [_networkManager requestNotObfuscatedWithBaseUrl:@"https://accounts.tokopedia.com"
+    [_networkManager requestNotObfuscatedWithBaseUrl:[NSString accountsUrl]
                                                 path:@"/token"
                                               method:RKRequestMethodPOST
                                               header:header
@@ -369,7 +369,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
                              @"Authorization": [NSString stringWithFormat:@"%@ %@", oAuthToken.tokenType, oAuthToken.accessToken]
                              };
     
-    [_getUserInfoNetworkManager requestNotObfuscatedWithBaseUrl:@"https://accounts.tokopedia.com"
+    [_getUserInfoNetworkManager requestNotObfuscatedWithBaseUrl:[NSString accountsUrl]
                                                            path:@"/info"
                                                          method:RKRequestMethodGET
                                                          header:header
