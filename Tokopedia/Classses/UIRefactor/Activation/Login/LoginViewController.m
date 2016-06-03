@@ -356,16 +356,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 }
 
 - (void)getUserInfoWithOAuthToken:(OAuthToken *)oAuthToken {
-    /*
-     NSString* securityQuestionUUID = [[[TKPDSecureStorage standardKeyChains] keychainDictionary] objectForKey:@"securityQuestionUUID"];
-     
-     NSDictionary* param = @{
-         kTKPDLOGIN_APIUSEREMAILKEY : [data objectForKey:kTKPDACTIVATION_DATAEMAILKEY]?:@(0),
-         kTKPDLOGIN_APIUSERPASSKEY : [data objectForKey:kTKPDACTIVATION_DATAPASSKEY]?:@(0),
-         @"uuid" : securityQuestionUUID.length ? securityQuestionUUID : @""
-     };
-     */
-    
     NSDictionary *header = @{
                              @"Authorization": [NSString stringWithFormat:@"%@ %@", oAuthToken.tokenType, oAuthToken.accessToken]
                              };
