@@ -92,9 +92,9 @@ typedef enum TagRequest {
 {
     [super viewDidLoad];
     
-    double widthMultiplier = [[UIScreen mainScreen]bounds].size.width / normalWidth;
-    double heightMultiplier = [[UIScreen mainScreen]bounds].size.height / normalHeight;
-    
+//    double widthMultiplier = [[UIScreen mainScreen]bounds].size.width / normalWidth;
+//    double heightMultiplier = [[UIScreen mainScreen]bounds].size.height / normalHeight;
+//    
     //todo with variable
     _product = [NSMutableArray new];
     _isNoData = (_product.count > 0);
@@ -116,12 +116,12 @@ typedef enum TagRequest {
     [_collectionView addSubview:_refreshControl];
     
     [_flowLayout setFooterReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 50)];
-    [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
+//    [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
     [_collectionView setCollectionViewLayout:_flowLayout];
     [_collectionView setAlwaysBounceVertical:YES];
 //    [_collectionView setContentInset:UIEdgeInsetsMake(5, 0, 150 * heightMultiplier, 0)];
     
-    [_flowLayout setItemSize:CGSizeMake((productCollectionViewCellWidthNormal * widthMultiplier), (productCollectionViewCellHeightNormal * heightMultiplier))];
+//    [_flowLayout setItemSize:CGSizeMake((productCollectionViewCellWidthNormal * widthMultiplier), (productCollectionViewCellHeightNormal * heightMultiplier))];
     
     [self.view setFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, [[UIScreen mainScreen]bounds].size.height)];
     
@@ -209,9 +209,9 @@ typedef enum TagRequest {
     return [ProductCellSize sizeWithType:1];
 }
 
-- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
-    return UIEdgeInsetsMake(10, 10, 10, 10);
-}
+//- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
+//    return UIEdgeInsetsMake(10, 10, 10, 10);
+//}
 
 #pragma mark - Memory Management
 -(void)dealloc{
