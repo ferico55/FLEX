@@ -243,7 +243,7 @@ static NSString const *rows = @"12";
     [self registerAllNib];
     
     [_flowLayout setFooterReferenceSize:CGSizeMake(self.view.frame.size.width, 50)];
-    [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 10, 10)];
+//    [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 10, 10)];
     
     if(self.isFromAutoComplete) {
         self.screenName = @"Hot List Detail (From Auto Complete Search)";
