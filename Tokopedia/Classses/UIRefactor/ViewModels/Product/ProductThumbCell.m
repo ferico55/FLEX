@@ -37,8 +37,8 @@
     self.preorderLabel.hidden = viewModel.isProductPreorder ? NO : YES;
     self.grosirLabel.hidden = viewModel.isWholesale ? NO : YES;
     self.goldShopBadge.hidden = viewModel.isGoldShopProduct ? NO : YES;
-    self.grosirIconLocation.constant = viewModel.isProductPreorder ? 4 : -50;
-    self.luckyIconLocation.constant = viewModel.isGoldShopProduct ? 1 : -19;
+    self.grosirIconLocation.constant = viewModel.isProductPreorder ? 7 : -50;
+    self.luckyIconLocation.constant = viewModel.isGoldShopProduct ? 7 : -19;
     
     self.grosirLabel.layer.masksToBounds = YES;
     self.preorderLabel.layer.masksToBounds = YES;

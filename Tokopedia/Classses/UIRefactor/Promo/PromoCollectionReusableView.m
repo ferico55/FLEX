@@ -18,7 +18,7 @@ typedef NS_ENUM(NSInteger, PromoCellHeight) {
     PromoNormalCellHeightSixPlus = 340,
     PromoThumbnailCellHeight = 160,
     PromoThumbnailCellHeightSix = 180,
-    PromoThumbnailCellHeightSixPlus = 451,
+    PromoThumbnailCellHeightSixPlus = 330,
 };
 
 @interface PromoCollectionReusableView ()
@@ -75,6 +75,8 @@ TKPDAlertViewDelegate
         _flowLayout.itemSize = [self itemSize];
         _cellNibName = @"ProductThumbCell";
         _cellIdentifier = @"ProductThumbCellIdentifier";
+        _flowLayout.minimumInteritemSpacing = 0;
+        _flowLayout.minimumLineSpacing = 0;
         _collectionViewHeightConstraint.constant = [self collectionHeightConstraint];
         _collectionView.scrollIndicatorInsets = UIEdgeInsetsZero;
         
@@ -256,7 +258,7 @@ TKPDAlertViewDelegate
     CGSize cellSize = CGSizeMake(0, 0);
     CGRect screenRect = [[UIScreen mainScreen] bounds];
     NSInteger cellCount = 1;
-    CGFloat inset = 15;
+    
     CGFloat screenWidth = screenRect.size.width;
     
     CGFloat cellWidth;
@@ -276,10 +278,10 @@ TKPDAlertViewDelegate
     } else if (_collectionViewCellType == PromoCollectionViewCellTypeThumbnail) {
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
             screenWidth = screenRect.size.width/2;
-            cellWidth = screenWidth/cellCount-inset;
+            cellWidth = screenWidth/cellCount;
         } else {
             screenWidth = screenRect.size.width;
-            cellWidth = screenWidth/cellCount-inset;
+            cellWidth = screenWidth/cellCount;
         }
         
         cellHeight = 90;

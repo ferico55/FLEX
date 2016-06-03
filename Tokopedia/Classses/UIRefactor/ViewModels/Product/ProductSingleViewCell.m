@@ -42,13 +42,13 @@
     [self.productShop setText:viewModel.productShop];
     [self.goldShopBadge setHidden:viewModel.isGoldShopProduct ? NO : YES];
     
-    self.luckyIconPosition.constant = viewModel.isGoldShopProduct ? 5 : -20;
+    self.luckyIconPosition.constant = viewModel.isGoldShopProduct ? 10 : -20;
     self.shopLocation.text = viewModel.shopLocation;
     self.grosirLabel.layer.masksToBounds = YES;
     self.preorderLabel.layer.masksToBounds = YES;
     self.preorderLabel.hidden = viewModel.isProductPreorder ? NO : YES;
     self.grosirLabel.hidden = viewModel.isWholesale ? NO : YES;
-    self.grosirPosition.constant = viewModel.isProductPreorder ? 5 : -64;
+    self.grosirPosition.constant = viewModel.isProductPreorder ? 10 : -64;
 
     [self.productInfoLabel setText:[NSString stringWithFormat:@"%@ Diskusi - %@ Ulasan", viewModel.productTalk, viewModel.productReview]];
     
