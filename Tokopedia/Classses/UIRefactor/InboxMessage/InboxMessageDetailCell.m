@@ -294,7 +294,7 @@ static CGFloat messageTextSize = 17.0;
     string = [self stringReplaceAhrefWithUrl:string];
     NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:string attributes:attributes];
     cell.messageLabel.attributedText = attributedText;
-    UITapGestureRecognizer *tapUser = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapUser:)];
+    UITapGestureRecognizer *tapUser = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapUser)];
     [cell.avatarImageView addGestureRecognizer:tapUser];
     [cell.avatarImageView setUserInteractionEnabled:[NavigationHelper shouldDoDeepNavigation]];
     cell.avatarImageView.tag = [message.user_id integerValue];
@@ -335,5 +335,12 @@ static CGFloat messageTextSize = 17.0;
     UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
     [pasteboard setString:self.messageLabel.text];
 }
+
+- (void)tapUser {
+    if (self.onTapUser) {
+        self.onTapUser(_message.user_id);
+    }
+}
+
 @end
 
