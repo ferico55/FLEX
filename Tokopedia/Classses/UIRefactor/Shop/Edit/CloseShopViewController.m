@@ -203,6 +203,8 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
         [self setDateButton];
         [_mulaiDariButton setEnabled:NO];
     }else{
+        _dateMulaiDari = nil;
+        [self setDateButton];
         [_mulaiDariButton setEnabled:YES];
     }
 }
@@ -245,6 +247,9 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
                                                                 _scheduleDetail.close_end = [self stringFromNSDate:_dateSampaiDengan];
                                                                 _isFormEnabled = NO;
                                                                 [self adjustView];
+                                                                [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITSHOPPOSTNOTIFICATIONNAMEKEY
+                                                                                                                    object:nil
+                                                                                                                  userInfo:nil];
                                                             }else{
                                                                 _centerViewType = CenterViewFailView;
                                                                 [self setFailLabelTextWithError:result.message_error];
@@ -278,6 +283,9 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
                                                             _scheduleDetail.close_end = [self stringFromNSDate:_dateSampaiDengan];
                                                             _isFormEnabled = NO;
                                                             [self adjustView];
+                                                            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITSHOPPOSTNOTIFICATIONNAMEKEY
+                                                                                                                object:nil
+                                                                                                              userInfo:nil];
                                                         }else{
                                                             _centerViewType = CenterViewFailView;
                                                             [self setFailLabelTextWithError:result.message_error];
@@ -306,6 +314,9 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
                                                                    _scheduleDetail.close_end = [self stringFromNSDate:_dateSampaiDengan];
                                                                    _isFormEnabled = NO;
                                                                    [self adjustView];
+                                                                   [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITSHOPPOSTNOTIFICATIONNAMEKEY
+                                                                                                                       object:nil
+                                                                                                                     userInfo:nil];
                                                                }else{
                                                                    _centerViewType = CenterViewFailView;
                                                                    [self setFailLabelTextWithError:result.message_error];
@@ -334,12 +345,15 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
                                                             _scheduleDetail.close_end = [self stringFromNSDate:_dateSampaiDengan];
                                                             _isFormEnabled = NO;
                                                             [self adjustView];
+                                                            [self.delegate didChangeShopStatus];
+                                                            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITSHOPPOSTNOTIFICATIONNAMEKEY
+                                                                                                                object:nil
+                                                                                                              userInfo:nil];
                                                         }else{
                                                             _centerViewType = CenterViewFailView;
                                                             [self setFailLabelTextWithError:result.message_error];
                                                             [self adjustView];
                                                         }
-                                                        [self.delegate didChangeShopStatus];
                                                         _centerViewType = CenterViewFormView;
                                                         [self performSelector:@selector(adjustView) withObject:nil afterDelay:VIEW_TRANSITION_DELAY];
                                                     } onFailure:^(NSError *error) {
@@ -372,6 +386,10 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
             _scheduleDetail.close_end = [self stringFromNSDate:_dateSampaiDengan];
             _isFormEnabled = YES;
             [self adjustView];
+            [self.delegate didChangeShopStatus];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITSHOPPOSTNOTIFICATIONNAMEKEY
+                                                                object:nil
+                                                              userInfo:nil];
         }else{
             _centerViewType = CenterViewFailView;
             [self setFailLabelTextWithError:result.message_error];
@@ -398,17 +416,25 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
     [_closeShopRequest requestActionOpenShopOnSuccess:^(CloseShopResponse *result) {
         if(result.data.is_success){
             _scheduleDetail.close_status = CLOSE_STATUS_OPEN;
-            _isFormEnabled = YES;
             
+            _dateMulaiDari = nil;
+            _dateSampaiDengan = nil;
+            [self setDateButton];
+            
+            _isFormEnabled = YES;
             useAnimation = YES;
             _centerViewType = CenterViewSuccessView;
             [self adjustView];
+            [self.delegate didChangeShopStatus];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITSHOPPOSTNOTIFICATIONNAMEKEY
+                                                                object:nil
+                                                              userInfo:nil];
         }else{
             _centerViewType = CenterViewFailView;
             [self setFailLabelTextWithError:result.message_error];
             [self adjustView];
         }
-        [self.delegate didChangeShopStatus];
         _centerViewType = CenterViewFormView;
         [self performSelector:@selector(adjustView) withObject:nil afterDelay:VIEW_TRANSITION_DELAY];
     } onFailure:^(NSError *error) {
@@ -524,7 +550,7 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
     CGRect aRect = self.view.frame;
     aRect.size.height -= kbSize.height;
     if (!CGRectContainsPoint(aRect, _catatanTextView.frame.origin) ) {
-        CGPoint scrollPoint = CGPointMake(0.0, _catatanTextView.frame.origin.y+kbSize.height);
+        CGPoint scrollPoint = CGPointMake(0.0, _catatanTextView.frame.origin.y+kbSize.height );
         [_scrollView setContentOffset:scrollPoint animated:YES];
     }
 }
