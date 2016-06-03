@@ -1109,11 +1109,11 @@ ImageSearchRequestDelegate
                                                 [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
                                             }
                                         } else if (promoResult == nil && _start == [startPerPage integerValue]) {
-                                            [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
+//                                            [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
                                         }
                                         [_collectionView reloadData];
                                     } onFailure:^(NSError *error) {
-                                        [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
+//                                        [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
                                         [_collectionView reloadData];
                                     }];
     }
