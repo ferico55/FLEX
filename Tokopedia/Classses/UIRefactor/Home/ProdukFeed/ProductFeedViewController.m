@@ -134,16 +134,16 @@ FavoriteShopRequestDelegate
     _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
     [_refreshControl addTarget:self action:@selector(refreshProductFeed)forControlEvents:UIControlEventValueChanged];
     [_collectionView addSubview:_refreshControl];
-    [_collectionView setContentInset:UIEdgeInsetsMake(0, 0, 50, 0)];
+//    [_collectionView setContentInset:UIEdgeInsetsMake(0, 0, 50, 0)];
     
-    [_collectionView setCollectionViewLayout:_flowLayout];
+//    [_collectionView setCollectionViewLayout:_flowLayout];
     [_collectionView setAlwaysBounceVertical:YES];
     [_firstFooter setFrame:CGRectMake(0, _collectionView.frame.origin.y, [UIScreen mainScreen].bounds.size.width, 50)];
 //    [_collectionView addSubview:_firstFooter];
 //    [_firstFooter setHidden:NO];
     
-    [_flowLayout setItemSize:CGSizeMake((productCollectionViewCellWidthNormal * widthMultiplier), (productCollectionViewCellHeightNormal * heightMultiplier))];
-    [_flowLayout setSectionInset:UIEdgeInsetsMake(100, 0, 0, 0)];
+//    [_flowLayout setItemSize:CGSizeMake((productCollectionViewCellWidthNormal * widthMultiplier), (productCollectionViewCellHeightNormal * heightMultiplier))];
+//    [_flowLayout setSectionInset:UIEdgeInsetsMake(100, 0, 0, 0)];
     
     
     [self.view setFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, [[UIScreen mainScreen]bounds].size.height)];
@@ -340,11 +340,11 @@ FavoriteShopRequestDelegate
                                             [_promo addObject:promoArrayLastHalf];
                                             [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
                                             [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
-                                            [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
+//                                            [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
                                         }
                                         [_collectionView reloadData];
                                     } onFailure:^(NSError *error) {
-                                        [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
+//                                        [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
                                         [_collectionView reloadData];
                                     }];
     }

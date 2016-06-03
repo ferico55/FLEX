@@ -227,7 +227,7 @@ typedef NS_ENUM(NSInteger, FavoriteShopRequestType){
         
         RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[SearchAWSProduct class]];
         //product
-        [listMapping addAttributeMappingsFromArray:@[@"product_image", @"product_image_full", @"product_price", @"product_name", @"product_shop", @"product_id", @"product_review_count", @"product_talk_count", @"shop_gold_status", @"shop_name", @"is_owner",@"shop_location", @"shop_lucky" ]];
+        [listMapping addAttributeMappingsFromArray:@[@"product_image", @"product_image_full", @"product_price", @"product_name", @"product_shop", @"product_id", @"product_review_count", @"product_talk_count", @"shop_gold_status", @"shop_name", @"is_owner",@"shop_location", @"shop_lucky", @"product_preorder", @"product_wholesale" ]];
         
         // paging mapping
         RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];

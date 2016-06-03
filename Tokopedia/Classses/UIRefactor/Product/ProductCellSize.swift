@@ -32,8 +32,8 @@ import Foundation
         } else {
             if(cellType == 1) {
                 numberOfCell = 2
-                let cellWidth = screenWidth/numberOfCell - 15
-                cellHeight = cellWidth + 105
+                let cellWidth = screenWidth/numberOfCell
+                cellHeight = cellWidth + 80
                 
             } else if(cellType == 2) {
                 numberOfCell = 1
@@ -45,7 +45,7 @@ import Foundation
         }
         
         
-        let cellWidth = screenWidth/numberOfCell - 15
+        let cellWidth = screenWidth/numberOfCell
         
         
         return CGSizeMake(cellWidth, cellHeight);

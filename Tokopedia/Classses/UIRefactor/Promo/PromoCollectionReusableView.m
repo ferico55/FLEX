@@ -59,6 +59,8 @@ TKPDAlertViewDelegate
     _collectionViewCellType = collectionViewCellType;
     if (_collectionViewCellType == PromoCollectionViewCellTypeNormal) {
         _flowLayout.itemSize = [self itemSize];
+        _flowLayout.minimumInteritemSpacing = 0;
+        _flowLayout.minimumLineSpacing = 0;
         _cellNibName = @"ProductCell";
         _cellIdentifier = @"ProductCellIdentifier";
         _collectionViewHeightConstraint.constant = [self collectionHeightConstraint];
@@ -174,14 +176,14 @@ TKPDAlertViewDelegate
     [self centerPositionAnimated:NO];
 }
 
-- (void)setScrollPosition:(NSNumber *)scrollPosition {
-    _scrollPosition = scrollPosition;
-    if (IS_IPAD) return;
-    NSInteger x = [_scrollPosition integerValue] * _flowLayout.itemSize.width;
-    NSInteger padding = [_scrollPosition integerValue] * _flowLayout.minimumLineSpacing;
-    CGPoint point = CGPointMake(x + padding, 0);
-    _collectionView.contentOffset = point;
-}
+//- (void)setScrollPosition:(NSNumber *)scrollPosition {
+//    _scrollPosition = scrollPosition;
+//    if (IS_IPAD) return;
+//    NSInteger x = [_scrollPosition integerValue] * _flowLayout.itemSize.width;
+//    NSInteger padding = [_scrollPosition integerValue] * _flowLayout.minimumLineSpacing;
+//    CGPoint point = CGPointMake(x + padding, 0);
+//    _collectionView.contentOffset = point;
+//}
 
 - (void)animateScrollToCenter {
     if (IS_IPAD) return;
@@ -264,12 +266,12 @@ TKPDAlertViewDelegate
         
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
             screenWidth = screenRect.size.width/2;
-            cellWidth = screenWidth/cellCount-inset;
+            cellWidth = screenWidth/cellCount;
         } else {
             screenWidth = screenRect.size.width;
-            cellWidth = screenWidth/cellCount-inset;
+            cellWidth = screenWidth/cellCount;
         }
-        cellHeight = cellWidth + 105;
+        cellHeight = cellWidth + 80;
         
     } else if (_collectionViewCellType == PromoCollectionViewCellTypeThumbnail) {
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {

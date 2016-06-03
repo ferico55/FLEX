@@ -21,11 +21,11 @@
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="tRQ-6E-Haa" customClass="CollectionScrollAndSwipe">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="0dN-xL-EyT">
-                        <size key="itemSize" width="145" height="285"/>
+                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="0dN-xL-EyT">
+                        <size key="itemSize" width="160" height="285"/>
                         <size key="headerReferenceSize" width="0.0" height="50"/>
                         <size key="footerReferenceSize" width="0.0" height="45"/>
-                        <inset key="sectionInset" minX="10" minY="10" maxX="10" maxY="0.0"/>
+                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                     </collectionViewFlowLayout>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="90x-TO-9xg"/>

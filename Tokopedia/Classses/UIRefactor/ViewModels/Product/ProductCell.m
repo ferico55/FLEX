@@ -21,11 +21,13 @@
     
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 4.0;
+    style.lineBreakMode = NSLineBreakByTruncatingTail;
     
     NSDictionary *attributes = @{
                                  NSFontAttributeName            : [UIFont fontWithName:@"GothamMedium" size:12],
                                  NSParagraphStyleAttributeName  : style,
                                  NSForegroundColorAttributeName : [UIColor colorWithRed:10.0/255.0 green:126.0/255.0 blue:7.0/255.0 alpha:1],
+                                 
                                  };
     
     self.productName.attributedText = [[NSAttributedString alloc] initWithString:viewModel.productName attributes:attributes];
