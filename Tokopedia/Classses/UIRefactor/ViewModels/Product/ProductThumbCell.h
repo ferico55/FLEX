@@ -21,6 +21,7 @@
 @property(nonatomic, weak) IBOutlet UILabel* preorderLabel;
 @property(nonatomic, weak) IBOutlet UILabel* shopName;
 @property(nonatomic, weak) IBOutlet UILabel* shopLocation;
+@property(nonatomic, weak) IBOutlet UILabel* catalogPriceLabel;
 @property(nonatomic, weak) IBOutlet UIImageView* locationIcon;
 @property (strong, nonatomic) IBOutlet UIImageView *goldShopBadge;
 @property (strong, nonatomic) IBOutlet UIImageView *productImage;

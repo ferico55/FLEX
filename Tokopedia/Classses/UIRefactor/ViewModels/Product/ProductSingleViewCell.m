@@ -12,23 +12,6 @@
 #import "ProductModelView.h"
 #import "CatalogModelView.h"
 
-@interface ProductSingleViewCell()
-
-@property (strong, nonatomic) IBOutlet UILabel *productInfoLabel;
-@property (strong, nonatomic) IBOutlet UIImageView *productImage;
-@property (strong, nonatomic) IBOutlet UILabel *productPrice;
-@property (strong, nonatomic) IBOutlet UILabel *productShop;
-@property (strong, nonatomic) IBOutlet UILabel *productName;
-@property (strong, nonatomic) IBOutlet UIImageView *goldShopBadge;
-@property (weak, nonatomic) IBOutlet UIImageView *luckyMerchantBadge;
-@property (weak, nonatomic) IBOutlet UILabel* shopLocation;
-@property (weak, nonatomic) IBOutlet UILabel* grosirLabel;
-@property (weak, nonatomic) IBOutlet UILabel* preorderLabel;
-@property (weak, nonatomic) IBOutlet UIImageView* locationIcon;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint* luckyIconPosition;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint* grosirPosition;
-
-@end
 
 @implementation ProductSingleViewCell
 
@@ -80,19 +63,13 @@
 
 - (void)setCatalogViewModel:(CatalogModelView *)viewModel {
     [self.productName setText:viewModel.catalogName];
-    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 4.0;
-    style.lineBreakMode = NSLineBreakByTruncatingTail;
     
-    NSDictionary *attributes = @{
-                                 NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:11],
-                                 NSParagraphStyleAttributeName  : style,
-                                 NSForegroundColorAttributeName : [UIColor colorWithRed:255.0/255.0 green:87.0/255.0 blue:34.0/255.0 alpha:1],
-                                 
-                                 };
-    
-    self.productPrice.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"Mulai dari %@", viewModel.catalogPrice] attributes:attributes];
+    self.productPrice.text = @"Mulai dari";
     self.productPriceWidthConstraint.constant = -50;
+    self.productPrice.font = [UIFont fontWithName:@"GothamBook" size:11.0];
+    
+    self.catalogPriceLabel.text = viewModel.catalogPrice;
+    self.catalogPriceLabel.hidden = NO;
     
     [self.productShop setText:[viewModel.catalogSeller isEqualToString:@"0"] ? @"Tidak ada penjual" : [NSString stringWithFormat:@"%@ Penjual", viewModel.catalogSeller]];
     

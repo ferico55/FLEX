@@ -16,6 +16,7 @@
         <mutableArray key="GothamMedium.ttf">
             <string>GothamMedium</string>
             <string>GothamMedium</string>
+            <string>GothamMedium</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -68,6 +69,21 @@
                                 <variation key="default">
                                     <mask key="constraints">
                                         <exclude reference="Ddb-re-7I6"/>
+                                    </mask>
+                                </variation>
+                            </label>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" tag="3" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e4n-03-AzD">
+                                <rect key="frame" x="10" y="335" width="280" height="16"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="16" id="Zfj-65-DbK"/>
+                                    <constraint firstAttribute="width" constant="120" id="roN-YZ-kub"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
+                                <color key="textColor" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="roN-YZ-kub"/>
                                     </mask>
                                 </variation>
                             </label>
@@ -179,6 +195,7 @@
                             <constraint firstItem="E3W-vA-ubj" firstAttribute="top" secondItem="eGy-Mg-oHd" secondAttribute="bottom" constant="3" id="VAt-XA-Q1l"/>
                             <constraint firstItem="kIj-WD-JB3" firstAttribute="top" secondItem="kAI-g1-d9l" secondAttribute="bottom" constant="2" id="VvS-nM-DRv"/>
                             <constraint firstItem="etC-Mi-f0y" firstAttribute="centerY" secondItem="zUN-Jt-7ae" secondAttribute="centerY" constant="2" id="X02-zK-Uh0"/>
+                            <constraint firstItem="e4n-03-AzD" firstAttribute="top" secondItem="zUN-Jt-7ae" secondAttribute="bottom" id="XxF-yA-URs"/>
                             <constraint firstAttribute="trailing" secondItem="kIj-WD-JB3" secondAttribute="trailing" constant="10" id="YuQ-c3-CND"/>
                             <constraint firstItem="zUN-Jt-7ae" firstAttribute="leading" secondItem="sy2-3E-5tq" secondAttribute="leading" constant="10" id="ZLv-lM-19d"/>
                             <constraint firstItem="DeI-5m-9NG" firstAttribute="top" secondItem="xYp-Qr-lkc" secondAttribute="bottom" constant="8" id="aJk-5O-t2y"/>
@@ -194,6 +211,8 @@
                             <constraint firstItem="etC-Mi-f0y" firstAttribute="leading" secondItem="zUN-Jt-7ae" secondAttribute="trailing" constant="50" id="tLZ-so-tXm"/>
                             <constraint firstItem="dAv-XG-SxH" firstAttribute="top" secondItem="eGy-Mg-oHd" secondAttribute="bottom" constant="2" id="uVz-KQ-hK2"/>
                             <constraint firstItem="kIj-WD-JB3" firstAttribute="top" relation="lessThanOrEqual" secondItem="DeI-5m-9NG" secondAttribute="bottom" constant="19" id="uqX-fv-TF9"/>
+                            <constraint firstItem="e4n-03-AzD" firstAttribute="leading" secondItem="sy2-3E-5tq" secondAttribute="leading" constant="10" id="ySV-co-wu7"/>
+                            <constraint firstAttribute="trailing" secondItem="e4n-03-AzD" secondAttribute="trailing" constant="10" id="yc9-Me-Owe"/>
                             <constraint firstItem="eGy-Mg-oHd" firstAttribute="leading" secondItem="sy2-3E-5tq" secondAttribute="leading" constant="10" id="zo8-7c-nMd"/>
                         </constraints>
                         <userDefinedRuntimeAttributes>
@@ -231,6 +250,7 @@
             </constraints>
             <size key="customSize" width="300" height="387"/>
             <connections>
+                <outlet property="catalogPriceLabel" destination="e4n-03-AzD" id="W4d-zL-JBp"/>
                 <outlet property="goldShopBadge" destination="HwM-OA-Hae" id="Qp6-R5-r6M"/>
                 <outlet property="grosirLabel" destination="etC-Mi-f0y" id="yQL-hN-trK"/>
                 <outlet property="grosirPosition" destination="TS5-ri-bvr" id="6fy-Tr-jlO"/>

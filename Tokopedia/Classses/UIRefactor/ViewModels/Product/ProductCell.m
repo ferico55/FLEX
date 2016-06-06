@@ -77,18 +77,13 @@
 
 - (void)setCatalogViewModel:(CatalogModelView *)viewModel {
     [self.productName setText:viewModel.catalogName];
-    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 4.0;
-    style.lineBreakMode = NSLineBreakByTruncatingTail;
+
+    self.productPrice.text = @"Mulai dari";
+    self.productPrice.font = [UIFont fontWithName:@"GothamBook" size:11.0];
     
-    NSDictionary *attributes = @{
-                                 NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:11],
-                                 NSParagraphStyleAttributeName  : style,
-                                 NSForegroundColorAttributeName : [UIColor colorWithRed:255.0/255.0 green:87.0/255.0 blue:34.0/255.0 alpha:1],
-                                 
-                                 };
+    self.catalogPriceLabel.hidden = NO;
+    self.catalogPriceLabel.text = viewModel.catalogPrice;
     
-    self.productPrice.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"Mulai dari %@", viewModel.catalogPrice] attributes:attributes];
     
     [self.productShop setText:[viewModel.catalogSeller isEqualToString:@"0"] ? @"Tidak ada penjual" : [NSString stringWithFormat:@"%@ Penjual", viewModel.catalogSeller]];
      self.goldShopBadge.hidden = YES;

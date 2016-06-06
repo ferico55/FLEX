@@ -27,5 +27,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *shopLocation;
 @property (weak, nonatomic) IBOutlet UILabel *grosirLabel;
 @property (weak, nonatomic) IBOutlet UILabel *preorderLabel;
+@property (weak, nonatomic) IBOutlet UILabel *catalogPriceLabel;
 
 @end
