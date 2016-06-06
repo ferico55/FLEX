@@ -12,6 +12,8 @@
 
 @interface ProductSingleViewCell : UICollectionViewCell
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *infoContraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *productPriceWidthConstraint;
+
 
 - (void)setViewModel:(ProductModelView*)viewModel;
 - (void)setCatalogViewModel:(CatalogModelView*)viewModel;

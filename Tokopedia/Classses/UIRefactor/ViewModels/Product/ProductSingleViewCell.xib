@@ -57,7 +57,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" tag="3" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zUN-Jt-7ae">
-                                <rect key="frame" x="10" y="319" width="120" height="16"/>
+                                <rect key="frame" x="10" y="319" width="119" height="16"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="120" id="Ddb-re-7I6"/>
                                     <constraint firstAttribute="height" constant="16" id="sOE-iX-HRA"/>
@@ -65,6 +65,11 @@
                                 <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
                                 <color key="textColor" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="Ddb-re-7I6"/>
+                                    </mask>
+                                </variation>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" tag="3" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eGy-Mg-oHd">
                                 <rect key="frame" x="10" y="353" width="130" height="16"/>
@@ -186,6 +191,7 @@
                             <constraint firstItem="dAv-XG-SxH" firstAttribute="centerY" secondItem="HwM-OA-Hae" secondAttribute="centerY" id="qgg-W8-MCk"/>
                             <constraint firstAttribute="trailing" secondItem="DeI-5m-9NG" secondAttribute="trailing" constant="10" id="qhc-Xk-w2a"/>
                             <constraint firstItem="E3W-vA-ubj" firstAttribute="top" secondItem="eGy-Mg-oHd" secondAttribute="bottom" constant="2" id="tKM-EI-pWe"/>
+                            <constraint firstItem="etC-Mi-f0y" firstAttribute="leading" secondItem="zUN-Jt-7ae" secondAttribute="trailing" constant="50" id="tLZ-so-tXm"/>
                             <constraint firstItem="dAv-XG-SxH" firstAttribute="top" secondItem="eGy-Mg-oHd" secondAttribute="bottom" constant="2" id="uVz-KQ-hK2"/>
                             <constraint firstItem="kIj-WD-JB3" firstAttribute="top" relation="lessThanOrEqual" secondItem="DeI-5m-9NG" secondAttribute="bottom" constant="19" id="uqX-fv-TF9"/>
                             <constraint firstItem="eGy-Mg-oHd" firstAttribute="leading" secondItem="sy2-3E-5tq" secondAttribute="leading" constant="10" id="zo8-7c-nMd"/>
@@ -237,6 +243,7 @@
                 <outlet property="productInfoLabel" destination="kIj-WD-JB3" id="qSD-6G-mYu"/>
                 <outlet property="productName" destination="DeI-5m-9NG" id="X5p-fb-Eb6"/>
                 <outlet property="productPrice" destination="zUN-Jt-7ae" id="wlM-v2-KCT"/>
+                <outlet property="productPriceWidthConstraint" destination="tLZ-so-tXm" id="bW8-j3-xts"/>
                 <outlet property="productShop" destination="eGy-Mg-oHd" id="KxJ-x8-9GN"/>
                 <outlet property="shopLocation" destination="T0n-0t-ya4" id="DcP-NV-pN1"/>
             </connections>

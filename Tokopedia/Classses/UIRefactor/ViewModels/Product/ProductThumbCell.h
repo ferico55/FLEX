@@ -27,6 +27,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *luckyMerchantBadge;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *grosirIconLocation;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *luckyIconLocation;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *productPriceWidthConstraint;
 
 
 @end

@@ -61,7 +61,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rp.12.000.000" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="459-Qy-tpA">
-                                <rect key="frame" x="94" y="38" width="93" height="18"/>
+                                <rect key="frame" x="94" y="38" width="115" height="18"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="93" id="cSj-v0-Ozu"/>
                                     <constraint firstAttribute="height" constant="18" id="p3z-fH-RIg"/>
@@ -69,6 +69,11 @@
                                 <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="12"/>
                                 <color key="textColor" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="cSj-v0-Ozu"/>
+                                    </mask>
+                                </variation>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Grosir" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fkG-Ep-UNO">
                                 <rect key="frame" x="217" y="38" width="42" height="18"/>
@@ -151,6 +156,7 @@
                             <constraint firstItem="Kw8-LN-It2" firstAttribute="leading" secondItem="aeK-n3-p3K" secondAttribute="trailing" constant="8" id="jPp-AN-0dU"/>
                             <constraint firstItem="aeK-n3-p3K" firstAttribute="top" secondItem="eFV-8v-Xwg" secondAttribute="top" constant="7" id="l45-Ge-7jS"/>
                             <constraint firstItem="459-Qy-tpA" firstAttribute="leading" secondItem="aeK-n3-p3K" secondAttribute="trailing" constant="8" id="op7-wm-S8R"/>
+                            <constraint firstItem="fkG-Ep-UNO" firstAttribute="leading" secondItem="459-Qy-tpA" secondAttribute="trailing" constant="8" id="rf4-Sh-cbB"/>
                             <constraint firstItem="fkG-Ep-UNO" firstAttribute="centerY" secondItem="MTc-ah-pyf" secondAttribute="centerY" id="tlD-hC-9rc"/>
                             <constraint firstItem="Jyc-LY-qhp" firstAttribute="leading" secondItem="aeK-n3-p3K" secondAttribute="trailing" constant="8" id="tqo-9G-ie0"/>
                             <constraint firstAttribute="trailing" secondItem="aeK-n3-p3K" secondAttribute="trailing" constant="227" id="x4W-Nz-Vp7"/>
@@ -190,6 +196,7 @@
                 <outlet property="productImage" destination="aeK-n3-p3K" id="olv-Ta-3Gb"/>
                 <outlet property="productName" destination="Kw8-LN-It2" id="7is-zw-gfN"/>
                 <outlet property="productPrice" destination="459-Qy-tpA" id="3Pi-PM-A6i"/>
+                <outlet property="productPriceWidthConstraint" destination="rf4-Sh-cbB" id="WAP-xs-1FO"/>
                 <outlet property="shopLocation" destination="3pI-6F-eJx" id="8Gj-JC-h7w"/>
                 <outlet property="shopName" destination="ysz-tw-Sdy" id="uqr-hW-15P"/>
             </connections>

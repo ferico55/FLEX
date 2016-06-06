@@ -85,6 +85,36 @@
         [self.productImage setImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"]];
     }];
     
+    self.preorderLabel.hidden = YES;
+    self.grosirLabel.hidden = YES;
+    self.locationIcon.hidden = YES;
+    self.shopLocation.text = nil;
+    
+    
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    style.lineSpacing = 4.0;
+    style.lineBreakMode = NSLineBreakByTruncatingTail;
+    
+    NSDictionary *attributes = @{
+                                 NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:11],
+                                 NSParagraphStyleAttributeName  : style,
+                                 NSForegroundColorAttributeName : [UIColor colorWithRed:255.0/255.0 green:87.0/255.0 blue:34.0/255.0 alpha:1],
+                                 
+                                 };
+    
+    self.productPrice.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"Mulai dari %@", viewModel.catalogPrice] attributes:attributes];
+    
+    
+    NSDictionary* catalogNameAtt = @{
+                                     NSFontAttributeName            : [UIFont fontWithName:@"GothamMedium" size:12],
+                                     NSParagraphStyleAttributeName  : style,
+                                     NSForegroundColorAttributeName : [UIColor colorWithRed:10.0/255.0 green:126.0/255.0 blue:7.0/255.0 alpha:1],
+                                     };
+    self.productName.numberOfLines = 2;
+    self.productName.attributedText = [[NSAttributedString alloc] initWithString:viewModel.catalogName attributes:catalogNameAtt];
+    
+    self.productPriceWidthConstraint.constant = -50;
+    [self.shopName setText:[viewModel.catalogSeller isEqualToString:@"0"] ? @"Tidak ada penjual" : [NSString stringWithFormat:@"%@ Penjual", viewModel.catalogSeller]];
 }
 
 

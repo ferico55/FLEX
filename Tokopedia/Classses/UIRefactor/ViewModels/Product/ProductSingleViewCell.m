@@ -80,8 +80,21 @@
 
 - (void)setCatalogViewModel:(CatalogModelView *)viewModel {
     [self.productName setText:viewModel.catalogName];
-    [self.productPrice setText:viewModel.catalogPrice];
-    [self.productInfoLabel setText:[viewModel.catalogSeller isEqualToString:@"0"] ? @"Tidak ada penjual" : [NSString stringWithFormat:@"%@ Penjual", viewModel.catalogSeller]];
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    style.lineSpacing = 4.0;
+    style.lineBreakMode = NSLineBreakByTruncatingTail;
+    
+    NSDictionary *attributes = @{
+                                 NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:11],
+                                 NSParagraphStyleAttributeName  : style,
+                                 NSForegroundColorAttributeName : [UIColor colorWithRed:255.0/255.0 green:87.0/255.0 blue:34.0/255.0 alpha:1],
+                                 
+                                 };
+    
+    self.productPrice.attributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"Mulai dari %@", viewModel.catalogPrice] attributes:attributes];
+    self.productPriceWidthConstraint.constant = -50;
+    
+    [self.productShop setText:[viewModel.catalogSeller isEqualToString:@"0"] ? @"Tidak ada penjual" : [NSString stringWithFormat:@"%@ Penjual", viewModel.catalogSeller]];
     
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:viewModel.catalogThumbUrl] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     [self.productImage setContentMode:UIViewContentModeCenter];
@@ -106,6 +119,12 @@
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
         [self.luckyMerchantBadge setImage:[UIImage imageNamed:@""]];
     }];
+    
+    self.preorderLabel.hidden = YES;
+    self.grosirLabel.hidden = YES;
+    self.locationIcon.hidden = YES;
+    self.shopLocation.text = nil;
+    self.productInfoLabel.hidden = YES;
 }
 
 @end
