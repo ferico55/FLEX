@@ -82,6 +82,9 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     TokopediaNetworkManager *_marketplaceNetworkManager;
     TokopediaNetworkManager *_getUserInfoNetworkManager;
     TokopediaNetworkManager *_thirdPartySignInNetworkManager;
+    
+    AccountInfo *_accountInfo;
+    OAuthToken *_oAuthToken;
 }
 
 @property (strong, nonatomic) IBOutlet TextField *emailTextField;
@@ -376,6 +379,9 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
                                                       parameter:@{}
                                                         mapping:[AccountInfo mapping]
                                                       onSuccess:^(RKMappingResult *mappingResult, RKObjectRequestOperation *operation) {
+                                                          _oAuthToken = oAuthToken;
+                                                          _accountInfo = _accountInfo;
+                                                          
                                                           [self authenticateToMarketplaceWithAccountInfo:mappingResult.dictionary[@""]
                                                                                               oAuthToken:oAuthToken];
                                                       }
@@ -389,12 +395,14 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     TKPDSecureStorage *storage = [TKPDSecureStorage standardKeyChains];
     [storage setKeychainWithValue:accountInfo.userId withKey:@"tmp_user_id"];
     
+    NSString *securityQuestionUUID = [storage keychainDictionary][@"securityQuestionUUID"]?:@"";
+    
     NSDictionary *header = @{
                              @"Authorization": [NSString stringWithFormat:@"%@ %@", oAuthToken.tokenType, oAuthToken.accessToken]
                              };
     
     NSDictionary *parameter = @{
-                                    @"uuid": @""
+                                    @"uuid": securityQuestionUUID
                                 };
     
     [_marketplaceNetworkManager requestWithBaseUrl:[NSString v4Url]
@@ -939,7 +947,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
         controller.deviceID = _userManager.getMyDeviceToken;
         controller.successAnswerCallback = ^(SecurityAnswer* answer) {
             [secureStorage setKeychainWithValue:answer.data.uuid withKey:@"securityQuestionUUID"];
-            [self setLoginIdentity];
+            [self authenticateToMarketplaceWithAccountInfo:_accountInfo oAuthToken:_oAuthToken];
         };
         
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
