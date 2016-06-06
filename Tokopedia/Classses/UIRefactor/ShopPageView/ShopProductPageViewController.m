@@ -405,6 +405,8 @@ EtalaseViewControllerDelegate
         cell = (ProductSingleViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
         [(ProductSingleViewCell*)cell setViewModel:list.viewModel];
         ((ProductSingleViewCell*)cell).infoContraint.constant = 0;
+        ((ProductSingleViewCell*)cell).locationIcon.hidden = YES;
+        ((ProductSingleViewCell*)cell).productShop.hidden = YES;
     } else if (self.cellType == UITableViewCellTypeTwoColumn) {
         cellid = @"ProductCellIdentifier";
         cell = (ProductCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
