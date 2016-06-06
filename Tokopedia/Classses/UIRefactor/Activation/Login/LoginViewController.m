@@ -380,9 +380,9 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
                                                         mapping:[AccountInfo mapping]
                                                       onSuccess:^(RKMappingResult *mappingResult, RKObjectRequestOperation *operation) {
                                                           _oAuthToken = oAuthToken;
-                                                          _accountInfo = _accountInfo;
+                                                          _accountInfo = mappingResult.dictionary[@""];
                                                           
-                                                          [self authenticateToMarketplaceWithAccountInfo:mappingResult.dictionary[@""]
+                                                          [self authenticateToMarketplaceWithAccountInfo:_accountInfo
                                                                                               oAuthToken:oAuthToken];
                                                       }
                                                       onFailure:^(NSError *error) {
