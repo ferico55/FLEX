@@ -341,6 +341,9 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 }
 
 - (void)doLoginWithEmail:(NSString *)email pass:(NSString *)pass {
+    [self setLoggingInState];
+    _barbuttonsignin.enabled = NO;
+
     NSDictionary *parameters = @{
                             @"grant_type": @"password",
                             @"username": email,
@@ -359,11 +362,16 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
                                            parameter:parameters
                                              mapping:[OAuthToken mapping]
                                            onSuccess:^(RKMappingResult *result, RKObjectRequestOperation *operation) {
+                                               _barbuttonsignin.enabled = YES;
+                                               [self unsetLoggingInState];
+
                                                OAuthToken *oAuthToken = result.dictionary[@""];
                                                [self getUserInfoWithOAuthToken:oAuthToken];
                                            }
                                            onFailure:^(NSError *error) {
-
+                                               _barbuttonsignin.enabled = YES;
+                                               [self unsetLoggingInState];
+                                               [self requestFailureLogin:error];
                                            }];
 }
 
