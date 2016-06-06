@@ -62,6 +62,7 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 @property (strong, nonatomic) IBOutlet UIView *successView;
+@property (strong, nonatomic) IBOutlet UILabel *catatanTextViewTitle;
 
 @property (strong, nonatomic) IBOutlet UIView *failView;
 @property (strong, nonatomic) IBOutlet UILabel *failLabel;
@@ -82,6 +83,7 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
     UIColor *darkGray;
     UIColor *positiveGreen;
     UIColor *negativeRed;
+    UIColor *textGray;
     
 }
 
@@ -107,11 +109,13 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
 -(void)initializeView{
     [_activityIndicator startAnimating];
     [self registerForKeyboardNotifications];
+    self.title = @"Status Toko";
     
-    lightGray = [UIColor colorWithRed:0.882 green:0.882 blue:0.882 alpha:1];
+    lightGray = [UIColor colorWithRed:0.899 green:0.892 blue:0.899 alpha:1];
     darkGray = [UIColor colorWithRed:0.533 green:0.533 blue:0.533 alpha:1];
+    textGray = [UIColor colorWithRed:0.415 green:0.415 blue:0.415 alpha:1];
     positiveGreen = [UIColor colorWithRed:0.206 green:0.684 blue:0.235 alpha:1];
-    negativeRed = [UIColor colorWithRed:1 green:0.912 blue:0.912 alpha:1];
+    negativeRed = [UIColor colorWithRed:0.81 green:0.113 blue:0.13 alpha:1];
     
     //self.scrollView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
     [_scrollView setScrollEnabled:YES];
@@ -121,8 +125,7 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
     
     CALayer * externalBorder = [CALayer layer];
     externalBorder.frame = CGRectMake(-1, -1, _formView.frame.size.width+2, _formView.frame.size.height+2);
-    //externalBorder.borderColor = [UIColor colorWithRed:0.914 green:0.914 blue:0.914 alpha:1].CGColor;
-    externalBorder.borderColor = darkGray.CGColor;
+    externalBorder.borderColor = lightGray.CGColor;
     externalBorder.borderWidth = 1.0;
     
     NSMutableParagraphStyle *paragraphStyle = [NSMutableParagraphStyle new];
@@ -202,10 +205,12 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
         }
         [self setDateButton];
         [_mulaiDariButton setEnabled:NO];
+        [_mulaiDariButton setTitleColor:textGray forState:UIControlStateNormal];
     }else{
         _dateMulaiDari = nil;
         [self setDateButton];
         [_mulaiDariButton setEnabled:YES];
+        [_mulaiDariButton setTitleColor:positiveGreen forState:UIControlStateNormal];
     }
 }
 - (IBAction)mulaiDariButtonTapped:(id)sender {
@@ -357,7 +362,12 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
                                                         _centerViewType = CenterViewFormView;
                                                         [self performSelector:@selector(adjustView) withObject:nil afterDelay:VIEW_TRANSITION_DELAY];
                                                     } onFailure:^(NSError *error) {
+                                                        _centerViewType = CenterViewFailView;
+                                                        [self setFailLabelTextWithError:@[@"Kendala koneksi internet"]];
+                                                        [self adjustView];
                                                         
+                                                        _centerViewType = CenterViewFormView;
+                                                        [self performSelector:@selector(adjustView) withObject:nil afterDelay:VIEW_TRANSITION_DELAY];
                                                     }];
             }
         }
@@ -451,26 +461,24 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
 - (BOOL)validateForm{
     BOOL isValidationSuccess = YES;
     if(_dateMulaiDari == nil){
-        [_mulaiDariView setBackgroundColor:negativeRed];
+        [_mulaiDariButton setTitleColor:negativeRed forState:UIControlStateNormal];
         isValidationSuccess = NO;
     }else{
-        [_mulaiDariView setBackgroundColor:[UIColor whiteColor]];
+        [_mulaiDariButton setTitleColor:positiveGreen forState:UIControlStateNormal];
     }
     
     if(_dateSampaiDengan == nil){
-        [_sampaiDenganView setBackgroundColor:negativeRed];
+        [_sampaiDenganButton setTitleColor:negativeRed forState:UIControlStateNormal];
         isValidationSuccess = NO;
     }else{
-        [_sampaiDenganView setBackgroundColor:[UIColor whiteColor]];
+        [_sampaiDenganButton setTitleColor:positiveGreen forState:UIControlStateNormal];
     }
     
     if(_catatanTextView.text == nil || [_catatanTextView.text isEqualToString:@""]){
-        [_catatanView setBackgroundColor:negativeRed];
-        [_catatanTextView setBackgroundColor:negativeRed];
+        [_catatanTextViewTitle setTextColor:negativeRed];
         isValidationSuccess = NO;
     }else{
-        [_catatanView setBackgroundColor:[UIColor whiteColor]];
-        [_catatanTextView setBackgroundColor:[UIColor whiteColor]];
+        [_catatanTextViewTitle setTextColor:textGray];
     }
     
     return isValidationSuccess;
@@ -533,10 +541,6 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
 #pragma mark - TextView Delegate
 
 -(void)textViewDidBeginEditing:(UITextView *)textView{
-    if(textViewInitialValue){
-        [_catatanTextView setText:@""];
-        textViewInitialValue = NO;
-    }
 }
 
 - (void)keyboardWasShown:(NSNotification*)aNotification
@@ -593,7 +597,7 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
         
     }else if(_centerViewType == CenterViewFormView){
         if(_isFormEnabled){
-            _centerViewHeight.constant = _formView.frame.size.height;
+            _centerViewHeight.constant = _formView.frame.size.height - 1;
         }else{
             _centerViewHeight.constant = _formView.frame.size.height - _batalView.frame.size.height - 6;
         }
@@ -725,27 +729,24 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
     if(_isFormEnabled){
         if(_scheduleDetail.close_status == CLOSE_STATUS_CLOSED){
             [_mulaiDariButton setEnabled:NO];
-            [_mulaiDariView setBackgroundColor:lightGray];
+            [_mulaiDariButton setTitleColor:darkGray forState:UIControlStateNormal];
         }else{
             [_mulaiDariButton setEnabled:YES];
-            [_mulaiDariView setBackgroundColor:[UIColor whiteColor]];
+            [_mulaiDariButton setTitleColor:positiveGreen forState:UIControlStateNormal];
         }
         [_sampaiDenganButton setEnabled:YES];
         _catatanTextView.editable = YES;
-        
-        [_sampaiDenganView setBackgroundColor:[UIColor whiteColor]];
-        [_catatanView setBackgroundColor:[UIColor whiteColor]];
-        [_catatanTextView setBackgroundColor:[UIColor whiteColor]];
+        [_sampaiDenganButton setTitleColor:positiveGreen forState:UIControlStateNormal];
+        [_catatanTextView setTextColor:[UIColor blackColor]];
         
     }else{
         [_mulaiDariButton setEnabled:NO];
         [_sampaiDenganButton setEnabled:NO];
         _catatanTextView.editable = NO;
         
-        [_mulaiDariView setBackgroundColor:lightGray];
-        [_sampaiDenganView setBackgroundColor:lightGray];
-        [_catatanView setBackgroundColor:lightGray];
-        [_catatanTextView setBackgroundColor:lightGray];
+        [_mulaiDariButton setTitleColor:textGray forState:UIControlStateNormal];
+        [_sampaiDenganButton setTitleColor:textGray forState:UIControlStateNormal];
+        [_catatanTextView setTextColor:textGray];
     }
 }
 
@@ -764,7 +765,7 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
     paragraphStyle.lineSpacing              = 5.0f;
     
     joinedString = [NSString convertHTML:joinedString];
-    UIFont *gothamTwelve = [UIFont fontWithName:@"GothamBook" size:12.0f];
+    UIFont *gothamTwelve = [UIFont fontWithName:@"GothamMedium" size:13.0f];
     
     NSMutableAttributedString *attribString = [[NSMutableAttributedString alloc]initWithString:joinedString];
     [attribString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [joinedString length])];
