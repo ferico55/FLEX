@@ -306,7 +306,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
                 }
                 
                 if (valid) {
-                    [self doLoginWithEmail:email pass:pass];
+                    [self doLoginWithEmail:email password:pass];
                 }
                 else{
                     StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messages delegate:self];
@@ -340,10 +340,28 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 //    return @{@"Authorization": @"Basic N2VhOTE5MTgyZmY6YjM2Y2JmOTA0ZDE0YmJmOTBlN2YyNTQzMTU5NWEzNjQ="};
 }
 
-- (void)doLoginWithEmail:(NSString *)email pass:(NSString *)pass {
+- (void)doLoginWithEmail:(NSString *)email password:(NSString *)pass {
     [self setLoggingInState];
     _barbuttonsignin.enabled = NO;
 
+    [self requestLoginWithEmail:email
+                       password:pass
+            successCallback:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                _barbuttonsignin.enabled = YES;
+                [self unsetLoggingInState];
+                [self requestSuccessLogin:successResult withOperation:operation];
+            }
+            failureCallback:^(NSError *error) {
+                _barbuttonsignin.enabled = YES;
+                [self unsetLoggingInState];
+                [self requestFailureLogin:error];
+            }];
+}
+
+- (void)requestLoginWithEmail:(NSString *)email
+                     password:(NSString *)pass
+              successCallback:(void (^)(RKMappingResult *, RKObjectRequestOperation *))successCallback
+              failureCallback:(void (^)(NSError *))failureCallback {
     NSDictionary *parameters = @{
                             @"grant_type": @"password",
                             @"username": email,
@@ -354,7 +372,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
      [_objectManager.HTTPClient setDefaultHeader:@"Authorization" value:@"Basic N2VhOTE5MTgyZmY6YjM2Y2JmOTA0ZDE0YmJmOTBlN2YyNTQzMTU5NWEzNjQ="];
      */
     NSDictionary *header = [self basicAuthorizationHeader];
-    
+
     [_networkManager requestNotObfuscatedWithBaseUrl:[NSString accountsUrl]
                                                 path:@"/token"
                                               method:RKRequestMethodPOST
@@ -362,24 +380,21 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
                                            parameter:parameters
                                              mapping:[OAuthToken mapping]
                                            onSuccess:^(RKMappingResult *result, RKObjectRequestOperation *operation) {
-                                               _barbuttonsignin.enabled = YES;
-                                               [self unsetLoggingInState];
-
                                                OAuthToken *oAuthToken = result.dictionary[@""];
-                                               [self getUserInfoWithOAuthToken:oAuthToken];
+                                               [self getUserInfoWithOAuthToken:oAuthToken
+                                                               successCallback:successCallback
+                                                               failureCallback:failureCallback];
                                            }
-                                           onFailure:^(NSError *error) {
-                                               _barbuttonsignin.enabled = YES;
-                                               [self unsetLoggingInState];
-                                               [self requestFailureLogin:error];
-                                           }];
+                                           onFailure:failureCallback];
 }
 
-- (void)getUserInfoWithOAuthToken:(OAuthToken *)oAuthToken {
+- (void)getUserInfoWithOAuthToken:(OAuthToken *)oAuthToken
+                  successCallback:(void (^)(RKMappingResult *, RKObjectRequestOperation *))successCallback
+                  failureCallback:(void (^)(NSError *))failureCallback {
     NSDictionary *header = @{
                              @"Authorization": [NSString stringWithFormat:@"%@ %@", oAuthToken.tokenType, oAuthToken.accessToken]
                              };
-    
+
     [_getUserInfoNetworkManager requestNotObfuscatedWithBaseUrl:[NSString accountsUrl]
                                                            path:@"/info"
                                                          method:RKRequestMethodGET
@@ -389,17 +404,19 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
                                                       onSuccess:^(RKMappingResult *mappingResult, RKObjectRequestOperation *operation) {
                                                           _oAuthToken = oAuthToken;
                                                           _accountInfo = mappingResult.dictionary[@""];
-                                                          
+
                                                           [self authenticateToMarketplaceWithAccountInfo:_accountInfo
-                                                                                              oAuthToken:oAuthToken];
+                                                                                              oAuthToken:oAuthToken
+                                                                                         successCallback:successCallback
+                                                                                         failureCallback:failureCallback];
                                                       }
-                                                      onFailure:^(NSError *error) {
-                                                          
-                                                      }];
+                                                      onFailure:failureCallback];
 }
 
 - (void)authenticateToMarketplaceWithAccountInfo:(AccountInfo *)accountInfo
-                                      oAuthToken:(OAuthToken *)oAuthToken {
+                                      oAuthToken:(OAuthToken *)oAuthToken
+                                 successCallback:(void (^)(RKMappingResult *, RKObjectRequestOperation *))successCallback
+                                 failureCallback:(void (^)(NSError *))failureCallback {
     TKPDSecureStorage *storage = [TKPDSecureStorage standardKeyChains];
     [storage setKeychainWithValue:accountInfo.userId withKey:@"tmp_user_id"];
     
@@ -412,20 +429,15 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     NSDictionary *parameter = @{
                                     @"uuid": securityQuestionUUID
                                 };
-    
+
     [_marketplaceNetworkManager requestWithBaseUrl:[NSString v4Url]
                                               path:@"/v4/session/make_login.pl"
                                             method:RKRequestMethodPOST
                                             header:header
                                          parameter:parameter
                                            mapping:[Login mapping]
-                                         onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                             [self requestSuccessLogin:successResult withOperation:operation];
-                                         }
-                                         onFailure:^(NSError *errorResult) {
-                                             
-                                         }];
-
+                                         onSuccess:successCallback
+                                         onFailure:failureCallback];
 }
 
 #pragma mark - Memory Management
@@ -955,7 +967,11 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
         controller.deviceID = _userManager.getMyDeviceToken;
         controller.successAnswerCallback = ^(SecurityAnswer* answer) {
             [secureStorage setKeychainWithValue:answer.data.uuid withKey:@"securityQuestionUUID"];
-            [self authenticateToMarketplaceWithAccountInfo:_accountInfo oAuthToken:_oAuthToken];
+            [self authenticateToMarketplaceWithAccountInfo:_accountInfo oAuthToken:_oAuthToken successCallback:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                [self requestSuccessLogin:successResult withOperation:operation];
+            }                              failureCallback:^(NSError *errorResult) {
+
+            }];
         };
         
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
@@ -1125,7 +1141,11 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                                                            parameter:parameter
                                                              mapping:[OAuthToken mapping]
                                                            onSuccess:^(RKMappingResult *mappingResult, RKObjectRequestOperation *operation) {
-                                                               [self getUserInfoWithOAuthToken:mappingResult.dictionary[@""]];
+                                                               [self getUserInfoWithOAuthToken:mappingResult.dictionary[@""] successCallback:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                                                   [self requestSuccessLogin:successResult withOperation:operation];
+                                                               }               failureCallback:^(NSError *errorResult) {
+
+                                                               }];
                                                            }
                                                            onFailure:^(NSError *error) {
                                                                
