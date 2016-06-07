@@ -425,9 +425,6 @@ ImageSearchRequestDelegate
                     ((PromoCollectionReusableView *)reusableView).promo = [_promo objectAtIndex:indexPath.section];
                     ((PromoCollectionReusableView *)reusableView).delegate = self;
                     ((PromoCollectionReusableView *)reusableView).indexPath = indexPath;
-                    if (self.scrollDirection == ScrollDirectionDown && indexPath.section == 1) {
-                        [((PromoCollectionReusableView *)reusableView) scrollToCenter];
-                    }
                     
                 }
 //            }
@@ -484,19 +481,19 @@ ImageSearchRequestDelegate
         if (_promo.count > section) {
             NSArray *currentPromo = [_promo objectAtIndex:section];
             
-            if(_promoCellType == PromoCollectionViewCellTypeThumbnail){
-                if(section % 2 == 0){
-                    if (currentPromo && currentPromo.count > 0) {
-                        CGFloat headerHeight = [PromoCollectionReusableView collectionViewHeightForType:_promoCellType];
-                        size = CGSizeMake(self.view.frame.size.width, headerHeight);
-                    }
-                }
-            }else{
+//            if(_promoCellType == PromoCollectionViewCellTypeThumbnail){
+//                if(section % 2 == 0){
+//                    if (currentPromo && currentPromo.count > 0) {
+//                        CGFloat headerHeight = [PromoCollectionReusableView collectionViewHeightForType:_promoCellType];
+//                        size = CGSizeMake(self.view.frame.size.width, headerHeight);
+//                    }
+//                }
+//            }else{
                 if (currentPromo && currentPromo.count > 0) {
                     CGFloat headerHeight = [PromoCollectionReusableView collectionViewHeightForType:_promoCellType];
                     size = CGSizeMake(self.view.frame.size.width, headerHeight);
                 }
-            }
+//            }
         }
     }
     return size;
@@ -1085,7 +1082,7 @@ ImageSearchRequestDelegate
         
         [_promoRequest requestForProductQuery:searchQuery
                                    department:departmentId
-                                         page:page
+                                         page:page/2
                                        source:source
                                     onSuccess:^(NSArray<PromoResult *> *promoResult) {
                                         if (promoResult) {

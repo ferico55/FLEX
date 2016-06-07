@@ -2224,6 +2224,9 @@
 		62D7F52A1CF3FD7F00BEAFD4 /* vt-iOSlib-1.0.1.tar.gz in Resources */ = {isa = PBXBuildFile; fileRef = 62D7EC801CF3FD7E00BEAFD4 /* vt-iOSlib-1.0.1.tar.gz */; };
 		62D7F52B1CF3FD7F00BEAFD4 /* vt-iOSlib-1.0.1.zip in Resources */ = {isa = PBXBuildFile; fileRef = 62D7EC811CF3FD7E00BEAFD4 /* vt-iOSlib-1.0.1.zip */; };
 		62D7F52C1CF3FD7F00BEAFD4 /* XYPieChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 62D7EC841CF3FD7E00BEAFD4 /* XYPieChart.m */; };
+		7A2A42771D0577F300B96468 /* info.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A2A42741D0577F100B96468 /* info.png */; };
+		7A2A42781D0577F400B96468 /* info@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A2A42751D0577F100B96468 /* info@2x.png */; };
+		7A2A42791D0577F400B96468 /* info@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A2A42761D0577F100B96468 /* info@3x.png */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
 		7ACE9C541BB00956006C4BB7 /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */; };
@@ -5634,6 +5637,9 @@
 		62D7EC831CF3FD7E00BEAFD4 /* XYPieChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XYPieChart.h; sourceTree = "<group>"; };
 		62D7EC841CF3FD7E00BEAFD4 /* XYPieChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYPieChart.m; sourceTree = "<group>"; };
 		7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7A2A42741D0577F100B96468 /* info.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = info.png; sourceTree = "<group>"; };
+		7A2A42751D0577F100B96468 /* info@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "info@2x.png"; sourceTree = "<group>"; };
+		7A2A42761D0577F100B96468 /* info@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "info@3x.png"; sourceTree = "<group>"; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FacebookSDKStrings.bundle; sourceTree = "<group>"; };
@@ -10495,6 +10501,9 @@
 		62D7E94E1CF3FD7C00BEAFD4 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				7A2A42741D0577F100B96468 /* info.png */,
+				7A2A42751D0577F100B96468 /* info@2x.png */,
+				7A2A42761D0577F100B96468 /* info@3x.png */,
 				62D7E94F1CF3FD7C00BEAFD4 /* attached_image_placeholder.png */,
 				62D7E9501CF3FD7C00BEAFD4 /* attached_image_placeholder@2x.png */,
 				62D7E9511CF3FD7C00BEAFD4 /* attached_image_placeholder@3x.png */,
@@ -11772,6 +11781,9 @@
 				62D7F4281CF3FD7E00BEAFD4 /* icon_star_active.png in Resources */,
 				62D7EF211CF3FD7E00BEAFD4 /* CatalogViewController.xib in Resources */,
 				62D7F4821CF3FD7E00BEAFD4 /* icon_category_white.png in Resources */,
+				7A2A42771D0577F300B96468 /* info.png in Resources */,
+				7A2A42781D0577F400B96468 /* info@2x.png in Resources */,
+				7A2A42791D0577F400B96468 /* info@3x.png in Resources */,
 				62D7F4831CF3FD7E00BEAFD4 /* icon_category_white@2x.png in Resources */,
 				62D7F13F1CF3FD7E00BEAFD4 /* DetailStatisticViewController.xib in Resources */,
 				62D7F1F91CF3FD7E00BEAFD4 /* UserPageHeader.xib in Resources */,

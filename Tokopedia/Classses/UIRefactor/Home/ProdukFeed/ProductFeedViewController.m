@@ -327,8 +327,11 @@ FavoriteShopRequestDelegate
 
 - (void)requestPromo {
     _promoRequest.page = _page;
-    if(_page % 2 == 0){
-        [_promoRequest requestForProductFeedWithPage:_page
+    
+    //this is happen, because we need to separate promo response into two object
+    //and must do promo request again every request product * 2
+    if((_page - 1) % 2 == 0 || _page == 0){
+        [_promoRequest requestForProductFeedWithPage:_page / 2
                                            onSuccess:^(NSArray<PromoResult *> *promoResult) {
                                                if (promoResult) {
                                                    if(promoResult.count > 2){

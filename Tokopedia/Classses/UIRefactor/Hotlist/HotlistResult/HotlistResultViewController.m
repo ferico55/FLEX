@@ -616,40 +616,14 @@ static NSString const *rows = @"12";
 
         } else if (_promo.count > indexPath.section -1) {
             NSArray *currentPromo = [_promo objectAtIndex:indexPath.section-1];
-            if(_promoCellType == PromoCollectionViewCellTypeThumbnail){
-                if(indexPath.section % 2 == 1){
-                    if (currentPromo && currentPromo.count > 0) {
-                        reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
-                                                                          withReuseIdentifier:@"PromoCollectionReusableView"
-                                                                                 forIndexPath:indexPath];
-                        NSMutableArray<PromoResult*> *combinedPromoResults = [NSMutableArray arrayWithArray:[_promo objectAtIndex:indexPath.section - 1]];
-                        if(_promo.count > indexPath.section){
-                            [combinedPromoResults addObjectsFromArray:[_promo objectAtIndex:indexPath.section]];
-                        }
-                        ((PromoCollectionReusableView *)reusableView).collectionViewCellType = _promoCellType;
-                        ((PromoCollectionReusableView *)reusableView).promo = combinedPromoResults;
-                        ((PromoCollectionReusableView *)reusableView).scrollPosition = [_promoScrollPosition objectAtIndex:indexPath.section-1];
-                        ((PromoCollectionReusableView *)reusableView).delegate = self;
-                        ((PromoCollectionReusableView *)reusableView).indexPath = indexPath;
-                        if (self.scrollDirection == ScrollDirectionDown && indexPath.section == 1) {
-                            [((PromoCollectionReusableView *)reusableView) scrollToCenter];
-                        }
-                    }
-                }
-            }else{
-                if (currentPromo && currentPromo.count > 0) {
-                    reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
-                                                                      withReuseIdentifier:@"PromoCollectionReusableView"
-                                                                             forIndexPath:indexPath];
-                    ((PromoCollectionReusableView *)reusableView).collectionViewCellType = _promoCellType;
-                    ((PromoCollectionReusableView *)reusableView).promo = [_promo objectAtIndex:indexPath.section - 1];
-                    ((PromoCollectionReusableView *)reusableView).scrollPosition = [_promoScrollPosition objectAtIndex:indexPath.section - 1];
-                    ((PromoCollectionReusableView *)reusableView).delegate = self;
-                    ((PromoCollectionReusableView *)reusableView).indexPath = indexPath;
-                    if (self.scrollDirection == ScrollDirectionDown && indexPath.section == 1) {
-                        [((PromoCollectionReusableView *)reusableView) scrollToCenter];
-                    }
-                }
+            if (currentPromo && currentPromo.count > 0) {
+                reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+                                                                  withReuseIdentifier:@"PromoCollectionReusableView"
+                                                                         forIndexPath:indexPath];
+                ((PromoCollectionReusableView *)reusableView).collectionViewCellType = _promoCellType;
+                ((PromoCollectionReusableView *)reusableView).promo = [_promo objectAtIndex:indexPath.section - 1];
+                ((PromoCollectionReusableView *)reusableView).delegate = self;
+                ((PromoCollectionReusableView *)reusableView).indexPath = indexPath;
             }
         } else {
             reusableView = nil;
@@ -685,21 +659,21 @@ static NSString const *rows = @"12";
         if (_promo.count > section-1) {
             NSArray *currentPromo = [_promo objectAtIndex:section-1];
             
-            if(_promoCellType == PromoCollectionViewCellTypeThumbnail){
-                if(section % 2 == 1){
-                    if (currentPromo && currentPromo.count > 0) {
-                        CGFloat headerHeight = [PromoCollectionReusableView collectionViewHeightForType:_promoCellType];
-                        size = CGSizeMake(self.view.frame.size.width, headerHeight);
-                    }
-                }
-            }else{
+//            if(_promoCellType == PromoCollectionViewCellTypeThumbnail){
+//                if(section % 2 == 1){
+//                    if (currentPromo && currentPromo.count > 0) {
+//                        CGFloat headerHeight = [PromoCollectionReusableView collectionViewHeightForType:_promoCellType];
+//                        size = CGSizeMake(self.view.frame.size.width, headerHeight);
+//                    }
+//                }
+//            }else{
                 if (currentPromo && currentPromo.count > 0) {
                     CGFloat headerHeight = [PromoCollectionReusableView collectionViewHeightForType:_promoCellType];
                     size = CGSizeMake(self.view.frame.size.width, headerHeight);
                 }else{
                     size = CGSizeZero;
                 }
-            }
+//            }
         }
     }
     return size;
@@ -726,10 +700,14 @@ static NSString const *rows = @"12";
 }
 
 #pragma mark - Promo request delegate
+- (void)isValidToLoadNextPage:(NSInteger)page {
+    
+}
+
 - (void)requestPromo {
     _promoRequest.page = _page;
     
-    if([_data objectForKey:@"hotlist_id"] && _page % 2 == 1){
+    if([_data objectForKey:@"hotlist_id"] && (_page % 2 == 1 || _page == 1)){
         NSString *departmentId = @"";
         if(_bannerResult.query.sc){
             departmentId = _bannerResult.query.sc;
@@ -737,10 +715,12 @@ static NSString const *rows = @"12";
 
         [_promoRequest requestForProductHotlist:[_data objectForKey:@"hotlist_id"]
                                      department:departmentId
-                                           page:_page
+                                           page:_page / 2
                                       onSuccess:^(NSArray<PromoResult *> *promoResult) {
                                           if (promoResult) {
-                                              if(promoResult.count > 2){
+                                              if(IS_IPAD) {
+                                                  [_promo addObject:promoResult];
+                                              } else {
                                                   NSRange arrayRangeToBeTaken = NSMakeRange(0, promoResult.count/2);
                                                   NSArray *promoArrayFirstHalf = [promoResult subarrayWithRange:arrayRangeToBeTaken];
                                                   arrayRangeToBeTaken.location = arrayRangeToBeTaken.length;
@@ -749,17 +729,8 @@ static NSString const *rows = @"12";
                                                   
                                                   [_promo addObject:promoArrayLastHalf];
                                                   [_promo addObject:promoArrayFirstHalf];
-                                                  [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
-                                                  [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
-                                              }else{
-                                                  [_promo addObject:promoResult];
-                                                  [_promo addObject:[NSArray new]];
-                                                  [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
-                                                  [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
                                               }
-                                          } else if (promoResult == nil && _page == 2) {
-                                              [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
-                                          }
+                                          } 
                                       } onFailure:^(NSError *errorResult) {
                                           
                                       }];
