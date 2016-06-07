@@ -68,6 +68,7 @@
             </variation>
             <connections>
                 <outlet property="collectionView" destination="dPa-5U-yMh" id="sGO-Zm-GhK"/>
+                <outlet property="infoButton" destination="efZ-Ex-PU8" id="DVc-xf-EbM"/>
             </connections>
         </collectionReusableView>
     </objects>

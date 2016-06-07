@@ -53,6 +53,10 @@ TKPDAlertViewDelegate
     
     UINib *thumbCellNib = [UINib nibWithNibName:@"ProductThumbCell" bundle:nil];
     [_collectionView registerNib:thumbCellNib forCellWithReuseIdentifier:@"ProductThumbCellIdentifier"];
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
+    _infoButton.userInteractionEnabled = YES;
+    [_infoButton addGestureRecognizer:tap];
 }
 
 - (void)setCollectionViewCellType:(PromoCollectionViewCellType)collectionViewCellType {
