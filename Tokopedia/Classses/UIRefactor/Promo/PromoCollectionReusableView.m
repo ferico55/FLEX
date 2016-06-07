@@ -14,11 +14,11 @@
 
 typedef NS_ENUM(NSInteger, PromoCellHeight) {
     PromoNormalCellHeight = 300,
-    PromoNormalCellHeightSix = 310,
+    PromoNormalCellHeightSix = 280,
     PromoNormalCellHeightSixPlus = 340,
     PromoThumbnailCellHeight = 160,
     PromoThumbnailCellHeightSix = 180,
-    PromoThumbnailCellHeightSixPlus = 330,
+    PromoThumbnailCellHeightSixPlus = 274,
 };
 
 @interface PromoCollectionReusableView ()
@@ -73,10 +73,12 @@ TKPDAlertViewDelegate
     
     else if (_collectionViewCellType == PromoCollectionViewCellTypeThumbnail) {
         _flowLayout.itemSize = [self itemSize];
-        _cellNibName = @"ProductThumbCell";
-        _cellIdentifier = @"ProductThumbCellIdentifier";
         _flowLayout.minimumInteritemSpacing = 0;
         _flowLayout.minimumLineSpacing = 0;
+        _flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
+        
+        _cellNibName = @"ProductThumbCell";
+        _cellIdentifier = @"ProductThumbCellIdentifier";
         _collectionViewHeightConstraint.constant = [self collectionHeightConstraint];
         _collectionView.scrollIndicatorInsets = UIEdgeInsetsZero;
         
@@ -224,29 +226,18 @@ TKPDAlertViewDelegate
     CGFloat height;
     if (IS_IPHONE_4_OR_LESS || IS_IPHONE_5) {
         if (type == PromoCollectionViewCellTypeNormal) {
-            height = PromoNormalCellHeight;
+            height = 310;
         } else if (type == PromoCollectionViewCellTypeThumbnail) {
-            height = PromoThumbnailCellHeightSixPlus;
+            height = 310;
         }
-    } else if (IS_IPHONE_6) {
+    } else {
         if (type == PromoCollectionViewCellTypeNormal) {
-            height = PromoNormalCellHeightSix;
+            height = 350;
         } else if (type == PromoCollectionViewCellTypeThumbnail) {
-            height = PromoThumbnailCellHeightSixPlus;
-        }
-    } else if (IS_IPHONE_6P) {
-        if (type == PromoCollectionViewCellTypeNormal) {
-            height = PromoNormalCellHeightSixPlus;
-        } else if (type == PromoCollectionViewCellTypeThumbnail) {
-            height = PromoThumbnailCellHeightSixPlus;
-        }
-    } else if (IS_IPAD) {
-        if (type == PromoCollectionViewCellTypeNormal) {
-            height = PromoNormalCellHeightSixPlus;
-        } else if (type == PromoCollectionViewCellTypeThumbnail) {
-            height = PromoThumbnailCellHeightSixPlus / 2 + 10;
+            height = 310;
         }
     }
+    
     return height;
 }
 
@@ -257,34 +248,21 @@ TKPDAlertViewDelegate
 - (CGSize)itemSize {
     CGSize cellSize = CGSizeMake(0, 0);
     CGRect screenRect = [[UIScreen mainScreen] bounds];
-    NSInteger cellCount = 1;
-    
     CGFloat screenWidth = screenRect.size.width;
     
     CGFloat cellWidth;
     CGFloat cellHeight;
     if (_collectionViewCellType == PromoCollectionViewCellTypeNormal) {
-        cellCount = 2;
-        
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
-            screenWidth = screenRect.size.width/2;
-            cellWidth = screenWidth/cellCount;
-        } else {
-            screenWidth = screenRect.size.width;
-            cellWidth = screenWidth/cellCount;
-        }
-        cellHeight = cellWidth + 80;
+        BOOL isPad = ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad);
+        CGFloat numberOfCell = isPad ? 4 : 2;
+        cellWidth = screenWidth/numberOfCell;
+        cellHeight = cellWidth + 85;
         
     } else if (_collectionViewCellType == PromoCollectionViewCellTypeThumbnail) {
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
-            screenWidth = screenRect.size.width/2;
-            cellWidth = screenWidth/cellCount;
-        } else {
-            screenWidth = screenRect.size.width;
-            cellWidth = screenWidth/cellCount;
-        }
-        
-        cellHeight = 90;
+        BOOL isPad = ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad);
+        CGFloat numberOfCell = isPad ? 2 : 1;
+        cellWidth = screenWidth/numberOfCell;
+        cellHeight = 120;
     }
     
     

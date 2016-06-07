@@ -246,8 +246,9 @@ FavoriteShopRequestDelegate
 }
 
 - (void)refreshProductFeed {
-    
     [_productDataSource removeAllProducts];
+    [_promo removeAllObjects];
+    
     [_collectionViewFlowLayout setFooterReferenceSize:CGSizeZero];
     [_firstFooter removeFromSuperview];
     [_noResultView removeFromSuperview];
@@ -255,6 +256,7 @@ FavoriteShopRequestDelegate
         _page = 0;
         _isRequestingProductFeed = YES;
         [_collectionView addSubview:_loadingIndicator];
+        [self requestPromo];
         //[_favoriteShopRequest requestProductFeedWithFavoriteShopList:_favoritedShops withPage:_page];
         [_favoriteShopRequest requestFavoriteShopListings];
     }
@@ -275,21 +277,20 @@ FavoriteShopRequestDelegate
 - (UICollectionReusableView*)collectionView:(UICollectionView*)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
     UICollectionReusableView *reusableView = nil;
     if (kind == UICollectionElementKindSectionHeader) {
-        if (_promo.count >= indexPath.section) {
+        if (_promo.count > indexPath.section) {
+            
             NSArray *currentPromo = [_promo objectAtIndex:indexPath.section];
             if (currentPromo && currentPromo.count > 0) {
                 reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"PromoCollectionReusableView"
                                                                          forIndexPath:indexPath];
                 ((PromoCollectionReusableView *)reusableView).collectionViewCellType = PromoCollectionViewCellTypeNormal;
                 ((PromoCollectionReusableView *)reusableView).promo = [_promo objectAtIndex:indexPath.section];
-                ((PromoCollectionReusableView *)reusableView).scrollPosition = [_promoScrollPosition objectAtIndex:indexPath.section];
                 ((PromoCollectionReusableView *)reusableView).delegate = self;
                 ((PromoCollectionReusableView *)reusableView).indexPath = indexPath;
-                if (self.scrollDirection == ScrollDirectionDown && indexPath.section == 1) {
-                    [((PromoCollectionReusableView *)reusableView) scrollToCenter];
-                }
                 
-            }        } else {
+            }
+            //            }
+        } else {
             reusableView = nil;
         }
     } else if (kind == UICollectionElementKindSectionFooter) {
@@ -329,20 +330,27 @@ FavoriteShopRequestDelegate
     if(_page % 2 == 0){
         [_promoRequest requestForProductFeedWithPage:_page
                                            onSuccess:^(NSArray<PromoResult *> *promoResult) {
-                                        if (promoResult) {
-                                            NSRange arrayRangeToBeTaken = NSMakeRange(0, promoResult.count/2);
-                                            NSArray *promoArrayFirstHalf = [promoResult subarrayWithRange:arrayRangeToBeTaken];
-                                            arrayRangeToBeTaken.location = arrayRangeToBeTaken.length;
-                                            arrayRangeToBeTaken.length = promoResult.count - arrayRangeToBeTaken.length;
-                                            NSArray *promoArrayLastHalf = [promoResult subarrayWithRange:arrayRangeToBeTaken];
-                                            
-                                            [_promo addObject:promoArrayFirstHalf];
-                                            [_promo addObject:promoArrayLastHalf];
-                                            [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
-                                            [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
-//                                            [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
-                                        }
-                                        [_collectionView reloadData];
+                                               if (promoResult) {
+                                                   if(promoResult.count > 2){
+                                                       if(IS_IPAD) {
+                                                           [_promo addObject:promoResult];
+                                                       } else {
+                                                           NSRange arrayRangeToBeTaken = NSMakeRange(0, promoResult.count/2);
+                                                           NSArray *promoArrayFirstHalf = [promoResult subarrayWithRange:arrayRangeToBeTaken];
+                                                           arrayRangeToBeTaken.location = arrayRangeToBeTaken.length;
+                                                           arrayRangeToBeTaken.length = promoResult.count - arrayRangeToBeTaken.length;
+                                                           NSArray *promoArrayLastHalf = [promoResult subarrayWithRange:arrayRangeToBeTaken];
+                                                           
+                                                           [_promo addObject:promoArrayLastHalf];
+                                                           [_promo addObject:promoArrayFirstHalf];
+                                                       }
+                                                   }else{
+                                                       [_promo addObject:promoResult];
+                                                       [_promo addObject:[NSArray new]];
+                                                   }
+                                               }
+                                               
+                                               [_collectionView reloadData];
                                     } onFailure:^(NSError *error) {
 //                                        [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
                                         [_collectionView reloadData];
