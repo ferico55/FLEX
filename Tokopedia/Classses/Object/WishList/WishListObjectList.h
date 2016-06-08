@@ -19,7 +19,13 @@
 @property (nonatomic, strong) NSString *product_image;
 @property (nonatomic, strong) NSString *product_name;
 @property (nonatomic, strong) NSString *shop_lucky;
-@property (nonatomic, strong) NSString *product_available; 
+@property (nonatomic, strong) NSString *product_available;
+
+@property NSInteger product_wholesale;
+@property NSInteger product_preorder;
+
+@property (nonatomic, assign) BOOL is_product_preorder;
+@property (nonatomic, assign) BOOL is_product_wholesale;
 
 @property (nonatomic, strong) ProductModelView *viewModel;
 

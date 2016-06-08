@@ -30,23 +30,25 @@ import Foundation
             cellHeight = cellWidth + 90
         }
         
+        
         return CGSizeMake(cellWidth, cellHeight);
     }
     
     class func sizeWishlistCell() -> CGSize {
         var numberOfCell: CGFloat
         var cellHeight: CGFloat
+        var cellWidth: CGFloat
+        let screenWidth = UIScreen.mainScreen().bounds.size.width
         
         if(UIDevice.currentDevice().userInterfaceIdiom == .Pad) {
             numberOfCell = 4
             cellHeight = 300
+            cellWidth = screenWidth/numberOfCell - 15
         } else {
             numberOfCell = 2
-            cellHeight = (UIScreen.mainScreen().bounds.size.width / numberOfCell) - 15 + 100
+            cellWidth = screenWidth/numberOfCell
+            cellHeight = cellWidth + 120
         }
-        
-        let screenWidth = UIScreen.mainScreen().bounds.size.width
-        let cellWidth = screenWidth/numberOfCell - 15
         
         
         return CGSizeMake(cellWidth, cellHeight);
