@@ -786,6 +786,19 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     // Login UA
     [TPAnalytics trackLoginUserID:_login.result.user_id];
     
+    NSDictionary *authenticatedData = @{
+    @"event": @"authenticated",
+    @"contactInfo": @{
+            @"userSeller": _login.result.seller_status,
+            @"userFullName": _login.result.full_name,
+            @"userEmail": [_activation objectForKey:kTKPDACTIVATION_DATAEMAILKEY]?:@"",
+            @"userId": _login.result.user_id,
+            @"userMSISNVerified": _login.result.msisdn_is_verified,
+            @"shopID": _login.result.shop_id
+        },
+    };
+    [TPAnalytics trackAuthenticated:authenticatedData];
+    
     //add user login to GA
     id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
     [tracker setAllowIDFACollection:YES];

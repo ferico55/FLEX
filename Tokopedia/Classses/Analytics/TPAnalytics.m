@@ -250,7 +250,7 @@
     [analytics.dataLayer push:data];
 }
 
-+ (void)trackPurchaseID:(NSString *)purchaseID carts:(NSArray *)carts {
++ (void)trackPurchaseID:(NSString *)purchaseID carts:(NSArray *)carts coupon:(NSString *)coupon {
     if (!purchaseID || !carts) return;
     TPAnalytics *analytics = [[self alloc] init];
     NSMutableArray *purchasedItems = [NSMutableArray array];
@@ -289,6 +289,7 @@
                     @"id": purchaseID,
                     @"revenue": revenueString,
                     @"shipping": shippingString,
+                    @"coupon": coupon?:@"",
                 },
                 @"products" : purchasedItems
             }
@@ -344,6 +345,11 @@
         @"event": @"snapSearchAddToCart",
         @"productId": product.product_id,
     };
+    [analytics.dataLayer push:data];
+}
+
++ (void)trackAuthenticated:(NSDictionary *)data {
+    TPAnalytics *analytics = [[self alloc] init];
     [analytics.dataLayer push:data];
 }
 
