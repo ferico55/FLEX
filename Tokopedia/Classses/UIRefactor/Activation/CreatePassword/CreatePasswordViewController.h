@@ -16,8 +16,6 @@
 
 @protocol CreatePasswordDelegate <NSObject>
 
-- (void)createPasswordSuccess;
-
 @end
 
 @interface CreatePasswordViewController : UIViewController

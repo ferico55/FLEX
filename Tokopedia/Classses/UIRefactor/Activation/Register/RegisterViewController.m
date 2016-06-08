@@ -691,31 +691,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     [self.view endEditing:YES];
 }
 
-#pragma mark - Create password delegate
-
-- (void)createPasswordSuccess
-{
-    if ([self.navigationController.viewControllers[0] isKindOfClass:[LoginViewController class]]) {
-        LoginViewController *loginController = (LoginViewController *)self.navigationController.viewControllers[0];
-        if (loginController.isPresentedViewController && [loginController.delegate respondsToSelector:@selector(redirectViewController:)]) {
-            [loginController.delegate redirectViewController:loginController.redirectViewController];
-            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-        } else {
-            [self.tabBarController setSelectedIndex:0];
-            [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
-                                                                object:nil
-                                                              userInfo:nil];
-        }
-    } else if ([self.navigationController.viewControllers[0] isKindOfClass:[TransactionCartRootViewController class]]) {
-        [self.navigationController popViewControllerAnimated:YES];
-        [self.tabBarController setSelectedIndex:3];
-        [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
-                                                            object:nil
-                                                          userInfo:nil];
-        [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification object:nil];
-    }
-}
-
 #pragma mark - Facebook login delegate
 
 - (void) loginButton:(FBSDKLoginButton *)loginButton
