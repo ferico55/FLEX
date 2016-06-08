@@ -17,7 +17,7 @@
             <autoresizingMask key="autoresizingMask"/>
             <subviews>
                 <collectionView multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="dPa-5U-yMh">
-                    <rect key="frame" x="0.0" y="32" width="320" height="191"/>
+                    <rect key="frame" x="0.0" y="35" width="320" height="220"/>
                     <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="iJH-EI-ym4">
                         <size key="itemSize" width="160" height="205"/>
@@ -31,38 +31,54 @@
                     </connections>
                 </collectionView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Promote" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DmB-1i-PZW">
-                    <rect key="frame" x="8" y="8" width="124" height="21"/>
+                    <rect key="frame" x="8" y="10" width="124" height="23"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="21" id="603-jZ-EBJ"/>
+                        <constraint firstAttribute="height" constant="15" id="603-jZ-EBJ"/>
                         <constraint firstAttribute="width" constant="124" id="FqA-vj-nB5"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="603-jZ-EBJ"/>
+                        </mask>
+                    </variation>
                 </label>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="info.png" translatesAutoresizingMaskIntoConstraints="NO" id="efZ-Ex-PU8">
-                    <rect key="frame" x="297" y="8" width="15" height="15"/>
+                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="info.png" translatesAutoresizingMaskIntoConstraints="NO" id="efZ-Ex-PU8">
+                    <rect key="frame" x="282" y="10" width="30" height="23"/>
                     <gestureRecognizers/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="15" id="Y8k-aS-uAU"/>
-                        <constraint firstAttribute="width" constant="15" id="cqi-bj-5yU"/>
+                        <constraint firstAttribute="height" constant="30" id="Y8k-aS-uAU"/>
+                        <constraint firstAttribute="width" constant="30" id="cqi-bj-5yU"/>
                     </constraints>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="Y8k-aS-uAU"/>
+                        </mask>
+                    </variation>
                 </imageView>
             </subviews>
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="dPa-5U-yMh" firstAttribute="top" secondItem="efZ-Ex-PU8" secondAttribute="bottom" constant="2" id="5b8-wy-bya"/>
                 <constraint firstAttribute="trailing" secondItem="efZ-Ex-PU8" secondAttribute="trailing" constant="8" id="90L-NZ-T8e"/>
-                <constraint firstItem="efZ-Ex-PU8" firstAttribute="top" secondItem="U6b-Vx-4bR" secondAttribute="top" constant="8" id="AcP-yt-IZB"/>
+                <constraint firstItem="efZ-Ex-PU8" firstAttribute="top" secondItem="U6b-Vx-4bR" secondAttribute="top" constant="10" id="AcP-yt-IZB"/>
+                <constraint firstItem="DmB-1i-PZW" firstAttribute="top" secondItem="U6b-Vx-4bR" secondAttribute="top" constant="10" id="Awx-vr-L68"/>
+                <constraint firstItem="dPa-5U-yMh" firstAttribute="top" secondItem="DmB-1i-PZW" secondAttribute="bottom" constant="3" id="MtC-ld-lnR"/>
                 <constraint firstItem="DmB-1i-PZW" firstAttribute="top" secondItem="U6b-Vx-4bR" secondAttribute="top" constant="8" id="bRN-r7-hgZ"/>
+                <constraint firstItem="dPa-5U-yMh" firstAttribute="top" secondItem="DmB-1i-PZW" secondAttribute="bottom" constant="2" id="beY-4C-7N0"/>
                 <constraint firstItem="DmB-1i-PZW" firstAttribute="leading" secondItem="U6b-Vx-4bR" secondAttribute="leading" constant="8" id="iMs-FF-fQa"/>
-                <constraint firstAttribute="bottom" secondItem="dPa-5U-yMh" secondAttribute="bottom" constant="32" id="lex-AK-Iky"/>
+                <constraint firstAttribute="bottom" secondItem="dPa-5U-yMh" secondAttribute="bottom" id="lex-AK-Iky"/>
                 <constraint firstAttribute="trailing" secondItem="dPa-5U-yMh" secondAttribute="trailing" id="r1P-rb-QJQ"/>
                 <constraint firstItem="dPa-5U-yMh" firstAttribute="leading" secondItem="U6b-Vx-4bR" secondAttribute="leading" id="rzW-7X-YgT"/>
-                <constraint firstItem="dPa-5U-yMh" firstAttribute="top" secondItem="U6b-Vx-4bR" secondAttribute="top" constant="32" id="sej-aZ-tLS"/>
+                <constraint firstItem="dPa-5U-yMh" firstAttribute="top" secondItem="U6b-Vx-4bR" secondAttribute="top" constant="35" id="sej-aZ-tLS"/>
                 <constraint firstItem="dPa-5U-yMh" firstAttribute="centerY" secondItem="U6b-Vx-4bR" secondAttribute="centerY" id="xVy-eM-iWb"/>
             </constraints>
             <variation key="default">
                 <mask key="constraints">
+                    <exclude reference="bRN-r7-hgZ"/>
+                    <exclude reference="MtC-ld-lnR"/>
                     <exclude reference="xVy-eM-iWb"/>
                 </mask>
             </variation>
