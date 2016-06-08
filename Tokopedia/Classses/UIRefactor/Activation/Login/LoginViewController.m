@@ -1032,12 +1032,8 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                                  kTKPDLOGIN_API_FB_TOKEN_KEY     : accessToken.tokenString?:@"",
                                  @"action" : @"do_login"
                                  };
-    
-    [self thirdPartySignInWithUserId:userId email:email provider:@"1" successCallback:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-        [self requestSuccessLogin:successResult withOperation:operation];
-    }                failureCallback:^(NSError *error) {
 
-    }];
+    [self doThirdPartySignInWithUserId:userId email:email provider:@"1"];
     
     _loadingView.hidden = NO;
     _emailTextField.hidden = YES;
@@ -1273,33 +1269,8 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
 
 #pragma mark - Activation Request
 - (void)requestLoginGoogleWithUser:(GIDGoogleUser *)user {
-    [self thirdPartySignInWithUserId:user.userID
-                               email:user.profile.email
-                            provider:@"2"
-                     successCallback:^(RKMappingResult *result, RKObjectRequestOperation *operation) {
-                         _login = result.dictionary[@""];
-                         _isnodata = NO;
+    [self doThirdPartySignInWithUserId:user.userID email:user.profile.email provider:@"2"];
 
-                         TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-
-                         [[GPPSignIn sharedInstance] signOut];
-                         [[GPPSignIn sharedInstance] disconnect];
-
-                         if(_login.result.security && ![_login.result.security.allow_login isEqualToString:@"1"]) {
-                             [self checkSecurityQuestion];
-                         } else {
-                             [self setLoginIdentity];
-                             if (_facebookUserData) {
-                                 [secureStorage setKeychainWithValue:([_facebookUserData objectForKey:@"email"]?:@"") withKey:kTKPD_USEREMAIL];
-                             } else if (_gidGoogleUser) {
-                                 [secureStorage setKeychainWithValue:(_signIn.userEmail?:@"") withKey:kTKPD_USEREMAIL];
-                             }
-                         }
-                     }
-                     failureCallback:^(NSError *error) {
-                         [StickyAlertView showErrorMessage:@[@"Sign in gagal silahkan coba lagi."]];
-                     }];
-    
 //    [_activationRequest requestDoLoginPlusWithAppType:@"2"
 //                                             birthday:@""
 //                                             deviceID:@""
@@ -1368,6 +1339,35 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
 //                                                [alert show];
 //                                                [self cancelLogin];
 //                                            }];
+}
+
+- (void)doThirdPartySignInWithUserId:(NSString *)userId email:(NSString *)email provider:(NSString *)provider {
+    [self thirdPartySignInWithUserId:userId
+                               email:email
+                            provider:provider
+                     successCallback:^(RKMappingResult *result, RKObjectRequestOperation *operation) {
+                         _login = result.dictionary[@""];
+                         _isnodata = NO;
+
+                         TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+
+                         [[GPPSignIn sharedInstance] signOut];
+                         [[GPPSignIn sharedInstance] disconnect];
+
+                         if (_login.result.security && ![_login.result.security.allow_login isEqualToString:@"1"]) {
+                             [self checkSecurityQuestion];
+                         } else {
+                             [self setLoginIdentity];
+                             if (_facebookUserData) {
+                                 [secureStorage setKeychainWithValue:([_facebookUserData objectForKey:@"email"] ?: @"") withKey:kTKPD_USEREMAIL];
+                             } else if (_gidGoogleUser) {
+                                 [secureStorage setKeychainWithValue:(_signIn.userEmail ?: @"") withKey:kTKPD_USEREMAIL];
+                             }
+                         }
+                     }
+                     failureCallback:^(NSError *error) {
+                         [StickyAlertView showErrorMessage:@[@"Sign in gagal silahkan coba lagi."]];
+                     }];
 }
 
 @end
