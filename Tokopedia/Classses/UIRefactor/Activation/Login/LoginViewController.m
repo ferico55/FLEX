@@ -720,82 +720,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
                     [secureStorage setKeychainWithValue:(_signIn.userEmail?:@"") withKey:kTKPD_USEREMAIL];
                 }
             }
-            /**
-            TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-            [secureStorage setKeychainWithValue:@(_login.result.is_login) withKey:kTKPD_ISLOGINKEY];
-            [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_USERIDKEY];
-            [secureStorage setKeychainWithValue:_login.result.full_name withKey:kTKPD_FULLNAMEKEY];
-            
-            if(_login.result.user_image != nil) {
-                [secureStorage setKeychainWithValue:_login.result.user_image withKey:kTKPD_USERIMAGEKEY];
-            }
-            
-            [secureStorage setKeychainWithValue:_login.result.shop_id withKey:kTKPD_SHOPIDKEY];
-            [secureStorage setKeychainWithValue:_login.result.shop_name withKey:kTKPD_SHOPNAMEKEY];
-            
-            if(_login.result.shop_avatar != nil) {
-                [secureStorage setKeychainWithValue:_login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
-            }
-            
-            [secureStorage setKeychainWithValue:@(_login.result.shop_is_gold) withKey:kTKPD_SHOPISGOLD];
-            [secureStorage setKeychainWithValue:_login.result.device_token_id withKey:kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY];
-            [secureStorage setKeychainWithValue:_login.result.msisdn_is_verified withKey:kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY];
-            [secureStorage setKeychainWithValue:_login.result.msisdn_show_dialog withKey:kTKPDLOGIN_API_MSISDN_SHOW_DIALOG_KEY];
-            [secureStorage setKeychainWithValue:_login.result.shop_has_terms withKey:kTKPDLOGIN_API_HAS_TERM_KEY];
-            if (_facebookUserData) {
-                [secureStorage setKeychainWithValue:([_facebookUserData objectForKey:@"email"]?:@"") withKey:kTKPD_USEREMAIL];
-            } else if (_googleUser) {
-                [secureStorage setKeychainWithValue:(_signIn.userEmail?:@"") withKey:kTKPD_USEREMAIL];
-            }
-            
-            if(_login.result.user_reputation != nil) {
-                ReputationDetail *reputation = _login.result.user_reputation;
-                [secureStorage setKeychainWithValue:@(YES) withKey:@"has_reputation"];
-                [secureStorage setKeychainWithValue:reputation.positive withKey:@"reputation_positive"];
-                [secureStorage setKeychainWithValue:reputation.positive_percentage withKey:@"reputation_positive_percentage"];
-                [secureStorage setKeychainWithValue:reputation.no_reputation withKey:@"no_reputation"];
-                [secureStorage setKeychainWithValue:reputation.negative withKey:@"reputation_negative"];
-                [secureStorage setKeychainWithValue:reputation.neutral withKey:@"reputation_neutral"];
-            }
-            
-            [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];
-            [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification object:nil];
-            
-            if([_login.result.msisdn_is_verified isEqualToString:@"0"]){
-                HelloPhoneVerificationViewController *controller = [HelloPhoneVerificationViewController new];
-                controller.delegate = self.delegate;
-                controller.redirectViewController = self.redirectViewController;
-                
-                if(!_isFromTabBar){
-                    [self.navigationController setNavigationBarHidden:YES animated:YES];
-                    [self.navigationController pushViewController:controller animated:YES];
-                }else{
-                    UINavigationController *navigationController = [[UINavigationController alloc] init];
-                    navigationController.navigationBarHidden = YES;
-                    navigationController.viewControllers = @[controller];
-                    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
-                }
-            }else{
-                if (_isPresentedViewController && [self.delegate respondsToSelector:@selector(redirectViewController:)]) {
-                    [self.delegate redirectViewController:_redirectViewController];
-                    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-                } else {
-                    UINavigationController *tempNavController = (UINavigationController *)[self.tabBarController.viewControllers firstObject];
-                    [((HomeTabViewController *)[tempNavController.viewControllers firstObject]) setIndexPage:1];
-                    [self.tabBarController setSelectedIndex:0];
-                    [((HomeTabViewController *)[tempNavController.viewControllers firstObject]) redirectToProductFeed];
-                }
-            }
-            
-            
-            
-            [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
-                                                                object:nil
-                                                              userInfo:nil];
-            
-            [Localytics setValue:@"Yes" forProfileAttribute:@"Is Login"];
-             **/
-            
         } else if ([_login.result.status isEqualToString:@"1"]) {
 
             TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
@@ -1109,9 +1033,11 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                                  @"action" : @"do_login"
                                  };
     
-    [self thirdPartySignInWithUserId:userId
-                               email:email
-                            provider:@"1"];
+    [self thirdPartySignInWithUserId:userId email:email provider:@"1" successCallback:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+        [self requestSuccessLogin:successResult withOperation:operation];
+    }                failureCallback:^(NSError *error) {
+
+    }];
     
     _loadingView.hidden = NO;
     _emailTextField.hidden = YES;
@@ -1126,14 +1052,16 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
 
 - (void)thirdPartySignInWithUserId:(NSString *)userId
                              email:(NSString *)email
-                          provider:(NSString *)provider {
+                          provider:(NSString *)provider
+                   successCallback:(void (^)(RKMappingResult *, RKObjectRequestOperation *))successCallback
+                   failureCallback:(void (^)(NSError *))failureCallback {
     NSDictionary *parameter = @{
                                 @"grant_type": @"extension",
                                 @"social_id": userId,
                                 @"social_type": provider,
                                 @"email": email
                                 };
-    
+
     [_thirdPartySignInNetworkManager requestNotObfuscatedWithBaseUrl:[NSString accountsUrl]
                                                                 path:@"/token"
                                                               method:RKRequestMethodPOST
@@ -1141,15 +1069,11 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                                                            parameter:parameter
                                                              mapping:[OAuthToken mapping]
                                                            onSuccess:^(RKMappingResult *mappingResult, RKObjectRequestOperation *operation) {
-                                                               [self getUserInfoWithOAuthToken:mappingResult.dictionary[@""] successCallback:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                                                   [self requestSuccessLogin:successResult withOperation:operation];
-                                                               }               failureCallback:^(NSError *errorResult) {
-
-                                                               }];
+                                                               [self getUserInfoWithOAuthToken:mappingResult.dictionary[@""]
+                                                                               successCallback:successCallback
+                                                                               failureCallback:failureCallback];
                                                            }
-                                                           onFailure:^(NSError *error) {
-                                                               
-                                                           }];
+                                                           onFailure:failureCallback];
 }
 
 - (void)loginButtonDidLogOut:(FBSDKLoginButton *)loginButton {
@@ -1349,7 +1273,32 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
 
 #pragma mark - Activation Request
 - (void)requestLoginGoogleWithUser:(GIDGoogleUser *)user {
-    [self thirdPartySignInWithUserId:user.userID email:user.profile.email provider:@"2"];
+    [self thirdPartySignInWithUserId:user.userID
+                               email:user.profile.email
+                            provider:@"2"
+                     successCallback:^(RKMappingResult *result, RKObjectRequestOperation *operation) {
+                         _login = result.dictionary[@""];
+                         _isnodata = NO;
+
+                         TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+
+                         [[GPPSignIn sharedInstance] signOut];
+                         [[GPPSignIn sharedInstance] disconnect];
+
+                         if(_login.result.security && ![_login.result.security.allow_login isEqualToString:@"1"]) {
+                             [self checkSecurityQuestion];
+                         } else {
+                             [self setLoginIdentity];
+                             if (_facebookUserData) {
+                                 [secureStorage setKeychainWithValue:([_facebookUserData objectForKey:@"email"]?:@"") withKey:kTKPD_USEREMAIL];
+                             } else if (_gidGoogleUser) {
+                                 [secureStorage setKeychainWithValue:(_signIn.userEmail?:@"") withKey:kTKPD_USEREMAIL];
+                             }
+                         }
+                     }
+                     failureCallback:^(NSError *error) {
+                         [StickyAlertView showErrorMessage:@[@"Sign in gagal silahkan coba lagi."]];
+                     }];
     
 //    [_activationRequest requestDoLoginPlusWithAppType:@"2"
 //                                             birthday:@""
