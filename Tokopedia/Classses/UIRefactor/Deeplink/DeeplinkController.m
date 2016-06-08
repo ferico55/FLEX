@@ -15,12 +15,10 @@
 #import "TKPDTabNavigationController.h"
 #import <GoogleAppIndexing/GoogleAppIndexing.h>
 #import "MyWishlistViewController.h"
-#import "CreateShopViewController.h"
 #import "ProductAddEditViewController.h"
 #import "TransactionCartRootViewController.h"
 #import "ContactUsWireframe.h"
 #import "TPContactUsDependencies.h"
-#import "MyShopShipmentTableViewController.h"
 
 #import "string_product.h"
 
@@ -326,7 +324,7 @@
 - (void)redirectToCreateShop {
     UserAuthentificationManager *auth = [UserAuthentificationManager new];
     if (auth.getUserId && [auth.getShopId isEqualToString:@""]) {
-        CreateShopViewController *controller = [CreateShopViewController new];
+        OpenShopViewController *controller = [OpenShopViewController new];
         self.activeController.hidesBottomBarWhenPushed = YES;
         [self.activeController.navigationController pushViewController:controller animated:YES];
         self.activeController.hidesBottomBarWhenPushed = NO;
@@ -364,8 +362,7 @@
 }
 
 - (void)redirectToShipmentSetting {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    MyShopShipmentTableViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"MyShopShipmentTableViewController"];
+    OpenShopViewController *controller = [OpenShopViewController new];
     [self.activeController.navigationController pushViewController:controller animated:YES];
 }
 
