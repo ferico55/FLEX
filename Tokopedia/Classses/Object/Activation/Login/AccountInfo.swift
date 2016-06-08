@@ -11,11 +11,13 @@ import UIKit
 @objc(AccountInfo)
 class AccountInfo: NSObject {
     var userId: String!
-    
+    var createdPassword: Bool = false
+
     class func mapping() -> RKObjectMapping {
         let mapping = RKObjectMapping(forClass: self)
         mapping.addAttributeMappingsFromDictionary([
             "user_id": "userId",
+            "created_password": "createdPassword"
         ])
         
         return mapping

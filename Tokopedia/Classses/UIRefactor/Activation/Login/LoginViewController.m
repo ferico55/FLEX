@@ -1307,9 +1307,9 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
 //                                                    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
 //                                                    [secureStorage setKeychainWithValue:@(NO) withKey:kTKPD_ISLOGINKEY];
 //                                                    [secureStorage setKeychainWithValue:result.result.user_id withKey:kTKPD_TMP_USERIDKEY];
-//                                                    
+//
 //                                                    [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];
-//                                                    
+//
 //                                                    CreatePasswordViewController *controller = [CreatePasswordViewController new];
 //                                                    controller.login = _login;
 //                                                    controller.delegate = self;
@@ -1320,10 +1320,10 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
 //                                                        controller.fullName = _gidGoogleUser.profile.name;
 //                                                        controller.email = _signIn.authentication.userEmail;
 //                                                    }
-//                                                    
+//
 //                                                    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
 //                                                    navigationController.navigationBar.translucent = NO;
-//                                                    
+//
 //                                                    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
 //                                                    
 //                                                } else {
@@ -1354,15 +1354,39 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                          [[GPPSignIn sharedInstance] signOut];
                          [[GPPSignIn sharedInstance] disconnect];
 
-                         if (_login.result.security && ![_login.result.security.allow_login isEqualToString:@"1"]) {
-                             [self checkSecurityQuestion];
-                         } else {
-                             [self setLoginIdentity];
-                             if (_facebookUserData) {
-                                 [secureStorage setKeychainWithValue:([_facebookUserData objectForKey:@"email"] ?: @"") withKey:kTKPD_USEREMAIL];
-                             } else if (_gidGoogleUser) {
-                                 [secureStorage setKeychainWithValue:(_signIn.userEmail ?: @"") withKey:kTKPD_USEREMAIL];
+                         if (_accountInfo.createdPassword) {
+                             if (_login.result.security && ![_login.result.security.allow_login isEqualToString:@"1"]) {
+                                 [self checkSecurityQuestion];
+                             } else {
+                                 [self setLoginIdentity];
+                                 if (_facebookUserData) {
+                                     [secureStorage setKeychainWithValue:([_facebookUserData objectForKey:@"email"] ?: @"") withKey:kTKPD_USEREMAIL];
+                                 } else if (_gidGoogleUser) {
+                                     [secureStorage setKeychainWithValue:(_signIn.userEmail ?: @"") withKey:kTKPD_USEREMAIL];
+                                 }
                              }
+                         } else {
+                             TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+                             [secureStorage setKeychainWithValue:@(NO) withKey:kTKPD_ISLOGINKEY];
+                             [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_TMP_USERIDKEY];
+
+                             [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];
+
+                             CreatePasswordViewController *controller = [CreatePasswordViewController new];
+                             controller.login = _login;
+                             controller.delegate = self;
+                             if (_facebookUserData) {
+                                 controller.facebookUserData = _facebookUserData;
+                             } else if (_gidGoogleUser) {
+                                 controller.gidGoogleUser = _gidGoogleUser;
+                                 controller.fullName = _gidGoogleUser.profile.name;
+                                 controller.email = _signIn.authentication.userEmail;
+                             }
+
+                             UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
+                             navigationController.navigationBar.translucent = NO;
+
+                             [self.navigationController presentViewController:navigationController animated:YES completion:nil];
                          }
                      }
                      failureCallback:^(NSError *error) {
