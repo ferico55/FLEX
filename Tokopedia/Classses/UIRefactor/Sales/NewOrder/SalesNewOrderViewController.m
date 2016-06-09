@@ -34,6 +34,7 @@
 #import "OrderSellerShop.h"
 
 #import "ProductRequest.h"
+#import "RejectReasonViewController.h"
 
 @interface SalesNewOrderViewController ()
 <
@@ -45,7 +46,8 @@
     RejectExplanationDelegate,
     FilterDelegate,
     ProductQuantityDelegate,
-    OrderDetailDelegate
+    OrderDetailDelegate,
+RejectReasonDelegate
 >
 {
     RKObjectManager *_actionObjectManager;
@@ -336,6 +338,7 @@
 - (void)tableViewCell:(UITableViewCell *)cell rejectOrderAtIndexPath:(NSIndexPath *)indexPath {
     self.selectedOrder = [self.orders objectAtIndex:indexPath.row];
     self.selectedIndexPath = indexPath;
+    /*
     if (self.selectedOrder.order_detail.detail_partial_order == 1) {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Tolak Pesanan"
                                                             message:@"Pembeli menyetujui apabila stok barang yang tersedia hanya sebagian"
@@ -352,7 +355,13 @@
                                                   otherButtonTitles:@"Persediaan barang habis", @"Varian tidak tersedia", @"Salah harga/berat", @"Toko sedang tutup", @"Lainnya", nil];
         alertView.tag = 3;
         [alertView show];
-    }
+    }*/
+    
+    RejectReasonViewController *vc = [RejectReasonViewController new];
+    
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
+    [navigationController.navigationBar setTranslucent:NO];
+    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
 }
 
 - (void)tableViewCell:(UITableViewCell *)cell didSelectPriceAtIndexPath:(NSIndexPath *)indexPath {
@@ -474,6 +483,10 @@
     }
 }
 
+-(void)didChooseRejectReason:(RejectReason *)reason withExplanation:(NSString *)explanation{
+    
+}
+
 - (void)showManageProductQuantityPage {
     ProductQuantityViewController *controller = [[ProductQuantityViewController alloc] init];
     OrderTransaction *order = [self.orders objectAtIndex:_selectedIndexPath.row];
@@ -562,6 +575,13 @@
 
 - (void)requestActionType:(NSString *)type
                    reason:(NSString *)reason
+                 products:(NSArray *)products
+          productQuantity:(NSArray *)productQuantity {
+}
+
+- (void)requestActionType:(NSString *)type
+                   reason:(RejectReason *)reason
+              explanation:(NSString*)explanation
                  products:(NSArray *)products
           productQuantity:(NSArray *)productQuantity {
 

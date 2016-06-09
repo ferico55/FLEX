@@ -2309,6 +2309,12 @@
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
 		85C494BF1AD790DD008A314A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BE1AD790DD008A314A /* libz.dylib */; };
 		85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494C01AD790E4008A314A /* CoreData.framework */; };
+		BB48E9321D05296A00FD1B77 /* RejectReasonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB48E9301D05296A00FD1B77 /* RejectReasonViewController.m */; };
+		BB48E9331D05296A00FD1B77 /* RejectReasonViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB48E9311D05296A00FD1B77 /* RejectReasonViewController.xib */; };
+		BB48E9361D052AA400FD1B77 /* RejectReason.m in Sources */ = {isa = PBXBuildFile; fileRef = BB48E9351D052AA400FD1B77 /* RejectReason.m */; };
+		BB48E9391D05377A00FD1B77 /* RejectOrderRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = BB48E9381D05377A00FD1B77 /* RejectOrderRequest.m */; };
+		BB48E93C1D05539D00FD1B77 /* RejectOrderResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = BB48E93B1D05539D00FD1B77 /* RejectOrderResponse.m */; };
+		BB48E93F1D056F1700FD1B77 /* RejectReasonData.m in Sources */ = {isa = PBXBuildFile; fileRef = BB48E93E1D056F1700FD1B77 /* RejectReasonData.m */; };
 		F25F6F270D531ED13A92CDB9 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4868E459AB2A65D133732296 /* libPods-Tokopedia.a */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
 		FC23B85A1ACD659900879D75 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8581ACD659900879D75 /* Fabric.framework */; };
@@ -5799,6 +5805,17 @@
 		85C494BE1AD790DD008A314A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		85C494C01AD790E4008A314A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		AAA12C6A69BF6CB5F8EE3287 /* Pods-Tokopedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug.xcconfig"; sourceTree = "<group>"; };
+		BB48E92F1D05296A00FD1B77 /* RejectReasonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RejectReasonViewController.h; sourceTree = "<group>"; };
+		BB48E9301D05296A00FD1B77 /* RejectReasonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RejectReasonViewController.m; sourceTree = "<group>"; };
+		BB48E9311D05296A00FD1B77 /* RejectReasonViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RejectReasonViewController.xib; sourceTree = "<group>"; };
+		BB48E9341D052AA400FD1B77 /* RejectReason.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RejectReason.h; sourceTree = "<group>"; };
+		BB48E9351D052AA400FD1B77 /* RejectReason.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RejectReason.m; sourceTree = "<group>"; };
+		BB48E9371D05377A00FD1B77 /* RejectOrderRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RejectOrderRequest.h; sourceTree = "<group>"; };
+		BB48E9381D05377A00FD1B77 /* RejectOrderRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RejectOrderRequest.m; sourceTree = "<group>"; };
+		BB48E93A1D05539D00FD1B77 /* RejectOrderResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RejectOrderResponse.h; sourceTree = "<group>"; };
+		BB48E93B1D05539D00FD1B77 /* RejectOrderResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RejectOrderResponse.m; sourceTree = "<group>"; };
+		BB48E93D1D056F1700FD1B77 /* RejectReasonData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RejectReasonData.h; sourceTree = "<group>"; };
+		BB48E93E1D056F1700FD1B77 /* RejectReasonData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RejectReasonData.m; sourceTree = "<group>"; };
 		C8A1445074FECD393EA18C17 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		FC23B8571ACD659900879D75 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		FC23B8581ACD659900879D75 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
@@ -9625,6 +9642,7 @@
 		85281C3B1CD09CD700152AD4 /* NewOrder */ = {
 			isa = PBXGroup;
 			children = (
+				BB48E92B1D05281F00FD1B77 /* RejectOrder */,
 				85281C3C1CD09CD700152AD4 /* ChooseProductCell.h */,
 				85281C3D1CD09CD700152AD4 /* ChooseProductCell.m */,
 				85281C3E1CD09CD700152AD4 /* ChooseProductCell.xib */,
@@ -9647,6 +9665,8 @@
 				85281C4F1CD09CD700152AD4 /* SalesNewOrderViewController.h */,
 				85281C501CD09CD700152AD4 /* SalesNewOrderViewController.m */,
 				85281C511CD09CD700152AD4 /* SalesNewOrderViewController.xib */,
+				BB48E9371D05377A00FD1B77 /* RejectOrderRequest.h */,
+				BB48E9381D05377A00FD1B77 /* RejectOrderRequest.m */,
 			);
 			path = NewOrder;
 			sourceTree = "<group>";
@@ -11726,6 +11746,22 @@
 			path = "Third Party";
 			sourceTree = "<group>";
 		};
+		BB48E92B1D05281F00FD1B77 /* RejectOrder */ = {
+			isa = PBXGroup;
+			children = (
+				BB48E92F1D05296A00FD1B77 /* RejectReasonViewController.h */,
+				BB48E9301D05296A00FD1B77 /* RejectReasonViewController.m */,
+				BB48E9311D05296A00FD1B77 /* RejectReasonViewController.xib */,
+				BB48E9341D052AA400FD1B77 /* RejectReason.h */,
+				BB48E9351D052AA400FD1B77 /* RejectReason.m */,
+				BB48E93A1D05539D00FD1B77 /* RejectOrderResponse.h */,
+				BB48E93B1D05539D00FD1B77 /* RejectOrderResponse.m */,
+				BB48E93D1D056F1700FD1B77 /* RejectReasonData.h */,
+				BB48E93E1D056F1700FD1B77 /* RejectReasonData.m */,
+			);
+			path = RejectOrder;
+			sourceTree = "<group>";
+		};
 		E1A48FC656B05056B45251AD /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -12032,6 +12068,7 @@
 				852825FA1CD09CE000152AD4 /* ProductTalkViewController.xib in Resources */,
 				85282A931CD09CE500152AD4 /* icon_signin_active@3x.png in Resources */,
 				852825281CD09CDF00152AD4 /* GeneralProductReviewCell.xib in Resources */,
+				BB48E9331D05296A00FD1B77 /* RejectReasonViewController.xib in Resources */,
 				8528275F1CD09CE200152AD4 /* TransactionCartShippingViewController.xib in Resources */,
 				852829831CD09CE400152AD4 /* icon_retur.png in Resources */,
 				852827EB1CD09CE200152AD4 /* banner_2.jpg in Resources */,
@@ -13417,6 +13454,7 @@
 				852824C91CD09CDF00152AD4 /* CategoryMenuViewCell.m in Sources */,
 				852822241CD09CDD00152AD4 /* NSStringCategory.m in Sources */,
 				852825971CD09CE000152AD4 /* InboxTicketViewController.m in Sources */,
+				BB48E9321D05296A00FD1B77 /* RejectReasonViewController.m in Sources */,
 				8528222C1CD09CDD00152AD4 /* UITableView+LoadingView.m in Sources */,
 				8528243A1CD09CDF00152AD4 /* UploadImage.m in Sources */,
 				852826B41CD09CE100152AD4 /* SettingAddressExpandedCell.m in Sources */,
@@ -13831,6 +13869,7 @@
 				852826F31CD09CE100152AD4 /* ShopFavoritedViewController.m in Sources */,
 				852824B41CD09CDF00152AD4 /* CatalogShopCell.m in Sources */,
 				8528273D1CD09CE100152AD4 /* TokopediaCacheManager.m in Sources */,
+				BB48E93F1D056F1700FD1B77 /* RejectReasonData.m in Sources */,
 				8528239F1CD09CDE00152AD4 /* ShipmentShopData.m in Sources */,
 				852825D21CD09CE000152AD4 /* NotificationViewController.m in Sources */,
 				852823DA1CD09CDE00152AD4 /* TKPString.m in Sources */,
@@ -14152,6 +14191,7 @@
 				852822801CD09CDD00152AD4 /* CatalogImages.m in Sources */,
 				852825CF1CD09CE000152AD4 /* NotificationBarButton.m in Sources */,
 				852825931CD09CE000152AD4 /* InboxTicketReplyViewController.m in Sources */,
+				BB48E93C1D05539D00FD1B77 /* RejectOrderResponse.m in Sources */,
 				852822B31CD09CDD00152AD4 /* GeneralActionResult.m in Sources */,
 				8528277C1CD09CE200152AD4 /* TxOrderStatusViewController.m in Sources */,
 				852822341CD09CDD00152AD4 /* ImageDownloader.m in Sources */,
@@ -14252,6 +14292,7 @@
 				852823051CD09CDE00152AD4 /* ReplyInboxTicketResult.m in Sources */,
 				852825D71CD09CE000152AD4 /* DepartmentTableViewController.m in Sources */,
 				8528268F1CD09CE100152AD4 /* DetailShipmentStatusCell.m in Sources */,
+				BB48E9361D052AA400FD1B77 /* RejectReason.m in Sources */,
 				852826571CD09CE000152AD4 /* ReputationShopHeader.m in Sources */,
 				8528250F1CD09CDF00152AD4 /* DepositListBankCell.m in Sources */,
 				852824551CD09CDF00152AD4 /* RSKPlaceholderTextView.swift in Sources */,
@@ -14295,6 +14336,7 @@
 				852822901CD09CDD00152AD4 /* Product.m in Sources */,
 				8528241E1CD09CDE00152AD4 /* TxOrderConfirmedResult.m in Sources */,
 				8528236D1CD09CDE00152AD4 /* OrderBookingData.m in Sources */,
+				BB48E9391D05377A00FD1B77 /* RejectOrderRequest.m in Sources */,
 				852822BD1CD09CDD00152AD4 /* GoogleplaceDetailResult.m in Sources */,
 				852822CD1CD09CDD00152AD4 /* HotlistDetailResult.m in Sources */,
 				852822621CD09CDD00152AD4 /* CatalogAddProduct.m in Sources */,
