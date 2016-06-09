@@ -112,15 +112,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 
 @property (strong, nonatomic) FBSDKLoginButton *loginView;
 
-- (void)cancelLogin;
-- (void)configureRestKitLogin;
-- (void)requestActionLogin:(id)userinfo;
-- (void)requestSuccessLogin:(id)object withOperation:(RKObjectRequestOperation*)operation;
-- (void)requestFailureLogin:(id)object;
-- (void)requestTimeoutLogin;
-
-- (void)keyboardWillShow:(NSNotification *)notification;
-- (void)keyboardWillHidden:(NSNotification*)aNotification;
 
 @end
 
