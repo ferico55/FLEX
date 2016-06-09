@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <customFonts key="customFonts">
+        <mutableArray key="GothamBook.ttf">
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+        </mutableArray>
         <mutableArray key="GothamMedium.ttf">
             <string>GothamMedium</string>
         </mutableArray>
@@ -17,81 +20,117 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="83"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="82"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="82.5"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GfF-sh-Y4H">
-                        <rect key="frame" x="81" y="31" width="186" height="21"/>
-                        <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
+                        <rect key="frame" x="75" y="27" width="100" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="21" id="Y9T-mS-7U2"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="12"/>
                         <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ejk-zf-Iv6">
-                        <rect key="frame" x="275" y="27" width="30" height="30"/>
+                        <rect key="frame" x="188" y="27" width="117" height="31.5"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="30" id="xvn-tW-rMN"/>
+                            <constraint firstAttribute="width" constant="117" id="BgJ-aW-UAb"/>
+                            <constraint firstAttribute="height" constant="20" id="QQK-wx-6HV"/>
+                            <constraint firstAttribute="height" constant="31.5" id="WIO-8p-HcF"/>
+                            <constraint firstAttribute="width" constant="67" id="uZJ-gg-ZKS"/>
                         </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
-                        <state key="normal" image="icon_love.png">
-                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
+                        <state key="normal" title="  Favorit" image="icon_love.png">
+                            <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                <real key="value" value="1"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                <color key="value" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                <real key="value" value="3"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="number" keyPath="shadowRadius">
+                                <real key="value" value="0.0"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="number" keyPath="shadowOpacity">
+                                <real key="value" value="0.0"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="QQK-wx-6HV"/>
+                                <exclude reference="uZJ-gg-ZKS"/>
+                            </mask>
+                        </variation>
                     </button>
-                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="hry-u8-Sr8">
-                        <rect key="frame" x="30" y="31" width="20" height="20"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="20" id="pQs-Wd-BlV"/>
-                        </constraints>
-                    </activityIndicatorView>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_default_shop.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="2WS-eh-gEh">
                         <rect key="frame" x="15" y="16" width="50" height="50"/>
-                    </imageView>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pFJ-bs-b6G" userLabel="Horizontal Border">
-                        <rect key="frame" x="15" y="81" width="305" height="1"/>
-                        <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
-                    </view>
-                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Badges_gold_merchant" translatesAutoresizingMaskIntoConstraints="NO" id="bmE-fp-rPx">
-                        <rect key="frame" x="54" y="8" width="20" height="20"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="20" id="fLi-yl-NSM"/>
-                            <constraint firstAttribute="width" constant="20" id="rIu-ni-ZQs"/>
+                            <constraint firstAttribute="width" constant="50" id="YhS-uc-Mec"/>
+                            <constraint firstAttribute="height" constant="50" id="bXV-Hs-0xR"/>
+                        </constraints>
+                    </imageView>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_location.png" translatesAutoresizingMaskIntoConstraints="NO" id="Ly3-ER-sH5">
+                        <rect key="frame" x="75" y="46" width="14" height="14"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="14" id="Tmd-gY-nCS"/>
+                            <constraint firstAttribute="height" constant="14" id="smu-Hl-7f2"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jakarta" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k1G-Vy-Q3C">
+                        <rect key="frame" x="90" y="48.5" width="100" height="10"/>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
+                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Badges_gold_merchant" translatesAutoresizingMaskIntoConstraints="NO" id="bmE-fp-rPx">
+                        <rect key="frame" x="15" y="16" width="20" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="20" id="HFr-9r-umq"/>
+                            <constraint firstAttribute="width" constant="20" id="Mnc-me-FlQ"/>
                         </constraints>
                     </imageView>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="GfF-sh-Y4H" firstAttribute="leading" secondItem="2WS-eh-gEh" secondAttribute="trailing" constant="16" id="0GW-uf-jk1"/>
-                    <constraint firstAttribute="bottom" secondItem="pFJ-bs-b6G" secondAttribute="bottom" id="6DT-FE-CQ8"/>
-                    <constraint firstItem="2WS-eh-gEh" firstAttribute="centerY" secondItem="hry-u8-Sr8" secondAttribute="centerY" id="7TH-VS-WOJ"/>
+                    <constraint firstItem="k1G-Vy-Q3C" firstAttribute="centerY" secondItem="Ly3-ER-sH5" secondAttribute="centerY" id="3Jk-yH-LRJ"/>
+                    <constraint firstItem="Ejk-zf-Iv6" firstAttribute="leading" secondItem="GfF-sh-Y4H" secondAttribute="trailing" constant="5" id="4d7-q0-Nfx"/>
+                    <constraint firstItem="2WS-eh-gEh" firstAttribute="leading" secondItem="bmE-fp-rPx" secondAttribute="trailing" constant="-20" id="5VB-7a-IyJ"/>
                     <constraint firstItem="bmE-fp-rPx" firstAttribute="trailing" secondItem="2WS-eh-gEh" secondAttribute="leading" id="8tF-Wh-cpI"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="Ejk-zf-Iv6" secondAttribute="trailing" constant="7" id="I0S-eb-A0e"/>
-                    <constraint firstItem="GfF-sh-Y4H" firstAttribute="leading" secondItem="hry-u8-Sr8" secondAttribute="trailing" constant="31" id="IS2-iM-gLt"/>
+                    <constraint firstItem="Ejk-zf-Iv6" firstAttribute="leading" secondItem="k1G-Vy-Q3C" secondAttribute="trailing" constant="48" id="EKu-ww-e1C"/>
+                    <constraint firstItem="GfF-sh-Y4H" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="27" id="HEq-fc-W3o"/>
                     <constraint firstItem="bmE-fp-rPx" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="KSZ-B6-WWb"/>
                     <constraint firstItem="bmE-fp-rPx" firstAttribute="bottom" secondItem="2WS-eh-gEh" secondAttribute="top" id="Ki8-H7-IvS"/>
-                    <constraint firstItem="pFJ-bs-b6G" firstAttribute="leading" secondItem="2WS-eh-gEh" secondAttribute="leading" id="KqQ-Q5-OyU"/>
-                    <constraint firstItem="GfF-sh-Y4H" firstAttribute="leading" secondItem="bmE-fp-rPx" secondAttribute="trailing" constant="7" id="Ovn-hd-51e"/>
-                    <constraint firstItem="2WS-eh-gEh" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="7" id="PF8-gM-n9l"/>
-                    <constraint firstItem="Ejk-zf-Iv6" firstAttribute="leading" secondItem="GfF-sh-Y4H" secondAttribute="trailing" constant="8" symbolic="YES" id="R1f-bK-gWe"/>
-                    <constraint firstItem="pFJ-bs-b6G" firstAttribute="top" secondItem="bmE-fp-rPx" secondAttribute="bottom" constant="53" id="VuI-fZ-qBX"/>
-                    <constraint firstItem="pFJ-bs-b6G" firstAttribute="top" secondItem="2WS-eh-gEh" secondAttribute="bottom" constant="15" id="ZBS-ot-Iak"/>
-                    <constraint firstItem="pFJ-bs-b6G" firstAttribute="top" secondItem="Ejk-zf-Iv6" secondAttribute="bottom" constant="24" id="c6y-Wo-yP3"/>
-                    <constraint firstItem="pFJ-bs-b6G" firstAttribute="top" secondItem="GfF-sh-Y4H" secondAttribute="bottom" constant="29" id="ctP-m3-wWP"/>
-                    <constraint firstItem="hry-u8-Sr8" firstAttribute="top" secondItem="GfF-sh-Y4H" secondAttribute="top" id="erm-sj-JOL"/>
-                    <constraint firstItem="GfF-sh-Y4H" firstAttribute="centerY" secondItem="hry-u8-Sr8" secondAttribute="centerY" id="fqb-IC-80Q"/>
-                    <constraint firstItem="Ejk-zf-Iv6" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="19" id="nIU-YN-KxO"/>
-                    <constraint firstAttribute="trailing" secondItem="pFJ-bs-b6G" secondAttribute="trailing" id="p42-kB-Aqb"/>
-                    <constraint firstItem="hry-u8-Sr8" firstAttribute="centerX" secondItem="2WS-eh-gEh" secondAttribute="centerX" id="qQU-Dz-77P"/>
-                    <constraint firstItem="hry-u8-Sr8" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="w6H-Q1-p5y"/>
+                    <constraint firstAttribute="trailing" secondItem="Ejk-zf-Iv6" secondAttribute="trailing" constant="15" id="Kk2-ES-GgT"/>
+                    <constraint firstItem="2WS-eh-gEh" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="Mg2-pD-Dwp"/>
+                    <constraint firstItem="2WS-eh-gEh" firstAttribute="top" secondItem="bmE-fp-rPx" secondAttribute="bottom" constant="-20" id="Mvc-3R-lWR"/>
+                    <constraint firstItem="GfF-sh-Y4H" firstAttribute="leading" secondItem="2WS-eh-gEh" secondAttribute="trailing" constant="10" id="S5e-8g-gor"/>
+                    <constraint firstItem="k1G-Vy-Q3C" firstAttribute="leading" secondItem="Ly3-ER-sH5" secondAttribute="trailing" constant="1" id="YeU-yQ-mIM"/>
+                    <constraint firstItem="Ejk-zf-Iv6" firstAttribute="leading" secondItem="Ly3-ER-sH5" secondAttribute="trailing" constant="149" id="ZR3-cq-6G3"/>
+                    <constraint firstItem="Ejk-zf-Iv6" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="27" id="fFr-lo-IYc"/>
+                    <constraint firstItem="Ly3-ER-sH5" firstAttribute="top" secondItem="GfF-sh-Y4H" secondAttribute="bottom" constant="-2" id="hQd-32-jbf"/>
+                    <constraint firstItem="Ly3-ER-sH5" firstAttribute="leading" secondItem="2WS-eh-gEh" secondAttribute="trailing" constant="10" id="ovx-Jr-Tgx"/>
+                    <constraint firstAttribute="trailing" secondItem="Ejk-zf-Iv6" secondAttribute="trailing" constant="15" id="qg3-d0-rZS"/>
+                    <constraint firstItem="2WS-eh-gEh" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="16" id="vzr-fC-RGu"/>
                 </constraints>
                 <variation key="default">
                     <mask key="constraints">
                         <exclude reference="8tF-Wh-cpI"/>
                         <exclude reference="KSZ-B6-WWb"/>
                         <exclude reference="Ki8-H7-IvS"/>
+                        <exclude reference="4d7-q0-Nfx"/>
+                        <exclude reference="EKu-ww-e1C"/>
+                        <exclude reference="Kk2-ES-GgT"/>
+                        <exclude reference="ZR3-cq-6G3"/>
                     </mask>
                 </variation>
             </tableViewCellContentView>
             <gestureRecognizers/>
             <connections>
-                <outlet property="act" destination="hry-u8-Sr8" id="fu5-RB-006"/>
                 <outlet property="favbutton" destination="Ejk-zf-Iv6" id="mJC-Lq-pn6"/>
                 <outlet property="goldBadgeView" destination="bmE-fp-rPx" id="IrQ-HR-cqa"/>
                 <outlet property="shopname" destination="GfF-sh-Y4H" id="mnn-Fo-6qf"/>
@@ -109,6 +148,7 @@
     <resources>
         <image name="Badges_gold_merchant" width="40" height="40"/>
         <image name="icon_default_shop.jpg" width="80" height="80"/>
+        <image name="icon_location.png" width="14" height="14"/>
         <image name="icon_love.png" width="20" height="20"/>
     </resources>
 </document>

@@ -262,11 +262,11 @@ static NSString const *rows = @"12";
             NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.shop_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
             //request.URL = url;
             
-            if([list.shop_gold_status isEqualToString:@"1"]){
-                ((SearchResultShopCell*)cell).goldBadgeView.hidden = NO;
-            }else{
-                ((SearchResultShopCell*)cell).goldBadgeView.hidden = YES;
-            }
+//            if([list.shop_gold_status isEqualToString:@"1"]){
+//                ((SearchResultShopCell*)cell).goldBadgeView.hidden = NO;
+//            }else{
+//                ((SearchResultShopCell*)cell).goldBadgeView.hidden = YES;
+//            }
             
             if([list.shop_is_fave_shop isEqualToString:@"1"]) {
                 [((SearchResultShopCell*)cell).favbutton setImage:[UIImage imageNamed:@"icon_love_active.png"] forState:UIControlStateNormal];
@@ -275,7 +275,7 @@ static NSString const *rows = @"12";
             }
             
             //there is no fav condition
-            [((SearchResultShopCell*)cell).favbutton setHidden:YES];
+//            [((SearchResultShopCell*)cell).favbutton setHidden:YES];
             
             UIImageView *thumb = (UIImageView*)((SearchResultShopCell*)cell).thumb;
             thumb = [UIImageView circleimageview:thumb];
