@@ -39,7 +39,7 @@ static NSString const *rows = @"12";
 @property (weak, nonatomic) IBOutlet UITableView *table;
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
-@property (strong, nonatomic) NSMutableArray *product;
+@property (strong, nonatomic) NSMutableArray *shops;
 @property (weak, nonatomic) IBOutlet UIView *shopview;
 @property (strong, nonatomic) SpellCheckRequest *spellCheckRequest;
 
@@ -112,7 +112,7 @@ static NSString const *rows = @"12";
     [super viewDidLoad];
     
     /** create new **/
-    _product = [NSMutableArray new];
+    _shops = [NSMutableArray new];
     _urlarray = [NSMutableArray new];
     _params = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
@@ -128,7 +128,7 @@ static NSString const *rows = @"12";
     [self initNoResultView];
     
     /** set table footer view (loading act) **/
-    if (_product.count > 0) {
+    if (_shops.count > 0) {
         _isnodata = NO;
     }
     
@@ -159,6 +159,11 @@ static NSString const *rows = @"12";
     
     _spellCheckRequest = [SpellCheckRequest new];
     _spellCheckRequest.delegate = self;
+    
+    
+    UINib *cellNib = [UINib nibWithNibName:@"SearchResultShopCell" bundle:nil];
+    [_table registerNib:cellNib forCellReuseIdentifier:@"SearchResultShopCellIdentifier"];
+    
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -231,7 +236,7 @@ static NSString const *rows = @"12";
 #pragma mark - Table View Data Source
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    NSInteger count = _product.count;
+    NSInteger count = _shops.count;
 #ifdef kTKPDSEARCHRESULT_NODATAENABLE
     return _isnodata?1:count;
 #else
@@ -240,76 +245,82 @@ static NSString const *rows = @"12";
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    SearchResultShopCell* cell = [tableView dequeueReusableCellWithIdentifier:@"SearchResultShopCellIdentifier" forIndexPath:indexPath];
     
-    UITableViewCell* cell = nil;
-    if (!_isnodata) {
-        NSString *cellid = kTKPDSEARCHRESULTSHOPCELL_IDENTIFIER;
-		
-		cell = (SearchResultShopCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
-		if (cell == nil) {
-			cell = [SearchResultShopCell newcell];
-			((SearchResultShopCell*)cell).delegate = self;
-		}
-        
-        if (_product.count>indexPath.row) {
-            
-            ((SearchResultShopCell*)cell).indexpath = indexPath;
-            
-            List *list = [_product objectAtIndex:indexPath.row];
-
-            ((SearchResultShopCell*)cell).shopname.text = list.shop_name?:@"";
-            
-            NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.shop_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-            //request.URL = url;
-            
-//            if([list.shop_gold_status isEqualToString:@"1"]){
-//                ((SearchResultShopCell*)cell).goldBadgeView.hidden = NO;
-//            }else{
-//                ((SearchResultShopCell*)cell).goldBadgeView.hidden = YES;
+    SearchAWSShop *shop = [_shops objectAtIndex:indexPath.row];
+    cell.modelView = shop.modelView;
+    
+    return cell;
+//    
+//    UITableViewCell* cell = nil;
+//    if (!_isnodata) {
+//        NSString *cellid = kTKPDSEARCHRESULTSHOPCELL_IDENTIFIER;
+//		
+//		cell = (SearchResultShopCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
+//		if (cell == nil) {
+//			cell = [SearchResultShopCell newcell];
+//			((SearchResultShopCell*)cell).delegate = self;
+//		}
+//        
+//        if (_product.count>indexPath.row) {
+//            
+//            ((SearchResultShopCell*)cell).indexpath = indexPath;
+//            
+//            List *list = [_product objectAtIndex:indexPath.row];
+//
+//            ((SearchResultShopCell*)cell).shopname.text = list.shop_name?:@"";
+//            
+//            NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.shop_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+//            //request.URL = url;
+//            
+////            if([list.shop_gold_status isEqualToString:@"1"]){
+////                ((SearchResultShopCell*)cell).goldBadgeView.hidden = NO;
+////            }else{
+////                ((SearchResultShopCell*)cell).goldBadgeView.hidden = YES;
+////            }
+//            
+//            if([list.shop_is_fave_shop isEqualToString:@"1"]) {
+//                [((SearchResultShopCell*)cell).favbutton setImage:[UIImage imageNamed:@"icon_love_active.png"] forState:UIControlStateNormal];
+//            } else {
+//                [((SearchResultShopCell*)cell).favbutton setImage:[UIImage imageNamed:@"icon_love.png"] forState:UIControlStateNormal];
 //            }
-            
-            if([list.shop_is_fave_shop isEqualToString:@"1"]) {
-                [((SearchResultShopCell*)cell).favbutton setImage:[UIImage imageNamed:@"icon_love_active.png"] forState:UIControlStateNormal];
-            } else {
-                [((SearchResultShopCell*)cell).favbutton setImage:[UIImage imageNamed:@"icon_love.png"] forState:UIControlStateNormal];
-            }
-            
-            //there is no fav condition
-//            [((SearchResultShopCell*)cell).favbutton setHidden:YES];
-            
-            UIImageView *thumb = (UIImageView*)((SearchResultShopCell*)cell).thumb;
-            thumb = [UIImageView circleimageview:thumb];
-            thumb.image = [UIImage imageNamed:@"icon_default_shop.jpg"];
-            
-            //thumb.hidden = YES;	//@prepareforreuse then @reset
-            
-            UIActivityIndicatorView *act = ((SearchResultShopCell*)cell).act;
-            [act startAnimating];
-            [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-    #pragma clang diagnostic push
-    #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                [thumb setImage:image];
-                [act stopAnimating];
-    #pragma clang diagnostic pop
-                
-            } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-                [act stopAnimating];
-            }];
-        }
-        else [self reset:cell];
-    } else {
-        static NSString *CellIdentifier = kTKPDSEARCH_STANDARDTABLEVIEWCELLIDENTIFIER;
-        
-        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-        if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        }
-        
-        cell.textLabel.text = kTKPDSEARCH_NODATACELLTITLE;
-        cell.detailTextLabel.text = kTKPDSEARCH_NODATACELLDESCS;
-    }
-	return cell;
+//            
+//            //there is no fav condition
+////            [((SearchResultShopCell*)cell).favbutton setHidden:YES];
+//            
+//            UIImageView *thumb = (UIImageView*)((SearchResultShopCell*)cell).thumb;
+//            thumb = [UIImageView circleimageview:thumb];
+//            thumb.image = [UIImage imageNamed:@"icon_default_shop.jpg"];
+//            
+//            //thumb.hidden = YES;	//@prepareforreuse then @reset
+//            
+//            UIActivityIndicatorView *act = ((SearchResultShopCell*)cell).act;
+//            [act startAnimating];
+//            [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+//    #pragma clang diagnostic push
+//    #pragma clang diagnostic ignored "-Warc-retain-cycles"
+//                [thumb setImage:image];
+//                [act stopAnimating];
+//    #pragma clang diagnostic pop
+//                
+//            } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+//                [act stopAnimating];
+//            }];
+//        }
+//        else [self reset:cell];
+//    } else {
+//        static NSString *CellIdentifier = kTKPDSEARCH_STANDARDTABLEVIEWCELLIDENTIFIER;
+//        
+//        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+//        if (cell == nil) {
+//            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+//            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//        }
+//        
+//        cell.textLabel.text = kTKPDSEARCH_NODATACELLTITLE;
+//        cell.detailTextLabel.text = kTKPDSEARCH_NODATACELLDESCS;
+//    }
+//	return cell;
 }
 
 
@@ -354,13 +365,6 @@ static NSString const *rows = @"12";
     BOOL status = [_searchitem.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
-//        if (start && !_isrefreshview) {
-//            [_cacheconnection connection:operation.HTTPRequestOperation.request didReceiveResponse:operation.HTTPRequestOperation.response];
-//            [_cachecontroller connectionDidFinish:_cacheconnection];
-//            //save response data to plist
-//            [operation.HTTPRequestOperation.responseData writeToFile:_cachepath atomically:YES];
-//        }
-        
         [self requestprocess:object];
     }
 }
@@ -384,12 +388,12 @@ static NSString const *rows = @"12";
             
             if (uriredirect == nil) {
                 if (start == 0) {
-                    [_product removeAllObjects];
+                    [_shops removeAllObjects];
                 }
                 
-                [_product addObjectsFromArray:_searchitem.result.shops];
+                [_shops addObjectsFromArray:_searchitem.result.shops];
                 
-                if (_product.count == 0) {
+                if (_shops.count == 0) {
                     [_act stopAnimating];
                     
                     if([self isUsingAnyFilter]){
@@ -431,7 +435,7 @@ static NSString const *rows = @"12";
 
 -(void)SearchResultShopCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
 {
-    List *list = _product[indexpath.row];
+    List *list = _shops[indexpath.row];
     
     ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
     NSIndexPath *indexPath = [_params objectForKey:kTKPDFILTERSORT_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
@@ -506,9 +510,9 @@ static NSString const *rows = @"12";
 
 -(void)reset:(UITableViewCell*)cell
 {
-    ((SearchResultShopCell*)cell).thumb = nil;
-    ((SearchResultShopCell*)cell).shopname = nil;
-    ((SearchResultShopCell*)cell).favbutton = nil;
+//    ((SearchResultShopCell*)cell).thumb = nil;
+//    ((SearchResultShopCell*)cell).shopname = nil;
+//    ((SearchResultShopCell*)cell).favbutton = nil;
 }
 
 -(void)refreshView:(UIRefreshControl*)refresh
@@ -558,7 +562,7 @@ static NSString const *rows = @"12";
 #pragma mark - Category notification
 - (void)changeCategory:(NSNotification *)notification
 {
-    [_product removeAllObjects];
+    [_shops removeAllObjects];
     [_params setObject:[notification.userInfo objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY] forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
     [self refreshView:nil];
     _table.tableFooterView = _footer;
