@@ -7,7 +7,6 @@
 //
 
 #import "FilterCategoryViewController.h"
-#import "Tokopedia-swift.h"
 #import "FilterCategoryViewCell.h"
 #import "LoadingView.h"
 
@@ -238,7 +237,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
-//    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     CategoryDetail *category = [self.categories objectAtIndex:indexPath.row];
     if (self.filterType == FilterCategoryTypeCategory ||
         self.filterType == FilterCategoryTypeHotlist ||
@@ -267,10 +266,6 @@
     self.selectedCategory = category;
     [self expandSelectedCategories];
     [self scrollToCategory:category];
-    
-    if ([self.delegate respondsToSelector:@selector(didSelectCategoryFilter:)]) {
-        [self.delegate didSelectCategoryFilter:self.selectedCategory];
-    }
 }
 
 - (void)deselectCategory:(CategoryDetail *)selectedCategory {
@@ -288,11 +283,11 @@
 #pragma mark - Tokopedia network
 
 - (NSString *)getPath:(int)tag {
-    return @"v1/categories";
+    return @"v0/categories";
 }
 
 - (NSDictionary *)getParameter:(int)tag {
-    return @{@"filter":@"type==tree"};
+    return @{};
 }
 
 - (int)getRequestMethod:(int)tag {
@@ -471,11 +466,6 @@
     [[[StickyAlertView alloc] initWithErrorMessages:@[@"Mohon maaf sedang terjadi kendala pada internet."] delegate:self] show];
     self.requestError = YES;
     self.tableView.tableFooterView = self.loadingView;
-    [self.tableView reloadData];
-}
-
--(void)resetSelectedFilter{
-    _selectedCategory = nil;
     [self.tableView reloadData];
 }
 
