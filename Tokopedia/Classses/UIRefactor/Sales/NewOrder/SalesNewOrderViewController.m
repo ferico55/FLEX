@@ -584,6 +584,9 @@ RejectReasonDelegate
               explanation:(NSString*)explanation
                  products:(NSArray *)products
           productQuantity:(NSArray *)productQuantity {
+    
+    UserAuthentificationManager *auth = [UserAuthentificationManager new];
+    NSString *userId = auth.getUserId;
 
     NSString *productIds = @"";
     for (OrderProduct *product in products) {
@@ -607,7 +610,11 @@ RejectReasonDelegate
         @"list_product_id": productIds?:@"",
         @"order_id": orderId,
         @"qty_accept": productQuantities?:@"",
-        @"reason": reason?:@"",
+        @"reason": explanation?:@"",
+        @"user_id":userId,
+        @"closed_note":@"",
+        @"closed_end":@"",
+        @"reason_code":reason.reason_code
     };
     
     [self.actionNetworkManager requestWithBaseUrl:[NSString v4Url]
