@@ -113,7 +113,12 @@ static NSString const *rows = @"12";
     
     NSArray *_initialCategories;
     TokopediaNetworkManager *_requestHotlistManager;
-    QueryObject *_selectedFilter;
+    FilterResponse *_filterResponse;
+    NSArray<ListOption*> *_selectedFilters;
+    NSDictionary *_selectedFilterParam;
+    ListOption *_selectedSort;
+    NSDictionary *_selectedSortParam;
+    NSArray<CategoryDetail*> *_selectedCategories;
 }
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageview;
@@ -285,49 +290,29 @@ static NSString const *rows = @"12";
 
 
 #pragma mark - Action View
-- (void)didTapFilterSubCategoryButton {
-    FilterCategoryViewController *controller = [FilterCategoryViewController new];
-    controller.filterType = FilterCategoryTypeHotlist;
-    controller.selectedCategory = _selectedFilter.selectedCategory;
-    controller.categories = [_initialCategories mutableCopy];
-    controller.delegate = self;
-    UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:controller];
-    navigationController.navigationBar.translucent = NO;
-    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
-}
 
 - (IBAction)didTapSortButton:(id)sender {
-    SortViewController *controller = [SortViewController new];
-    controller.selectedIndexPath = _sortIndexPath;
-    controller.sortType = SortHotlistDetail;
-    controller.delegate = self;
-    UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:controller];
-    [self.navigationController presentViewController:navigation animated:YES completion:nil];
+    FiltersController *controller = [[FiltersController alloc]initWithSortResponse:_filterResponse?:[FilterResponse new] selectedSort:_selectedSort presentedVC:self onCompletion:^(ListOption * sort, NSDictionary*paramSort) {
+        _selectedSortParam = paramSort;
+        _selectedSort = sort;
+        [self refreshView:nil];
+    } response:^(FilterResponse * filterResponse) {
+        _filterResponse = filterResponse;
+    }];
 }
 
 - (IBAction)didTapFilterButton:(id)sender {
-    FilterType *type = [FilterType new];
-
-    FilterController *controller =
-    [[FilterController alloc] initWithCategoryType:FilterCategoryTypeHotlist
-                                      categoryList:[_initialCategories mutableCopy]
-                                           filters:@[type.Category, type.Shop, type.Location, type.Price, type.shipment, type. Condition, type.preorder]
-                                    selectedFilter:_selectedFilter?:[QueryObject new]
-                                       presentedVC:self
-                                      onCompletion:^(QueryObject * filter) {
-                                          
-                                          _selectedFilter = filter;
-                                          [self refreshView:nil];
-                                          
-                                      }];
-
-
-//    FilterViewController *vc = [FilterViewController new];
-//    vc.delegate = self;
-//    vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPEHOTLISTVIEWKEY),
-//                kTKPDFILTER_DATAFILTERKEY: _detailfilter};
-//    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
-//    [self.navigationController presentViewController:nav animated:YES completion:nil];
+                                     
+    FiltersController *controller = [[FiltersController alloc]initWithFilterResponse:_filterResponse?:[FilterResponse new] categories:[_initialCategories copy] selectedCategories:_selectedCategories selectedFilters:_selectedFilters presentedVC:self onCompletion:^(NSArray<CategoryDetail *> * selectedCategories , NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
+        
+        _selectedCategories = selectedCategories;
+        _selectedFilters = selectedFilters;
+        _selectedFilterParam = paramFilters;
+        [self refreshView:nil];
+        
+    } response:^(FilterResponse * filterResponse){
+        _filterResponse = filterResponse;
+    }];
 }
 
 - (IBAction)didTapChangeGridButton:(id)sender {
@@ -545,27 +530,6 @@ static NSString const *rows = @"12";
     
     [self requestHotlist];
 }
-
-#pragma mark - Category Delegate
-- (void)didSelectCategory:(CategoryDetail *)category {
-    _selectedFilter.selectedCategory = category;
-    [_detailfilter setObject:category.categoryId forKey:@"department_id"];
-    [self refreshView:nil];
-}
-
-#pragma mark - Sort Delegate
-- (void)didSelectSort:(NSString *)sort atIndexPath:(NSIndexPath *)indexPath {
-    _sortIndexPath = indexPath;
-    [_detailfilter setObject:sort forKey:kTKPDHOME_APIORDERBYKEY];
-    [self refreshView:nil];
-}
-
-#pragma mark - Filter Delegate
--(void)FilterViewController:(FilterViewController *)viewController withUserInfo:(NSDictionary *)userInfo {
-    [_detailfilter addEntriesFromDictionary:userInfo];
-    [self refreshView:nil];
-}
-
 
 #pragma mark - CollectionView Delegate And Datasource
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -913,33 +877,26 @@ static NSString const *rows = @"12";
 }
 
 - (NSDictionary*)parameters {
-    NSString *selectedLocations = [[_selectedFilter.selectedLocation valueForKey:@"filterID"] componentsJoinedByString:@","];
-    NSString *selectedShops = [[_selectedFilter.selectedShop valueForKey:@"filterID"] componentsJoinedByString:@","];
-    NSString *selectedCondition = [[_selectedFilter.selectedCondition valueForKey:@"filterID"] componentsJoinedByString:@","];
-    NSString *selectedShipping = [[_selectedFilter.selectedShipping valueForKey:@"filterID"] componentsJoinedByString:@","];
-    NSString *selectedCategory = [[_selectedFilter.selectedCategory valueForKey:@"categoryId"] componentsJoinedByString:@","];
-    NSString *selectedPreoder = [[_selectedFilter.selectedPreorder valueForKey:@"filterID"] componentsJoinedByString:@","];
 
-     NSDictionary* param = @{
+    NSMutableDictionary *params = [NSMutableDictionary new];
+    
+    NSString *selectedCategory = [[_selectedCategories valueForKey:@"categoryId"] componentsJoinedByString:@","];
+
+    NSDictionary* param = @{
                              @"device":@"ios",
                              @"q" : [_detailfilter objectForKey:kTKPDHOME_DATAQUERYKEY]?:[_data objectForKey:kTKPDHOME_DATAQUERYKEY],
                              @"start" : @(_start),
                              @"rows" : rows,
-                             @"ob" : [_detailfilter objectForKey:kTKPDHOME_APIORDERBYKEY]?:@"",
                              @"sc" : selectedCategory?:@"",
-                             @"floc" :selectedLocations?:@"",
-                             @"fshop" :selectedShops?:@"",
-                             @"pmin" :_selectedFilter.selectedPrice.priceMin?:@"",
-                             @"pmax" :_selectedFilter.selectedPrice.priceMax?:@"",
                              @"hashtag" : [self isInitialRequest] ? @"true" : @"",
                              @"breadcrumb" :  [self isInitialRequest] ? @"true" : @"",
-                             @"condition" : selectedCondition?:@"",
-                             @"shipping" : selectedShipping?:@"",
-                             @"wholesale" : @(_selectedFilter.selectedPrice.priceWholesale)?:@"",
-                             @"preorder" : selectedPreoder?:@""
                              };
-                             
-     return param;
+    
+    [params addEntriesFromDictionary:param];
+    [params addEntriesFromDictionary:_selectedFilterParam];
+    [params addEntriesFromDictionary:_selectedSortParam];
+    
+     return [params copy];
 }
 
 
