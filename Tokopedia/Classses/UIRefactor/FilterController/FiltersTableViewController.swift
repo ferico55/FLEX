@@ -10,26 +10,54 @@ import UIKit
 
 class FiltersTableViewController: UIViewController {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    private var tableView: UITableView = UITableView()
+    private var filtersDatasource : FiltersListDataSource!
+    private var items: [ListOption] = []
+    private var showSearchBar: Bool = false
+    var selectedObjects : [ListOption] = []
+    
+    private var completionHandler:([ListOption])->Void = {(arg:[ListOption]) -> Void in}
+    
+    init(items:[ListOption],selectedObjects:[ListOption], showSearchBar:Bool, onCompletion: (([ListOption]) -> Void)){
+        completionHandler = onCompletion
+        self.items = items
+        self.selectedObjects = selectedObjects
+        self.showSearchBar = showSearchBar
+        super.init(nibName: nil, bundle: nil)
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
-    */
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        tableView = UITableView.init(frame: CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height), style: .Plain)
+        
+        tableView.dataSource = filtersDatasource
+        tableView.delegate = filtersDatasource
+        
+        filtersDatasource =   FiltersListDataSource.init(tableView: tableView, showSearchBar: self.showSearchBar, selectedObjects:self.selectedObjects) { (selectedLocation) in
+            
+            self.completionHandler(selectedLocation)
+        }
+        filtersDatasource.addItems(self.items)
+//        filtersDatasource.searchBarPlaceholder = "Cari \(self.tabBarItem!.title!)"
+        
+        self.view.addSubview(self.tableView)
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        tableView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)
+        
+    }
+    
+    //Mark: - reset Filter
+    func resetSelectedFilter() -> Void {
+        selectedObjects = []
+        self.tableView.reloadData()
+    }
 
 }
