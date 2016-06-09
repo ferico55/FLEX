@@ -36,7 +36,22 @@
 
 + (void)trackScreenName:(NSString *)screeName {
     TPAnalytics *analytics = [[self alloc] init];
-    [analytics.dataLayer push:@{@"event": @"openScreen", @"screenName": screeName?:@""}];
+    UserAuthentificationManager *auth = [UserAuthentificationManager new];
+    if (auth.isLogin) {
+        NSDictionary *authenticatedData = @{
+        @"event": @"authenticated",
+        @"contactInfo": @{
+                @"userSeller": [auth.getShopId isEqualToString:@"0"]? @"0": @"1",
+                @"userFullName": [auth.getUserLoginData objectForKey:@"full_name"],
+                @"userEmail": [auth.getUserLoginData objectForKey:@"user_email"],
+                @"userId": auth.getUserId,
+                @"userMSISNVerified": [auth.getUserLoginData objectForKey:@"msisdn_is_verified"],
+                @"shopID": auth.getShopId
+            },
+        };
+        [analytics.dataLayer push:authenticatedData];
+        [analytics.dataLayer push:@{@"event": @"openScreen", @"screenName": screeName}];
+    }
 }
 
 + (void)trackScreenName:(NSString *)screeName gridType:(NSInteger)gridType {
