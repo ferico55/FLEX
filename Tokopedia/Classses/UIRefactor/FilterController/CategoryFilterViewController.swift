@@ -348,8 +348,9 @@ import UIKit
     
     //Mark: - reset Filter
     func resetSelectedFilter() -> Void {
-        selectedCategories = [CategoryDetail()]
-//        self.tableView.reloadData()
+        selectedCategories = []
+        categories.forEach({$0.isSelected = false})
+        self.tableView.reloadData()
     }
 
 }

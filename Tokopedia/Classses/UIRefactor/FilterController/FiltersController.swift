@@ -118,7 +118,7 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
             if filter.title == categoryTitle() {
                 let controller : CategoryFilterViewController = CategoryFilterViewController.init(selectedCategories: selectedCategories, initialCategories:categories) { (selectedCategory) in
                     self.selectedCategories = selectedCategory
-                    self .adjustImageTabBarButton((self.selectedCategories.count>0), filter: filter)
+                    self .adjustImageTabBarButton((self.selectedCategories.count>0))
                 }
                 
                 if (self.selectedCategories.count>0) {
@@ -139,7 +139,7 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
                             (controller as! FiltersTableViewController).selectedObjects = selectedFilters
                         }
                     })
-                    self .adjustImageTabBarButton(self.filterIsActive(filter.options, selectedFilters: selectedFilters), filter: filter)
+                    self .adjustImageTabBarButton(self.filterIsActive(filter.options, selectedFilters: selectedFilters))
                 }
 
                 if (self.filterIsActive(filter.options, selectedFilters: selectedFilters)) {
@@ -178,7 +178,7 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
         return "Kategori"
     }
     
-    private func adjustImageTabBarButton(isActive:Bool, filter:ListFilter){
+    private func adjustImageTabBarButton(isActive:Bool){
         if isActive {
             var index : Int = Int(self.tabBarController.selectedIndex)
             if index == Int(UInt8.max){
@@ -187,7 +187,6 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
             if self.tabBarController.tabBar.tabBarButtons?.isEmpty == false {
                 let button : MHVerticalTabBarButton = self.tabBarController.tabBar.tabBarButtons[Int(self.tabBarController.selectedIndex)];
                 button.imageView.image = UIImage.init(named: "icon_unread.png")
-                filter.isActiveFilter = true
             }
         }
         else {
@@ -198,7 +197,6 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
             if self.tabBarController.tabBar.tabBarButtons?.isEmpty == false {
                 let button : MHVerticalTabBarButton = self.tabBarController.tabBar.tabBarButtons[index];
                 button.imageView.image = UIImage()
-                filter.isActiveFilter = false
             }
         }
     }
@@ -224,7 +222,17 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
     func didTapResetButton(button: UIButton!) {
         selectedCategories = []
         selectedFilters = []
-        //        listControllers.forEach { $0.resetSelectedFilter() }
+        
+        listControllers.forEach { (controller) in
+            if controller.isKindOfClass(CategoryFilterViewController){
+                (controller as! CategoryFilterViewController).resetSelectedFilter()
+            }
+            if controller.isKindOfClass(FiltersTableViewController){
+                (controller as! FiltersTableViewController).resetSelectedFilter()
+            }
+        }
+        
+        self.tabBarController.tabBar.tabBarButtons.forEach({$0.imageView.image = UIImage()})
     }
     
     func tabBarController(tabBarController: MHVerticalTabBarController!, didSelectViewController viewController: UIViewController!) {

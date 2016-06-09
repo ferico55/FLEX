@@ -11,7 +11,7 @@ import UIKit
 class FiltersTableViewController: UIViewController {
 
     private var tableView: UITableView = UITableView()
-    private var filtersDatasource : FiltersListDataSource!
+    private var filtersDatasource : FiltersListDataSource = FiltersListDataSource()
     private var items: [ListOption] = []
     private var showSearchBar: Bool = false
     var selectedObjects : [ListOption] = []
@@ -37,12 +37,12 @@ class FiltersTableViewController: UIViewController {
         tableView.dataSource = filtersDatasource
         tableView.delegate = filtersDatasource
         
-        filtersDatasource =   FiltersListDataSource.init(tableView: tableView, showSearchBar: self.showSearchBar, selectedObjects:self.selectedObjects) { (selectedLocation) in
-            
-            self.completionHandler(selectedLocation)
+        filtersDatasource =   FiltersListDataSource.init(tableView: tableView, showSearchBar: self.showSearchBar, selectedObjects:self.selectedObjects) { (selectedObjects) in
+            self.selectedObjects = selectedObjects
+            self.completionHandler(selectedObjects)
         }
         filtersDatasource.addItems(self.items)
-//        filtersDatasource.searchBarPlaceholder = "Cari \(self.tabBarItem!.title!)"
+        filtersDatasource.searchBarPlaceholder = "Cari \(self.tabBarItem!.title!)"
         
         self.view.addSubview(self.tableView)
     }
@@ -56,8 +56,8 @@ class FiltersTableViewController: UIViewController {
     
     //Mark: - reset Filter
     func resetSelectedFilter() -> Void {
-        selectedObjects = []
-        self.tableView.reloadData()
+        filtersDatasource.selectedObjects = []
+        tableView.reloadData()
     }
 
 }

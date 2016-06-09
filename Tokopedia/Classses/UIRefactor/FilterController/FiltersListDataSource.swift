@@ -10,18 +10,21 @@ import UIKit
 
 class FiltersListDataSource:  NSObject, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UITextFieldDelegate  {
 
-    private var tableView: UITableView?
+    var tableView: UITableView?
     private var searchBar: UISearchBar = UISearchBar()
     private var items: [ListOption] = []
     private var showSearchBar: Bool = false
-    private var selectedObjects : [ListOption] = []
+    var selectedObjects : [ListOption] = []
     
     private var filteredItem:[ListOption] = []
     private var searchActive : Bool = false
-    private var searchBarPlaceholder = "Cari"
-    
+    var searchBarPlaceholder = "Cari"
     
     private var completionHandler:([ListOption])->Void = {(arg:[ListOption]) -> Void in}
+    
+    override init() {
+        super.init()
+    }
     
     init(tableView:UITableView, showSearchBar:Bool,selectedObjects:[ListOption], onCompletion: (([ListOption]) -> Void)) {
         super.init()
@@ -268,4 +271,11 @@ class FiltersListDataSource:  NSObject, UITableViewDelegate, UITableViewDataSour
         return true
     }
     
+    //Mark: - reset Filter
+    func resetSelectedFilter() -> Void {
+        selectedObjects = []
+        items.forEach({$0.isSelected = false})
+        self.tableView!.reloadData()
+    }
+
 }
