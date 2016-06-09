@@ -248,21 +248,4 @@
         }
 	}
 }
-
-#pragma mark - Cell Delegate
--(void)FilterLocationViewCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
-{
-    //[self.navigationController dismissViewControllerAnimated:YES completion:nil];
-    [_selectedlocation setObject:indexpath forKey:kTKPDFILTER_DATAINDEXPATHKEY];
-
-    if ([self.delegate respondsToSelector:@selector(didSelectLocationFilter:)]) {
-        FilterObject *object = [FilterObject new];
-        object.title = _locationnames[indexpath.row];
-        object.filterID = _locationvalues[indexpath.row];
-        [self.delegate didSelectLocationFilter:object];
-    }
-    
-    [_table reloadData];
-}
-
 @end

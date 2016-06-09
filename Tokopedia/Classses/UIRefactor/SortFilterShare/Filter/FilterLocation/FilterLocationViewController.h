@@ -13,7 +13,6 @@
 @protocol FilterLocationViewControllerDelegate <NSObject>
 @required
 -(void)FilterLocationViewController:(UIViewController*)viewcontroller withdata:(NSDictionary*)data;
--(void)didSelectLocationFilter:(FilterObject *)selectedLocation;
 
 @end
 
