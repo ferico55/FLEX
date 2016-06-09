@@ -775,7 +775,6 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
     
     _failLabel.attributedText = attribString;
     _failLabel.numberOfLines = 0;
-    [_failLabel sizeToFit];
 }
 
 @end
