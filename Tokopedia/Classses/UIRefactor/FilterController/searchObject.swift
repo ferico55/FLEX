@@ -8,6 +8,21 @@
 
 import UIKit
 
-class searchObject: NSObject {
-
+class searchObject: NSObject, TKPObjectMapping {
+    
+    var searchable : NSString = ""
+    var placeholder : NSString = ""
+    
+    static func attributeMappingDictionary() -> [NSObject : AnyObject]! {
+        return ["searchable"   : "searchable",
+                "placeholder"  : "placeholder"
+        ]
+    }
+    
+    static func mapping() -> RKObjectMapping! {
+        let mapping : RKObjectMapping = RKObjectMapping.init(forClass: self)
+        mapping.addAttributeMappingsFromDictionary(self.attributeMappingDictionary())
+        
+        return mapping
+    }
 }
