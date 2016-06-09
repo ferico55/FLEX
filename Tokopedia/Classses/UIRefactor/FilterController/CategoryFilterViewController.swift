@@ -20,64 +20,6 @@ import UIKit
     case Down
 }
 
-class FilterTableViewCell: UITableViewCell
-{
-    var selectedImageView : UIImageView = UIImageView()
-    var arrowImageView : UIImageView = UIImageView()
-    var leftPading : CGFloat = 0.0
-    var label : UILabel = UILabel ()
-    var disableSelected :Bool = true
-    
-    override init(style: UITableViewCellStyle, reuseIdentifier: String!)
-    {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
-        label.numberOfLines = 0
-        let font = UIFont.init(name: "GothamBook", size: 13)
-        label.font = font
-        arrowImageView.contentMode = .ScaleAspectFit
-        selectedImageView.contentMode = .ScaleAspectFit
-        selectedImageView.hidden = true
-        selectedImageView.image = UIImage.init(named: "icon_circle.png")
-        arrowImageView.image = UIImage.init(named: "icon_arrow_down.png")
-
-        self.addSubview(selectedImageView)
-        self.addSubview(arrowImageView)
-        self.addSubview(label)
-    }
-
-    func setPading(leftPading: CGFloat) {
-        selectedImageView.hidden = disableSelected
-        arrowImageView.hidden = !disableSelected
-
-        self.leftPading = leftPading
-        arrowImageView.frame = CGRect(origin: CGPoint(x: self.frame.size.width - 25, y: 15), size: CGSize(width: 10, height: 10))
-        selectedImageView.frame =  CGRect(origin: CGPoint(x: 0 + leftPading, y: 13), size: CGSize(width: 15, height: 15))
-        label.frame = CGRectMake(0 + selectedImageView.frame.width + leftPading + 10, 0, self.frame.size.width - ( selectedImageView.frame.origin.x + selectedImageView.frame.size.width + arrowImageView.frame.size.width + 25), self.frame.size.height)
-    }
-    
-    func setArrowDirection(direction:DirectionArrow) {
-        if (direction == .Up) {
-            arrowImageView.image = UIImage.init(named: "icon_arrow_up.png")
-        } else if (direction == .Down) {
-            arrowImageView.image = UIImage.init(named: "icon_arrow_down.png")
-        }
-    }
-    
-    override func setSelected(selected: Bool, animated: Bool){
-        if (selected) {
-            selectedImageView.image = UIImage.init(named: "icon_checkmark_green-01.png")
-        } else {
-            selectedImageView.image = UIImage.init(named: "icon_circle.png")
-        }
-    }
-    
-    required init(coder aDecoder: NSCoder)
-    {
-        super.init(coder: aDecoder)!
-    }
-}
-
 @objc class CategoryFilterViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     private var initialCategories: [CategoryDetail] = []
@@ -90,6 +32,13 @@ class FilterTableViewCell: UITableViewCell
     private var refreshControl : UIRefreshControl = UIRefreshControl()
     
     init(selectedCategories:[CategoryDetail], filterType:CategoryFilterType, initialCategories:[CategoryDetail], onCompletion: (([CategoryDetail]) -> Void)){
+        completionHandler = onCompletion
+        self.selectedCategories =  selectedCategories.map { ($0.copy() as! CategoryDetail) }
+        self.initialCategories = initialCategories.map { ($0.copy() as! CategoryDetail) }
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    init(selectedCategories:[CategoryDetail], initialCategories:[CategoryDetail], onCompletion: (([CategoryDetail]) -> Void)){
         completionHandler = onCompletion
         self.selectedCategories =  selectedCategories.map { ($0.copy() as! CategoryDetail) }
         self.initialCategories = initialCategories.map { ($0.copy() as! CategoryDetail) }
@@ -229,12 +178,9 @@ class FilterTableViewCell: UITableViewCell
         }
         
         cell.frame.size.width = tableView.frame.size.width
-        if Int(category.tree) > 1 {
-            let tree:Int = Int(category.tree)!
-            cell.setPading( CGFloat(tree) * 20)
-        } else {
-            cell.setPading(10.0)
-        }
+
+        let tree:Int = Int(category.tree)!
+        cell.setPading(CGFloat(tree-1) * 20)
         
         cell.label .setCustomAttributedText( category.name as String )
         
@@ -252,20 +198,14 @@ class FilterTableViewCell: UITableViewCell
         
         let category:CategoryDetail = self.categories[indexPath.row]
         
-        if category.isExpanded == true {
-            self.doCollapseCategory(category)
+        if category.child.count > 0 {
+            if category.isExpanded == true {
+                self.doCollapseCategory(category)
+            } else {
+                self.doExpandCategory(category)
+            }
         } else {
-            self.doExpandCategory(category)
-        }
-        
-        if category.isExpanded {
-            cell.setArrowDirection(.Up)
-        } else {
-            cell.setArrowDirection(.Down)
-        }
-        
-        category.isSelected = !category.isSelected
-        if category.child.count == 0{
+            category.isSelected = !category.isSelected
             if category.isSelected == false {
                 self.tableView.deselectRowAtIndexPath(indexPath, animated: false)
                 for (index, selected) in selectedCategories.enumerate() {
@@ -278,6 +218,12 @@ class FilterTableViewCell: UITableViewCell
             }
             
             completionHandler(selectedCategories)
+        }
+        
+        if category.isExpanded {
+            cell.setArrowDirection(.Up)
+        } else {
+            cell.setArrowDirection(.Down)
         }
     }
     
