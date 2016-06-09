@@ -713,7 +713,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
             if(_login.result.security && ![_login.result.security.allow_login isEqualToString:@"1"]) {
                 [self checkSecurityQuestion];
             } else {
-                [self setLoginIdentity];
+                [self onLoginSuccess];
                 if (_facebookUserData) {
                     [secureStorage setKeychainWithValue:([_facebookUserData objectForKey:@"email"]?:@"") withKey:kTKPD_USEREMAIL];
                 } else if (_gidGoogleUser) {
@@ -771,7 +771,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     if (status) {
         _isnodata = NO;
         if (_login.result.is_login) {
-            [self setLoginIdentity];
+            [self onLoginSuccess];
         }
         else{
             if(_login.result.security && ![_login.result.security.allow_login isEqualToString:@"1"]) {
@@ -789,65 +789,29 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     }
 }
 
-- (void)setLoginIdentity {
-    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-    [secureStorage setKeychainWithValue:@(_login.result.is_login) withKey:kTKPD_ISLOGINKEY];
-    [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_USERIDKEY];
-    [secureStorage setKeychainWithValue:_login.result.full_name withKey:kTKPD_FULLNAMEKEY];
+- (void)onLoginSuccess {
+    [self storeCredentialToKeychain];
+    [self trackUserSignIn];
+
+    [self notifyUserDidLogin];
+
+
+    [self navigateToProperPage];
+
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
+                                                        object:nil
+                                                      userInfo:nil];
     
-    
-    if(_login.result.user_image != nil) {
-        [secureStorage setKeychainWithValue:_login.result.user_image withKey:kTKPD_USERIMAGEKEY];
-    }
-    
-    [secureStorage setKeychainWithValue:_login.result.shop_id withKey:kTKPD_SHOPIDKEY];
-    [secureStorage setKeychainWithValue:_login.result.shop_name withKey:kTKPD_SHOPNAMEKEY];
-    
-    if(_login.result.shop_avatar != nil) {
-        [secureStorage setKeychainWithValue:_login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
-    }
-    
-    [secureStorage setKeychainWithValue:@(_login.result.shop_is_gold) withKey:kTKPD_SHOPISGOLD];
-    [secureStorage setKeychainWithValue:_login.result.msisdn_is_verified withKey:kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY];
-    [secureStorage setKeychainWithValue:_login.result.msisdn_show_dialog withKey:kTKPDLOGIN_API_MSISDN_SHOW_DIALOG_KEY];
-    [secureStorage setKeychainWithValue:_login.result.device_token_id withKey:kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY];
-    [secureStorage setKeychainWithValue:_login.result.shop_has_terms withKey:kTKPDLOGIN_API_HAS_TERM_KEY];
-    [secureStorage setKeychainWithValue:[_activation objectForKey:kTKPDACTIVATION_DATAEMAILKEY] withKey:kTKPD_USEREMAIL];
-    
-    if(_login.result.user_reputation != nil) {
-        ReputationDetail *reputation = _login.result.user_reputation;
-        [secureStorage setKeychainWithValue:@(YES) withKey:@"has_reputation"];
-        [secureStorage setKeychainWithValue:reputation.positive withKey:@"reputation_positive"];
-        [secureStorage setKeychainWithValue:reputation.positive_percentage withKey:@"reputation_positive_percentage"];
-        [secureStorage setKeychainWithValue:reputation.no_reputation withKey:@"no_reputation"];
-        [secureStorage setKeychainWithValue:reputation.negative withKey:@"reputation_negative"];
-        [secureStorage setKeychainWithValue:reputation.neutral withKey:@"reputation_neutral"];
-    }
-    
-    // Login UA
-    [TPAnalytics trackLoginUserID:_login.result.user_id];
-    
-    //add user login to GA
-    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
-    [tracker setAllowIDFACollection:YES];
-    [tracker set:@"&uid" value:_login.result.user_id];
-    // This hit will be sent with the User ID value and be visible in User-ID-enabled views (profiles).
-    [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"UX"            // Event category (required)
-                                                          action:@"User Sign In"  // Event action (required)
-                                                           label:nil              // Event label
-                                                           value:nil] build]];    // Event value
-    
-    [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification object:nil];
-    
-    
-    
+    [Localytics setValue:@"Yes" forProfileAttribute:@"Is Login"];
+}
+
+- (void)navigateToProperPage {
     if([_login.result.msisdn_is_verified isEqualToString:@"0"]){
         HelloPhoneVerificationViewController *controller = [HelloPhoneVerificationViewController new];
         controller.delegate = self.delegate;
         controller.redirectViewController = self.redirectViewController;
-        
+
         if(!_isFromTabBar){
             [self.navigationController setNavigationBarHidden:YES animated:YES];
             [self.navigationController pushViewController:controller animated:YES];
@@ -868,13 +832,63 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
             [((HomeTabViewController *)[tempNavController.viewControllers firstObject]) redirectToProductFeed];
         }
     }
-    
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
-                                                        object:nil
-                                                      userInfo:nil];
-    
-    [Localytics setValue:@"Yes" forProfileAttribute:@"Is Login"];
+}
+
+- (void)notifyUserDidLogin {
+    [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification object:nil];
+}
+
+- (void)trackUserSignIn {
+// Login UA
+    [TPAnalytics trackLoginUserID:_login.result.user_id];
+
+    //add user login to GA
+    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker setAllowIDFACollection:YES];
+    [tracker set:@"&uid" value:_login.result.user_id];
+    // This hit will be sent with the User ID value and be visible in User-ID-enabled views (profiles).
+    [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"UX"            // Event category (required)
+                                                          action:@"User Sign In"  // Event action (required)
+                                                           label:nil              // Event label
+                                                           value:nil] build]];    // Event value
+
+    [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];
+}
+
+- (void)storeCredentialToKeychain {
+    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+    [secureStorage setKeychainWithValue:@(_login.result.is_login) withKey:kTKPD_ISLOGINKEY];
+    [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_USERIDKEY];
+    [secureStorage setKeychainWithValue:_login.result.full_name withKey:kTKPD_FULLNAMEKEY];
+
+
+    if(_login.result.user_image != nil) {
+        [secureStorage setKeychainWithValue:_login.result.user_image withKey:kTKPD_USERIMAGEKEY];
+    }
+
+    [secureStorage setKeychainWithValue:_login.result.shop_id withKey:kTKPD_SHOPIDKEY];
+    [secureStorage setKeychainWithValue:_login.result.shop_name withKey:kTKPD_SHOPNAMEKEY];
+
+    if(_login.result.shop_avatar != nil) {
+        [secureStorage setKeychainWithValue:_login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
+    }
+
+    [secureStorage setKeychainWithValue:@(_login.result.shop_is_gold) withKey:kTKPD_SHOPISGOLD];
+    [secureStorage setKeychainWithValue:_login.result.msisdn_is_verified withKey:kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY];
+    [secureStorage setKeychainWithValue:_login.result.msisdn_show_dialog withKey:kTKPDLOGIN_API_MSISDN_SHOW_DIALOG_KEY];
+    [secureStorage setKeychainWithValue:_login.result.device_token_id withKey:kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY];
+    [secureStorage setKeychainWithValue:_login.result.shop_has_terms withKey:kTKPDLOGIN_API_HAS_TERM_KEY];
+    [secureStorage setKeychainWithValue:[_activation objectForKey:kTKPDACTIVATION_DATAEMAILKEY] withKey:kTKPD_USEREMAIL];
+
+    if(_login.result.user_reputation != nil) {
+        ReputationDetail *reputation = _login.result.user_reputation;
+        [secureStorage setKeychainWithValue:@(YES) withKey:@"has_reputation"];
+        [secureStorage setKeychainWithValue:reputation.positive withKey:@"reputation_positive"];
+        [secureStorage setKeychainWithValue:reputation.positive_percentage withKey:@"reputation_positive_percentage"];
+        [secureStorage setKeychainWithValue:reputation.no_reputation withKey:@"no_reputation"];
+        [secureStorage setKeychainWithValue:reputation.negative withKey:@"reputation_negative"];
+        [secureStorage setKeychainWithValue:reputation.neutral withKey:@"reputation_neutral"];
+    }
 }
 
 - (void)checkSecurityQuestion {
@@ -903,7 +917,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
         
         [self.navigationController presentViewController:navigationController animated:YES completion:nil];
     } else {
-        [self setLoginIdentity];
+        [self onLoginSuccess];
     }
     
     
@@ -1327,7 +1341,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                              if (_login.result.security && ![_login.result.security.allow_login isEqualToString:@"1"]) {
                                  [self checkSecurityQuestion];
                              } else {
-                                 [self setLoginIdentity];
+                                 [self onLoginSuccess];
                                  if (_facebookUserData) {
                                      [secureStorage setKeychainWithValue:([_facebookUserData objectForKey:@"email"] ?: @"") withKey:kTKPD_USEREMAIL];
                                  } else if (_gidGoogleUser) {
