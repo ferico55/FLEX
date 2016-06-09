@@ -170,7 +170,7 @@ static NSString const *rows = @"12";
             [_shops addObjectsFromArray:items.result.shops];
             
             if (_shops.count == 0) {
-                [_act stopAnimating];
+                [_refreshControl endRefreshing];
                 
                 if([self isUsingAnyFilter]){
                     [_noResultView setNoResultDesc:@"Silakan lakukan pencarian dengan filter lain"];
@@ -179,6 +179,8 @@ static NSString const *rows = @"12";
                     [_noResultView setNoResultDesc:@"Silakan lakukan pencarian dengan kata kunci lain"];
                     [_noResultView hideButton:YES];
                 }
+                
+                
                 [_table addSubview: _noResultView];
             }else{
                 [_noResultView removeFromSuperview];
@@ -192,11 +194,12 @@ static NSString const *rows = @"12";
                     _table.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
                 }
                 
-                [_table reloadData];
+                
                 
             }
         }
         
+        [_table reloadData];
         _shopview.hidden = NO;
     }
 
@@ -279,6 +282,7 @@ static NSString const *rows = @"12";
                                         mapping:[self mapping]
                                       onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                           [self didReceiveShopResult:[successResult.dictionary objectForKey:@""]];
+                                          [_act stopAnimating];
                                       } onFailure:^(NSError *errorResult) {
                                           [_refreshControl endRefreshing];
                                           _table.tableFooterView = [self getLoadView].view;
@@ -287,42 +291,62 @@ static NSString const *rows = @"12";
 
 
 #pragma mark - TKPDTabNavigationController Tap Button Notification
--(IBAction)tap:(id)sender
-{
-    UIButton *button = (UIButton *)sender;
-    switch (button.tag) {
-        case 10:
-        {
-            // Action Sort Button
-            SortViewController *controller = [SortViewController new];
-            controller.selectedIndexPath = _sortIndexPath;
-            controller.delegate = self;
-            controller.sortType = SortShopSearch;
-            
-            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:controller];
-            [self.navigationController presentViewController:nav animated:YES completion:nil];
-            
-            break;
-        }
-        case 11:
-        {
-            // Action Filter Button
-            FilterViewController *vc = [FilterViewController new];
-            vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPESHOPVIEWKEY),
-                        kTKPDFILTER_DATAFILTERKEY: _params};
-            vc.delegate = self;
-            UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
-            [self.navigationController presentViewController:nav animated:YES completion:nil];
-            break;
-        }
-        default:
-            break;
-    }
+
+- (IBAction)tapSortButton:(id)sender {
+    SortViewController *controller = [SortViewController new];
+    controller.selectedIndexPath = _sortIndexPath;
+    controller.delegate = self;
+    controller.sortType = SortShopSearch;
+    
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:controller];
+    [self.navigationController presentViewController:nav animated:YES completion:nil];
 }
 
 
-- (LoadingView *)getLoadView
-{
+- (IBAction)tapFilterButton:(id)sender {
+    FilterViewController *vc = [FilterViewController new];
+    vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPESHOPVIEWKEY),
+                kTKPDFILTER_DATAFILTERKEY: _params};
+    vc.delegate = self;
+    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
+    [self.navigationController presentViewController:nav animated:YES completion:nil];
+}
+//
+//-(IBAction)tap:(id)sender
+//{
+//    UIButton *button = (UIButton *)sender;
+//    switch (button.tag) {
+//        case 10:
+//        {
+//            // Action Sort Button
+//            SortViewController *controller = [SortViewController new];
+//            controller.selectedIndexPath = _sortIndexPath;
+//            controller.delegate = self;
+//            controller.sortType = SortShopSearch;
+//            
+//            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:controller];
+//            [self.navigationController presentViewController:nav animated:YES completion:nil];
+//            
+//            break;
+//        }
+//        case 11:
+//        {
+//            // Action Filter Button
+//            FilterViewController *vc = [FilterViewController new];
+//            vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPESHOPVIEWKEY),
+//                        kTKPDFILTER_DATAFILTERKEY: _params};
+//            vc.delegate = self;
+//            UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
+//            [self.navigationController presentViewController:nav animated:YES completion:nil];
+//            break;
+//        }
+//        default:
+//            break;
+//    }
+//}
+
+
+- (LoadingView *)getLoadView {
     if(loadingView == nil)
     {
         loadingView = [LoadingView new];
@@ -335,6 +359,8 @@ static NSString const *rows = @"12";
 -(void)refreshView:(UIRefreshControl*)refresh {
     _page = 1;
     start = 0;
+    [_shops removeAllObjects];
+    [_refreshControl endRefreshing];
     [self loadData];
 }
 
@@ -357,14 +383,12 @@ static NSString const *rows = @"12";
     _sortIndexPath = indexPath;
 }
 
--(void)SortViewController:(SortViewController *)viewController withUserInfo:(NSDictionary *)userInfo
-{
+-(void)SortViewController:(SortViewController *)viewController withUserInfo:(NSDictionary *)userInfo {
     [_params addEntriesFromDictionary:userInfo];
 }
 
 #pragma mark - Filter Delegate
--(void)FilterViewController:(FilterViewController *)viewController withUserInfo:(NSDictionary *)userInfo
-{
+-(void)FilterViewController:(FilterViewController *)viewController withUserInfo:(NSDictionary *)userInfo {
     [_params addEntriesFromDictionary:userInfo];
     [self refreshView:nil];
     [_act startAnimating];
