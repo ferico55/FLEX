@@ -10,22 +10,21 @@ import UIKit
 
 class RequestFilter: NSObject {
 
-    class func fetchListFilter(success: (([FilterObject]) -> Void), failed:((NSError)->Void)) {
+    class func fetchFilter(success: ((response:FilterResponse) -> Void), failed:((NSError)->Void)) {
         let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
         
-        networkManager.requestWithBaseUrl("http://private-d6b26-rennyrun.apiary-mock.com",
-                                          path:"/shipment",
+        networkManager.requestWithBaseUrl("http://private-ccbb0-dynamicfilter.apiary-mock.com",
+                                          path:"/filter",
                                           method: .GET,
                                           parameter: Dictionary(),
-                                          mapping: FilterResponseObject.mapping(),
+                                          mapping: FilterResponse.mapping(),
                                           onSuccess: { (mappingResult, operation) in
                                             
                                             let result : Dictionary = mappingResult.dictionary() as Dictionary
-                                            let response : FilterResponseObject = result[""] as! FilterResponseObject
+                                            let response : FilterResponse = result[""] as! FilterResponse
                                             
-                                            success(response.list)
-                                            
+                                            success(response: response)
                                             
         }) { (error) in
             failed(error)
