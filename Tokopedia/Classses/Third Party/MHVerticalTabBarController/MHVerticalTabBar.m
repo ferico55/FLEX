@@ -134,7 +134,7 @@
 }
 
 - (void)setSelectedIndex:(NSUInteger)selectedIndex animated:(BOOL)animated {
-    if (selectedIndex > [self.tabBarButtons count]) return;
+    if (selectedIndex > [self.tabBarButtons count] || [self.tabBarButtons count] == 0) return;
     
     _selectedIndex = selectedIndex;
     

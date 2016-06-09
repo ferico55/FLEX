@@ -83,6 +83,8 @@
 
 - (void)setViewControllers:(NSArray *)viewControllers {
     
+    if (viewControllers.count == 0) return;
+    
     // remove old child view controllers
     [self.childViewControllers enumerateObjectsUsingBlock:^(UIViewController *viewController, NSUInteger idx, BOOL *stop) {
         [viewController willMoveToParentViewController:nil];
@@ -115,7 +117,7 @@
 }
 
 - (void)setSelectedIndex:(NSUInteger)selectedIndex {
-    if (selectedIndex > [self.viewControllers count]) return;
+    if (selectedIndex > [self.viewControllers count] || [self.viewControllers count] == 0) return;
 
     self.selectedViewController = [self.childViewControllers objectAtIndex:selectedIndex];
 }

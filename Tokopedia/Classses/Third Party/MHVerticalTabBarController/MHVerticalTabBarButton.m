@@ -24,7 +24,7 @@
     self = [super init];
     if (self) {
         [self commonInit];
-        _titleLabel.text = title;
+        [_titleLabel setCustomAttributedText:title];
         _imageView.image = image;
         _imageView.highlightedImage = selectedImage;
     }
@@ -43,6 +43,7 @@
     _titleLabel = [[UILabel alloc] init];
     _titleLabel.backgroundColor = [UIColor clearColor];
     _titleLabel.textAlignment = NSTextAlignmentCenter;
+    _titleLabel.numberOfLines = 0;
     
     _imageView = [[UIImageView alloc] init];
     _imageView.contentMode = UIViewContentModeScaleAspectFit;
