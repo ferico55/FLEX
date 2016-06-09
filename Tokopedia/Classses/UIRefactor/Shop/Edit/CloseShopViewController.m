@@ -493,9 +493,11 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
             _dateSampaiDengan = nil;
         }
         [self setDateButton];
+        [_mulaiDariButton setTitleColor:positiveGreen forState:UIControlStateNormal];
     }else if(alertView.tag == AlertDatePickerSampaiDengan){
         _dateSampaiDengan = date;
         [self setDateButton];
+        [_sampaiDenganButton setTitleColor:positiveGreen forState:UIControlStateNormal];
     }
 }
 
@@ -599,7 +601,7 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
         if(_isFormEnabled){
             _centerViewHeight.constant = _formView.frame.size.height - 1;
         }else{
-            _centerViewHeight.constant = _formView.frame.size.height - _batalView.frame.size.height - 6;
+            _centerViewHeight.constant = _formView.frame.size.height - _batalView.frame.size.height - 10;
         }
         [_aturJadwalTutupView setHidden:YES];
         [_formView setHidden:NO];
@@ -632,7 +634,7 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
         [_failView setHidden:YES];
         [_centerView bringSubviewToFront:_successView];
     }else if(_centerViewType == CenterViewFailView){
-        _centerViewHeight.constant = _successView.frame.size.height;
+        _centerViewHeight.constant = _failView.frame.size.height;
         [_aturJadwalTutupView setHidden:YES];
         [_formView setHidden:YES];
         [_loadingView setHidden:YES];
