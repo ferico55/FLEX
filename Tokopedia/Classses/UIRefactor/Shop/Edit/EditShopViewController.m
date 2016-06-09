@@ -286,7 +286,11 @@
 
 - (void)didTapShopStatus {
     _closeShopController.scheduleDetail = _dataSource.shop.closed_schedule_detail;
-    _closeShopController.closedNote = _dataSource.shop.closed_detail.note;
+    if(_dataSource.shop.closed_detail.note && ![_dataSource.shop.closed_detail.note isEqualToString:@""]){
+        _closeShopController.closedNote = _dataSource.shop.closed_detail.note;
+    }else{
+        _closeShopController.closedNote = _dataSource.shop.closed_schedule_detail.close_later_note;
+    }
     
     [self.navigationController pushViewController:_closeShopController animated:YES];
 }
@@ -297,11 +301,15 @@
 
 - (void)didTapMerchantInfo{
     WebViewController *webViewController = [WebViewController new];
-    NSString *webViewStrUrl =@"https://gold.tokopedia.com";
+    NSString *webViewStrUrl = [self goldMerchantURL];
     webViewController.isLPWebView = NO;
     webViewController.strURL = webViewStrUrl;
     webViewController.strTitle = @"Gold Merchant";
     [self.navigationController pushViewController:webViewController animated:YES];
+}
+
+-(NSString*)goldMerchantURL{
+    return @"https://gold.tokopedia.com";
 }
 
 #pragma mark - Generate Host

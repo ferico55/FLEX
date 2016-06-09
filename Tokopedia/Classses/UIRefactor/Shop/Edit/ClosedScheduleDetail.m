@@ -11,7 +11,7 @@
 @implementation ClosedScheduleDetail
 +(RKObjectMapping *)mapping{
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
-    [mapping addAttributeMappingsFromArray:@[@"close_end", @"close_start", @"close_status"]];
+    [mapping addAttributeMappingsFromArray:@[@"close_end", @"close_start", @"close_status", @"close_later_note"]];
     return mapping;
 }
 @end

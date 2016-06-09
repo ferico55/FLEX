@@ -16,6 +16,7 @@
 @property (nonatomic, strong) NSString* close_end;
 @property (nonatomic, strong) NSString* close_start;
 @property NSInteger close_status;
+@property (nonatomic, strong) NSString* close_later_note;
 
 +(RKObjectMapping*)mapping;
 
