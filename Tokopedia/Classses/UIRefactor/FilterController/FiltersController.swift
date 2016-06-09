@@ -14,17 +14,17 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
     private var selectedCategories: [CategoryDetail] = []
     private var selectedFilters:[ListOption] = []
     private var listControllers : [UIViewController] = []
-    private var completionHandlerFilter:([CategoryDetail], [ListOption])->Void = {(CategoryDetail, ListOption) -> Void in}
+    private var completionHandlerFilter:([CategoryDetail], [ListOption], [String:String])->Void = {(CategoryDetail, ListOption, param) -> Void in}
     private var categories: [CategoryDetail] = []
     private let tabBarController:MHVerticalTabBarController = MHVerticalTabBarController()
     private var presentedController : UIViewController = UIViewController()
     
     private var selectedSort : ListOption = ListOption()
-    private var completionHandlerSort:(ListOption)->Void = {_ in }
+    private var completionHandlerSort:(ListOption, [String:String])->Void = {_ in }
     
     private var completionHandlerResponse:(FilterResponse)->Void = {_ in }
     
-    init(filterResponse:FilterResponse, categories: [CategoryDetail], selectedCategories:[CategoryDetail], selectedFilters:[ListOption], presentedVC:(UIViewController), onCompletion: ((selectedCategories:[CategoryDetail], selectedFilters:[ListOption]) -> Void), response:((FilterResponse) -> Void)){
+    init(filterResponse:FilterResponse, categories: [CategoryDetail], selectedCategories:[CategoryDetail], selectedFilters:[ListOption], presentedVC:(UIViewController), onCompletion: ((selectedCategories:[CategoryDetail], selectedFilters:[ListOption], paramFilter:[String : String]) -> Void), response:((FilterResponse) -> Void)){
         
         self.filterResponse = filterResponse
         self.categories = categories
@@ -39,7 +39,7 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
         self .presentControllerFilter()
     }
     
-    init(sortResponse:FilterResponse, selectedSort: ListOption, presentedVC:(UIViewController), onCompletion: ((selectedSort:ListOption) -> Void), response:((FilterResponse) -> Void)){
+    init(sortResponse:FilterResponse, selectedSort: ListOption, presentedVC:(UIViewController), onCompletion: ((selectedSort:ListOption, paramSort:[String:String]) -> Void), response:((FilterResponse) -> Void)){
         
         self.selectedSort = selectedSort
         self.completionHandlerSort = onCompletion
@@ -100,9 +100,9 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
     }
     
     private func presentControllerSort(){
-        let controller : FilterSortViewController = FilterSortViewController.init(items: filterResponse.sort, selectedObject: selectedSort, onCompletion: { (selectedSort) in
+        let controller : FilterSortViewController = FilterSortViewController.init(items: filterResponse.sort, selectedObject: selectedSort, onCompletion: { (selectedSort: ListOption, paramSort:[String:String]) in
                 self.selectedSort = selectedSort
-                self.completionHandlerSort(self.selectedSort)
+                self.completionHandlerSort(self.selectedSort, paramSort)
             }) { (response) in
                 self.filterResponse = response
                 self.completionHandlerResponse(response)
@@ -205,7 +205,21 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
     
     // MARK: - MHVerticalTabBarController Delegate
     func done() {
-        completionHandlerFilter(selectedCategories, selectedFilters)
+        
+        var params : [String: String] = [:]
+        for filter in selectedFilters {
+            let filterParam = params[filter.key]
+            var value : String?
+            if filterParam != nil && filterParam != "" {
+                value = "\(filterParam!),\(filter.value)"
+            } else {
+                value = filter.value
+            }
+            
+            params[filter.key] = value
+        }
+
+        completionHandlerFilter(selectedCategories, selectedFilters, params)
     }
     func didTapResetButton(button: UIButton!) {
         selectedCategories = []
