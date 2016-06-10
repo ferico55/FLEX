@@ -25,7 +25,7 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
     AlertDatePickerSampaiDengan
 };
 
-@interface CloseShopViewController ()<TKPDAlertViewDelegate, UIScrollViewDelegate, UITextViewDelegate>
+@interface CloseShopViewController ()<TKPDAlertViewDelegate, UIScrollViewDelegate, UITextViewDelegate, UIGestureRecognizerDelegate>
 @property (strong, nonatomic) IBOutlet UIButton *bukaTokoButton;
 @property (strong, nonatomic) IBOutlet UIImageView *shopStatusIndicator;
 @property (strong, nonatomic) IBOutlet UILabel *shopStatusLabel;
@@ -51,6 +51,7 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
 @property (strong, nonatomic) IBOutlet UIButton *submitButton;
 @property (strong, nonatomic) IBOutlet UIView *catatanView;
 @property (strong, nonatomic) IBOutlet UIView *sampaiDenganView;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *hapusButtonWidth;
 
 @property (strong, nonatomic) IBOutlet UIView *centerView;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *centerViewHeight;
@@ -104,18 +105,74 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
     }
     
     [self initializeView];
+    
+    
+    UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapBehind:)];
+    [recognizer setNumberOfTapsRequired:1];
+    recognizer.cancelsTouchesInView = NO; //So the user can still interact with controls in the modal view
+    [self.view.window addGestureRecognizer:recognizer];
+    recognizer.delegate = self;
+}
+
+- (void)handleTapBehind:(UITapGestureRecognizer *)sender
+{
+    if (sender.state == UIGestureRecognizerStateEnded) {
+        
+        // passing nil gives us coordinates in the window
+        CGPoint location = [sender locationInView:nil];
+        
+        // swap (x,y) on iOS 8 in landscape
+        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0")) {
+            if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation)) {
+                location = CGPointMake(location.y, location.x);
+            }
+        }
+        
+        // convert the tap's location into the local view's coordinate system, and test to see if it's in or outside. If outside, dismiss the view.
+        if (![self.view pointInside:[self.view convertPoint:location fromView:self.view.window] withEvent:nil]) {
+            
+            // remove the recognizer first so it's view.window is valid
+            [self.view.window removeGestureRecognizer:sender];
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }
+    }
 }
 
 -(void)initializeView{
     [_activityIndicator startAnimating];
     [self registerForKeyboardNotifications];
     self.title = @"Status Toko";
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Batal" style: UIBarButtonItemStyleBordered target:self action:@selector(didTapBackButton)];
+    self.navigationItem.leftBarButtonItem = backButton;
     
     lightGray = [UIColor colorWithRed:0.899 green:0.892 blue:0.899 alpha:1];
     darkGray = [UIColor colorWithRed:0.533 green:0.533 blue:0.533 alpha:1];
     textGray = [UIColor colorWithRed:0.415 green:0.415 blue:0.415 alpha:1];
     positiveGreen = [UIColor colorWithRed:0.206 green:0.684 blue:0.235 alpha:1];
     negativeRed = [UIColor colorWithRed:0.81 green:0.113 blue:0.13 alpha:1];
+    
+    CGRect mySizeWhenPresented = self.view.frame;
+    [_aturJadwalTutupView setFrame:CGRectMake(_aturJadwalTutupView.frame.origin.x,
+                                              _aturJadwalTutupView.frame.origin.y,
+                                              mySizeWhenPresented.size.width-16,
+                                              _aturJadwalTutupView.frame.size.height)];
+    [_formView setFrame:CGRectMake(_formView.frame.origin.x,
+                                   _formView.frame.origin.y,
+                                   mySizeWhenPresented.size.width-16,
+                                   _formView.frame.size.height)];
+    [_loadingView setFrame:CGRectMake(_loadingView.frame.origin.x,
+                                      _loadingView.frame.origin.y,
+                                      mySizeWhenPresented.size.width-16,
+                                      _loadingView.frame.size.height)];
+    [_successView setFrame:CGRectMake(_successView.frame.origin.x,
+                                      _successView.frame.origin.y,
+                                      mySizeWhenPresented.size.width-16,
+                                      _successView.frame.size.height)];
+    [_failView setFrame:CGRectMake(_failView.frame.origin.x,
+                                   _failView.frame.origin.y,
+                                   mySizeWhenPresented.size.width-16,
+                                   _failView.frame.size.height)];
+    _hapusButtonWidth.constant = _formView.frame.size.width/2-1;
     
     //self.scrollView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
     [_scrollView setScrollEnabled:YES];
@@ -164,6 +221,10 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
     [_centerView addSubview:_failView];
     useAnimation = YES;
     [self adjustView];
+}
+- (IBAction)didTapBackButton
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)registerForKeyboardNotifications
@@ -547,17 +608,19 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
 
 - (void)keyboardWasShown:(NSNotification*)aNotification
 {
-    NSDictionary* info = [aNotification userInfo];
-    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
-    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
-    _scrollView.contentInset = contentInsets;
-    _scrollView.scrollIndicatorInsets = contentInsets;
-    
-    CGRect aRect = self.view.frame;
-    aRect.size.height -= kbSize.height;
-    if (!CGRectContainsPoint(aRect, _catatanTextView.frame.origin) ) {
-        CGPoint scrollPoint = CGPointMake(0.0, _catatanTextView.frame.origin.y+kbSize.height );
-        [_scrollView setContentOffset:scrollPoint animated:YES];
+    if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad){
+        NSDictionary* info = [aNotification userInfo];
+        CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+        UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
+        _scrollView.contentInset = contentInsets;
+        _scrollView.scrollIndicatorInsets = contentInsets;
+        
+        CGRect aRect = self.view.frame;
+        aRect.size.height -= kbSize.height;
+        if (!CGRectContainsPoint(aRect, _catatanTextView.frame.origin) ) {
+            CGPoint scrollPoint = CGPointMake(0.0, _catatanTextView.frame.origin.y+kbSize.height );
+            [_scrollView setContentOffset:scrollPoint animated:YES];
+        }
     }
 }
 

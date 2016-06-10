@@ -48,6 +48,7 @@
                 <outlet property="failView" destination="Mcs-f7-JbY" id="wxO-vu-K4z"/>
                 <outlet property="formView" destination="RwZ-F8-oxE" id="qNc-5F-wO9"/>
                 <outlet property="hapusButton" destination="RmX-Yr-XuP" id="Aro-Cc-tpG"/>
+                <outlet property="hapusButtonWidth" destination="qez-Y6-Dbe" id="nLX-HY-ny0"/>
                 <outlet property="loadingView" destination="1su-HI-0hf" id="Hu5-Hg-LDM"/>
                 <outlet property="mulaiDariButton" destination="py2-OZ-C1r" id="OWV-zh-qe7"/>
                 <outlet property="mulaiDariView" destination="XbR-Q9-Ys3" id="qOh-Qy-evb"/>
@@ -579,10 +580,14 @@
             <rect key="frame" x="0.0" y="0.0" width="304" height="77"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="7iQ-M0-FDG">
-                    <rect key="frame" x="143" y="28" width="20" height="20"/>
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="7iQ-M0-FDG">
+                    <rect key="frame" x="142" y="28" width="20" height="20"/>
                 </activityIndicatorView>
             </subviews>
+            <constraints>
+                <constraint firstItem="7iQ-M0-FDG" firstAttribute="centerY" secondItem="1su-HI-0hf" secondAttribute="centerY" id="0SL-GL-2uS"/>
+                <constraint firstItem="7iQ-M0-FDG" firstAttribute="centerX" secondItem="1su-HI-0hf" secondAttribute="centerX" id="H4u-Id-GfS"/>
+            </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="633" y="486.5"/>
         </view>
@@ -600,7 +605,7 @@
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Saved!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bIg-DG-8Lh">
                     <rect key="frame" x="8" y="67" width="288" height="12"/>
                     <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
@@ -632,7 +637,7 @@
                         <constraint firstAttribute="height" constant="30" id="XKB-yh-2q5"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>

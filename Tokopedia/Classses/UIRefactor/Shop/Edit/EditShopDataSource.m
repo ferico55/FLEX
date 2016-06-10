@@ -159,11 +159,11 @@ NSInteger const SectionForShopTagDescription = 0;
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     NSString *title;
     if (section == 1) {
-        title = @"Gambar Toko";
+        title = @"  Gambar Toko";
     } else if (section == 2) {
-        title = @"Status";
+        title = @"  Status";
     } else if (section == 3) {
-        title = @"Keanggotaan";
+        title = @"  Keanggotaan";
     }
     return title;
 }

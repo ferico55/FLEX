@@ -77,11 +77,39 @@
     _closeShopController = [[CloseShopViewController alloc]init];
     _closeShopController.delegate = self;
     
+    if ([self.tableView respondsToSelector:@selector(setSeparatorInset:)]) {
+        [self.tableView setSeparatorInset:UIEdgeInsetsZero];
+    }
+    if ([self.tableView respondsToSelector:@selector(setLayoutMargins:)]) {
+        [self.tableView setLayoutMargins:UIEdgeInsetsZero];
+    }
+    if([self.tableView respondsToSelector:@selector(setCellLayoutMarginsFollowReadableWidth:)]) {
+        self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
+    }
+    
     [self registerNibs];
     
     [self generateHost];
     [self fetchShopInformation];
 }
+
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+}
+
+-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
+    if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {
+        [cell setSeparatorInset:UIEdgeInsetsZero];
+    }
+    if ([cell respondsToSelector:@selector(setPreservesSuperviewLayoutMargins:)]) {
+        [cell setPreservesSuperviewLayoutMargins:NO];
+    }
+    if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
+        [cell setLayoutMargins:UIEdgeInsetsZero];
+    }
+}
+
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -291,8 +319,17 @@
     }else{
         _closeShopController.closedNote = _dataSource.shop.closed_schedule_detail.close_later_note;
     }
+    //self.navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+    _closeShopController.modalPresentationStyle = UIModalPresentationFormSheet;
     
-    [self.navigationController pushViewController:_closeShopController animated:YES];
+    //[self presentViewController:_closeShopController animated:YES completion:nil];
+    //[self.navigationController pushViewController:_closeShopController animated:YES];
+    
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:_closeShopController];
+    nav.navigationBar.translucent = NO;
+    nav.modalPresentationStyle = UIModalPresentationFormSheet;
+    
+    [self.navigationController presentViewController:nav animated:YES completion:nil];
 }
 
 -(void)didChangeShopStatus{
