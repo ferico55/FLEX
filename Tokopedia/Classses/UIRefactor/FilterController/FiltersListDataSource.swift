@@ -18,7 +18,7 @@ class FiltersListDataSource:  NSObject, UITableViewDelegate, UITableViewDataSour
     
     private var filteredItem:[ListOption] = []
     private var searchActive : Bool = false
-    var searchBarPlaceholder = "Cari"
+    private var searchBarPlaceholder = ""
     
     private var completionHandler:([ListOption])->Void = {(arg:[ListOption]) -> Void in}
     
@@ -26,7 +26,7 @@ class FiltersListDataSource:  NSObject, UITableViewDelegate, UITableViewDataSour
         super.init()
     }
     
-    init(tableView:UITableView, showSearchBar:Bool,selectedObjects:[ListOption], onCompletion: (([ListOption]) -> Void)) {
+    init(tableView:UITableView, showSearchBar:Bool,selectedObjects:[ListOption], searchBarPlaceholder: String, onCompletion: (([ListOption]) -> Void)) {
         super.init()
         
         completionHandler = onCompletion

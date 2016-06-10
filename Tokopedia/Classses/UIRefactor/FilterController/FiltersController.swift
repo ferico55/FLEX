@@ -132,7 +132,7 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
                 
                 listControllers .append(controller)
             } else {
-                let controller: FiltersTableViewController = FiltersTableViewController.init(items: filter.options , selectedObjects: selectedFilters, showSearchBar: false) { (selectedFilters) in
+                let controller: FiltersTableViewController = FiltersTableViewController.init(items: filter.options , selectedObjects: selectedFilters, showSearchBar: (filter.search.searchable.integerValue == 1), searchBarPlaceholder: filter.search.placeholder as String) { (selectedFilters) in
                     self.selectedFilters = selectedFilters
                     self.listControllers.forEach({ (controller) in
                         if controller.isKindOfClass(FiltersTableViewController){
