@@ -35,8 +35,8 @@
     self.grosirLabel.layer.masksToBounds = YES;
     self.preorderLabel.layer.masksToBounds = YES;
 
-    [self.productImage setContentMode:UIViewContentModeCenter];
-    [self.productImage setImageWithURL:[NSURL URLWithString:viewModel.productThumbUrl] placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"]];
+    [self.productImage setImageWithURL:[NSURL URLWithString:viewModel.productThumbUrl] placeholderImage:[UIImage imageNamed:@"grey-bg.png"]];
+    [self.productImage setContentMode:UIViewContentModeScaleAspectFit];
     
     [self.luckyMerchantBadge setImageWithURL:[NSURL URLWithString:viewModel.luckyMerchantImageURL]];
     [self.luckyMerchantBadge setContentMode:UIViewContentModeScaleAspectFill];
@@ -45,8 +45,8 @@
 - (void)setCatalogViewModel:(CatalogModelView *)viewModel {
     [self.goldShopBadge setHidden:YES];
 
-    [self.productImage setContentMode:UIViewContentModeCenter];
-    [self.productImage setImageWithURL:[NSURL URLWithString:viewModel.catalogThumbUrl] placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"]];
+    [self.productImage setImageWithURL:[NSURL URLWithString:viewModel.catalogThumbUrl] placeholderImage:[UIImage imageNamed:@"grey-bg.png"]];
+    [self.productImage setContentMode:UIViewContentModeScaleAspectFit];
     
     self.preorderLabel.hidden = YES;
     self.grosirLabel.hidden = YES;

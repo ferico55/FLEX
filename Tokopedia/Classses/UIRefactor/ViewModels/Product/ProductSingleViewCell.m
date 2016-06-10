@@ -31,8 +31,8 @@
 
     [self.productInfoLabel setText:[NSString stringWithFormat:@"%@ Diskusi - %@ Ulasan", viewModel.productTalk, viewModel.productReview]];
     
-    [self.productImage setContentMode:UIViewContentModeCenter];
-    [self.productImage setImageWithURL:[NSURL URLWithString:viewModel.productThumbUrl] placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"]];
+    [self.productImage setImageWithURL:[NSURL URLWithString:viewModel.productThumbUrl] placeholderImage:[UIImage imageNamed:@"grey-bg.png.png"]];
+    [self.productImage setContentMode:UIViewContentModeScaleAspectFill];
     
     [self.luckyMerchantBadge setImageWithURL:[NSURL URLWithString:viewModel.luckyMerchantImageURL]];
     [self.luckyMerchantBadge setContentMode:UIViewContentModeScaleAspectFill];
@@ -51,8 +51,8 @@
     
     [self.productShop setText:[viewModel.catalogSeller isEqualToString:@"0"] ? @"Tidak ada penjual" : [NSString stringWithFormat:@"%@ Penjual", viewModel.catalogSeller]];
     
-    [self.productImage setImageWithURL:[NSURL URLWithString:viewModel.catalogThumbUrl] placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"]];
-    [self.productImage setContentMode:UIViewContentModeCenter];
+    [self.productImage setImageWithURL:[NSURL URLWithString:viewModel.catalogThumbUrl] placeholderImage:[UIImage imageNamed:@"grey-bg.png.png"]];
+    [self.productImage setContentMode:UIViewContentModeScaleAspectFill];
     
     self.preorderLabel.hidden = YES;
     self.grosirLabel.hidden = YES;

@@ -43,8 +43,9 @@
     self.preorderPosition.constant = !viewModel.isWholesale ? -42 : 3;
     
     
-    [self.productImage setContentMode:UIViewContentModeCenter];
-    [self.productImage setImageWithURL:[NSURL URLWithString:viewModel.productThumbUrl] placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"]];
+    
+    [self.productImage setImageWithURL:[NSURL URLWithString:viewModel.productThumbUrl] placeholderImage:[UIImage imageNamed:@"grey-bg.png"]];
+    
     
     [self.luckyMerchantBadge setImageWithURL:[NSURL URLWithString:viewModel.luckyMerchantImageURL]];
     [self.luckyMerchantBadge setContentMode:UIViewContentModeScaleAspectFill];
@@ -63,7 +64,7 @@
     [self.productShop setText:[viewModel.catalogSeller isEqualToString:@"0"] ? @"Tidak ada penjual" : [NSString stringWithFormat:@"%@ Penjual", viewModel.catalogSeller]];
      self.goldShopBadge.hidden = YES;
     
-    [self.productImage setImageWithURL:[NSURL URLWithString:viewModel.catalogThumbUrl] placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"]];
+    [self.productImage setImageWithURL:[NSURL URLWithString:viewModel.catalogThumbUrl] placeholderImage:[UIImage imageNamed:@"grey-bg.png"]];
     [self.productImage setContentMode:UIViewContentModeCenter];
     
     self.preorderLabel.hidden = YES;

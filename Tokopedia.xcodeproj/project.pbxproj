@@ -2465,6 +2465,7 @@
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
 		7A9E18011D09205C00C22DCD /* SearchShopModelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9E18001D09205C00C22DCD /* SearchShopModelView.swift */; };
+		7ABC3C041D0A7C2200CD6823 /* grey-bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 7ABC3C031D0A7C2200CD6823 /* grey-bg.png */; };
 		7ACE9C541BB00956006C4BB7 /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */; };
 		7ACE9C551BB00956006C4BB7 /* FBAudienceNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C4F1BB00956006C4BB7 /* FBAudienceNetwork.framework */; };
 		7ACE9C581BB00956006C4BB7 /* FBSDKMessengerShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */; };
@@ -6114,6 +6115,7 @@
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		7A9E18001D09205C00C22DCD /* SearchShopModelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchShopModelView.swift; sourceTree = "<group>"; };
+		7ABC3C031D0A7C2200CD6823 /* grey-bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "grey-bg.png"; sourceTree = "<group>"; };
 		7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FacebookSDKStrings.bundle; sourceTree = "<group>"; };
 		7ACE9C4F1BB00956006C4BB7 /* FBAudienceNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBAudienceNetwork.framework; sourceTree = "<group>"; };
 		7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKMessengerShareKit.framework; sourceTree = "<group>"; };
@@ -10974,6 +10976,7 @@
 		62D7E94E1CF3FD7C00BEAFD4 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				7ABC3C031D0A7C2200CD6823 /* grey-bg.png */,
 				7A2A427A1D07D00F00B96468 /* wishtlist-trash.png */,
 				7A2A427D1D07D00F00B96468 /* Onboarding */,
 				7A2A42951D07D00F00B96468 /* TAB BAR BUTTON 30_60_90 */,
@@ -13924,6 +13927,7 @@
 				62D7F3F51CF3FD7E00BEAFD4 /* icon_signin.png in Resources */,
 				62D7F1AB1CF3FD7E00BEAFD4 /* TransactionCCViewController.xib in Resources */,
 				62D7F2261CF3FD7E00BEAFD4 /* banner_3.jpg in Resources */,
+				7ABC3C041D0A7C2200CD6823 /* grey-bg.png in Resources */,
 				BBA298D41CC624AC000630FB /* Main.storyboard in Resources */,
 				62D7F4E81CF3FD7F00BEAFD4 /* icon_hotlist_active.png in Resources */,
 				62D7F45B1CF3FD7E00BEAFD4 /* icon_more.png in Resources */,
