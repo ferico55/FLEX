@@ -70,9 +70,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     NSOperationQueue *_thirdAppOperationQueue;
 
     NSDictionary *_facebookUserData;
-    
-    GPPSignIn *_signIn;
-    GTLPlusPerson *_googleUser;
+
     GIDGoogleUser *_gidGoogleUser;
     UserAuthentificationManager *_userManager;
     
@@ -167,20 +165,10 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     _activation = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
     _thirdAppOperationQueue = [NSOperationQueue new];
-    
-    _signIn = [GPPSignIn sharedInstance];
-    _signIn.shouldFetchGooglePlusUser = YES;
-    _signIn.shouldFetchGoogleUserEmail = YES;
-    _signIn.clientID = kClientId;
-    _signIn.scopes = @[ kGTLAuthScopePlusLogin ];
-    _signIn.delegate = self;
-    [_signIn trySilentAuthentication];
-    
+
     _activationRequest = [ActivationRequest new];
     
     googleSignInButton.layer.shadowOffset = CGSizeMake(1, 1);
-    
-//    [self.googleSignInButton setStyle:kGIDSignInButtonStyleStandard];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -969,8 +957,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                                  if (_facebookUserData) {
                                      [secureStorage setKeychainWithValue:([_facebookUserData objectForKey:@"email"] ?: @"") withKey:kTKPD_USEREMAIL];
                                  } else if (_gidGoogleUser) {
-                                     //TODO check whether value exists
-                                     [secureStorage setKeychainWithValue:(_signIn.userEmail ?: @"") withKey:kTKPD_USEREMAIL];
+                                     [secureStorage setKeychainWithValue:email withKey:kTKPD_USEREMAIL];
                                  }
                              }
                          } else {
@@ -988,7 +975,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                              } else if (_gidGoogleUser) {
                                  controller.gidGoogleUser = _gidGoogleUser;
                                  controller.fullName = _gidGoogleUser.profile.name;
-                                 controller.email = _signIn.authentication.userEmail;
+                                 controller.email = email;
                              }
 
                              UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];

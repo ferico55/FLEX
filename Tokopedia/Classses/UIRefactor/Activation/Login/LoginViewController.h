@@ -7,10 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <GooglePlus/GooglePlus.h>
 #import <GoogleSignIn/GoogleSignIn.h>
-
-@class GPPSignInButton;
 
 @protocol LoginViewDelegate <NSObject>
 
@@ -28,8 +25,6 @@
 @property (weak, nonatomic) id<LoginViewDelegate> delegate;
 @property (weak, nonatomic) id redirectViewController;
 @property BOOL isFromTabBar;
-
-@property (retain, nonatomic) IBOutlet GPPSignInButton *signInButton;
 
 - (void)navigateToRegister;
 
