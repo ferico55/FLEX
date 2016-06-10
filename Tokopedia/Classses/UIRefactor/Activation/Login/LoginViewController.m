@@ -1202,8 +1202,8 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
 
                          TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
 
-                         [[GPPSignIn sharedInstance] signOut];
-                         [[GPPSignIn sharedInstance] disconnect];
+                         [[GIDSignIn sharedInstance] signOut];
+                         [[GIDSignIn sharedInstance] disconnect];
 
                          if (_accountInfo.createdPassword) {
                              if (_login.result.security && ![_login.result.security.allow_login isEqualToString:@"1"]) {
