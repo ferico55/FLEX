@@ -63,7 +63,8 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
         CGFloat cellWidth = screenWidth/numberOfCell - 12;
         return CGSizeMake(cellWidth, cellHeight);
     } else {
-        return [ProductCellSize sizeWithType:UITableViewCellTypeTwoColumn];
+        CGSize normalSize = [ProductCellSize sizeWithType:UITableViewCellTypeTwoColumn];
+        return CGSizeMake(normalSize.width, normalSize.height - 30);
     }
 }
 
