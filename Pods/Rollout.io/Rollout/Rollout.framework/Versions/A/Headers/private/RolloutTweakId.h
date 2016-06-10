@@ -5,7 +5,8 @@
 
 #import <Foundation/Foundation.h>
 
-@class RolloutMethodId;
+@protocol RolloutMethodId;
+@class RolloutSwiftDevModeDataProvider;
 
 typedef enum {
     RolloutTweakId_swizzlingType_replaceImplementation,
@@ -13,15 +14,13 @@ typedef enum {
     RolloutTweakId_swizzlingTypesCount
 } RolloutTweakId_swizzlingType;
 
-
-
 @interface RolloutTweakId : NSObject <NSCopying>
 
-@property (readonly) RolloutMethodId *methodId;
+@property (readonly) id<RolloutMethodId> methodId;
 @property (readonly) RolloutTweakId_swizzlingType swizzlingType;
 
+- (instancetype)initWithMethodId:(id<RolloutMethodId>)methodId swizzlingType:(RolloutTweakId_swizzlingType)swizzlingType;
 
-- (instancetype)initWithMethodId:(RolloutMethodId *)methodId swizzlingType:(RolloutTweakId_swizzlingType)swizzlingType;
-- (instancetype)initFromJsonConfiguration:(NSDictionary*)configuration;
+- (instancetype)initFromJsonConfiguration:(NSDictionary *)configuration swiftDevModeDataProvider:(RolloutSwiftDevModeDataProvider *)swiftDevModeDataProvider;
 
 @end
