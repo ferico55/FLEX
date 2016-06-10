@@ -84,7 +84,7 @@ typedef enum ScrollDirection {
 
 static NSString const *rows = @"12";
 
-@interface HotlistResultViewController () <FilterCategoryViewDelegate, SortViewControllerDelegate, FilterViewControllerDelegate, PromoCollectionViewDelegate, HotlistBannerDelegate> {
+@interface HotlistResultViewController () < PromoCollectionViewDelegate, HotlistBannerDelegate> {
     
     NSInteger _start;
     NSInteger _page;
@@ -113,6 +113,7 @@ static NSString const *rows = @"12";
     
     NSArray *_initialCategories;
     TokopediaNetworkManager *_requestHotlistManager;
+    
     FilterResponse *_filterResponse;
     NSArray<ListOption*> *_selectedFilters;
     NSDictionary *_selectedFilterParam;
