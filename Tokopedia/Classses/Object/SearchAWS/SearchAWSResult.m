@@ -15,6 +15,10 @@
 
 @implementation SearchAWSResult
 
+-(void)setCategory:(NSArray *)category{
+    _breadcrumb = category;
+}
+
 + (RKObjectMapping *)mapping {
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:self];
     
@@ -34,7 +38,10 @@
     
     RKRelationshipMapping *categoryRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"breadcrumb" toKeyPath:@"breadcrumb" withMapping:[CategoryDetail mapping]];
     [resultMapping addPropertyMapping:categoryRelationship];
-    
+
+    RKRelationshipMapping *categoriesRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"category" toKeyPath:@"category" withMapping:[CategoryDetail mapping]];
+    [resultMapping addPropertyMapping:categoriesRelationship];
+
     return resultMapping;
 }
 

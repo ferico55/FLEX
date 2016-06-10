@@ -27,6 +27,7 @@
 
 @property (nonatomic, strong) NSArray *hashtag;
 @property (nonatomic, strong) NSArray *breadcrumb;
+@property (nonatomic, strong) NSArray *category;
 
 
 @end
