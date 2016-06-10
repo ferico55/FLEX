@@ -21,7 +21,7 @@
 
 @end
 
-@interface LoginViewController : GAITrackedViewController <UITextFieldDelegate, GPPSignInDelegate, GIDSignInDelegate, GIDSignInUIDelegate>
+@interface LoginViewController : GAITrackedViewController <UITextFieldDelegate, GIDSignInDelegate, GIDSignInUIDelegate>
 
 @property (strong,nonatomic) NSDictionary *data;
 @property BOOL isPresentedViewController;
