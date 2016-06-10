@@ -145,6 +145,13 @@ ImageSearchRequestDelegate
     
     NSIndexPath *_sortIndexPath;
     NSArray *_initialBreadcrumb;
+    
+    FilterResponse *_filterResponse;
+    NSArray<ListOption*> *_selectedFilters;
+    NSDictionary *_selectedFilterParam;
+    ListOption *_selectedSort;
+    NSDictionary *_selectedSortParam;
+    NSArray<CategoryDetail*> *_selectedCategories;
 }
 
 #pragma mark - Initialization
@@ -537,50 +544,12 @@ ImageSearchRequestDelegate
     switch (button.tag) {
         case 10:
         {
-            // Action Urutkan Button
-            SortViewController *controller = [SortViewController new];
-            controller.delegate = self;
-            controller.selectedIndexPath = _sortIndexPath;
-            if(_isFromImageSearch){
-                controller.sortType = SortImageSearch;
-            }else if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
-                controller.sortType = SortProductSearch;
-            } else {
-                controller.sortType = SortCatalogSearch;
-            }
-            
-            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:controller];
-            [self.navigationController presentViewController:nav animated:YES completion:nil];
-            
+            [self didTapSortButton:sender];
             break;
         }
         case 11:
         {
-            // Action Filter Button
-            FilterType *type = [FilterType new];
-            FilterController *controller =
-            [[FilterController alloc] initWithCategoryType:0
-                                              categoryList:_initialBreadcrumb
-                                                   filters:@[type.Category, type.Shop, type.Location, type.Price, type.shipment, type. Condition, type.preorder]
-                                            selectedFilter:[QueryObject new]
-                                               presentedVC:self
-                                              onCompletion:^(QueryObject * filter) {
-                                                  
-//                                                  _selectedFilter = filter;
-//                                                  [self refreshView:nil];
-                                                  
-                                              }];
-//            FilterViewController *vc = [FilterViewController new];
-//            if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY])
-//                vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPEPRODUCTVIEWKEY),
-//                            kTKPDFILTER_DATAFILTERKEY: _params
-//                            };
-//            else
-//                vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPECATALOGVIEWKEY),
-//                            kTKPDFILTER_DATAFILTERKEY: _params};
-//            vc.delegate = self;
-//            UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
-//            [self.navigationController presentViewController:nav animated:YES completion:nil];
+            [self didTapFilterButton:sender];
             break;
         }
         case 12:
@@ -639,46 +608,49 @@ ImageSearchRequestDelegate
     }
 }
 
-#pragma mark - Filter Delegate
--(void)FilterViewController:(FilterViewController *)viewController withUserInfo:(NSDictionary *)userInfo {
-    [_params addEntriesFromDictionary:userInfo];
-    [self refreshView:nil];
-}
-
-#pragma mark - Sort Delegate
-- (void)didSelectSort:(NSString *)sort atIndexPath:(NSIndexPath *)indexPath {
-    [_params setObject:sort forKey:@"order_by"];
-    
-    if([[_params objectForKey:@"order_by"] isEqualToString:@"99"]){
-        [self restoreSimilarity];
-        //image search sort by similarity
-        NSArray* sortedProducts = [[_product firstObject] sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
-            CGFloat first = (CGFloat)[[(SearchAWSProduct*)a similarity_rank] floatValue];
-            CGFloat second = (CGFloat)[[(SearchAWSProduct*)b similarity_rank] floatValue];
-            return first > second;
-        }];
-        _product[0] = [NSMutableArray arrayWithArray:sortedProducts];
-        _sortIndexPath = indexPath;
-        [_refreshControl beginRefreshing];
-        [_collectionView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-            [_refreshControl endRefreshing];
-            [_collectionView reloadData];
-        });
-    } else {
-        //normal sort
+- (IBAction)didTapSortButton:(UIButton*)sender {
+    FiltersController *controller = [[FiltersController alloc]initWithSortResponse:_filterResponse?:[FilterResponse new] selectedSort:_selectedSort presentedVC:self onCompletion:^(ListOption * sort, NSDictionary*paramSort) {
+        _selectedSortParam = paramSort;
+        _selectedSort = sort;
+        
+        if([[_selectedSortParam objectForKey:@"order_by"] isEqualToString:@"99"]){
+            [self restoreSimilarity];
+            //image search sort by similarity
+            NSArray* sortedProducts = [[_product firstObject] sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
+                CGFloat first = (CGFloat)[[(SearchAWSProduct*)a similarity_rank] floatValue];
+                CGFloat second = (CGFloat)[[(SearchAWSProduct*)b similarity_rank] floatValue];
+                return first > second;
+            }];
+            _product[0] = [NSMutableArray arrayWithArray:sortedProducts];
+            [_refreshControl beginRefreshing];
+            [_collectionView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                [_refreshControl endRefreshing];
+                [_collectionView reloadData];
+            });
+        } else {
+            //normal sort
+            [self refreshView:nil];
+        }
         [self refreshView:nil];
-        _sortIndexPath = indexPath;
-    }
-    
+    } response:^(FilterResponse * filterResponse) {
+        _filterResponse = filterResponse;
+    }];
+
 }
 
-#pragma mark - Category notification
-- (void)changeCategory:(NSNotification *)notification {
-    [_params setObject:[notification.userInfo objectForKey:@"department_id"] forKey:@"department_id"];
-    [_params setObject:[_data objectForKey:@"search"]?:@"" forKey:@"search"];
-    
-    [self refreshView:nil];
+-(IBAction)didTapFilterButton:(UIButton*)sender{
+    FiltersController *controller = [[FiltersController alloc]initWithFilterResponse:_filterResponse?:[FilterResponse new] categories:[_initialBreadcrumb copy] selectedCategories:_selectedCategories selectedFilters:_selectedFilters presentedVC:self onCompletion:^(NSArray<CategoryDetail *> * selectedCategories , NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
+        
+        _selectedCategories = selectedCategories;
+        _selectedFilters = selectedFilters;
+        _selectedFilterParam = paramFilters;
+        [_params setObject:[_data objectForKey:@"search"]?:@"" forKey:@"search"];
+        [self refreshView:nil];
+        
+    } response:^(FilterResponse * filterResponse){
+        _filterResponse = filterResponse;
+    }];
 }
 
 #pragma mark - LoadingView Delegate
@@ -692,12 +664,6 @@ ImageSearchRequestDelegate
 - (NSDictionary*)getParameter {
     NSMutableDictionary *parameter = [[NSMutableDictionary alloc]init];
     [parameter setObject:@"ios" forKey:@"device"];
-    [parameter setObject:[_params objectForKey:@"department_id"]?:@"" forKey:@"sc"];
-    [parameter setObject:[_params objectForKey:@"location"]?:@"" forKey:@"floc"];
-    [parameter setObject:[_params objectForKey:@"order_by"]?:@"" forKey:@"ob"];
-    [parameter setObject:[_params objectForKey:@"price_min"]?:@"" forKey:@"pmin"];
-    [parameter setObject:[_params objectForKey:@"price_max"]?:@"" forKey:@"pmax"];
-    [parameter setObject:[_params objectForKey:@"shop_type"]?:@"" forKey:@"fshop"];
     [parameter setObject:[_params objectForKey:@"sc_identifier"]?:@"" forKey:@"sc_identifier"];
     if(_isFromImageSearch){
         [parameter setObject:_image_url forKey:@"image_url"];
@@ -714,6 +680,9 @@ ImageSearchRequestDelegate
         [parameter setObject:@(_start) forKey:@"start"];
         [parameter setObject:@"true" forKey:@"breadcrumb"];
     }
+    
+    [parameter addEntriesFromDictionary:_selectedSortParam];
+    [parameter addEntriesFromDictionary:_selectedFilterParam];
     return parameter;
 }
 
@@ -745,7 +714,7 @@ ImageSearchRequestDelegate
 
 - (NSDictionary*)pathUrls {
     NSDictionary *pathDictionary = @{
-                                     @"search_catalog" : @"/search/v1/catalog",
+                                     @"search_catalog" : @"/search/v2.1/catalog",
                                      @"search_shop" : @"/search/v1/shop",
                                      @"search_product" : @"/search/v2.1/product"
                                      };

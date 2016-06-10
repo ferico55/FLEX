@@ -82,6 +82,11 @@ static NSString const *rows = @"12";
     NSTimeInterval _timeinterval;
     
     NSIndexPath *_sortIndexPath;
+    
+    FilterResponse *_filterResponse;
+    NSArray<ListOption*> *_selectedFilters;
+    NSDictionary *_selectedFilterParam;
+    NSArray<CategoryDetail*> *_selectedCategories;
 }
 
 #pragma mark - Initialization
@@ -466,18 +471,25 @@ static NSString const *rows = @"12";
         }
         case 11:
         {
-            // Action Filter Button
-            FilterViewController *vc = [FilterViewController new];
-            vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPESHOPVIEWKEY),
-                        kTKPDFILTER_DATAFILTERKEY: _params};
-            vc.delegate = self;
-            UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
-            [self.navigationController presentViewController:nav animated:YES completion:nil];
+            [self didTapFilterButton:sender];
             break;
         }
         default:
             break;
     }
+}
+
+-(IBAction)didTapFilterButton:(UIButton*)button{
+    FiltersController *controller = [[FiltersController alloc]initWithFilterResponse:_filterResponse?:[FilterResponse new] categories:nil selectedCategories:_selectedCategories selectedFilters:_selectedFilters presentedVC:self onCompletion:^(NSArray<CategoryDetail *> * selectedCategories , NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
+        
+        _selectedCategories = selectedCategories;
+        _selectedFilters = selectedFilters;
+        _selectedFilterParam = paramFilters;
+        [self refreshView:nil];
+        
+    } response:^(FilterResponse * filterResponse){
+        _filterResponse = filterResponse;
+    }];
 }
 
 #pragma mark - Methods
@@ -584,26 +596,20 @@ static NSString const *rows = @"12";
                   @"start" : @(start),
                   @"rows" : rows,
                   @"device" : @"ios",
-                  @"ob"     :   [_params objectForKey:kTKPDSEARCH_APIORDERBYKEY]?:@"",
-                  @"floc"    :   [_params objectForKey:kTKPDSEARCH_APILOCATIONKEY]?:@"",
-                  @"fshop"    :   [_params objectForKey:kTKPDSEARCH_APISHOPTYPEKEY]?:@"",
-                  @"pmin"    :   [_params objectForKey:kTKPDSEARCH_APIPRICEMINKEY]?:@"",
-                  @"pmax"    :   [_params objectForKey:kTKPDSEARCH_APIPRICEMAXKEY]?:@""
                   };
     } else {
         param = @{@"sc"   :   deptid?:@"",
                   @"start" : @(start),
                   @"rows" : rows,
                   @"device" : @"ios",
-                  @"ob"         :   [_params objectForKey:kTKPDSEARCH_APIORDERBYKEY]?:@"",
-                  @"floc"        :   [_params objectForKey:kTKPDSEARCH_APILOCATIONKEY]?:@"",
-                  @"fshop"        :   [_params objectForKey:kTKPDSEARCH_APISHOPTYPEKEY]?:@"",
-                  @"pmin"        :   [_params objectForKey:kTKPDSEARCH_APIPRICEMINKEY]?:@"",
-                  @"pmax"        :   [_params objectForKey:kTKPDSEARCH_APIPRICEMAXKEY]?:@""
                   };
     }
     
-    return param;
+    NSMutableDictionary *parameter =[NSMutableDictionary new];
+    [parameter addEntriesFromDictionary:param];
+    [parameter addEntriesFromDictionary:_selectedFilterParam];
+    
+    return [parameter copy];
 }
 
 - (int)getRequestMethod:(int)tag {
@@ -611,10 +617,9 @@ static NSString const *rows = @"12";
 }
 
 
-
 - (NSString*)getPath:(int)tag
 {
-    return @"search/v1/shop";
+    return @"/search/v1/shop";
 }
 
 - (id)getObjectManager:(int)tag
@@ -665,7 +670,7 @@ static NSString const *rows = @"12";
     // register mappings with the provider using a response descriptor
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
                                                                                             method:RKRequestMethodGET
-                                                                                       pathPattern:[self getPath:nil]
+                                                                                       pathPattern:[self getPath:0]
                                                                                            keyPath:@""
                                                                                        statusCodes:kTkpdIndexSetStatusCodeOK];
     
