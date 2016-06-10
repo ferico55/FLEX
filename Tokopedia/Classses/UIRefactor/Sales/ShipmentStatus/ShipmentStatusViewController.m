@@ -42,7 +42,6 @@
 @property (strong, nonatomic) NSString *deadline;
 @property (strong, nonatomic) NSString *invoice;
 @property (strong, nonatomic) NSString *shipmentId;
-@property (strong, nonatomic) NSString *status;
 
 @property (strong, nonatomic) NSString *start;
 @property (strong, nonatomic) NSString *end;
@@ -82,7 +81,6 @@
     self.deadline = @"";
     self.invoice = @"";
     self.shipmentId = @"";
-    self.status = @"";
     
     self.start = @"";
     self.end = @"";
@@ -440,7 +438,7 @@
 #pragma mark - Filter delegate
 
 - (void)filterShipmentStatusInvoice:(NSString *)invoice {
-    self.status = invoice;
+    self.invoice = invoice;
     self.page = @"1";
     
     [self.orders removeAllObjects];

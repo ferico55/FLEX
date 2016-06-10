@@ -812,14 +812,15 @@
     self.tableView.tableFooterView = _footerView;
 
     NSDictionary *parameters = @{
-        @"deadline": _dueDate,
-        @"invoice": _invoiceNumber,
-        @"shipment_id": _courier? _courier.shipment_id: @"",
-        @"start": _start,
-        @"end": _end,
-        @"page": _page,
-        @"per_page": _perPage,
+         @"deadline": _dueDate?:@"",
+         @"invoice": _invoiceNumber?:@"",
+         @"shipment_id": _courier? _courier.shipment_id: @"",
+         @"start": _start?:@"",
+         @"end": _end?:@"",
+         @"page": _page?:@"",
+         @"per_page": _perPage?:@"",
     };
+    
     [self.networkManager requestWithBaseUrl:[NSString v4Url]
                                        path:@"/v4/myshop-order/get_order_process.pl"
                                      method:RKRequestMethodGET
@@ -1104,7 +1105,7 @@
 =======
     [self.actionNetworkManager requestWithBaseUrl:[NSString v4Url]
                                              path:@"/v4/action/myshop-order/proceed_shipping.pl"
-                                           method:RKRequestMethodGET
+                                           method:RKRequestMethodPOST
                                         parameter:parameters
                                           mapping:[ActionOrder mapping]
                                         onSuccess:^(RKMappingResult *mappingResult,
