@@ -40,8 +40,12 @@
 @property(nonatomic, strong) NSString* shop_is_owner;
 @property(nonatomic, strong) NSString* product_url;
 @property(nonatomic, strong) NSString* product_name;
-@property BOOL product_preorder;
-@property BOOL product_wholesale;
+
+@property NSInteger product_wholesale;
+@property NSInteger product_preorder;
+
+@property (nonatomic, assign) BOOL is_product_preorder;
+@property (nonatomic, assign) BOOL is_product_wholesale;
 
 
 @property (nonatomic, strong) ProductModelView *viewModel;

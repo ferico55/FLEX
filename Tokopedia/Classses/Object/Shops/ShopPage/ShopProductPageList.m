@@ -34,6 +34,7 @@
                                                                 @"product_returnable",
                                                                 @"shop_location",
                                                                 @"product_preorder",
+                                                                @"product_wholesale",
                                                                 @"product_normal_price",
                                                                 @"product_image_300",
                                                                 @"shop_name",
@@ -43,6 +44,15 @@
                                                                 @"product_name"]];
     return shopProductPageListMapping;
 }
+
+- (BOOL)is_product_wholesale {
+    return _product_wholesale == 1? YES : NO;
+}
+
+- (BOOL)is_product_preorder {
+    return _product_preorder == 1? YES : NO;
+}
+
 - (ProductModelView *)viewModel {
     if(!_viewModel) {
         ProductModelView *viewModel = [[ProductModelView alloc] init];
@@ -54,8 +64,8 @@
         [viewModel setProductTalk:self.product_talk_count];
         [viewModel setIsGoldShopProduct:[self.shop_gold_status isEqualToString:@"1"]?YES:NO];
         [viewModel setLuckyMerchantImageURL:self.shop_lucky];
-        [viewModel setIsProductPreorder:self.product_preorder];
-        [viewModel setIsWholesale:self.product_wholesale];
+        [viewModel setIsProductPreorder:self.is_product_preorder];
+        [viewModel setIsWholesale:self.is_product_wholesale];
         
         _viewModel = viewModel;
     }
