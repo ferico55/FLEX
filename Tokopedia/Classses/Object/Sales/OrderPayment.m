@@ -10,4 +10,10 @@
 
 @implementation OrderPayment
 
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[self class]];
+    [mapping addAttributeMappingsFromArray:@[@"payment_process_due_date", @"payment_komisi", @"payment_verify_date", @"payment_shipping_due_date", @"payment_process_day_left", @"payment_gateway_id", @"payment_gateway_image", @"payment_shipping_day_left", @"payment_gateway_name"]];
+    return mapping;
+}
+
 @end

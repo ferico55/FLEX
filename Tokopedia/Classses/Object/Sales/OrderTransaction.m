@@ -10,8 +10,6 @@
 
 @implementation OrderTransaction
 
-<<<<<<< HEAD
-=======
 + (RKObjectMapping *)mapping {
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[self class]];
     [mapping addAttributeMappingsFromArray:@[@"order_JOB_status", @"order_auto_resi", @"order_auto_awb"]];
@@ -28,5 +26,4 @@
     return mapping;
 }
 
->>>>>>> 4f18081... sales v4
 @end
