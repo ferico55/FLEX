@@ -36,6 +36,7 @@
     CancelShipmentConfirmationDelegate,
     RequestShipmentCourierDelegate
 >
+<<<<<<< HEAD
 {
     NSMutableArray *_orders;
     OrderTransaction *_selectedOrder;
@@ -75,6 +76,8 @@
     
     OrderBooking *_orderBooking;
 }
+=======
+>>>>>>> 4f18081... sales v4
 
 @property (strong, nonatomic) IBOutlet UIView *headerView;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -82,6 +85,37 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (weak, nonatomic) IBOutlet UILabel *alertLabel;
 
+<<<<<<< HEAD
+=======
+// parameters
+@property (strong, nonatomic) NSString *start;
+@property (strong, nonatomic) NSString *end;
+@property (strong, nonatomic) NSString *page;
+@property (strong, nonatomic) NSString *perPage;
+
+@property (strong, nonatomic) NSString *invoiceNumber;
+@property (strong, nonatomic) NSString *dueDate;
+
+@property (strong, nonatomic) NSURL *nextURL;
+
+@property (strong, nonatomic) ShipmentCourier *courier;
+@property (strong, nonatomic) NSArray *shipmentCouriers;
+
+@property (strong, nonatomic) OrderBooking *orderBooking;
+
+@property (strong, nonatomic) NSMutableArray *orders;
+@property (strong, nonatomic) OrderTransaction *selectedOrder;
+@property (strong, nonatomic) NSMutableDictionary *orderInProcess;
+@property NSInteger numberOfProcessedOrder;
+
+@property (strong, nonatomic) NSIndexPath *selectedIndexPath;
+
+@property (strong, nonatomic) TokopediaNetworkManager *networkManager;
+@property (strong, nonatomic) TokopediaNetworkManager *actionNetworkManager;
+
+@property (strong, nonatomic) FilterShipmentConfirmationViewController *filterController;
+
+>>>>>>> 4f18081... sales v4
 @end
 
 @implementation ShipmentConfirmationViewController
@@ -91,8 +125,24 @@
     
     self.title = @"Konfirmasi Pengiriman";
     
+<<<<<<< HEAD
     _isNoData = YES;
     _isRefreshView = NO;
+=======
+    self.networkManager = [TokopediaNetworkManager new];
+    self.networkManager.isUsingHmac = YES;
+    
+    self.actionNetworkManager = [TokopediaNetworkManager new];
+    self.actionNetworkManager.isUsingHmac = YES;
+
+    self.dueDate = @"";
+    self.invoiceNumber = @"";
+   
+    self.start = @"";
+    self.end = @"";
+    self.page = @"";
+    self.perPage = @"";
+>>>>>>> 4f18081... sales v4
     
     _page = 1;
     _limit = 6;
@@ -335,8 +385,7 @@
     [self.navigationController presentViewController:navigationController animated:YES completion:nil];
 }
 
-- (void)tableViewCell:(UITableViewCell *)cell rejectOrderAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableViewCell:(UITableViewCell *)cell rejectOrderAtIndexPath:(NSIndexPath *)indexPath {
     _selectedOrder = [_orders objectAtIndex:indexPath.row];
     _selectedIndexPath = indexPath;
 
@@ -352,8 +401,7 @@
     [self.navigationController presentViewController:navigationController animated:YES completion:nil];
 }
 
-- (void)tableViewCell:(UITableViewCell *)cell didSelectPriceAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableViewCell:(UITableViewCell *)cell didSelectPriceAtIndexPath:(NSIndexPath *)indexPath {
     _selectedOrder = [_orders objectAtIndex:indexPath.row];
     _selectedIndexPath = indexPath;
     
@@ -366,8 +414,7 @@
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void)tableViewCell:(UITableViewCell *)cell didSelectUserAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableViewCell:(UITableViewCell *)cell didSelectUserAtIndexPath:(NSIndexPath *)indexPath {
     _selectedOrder = [_orders objectAtIndex:indexPath.row];
     _selectedIndexPath = indexPath;
     
@@ -377,6 +424,7 @@
 
 #pragma mark - Reskit methods
 
+<<<<<<< HEAD
 - (void)configureRestKit
 {
     _objectManager =  [RKObjectManager sharedClient];
@@ -759,12 +807,69 @@
 - (void)cancel
 {
 
+=======
+- (void)fetchShipmentConfirmationData {
+    self.tableView.tableFooterView = _footerView;
+
+    NSDictionary *parameters = @{
+        @"deadline": _dueDate,
+        @"invoice": _invoiceNumber,
+        @"shipment_id": _courier? _courier.shipment_id: @"",
+        @"start": _start,
+        @"end": _end,
+        @"page": _page,
+        @"per_page": _perPage,
+    };
+    [self.networkManager requestWithBaseUrl:[NSString v4Url]
+                                       path:@"/v4/myshop-order/get_order_process.pl"
+                                     method:RKRequestMethodGET
+                                  parameter:parameters
+                                    mapping:[Order mapping]
+                                  onSuccess:^(RKMappingResult *mappingResult,
+                                              RKObjectRequestOperation *operation) {
+                                      [self didReceiveMappingResult:mappingResult];
+                                  } onFailure:^(NSError *errorResult) {
+                                  
+                                  }];
+}
+
+- (void)didReceiveMappingResult:(RKMappingResult *)mappingResult {
+    Order *response = [mappingResult.dictionary objectForKey:@""];
+
+    if ([_page isEqualToString:@"1"]) {
+        self.orders = response.result.list;
+    } else {
+        [self.orders addObjectsFromArray:response.result.list];
+    }
+
+    self.orderBooking = response.result.booking;
+
+    self.nextURL =  [NSURL URLWithString:response.result.paging.uri_next];
+    self.page = [self.nextURL valueForKey:@"page"];
+
+
+    NSLog(@"next page : %ld",(long)_page);
+
+    if (self.page == 0) {
+        self.tableView.tableFooterView = nil;
+    }
+    
+    if (self.orders.count == 0) {
+        self.activityIndicator.hidden = YES;
+
+        CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, 103);
+        NoResultView *noResultView = [[NoResultView alloc] initWithFrame:frame];
+        self.tableView.tableFooterView = noResultView;
+        self.tableView.sectionFooterHeight = noResultView.frame.size.height;
+    }
+
+    [self.tableView reloadData];
+>>>>>>> 4f18081... sales v4
 }
 
 #pragma mark - Actions
 
-- (IBAction)tap:(id)sender
-{
+- (void)tap:(id)sender {
     UINavigationController *navigationController = [[UINavigationController alloc] init];
     navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
     navigationController.navigationBar.translucent = NO;
@@ -776,6 +881,7 @@
 
 #pragma mark - Order detail delegate
 
+<<<<<<< HEAD
 - (void)didReceiveActionType:(NSString *)type courier:(ShipmentCourier *)courier courierPackage:(ShipmentCourierPackage *)courierPackage receiptNumber:(NSString *)receiptNumber rejectionReason:(NSString *)rejectionReason
 {
     [self requestActionType:type
@@ -783,12 +889,25 @@
              courierPackage:courierPackage
               receiptNumber:receiptNumber
             rejectionReason:rejectionReason];
+=======
+- (void)didReceiveActionType:(NSString *)type
+                     courier:(ShipmentCourier *)courier
+              courierPackage:(ShipmentCourierPackage *)courierPackage
+               receiptNumber:(NSString *)receiptNumber
+             rejectionReason:(NSString *)rejectionReason {
+    [self requestAction:type
+                courier:courier
+         courierPackage:courierPackage
+          receiptNumber:receiptNumber
+        rejectionReason:rejectionReason];
+>>>>>>> 4f18081... sales v4
 }
 
 #pragma mark - Filter delegate
 
-- (void)filterShipmentInvoice:(NSString *)invoice dueDate:(NSString *)dueDate courier:(ShipmentCourier *)courier
-{
+- (void)filterShipmentInvoice:(NSString *)invoice
+                      dueDate:(NSString *)dueDate
+                      courier:(ShipmentCourier *)courier {
     _invoiceNumber = invoice;
     _dueDate = dueDate;
     _courier = courier;
@@ -809,6 +928,7 @@
 
 #pragma mark - Accept shipment delegate
 
+<<<<<<< HEAD
 - (void)submitConfirmationReceiptNumber:(NSString *)receiptNumber courier:(ShipmentCourier *)courier courierPackage:(ShipmentCourierPackage *)courierPackage
 {
     [self requestActionType:@"confirm"
@@ -816,10 +936,21 @@
              courierPackage:courierPackage
               receiptNumber:receiptNumber
             rejectionReason:nil];
+=======
+- (void)submitConfirmationReceiptNumber:(NSString *)receiptNumber
+                                courier:(ShipmentCourier *)courier
+                         courierPackage:(ShipmentCourierPackage *)courierPackage {
+    [self requestAction:@"confirm"
+                courier:courier
+         courierPackage:courierPackage
+          receiptNumber:receiptNumber
+        rejectionReason:nil];
+>>>>>>> 4f18081... sales v4
 }
 
 #pragma mark - Cancel shipment delegate
 
+<<<<<<< HEAD
 - (void)cancelShipmentWithExplanation:(NSString *)explanation
 {
     [self requestActionType:@"reject"
@@ -827,10 +958,19 @@
              courierPackage:nil
               receiptNumber:nil
             rejectionReason:explanation];
+=======
+- (void)cancelShipmentWithExplanation:(NSString *)explanation {
+    [self requestAction:@"reject"
+                courier:nil
+         courierPackage:nil
+          receiptNumber:nil
+        rejectionReason:explanation];
+>>>>>>> 4f18081... sales v4
 }
 
 #pragma mark - Resktit methods for actions
 
+<<<<<<< HEAD
 - (void)configureActionReskit
 {
     _actionObjectManager =  [RKObjectManager sharedClient];
@@ -899,6 +1039,41 @@
     
     [self performSelector:@selector(reloadData) withObject:nil afterDelay:0.5];
     
+=======
+- (void)requestAction:(NSString *)type
+              courier:(ShipmentCourier *)courier
+       courierPackage:(ShipmentCourierPackage *)courierPackage
+        receiptNumber:(NSString *)receiptNumber
+      rejectionReason:(NSString *)rejectionReason {
+    UserAuthentificationManager *auth = [UserAuthentificationManager new];
+    NSDictionary *parameters = @{
+        API_ACTION_KEY              : API_PROCEED_SHIPPING_KEY,
+        API_ACTION_TYPE_KEY         : type,
+        API_USER_ID_KEY             : auth.getUserId,
+        API_ORDER_ID_KEY            : _selectedOrder.order_detail.detail_order_id,
+        API_SHIPMENT_ID_KEY         : courier.shipment_id ?: [NSNumber numberWithInteger:_selectedOrder.order_shipment.shipment_id],
+        API_SHIPMENT_NAME_KEY       : courier.shipment_name ?: _selectedOrder.order_shipment.shipment_name,
+        API_SHIPMENT_PACKAGE_ID_KEY : courierPackage.sp_id ?: _selectedOrder.order_shipment.shipment_package_id,
+        API_SHIPMENT_REF_KEY        : receiptNumber ?: @"",
+        API_REASON_KEY              : rejectionReason ?: @"",
+    };
+
+    // Add information about which transaction is in processing and at what index path
+    OrderTransaction *order = _selectedOrder;
+
+    NSIndexPath *indexPath = _selectedIndexPath;
+
+    NSDictionary *object = @{@"order" : order, @"indexPath" : indexPath};
+    NSString *key = order.order_detail.detail_order_id;
+    [_orderInProcess setObject:object forKey:key];
+
+    // Delete row for the object
+    [_orders removeObjectAtIndex:indexPath.row];
+    [_tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+
+    [self performSelector:@selector(reloadData) withObject:nil afterDelay:0.5];
+
+>>>>>>> 4f18081... sales v4
     NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
                                                       target:self
                                                     selector:@selector(timeoutAtIndexPath:)
@@ -907,6 +1082,7 @@
     
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
     
+<<<<<<< HEAD
     [_actionRequest setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         
         [self actionRequestSuccess:mappingResult
@@ -925,6 +1101,28 @@
 
 - (void)actionRequestSuccess:(id)object withOperation:(RKObjectRequestOperation *)operation orderId:(NSString *)orderId actionType:(NSString *)actionType
 {
+=======
+    [self.actionNetworkManager requestWithBaseUrl:[NSString v4Url]
+                                             path:@"/v4/action/myshop-order/proceed_shipping.pl"
+                                           method:RKRequestMethodGET
+                                        parameter:parameters
+                                          mapping:[ActionOrder mapping]
+                                        onSuccess:^(RKMappingResult *mappingResult,
+                                                    RKObjectRequestOperation *operation) {
+                                            [self actionRequestSuccess:mappingResult
+                                                         withOperation:operation
+                                                               orderId:key
+                                                            actionType:type];
+                                        } onFailure:^(NSError *error) {
+                                            [self actionRequestFailure:error orderId:key];
+                                        }];
+}
+
+- (void)actionRequestSuccess:(id)object
+               withOperation:(RKObjectRequestOperation *)operation
+                     orderId:(NSString *)orderId
+                  actionType:(NSString *)actionType {
+>>>>>>> 4f18081... sales v4
     NSDictionary *result = ((RKMappingResult *)object).dictionary;
     
     ActionOrder *actionOrder = [result objectForKey:@""];
@@ -950,8 +1148,12 @@
     }
 }
 
+<<<<<<< HEAD
 - (void)actionRequestFailure:(id)object orderId:(NSString *)orderId
 {
+=======
+- (void)actionRequestFailure:(id)object orderId:(NSString *)orderId {
+>>>>>>> 4f18081... sales v4
     NSLog(@"\n\nRequest error : %@\n\n", object);
     NSDictionary *result = ((RKMappingResult *)object).dictionary;
     ActionOrder *actionOrder = [result objectForKey:@""];
@@ -963,20 +1165,27 @@
     [self performSelector:@selector(restoreData:) withObject:orderId];
 }
 
+<<<<<<< HEAD
 - (void)timeoutAtIndexPath:(NSTimer *)timer
 {
+=======
+- (void)timeoutAtIndexPath:(NSTimer *)timer {
+>>>>>>> 4f18081... sales v4
     NSLog(@"%@", NSStringFromSelector(_cmd));
     NSString *orderId = [[timer userInfo] objectForKey:@"orderId"];
     [self performSelector:@selector(restoreData:) withObject:orderId];
 }
 
+<<<<<<< HEAD
 - (void)reloadData
 {
+=======
+- (void)reloadData {
+>>>>>>> 4f18081... sales v4
     [_tableView reloadData];
 }
 
-- (void)restoreData:(NSString *)orderId
-{
+- (void)restoreData:(NSString *)orderId {
     NSDictionary *dict = [_orderInProcess objectForKey:orderId];
     if (dict) {
         OrderTransaction *order = [dict objectForKey:@"order"];
