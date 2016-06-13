@@ -45,10 +45,9 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     CreatePasswordDelegate,
     TKPDAlertViewDelegate,
     FBSDKLoginButtonDelegate,
-    GIDSignInUIDelegate,
-    GPPSignInDelegate
+    GIDSignInUIDelegate
 >
-{    
+{
     UITextField *_activetextfield;
     NSMutableDictionary *_datainput;
     
@@ -76,7 +75,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     NSDictionary *_facebookUserData;
     
     GPPSignIn *_signIn;
-    GTLPlusPerson *_googleUser;
     GIDGoogleUser *_gidGoogleUser;
     
     ActivationRequest *_activationRequest;
@@ -148,14 +146,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     [_datainput setObject:@(3) forKey:kTKPDREGISTER_APIGENDERKEY];
         
     _agreementLabel.userInteractionEnabled = YES;
-
-    _signIn = [GPPSignIn sharedInstance];
-    _signIn.shouldFetchGooglePlusUser = YES;
-    _signIn.shouldFetchGoogleUserEmail = YES;
-    _signIn.clientID = kClientId;
-    _signIn.scopes = @[ kGTLAuthScopePlusLogin ];
-    _signIn.delegate = self;
-    [_signIn trySilentAuthentication];
 
     _loginView = [[FBSDKLoginButton alloc] init];
     _loginView.delegate = self;
@@ -811,8 +801,8 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
         _isnodata = NO;
         if ([_login.result.status isEqualToString:@"2"]) {
             
-            [[GPPSignIn sharedInstance] signOut];
-            [[GPPSignIn sharedInstance] disconnect];
+            [[GIDSignIn sharedInstance] signOut];
+            [[GIDSignIn sharedInstance] disconnect];
             
             TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
             [secureStorage setKeychainWithValue:@(_login.result.is_login) withKey:kTKPD_ISLOGINKEY];
@@ -876,7 +866,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
 //                    fullName = [_googleUser.name.givenName stringByAppendingFormat:@" %@", _googleUser.name.familyName];
 //                }
                 controller.fullName = _gidGoogleUser.profile.name;
-                controller.email = _signIn.authentication.userEmail;
+                controller.email = _gidGoogleUser.profile.email;
             }
             
             UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
@@ -914,71 +904,6 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
     webViewController.strTitle = @"Kebijakan Privasi";
     webViewController.strURL = @"https://m.tokopedia.com/privacy.pl";
     [self.navigationController pushViewController:webViewController animated:YES];
-}
-
-- (void)finishedWithAuth: (GTMOAuth2Authentication *)auth
-                   error: (NSError *) error {
-    NSLog(@"Received error %@ and auth object %@",error, auth);
-    if (error) {
-        NSArray *messages = @[[error localizedDescription]];
-        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messages
-                                                                       delegate:self];
-        [alert show];
-    } else {
-        [self requestGoogleUserDataAuth:auth error:error];
-    }
-}
-
-- (void)requestGoogleUserDataAuth: (GTMOAuth2Authentication *)auth
-                            error: (NSError *) error {
-    GTLQueryPlus *query = [GTLQueryPlus queryForPeopleGetWithUserId:@"me"];
-    NSLog(@"email %@ ", [NSString stringWithFormat:@"Email: %@", _signIn.authentication.userEmail]);
-    NSLog(@"Received error %@ and auth object %@",error, auth);
-    GTLServicePlus* plusService = [[GTLServicePlus alloc] init] ;
-    plusService.retryEnabled = YES;
-    [plusService setAuthorizer:_signIn.authentication];
-    plusService.apiVersion = @"v1";
-    [plusService executeQuery:query
-            completionHandler:^(GTLServiceTicket *ticket,
-                                GTLPlusPerson *person,
-                                NSError *error) {
-                if (error) {
-                    NSArray *message = @[[error localizedDescription]];
-                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:message delegate:self];
-                    [alert show];
-                } else {
-                    NSString *gender = @"";
-                    if ([person.gender isEqualToString:@"male"]) {
-                        gender = @"1";
-                    } else if ([person.gender isEqualToString:@"female"]) {
-                        gender = @"2";
-                    }
-                    
-                    NSString *birthday = @"";
-                    if (person.birthday) {
-                        NSArray *birthdayComponents = [person.birthday componentsSeparatedByString:@"-"];
-                        NSString *year = [birthdayComponents objectAtIndex:0];
-                        if (![year isEqualToString:@"0000"]) {
-                            NSString *day = [birthdayComponents objectAtIndex:2];
-                            NSString *month = [birthdayComponents objectAtIndex:1];
-                            birthday = [NSString stringWithFormat:@"%@/%@/%@", day, month, year];
-                        }
-                    }
-                    
-                    NSDictionary *data = @{
-                                           kTKPDLOGIN_API_APP_TYPE_KEY     : @"2",
-                                           kTKPDLOGIN_API_EMAIL_KEY        : _signIn.authentication.userEmail,
-                                           kTKPDLOGIN_API_NAME_KEY         : [person.name.givenName stringByAppendingFormat:@" %@", person.name.familyName],
-                                           kTKPDLOGIN_API_ID_KEY           : person.identifier?:@"",
-                                           kTKPDLOGIN_API_BIRTHDAY_KEY     : birthday,
-                                           kTKPDLOGIN_API_GENDER_KEY       : gender?:@"",
-                                           };
-                    
-                    _googleUser = person;
-                    
-                    [self requestThirdAppUser:data];
-                }
-            }];
 }
 
 - (void)updateFormViewAppearance {
@@ -1077,8 +1002,8 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                                                     _isnodata = NO;
                                                     if ([_login.result.status isEqualToString:@"2"]) {
                                                         
-                                                        [[GPPSignIn sharedInstance] signOut];
-                                                        [[GPPSignIn sharedInstance] disconnect];
+                                                        [[GIDSignIn sharedInstance] signOut];
+                                                        [[GIDSignIn sharedInstance] disconnect];
                                                         
                                                         TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
                                                         [secureStorage setKeychainWithValue:@(_login.result.is_login) withKey:kTKPD_ISLOGINKEY];
@@ -1137,7 +1062,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                                                         } else if (_gidGoogleUser) {
                                                             controller.gidGoogleUser = _gidGoogleUser;
                                                             controller.fullName = _gidGoogleUser.profile.name;
-                                                            controller.email = _signIn.authentication.userEmail;
+                                                            controller.email = _gidGoogleUser.profile.email;
                                                         }
                                                         
                                                         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
