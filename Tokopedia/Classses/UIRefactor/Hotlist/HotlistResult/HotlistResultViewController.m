@@ -29,7 +29,6 @@
 #import "SearchResultShopViewController.h"
 
 #import "TKPDTabNavigationController.h"
-#import "FilterCategoryViewController.h"
 
 #import "URLCacheController.h"
 #import "GeneralAlertCell.h"
@@ -162,7 +161,6 @@ static NSString const *rows = @"12";
     [super viewDidLoad];
     _page = 0;
     
-    [self setRightButton];
     _requestHotlistManager = [[TokopediaNetworkManager alloc] init];
     _requestHotlistManager.isParameterNotEncrypted = YES;
     
@@ -271,11 +269,6 @@ static NSString const *rows = @"12";
     
     UINib *promoNib = [UINib nibWithNibName:@"PromoCollectionReusableView" bundle:nil];
     [_collectionView registerNib:promoNib forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"PromoCollectionReusableView"];
-}
-
-- (void)setRightButton {
-    UIImage* image = [UIImage imageNamed:@"icon_category_list_white.png"];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(didTapFilterSubCategoryButton)];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
