@@ -10,4 +10,10 @@
 
 @implementation AddShopResult
 
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[self class]];
+    [mapping addAttributeMappingsFromArray:@[@"is_success", @"status_domain", @"shop_id", @"shop_url", @"post_key"]];
+    return mapping;
+}
+
 @end
