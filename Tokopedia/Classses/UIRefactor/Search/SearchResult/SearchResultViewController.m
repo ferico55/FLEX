@@ -665,6 +665,7 @@ ImageSearchRequestDelegate
     NSMutableDictionary *parameter = [[NSMutableDictionary alloc]init];
     [parameter setObject:@"ios" forKey:@"device"];
     [parameter setObject:[_params objectForKey:@"sc_identifier"]?:@"" forKey:@"sc_identifier"];
+    [parameter setObject:[_params objectForKey:@"department_id"]?:@"" forKey:@"sc"];
     if(_isFromImageSearch){
         [parameter setObject:_image_url forKey:@"image_url"];
         if (_strImageSearchResult) {
@@ -811,11 +812,6 @@ ImageSearchRequestDelegate
     if(search.result.department_id && ![search.result.department_id isEqualToString:@"0"]) {
         NSString *departementID = search.result.department_id?:@"";
         [_params setObject:departementID forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
-        if ([_delegate respondsToSelector:@selector(updateTabCategory:)]) {
-            CategoryDetail *category = [CategoryDetail new];
-            category.categoryId = departementID;
-            [_delegate updateTabCategory:category];
-        }
     }
     if([redirect_url isEqualToString:@""] || redirect_url == nil || [redirect_url isEqualToString:@"0"]) {
         NSString *hascatalog = search.result.has_catalog;
