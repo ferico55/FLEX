@@ -12,7 +12,7 @@
 
 @property NSInteger last_order_id;
 @property (strong, nonatomic) NSString *last_shipment_id;
-@property NSInteger last_est_shipping_left;
+@property (strong, nonatomic) NSString *last_est_shipping_left;
 @property (strong, nonatomic) NSString *last_order_status;
 @property (strong, nonatomic) NSString *last_status_date;
 @property NSInteger last_pod_code;
