@@ -54,20 +54,11 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     
     NSMutableDictionary *_activation;
     
-    BOOL _isnodata;    
-    NSInteger _requestcount;
-    
+    BOOL _isnodata;
+
     Login *_login;
     
     UIBarButtonItem *_barbuttonsignin;
-        
-    __weak RKObjectManager *_objectmanager;
-    __weak RKManagedObjectRequestOperation *_request;
-    NSOperationQueue *_operationQueue;
-
-    __weak RKObjectManager *_thirdAppObjectManager;
-    __weak RKManagedObjectRequestOperation *_thirdAppLoginRequest;
-    NSOperationQueue *_thirdAppOperationQueue;
 
     NSDictionary *_facebookUserData;
 
@@ -163,8 +154,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     }
     
     _activation = [NSMutableDictionary new];
-    _operationQueue = [NSOperationQueue new];
-    _thirdAppOperationQueue = [NSOperationQueue new];
 
     _activationRequest = [ActivationRequest new];
     
@@ -436,17 +425,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 
 -(void)cancelLogin
 {
-    [_request cancel];
-    _request = nil;
-    [_objectmanager.operationQueue cancelAllOperations];
-    _objectmanager = nil;
-    
-    [_thirdAppLoginRequest cancel];
-    _thirdAppLoginRequest = nil;
-    
-    [_thirdAppObjectManager.operationQueue cancelAllOperations];
-    _thirdAppObjectManager = nil;
-    
     _loadingView.hidden = YES;
     _emailTextField.hidden = NO;
     _passwordTextField.hidden = NO;
@@ -627,15 +605,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     }
     
     
-}
-
--(void)requestFailureLogin:(id)object
-{
-}
-
--(void)requestTimeoutLogin
-{
-    [self cancelLogin];
 }
 
 #pragma mark - Delegate
