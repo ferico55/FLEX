@@ -881,7 +881,7 @@ static NSString const *rows = @"12";
                              @"q" : [_detailfilter objectForKey:kTKPDHOME_DATAQUERYKEY]?:[_data objectForKey:kTKPDHOME_DATAQUERYKEY],
                              @"start" : @(_start),
                              @"rows" : rows,
-                             @"sc" : selectedCategory?:@"",
+                             @"sc" : selectedCategory?:@"0",
                              @"hashtag" : [self isInitialRequest] ? @"true" : @"",
                              @"breadcrumb" :  [self isInitialRequest] ? @"true" : @"",
                              };
