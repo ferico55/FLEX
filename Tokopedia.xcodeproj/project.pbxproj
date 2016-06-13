@@ -1226,10 +1226,6 @@
 		924181221D00161E00F6083B /* SettingUserProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 924177731D00161B00F6083B /* SettingUserProfileViewController.xib */; };
 		924181231D00161E00F6083B /* BerhasilBukaTokoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 924177771D00161B00F6083B /* BerhasilBukaTokoViewController.m */; };
 		924181241D00161E00F6083B /* BerhasilBukaTokoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 924177781D00161B00F6083B /* BerhasilBukaTokoViewController.xib */; };
-		924181251D00161E00F6083B /* CreateShopCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9241777A1D00161B00F6083B /* CreateShopCell.m */; };
-		924181261D00161E00F6083B /* CreateShopViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9241777C1D00161B00F6083B /* CreateShopViewController.m */; };
-		924181271D00161E00F6083B /* CreateShopViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9241777D1D00161B00F6083B /* CreateShopViewController.xib */; };
-		924181281D00161E00F6083B /* ShopDeliveryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9241777F1D00161B00F6083B /* ShopDeliveryCell.m */; };
 		924181291D00161E00F6083B /* EditShopDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 924177841D00161B00F6083B /* EditShopDataSource.m */; };
 		9241812A1D00161E00F6083B /* EditShopDescriptionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 924177861D00161B00F6083B /* EditShopDescriptionViewCell.m */; };
 		9241812B1D00161E00F6083B /* EditShopDescriptionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 924177871D00161B00F6083B /* EditShopDescriptionViewCell.xib */; };
@@ -4503,14 +4499,6 @@
 		924177761D00161B00F6083B /* BerhasilBukaTokoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BerhasilBukaTokoViewController.h; sourceTree = "<group>"; };
 		924177771D00161B00F6083B /* BerhasilBukaTokoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BerhasilBukaTokoViewController.m; sourceTree = "<group>"; };
 		924177781D00161B00F6083B /* BerhasilBukaTokoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BerhasilBukaTokoViewController.xib; sourceTree = "<group>"; };
-		924177791D00161B00F6083B /* CreateShopCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateShopCell.h; sourceTree = "<group>"; };
-		9241777A1D00161B00F6083B /* CreateShopCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateShopCell.m; sourceTree = "<group>"; };
-		9241777B1D00161B00F6083B /* CreateShopViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateShopViewController.h; sourceTree = "<group>"; };
-		9241777C1D00161B00F6083B /* CreateShopViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateShopViewController.m; sourceTree = "<group>"; };
-		9241777D1D00161B00F6083B /* CreateShopViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CreateShopViewController.xib; sourceTree = "<group>"; };
-		9241777E1D00161B00F6083B /* ShopDeliveryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopDeliveryCell.h; sourceTree = "<group>"; };
-		9241777F1D00161B00F6083B /* ShopDeliveryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopDeliveryCell.m; sourceTree = "<group>"; };
-		924177801D00161B00F6083B /* string_create_shop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_create_shop.h; sourceTree = "<group>"; };
 		924177811D00161B00F6083B /* detail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = detail.h; sourceTree = "<group>"; };
 		924177831D00161B00F6083B /* EditShopDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditShopDataSource.h; sourceTree = "<group>"; };
 		924177841D00161B00F6083B /* EditShopDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditShopDataSource.m; sourceTree = "<group>"; };
@@ -9817,14 +9805,6 @@
 				924177761D00161B00F6083B /* BerhasilBukaTokoViewController.h */,
 				924177771D00161B00F6083B /* BerhasilBukaTokoViewController.m */,
 				924177781D00161B00F6083B /* BerhasilBukaTokoViewController.xib */,
-				924177791D00161B00F6083B /* CreateShopCell.h */,
-				9241777A1D00161B00F6083B /* CreateShopCell.m */,
-				9241777B1D00161B00F6083B /* CreateShopViewController.h */,
-				9241777C1D00161B00F6083B /* CreateShopViewController.m */,
-				9241777D1D00161B00F6083B /* CreateShopViewController.xib */,
-				9241777E1D00161B00F6083B /* ShopDeliveryCell.h */,
-				9241777F1D00161B00F6083B /* ShopDeliveryCell.m */,
-				924177801D00161B00F6083B /* string_create_shop.h */,
 			);
 			path = Create;
 			sourceTree = "<group>";
@@ -12024,7 +12004,6 @@
 				9241831B1D00161E00F6083B /* icon_google_new@3x.png in Resources */,
 				924183611D00161E00F6083B /* icon_medal_silver.png in Resources */,
 				924181A21D00161E00F6083B /* TransactionCartShippingViewController.xib in Resources */,
-				924181271D00161E00F6083B /* CreateShopViewController.xib in Resources */,
 				924185311D00161E00F6083B /* klikbca_guide_3.png in Resources */,
 				92417FA31D00161E00F6083B /* HistoryProductViewController.xib in Resources */,
 				924180B71D00161E00F6083B /* RetryCollectionReusableView.xib in Resources */,
@@ -13371,7 +13350,6 @@
 				92417D7E1D00161E00F6083B /* DetailMyInboxReputation.m in Sources */,
 				92417DF01D00161E00F6083B /* SearchAutoCompleteCatalog.m in Sources */,
 				92417D8D1D00161E00F6083B /* SubmitReviewResult.m in Sources */,
-				924181261D00161E00F6083B /* CreateShopViewController.m in Sources */,
 				92417CC41D00161E00F6083B /* SecurityRequestOTP.m in Sources */,
 				92417F2B1D00161E00F6083B /* CategoryMenuViewCell.m in Sources */,
 				92417EB91D00161E00F6083B /* TKPGoogleDistanceMatrixProductStore.m in Sources */,
@@ -13697,7 +13675,6 @@
 				92417CD31D00161E00F6083B /* CategoryList.m in Sources */,
 				924180111D00161E00F6083B /* MyShopEtalaseEditViewController.m in Sources */,
 				92417EA91D00161E00F6083B /* DKCamera.swift in Sources */,
-				924181281D00161E00F6083B /* ShopDeliveryCell.m in Sources */,
 				92417F291D00161E00F6083B /* FilterCategoryViewController.m in Sources */,
 				92417DA61D00161E00F6083B /* ProfileEditFormResult.m in Sources */,
 				92417EFD1D00161E00F6083B /* CameraAlbumListViewController.m in Sources */,
@@ -13746,7 +13723,6 @@
 				924181CB1D00161E00F6083B /* TxOrderConfirmationDropshipCell.m in Sources */,
 				92417D5C1D00161E00F6083B /* InboxTalk.m in Sources */,
 				92417F611D00161E00F6083B /* NoResultView.m in Sources */,
-				924181251D00161E00F6083B /* CreateShopCell.m in Sources */,
 				92417FF81D00161E00F6083B /* InboxTicketSplitViewController.m in Sources */,
 				9241801E1D00161E00F6083B /* NavigateViewController.m in Sources */,
 				92417E681D00161E00F6083B /* TxOrderConfirmationResult.m in Sources */,
