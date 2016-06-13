@@ -350,7 +350,7 @@
 - (void)actionAfterRequest:(RKMappingResult *)mappingResult
              withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
     CategoryResponse *response = [mappingResult.dictionary objectForKey:@""];
-    self.initialCategories = [NSMutableArray arrayWithArray:response.result.categories];
+    self.initialCategories = [NSMutableArray arrayWithArray:response.data.categories];
     if (self.filterType == FilterCategoryTypeSearchProduct) {
         CategoryDetail *category = [CategoryDetail new];
         category.categoryId = @"0";

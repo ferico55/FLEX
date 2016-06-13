@@ -24,7 +24,7 @@ class RequestFilterCategory: NSObject {
                                             let result : Dictionary = mappingResult.dictionary() as Dictionary
                                             let response : CategoryResponse = result[""] as! CategoryResponse
                                             
-                                            success(response.result.categories)
+                                            success(response.data.categories)
                                             
                                             
         }) { (error) in

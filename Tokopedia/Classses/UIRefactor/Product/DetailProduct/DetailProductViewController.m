@@ -2885,7 +2885,7 @@ OtherProductDelegate
             SearchAWS *otherProduct = [result objectForKey:@""];
             BOOL status = [otherProduct.status isEqualToString:kTKPDREQUEST_OKSTATUS];
             if (status) {
-                _otherProductObj = [NSArray arrayWithArray:otherProduct.result.products];
+                _otherProductObj = [NSArray arrayWithArray:otherProduct.data.products];
                 [self setOtherProducts];
             }
         }

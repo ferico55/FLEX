@@ -563,7 +563,7 @@ ImageSearchRequestDelegate
                 title = [_data objectForKey:kTKPDSEARCH_DATASEARCHKEY];
             }
             title = [[NSString stringWithFormat:@"Jual %@ | Tokopedia", title] capitalizedString];
-            NSURL *url = [NSURL URLWithString: _searchObject.result.share_url?:@"www.tokopedia.com"];
+            NSURL *url = [NSURL URLWithString: _searchObject.data.share_url?:@"www.tokopedia.com"];
             UIActivityViewController *controller = [UIActivityViewController shareDialogWithTitle:title
                                                                                               url:url
                                                                                            anchor:button];
@@ -803,18 +803,18 @@ ImageSearchRequestDelegate
     
     [self reloadView];
     
-    _initialBreadcrumb = search.result.breadcrumb;
+    _initialBreadcrumb = search.data.breadcrumb;
     if ([_delegate respondsToSelector:@selector(updateCategories:)]) {
-        [_delegate updateCategories:search.result.breadcrumb];
+        [_delegate updateCategories:search.data.breadcrumb];
     }
     
-    NSString *redirect_url = search.result.redirect_url;
-    if(search.result.department_id && ![search.result.department_id isEqualToString:@"0"]) {
-        NSString *departementID = search.result.department_id?:@"";
+    NSString *redirect_url = search.data.redirect_url;
+    if(search.data.department_id && ![search.data.department_id isEqualToString:@"0"]) {
+        NSString *departementID = search.data.department_id?:@"";
         [_params setObject:departementID forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
     }
     if([redirect_url isEqualToString:@""] || redirect_url == nil || [redirect_url isEqualToString:@"0"]) {
-        NSString *hascatalog = search.result.has_catalog;
+        NSString *hascatalog = search.data.has_catalog;
         
         if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
             hascatalog = @"1";
@@ -832,17 +832,17 @@ ImageSearchRequestDelegate
         
         
         if([[_data objectForKey:@"type"] isEqualToString:@"search_product"]) {
-            if(search.result.products.count > 0) {
-                [_product addObject: search.result.products];
-                [TPAnalytics trackProductImpressions:search.result.products];
+            if(search.data.products.count > 0) {
+                [_product addObject: search.data.products];
+                [TPAnalytics trackProductImpressions:search.data.products];
             }
             
         } else {
-            if(search.result.catalogs.count > 0) {
+            if(search.data.catalogs.count > 0) {
                 //_product[0] is for products
                 //so everything is in first index
                 //you're welcome!
-                [_product addObject: search.result.catalogs];
+                [_product addObject: search.data.catalogs];
             }
             
         }
@@ -854,8 +854,8 @@ ImageSearchRequestDelegate
             //            [_collectionView layoutIfNeeded];
         }
         [self requestPromo];
-        if (search.result.products.count > 0 || search.result.catalogs.count > 0) {
-            _urinext =  search.result.paging.uri_next;
+        if (search.data.products.count > 0 || search.data.catalogs.count > 0) {
+            _urinext =  search.data.paging.uri_next;
             _start = [[self splitUriToPage:_urinext] integerValue];
             if([_urinext isEqualToString:@""]) {
                 [_flowLayout setFooterReferenceSize:CGSizeZero];
@@ -902,7 +902,7 @@ ImageSearchRequestDelegate
         }
     } else {
         
-        NSURL *url = [NSURL URLWithString:search.result.redirect_url];
+        NSURL *url = [NSURL URLWithString:search.data.redirect_url];
         NSArray* query = [[url path] componentsSeparatedByString: @"/"];
         
         // Redirect URI to hotlist
@@ -912,7 +912,7 @@ ImageSearchRequestDelegate
         
         // redirect uri to search category
         else if ([query[1] isEqualToString:kTKPDSEARCH_DATAURLREDIRECTCATEGORY]) {
-            NSString *departementID = search.result.department_id?:@"";
+            NSString *departementID = search.data.department_id?:@"";
             [_params setObject:departementID forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
             [_params removeObjectForKey:@"search"];
             [_networkManager requestCancel];
@@ -939,7 +939,7 @@ ImageSearchRequestDelegate
 }
 
 - (void)redirectToCatalogResult{
-    NSURL *url = [NSURL URLWithString:_searchObject.result.redirect_url];
+    NSURL *url = [NSURL URLWithString:_searchObject.data.redirect_url];
     NSArray* query = [[url path] componentsSeparatedByString: @"/"];
     
     NSString *catalogID = query[2];
@@ -963,7 +963,7 @@ ImageSearchRequestDelegate
 - (void)redirectToHotlistResult{
     [Localytics triggerInAppMessage:@"Hot List Result Screen"];
     
-    NSURL *url = [NSURL URLWithString:_searchObject.result.redirect_url];
+    NSURL *url = [NSURL URLWithString:_searchObject.data.redirect_url];
     NSArray* query = [[url path] componentsSeparatedByString: @"/"];
     
     HotlistResultViewController *vc = [HotlistResultViewController new];

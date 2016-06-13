@@ -837,7 +837,7 @@ static NSString const *rows = @"12";
 - (void)didReceiveHotlistResult:(SearchAWS*)searchResult {
     //remove all view when first page
     if([self isInitialRequest]) {
-        _hashtags = searchResult.result.hashtag;
+        _hashtags = searchResult.data.hashtag;
         [_hashtagsscrollview removeAllSubviews];
         [self setHashtagButtons:_hashtags];
         
@@ -847,19 +847,19 @@ static NSString const *rows = @"12";
         [_firstFooter removeFromSuperview];
         
         //set no resultview
-        if(searchResult.result.products.count == 0) {
+        if(searchResult.data.products.count == 0) {
             [_collectionView addSubview:_noResultView];
         }
     }
     
     //set initial category
     if (_initialCategories == nil) {
-        _initialCategories = [searchResult.result.breadcrumb mutableCopy];
+        _initialCategories = [searchResult.data.breadcrumb mutableCopy];
     }
     
     //set products
-    [_products addObject:searchResult.result.products];
-    _urinext = searchResult.result.paging.uri_next;
+    [_products addObject:searchResult.data.products];
+    _urinext = searchResult.data.paging.uri_next;
     _start = [[_requestHotlistManager explodeURL:_urinext withKey:@"start"] integerValue];
     _page++;
     
@@ -867,7 +867,7 @@ static NSString const *rows = @"12";
     
     [_collectionView reloadData];
     
-    [TPAnalytics trackProductImpressions:searchResult.result.products];
+    [TPAnalytics trackProductImpressions:searchResult.data.products];
 }
 
 - (NSDictionary*)parameters {
