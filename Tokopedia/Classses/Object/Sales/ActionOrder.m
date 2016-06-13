@@ -10,14 +10,11 @@
 
 @implementation ActionOrder
 
-<<<<<<< HEAD
-=======
-+ (RKObjectMapping *)mapping {
++ (RKObjectMapping *)mapping {
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[self class]];
     [mapping addAttributeMappingsFromArray:@[@"status", @"message_status", @"message_error", @"server_process_time"]];
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data" toKeyPath:@"result" withMapping:[ActionOrderResult mapping]]];
     return mapping;
 }
 
->>>>>>> 4f18081... sales v4
 @end
