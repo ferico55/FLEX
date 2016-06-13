@@ -947,17 +947,10 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
 
 
 #pragma mark - Action
-<<<<<<< HEAD
 - (IBAction)actionCreateShop:(id)sender
 {
-    CreateShopViewController *createShopViewController = [CreateShopViewController new];
-    createShopViewController.moreViewController = self;
-    [self pushViewController:createShopViewController];
-=======
-- (IBAction)actionCreateShop:(id)sender {
     OpenShopViewController *controller = [[OpenShopViewController alloc] initWithNibName:@"OpenShopViewController" bundle:nil];
     [self pushViewController:controller];
->>>>>>> 4f18081... sales v4
 }
 
 - (void)updateSaldoTokopedia:(NSNotification*)notification {
