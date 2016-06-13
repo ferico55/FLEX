@@ -45,7 +45,7 @@
     _networkManager.isUsingDefaultError = NO;
     [_networkManager requestWithBaseUrl:[NSString v4Url]
                                    path:@"/v4/action/myshop-info/update_shop_close.pl"
-                                 method:RKRequestMethodGET
+                                 method:RKRequestMethodPOST
                               parameter:@{@"close_action":@(CLOSE_SHOP_ACTION_OPEN)
                                           }
                                 mapping:[CloseShopResponse mapping]

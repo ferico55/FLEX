@@ -85,13 +85,13 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
     UIColor *positiveGreen;
     UIColor *negativeRed;
     UIColor *textGray;
-    
+    BOOL isLoading;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     _closeShopRequest = [CloseShopRequest new];
-    
+    isLoading = NO;
 }
 
 -(void)viewDidAppear:(BOOL)animated{
@@ -142,7 +142,7 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
     [_activityIndicator startAnimating];
     [self registerForKeyboardNotifications];
     self.title = @"Status Toko";
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Batal" style: UIBarButtonItemStyleBordered target:self action:@selector(didTapBackButton)];
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Tutup" style: UIBarButtonItemStyleBordered target:self action:@selector(didTapBackButton)];
     self.navigationItem.leftBarButtonItem = backButton;
     
     lightGray = [UIColor colorWithRed:0.899 green:0.892 blue:0.899 alpha:1];
@@ -299,14 +299,15 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
     [datePicker show];
 }
 - (IBAction)submitButtonTapped:(id)sender {
-    if([self validateForm]){
+    if(!isLoading && [self validateForm]){
+        isLoading = YES;
         _centerViewType = CenterViewLoadingView;
         [self adjustView];
         if([_tutupSekarangSwitch isOn]){
             [_closeShopRequest requestActionCloseShopFromNowUntil:[self stringFromNSDate:_dateSampaiDengan]
                                                         closeNote:_catatanTextView.text
                                                         onSuccess:^(CloseShopResponse *result) {
-                                                            if(result.data.is_success){
+                                                            if([result.data.is_success boolValue]){
                                                                 _centerViewType = CenterViewSuccessView;
                                                                 _scheduleDetail.close_status = CLOSE_STATUS_CLOSED;
                                                                 _scheduleDetail.close_start = [self stringFromNSDate:_dateMulaiDari];
@@ -327,6 +328,7 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
                                                             _centerViewType = CenterViewFormView;
                                                             [self performSelector:@selector(adjustView) withObject:nil afterDelay:VIEW_TRANSITION_DELAY];
                                                             [_tutupSekarangSwitch setOn:NO];
+                                                            isLoading = NO;
                                                         }
                                                         onFailure:^(NSError *error) {
                                                             _centerViewType = CenterViewFailView;
@@ -335,6 +337,7 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
                                                             
                                                             _centerViewType = CenterViewFormView;
                                                             [self performSelector:@selector(adjustView) withObject:nil afterDelay:VIEW_TRANSITION_DELAY];
+                                                            isLoading = NO;
                                                         }];
         }else{
             if(_scheduleDetail.close_status == CLOSE_STATUS_OPEN){
@@ -342,7 +345,7 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
                                                         until:[self stringFromNSDate:_dateSampaiDengan]
                                                     closeNote:_catatanTextView.text
                                                     onSuccess:^(CloseShopResponse *result) {
-                                                        if(result.data.is_success){
+                                                        if([result.data.is_success boolValue]){
                                                             _centerViewType = CenterViewSuccessView;
                                                             _scheduleDetail.close_status = CLOSE_STATUS_CLOSE_SCHEDULED;
                                                             _scheduleDetail.close_start = [self stringFromNSDate:_dateMulaiDari];
@@ -360,6 +363,7 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
                                                         [self.delegate didChangeShopStatus];
                                                         _centerViewType = CenterViewFormView;
                                                         [self performSelector:@selector(adjustView) withObject:nil afterDelay:VIEW_TRANSITION_DELAY];
+                                                        isLoading = NO;
                                                     }
                                                     onFailure:^(NSError *error) {
                                                         _centerViewType = CenterViewFailView;
@@ -368,12 +372,13 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
                                                         
                                                         _centerViewType = CenterViewFormView;
                                                         [self performSelector:@selector(adjustView) withObject:nil afterDelay:VIEW_TRANSITION_DELAY];
+                                                        isLoading = NO;
                                                     }];
             }else if(_scheduleDetail.close_status == CLOSE_STATUS_CLOSED){
                 [_closeShopRequest requestActionExtendCloseShopUntil:[self stringFromNSDate:_dateSampaiDengan]
                                                            closeNote:_catatanTextView.text
                                                            onSuccess:^(CloseShopResponse *result) {
-                                                               if(result.data.is_success){
+                                                               if([result.data.is_success boolValue]){
                                                                    _centerViewType = CenterViewSuccessView;
                                                                    _scheduleDetail.close_status = CLOSE_STATUS_CLOSED;
                                                                    _scheduleDetail.close_start = [self stringFromNSDate:_dateMulaiDari];
@@ -391,6 +396,7 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
                                                                [self.delegate didChangeShopStatus];
                                                                _centerViewType = CenterViewFormView;
                                                                [self performSelector:@selector(adjustView) withObject:nil afterDelay:VIEW_TRANSITION_DELAY];
+                                                               isLoading = NO;
                                                            } onFailure:^(NSError *error) {
                                                                _centerViewType = CenterViewFailView;
                                                                [self setFailLabelTextWithError:@[@"Kendala koneksi internet"]];
@@ -398,13 +404,14 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
                                                                
                                                                _centerViewType = CenterViewFormView;
                                                                [self performSelector:@selector(adjustView) withObject:nil afterDelay:VIEW_TRANSITION_DELAY];
+                                                               isLoading = NO;
                                                            }];
             }else if(_scheduleDetail.close_status == CLOSE_STATUS_CLOSE_SCHEDULED){
                 [_closeShopRequest requestActionCloseShopFrom:[self stringFromNSDate:_dateMulaiDari]
                                                         until:[self stringFromNSDate:_dateSampaiDengan]
                                                     closeNote:_catatanTextView.text
                                                     onSuccess:^(CloseShopResponse *result) {
-                                                        if(result.data.is_success){
+                                                        if([result.data.is_success boolValue]){
                                                             _centerViewType = CenterViewSuccessView;
                                                             _scheduleDetail.close_status = CLOSE_STATUS_CLOSE_SCHEDULED;
                                                             _scheduleDetail.close_start = [self stringFromNSDate:_dateMulaiDari];
@@ -422,6 +429,7 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
                                                         }
                                                         _centerViewType = CenterViewFormView;
                                                         [self performSelector:@selector(adjustView) withObject:nil afterDelay:VIEW_TRANSITION_DELAY];
+                                                        isLoading = NO;
                                                     } onFailure:^(NSError *error) {
                                                         _centerViewType = CenterViewFailView;
                                                         [self setFailLabelTextWithError:@[@"Kendala koneksi internet"]];
@@ -429,6 +437,7 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
                                                         
                                                         _centerViewType = CenterViewFormView;
                                                         [self performSelector:@selector(adjustView) withObject:nil afterDelay:VIEW_TRANSITION_DELAY];
+                                                        isLoading = NO;
                                                     }];
             }
         }
@@ -446,77 +455,85 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
 }
 
 - (IBAction)hapusButtonTapped:(id)sender {
-    _centerViewType = CenterViewLoadingView;
-    [self adjustView];
-    
-    [_closeShopRequest requestActionAbortCloseScheduleOnSuccess:^(CloseShopResponse *result) {
-        if(result.data.is_success){
-            _centerViewType = CenterViewSuccessView;
-            _scheduleDetail.close_status = CLOSE_STATUS_OPEN;
-            _scheduleDetail.close_start = [self stringFromNSDate:_dateMulaiDari];
-            _scheduleDetail.close_end = [self stringFromNSDate:_dateSampaiDengan];
-            _isFormEnabled = YES;
-            [self adjustView];
-            [self.delegate didChangeShopStatus];
-            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITSHOPPOSTNOTIFICATIONNAMEKEY
-                                                                object:nil
-                                                              userInfo:nil];
-        }else{
-            _centerViewType = CenterViewFailView;
-            [self setFailLabelTextWithError:result.message_error];
-            [self adjustView];
-        }
-        
-        _centerViewType = CenterViewFormView;
-        [self performSelector:@selector(adjustView) withObject:nil afterDelay:VIEW_TRANSITION_DELAY];
-
-    } onFailure:^(NSError *error) {
-        _centerViewType = CenterViewFailView;
-        [self setFailLabelTextWithError:@[@"Kendala koneksi internet"]];
+    if(!isLoading){
+        isLoading = YES;
+        _centerViewType = CenterViewLoadingView;
         [self adjustView];
         
-        _centerViewType = CenterViewFormView;
-        [self performSelector:@selector(adjustView) withObject:nil afterDelay:VIEW_TRANSITION_DELAY];
-    }];
+        [_closeShopRequest requestActionAbortCloseScheduleOnSuccess:^(CloseShopResponse *result) {
+            if([result.data.is_success boolValue]){
+                _centerViewType = CenterViewSuccessView;
+                _scheduleDetail.close_status = CLOSE_STATUS_OPEN;
+                _scheduleDetail.close_start = [self stringFromNSDate:_dateMulaiDari];
+                _scheduleDetail.close_end = [self stringFromNSDate:_dateSampaiDengan];
+                _isFormEnabled = YES;
+                [self adjustView];
+                [self.delegate didChangeShopStatus];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITSHOPPOSTNOTIFICATIONNAMEKEY
+                                                                    object:nil
+                                                                  userInfo:nil];
+            }else{
+                _centerViewType = CenterViewFailView;
+                [self setFailLabelTextWithError:result.message_error];
+                [self adjustView];
+            }
+            
+            _centerViewType = CenterViewFormView;
+            [self performSelector:@selector(adjustView) withObject:nil afterDelay:VIEW_TRANSITION_DELAY];
+            isLoading = NO;
+        } onFailure:^(NSError *error) {
+            _centerViewType = CenterViewFailView;
+            [self setFailLabelTextWithError:@[@"Kendala koneksi internet"]];
+            [self adjustView];
+            
+            _centerViewType = CenterViewFormView;
+            [self performSelector:@selector(adjustView) withObject:nil afterDelay:VIEW_TRANSITION_DELAY];
+            isLoading = NO;
+        }];
+    }
 }
 
 - (IBAction)bukaTokoTapped:(id)sender {
-    useAnimation = YES;
-    _centerViewType = CenterViewLoadingView;
-    [self adjustView];
-    [_closeShopRequest requestActionOpenShopOnSuccess:^(CloseShopResponse *result) {
-        if(result.data.is_success){
-            _scheduleDetail.close_status = CLOSE_STATUS_OPEN;
-            
-            _dateMulaiDari = nil;
-            _dateSampaiDengan = nil;
-            [self setDateButton];
-            
-            _isFormEnabled = YES;
-            useAnimation = YES;
-            _centerViewType = CenterViewSuccessView;
-            [self adjustView];
-            [self.delegate didChangeShopStatus];
-            
-            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITSHOPPOSTNOTIFICATIONNAMEKEY
-                                                                object:nil
-                                                              userInfo:nil];
-        }else{
-            _centerViewType = CenterViewFailView;
-            [self setFailLabelTextWithError:result.message_error];
-            [self adjustView];
-        }
-        _centerViewType = CenterViewFormView;
-        [self performSelector:@selector(adjustView) withObject:nil afterDelay:VIEW_TRANSITION_DELAY];
-    } onFailure:^(NSError *error) {
-        _centerViewType = CenterViewFailView;
-        [self setFailLabelTextWithError:@[@"Kendala koneksi internet"]];
+    if(!isLoading){
+        isLoading = YES;
+        useAnimation = YES;
+        _centerViewType = CenterViewLoadingView;
         [self adjustView];
-        
-        _centerViewType = CenterViewFormView;
-        [self performSelector:@selector(adjustView) withObject:nil afterDelay:VIEW_TRANSITION_DELAY];
-
-    }];
+        [_closeShopRequest requestActionOpenShopOnSuccess:^(CloseShopResponse *result) {
+            if([result.data.is_success boolValue]){
+                _scheduleDetail.close_status = CLOSE_STATUS_OPEN;
+                
+                _dateMulaiDari = nil;
+                _dateSampaiDengan = nil;
+                [self setDateButton];
+                
+                _isFormEnabled = YES;
+                useAnimation = YES;
+                _centerViewType = CenterViewSuccessView;
+                [self adjustView];
+                [self.delegate didChangeShopStatus];
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITSHOPPOSTNOTIFICATIONNAMEKEY
+                                                                    object:nil
+                                                                  userInfo:nil];
+            }else{
+                _centerViewType = CenterViewFailView;
+                [self setFailLabelTextWithError:result.message_error];
+                [self adjustView];
+            }
+            _centerViewType = CenterViewFormView;
+            [self performSelector:@selector(adjustView) withObject:nil afterDelay:VIEW_TRANSITION_DELAY];
+            isLoading = NO;
+        } onFailure:^(NSError *error) {
+            _centerViewType = CenterViewFailView;
+            [self setFailLabelTextWithError:@[@"Kendala koneksi internet"]];
+            [self adjustView];
+            
+            _centerViewType = CenterViewFormView;
+            [self performSelector:@selector(adjustView) withObject:nil afterDelay:VIEW_TRANSITION_DELAY];
+            isLoading = NO;
+        }];
+    }
 }
 
 - (BOOL)validateForm{
