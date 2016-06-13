@@ -858,8 +858,8 @@ typedef enum
         textField.text = product.product_min_order;
     }
     
-    [self doCalculate];
-    [_tableView reloadData];
+    [self doCalculate];    
+    [self requestRate];
 }
 
 - (BOOL)textField:(UITextField*)textField shouldChangeCharactersInRange:(NSRange)range
