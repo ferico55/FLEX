@@ -561,7 +561,7 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
-    self.title = ([self.title isEqualToString:@""])?@"Pembayaran": self.title;
+    self.title = @"Pembayaran";
 }
 
 @end
