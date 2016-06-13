@@ -109,19 +109,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 @property (strong, nonatomic) IBOutlet UILabel *googleSignInLabel;
 @property (strong, nonatomic) FBSDKLoginButton *loginView;
 
-- (IBAction)tap:(id)sender;
-- (IBAction)tapsegment:(id)sender;
-
-- (void)cancel;
-- (void)configureRestKit;
-- (void)LoadDataAction:(id)userinfo;
-- (void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation*)operation;
-- (void)requestfailure:(id)object;
-- (void)requesttimeout;
-
-- (void)keyboardWillShow:(NSNotification *)notification;
-- (void)keyboardWillHide:(NSNotification*)aNotification;
-
 @end
 
 @implementation RegisterViewController
@@ -373,25 +360,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 - (IBAction)tapsegment:(UISegmentedControl *)sender {
     [_activetextfield resignFirstResponder];
     [_datainput setObject:@(sender.selectedSegmentIndex+1) forKey:kTKPDREGISTER_APIGENDERKEY];
-}
-
-- (IBAction)gesture:(id)sender {
-    UITapGestureRecognizer *gesture = (UITapGestureRecognizer *)sender;
-    switch (gesture.state) {
-        case UIGestureRecognizerStateBegan: {
-            break;
-        }
-        case UIGestureRecognizerStateChanged: {
-            break;
-        }
-        case UIGestureRecognizerStateEnded: {
-            [_activetextfield resignFirstResponder];
-            break;
-        }
-        
-        default:
-            break;
-    }
 }
 
 #pragma mark - Memory Management
