@@ -50,8 +50,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     GIDSignInDelegate
 >
 {
-    UITextField *_activetextfield;
-    
     NSMutableDictionary *_activation;
     
     BOOL _isnodata;
@@ -218,8 +216,8 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 #pragma mark - View Actipn
 -(IBAction)tap:(id)sender
 {
-    [_activetextfield resignFirstResponder];
-    
+    [self.view endEditing:YES];
+
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIBarButtonItem *btn = (UIBarButtonItem*)sender;
         switch (btn.tag) {
@@ -610,7 +608,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 #pragma mark - Delegate
 -(void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    _activetextfield = textField;
 }
 
 -(void)textFieldDidEndEditing:(UITextField *)textField

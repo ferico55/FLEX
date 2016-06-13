@@ -239,7 +239,8 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 #pragma mark - View Action
 -(IBAction)tap:(id)sender
 {
-    [_activetextfield resignFirstResponder];
+    [self.view endEditing:YES];
+
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIBarButtonItem *btn = (UIBarButtonItem*)sender;
         switch (btn.tag) {
