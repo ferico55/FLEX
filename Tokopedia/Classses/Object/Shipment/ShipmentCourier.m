@@ -15,4 +15,21 @@
     return _shipment_name;
 }
 
++(NSDictionary *)attributeMappingDictionary
+{
+    NSArray *keys = @[@"shipment_id",
+                      @"shipment_name",
+                      @"shipment_available",
+                      @"shipment_image"
+                      ];
+    return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
+}
+
++(RKObjectMapping*)mapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+    return mapping;
+}
+
 @end
