@@ -120,7 +120,8 @@
     NSString * dropshipString = [[tempDropshipStringList valueForKey:@"description"] componentsJoinedByString:@"*~*"];
     
     NSString * partialString = [[tempPartialStringList valueForKey:@"description"] componentsJoinedByString:@"*~*"];
-    NSNumber *deposit = [[NSNumberFormatter IDRFormarter] numberFromString:saldo];
+    NSString *saldoWithIDR = [NSString stringWithFormat:@"Rp %@",saldo];
+    NSNumber *deposit = [[NSNumberFormatter IDRFormarter] numberFromString:saldoWithIDR];
     
     NSString *usedSaldo = @"0";
     if (isUsingSaldo) {
