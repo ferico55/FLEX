@@ -31,13 +31,6 @@ import UIKit
     private var completionHandler:([CategoryDetail])->Void = {(arg:[CategoryDetail]) -> Void in}
     private var refreshControl : UIRefreshControl = UIRefreshControl()
     
-    init(selectedCategories:[CategoryDetail], filterType:CategoryFilterType, initialCategories:[CategoryDetail], onCompletion: (([CategoryDetail]) -> Void)){
-        completionHandler = onCompletion
-        self.selectedCategories =  selectedCategories.map { ($0.copy() as! CategoryDetail) }
-        self.initialCategories = initialCategories.map { ($0.copy() as! CategoryDetail) }
-        super.init(nibName: nil, bundle: nil)
-    }
-    
     init(selectedCategories:[CategoryDetail], initialCategories:[CategoryDetail], onCompletion: (([CategoryDetail]) -> Void)){
         completionHandler = onCompletion
         self.selectedCategories =  selectedCategories.map { ($0.copy() as! CategoryDetail) }
@@ -57,7 +50,7 @@ import UIKit
         tableView.allowsMultipleSelection = true
         tableView.allowsMultipleSelectionDuringEditing = true
         tableView.allowsSelection = true
-        refreshControl.addTarget(self, action: "refresh:", forControlEvents: UIControlEvents.ValueChanged)
+        refreshControl.addTarget(self, action: #selector(CategoryFilterViewController.refresh(_:)), forControlEvents: UIControlEvents.ValueChanged)
         tableView.addSubview(refreshControl)
         tableView.delegate = self
         tableView.dataSource = self
@@ -209,7 +202,7 @@ import UIKit
             if category.isSelected == false {
                 self.tableView.deselectRowAtIndexPath(indexPath, animated: false)
                 for (index, selected) in selectedCategories.enumerate() {
-                    if selected.categoryId == category.categoryId {
+                    if selected.categoryId == category.categoryId && category.tree == selected.tree{
                         selectedCategories .removeAtIndex(index)
                     }
                 }
@@ -229,7 +222,7 @@ import UIKit
     
     func doExpandCategory(selectedCategory:(CategoryDetail)) {
         for category in self.initialCategories {
-            if selectedCategory.categoryId == category.categoryId {
+            if selectedCategory.categoryId == category.categoryId{
                 self.expand(selectedCategory, initCategory: category)
             } else  {
                 for childCategory in category.child {
@@ -242,7 +235,7 @@ import UIKit
     }
     
     func expand(selectedCategory:(CategoryDetail), initCategory:(CategoryDetail)) {
-        if selectedCategory.categoryId == initCategory.categoryId {
+        if selectedCategory.categoryId == initCategory.categoryId{
             initCategory.isExpanded = true
             
             let location : Int  = self.categories.indexOf(initCategory)! + 1
@@ -263,7 +256,7 @@ import UIKit
     func doCollapseCategory(selectedCategory:(CategoryDetail)) {
         selectedCategory.isExpanded = false
         for (_,category) in self.categories.enumerate() {
-            if category.parent == selectedCategory.categoryId{
+            if category.parent == selectedCategory.categoryId {
                 category.isExpanded = false
 
                 self.tableView.beginUpdates()
@@ -293,7 +286,7 @@ import UIKit
     func expandSelectedCategories(){
         for category in self.initialCategories {
             for selectedCategory in self.selectedCategories {
-                if category.categoryId == selectedCategory.categoryId {
+                if category.categoryId == selectedCategory.categoryId && category.tree == selectedCategory.tree {
                     category.isSelected = true
                 } else {
                     self.expandChildCategory(category)
@@ -305,7 +298,7 @@ import UIKit
     func expandChildCategory(category:(CategoryDetail)) {
         for childCategory in category.child {
             for selectedCategory in self.selectedCategories {
-                if childCategory.categoryId == selectedCategory.categoryId {
+                if childCategory.categoryId == selectedCategory.categoryId && childCategory.tree == selectedCategory.tree{
                     childCategory.isSelected = true
                     self.addCategoryChild(category)
                 } else {
@@ -319,7 +312,7 @@ import UIKit
     func expandLastCategory(category:(CategoryDetail), parentCategory:(CategoryDetail)) {
         for lastCategory in category.child {
             for selectedCategory in self.selectedCategories {
-                if lastCategory.categoryId == selectedCategory.categoryId {
+                if lastCategory.categoryId == selectedCategory.categoryId && lastCategory.tree == selectedCategory.tree {
                     lastCategory.isSelected = true
                     self.addCategoryChild(parentCategory)
                     self.addCategoryChild(category)
