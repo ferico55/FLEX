@@ -31,8 +31,7 @@
 - (void)commonInit {
     _animationDuration = 0.2;
 
-    self.backgroundColor = [UIColor colorWithRed:214/255.0 green:214/255.0 blue:214/255.0 alpha:1.0];
-    
+    self.backgroundColor = [UIColor colorWithRed:(236.0/255.0f) green:(236/255.0f) blue:(236.0/255.0f) alpha:1.0f];
     CGRect rect =
     CGRectMake(0,
                0,
@@ -42,9 +41,14 @@
     _selectedBackgroundView.backgroundColor = [UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1.0];
     [self addSubview:_selectedBackgroundView];
     
+    
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    style.lineSpacing = 4.0;
+    style.alignment = NSTextAlignmentCenter;
     _labelAttributes = @{
         NSForegroundColorAttributeName : [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:1.0],
-        NSFontAttributeName : FONT_GOTHAM_BOOK_13
+        NSFontAttributeName : FONT_GOTHAM_BOOK_13,
+        NSParagraphStyleAttributeName : style
     };
     
     _tabBarItemHeight = 44;
