@@ -2315,6 +2315,10 @@
 		BB48E9391D05377A00FD1B77 /* RejectOrderRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = BB48E9381D05377A00FD1B77 /* RejectOrderRequest.m */; };
 		BB48E93C1D05539D00FD1B77 /* RejectOrderResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = BB48E93B1D05539D00FD1B77 /* RejectOrderResponse.m */; };
 		BB48E93F1D056F1700FD1B77 /* RejectReasonData.m in Sources */ = {isa = PBXBuildFile; fileRef = BB48E93E1D056F1700FD1B77 /* RejectReasonData.m */; };
+		BBEB09AC1D0FBE89007A9821 /* RejectReasonEmptyStockViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBEB09AA1D0FBE89007A9821 /* RejectReasonEmptyStockViewController.m */; };
+		BBEB09AD1D0FBE89007A9821 /* RejectReasonEmptyStockViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBEB09AB1D0FBE89007A9821 /* RejectReasonEmptyStockViewController.xib */; };
+		BBEB09B11D0FC054007A9821 /* RejectReasonEmptyStockCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BBEB09AF1D0FC054007A9821 /* RejectReasonEmptyStockCell.m */; };
+		BBEB09B21D0FC054007A9821 /* RejectReasonEmptyStockCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBEB09B01D0FC054007A9821 /* RejectReasonEmptyStockCell.xib */; };
 		F25F6F270D531ED13A92CDB9 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4868E459AB2A65D133732296 /* libPods-Tokopedia.a */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
 		FC23B85A1ACD659900879D75 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8581ACD659900879D75 /* Fabric.framework */; };
@@ -5816,6 +5820,12 @@
 		BB48E93B1D05539D00FD1B77 /* RejectOrderResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RejectOrderResponse.m; sourceTree = "<group>"; };
 		BB48E93D1D056F1700FD1B77 /* RejectReasonData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RejectReasonData.h; sourceTree = "<group>"; };
 		BB48E93E1D056F1700FD1B77 /* RejectReasonData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RejectReasonData.m; sourceTree = "<group>"; };
+		BBEB09A91D0FBE89007A9821 /* RejectReasonEmptyStockViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RejectReasonEmptyStockViewController.h; sourceTree = "<group>"; };
+		BBEB09AA1D0FBE89007A9821 /* RejectReasonEmptyStockViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RejectReasonEmptyStockViewController.m; sourceTree = "<group>"; };
+		BBEB09AB1D0FBE89007A9821 /* RejectReasonEmptyStockViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RejectReasonEmptyStockViewController.xib; sourceTree = "<group>"; };
+		BBEB09AE1D0FC054007A9821 /* RejectReasonEmptyStockCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RejectReasonEmptyStockCell.h; sourceTree = "<group>"; };
+		BBEB09AF1D0FC054007A9821 /* RejectReasonEmptyStockCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RejectReasonEmptyStockCell.m; sourceTree = "<group>"; };
+		BBEB09B01D0FC054007A9821 /* RejectReasonEmptyStockCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RejectReasonEmptyStockCell.xib; sourceTree = "<group>"; };
 		C8A1445074FECD393EA18C17 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		FC23B8571ACD659900879D75 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		FC23B8581ACD659900879D75 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
@@ -11758,6 +11768,12 @@
 				BB48E93B1D05539D00FD1B77 /* RejectOrderResponse.m */,
 				BB48E93D1D056F1700FD1B77 /* RejectReasonData.h */,
 				BB48E93E1D056F1700FD1B77 /* RejectReasonData.m */,
+				BBEB09A91D0FBE89007A9821 /* RejectReasonEmptyStockViewController.h */,
+				BBEB09AA1D0FBE89007A9821 /* RejectReasonEmptyStockViewController.m */,
+				BBEB09AB1D0FBE89007A9821 /* RejectReasonEmptyStockViewController.xib */,
+				BBEB09AE1D0FC054007A9821 /* RejectReasonEmptyStockCell.h */,
+				BBEB09AF1D0FC054007A9821 /* RejectReasonEmptyStockCell.m */,
+				BBEB09B01D0FC054007A9821 /* RejectReasonEmptyStockCell.xib */,
 			);
 			path = RejectOrder;
 			sourceTree = "<group>";
@@ -12535,6 +12551,7 @@
 				852828341CD09CE200152AD4 /* icon-search-camera.png in Resources */,
 				852829071CD09CE300152AD4 /* icon_medal_diamond_one.png in Resources */,
 				8528255F1CD09CE000152AD4 /* InboxMessageCell.xib in Resources */,
+				BBEB09B21D0FC054007A9821 /* RejectReasonEmptyStockCell.xib in Resources */,
 				852829A71CD09CE400152AD4 /* icon_shop.png in Resources */,
 				852827D91CD09CE200152AD4 /* Main.storyboard in Resources */,
 				85282AD11CD09CE500152AD4 /* icon_komplain.png in Resources */,
@@ -12836,6 +12853,7 @@
 				852827FF1CD09CE200152AD4 /* icon_13@2x.png in Resources */,
 				852825891CD09CE000152AD4 /* ReviewFormViewController.xib in Resources */,
 				852829321CD09CE300152AD4 /* icon_netral@3x.png in Resources */,
+				BBEB09AD1D0FBE89007A9821 /* RejectReasonEmptyStockViewController.xib in Resources */,
 				852829B91CD09CE400152AD4 /* icon_signin@2x.png in Resources */,
 				852828321CD09CE200152AD4 /* icon-plus-math.png in Resources */,
 				85282A8A1CD09CE500152AD4 /* icon_category_active@3x.png in Resources */,
@@ -13487,6 +13505,7 @@
 				852822C51CD09CDD00152AD4 /* HotlistBannerQuery.m in Sources */,
 				8528235B1CD09CDE00152AD4 /* PromoResult.m in Sources */,
 				852824101CD09CDE00152AD4 /* TransactionSummaryDetail.m in Sources */,
+				BBEB09B11D0FC054007A9821 /* RejectReasonEmptyStockCell.m in Sources */,
 				8528266D1CD09CE100152AD4 /* OrderRejectExplanationViewController.m in Sources */,
 				852826CC1CD09CE100152AD4 /* ProfileSettingViewController.m in Sources */,
 				852823BA1CD09CDE00152AD4 /* ShopInfoResult.m in Sources */,
@@ -13964,6 +13983,7 @@
 				852824A31CD09CDF00152AD4 /* DetailedImageCell.swift in Sources */,
 				852823631CD09CDE00152AD4 /* ReputationResult.m in Sources */,
 				852824BA1CD09CDF00152AD4 /* CatalogViewController.m in Sources */,
+				BBEB09AC1D0FBE89007A9821 /* RejectReasonEmptyStockViewController.m in Sources */,
 				8528245C1CD09CDF00152AD4 /* TKPMappingManager.m in Sources */,
 				852825311CD09CDF00152AD4 /* ReportViewController.m in Sources */,
 				8528276B1CD09CE200152AD4 /* TransactionCartResultPaymentCell.m in Sources */,
