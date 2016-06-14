@@ -24,13 +24,9 @@
 #import "WebViewController.h"
 #import "TransactionCartRootViewController.h"
 
-#import <GoogleOpenSource/GoogleOpenSource.h>
-
 #import "Localytics.h"
 
 #import "TAGDataLayer.h"
-
-#import <GoogleSignIn/GoogleSignIn.h>
 
 #import "ActivationRequest.h"
 
