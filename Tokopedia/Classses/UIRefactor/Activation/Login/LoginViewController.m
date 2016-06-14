@@ -45,7 +45,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 <
     FBSDKLoginButtonDelegate,
     LoginViewDelegate,
-    CreatePasswordDelegate,
     GIDSignInUIDelegate,
     GIDSignInDelegate
 >
@@ -935,7 +934,6 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
 
                              CreatePasswordViewController *controller = [CreatePasswordViewController new];
                              controller.login = _login;
-                             controller.delegate = self;
                              if (_facebookUserData) {
                                  controller.facebookUserData = _facebookUserData;
                              } else if (_gidGoogleUser) {

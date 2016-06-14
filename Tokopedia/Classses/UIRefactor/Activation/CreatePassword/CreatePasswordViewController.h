@@ -14,14 +14,9 @@
 #import <GoogleOpenSource/GoogleOpenSource.h>
 #import <GoogleSignIn/GoogleSignIn.h>
 
-@protocol CreatePasswordDelegate <NSObject>
-
-@end
-
 @interface CreatePasswordViewController : UIViewController
 
 @property (strong, nonatomic) Login *login;
-@property (weak, nonatomic) id<CreatePasswordDelegate> delegate;
 @property (strong, nonatomic) NSDictionary *facebookUserData;
 @property GTLPlusPerson *googleUser;
 @property GIDGoogleUser *gidGoogleUser;
