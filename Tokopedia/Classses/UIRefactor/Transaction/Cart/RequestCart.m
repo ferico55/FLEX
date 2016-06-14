@@ -135,7 +135,7 @@
                                       @"dropship_str"   :dropshipString,
                                       @"partial_str"    :partialString,
                                       @"use_deposit"    :@(isUsingSaldo),
-                                      @"deposit_amt"    :usedSaldo,
+                                      @"deposit_amt"    :usedSaldo?:@"",
                                       @"lp_flag"        :@"1",
                                       };
     
