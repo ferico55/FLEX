@@ -84,22 +84,15 @@
             _titleLabel.frame = CGRectOffset(self.bounds, self.titleOffset.width, self.titleOffset.height);
         }
         
-        _imageView.frame = CGRectMake(10, self.bounds.size.height/2-5, 8, 8);
+        _imageView.frame = CGRectMake(5, self.bounds.size.height/2-5, 8, 8);
 
-        
-//        if (CGSizeEqualToSize(_imageOffset, CGSizeZero)) {
-//            _imageView.frame = CGRectOffset(self.bounds, 0, _imageView.image.size.height * -0.2);
-//        }
-//        else {
-//            _imageView.frame = CGRectOffset(self.bounds, self.imageOffset.width, self.imageOffset.height);
-//        }
     }
     else {
         _imageView.frame = self.bounds;
     }
     
     UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, self.frame.size.height, self.frame.size.width, 0.5)];
-    lineView.backgroundColor = [UIColor colorWithRed:(188.0/255.0f) green:(187/255.0f) blue:(193.0/255.0f) alpha:1.0f];
+    lineView.backgroundColor = [UIColor colorWithRed:(188.0/255.0f) green:(187/255.0f) blue:(193.0/255.0f) alpha:0.5f];
 
     [self addSubview:lineView];
     
