@@ -159,7 +159,7 @@
          NSDictionary *result = successResult.dictionary;
          TransactionAction *cart = [result objectForKey:@""];
          
-         if (cart.data.parameter != nil) {
+         if (cart.data.parameter != nil && cart.message_error.count == 0) {
              NSArray *successMessages = cart.message_status;
              if (successMessages.count > 0) {
                  [StickyAlertView showSuccessMessage:successMessages];
