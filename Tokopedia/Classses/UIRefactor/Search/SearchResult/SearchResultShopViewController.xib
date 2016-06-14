@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -13,6 +13,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SearchResultShopViewController">
             <connections>
                 <outlet property="act" destination="4UL-cg-udr" id="FCo-1b-QE3"/>
+                <outlet property="activeFilterImageView" destination="d33-nO-6dv" id="748-Fe-ETo"/>
                 <outlet property="footer" destination="wVY-21-3dp" id="DSX-WW-bHw"/>
                 <outlet property="shopview" destination="r0y-ak-8VP" id="UlM-l6-a06"/>
                 <outlet property="table" destination="DEU-dk-S8H" id="39x-0i-9ST"/>
@@ -51,6 +52,14 @@
                                 <action selector="tap:" destination="-1" eventType="touchUpInside" id="J5X-if-yad"/>
                             </connections>
                         </button>
+                        <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_oval" translatesAutoresizingMaskIntoConstraints="NO" id="d33-nO-6dv">
+                            <rect key="frame" x="79" y="21" width="7" height="7"/>
+                            <color key="tintColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="7" id="tPx-t9-wKW"/>
+                                <constraint firstAttribute="height" constant="7" id="xpY-Yv-EuN"/>
+                            </constraints>
+                        </imageView>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nGU-1p-eDC" userLabel="Top Border">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
                             <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
@@ -65,6 +74,8 @@
                         <constraint firstAttribute="bottom" secondItem="m3O-OD-9Qo" secondAttribute="bottom" id="7wz-6j-VBD"/>
                         <constraint firstItem="m3O-OD-9Qo" firstAttribute="leading" secondItem="r0y-ak-8VP" secondAttribute="leading" id="IDn-SB-KWi"/>
                         <constraint firstItem="nGU-1p-eDC" firstAttribute="leading" secondItem="r0y-ak-8VP" secondAttribute="leading" id="RQo-cF-qou"/>
+                        <constraint firstItem="d33-nO-6dv" firstAttribute="leading" secondItem="r0y-ak-8VP" secondAttribute="leading" constant="79" id="RkT-Dy-Nlg"/>
+                        <constraint firstItem="d33-nO-6dv" firstAttribute="centerY" secondItem="m3O-OD-9Qo" secondAttribute="centerY" constant="2" id="c0Q-c6-VFJ"/>
                         <constraint firstAttribute="trailing" secondItem="nGU-1p-eDC" secondAttribute="trailing" id="erO-Sx-Yp6"/>
                         <constraint firstItem="m3O-OD-9Qo" firstAttribute="top" secondItem="r0y-ak-8VP" secondAttribute="top" id="gw5-oW-fef"/>
                         <constraint firstItem="nGU-1p-eDC" firstAttribute="top" secondItem="r0y-ak-8VP" secondAttribute="top" id="uA7-Ze-fEt"/>
@@ -102,4 +113,7 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
     </objects>
+    <resources>
+        <image name="icon_oval" width="7" height="7"/>
+    </resources>
 </document>

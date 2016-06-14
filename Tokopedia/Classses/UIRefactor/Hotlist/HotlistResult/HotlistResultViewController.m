@@ -148,7 +148,9 @@ static NSString const *rows = @"12";
 
 @property (assign, nonatomic) CGFloat lastContentOffset;
 @property ScrollDirection scrollDirection;
+@property (strong, nonatomic) IBOutlet UIImageView *activeSortImageView;
 
+@property (strong, nonatomic) IBOutlet UIImageView *activeFilterImageView;
 @property (nonatomic, strong) NSArray *hashtags;
 
 @end
@@ -289,6 +291,7 @@ static NSString const *rows = @"12";
     FiltersController *controller = [[FiltersController alloc]initWithSortResponse:_filterResponse?:[FilterResponse new] selectedSort:_selectedSort presentedVC:self onCompletion:^(ListOption * sort, NSDictionary*paramSort) {
         _selectedSortParam = paramSort;
         _selectedSort = sort;
+        _activeSortImageView.hidden = (_selectedSort == nil);
         [self refreshView:nil];
     } response:^(FilterResponse * filterResponse) {
         _filterResponse = filterResponse;
@@ -302,6 +305,9 @@ static NSString const *rows = @"12";
         _selectedCategories = selectedCategories;
         _selectedFilters = selectedFilters;
         _selectedFilterParam = paramFilters;
+        
+        _activeFilterImageView.hidden = (selectedCategories.count + selectedFilters.count == 0);
+        
         [self refreshView:nil];
         
     } response:^(FilterResponse * filterResponse){

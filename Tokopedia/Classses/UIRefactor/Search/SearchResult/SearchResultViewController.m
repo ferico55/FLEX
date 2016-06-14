@@ -110,6 +110,9 @@ ImageSearchRequestDelegate
 
 @property (strong, nonatomic) ImageSearchRequest *imageSearchRequest;
 
+@property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *activeSortImageViews;
+@property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *activeFilterImageViews;
+
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *imageSearchToolbarButtons;
 
 @end
@@ -613,6 +616,10 @@ ImageSearchRequestDelegate
         _selectedSortParam = paramSort;
         _selectedSort = sort;
         
+        for (UIImageView *image in _activeSortImageViews) {
+            image.hidden = (_selectedSort == nil);
+        }
+        
         if([[_selectedSortParam objectForKey:@"order_by"] isEqualToString:@"99"]){
             [self restoreSimilarity];
             //image search sort by similarity
@@ -645,6 +652,9 @@ ImageSearchRequestDelegate
         _selectedCategories = selectedCategories;
         _selectedFilters = selectedFilters;
         _selectedFilterParam = paramFilters;
+        for (UIImageView *image in _activeFilterImageViews) {
+            image.hidden = (_selectedCategories.count + selectedFilters.count == 0);
+        }
         [_params setObject:[_data objectForKey:@"search"]?:@"" forKey:@"search"];
         [self refreshView:nil];
         

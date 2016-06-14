@@ -42,6 +42,7 @@ static NSString const *rows = @"12";
 @property (strong, nonatomic) NSMutableArray *product;
 @property (weak, nonatomic) IBOutlet UIView *shopview;
 @property (strong, nonatomic) SpellCheckRequest *spellCheckRequest;
+@property (strong, nonatomic) IBOutlet UIImageView *activeFilterImageView;
 
 -(void)cancel;
 -(void)loadData;
@@ -86,7 +87,6 @@ static NSString const *rows = @"12";
     FilterResponse *_filterResponse;
     NSArray<ListOption*> *_selectedFilters;
     NSDictionary *_selectedFilterParam;
-    NSArray<CategoryDetail*> *_selectedCategories;
 }
 
 #pragma mark - Initialization
@@ -480,11 +480,11 @@ static NSString const *rows = @"12";
 }
 
 -(IBAction)didTapFilterButton:(UIButton*)button{
-    FiltersController *controller = [[FiltersController alloc]initWithFilterResponse:_filterResponse?:[FilterResponse new] categories:nil selectedCategories:_selectedCategories selectedFilters:_selectedFilters presentedVC:self onCompletion:^(NSArray<CategoryDetail *> * selectedCategories , NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
+    FiltersController *controller = [[FiltersController alloc]initWithFilterResponse:_filterResponse?:[FilterResponse new] categories:nil selectedCategories:nil selectedFilters:_selectedFilters presentedVC:self onCompletion:^(NSArray<CategoryDetail *> * selectedCategories , NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
         
-        _selectedCategories = selectedCategories;
         _selectedFilters = selectedFilters;
         _selectedFilterParam = paramFilters;
+        _activeFilterImageView.hidden = (_selectedFilters.count == 0);
         [self refreshView:nil];
         
     } response:^(FilterResponse * filterResponse){
