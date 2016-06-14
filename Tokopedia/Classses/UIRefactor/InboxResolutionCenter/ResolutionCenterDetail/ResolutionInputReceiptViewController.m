@@ -140,7 +140,7 @@
                                                 success:^(ResolutionActionResult *data) {
         button.enabled = YES;
         if ([_delegate respondsToSelector:@selector(addResolutionLast:conversationLast:replyEnable:)]){
-            [_delegate addResolutionLast:data.solution_last conversationLast:data.conversation_last[0] replyEnable:!data.button.hide_no_reply];
+            [_delegate addResolutionLast:data.solution_last conversationLast:data.conversation_last[0] replyEnable:YES];
         }
         [self.navigationController popViewControllerAnimated:YES];
         
@@ -158,7 +158,7 @@
                                                success:^(ResolutionActionResult *data) {
         button.enabled = YES;
         if ([_delegate respondsToSelector:@selector(addResolutionLast:conversationLast:replyEnable:)]){
-            [_delegate addResolutionLast:data.solution_last conversationLast:data.conversation_last[0] replyEnable:!data.button.hide_no_reply];
+            [_delegate addResolutionLast:data.solution_last conversationLast:data.conversation_last[0] replyEnable:YES];
         }
         [self.navigationController popViewControllerAnimated:YES];
         

@@ -98,6 +98,7 @@
                                                  name:UIKeyboardWillHideNotification object:nil];
     
     [self adjustFooterButton];
+    [self adjustActionLabel];
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"dd MMMM yyyy HH:mm"];
@@ -108,6 +109,27 @@
     
     [_messageTextView becomeFirstResponder];
 }
+
+-(void)adjustActionLabel
+{
+    NSString *actionByString;
+    UIColor *actionByBgColor;
+    
+    if(_resolution.resolution_by.by_customer == 1)
+    {
+        actionByString = @"Pembeli";
+        actionByBgColor = COLOR_BUYER;
+    }
+    else
+    {
+        actionByString = @"Penjual";
+        actionByBgColor = COLOR_SELLER;
+    }
+    
+    _buyerSellerLabel.backgroundColor = actionByBgColor;
+    _buyerSellerLabel.text = actionByString;
+}
+
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -481,7 +503,7 @@
                                             success:^(ResolutionActionResult *data) {
                                                 sendButton.enabled = YES;
                                                 if ([_delegate respondsToSelector:@selector(addResolutionLast:conversationLast:replyEnable:)]){
-                                                    [_delegate addResolutionLast:data.solution_last conversationLast:data.conversation_last[0] replyEnable:!data.button.hide_no_reply];
+                                                    [_delegate addResolutionLast:data.solution_last conversationLast:data.conversation_last[0] replyEnable:YES];
                                                 }
                                                 [self.navigationController popViewControllerAnimated:YES];
                                                 
@@ -498,7 +520,7 @@
                                                      [_delegate hideReportButton:YES];
                                                  }
                                                  if ([_delegate respondsToSelector:@selector(addResolutionLast:conversationLast:replyEnable:)]){
-                                                     [_delegate addResolutionLast:data.solution_last conversationLast:data.conversation_last[0] replyEnable:!data.button.hide_no_reply];
+                                                     [_delegate addResolutionLast:data.solution_last conversationLast:data.conversation_last[0] replyEnable:YES];
                                                  }
                                                  [self.navigationController popViewControllerAnimated:YES];
                                                  
