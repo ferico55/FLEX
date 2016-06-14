@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @interface CloseShopResult : NSObject
-@property BOOL is_success;
+@property (strong, nonatomic) NSString* is_success;
 
 +(RKObjectMapping*)mapping;
 @end
