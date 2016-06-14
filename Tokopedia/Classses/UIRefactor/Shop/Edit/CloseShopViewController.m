@@ -255,124 +255,15 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
 }
 - (IBAction)submitButtonTapped:(id)sender {
     if(!isLoading && [self validateForm]){
-        isLoading = YES;
-        [self adjustView:CenterViewLoadingView withAnimation:NO];
         if([_tutupSekarangSwitch isOn]){
-            [_closeShopRequest requestActionCloseShopFromNowUntil:[self stringFromNSDate:_dateSampaiDengan]
-                                                        closeNote:_catatanTextView.text
-                                                        onSuccess:^(CloseShopResponse *result) {
-                                                            if([result.data.is_success boolValue]){
-                                                                _scheduleDetail.close_status = CLOSE_STATUS_CLOSED;
-                                                                _scheduleDetail.close_start = [self stringFromNSDate:_dateMulaiDari];
-                                                                _scheduleDetail.close_end = [self stringFromNSDate:_dateSampaiDengan];
-                                                                _isFormEnabled = NO;
-                                                                [self adjustView:CenterViewSuccessView withAnimation:NO];
-                                                                [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITSHOPPOSTNOTIFICATIONNAMEKEY
-                                                                                                                    object:nil
-                                                                                                                  userInfo:nil];
-                                                            }else{
-                                                                [self setFailLabelTextWithError:result.message_error];
-                                                                [self adjustView:CenterViewFailView withAnimation:NO];
-                                                            }
-                                                            
-                                                            [self.delegate didChangeShopStatus];
-                                                            [self returnToFormViewWithDelay];
-                                                            [_tutupSekarangSwitch setOn:NO];
-                                                            isLoading = NO;
-                                                        }
-                                                        onFailure:^(NSError *error) {
-                                                            [self setFailLabelTextWithError:@[@"Kendala koneksi internet"]];
-                                                            [self adjustView:CenterViewFailView withAnimation:NO];
-                                                            
-                                                            
-                                                            
-                                                            isLoading = NO;
-                                                        }];
+            [self closeShopFromNow];
         }else{
             if(_scheduleDetail.close_status == CLOSE_STATUS_OPEN){
-                [_closeShopRequest requestActionCloseShopFrom:[self stringFromNSDate:_dateMulaiDari]
-                                                        until:[self stringFromNSDate:_dateSampaiDengan]
-                                                    closeNote:_catatanTextView.text
-                                                    onSuccess:^(CloseShopResponse *result) {
-                                                        if([result.data.is_success boolValue]){
-                                                            _scheduleDetail.close_status = CLOSE_STATUS_CLOSE_SCHEDULED;
-                                                            _scheduleDetail.close_start = [self stringFromNSDate:_dateMulaiDari];
-                                                            _scheduleDetail.close_end = [self stringFromNSDate:_dateSampaiDengan];
-                                                            _isFormEnabled = NO;
-                                                            [self adjustView:CenterViewSuccessView withAnimation:NO];
-                                                            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITSHOPPOSTNOTIFICATIONNAMEKEY
-                                                                                                                object:nil
-                                                                                                              userInfo:nil];
-                                                        }else{
-                                                            [self setFailLabelTextWithError:result.message_error];
-                                                            [self adjustView:CenterViewFailView withAnimation:NO];
-                                                        }
-                                                        [self.delegate didChangeShopStatus];
-                                                        [self returnToFormViewWithDelay];
-                                                        isLoading = NO;
-                                                    }
-                                                    onFailure:^(NSError *error) {
-                                                        [self setFailLabelTextWithError:@[@"Kendala koneksi internet"]];
-                                                        [self adjustView:CenterViewFailView withAnimation:NO];
-                                                        
-                                                        [self returnToFormViewWithDelay];
-                                                        isLoading = NO;
-                                                    }];
+                [self createCloseShopSchedule];
             }else if(_scheduleDetail.close_status == CLOSE_STATUS_CLOSED){
-                [_closeShopRequest requestActionExtendCloseShopUntil:[self stringFromNSDate:_dateSampaiDengan]
-                                                           closeNote:_catatanTextView.text
-                                                           onSuccess:^(CloseShopResponse *result) {
-                                                               if([result.data.is_success boolValue]){
-                                                                   _scheduleDetail.close_status = CLOSE_STATUS_CLOSED;
-                                                                   _scheduleDetail.close_start = [self stringFromNSDate:_dateMulaiDari];
-                                                                   _scheduleDetail.close_end = [self stringFromNSDate:_dateSampaiDengan];
-                                                                   _isFormEnabled = NO;
-                                                                   [self adjustView:CenterViewSuccessView withAnimation:NO];
-                                                                   [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITSHOPPOSTNOTIFICATIONNAMEKEY
-                                                                                                                       object:nil
-                                                                                                                     userInfo:nil];
-                                                               }else{
-                                                                   [self setFailLabelTextWithError:result.message_error];
-                                                                   [self adjustView:CenterViewFailView withAnimation:NO];
-                                                               }
-                                                               [self.delegate didChangeShopStatus];
-                                                               [self returnToFormViewWithDelay];
-                                                               isLoading = NO;
-                                                           } onFailure:^(NSError *error) {
-                                                               [self setFailLabelTextWithError:@[@"Kendala koneksi internet"]];
-                                                               [self adjustView:CenterViewFailView withAnimation:NO];
-                                                               
-                                                               [self returnToFormViewWithDelay];
-                                                               isLoading = NO;
-                                                           }];
+                [self extendCloseShopSchedule];
             }else if(_scheduleDetail.close_status == CLOSE_STATUS_CLOSE_SCHEDULED){
-                [_closeShopRequest requestActionCloseShopFrom:[self stringFromNSDate:_dateMulaiDari]
-                                                        until:[self stringFromNSDate:_dateSampaiDengan]
-                                                    closeNote:_catatanTextView.text
-                                                    onSuccess:^(CloseShopResponse *result) {
-                                                        if([result.data.is_success boolValue]){
-                                                            _scheduleDetail.close_status = CLOSE_STATUS_CLOSE_SCHEDULED;
-                                                            _scheduleDetail.close_start = [self stringFromNSDate:_dateMulaiDari];
-                                                            _scheduleDetail.close_end = [self stringFromNSDate:_dateSampaiDengan];
-                                                            _isFormEnabled = NO;
-                                                            [self adjustView:CenterViewSuccessView withAnimation:NO];
-                                                            [self.delegate didChangeShopStatus];
-                                                            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITSHOPPOSTNOTIFICATIONNAMEKEY
-                                                                                                                object:nil
-                                                                                                              userInfo:nil];
-                                                        }else{
-                                                            [self setFailLabelTextWithError:result.message_error];
-                                                            [self adjustView:CenterViewFailView withAnimation:NO];
-                                                        }
-                                                        [self returnToFormViewWithDelay];
-                                                        isLoading = NO;
-                                                    } onFailure:^(NSError *error) {
-                                                        [self setFailLabelTextWithError:@[@"Kendala koneksi internet"]];
-                                                        [self adjustView:CenterViewFailView withAnimation:NO];
-                                                        
-                                                        [self returnToFormViewWithDelay];
-                                                        isLoading = NO;
-                                                    }];
+                [self createCloseShopSchedule];
             }
         }
     }
@@ -390,68 +281,13 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
 
 - (IBAction)hapusButtonTapped:(id)sender {
     if(!isLoading){
-        isLoading = YES;
-        [self adjustView:CenterViewLoadingView withAnimation:NO];
-        
-        [_closeShopRequest requestActionAbortCloseScheduleOnSuccess:^(CloseShopResponse *result) {
-            if([result.data.is_success boolValue]){
-                _scheduleDetail.close_status = CLOSE_STATUS_OPEN;
-                _scheduleDetail.close_start = [self stringFromNSDate:_dateMulaiDari];
-                _scheduleDetail.close_end = [self stringFromNSDate:_dateSampaiDengan];
-                _isFormEnabled = YES;
-                [self adjustView:CenterViewSuccessView withAnimation:NO];
-                [self.delegate didChangeShopStatus];
-                [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITSHOPPOSTNOTIFICATIONNAMEKEY
-                                                                    object:nil
-                                                                  userInfo:nil];
-            }else{
-                [self setFailLabelTextWithError:result.message_error];
-                [self adjustView:CenterViewFailView withAnimation:NO];
-            }
-            [self returnToFormViewWithDelay];
-            isLoading = NO;
-        } onFailure:^(NSError *error) {
-            [self setFailLabelTextWithError:@[@"Kendala koneksi internet"]];
-            [self adjustView:CenterViewFailView withAnimation:NO];
-            
-            [self returnToFormViewWithDelay];
-            isLoading = NO;
-        }];
+        [self abortCloseShopSchedule];
     }
 }
 
 - (IBAction)bukaTokoTapped:(id)sender {
     if(!isLoading){
-        isLoading = YES;
-        [self adjustView:CenterViewLoadingView withAnimation:YES];
-        [_closeShopRequest requestActionOpenShopOnSuccess:^(CloseShopResponse *result) {
-            if([result.data.is_success boolValue]){
-                _scheduleDetail.close_status = CLOSE_STATUS_OPEN;
-                _dateMulaiDari = nil;
-                _dateSampaiDengan = nil;
-                [self setDateButton];
-                
-                _isFormEnabled = YES;
-                [self adjustView:CenterViewSuccessView withAnimation:YES];
-                [self.delegate didChangeShopStatus];
-                
-                [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITSHOPPOSTNOTIFICATIONNAMEKEY
-                                                                    object:nil
-                                                                  userInfo:nil];
-            }else{
-                [self setFailLabelTextWithError:result.message_error];
-                [self adjustView:CenterViewFailView withAnimation:NO];
-            }
-            [self returnToFormViewWithDelay];
-            
-            isLoading = NO;
-        } onFailure:^(NSError *error) {
-            [self setFailLabelTextWithError:@[@"Kendala koneksi internet"]];
-            [self adjustView:CenterViewFailView withAnimation:NO];
-            
-            [self returnToFormViewWithDelay];
-            isLoading = NO;
-        }];
+        [self openShop];
     }
 }
 
@@ -481,8 +317,168 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
     return isValidationSuccess;
 }
 
+#pragma mark - Request Method
+- (void)closeShopFromNow{
+    isLoading = YES;
+    [self adjustView:CenterViewLoadingView withAnimation:NO];
+    [_closeShopRequest requestActionCloseShopFromNowUntil:[self stringFromNSDate:_dateSampaiDengan]
+                                                closeNote:_catatanTextView.text
+                                                onSuccess:^(CloseShopResponse *result) {
+                                                    if([result.data.is_success boolValue]){
+                                                        _scheduleDetail.close_status = CLOSE_STATUS_CLOSED;
+                                                        _scheduleDetail.close_start = [self stringFromNSDate:_dateMulaiDari];
+                                                        _scheduleDetail.close_end = [self stringFromNSDate:_dateSampaiDengan];
+                                                        _isFormEnabled = NO;
+                                                        [self adjustView:CenterViewSuccessView withAnimation:NO];
+                                                        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITSHOPPOSTNOTIFICATIONNAMEKEY
+                                                                                                            object:nil
+                                                                                                          userInfo:nil];
+                                                    }else{
+                                                        [self setFailLabelTextWithError:result.message_error];
+                                                        [self adjustView:CenterViewFailView withAnimation:NO];
+                                                    }
+                                                    
+                                                    [self.delegate didChangeShopStatus];
+                                                    [self returnToFormViewWithDelay];
+                                                    [_tutupSekarangSwitch setOn:NO];
+                                                    isLoading = NO;
+                                                }
+                                                onFailure:^(NSError *error) {
+                                                    [self setFailLabelTextWithError:@[@"Kendala koneksi internet"]];
+                                                    [self adjustView:CenterViewFailView withAnimation:NO];
+                                                    isLoading = NO;
+                                                }];
+}
+
+-(void)createCloseShopSchedule{
+    isLoading = YES;
+    [self adjustView:CenterViewLoadingView withAnimation:NO];
+    [_closeShopRequest requestActionCloseShopFrom:[self stringFromNSDate:_dateMulaiDari]
+                                            until:[self stringFromNSDate:_dateSampaiDengan]
+                                        closeNote:_catatanTextView.text
+                                        onSuccess:^(CloseShopResponse *result) {
+                                            if([result.data.is_success boolValue]){
+                                                _scheduleDetail.close_status = CLOSE_STATUS_CLOSE_SCHEDULED;
+                                                _scheduleDetail.close_start = [self stringFromNSDate:_dateMulaiDari];
+                                                _scheduleDetail.close_end = [self stringFromNSDate:_dateSampaiDengan];
+                                                _isFormEnabled = NO;
+                                                [self adjustView:CenterViewSuccessView withAnimation:NO];
+                                                [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITSHOPPOSTNOTIFICATIONNAMEKEY
+                                                                                                    object:nil
+                                                                                                  userInfo:nil];
+                                            }else{
+                                                [self setFailLabelTextWithError:result.message_error];
+                                                [self adjustView:CenterViewFailView withAnimation:NO];
+                                            }
+                                            [self.delegate didChangeShopStatus];
+                                            [self returnToFormViewWithDelay];
+                                            isLoading = NO;
+                                        }
+                                        onFailure:^(NSError *error) {
+                                            [self setFailLabelTextWithError:@[@"Kendala koneksi internet"]];
+                                            [self adjustView:CenterViewFailView withAnimation:NO];
+                                            
+                                            [self returnToFormViewWithDelay];
+                                            isLoading = NO;
+                                        }];
+}
+
+-(void)extendCloseShopSchedule{
+    isLoading = YES;
+    [self adjustView:CenterViewLoadingView withAnimation:NO];
+    [_closeShopRequest requestActionExtendCloseShopUntil:[self stringFromNSDate:_dateSampaiDengan]
+                                               closeNote:_catatanTextView.text
+                                               onSuccess:^(CloseShopResponse *result) {
+                                                   if([result.data.is_success boolValue]){
+                                                       _scheduleDetail.close_status = CLOSE_STATUS_CLOSED;
+                                                       _scheduleDetail.close_start = [self stringFromNSDate:_dateMulaiDari];
+                                                       _scheduleDetail.close_end = [self stringFromNSDate:_dateSampaiDengan];
+                                                       _isFormEnabled = NO;
+                                                       [self adjustView:CenterViewSuccessView withAnimation:NO];
+                                                       [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITSHOPPOSTNOTIFICATIONNAMEKEY
+                                                                                                           object:nil
+                                                                                                         userInfo:nil];
+                                                   }else{
+                                                       [self setFailLabelTextWithError:result.message_error];
+                                                       [self adjustView:CenterViewFailView withAnimation:NO];
+                                                   }
+                                                   [self.delegate didChangeShopStatus];
+                                                   [self returnToFormViewWithDelay];
+                                                   isLoading = NO;
+                                               } onFailure:^(NSError *error) {
+                                                   [self setFailLabelTextWithError:@[@"Kendala koneksi internet"]];
+                                                   [self adjustView:CenterViewFailView withAnimation:NO];
+                                                   
+                                                   [self returnToFormViewWithDelay];
+                                                   isLoading = NO;
+                                               }];
+}
+
+-(void)abortCloseShopSchedule{
+    isLoading = YES;
+    [self adjustView:CenterViewLoadingView withAnimation:NO];
+    [_closeShopRequest requestActionAbortCloseScheduleOnSuccess:^(CloseShopResponse *result) {
+        if([result.data.is_success boolValue]){
+            _scheduleDetail.close_status = CLOSE_STATUS_OPEN;
+            _scheduleDetail.close_start = [self stringFromNSDate:_dateMulaiDari];
+            _scheduleDetail.close_end = [self stringFromNSDate:_dateSampaiDengan];
+            _isFormEnabled = YES;
+            [self adjustView:CenterViewSuccessView withAnimation:NO];
+            [self.delegate didChangeShopStatus];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITSHOPPOSTNOTIFICATIONNAMEKEY
+                                                                object:nil
+                                                              userInfo:nil];
+        }else{
+            [self setFailLabelTextWithError:result.message_error];
+            [self adjustView:CenterViewFailView withAnimation:NO];
+        }
+        [self returnToFormViewWithDelay];
+        isLoading = NO;
+    } onFailure:^(NSError *error) {
+        [self setFailLabelTextWithError:@[@"Kendala koneksi internet"]];
+        [self adjustView:CenterViewFailView withAnimation:NO];
+        
+        [self returnToFormViewWithDelay];
+        isLoading = NO;
+    }];
+}
+
+-(void)openShop{
+    isLoading = YES;
+    [self adjustView:CenterViewLoadingView withAnimation:YES];
+    [_closeShopRequest requestActionOpenShopOnSuccess:^(CloseShopResponse *result) {
+        if([result.data.is_success boolValue]){
+            _scheduleDetail.close_status = CLOSE_STATUS_OPEN;
+            _dateMulaiDari = nil;
+            _dateSampaiDengan = nil;
+            [self setDateButton];
+            
+            _isFormEnabled = YES;
+            [self adjustView:CenterViewSuccessView withAnimation:YES];
+            [self.delegate didChangeShopStatus];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITSHOPPOSTNOTIFICATIONNAMEKEY
+                                                                object:nil
+                                                              userInfo:nil];
+        }else{
+            [self setFailLabelTextWithError:result.message_error];
+            [self adjustView:CenterViewFailView withAnimation:NO];
+        }
+        [self returnToFormViewWithDelay];
+        
+        isLoading = NO;
+    } onFailure:^(NSError *error) {
+        [self setFailLabelTextWithError:@[@"Kendala koneksi internet"]];
+        [self adjustView:CenterViewFailView withAnimation:NO];
+        
+        [self returnToFormViewWithDelay];
+        isLoading = NO;
+    }];
+
+}
+
 #pragma mark - Date Picker Delegate
--(void)alertView:(TKPDAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {    
+-(void)alertView:(TKPDAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     NSDate *date = [alertView.data objectForKey:@"datepicker"];
     if(alertView.tag == AlertDatePickerMulaiDari){
         _dateMulaiDari = date;
