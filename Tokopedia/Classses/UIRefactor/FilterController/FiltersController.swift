@@ -73,7 +73,7 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
     private func presentControllerFilter(){
         
         tabBarController.delegate = self
-        tabBarController.title = "Filter"
+        tabBarController.title = "FILTER"
         tabBarController.tabBarWidth = 110
         tabBarController.tabBarItemHeight = 44
         tabBarController.showResetButton = true
