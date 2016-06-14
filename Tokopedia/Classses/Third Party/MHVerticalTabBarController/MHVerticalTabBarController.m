@@ -110,10 +110,9 @@
     if (showResetButton) {
         UIButton *resetButton = [UIButton buttonWithType:UIButtonTypeCustom];
         resetButton.frame = CGRectMake(0, self.view.frame.size.height - 44 - 60, _tabBarWidth, 40);
-        [resetButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [resetButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [resetButton setTitle:@"Reset" forState:UIControlStateNormal];
-        UIColor *color = [UIColor colorWithRed:(236.0/255.0f) green:(236/255.0f) blue:(236.0/255.0f) alpha:1.0f];
-        self.view.backgroundColor = [UIColor blackColor];
+        UIColor *color = kTKPDNAVIGATION_NAVIGATIONBGCOLOR;
         [resetButton setBackgroundColor:color];
         resetButton.titleLabel.font = FONT_GOTHAM_BOOK_12;
         [resetButton addTarget:self action:@selector(tapResetButton:) forControlEvents:UIControlEventTouchUpInside];
