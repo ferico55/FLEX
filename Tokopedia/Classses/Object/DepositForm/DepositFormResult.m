@@ -10,4 +10,18 @@
 
 @implementation DepositFormResult
 
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *depositFormResultMapping = [RKObjectMapping mappingForClass:[DepositFormResult class]];
+    
+    [depositFormResultMapping addAttributeMappingsFromArray:@[@"msisdn_verified",
+                                                              @"useable_deposit",
+                                                              @"useable_deposit_idr"]];
+    
+    [depositFormResultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"bank_account"
+                                                                                             toKeyPath:@"bank_account"
+                                                                                           withMapping:[DepositFormBankAccountList mapping]]];
+    
+    return depositFormResultMapping;
+}
+
 @end

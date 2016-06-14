@@ -15,5 +15,5 @@
 @property (nonatomic, strong) NSString *is_success;
 @property (nonatomic, strong) NSString *talk_id;
 
-
++ (RKRelationshipMapping *)mapping;
 @end

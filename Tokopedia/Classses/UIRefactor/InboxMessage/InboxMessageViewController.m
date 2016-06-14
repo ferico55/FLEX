@@ -117,7 +117,10 @@
     _userManager = [UserAuthentificationManager new];
 
     _getInboxListNetworkManager = [TokopediaNetworkManager new];
+    _getInboxListNetworkManager.isUsingHmac = YES;
+    
     _messageActionNetworkManager = [TokopediaNetworkManager new];
+    _messageActionNetworkManager.isUsingHmac = YES;
 
     _loadingView = [LoadingView new];
     _loadingView.delegate = self;
@@ -161,17 +164,16 @@
 - (void)fetchInboxMessages {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"disableButtonRead" object:nil userInfo:nil];
 
-    NSDictionary* param =@{kTKPDHOME_APIACTIONKEY:KTKPDMESSAGE_ACTIONGETMESSAGE,
-            kTKPDHOME_APILIMITPAGEKEY : @(kTKPDHOMEHOTLIST_LIMITPAGE),
+    NSDictionary* param =@{
             kTKPDHOME_APIPAGEKEY:@(_page),
             KTKPDMESSAGE_FILTERKEY:_readstatus?_readstatus:@"",
             KTKPDMESSAGE_KEYWORDKEY:_keyword?_keyword:@"",
             KTKPDMESSAGE_NAVKEY:[_data objectForKey:@"nav"]?:@""
     };
 
-    [_getInboxListNetworkManager requestWithBaseUrl:[NSString basicUrl]
-                                               path:KTKPDMESSAGE_PATHURL
-                                             method:RKRequestMethodPOST
+    [_getInboxListNetworkManager requestWithBaseUrl:[NSString v4Url]
+                                               path:@"/v4/inbox-message/get_inbox_message.pl"
+                                             method:RKRequestMethodGET
                                           parameter:param
                                             mapping:[InboxMessage mapping]
                                           onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
@@ -281,8 +283,15 @@
             KTKPDMESSAGE_DATAELEMENTKEY : joinedArr,
     };
 
-    [_messageActionNetworkManager requestWithBaseUrl:[NSString basicUrl]
-                                                path:KTKPDMESSAGEPRODUCTACTION_PATHURL
+    NSDictionary<NSString*, NSString*>* pathByAction = @{
+            KTKPDMESSAGE_ACTIONARCHIVEMESSAGE: @"/v4/action/message/archive_messages.pl",
+            KTKPDMESSAGE_ACTIONDELETEMESSAGE: @"/v4/action/message/delete_messages.pl",
+            KTKPDMESSAGE_ACTIONMOVETOINBOXMESSAGE: @"/v4/action/message/move_to_inbox.pl",
+            KTKPDMESSAGE_ACTIONDELETEFOREVERMESSAGE: @"/v4/action/message/delete_forever_messages.pl"
+    };
+
+    [_messageActionNetworkManager requestWithBaseUrl:[NSString v4Url]
+                                                path:pathByAction[action]
                                               method:RKRequestMethodPOST
                                            parameter:param
                                              mapping:[InboxMessageAction mapping]

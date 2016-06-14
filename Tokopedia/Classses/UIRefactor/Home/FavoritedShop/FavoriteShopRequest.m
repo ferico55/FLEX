@@ -95,7 +95,8 @@ typedef NS_ENUM(NSInteger, FavoriteShopRequestType){
                  @"rows":@(PER_PAGE),
                  @"start":@((page*PER_PAGE)),
                  @"shop_id":_favoriteShopString,
-                 @"ob":@(10)
+                 @"ob":@(10),
+                 @"source":@"feed"
                  };
     }else if(tag == FavoriteShopRequestAll){
         return @{kTKPDHOME_APIACTIONKEY:kTKPDHOMEFAVORITESHOPACT};
@@ -108,7 +109,7 @@ typedef NS_ENUM(NSInteger, FavoriteShopRequestType){
     }else if(tag == FavoriteShopRequestDoFavorite){
         return @"/v4/action/favorite-shop/fav_shop.pl";
     }else if(tag == FavoriteShopRequestGetProductFeed){
-        return @"search/v1/product";
+        return @"/search/v1/product";
     }else if(tag == FavoriteShopRequestAll){
         return @"/v4/home/get_list_fave_shop_id.pl";
     }
@@ -123,8 +124,6 @@ typedef NS_ENUM(NSInteger, FavoriteShopRequestType){
         networkManager.isUsingHmac = YES;
         return RKRequestMethodGET;
     }else if(tag == FavoriteShopRequestGetProductFeed){
-        //networkManager.isUsingHmac = NO;
-        //networkManager.isParameterNotEncrypted = YES;
         productFeedNetworkManager.isUsingHmac = NO;
         productFeedNetworkManager.isParameterNotEncrypted = YES;
         return RKRequestMethodGET;
@@ -211,8 +210,7 @@ typedef NS_ENUM(NSInteger, FavoriteShopRequestType){
         
         return _objectmanager;
     }else if(tag == FavoriteShopRequestGetProductFeed){
-        //_objectmanager = [RKObjectManager sharedClient:@"http://ace.tokopedia.com/"];
-        _productFeedObjectManager = [RKObjectManager sharedClient:@"http://ace.tokopedia.com/"];
+        _productFeedObjectManager = [RKObjectManager sharedClient:[NSString aceUrl]];
         
         RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[SearchAWS class]];
         [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,

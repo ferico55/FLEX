@@ -15,5 +15,8 @@
 @property (nonatomic, strong) NSString *status;
 @property (nonatomic, strong) NSString *server_process_time;
 @property (nonatomic, strong) DepositResult *result;
+@property (nonatomic, strong) DepositResult *data;
+
++ (RKObjectMapping*)mapping;
 
 @end

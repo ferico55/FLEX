@@ -50,20 +50,10 @@
     
     NSString *_urinext;
     UIRefreshControl *_refreshControl;
-    NSInteger _requestcount;
-    NSInteger _requestsendcount;
-    NSTimer *_timer;
-    
-    NSString *_messageBaseUrl;
-    NSString *_messagePostUrl;
-    NSString *_messageActionBaseUrl;
-    NSString *_messageActionPostUrl;
-    
-    __weak RKObjectManager *_objectmanager;
-    __weak RKObjectManager *_objectmanageraction;
-    __weak RKManagedObjectRequestOperation *_request;
-    __weak RKManagedObjectRequestOperation *_requestsend;
-    NSOperationQueue *_operationQueue;
+
+    TokopediaNetworkManager *_fetchConversationNetworkManager;
+    TokopediaNetworkManager *_sendMessageNetworkManager;
+
     TAGContainer *_gtmContainer;
 }
 
@@ -102,7 +92,13 @@
                                                                       style:UIBarButtonItemStyleBordered
                                                                      target:self
                                                                      action:@selector(tap:)];
-    
+
+    _fetchConversationNetworkManager = [TokopediaNetworkManager new];
+    _fetchConversationNetworkManager.isUsingHmac = YES;
+
+    _sendMessageNetworkManager = [TokopediaNetworkManager new];
+    _sendMessageNetworkManager.isUsingHmac = YES;
+
     _textView.delegate = self;
     
     if (_data) {
@@ -115,7 +111,6 @@
         [_act stopAnimating];
     }
 
-    _operationQueue = [NSOperationQueue new];
     _page = 1;
     
     /** set table view datasource and delegate **/
@@ -129,12 +124,7 @@
     UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
     TagManagerHandler *gtmHandler = [TagManagerHandler new];
     [gtmHandler pushDataLayer:@{@"user_id" : [_userManager getUserId]}];
-    
-    _messageBaseUrl = [[self gtmContainer] stringForKey:GTMKeyInboxMessageBase];
-    _messagePostUrl = [[self gtmContainer] stringForKey:GTMKeyInboxMessagePost];
-    _messageActionBaseUrl = [[self gtmContainer] stringForKey:GTMKeyActionInboxMessageBase];
-    _messageActionPostUrl = [[self gtmContainer] stringForKey:GTMKeyActionInboxMessagePost];
-    
+
     if (_messages.count > 0) {
         _isnodata = NO;
     }
@@ -147,8 +137,7 @@
     self.navigationItem.titleView = _titleView;
 
     if (_data) {
-        [self configureRestKit];
-        [self loadData];
+        [self fetchInboxMessageConversations];
     }
 }
 
@@ -165,9 +154,6 @@
 
 - (void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
-    [_request cancel];
-    [_operationQueue cancelAllOperations];
-    [_timer invalidate];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -185,108 +171,27 @@
 #pragma mark - UITableView DataSource
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return _data? _messages.count:0;
+    return _messages.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
+    __weak __typeof(self) weakSelf = self;
+
     static NSString* cellIdentifier = @"messagingCell";
     
-//    InboxMessageDetailCell * cell = (InboxMessageDetailCell*) [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    InboxMessageDetailCell * cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     
-    UITableViewCell *cell = nil;
     if (cell == nil) {
         cell = [[InboxMessageDetailCell alloc] initMessagingCellWithReuseIdentifier:cellIdentifier];
     }
-    [self configureCell:cell atIndexPath:indexPath];
-    
+
+    InboxMessageDetailList *message = _messages[indexPath.row];
+    cell.message = message;
+    cell.onTapUser = ^(NSString *userId) {
+        [weakSelf showUserWithId:userId];
+    };
+
     return cell;
-}
-
-- (NSString *)stringReplaceAhrefWithUrl:(NSString *)string
-{
-    NSString *leadingTrailingWhiteSpacesPattern = @"<a[^>]+href=\"(.*?)\"[^>]*>.*?</a>";
-    
-    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:leadingTrailingWhiteSpacesPattern options:NSRegularExpressionCaseInsensitive error:NULL];
-    
-    NSRange stringRange = NSMakeRange(0, string.length);
-    NSString *trimmedString = [regex stringByReplacingMatchesInString:string options:NSMatchingReportProgress range:stringRange withTemplate:@"$1"];
-    
-    return trimmedString;
-}
-
--(void)configureCell:(id)aCell atIndexPath:(NSIndexPath*)indexPath {
-    InboxMessageDetailCell *cell = (InboxMessageDetailCell*)aCell;
-    if(_messages.count > indexPath.row) {
-        InboxMessageDetailList *message = _messages[indexPath.row];
-        
-        UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
-        
-        NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-        style.lineSpacing = 4.0;
-        style.alignment = NSTextAlignmentLeft;
-        
-        NSDictionary *attributes = @{NSForegroundColorAttributeName: [UIColor whiteColor],
-                                     NSFontAttributeName: font,
-                                     NSParagraphStyleAttributeName: style,
-                                     };
-        NSString *string = message.message_reply;
-        string = [self stringReplaceAhrefWithUrl:string];
-        NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:string attributes:attributes];
-        
-        cell.messageLabel.attributedText = attributedText;
-//        cell.messageLabel.text = message.message_reply;
-        UITapGestureRecognizer *tapUser = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapUser:)];
-
-        [cell.avatarImageView addGestureRecognizer:tapUser];
-        [cell.avatarImageView setUserInteractionEnabled:[NavigationHelper shouldDoDeepNavigation]];
-        cell.avatarImageView.tag = [message.user_id integerValue];
-        cell.viewLabelUser.text = message.user_name;
-        
-        //Set user label
-//        if([message.user_label isEqualToString:CPenjual]) {
-//            [cell.viewLabelUser setColor:CTagPenjual];
-//        }
-//        else if([message.user_label isEqualToString:CPembeli]) {
-//            [cell.viewLabelUser setColor:CTagPembeli];
-//        }
-//        else if([message.user_label isEqualToString:CAdministrator]) {
-//            [cell.viewLabelUser setColor:CTagAdministrator];
-//        }
-//        else if([message.user_label isEqualToString:CPengguna]) {
-//            [cell.viewLabelUser setColor:CTagPengguna];
-//        }
-        [cell.viewLabelUser setLabelBackground:message.user_label];
-
-        if([message.message_action isEqualToString:@"1"]) {
-            if(message.is_just_sent) {
-                cell.timeLabel.text = @"Kirim...";
-            } else {
-                cell.timeLabel.text = message.message_reply_time_fmt;
-            }
-            
-            cell.sent = YES;
-            cell.avatarImageView.image = nil;
-        } else {
-            cell.sent = NO;
-            cell.avatarImageView.image = nil;
-            cell.messageLabel.textColor = [UIColor blackColor];
-            cell.timeLabel.text = message.message_reply_time_fmt;
-            
-            if([message.user_image isEqualToString:@"0"]) {
-                cell.avatarImageView.image = [UIImage imageNamed:@"default-boy.png"];
-            } else {
-                NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:message.user_image]
-                                                              cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                                          timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-                [cell.avatarImageView setImageWithURLRequest:request
-                                            placeholderImage:[UIImage imageNamed:@"default-boy.png"]
-                                                     success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                    [cell.avatarImageView setImage:image];
-                } failure:nil];
-            }
-        }
-    }
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -297,74 +202,6 @@
     }
     
     return messageSize.height + 2*[InboxMessageDetailCell textMarginVertical] + 30.0f;
-}
-
-#pragma mark - Request and Mapping
-- (void) configureRestKit {
-    // initialize RestKit
-    if([_messageBaseUrl isEqualToString:kTkpdBaseURLString] || [_messageBaseUrl isEqualToString:@""]) {
-        _objectmanager = [RKObjectManager sharedClient];
-    } else {
-        _objectmanager = [RKObjectManager sharedClient:_messageBaseUrl];
-    }
-    
-    //register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:[InboxMessageDetail mapping]
-                                                                                                  method:RKRequestMethodPOST
-                                                                                             pathPattern:[_messagePostUrl isEqualToString:@""] ? KTKPDMESSAGE_PATHURL : _messagePostUrl
-                                                                                                 keyPath:@""
-                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectmanager addResponseDescriptor:responseDescriptorStatus];
-}
-
-
-
-- (void) loadData {
-    if (_request.isExecuting) return;
-    
-    // create a new one, this one is expired or we've never gotten it
-    if (!_isrefreshview) {
-        _table.tableHeaderView = _header;
-        [_act startAnimating];
-    }
-    
-    NSDictionary* param = @{kTKPDHOME_APIACTIONKEY:KTKPDMESSAGE_ACTIONGETDETAIL,
-                            kTKPDHOME_APIPAGEKEY : @(_page),
-                            kTKPDHOME_APILIMITPAGEKEY : KTKPDMESSAGE_LIMITVALUE,
-                            KTKPDMESSAGE_IDKEY:[_data objectForKey:KTKPDMESSAGE_IDKEY]?:@"",
-                            KTKPDMESSAGE_NAVKEY : [_data objectForKey:KTKPDMESSAGE_NAVKEY]?:@"",
-                            };
-    
-    _requestcount ++;
-    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:[_messagePostUrl isEqualToString:@""] ? KTKPDMESSAGE_PATHURL : _messagePostUrl parameters:[param encrypt]];
-    
-    
-    
-    [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestsuccess:mappingResult withOperation:operation];
-      
-        [_table reloadData];
-        _isrefreshview = NO;
-        [_refreshControl endRefreshing];
-        [_timer invalidate];
-        _timer = nil;
-        
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        /** failure **/
-        _table.tableFooterView = nil;
-        _isrefreshview = NO;
-        [_refreshControl endRefreshing];
-        [_timer invalidate];
-        _timer = nil;
-    }];
-    
-    [_operationQueue addOperation:_request];
-    
-    _timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
-
-    
 }
 
 - (void)requestsendmessage:(id)object withOperation:(RKObjectRequestOperation*)operation {
@@ -385,117 +222,88 @@
     
 }
 
-- (void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation*)operation {
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
+- (void)requestsuccess:(RKMappingResult *)object {
+    NSDictionary *result = object.dictionary;
     id info = [result objectForKey:@""];
     InboxMessageDetail *messagelist = info;
-    
-    BOOL status = [messagelist.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if(status) {
-        
-        
-        if(_page > 1) {
-            NSMutableArray *_loadedmessages;
-            _loadedmessages = [NSMutableArray new];
-            
-            NSArray* reversedArray = [[messagelist.result.list reverseObjectEnumerator] allObjects];
-            [_loadedmessages addObjectsFromArray: reversedArray];
-            [_loadedmessages addObjectsFromArray:_messages];
-            [_messages removeAllObjects];
-            [_messages addObjectsFromArray:_loadedmessages];
-        } else {
-            [_messages removeAllObjects];
-            NSArray* reversedArray = [[messagelist.result.list reverseObjectEnumerator] allObjects];
-            [_messages addObjectsFromArray: reversedArray];
-            
-            NSArray *between = messagelist.result.conversation_between?:@[];
-            NSMutableArray *between_name;
-            between_name = [NSMutableArray new];
-            
-            for(int i=0;i<between.count;i++) {
-                InboxMessageDetailBetween *m_between = between[i];
-                [between_name addObject:m_between.user_name?:@""];
-            }
-            
-            NSString *btw;
-            if (between_name.count == 2) {
-                btw = [NSString stringWithFormat:@"Antara : %@ dan %@", between_name[1], between_name[0]];
-            } else {
-                btw = [NSString stringWithFormat:@"Antara : %@", [between_name componentsJoinedByString:@", "]];
-            }
-            
-            UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 206, 44)];
-            
-            label.numberOfLines = 2;
-            label.font = [UIFont systemFontOfSize: 11.0f];
-            label.textAlignment = NSTextAlignmentCenter;
-            label.textColor = [UIColor whiteColor];
-            
-            NSString *title = [NSString stringWithFormat:@"%@\n%@", [_data objectForKey:KTKPDMESSAGE_TITLEKEY], btw];
 
-            _titleLabel.text = [_data objectForKey:KTKPDMESSAGE_TITLEKEY];
-            _participantsLabel.text = btw;
+    if(_page > 1) {
+        NSMutableArray *_loadedmessages;
+        _loadedmessages = [NSMutableArray new];
 
-            NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:title];
-            [attributedText addAttribute:NSFontAttributeName
-                                   value:[UIFont boldSystemFontOfSize: 16.0f]
-                                   range:NSMakeRange(0, [[_data objectForKey:KTKPDMESSAGE_TITLEKEY] length])];
-
-            
-            label.attributedText = attributedText;
-
-            [_table setContentOffset:CGPointMake(0, CGFLOAT_MAX)];
-        }
-        
-        if (_messages.count >0) {
-            _isnodata = NO;
-            _urinext =  messagelist.result.paging.uri_next;
-
-            if([_urinext isEqualToString:@"0"] || !_urinext) {
-                [self hidebuttonmore:YES];
-            } else {
-                [self showbuttonmore];
-            }
-            
-            NSURL *url = [NSURL URLWithString:_urinext];
-            NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
-            
-            NSMutableDictionary *queries = [NSMutableDictionary new];
-            [queries removeAllObjects];
-            for (NSString *keyValuePair in querry)
-            {
-                NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
-                NSString *key = [pairComponents objectAtIndex:0];
-                NSString *value = [pairComponents objectAtIndex:1];
-                
-                [queries setObject:value forKey:key];
-            }
-            
-            _page = [[queries objectForKey:kTKPDHOME_APIPAGEKEY] integerValue];
-        }
+        NSArray* reversedArray = [[messagelist.result.list reverseObjectEnumerator] allObjects];
+        [_loadedmessages addObjectsFromArray: reversedArray];
+        [_loadedmessages addObjectsFromArray:_messages];
+        [_messages removeAllObjects];
+        [_messages addObjectsFromArray:_loadedmessages];
     } else {
-        [self cancel];
-        NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
-        if ([(NSError*)object code] == NSURLErrorCancelled) {
-            if (_requestcount<kTKPDREQUESTCOUNTMAX) {
-                NSLog(@" ==== REQUESTCOUNT %zd =====",_requestcount);
-                _table.tableHeaderView = _footer;
-                [_act startAnimating];
-                [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-                [self performSelector:@selector(loadData) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-            }
-            else
-            {
-                [_act stopAnimating];
-                _table.tableHeaderView = nil;
-            }
+        [_messages removeAllObjects];
+        NSArray* reversedArray = [[messagelist.result.list reverseObjectEnumerator] allObjects];
+        [_messages addObjectsFromArray: reversedArray];
+
+        NSArray *between = messagelist.result.conversation_between?:@[];
+        NSMutableArray *between_name;
+        between_name = [NSMutableArray new];
+
+        for(int i=0;i<between.count;i++) {
+            InboxMessageDetailBetween *m_between = between[i];
+            [between_name addObject:m_between.user_name?:@""];
         }
-        else
+
+        NSString *btw;
+        if (between_name.count == 2) {
+            btw = [NSString stringWithFormat:@"Antara : %@ dan %@", between_name[1], between_name[0]];
+        } else {
+            btw = [NSString stringWithFormat:@"Antara : %@", [between_name componentsJoinedByString:@", "]];
+        }
+
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 206, 44)];
+
+        label.numberOfLines = 2;
+        label.font = [UIFont systemFontOfSize: 11.0f];
+        label.textAlignment = NSTextAlignmentCenter;
+        label.textColor = [UIColor whiteColor];
+
+        NSString *title = [NSString stringWithFormat:@"%@\n%@", [_data objectForKey:KTKPDMESSAGE_TITLEKEY], btw];
+
+        _titleLabel.text = [_data objectForKey:KTKPDMESSAGE_TITLEKEY];
+        _participantsLabel.text = btw;
+
+        NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:title];
+        [attributedText addAttribute:NSFontAttributeName
+                               value:[UIFont boldSystemFontOfSize: 16.0f]
+                               range:NSMakeRange(0, [[_data objectForKey:KTKPDMESSAGE_TITLEKEY] length])];
+
+
+        label.attributedText = attributedText;
+
+        [_table setContentOffset:CGPointMake(0, CGFLOAT_MAX)];
+    }
+    if (_messages.count >0) {
+        _isnodata = NO;
+        _urinext =  messagelist.result.paging.uri_next;
+
+        if([_urinext isEqualToString:@"0"] || !_urinext) {
+            [self hidebuttonmore:YES];
+        } else {
+            [self showbuttonmore];
+        }
+
+        NSURL *url = [NSURL URLWithString:_urinext];
+        NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
+
+        NSMutableDictionary *queries = [NSMutableDictionary new];
+        [queries removeAllObjects];
+        for (NSString *keyValuePair in querry)
         {
-            [_act stopAnimating];
-            _table.tableHeaderView = nil;
+            NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
+            NSString *key = [pairComponents objectAtIndex:0];
+            NSString *value = [pairComponents objectAtIndex:1];
+
+            [queries setObject:value forKey:key];
         }
+
+        _page = [[queries objectForKey:kTKPDHOME_APIPAGEKEY] integerValue];
     }
 }
 
@@ -530,8 +338,7 @@
         switch (btn.tag) {
             case 10: {
                 [self hidebuttonmore:NO];
-                [self configureRestKit];
-                [self loadData];
+                [self fetchInboxMessageConversations];
                 break;
             }
                 
@@ -567,7 +374,6 @@
                                   atScrollPosition:UITableViewScrollPositionTop
                                           animated:YES];
                     
-                    [self configureActionRestkit];
                     [self doSendMessage:_textView.text];
                     
                     _textView.text = nil;
@@ -585,6 +391,38 @@
                 break;
         }
     }
+}
+
+- (void)fetchInboxMessageConversations {
+    if (!_isrefreshview) {
+        _table.tableHeaderView = _header;
+        [_act startAnimating];
+    }
+
+    NSDictionary* param = @{kTKPDHOME_APIACTIONKEY:KTKPDMESSAGE_ACTIONGETDETAIL,
+            kTKPDHOME_APIPAGEKEY : @(_page),
+            kTKPDHOME_APILIMITPAGEKEY : KTKPDMESSAGE_LIMITVALUE,
+            KTKPDMESSAGE_IDKEY:[_data objectForKey:KTKPDMESSAGE_IDKEY]?:@"",
+            KTKPDMESSAGE_NAVKEY : [_data objectForKey:KTKPDMESSAGE_NAVKEY]?:@"",
+    };
+
+    [_fetchConversationNetworkManager requestWithBaseUrl:[NSString v4Url]
+                                                    path:@"/v4/inbox-message/get_inbox_detail_message.pl"
+                                                  method:RKRequestMethodGET
+                                               parameter:param
+                                                 mapping:[InboxMessageDetail mapping]
+                                               onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                                   [self requestsuccess:successResult];
+
+                                                   [_table reloadData];
+                                                   _isrefreshview = NO;
+                                                   [_refreshControl endRefreshing];
+                                               }
+                                               onFailure:^(NSError *errorResult) {
+                                                   _table.tableFooterView = nil;
+                                                   _isrefreshview = NO;
+                                                   [_refreshControl endRefreshing];
+                                               }];
 }
 
 -(void) keyboardWillShow:(NSNotification *)note{
@@ -632,38 +470,6 @@
     [UIView commitAnimations];
 }
 
-#pragma mark - action
--(void) configureActionRestkit {
-    if([_messageActionBaseUrl isEqualToString:kTkpdBaseURLString] || [_messageActionBaseUrl isEqualToString:@""]) {
-        _objectmanageraction = [RKObjectManager sharedClient];
-    } else {
-        _objectmanageraction = [RKObjectManager sharedClient:_messageBaseUrl];
-    }
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[InboxMessageAction class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[InboxMessageActionResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{kTKPD_APIISSUCCESSKEY:kTKPD_APIISSUCCESSKEY}];
-    
-    //relation
-    RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
-    [statusMapping addPropertyMapping:resulRel];
-    
-    
-    //register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                                  method:RKRequestMethodPOST
-                                                                                             pathPattern:[_messageActionPostUrl isEqualToString:@""] ? KTKPDMESSAGEPRODUCTACTION_PATHURL : _messageActionPostUrl
-                                                                                                 keyPath:@""
-                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectmanageraction addResponseDescriptor:responseDescriptorStatus];
-}
-
 - (void) showbuttonmore {
     [_act stopAnimating];
     
@@ -683,49 +489,36 @@
 }
 
 -(void) doSendMessage:(id)message_reply {
-    NSDictionary* param = @{kTKPDHOME_APIACTIONKEY:KTKPDMESSAGE_ACTIONREPLYMESSAGE,
-                            kTKPDHOME_APIMESSAGEREPLYKEY:message_reply,
-                            KTKPDMESSAGE_IDKEY:[_data objectForKey:KTKPDMESSAGE_IDKEY],
-                            
-                            };
-    
-    _requestsendcount ++;
-    _requestsend = [_objectmanageraction appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:[_messageActionPostUrl isEqualToString:@""] ? KTKPDMESSAGEPRODUCTACTION_PATHURL : _messageActionPostUrl parameters:[param encrypt]];
-
     if (_onMessagePosted) {
         _onMessagePosted(_textView.text);
     }
 
     [_textView resignFirstResponder];
-    
-    [_requestsend setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestsendmessage:mappingResult withOperation:operation];
-        
-        [_table reloadData];
-        _isrefreshview = NO;
-        [_refreshControl endRefreshing];
-        [_timer invalidate];
-        _timer = nil;
-        
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        /** failure **/
-//                [self requestfailure:error];
-        
-        _table.tableFooterView = nil;
-        _isrefreshview = NO;
-        [_refreshControl endRefreshing];
-        [_timer invalidate];
-        _timer = nil;
-    }];
 
-    [_operationQueue addOperation:_requestsend];
-    
-    _timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestsendtimeout) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
-}
+    NSDictionary* param = @{
+            kTKPDHOME_APIACTIONKEY:KTKPDMESSAGE_ACTIONREPLYMESSAGE,
+            kTKPDHOME_APIMESSAGEREPLYKEY:message_reply,
+            KTKPDMESSAGE_IDKEY:[_data objectForKey:KTKPDMESSAGE_IDKEY],
+    };
 
-- (void)requestsendtimeout {
-    
+    [_sendMessageNetworkManager
+            requestWithBaseUrl:[NSString v4Url]
+                          path:@"/v4/action/message/reply_message.pl"
+                        method:RKRequestMethodPOST
+                     parameter:param
+                       mapping:[InboxMessageAction mapping]
+                     onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                         [self requestsendmessage:successResult withOperation:operation];
+
+                         [_table reloadData];
+                         _isrefreshview = NO;
+                         [_refreshControl endRefreshing];
+                     }
+                     onFailure:^(NSError *errorResult) {
+                         _table.tableFooterView = nil;
+                         _isrefreshview = NO;
+                         [_refreshControl endRefreshing];
+                     }];
 }
 
 #pragma mark - TextView Delegate
@@ -743,32 +536,9 @@
     _buttonsend.enabled = message.length > 5;
 }
 
-#pragma mark - Tap User
-- (void)tapUser:(id)sender{
+- (void)showUserWithId:(NSString *)userId {
     NavigateViewController *navigateController = [NavigateViewController new];
-    UITapGestureRecognizer *tap = (UITapGestureRecognizer*)sender;
-    NSString *userId = [NSString stringWithFormat:@"%ld", (long)tap.view.tag];
     [navigateController navigateToProfileFromViewController:self withUserID:userId];
-}
-
--(void)replaceDataSelected:(NSDictionary *)data
-{
-    _data = data;
-    
-    if (data) {
-        _page = 1;
-    
-        [self configureRestKit];
-        [self loadData];
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"markAsReadMessage" object:nil userInfo:@{@"index_path" : [_data objectForKey:@"index_path"], @"read_status" : @"1"}];
-    }
-    else {
-        [_act stopAnimating];
-        [_table reloadData];
-    }
-    
-    _messagingview.hidden = _data == nil;
 }
 
 @end

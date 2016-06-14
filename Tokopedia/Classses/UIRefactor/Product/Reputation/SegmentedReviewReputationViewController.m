@@ -37,6 +37,8 @@
     selectedFilter = CTagSemuaReview;
     [self setNavigationTitle:selectedFilter];
     
+    _selectedIndex = _userHasShop?0:2;
+    
     if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [backButton setImage:[UIImage imageNamed:@"icon_arrow_white.png"] forState:UIControlStateNormal];
@@ -66,6 +68,19 @@
         
         segmentedControl.selectedSegmentIndex = _selectedIndex;
         [self actionValueChange:segmentedControl];
+    }
+}
+
+- (void)viewDidLayoutSubviews {
+    if (!_userHasShop) {
+        CGRect frame = CGRectZero;
+        segmentedControlView.frame = frame;
+        segmentedControl.frame = frame;
+        
+        frame = viewContent.frame;
+        frame.origin.y = 0;
+        frame.size.height = frame.size.height + 45;
+        viewContent.frame = frame;
     }
 }
 

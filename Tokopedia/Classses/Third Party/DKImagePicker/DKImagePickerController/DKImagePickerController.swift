@@ -34,8 +34,8 @@ public class DKAsset: NSObject {
     /// Returns a CGImage of the representation that is appropriate for displaying full screen.
     public private(set) lazy var resizedImage: UIImage? = {
         if let originalAsset = self.originalAsset {
-            let original : UIImage = UIImage(CGImage: (originalAsset.defaultRepresentation().fullResolutionImage().takeUnretainedValue()))
-            return self.resizeImage(original)
+            let original : UIImage = UIImage(CGImage: (originalAsset.defaultRepresentation().fullResolutionImage().takeUnretainedValue()), scale: 1.0, orientation: UIImageOrientation.Up)
+            return self.resizeImage(self.fixOrientation(original))
         }
         return nil
     }()
@@ -68,6 +68,77 @@ public class DKAsset: NSObject {
             UIGraphicsEndImageContext()
             
             return resized
+    }
+    
+    func fixOrientation(image: UIImage) -> UIImage {
+        // No-op if the orientation is already correct
+        let orientationInt : Int = Int(self.originalAsset!.valueForProperty("ALAssetPropertyOrientation") as! NSNumber)
+        let imageOrientation : UIImageOrientation = UIImageOrientation.init(rawValue: orientationInt)!
+        if (imageOrientation == UIImageOrientation.Up) { return image; }
+        
+        // We need to calculate the proper transformation to make the image upright.
+        // We do it in 2 steps: Rotate if Left/Right/Down, and then flip if Mirrored.
+        var transform = CGAffineTransformIdentity
+        var newImageWidth : CGFloat = image.size.width
+        var newImageHeight : CGFloat = image.size.height
+        
+        switch (imageOrientation) {
+        case .Down, .DownMirrored:
+            transform = CGAffineTransformTranslate(transform, image.size.width, image.size.height)
+            transform = CGAffineTransformRotate(transform, CGFloat(M_PI))
+            break
+        case .Left, .LeftMirrored:
+            transform = CGAffineTransformTranslate(transform, image.size.height, 0)
+            transform = CGAffineTransformRotate(transform, CGFloat(M_PI_2))
+            newImageWidth = image.size.height
+            newImageHeight = image.size.width
+            break
+        case .Right, .RightMirrored:
+            transform = CGAffineTransformTranslate(transform, 0, image.size.width)
+            transform = CGAffineTransformRotate(transform, CGFloat(-M_PI_2))
+            newImageWidth = image.size.height
+            newImageHeight = image.size.width
+            break
+        case .Up, .UpMirrored:
+            break
+        }
+        
+        switch (imageOrientation) {
+        case .UpMirrored, .DownMirrored:
+            transform = CGAffineTransformTranslate(transform, image.size.height, 0)
+            transform = CGAffineTransformScale(transform, -1, 1)
+            break
+        case .LeftMirrored, .RightMirrored:
+            transform = CGAffineTransformTranslate(transform, image.size.width, 0)
+            transform = CGAffineTransformScale(transform, -1, 1)
+            break
+        case .Up, .Down, .Left, .Right:
+            break
+        }
+        
+        // Now we draw the underlying CGImage into a new context, applying the transform
+        // calculated above.
+        
+        let ctx = CGBitmapContextCreate(nil, Int(newImageWidth), Int(newImageHeight), CGImageGetBitsPerComponent(image.CGImage), 0, CGImageGetColorSpace(image.CGImage), CGImageGetBitmapInfo(image.CGImage).rawValue)
+        
+        CGContextConcatCTM(ctx, transform);
+        
+        switch (imageOrientation) {
+        case .Left, .LeftMirrored, .Right, .RightMirrored:
+            // Grr...
+            CGContextDrawImage(ctx, CGRectMake(0, 0, newImageHeight, newImageWidth), image.CGImage)
+            break
+            
+        default:
+            CGContextDrawImage(ctx, CGRectMake(0, 0, newImageWidth, newImageHeight), image.CGImage)
+            break
+        }
+        
+        // And now we just create a new UIImage from the drawing context
+        let cgimg = CGBitmapContextCreateImage(ctx)
+        let img = UIImage(CGImage: cgimg!)
+        
+        return img
     }
 
     

@@ -19,45 +19,31 @@
 @class ProductTalkDetailViewController;
 @class TalkList;
 @class ReportViewController;
+@class TalkCell;
 
 @protocol TalkCellDelegate <NSObject>
 
 @required
 - (id)getNavigationController:(UITableViewCell *)cell;
 - (UITableView*)getTable;
-- (NSMutableArray*)getTalkList;
 
 @optional
 - (void)tapToReportTalk:(UITableViewCell *)cell;
 - (void)tapToFollowTalk:(UITableViewCell *)cell withButton:(UIButton *)button;
 - (void)tapToDeleteTalk:(UITableViewCell *)cell;
 
-- (void)updateTalkStatusAtIndexPath:(NSIndexPath *)path following:(BOOL)following;
 @end
 
-@interface TalkCell : UITableViewCell <UIActionSheetDelegate, SmileyDelegate, CMPopTipViewDelegate, ReportViewControllerDelegate> {
+@interface TalkCell : UITableViewCell <UIActionSheetDelegate, SmileyDelegate, CMPopTipViewDelegate> {
     NSString *_myShopID;
     NSString *_myUserID;
     NavigateViewController *_navigateController;
     UserAuthentificationManager *_userManager;
     CMPopTipView *_popTipView;
-    
-    TalkList *_unfollowTalk;
-    TalkList *_deleteTalk;
-    TalkList *_reportTalk;
-    
-    NSIndexPath *_unfollowIndexPath;
-    NSIndexPath *_deleteIndexPath;
-    NSIndexPath *_reportIndexPath;
-    
+
     TokopediaNetworkManager *_unfollowNetworkManager;
     TokopediaNetworkManager *_deleteNetworkManager;
-    __weak RKObjectManager *_objectUnfollowmanager;
 }
-
-
-- (void)setTalkViewModel:(TalkModelView*)modelView;
-- (void)tapToDetailTalk:(UITableViewCell*)cell;
 
 @property (weak, nonatomic) IBOutlet UIImageView *userImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *unreadImageView;
@@ -68,7 +54,6 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *totalCommentButton;
 @property (weak, nonatomic) IBOutlet UIButton *unfollowButton;
-@property (weak, nonatomic) IBOutlet UIButton *productButton;
 @property (weak, nonatomic) IBOutlet UIButton *moreActionButton;
 @property (weak, nonatomic) IBOutlet UIButton *reputationButton;
 @property (weak, nonatomic) IBOutlet ViewLabelUser *userButton;
@@ -83,13 +68,11 @@
 @property (nonatomic, strong) NSString *selectedTalkUserID;
 @property (nonatomic, strong) NSString *selectedTalkShopID;
 @property (nonatomic, strong) NSString *selectedTalkProductID;
-@property BOOL marksOpenedTalkAsRead;
-
-//========== This is a property to configure split screen on iPad
-@property (nonatomic) BOOL isSplitScreen;
 
 @property (nonatomic, strong) ReputationDetail *selectedTalkReputation;
-@property (strong, nonatomic) ProductTalkDetailViewController *detailViewController;
+
+@property (nonatomic) BOOL enableDeepNavigation;
+@property (strong, nonatomic) TalkList* talk;
 
 
 @end

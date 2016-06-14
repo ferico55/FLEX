@@ -15,4 +15,32 @@
     return [_shop_name kv_decodeHTMLCharacterEntities];
 }
 
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[LoginResult class]];
+    
+    [mapping addAttributeMappingsFromArray:@[@"shop_id",
+                                             @"is_login",
+                                             @"shop_name",
+                                             @"shop_avatar",
+                                             @"shop_is_gold",
+                                             @"user_id",
+                                             @"device_token_id",
+                                             @"shop_has_terms",
+                                             @"full_name",
+                                             @"user_image",
+                                             @"status",
+                                             @"msisdn_is_verified",
+                                             @"msisdn_show_dialog"]];
+    
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"security"
+                                                                            toKeyPath:@"security"
+                                                                          withMapping:[LoginSecurity mapping]]];
+    
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"user_reputation"
+                                                                            toKeyPath:@"user_reputation"
+                                                                          withMapping:[ReputationDetail mapping]]];
+    
+    return mapping;
+}
+
 @end

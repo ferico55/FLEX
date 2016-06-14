@@ -32,36 +32,20 @@
 
 #import "TalkCell.h"
 
-#define CTagDeleteAlert 12
-#define CTagDeleteMessage 13
-
 #pragma mark - Product Talk View Controller
-@interface ProductTalkViewController ()<UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate, UIAlertViewDelegate, TokopediaNetworkManagerDelegate, TalkCellDelegate>
+@interface ProductTalkViewController ()<UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate, UIAlertViewDelegate, TalkCellDelegate>
 {
     NSMutableArray *_list;
-    NSArray *_headerimages;
-    NSInteger _requestcount;
-    NSInteger _requestUnfollowCount;
-    NSInteger _pageheaderimages;
-    NSTimer *_timer;
     BOOL _isnodata;
-    
-    CMPopTipView *cmPopTitpView;
+
     NSInteger _page;
-    NSInteger _limit;
     NSString *_urinext;
     NSIndexPath *selectedIndexPath;
     BOOL _isrefreshview;
     UIRefreshControl *_refreshControl;
     
     Talk *_talk;
-    __weak RKObjectManager *_objectmanager;
-    __weak RKManagedObjectRequestOperation *_request;
-    
-    NSOperationQueue *_operationQueue;
-    
-    NSString *_cachepath;
-    NSTimeInterval _timeinterval;
+
     NSString *_product_id;
     UserAuthentificationManager *_userManager;
     ReportViewController *_reportController;
@@ -75,17 +59,7 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *productnamelabel;
 @property (weak, nonatomic) IBOutlet UILabel *pricelabel;
-
-
--(void)cancel;
--(void)configureRestKit;
--(void)loadData;
--(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation*)operation;
--(void)requestfailure:(id)object;
--(void)requestprocess:(id)object;
--(void)requesttimeout;
-
--(IBAction)tap:(id)sender;
+@property (strong, nonatomic) TokopediaNetworkManager *networkManager;
 
 @end
 
@@ -105,9 +79,13 @@
 #pragma mark - View Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
+    _page = 1;
+
+    _networkManager = [TokopediaNetworkManager new];
+    _networkManager.isUsingHmac = YES;
+
     _list = [NSMutableArray new];
-    _operationQueue = [NSOperationQueue new];
     _userManager = [UserAuthentificationManager new];
     _noResultView = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, [UIScreen mainScreen].bounds.size.width, 200)];
     _product_id = [_data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTIDKEY]?:0;
@@ -136,9 +114,7 @@
     /** init notification*/
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateTotalComment:) name:@"UpdateTotalComment" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateTalk:) name:@"UpdateTalk" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateDeletedTalk:) name:@"TokopediaDeleteInboxTalk" object:nil];
-    
-    [self configureRestKit];
+
     [self loadData];
 }
 
@@ -152,11 +128,6 @@
     self.screenName = @"Product - Talk List";
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-    [self cancel];
-}
-
 - (void)setRightBarButton {
     NSString *shopID = [NSString stringWithFormat:@"%@", [_userManager getShopId]];
     BOOL isLogin = [_userManager isLogin];
@@ -164,20 +135,26 @@
         NSBundle *bundle = [NSBundle mainBundle];
         UIBarButtonItem *addButton;
         UIImage *imgadd = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:@"icon_shop_addproduct" ofType:@"png"]];
-        if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
-            UIImage * image = [imgadd imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-            addButton = [[UIBarButtonItem alloc] initWithImage:image
-                                                         style:UIBarButtonItemStylePlain
-                                                        target:self
-                                                        action:@selector(tap:)];
-        } else {
-            addButton = [[UIBarButtonItem alloc] initWithImage:imgadd style:UIBarButtonItemStylePlain
-                                                        target:self
-                                                        action:@selector(tap:)];
-        }
-        [addButton setTag:11];
+
+        UIImage * image = [imgadd imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        addButton = [[UIBarButtonItem alloc] initWithImage:image
+                                                 style:UIBarButtonItemStylePlain
+                                                target:self
+                                                action:@selector(createNewDiscussion)];
         self.navigationItem.rightBarButtonItem = addButton;
     }
+}
+
+- (void)createNewDiscussion {
+    ProductTalkFormViewController *vc = [ProductTalkFormViewController new];
+    vc.data = @{
+            kTKPDDETAIL_APIPRODUCTIDKEY:[_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@(0),
+            kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY:[_data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY]?:@(0),
+            kTKPDDETAILPRODUCT_APIIMAGESRCKEY:[_data objectForKey:kTKPDDETAILPRODUCT_APIIMAGESRCKEY]?:@(0),
+            TKPD_TALK_SHOP_ID:[_data objectForKey:TKPD_TALK_SHOP_ID]?:@(0),
+
+    };
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - Table View Data Source
@@ -189,6 +166,16 @@
 #endif
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    TalkList* list = _list[indexPath.row];
+
+    ProductTalkDetailViewController *controller = [ProductTalkDetailViewController new];
+    controller.indexPath = indexPath;
+    controller.talk = list;
+
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     TalkList *list = [_list objectAtIndex:indexPath.row];
     list.talk_product_id = _product_id;
@@ -198,51 +185,17 @@
     
     TalkCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TalkProductCellIdentifier" forIndexPath:indexPath];
     cell.delegate = self;
-    cell.selectedTalkShopID = list.talk_shop_id;
-    cell.selectedTalkUserID = [NSString stringWithFormat:@"%ld", (long)list.talk_user_id];
-    cell.selectedTalkProductID = list.talk_product_id;
-    cell.selectedTalkReputation = list.talk_user_reputation;
-    
-    [cell setTalkViewModel:list.viewModel];
+    cell.talk = list;
     
     //next page if already last cell
     NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1;
     if (row == indexPath.row) {
         if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
-            [self configureRestKit];
             [self loadData];
         }
     }
     
     return cell;
-}
-
-#pragma mark - View Action
-- (IBAction)tap:(id)sender {
-    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
-        UIBarButtonItem *btn = (UIBarButtonItem*)sender;
-        switch (btn.tag) {
-            case 10: {
-                [self.navigationController popViewControllerAnimated:YES];
-                break;
-            }
-            case 11 : {
-                //add new talk
-                ProductTalkFormViewController *vc = [ProductTalkFormViewController new];
-                vc.data = @{
-                            kTKPDDETAIL_APIPRODUCTIDKEY:[_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@(0),
-                            kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY:[_data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY]?:@(0),
-                            kTKPDDETAILPRODUCT_APIIMAGESRCKEY:[_data objectForKey:kTKPDDETAILPRODUCT_APIIMAGESRCKEY]?:@(0),
-                            TKPD_TALK_SHOP_ID:[_data objectForKey:TKPD_TALK_SHOP_ID]?:@(0),
-                            
-                            };
-                [self.navigationController pushViewController:vc animated:YES];
-                break;
-            }
-            default:
-                break;
-        }
-    }
 }
 
 #pragma mark - Memory Management
@@ -256,267 +209,58 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Request and Mapping
-- (void)cancel {
-    [_request cancel];
-    _request = nil;
-    [_objectmanager.operationQueue cancelAllOperations];
-    _objectmanager = nil;
-}
-
-- (void)configureRestKit {
-    // initialize RestKit
-    _objectmanager =  [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Talk class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TalkResult class]];
-    
-    RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[TalkList class]];
-    [listMapping addAttributeMappingsFromArray:@[
-                                                 TKPD_TALK_TOTAL_COMMENT,
-                                                 TKPD_TALK_USER_IMG,
-                                                 TKPD_TALK_USER_NAME,
-                                                 TKPD_TALK_ID,
-                                                 TKPD_TALK_CREATE_TIME,
-                                                 TKPD_TALK_MESSAGE,
-                                                 TKPD_TALK_FOLLOW_STATUS,
-                                                 TKPD_TALK_SHOP_ID,
-                                                 TKPD_TALK_USER_ID,
-                                                 TKPD_TALK_USER_LABEL_ID,
-                                                 TKPD_TALK_USER_LABEL,
-                                                 TKPD_TALK_OWN
-                                                 ]];
-    
-    RKObjectMapping *reviewUserReputationMapping = [RKObjectMapping mappingForClass:[ReputationDetail class]];
-    [reviewUserReputationMapping addAttributeMappingsFromArray:@[CPositivePercentage,
-                                                                 CNoReputation,
-                                                                 CNegative,
-                                                                 CNeutral,
-                                                                 CPositif]];
-
-    
-    RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
-    [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDDETAIL_APIURINEXTKEY:kTKPDDETAIL_APIURINEXTKEY}];
-    
-    // Relationship Mapping
-    [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CTalkUserReputation toKeyPath:CTalkUserReputation withMapping:reviewUserReputationMapping]];
-
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APILISTKEY toKeyPath:kTKPD_APILISTKEY withMapping:listMapping];
-    [resultMapping addPropertyMapping:listRel];
-    
-    RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIPAGINGKEY toKeyPath:kTKPDDETAIL_APIPAGINGKEY withMapping:pagingMapping];
-    [resultMapping addPropertyMapping:pageRel];
-    
-    // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDDETAILPRODUCT_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-
-    [_objectmanager addResponseDescriptor:responseDescriptorStatus];
-}
-
 - (void)loadData {
-    if (_request.isExecuting) return;
-    _requestcount++;
-    
-	NSDictionary* param = @{
-                            kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETPRODUCTTALKKEY,
-                            kTKPDDETAIL_APIPRODUCTIDKEY : [_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@(0),
-                            kTKPDDETAIL_APIPAGEKEY : @(_page)?:@1,
-                            kTKPDDETAIL_APILIMITKEY : @kTKPDDETAILDEFAULT_LIMITPAGE
-                            };
-    
+    NSDictionary* param = @{
+            kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETPRODUCTTALKKEY,
+            kTKPDDETAIL_APIPRODUCTIDKEY : [_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@(0),
+            kTKPDDETAIL_APIPAGEKEY : @(_page)?:@1,
+            kTKPDDETAIL_APILIMITKEY : @kTKPDDETAILDEFAULT_LIMITPAGE
+    };
+
     if (!_isrefreshview) {
         _table.tableFooterView = _footer;
         [_act startAnimating];
     }
-    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILPRODUCT_APIPATH parameters:[param encrypt]];
-    [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [_timer invalidate];
-        _timer = nil;
-        [_act stopAnimating];
-        _table.hidden = NO;
-        _isrefreshview = NO;
-        [_refreshControl endRefreshing];
-        [self requestsuccess:mappingResult withOperation:operation];
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [_timer invalidate];
-        _timer = nil;
-        [_act stopAnimating];
-        _table.hidden = NO;
-        _isrefreshview = NO;
-        [_refreshControl endRefreshing];
-        [self requestfailure:error];
-    }];
-    [_operationQueue addOperation:_request];
-    
-    _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+
+    [_networkManager requestWithBaseUrl:[NSString v4Url]
+                                   path:@"/v4/product/get_product_talk.pl"
+                                 method:RKRequestMethodGET
+                              parameter:param
+                                mapping:[Talk mapping]
+                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                  [_act stopAnimating];
+                                  _table.hidden = NO;
+                                  _isrefreshview = NO;
+                                  [_refreshControl endRefreshing];
+
+                                  NSDictionary *result = successResult.dictionary;
+                                  _talk = result[@""];
+                                  [self onReceiveTalkList:_talk.result.list];
+                              }
+                              onFailure:^(NSError *errorResult) {
+                                  [_act stopAnimating];
+                                  _table.hidden = NO;
+                                  _isrefreshview = NO;
+                                  [_refreshControl endRefreshing];
+                              }];
 }
 
-- (void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation *)operation {
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id stats = [result objectForKey:@""];
-    _talk = stats;
-    BOOL status = [_talk.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if (status) {
-        [self requestprocess:object];
+- (void)onReceiveTalkList:(NSArray<TalkList *> *)talkList {
+    [_list addObjectsFromArray:talkList];
+
+    if([_list count] > 0) {
+        _urinext =  _talk.result.paging.uri_next;
+        _page = [[_networkManager splitUriToPage:_urinext] integerValue];
+
+        _isnodata = NO;
+        [_table reloadData];
+    } else {
+        _table.tableFooterView = _noResultView;
+        _isnodata = YES;
     }
 }
-
-- (void)requesttimeout {
-    [self cancel];
-}
-
-- (void)requestfailure:(id)object {
-    
-}
-
-- (void)requestprocess:(id)object {
-    if (object) {
-        if ([object isKindOfClass:[RKMappingResult class]]) {
-            NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            
-            id stats = [result objectForKey:@""];
-            
-            _talk = stats;
-            BOOL status = [_talk.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-            
-            if (status) {
-                NSArray *list = _talk.result.list;
-                [_list addObjectsFromArray:list];
-                
-                if([_list count] > 0) {
-                    _urinext =  _talk.result.paging.uri_next;
-                    NSURL *url = [NSURL URLWithString:_urinext];
-                    NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
-                    
-                    NSMutableDictionary *queries = [NSMutableDictionary new];
-                    [queries removeAllObjects];
-                    for (NSString *keyValuePair in querry)
-                    {
-                        NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
-                        NSString *key = [pairComponents objectAtIndex:0];
-                        NSString *value = [pairComponents objectAtIndex:1];
-                        
-                        [queries setObject:value forKey:key];
-                    }
-                    
-                    _page = [[queries objectForKey:kTKPDDETAIL_APIPAGEKEY] integerValue];
-                    NSLog(@"next page : %zd",_page);
-                    
-                    
-                    _isnodata = NO;
-                    [_table reloadData];
-                } else {
-                    _table.tableFooterView = _noResultView;
-                    _isnodata = YES;
-                }
-                
-                
-                
-            }
-        }else{
-            [self cancel];
-            NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
-            if ([(NSError*)object code] == NSURLErrorCancelled) {
-                if (_requestcount<kTKPDREQUESTCOUNTMAX) {
-                    NSLog(@" ==== REQUESTCOUNT %zd =====",_requestcount);
-                    _table.tableFooterView = _footer;
-                    [_act startAnimating];
-                    [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-                    [self performSelector:@selector(loadData) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-                }
-                else
-                {
-                    [_act stopAnimating];
-                    _table.tableFooterView = _noResultView;
-                    NSError *error = object;
-                    NSString *errorDescription = error.localizedDescription;
-                    
-                    if(error.code == -1011) {
-                        errorDescription = CStringFailedInServer;
-                    } else if (error.code==-1009 || error.code==-999) {
-                        errorDescription = CStringNoConnection;
-                    }
-                    UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-                    [errorAlert show];
-                }
-            }
-            else
-            {
-                [_act stopAnimating];
-                _table.tableFooterView = _noResultView;
-                NSError *error = object;
-                NSString *errorDescription = error.localizedDescription;
-                
-                if(error.code == -1011) {
-                    errorDescription = CStringFailedInServer;
-                } else if (error.code==-1009 || error.code==-999) {
-                    errorDescription = CStringNoConnection;
-                }
-                UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-                [errorAlert show];
-            }
-        }
-    }
-}
-
 
 #pragma mark - Delegate
-- (void)GeneralTalkCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath {
-    ProductTalkDetailViewController *vc = [ProductTalkDetailViewController new];
-    NSInteger row = indexpath.row;
-    TalkList *list = _list[row];
-    ReputationDetail *tempReputationDetail;
-    if(list.talk_user_reputation == nil) {
-        TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-        NSDictionary* auth = [secureStorage keychainDictionary];
-        auth = [auth mutableCopy];
-        if(auth) {
-            NSInteger userId = [[auth objectForKey:@"user_id"] integerValue];
-            if(list.talk_user_id == userId) {
-                UserAuthentificationManager *user = [UserAuthentificationManager new];
-                tempReputationDetail = user.reputation;
-            }
-        }
-    }
-    
-    NSMutableDictionary *dictData = [NSMutableDictionary new];
-    [dictData setObject:list.talk_message?:@0 forKey:TKPD_TALK_MESSAGE];
-    [dictData setObject:list.talk_user_image?:@0 forKey:TKPD_TALK_USER_IMG];
-    [dictData setObject:list.talk_create_time?:@0 forKey:TKPD_TALK_CREATE_TIME];
-    [dictData setObject:list.talk_user_name?:@0 forKey:TKPD_TALK_USER_NAME];
-    [dictData setObject:list.talk_id?:@0 forKey:TKPD_TALK_ID];
-    [dictData setObject:[NSString stringWithFormat:@"%d", list.talk_user_id] forKey:TKPD_TALK_USER_ID];
-    [dictData setObject:list.talk_total_comment?:@0 forKey:TKPD_TALK_TOTAL_COMMENT];
-    [dictData setObject:list.talk_shop_id?:@0 forKey:TKPD_TALK_SHOP_ID];
-    [dictData setObject:_product_id forKey:kTKPDDETAILPRODUCT_APIPRODUCTIDKEY];
-    [dictData setObject:[_data objectForKey:@"talk_product_status"] forKey:TKPD_TALK_PRODUCT_STATUS];
-    [dictData setObject:[_data objectForKey:@"talk_product_image"] forKey:TKPD_TALK_PRODUCT_IMAGE];
-    [dictData setObject:[_data objectForKey:@"product_name"] forKey:TKPD_TALK_PRODUCT_NAME];
-    
-    //utk notification, apabila total comment bertambah, maka list ke INDEX akan berubah pula
-    [dictData setObject:@(row)?:@0 forKey:kTKPDDETAIL_DATAINDEXKEY];
-    
-    if(list.talk_user_reputation!=nil && list.talk_user_label!=nil) {
-        [dictData setObject:list.talk_user_label forKey:TKPD_TALK_USER_LABEL];
-        [dictData setObject:list.talk_user_reputation forKey:TKPD_TALK_REPUTATION_PERCENTAGE];
-    }
-    else if(tempReputationDetail != nil){
-        [dictData setObject:@"Pengguna" forKey:TKPD_TALK_USER_LABEL];
-        [dictData setObject:tempReputationDetail forKey:TKPD_TALK_REPUTATION_PERCENTAGE];
-    }
-    
-    vc.data = dictData;
-    [self.navigationController pushViewController:vc animated:YES];
-    
-}
 
 - (id)navigationController:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath {
     return self;
@@ -529,20 +273,15 @@
     _productnamelabel.numberOfLines = 1;
     
     _pricelabel.text = [data objectForKey:API_PRODUCT_PRICE_KEY];
-    _headerimages = [data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTIMAGESKEY];
 }
 
 -(void)refreshView:(UIRefreshControl*)refresh {
-    /** clear object **/
-    [self cancel];
-    _requestcount = 0;
     [_list removeAllObjects];
     _page = 1;
     _isrefreshview = YES;
     
     [_table reloadData];
     /** request data **/
-    [self configureRestKit];
     [self loadData];
 }
 
@@ -563,10 +302,8 @@
     }
 }
 
-- (void)updateDeletedTalk:(NSNotification*)notification {
-    NSDictionary *userInfo = notification.userInfo;
-    NSInteger index = [[userInfo objectForKey:@"index"] integerValue];
-    
+- (void)tapToDeleteTalk:(UITableViewCell *)cell {
+    NSInteger index = [_table indexPathForCell:cell].row;
     [_list removeObjectAtIndex:index];
     [_table reloadData];
 }
@@ -652,10 +389,6 @@
 
 - (UITableView *)getTable {
     return _table;
-}
-
-- (NSMutableArray *)getTalkList {
-    return _list;
 }
 
 @end
