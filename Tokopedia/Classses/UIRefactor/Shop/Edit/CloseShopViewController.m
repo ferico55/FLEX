@@ -197,7 +197,6 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 
@@ -565,9 +564,6 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
 
 #pragma mark - TextView Delegate
 
--(void)textViewDidBeginEditing:(UITextView *)textView{
-}
-
 - (void)keyboardWasShown:(NSNotification*)aNotification
 {
     if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad){
@@ -592,14 +588,6 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
     UIEdgeInsets contentInsets = UIEdgeInsetsZero;
     _scrollView.contentInset = contentInsets;
     _scrollView.scrollIndicatorInsets = contentInsets;
-}
-
-#pragma mark - ScrollView delegate
--(void)scrollViewDidScroll:(UIScrollView *)scrollView{
-    
-}
-
--(void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView{
 }
 
 # pragma mark - Toggle View
