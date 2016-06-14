@@ -276,18 +276,14 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
                                                             }
                                                             
                                                             [self.delegate didChangeShopStatus];
-                                                            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(VIEW_TRANSITION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                                                                [self adjustView:CenterViewFormView withAnimation:NO];
-                                                            });
+                                                            [self returnToFormViewWithDelay];
                                                             [_tutupSekarangSwitch setOn:NO];
                                                             isLoading = NO;
                                                         }
                                                         onFailure:^(NSError *error) {
                                                             [self setFailLabelTextWithError:@[@"Kendala koneksi internet"]];
                                                             [self adjustView:CenterViewFailView withAnimation:NO];
-                                                            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(VIEW_TRANSITION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                                                                [self adjustView:CenterViewFormView withAnimation:NO];
-                                                            });
+                                                            
                                                             
                                                             
                                                             isLoading = NO;
@@ -312,18 +308,14 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
                                                             [self adjustView:CenterViewFailView withAnimation:NO];
                                                         }
                                                         [self.delegate didChangeShopStatus];
-                                                        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(VIEW_TRANSITION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                                                            [self adjustView:CenterViewFormView withAnimation:NO];
-                                                        });
+                                                        [self returnToFormViewWithDelay];
                                                         isLoading = NO;
                                                     }
                                                     onFailure:^(NSError *error) {
                                                         [self setFailLabelTextWithError:@[@"Kendala koneksi internet"]];
                                                         [self adjustView:CenterViewFailView withAnimation:NO];
                                                         
-                                                        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(VIEW_TRANSITION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                                                            [self adjustView:CenterViewFormView withAnimation:NO];
-                                                        });
+                                                        [self returnToFormViewWithDelay];
                                                         isLoading = NO;
                                                     }];
             }else if(_scheduleDetail.close_status == CLOSE_STATUS_CLOSED){
@@ -344,18 +336,13 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
                                                                    [self adjustView:CenterViewFailView withAnimation:NO];
                                                                }
                                                                [self.delegate didChangeShopStatus];
-                                                               dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(VIEW_TRANSITION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                                                                   [self adjustView:CenterViewFormView withAnimation:NO];
-                                                               });
-                                                               
+                                                               [self returnToFormViewWithDelay];
                                                                isLoading = NO;
                                                            } onFailure:^(NSError *error) {
                                                                [self setFailLabelTextWithError:@[@"Kendala koneksi internet"]];
                                                                [self adjustView:CenterViewFailView withAnimation:NO];
                                                                
-                                                               dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(VIEW_TRANSITION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                                                                   [self adjustView:CenterViewFormView withAnimation:NO];
-                                                               });
+                                                               [self returnToFormViewWithDelay];
                                                                isLoading = NO;
                                                            }];
             }else if(_scheduleDetail.close_status == CLOSE_STATUS_CLOSE_SCHEDULED){
@@ -377,17 +364,13 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
                                                             [self setFailLabelTextWithError:result.message_error];
                                                             [self adjustView:CenterViewFailView withAnimation:NO];
                                                         }
-                                                        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(VIEW_TRANSITION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                                                            [self adjustView:CenterViewFormView withAnimation:NO];
-                                                        });
+                                                        [self returnToFormViewWithDelay];
                                                         isLoading = NO;
                                                     } onFailure:^(NSError *error) {
                                                         [self setFailLabelTextWithError:@[@"Kendala koneksi internet"]];
                                                         [self adjustView:CenterViewFailView withAnimation:NO];
                                                         
-                                                        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(VIEW_TRANSITION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                                                            [self adjustView:CenterViewFormView withAnimation:NO];
-                                                        });
+                                                        [self returnToFormViewWithDelay];
                                                         isLoading = NO;
                                                     }];
             }
@@ -425,17 +408,13 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
                 [self setFailLabelTextWithError:result.message_error];
                 [self adjustView:CenterViewFailView withAnimation:NO];
             }
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(VIEW_TRANSITION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [self adjustView:CenterViewFormView withAnimation:NO];
-            });
+            [self returnToFormViewWithDelay];
             isLoading = NO;
         } onFailure:^(NSError *error) {
             [self setFailLabelTextWithError:@[@"Kendala koneksi internet"]];
             [self adjustView:CenterViewFailView withAnimation:NO];
             
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(VIEW_TRANSITION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [self adjustView:CenterViewFormView withAnimation:NO];
-            });
+            [self returnToFormViewWithDelay];
             isLoading = NO;
         }];
     }
@@ -463,18 +442,14 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
                 [self setFailLabelTextWithError:result.message_error];
                 [self adjustView:CenterViewFailView withAnimation:NO];
             }
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(VIEW_TRANSITION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [self adjustView:CenterViewFormView withAnimation:NO];
-            });
+            [self returnToFormViewWithDelay];
             
             isLoading = NO;
         } onFailure:^(NSError *error) {
             [self setFailLabelTextWithError:@[@"Kendala koneksi internet"]];
             [self adjustView:CenterViewFailView withAnimation:NO];
             
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(VIEW_TRANSITION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [self adjustView:CenterViewFormView withAnimation:NO];
-            });
+            [self returnToFormViewWithDelay];
             isLoading = NO;
         }];
     }
@@ -762,6 +737,12 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
         [_sampaiDenganButton setTitleColor:textGray forState:UIControlStateNormal];
         [_catatanTextView setTextColor:textGray];
     }
+}
+
+- (void)returnToFormViewWithDelay{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(VIEW_TRANSITION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self adjustView:CenterViewFormView withAnimation:NO];
+    });
 }
 
 - (void)setFailLabelTextWithError:(NSArray *)texts{
