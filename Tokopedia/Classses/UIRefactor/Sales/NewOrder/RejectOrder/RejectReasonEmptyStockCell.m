@@ -7,7 +7,6 @@
 //
 
 #import "RejectReasonEmptyStockCell.h"
-
 @implementation RejectReasonEmptyStockCell
 
 - (void)awakeFromNib {

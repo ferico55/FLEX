@@ -9,5 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface RejectReasonEmptyStockCell : UITableViewCell
+@property (strong, nonatomic) IBOutlet UIImageView *checkImage;
+@property (strong, nonatomic) IBOutlet UIImageView *productImage;
+@property (strong, nonatomic) IBOutlet UILabel *productName;
+@property (strong, nonatomic) IBOutlet UILabel *productPrice;
 
 @end

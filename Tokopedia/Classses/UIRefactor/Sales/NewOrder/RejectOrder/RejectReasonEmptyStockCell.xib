@@ -99,6 +99,12 @@
                     <constraint firstAttribute="bottom" secondItem="6tu-TP-3Bc" secondAttribute="bottom" id="r6i-gu-9ms"/>
                 </constraints>
             </tableViewCellContentView>
+            <connections>
+                <outlet property="checkImage" destination="wt7-PY-HuX" id="ctH-W2-gGJ"/>
+                <outlet property="productImage" destination="KR9-lH-F6a" id="sJz-Rq-UuS"/>
+                <outlet property="productName" destination="Iuv-4V-b9f" id="NYZ-Oy-hbL"/>
+                <outlet property="productPrice" destination="9uR-Uy-xTh" id="gQN-eH-l8y"/>
+            </connections>
             <point key="canvasLocation" x="538" y="364"/>
         </tableViewCell>
     </objects>
