@@ -452,7 +452,7 @@
                              _scrollviewContentSize.height += _keyboardSize.height;
                              
                              CGRect frame = _footerView.frame;
-                             frame.origin.y = _keyboardPosition.y - _footerView.frame.size.height - _headerView.frame.size.height + 15;
+                             frame.origin.y = _keyboardPosition.y - _footerView.frame.size.height - _headerView.frame.size.height + 20;
                              _footerView.frame = frame;
                              
                              UIEdgeInsets inset = _messageTextView.contentInset;
