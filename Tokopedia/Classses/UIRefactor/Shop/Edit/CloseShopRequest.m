@@ -24,7 +24,7 @@
     _networkManager.isUsingHmac = YES;
     _networkManager.isUsingDefaultError = NO;
     [_networkManager requestWithBaseUrl:[NSString v4Url]
-                                   path:@"/v4/action/myshop-info/update_shop_close.pl"
+                                   path:[self closeShopEndpoint]
                                  method:RKRequestMethodPOST
                               parameter:@{@"closed_note":closeNote,
                                           @"close_end":dateUntil,
@@ -44,7 +44,7 @@
     _networkManager.isUsingHmac = YES;
     _networkManager.isUsingDefaultError = NO;
     [_networkManager requestWithBaseUrl:[NSString v4Url]
-                                   path:@"/v4/action/myshop-info/update_shop_close.pl"
+                                   path:[self closeShopEndpoint]
                                  method:RKRequestMethodPOST
                               parameter:@{@"close_action":@(CLOSE_SHOP_ACTION_OPEN)
                                           }
@@ -62,7 +62,7 @@
     _networkManager.isUsingHmac = YES;
     _networkManager.isUsingDefaultError = NO;
     [_networkManager requestWithBaseUrl:[NSString v4Url]
-                                   path:@"/v4/action/myshop-info/update_shop_close.pl"
+                                   path:[self closeShopEndpoint]
                                  method:RKRequestMethodPOST
                               parameter:@{@"close_action"   :@(CLOSE_SHOP_ACTION_SET_SCHEDULE),
                                           @"closed_note"    :closeNote,
@@ -83,7 +83,7 @@
     _networkManager.isUsingHmac = YES;
     _networkManager.isUsingDefaultError = NO;
     [_networkManager requestWithBaseUrl:[NSString v4Url]
-                                   path:@"/v4/action/myshop-info/update_shop_close.pl"
+                                   path:[self closeShopEndpoint]
                                  method:RKRequestMethodPOST
                               parameter:@{@"close_action"   :@(CLOSE_SHOP_ACTION_ABORT_SCHEDULE)
                                           }
@@ -101,7 +101,7 @@
     _networkManager.isUsingHmac = YES;
     _networkManager.isUsingDefaultError = NO;
     [_networkManager requestWithBaseUrl:[NSString v4Url]
-                                   path:@"/v4/action/myshop-info/update_shop_close.pl"
+                                   path:[self closeShopEndpoint]
                                  method:RKRequestMethodPOST
                               parameter:@{@"close_action"   :@(CLOSE_SHOP_ACTION_EXTEND_SCHEDULE),
                                           @"closed_note"    :closeNote,
@@ -114,6 +114,10 @@
                               } onFailure:^(NSError *errorResult) {
                                   errorCallback(errorResult);
                               }];
+}
+
+-(NSString*)closeShopEndpoint{
+    return @"/v4/action/myshop-info/update_shop_close.pl";
 }
 
 @end
