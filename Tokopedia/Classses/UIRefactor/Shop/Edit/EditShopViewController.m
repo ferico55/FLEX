@@ -319,16 +319,10 @@
     }else{
         _closeShopController.closedNote = _dataSource.shop.closed_schedule_detail.close_later_note;
     }
-    //self.navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
-    _closeShopController.modalPresentationStyle = UIModalPresentationFormSheet;
-    
-    //[self presentViewController:_closeShopController animated:YES completion:nil];
-    //[self.navigationController pushViewController:_closeShopController animated:YES];
     
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:_closeShopController];
     nav.navigationBar.translucent = NO;
     nav.modalPresentationStyle = UIModalPresentationFormSheet;
-    
     [self.navigationController presentViewController:nav animated:YES completion:nil];
 }
 
