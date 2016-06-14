@@ -193,12 +193,10 @@ class FiltersListDataSource:  NSObject, UITableViewDelegate, UITableViewDataSour
     }
     
     func searchBarTextDidEndEditing(searchBar: UISearchBar) {
-        searchActive = false;
         
     }
     
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-        searchActive = false;
         searchBar.resignFirstResponder()
     }
     
@@ -206,8 +204,7 @@ class FiltersListDataSource:  NSObject, UITableViewDelegate, UITableViewDataSour
         filteredItem = items.filter({ (object) -> Bool in
             let tmp: ListOption = object
             
-//            let range : NSRange = tmp.name.rangeOfString(searchBar.text!, options: NSStringCompareOptions.CaseInsensitiveSearch)
-            return tmp.name.rangeOfString(searchBar.text!) != nil
+            return tmp.name.lowercaseString.rangeOfString(searchBar.text!.lowercaseString) != nil
         })
         if(filteredItem.count == 0){
             searchActive = false;
@@ -217,6 +214,7 @@ class FiltersListDataSource:  NSObject, UITableViewDelegate, UITableViewDataSour
             
         }
         self.tableView!.reloadData()
+        searchBar.becomeFirstResponder()
         
     }
     
