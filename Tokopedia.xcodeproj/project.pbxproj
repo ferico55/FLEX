@@ -19,6 +19,13 @@
 		62650C4A1CF8563D002B32EB /* CustomNotificationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 62650C481CF8563D002B32EB /* CustomNotificationView.xib */; };
 		62650C4F1CF85695002B32EB /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 62650C4C1CF85695002B32EB /* Info.plist */; };
 		62650C501CF85695002B32EB /* SwiftOverlays.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62650C4E1CF85695002B32EB /* SwiftOverlays.swift */; };
+		62838A951D0EA59F0016C7C2 /* Errors.m in Sources */ = {isa = PBXBuildFile; fileRef = 62838A941D0EA59F0016C7C2 /* Errors.m */; };
+		62AA81A91D0FAF8C00B04C2F /* closetoko@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = 62AA81A31D0FAF8C00B04C2F /* closetoko@1x.png */; };
+		62AA81AA1D0FAF8C00B04C2F /* closetoko@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 62AA81A41D0FAF8C00B04C2F /* closetoko@2x.png */; };
+		62AA81AB1D0FAF8C00B04C2F /* closetoko@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 62AA81A51D0FAF8C00B04C2F /* closetoko@3x.png */; };
+		62AA81AC1D0FAF8C00B04C2F /* ic_error_outline.png in Resources */ = {isa = PBXBuildFile; fileRef = 62AA81A61D0FAF8C00B04C2F /* ic_error_outline.png */; };
+		62AA81AD1D0FAF8C00B04C2F /* ic_error_outline@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 62AA81A71D0FAF8C00B04C2F /* ic_error_outline@2x.png */; };
+		62AA81AE1D0FAF8C00B04C2F /* ic_error_outline@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 62AA81A81D0FAF8C00B04C2F /* ic_error_outline@3x.png */; };
 		62D7EC851CF3FD7E00BEAFD4 /* TPAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 62D7DE541CF3FD7A00BEAFD4 /* TPAnalytics.m */; };
 		62D7EC861CF3FD7E00BEAFD4 /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 62D7DE571CF3FD7A00BEAFD4 /* URLCacheAlert.m */; };
 		62D7EC871CF3FD7E00BEAFD4 /* URLCacheConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 62D7DE591CF3FD7A00BEAFD4 /* URLCacheConnection.m */; };
@@ -2323,6 +2330,14 @@
 		62650C4C1CF85695002B32EB /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		62650C4D1CF85695002B32EB /* SwiftOverlays.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwiftOverlays.h; sourceTree = "<group>"; };
 		62650C4E1CF85695002B32EB /* SwiftOverlays.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftOverlays.swift; sourceTree = "<group>"; };
+		62838A931D0EA59F0016C7C2 /* Errors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Errors.h; sourceTree = "<group>"; };
+		62838A941D0EA59F0016C7C2 /* Errors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Errors.m; sourceTree = "<group>"; };
+		62AA81A31D0FAF8C00B04C2F /* closetoko@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "closetoko@1x.png"; sourceTree = "<group>"; };
+		62AA81A41D0FAF8C00B04C2F /* closetoko@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "closetoko@2x.png"; sourceTree = "<group>"; };
+		62AA81A51D0FAF8C00B04C2F /* closetoko@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "closetoko@3x.png"; sourceTree = "<group>"; };
+		62AA81A61D0FAF8C00B04C2F /* ic_error_outline.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_error_outline.png; sourceTree = "<group>"; };
+		62AA81A71D0FAF8C00B04C2F /* ic_error_outline@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_error_outline@2x.png"; sourceTree = "<group>"; };
+		62AA81A81D0FAF8C00B04C2F /* ic_error_outline@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_error_outline@3x.png"; sourceTree = "<group>"; };
 		62D7DE531CF3FD7A00BEAFD4 /* TPAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPAnalytics.h; sourceTree = "<group>"; };
 		62D7DE541CF3FD7A00BEAFD4 /* TPAnalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPAnalytics.m; sourceTree = "<group>"; };
 		62D7DE561CF3FD7A00BEAFD4 /* URLCacheAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheAlert.h; sourceTree = "<group>"; };
@@ -5803,6 +5818,15 @@
 			path = SwiftOverlays;
 			sourceTree = "<group>";
 		};
+		62838A921D0EA5780016C7C2 /* Error */ = {
+			isa = PBXGroup;
+			children = (
+				62838A931D0EA59F0016C7C2 /* Errors.h */,
+				62838A941D0EA59F0016C7C2 /* Errors.m */,
+			);
+			path = Error;
+			sourceTree = "<group>";
+		};
 		62D7DE511CF3FD7A00BEAFD4 /* Classses */ = {
 			isa = PBXGroup;
 			children = (
@@ -5975,6 +5999,7 @@
 				62D7DF281CF3FD7A00BEAFD4 /* DepositSummary */,
 				62D7DF311CF3FD7A00BEAFD4 /* DetailCatalog */,
 				62D7DF4A1CF3FD7A00BEAFD4 /* DetailProduct */,
+				62838A921D0EA5780016C7C2 /* Error */,
 				62D7DF8A1CF3FD7A00BEAFD4 /* Favorited */,
 				62D7DF911CF3FD7A00BEAFD4 /* FavoritedShop */,
 				62D7DF9C1CF3FD7A00BEAFD4 /* FavoriteShopAction */,
@@ -10534,6 +10559,12 @@
 		62D7E94E1CF3FD7C00BEAFD4 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				62AA81A31D0FAF8C00B04C2F /* closetoko@1x.png */,
+				62AA81A41D0FAF8C00B04C2F /* closetoko@2x.png */,
+				62AA81A51D0FAF8C00B04C2F /* closetoko@3x.png */,
+				62AA81A61D0FAF8C00B04C2F /* ic_error_outline.png */,
+				62AA81A71D0FAF8C00B04C2F /* ic_error_outline@2x.png */,
+				62AA81A81D0FAF8C00B04C2F /* ic_error_outline@3x.png */,
 				62571FC21CFC46D9003BC654 /* icon_dismiss.png */,
 				62571FC31CFC46D9003BC654 /* icon_dismiss@2x.png */,
 				62571FC41CFC46D9003BC654 /* icon_dismiss@3x.png */,
@@ -11954,6 +11985,7 @@
 				62D7F10D1CF3FD7E00BEAFD4 /* SettingBankNameViewController.xib in Resources */,
 				62D7F2A01CF3FD7E00BEAFD4 /* icon_cancel@2x.png in Resources */,
 				62D7F0461CF3FD7E00BEAFD4 /* ProductReviewCell.xib in Resources */,
+				62AA81AE1D0FAF8C00B04C2F /* ic_error_outline@3x.png in Resources */,
 				62D7F22D1CF3FD7E00BEAFD4 /* camera.png in Resources */,
 				62D7F0FB1CF3FD7E00BEAFD4 /* SearchResultShopViewController.xib in Resources */,
 				62D7F4D51CF3FD7F00BEAFD4 /* ic_category.png in Resources */,
@@ -11997,6 +12029,7 @@
 				62D7F29A1CF3FD7E00BEAFD4 /* icon_camera.png in Resources */,
 				62D7F3911CF3FD7E00BEAFD4 /* icon_no_data_grey@2x.png in Resources */,
 				62D7EFC31CF3FD7E00BEAFD4 /* TKPDTabHomeViewController.xib in Resources */,
+				62AA81AD1D0FAF8C00B04C2F /* ic_error_outline@2x.png in Resources */,
 				62D7F4921CF3FD7E00BEAFD4 /* top_bg.png in Resources */,
 				62D7F0171CF3FD7E00BEAFD4 /* MyShopNoteViewController.xib in Resources */,
 				62D7F3D61CF3FD7E00BEAFD4 /* icon_search.png in Resources */,
@@ -12237,6 +12270,7 @@
 				62D7EFF01CF3FD7E00BEAFD4 /* ReviewFormViewController.xib in Resources */,
 				62D7F4631CF3FD7E00BEAFD4 /* icon_signin.png in Resources */,
 				62D7EFF51CF3FD7E00BEAFD4 /* InboxTalkViewController.xib in Resources */,
+				62AA81AA1D0FAF8C00B04C2F /* closetoko@2x.png in Resources */,
 				BBA298D61CC624AC000630FB /* MainViewController.xib in Resources */,
 				62D7F5191CF3FD7F00BEAFD4 /* klikbca_guide_2.png in Resources */,
 				62D7F1071CF3FD7E00BEAFD4 /* SettingAddressExpandedCell.xib in Resources */,
@@ -12321,6 +12355,7 @@
 				62D7F3DC1CF3FD7E00BEAFD4 /* icon_search_active@2x.png in Resources */,
 				62D7F0931CF3FD7E00BEAFD4 /* ReviewSummaryViewController.xib in Resources */,
 				62D7EF331CF3FD7E00BEAFD4 /* CategoryResultViewController.xib in Resources */,
+				62AA81AC1D0FAF8C00B04C2F /* ic_error_outline.png in Resources */,
 				62D7F4CC1CF3FD7F00BEAFD4 /* icon_more_active@3x.png in Resources */,
 				62D7F0C21CF3FD7E00BEAFD4 /* ProductQuantityCell.xib in Resources */,
 				62D7F3C11CF3FD7E00BEAFD4 /* icon_retur@2x.png in Resources */,
@@ -12373,6 +12408,7 @@
 				62D7F4311CF3FD7E00BEAFD4 /* icon_success@2x.png in Resources */,
 				62D7EF971CF3FD7E00BEAFD4 /* GeneralTalkCommentCell.xib in Resources */,
 				62D7F40B1CF3FD7E00BEAFD4 /* icon_sold.png in Resources */,
+				62AA81AB1D0FAF8C00B04C2F /* closetoko@3x.png in Resources */,
 				62D7F26E1CF3FD7E00BEAFD4 /* icon-search-camera.png in Resources */,
 				62D7F2711CF3FD7E00BEAFD4 /* icon_arrow_down@2x.png in Resources */,
 				62D7F4241CF3FD7E00BEAFD4 /* icon_speed_neutral_large@2x.png in Resources */,
@@ -12802,6 +12838,7 @@
 				62D7F5071CF3FD7F00BEAFD4 /* icon_close_white@2x.png in Resources */,
 				62D7F1011CF3FD7E00BEAFD4 /* SecurityQuestionViewController.xib in Resources */,
 				62D7F4801CF3FD7E00BEAFD4 /* icon_arrow_white.png in Resources */,
+				62AA81A91D0FAF8C00B04C2F /* closetoko@1x.png in Resources */,
 				62D7F0FD1CF3FD7E00BEAFD4 /* SearchResultViewController.xib in Resources */,
 				62D7EFA41CF3FD7E00BEAFD4 /* FavoritedShopViewController.xib in Resources */,
 				62D7F4351CF3FD7E00BEAFD4 /* icon_toped_alert@2x.png in Resources */,
@@ -13635,6 +13672,7 @@
 				62D7F00A1CF3FD7E00BEAFD4 /* MyShopAddressDetailViewController.m in Sources */,
 				62D7EEA81CF3FD7E00BEAFD4 /* UploadImageValidationResult.m in Sources */,
 				62D7F1161CF3FD7E00BEAFD4 /* SettingNotificationViewController.m in Sources */,
+				62838A951D0EA59F0016C7C2 /* Errors.m in Sources */,
 				62D7ED981CF3FD7E00BEAFD4 /* NotifyAttributes.m in Sources */,
 				62D7ECCB1CF3FD7E00BEAFD4 /* AddressDistrict.m in Sources */,
 				62D7F03B1CF3FD7E00BEAFD4 /* DetailProductWholesaleCell.m in Sources */,
