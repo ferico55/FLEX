@@ -12374,12 +12374,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = FC36DFAF19B0656400AF74C1 /* Build configuration list for PBXNativeTarget "Tokopedia" */;
 			buildPhases = (
+				1C56CCB66BFD1B0ECF692571 /* Rollout.io pre-build */,
 				9852790493753292549B327E /* Check Pods Manifest.lock */,
 				FC36DF7F19B0656400AF74C1 /* Sources */,
 				FC36DF8019B0656400AF74C1 /* Frameworks */,
 				FC36DF8119B0656400AF74C1 /* Resources */,
-				482F0ED011CF4FBE8FD33502 /* Rollout.io dsym upload */,
 				270CBF0B5FC08042843CD1B4 /* Copy Pods Resources */,
+				3FEF41142B3F44BF6746A1DE /* Rollout.io post-build */,
 			);
 			buildRules = (
 			);
@@ -13687,6 +13688,20 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		1C56CCB66BFD1B0ECF692571 /* Rollout.io pre-build */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Rollout.io pre-build";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "ROLLOUT_lastXcodeprojConfiguration=6 \"${SRCROOT}/Pods/Rollout.io/lib/pre-build_xcode_phase\"";
+		};
 		2340CF76B183AE415524ED79 /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -13717,19 +13732,19 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		482F0ED011CF4FBE8FD33502 /* Rollout.io dsym upload */ = {
+		3FEF41142B3F44BF6746A1DE /* Rollout.io post-build */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Rollout.io dsym upload";
+			name = "Rollout.io post-build";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "ROLLOUT_lastXcodeprojConfiguration=5 \"${SRCROOT}/Pods/Rollout.io/lib/upload_dsym_phase\" -k 56a717aed7bed00574f5169c";
+			shellScript = "ROLLOUT_lastXcodeprojConfiguration=6 \"${SRCROOT}/Pods/Rollout.io/lib/post-build_xcode_phase\" -k 56a717aed7bed00574f5169c";
 		};
 		9852790493753292549B327E /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;

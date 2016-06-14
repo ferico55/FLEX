@@ -80,6 +80,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    _page = 1;
+
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.isUsingHmac = YES;
 
