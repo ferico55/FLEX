@@ -318,8 +318,7 @@
         _closeShopController.closedNote = _dataSource.shop.closed_detail.note;
     }else{
         _closeShopController.closedNote = _dataSource.shop.closed_schedule_detail.close_later_note;
-    }
-    
+    }    
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:_closeShopController];
     nav.navigationBar.translucent = NO;
     nav.modalPresentationStyle = UIModalPresentationFormSheet;
