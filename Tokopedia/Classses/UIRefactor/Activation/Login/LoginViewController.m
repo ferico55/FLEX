@@ -29,8 +29,6 @@
 #import "PhoneVerificationViewController.h"
 #import "HelloPhoneVerificationViewController.h"
 
-#import <GoogleOpenSource/GoogleOpenSource.h>
-
 #import "Localytics.h"
 #import "Tokopedia-Swift.h"
 

@@ -10,15 +10,12 @@
 #import "Login.h"
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
-#import <GooglePlus/GooglePlus.h>
-#import <GoogleOpenSource/GoogleOpenSource.h>
 #import <GoogleSignIn/GoogleSignIn.h>
 
 @interface CreatePasswordViewController : UIViewController
 
 @property (strong, nonatomic) Login *login;
 @property (strong, nonatomic) NSDictionary *facebookUserData;
-@property GTLPlusPerson *googleUser;
 @property GIDGoogleUser *gidGoogleUser;
 @property (strong, nonatomic) NSString *email;
 @property (strong, nonatomic) NSString *fullName;

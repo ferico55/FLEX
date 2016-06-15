@@ -15,7 +15,6 @@
 #import "TKPDSecureStorage.h"
 #import "AppsFlyerTracker.h"
 #import "Localytics.h"
-#import <GooglePlus/GooglePlus.h>
 #import <GoogleAppIndexing/GoogleAppIndexing.h>
 #import <Google/Analytics.h>
 #import "NavigateViewController.h"
@@ -246,8 +245,6 @@
     if (shouldOpenURL) {
         return YES;
     } else if ([[GIDSignIn sharedInstance] handleURL:url sourceApplication:sourceApplication annotation:annotation]) {
-        return YES;
-    } else if ([GPPURLHandler handleURL:url sourceApplication:sourceApplication annotation:annotation]) {
         return YES;
     } else if ([self.tagManager previewWithUrl:url]) {
         return YES;

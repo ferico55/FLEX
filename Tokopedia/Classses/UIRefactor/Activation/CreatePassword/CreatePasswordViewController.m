@@ -129,16 +129,6 @@
     NSString *birthday = @"";
     if (_facebookUserData) {
         birthday = [_facebookUserData objectForKey:@"birthday"];
-    } else if (_googleUser) {
-        if (_googleUser.birthday) {
-            NSArray *birthdayComponents = [_googleUser.birthday componentsSeparatedByString:@"-"];
-            NSString *year = [birthdayComponents objectAtIndex:0];
-            if (![year isEqualToString:@"0000"]) {
-                NSString *day = [birthdayComponents objectAtIndex:2];
-                NSString *month = [birthdayComponents objectAtIndex:1];
-                birthday = [NSString stringWithFormat:@"%@/%@/%@", day, month, year];
-            }
-        }
     }
     
     _dateOfBirthTextField.text = birthday;
