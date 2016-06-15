@@ -968,12 +968,16 @@
         {
             NSInteger grandTotal = ([self isUseGrandTotalWithoutLP])?[[_dataInput objectForKey:DATA_CART_GRAND_TOTAL_WO_LP] integerValue]:[[_dataInput objectForKey:DATA_CART_GRAND_TOTAL] integerValue];
             NSNumber *deposit = [_dataInput objectForKey:DATA_USED_SALDO_KEY];
-            if ([deposit integerValue] >= grandTotal)
+            if ([deposit integerValue] == 0) {
+                isValid = NO;
+                [messageError addObject:@"Saldo Tokopedia harus diisi."];
+            }
+            else if ([deposit integerValue] >= grandTotal)
             {
                 isValid = NO;
                 [messageError addObject:@"Jumlah Saldo Tokopedia yang Anda masukkan terlalu banyak. Gunakan Pembayaran Saldo Tokopedia apabila mencukupi."];
             }
-            if ([deposit integerValue]> [self depositAmountUser]) {
+            else if ([deposit integerValue]> [self depositAmountUser]) {
                 isValid = NO;
                 [messageError addObject:@"Saldo Tokopedia Anda tidak mencukupi."];
             }
