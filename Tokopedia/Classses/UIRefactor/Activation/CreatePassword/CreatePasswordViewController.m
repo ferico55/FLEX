@@ -421,12 +421,7 @@
                                                     
                                                     BOOL status = [_createPassword.status isEqualToString:kTKPDREQUEST_OKSTATUS];
                                                     if (status && [_createPassword.result.is_success boolValue]) {
-                                                        
-                                                        TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-                                                        [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_USERIDKEY];
-                                                        [secureStorage setKeychainWithValue:_fullNameTextField.text withKey:kTKPD_FULLNAMEKEY];
-                                                        [secureStorage setKeychainWithValue:@(YES) withKey:kTKPD_ISLOGINKEY];
-                                                        
+                                                        [self trackRegistration];
                                                         [self requestLogin];
                                                         
                                                     } else if (_createPassword.message_error) {
@@ -491,18 +486,7 @@
                                                                                                         object:nil];
                                                     
                                                     [Localytics setValue:@"Yes" forProfileAttribute:@"Is Login"];
-                                                    
-                                                    NSDictionary *trackerValues;
-                                                    if (_gidGoogleUser) {
-                                                        trackerValues = @{AFEventParamRegistrationMethod : @"Google Registration"};
-                                                    } else if (_facebookUserData) {
-                                                        trackerValues = @{AFEventParamRegistrationMethod : @"Facebook Registration"};
-                                                    } else {
-                                                        trackerValues = @{};
-                                                    }
-                                                    
-                                                    [[AppsFlyerTracker sharedTracker] trackEvent:AFEventCompleteRegistration withValues:trackerValues];
-                                                    
+
                                                     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                                                     
                                                 } else {
@@ -523,6 +507,19 @@
                                                                                                            delegate:self];
                                             [alert show];
                                         }];
+}
+
+- (void)trackRegistration {
+    NSDictionary *trackerValues;
+    if (_gidGoogleUser) {
+        trackerValues = @{AFEventParamRegistrationMethod : @"Google Registration"};
+    } else if (_facebookUserData) {
+        trackerValues = @{AFEventParamRegistrationMethod : @"Facebook Registration"};
+    } else {
+        trackerValues = @{};
+    }
+
+    [[AppsFlyerTracker sharedTracker] trackEvent:AFEventCompleteRegistration withValues:trackerValues];
 }
 
 #pragma mark - Keyboard Notification
