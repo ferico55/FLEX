@@ -28,14 +28,6 @@
     TKPDAlertViewDelegate
 >
 {
-
-    NSInteger _requestCount;
-    NSTimer *_timer;
-
-    RKObjectManager *_objectManager;
-    RKManagedObjectRequestOperation *_request;
-    NSOperationQueue *_operationQueue;
-
     ActivationRequest *_activationRequest;
 }
 
@@ -99,9 +91,6 @@
 
     _signupButton.layer.cornerRadius = 2;
 
-    _operationQueue = [NSOperationQueue new];
-    _requestCount = 0;
-    
     NSString *name;
     if (_fullName) {
         name = _fullName;
