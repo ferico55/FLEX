@@ -641,6 +641,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
     if (indexPath.section == 1 && indexPath.row == 0) {
         NavigateViewController *navigateController = [NavigateViewController new];
         [navigateController navigateToProfileFromViewController:wrapperController withUserID:[_auth objectForKey:MORE_USER_ID]];
+        
     }
     
     else if (indexPath.section == 1 && indexPath.row == 1) {
@@ -648,8 +649,10 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
         PurchaseViewController *purchaseController = [storyboard instantiateViewControllerWithIdentifier:@"PurchaseViewController"];
         purchaseController.notification = _notifManager.notification;
         [wrapperController.navigationController pushViewController:purchaseController animated:YES];
+        
     }
     else if(indexPath.section==1 && indexPath.row==2) {
+        
         UINavigationController *tempNavController = (UINavigationController *) [wrapperController.tabBarController.viewControllers firstObject];
         [((HomeTabViewController *)[tempNavController.viewControllers firstObject]) setIndexPage:2];
         [wrapperController.tabBarController setSelectedIndex:0];

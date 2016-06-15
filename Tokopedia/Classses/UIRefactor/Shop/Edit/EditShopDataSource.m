@@ -8,13 +8,9 @@
 
 #import "EditShopDataSource.h"
 
-#import "EditShopTypeViewCell.h"
-#import "EditShopImageViewCell.h"
-#import "EditShopDescriptionViewCell.h"
-
 @implementation EditShopDataSource
 
-NSInteger const SectionForShopTagDescription = 2;
+NSInteger const SectionForShopTagDescription = 0;
 
 #pragma mark - Table view data source
 
@@ -33,26 +29,25 @@ NSInteger const SectionForShopTagDescription = 2;
          cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = nil;
     if (indexPath.section == 0) {
-        cell = [self tableView:tableView shopTypeCellForRowAtIndexPath:indexPath];
-    } else if (indexPath.section == 1) {
-        cell = [self tableView:tableView shopImageCellForRowAtIndexPath:indexPath];
-    } else if (indexPath.section == 2) {
         if (indexPath.row == 0) {
             cell = [self tableView:tableView shopNameCellForRowAtIndexPath:indexPath];
         } else {
             cell = [self tableView:tableView shopDescriptionCellForRowAtIndexPath:indexPath];
         }
-    } else if (indexPath.section == 3) {
+    } else if (indexPath.section == 1) {
+        cell = [self tableView:tableView shopImageCellForRowAtIndexPath:indexPath];
+    } else if (indexPath.section == 2) {
         cell = [self tableView:tableView shopStatusCellForRowAtIndexPath:indexPath];
+    } else if (indexPath.section == 3) {
+        cell = [self tableView:tableView shopTypeCellForRowAtIndexPath:indexPath];
     }
     return cell;
 }
 
 - (EditShopTypeViewCell *)tableView:(UITableView *)tableView shopTypeCellForRowAtIndexPath:(NSIndexPath *)indexPath {
     EditShopTypeViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"shopType"];
-    if ([self.shop.info.shop_is_gold boolValue]) {
-        [cell showsGoldMerchantBadge];
-    }    
+    [cell initializeInterfaceWithGoldMerchantStatus:self.shop.info.shop_is_gold expiryDate:self.shop.info.shop_gold_expired_time];
+    cell.delegate = self;
     return cell;
 }
 
@@ -126,16 +121,49 @@ NSInteger const SectionForShopTagDescription = 2;
     return cell;
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+    UIView *footer;
+    if(section == 2 && !(_shop.closed_schedule_detail.close_status == CLOSE_STATUS_OPEN)){
+        footer = [[UIView alloc]initWithFrame:CGRectMake(15, 8, 320, 40)];
+        footer.backgroundColor = [UIColor clearColor];
+        
+        UILabel *lbl = [[UILabel alloc]initWithFrame:footer.frame];
+        lbl.backgroundColor = [UIColor clearColor];
+        
+        if(_shop.closed_schedule_detail.close_status == CLOSE_STATUS_CLOSED){
+            lbl.text = [NSString stringWithFormat:@"Toko akan buka kembali pada %@, 23:59.", _shop.closed_schedule_detail.close_end];
+        }else{
+            lbl.text = [NSString stringWithFormat:@"Toko akan tutup pada %@, 00:00.", _shop.closed_schedule_detail.close_start];
+        }
+        lbl.textAlignment = NSTextAlignmentLeft;
+        lbl.font = [UIFont fontWithName:@"Gotham Book" size:12.0];
+        [lbl setNumberOfLines:0];
+        [lbl sizeToFit];
+        [footer addSubview:lbl];
+        
+        return footer;
+    }
+    return footer;
+}
+
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    if(_shop.closed_schedule_detail.close_status == CLOSE_STATUS_CLOSED || _shop.closed_schedule_detail.close_status == CLOSE_STATUS_CLOSE_SCHEDULED){
+        return 40.0;
+    }
+    return 0;
+}
+
 #pragma mark - Table view delegate
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     NSString *title;
-    if (section == 0) {
-        title = @"Keanggotaan";
-    } else if (section == 1) {
-        title = @"Gambar Toko";
+    if (section == 1) {
+        title = @"  Gambar Toko";
     } else if (section == 2) {
-        title = @"Informasi Toko";
+        title = @"  Status";
+    } else if (section == 3) {
+        title = @"  Keanggotaan";
     }
     return title;
 }
@@ -165,7 +193,9 @@ NSInteger const SectionForShopTagDescription = 2;
     } else if ([indexPath isEqual:[self indexPathForShopTag]]) {
         return 60;
     } else if ([indexPath isEqual:[self indexPathForShopDescription]]) {
-        return 80;
+        return 100;
+    } else if (indexPath.section == 3){
+        return 100;
     }
     return 44;
 }
@@ -173,7 +203,7 @@ NSInteger const SectionForShopTagDescription = 2;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 1) {
         [self.delegate didTapShopPhoto];
-    } else if (indexPath.section == 3) {
+    } else if (indexPath.section == 2) {
         [self.delegate didTapShopStatus];
     }
 }
@@ -183,11 +213,16 @@ NSInteger const SectionForShopTagDescription = 2;
 }
 
 - (NSIndexPath *)indexPathForShopTag {
-    return [NSIndexPath indexPathForRow:1 inSection:2];
+    return [NSIndexPath indexPathForRow:1 inSection:0];
 }
 
 - (NSIndexPath *)indexPathForShopDescription {
-    return [NSIndexPath indexPathForRow:2 inSection:2];
+    return [NSIndexPath indexPathForRow:2 inSection:0];
+}
+
+#pragma mark - Delegate
+-(void)merchantInfoButtonTapped{
+    [_delegate didTapMerchantInfo];
 }
 
 #pragma mark - Notification 
