@@ -9,6 +9,9 @@
             <string>GothamBook</string>
             <string>GothamBook</string>
         </mutableArray>
+        <mutableArray key="GothamMedium.ttf">
+            <string>GothamMedium</string>
+        </mutableArray>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -23,7 +26,7 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6tu-TP-3Bc">
                         <rect key="frame" x="0.0" y="0.0" width="35" height="81"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="wt7-PY-HuX">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_circle.png" highlighted="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wt7-PY-HuX">
                                 <rect key="frame" x="8" y="31" width="20" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="20" id="8Jb-3M-iLO"/>
@@ -41,7 +44,7 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CRK-1u-HJF">
                         <rect key="frame" x="35" y="0.0" width="60" height="81"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="KR9-lH-F6a">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="KR9-lH-F6a">
                                 <rect key="frame" x="0.0" y="11" width="60" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="60" id="Ler-mW-2z6"/>
@@ -68,11 +71,23 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Rp. 10.000,-" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9uR-Uy-xTh">
-                                <rect key="frame" x="8" y="44" width="209" height="12"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rp. 10.000,-" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9uR-Uy-xTh">
+                                <rect key="frame" x="8" y="44" width="95" height="12"/>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                                 <color key="textColor" red="0.42352941176470588" green="0.42352941176470588" blue="0.42352941176470588" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Stok Kosong" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wNh-oi-CPs">
+                                <rect key="frame" x="111" y="41" width="84" height="17"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="12"/>
+                                <color key="textColor" red="0.9999127984046936" green="1" blue="0.99988144636154175" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="2"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                             </label>
                         </subviews>
                         <color key="backgroundColor" red="0.85660016536712646" green="1" blue="0.83104383945465088" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -81,8 +96,9 @@
                             <constraint firstItem="9uR-Uy-xTh" firstAttribute="leading" secondItem="dMV-Uu-6yL" secondAttribute="leading" constant="8" id="Bt4-AH-jA7"/>
                             <constraint firstItem="Iuv-4V-b9f" firstAttribute="leading" secondItem="dMV-Uu-6yL" secondAttribute="leading" constant="8" id="IZs-0j-NSu"/>
                             <constraint firstAttribute="trailing" secondItem="Iuv-4V-b9f" secondAttribute="trailing" constant="8" id="a2i-sD-9ik"/>
-                            <constraint firstAttribute="trailing" secondItem="9uR-Uy-xTh" secondAttribute="trailing" constant="8" id="rFG-jO-ftY"/>
+                            <constraint firstItem="wNh-oi-CPs" firstAttribute="leading" secondItem="9uR-Uy-xTh" secondAttribute="trailing" constant="4" id="hvW-ke-sG4"/>
                             <constraint firstItem="Iuv-4V-b9f" firstAttribute="top" secondItem="dMV-Uu-6yL" secondAttribute="top" constant="20" id="sts-Xz-Hxj"/>
+                            <constraint firstItem="wNh-oi-CPs" firstAttribute="top" secondItem="Iuv-4V-b9f" secondAttribute="bottom" constant="4" id="wTr-4g-jIC"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -104,8 +120,12 @@
                 <outlet property="productImage" destination="KR9-lH-F6a" id="sJz-Rq-UuS"/>
                 <outlet property="productName" destination="Iuv-4V-b9f" id="NYZ-Oy-hbL"/>
                 <outlet property="productPrice" destination="9uR-Uy-xTh" id="gQN-eH-l8y"/>
+                <outlet property="stokKosongLabel" destination="wNh-oi-CPs" id="GTw-0s-3Vp"/>
             </connections>
             <point key="canvasLocation" x="538" y="364"/>
         </tableViewCell>
     </objects>
+    <resources>
+        <image name="icon_circle.png" width="20" height="20"/>
+    </resources>
 </document>

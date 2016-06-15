@@ -358,6 +358,7 @@ RejectReasonDelegate
     }*/
     
     RejectReasonViewController *vc = [RejectReasonViewController new];
+    vc.order = _selectedOrder;
     
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
     [navigationController.navigationBar setTranslucent:NO];

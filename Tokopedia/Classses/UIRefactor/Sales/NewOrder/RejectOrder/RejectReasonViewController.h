@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "RejectReason.h"
+#import "OrderTransaction.h"
 
 @protocol RejectReasonDelegate <NSObject>
 - (void) didChooseRejectReason:(RejectReason*)reason withExplanation:(NSString*)explanation;
@@ -15,4 +16,5 @@
 
 @interface RejectReasonViewController : UIViewController
 @property (weak, nonatomic) id<RejectReasonDelegate> delegate;
+@property (strong, nonatomic) OrderTransaction* order;
 @end

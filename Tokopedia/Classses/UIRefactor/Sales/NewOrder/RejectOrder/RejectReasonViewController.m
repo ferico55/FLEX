@@ -96,6 +96,7 @@
     
     if([_selectedReason.reason_code isEqualToString:BARANG_HABIS]){
         RejectReasonEmptyStockViewController *vc = [[RejectReasonEmptyStockViewController alloc]init];
+        vc.order = self.order;
         [self.navigationController pushViewController:vc animated:YES];
     }else if([_selectedReason.reason_code isEqualToString:VARIAN_TIDAK_TERSEDIA]){
         

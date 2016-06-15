@@ -34,7 +34,7 @@
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 5;
+    return _order.order_products.count;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -48,6 +48,9 @@
                                                                options:nil];
         cell = [topLevelObjects objectAtIndex:0];
     }
+    
+    OrderProduct *currentProduct = [_order.order_products objectAtIndex:indexPath.row];
+    [cell setViewModel:currentProduct.viewModel];
     return cell;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -67,13 +70,13 @@
     label.backgroundColor = [UIColor clearColor];
     
     // Create header view and add label as a subview
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.window.frame.size.width, 100)];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.window.frame.size.width, 40)];
     [view addSubview:label];
     
     return view;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    return 100;
+    return 40;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
