@@ -30,11 +30,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"Tolak Pesanan";
-    UIBarButtonItem *back = [[UIBarButtonItem alloc] initWithTitle : @"Back"
+    UIBarButtonItem *back = [[UIBarButtonItem alloc] initWithTitle : @"Batal"
                                                              style : UIBarButtonItemStyleDone
                                                             target : self
                                                             action : @selector(didTapBackButton)];
-    self.navigationItem.backBarButtonItem = back;
+    self.navigationItem.leftBarButtonItem = back;
     
     rejectOrderRequest = [RejectOrderRequest new];
     [self requestRejectReasons];

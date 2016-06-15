@@ -361,6 +361,7 @@ RejectReasonDelegate
     
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
     [navigationController.navigationBar setTranslucent:NO];
+    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
     [self.navigationController presentViewController:navigationController animated:YES completion:nil];
 }
 
