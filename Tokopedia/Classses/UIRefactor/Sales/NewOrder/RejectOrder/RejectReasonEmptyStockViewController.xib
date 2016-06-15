@@ -12,6 +12,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RejectReasonEmptyStockViewController">
             <connections>
+                <outlet property="confirmButton" destination="FeS-Se-dMf" id="vS3-gY-pu3"/>
+                <outlet property="tableView" destination="JOd-Ji-3rG" id="wFB-d3-Ohn"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>

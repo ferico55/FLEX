@@ -9,6 +9,13 @@
 #import "RejectReasonViewController.h"
 #import "RejectOrderRequest.h"
 #import "OrderRejectExplanationViewController.h"
+#import "RejectReasonEmptyStockViewController.h"
+
+
+#define BARANG_HABIS @"1"
+#define VARIAN_TIDAK_TERSEDIA @"2"
+#define SALAH_HARGA_BERAT @"3"
+#define TOKO_SEDANG_TUTUP @"4"
 
 @interface RejectReasonViewController ()<UITableViewDelegate, UIScrollViewDelegate, UITableViewDataSource, RejectExplanationDelegate>
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
@@ -74,7 +81,7 @@
     label.backgroundColor = [UIColor clearColor];
     
     // Create header view and add label as a subview
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 100)];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.window.frame.size.width, 100)];
     [view addSubview:label];
     
     return view;
@@ -87,9 +94,22 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     _selectedReason = [_rejectReasons objectAtIndex:indexPath.row];
     
-    OrderRejectExplanationViewController *controller = [[OrderRejectExplanationViewController alloc] init];
-    controller.delegate = self;
-    [self.navigationController pushViewController:controller animated:YES];
+    if([_selectedReason.reason_code isEqualToString:BARANG_HABIS]){
+        RejectReasonEmptyStockViewController *vc = [[RejectReasonEmptyStockViewController alloc]init];
+        [self.navigationController pushViewController:vc animated:YES];
+    }else if([_selectedReason.reason_code isEqualToString:VARIAN_TIDAK_TERSEDIA]){
+        
+    }else if([_selectedReason.reason_code isEqualToString:SALAH_HARGA_BERAT]){
+        
+    }else if([_selectedReason.reason_code isEqualToString:TOKO_SEDANG_TUTUP]){
+        
+    }else{
+        OrderRejectExplanationViewController *controller = [[OrderRejectExplanationViewController alloc] init];
+        controller.delegate = self;
+        [self.navigationController pushViewController:controller animated:YES];
+    }
+    
+    
 }
 
 #pragma mark - Request

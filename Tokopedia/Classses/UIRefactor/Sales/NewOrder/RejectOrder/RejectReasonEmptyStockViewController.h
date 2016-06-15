@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "OrderProduct.h"
 
 @interface RejectReasonEmptyStockViewController : UIViewController
-
+@property (strong, nonatomic) NSArray<OrderProduct*>* order_products;
 @end
