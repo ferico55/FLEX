@@ -1298,7 +1298,7 @@ FilterCategoryViewDelegate
                 NSMutableDictionary *data = [NSMutableDictionary new];
                 [data addEntriesFromDictionary:selected];
                 NSUInteger indexIndexPath = [_selectedImagesCameraController indexOfObject:selected];
-                [data setObject:selectedIndexpaths[indexIndexPath] forKey:@"selected_indexpath"];
+                if(indexIndexPath < selectedIndexpaths.count)[data setObject:selectedIndexpaths[indexIndexPath] forKey:@"selected_indexpath"];
                 [self setImageData:[data copy] tag:index];
                 j++;
             }
