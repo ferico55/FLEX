@@ -49,8 +49,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 {
     NSMutableDictionary *_activation;
 
-    Login *_login;
-    
     UIBarButtonItem *_barbuttonsignin;
 
     NSDictionary *_facebookUserData;
@@ -443,17 +441,18 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 
 - (void)requestSuccessLogin:(RKMappingResult *)mappingResult withOperation:(RKObjectRequestOperation*)operation
 {
-    _login = [mappingResult.dictionary objectForKey:@""];
-    BOOL status = [_login.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+    Login *login = mappingResult.dictionary[@""];
+
+    BOOL status = [login.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     if (status) {
-        if (_login.result.is_login) {
-            [self onLoginSuccess];
+        if (login.result.is_login) {
+            [self onLoginSuccess:login];
         }
         else{
-            if(_login.result.security && ![_login.result.security.allow_login isEqualToString:@"1"]) {
-                [self checkSecurityQuestion];
+            if(login.result.security && ![login.result.security.allow_login isEqualToString:@"1"]) {
+                [self checkSecurityQuestion:login];
             } else {
-                [StickyAlertView showErrorMessage:_login.message_error];
+                [StickyAlertView showErrorMessage:login.message_error];
             }
         }
     }
@@ -465,14 +464,14 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     }
 }
 
-- (void)onLoginSuccess {
-    [self storeCredentialToKeychain:_login];
-    [self trackUserSignIn:_login];
+- (void)onLoginSuccess:(Login *)login {
+    [self storeCredentialToKeychain:login];
+    [self trackUserSignIn:login];
 
     [self notifyUserDidLogin];
 
 
-    [self navigateToProperPage:_login];
+    [self navigateToProperPage:login];
 
 
     [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
@@ -567,17 +566,17 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     }
 }
 
-- (void)checkSecurityQuestion {
+- (void)checkSecurityQuestion:(Login *)login {
     if(FBTweakValue(@"Security", @"Question", @"Enabled", YES)) {
         TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-        [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_USERIDKEY];
+        [secureStorage setKeychainWithValue:login.result.user_id withKey:kTKPD_USERIDKEY];
         
         //    SecurityQuestionViewController *controller = [[SecurityQuestionViewController alloc] initWithNibName:@"SecurityQuestionViewController" bundle:nil];
         SecurityQuestionViewController* controller = [SecurityQuestionViewController new];
-        controller.questionType1 = _login.result.security.user_check_security_1;
-        controller.questionType2 = _login.result.security.user_check_security_2;
+        controller.questionType1 = login.result.security.user_check_security_1;
+        controller.questionType2 = login.result.security.user_check_security_2;
         
-        controller.userID = _login.result.user_id;
+        controller.userID = login.result.user_id;
         controller.deviceID = _userManager.getMyDeviceToken;
         controller.successAnswerCallback = ^(SecurityAnswer* answer) {
             [secureStorage setKeychainWithValue:answer.data.uuid withKey:@"securityQuestionUUID"];
@@ -593,7 +592,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
         
         [self.navigationController presentViewController:navigationController animated:YES completion:nil];
     } else {
-        [self onLoginSuccess];
+        [self onLoginSuccess:login];
     }
     
     
@@ -903,7 +902,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                                email:email
                             provider:provider
                      successCallback:^(RKMappingResult *result, RKObjectRequestOperation *operation) {
-                         _login = result.dictionary[@""];
+                         Login *login = result.dictionary[@""];
 
                          TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
 
@@ -911,10 +910,10 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                          [[GIDSignIn sharedInstance] disconnect];
 
                          if (_accountInfo.createdPassword) {
-                             if (_login.result.security && ![_login.result.security.allow_login isEqualToString:@"1"]) {
-                                 [self checkSecurityQuestion];
+                             if (login.result.security && ![login.result.security.allow_login isEqualToString:@"1"]) {
+                                 [self checkSecurityQuestion:login];
                              } else {
-                                 [self onLoginSuccess];
+                                 [self onLoginSuccess:login];
                                  if (_facebookUserData) {
                                      [secureStorage setKeychainWithValue:([_facebookUserData objectForKey:@"email"] ?: @"") withKey:kTKPD_USEREMAIL];
                                  } else if (_gidGoogleUser) {
@@ -924,7 +923,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                          } else {
                              TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
                              [secureStorage setKeychainWithValue:@(NO) withKey:kTKPD_ISLOGINKEY];
-                             [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_TMP_USERIDKEY];
+                             [secureStorage setKeychainWithValue:login.result.user_id withKey:kTKPD_TMP_USERIDKEY];
 
                              [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];
 
