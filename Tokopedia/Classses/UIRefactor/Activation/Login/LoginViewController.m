@@ -900,6 +900,8 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
 }
 
 - (void)doThirdPartySignInWithUserId:(NSString *)userId email:(NSString *)email provider:(NSString *)provider {
+    __weak typeof(self) weakSelf = self;
+
     [self thirdPartySignInWithUserId:userId
                                email:email
                             provider:provider
@@ -939,6 +941,11 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                                  controller.fullName = _gidGoogleUser.profile.name;
                                  controller.email = email;
                              }
+
+                             controller.onPasswordCreated = ^{
+                                 [controller dismissViewControllerAnimated:YES completion:nil];
+                                 [weakSelf doThirdPartySignInWithUserId:userId email:email provider:provider];
+                             };
 
                              UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
                              navigationController.navigationBar.translucent = NO;

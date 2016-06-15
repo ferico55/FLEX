@@ -412,7 +412,12 @@
                                                     BOOL status = [_createPassword.status isEqualToString:kTKPDREQUEST_OKSTATUS];
                                                     if (status && [_createPassword.result.is_success boolValue]) {
                                                         [self trackRegistration];
-                                                        [self requestLogin];
+
+                                                        if (_onPasswordCreated) {
+                                                            _onPasswordCreated();
+                                                        } else {
+                                                            [self requestLogin];
+                                                        }
                                                         
                                                     } else if (_createPassword.message_error) {
                                                         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:_createPassword.message_error

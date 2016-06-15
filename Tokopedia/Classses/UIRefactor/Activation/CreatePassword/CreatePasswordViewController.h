@@ -20,4 +20,6 @@
 @property (strong, nonatomic) NSString *email;
 @property (strong, nonatomic) NSString *fullName;
 
+@property (copy) void(^onPasswordCreated)();
+
 @end
