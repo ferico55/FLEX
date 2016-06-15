@@ -933,7 +933,6 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                              [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];
 
                              CreatePasswordViewController *controller = [CreatePasswordViewController new];
-                             controller.login = _login;
                              if (_facebookUserData) {
                                  controller.facebookUserData = _facebookUserData;
                              } else if (_gidGoogleUser) {

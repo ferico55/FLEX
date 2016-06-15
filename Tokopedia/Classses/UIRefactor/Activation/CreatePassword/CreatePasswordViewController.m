@@ -28,8 +28,7 @@
     TKPDAlertViewDelegate
 >
 {
-    CreatePassword *_createPassword;
-    
+
     NSInteger _requestCount;
     NSTimer *_timer;
 
@@ -407,10 +406,8 @@
                                              birthdayYear:[self getBirthdayYear]
                                               registerTOS:@"1"
                                                 onSuccess:^(CreatePassword *result) {
-                                                    _createPassword = result;
-                                                    
-                                                    BOOL status = [_createPassword.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-                                                    if (status && [_createPassword.result.is_success boolValue]) {
+                                                    BOOL status = [result.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+                                                    if (status && [result.result.is_success boolValue]) {
                                                         [self trackRegistration];
 
                                                         if (_onPasswordCreated) {
@@ -419,8 +416,8 @@
                                                             [self requestLogin];
                                                         }
                                                         
-                                                    } else if (_createPassword.message_error) {
-                                                        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:_createPassword.message_error
+                                                    } else if (result.message_error) {
+                                                        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:result.message_error
                                                                                                                        delegate:self];
                                                         [alert show];
                                                         [self enableTextFields];
@@ -444,32 +441,30 @@
                                      userPassword:_passwordTextField.text?:@"0"
                                              uuid:@""
                                         onSuccess:^(Login *result) {
-                                            _login = result;
-                                            
-                                            BOOL status = [_login.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+                                            BOOL status = [result.status isEqualToString:kTKPDREQUEST_OKSTATUS];
                                             if (status) {
-                                                if (_login.result.is_login) {
+                                                if (result.result.is_login) {
                                                     TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-                                                    [secureStorage setKeychainWithValue:@(_login.result.is_login) withKey:kTKPD_ISLOGINKEY];
-                                                    [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_USERIDKEY];
-                                                    [secureStorage setKeychainWithValue:_login.result.full_name withKey:kTKPD_FULLNAMEKEY];
+                                                    [secureStorage setKeychainWithValue:@(result.result.is_login) withKey:kTKPD_ISLOGINKEY];
+                                                    [secureStorage setKeychainWithValue:result.result.user_id withKey:kTKPD_USERIDKEY];
+                                                    [secureStorage setKeychainWithValue:result.result.full_name withKey:kTKPD_FULLNAMEKEY];
                                                     
-                                                    if(_login.result.user_image != nil) {
-                                                        [secureStorage setKeychainWithValue:_login.result.user_image withKey:kTKPD_USERIMAGEKEY];
+                                                    if(result.result.user_image != nil) {
+                                                        [secureStorage setKeychainWithValue:result.result.user_image withKey:kTKPD_USERIMAGEKEY];
                                                     }
                                                     
-                                                    [secureStorage setKeychainWithValue:_login.result.shop_id withKey:kTKPD_SHOPIDKEY];
-                                                    [secureStorage setKeychainWithValue:_login.result.shop_name withKey:kTKPD_SHOPNAMEKEY];
+                                                    [secureStorage setKeychainWithValue:result.result.shop_id withKey:kTKPD_SHOPIDKEY];
+                                                    [secureStorage setKeychainWithValue:result.result.shop_name withKey:kTKPD_SHOPNAMEKEY];
                                                     
-                                                    if(_login.result.shop_avatar != nil) {
-                                                        [secureStorage setKeychainWithValue:_login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
+                                                    if(result.result.shop_avatar != nil) {
+                                                        [secureStorage setKeychainWithValue:result.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
                                                     }
                                                     
-                                                    [secureStorage setKeychainWithValue:@(_login.result.shop_is_gold) withKey:kTKPD_SHOPISGOLD];
-                                                    [secureStorage setKeychainWithValue:_login.result.msisdn_is_verified withKey:kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY];
-                                                    [secureStorage setKeychainWithValue:_login.result.msisdn_show_dialog withKey:kTKPDLOGIN_API_MSISDN_SHOW_DIALOG_KEY];
-                                                    [secureStorage setKeychainWithValue:_login.result.device_token_id?:@"" withKey:kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY];
-                                                    [secureStorage setKeychainWithValue:_login.result.shop_has_terms withKey:kTKPDLOGIN_API_HAS_TERM_KEY];
+                                                    [secureStorage setKeychainWithValue:@(result.result.shop_is_gold) withKey:kTKPD_SHOPISGOLD];
+                                                    [secureStorage setKeychainWithValue:result.result.msisdn_is_verified withKey:kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY];
+                                                    [secureStorage setKeychainWithValue:result.result.msisdn_show_dialog withKey:kTKPDLOGIN_API_MSISDN_SHOW_DIALOG_KEY];
+                                                    [secureStorage setKeychainWithValue:result.result.device_token_id?:@"" withKey:kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY];
+                                                    [secureStorage setKeychainWithValue:result.result.shop_has_terms withKey:kTKPDLOGIN_API_HAS_TERM_KEY];
                                                     
                                                     [self.tabBarController setSelectedIndex:0];
                                                     
@@ -485,7 +480,7 @@
                                                     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                                                     
                                                 } else {
-                                                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:_login.message_error
+                                                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:result.message_error
                                                                                                                    delegate:self];
                                                     [alert show];
                                                 }

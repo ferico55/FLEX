@@ -14,7 +14,6 @@
 
 @interface CreatePasswordViewController : UIViewController
 
-@property (strong, nonatomic) Login *login;
 @property (strong, nonatomic) NSDictionary *facebookUserData;
 @property GIDGoogleUser *gidGoogleUser;
 @property (strong, nonatomic) NSString *email;

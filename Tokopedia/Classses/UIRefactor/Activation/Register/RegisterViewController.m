@@ -849,7 +849,6 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
             [secureStorage setKeychainWithValue:login.result.user_id withKey:kTKPD_TMP_USERIDKEY];
 
             CreatePasswordViewController *controller = [CreatePasswordViewController new];
-            controller.login = login;
             if (_facebookUserData) {
                 controller.facebookUserData = _facebookUserData;
             } else if (_gidGoogleUser) {
