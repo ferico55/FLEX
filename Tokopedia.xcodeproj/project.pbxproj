@@ -2329,6 +2329,9 @@
 		7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
+		7ABC53EC1D0FEDA000CD6823 /* InboxMessageCieCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxMessageCieCell.h; sourceTree = "<group>"; };
+		7ABC53ED1D0FEDA000CD6823 /* InboxMessageCieCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxMessageCieCell.m; sourceTree = "<group>"; };
+		7ABC53EE1D0FEDA000CD6823 /* InboxMessageCieCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InboxMessageCieCell.xib; sourceTree = "<group>"; };
 		7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FacebookSDKStrings.bundle; sourceTree = "<group>"; };
 		7ACE9C4F1BB00956006C4BB7 /* FBAudienceNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBAudienceNetwork.framework; sourceTree = "<group>"; };
 		7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKMessengerShareKit.framework; sourceTree = "<group>"; };
@@ -8830,6 +8833,9 @@
 				9241750A1D00161B00F6083B /* InboxRootViewController.m */,
 				9241750B1D00161B00F6083B /* InboxRootViewController.xib */,
 				9241750C1D00161B00F6083B /* string_inbox_message.h */,
+				7ABC53EC1D0FEDA000CD6823 /* InboxMessageCieCell.h */,
+				7ABC53ED1D0FEDA000CD6823 /* InboxMessageCieCell.m */,
+				7ABC53EE1D0FEDA000CD6823 /* InboxMessageCieCell.xib */,
 			);
 			path = InboxMessage;
 			sourceTree = "<group>";
