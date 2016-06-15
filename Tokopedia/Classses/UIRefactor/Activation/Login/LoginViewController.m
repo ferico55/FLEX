@@ -48,8 +48,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 >
 {
     NSMutableDictionary *_activation;
-    
-    BOOL _isnodata;
 
     Login *_login;
     
@@ -448,7 +446,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     _login = [mappingResult.dictionary objectForKey:@""];
     BOOL status = [_login.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     if (status) {
-        _isnodata = NO;
         if (_login.result.is_login) {
             [self onLoginSuccess];
         }
@@ -907,7 +904,6 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                             provider:provider
                      successCallback:^(RKMappingResult *result, RKObjectRequestOperation *operation) {
                          _login = result.dictionary[@""];
-                         _isnodata = NO;
 
                          TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
 
