@@ -110,7 +110,7 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
     [_activityIndicator startAnimating];
     [self registerForKeyboardNotifications];
     self.title = @"Status Toko";
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Tutup" style: UIBarButtonItemStyleBordered target:self action:@selector(didTapBackButton)];
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Tutup" style: UIBarButtonItemStyleDone target:self action:@selector(didTapBackButton)];
     self.navigationItem.leftBarButtonItem = backButton;
     
     lightGray = [UIColor colorWithRed:0.899 green:0.892 blue:0.899 alpha:1];
