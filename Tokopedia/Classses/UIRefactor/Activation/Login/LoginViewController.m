@@ -914,11 +914,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                                  [self checkSecurityQuestion:login];
                              } else {
                                  [self onLoginSuccess:login];
-                                 if (_facebookUserData) {
-                                     [secureStorage setKeychainWithValue:([_facebookUserData objectForKey:@"email"] ?: @"") withKey:kTKPD_USEREMAIL];
-                                 } else if (_gidGoogleUser) {
-                                     [secureStorage setKeychainWithValue:email withKey:kTKPD_USEREMAIL];
-                                 }
+                                 [secureStorage setKeychainWithValue:email withKey:kTKPD_USEREMAIL];
                              }
                          } else {
                              TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
