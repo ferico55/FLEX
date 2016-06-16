@@ -12,10 +12,10 @@
 #import "RejectReasonEmptyStockViewController.h"
 
 
-#define BARANG_HABIS @"1"
-#define VARIAN_TIDAK_TERSEDIA @"2"
-#define SALAH_HARGA_BERAT @"3"
-#define TOKO_SEDANG_TUTUP @"4"
+#define EMPTY_STOCK @"1"
+#define EMPTY_VARIANT @"2"
+#define WRONG_PRICE_WEIGHT @"3"
+#define SHOP_IS_CLOSED @"4"
 
 @interface RejectReasonViewController ()<UITableViewDelegate, UIScrollViewDelegate, UITableViewDataSource, RejectExplanationDelegate>
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
@@ -94,19 +94,21 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     _selectedReason = [_rejectReasons objectAtIndex:indexPath.row];
     
-    if([_selectedReason.reason_code isEqualToString:BARANG_HABIS]){
+    if([_selectedReason.reason_code isEqualToString:EMPTY_STOCK]){
         RejectReasonEmptyStockViewController *vc = [[RejectReasonEmptyStockViewController alloc]init];
         vc.order = self.order;
+        vc.title = _selectedReason.reason_text;
         [self.navigationController pushViewController:vc animated:YES];
-    }else if([_selectedReason.reason_code isEqualToString:VARIAN_TIDAK_TERSEDIA]){
+    }else if([_selectedReason.reason_code isEqualToString:EMPTY_VARIANT]){
         
-    }else if([_selectedReason.reason_code isEqualToString:SALAH_HARGA_BERAT]){
+    }else if([_selectedReason.reason_code isEqualToString:WRONG_PRICE_WEIGHT]){
         
-    }else if([_selectedReason.reason_code isEqualToString:TOKO_SEDANG_TUTUP]){
+    }else if([_selectedReason.reason_code isEqualToString:SHOP_IS_CLOSED]){
         
     }else{
         OrderRejectExplanationViewController *controller = [[OrderRejectExplanationViewController alloc] init];
         controller.delegate = self;
+        controller.title = _selectedReason.reason_text;
         [self.navigationController pushViewController:controller animated:YES];
     }
     

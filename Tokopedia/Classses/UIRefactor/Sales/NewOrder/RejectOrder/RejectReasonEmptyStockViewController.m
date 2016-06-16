@@ -21,6 +21,7 @@
     [super viewDidLoad];
     _tableView.dataSource = self;
     _tableView.delegate = self;
+    _tableView.allowsMultipleSelection = YES;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -48,13 +49,14 @@
                                                                options:nil];
         cell = [topLevelObjects objectAtIndex:0];
     }
-    
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    [cell setSelected:NO animated:NO];
     OrderProduct *currentProduct = [_order.order_products objectAtIndex:indexPath.row];
     [cell setViewModel:currentProduct.viewModel];
     return cell;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 80;
+    return 70;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
@@ -79,8 +81,11 @@
     return 40;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
+}
+- (IBAction)confirmButtonTapped:(id)sender {
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end
