@@ -659,7 +659,7 @@
 
     [self.networkManager requestWithBaseUrl:[NSString v4Url]
                                        path:path
-                                     method:RKRequestMethodGET
+                                     method:RKRequestMethodPOST
                                   parameter:[self parameters]
                                     mapping:[AddShop mapping]
                                   onSuccess:^(RKMappingResult *mappingResult, RKObjectRequestOperation *operation) {
