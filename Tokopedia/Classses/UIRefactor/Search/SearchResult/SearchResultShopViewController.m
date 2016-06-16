@@ -480,6 +480,23 @@ static NSString const *rows = @"12";
 }
 
 -(IBAction)didTapFilterButton:(UIButton*)button{
+    if ([self isUseDynamicFilter]) {
+        [self pushDynamicFilter];
+    } else {
+        [self pushFilter];
+    }
+}
+
+-(void)pushFilter{
+    FilterViewController *vc = [FilterViewController new];
+    vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPESHOPVIEWKEY),
+                kTKPDFILTER_DATAFILTERKEY: _params};
+    vc.delegate = self;
+    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
+    [self.navigationController presentViewController:nav animated:YES completion:nil];
+}
+
+-(void)pushDynamicFilter{
     FiltersController *controller = [[FiltersController alloc]initWithFilterResponse:_filterResponse?:[FilterResponse new] categories:nil selectedCategories:nil selectedFilters:_selectedFilters presentedVC:self onCompletion:^(NSArray<CategoryDetail *> * selectedCategories , NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
         
         _selectedFilters = selectedFilters;
@@ -490,6 +507,14 @@ static NSString const *rows = @"12";
     } response:^(FilterResponse * filterResponse){
         _filterResponse = filterResponse;
     }];
+}
+
+-(BOOL)isUseDynamicFilter{
+    if(FBTweakValue(@"Dynamic", @"Filter", @"Enabled", YES)) {
+        return YES;
+    } else {
+        return NO;
+    }
 }
 
 #pragma mark - Methods
@@ -585,12 +610,54 @@ static NSString const *rows = @"12";
 
 #pragma mark - TokopediaNetworkManager Delegate
 - (NSDictionary*)getParameter:(int)tag {
+    if ([self isUseDynamicFilter]) {
+        return [self parameterDynamicFilter];
+    } else {
+        return [self parameterFilter];
+    }
+}
+
+-(NSDictionary*)parameterFilter{
     NSString *querry = [_params objectForKey:kTKPDSEARCH_DATASEARCHKEY];
     NSString *type = kTKPDSEARCH_DATASEARCHSHOPKEY;
     NSString *deptid = [_params objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
     
     NSDictionary* param;
+    
+    if (deptid == nil ) {
+        param = @{@"q"       :   querry?:@"",
+                  @"start" : @(start),
+                  @"rows" : rows,
+                  @"device" : @"ios",
+                  @"ob"     :   [_params objectForKey:kTKPDSEARCH_APIORDERBYKEY]?:@"",
+                  @"floc"    :   [_params objectForKey:kTKPDSEARCH_APILOCATIONKEY]?:@"",
+                  @"fshop"    :   [_params objectForKey:kTKPDSEARCH_APISHOPTYPEKEY]?:@"",
+                  @"pmin"    :   [_params objectForKey:kTKPDSEARCH_APIPRICEMINKEY]?:@"",
+                  @"pmax"    :   [_params objectForKey:kTKPDSEARCH_APIPRICEMAXKEY]?:@""
+                  };
+    } else {
+        param = @{@"sc"   :   deptid?:@"",
+                  @"start" : @(start),
+                  @"rows" : rows,
+                  @"device" : @"ios",
+                  @"ob"         :   [_params objectForKey:kTKPDSEARCH_APIORDERBYKEY]?:@"",
+                  @"floc"        :   [_params objectForKey:kTKPDSEARCH_APILOCATIONKEY]?:@"",
+                  @"fshop"        :   [_params objectForKey:kTKPDSEARCH_APISHOPTYPEKEY]?:@"",
+                  @"pmin"        :   [_params objectForKey:kTKPDSEARCH_APIPRICEMINKEY]?:@"",
+                  @"pmax"        :   [_params objectForKey:kTKPDSEARCH_APIPRICEMAXKEY]?:@""
+                  };
+    }
+    
+    return param;
+}
 
+-(NSDictionary*)parameterDynamicFilter{
+    NSString *querry = [_params objectForKey:kTKPDSEARCH_DATASEARCHKEY];
+    NSString *type = kTKPDSEARCH_DATASEARCHSHOPKEY;
+    NSString *deptid = [_params objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
+    
+    NSDictionary* param;
+    
     if (deptid == nil ) {
         param = @{@"q"       :   querry?:@"",
                   @"start" : @(start),

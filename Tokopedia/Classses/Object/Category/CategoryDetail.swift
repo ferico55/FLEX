@@ -31,9 +31,25 @@ import UIKit
     var identifier :String = String()
     var url : String = String()
     var child : [CategoryDetail] = []
-    var isExpanded : Bool = true
-    var isLastCategory : Bool = false
-    var hasChildCategories : Bool = true
+    var isExpanded : Bool = false
+    var isLastCategory : Bool = false {
+        didSet{
+            if self.child.count == 0 {
+            self.isLastCategory = true
+            } else {
+            self.isLastCategory = false
+            }
+        }
+    }
+    var hasChildCategories : Bool = true {
+        didSet{
+            if self.child.count == 0 {
+                self.hasChildCategories = false
+            } else {
+                self.hasChildCategories = true
+            }
+        }
+    }
     var isSelected : Bool = false
     
     required override init() {
@@ -91,12 +107,5 @@ import UIKit
         
         return mapping
     }
-    
-    func setLastCategory() {
-        if self.child.count == 0 {
-            isLastCategory = true
-        } else {
-            isLastCategory = false
-        }
-    }
+
 }

@@ -201,7 +201,7 @@
         }
     }
     
-    if (category.hasChildCategories) {
+    if (category.child.count > 0) {
         [cell showArrow];
         ArrowDirection direction = category.isExpanded ? ArrowDirectionUp : ArrowDirectionDown;
         [cell setArrowDirection:direction];

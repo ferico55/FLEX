@@ -126,7 +126,6 @@ import UIKit
         
         for (index,category) in self.initialCategories.enumerate() {
             category.isExpanded = false
-            category.setLastCategory()
             self.categories.append(category)
             indexPaths.append(NSIndexPath.init(forRow:index , inSection: 0))
         }
