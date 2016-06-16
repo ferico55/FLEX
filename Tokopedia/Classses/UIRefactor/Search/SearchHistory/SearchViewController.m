@@ -171,6 +171,8 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     [self initNotificationManager];
     
     [self.searchBar resignFirstResponder];
+    [self.searchBar setText:nil];
+    [self searchBar:_searchBar textDidChange:@""];
     [self.searchBar setShowsBookmarkButton:NO];
     
     if([self isEnableImageSearch]) {

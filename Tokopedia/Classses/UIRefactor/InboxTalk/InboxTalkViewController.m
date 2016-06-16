@@ -117,6 +117,7 @@
     
     //load data
     _networkManager = [TokopediaNetworkManager new];
+    _networkManager.isUsingHmac = YES;
     [self fetchInboxTalkList];
 }
 
@@ -212,9 +213,9 @@
 - (void)fetchInboxTalkList {
     [self showLoadingIndicator];
 
-    [_networkManager requestWithBaseUrl:[NSString basicUrl]
-                                   path:KTKPDMESSAGE_TALK
-                                 method:RKRequestMethodPOST
+    [_networkManager requestWithBaseUrl:[NSString v4Url]
+                                   path:@"/v4/inbox-talk/get_inbox_talk.pl"
+                                 method:RKRequestMethodGET
                               parameter:[self requestParameter]
                                 mapping:[Talk mapping]
                               onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
@@ -307,7 +308,7 @@
                             kTKPDHOME_APIPAGEKEY:@(_page)?:@1,
                             KTKPDMESSAGE_FILTERKEY:_readStatus?_readStatus:@"",
                             KTKPDMESSAGE_KEYWORDKEY:_keyword?_keyword:@"",
-                            KTKPDMESSAGE_NAVKEY:nav
+                            KTKPDMESSAGE_NAVKEY:nav,
                             };
     return param;
 }

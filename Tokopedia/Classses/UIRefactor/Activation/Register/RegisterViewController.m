@@ -140,7 +140,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     [super viewDidLoad];
     
     _datainput = [NSMutableDictionary new];
-    [_datainput setObject:@"1" forKey:kTKPDREGISTER_APIGENDERKEY];
 
     _operationQueue =[NSOperationQueue new];
     
@@ -154,7 +153,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
              object:nil];
     
     //set default data
-    [_datainput setObject:@(1) forKey:kTKPDREGISTER_APIGENDERKEY];
+    [_datainput setObject:@(3) forKey:kTKPDREGISTER_APIGENDERKEY];
         
     _agreementLabel.userInteractionEnabled = YES;
 
@@ -165,8 +164,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     _signIn.scopes = @[ kGTLAuthScopePlusLogin ];
     _signIn.delegate = self;
     [_signIn trySilentAuthentication];
-    
-//    [_signInButton setStyle:kGPPSignInButtonStyleStandard];
 
     _loginView = [[FBSDKLoginButton alloc] init];
     _loginView.delegate = self;
@@ -273,10 +270,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
                 NSString *fullname = [_datainput objectForKey:kTKPDREGISTER_APIFULLNAMEKEY];
                 NSString *phone = [_datainput objectForKey:kTKPDREGISTER_APIPHONEKEY];
                 NSString *email = [_datainput objectForKey:kTKPDREGISTER_APIEMAILKEY];
-                NSString *gender = [_datainput objectForKey:kTKPDREGISTER_APIGENDERKEY]?:@"1";
-                NSString *birthday = [_datainput objectForKey:kTKPDREGISTER_APIBIRTHDAYKEY];
-                NSString *birthmonth = [_datainput objectForKey:kTKPDREGISTER_APIBIRTHMONTHKEY];
-                NSString *birthyear = [_datainput objectForKey:kTKPDREGISTER_APIBITHYEARKEY];
                 NSString *pass = [_datainput objectForKey:kTKPDREGISTER_APIPASSKEY];
                 NSString *confirmpass = [_datainput objectForKey:kTKPDREGISTER_APICONFIRMPASSKEY];
                 BOOL isagree = [[_datainput objectForKey:kTKPDACTIVATION_DATAISAGREEKEY]boolValue];
@@ -284,8 +277,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
                 if (fullname && ![fullname isEqualToString:@""] &&
                     phone &&
                     email && [email isEmail] &&
-                    gender &&
-                    birthday && birthmonth && birthyear &&
                     pass && ![pass isEqualToString:@""] &&
                     confirmpass && ![confirmpass isEqualToString:@""]&&
                     [pass isEqualToString:confirmpass] &&
@@ -318,12 +309,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
                         if (![email isEmail]) {
                             [messages addObject:ERRORMESSAGE_INVALID_EMAIL_FORMAR];
                         }
-                    }
-                    if (!gender) {
-                        [messages addObject:ERRORMESSAGE_NULL_GENDER];
-                    }
-                    if (!birthday || !birthmonth || !birthyear) {
-                        [messages addObject:ERRORMESSAGE_NULL_BIRTHDATE];
                     }
                     if (!pass || [pass isEqualToString:@""]) {
                         [messages addObject:ERRORMESSAGE_NULL_PASSWORD];
@@ -488,10 +473,10 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
                             kTKPDREGISTER_APIFULLNAMEKEY:[data objectForKey:kTKPDREGISTER_APIFULLNAMEKEY],
                             kTKPDREGISTER_APIEMAILKEY:[data objectForKey:kTKPDREGISTER_APIEMAILKEY],
                             kTKPDREGISTER_APIPHONEKEY:[data objectForKey:kTKPDREGISTER_APIPHONEKEY],
-                            kTKPDREGISTER_APIGENDERKEY:[data objectForKey:kTKPDREGISTER_APIGENDERKEY]?:@"1",
-                            kTKPDREGISTER_APIBIRTHDAYKEY:[data objectForKey:kTKPDREGISTER_APIBIRTHDAYKEY],
-                            kTKPDREGISTER_APIBIRTHMONTHKEY:[data objectForKey:kTKPDREGISTER_APIBIRTHMONTHKEY],
-                            kTKPDREGISTER_APIBITHYEARKEY:[data objectForKey:kTKPDREGISTER_APIBITHYEARKEY],
+                            kTKPDREGISTER_APIGENDERKEY:[data objectForKey:kTKPDREGISTER_APIGENDERKEY]?:@"3",
+                            kTKPDREGISTER_APIBIRTHDAYKEY:[data objectForKey:kTKPDREGISTER_APIBIRTHDAYKEY]?:@"1",
+                            kTKPDREGISTER_APIBIRTHMONTHKEY:[data objectForKey:kTKPDREGISTER_APIBIRTHMONTHKEY]?:@"1",
+                            kTKPDREGISTER_APIBITHYEARKEY:[data objectForKey:kTKPDREGISTER_APIBITHYEARKEY]?:@"1",
                             kTKPDREGISTER_APIPASSKEY:[data objectForKey:kTKPDREGISTER_APIPASSKEY],
                             kTKPDREGISTER_APICONFIRMPASSKEY:[data objectForKey:kTKPDREGISTER_APICONFIRMPASSKEY]
                             };
@@ -954,7 +939,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
 
             TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
             [secureStorage setKeychainWithValue:@(_login.result.is_login) withKey:kTKPD_ISLOGINKEY];
-//            [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_TMP_USERIDKEY];
+            [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_TMP_USERIDKEY];
 
             CreatePasswordViewController *controller = [CreatePasswordViewController new];
             controller.login = _login;
@@ -1219,6 +1204,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                                                         
                                                         TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
                                                         [secureStorage setKeychainWithValue:@(NO) withKey:kTKPD_ISLOGINKEY];
+                                                        [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_TMP_USERIDKEY];
                                                         
                                                         CreatePasswordViewController *controller = [CreatePasswordViewController new];
                                                         controller.login = _login;

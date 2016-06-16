@@ -67,6 +67,10 @@
 
 #import "DepositRequest.h"
 
+#import <JLPermissions/JLNotificationPermission.h>
+
+#import "Tokopedia-Swift.h"
+
 #define CTagProfileInfo 12
 #define CTagLP 13
 
@@ -96,6 +100,7 @@
     
     NSURL *_deeplinkUrl;
     
+    BOOL _shouldDisplayPushNotificationCell;
 }
 
 @property (weak, nonatomic) IBOutlet UILabel *depositLabel;
@@ -214,6 +219,34 @@
     [self updateShopInformation];
     [self configureGTM];
     [self.tableView setShowsVerticalScrollIndicator:NO];
+    
+    [self togglePushNotificationCellVisibility];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(appDidResume)
+                                                 name:UIApplicationDidBecomeActiveNotification
+                                               object:nil];
+}
+
+- (void)appDidResume {
+    [self togglePushNotificationCellVisibility];
+}
+
+- (BOOL)isBadgeNotificationTurnedOn {
+    UIApplication *application = [UIApplication sharedApplication];
+    if ([application respondsToSelector:@selector(currentUserNotificationSettings)]) {
+        return application.currentUserNotificationSettings.types & UIUserNotificationTypeBadge;
+    } else {
+        return application.enabledRemoteNotificationTypes & UIRemoteNotificationTypeBadge;
+    }
+}
+
+- (void)togglePushNotificationCellVisibility {
+    BOOL isPushNotificationAuthorized = [JLNotificationPermission sharedInstance].authorizationStatus != JLPermissionDenied;
+    
+    _shouldDisplayPushNotificationCell = !isPushNotificationAuthorized || ![self isBadgeNotificationTurnedOn];
+    
+    [self.tableView reloadData];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -499,7 +532,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 8;
+    return 9;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -539,7 +572,7 @@
             break;
             
         case 6:
-            return 1;
+            return _shouldDisplayPushNotificationCell?1:0;
             break;
             
         case 7 :
@@ -608,6 +641,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
     if (indexPath.section == 1 && indexPath.row == 0) {
         NavigateViewController *navigateController = [NavigateViewController new];
         [navigateController navigateToProfileFromViewController:wrapperController withUserID:[_auth objectForKey:MORE_USER_ID]];
+        
     }
     
     else if (indexPath.section == 1 && indexPath.row == 1) {
@@ -615,8 +649,10 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
         PurchaseViewController *purchaseController = [storyboard instantiateViewControllerWithIdentifier:@"PurchaseViewController"];
         purchaseController.notification = _notifManager.notification;
         [wrapperController.navigationController pushViewController:purchaseController animated:YES];
+        
     }
     else if(indexPath.section==1 && indexPath.row==2) {
+        
         UINavigationController *tempNavController = (UINavigationController *) [wrapperController.tabBarController.viewControllers firstObject];
         [((HomeTabViewController *)[tempNavController.viewControllers firstObject]) setIndexPage:2];
         [wrapperController.tabBarController setSelectedIndex:0];
@@ -788,6 +824,10 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
     }
     
     else if (indexPath.section == 6) {
+        [self activatePushNotification];
+    }
+    
+    else if (indexPath.section == 7) {
         if(indexPath.row == 0) {
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
             [[NSNotificationCenter defaultCenter] postNotificationName:kTKPDACTIVATION_DIDAPPLICATIONLOGOUTNOTIFICATION
@@ -798,6 +838,26 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
     }
     
     _wrapperViewController.hidesBottomBarWhenPushed = NO;
+}
+
+- (void)activatePushNotification {
+    JLNotificationPermission *permission = [JLNotificationPermission sharedInstance];
+    
+    JLAuthorizationStatus permissionStatus = permission.authorizationStatus;
+    
+    if (permissionStatus == JLPermissionNotDetermined) {
+        permission.extraAlertEnabled = false;
+        [permission authorize: ^(NSString *deviceId, NSError *error) {
+            [self togglePushNotificationCellVisibility];
+        }];
+    } else {
+        ActivatePushInstructionViewController *viewController = [ActivatePushInstructionViewController new];
+        
+        viewController.viewControllerDidClosed = ^{
+            [[JLNotificationPermission sharedInstance] displayAppSystemSettings];
+        };
+        [_wrapperViewController presentViewController:viewController animated:YES completion:nil];
+    }
 }
 
 -(void)pushIOSFeedback

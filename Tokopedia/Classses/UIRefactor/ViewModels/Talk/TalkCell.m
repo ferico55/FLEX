@@ -33,6 +33,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 @interface TalkCell ()
 
 @property (strong, nonatomic) NSDictionary *messageAttribute;
+@property (strong, nonatomic) ReportViewController *reportController;
 
 @end
 
@@ -40,6 +41,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 {
     IBOutlet NSLayoutConstraint* commentButtonTrailingToVerticalBorder;
     IBOutlet UILabel *_productNameLabel;
+    TokopediaNetworkManager *_reportNetworkManager;
 }
 
 - (void)setEnableDeepNavigation:(BOOL)enableDeepNavigation {
@@ -180,6 +182,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     [self followAnimateZoomOut:self.unfollowButton];
     
     _unfollowNetworkManager = [TokopediaNetworkManager new];
+    _unfollowNetworkManager.isUsingHmac = YES;
 
     NSDictionary* parameter = @{
             kTKPDDETAIL_ACTIONKEY : TKPD_FOLLOW_TALK_ACTION,
@@ -188,8 +191,8 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
             @"shop_id":_talk.talk_shop_id
     };
 
-    [_unfollowNetworkManager requestWithBaseUrl:[NSString basicUrl]
-                                           path:@"action/talk.pl"
+    [_unfollowNetworkManager requestWithBaseUrl:[NSString v4Url]
+                                           path:@"/v4/action/talk/follow_product_talk.pl"
                                          method:RKRequestMethodPOST
                                       parameter:parameter
                                         mapping:[GeneralAction mapping]
@@ -236,11 +239,15 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 }
 
 - (void)tapToReport {
-    ReportViewController *_reportController = [ReportViewController new];
-    _reportController.delegate = self;
+    _reportController = [ReportViewController new];
 
     _reportController.strProductID = _talk.talk_product_id;
     _reportController.strShopID = _talk.talk_shop_id;
+
+    __weak __typeof(self) weakSelf = self;
+    _reportController.onFinishWritingReport = ^(NSString *message) {
+        [weakSelf reportTalkWithMessage:message];
+    };
     
     TKPDTabViewController *controller = [_delegate getNavigationController:self];
     [controller.navigationController pushViewController:_reportController animated:YES];
@@ -315,7 +322,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 				successMessages = @[@"Anda berhasil menghapus diskusi ini."];
                 [_delegate tapToDeleteTalk:self];
 			} else {
-                successMessages = @[_talk.talk_follow_status ? @"Anda berhasil mengikuti diskusi ini." : @"Anda batal mengikuti diskusi ini."];
+                successMessages = @[!_talk.talk_follow_status ? @"Anda berhasil mengikuti diskusi ini." : @"Anda batal mengikuti diskusi ini."];
 
                 _talk.viewModel = nil;
                 _talk.talk_follow_status = !_talk.talk_follow_status;
@@ -359,6 +366,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     //delete talk
     if(buttonIndex == 1) {
         _deleteNetworkManager = [TokopediaNetworkManager new];
+        _deleteNetworkManager.isUsingHmac = YES;
 
         NSDictionary *parameter = @{
                 kTKPDDETAIL_ACTIONKEY : TKPD_DELETE_TALK_ACTION,
@@ -367,8 +375,8 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
                 kTKPDDETAILSHOP_APISHOPID : _talk.talk_shop_id
         };
 
-        [_deleteNetworkManager requestWithBaseUrl:[NSString basicUrl]
-                                             path:@"action/talk.pl"
+        [_deleteNetworkManager requestWithBaseUrl:[NSString v4Url]
+                                             path:@"/v4/action/talk/delete_product_talk.pl"
                                            method:RKRequestMethodPOST
                                         parameter:parameter
                                           mapping:[GeneralAction mapping]
@@ -381,23 +389,43 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     }
 }
 
-#pragma mark - ReportViewController Delegate
-- (NSDictionary *)getParameter {
-    return @{
-             @"action" : @"report_product_talk",
-             @"talk_id" : _talk.talk_id?:@(0),
-             @"shop_id" : _talk.talk_shop_id?:@(0),
-             @"product_id" : _talk.talk_product_id?:@(0)
-             };
-}
+- (void)reportTalkWithMessage:(NSString *)textMessage {
+    _reportNetworkManager = [TokopediaNetworkManager new];
+    _reportNetworkManager.isUsingHmac = YES;
 
-- (NSString *)getPath {
-    return @"action/talk.pl";
-}
+    NSDictionary *parameter = @{
+            @"action" : @"report_product_talk",
+            @"talk_id" : _talk.talk_id?:@(0),
+            @"shop_id" : _talk.talk_shop_id?:@(0),
+            @"product_id" : _talk.talk_product_id?:@(0),
+            @"text_message": textMessage
+    };
 
-- (UIViewController *)didReceiveViewController {
-    return [_delegate getNavigationController:self];
-}
+    [_reportNetworkManager requestWithBaseUrl:[NSString v4Url]
+                                         path:@"/v4/action/talk/report_product_talk.pl"
+                                       method:RKRequestMethodPOST
+                                    parameter:parameter
+                                      mapping:[GeneralAction mapping]
+                                    onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                        [_reportController.navigationController popViewControllerAnimated:YES];
 
+                                        GeneralAction *action = successResult.dictionary[@""];
+
+                                        if (action.data.is_success.boolValue) {
+                                            StickyAlertView *alertView = [[StickyAlertView alloc] initWithSuccessMessages:@[SUCCESS_REPORT_TALK]
+                                                                                                                 delegate:_reportController];
+
+                                            [alertView show];
+                                        } else {
+                                            StickyAlertView *alertView = [[StickyAlertView alloc] initWithErrorMessages:action.message_error
+                                                                                                               delegate:_reportController];
+
+                                            [alertView show];
+                                        }
+                                    }
+                                    onFailure:^(NSError *errorResult) {
+
+                                    }];
+}
 
 @end
