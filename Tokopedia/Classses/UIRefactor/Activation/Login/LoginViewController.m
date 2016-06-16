@@ -855,7 +855,6 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                                  controller.facebookUserData = _facebookUserData;
                              } else if (_gidGoogleUser) {
                                  controller.gidGoogleUser = _gidGoogleUser;
-                                 controller.fullName = _gidGoogleUser.profile.name;
                                  controller.email = email;
                              }
 

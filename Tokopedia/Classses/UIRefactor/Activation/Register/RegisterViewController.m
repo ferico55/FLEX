@@ -853,11 +853,6 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                 controller.facebookUserData = _facebookUserData;
             } else if (_gidGoogleUser) {
                 controller.gidGoogleUser = _gidGoogleUser;
-//                NSString *fullName;
-//                if (_googleUser.name.givenName.length > 0) {
-//                    fullName = [_googleUser.name.givenName stringByAppendingFormat:@" %@", _googleUser.name.familyName];
-//                }
-                controller.fullName = _gidGoogleUser.profile.name;
                 controller.email = _gidGoogleUser.profile.email;
             }
             

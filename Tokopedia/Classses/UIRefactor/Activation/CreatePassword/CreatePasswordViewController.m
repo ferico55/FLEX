@@ -93,9 +93,7 @@
     _signupButton.layer.cornerRadius = 2;
 
     NSString *name;
-    if (_fullName) {
-        name = _fullName;
-    } else if (_facebookUserData) {
+    if (_facebookUserData) {
         name = _userProfile.name;
     } else if (_gidGoogleUser) {
         name = _gidGoogleUser.profile.name;
