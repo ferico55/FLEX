@@ -214,6 +214,7 @@ ImageSearchRequestDelegate
     
     
     [_params setDictionary:_data];
+    [self setDefaultSort];
     
     if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
         if(self.isFromAutoComplete) {
@@ -311,6 +312,25 @@ ImageSearchRequestDelegate
     _spellCheckRequest = [SpellCheckRequest new];
     _spellCheckRequest.delegate = self;
     
+}
+
+-(void)setDefaultSort{
+    [_params setObject:[self defaultSortID] forKey:@"ob"];
+    _selectedSort = [self defaultSortDynamicFilter];
+    _selectedSortParam = @{@"ob":[self defaultSortID]};
+}
+
+-(ListOption*)defaultSortDynamicFilter{
+    ListOption *sort = [ListOption new];
+    sort.name = @"Paling Sesuai";
+    sort.value = @"23";
+    sort.key = @"ob";
+    sort.type = @"checkmark";
+    return sort;
+}
+
+-(NSString*)defaultSortID{
+    return @"23";
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -619,9 +639,9 @@ ImageSearchRequestDelegate
 
 #pragma mark - Sort Delegate
 - (void)didSelectSort:(NSString *)sort atIndexPath:(NSIndexPath *)indexPath {
-    [_params setObject:sort forKey:@"order_by"];
+    [_params setObject:sort forKey:@"ob"];
     
-    if([[_params objectForKey:@"order_by"] isEqualToString:@"99"]){
+    if([[_params objectForKey:@"ob"] isEqualToString:@"99"]){
         [self restoreSimilarity];
         //image search sort by similarity
         NSArray* sortedProducts = [[_product firstObject] sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
@@ -687,7 +707,7 @@ ImageSearchRequestDelegate
             image.hidden = (_selectedSort == nil);
         }
         
-        if([[_selectedSortParam objectForKey:@"order_by"] isEqualToString:@"99"]){
+        if([[_selectedSortParam objectForKey:@"ob"] isEqualToString:@"99"]){
             [self restoreSimilarity];
             //image search sort by similarity
             NSArray* sortedProducts = [[_product firstObject] sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
@@ -779,13 +799,7 @@ ImageSearchRequestDelegate
 -(NSDictionary *)parameterFilter{
     NSMutableDictionary *parameter = [[NSMutableDictionary alloc]init];
     [parameter setObject:@"ios" forKey:@"device"];
-    [parameter setObject:[_params objectForKey:@"department_id"]?:@"" forKey:@"sc"];
-    [parameter setObject:[_params objectForKey:@"location"]?:@"" forKey:@"floc"];
-    [parameter setObject:[_params objectForKey:@"order_by"]?:@"" forKey:@"ob"];
-    [parameter setObject:[_params objectForKey:@"price_min"]?:@"" forKey:@"pmin"];
-    [parameter setObject:[_params objectForKey:@"price_max"]?:@"" forKey:@"pmax"];
-    [parameter setObject:[_params objectForKey:@"shop_type"]?:@"" forKey:@"fshop"];
-    [parameter setObject:[_params objectForKey:@"sc_identifier"]?:@"" forKey:@"sc_identifier"];
+    [parameter addEntriesFromDictionary:_params];
     if(_isFromImageSearch){
         [parameter setObject:_image_url forKey:@"image_url"];
         if (_strImageSearchResult) {
@@ -805,10 +819,12 @@ ImageSearchRequestDelegate
 }
 
 -(NSDictionary*)parameterDynamicFilter{
+    NSString *selectedCategory = [[_selectedCategories valueForKey:@"categoryId"] componentsJoinedByString:@","];
+
     NSMutableDictionary *parameter = [[NSMutableDictionary alloc]init];
     [parameter setObject:@"ios" forKey:@"device"];
     [parameter setObject:[_params objectForKey:@"sc_identifier"]?:@"" forKey:@"sc_identifier"];
-    [parameter setObject:[_params objectForKey:@"department_id"]?:@"" forKey:@"sc"];
+    [parameter setObject:selectedCategory?:@"" forKey:@"sc"];
     if(_isFromImageSearch){
         [parameter setObject:_image_url forKey:@"image_url"];
         if (_strImageSearchResult) {
@@ -946,9 +962,12 @@ ImageSearchRequestDelegate
     
     [self reloadView];
     
-    _initialBreadcrumb = search.data.breadcrumb;
-    if ([_delegate respondsToSelector:@selector(updateCategories:)]) {
-        [_delegate updateCategories:search.data.breadcrumb];
+    //set initial category
+    if (_initialBreadcrumb == nil) {
+        _initialBreadcrumb = search.data.breadcrumb;
+        if ([_delegate respondsToSelector:@selector(updateCategories:)]) {
+            [_delegate updateCategories:search.data.breadcrumb];
+        }
     }
     
     NSString *redirect_url = search.data.redirect_url;
@@ -1012,7 +1031,7 @@ ImageSearchRequestDelegate
             [[NSNotificationCenter defaultCenter] postNotificationName:@"changeNavigationTitle" object:[_params objectForKey:@"search"]];
             [_noResultView removeFromSuperview];
             
-            if(_isFromImageSearch && [_params objectForKey:@"order_by"] && [[_params objectForKey:@"order_by"] isEqualToString:@"99"]){
+            if(_isFromImageSearch && [_params objectForKey:@"ob"] && [[_params objectForKey:@"ob"] isEqualToString:@"99"]){
                 [self restoreSimilarity];
                 //image search sort by similarity
                 NSArray* sortedProducts = [[_product firstObject] sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {

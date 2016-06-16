@@ -41,8 +41,6 @@ typedef enum
 #define kTKPDFILTER_APILOCATIONNAMEKEY @"locationname"
 #define kTKPDFILTER_APICONDITIONNAMEKEY @"conditionname"
 #define kTKPDFILTER_APISHOPTYPEKEY @"shop_type"
-#define kTKPDFILTER_APIPRICEMINKEY @"price_min"
-#define kTKPDFILTER_APIPRICEMAXKEY @"price_max"
 #define kTKPDFILTER_APISELECTEDDISTRICTIDKEY @"districtid"
 
 #define kTKPDFILTER_DATACOLUMNKEY @"column"

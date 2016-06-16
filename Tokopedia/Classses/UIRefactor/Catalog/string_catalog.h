@@ -27,8 +27,6 @@
 #define API_CATALOG_NAME_KEY            @"catalog_name"
 #define API_CATALOG_PRICE_KEY           @"catalog_price"
 
-#define API_PRICE_MIN_KEY               @"price_min"
-#define API_PRICE_MAX_KEY               @"price_max"
 
 #define API_CATALOG_DESCRIPTION_KEY     @"catalog_description"
 #define API_CATALOG_KEY_KEY             @"catalog_key"

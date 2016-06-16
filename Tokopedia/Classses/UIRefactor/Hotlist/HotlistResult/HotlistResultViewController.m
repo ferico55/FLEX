@@ -164,6 +164,8 @@ static NSString const *rows = @"12";
     [super viewDidLoad];
     _page = 0;
     
+    [self setDefaultSort];
+    
     if (![self isUseDynamicFilter]) {
         [self setRightButton];
     }
@@ -263,7 +265,27 @@ static NSString const *rows = @"12";
         self.screenName = @"Hot List Detail";
         [TPAnalytics trackScreenName:@"Hot List Detail" gridType:self.cellType];
     }
+}
+
+-(void)setDefaultSort{
+    [_detailfilter setObject:[self defaultSortID] forKey:@"ob"];
+    _selectedSort = [self defaultSortDynamicFilter];
+    _selectedSortParam = @{@"ob":[self defaultSortID]};
     
+}
+
+-(ListOption*)defaultSortDynamicFilter{
+    ListOption *sort = [ListOption new];
+    sort.name = @"Paling Sesuai";
+    sort.value = @"23";
+    sort.key = @"ob";
+    sort.type = @"checkmark";
+    return sort;
+}
+
+
+-(NSString*)defaultSortID{
+    return @"23";
 }
 
 - (void)registerAllNib {
@@ -595,14 +617,14 @@ static NSString const *rows = @"12";
 #pragma mark - Category Delegate
 - (void)didSelectCategory:(CategoryDetail *)category {
     _selectedCategory = category;
-    [_detailfilter setObject:category.categoryId forKey:@"department_id"];
+    [_detailfilter setObject:category.categoryId forKey:@"sc"];
     [self refreshView:nil];
 }
 
 #pragma mark - Sort Delegate
 - (void)didSelectSort:(NSString *)sort atIndexPath:(NSIndexPath *)indexPath {
     _sortIndexPath = indexPath;
-    [_detailfilter setObject:sort forKey:kTKPDHOME_APIORDERBYKEY];
+    [_detailfilter setObject:sort forKey:@"ob"];
     [self refreshView:nil];
 }
 
@@ -888,17 +910,19 @@ static NSString const *rows = @"12";
     //set query
     NSDictionary *query = @{
         @"negative_keyword" : q.negative_keyword?:@"",
-        @"department_id" : q.sc?:@"",
-        @"order_by" : q.ob?:@"",
+        @"sc" : q.sc?:@"",
+        @"ob" : q.ob?:[self defaultSortID],
         @"terms" : q.terms?:@"",
-        @"shop_type" : q.fshop?:@"",
-        @"key" : q.q?:@"",
-        @"price_min" : q.pmin?:@"",
-        @"price_max" : q.pmax?:@"",
+        @"fshop" : q.fshop?:@"",
+        @"q" : q.q?:@"",
+        @"pmin" : q.pmin?:@"",
+        @"pmax" : q.pmax?:@"",
         @"type" : q.type?:@""
     };
     
     [_detailfilter addEntriesFromDictionary:query];
+    _selectedFilterParam = query;
+    [self setDefaultSort];
     
     _start = 0;
     [self requestHotlist];
@@ -971,19 +995,25 @@ static NSString const *rows = @"12";
     NSMutableDictionary *params = [NSMutableDictionary new];
     
     NSString *selectedCategory = [[_selectedCategories valueForKey:@"categoryId"] componentsJoinedByString:@","];
+    NSString *categories;
+    if (![[_detailfilter objectForKey:@"sc"] isEqualToString:@""]) {
+        categories = [NSString stringWithFormat:@"%@,%@",selectedCategory,[_detailfilter objectForKey:@"sc"]?:@""];
+    } else {
+        categories = selectedCategory;
+    }
     
     NSDictionary* param = @{
                             @"device":@"ios",
                             @"q" : [_detailfilter objectForKey:kTKPDHOME_DATAQUERYKEY]?:[_data objectForKey:kTKPDHOME_DATAQUERYKEY],
                             @"start" : @(_start),
                             @"rows" : rows,
-                            @"sc" : selectedCategory?:@"0",
                             @"hashtag" : [self isInitialRequest] ? @"true" : @"",
                             @"breadcrumb" :  [self isInitialRequest] ? @"true" : @"",
                             };
     
     [params addEntriesFromDictionary:param];
     [params addEntriesFromDictionary:_selectedFilterParam];
+    [params setObject:categories forKey:@"sc"];
     [params addEntriesFromDictionary:_selectedSortParam];
     
     return [params copy];
@@ -995,12 +1025,12 @@ static NSString const *rows = @"12";
                             @"q" : [_detailfilter objectForKey:kTKPDHOME_DATAQUERYKEY]?:[_data objectForKey:kTKPDHOME_DATAQUERYKEY],
                             @"start" : @(_start),
                             @"rows" : rows,
-                            @"ob" : [_detailfilter objectForKey:kTKPDHOME_APIORDERBYKEY]?:@"",
-                            @"sc" : [_detailfilter objectForKey:kTKPDHOME_APIDEPARTMENTIDKEY]?:@"",
-                            @"floc" :[_detailfilter objectForKey:kTKPDHOME_APILOCATIONKEY]?:@"",
-                            @"fshop" :[_detailfilter objectForKey:kTKPDHOME_APISHOPTYPEKEY]?:@"",
-                            @"pmin" :[_detailfilter objectForKey:kTKPDHOME_APIPRICEMINKEY]?:@"",
-                            @"pmax" :[_detailfilter objectForKey:kTKPDHOME_APIPRICEMAXKEY]?:@"",
+                            @"ob" : [_detailfilter objectForKey:@"ob"]?:@"",
+                            @"sc" : [_detailfilter objectForKey:@"sc"]?:@"",
+                            @"floc" :[_detailfilter objectForKey:@"floc"]?:@"",
+                            @"fshop" :[_detailfilter objectForKey:@"type"]?:@"",
+                            @"pmin" :[_detailfilter objectForKey:@"pmin"]?:@"",
+                            @"pmax" :[_detailfilter objectForKey:@"pmax"]?:@"",
                             @"hashtag" : [self isInitialRequest] ? @"true" : @"",
                             @"breadcrumb" :  [self isInitialRequest] ? @"true" : @"",
                             };

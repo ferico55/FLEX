@@ -560,11 +560,11 @@ static NSString const *rows = @"12";
     [self loadData];
 }
 - (BOOL) isUsingAnyFilter{
-    BOOL isUsingLocationFilter = [_params objectForKey:@"location"] != nil && ![[_params objectForKey:@"location"] isEqualToString:@""];
-    BOOL isUsingDepFilter = [_params objectForKey:@"department_id"] != nil && ![[_params objectForKey:@"department_id"] isEqualToString:@""];
-    BOOL isUsingPriceMinFilter = [_params objectForKey:@"price_min"] != nil && ![_params objectForKey:@"price_min"] == 0;
-    BOOL isUsingPriceMaxFilter = [_params objectForKey:@"price_max"] != nil && ![_params objectForKey:@"price_max"] == 0;
-    BOOL isUsingShopTypeFilter = [_params objectForKey:@"shop_type"] != nil && ![_params objectForKey:@"shop_type"] == 0;
+    BOOL isUsingLocationFilter = [_params objectForKey:@"floc"] != nil && ![[_params objectForKey:@"floc"] isEqualToString:@""];
+    BOOL isUsingDepFilter = [_params objectForKey:@"sc"] != nil && ![[_params objectForKey:@"sc"] isEqualToString:@""];
+    BOOL isUsingPriceMinFilter = [_params objectForKey:@"pmin"] != nil && ![_params objectForKey:@"pmin"] == 0;
+    BOOL isUsingPriceMaxFilter = [_params objectForKey:@"pmax"] != nil && ![_params objectForKey:@"pmax"] == 0;
+    BOOL isUsingShopTypeFilter = [_params objectForKey:@"type"] != nil && ![_params objectForKey:@"type"] == 0;
     
     return  (isUsingDepFilter || isUsingLocationFilter || isUsingPriceMaxFilter || isUsingPriceMinFilter || isUsingShopTypeFilter);
 }
