@@ -97,13 +97,8 @@
     _emailTextField.text = _userProfile.email;
     _emailTextField.enabled = NO;
     _emailTextField.layer.opacity = 0.7;
-    
-    NSString *birthday = @"";
-    if (_facebookUserData) {
-        birthday = _userProfile.birthDay;
-    }
-    
-    _dateOfBirthTextField.text = birthday;
+
+    _dateOfBirthTextField.text = _userProfile.birthDay;
     _dateOfBirthTextField.delegate = self;
     
     _activityIndicatorView.hidden = YES;
@@ -123,9 +118,9 @@
 - (void)setFacebookUserData:(NSDictionary *)facebookUserData {
     _facebookUserData = facebookUserData;
     _userProfile = [CreatePasswordUserProfile new];
-    _userProfile.email = _facebookUserData[@"email"];
-    _userProfile.name = _facebookUserData[@"name"];
-    _userProfile.birthDay = _facebookUserData[@"birthday"];
+    _userProfile.email = facebookUserData[@"email"];
+    _userProfile.name = facebookUserData[@"name"];
+    _userProfile.birthDay = facebookUserData[@"birthday"];
     _userProfile.gender = [self getGenderFromFacebookUserData:facebookUserData];
 }
 
