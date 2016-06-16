@@ -117,11 +117,7 @@
 
 - (void)setFacebookUserData:(NSDictionary *)facebookUserData {
     _facebookUserData = facebookUserData;
-    _userProfile = [CreatePasswordUserProfile new];
-    _userProfile.email = facebookUserData[@"email"];
-    _userProfile.name = facebookUserData[@"name"];
-    _userProfile.birthDay = facebookUserData[@"birthday"];
-    _userProfile.gender = [self getGenderFromFacebookUserData:facebookUserData];
+    _userProfile = [CreatePasswordUserProfile fromFacebook:facebookUserData];
 }
 
 - (void)setGidGoogleUser:(GIDGoogleUser *)gidGoogleUser {
