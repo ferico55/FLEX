@@ -12,4 +12,5 @@ class CreatePasswordUserProfile: NSObject {
     var name: String?
     var email: String?
     var birthDay: String?
+    var gender: String?
 }
