@@ -12,12 +12,15 @@
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import <GoogleSignIn/GoogleSignIn.h>
 
+@class CreatePasswordUserProfile;
+
 @interface CreatePasswordViewController : UIViewController
 
 @property (strong, nonatomic) NSDictionary *facebookUserData;
 @property GIDGoogleUser *gidGoogleUser;
 @property (strong, nonatomic) NSString *email;
 @property (strong, nonatomic) NSString *fullName;
+@property (strong, nonatomic) CreatePasswordUserProfile *userProfile;
 
 @property (copy) void(^onPasswordCreated)();
 

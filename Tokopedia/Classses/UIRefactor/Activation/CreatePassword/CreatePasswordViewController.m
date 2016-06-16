@@ -19,6 +19,7 @@
 #import "Localytics.h"
 #import "AppsFlyerTracker.h"
 #import "ActivationRequest.h"
+#import "Tokopedia-Swift.h"
 
 @interface CreatePasswordViewController ()
 <
@@ -95,7 +96,7 @@
     if (_fullName) {
         name = _fullName;
     } else if (_facebookUserData) {
-        name = [_facebookUserData objectForKey:@"name"];
+        name = _userProfile.name;
     } else if (_gidGoogleUser) {
         name = _gidGoogleUser.profile.name;
     }
@@ -106,7 +107,7 @@
     if (_email) {
         email = _email;
     } else if (_facebookUserData) {
-        email = [_facebookUserData objectForKey:@"email"];
+        email = _userProfile.email;
     } else if (_gidGoogleUser) {
         email = _gidGoogleUser.profile.email;
     }
@@ -134,6 +135,13 @@
              object:nil];
     
     _activationRequest = [ActivationRequest new];
+}
+
+- (void)setFacebookUserData:(NSDictionary *)facebookUserData {
+    _facebookUserData = facebookUserData;
+    _userProfile = [CreatePasswordUserProfile new];
+    _userProfile.email = _facebookUserData[@"email"];
+    _userProfile.name = _facebookUserData[@"name"];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
