@@ -13,8 +13,6 @@
 
 @implementation GeneralTalkCommentCell
 
-static CGFloat messageTextSize = 14.0;
-
 - (void)awakeFromNib {
     self.user_image.layer.cornerRadius = self.user_image.frame.size.width/2;
     [self.user_name setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"GothamMedium" size:14.0f]];
@@ -39,20 +37,6 @@ static CGFloat messageTextSize = 14.0;
         }
     }
     return nil;
-}
-
-+ (CGSize)messageSize:(NSString*)message {
-    return [message sizeWithFont:[UIFont systemFontOfSize:messageTextSize]
-               constrainedToSize:CGSizeMake([self maxTextWidth], CGFLOAT_MAX)
-                   lineBreakMode:NSLineBreakByWordWrapping];
-}
-
-+ (CGFloat)maxTextWidth {
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        return 220.0f;
-    } else {
-        return 400.0f;
-    }
 }
 
 - (void)layoutSubviews {
@@ -127,6 +111,8 @@ static CGFloat messageTextSize = 14.0;
     user_image.image = nil;
 
     [user_image setImageWithURL:url placeholderImage:[UIImage imageNamed:@"default-boy.png"]];
+
+    [self.user_name setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"GothamMedium" size:14.0f]];
 }
 
 

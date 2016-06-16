@@ -34,13 +34,19 @@
 #import "Localytics.h"
 #import "Tokopedia-Swift.h"
 
-static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn34n.apps.googleusercontent.com";
+#import <GoogleSignIn/GoogleSignIn.h>
+
+#import "ActivationRequest.h"
+
+static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jdpts.apps.googleusercontent.com";
 
 @interface LoginViewController ()
 <
     FBSDKLoginButtonDelegate,
     LoginViewDelegate,
-    CreatePasswordDelegate
+    CreatePasswordDelegate,
+    GIDSignInUIDelegate,
+    GIDSignInDelegate
 >
 {
     UITextField *_activetextfield;
@@ -66,7 +72,10 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
     
     GPPSignIn *_signIn;
     GTLPlusPerson *_googleUser;
+    GIDGoogleUser *_gidGoogleUser;
     UserAuthentificationManager *_userManager;
+    
+    ActivationRequest *_activationRequest;
 }
 
 @property (strong, nonatomic) IBOutlet TextField *emailTextField;
@@ -79,7 +88,10 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
 @property (weak, nonatomic) IBOutlet UIImageView *screenLogin;
 @property (weak, nonatomic) IBOutlet UIButton *forgetPasswordButton;
 
-@property (retain, nonatomic) IBOutlet GPPSignInButton *googleSignInButton;
+//@property (retain, nonatomic) IBOutlet GPPSignInButton *googleSignInButton;
+//@property (strong, nonatomic) IBOutlet GIDSignInButton *googleSignInButton;
+@property (strong, nonatomic) IBOutlet UIView *googleSignInButton;
+@property (strong, nonatomic) IBOutlet UILabel *signInLabel;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *formViewMarginTopConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *formViewWidthConstraint;
@@ -158,7 +170,11 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
     _signIn.delegate = self;
     [_signIn trySilentAuthentication];
     
-    [self.googleSignInButton setStyle:kGPPSignInButtonStyleStandard];
+    _activationRequest = [ActivationRequest new];
+    
+    googleSignInButton.layer.shadowOffset = CGSizeMake(1, 1);
+    
+//    [self.googleSignInButton setStyle:kGIDSignInButtonStyleStandard];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -177,6 +193,7 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
     _passwordTextField.isBottomRoundCorner = YES;
     
     FBSDKLoginManager *loginManager = [[FBSDKLoginManager alloc] init];
+    loginManager.loginBehavior = FBSDKLoginBehaviorNative;
     [loginManager logOut];
     [FBSDKAccessToken setCurrentAccessToken:nil];
     
@@ -190,6 +207,18 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
                                              selector:@selector(updateFormViewAppearance)
                                                  name:kTKPDForceUpdateFacebookButton
                                                object:nil];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    GIDSignIn *signIn = [GIDSignIn sharedInstance];
+    signIn.shouldFetchBasicProfile = YES;
+    signIn.clientID = kClientId;
+    signIn.scopes = @[ @"profile", @"email" ];
+    signIn.delegate = self;
+    signIn.uiDelegate = self;
+    signIn.allowsSignInWithWebView = YES;
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -282,6 +311,12 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
                 break;
         }
         
+    } else if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
+        UITapGestureRecognizer *gesture = (UITapGestureRecognizer *)sender;
+        if (gesture.view.tag == 12) {
+            _signInLabel.highlighted = YES;
+            [[GIDSignIn sharedInstance] signIn];
+        }        
     }
 }
 #pragma mark - Memory Management
@@ -362,7 +397,7 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
                                                         kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY   : kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY,
                                                         kTKPDLOGIN_API_MSISDN_SHOW_DIALOG_KEY   : kTKPDLOGIN_API_MSISDN_SHOW_DIALOG_KEY,
                                                         kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY : kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY,
-                                                         kTKPDLOGIN_API_HAS_TERM_KEY : kTKPDLOGIN_API_HAS_TERM_KEY
+                                                        kTKPDLOGIN_API_HAS_TERM_KEY : kTKPDLOGIN_API_HAS_TERM_KEY
                                                         }];
     
     RKObjectMapping *userReputationMapping = [RKObjectMapping mappingForClass:[ReputationDetail class]];
@@ -502,7 +537,7 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
     NSString* securityQuestionUUID = [[[TKPDSecureStorage standardKeyChains] keychainDictionary] objectForKey:@"securityQuestionUUID"];
     
     NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithDictionary:data];
-    [parameters setObject:kTKPDREGISTER_APIDOLOGINKEY forKey:kTKPDREGISTER_APIACTIONKEY];
+//    [parameters setObject:kTKPDREGISTER_APIDOLOGINKEY forKey:kTKPDREGISTER_APIACTIONKEY];
     [parameters setObject:(securityQuestionUUID.length ? securityQuestionUUID : @"") forKey:@"uuid"];
     
     
@@ -560,7 +595,7 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
                 [self setLoginIdentity];
                 if (_facebookUserData) {
                     [secureStorage setKeychainWithValue:([_facebookUserData objectForKey:@"email"]?:@"") withKey:kTKPD_USEREMAIL];
-                } else if (_googleUser) {
+                } else if (_gidGoogleUser) {
                     [secureStorage setKeychainWithValue:(_signIn.userEmail?:@"") withKey:kTKPD_USEREMAIL];
                 }
             }
@@ -653,13 +688,13 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
             controller.delegate = self;
             if (_facebookUserData) {
                 controller.facebookUserData = _facebookUserData;
-            } else if (_googleUser) {
-                controller.googleUser = _googleUser;
-                NSString *fullName;
-                if (_googleUser.name.givenName.length > 0) {
-                    fullName = [_googleUser.name.givenName stringByAppendingFormat:@" %@", _googleUser.name.familyName];
-                }
-                controller.fullName = fullName;
+            } else if (_gidGoogleUser) {
+                controller.gidGoogleUser = _gidGoogleUser;
+//                NSString *fullName;
+//                if (_googleUser.name.givenName.length > 0) {
+//                    fullName = [_googleUser.name.givenName stringByAppendingFormat:@" %@", _googleUser.name.familyName];
+//                }
+                controller.fullName = _gidGoogleUser.profile.name;
                 controller.email = _signIn.authentication.userEmail;
             }
             
@@ -904,7 +939,7 @@ static NSString * const kClientId = @"692092518182-bnp4vfc3cbhktuqskok21sgenq0pn
 
 #pragma mark - Facebook login delegate
 
-- (void)  loginButton:(FBSDKLoginButton *)loginButton
+- (void) loginButton:(FBSDKLoginButton *)loginButton
 didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                 error:(NSError *)error {
     if (error) {
@@ -951,6 +986,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
             kTKPDLOGIN_API_BIRTHDAY_KEY     : birthday,
             kTKPDLOGIN_API_GENDER_KEY       : gender,
             kTKPDLOGIN_API_FB_TOKEN_KEY     : accessToken.tokenString?:@"",
+            @"action" : @"do_login"
         };
 
         [self requestThirdAppUser:parameters];
@@ -1114,8 +1150,9 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
         self.formViewMarginTopConstraint.constant = 280;
         self.formViewWidthConstraint.constant = 500;
         constant =  (self.formViewWidthConstraint.constant / 2) - 10;
-        [self.googleSignInButton setStyle:kGPPSignInButtonStyleWide];
+//        [self.googleSignInButton setStyle:kGIDSignInButtonStyleStandard];
         facebookButtonTitle = @"Sign in with Facebook";
+        _signInLabel.text = @"Sign in with Google";
         self.facebookButtonTopConstraint.constant = 30;
         self.googleButtonTopConstraint.constant = 29;
     }
@@ -1136,6 +1173,103 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
     [self.googleSignInButton layoutIfNeeded];
     
     [self.view layoutSubviews];
+}
+
+#pragma mark - Google Sign In Delegate
+- (void)signIn:(GIDSignIn *)signIn didSignInForUser:(GIDGoogleUser *)user withError:(NSError *)error {
+    if (user) {
+        _loadingView.hidden = NO;
+        _emailTextField.hidden = YES;
+        _passwordTextField.hidden = YES;
+        _loginButton.hidden = YES;
+        _forgetPasswordButton.hidden = YES;
+        _facebookLoginButton.hidden = YES;
+        self.googleSignInButton.hidden = YES;
+        [_activityIndicator startAnimating];
+        
+        _gidGoogleUser = user;
+        
+        [self requestLoginGoogleWithUser:user];
+    }
+}
+
+- (void)signIn:(GIDSignIn *)signIn didDisconnectWithUser:(GIDGoogleUser *)user withError:(NSError *)error {
+    
+}
+
+#pragma mark - Activation Request
+- (void)requestLoginGoogleWithUser:(GIDGoogleUser *)user {
+    NSString *securityQuestionUUID = [[[TKPDSecureStorage standardKeyChains] keychainDictionary] objectForKey:@"securityQuestionUUID"];
+    NSString *uuid = securityQuestionUUID.length ? securityQuestionUUID : @"";
+    
+    [_activationRequest requestDoLoginPlusWithAppType:@"2"
+                                             birthday:@""
+                                             deviceID:@""
+                                                email:user.profile.email
+                                               gender:@""
+                                               userID:user.userID
+                                                 name:user.profile.name
+                                               osType:@""
+                                              picture:@""
+                                                 uuid:uuid
+                                            onSuccess:^(Login *result) {
+                                                _barbuttonsignin.enabled = YES;
+                                                _barbuttonsignin.title = @"Masuk";
+                                                _login = result;
+                                                _isnodata = NO;
+                                                if ([result.result.status isEqualToString:@"2"]) {
+                                                    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+                                                    
+                                                    [[GPPSignIn sharedInstance] signOut];
+                                                    [[GPPSignIn sharedInstance] disconnect];
+                                                    
+                                                    if(result.result.security && ![result.result.security.allow_login isEqualToString:@"1"]) {
+                                                        [self checkSecurityQuestion];
+                                                    } else {
+                                                        [self setLoginIdentity];
+                                                        if (_facebookUserData) {
+                                                            [secureStorage setKeychainWithValue:([_facebookUserData objectForKey:@"email"]?:@"") withKey:kTKPD_USEREMAIL];
+                                                        } else if (_gidGoogleUser) {
+                                                            [secureStorage setKeychainWithValue:(_signIn.userEmail?:@"") withKey:kTKPD_USEREMAIL];
+                                                        }
+                                                    }
+                                                } else if ([result.result.status isEqualToString:@"1"]) {
+                                                    
+                                                    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+                                                    [secureStorage setKeychainWithValue:@(NO) withKey:kTKPD_ISLOGINKEY];
+                                                    [secureStorage setKeychainWithValue:result.result.user_id withKey:kTKPD_TMP_USERIDKEY];
+                                                    
+                                                    [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];
+                                                    
+                                                    CreatePasswordViewController *controller = [CreatePasswordViewController new];
+                                                    controller.login = _login;
+                                                    controller.delegate = self;
+                                                    if (_facebookUserData) {
+                                                        controller.facebookUserData = _facebookUserData;
+                                                    } else if (_gidGoogleUser) {
+                                                        controller.gidGoogleUser = _gidGoogleUser;
+                                                        controller.fullName = _gidGoogleUser.profile.name;
+                                                        controller.email = _signIn.authentication.userEmail;
+                                                    }
+                                                    
+                                                    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
+                                                    navigationController.navigationBar.translucent = NO;
+                                                    
+                                                    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+                                                    
+                                                } else {
+                                                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:result.message_error
+                                                                                                                   delegate:self];
+                                                    [alert show];
+                                                    [self cancelLogin];
+                                                }
+                                            }
+                                            onFailure:^(NSError *error) {
+                                                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Sign in gagal silahkan coba lagi."]
+                                                                                                               delegate:self];
+                                                [alert show];
+                                                [self cancelLogin];
+                                            }];
 }
 
 @end

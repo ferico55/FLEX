@@ -52,6 +52,7 @@
 - (void)requestGetInboxReputationWithNavigation:(NSString*)navigation
                                            page:(NSNumber*)page
                                          filter:(NSString*)filter
+                                        keyword:(NSString*)keyword
                                       onSuccess:(void(^)(InboxReputationResult *inboxReputationResult))successCallback
                                       onFailure:(void(^)(NSError *errorResult))errorCallback;
 

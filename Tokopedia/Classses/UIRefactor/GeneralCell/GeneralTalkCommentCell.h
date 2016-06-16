@@ -44,7 +44,5 @@
 
 + (id)newcell;
 - (IBAction)actionSmile:(id)sender;
-+ (CGSize)messageSize:(NSString*)message;
-+ (CGFloat)maxTextWidth;
 
 @end

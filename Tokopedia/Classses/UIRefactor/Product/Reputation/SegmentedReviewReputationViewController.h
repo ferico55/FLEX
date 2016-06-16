@@ -23,11 +23,13 @@
     IBOutlet UIButton *btnAllReview, *btnBelumDibaca, *btnBelumDireview;
     IBOutlet NSLayoutConstraint *constTopCheckList;
     IBOutlet UILabel *lblDescChangeReviewStyle;
+    IBOutlet UIView *segmentedControlView;
 }
 
 @property (nonatomic, unsafe_unretained) SplitReputationViewController *splitVC;
 @property (nonatomic) int selectedIndex;
 @property (nonatomic) BOOL getDataFromMasterDB;
+@property (nonatomic) BOOL userHasShop;
 
 - (NSString *)getSelectedFilter;
 - (IBAction)actionReview:(id)sender;

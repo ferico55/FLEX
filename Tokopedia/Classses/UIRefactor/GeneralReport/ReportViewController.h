@@ -15,15 +15,11 @@
 - (NSString*)getPath;
 - (UIViewController*)didReceiveViewController;
 
-@optional
-- (void)didFinishWritingReportWithReviewID:(NSString*)reviewID
-                                    talkID:(NSString*)talkID
-                                    shopID:(NSString*)shopID
-                               textMessage:(NSString*)textMessage;
-
 @end
 
 @interface ReportViewController : UIViewController
+
+@property (copy, nonatomic) void (^onFinishWritingReport)(NSString* message);
 
 @property (weak, nonatomic) id<ReportViewControllerDelegate> delegate;
 @property (nonatomic, strong) NSString *strProductID;

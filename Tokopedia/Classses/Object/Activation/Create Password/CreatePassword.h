@@ -16,4 +16,6 @@
 @property (nonatomic, strong) NSString *server_process_time;
 @property (nonatomic, strong) CreatePasswordResult *result;
 
++ (RKObjectMapping *)mapping;
+
 @end

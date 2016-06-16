@@ -21,13 +21,11 @@
 
 #import "ReportViewController.h"
 #import "NavigateViewController.h"
-#import "ShopBadgeLevel.h"
 #import "SmileyAndMedal.h"
+#import "TalkList.h"
 #import "stringrestkit.h"
 #import "string_inbox_talk.h"
 
-#import "NavigationHelper.h"
-#import "ShopBadgeLevel.h"
 #import <UITableView+FDTemplateLayoutCell/UITableView+FDTemplateLayoutCell.h>
 
 @interface ProductTalkDetailViewController ()
@@ -37,7 +35,6 @@
     UIScrollViewDelegate,
     UITextViewDelegate,
     MGSwipeTableCellDelegate,
-    ReportViewControllerDelegate,
     LoginViewDelegate,
     GeneralTalkCommentCellDelegate,
     SmileyDelegate,
@@ -68,6 +65,7 @@
     TokopediaNetworkManager *_talkCommentNetworkManager;
     TokopediaNetworkManager *_sendCommentNetworkManager;
     TokopediaNetworkManager *_deleteCommentNetworkManager;
+    TokopediaNetworkManager *_reportNetworkManager;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
@@ -85,6 +83,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *productNameLabel;
 @property (weak, nonatomic) IBOutlet UIButton *talkCommentButtonLarge;
 
+@property (strong, nonatomic) NSDictionary *data;
+
 @end
 
 @implementation ProductTalkDetailViewController
@@ -100,14 +100,17 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     
-    
+
     
     if (self) {
         _marksOpenedTalksAsRead = NO;
+        _enableDeepNavigation = YES;
         self.title = kTKPDTITLE_TALK;
     }
     
     if(self){
+        _data = [NSMutableDictionary new];
+
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(keyboardWillShow:)
                                                      name:UIKeyboardWillShowNotification
@@ -141,8 +144,16 @@
 
 
     _talkCommentNetworkManager = [TokopediaNetworkManager new];
+    _talkCommentNetworkManager.isUsingHmac = YES;
+
     _sendCommentNetworkManager = [TokopediaNetworkManager new];
+    _sendCommentNetworkManager.isUsingHmac = YES;
+
     _deleteCommentNetworkManager = [TokopediaNetworkManager new];
+    _deleteCommentNetworkManager.isUsingHmac = YES;
+
+    _reportNetworkManager = [TokopediaNetworkManager new];
+    _reportNetworkManager.isUsingHmac = YES;
 
     _list = [NSMutableArray new];
 
@@ -157,11 +168,11 @@
     _auth = [auth mutableCopy];
 
     if(_marksOpenedTalksAsRead) {
-        _urlPath = kTKPDINBOX_TALK_APIPATH;
+        _urlPath = @"/v4/inbox-talk/get_inbox_detail_talk.pl";
         _urlAction = kTKPDDETAIL_APIGETINBOXDETAIL;
         
     } else {
-        _urlPath = kTKPDDETAILTALK_APIPATH;
+        _urlPath = @"/v4/talk/get_comment_by_talk_id.pl";
         _urlAction = kTKPDDETAIL_APIGETCOMMENTBYTALKID;
     }
     
@@ -171,10 +182,7 @@
                                                                          action:nil];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
 
-        // add gesture to product image
-    UITapGestureRecognizer* productGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapProduct)];
-    [_talkProductImage addGestureRecognizer:productGesture];
-    [_talkProductImage setUserInteractionEnabled: [NavigationHelper shouldDoDeepNavigation]];
+    [_talkProductImage setUserInteractionEnabled: _enableDeepNavigation];
 
 
     _talkuserimage.layer.cornerRadius = _talkuserimage.bounds.size.width/2.0f;
@@ -192,10 +200,45 @@
             _talkInputView.hidden = YES;
         }
     }
-    
+
+    _table.tableFooterView = _footer;
+
+    _data = [self generateData];
     [self fetchTalkComments];
+}
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
 
     [self setHeaderData:_data];
+
+    //called to prevent error on iOS 7, haven't found explanation why
+    //if called on iOS 8 or above, this will mess up the layout
+    if (!SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0")) {
+        [self.view layoutIfNeeded];
+    }
+}
+
+- (NSDictionary *)generateData {
+    if (!_talk || !_indexPath) return nil;
+
+    return @{
+            TKPD_TALK_MESSAGE:_talk.talk_message?:@0,
+            TKPD_TALK_USER_IMG:_talk.talk_user_image?:@0,
+            TKPD_TALK_CREATE_TIME:_talk.talk_create_time?:@0,
+            TKPD_TALK_USER_NAME:_talk.talk_user_name?:@0,
+            TKPD_TALK_ID:_talk.talk_id?:@0,
+            TKPD_TALK_USER_ID:[NSString stringWithFormat:@"%zd", _talk.talk_user_id]?:@0,
+            TKPD_TALK_TOTAL_COMMENT : _talk.talk_total_comment?:@0,
+            kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : _talk.talk_product_id?:@0,
+            TKPD_TALK_SHOP_ID:_talk.talk_shop_id?:@0,
+            TKPD_TALK_PRODUCT_IMAGE:_talk.talk_product_image?:@"",
+            TKPD_TALK_PRODUCT_NAME:_talk.talk_product_name?:@0,
+            TKPD_TALK_PRODUCT_STATUS:_talk.talk_product_status?:@0,
+            TKPD_TALK_USER_LABEL:_talk.talk_user_label?:@0,
+            TKPD_TALK_REPUTATION_PERCENTAGE:_talk.talk_user_reputation?:@0,
+            kTKPDDETAIL_DATAINDEXKEY : @(_indexPath.row)?:@0
+    };
 }
 
 #pragma mark - Memory Management
@@ -289,9 +332,19 @@
     [cmPopTitpView presentPointingAtView:button inView:self.view animated:YES];
 }
 
+- (void)resizeHeaderHeightToFitContent {
+    [_header layoutIfNeeded];
+    _talkmessagelabel.preferredMaxLayoutWidth = _talkmessagelabel.frame.size.width;
+    
+    CGFloat height = [_header systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
+    CGRect headerFrame = _header.frame;
+    headerFrame.size.height = height;
+    _header.frame = headerFrame;
+}
+
 -(void)setHeaderData:(NSDictionary*)data
 {
-    if(!data) {
+    if(!data || !data.count) {
         [_talkInputView setHidden:YES];
         [_header setHidden:YES];
         return;
@@ -309,16 +362,10 @@
         }
     }
 
-    _talkmessagelabel.text = data[TKPD_TALK_MESSAGE];
-    [_header layoutIfNeeded];
-
-    CGFloat height = [_header systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
-    CGRect headerFrame = _header.frame;
-    headerFrame.size.height = height;
-    _header.frame = headerFrame;
-
-
     self.table.tableHeaderView = self.header;
+    _talkmessagelabel.text = data[TKPD_TALK_MESSAGE];
+    
+    [self resizeHeaderHeightToFitContent];
 
     _talkcreatetimelabel.text = [data objectForKey:TKPD_TALK_CREATE_TIME];
     
@@ -326,9 +373,7 @@
     [_userButton setText:[data objectForKey:TKPD_TALK_USER_NAME]];
     [_userButton setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"GothamMedium" size:14.0f]];
 
-    UITapGestureRecognizer *tapUser = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapUser)];
-    [_userButton addGestureRecognizer:tapUser];
-    [_userButton setUserInteractionEnabled:YES];
+    [_userButton setUserInteractionEnabled:_enableDeepNavigation];
 
     [_talkCommentButtonLarge setTitle:[NSString stringWithFormat:@"%@ Komentar",[data objectForKey:TKPD_TALK_TOTAL_COMMENT]] forState:UIControlStateNormal];
     
@@ -344,14 +389,13 @@
 
     NSURL *userImageUrl = [NSURL URLWithString:[data objectForKey:TKPD_TALK_USER_IMG]];
     [_talkuserimage setImageWithURL:userImageUrl placeholderImage:[UIImage imageNamed:@"default-boy.png"]];
+    _talkuserimage.userInteractionEnabled = _enableDeepNavigation;
 
     NSURL *productImageUrl = [NSURL URLWithString:[data objectForKey:TKPD_TALK_PRODUCT_IMAGE]];
     [_talkProductImage setImageWithURL:productImageUrl placeholderImage:[UIImage imageNamed:@"default-boy.png"]];
 
     _productNameLabel.text = [_data objectForKey:TKPD_TALK_PRODUCT_NAME];
-    _productNameLabel.userInteractionEnabled = YES;
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapProduct)];
-    [_productNameLabel addGestureRecognizer:tap];
+    _productNameLabel.userInteractionEnabled = _enableDeepNavigation;
 }
 
 #pragma mark - Request and Mapping
@@ -393,8 +437,8 @@
 
 #pragma mark - View Action
 
-- (void)tapProduct {
-    if (![NavigationHelper shouldDoDeepNavigation]) {
+- (IBAction)tapProduct {
+    if (!_enableDeepNavigation) {
         return;
     }
     
@@ -415,8 +459,8 @@
                             kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : [_data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTIDKEY]
                             };
 
-    [_sendCommentNetworkManager requestWithBaseUrl:kTkpdBaseURLString
-                                              path:kTKPDACTIONTALK_APIPATH
+    [_sendCommentNetworkManager requestWithBaseUrl:[NSString v4Url]
+                                              path:@"/v4/action/talk/add_comment_talk.pl"
                                             method:RKRequestMethodPOST
                                          parameter:param
                                            mapping:[ProductTalkCommentAction mapping]
@@ -435,7 +479,7 @@
                                          }];
 }
 
-- (void)tapUser {
+- (IBAction)tapUser {
     NSString *userId = [_data objectForKey:@"user_id"];
     if(!userId) {
         userId = [_data objectForKey:@"talk_user_id"];
@@ -645,6 +689,7 @@
 -(NSArray*) swipeTableCell:(MGSwipeTableCell*) cell swipeButtonsForDirection:(MGSwipeDirection)direction
              swipeSettings:(MGSwipeSettings*) swipeSettings expansionSettings:(MGSwipeExpansionSettings*) expansionSettings
 {
+    __weak __typeof(self) weakSelf = self;
     
     swipeSettings.transition = MGSwipeTransitionStatic;
     expansionSettings.buttonIndex = -1; //-1 not expand, 0 expand
@@ -667,14 +712,18 @@
             MGSwipeButton * report = [MGSwipeButton buttonWithTitle:@"Laporkan" backgroundColor:[UIColor colorWithRed:0 green:122/255.0 blue:255.05 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
                 _reportAction = @"report_comment_talk";
                 ReportViewController *reportController = [ReportViewController new];
-                reportController.delegate = self;
-                [self.navigationController pushViewController:reportController animated:YES];
+
+                reportController.onFinishWritingReport = ^(NSString *message) {
+                    [weakSelf reportCommentWithMessage:message];
+                };
+
+                [weakSelf.navigationController pushViewController:reportController animated:YES];
                 return YES;
             }];
             return @[report];
         } else {
             MGSwipeButton * trash = [MGSwipeButton buttonWithTitle:@"Hapus" backgroundColor:[UIColor colorWithRed:255/255 green:59/255.0 blue:48/255.0 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
-                [self deleteCommentTalkAtIndexPath:indexPath];
+                [weakSelf deleteCommentTalkAtIndexPath:indexPath];
                 return YES;
             }];
             
@@ -761,8 +810,8 @@
             @"talk_id" : [_data objectForKey:@"talk_id"]
     };
 
-    [_deleteCommentNetworkManager requestWithBaseUrl:kTkpdBaseURLString
-                                                path:kTKPDACTIONTALK_APIPATH
+    [_deleteCommentNetworkManager requestWithBaseUrl:[NSString v4Url]
+                                                path:@"/v4/action/talk/delete_comment_talk.pl"
                                               method:RKRequestMethodPOST
                                            parameter:param
                                              mapping:[GeneralAction mapping]
@@ -800,7 +849,7 @@
         [alert show];
     }
     
-    if ([generalaction.result.is_success isEqualToString:@"1"]) {
+    if ([generalaction.data.is_success isEqualToString:@"1"]) {
         NSArray *array =  [[NSArray alloc] initWithObjects:CStringBerhasilMenghapusKomentarDiskusi, nil];
         StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:array delegate:self];
         [stickyAlertView show];
@@ -831,38 +880,65 @@
 
 
 #pragma mark - Report Delegate
-- (NSDictionary *)getParameter {
-    return @{
-             @"action" : _reportAction,
-             @"talk_id" : [_data objectForKey:kTKPDTALKCOMMENT_TALKID]?:@(0),
-             @"talk_comment_id" : [_datainput objectForKey:@"comment_id"]?:@(0),
-             @"product_id" : [_data objectForKey:@"product_id"],
-             };
-}
 
-- (NSString *)getPath {
-    return @"action/talk.pl";
-}
+- (void)reportCommentWithMessage:(NSString *)textMessage {
 
-- (UIViewController *)didReceiveViewController {
-    return self;
+    NSDictionary *parameter = @{
+            @"action" : _reportAction,
+            @"talk_id" : [_data objectForKey:kTKPDTALKCOMMENT_TALKID]?:@(0),
+            @"talk_comment_id" : [_datainput objectForKey:@"comment_id"]?:@(0),
+            @"product_id" : [_data objectForKey:@"product_id"],
+            @"text_message": textMessage
+    };
+
+    [_reportNetworkManager requestWithBaseUrl:[NSString v4Url]
+                                         path:@"/v4/action/talk/report_comment_talk.pl"
+                                       method:RKRequestMethodPOST
+                                    parameter:parameter
+                                      mapping:[GeneralAction mapping]
+                                    onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                        [self.navigationController popToViewController:self animated:YES];
+
+                                        // need to do dispatch because this view controller's window is nil until the report view controller
+                                        // is popped from navigation stack
+                                        dispatch_async(dispatch_get_main_queue(), ^{
+                                            GeneralAction *action = successResult.dictionary[@""];
+                                            if (action.data.is_success.boolValue) {
+                                                StickyAlertView *alertView = [[StickyAlertView alloc] initWithSuccessMessages:@[SUCCESS_REPORT_TALK]
+                                                                                                                     delegate:self];
+
+                                                [alertView show];
+                                            } else {
+                                                StickyAlertView *alertView = [[StickyAlertView alloc] initWithErrorMessages:action.message_error
+                                                                                                                   delegate:self];
+
+                                                [alertView show];
+                                            }
+                                        });
+
+                                    }
+                                    onFailure:^(NSError *errorResult) {
+
+                                    }];
 }
 
 #pragma mark - LoginView Delegate
+
 - (void)redirectViewController:(id)viewController {
 
 }
-
 #pragma mark - Notification Delegate
+
 - (void)userDidLogin:(NSNotification*)notification {
     _userManager = [UserAuthentificationManager new];
 }
 
 - (void)userDidLogout:(NSNotification*)notification {
-    _userManager = [UserAuthentificationManager new];    
+    _userManager = [UserAuthentificationManager new];
 }
-
 #pragma mark - CMPopTipView Delegate
+
+
 - (void)dismissAllPopTipViews
 {
     [cmPopTitpView dismissAnimated:YES];
@@ -874,9 +950,8 @@
 {
     [self dismissAllPopTipViews];
 }
-
-
 #pragma mark - Smiley Delegate
+
 - (void)actionVote:(id)sender {
     [self dismissAllPopTipViews];
 }
@@ -884,7 +959,7 @@
 -(void)replaceDataSelected:(NSDictionary *)data
 {
     _data = data;
-    
+
     if (data) {
         _page = 1;
         [_list removeAllObjects];
@@ -896,6 +971,8 @@
 }
 
 - (void)fetchTalkComments {
+    [_act startAnimating];
+
     NSDictionary* param = @{
             kTKPDDETAIL_APIACTIONKEY : _urlAction ?:@"",
             TKPD_TALK_ID : [_data objectForKey:kTKPDTALKCOMMENT_TALKID]?:@(0),
@@ -903,9 +980,9 @@
             kTKPDDETAIL_APIPAGEKEY : @(_page)
     };
 
-    [_talkCommentNetworkManager requestWithBaseUrl:kTkpdBaseURLString
+    [_talkCommentNetworkManager requestWithBaseUrl:[NSString v4Url]
                                               path:_urlPath
-                                            method:RKRequestMethodPOST
+                                            method:RKRequestMethodGET
                                          parameter:param
                                            mapping:[TalkComment mapping]
                                          onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
@@ -931,6 +1008,31 @@
     NSString *text = [_growingtextview.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 
     _sendButton.enabled = text.length > 5;
+}
+
+- (void)setTalk:(TalkList *)list {
+    _talk = list;
+
+    NSDictionary *data = @{
+            TKPD_TALK_MESSAGE:list.talk_message?:@0,
+            TKPD_TALK_USER_IMG:list.talk_user_image?:@0,
+            TKPD_TALK_CREATE_TIME:list.talk_create_time?:@0,
+            TKPD_TALK_USER_NAME:list.talk_user_name?:@0,
+            TKPD_TALK_ID:list.talk_id?:@0,
+            TKPD_TALK_USER_ID:[NSString stringWithFormat:@"%zd", list.talk_user_id]?:@0,
+            TKPD_TALK_TOTAL_COMMENT : list.talk_total_comment?:@0,
+            kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : list.talk_product_id?:@0,
+            TKPD_TALK_SHOP_ID:list.talk_shop_id?:@0,
+            TKPD_TALK_PRODUCT_IMAGE:list.talk_product_image?:@"",
+            TKPD_TALK_PRODUCT_NAME:list.talk_product_name?:@0,
+            TKPD_TALK_PRODUCT_STATUS:list.talk_product_status?:@0,
+            TKPD_TALK_USER_LABEL:list.talk_user_label?:@0,
+            TKPD_TALK_REPUTATION_PERCENTAGE:list.talk_user_reputation?:@0,
+    };
+}
+
+- (void)setIndexPath:(NSIndexPath *)indexPath {
+    _indexPath = indexPath;
 }
 
 @end

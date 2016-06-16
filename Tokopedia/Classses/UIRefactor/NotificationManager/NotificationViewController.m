@@ -33,7 +33,9 @@
 #import "InboxTicketSplitViewController.h"
 
 
-@interface NotificationViewController () <NewOrderDelegate, ShipmentConfirmationDelegate, SplitReputationVcProtocol>
+@interface NotificationViewController () <NewOrderDelegate, ShipmentConfirmationDelegate, SplitReputationVcProtocol> {
+    NSDictionary *_auth;
+}
 
 @property (weak, nonatomic) IBOutlet UILabel *messageCountLabel;
 @property (weak, nonatomic) IBOutlet UILabel *discussionCountLabel;
@@ -62,6 +64,7 @@
 @property (weak, nonatomic) IBOutlet UITableViewCell *receiveConfirmation;
 
 
+
 @end
 
 @implementation NotificationViewController
@@ -71,6 +74,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+    _auth = [secureStorage keychainDictionary];
+    _auth = [_auth mutableCopy];
     
     // Inbox section
     
@@ -400,6 +407,7 @@
                 } else {
                     SegmentedReviewReputationViewController *segmentedReputationViewController = [SegmentedReviewReputationViewController new];
 	                segmentedReputationViewController.hidesBottomBarWhenPushed = YES;
+                    segmentedReputationViewController.userHasShop = ([_auth objectForKey:@"shop_id"] && [[_auth objectForKey:@"shop_id"] integerValue] > 0);
     	            [self.delegate pushViewController:segmentedReputationViewController];
                 }
                 break;

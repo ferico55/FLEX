@@ -30,6 +30,8 @@
 #import "URLCacheController.h"
 #import "NoResultReusableView.h"
 #import "TAGDataLayer.h"
+#import "Tokopedia-Swift.h"
+#import "NavigationHelper.h"
 
 @interface InboxTalkViewController () <UITableViewDataSource, UITableViewDelegate, TKPDTabViewDelegate, UIAlertViewDelegate, TalkCellDelegate>
 
@@ -73,7 +75,6 @@
 - (void)initNotification {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateTotalComment:) name:@"UpdateTotalComment" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadDataSource:) name:TKPDTabNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateDeletedTalk:) name:@"TokopediaDeleteInboxTalk" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUnreadTalk:) name:@"updateUnreadTalk" object:nil];
 }
 
@@ -90,10 +91,6 @@
     [super viewDidLoad];
     
     [self initNotification];
-    
-    // allow table selection only on iPad through didSelectRowAtIndexPath
-    // on iPhone, each cell handles its own events currently
-    _table.allowsSelection = UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad;
     
     _page = 1;
     isFirstShow = YES;
@@ -120,6 +117,7 @@
     
     //load data
     _networkManager = [TokopediaNetworkManager new];
+    _networkManager.isUsingHmac = YES;
     [self fetchInboxTalkList];
 }
 
@@ -144,16 +142,9 @@
     
     TalkCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TalkCellIdentifier" forIndexPath:indexPath];
     cell.delegate = self;
-    cell.selectedTalkShopID = list.talk_shop_id;
-    cell.selectedTalkUserID = [NSString stringWithFormat:@"%ld", (long)list.talk_user_id];
-    cell.selectedTalkProductID = list.talk_product_id;
-    cell.selectedTalkReputation = list.talk_user_reputation;
-    cell.detailViewController = _detailViewController;
-    cell.marksOpenedTalkAsRead = YES;
-    cell.isSplitScreen = YES;
-
+    cell.enableDeepNavigation = NO;
     
-    [cell setTalkViewModel:list.viewModel];
+    cell.talk = list;
     
     //next page if already last cell
     NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1;
@@ -167,42 +158,31 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [self showTalkCommentsAtIndexPath:indexPath];
+}
+
+- (void)showTalkCommentsAtIndexPath:(NSIndexPath *)indexPath {
     TalkList* list = _talkList[indexPath.row];
-    
-    NSDictionary *data = @{
-                           TKPD_TALK_MESSAGE:list.talk_message?:@0,
-                           TKPD_TALK_USER_IMG:list.talk_user_image?:@0,
-                           TKPD_TALK_CREATE_TIME:list.talk_create_time?:@0,
-                           TKPD_TALK_USER_NAME:list.talk_user_name?:@0,
-                           TKPD_TALK_ID:list.talk_id?:@0,
-                           TKPD_TALK_USER_ID:[NSString stringWithFormat:@"%zd", list.talk_user_id]?:@0,
-                           TKPD_TALK_TOTAL_COMMENT : list.talk_total_comment?:@0,
-                           kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : list.talk_product_id?:@0,
-                           TKPD_TALK_SHOP_ID:list.talk_shop_id?:@0,
-                           TKPD_TALK_PRODUCT_IMAGE:list.talk_product_image?:@"",
-                           kTKPDDETAIL_DATAINDEXKEY : @(indexPath.row)?:@0,
-                           TKPD_TALK_PRODUCT_NAME:list.talk_product_name?:@0,
-                           TKPD_TALK_PRODUCT_STATUS:list.talk_product_status?:@0,
-                           TKPD_TALK_USER_LABEL:list.talk_user_label?:@0,
-                           TKPD_TALK_REPUTATION_PERCENTAGE:list.talk_user_reputation?:@0,
-                           };
-    
+
     NSDictionary *userInfo = @{kTKPDDETAIL_DATAINDEXKEY:@(indexPath.row)};
-    
+
     [[NSNotificationCenter defaultCenter] postNotificationName:@"updateUnreadTalk" object:nil userInfo:userInfo];
-    
+
+    //TODO remove this delegate stuff
     UIViewController* containerViewController = (UIViewController*)_delegate;
-    UIViewController* master = containerViewController.splitViewController.viewControllers.firstObject;
-    
+
     ProductTalkDetailViewController* detailVC = [[ProductTalkDetailViewController alloc] initByMarkingOpenedTalkAsRead:YES];
-    detailVC.data = data;
-    
-    UINavigationController *detailNav = [[UINavigationController alloc]initWithRootViewController:detailVC];
-    detailNav.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
-    detailNav.navigationBar.translucent = NO;
-    detailNav.navigationBar.tintColor = [UIColor whiteColor];
-    
-    containerViewController.splitViewController.viewControllers = @[master, detailNav];
+    detailVC.talk = list;
+    detailVC.indexPath = indexPath;
+    detailVC.enableDeepNavigation = [NavigationHelper shouldDoDeepNavigation];
+
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        UINavigationController *detailNav = [[UINavigationController alloc]initWithRootViewController:detailVC];
+        detailNav.navigationBar.translucent = NO;
+        [containerViewController.splitViewController replaceDetailViewController:detailNav];
+    } else {
+        [containerViewController.navigationController pushViewController:detailVC animated:YES];
+    }
 }
 
 #pragma mark - Talk Cell Delegate
@@ -210,18 +190,8 @@
     return self.table;
 }
 
-- (NSMutableArray *)getTalkList {
-    return _talkList;
-}
-
 - (id)getNavigationController:(UITableViewCell *)cell {
     return _delegate;
-}
-
-- (void)updateTalkStatusAtIndexPath:(NSIndexPath *)indexPath following:(BOOL)following {
-    TalkList *talk = _talkList[indexPath.row];
-    talk.talk_follow_status = following;
-    talk.viewModel = nil;
 }
 
 - (void)tapToDeleteTalk:(UITableViewCell *)cell {
@@ -243,9 +213,9 @@
 - (void)fetchInboxTalkList {
     [self showLoadingIndicator];
 
-    [_networkManager requestWithBaseUrl:kTkpdBaseURLString
-                                   path:KTKPDMESSAGE_TALK
-                                 method:RKRequestMethodPOST
+    [_networkManager requestWithBaseUrl:[NSString v4Url]
+                                   path:@"/v4/inbox-talk/get_inbox_talk.pl"
+                                 method:RKRequestMethodGET
                               parameter:[self requestParameter]
                                 mapping:[Talk mapping]
                               onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
@@ -271,13 +241,6 @@
         list.viewModel = nil;
         [_table reloadData];
     }
-}
-
-- (void)updateDeletedTalk:(NSNotification*)notification {
-    NSDictionary *userInfo = notification.userInfo;
-    NSInteger index = [[userInfo objectForKey:@"index"] integerValue];
-    [_talkList removeObjectAtIndex:index];
-    [_table reloadData];
 }
 
 - (void)updateUnreadTalk : (NSNotification*)notification {
@@ -345,7 +308,7 @@
                             kTKPDHOME_APIPAGEKEY:@(_page)?:@1,
                             KTKPDMESSAGE_FILTERKEY:_readStatus?_readStatus:@"",
                             KTKPDMESSAGE_KEYWORDKEY:_keyword?_keyword:@"",
-                            KTKPDMESSAGE_NAVKEY:nav
+                            KTKPDMESSAGE_NAVKEY:nav,
                             };
     return param;
 }
@@ -384,8 +347,11 @@
                 isFirstShow = NO;
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    TalkCell* cell = [_table cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-                    [cell tapToDetailTalk:cell];
+                    NSIndexPath* indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+                    [_table selectRowAtIndexPath:indexPath
+                                        animated:NO
+                                  scrollPosition:UITableViewScrollPositionNone];
+                    [self showTalkCommentsAtIndexPath:indexPath];
                 });
             }
         }

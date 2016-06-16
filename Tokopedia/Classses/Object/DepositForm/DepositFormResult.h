@@ -16,4 +16,6 @@
 @property (nonatomic, strong) NSString *useable_deposit_idr;
 @property (nonatomic, strong) NSArray *bank_account;
 
++ (RKObjectMapping*)mapping;
+
 @end

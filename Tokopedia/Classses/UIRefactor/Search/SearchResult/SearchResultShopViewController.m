@@ -588,7 +588,8 @@ static NSString const *rows = @"12";
                   @"floc"    :   [_params objectForKey:kTKPDSEARCH_APILOCATIONKEY]?:@"",
                   @"fshop"    :   [_params objectForKey:kTKPDSEARCH_APISHOPTYPEKEY]?:@"",
                   @"pmin"    :   [_params objectForKey:kTKPDSEARCH_APIPRICEMINKEY]?:@"",
-                  @"pmax"    :   [_params objectForKey:kTKPDSEARCH_APIPRICEMAXKEY]?:@""
+                  @"pmax"    :   [_params objectForKey:kTKPDSEARCH_APIPRICEMAXKEY]?:@"",
+                  @"source" :   [_params objectForKey:@"search"]
                   };
     } else {
         param = @{@"sc"   :   deptid?:@"",
@@ -599,7 +600,8 @@ static NSString const *rows = @"12";
                   @"floc"        :   [_params objectForKey:kTKPDSEARCH_APILOCATIONKEY]?:@"",
                   @"fshop"        :   [_params objectForKey:kTKPDSEARCH_APISHOPTYPEKEY]?:@"",
                   @"pmin"        :   [_params objectForKey:kTKPDSEARCH_APIPRICEMINKEY]?:@"",
-                  @"pmax"        :   [_params objectForKey:kTKPDSEARCH_APIPRICEMAXKEY]?:@""
+                  @"pmax"        :   [_params objectForKey:kTKPDSEARCH_APIPRICEMAXKEY]?:@"",
+                  @"source" :   @"search"
                   };
     }
     
@@ -614,13 +616,13 @@ static NSString const *rows = @"12";
 
 - (NSString*)getPath:(int)tag
 {
-    return @"search/v1/shop";
+    return @"/search/v1/shop";
 }
 
 - (id)getObjectManager:(int)tag
 {
 
-    _objectmanager = [RKObjectManager sharedClient:@"https://ace.tokopedia.com/"];
+    _objectmanager = [RKObjectManager sharedClient:[NSString aceUrl]];
     
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[SearchItem class]];

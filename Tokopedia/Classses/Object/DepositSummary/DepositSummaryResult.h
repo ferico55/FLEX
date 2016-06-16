@@ -20,5 +20,8 @@
 @property (nonatomic, strong) NSString *start_date;
 @property (nonatomic, strong) NSString *end_date;
 @property (nonatomic, strong) NSString *error_date;
+@property (nonatomic, strong) NSString *user_id;
+
++ (RKObjectMapping*)mapping;
 
 @end

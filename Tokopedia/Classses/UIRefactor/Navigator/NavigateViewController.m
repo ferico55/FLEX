@@ -321,6 +321,7 @@
 
 - (void)navigateToInboxReviewFromViewController:(UIViewController *)viewController withGetDataFromMasterDB:(BOOL)getDataFromMaster
 {
+    NSDictionary *auth = [[TKPDSecureStorage standardKeyChains] keychainDictionary];
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
         splitViewController = [UISplitViewController new];
         
@@ -334,6 +335,7 @@
         segmentedReputationViewController.hidesBottomBarWhenPushed = YES;
         segmentedReputationViewController.getDataFromMasterDB = getDataFromMaster;
         segmentedReputationViewController.selectedIndex = CTagReviewSaya;
+        segmentedReputationViewController.userHasShop = ([auth objectForKey:@"shop_id"] && [[auth objectForKey:@"shop_id"] integerValue] > 0);
         [viewController.navigationController pushViewController:segmentedReputationViewController animated:YES];
     }
 }

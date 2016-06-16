@@ -10,4 +10,12 @@
 
 @implementation CreatePasswordResult
 
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[CreatePasswordResult class]];
+    
+    [mapping addAttributeMappingsFromArray:@[@"is_success"]];
+    
+    return mapping;
+}
+
 @end

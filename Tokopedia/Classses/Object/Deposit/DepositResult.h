@@ -12,4 +12,6 @@
 
 @property (nonatomic, strong) NSString *deposit_total;
 
++ (RKObjectMapping*)mapping;
+
 @end

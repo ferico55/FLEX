@@ -31,6 +31,7 @@
 @property (strong, nonatomic) NSString *shop_tagline;
 @property (strong, nonatomic) NSString *shop_total_favorit;
 @property (strong, nonatomic) NSString *shop_url;
+@property (strong, nonatomic) NSString *shop_gold_expired_time;
 
 + (RKObjectMapping *)mapping;
 
