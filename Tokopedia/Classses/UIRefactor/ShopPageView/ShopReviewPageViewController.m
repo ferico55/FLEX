@@ -292,10 +292,6 @@
                               }];
     
     [self initNotification];
-//    [self configureRestKit];
-//    
-//    [self loadData];
-    
 }
 
 
@@ -366,11 +362,6 @@
                                       
                                       
                                   }];
-
-//        [self configureRestKit];
-//        if (_isNoData && _page < 1) {
-//            [self loadData];
-//        }
     }
 }
 

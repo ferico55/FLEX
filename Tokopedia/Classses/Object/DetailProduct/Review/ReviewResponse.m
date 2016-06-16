@@ -17,7 +17,10 @@
 + (RKObjectMapping *)mapping{
     RKObjectMapping *reviewResponseMapping = [RKObjectMapping mappingForClass:[ReviewResponse class]];
     [reviewResponseMapping addAttributeMappingsFromArray:@[@"response_create_time",
-                                                           @"response_message"]];
+                                                           @"response_message",
+                                                           @"response_time_fmt",
+                                                           @"response_time_ago",
+                                                           @"response_msg"]];
     return reviewResponseMapping;
 }
 
