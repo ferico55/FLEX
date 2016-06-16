@@ -143,7 +143,7 @@
     _userProfile.email = _facebookUserData[@"email"];
     _userProfile.name = _facebookUserData[@"name"];
     _userProfile.birthDay = _facebookUserData[@"birthday"];
-    _userProfile.gender = [self getGender];
+    _userProfile.gender = [self getGenderFromFacebookUserData:facebookUserData];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -224,10 +224,10 @@
     return [_dateOfBirthTextField.text componentsSeparatedByString:@"/"][2];
 }
 
-- (NSString *)getGender {
-    if ([[_facebookUserData objectForKey:@"gender"] isEqualToString:@"male"]) {
+- (NSString *)getGenderFromFacebookUserData:(NSDictionary *)facebookUserData {
+    if ([[facebookUserData objectForKey:@"gender"] isEqualToString:@"male"]) {
         return @"1";
-    } else if ([[_facebookUserData objectForKey:@"gender"] isEqualToString:@"female"]) {
+    } else if ([[facebookUserData objectForKey:@"gender"] isEqualToString:@"female"]) {
         return @"2";
     } else {
         return @"3";
