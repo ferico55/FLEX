@@ -2309,12 +2309,18 @@
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
 		85C494BF1AD790DD008A314A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BE1AD790DD008A314A /* libz.dylib */; };
 		85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494C01AD790E4008A314A /* CoreData.framework */; };
+		BB464A281D1299B200993B7F /* RejectReasonProductDescriptionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB464A261D1299B200993B7F /* RejectReasonProductDescriptionViewController.m */; };
+		BB464A291D1299B200993B7F /* RejectReasonProductDescriptionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB464A271D1299B200993B7F /* RejectReasonProductDescriptionViewController.xib */; };
 		BB48E9321D05296A00FD1B77 /* RejectReasonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB48E9301D05296A00FD1B77 /* RejectReasonViewController.m */; };
 		BB48E9331D05296A00FD1B77 /* RejectReasonViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB48E9311D05296A00FD1B77 /* RejectReasonViewController.xib */; };
 		BB48E9361D052AA400FD1B77 /* RejectReason.m in Sources */ = {isa = PBXBuildFile; fileRef = BB48E9351D052AA400FD1B77 /* RejectReason.m */; };
 		BB48E9391D05377A00FD1B77 /* RejectOrderRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = BB48E9381D05377A00FD1B77 /* RejectOrderRequest.m */; };
 		BB48E93C1D05539D00FD1B77 /* RejectOrderResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = BB48E93B1D05539D00FD1B77 /* RejectOrderResponse.m */; };
 		BB48E93F1D056F1700FD1B77 /* RejectReasonData.m in Sources */ = {isa = PBXBuildFile; fileRef = BB48E93E1D056F1700FD1B77 /* RejectReasonData.m */; };
+		BBA3CDAB1D127CE2008B9938 /* RejectReasonEmptyVariantViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBA3CDA91D127CE2008B9938 /* RejectReasonEmptyVariantViewController.m */; };
+		BBA3CDAC1D127CE2008B9938 /* RejectReasonEmptyVariantViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBA3CDAA1D127CE2008B9938 /* RejectReasonEmptyVariantViewController.xib */; };
+		BBA3CDB01D127E6A008B9938 /* RejectReasonEmptyVariantCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BBA3CDAE1D127E6A008B9938 /* RejectReasonEmptyVariantCell.m */; };
+		BBA3CDB11D127E6A008B9938 /* RejectReasonEmptyVariantCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBA3CDAF1D127E6A008B9938 /* RejectReasonEmptyVariantCell.xib */; };
 		BBEB09AC1D0FBE89007A9821 /* RejectReasonEmptyStockViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBEB09AA1D0FBE89007A9821 /* RejectReasonEmptyStockViewController.m */; };
 		BBEB09AD1D0FBE89007A9821 /* RejectReasonEmptyStockViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBEB09AB1D0FBE89007A9821 /* RejectReasonEmptyStockViewController.xib */; };
 		BBEB09B11D0FC054007A9821 /* RejectReasonEmptyStockCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BBEB09AF1D0FC054007A9821 /* RejectReasonEmptyStockCell.m */; };
@@ -5809,6 +5815,9 @@
 		85C494BE1AD790DD008A314A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		85C494C01AD790E4008A314A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		AAA12C6A69BF6CB5F8EE3287 /* Pods-Tokopedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug.xcconfig"; sourceTree = "<group>"; };
+		BB464A251D1299B200993B7F /* RejectReasonProductDescriptionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RejectReasonProductDescriptionViewController.h; sourceTree = "<group>"; };
+		BB464A261D1299B200993B7F /* RejectReasonProductDescriptionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RejectReasonProductDescriptionViewController.m; sourceTree = "<group>"; };
+		BB464A271D1299B200993B7F /* RejectReasonProductDescriptionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RejectReasonProductDescriptionViewController.xib; sourceTree = "<group>"; };
 		BB48E92F1D05296A00FD1B77 /* RejectReasonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RejectReasonViewController.h; sourceTree = "<group>"; };
 		BB48E9301D05296A00FD1B77 /* RejectReasonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RejectReasonViewController.m; sourceTree = "<group>"; };
 		BB48E9311D05296A00FD1B77 /* RejectReasonViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RejectReasonViewController.xib; sourceTree = "<group>"; };
@@ -5820,6 +5829,12 @@
 		BB48E93B1D05539D00FD1B77 /* RejectOrderResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RejectOrderResponse.m; sourceTree = "<group>"; };
 		BB48E93D1D056F1700FD1B77 /* RejectReasonData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RejectReasonData.h; sourceTree = "<group>"; };
 		BB48E93E1D056F1700FD1B77 /* RejectReasonData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RejectReasonData.m; sourceTree = "<group>"; };
+		BBA3CDA81D127CE2008B9938 /* RejectReasonEmptyVariantViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RejectReasonEmptyVariantViewController.h; sourceTree = "<group>"; };
+		BBA3CDA91D127CE2008B9938 /* RejectReasonEmptyVariantViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RejectReasonEmptyVariantViewController.m; sourceTree = "<group>"; };
+		BBA3CDAA1D127CE2008B9938 /* RejectReasonEmptyVariantViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RejectReasonEmptyVariantViewController.xib; sourceTree = "<group>"; };
+		BBA3CDAD1D127E6A008B9938 /* RejectReasonEmptyVariantCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RejectReasonEmptyVariantCell.h; sourceTree = "<group>"; };
+		BBA3CDAE1D127E6A008B9938 /* RejectReasonEmptyVariantCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RejectReasonEmptyVariantCell.m; sourceTree = "<group>"; };
+		BBA3CDAF1D127E6A008B9938 /* RejectReasonEmptyVariantCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RejectReasonEmptyVariantCell.xib; sourceTree = "<group>"; };
 		BBEB09A91D0FBE89007A9821 /* RejectReasonEmptyStockViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RejectReasonEmptyStockViewController.h; sourceTree = "<group>"; };
 		BBEB09AA1D0FBE89007A9821 /* RejectReasonEmptyStockViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RejectReasonEmptyStockViewController.m; sourceTree = "<group>"; };
 		BBEB09AB1D0FBE89007A9821 /* RejectReasonEmptyStockViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RejectReasonEmptyStockViewController.xib; sourceTree = "<group>"; };
@@ -11774,6 +11789,15 @@
 				BBEB09AE1D0FC054007A9821 /* RejectReasonEmptyStockCell.h */,
 				BBEB09AF1D0FC054007A9821 /* RejectReasonEmptyStockCell.m */,
 				BBEB09B01D0FC054007A9821 /* RejectReasonEmptyStockCell.xib */,
+				BBA3CDA81D127CE2008B9938 /* RejectReasonEmptyVariantViewController.h */,
+				BBA3CDA91D127CE2008B9938 /* RejectReasonEmptyVariantViewController.m */,
+				BBA3CDAA1D127CE2008B9938 /* RejectReasonEmptyVariantViewController.xib */,
+				BBA3CDAD1D127E6A008B9938 /* RejectReasonEmptyVariantCell.h */,
+				BBA3CDAE1D127E6A008B9938 /* RejectReasonEmptyVariantCell.m */,
+				BBA3CDAF1D127E6A008B9938 /* RejectReasonEmptyVariantCell.xib */,
+				BB464A251D1299B200993B7F /* RejectReasonProductDescriptionViewController.h */,
+				BB464A261D1299B200993B7F /* RejectReasonProductDescriptionViewController.m */,
+				BB464A271D1299B200993B7F /* RejectReasonProductDescriptionViewController.xib */,
 			);
 			path = RejectOrder;
 			sourceTree = "<group>";
@@ -12339,6 +12363,7 @@
 				852824761CD09CDF00152AD4 /* AlertInfoPaymentConfirmationView.xib in Resources */,
 				852828E91CD09CE300152AD4 /* icon_lock_grey.png in Resources */,
 				85282AC81CD09CE500152AD4 /* Icon_check_grey_bg@2x.png in Resources */,
+				BBA3CDB11D127E6A008B9938 /* RejectReasonEmptyVariantCell.xib in Resources */,
 				85282A521CD09CE500152AD4 /* navigation-button-bg-pt@2x.png in Resources */,
 				852827C31CD09CE200152AD4 /* ProductThumbCell.xib in Resources */,
 				852824B91CD09CDF00152AD4 /* CatalogSpecificationCell.xib in Resources */,
@@ -12997,6 +13022,7 @@
 				85282A671CD09CE500152AD4 /* onboarding_toped_1e.png in Resources */,
 				85282AEA1CD09CE500152AD4 /* MGSwipeTableCell.podspec in Resources */,
 				852829641CD09CE400152AD4 /* icon_plus_blue.png in Resources */,
+				BB464A291D1299B200993B7F /* RejectReasonProductDescriptionViewController.xib in Resources */,
 				8528299B1CD09CE400152AD4 /* icon_search@2x.png in Resources */,
 				852829D01CD09CE400152AD4 /* icon_sold@3x.png in Resources */,
 				852828A41CD09CE300152AD4 /* icon_comment_bubble@2x.png in Resources */,
@@ -13143,6 +13169,7 @@
 				8528266E1CD09CE100152AD4 /* OrderRejectExplanationViewController.xib in Resources */,
 				8528297B1CD09CE400152AD4 /* icon_questionmark_blue@3x.png in Resources */,
 				8528298C1CD09CE400152AD4 /* icon_sad20@3x.png in Resources */,
+				BBA3CDAC1D127CE2008B9938 /* RejectReasonEmptyVariantViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13256,6 +13283,7 @@
 				8528240C1CD09CDE00152AD4 /* InstallmentBank.m in Sources */,
 				852824111CD09CDE00152AD4 /* TransactionSummaryResult.m in Sources */,
 				852826241CD09CE000152AD4 /* InboxReviewCell.m in Sources */,
+				BB464A281D1299B200993B7F /* RejectReasonProductDescriptionViewController.m in Sources */,
 				852823DE1CD09CDE00152AD4 /* TrackOrderHistory.m in Sources */,
 				8528245B1CD09CDF00152AD4 /* TKPHomeProductsStore.m in Sources */,
 				852822F31CD09CDD00152AD4 /* InboxTalk.m in Sources */,
@@ -13689,6 +13717,7 @@
 				852823401CD09CDE00152AD4 /* FavoriteShop.m in Sources */,
 				8528263E1CD09CE000152AD4 /* ReviewRequest.m in Sources */,
 				852823CA1CD09CDE00152AD4 /* ShopSettingsResult.m in Sources */,
+				BBA3CDB01D127E6A008B9938 /* RejectReasonEmptyVariantCell.m in Sources */,
 				852822A31CD09CDD00152AD4 /* TalkResult.m in Sources */,
 				8528274D1CD09CE200152AD4 /* TransactionShipmentATCTableViewController.m in Sources */,
 				8528240E1CD09CDE00152AD4 /* TransactionSummary.m in Sources */,
@@ -13971,6 +14000,7 @@
 				8528269E1CD09CE100152AD4 /* SearchAutoCompleteViewController.m in Sources */,
 				852827431CD09CE100152AD4 /* ATCPushLocalytics.m in Sources */,
 				852822601CD09CDD00152AD4 /* AddressProvince.m in Sources */,
+				BBA3CDAB1D127CE2008B9938 /* RejectReasonEmptyVariantViewController.m in Sources */,
 				8528222A1CD09CDD00152AD4 /* UIKitCategory.m in Sources */,
 				852823471CD09CDE00152AD4 /* ProfileSettingsResult.m in Sources */,
 				8528240D1CD09CDE00152AD4 /* InstallmentTerm.m in Sources */,

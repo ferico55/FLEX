@@ -28,4 +28,7 @@
 
 @property (strong, nonatomic) ProductModelView *viewModel;
 
+//not used for mapping
+@property BOOL stokKosong;
+
 @end

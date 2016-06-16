@@ -10,6 +10,7 @@
 #import "RejectOrderRequest.h"
 #import "OrderRejectExplanationViewController.h"
 #import "RejectReasonEmptyStockViewController.h"
+#import "RejectReasonEmptyVariantViewController.h"
 
 
 #define EMPTY_STOCK @"1"
@@ -100,7 +101,10 @@
         vc.title = _selectedReason.reason_text;
         [self.navigationController pushViewController:vc animated:YES];
     }else if([_selectedReason.reason_code isEqualToString:EMPTY_VARIANT]){
-        
+        RejectReasonEmptyVariantViewController *vc = [[RejectReasonEmptyVariantViewController alloc]init];
+        vc.order = self.order;
+        vc.title = _selectedReason.reason_text;
+        [self.navigationController pushViewController:vc animated:YES];
     }else if([_selectedReason.reason_code isEqualToString:WRONG_PRICE_WEIGHT]){
         
     }else if([_selectedReason.reason_code isEqualToString:SHOP_IS_CLOSED]){

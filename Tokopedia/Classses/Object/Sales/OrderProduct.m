@@ -47,6 +47,7 @@
         tempViewModel.productQuantity = [NSString stringWithFormat:@"%zd",_product_quantity];
         tempViewModel.productTotalWeight = _product_weight;
         tempViewModel.productNotes = [_product_notes kv_decodeHTMLCharacterEntities];
+        tempViewModel.isProductBuyAble = !_stokKosong;
         
         _viewModel = tempViewModel;
     }
