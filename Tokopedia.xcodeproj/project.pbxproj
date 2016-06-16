@@ -2254,6 +2254,7 @@
 		923B9DC71D0165E5002B3792 /* VTToken.m in Sources */ = {isa = PBXBuildFile; fileRef = 923B98301D0165E4002B3792 /* VTToken.m */; };
 		923B9DC81D0165E5002B3792 /* VTTransactionDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 923B98321D0165E4002B3792 /* VTTransactionDetails.m */; };
 		923B9DCA1D016844002B3792 /* AccountInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 923B9DC91D016844002B3792 /* AccountInfo.swift */; };
+		92738A5A1D125B3F002163FD /* CreatePasswordUserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92738A591D125B3F002163FD /* CreatePasswordUserProfile.swift */; };
 		BBA2937F1CC624AB000630FB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BBA285A51CC624A1000630FB /* AppDelegate.m */; };
 		BBA298CE1CC624AC000630FB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BBA290691CC624A5000630FB /* InfoPlist.strings */; };
 		BBA298CF1CC624AC000630FB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BBA2906B1CC624A5000630FB /* GoogleService-Info.plist */; };
@@ -5665,6 +5666,7 @@
 		923B98311D0165E4002B3792 /* VTTransactionDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTTransactionDetails.h; sourceTree = "<group>"; };
 		923B98321D0165E4002B3792 /* VTTransactionDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTTransactionDetails.m; sourceTree = "<group>"; };
 		923B9DC91D016844002B3792 /* AccountInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountInfo.swift; sourceTree = "<group>"; };
+		92738A591D125B3F002163FD /* CreatePasswordUserProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatePasswordUserProfile.swift; sourceTree = "<group>"; };
 		AAA12C6A69BF6CB5F8EE3287 /* Pods-Tokopedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug.xcconfig"; sourceTree = "<group>"; };
 		BBA285A41CC624A1000630FB /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		BBA285A51CC624A1000630FB /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -7054,6 +7056,7 @@
 				923B8DA81D0165E1002B3792 /* CreatePassword.m */,
 				923B8DA91D0165E1002B3792 /* CreatePasswordResult.h */,
 				923B8DAA1D0165E1002B3792 /* CreatePasswordResult.m */,
+				92738A591D125B3F002163FD /* CreatePasswordUserProfile.swift */,
 			);
 			path = "Create Password";
 			sourceTree = "<group>";
@@ -13035,6 +13038,7 @@
 				923B98F81D0165E4002B3792 /* InboxResolutionCenterList.m in Sources */,
 				923B9B451D0165E5002B3792 /* GeneralTalkCommentCell.m in Sources */,
 				923B98781D0165E4002B3792 /* SecurityRequestOTPResult.m in Sources */,
+				92738A5A1D125B3F002163FD /* CreatePasswordUserProfile.swift in Sources */,
 				923B99061D0165E4002B3792 /* ResolutionOrder.m in Sources */,
 				923B9D0B1D0165E5002B3792 /* ShopPageHeader.m in Sources */,
 				923B9D801D0165E5002B3792 /* TxOrderConfirmationProductCell.m in Sources */,
