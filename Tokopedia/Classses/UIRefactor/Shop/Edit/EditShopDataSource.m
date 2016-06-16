@@ -46,7 +46,7 @@ NSInteger const SectionForShopTagDescription = 0;
 
 - (EditShopTypeViewCell *)tableView:(UITableView *)tableView shopTypeCellForRowAtIndexPath:(NSIndexPath *)indexPath {
     EditShopTypeViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"shopType"];
-    [cell initializeInterfaceWithGoldMerchantStatus:self.shop.info.shop_is_gold expiryDate:self.shop.info.shop_gold_expired_time];
+    [cell initializeInterfaceWithGoldMerchantStatus:[self.shop.info.shop_is_gold boolValue] expiryDate:self.shop.info.shop_gold_expired_time];
     cell.delegate = self;
     return cell;
 }

@@ -20,7 +20,7 @@
 @property (strong, nonatomic) NSString *shop_is_closed_note;
 @property (strong, nonatomic) NSString *shop_is_closed_reason;
 @property (strong, nonatomic) NSString *shop_is_closed_until;
-@property BOOL shop_is_gold;
+@property (strong, nonatomic) NSString *shop_is_gold;
 @property (strong, nonatomic) NSString *shop_is_owner;
 @property (strong, nonatomic) NSString *shop_location;
 @property (strong, nonatomic) NSString *shop_name;
