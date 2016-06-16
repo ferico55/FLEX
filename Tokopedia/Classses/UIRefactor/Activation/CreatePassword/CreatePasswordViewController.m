@@ -117,7 +117,7 @@
     
     NSString *birthday = @"";
     if (_facebookUserData) {
-        birthday = [_facebookUserData objectForKey:@"birthday"];
+        birthday = _userProfile.birthDay;
     }
     
     _dateOfBirthTextField.text = birthday;
@@ -142,6 +142,7 @@
     _userProfile = [CreatePasswordUserProfile new];
     _userProfile.email = _facebookUserData[@"email"];
     _userProfile.name = _facebookUserData[@"name"];
+    _userProfile.birthDay = _facebookUserData[@"birthday"];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
