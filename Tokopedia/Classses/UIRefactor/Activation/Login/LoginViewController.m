@@ -742,10 +742,6 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
-#pragma mark - Google sign in delegate
-
-#pragma mark - Facebook Button
-
 - (void)updateFormViewAppearance {
     
     CGFloat constant;
@@ -824,75 +820,6 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
 #pragma mark - Activation Request
 - (void)requestLoginGoogleWithUser:(GIDGoogleUser *)user {
     [self doThirdPartySignInWithUserId:user.userID email:user.profile.email provider:@"2"];
-
-//    [_activationRequest requestDoLoginPlusWithAppType:@"2"
-//                                             birthday:@""
-//                                             deviceID:@""
-//                                                email:user.profile.email
-//                                               gender:@""
-//                                               userID:user.userID
-//                                                 name:user.profile.name
-//                                               osType:@""
-//                                              picture:@""
-//                                                 uuid:securityQuestionUUID
-//                                            onSuccess:^(Login *result) {
-//                                                _barbuttonsignin.enabled = YES;
-//                                                _barbuttonsignin.title = @"Masuk";
-//                                                _login = result;
-//                                                _isnodata = NO;
-//                                                if ([result.result.status isEqualToString:@"2"]) {
-//                                                    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-//                                                    
-//                                                    [[GPPSignIn sharedInstance] signOut];
-//                                                    [[GPPSignIn sharedInstance] disconnect];
-//                                                    
-//                                                    if(result.result.security && ![result.result.security.allow_login isEqualToString:@"1"]) {
-//                                                        [self checkSecurityQuestion];
-//                                                    } else {
-//                                                        [self setLoginIdentity];
-//                                                        if (_facebookUserData) {
-//                                                            [secureStorage setKeychainWithValue:([_facebookUserData objectForKey:@"email"]?:@"") withKey:kTKPD_USEREMAIL];
-//                                                        } else if (_gidGoogleUser) {
-//                                                            [secureStorage setKeychainWithValue:(_signIn.userEmail?:@"") withKey:kTKPD_USEREMAIL];
-//                                                        }
-//                                                    }
-//                                                } else if ([result.result.status isEqualToString:@"1"]) {
-//                                                    
-//                                                    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-//                                                    [secureStorage setKeychainWithValue:@(NO) withKey:kTKPD_ISLOGINKEY];
-//                                                    [secureStorage setKeychainWithValue:result.result.user_id withKey:kTKPD_TMP_USERIDKEY];
-//
-//                                                    [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];
-//
-//                                                    CreatePasswordViewController *controller = [CreatePasswordViewController new];
-//                                                    controller.login = _login;
-//                                                    controller.delegate = self;
-//                                                    if (_facebookUserData) {
-//                                                        controller.facebookUserData = _facebookUserData;
-//                                                    } else if (_gidGoogleUser) {
-//                                                        controller.gidGoogleUser = _gidGoogleUser;
-//                                                        controller.fullName = _gidGoogleUser.profile.name;
-//                                                        controller.email = _signIn.authentication.userEmail;
-//                                                    }
-//
-//                                                    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
-//                                                    navigationController.navigationBar.translucent = NO;
-//
-//                                                    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
-//                                                    
-//                                                } else {
-//                                                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:result.message_error
-//                                                                                                                   delegate:self];
-//                                                    [alert show];
-//                                                    [self cancelLogin];
-//                                                }
-//                                            }
-//                                            onFailure:^(NSError *error) {
-//                                                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Sign in gagal silahkan coba lagi."]
-//                                                                                                               delegate:self];
-//                                                [alert show];
-//                                                [self cancelLogin];
-//                                            }];
 }
 
 - (void)doThirdPartySignInWithUserId:(NSString *)userId email:(NSString *)email provider:(NSString *)provider {
