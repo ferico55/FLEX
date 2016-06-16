@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="GothamMedium.ttf">
+            <string>GothamMedium</string>
+        </mutableArray>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="courier" id="Qim-UM-1iN" customClass="CourierViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Qim-UM-1iN" id="egB-FI-4DK">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="32a-Jx-H2f">
+                        <rect key="frame" x="15" y="0.0" width="202" height="44"/>
+                        <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="right" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Cwv-wl-ZHN">
+                        <rect key="frame" x="225" y="5" width="80" height="34"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="80" id="DDc-Am-Bvs"/>
+                            <constraint firstAttribute="width" constant="80" id="Itr-Tp-nQ0"/>
+                            <constraint firstAttribute="height" constant="34" id="xxO-EO-G4i"/>
+                        </constraints>
+                    </imageView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="Cwv-wl-ZHN" firstAttribute="leading" secondItem="32a-Jx-H2f" secondAttribute="trailing" constant="8" id="1UR-OL-tE5"/>
+                    <constraint firstItem="32a-Jx-H2f" firstAttribute="top" secondItem="egB-FI-4DK" secondAttribute="top" id="43r-2r-uH8"/>
+                    <constraint firstAttribute="trailing" secondItem="Cwv-wl-ZHN" secondAttribute="trailing" constant="15" id="4mR-h4-HuO"/>
+                    <constraint firstItem="Cwv-wl-ZHN" firstAttribute="top" secondItem="egB-FI-4DK" secondAttribute="top" constant="5" id="G8C-im-OTK"/>
+                    <constraint firstItem="32a-Jx-H2f" firstAttribute="leading" secondItem="egB-FI-4DK" secondAttribute="leading" constant="15" id="d6z-hB-mOw"/>
+                    <constraint firstAttribute="bottom" secondItem="32a-Jx-H2f" secondAttribute="bottom" id="u4C-0C-hbY"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <connections>
+                <outlet property="courierLogoImageView" destination="Cwv-wl-ZHN" id="Git-je-geD"/>
+                <outlet property="courierNameLabel" destination="32a-Jx-H2f" id="Wo8-Aj-HDh"/>
+            </connections>
+            <point key="canvasLocation" x="182" y="247"/>
+        </tableViewCell>
+    </objects>
+</document>

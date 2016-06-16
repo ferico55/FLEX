@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface ShipmentCourier : NSObject
+@interface ShipmentCourier : NSObject <TKPObjectMapping>
 
 @property (strong, nonatomic) NSString *shipment_id;
 @property (strong, nonatomic) NSString *shipment_name;

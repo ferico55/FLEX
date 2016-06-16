@@ -120,7 +120,8 @@
     [_tableView reloadData];
     
     TransactionBuyResult *result = [_data objectForKey:DATA_CART_RESULT_KEY];
-    [TPAnalytics trackPurchaseID:result.transaction.payment_id carts:result.transaction.carts];
+    NSString *voucherCode = [_data objectForKey:API_VOUCHER_CODE_KEY];
+    [TPAnalytics trackPurchaseID:result.transaction.payment_id carts:result.transaction.carts coupon:voucherCode];
 }
 
 -(void)viewWillDisappear:(BOOL)animated

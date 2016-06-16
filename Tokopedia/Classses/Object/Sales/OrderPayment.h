@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface OrderPayment : NSObject
+@interface OrderPayment : NSObject <TKPObjectMapping>
 
 @property (strong, nonatomic) NSString *payment_process_due_date;
 @property (strong, nonatomic) NSString *payment_komisi;
