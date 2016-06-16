@@ -12,7 +12,6 @@
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *descLabel;
-@property (weak, nonatomic) IBOutlet UIButton *button;
 
 @end
 
@@ -60,6 +59,27 @@
         
         [self hideButton:YES];
     }
+}
+
+- (void)generateRequestErrorViewWithError:(NSError *)error {
+    if (error.code == -1011) {
+        [self setNoResultTitle:@"Whoops!\nTerjadi kendala pada server"];
+        [self setNoResultDesc:@"Harap coba lagi"];
+    } else if (error.code == -1009) {
+        [self setNoResultTitle:@"Whoops!\nTidak ada koneksi Internet"];
+        [self setNoResultDesc:@"Cek koneksi Internet Anda"];
+    } else if (error.code == -999) {
+        [self setNoResultTitle:@"Whoops!\nTerjadi kendala pada koneksi Internet"];
+        [self setNoResultDesc:@"Harap coba lagi"];
+    } else {
+        [self setNoResultTitle:@"Whoops!\nTerjadi kendala pada server"];
+        [self setNoResultDesc:@"Harap coba lagi"];
+    }
+    
+    [self setNoResultImage:@"no-result.png"];
+    [_button.layer setCornerRadius:3.0];
+    [self hideButton:NO];
+    [self setNoResultButtonTitle:@"Coba Lagi"];
 }
 
 #pragma mark - Setter

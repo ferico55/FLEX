@@ -101,11 +101,17 @@
     
     BOOL _isSelectBankInstallment;
     BOOL _isSelectDurationInstallment;
+    BOOL _isSaldoError;
+    BOOL _isDropshipperError;
     
     TransactionVoucherData *_voucherData;
 
     NoResultReusableView *_noResultView;
+    NoResultReusableView *_noInternetConnectionView;
     
+    NSMutableArray *_saldoErrorMessages;
+    
+    UIView *_lineView;
 }
 @property (weak, nonatomic) IBOutlet UIView *paymentMethodView;
 @property (weak, nonatomic) IBOutlet UIView *paymentMethodSelectedView;
@@ -115,7 +121,7 @@
 @property (weak, nonatomic) IBOutlet UIView *voucerCodeBeforeTapView;
 @property (weak, nonatomic) IBOutlet UIButton *voucherCodeButton;
 @property (weak, nonatomic) IBOutlet UILabel *voucherAmountLabel;
-
+@property (strong, nonatomic) IBOutlet UIImageView *saldoErrorIcon;
 @property (weak, nonatomic) IBOutlet UISwitch *switchUsingSaldo;
 
 @property (strong, nonatomic) IBOutlet UITableViewCell *passwordCell;
@@ -170,6 +176,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *transferCodeLabel;
 
 @property (weak, nonatomic) IBOutlet UILabel *klikBCANotes;
+
 - (IBAction)tap:(id)sender;
 @end
 
@@ -232,6 +239,7 @@
         
     }
     [self initNoResultView];
+    [self initNoInternetConnectionView];
     [self setDefaultInputData];
     
     _alertLoading = [[UIAlertView alloc]initWithTitle:@"Processing" message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
@@ -239,15 +247,25 @@
     _loadingView = [LoadingView new];
     _loadingView.delegate = self;
     [_klikBCANotes setCustomAttributedText:_klikBCANotes.text];
+    
+    _saldoErrorIcon.hidden = YES;
 }
 
 - (void)initNoResultView{
     _noResultView = [[NoResultReusableView alloc] initWithFrame:CGRectMake(0, -30, [[UIScreen mainScreen]bounds].size.width, [[UIScreen mainScreen]bounds].size.height)];
     _noResultView.delegate = self;
+    _noResultView.button.tag = 1;
     [_noResultView generateAllElements:@"Keranjang.png"
-                                title:@"Keranjang belanja Anda kosong"
-                                 desc:@"Pilih dan beli produk yang anda inginkan,\nayo mulai belanja!"
-                             btnTitle:@"Ayo mulai belanja!"];
+                                 title:@"Keranjang belanja Anda kosong"
+                                  desc:@"Pilih dan beli produk yang anda inginkan,\nayo mulai belanja!"
+                              btnTitle:@"Ayo mulai belanja!"];
+    [_transferCodeInfoLabel setCustomAttributedText:_transferCodeInfoLabel.text];
+}
+
+- (void)initNoInternetConnectionView {
+    _noInternetConnectionView = [[NoResultReusableView alloc] initWithFrame:CGRectMake(0, -30, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
+    _noInternetConnectionView.delegate = self;
+    _noInternetConnectionView.button.tag = 2;
     [_transferCodeInfoLabel setCustomAttributedText:_transferCodeInfoLabel.text];
 }
 
@@ -445,7 +463,12 @@
 
     if (section < _list.count)
     {
-        return 44;
+        if (_list[section].errors.count > 0 && ([_list[section].errors[0].name isEqualToString:@"shop-closed"])) {
+            NSString *string = [NSString stringWithFormat:@"%@\n%@", _list[section].errors[0].title, _list[section].errors[0].desc];
+            return 44 + [self getLabelHeightWithText:string];
+        } else {
+            return 44;
+        }
     }
     else if (section == _list.count)
     {
@@ -627,6 +650,7 @@
                     break;
                 default:
                     if([self isValidInput]) {
+                        _saldoErrorIcon.hidden = YES;
                         [self sendingProductDataToGA];
                         if([self isHandlePaymentWithNative]) {
                             [self doCheckout];
@@ -973,17 +997,26 @@
         {
             NSInteger grandTotal = ([self isUseGrandTotalWithoutLP])?[[_dataInput objectForKey:DATA_CART_GRAND_TOTAL_WO_LP] integerValue]:[[_dataInput objectForKey:DATA_CART_GRAND_TOTAL] integerValue];
             NSNumber *deposit = [_dataInput objectForKey:DATA_USED_SALDO_KEY];
-            if ([deposit integerValue] >= grandTotal)
-            {
+            if ([deposit integerValue] == 0) {
                 isValid = NO;
-                [messageError addObject:@"Jumlah Saldo Tokopedia yang Anda masukkan terlalu banyak. Gunakan Pembayaran Saldo Tokopedia apabila mencukupi."];
+                [messageError addObject:@"Saldo harus diisi."];
+                _saldoErrorIcon.hidden = NO;
                 [self swipeView:_saldoTextFieldCell];
+            } else {
+                if ([deposit integerValue] >= grandTotal) {
+                    isValid = NO;
+                    [messageError addObject:@"Jumlah Saldo Tokopedia yang Anda masukkan terlalu banyak. Gunakan Pembayaran Saldo Tokopedia apabila mencukupi."];
+                    _saldoErrorIcon.hidden = NO;
+                    [self swipeView:_saldoTextFieldCell];
+                }
+                if ([deposit integerValue]> [self depositAmountUser]) {
+                    isValid = NO;
+                    [messageError addObject:@"Saldo Tokopedia Anda tidak mencukupi."];
+                    _saldoErrorIcon.hidden = NO;
+                    [self swipeView:_saldoTextFieldCell];
+                }
             }
-            if ([deposit integerValue]> [self depositAmountUser]) {
-                isValid = NO;
-                [messageError addObject:@"Saldo Tokopedia Anda tidak mencukupi."];
-                [self swipeView:_saldoTextFieldCell];
-            }
+            
         }
     }
     
@@ -1018,14 +1051,14 @@
             }
             else if (_list[i].cart_dropship_phone.length < 6) {
                 isValid = NO;
-                if (![messageError containsObject:@"Nomor telepon penerima terlalu pendek. Minimum 6 karakter."])
-                    [messageError addObject:@"Nomor telepon penerima terlalu pendek. Minimum 6 karakter."];
+                if (![messageError containsObject:@"Nomor telepon terlalu pendek, minimum 6 karakter."])
+                    [messageError addObject:@"Nomor telepon terlalu pendek, minimum 6 karakter."];
             }
         }
     }
     
     NSLog(@"%d",isValid);
-    if (!isValid) {
+    if (!isValid && messageError.count > 0) {
         [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:[messageError copy]]
                                                  type:0
                                              duration:4.0
@@ -1034,7 +1067,7 @@
                                                action:nil];
     }
 
-    return  isValid;
+    return isValid;
 }
 
 -(void)adjustDropshipperListParam;
@@ -1088,6 +1121,17 @@
             [partialListParam setObject:_list[i].cart_is_partial?:@"0" forKey:partialDetailKey];
     }
     [_dataInput setObject:partialListParam forKey:DATA_PARTIAL_LIST_KEY];
+}
+
+- (CGFloat)getLabelHeightWithText:(NSString*)text {
+    CGSize maximumLabelSize = CGSizeMake(_tableView.frame.size.width,9999);
+    NSStringDrawingContext *context = [NSStringDrawingContext new];
+    CGSize expectedLabelSize = [text boundingRectWithSize:maximumLabelSize
+                                                    options:NSStringDrawingUsesLineFragmentOrigin
+                                                 attributes:@{NSFontAttributeName:[UIFont fontWithName:@"Gotham Book" size:18.0f]}
+                                                    context:context].size;
+    
+    return expectedLabelSize.height;
 }
 
 #pragma mark - Custom Error Message View Delegate
@@ -1379,6 +1423,7 @@
     if (textField == _saldoTokopediaAmountTextField) {
         NSInteger grandTotal = [[[NSNumberFormatter IDRFormarter] numberFromString:_grandTotalLabel.text] integerValue];
         [_dataInput setObject:@(grandTotal) forKey:DATA_UPDATED_GRAND_TOTAL];
+        _saldoErrorIcon.hidden = YES;
     }
 
     return YES;
@@ -1395,7 +1440,7 @@
         _list[-textField.tag-1].cart_dropship_phone = textField.text;
     }
     if (textField == _saldoTokopediaAmountTextField) {
-        
+        _saldoErrorIcon.hidden = YES;
         [_tableView reloadData];
     }
     if (textField == _passwordTextField) {
@@ -1424,26 +1469,22 @@
 
         NSString *textFieldText = [textField.text stringByReplacingOccurrencesOfString:@"." withString:@""];
 
-        if (range.length > 0)
-        {
-            
+        if (range.length > 0) {
+            _saldoErrorIcon.hidden = YES;
             NSString *textFieldRemoveOneChar = [[textField.text substringToIndex:[textField.text length]-1] stringByReplacingOccurrencesOfString:@"." withString:@""];
             NSString *depositAmount = [textFieldRemoveOneChar stringByReplacingOccurrencesOfString:@"." withString:@""];
             [_dataInput setObject:depositAmount forKey:DATA_USED_SALDO_KEY];
             [self adjustGrandTotalWithDeposit:textFieldRemoveOneChar];
             
-        }
-        else if ([textFieldText integerValue] <= grandTotal || [textFieldText integerValue] <= [self depositAmountUser])
-        {
+        } else if ([textFieldText integerValue] <= grandTotal || [textFieldText integerValue] <= [self depositAmountUser]) {
             NSString *deposit = depositAmount;
-            
+            _saldoErrorIcon.hidden = YES;
             [self adjustGrandTotalWithDeposit:deposit];
             
         }
         
-       NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-        if([string length]==0)
-        {
+        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+        if([string length]==0) {
             [formatter setGroupingSeparator:@"."];
             [formatter setGroupingSize:4];
             [formatter setUsesGroupingSeparator:YES];
@@ -1453,21 +1494,20 @@
             NSString *str = [formatter stringFromNumber:[NSNumber numberWithDouble:[num doubleValue]]];
             textField.text = str;
             return YES;
-        }
-        else {
+        } else {
             [formatter setGroupingSeparator:@"."];
             [formatter setGroupingSize:2];
             [formatter setUsesGroupingSeparator:YES];
             [formatter setSecondaryGroupingSize:3];
             NSString *num = textField.text ;
-            if(![num isEqualToString:@""])
-            {
+            if(![num isEqualToString:@""]) {
                 num = [num stringByReplacingOccurrencesOfString:@"." withString:@""];
                 NSString *str = [formatter stringFromNumber:[NSNumber numberWithDouble:[num doubleValue]]];
                 textField.text = str;
             }
             return YES;
         }
+        
         [_tableView reloadData];
         
     }
@@ -1821,18 +1861,17 @@
     else
     {
         //otherCell
-        if (indexPath.row == productCount+1)
+        if (indexPath.row == productCount+1) {
             cell = [CartCell cellDetailShipmentTable:_tableView indexPath:indexPath];
-        else if (indexPath.row == productCount+2)
+        } else if (indexPath.row == productCount+2) {
             cell = [CartCell cellIsPartial:_list[indexPath.section].cart_is_partial tableView:_tableView atIndextPath:indexPath];
-        else if (indexPath.row == productCount+3)
+        } else if (indexPath.row == productCount+3) {
             cell = [CartCell cellIsDropshipper:_list[indexPath.section].cart_is_dropshipper tableView:_tableView atIndextPath:indexPath];
-        else if (indexPath.row == productCount+4){
+        } else if (indexPath.row == productCount+4) {
             cell = [CartCell cellTextFieldPlaceholder:@"Nama Pengirim" List:[_list copy] tableView:_tableView atIndexPath:indexPath withText:_list[indexPath.section].cart_dropship_name?:@""];
-        }
-        else if (indexPath.row == productCount+5)
-        {
-            cell = [CartCell cellTextFieldPlaceholder:@"Nomer Telepon" List:[_list copy] tableView:_tableView atIndexPath:indexPath withText:_list[indexPath.section].cart_dropship_phone?:@""];
+            
+        } else if (indexPath.row == productCount+5) {
+            cell = [CartCell cellTextFieldPlaceholder:@"Nomor Telepon" List:[_list copy] tableView:_tableView atIndexPath:indexPath withText:_list[indexPath.section].cart_dropship_phone?:@""];
         }
     }
     
@@ -1973,8 +2012,10 @@
     
     if (indexPath.section < _list.count) {
         TransactionCartList *list = _list[indexPath.section];
-        if (indexPath.row == 0)
-            return [self errorLabelHeight:list];
+        if (indexPath.row == 0) {
+            return 0;
+        }
+//            return [self errorLabelHeight:list];
         else if(indexPath.row <= list.cart_products.count) {
             ProductDetail *product = list.cart_products[indexPath.row-1];
             return [self productRowHeight:product];
@@ -1985,13 +2026,13 @@
                 return 0;
             }
         }
-        else if (indexPath.row == list.cart_products.count + 4)
+        else if (indexPath.row == list.cart_products.count + 4) // Dropshipper name
         {
             if ([_list[indexPath.section].cart_is_dropshipper integerValue] == 0) {
                 return 0;
             }
         }
-        else if (indexPath.row == list.cart_products.count + 5)
+        else if (indexPath.row == list.cart_products.count + 5) // Dropshipper phone
         {
             if ([_list[indexPath.section].cart_is_dropshipper integerValue] == 0) {
                 return 0;
@@ -2200,10 +2241,12 @@
     else
     {
         NSString *string = [NSString stringWithFormat:@"%@\n%@",error1, error2];
-        CGSize maximumLabelSize = CGSizeMake(290,9999);
-        CGSize expectedLabelSize = [string sizeWithFont:FONT_GOTHAM_BOOK_16
-                                      constrainedToSize:maximumLabelSize
-                                          lineBreakMode:NSLineBreakByTruncatingTail];
+        CGSize maximumLabelSize = CGSizeMake(_tableView.frame.size.width,9999);
+        NSStringDrawingContext *context = [NSStringDrawingContext new];
+        CGSize expectedLabelSize = [string boundingRectWithSize:maximumLabelSize
+                                                        options:NSStringDrawingUsesLineFragmentOrigin
+                                                     attributes:@{NSFontAttributeName:[UIFont fontWithName:@"Gotham Book" size:21.0f]}
+                                                        context:context].size;
         
         return expectedLabelSize.height;
     }
@@ -2215,16 +2258,45 @@
     NSString *string = productNotes;
     
     //Calculate the expected size based on the font and linebreak mode of your label
-    CGSize maximumLabelSize = CGSizeMake(250,9999);
+    CGSize maximumLabelSize = CGSizeMake(_tableView.frame.size.width,9999);
     CGSize expectedLabelSize = [string sizeWithFont:FONT_GOTHAM_BOOK_16
                                   constrainedToSize:maximumLabelSize
-                                      lineBreakMode:NSLineBreakByTruncatingTail];
+                                      lineBreakMode:NSLineBreakByWordWrapping];
+    
+    
     
     if ([productNotes isEqualToString:@""]) {
         expectedLabelSize.height = 0;
     }
     
-    return CELL_PRODUCT_ROW_HEIGHT+expectedLabelSize.height;
+    CGSize expectedErrorLabelSize;
+    
+    if (product.errors.count > 0) {
+        Errors *error = product.errors[0];
+        NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+        paragraphStyle.paragraphSpacing = 6.0;
+        
+        NSMutableAttributedString *title = [[NSMutableAttributedString alloc] initWithString:error.title
+                                                                                  attributes:@{NSFontAttributeName: [UIFont fontWithName:@"Gotham Medium" size:13.0f],
+                                                                                               NSParagraphStyleAttributeName:paragraphStyle}];
+        paragraphStyle.paragraphSpacing = 4.0;
+        
+        NSAttributedString *errorDesc = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"\n%@", error.desc]
+                                                                        attributes:@{NSFontAttributeName: [UIFont fontWithName:@"Gotham Book" size:14.0f],
+                                                                                     NSParagraphStyleAttributeName:paragraphStyle}];
+        
+        [title appendAttributedString:errorDesc];
+        
+        CGSize maximumLabelSize = CGSizeMake(250,9999);
+        NSStringDrawingContext *context = [NSStringDrawingContext new];
+        expectedErrorLabelSize = [title boundingRectWithSize:maximumLabelSize
+                                                       options:NSStringDrawingUsesLineFragmentOrigin
+                                                       context:context].size;
+    } else {
+        expectedErrorLabelSize.height = 0;
+    }
+    
+    return CELL_PRODUCT_ROW_HEIGHT + expectedLabelSize.height + expectedErrorLabelSize.height;
 }
 
 #pragma mark - Request
@@ -2241,7 +2313,9 @@
     _buyButton.enabled = NO;
     
     [RequestCart fetchCartData:^(TransactionCartResult *data) {
-        
+        [_noInternetConnectionView removeFromSuperview];
+        _saldoTokopediaCell.contentView.backgroundColor = [UIColor whiteColor];
+        _saldoTextFieldCell.contentView.backgroundColor = [UIColor whiteColor];
         NSArray <TransactionCartList*>*list = data.list;
         for (int i = 0; i< data.list.count; i++) {
             if (i < _list.count) {
@@ -2274,6 +2348,8 @@
         [self isLoading:NO];
         
     } error:^(NSError *error) {
+        [_noInternetConnectionView generateRequestErrorViewWithError:error];
+        [_tableView addSubview:_noInternetConnectionView];
         _paymentMethodView.hidden = YES;
         if (_list.count <=0) {
             _tableView.tableFooterView =_loadingView.view;
@@ -2312,6 +2388,12 @@
                                 [self requestCartData];
                                 [self isLoading:NO];
                             } error:^(NSError *error) {
+                                [self doClearAllData];
+                                [_refreshControl beginRefreshing];
+                                [_tableView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
+                                _paymentMethodView.hidden = YES;
+                                [_noInternetConnectionView generateRequestErrorViewWithError:error];
+                                [_tableView addSubview:_noInternetConnectionView];
                                 [self isLoading:NO];
                             }];
 }
@@ -2319,26 +2401,39 @@
 -(void)doRequestVoucher{
     [self isLoading:YES];
     NSString *voucherCode = [_dataInput objectForKey:API_VOUCHER_CODE_KEY];
-    [RequestCart fetchVoucherCode:voucherCode success:^(TransactionVoucherData *data) {
+    [RequestCart fetchVoucherCode:voucherCode success:^(TransactionVoucher *data) {
+        if (data.message_error.count > 0) {
+            
+        } else {
+            _voucherData = data.result.data_voucher;
+            
+            _voucherCodeButton.hidden = YES;
+            _voucherAmountLabel.hidden = NO;
+            
+            NSInteger voucher = [_voucherData.voucher_amount integerValue];
+            NSString *voucherString = [[NSNumberFormatter IDRFormarter] stringFromNumber:[NSNumber numberWithInteger:voucher]];
+            voucherString = [NSString stringWithFormat:@"Anda mendapatkan voucher %@", voucherString];
+            _voucherAmountLabel.text = voucherString;
+            _voucherAmountLabel.font = [UIFont fontWithName:@"GothamBook" size:12];
+            
+            _buttonVoucherInfo.hidden = YES;
+            _buttonCancelVoucher.hidden = NO;
+            
+            [self adjustGrandTotalWithDeposit:_saldoTokopediaAmountTextField.text];
+        }
         
-        _voucherData = data;
-        
-        _voucherCodeButton.hidden = YES;
-        _voucherAmountLabel.hidden = NO;
-        
-        NSInteger voucher = [_voucherData.voucher_amount integerValue];
-        NSString *voucherString = [[NSNumberFormatter IDRFormarter] stringFromNumber:[NSNumber numberWithInteger:voucher]];
-        voucherString = [NSString stringWithFormat:@"Anda mendapatkan voucher %@", voucherString];
-        _voucherAmountLabel.text = voucherString;
-        _voucherAmountLabel.font = [UIFont fontWithName:@"GothamBook" size:12];
-        
-        _buttonVoucherInfo.hidden = YES;
-        _buttonCancelVoucher.hidden = NO;
-        
-        [self adjustGrandTotalWithDeposit:_saldoTokopediaAmountTextField.text];
         [self isLoading:NO];
         [_tableView reloadData];
     } error:^(NSError *error) {
+        if (error) {
+            [self doClearAllData];
+            [_refreshControl beginRefreshing];
+            [_tableView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
+            _paymentMethodView.hidden = YES;
+            [_noInternetConnectionView generateRequestErrorViewWithError:error];
+            [_tableView addSubview:_noInternetConnectionView];
+        }
+        
         [_dataInput removeObjectForKey:API_VOUCHER_CODE_KEY];
         [self isLoading:NO];
     }];
@@ -2388,6 +2483,14 @@
                                 [_delegate didFinishRequestCheckoutData:userInfo];
                                 [self isLoading:NO];
                             } error:^(NSError *error) {
+                                if (error) {
+                                    [_noInternetConnectionView generateRequestErrorViewWithError:error];
+                                    [_tableView addSubview:_noInternetConnectionView];
+                                }
+                                [self doClearAllData];
+                                [_refreshControl beginRefreshing];
+                                [_tableView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
+                                _paymentMethodView.hidden = YES;
                                 [self isLoading:NO];
                             }];
 }
@@ -2428,7 +2531,12 @@
                               [self isLoading:NO];
 
                           } error:^(NSError *error) {
-                              
+                              [self doClearAllData];
+                              [_refreshControl beginRefreshing];
+                              [_tableView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
+                              _paymentMethodView.hidden = YES;
+                              [_noInternetConnectionView generateRequestErrorViewWithError:error];
+                              [_tableView addSubview:_noInternetConnectionView];
                               [self isLoading:NO];
                               
                           }];
@@ -2465,6 +2573,12 @@
         }
         [self isLoading:NO];
     } error:^(NSError *error) {
+        [self doClearAllData];
+        [_refreshControl beginRefreshing];
+        [_tableView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
+        _paymentMethodView.hidden = YES;
+        [_noInternetConnectionView generateRequestErrorViewWithError:error];
+        [_tableView addSubview:_noInternetConnectionView];
         [self isLoading:NO];
     }];
 }
@@ -2476,6 +2590,12 @@
         }
         [_tableView reloadData];
     } error:^(NSError *error) {
+        [self doClearAllData];
+        [_refreshControl beginRefreshing];
+        [_tableView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
+        _paymentMethodView.hidden = YES;
+        [_noInternetConnectionView generateRequestErrorViewWithError:error];
+        [_tableView addSubview:_noInternetConnectionView];
         [self isLoading:NO];
     }];
 }
@@ -2492,7 +2612,14 @@
 
 #pragma mark - NoResult Delegate
 - (void)buttonDidTapped:(id)sender{
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"navigateToPageInTabBar" object:@"1"];
+    UIButton *button = (UIButton *)sender;
+    if (button.tag == 1) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"navigateToPageInTabBar" object:@"1"];
+    } else {
+        [_noInternetConnectionView removeFromSuperview];
+        [self refreshRequestCart];
+    }
+    
 }
 
 @end

@@ -7,6 +7,7 @@
 //
 
 #import "TransactionCartCell.h"
+#import "Errors.h"
 
 @implementation TransactionCartCell
 {
@@ -102,10 +103,6 @@
     
     [attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:158.0/255.0 green:158.0/255.0 blue:158.0/255.0 alpha:1] range:[priceIsChangedString rangeOfString:productSebelumnya]];
     
-    
-    
-    
-    
     if ( [[viewModel.productPriceBeforeChange priceFromStringIDR] integerValue] != 0)
         
         self.productPriceLabel.attributedText = attributedString;
@@ -159,67 +156,92 @@
     
     self.editButton.hidden = (_indexPage == 1);
     
-    
-    
-    if (([viewModel.productErrorMessage isEqualToString:@""] ||
-         
-         [viewModel.productErrorMessage isEqualToString:@"0"] ||
-         
-         viewModel.productErrorMessage == nil ) &&
+    if (viewModel.productErrors.count > 0) {
+        Errors *error = viewModel.productErrors[0];
         
-        [[viewModel.productPriceBeforeChange priceFromStringIDR] integerValue] == 0) {
+        NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+        paragraphStyle.paragraphSpacing = 6.0;
         
-        self.errorProductLabel.hidden = YES;
+        NSMutableAttributedString *title = [[NSMutableAttributedString alloc] initWithString:error.title
+                                                                                  attributes:@{NSFontAttributeName: [UIFont fontWithName:@"Gotham Medium" size:13.0f],
+                                                                                               NSParagraphStyleAttributeName:paragraphStyle}];
         
+        NSAttributedString *errorDesc = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"\n%@", error.desc]
+                                                                        attributes:@{NSFontAttributeName: [UIFont fontWithName:@"Gotham Book" size:14.0f],
+                                                                                     NSParagraphStyleAttributeName:paragraphStyle}];
+        
+        [title appendAttributedString:errorDesc];
+        
+        
+        
+        CGSize maximumLabelSize = CGSizeMake(250,9999);
+        NSStringDrawingContext *context = [NSStringDrawingContext new];
+        CGSize expectedLabelSize = [title boundingRectWithSize:maximumLabelSize
+                                                       options:NSStringDrawingUsesLineFragmentOrigin
+                                                       context:context].size;
+        _errorViewHeightConstraint.constant = expectedLabelSize.height;
+        _errorLabel.attributedText = title;
+    } else {
+        _errorViewHeightConstraint.constant = 0;
     }
     
-    else
-        
-    {
-        
-        self.errorProductLabel.hidden = NO;
-        
-        if ([viewModel.productErrorMessage isEqualToString:@"Produk ini berada di gudang"]) {
-            
-            self.errorProductLabel.text = @"GUDANG";
-            
-        }
-        
-        else if ([viewModel.productErrorMessage isEqualToString:@"Produk ini dalam moderasi"])
-            
-        {
-            
-            self.errorProductLabel.text = @"MODERASI";
-            
-        }
-        
-        else if ([viewModel.productErrorMessage isEqualToString:@"Maksimal pembelian produk ini adalah 999 item"])
-            
-        {
-            
-            [self.errorProductLabel setCustomAttributedText:@"Maks\n999 item"];
-            
-        }
-        
-        else if ([viewModel.productErrorMessage isEqualToString:@"Produk ini sudah dihapus oleh penjual"])
-            
-            self.errorProductLabel.text = @"HAPUS";
-        
-        else if ([_viewModelCart.cartIsPriceChanged integerValue] == 1)
-            
-        {
-            
-            [self.errorProductLabel setCustomAttributedText:@"HARGA BERUBAH"];
-            
-        }
-        
-        else
-            
-            self.errorProductLabel.text = @"TIDAK VALID";
-    }
+//    if (([viewModel.productErrorMessage isEqualToString:@""] ||
+//         
+//         [viewModel.productErrorMessage isEqualToString:@"0"] ||
+//         
+//         viewModel.productErrorMessage == nil ) &&
+//        
+//        [[viewModel.productPriceBeforeChange priceFromStringIDR] integerValue] == 0) {
+//        
+//        self.errorProductLabel.hidden = YES;
+//        
+//    }
+//    
+//    else
+//        
+//    {
+//        
+//        self.errorProductLabel.hidden = NO;
+//        
+//        if ([viewModel.productErrorMessage isEqualToString:@"Produk ini berada di gudang"]) {
+//            
+//            self.errorProductLabel.text = @"GUDANG";
+//            
+//        }
+//        
+//        else if ([viewModel.productErrorMessage isEqualToString:@"Produk ini dalam moderasi"])
+//            
+//        {
+//            
+//            self.errorProductLabel.text = @"MODERASI";
+//            
+//        }
+//        
+//        else if ([viewModel.productErrorMessage isEqualToString:@"Maksimal pembelian produk ini adalah 999 item"])
+//            
+//        {
+//            
+//            [self.errorProductLabel setCustomAttributedText:@"Maks\n999 item"];
+//            
+//        }
+//        
+//        else if ([viewModel.productErrorMessage isEqualToString:@"Produk ini sudah dihapus oleh penjual"])
+//            
+//            self.errorProductLabel.text = @"HAPUS";
+//        
+//        else if ([_viewModelCart.cartIsPriceChanged integerValue] == 1)
+//            
+//        {
+//            
+//            [self.errorProductLabel setCustomAttributedText:@"HARGA BERUBAH"];
+//            
+//        }
+//        
+//        else
+//            
+//            self.errorProductLabel.text = @"TIDAK VALID";
+//    }
     
 }
-
-
 
 @end

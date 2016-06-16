@@ -21,6 +21,7 @@
         tempViewModel.productTotalWeight = _product_total_weight;
         tempViewModel.productNotes = _product_notes;
         tempViewModel.productErrorMessage = _product_error_msg;
+        tempViewModel.productErrors = _errors;
         
         _viewModel = tempViewModel;
     }
@@ -123,6 +124,9 @@
 {
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
     [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+    
+    RKRelationshipMapping *errorMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"errors" toKeyPath:@"errors" withMapping:[Errors mapping]];
+    [mapping addPropertyMapping:errorMapping];
 
     return mapping;
 }

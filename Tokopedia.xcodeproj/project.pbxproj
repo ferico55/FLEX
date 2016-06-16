@@ -2242,6 +2242,8 @@
 		62D7F52A1CF3FD7F00BEAFD4 /* vt-iOSlib-1.0.1.tar.gz in Resources */ = {isa = PBXBuildFile; fileRef = 62D7EC801CF3FD7E00BEAFD4 /* vt-iOSlib-1.0.1.tar.gz */; };
 		62D7F52B1CF3FD7F00BEAFD4 /* vt-iOSlib-1.0.1.zip in Resources */ = {isa = PBXBuildFile; fileRef = 62D7EC811CF3FD7E00BEAFD4 /* vt-iOSlib-1.0.1.zip */; };
 		62D7F52C1CF3FD7F00BEAFD4 /* XYPieChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 62D7EC841CF3FD7E00BEAFD4 /* XYPieChart.m */; };
+		62F997D41D0FD73C0013EF5C /* GeneralTextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 62F997D21D0FD73C0013EF5C /* GeneralTextFieldCell.m */; };
+		62F997D51D0FD73C0013EF5C /* GeneralTextFieldCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 62F997D31D0FD73C0013EF5C /* GeneralTextFieldCell.xib */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
 		7ACE9C541BB00956006C4BB7 /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */; };
@@ -5672,6 +5674,9 @@
 		62D7EC811CF3FD7E00BEAFD4 /* vt-iOSlib-1.0.1.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "vt-iOSlib-1.0.1.zip"; sourceTree = "<group>"; };
 		62D7EC831CF3FD7E00BEAFD4 /* XYPieChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XYPieChart.h; sourceTree = "<group>"; };
 		62D7EC841CF3FD7E00BEAFD4 /* XYPieChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYPieChart.m; sourceTree = "<group>"; };
+		62F997D11D0FD73C0013EF5C /* GeneralTextFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralTextFieldCell.h; sourceTree = "<group>"; };
+		62F997D21D0FD73C0013EF5C /* GeneralTextFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralTextFieldCell.m; sourceTree = "<group>"; };
+		62F997D31D0FD73C0013EF5C /* GeneralTextFieldCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GeneralTextFieldCell.xib; sourceTree = "<group>"; };
 		7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
@@ -8578,6 +8583,9 @@
 		62D7E4991CF3FD7B00BEAFD4 /* GeneralCell */ = {
 			isa = PBXGroup;
 			children = (
+				62F997D11D0FD73C0013EF5C /* GeneralTextFieldCell.h */,
+				62F997D21D0FD73C0013EF5C /* GeneralTextFieldCell.m */,
+				62F997D31D0FD73C0013EF5C /* GeneralTextFieldCell.xib */,
 				62D7E49A1CF3FD7B00BEAFD4 /* GeneralAlertCell.h */,
 				62D7E49B1CF3FD7B00BEAFD4 /* GeneralAlertCell.m */,
 				62D7E49C1CF3FD7B00BEAFD4 /* GeneralAlertCell.xib */,
@@ -12232,6 +12240,7 @@
 				62D7EECB1CF3FD7E00BEAFD4 /* HelloPhoneVerificationViewController.xib in Resources */,
 				62D7F2201CF3FD7E00BEAFD4 /* attached_image_placeholder@3x.png in Resources */,
 				62D7F3EB1CF3FD7E00BEAFD4 /* icon_shop_grey@2x.png in Resources */,
+				62F997D51D0FD73C0013EF5C /* GeneralTextFieldCell.xib in Resources */,
 				62D7F4B81CF3FD7F00BEAFD4 /* icon_etalase@3x.png in Resources */,
 				62D7F08B1CF3FD7E00BEAFD4 /* ProductReputationCell.xib in Resources */,
 				62D7F2E81CF3FD7E00BEAFD4 /* icon_countdown@2x.png in Resources */,
@@ -13519,6 +13528,7 @@
 				62D7EDC81CF3FD7E00BEAFD4 /* PromoResult.m in Sources */,
 				62D7EEA21CF3FD7E00BEAFD4 /* UploadImageImage.m in Sources */,
 				62D7EE821CF3FD7E00BEAFD4 /* TxOrderConfirmedList.m in Sources */,
+				62F997D41D0FD73C0013EF5C /* GeneralTextFieldCell.m in Sources */,
 				62D7EE121CF3FD7E00BEAFD4 /* NotesResult.m in Sources */,
 				62D7EF051CF3FD7E00BEAFD4 /* CameraCollectionViewController.m in Sources */,
 				62D7EE491CF3FD7E00BEAFD4 /* RateResponse.m in Sources */,

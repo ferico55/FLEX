@@ -37,6 +37,12 @@
 
 @property (weak, nonatomic) IBOutlet UIView *border;
 
+@property (strong, nonatomic) IBOutlet UIView *errorView;
+@property (strong, nonatomic) IBOutlet UILabel *errorLabel;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *errorViewHeightConstraint;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *errorLabelWidth;
+
+
 @property (nonatomic) NSInteger indexPage;
 @property (nonatomic) id<UIActionSheetDelegate> actionSheetDelegate;
 
