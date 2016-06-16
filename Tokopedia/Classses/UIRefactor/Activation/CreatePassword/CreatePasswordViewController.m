@@ -92,22 +92,9 @@
 
     _signupButton.layer.cornerRadius = 2;
 
-    NSString *name;
-    if (_facebookUserData) {
-        name = _userProfile.name;
-    } else if (_gidGoogleUser) {
-        name = _gidGoogleUser.profile.name;
-    }
-    _fullNameTextField.text = name;
-    
-    
-    NSString *email;
-    if (_facebookUserData) {
-        email = _userProfile.email;
-    } else if (_gidGoogleUser) {
-        email = _gidGoogleUser.profile.email;
-    }
-    _emailTextField.text = email;
+    _fullNameTextField.text = _userProfile.name;
+
+    _emailTextField.text = _userProfile.email;
     _emailTextField.enabled = NO;
     _emailTextField.layer.opacity = 0.7;
     
@@ -140,6 +127,13 @@
     _userProfile.name = _facebookUserData[@"name"];
     _userProfile.birthDay = _facebookUserData[@"birthday"];
     _userProfile.gender = [self getGenderFromFacebookUserData:facebookUserData];
+}
+
+- (void)setGidGoogleUser:(GIDGoogleUser *)gidGoogleUser {
+    _gidGoogleUser = gidGoogleUser;
+    _userProfile = [CreatePasswordUserProfile new];
+    _userProfile.email = gidGoogleUser.profile.email;
+    _userProfile.name = gidGoogleUser.profile.name;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
