@@ -482,15 +482,8 @@
         [mutableParameters setValue:_selectedDistrict.districtId forKey:@"district_id"];
     }
 
-    NSString *path;
-    if (self.shipmentType == ShipmentTypeOpenShop) {
-        path = @"/v4/myshop/get_open_shop_form.pl";
-        UserAuthentificationManager *auth = [UserAuthentificationManager new];
-        [mutableParameters setValue:auth.getUserId forKey:@"user_id"];
-    } else {
-        path = @"/v4/myshop-shipment/get_shipping_info.pl";
-    }
-    
+    NSString *path = self.shipmentType == ShipmentTypeOpenShop? @"/v4/myshop/get_open_shop_form.pl": @"/v4/myshop-shipment/get_shipping_info.pl";
+
     NSDictionary *parameters = [mutableParameters copy];
     
     [self.networkManager requestWithBaseUrl:[NSString v4Url]
