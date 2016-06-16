@@ -143,6 +143,7 @@
     _userProfile.email = _facebookUserData[@"email"];
     _userProfile.name = _facebookUserData[@"name"];
     _userProfile.birthDay = _facebookUserData[@"birthday"];
+    _userProfile.gender = [self getGender];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -395,7 +396,7 @@
     _signupButton.layer.opacity = 0.7;
     
     [_activationRequest requestCreatePasswordWithFullName:_fullNameTextField.text
-                                                   gender:[self getGender]
+                                                   gender:_userProfile.gender?: @"3"
                                               newPassword:_passwordTextField.text
                                           confirmPassword:_confirmPasswordTextfield.text
                                                    msisdn:_phoneNumberTextField.text
