@@ -11,4 +11,5 @@ import UIKit
 class CreatePasswordUserProfile: NSObject {
     var name: String?
     var email: String?
+    var birthDay: String?
 }
