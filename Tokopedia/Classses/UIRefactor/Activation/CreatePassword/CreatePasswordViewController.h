@@ -18,7 +18,6 @@
 
 @property (strong, nonatomic) NSDictionary *facebookUserData;
 @property GIDGoogleUser *gidGoogleUser;
-@property (strong, nonatomic) NSString *email;
 @property (strong, nonatomic) CreatePasswordUserProfile *userProfile;
 
 @property (copy) void(^onPasswordCreated)();

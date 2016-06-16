@@ -853,7 +853,6 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                 controller.facebookUserData = _facebookUserData;
             } else if (_gidGoogleUser) {
                 controller.gidGoogleUser = _gidGoogleUser;
-                controller.email = _gidGoogleUser.profile.email;
             }
             
             UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];

@@ -102,9 +102,7 @@
     
     
     NSString *email;
-    if (_email) {
-        email = _email;
-    } else if (_facebookUserData) {
+    if (_facebookUserData) {
         email = _userProfile.email;
     } else if (_gidGoogleUser) {
         email = _gidGoogleUser.profile.email;
