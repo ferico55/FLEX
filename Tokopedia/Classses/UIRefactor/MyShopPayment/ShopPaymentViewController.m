@@ -130,19 +130,8 @@
     
     cell.indexPath = indexPath;
     
-    NSURL *url = [NSURL URLWithString:payment.payment_image];
-    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url
-                                                  cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                              timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-    
-    cell.thumbnailImageView.image = nil;
-    [cell.thumbnailImageView setImageWithURLRequest:request
-                                   placeholderImage:nil
-                                            success:^(NSURLRequest *request,
-                                                      NSHTTPURLResponse *response,
-                                                      UIImage *image) {
-                              [cell.thumbnailImageView setImage:image];
-                          } failure:nil];
+    [cell.thumbnailImageView setImageWithURL:[NSURL URLWithString:payment.payment_image]];
+
     return cell;
 }
 
