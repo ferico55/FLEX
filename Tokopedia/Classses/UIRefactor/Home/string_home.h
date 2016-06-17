@@ -52,13 +52,6 @@
 #define kTKPDHOME_APISTARTERPRICEKEY @"price_start"
 #define kTKPDHOME_APITITLEKEY @"title"
 
-#define kTKPDHOME_APIDEPARTMENTIDKEY @"department_id"
-#define kTKPDHOME_APIORDERBYKEY @"order_by"
-#define kTKPDHOME_APILOCATIONKEY @"location"
-#define kTKPDHOME_APISHOPTYPEKEY @"shop_type"
-#define kTKPDHOME_APIPRICEMINKEY @"price_min"
-#define kTKPDHOME_APIPRICEMAXKEY @"price_max"
-
 #define kTKPDHOME_APIQUERYKEY @"key"
 #define kTKPDHOME_APILIMITKEY @"limit"
 

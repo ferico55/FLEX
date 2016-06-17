@@ -7,6 +7,7 @@
 //
 
 #import "Owner.h"
+#import "ReputationDetail.h"
 
 @implementation Owner
 +(RKObjectMapping *)mapping{

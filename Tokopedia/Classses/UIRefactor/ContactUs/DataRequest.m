@@ -7,6 +7,7 @@
 //
 
 #import "DataRequest.h"
+#import "UserAuthentificationManager.h"
 
 @implementation DataRequest
 

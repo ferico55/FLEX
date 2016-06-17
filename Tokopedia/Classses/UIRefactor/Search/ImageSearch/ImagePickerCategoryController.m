@@ -98,7 +98,7 @@
     controller.isFromImageSearch = YES;
     controller.title = @"Hasil Pencarian";
     controller.hidesBottomBarWhenPushed = YES;
-    controller.data = @{@"type": @"search_product", @"department_id": category[@"id"]};
+    controller.data = @{@"type": @"search_product", @"sc": category[@"id"]};
     controller.imageQueryInfo = _imageQuery;
     controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [self.navigationController pushViewController:controller animated:YES];
