@@ -209,32 +209,7 @@ static CGFloat messageTextSize = 17.0;
         self.timeLabel.frame = timeLabelFrame;
     }
 }
-//
-//- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-////    /*Selecting a UIMessagingCell will cause its subviews to be re-layouted. This process will not be animated! So handing animated = YES to this method will do nothing.*/
-////    [super setSelected:selected animated:NO];
-////    
-////    [self setNeedsLayout];
-////    
-////    /*Furthermore, the cell becomes first responder when selected.*/
-////    if (selected == YES) {
-////        [self becomeFirstResponder];
-////    } else {
-////        [self resignFirstResponder];
-////    }
-//}
-//
-//-(void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
-//    
-//}
-//
-//-(void)setEditing:(BOOL)editing animated:(BOOL)animated {
-//    
-//}
 
-//#pragma mark -
-//#pragma mark UIGestureRecognizer-Handling
-//
 - (void)handleLongPress:(UILongPressGestureRecognizer *)longPressRecognizer {
     if (longPressRecognizer.state != UIGestureRecognizerStateBegan) {
         return;
@@ -261,30 +236,6 @@ static CGFloat messageTextSize = 17.0;
     }
 }
 
-//- (NSString*)urlComponent:(NSString*)url WithKey:(NSString*)key {
-//    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
-//    for (NSString *param in [url componentsSeparatedByString:@"&"]) {
-//        NSArray *elts = [param componentsSeparatedByString:@"="];
-//        if([elts count] < 2) continue;
-//        [params setObject:[elts lastObject] forKey:[elts firstObject]];
-//    }
-//    
-//    return [params objectForKey:key];
-//}
-
-
-+ (NSString *)stringReplaceAhrefWithUrl:(NSString *)string{
-    NSString *leadingTrailingWhiteSpacesPattern = @"<a[^>]+href=\".*?\"[^>]*>(.*?)</a>";
-
-    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:leadingTrailingWhiteSpacesPattern options:NSRegularExpressionCaseInsensitive|NSRegularExpressionUseUnicodeWordBoundaries error:NULL];
-
-    NSRange stringRange = NSMakeRange(0, string.length);
-    NSString *trimmedString = [regex stringByReplacingMatchesInString:string options:NSMatchingReportProgress range:stringRange withTemplate:@"$1"];
-    
-    NSString* replacedString = [trimmedString stringByReplacingOccurrencesOfString:@"&bull;" withString:@"*"];
-
-    return replacedString;
-}
 
 - (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url  {
     NSString* theRealUrl = [NSString stringWithFormat:@"https://tkp.me/r?url=%@", [url.absoluteString stringByReplacingOccurrencesOfString:@"*" withString:@"."]];
@@ -308,10 +259,7 @@ static CGFloat messageTextSize = 17.0;
             NSFontAttributeName: font,
             NSParagraphStyleAttributeName: style,
     };
-    NSString *string = message.message_reply;
-    string = [InboxMessageDetailCell stringReplaceAhrefWithUrl:string];
-    
-    
+    NSString *string = [NSString stringReplaceAhrefWithUrl:message.message_reply];
     NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:string attributes:attributes];
     
     
