@@ -36,4 +36,7 @@
 @property (strong, nonatomic) NSArray *shipmentCouriers;
 @property (strong, nonatomic) OrderBooking *booking;
 
+@property BOOL shouldRequestIDropCode;
+@property BOOL isIDropCourier;
+
 @end

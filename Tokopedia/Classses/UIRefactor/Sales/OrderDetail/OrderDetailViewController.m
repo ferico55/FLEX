@@ -326,7 +326,7 @@ typedef enum TagRequest {
 }
 
 - (void)request {
-    if ([_delegate isKindOfClass:[ShipmentConfirmationViewController class]] && [_transaction.order_shipment.shipment_package_id isEqualToString:@"19"]) {
+    if (_shouldRequestIDropCode && _isIDropCourier) {
         _networkManager = [TokopediaNetworkManager new];
         _networkManager.delegate = self;
         _networkManager.tagRequest = OrderDetailTag;
@@ -735,7 +735,7 @@ typedef enum TagRequest {
 }
 
 - (IBAction)tapGetCode:(id)sender {
-    if ([_delegate isKindOfClass:[ShipmentConfirmationViewController class]] && [_transaction.order_shipment.shipment_package_id isEqualToString:@"19"]) {
+    if (_shouldRequestIDropCode && _isIDropCourier) {
         _courierAgentLabel.text = [[NSString stringWithFormat:@"%@ (%@)",
                                     _transaction.order_shipment.shipment_name,
                                     _transaction.order_shipment.shipment_product] stringByAppendingString:@" - Loading..."];
