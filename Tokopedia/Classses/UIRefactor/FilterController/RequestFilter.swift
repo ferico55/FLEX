@@ -13,9 +13,8 @@ class RequestFilter: NSObject {
     class func fetchFilter(success: ((response:FilterResponse) -> Void), failed:((NSError)->Void)) {
         let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
-        
-        networkManager.requestWithBaseUrl("http://private-ccbb0-dynamicfilter.apiary-mock.com",
-                                          path:"/filter",
+        networkManager.requestWithBaseUrl(NSString.aceUrl(),
+                                          path:"/v1/dynamic_attributes",
                                           method: .GET,
                                           parameter: Dictionary(),
                                           mapping: FilterResponse.mapping(),
