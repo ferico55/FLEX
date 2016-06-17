@@ -349,8 +349,7 @@ RequestShipmentCourierDelegate
     controller.delegate = self;
     controller.shipmentCouriers = _shipmentCouriers;
     controller.booking = _orderBooking;
-    controller.shouldRequestIDropCode = YES;
-    controller.isIDropCourier = [_selectedOrder.order_shipment.shipment_package_id isEqualToString:IDropShipmentPackageID];
+    controller.shouldRequestIDropCode = [_selectedOrder.order_shipment.shipment_package_id isEqualToString:IDropShipmentPackageID];
     
     [self.navigationController pushViewController:controller animated:YES];
 }

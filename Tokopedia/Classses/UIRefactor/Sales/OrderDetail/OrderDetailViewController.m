@@ -326,7 +326,7 @@ typedef enum TagRequest {
 }
 
 - (void)request {
-    if (_shouldRequestIDropCode && _isIDropCourier) {
+    if (_shouldRequestIDropCode) {
         _networkManager = [TokopediaNetworkManager new];
         _networkManager.delegate = self;
         _networkManager.tagRequest = OrderDetailTag;
