@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "TrackOrderResult.h"
 
-@interface Track : NSObject
+@interface Track : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *status;
 @property (nonatomic, strong) NSString *server_process_time;
