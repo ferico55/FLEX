@@ -349,7 +349,7 @@ ImageSearchRequestDelegate
     _data = data;
     
     if (_data) {
-        [_params setObject:data[@"department_id"] forKey:@"department_id"];
+        [_params setObject:data[@"department_id"] forKey:@"sc"];
     }
 }
 
@@ -667,7 +667,7 @@ ImageSearchRequestDelegate
 
 #pragma mark - Category notification
 - (void)changeCategory:(NSNotification *)notification {
-    [_params setObject:[notification.userInfo objectForKey:@"department_id"] forKey:@"department_id"];
+    [_params setObject:[notification.userInfo objectForKey:@"department_id"] forKey:@"sc"];
     [_params setObject:[_data objectForKey:@"search"]?:@"" forKey:@"search"];
     
     [self refreshView:nil];
@@ -820,11 +820,19 @@ ImageSearchRequestDelegate
 
 -(NSDictionary*)parameterDynamicFilter{
     NSString *selectedCategory = [[_selectedCategories valueForKey:@"categoryId"] componentsJoinedByString:@","];
+    NSString *categories;
+    if (![[_params objectForKey:@"sc"] isEqualToString:@""] && selectedCategory) {
+        categories = [NSString stringWithFormat:@"%@,%@",selectedCategory,[_params objectForKey:@"sc"]?:@""];
+    } else if (![[_params objectForKey:@"sc"] isEqualToString:@""]){
+        categories = [_params objectForKey:@"sc"]?:@"";
+    } else {
+        categories = selectedCategory;
+    }
 
     NSMutableDictionary *parameter = [[NSMutableDictionary alloc]init];
     [parameter setObject:@"ios" forKey:@"device"];
     [parameter setObject:[_params objectForKey:@"sc_identifier"]?:@"" forKey:@"sc_identifier"];
-    [parameter setObject:selectedCategory?:@"" forKey:@"sc"];
+    [parameter setObject:categories?:@"" forKey:@"sc"];
     if(_isFromImageSearch){
         [parameter setObject:_image_url forKey:@"image_url"];
         if (_strImageSearchResult) {
@@ -973,7 +981,7 @@ ImageSearchRequestDelegate
     NSString *redirect_url = search.data.redirect_url;
     if(search.data.department_id && ![search.data.department_id isEqualToString:@"0"]) {
         NSString *departementID = search.data.department_id?:@"";
-        [_params setObject:departementID forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
+        [_params setObject:departementID forKey:@"sc"];
         if ([_delegate respondsToSelector:@selector(updateTabCategory:)]) {
             CategoryDetail *category = [CategoryDetail new];
             category.categoryId = departementID;
@@ -1080,7 +1088,7 @@ ImageSearchRequestDelegate
         // redirect uri to search category
         else if ([query[1] isEqualToString:kTKPDSEARCH_DATAURLREDIRECTCATEGORY]) {
             NSString *departementID = search.data.department_id?:@"";
-            [_params setObject:departementID forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
+            [_params setObject:departementID forKey:@"sc"];
             [_params removeObjectForKey:@"search"];
             [_networkManager requestCancel];
             
@@ -1197,20 +1205,20 @@ ImageSearchRequestDelegate
 }
 
 - (BOOL) isUsingAnyFilter{
-    BOOL isUsingLocationFilter = [_params objectForKey:@"location"] != nil && ![[_params objectForKey:@"location"] isEqualToString:@""];
+    BOOL isUsingLocationFilter = [_params objectForKey:@"floc"] != nil && ![[_params objectForKey:@"floc"] isEqualToString:@""];
     BOOL isUsingDepFilter = [_params objectForKey:@"department_id"] != nil;
-    BOOL isUsingPriceMinFilter = [_params objectForKey:@"price_min"] != nil && ![[[NSString alloc]initWithFormat:@"%@", [_params objectForKey:@"price_min"]] isEqualToString:@"0"];
-    BOOL isUsingPriceMaxFilter = [_params objectForKey:@"price_max"] != nil && ![[[NSString alloc]initWithFormat:@"%@", [_params objectForKey:@"price_max"]] isEqualToString:@"0"];;
-    BOOL isUsingShopTypeFilter = [_params objectForKey:@"shop_type"] != nil && ![[[NSString alloc]initWithFormat:@"%@", [_params objectForKey:@"shop_type"]] isEqualToString:@"0"];;
+    BOOL isUsingPriceMinFilter = [_params objectForKey:@"pmin"] != nil && ![[[NSString alloc]initWithFormat:@"%@", [_params objectForKey:@"pmin"]] isEqualToString:@"0"];
+    BOOL isUsingPriceMaxFilter = [_params objectForKey:@"pmax"] != nil && ![[[NSString alloc]initWithFormat:@"%@", [_params objectForKey:@"pmax"]] isEqualToString:@"0"];;
+    BOOL isUsingShopTypeFilter = [_params objectForKey:@"fshop"] != nil && ![[[NSString alloc]initWithFormat:@"%@", [_params objectForKey:@"fshop"]] isEqualToString:@"0"];;
     
     return  (isUsingDepFilter || isUsingLocationFilter || isUsingPriceMaxFilter || isUsingPriceMinFilter || isUsingShopTypeFilter);
 }
 
 - (BOOL) isUsingAnyFilterExceptCategory{
-    BOOL isUsingLocationFilter = [_params objectForKey:@"location"] != nil && ![[_params objectForKey:@"location"] isEqualToString:@""];
-    BOOL isUsingPriceMinFilter = [_params objectForKey:@"price_min"] != nil && ![[[NSString alloc]initWithFormat:@"%@", [_params objectForKey:@"price_min"]] isEqualToString:@"0"];
-    BOOL isUsingPriceMaxFilter = [_params objectForKey:@"price_max"] != nil && ![[[NSString alloc]initWithFormat:@"%@", [_params objectForKey:@"price_max"]] isEqualToString:@"0"];;
-    BOOL isUsingShopTypeFilter = [_params objectForKey:@"shop_type"] != nil && ![[[NSString alloc]initWithFormat:@"%@", [_params objectForKey:@"shop_type"]] isEqualToString:@"0"];;
+    BOOL isUsingLocationFilter = [_params objectForKey:@"floc"] != nil && ![[_params objectForKey:@"floc"] isEqualToString:@""];
+    BOOL isUsingPriceMinFilter = [_params objectForKey:@"pmin"] != nil && ![[[NSString alloc]initWithFormat:@"%@", [_params objectForKey:@"pmin"]] isEqualToString:@"0"];
+    BOOL isUsingPriceMaxFilter = [_params objectForKey:@"pmax"] != nil && ![[[NSString alloc]initWithFormat:@"%@", [_params objectForKey:@"pmax"]] isEqualToString:@"0"];;
+    BOOL isUsingShopTypeFilter = [_params objectForKey:@"fshop"] != nil && ![[[NSString alloc]initWithFormat:@"%@", [_params objectForKey:@"fshop"]] isEqualToString:@"0"];;
     
     return  ( isUsingLocationFilter || isUsingPriceMaxFilter || isUsingPriceMinFilter || isUsingShopTypeFilter);
 }

@@ -78,15 +78,15 @@
     
     SearchResultViewController *vc = [SearchResultViewController new];
     vc.hidesBottomBarWhenPushed = YES;
-    vc.data =@{categoryIdKey : categoryId,categoryNameKey : categoryName, searchTypeKey:@"search_product"};
+    vc.data =@{@"sc" : categoryId,categoryNameKey : categoryName, searchTypeKey:@"search_product"};
     
     SearchResultViewController *vc1 = [SearchResultViewController new];
     vc1.hidesBottomBarWhenPushed = YES;
-    vc1.data =@{categoryIdKey : categoryId,categoryNameKey : categoryName, searchTypeKey:@"search_catalog"};
+    vc1.data =@{@"sc" : categoryId,categoryNameKey : categoryName, searchTypeKey:@"search_catalog"};
     
     SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
     vc2.hidesBottomBarWhenPushed = YES;
-    vc2.data =@{categoryIdKey : categoryId,categoryNameKey : categoryName, searchTypeKey:@"search_shop"};
+    vc2.data =@{@"sc" : categoryId,categoryNameKey : categoryName, searchTypeKey:@"search_shop"};
     
     NSArray *viewcontrollers = @[vc,vc1,vc2];
     

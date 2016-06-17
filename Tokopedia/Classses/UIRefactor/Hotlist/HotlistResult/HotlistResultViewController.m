@@ -591,11 +591,11 @@ static NSString const *rows = @"12";
     if ([querry[1] isEqualToString:kTKPDHOME_DATAURLREDIRECTCATEGORY]) {
         SearchResultViewController *vc = [SearchResultViewController new];
         NSString *searchtext = hashtags.department_id;
-        vc.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : searchtext?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY};
+        vc.data =@{@"sc" : searchtext?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY};
         SearchResultViewController *vc1 = [SearchResultViewController new];
-        vc1.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : searchtext?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY};
+        vc1.data =@{@"sc" : searchtext?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY};
         SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
-        vc2.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : searchtext?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY};
+        vc2.data =@{@"sc" : searchtext?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY};
         NSArray *viewcontrollers = @[vc,vc1,vc2];
 
         TKPDTabNavigationController *c = [TKPDTabNavigationController new];
@@ -996,8 +996,10 @@ static NSString const *rows = @"12";
     
     NSString *selectedCategory = [[_selectedCategories valueForKey:@"categoryId"] componentsJoinedByString:@","];
     NSString *categories;
-    if (![[_detailfilter objectForKey:@"sc"] isEqualToString:@""]) {
+    if (![[_detailfilter objectForKey:@"sc"] isEqualToString:@""] && selectedCategory) {
         categories = [NSString stringWithFormat:@"%@,%@",selectedCategory,[_detailfilter objectForKey:@"sc"]?:@""];
+    } else if (![[_detailfilter objectForKey:@"sc"] isEqualToString:@""]){
+        categories = [_detailfilter objectForKey:@"sc"]?:@"";
     } else {
         categories = selectedCategory;
     }
