@@ -42,7 +42,6 @@
 }
 
 - (void)layoutSubviews {
-
     [super layoutSubviews];
     self.commentlabel.preferredMaxLayoutWidth = self.commentlabel.frame.size.width;
 }
@@ -59,7 +58,7 @@
 
     
     cell.commentlabel.enabledTextCheckingTypes = NSTextCheckingTypeLink;
-    NSString* string = [InboxMessageDetailCell stringReplaceAhrefWithUrl:list.comment_message];
+    NSString* string = [NSString stringReplaceAhrefWithUrl:list.comment_message];
     cell.commentlabel.text = string;
     cell.commentlabel.delegate = self;
 
