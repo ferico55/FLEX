@@ -46,4 +46,7 @@
 + (void)trackSnapSearchCategory:(NSString *)categoryName;
 + (void)trackSnapSearchAddToCart:(ProductDetail *)product;
 
++ (void)trackSuccessSubmitReview;
++ (void)trackSearchInboxReview;
+
 @end

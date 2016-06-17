@@ -296,6 +296,7 @@ TokopediaNetworkManagerDelegate
                                                                    token:_token
                                                                     host:_generatedHost.upload_host
                                                                onSuccess:^(SubmitReviewResult *result) {
+                                                                   [TPAnalytics trackSuccessSubmitReview];
                                                                    NSMutableArray *allViewControllers = [NSMutableArray arrayWithArray:[self.navigationController viewControllers]];
                                                                    
                                                                    StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[@"Anda telah berhasil mengisi ulasan"]
