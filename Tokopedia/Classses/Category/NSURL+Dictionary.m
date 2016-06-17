@@ -11,6 +11,10 @@
 @implementation NSURL (Dictionary)
 
 - (NSString *)valueForKey:(NSString *)key {
+    return [self.parameters objectForKey:key];
+}
+
+- (NSDictionary *)parameters {
     NSArray *query = [self.query componentsSeparatedByString:@"&"];
     NSMutableDictionary *queries = [NSMutableDictionary new];
     for (NSString *keyValuePair in query) {
@@ -19,7 +23,7 @@
         NSString *value = [pairComponents objectAtIndex:1];
         [queries setObject:value forKey:key];
     }
-    return [queries objectForKey:key];
+    return queries;
 }
 
 @end

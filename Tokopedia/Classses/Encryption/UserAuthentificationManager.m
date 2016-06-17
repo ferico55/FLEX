@@ -74,7 +74,15 @@
 }
 
 - (NSString *)getShopId {
-    return [_auth objectForKey:@"shop_id"]?:@"0";
+    if ([_auth objectForKey:@"shop_id"]) {
+        if ([[_auth objectForKey:@"shop_id"] isKindOfClass:[NSNumber class]]) {
+            return [NSString stringWithFormat:@"%@", [_auth objectForKey:@"shop_id"]];
+        } else {
+            return [_auth objectForKey:@"shop_id"];
+        }        
+    } else {
+        return @"0";
+    }
 }
 
 - (NSString *)getShopName {

@@ -17,4 +17,6 @@
 @property (nonatomic, strong) NSArray *shop_payment;
 @property (nonatomic, strong) NSArray *payment_options;
 
++ (RKObjectMapping *)mapping;
+
 @end

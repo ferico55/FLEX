@@ -19,6 +19,7 @@
 @property (nonatomic, strong) NSString *response_message;
 @property (nonatomic, strong) NSString *response_time_fmt;
 @property (nonatomic, strong) NSString *response_time_ago;
+@property (nonatomic, strong) NSString *response_msg;
 @property (nonatomic) BOOL failedSentMessage, canDelete;
 
 + (RKObjectMapping*) mapping;

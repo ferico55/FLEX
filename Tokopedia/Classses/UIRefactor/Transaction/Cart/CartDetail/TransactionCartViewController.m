@@ -2478,7 +2478,8 @@
                                 NSDictionary *userInfo = @{DATA_CART_SUMMARY_KEY:_cartSummary?:[TransactionSummaryDetail new],
                                                            DATA_TYPE_KEY:@(TYPE_CART_SUMMARY),
                                                            DATA_CART_GATEWAY_KEY :selectedGateway?:[TransactionCartGateway new],
-                                                           DATA_CC_KEY : data.credit_card_data?:[CCData new]
+                                                           DATA_CC_KEY : data.credit_card_data?:[CCData new],
+                                                           API_VOUCHER_CODE_KEY: [_dataInput objectForKey:API_VOUCHER_CODE_KEY]
                                                            };
                                 [_delegate didFinishRequestCheckoutData:userInfo];
                                 [self isLoading:NO];
@@ -2565,7 +2566,10 @@
                 break;
             default:
             {
-                NSDictionary *userInfo = @{DATA_CART_RESULT_KEY:data};
+                NSDictionary *userInfo = @{
+                                           DATA_CART_RESULT_KEY:data,
+                                           API_VOUCHER_CODE_KEY: [_data objectForKey:API_VOUCHER_CODE_KEY]
+                                           };
                 [self.delegate didFinishRequestBuyData:userInfo];
                 [_dataInput removeAllObjects];
             }

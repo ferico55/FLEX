@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface ActionOrderResult : NSObject
+@interface ActionOrderResult : NSObject <TKPObjectMapping>
 
 @property (strong, nonatomic) NSString *is_success;
 
