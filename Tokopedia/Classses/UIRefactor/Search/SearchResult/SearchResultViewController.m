@@ -799,7 +799,13 @@ ImageSearchRequestDelegate
 -(NSDictionary *)parameterFilter{
     NSMutableDictionary *parameter = [[NSMutableDictionary alloc]init];
     [parameter setObject:@"ios" forKey:@"device"];
-    [parameter addEntriesFromDictionary:_params];
+    [parameter setObject:[_params objectForKey:@"sc"]?:@"" forKey:@"sc"];
+    [parameter setObject:[_params objectForKey:@"floc"]?:@"" forKey:@"floc"];
+    [parameter setObject:[_params objectForKey:@"ob"]?:@"" forKey:@"ob"];
+    [parameter setObject:[_params objectForKey:@"pmin"]?:@"" forKey:@"pmin"];
+    [parameter setObject:[_params objectForKey:@"pmax"]?:@"" forKey:@"pmax"];
+    [parameter setObject:[_params objectForKey:@"fshop"]?:@"" forKey:@"fshop"];
+    [parameter setObject:[_params objectForKey:@"sc_identifier"]?:@"" forKey:@"sc_identifier"];
     if(_isFromImageSearch){
         [parameter setObject:_image_url forKey:@"image_url"];
         if (_strImageSearchResult) {
