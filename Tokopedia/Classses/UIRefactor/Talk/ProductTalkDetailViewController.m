@@ -274,6 +274,7 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     GeneralTalkCommentCell* cell = [tableView dequeueReusableCellWithIdentifier:kTKPDGENERALTALKCOMMENTCELL_IDENTIFIER];
+    __weak __typeof(self) weakSelf = self;
     if (cell == nil) {
         cell = [GeneralTalkCommentCell newcell];
     }
@@ -281,7 +282,6 @@
     cell.delegate = self;
     cell.del = self;
     cell.onTapTalkWithUrl = ^(NSURL* url){
-        __weak __typeof(self) weakSelf = self;
         WebViewController *controller = [[WebViewController alloc] init];
         controller.strURL = url.absoluteString;
         controller.strTitle = url.absoluteString;

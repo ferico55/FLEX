@@ -188,12 +188,12 @@
 }
 
 - (void)openWebViewWithURL:(NSURL*)url {
+    __weak __typeof(self) weakSelf = self;
+    
     WebViewController *controller = [[WebViewController alloc] init];
     controller.strURL = url.absoluteString;
     controller.strTitle = url.absoluteString;
     controller.onTapButtonWithURL = ^(NSURL* url) {
-        __weak __typeof(self) weakSelf = self;
-        
         if([url.absoluteString isEqualToString:@"https://www.tokopedia.com/"]) {
             [weakSelf.navigationController popViewControllerAnimated:YES];
         }
