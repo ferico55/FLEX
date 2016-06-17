@@ -11,6 +11,8 @@
 #import "ReputationDetail.h"
 //#import "Tokopedia-Swift.h"
 
+@class CategoryDetail;
+
 @interface UserAuthentificationManager : NSObject {
     id userLoginData;
     NSString *_userId;
@@ -24,7 +26,7 @@
 - (NSString*)getShopId;
 - (NSString*)getShopName;
 - (NSString*)getShopHasTerm;
-- (id )getLastProductAddCategory;
+- (CategoryDetail*)getLastProductAddCategory;
 - (NSString*)getMyDeviceToken;
 - (NSString*)getMyDeviceIdToken;
 - (BOOL)isMyShopWithShopId:(NSString*)shopId;
