@@ -538,7 +538,7 @@
     cell.getBtnTryAgain.hidden = !(_detailReputationReview.review_response.failedSentMessage);
     
     //Set image
-    NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_detailReputationReview.product_owner.shop_img] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_shopImage] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     [cell.getImgProfile setImageWithURLRequest:userImageRequest placeholderImage:[UIImage imageNamed:@"icon_profile_picture.jpeg"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
@@ -893,12 +893,12 @@
                                                                                _detailReputationReview.product_owner.shop_reputation_score = result.product_owner.shop_reputation_score;
                                                                            }
                                                                            else {
-                                                                               _shopBadgeLevel = _detailReputationReview.shop_badge_level = result.shop_reputation.reputation_badge_object;
+                                                                               _shopBadgeLevel = _detailReputationReview.shop_badge_level = result.shop_reputation.reputation_badge_object?:_shopBadgeLevel;
                                                                                _detailReputationReview.product_owner.shop_reputation_score = result.product_owner.shop_reputation_score;
                                                                                _detailReputationReview.product_owner.shop_id = result.shop_id;
                                                                                _detailReputationReview.product_owner.shop_name = result.shop_name;
                                                                                _detailReputationReview.product_owner.shop_url = result.shop_img_uri;
-                                                                               _detailReputationReview.product_owner.shop_img = result.product_owner.shop_img;
+                                                                               _shopImage = result.product_owner.shop_img;
                                                                            }
                                                                        }
                                                                        
