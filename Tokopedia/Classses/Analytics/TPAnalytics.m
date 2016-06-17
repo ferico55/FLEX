@@ -385,4 +385,23 @@
     [analytics.dataLayer push:data];
 }
 
++ (void)trackPushNotificationAccepted:(BOOL)accepted {
+    TPAnalytics *analytics = [[self alloc] init];
+    NSDictionary *data = @{
+                            @"event": @"pushNotificationPermissionRequest",
+                            @"allowed": @(accepted)
+                           };
+    
+    [analytics.dataLayer push:data];
+}
+
++ (void)trackOpenPushNotificationSetting {
+    TPAnalytics *analytics = [[self alloc] init];
+    NSDictionary *data = @{
+                           @"event": @"openPushNotificationSetting"
+                           };
+    
+    [analytics.dataLayer push:data];
+}
+
 @end
