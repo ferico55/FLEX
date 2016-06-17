@@ -55,10 +55,16 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
     
     private func requestFilter(){
         RequestFilter .fetchFilter({ (response) in
+            if(response.filter.count == 0){
+                let vc : UIViewController = UIViewController()
+                vc.view.backgroundColor = UIColor.whiteColor()
+                self.setTabbarViewController([vc])
+            } else {
                 self.filterResponse = response
                 self.completionHandlerResponse(response)
                 self.adjustControllers()
                 self.setTabbarViewController(self.listControllers)
+            }
             }) { (error) in
                 let vc : UIViewController = UIViewController()
                 vc.view.backgroundColor = UIColor.whiteColor()

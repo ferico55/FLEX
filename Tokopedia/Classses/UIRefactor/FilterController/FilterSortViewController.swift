@@ -153,6 +153,8 @@ class FilterSortViewController: UIViewController, UITableViewDelegate, UITableVi
             self.tableView.reloadData()
             
         }) { (error) in
+            self.tableView.setContentOffset(CGPointZero, animated:true)
+            self.refreshControl.endRefreshing()
         }
     }
 }
