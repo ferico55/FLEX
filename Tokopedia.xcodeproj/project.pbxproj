@@ -1159,7 +1159,6 @@
 		853CEC621D128D1D009033AF /* ChangeCourierViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 853CE2171D128D14009033AF /* ChangeCourierViewController.xib */; };
 		853CEC631D128D1D009033AF /* FilterShipmentConfirmationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 853CE2191D128D14009033AF /* FilterShipmentConfirmationViewController.m */; };
 		853CEC641D128D1D009033AF /* FilterShipmentConfirmationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 853CE21A1D128D14009033AF /* FilterShipmentConfirmationViewController.xib */; };
-		853CEC651D128D1D009033AF /* RequestShipmentCourier.m in Sources */ = {isa = PBXBuildFile; fileRef = 853CE21C1D128D14009033AF /* RequestShipmentCourier.m */; };
 		853CEC661D128D1D009033AF /* ShipmentConfirmationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 853CE21E1D128D14009033AF /* ShipmentConfirmationViewController.m */; };
 		853CEC671D128D1D009033AF /* ShipmentConfirmationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 853CE21F1D128D14009033AF /* ShipmentConfirmationViewController.xib */; };
 		853CEC681D128D1D009033AF /* SubmitShipmentConfirmationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 853CE2211D128D14009033AF /* SubmitShipmentConfirmationViewController.m */; };
@@ -4480,8 +4479,6 @@
 		853CE2181D128D14009033AF /* FilterShipmentConfirmationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilterShipmentConfirmationViewController.h; sourceTree = "<group>"; };
 		853CE2191D128D14009033AF /* FilterShipmentConfirmationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilterShipmentConfirmationViewController.m; sourceTree = "<group>"; };
 		853CE21A1D128D14009033AF /* FilterShipmentConfirmationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FilterShipmentConfirmationViewController.xib; sourceTree = "<group>"; };
-		853CE21B1D128D14009033AF /* RequestShipmentCourier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestShipmentCourier.h; sourceTree = "<group>"; };
-		853CE21C1D128D14009033AF /* RequestShipmentCourier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestShipmentCourier.m; sourceTree = "<group>"; };
 		853CE21D1D128D14009033AF /* ShipmentConfirmationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShipmentConfirmationViewController.h; sourceTree = "<group>"; };
 		853CE21E1D128D14009033AF /* ShipmentConfirmationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShipmentConfirmationViewController.m; sourceTree = "<group>"; };
 		853CE21F1D128D14009033AF /* ShipmentConfirmationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShipmentConfirmationViewController.xib; sourceTree = "<group>"; };
@@ -9807,8 +9804,6 @@
 				853CE2181D128D14009033AF /* FilterShipmentConfirmationViewController.h */,
 				853CE2191D128D14009033AF /* FilterShipmentConfirmationViewController.m */,
 				853CE21A1D128D14009033AF /* FilterShipmentConfirmationViewController.xib */,
-				853CE21B1D128D14009033AF /* RequestShipmentCourier.h */,
-				853CE21C1D128D14009033AF /* RequestShipmentCourier.m */,
 				853CE21D1D128D14009033AF /* ShipmentConfirmationViewController.h */,
 				853CE21E1D128D14009033AF /* ShipmentConfirmationViewController.m */,
 				853CE21F1D128D14009033AF /* ShipmentConfirmationViewController.xib */,
@@ -13753,7 +13748,6 @@
 				853CE95A1D128D1D009033AF /* SearchAWSProduct.m in Sources */,
 				853CECEE1D128D1E009033AF /* ShopContainerViewController.m in Sources */,
 				853CE9AA1D128D1D009033AF /* POSIndonesia.m in Sources */,
-				853CEC651D128D1D009033AF /* RequestShipmentCourier.m in Sources */,
 				853CE8DC1D128D1D009033AF /* InboxTicketUserInvolve.m in Sources */,
 				853CE9BE1D128D1D009033AF /* RateProduct.m in Sources */,
 				853CECC41D128D1D009033AF /* EditShopDescriptionViewCell.m in Sources */,
