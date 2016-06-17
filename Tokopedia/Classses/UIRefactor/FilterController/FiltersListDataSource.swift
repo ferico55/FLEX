@@ -97,7 +97,7 @@ class FiltersListDataSource:  NSObject, UITableViewDelegate, UITableViewDataSour
             item = items[indexPath.row];
         }
         
-        if item!.type == "checkmark" {
+        if item!.type == self.checkmarType() {
             cell = FilterTableViewCell.init(style: .Default, reuseIdentifier: "cellCheckmark")
             (cell as! FilterTableViewCell).label.text =  item!.name
             (cell as! FilterTableViewCell).disableSelected = false
@@ -112,7 +112,7 @@ class FiltersListDataSource:  NSObject, UITableViewDelegate, UITableViewDataSour
             customColorView.backgroundColor = UIColor.whiteColor()
             cell.selectedBackgroundView =  customColorView;
         }
-        if item!.type == "textinput" {
+        if item!.type == self.textInputType() {
             cell = TextFieldCell.init(style: .Default, reuseIdentifier: "cellTextField")
             (cell as! TextFieldCell).titleLabel.text = item!.name
             
@@ -136,6 +136,14 @@ class FiltersListDataSource:  NSObject, UITableViewDelegate, UITableViewDataSour
         }
         
         return cell
+    }
+    
+    func textInputType() -> NSString {
+        return "textinput"
+    }
+    
+    func checkmarType() -> NSString {
+        return "checkmark"
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {

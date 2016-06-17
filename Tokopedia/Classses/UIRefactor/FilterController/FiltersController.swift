@@ -70,10 +70,14 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
         tabBarController.viewControllers = viewControllers as [AnyObject]
     }
     
+    private func getTitle() -> String{
+        return "Filter"
+    }
+    
     private func presentControllerFilter(){
         
         tabBarController.delegate = self
-        tabBarController.title = "FILTER"
+        tabBarController.title = self.getTitle()
         tabBarController.tabBarWidth = 110
         tabBarController.tabBarItemHeight = 44
         tabBarController.showResetButton = true
@@ -164,7 +168,7 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
         
         let listKeyFilters = ListFilters.map({$0.key})
         for selectedFilter in selectedFilters {
-            if selectedFilter.type == "textinput" {
+            if selectedFilter.type == self.textInputType() {
                 if listKeyFilters .contains(selectedFilter.key) {
                     textFieldIsActive = true
                 }
@@ -172,6 +176,10 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
         }
             
         return ((allElemsContained.count>0) || textFieldIsActive)
+    }
+    
+    private func textInputType()-> NSString{
+        return "textinput"
     }
     
     private func categoryTitle() -> NSString{
