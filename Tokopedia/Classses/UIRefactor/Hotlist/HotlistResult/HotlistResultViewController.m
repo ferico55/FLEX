@@ -1013,7 +1013,7 @@ static NSString const *rows = @"12";
     
     [params addEntriesFromDictionary:param];
     [params addEntriesFromDictionary:_selectedFilterParam];
-    [params setObject:categories forKey:@"sc"];
+    [params setObject:categories?:@"" forKey:@"sc"];
     [params addEntriesFromDictionary:_selectedSortParam];
     
     return [params copy];
