@@ -100,6 +100,9 @@
     [_tambahEtalaseTextField setText:@""];
     selectedIndexPath = indexPath;
     EtalaseList *selectedEtalase = indexPath.section == 0?[otherEtalaseList objectAtIndex:indexPath.row]:[etalaseList objectAtIndex:indexPath.row];
+    if ([self.delegate respondsToSelector:@selector(didSelectEtalaseFilter:)]) {
+        [self.delegate didSelectEtalaseFilter:selectedEtalase];
+    }
     if(_isEditable){
         [[alertView textFieldAtIndex:0] setText:selectedEtalase.etalase_name];
         [alertView show];
@@ -199,9 +202,13 @@
     if(selectedIndexPath){
         if(!_isEditable){
             if(selectedIndexPath.section == 0){
-                [_delegate didSelectEtalase:otherEtalaseList[selectedIndexPath.row]];
+                if ([self.delegate respondsToSelector:@selector(didSelectEtalase:)]) {
+                    [self.delegate didSelectEtalase:otherEtalaseList[selectedIndexPath.row]];
+                }
             }else{
-                [_delegate didSelectEtalase:etalaseList[selectedIndexPath.row]];
+                if ([self.delegate respondsToSelector:@selector(didSelectEtalase:)]) {
+                    [self.delegate didSelectEtalase:etalaseList[selectedIndexPath.row]];
+                }
             }
             
         }

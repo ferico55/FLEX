@@ -7,8 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
-#import "CategoryResult.h"
+#import "Tokopedia-Swift.h"
 
 @interface CategoryObj : NSObject
 
@@ -16,6 +15,7 @@
 @property (nonatomic, strong) NSString *status;
 @property (nonatomic, strong) NSString *server_process_time;
 @property (nonatomic, strong) CategoryResult *result;
+@property (nonatomic, strong) CategoryResult *data;
 
 
 @end

@@ -45,7 +45,7 @@ typedef NS_ENUM(NSInteger, SpellCheckNetworkManager) {
 }
 
 - (id)getObjectManager:(int)tag {
-    _objectManager = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:@"https://ace.tokopedia.com/"]];
+    _objectManager = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:[NSString aceUrl]]];
     
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[SpellCheckResponse class]];
     [statusMapping addAttributeMappingsFromArray:@[@"status", @"server_process_time"]];

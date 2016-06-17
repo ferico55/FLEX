@@ -138,10 +138,10 @@
     [_detailfilter setObject:[datafilter objectForKey:kTKPDFILTER_APILOCATIONKEY]?:@"" forKey:kTKPDFILTER_APILOCATIONKEY];
     [_detailfilter setObject:[datafilter objectForKey:kTKPDFILTER_DATASORTVALUEKEY]?:@"" forKey:kTKPDFILTER_APICONDITIONKEY];
     
-    NSInteger pricemin = [[datafilter objectForKey:kTKPDFILTER_APIPRICEMINKEY] integerValue];
-    NSInteger pricemax = [[datafilter objectForKey:kTKPDFILTER_APIPRICEMAXKEY] integerValue];
-    [_detailfilter setObject:@(pricemin?:0) forKey:kTKPDFILTER_APIPRICEMINKEY];
-    [_detailfilter setObject:@(pricemax?:0) forKey:kTKPDFILTER_APIPRICEMAXKEY];
+    NSInteger pricemin = [[datafilter objectForKey:@"pmin"] integerValue];
+    NSInteger pricemax = [[datafilter objectForKey:@"pmax"] integerValue];
+    [_detailfilter setObject:@(pricemin?:0) forKey:@"pmin"];
+    [_detailfilter setObject:@(pricemax?:0) forKey:@"pmax"];
     
     _pricemin.text = (pricemin>0)?[NSString stringWithFormat:@"%zd",pricemin]:0;
     _pricemax.text = (pricemax>0)?[NSString stringWithFormat:@"%zd",pricemax]:0;
@@ -251,24 +251,14 @@
             case 11:
             {
                 //SUBMIT
-                NSInteger priceMin = [[_detailfilter objectForKey:kTKPDFILTER_APIPRICEMINKEY] integerValue];
-                NSInteger priceMax = [[_detailfilter objectForKey:kTKPDFILTER_APIPRICEMAXKEY] integerValue];
+                NSInteger priceMin = [[_detailfilter objectForKey:@"pmin"] integerValue];
+                NSInteger priceMax = [[_detailfilter objectForKey:@"pmax"] integerValue];
  
                 if (priceMax != nil && priceMax < priceMin) {
                     StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Harga minimum harus lebih kecil dari harga maksimum."] delegate:self];
                     [alert show];
                 } else {
-                    NSDictionary *userinfo = @{
-                                               kTKPDFILTER_APILOCATIONKEY:[_detailfilter objectForKey:kTKPDFILTER_APILOCATIONKEY]?:@"",
-                                               kTKPDFILTER_APISHOPTYPEKEY:[_detailfilter objectForKey:kTKPDFILTER_APISHOPTYPEKEY]?:@"",
-                                               kTKPDFILTER_APIPRICEMINKEY:[_detailfilter objectForKey:kTKPDFILTER_APIPRICEMINKEY]?:@"",
-                                               kTKPDFILTER_APIPRICEMAXKEY:[_detailfilter objectForKey:kTKPDFILTER_APIPRICEMAXKEY]?:@"",
-                                               kTKPDFILTER_APICONDITIONKEY:[_detailfilter objectForKey:kTKPDFILTER_APICONDITIONKEY]?:@"",
-                                               kTKPDFILTER_APILOCATIONNAMEKEY: [_detailfilter objectForKey:kTKPDFILTER_APILOCATIONNAMEKEY]?:@"",
-                                               kTKPDFILTERLOCATION_DATAINDEXPATHKEY:[_detailfilter objectForKey:kTKPDFILTERLOCATION_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0],
-                                               kTKPDFILTERCONDITION_DATAINDEXPATHKEY:[_detailfilter objectForKey:kTKPDFILTERCONDITION_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0],
-                                               kTKPDFILTER_APICONDITIONNAMEKEY : [_detailfilter objectForKey:kTKPDFILTER_APICONDITIONNAMEKEY]?:@""
-                                               };
+                    NSDictionary *userinfo = _detailfilter;
                     [_delegate FilterViewController:self withUserInfo:userinfo];
                     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                 }
@@ -442,9 +432,9 @@
 - (void)priceTextFieldChanged:(UITextField *)textField
 {
     if (textField == _pricemin || textField == _pricemincatalog) {
-        [_detailfilter setObject:textField.text forKey:kTKPDFILTER_APIPRICEMINKEY];
+        [_detailfilter setObject:textField.text forKey:@"pmin"];
     } else if (textField == _pricemax || textField == _pricemaxcatalog) {
-        [_detailfilter setObject:textField.text forKey:kTKPDFILTER_APIPRICEMAXKEY];
+        [_detailfilter setObject:textField.text forKey:@"pmax"];
     }
 }
 

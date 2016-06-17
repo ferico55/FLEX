@@ -42,6 +42,7 @@ static NSString const *rows = @"12";
 @property (strong, nonatomic) NSMutableArray *product;
 @property (weak, nonatomic) IBOutlet UIView *shopview;
 @property (strong, nonatomic) SpellCheckRequest *spellCheckRequest;
+@property (strong, nonatomic) IBOutlet UIImageView *activeFilterImageView;
 
 -(void)cancel;
 -(void)loadData;
@@ -82,6 +83,10 @@ static NSString const *rows = @"12";
     NSTimeInterval _timeinterval;
     
     NSIndexPath *_sortIndexPath;
+    
+    FilterResponse *_filterResponse;
+    NSArray<ListOption*> *_selectedFilters;
+    NSDictionary *_selectedFilterParam;
 }
 
 #pragma mark - Initialization
@@ -466,17 +471,49 @@ static NSString const *rows = @"12";
         }
         case 11:
         {
-            // Action Filter Button
-            FilterViewController *vc = [FilterViewController new];
-            vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPESHOPVIEWKEY),
-                        kTKPDFILTER_DATAFILTERKEY: _params};
-            vc.delegate = self;
-            UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
-            [self.navigationController presentViewController:nav animated:YES completion:nil];
+            [self didTapFilterButton:sender];
             break;
         }
         default:
             break;
+    }
+}
+
+-(IBAction)didTapFilterButton:(UIButton*)button{
+    if ([self isUseDynamicFilter]) {
+        [self pushDynamicFilter];
+    } else {
+        [self pushFilter];
+    }
+}
+
+-(void)pushFilter{
+    FilterViewController *vc = [FilterViewController new];
+    vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPESHOPVIEWKEY),
+                kTKPDFILTER_DATAFILTERKEY: _params};
+    vc.delegate = self;
+    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
+    [self.navigationController presentViewController:nav animated:YES completion:nil];
+}
+
+-(void)pushDynamicFilter{
+    FiltersController *controller = [[FiltersController alloc]initWithFilterResponse:_filterResponse?:[FilterResponse new] categories:nil selectedCategories:nil selectedFilters:_selectedFilters presentedVC:self onCompletion:^(NSArray<CategoryDetail *> * selectedCategories , NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
+        
+        _selectedFilters = selectedFilters;
+        _selectedFilterParam = paramFilters;
+        _activeFilterImageView.hidden = (_selectedFilters.count == 0);
+        [self refreshView:nil];
+        
+    } response:^(FilterResponse * filterResponse){
+        _filterResponse = filterResponse;
+    }];
+}
+
+-(BOOL)isUseDynamicFilter{
+    if(FBTweakValue(@"Dynamic", @"Filter", @"Enabled", YES)) {
+        return YES;
+    } else {
+        return NO;
     }
 }
 
@@ -523,11 +560,11 @@ static NSString const *rows = @"12";
     [self loadData];
 }
 - (BOOL) isUsingAnyFilter{
-    BOOL isUsingLocationFilter = [_params objectForKey:@"location"] != nil && ![[_params objectForKey:@"location"] isEqualToString:@""];
-    BOOL isUsingDepFilter = [_params objectForKey:@"department_id"] != nil && ![[_params objectForKey:@"department_id"] isEqualToString:@""];
-    BOOL isUsingPriceMinFilter = [_params objectForKey:@"price_min"] != nil && ![_params objectForKey:@"price_min"] == 0;
-    BOOL isUsingPriceMaxFilter = [_params objectForKey:@"price_max"] != nil && ![_params objectForKey:@"price_max"] == 0;
-    BOOL isUsingShopTypeFilter = [_params objectForKey:@"shop_type"] != nil && ![_params objectForKey:@"shop_type"] == 0;
+    BOOL isUsingLocationFilter = [_params objectForKey:@"floc"] != nil && ![[_params objectForKey:@"floc"] isEqualToString:@""];
+    BOOL isUsingDepFilter = [_params objectForKey:@"sc"] != nil && ![[_params objectForKey:@"sc"] isEqualToString:@""];
+    BOOL isUsingPriceMinFilter = [_params objectForKey:@"pmin"] != nil && ![_params objectForKey:@"pmin"] == 0;
+    BOOL isUsingPriceMaxFilter = [_params objectForKey:@"pmax"] != nil && ![_params objectForKey:@"pmax"] == 0;
+    BOOL isUsingShopTypeFilter = [_params objectForKey:@"type"] != nil && ![_params objectForKey:@"type"] == 0;
     
     return  (isUsingDepFilter || isUsingLocationFilter || isUsingPriceMaxFilter || isUsingPriceMinFilter || isUsingShopTypeFilter);
 }
@@ -573,12 +610,20 @@ static NSString const *rows = @"12";
 
 #pragma mark - TokopediaNetworkManager Delegate
 - (NSDictionary*)getParameter:(int)tag {
+    if ([self isUseDynamicFilter]) {
+        return [self parameterDynamicFilter];
+    } else {
+        return [self parameterFilter];
+    }
+}
+
+-(NSDictionary*)parameterFilter{
     NSString *querry = [_params objectForKey:kTKPDSEARCH_DATASEARCHKEY];
     NSString *type = kTKPDSEARCH_DATASEARCHSHOPKEY;
     NSString *deptid = [_params objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
     
     NSDictionary* param;
-
+    
     if (deptid == nil ) {
         param = @{@"q"       :   querry?:@"",
                   @"start" : @(start),
@@ -608,10 +653,37 @@ static NSString const *rows = @"12";
     return param;
 }
 
+-(NSDictionary*)parameterDynamicFilter{
+    NSString *querry = [_params objectForKey:kTKPDSEARCH_DATASEARCHKEY];
+    NSString *type = kTKPDSEARCH_DATASEARCHSHOPKEY;
+    NSString *deptid = [_params objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
+    
+    NSDictionary* param;
+    
+    if (deptid == nil ) {
+        param = @{@"q"       :   querry?:@"",
+                  @"start" : @(start),
+                  @"rows" : rows,
+                  @"device" : @"ios",
+                  };
+    } else {
+        param = @{@"sc"   :   deptid?:@"",
+                  @"start" : @(start),
+                  @"rows" : rows,
+                  @"device" : @"ios",
+                  };
+    }
+    
+    NSMutableDictionary *parameter =[NSMutableDictionary new];
+    [parameter addEntriesFromDictionary:param];
+    [parameter addEntriesFromDictionary:_selectedFilterParam];
+    
+    return [parameter copy];
+}
+
 - (int)getRequestMethod:(int)tag {
     return RKRequestMethodGET;
 }
-
 
 
 - (NSString*)getPath:(int)tag
@@ -667,7 +739,7 @@ static NSString const *rows = @"12";
     // register mappings with the provider using a response descriptor
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
                                                                                             method:RKRequestMethodGET
-                                                                                       pathPattern:[self getPath:nil]
+                                                                                       pathPattern:[self getPath:0]
                                                                                            keyPath:@""
                                                                                        statusCodes:kTkpdIndexSetStatusCodeOK];
     
