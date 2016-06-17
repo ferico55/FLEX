@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface AddressCity : NSObject
+@interface AddressCity : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *city_id;
 @property (nonatomic, strong) NSString *city_name;

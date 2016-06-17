@@ -9,7 +9,9 @@
 #import <Foundation/Foundation.h>
 #import "Breadcrumb.h"
 #import "ReputationDetail.h"
-#import "CategoryDetail.h"
+//#import "Tokopedia-Swift.h"
+
+@class CategoryDetail;
 
 @interface UserAuthentificationManager : NSObject {
     id userLoginData;
@@ -24,7 +26,7 @@
 - (NSString*)getShopId;
 - (NSString*)getShopName;
 - (NSString*)getShopHasTerm;
-- (CategoryDetail *)getLastProductAddCategory;
+- (CategoryDetail*)getLastProductAddCategory;
 - (NSString*)getMyDeviceToken;
 - (NSString*)getMyDeviceIdToken;
 - (BOOL)isMyShopWithShopId:(NSString*)shopId;

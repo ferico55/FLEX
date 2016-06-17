@@ -435,16 +435,16 @@ static BOOL scrolledToBottomWithBuffer(CGPoint contentOffset, CGSize contentSize
     [_refreshControl setHidden:YES];
     _isFailRequest = NO;
     
-    if (_favoritedShopString && [_favoritedShopString length] > 0 && feed.result.products.count > 0) {
+    if (_favoritedShopString && [_favoritedShopString length] > 0 && feed.data.products.count > 0) {
         if (_page == 0) {
-            [_productDataSource replaceProductsWith: feed.result.products];
+            [_productDataSource replaceProductsWith: feed.data.products];
         }else{
-            [_productDataSource addProducts: feed.result.products];
+            [_productDataSource addProducts: feed.data.products];
         }
         
-        [TPAnalytics trackProductImpressions:feed.result.products];
+        [TPAnalytics trackProductImpressions:feed.data.products];
         
-        _nextPageUri =  feed.result.paging.uri_next;
+        _nextPageUri =  feed.data.paging.uri_next;
         _page++;
         
         if (_page > 1) [self requestPromo];

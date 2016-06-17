@@ -10,6 +10,8 @@
 
 #import "TokopediaNetworkManager.h"
 #import "TokopediaCacheManager.h"
+#import "UserAuthentificationManager.h"
+#import "CategoryList.h"
 
 @interface RequestCategory ()<TokopediaNetworkManagerDelegate>
 
