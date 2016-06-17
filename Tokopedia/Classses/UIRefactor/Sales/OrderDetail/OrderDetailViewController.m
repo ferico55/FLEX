@@ -735,7 +735,7 @@ typedef enum TagRequest {
 }
 
 - (IBAction)tapGetCode:(id)sender {
-    if (_shouldRequestIDropCode && _isIDropCourier) {
+    if (_shouldRequestIDropCode) {
         _courierAgentLabel.text = [[NSString stringWithFormat:@"%@ (%@)",
                                     _transaction.order_shipment.shipment_name,
                                     _transaction.order_shipment.shipment_product] stringByAppendingString:@" - Loading..."];
