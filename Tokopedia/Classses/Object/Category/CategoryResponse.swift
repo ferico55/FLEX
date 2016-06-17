@@ -8,7 +8,7 @@
 
 import UIKit
 
-@objc class CategoryResponse: NSObject,TKPObjectMapping {
+@objc class CategoryResponse: NSObject {
     
     var status:String = ""
     var result:CategoryData = CategoryData(){
@@ -18,11 +18,11 @@ import UIKit
     }
     var data:CategoryData = CategoryData()
     
-    @objc internal class func attributeMappingDictionary() -> [NSObject : AnyObject]! {
+    private class func attributeMappingDictionary() -> [NSObject : AnyObject]! {
         return ["status": "status"]
     }
     
-    @objc internal class func mapping() -> RKObjectMapping! {
+    class func mapping() -> RKObjectMapping! {
         let mapping : RKObjectMapping = RKObjectMapping.init(forClass: self)
         mapping.addAttributeMappingsFromDictionary(self.attributeMappingDictionary())
         mapping.addPropertyMapping(RKRelationshipMapping.init(fromKeyPath: "result", toKeyPath: "result", withMapping: CategoryData.mapping()))

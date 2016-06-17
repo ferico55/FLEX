@@ -8,7 +8,7 @@
 
 import UIKit
 
-@objc class CategoryDetail: NSObject, TKPObjectMapping, NSCopying {
+@objc class CategoryDetail: NSObject, NSCopying {
 
     var d_id :String = String() {
         didSet {
@@ -75,7 +75,7 @@ import UIKit
         return self.dynamicType.init(self)
     }
     
-    @objc internal class func attributeMappingDictionary() -> [NSObject : AnyObject]! {
+    private class func attributeMappingDictionary() -> [NSObject : AnyObject]! {
         return ["name":"name",
                 "weight":"weight",
                 "parent":"parent",
@@ -89,7 +89,7 @@ import UIKit
         ]
     }
     
-    @objc internal class func mapping() -> RKObjectMapping! {
+    class func mapping() -> RKObjectMapping! {
         let mapping : RKObjectMapping = RKObjectMapping.init(forClass: self)
         mapping.addAttributeMappingsFromDictionary(self.attributeMappingDictionary())
         
