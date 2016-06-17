@@ -243,12 +243,9 @@ static CGFloat messageTextSize = 17.0;
     self.onTapMessageWithUrl([NSURL URLWithString:[theRealUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]);
 }
 
-- (void)setMessage:(InboxMessageDetailList *)message {
-    _message = message;
-
-    InboxMessageDetailCell *cell = self;
+- (NSAttributedString*)attributedMessage:(InboxMessageDetailList*)message {
     BOOL isLoggedInUser = [message.message_action isEqualToString:@"1"];
-
+    
     UIFont *font = [UIFont fontWithName:@"GothamBook" size:14];
     
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
@@ -256,19 +253,28 @@ static CGFloat messageTextSize = 17.0;
     style.alignment = NSTextAlignmentLeft;
     
     NSDictionary *attributes = @{NSForegroundColorAttributeName: isLoggedInUser ? [UIColor whiteColor] : [UIColor blackColor],
-            NSFontAttributeName: font,
-            NSParagraphStyleAttributeName: style,
-    };
+                                 NSFontAttributeName: font,
+                                 NSParagraphStyleAttributeName: style,
+                                 };
     NSString *string = [NSString stringReplaceAhrefWithUrl:message.message_reply];
-    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:string attributes:attributes];
+    NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:string attributes:attributes];
+    
+    return attributedString;
+}
+
+- (void)setMessage:(InboxMessageDetailList *)message {
+    _message = message;
+
+    InboxMessageDetailCell *cell = self;
     
     
+    NSAttributedString* attributedString = [self attributedMessage:message];
     self.messageLabel.enabledTextCheckingTypes = NSTextCheckingTypeLink;
-    self.messageLabel.attributedText = attributedText;
+    self.messageLabel.attributedText = attributedString;
     self.messageLabel.delegate = self;
     
     NSDataDetector *linkDetector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:nil];
-    NSArray *matches = [linkDetector matchesInString:string options:0 range:NSMakeRange(0, [string length])];
+    NSArray *matches = [linkDetector matchesInString:attributedString.string options:0 range:NSMakeRange(0, [attributedString length])];
     
     for(NSTextCheckingResult* match in matches) {
         [self.messageLabel addLinkToURL:match.URL withRange:match.range];
