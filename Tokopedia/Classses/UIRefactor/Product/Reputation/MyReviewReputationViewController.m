@@ -348,6 +348,7 @@
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
     _keyword = searchBar.text;
     page = 0;
+    [TPAnalytics trackSearchInboxReview];
     [_searchBar resignFirstResponder];
     [arrList removeAllObjects];
     [tableContent reloadData];

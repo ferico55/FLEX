@@ -368,4 +368,21 @@
     [analytics.dataLayer push:data];
 }
 
++ (void)trackSuccessSubmitReview:(NSInteger)status {
+    TPAnalytics *analytics = [[self alloc] init];
+    NSDictionary *data = @{
+                           @"event": @"successSubmitReview",
+						   @"submitReviewStatus": @(status)
+                           };
+    [analytics.dataLayer push:data];
+}
+
++ (void)trackSearchInboxReview {
+    TPAnalytics *analytics = [[self alloc] init];
+    NSDictionary *data = @{
+                           @"event": @"searchInboxReview"
+                           };
+    [analytics.dataLayer push:data];
+}
+
 @end
