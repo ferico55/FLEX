@@ -25,6 +25,7 @@
 #import "TalkList.h"
 #import "stringrestkit.h"
 #import "string_inbox_talk.h"
+#import "WebViewController.h"
 
 #import <UITableView+FDTemplateLayoutCell/UITableView+FDTemplateLayoutCell.h>
 
@@ -273,12 +274,25 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     GeneralTalkCommentCell* cell = [tableView dequeueReusableCellWithIdentifier:kTKPDGENERALTALKCOMMENTCELL_IDENTIFIER];
+    __weak __typeof(self) weakSelf = self;
     if (cell == nil) {
         cell = [GeneralTalkCommentCell newcell];
     }
     
     cell.delegate = self;
     cell.del = self;
+    cell.onTapTalkWithUrl = ^(NSURL* url){
+        WebViewController *controller = [[WebViewController alloc] init];
+        controller.strURL = url.absoluteString;
+        controller.strTitle = url.absoluteString;
+        controller.onTapLinkWithUrl = ^(NSURL* url) {
+            if([url.absoluteString isEqualToString:@"https://www.tokopedia.com/"]) {
+                [weakSelf.navigationController popViewControllerAnimated:YES];
+            }
+        };
+        
+        [weakSelf.navigationController pushViewController:controller animated:YES];
+    };
 
     TalkCommentList *list = _list[indexPath.row];
 

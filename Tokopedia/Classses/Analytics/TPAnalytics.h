@@ -47,5 +47,7 @@
 + (void)trackSnapSearchAddToCart:(ProductDetail *)product;
 
 + (void)trackAuthenticated:(NSDictionary *)data;
++ (void)trackSuccessSubmitReview:(NSInteger)status;
++ (void)trackSearchInboxReview;
 
 @end

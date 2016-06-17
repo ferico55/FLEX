@@ -10,6 +10,8 @@
 #import "TalkCommentList.h"
 #import "ShopReputation.h"
 #import "SmileyAndMedal.h"
+#import "TTTAttributedLabel.h"
+#import "InboxMessageDetailCell.h"
 
 @implementation GeneralTalkCommentCell
 
@@ -40,16 +42,25 @@
 }
 
 - (void)layoutSubviews {
-
     [super layoutSubviews];
     self.commentlabel.preferredMaxLayoutWidth = self.commentlabel.frame.size.width;
+}
+
+- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url {
+    NSString* theRealUrl = [NSString stringWithFormat:@"https://tkp.me/r?url=%@", [url.absoluteString stringByReplacingOccurrencesOfString:@"*" withString:@"."]];
+    
+    self.onTapTalkWithUrl([NSURL URLWithString:[theRealUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]);
 }
 
 - (void)setComment:(TalkCommentList *)list {
     _comment = list;
     GeneralTalkCommentCell *cell = self;
 
-    cell.commentlabel.text = list.comment_message;
+    
+    cell.commentlabel.enabledTextCheckingTypes = NSTextCheckingTypeLink;
+    NSString* string = [NSString stringReplaceAhrefWithUrl:list.comment_message];
+    cell.commentlabel.text = string;
+    cell.commentlabel.delegate = self;
 
     NSString *name = list.isSeller? list.comment_shop_name : list.comment_user_name;
     cell.user_name.text = name;
