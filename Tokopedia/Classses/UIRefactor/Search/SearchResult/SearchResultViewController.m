@@ -827,7 +827,7 @@ ImageSearchRequestDelegate
 -(NSDictionary*)parameterDynamicFilter{
     NSString *selectedCategory = [[_selectedCategories valueForKey:@"categoryId"] componentsJoinedByString:@","];
     NSString *categories;
-    if (![[_params objectForKey:@"sc"] isEqualToString:@""] && selectedCategory) {
+    if (![[_params objectForKey:@"sc"] isEqualToString:@""] && _selectedCategories.count > 0) {
         categories = [NSString stringWithFormat:@"%@,%@",selectedCategory,[_params objectForKey:@"sc"]?:@""];
     } else if (![[_params objectForKey:@"sc"] isEqualToString:@""]){
         categories = [_params objectForKey:@"sc"]?:@"";
