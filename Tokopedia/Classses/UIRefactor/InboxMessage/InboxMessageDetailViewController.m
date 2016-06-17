@@ -19,25 +19,11 @@
 #import "TagManagerHandler.h"
 #import "NavigationHelper.h"
 #import "Tokopedia-Swift.h"
+#import "TTTAttributedLabel.h"
+#import <BlocksKit/BlocksKit.h>
+#import <BlocksKit/UIGestureRecognizer+BlocksKit.h>
+#import "WebViewController.h"
 
-@interface InboxMessageDetailViewController () <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate>
-
-@property (weak, nonatomic) IBOutlet UIView *footer;
-@property (weak, nonatomic) IBOutlet UIView *messagingview;
-@property (strong, nonatomic) IBOutlet UIView *header;
-@property (weak, nonatomic) IBOutlet UITableView *table;
-@property (weak, nonatomic) IBOutlet UIButton *buttonloadmore;
-@property (weak, nonatomic) IBOutlet UIButton *buttonsend;
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
-
-@property (strong, nonatomic) IBOutlet RSKGrowingTextView *textView;
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *messageViewBottomConstraint;
-@property (strong, nonatomic) IBOutlet UIView *titleView;
-@property (strong, nonatomic) IBOutlet UILabel *titleLabel;
-@property (strong, nonatomic) IBOutlet UILabel *participantsLabel;
-
-
-@end
 
 @implementation InboxMessageDetailViewController {
     BOOL _isnodata;
@@ -114,7 +100,7 @@
     _page = 1;
     
     /** set table view datasource and delegate **/
-    _table.delegate = self;
+//    _table.delegate = self;
     _table.dataSource = self;
     _table.contentInset = UIEdgeInsetsMake(5, 0, 0, 0);
     
@@ -187,11 +173,33 @@
 
     InboxMessageDetailList *message = _messages[indexPath.row];
     cell.message = message;
+    
     cell.onTapUser = ^(NSString *userId) {
         [weakSelf showUserWithId:userId];
     };
+    
+    cell.onTapMessageWithUrl = ^(NSURL* url) {
+        [weakSelf openWebViewWithURL:url];
+    };
 
+    cell.messageLabel.userInteractionEnabled = YES;
+    
     return cell;
+}
+
+- (void)openWebViewWithURL:(NSURL*)url {
+    __weak __typeof(self) weakSelf = self;
+    
+    WebViewController *controller = [[WebViewController alloc] init];
+    controller.strURL = url.absoluteString;
+    controller.strTitle = url.absoluteString;
+    controller.onTapLinkWithUrl = ^(NSURL* url) {
+        if([url.absoluteString isEqualToString:@"https://www.tokopedia.com/"]) {
+            [weakSelf.navigationController popViewControllerAnimated:YES];
+        }
+    };
+    
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -525,6 +533,8 @@
 - (void)textViewDidChange:(UITextView *)textView {
     [self adjustButtonSendAvailability];
 }
+
+
 
 - (void)textViewDidBeginEditing:(UITextView *)textView {
     [_table scrollToBottomAnimated:YES];
