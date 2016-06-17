@@ -17,6 +17,7 @@
 - (BOOL) isNotAllBaseCharacter;
 -(BOOL)isAllNonNumber;
 - (BOOL) isNumber;
++ (NSString *)stringReplaceAhrefWithUrl:(NSString *)string;
 
 - (BOOL) isNotAllBaseCharacter;
 
