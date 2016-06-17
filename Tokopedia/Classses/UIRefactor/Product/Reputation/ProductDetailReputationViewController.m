@@ -533,12 +533,12 @@
     
     cell.getViewLabelUser.tag = indexPath.row;
     cell.getTvDesc.text = _detailReputationReview.review_response.response_message;
-    cell.getLblDate.text = _detailReputationReview.review_response.response_create_time;
+    cell.getLblDate.text = _detailReputationReview.review_response.response_time_fmt?:_detailReputationReview.review_response.response_create_time;
     cell.getBtnTryAgain.tag = indexPath.row;
     cell.getBtnTryAgain.hidden = !(_detailReputationReview.review_response.failedSentMessage);
     
     //Set image
-    NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_shopImage] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_shopImage?:_detailReputationReview.product_owner.shop_img] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     [cell.getImgProfile setImageWithURLRequest:userImageRequest placeholderImage:[UIImage imageNamed:@"icon_profile_picture.jpeg"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
@@ -549,7 +549,7 @@
     
     
     [cell setStar:_shopBadgeLevel.level withSet:_shopBadgeLevel.set];
-    [cell.getViewLabelUser setText:_detailReputationReview.review_shop_name];
+    [cell.getViewLabelUser setText:_detailReputationReview.review_shop_name?:_detailReputationReview.product_owner.shop_name];
     [cell.getViewLabelUser setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"Gotham Medium" size:13.0f]];
     [cell.getViewLabelUser setLabelBackground:(_detailReputationReview!=nil)?_detailReputationReview.product_owner.user_label:CPenjual];
     cell.getViewStar.tag = indexPath.row;
@@ -896,7 +896,7 @@
                                                                                _shopBadgeLevel = _detailReputationReview.shop_badge_level = result.shop_reputation.reputation_badge_object?:_shopBadgeLevel;
                                                                                _detailReputationReview.product_owner.shop_reputation_score = result.product_owner.shop_reputation_score;
                                                                                _detailReputationReview.product_owner.shop_id = result.shop_id;
-                                                                               _detailReputationReview.product_owner.shop_name = result.shop_name;
+                                                                               _detailReputationReview.product_owner.shop_name = result.shop_name?:result.product_owner.shop_name;
                                                                                _detailReputationReview.product_owner.shop_url = result.shop_img_uri;
                                                                                _shopImage = result.product_owner.shop_img;
                                                                            }
