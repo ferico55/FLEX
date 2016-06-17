@@ -28,6 +28,7 @@
 @property (nonatomic, strong) NSString *strTotalDisLike;
 @property (nonatomic, strong) NSString *strLikeStatus;
 @property (nonatomic, strong) NSIndexPath *indexPathSelected;
+@property (nonatomic, strong) NSString *shopImage;
 - (IBAction)actionSend:(id)sender;
 - (void)userHasLogin;
 - (void)updateLikeDislike:(LikeDislike *)likeDislikeObj;

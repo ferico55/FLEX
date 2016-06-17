@@ -256,7 +256,7 @@
 }
 
 - (void) messageaction:(NSString*)action{
-    [self messageaction:action indexPaths:[_table indexPathsForSelectedRows]];
+    [self messageaction:action indexPaths:[_table indexPathsForSelectedRows]?:@[]];
 }
 
 - (void)messageaction:(NSString*)action indexPaths:(NSArray<NSIndexPath*>*)indexPaths{

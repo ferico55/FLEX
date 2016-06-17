@@ -24,6 +24,8 @@
 #import "ShipmentCourier.h"
 #import "UITableView+IndexPath.h"
 
+#define IDropShipmentPackageID @"19"
+
 @interface ShipmentConfirmationViewController ()
 <
     UITableViewDataSource,
@@ -343,10 +345,11 @@
     _selectedIndexPath = indexPath;
     
     OrderDetailViewController *controller = [[OrderDetailViewController alloc] init];
-    controller.transaction = [_orders objectAtIndex:indexPath.row];
+    controller.transaction = _selectedOrder;
     controller.delegate = self;
     controller.shipmentCouriers = _shipmentCouriers;
     controller.booking = _orderBooking;
+    controller.shouldRequestIDropCode = [_selectedOrder.order_shipment.shipment_package_id isEqualToString:IDropShipmentPackageID];
     
     [self.navigationController pushViewController:controller animated:YES];
 }
