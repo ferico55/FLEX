@@ -40,7 +40,7 @@
 @property (strong, nonatomic) IBOutlet UIView *errorView;
 @property (strong, nonatomic) IBOutlet UILabel *errorLabel;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *errorViewHeightConstraint;
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *errorLabelWidth;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *errorLabelHeightConstraint;
 
 
 @property (nonatomic) NSInteger indexPage;

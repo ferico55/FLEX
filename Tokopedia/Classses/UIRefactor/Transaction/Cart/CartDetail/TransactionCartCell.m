@@ -152,95 +152,38 @@
         
     }];
     
-    
-    
     self.editButton.hidden = (_indexPage == 1);
     
     if (viewModel.productErrors.count > 0) {
         Errors *error = viewModel.productErrors[0];
         
+        UIFont *boldFont = [UIFont fontWithName:@"Gotham Medium" size:14.0f];
+        UIFont *font = [UIFont fontWithName:@"Gotham Book" size:13.0f];
+        
         NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-        paragraphStyle.paragraphSpacing = 6.0;
+        paragraphStyle.paragraphSpacing = 0.25 * boldFont.lineHeight;
         
         NSMutableAttributedString *title = [[NSMutableAttributedString alloc] initWithString:error.title
-                                                                                  attributes:@{NSFontAttributeName: [UIFont fontWithName:@"Gotham Medium" size:13.0f],
+                                                                                  attributes:@{NSFontAttributeName: [UIFont fontWithName:@"Gotham Medium" size:14.0f],
                                                                                                NSParagraphStyleAttributeName:paragraphStyle}];
+        paragraphStyle.paragraphSpacing = 0.25 * font.lineHeight;
         
         NSAttributedString *errorDesc = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"\n%@", error.desc]
-                                                                        attributes:@{NSFontAttributeName: [UIFont fontWithName:@"Gotham Book" size:14.0f],
+                                                                        attributes:@{NSFontAttributeName: [UIFont fontWithName:@"Gotham Book" size:13.0f],
                                                                                      NSParagraphStyleAttributeName:paragraphStyle}];
         
         [title appendAttributedString:errorDesc];
         
-        
-        
-        CGSize maximumLabelSize = CGSizeMake(250,9999);
+        CGSize maximumLabelSize = CGSizeMake([[UIScreen mainScreen] bounds].size.width,9999);
         NSStringDrawingContext *context = [NSStringDrawingContext new];
         CGSize expectedLabelSize = [title boundingRectWithSize:maximumLabelSize
-                                                       options:NSStringDrawingUsesLineFragmentOrigin
+                                                       options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
                                                        context:context].size;
-        _errorViewHeightConstraint.constant = expectedLabelSize.height;
+        _errorViewHeightConstraint.constant = expectedLabelSize.height + 16;
         _errorLabel.attributedText = title;
     } else {
         _errorViewHeightConstraint.constant = 0;
     }
-    
-//    if (([viewModel.productErrorMessage isEqualToString:@""] ||
-//         
-//         [viewModel.productErrorMessage isEqualToString:@"0"] ||
-//         
-//         viewModel.productErrorMessage == nil ) &&
-//        
-//        [[viewModel.productPriceBeforeChange priceFromStringIDR] integerValue] == 0) {
-//        
-//        self.errorProductLabel.hidden = YES;
-//        
-//    }
-//    
-//    else
-//        
-//    {
-//        
-//        self.errorProductLabel.hidden = NO;
-//        
-//        if ([viewModel.productErrorMessage isEqualToString:@"Produk ini berada di gudang"]) {
-//            
-//            self.errorProductLabel.text = @"GUDANG";
-//            
-//        }
-//        
-//        else if ([viewModel.productErrorMessage isEqualToString:@"Produk ini dalam moderasi"])
-//            
-//        {
-//            
-//            self.errorProductLabel.text = @"MODERASI";
-//            
-//        }
-//        
-//        else if ([viewModel.productErrorMessage isEqualToString:@"Maksimal pembelian produk ini adalah 999 item"])
-//            
-//        {
-//            
-//            [self.errorProductLabel setCustomAttributedText:@"Maks\n999 item"];
-//            
-//        }
-//        
-//        else if ([viewModel.productErrorMessage isEqualToString:@"Produk ini sudah dihapus oleh penjual"])
-//            
-//            self.errorProductLabel.text = @"HAPUS";
-//        
-//        else if ([_viewModelCart.cartIsPriceChanged integerValue] == 1)
-//            
-//        {
-//            
-//            [self.errorProductLabel setCustomAttributedText:@"HARGA BERUBAH"];
-//            
-//        }
-//        
-//        else
-//            
-//            self.errorProductLabel.text = @"TIDAK VALID";
-//    }
     
 }
 

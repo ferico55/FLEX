@@ -33,17 +33,14 @@
                                     <constraint firstAttribute="width" constant="44" id="cag-hC-HbV"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zWN-Jd-VQe">
-                                <rect key="frame" x="15" y="0.0" width="253" height="44"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="253" id="5qj-7u-Pre"/>
-                                </constraints>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zWN-Jd-VQe">
+                                <rect key="frame" x="15" y="8" width="253" height="28"/>
                                 <attributedString key="attributedText">
                                     <fragment content="Label">
                                         <attributes>
                                             <color key="NSColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="calibratedRGB"/>
                                             <font key="NSFont" size="13" name="GothamBook"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="6" tighteningFactorForTruncation="0.0"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="6" tighteningFactorForTruncation="0.0"/>
                                         </attributes>
                                     </fragment>
                                 </attributedString>
@@ -52,12 +49,13 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="8WC-Xl-Ekd" firstAttribute="centerY" secondItem="bVq-kV-LXc" secondAttribute="centerY" id="0hm-8p-4fq"/>
+                            <constraint firstAttribute="trailing" secondItem="8WC-Xl-Ekd" secondAttribute="trailing" id="3G8-J7-aRT"/>
                             <constraint firstAttribute="height" constant="44" id="9nR-ye-Tdy"/>
                             <constraint firstItem="8WC-Xl-Ekd" firstAttribute="leading" secondItem="zWN-Jd-VQe" secondAttribute="trailing" constant="8" id="Ffp-jS-lEZ"/>
-                            <constraint firstAttribute="bottom" secondItem="zWN-Jd-VQe" secondAttribute="bottom" id="SfA-6g-Zgm"/>
+                            <constraint firstAttribute="bottom" secondItem="zWN-Jd-VQe" secondAttribute="bottom" constant="8" id="SfA-6g-Zgm"/>
                             <constraint firstItem="zWN-Jd-VQe" firstAttribute="leading" secondItem="bVq-kV-LXc" secondAttribute="leading" constant="15" id="g8C-J3-aeK"/>
-                            <constraint firstItem="8WC-Xl-Ekd" firstAttribute="centerY" secondItem="bVq-kV-LXc" secondAttribute="centerY" id="gKW-PC-vXm"/>
-                            <constraint firstItem="zWN-Jd-VQe" firstAttribute="top" secondItem="bVq-kV-LXc" secondAttribute="top" id="nFO-OY-yWg"/>
+                            <constraint firstItem="zWN-Jd-VQe" firstAttribute="top" secondItem="bVq-kV-LXc" secondAttribute="top" constant="8" id="nFO-OY-yWg"/>
                         </constraints>
                     </view>
                     <view tag="10" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WOu-9t-o2o">
@@ -175,7 +173,6 @@
                     <constraint firstItem="bVq-kV-LXc" firstAttribute="leading" secondItem="ObG-qm-9Xr" secondAttribute="leading" id="Kcb-NS-zPA"/>
                     <constraint firstItem="WOu-9t-o2o" firstAttribute="leading" secondItem="ObG-qm-9Xr" secondAttribute="leading" id="PNc-Qc-5ZE"/>
                     <constraint firstItem="WOu-9t-o2o" firstAttribute="top" secondItem="bVq-kV-LXc" secondAttribute="bottom" id="Pm9-yF-62j"/>
-                    <constraint firstItem="WOu-9t-o2o" firstAttribute="top" secondItem="bVq-kV-LXc" secondAttribute="bottom" id="Y2R-kN-PKj"/>
                     <constraint firstAttribute="trailing" secondItem="bVq-kV-LXc" secondAttribute="trailing" id="hb1-9g-gqF"/>
                     <constraint firstItem="bVq-kV-LXc" firstAttribute="top" secondItem="ObG-qm-9Xr" secondAttribute="top" id="k9e-vf-rp3"/>
                     <constraint firstAttribute="trailing" secondItem="CLh-ZD-D84" secondAttribute="trailing" id="my4-T6-JhM"/>
@@ -185,7 +182,6 @@
             <connections>
                 <outlet property="editButton" destination="VEf-5u-Ef6" id="Seb-zq-5Ex"/>
                 <outlet property="errorLabel" destination="zWN-Jd-VQe" id="9kR-TS-T6l"/>
-                <outlet property="errorLabelWidth" destination="5qj-7u-Pre" id="jDT-RO-y0V"/>
                 <outlet property="errorView" destination="bVq-kV-LXc" id="LQ6-7L-M98"/>
                 <outlet property="errorViewHeightConstraint" destination="9nR-ye-Tdy" id="nmK-lh-5Vi"/>
                 <outlet property="productNameLabel" destination="9B8-Qh-nPX" id="gUV-uK-K9f"/>

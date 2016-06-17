@@ -51,6 +51,8 @@
 
 #import "Tokopedia-Swift.h"
 
+#import "UITableView+FDTemplateLayoutCell.h"
+
 #define DurationInstallmentFormat @"%@ bulan (%@)"
 
 @interface TransactionCartViewController ()
@@ -2018,6 +2020,11 @@
 //            return [self errorLabelHeight:list];
         else if(indexPath.row <= list.cart_products.count) {
             ProductDetail *product = list.cart_products[indexPath.row-1];
+//            return [_tableView fd_heightForCellWithIdentifier:@"TransactionCartCellIdentifier"
+//                                             cacheByIndexPath:indexPath
+//                                                configuration:^(TransactionCartCell *cell) {
+//                                                    [cell setViewModel:product.viewModel];
+//                                                }];
             return [self productRowHeight:product];
         }
         else if ( indexPath.row == list.cart_products.count + 2) {
@@ -2273,16 +2280,20 @@
     
     if (product.errors.count > 0) {
         Errors *error = product.errors[0];
+        
+        UIFont *boldFont = [UIFont fontWithName:@"Gotham Medium" size:14.0f];
+        UIFont *font = [UIFont fontWithName:@"Gotham Book" size:13.0f];
+        
         NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-        paragraphStyle.paragraphSpacing = 6.0;
+        paragraphStyle.paragraphSpacing = 0.25 * boldFont.lineHeight;
         
         NSMutableAttributedString *title = [[NSMutableAttributedString alloc] initWithString:error.title
-                                                                                  attributes:@{NSFontAttributeName: [UIFont fontWithName:@"Gotham Medium" size:13.0f],
+                                                                                  attributes:@{NSFontAttributeName: [UIFont fontWithName:@"Gotham Medium" size:14.0f],
                                                                                                NSParagraphStyleAttributeName:paragraphStyle}];
-        paragraphStyle.paragraphSpacing = 4.0;
+        paragraphStyle.paragraphSpacing = 0.25 * font.lineHeight;
         
         NSAttributedString *errorDesc = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"\n%@", error.desc]
-                                                                        attributes:@{NSFontAttributeName: [UIFont fontWithName:@"Gotham Book" size:14.0f],
+                                                                        attributes:@{NSFontAttributeName: [UIFont fontWithName:@"Gotham Book" size:13.0f],
                                                                                      NSParagraphStyleAttributeName:paragraphStyle}];
         
         [title appendAttributedString:errorDesc];
@@ -2290,8 +2301,9 @@
         CGSize maximumLabelSize = CGSizeMake(250,9999);
         NSStringDrawingContext *context = [NSStringDrawingContext new];
         expectedErrorLabelSize = [title boundingRectWithSize:maximumLabelSize
-                                                       options:NSStringDrawingUsesLineFragmentOrigin
+                                                       options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
                                                        context:context].size;
+        expectedErrorLabelSize.height = expectedErrorLabelSize.height + 16;
     } else {
         expectedErrorLabelSize.height = 0;
     }
