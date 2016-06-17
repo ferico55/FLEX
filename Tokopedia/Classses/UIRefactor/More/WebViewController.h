@@ -18,6 +18,8 @@
 @property (nonatomic, strong) NSString *strURL;
 @property (nonatomic, strong) NSString *strTitle;
 
+@property(copy) void(^onTapButtonWithURL)(NSURL* url);
+
 @property BOOL isLPWebView;
 
 @end

@@ -10,6 +10,8 @@
 #import "string_home.h"
 #import "ViewLabelUser.h"
 #import "MGSwipeTableCell.h"
+#import "TTTAttributedLabel.h"
+
 
 @class TalkCommentList;
 
@@ -27,11 +29,11 @@
 @end
 
 #pragma mark - General Talk Comment Cell
-@interface GeneralTalkCommentCell : MGSwipeTableCell
+@interface GeneralTalkCommentCell : MGSwipeTableCell <TTTAttributedLabelDelegate>
 
 @property (nonatomic, weak) IBOutlet id<GeneralTalkCommentCellDelegate> delegate;
 @property (nonatomic, weak) IBOutlet id<GeneralTalkCommentCellDelegate> del;
-@property (weak, nonatomic) IBOutlet UILabel *commentlabel;
+@property (weak, nonatomic) IBOutlet TTTAttributedLabel *commentlabel;
 @property (weak, nonatomic) IBOutlet ViewLabelUser *user_name;
 @property (weak, nonatomic) IBOutlet UILabel *create_time;
 @property (weak, nonatomic) IBOutlet UIImageView *user_image;
@@ -44,5 +46,6 @@
 
 + (id)newcell;
 - (IBAction)actionSmile:(id)sender;
+@property(copy) void(^onTapTalkWithUrl)(NSURL*);
 
 @end
