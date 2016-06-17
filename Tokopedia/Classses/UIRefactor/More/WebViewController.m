@@ -88,7 +88,7 @@
         return NO;
     }
     
-    self.onTapButtonWithURL([inRequest URL]);
+    self.onTapLinkWithUrl([inRequest URL]);
     
     return YES;
 }
