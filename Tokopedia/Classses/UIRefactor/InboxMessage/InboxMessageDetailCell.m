@@ -273,7 +273,7 @@ static CGFloat messageTextSize = 17.0;
 //}
 
 
-- (NSString *)stringReplaceAhrefWithUrl:(NSString *)string{
++ (NSString *)stringReplaceAhrefWithUrl:(NSString *)string{
     NSString *leadingTrailingWhiteSpacesPattern = @"<a[^>]+href=\".*?\"[^>]*>(.*?)</a>";
 
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:leadingTrailingWhiteSpacesPattern options:NSRegularExpressionCaseInsensitive|NSRegularExpressionUseUnicodeWordBoundaries error:NULL];
@@ -309,7 +309,7 @@ static CGFloat messageTextSize = 17.0;
             NSParagraphStyleAttributeName: style,
     };
     NSString *string = message.message_reply;
-    string = [self stringReplaceAhrefWithUrl:string];
+    string = [InboxMessageDetailCell stringReplaceAhrefWithUrl:string];
     
     
     NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:string attributes:attributes];

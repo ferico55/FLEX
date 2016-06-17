@@ -81,6 +81,7 @@
  FOR CUSTOMIZATION: To edit the image, user your own names in this method.
  */
 +(UIImage*)balloonImage:(BOOL)sent isSelected:(BOOL)selected;
++ (NSString *)stringReplaceAhrefWithUrl:(NSString *)string;
 
 /**Initializes the PTSMessagingCell.
  @param reuseIdentifier NSString* containing a reuse Identifier.
