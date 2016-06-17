@@ -261,19 +261,35 @@ static CGFloat messageTextSize = 17.0;
     }
 }
 
-- (NSString *)stringReplaceAhrefWithUrl:(NSString *)string{
-    NSString *leadingTrailingWhiteSpacesPattern = @"<a[^>]+href=\"(.*?)\"[^>]*>.*?</a>";
+//- (NSString*)urlComponent:(NSString*)url WithKey:(NSString*)key {
+//    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+//    for (NSString *param in [url componentsSeparatedByString:@"&"]) {
+//        NSArray *elts = [param componentsSeparatedByString:@"="];
+//        if([elts count] < 2) continue;
+//        [params setObject:[elts lastObject] forKey:[elts firstObject]];
+//    }
+//    
+//    return [params objectForKey:key];
+//}
 
-    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:leadingTrailingWhiteSpacesPattern options:NSRegularExpressionCaseInsensitive error:NULL];
+
+- (NSString *)stringReplaceAhrefWithUrl:(NSString *)string{
+    NSString *leadingTrailingWhiteSpacesPattern = @"<a[^>]+href=\".*?\"[^>]*>(.*?)</a>";
+
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:leadingTrailingWhiteSpacesPattern options:NSRegularExpressionCaseInsensitive|NSRegularExpressionUseUnicodeWordBoundaries error:NULL];
 
     NSRange stringRange = NSMakeRange(0, string.length);
     NSString *trimmedString = [regex stringByReplacingMatchesInString:string options:NSMatchingReportProgress range:stringRange withTemplate:@"$1"];
+    
+    NSString* replacedString = [trimmedString stringByReplacingOccurrencesOfString:@"&bull;" withString:@"*"];
 
-    return trimmedString;
+    return replacedString;
 }
 
 - (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url  {
-    self.onTapMessageWithUrl(url);
+    NSString* theRealUrl = [NSString stringWithFormat:@"https://tkp.me/r?url=%@", [url.absoluteString stringByReplacingOccurrencesOfString:@"*" withString:@"."]];
+    
+    self.onTapMessageWithUrl([NSURL URLWithString:[theRealUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]);
 }
 
 - (void)setMessage:(InboxMessageDetailList *)message {
@@ -294,6 +310,8 @@ static CGFloat messageTextSize = 17.0;
     };
     NSString *string = message.message_reply;
     string = [self stringReplaceAhrefWithUrl:string];
+    
+    
     NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:string attributes:attributes];
     
     
