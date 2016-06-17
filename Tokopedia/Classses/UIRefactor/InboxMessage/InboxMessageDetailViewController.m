@@ -345,7 +345,7 @@
             case 11: {
                 NSString *message = [_textView.text stringByTrimmingCharactersInSet:
                                      [NSCharacterSet whitespaceCharacterSet]];
-                if(message.length > 5) {
+                if(message.length > 1) {
                     NSInteger lastindexpathrow = [_messages count];
                     
                     InboxMessageDetailList *sendmessage = [InboxMessageDetailList new];
@@ -533,7 +533,7 @@
 - (void)adjustButtonSendAvailability {
     NSString *message = [_textView.text stringByTrimmingCharactersInSet:
                          [NSCharacterSet whitespaceCharacterSet]];
-    _buttonsend.enabled = message.length > 5;
+    _buttonsend.enabled = message.length > 1;
 }
 
 - (void)showUserWithId:(NSString *)userId {
