@@ -11,7 +11,7 @@
 #import "NotificationPurchase.h"
 #import "NotificationInbox.h"
 
-@interface NotificationResult : NSObject
+@interface NotificationResult : NSObject <TKPObjectMapping>
 
 @property (strong, nonatomic) NSNumber *total_cart;
 @property (strong, nonatomic) NSNumber *resolution;

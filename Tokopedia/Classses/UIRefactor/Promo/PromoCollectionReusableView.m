@@ -13,12 +13,12 @@
 #import "WebViewController.h"
 
 typedef NS_ENUM(NSInteger, PromoCellHeight) {
-    PromoNormalCellHeight = 260,
-    PromoNormalCellHeightSix = 310,
+    PromoNormalCellHeight = 300,
+    PromoNormalCellHeightSix = 280,
     PromoNormalCellHeightSixPlus = 340,
     PromoThumbnailCellHeight = 160,
     PromoThumbnailCellHeightSix = 180,
-    PromoThumbnailCellHeightSixPlus = 190,
+    PromoThumbnailCellHeightSixPlus = 274,
 };
 
 @interface PromoCollectionReusableView ()
@@ -46,6 +46,7 @@ TKPDAlertViewDelegate
         _flowLayout.minimumLineSpacing = 14;
     }
     
+    
     _collectionView.decelerationRate = UIScrollViewDecelerationRateFast;
     
     UINib *cellNib = [UINib nibWithNibName:@"ProductCell" bundle:nil];
@@ -53,12 +54,18 @@ TKPDAlertViewDelegate
     
     UINib *thumbCellNib = [UINib nibWithNibName:@"ProductThumbCell" bundle:nil];
     [_collectionView registerNib:thumbCellNib forCellWithReuseIdentifier:@"ProductThumbCellIdentifier"];
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
+    _infoButton.userInteractionEnabled = YES;
+    [_infoButton addGestureRecognizer:tap];
 }
 
 - (void)setCollectionViewCellType:(PromoCollectionViewCellType)collectionViewCellType {
     _collectionViewCellType = collectionViewCellType;
     if (_collectionViewCellType == PromoCollectionViewCellTypeNormal) {
-        _flowLayout.itemSize = [self itemSize];
+        _flowLayout.itemSize = [PromoCollectionReusableView itemSize:_collectionViewCellType];
+        _flowLayout.minimumInteritemSpacing = 0;
+        _flowLayout.minimumLineSpacing = 0;
         _cellNibName = @"ProductCell";
         _cellIdentifier = @"ProductCellIdentifier";
         _collectionViewHeightConstraint.constant = [self collectionHeightConstraint];
@@ -70,7 +77,11 @@ TKPDAlertViewDelegate
     }
     
     else if (_collectionViewCellType == PromoCollectionViewCellTypeThumbnail) {
-        _flowLayout.itemSize = [self itemSize];
+        _flowLayout.itemSize = [PromoCollectionReusableView itemSize:_collectionViewCellType];
+        _flowLayout.minimumInteritemSpacing = 0;
+        _flowLayout.minimumLineSpacing = 0;
+        _flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
+        
         _cellNibName = @"ProductThumbCell";
         _cellIdentifier = @"ProductThumbCellIdentifier";
         _collectionViewHeightConstraint.constant = [self collectionHeightConstraint];
@@ -174,14 +185,14 @@ TKPDAlertViewDelegate
     [self centerPositionAnimated:NO];
 }
 
-- (void)setScrollPosition:(NSNumber *)scrollPosition {
-    _scrollPosition = scrollPosition;
-    if (IS_IPAD) return;
-    NSInteger x = [_scrollPosition integerValue] * _flowLayout.itemSize.width;
-    NSInteger padding = [_scrollPosition integerValue] * _flowLayout.minimumLineSpacing;
-    CGPoint point = CGPointMake(x + padding, 0);
-    _collectionView.contentOffset = point;
-}
+//- (void)setScrollPosition:(NSNumber *)scrollPosition {
+//    _scrollPosition = scrollPosition;
+//    if (IS_IPAD) return;
+//    NSInteger x = [_scrollPosition integerValue] * _flowLayout.itemSize.width;
+//    NSInteger padding = [_scrollPosition integerValue] * _flowLayout.minimumLineSpacing;
+//    CGPoint point = CGPointMake(x + padding, 0);
+//    _collectionView.contentOffset = point;
+//}
 
 - (void)animateScrollToCenter {
     if (IS_IPAD) return;
@@ -218,31 +229,22 @@ TKPDAlertViewDelegate
 
 + (CGFloat)collectionViewHeightForType:(PromoCollectionViewCellType)type {
     CGFloat height;
+    CGSize itemSize = [self itemSize:type];
+    
     if (IS_IPHONE_4_OR_LESS || IS_IPHONE_5) {
         if (type == PromoCollectionViewCellTypeNormal) {
-            height = PromoNormalCellHeight;
+            height = itemSize.height + 40;
         } else if (type == PromoCollectionViewCellTypeThumbnail) {
-            height = PromoThumbnailCellHeight;
+            height = itemSize.height * 2 + 40;
         }
-    } else if (IS_IPHONE_6) {
+    } else {
         if (type == PromoCollectionViewCellTypeNormal) {
-            height = PromoNormalCellHeightSix;
+            height = itemSize.height + 50;
         } else if (type == PromoCollectionViewCellTypeThumbnail) {
-            height = PromoThumbnailCellHeightSix;
-        }
-    } else if (IS_IPHONE_6P) {
-        if (type == PromoCollectionViewCellTypeNormal) {
-            height = PromoNormalCellHeightSixPlus;
-        } else if (type == PromoCollectionViewCellTypeThumbnail) {
-            height = PromoThumbnailCellHeightSixPlus;
-        }
-    } else if (IS_IPAD) {
-        if (type == PromoCollectionViewCellTypeNormal) {
-            height = PromoNormalCellHeightSixPlus;
-        } else if (type == PromoCollectionViewCellTypeThumbnail) {
-            height = PromoThumbnailCellHeightSixPlus;
+            height = itemSize.height * 2 + 50;
         }
     }
+
     return height;
 }
 
@@ -250,33 +252,30 @@ TKPDAlertViewDelegate
     return [self collectionViewHeightForType:PromoCollectionViewCellTypeNormal];
 }
 
-- (CGSize)itemSize {
++ (CGSize)itemSize:(NSInteger)type {
     CGSize cellSize = CGSizeMake(0, 0);
     CGRect screenRect = [[UIScreen mainScreen] bounds];
-    NSInteger cellCount = 0;
-    float heightRatio = 0, widhtRatio = 0, inset = 0;
     CGFloat screenWidth = screenRect.size.width;
-    if (_collectionViewCellType == PromoCollectionViewCellTypeNormal) {
-        cellCount = 2;
-        heightRatio = 41;
-        widhtRatio = 29;
-        inset = 15;
-    } else if (_collectionViewCellType == PromoCollectionViewCellTypeThumbnail) {
-        cellCount = 3;
-        heightRatio = 1;
-        widhtRatio = 1;
-        inset = 14;
-    }
+    
     CGFloat cellWidth;
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
-        screenWidth = screenRect.size.width/2;
-        cellWidth = screenWidth/cellCount-inset;
-    } else {
-        screenWidth = screenRect.size.width;
-        cellWidth = screenWidth/cellCount-inset;
+    CGFloat cellHeight;
+    if (type == PromoCollectionViewCellTypeNormal) {
+        BOOL isPad = ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad);
+        CGFloat numberOfCell = isPad ? 4 : 2;
+        cellWidth = screenWidth/numberOfCell;
+        cellHeight = cellWidth + 85;
+        
+    } else if (type == PromoCollectionViewCellTypeThumbnail) {
+        BOOL isPad = ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad);
+        CGFloat numberOfCell = isPad ? 2 : 1;
+        cellWidth = screenWidth/numberOfCell;
+        cellHeight = 120;
     }
-    cellSize = CGSizeMake(cellWidth, cellWidth*heightRatio/widhtRatio);
+    
+    
+    cellSize = CGSizeMake(cellWidth, cellHeight);
     return cellSize;
 }
+
 
 @end
