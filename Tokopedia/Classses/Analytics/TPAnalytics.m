@@ -389,7 +389,7 @@
     TPAnalytics *analytics = [[self alloc] init];
     NSDictionary *data = @{
                             @"event": @"pushNotificationPermissionRequest",
-                            @"allowed": @(accepted)
+                            @"pushNotificationAllowed": @(accepted)
                            };
     
     [analytics.dataLayer push:data];
