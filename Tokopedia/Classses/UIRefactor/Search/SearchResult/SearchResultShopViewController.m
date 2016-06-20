@@ -57,7 +57,7 @@ static NSString const *rows = @"12";
     
     NSIndexPath *_sortIndexPath;
     
-    FilterResponse *_filterResponse;
+    FilterData *_filterResponse;
     NSArray<ListOption*> *_selectedFilters;
     NSDictionary *_selectedFilterParam;
 }
@@ -274,15 +274,19 @@ static NSString const *rows = @"12";
     [self.navigationController presentViewController:nav animated:YES completion:nil];
 }
 
+-(NSString *)searchShopType{
+    return @"search_shop";
+}
+
 -(void)pushDynamicFilter{
-    FiltersController *controller = [[FiltersController alloc]initWithFilterResponse:_filterResponse?:[FilterResponse new] categories:nil selectedCategories:nil selectedFilters:_selectedFilters presentedVC:self onCompletion:^(NSArray<CategoryDetail *> * selectedCategories , NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
+    FiltersController *controller = [[FiltersController alloc]initWithSource:[self searchShopType] filterResponse:_filterResponse?:[FilterData new] categories:nil selectedCategories:nil selectedFilters:_selectedFilters presentedVC:self onCompletion:^(NSArray<CategoryDetail *> * selectedCategories , NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
         
         _selectedFilters = selectedFilters;
         _selectedFilterParam = paramFilters;
         _activeFilterImageView.hidden = (_selectedFilters.count == 0);
         [self refreshView:nil];
         
-    } response:^(FilterResponse * filterResponse){
+    } response:^(FilterData * filterResponse){
         _filterResponse = filterResponse;
     }];
 }

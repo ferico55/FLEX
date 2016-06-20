@@ -8,26 +8,22 @@
 
 import UIKit
 
-class FilterResponse: NSObject, TKPObjectMapping {
+class FilterResponse: NSObject {
 
     var status : NSString = ""
-    var filter : [ListFilter] = []
-    var sort   : [ListOption] = []
+    var data : FilterData = FilterData()
     
     
-    static func attributeMappingDictionary() -> [NSObject : AnyObject]! {
+    class private func attributeMappingDictionary() -> [NSObject : AnyObject]! {
         return ["status" : "status"]
     }
     
-    static func mapping() -> RKObjectMapping! {
+    class func mapping() -> RKObjectMapping! {
         let mapping : RKObjectMapping = RKObjectMapping.init(forClass: self)
         mapping.addAttributeMappingsFromDictionary(self.attributeMappingDictionary())
         
-        let relMapping : RKRelationshipMapping = RKRelationshipMapping.init(fromKeyPath: "filter", toKeyPath: "filter", withMapping: ListFilter.mapping())
+        let relMapping : RKRelationshipMapping = RKRelationshipMapping.init(fromKeyPath: "data", toKeyPath: "data", withMapping: FilterData.mapping())
         mapping.addPropertyMapping(relMapping)
-        
-        let relMappingSort : RKRelationshipMapping = RKRelationshipMapping.init(fromKeyPath: "sort", toKeyPath: "sort", withMapping: ListOption.mapping())
-        mapping.addPropertyMapping(relMappingSort)
         
         return mapping
     }

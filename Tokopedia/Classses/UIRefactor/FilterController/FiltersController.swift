@@ -10,7 +10,7 @@ import UIKit
 
 class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
     
-    private var filterResponse : FilterResponse = FilterResponse()
+    private var filterResponse : FilterData = FilterData()
     private var selectedCategories: [CategoryDetail] = []
     private var selectedFilters:[ListOption] = []
     private var listControllers : [UIViewController] = []
@@ -22,9 +22,11 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
     private var selectedSort : ListOption = ListOption()
     private var completionHandlerSort:(ListOption, [String:String])->Void = {_ in }
     
-    private var completionHandlerResponse:(FilterResponse)->Void = {_ in }
+    private var source : String = ""
     
-    init(filterResponse:FilterResponse, categories: [CategoryDetail], selectedCategories:[CategoryDetail], selectedFilters:[ListOption], presentedVC:(UIViewController), onCompletion: ((selectedCategories:[CategoryDetail], selectedFilters:[ListOption], paramFilter:[String : String]) -> Void), response:((FilterResponse) -> Void)){
+    private var completionHandlerResponse:(FilterData)->Void = {_ in }
+    
+    init(source: String, filterResponse:FilterData, categories: [CategoryDetail], selectedCategories:[CategoryDetail], selectedFilters:[ListOption], presentedVC:(UIViewController), onCompletion: ((selectedCategories:[CategoryDetail], selectedFilters:[ListOption], paramFilter:[String : String]) -> Void), response:((FilterData) -> Void)){
         
         self.filterResponse = filterResponse
         self.categories = categories
@@ -32,6 +34,7 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
         self.selectedFilters = selectedFilters
         self.completionHandlerFilter = onCompletion
         self.presentedController = presentedVC
+        self.source = source
         completionHandlerResponse = response
         
         super.init()
@@ -39,11 +42,12 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
         self .presentControllerFilter()
     }
     
-    init(sortResponse:FilterResponse, selectedSort: ListOption, presentedVC:(UIViewController), onCompletion: ((selectedSort:ListOption, paramSort:[String:String]) -> Void), response:((FilterResponse) -> Void)){
+    init(source:String, sortResponse:FilterData, selectedSort: ListOption, presentedVC:(UIViewController), onCompletion: ((selectedSort:ListOption, paramSort:[String:String]) -> Void), response:((FilterData) -> Void)){
         
         self.selectedSort = selectedSort
         self.completionHandlerSort = onCompletion
         self.presentedController = presentedVC
+        self.source = source
         
         self.filterResponse = sortResponse
         completionHandlerResponse = response
@@ -54,7 +58,7 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
     }
     
     private func requestFilter(){
-        RequestFilter .fetchFilter({ (response) in
+        RequestFilter.fetchFilter(source, success: { (response) in
             if(response.filter.count == 0){
                 let vc : UIViewController = UIViewController()
                 vc.view.backgroundColor = UIColor.whiteColor()
@@ -110,7 +114,7 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
     }
     
     private func presentControllerSort(){
-        let controller : FilterSortViewController = FilterSortViewController.init(items: filterResponse.sort, selectedObject: selectedSort, onCompletion: { (selectedSort: ListOption, paramSort:[String:String]) in
+        let controller : FilterSortViewController = FilterSortViewController.init(source:source, items: filterResponse.sort, selectedObject: selectedSort, onCompletion: { (selectedSort: ListOption, paramSort:[String:String]) in
                 self.selectedSort = selectedSort
                 self.completionHandlerSort(self.selectedSort, paramSort)
             }) { (response) in
@@ -174,7 +178,7 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
         
         let listKeyFilters = ListFilters.map({$0.key})
         for selectedFilter in selectedFilters {
-            if selectedFilter.type == self.textInputType() {
+            if selectedFilter.input_type == self.textInputType() {
                 if listKeyFilters .contains(selectedFilter.key) {
                     textFieldIsActive = true
                 }
@@ -185,7 +189,7 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
     }
     
     private func textInputType()-> NSString{
-        return "textinput"
+        return "textbox"
     }
     
     private func categoryTitle() -> NSString{
