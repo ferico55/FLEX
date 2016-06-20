@@ -190,8 +190,9 @@ typedef enum TagRequest {
     
     WishListObjectList *list = [_product objectAtIndex:indexPath.row];
     [cell setViewModel:list.viewModel];
+    
+    __weak typeof(self) weakSelf = self;
     cell.tappedBuyButton = ^(ProductWishlistCell* tappedCell){
-        __weak typeof(self) weakSelf = self;
         TransactionATCViewController *transactionVC = [TransactionATCViewController new];
         transactionVC.productID = list.product_id;
         transactionVC.hidesBottomBarWhenPushed = YES;
