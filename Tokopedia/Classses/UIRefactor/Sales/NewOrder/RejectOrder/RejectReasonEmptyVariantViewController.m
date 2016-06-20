@@ -16,7 +16,9 @@
 
 @end
 
-@implementation RejectReasonEmptyVariantViewController
+@implementation RejectReasonEmptyVariantViewController{
+    NSIndexPath* selectedIndexPath;
+}
 
 
 - (void)viewDidLoad {
@@ -96,6 +98,7 @@
 #pragma mark - Cell Delegate
 -(void)tableViewCell:(UITableViewCell *)cell changeProductDescriptionAtIndexPath:(NSIndexPath *)indexPath{
     OrderProduct *selectedProduct = [_order.order_products objectAtIndex:indexPath.row];
+    selectedIndexPath = indexPath;
     RejectReasonProductDescriptionViewController *vc = [[RejectReasonProductDescriptionViewController alloc] init];
     vc.orderProduct = selectedProduct;
     vc.delegate = self;
@@ -103,7 +106,12 @@
 }
 
 #pragma mark - Product Description Delegate
--(void)didChangeProductDescription:(OrderProduct *)orderProduct{
+
+- (void)didChangeProductDescription:(NSString *)description withEmptyStock:(BOOL)emptyStock {
+    OrderProduct *product = [self.order.order_products objectAtIndex:selectedIndexPath.row];
+    product.product_description = description;
+    product.emptyStock = emptyStock;
 }
+
 @end
 

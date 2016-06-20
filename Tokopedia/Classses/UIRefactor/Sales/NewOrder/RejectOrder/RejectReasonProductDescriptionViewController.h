@@ -10,7 +10,7 @@
 #import "OrderProduct.h"
 
 @protocol RejectReasonProductDescriptionDelegate <NSObject>
-- (void)didChangeProductDescription:(OrderProduct*)orderProduct;
+- (void)didChangeProductDescription:(NSString *)description withEmptyStock:(BOOL)emptyStock ;
 @end
 
 @interface RejectReasonProductDescriptionViewController : UIViewController

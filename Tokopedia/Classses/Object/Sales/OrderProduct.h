@@ -25,10 +25,11 @@
 @property NSInteger product_reject_quantity;
 @property (strong, nonatomic) NSString *product_name;
 @property (strong, nonatomic) NSString *product_url;
+@property (strong, nonatomic) NSString *product_description;
 
 @property (strong, nonatomic) ProductModelView *viewModel;
 
 //not used for mapping
-@property BOOL stokKosong;
+@property BOOL emptyStock;
 
 @end

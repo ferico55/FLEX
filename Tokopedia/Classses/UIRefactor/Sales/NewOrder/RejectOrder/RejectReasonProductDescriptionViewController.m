@@ -44,7 +44,7 @@
 }
 
 -(IBAction)doneButtonClicked:(id)sender{
-    [self.delegate didChangeProductDescription:_orderProduct];
+    [self.delegate didChangeProductDescription:_orderProduct.product_description withEmptyStock:_orderProduct.emptyStock];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
