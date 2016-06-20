@@ -22,7 +22,7 @@ class FilterResponse: NSObject {
         let mapping : RKObjectMapping = RKObjectMapping.init(forClass: self)
         mapping.addAttributeMappingsFromDictionary(self.attributeMappingDictionary())
         
-        let relMapping : RKRelationshipMapping = RKRelationshipMapping.init(fromKeyPath: "data", toKeyPath: "data", withMapping: ListFilter.mapping())
+        let relMapping : RKRelationshipMapping = RKRelationshipMapping.init(fromKeyPath: "data", toKeyPath: "data", withMapping: FilterData.mapping())
         mapping.addPropertyMapping(relMapping)
         
         return mapping
