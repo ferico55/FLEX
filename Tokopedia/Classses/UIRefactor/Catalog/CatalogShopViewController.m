@@ -40,6 +40,8 @@
 #import "detail.h"
 #import "NoResultReusableView.h"
 
+#import "Tokopedia-Swift.h"
+
 @interface CatalogShopViewController ()
 <
     UITableViewDataSource,
@@ -85,6 +87,13 @@
     NoResultReusableView *_noResultView;
     
     NSIndexPath *_sortIndexPath;
+    
+    FilterData *_filterResponse;
+    NSArray<ListOption*> *_selectedFilters;
+    NSDictionary *_selectedFilterParam;
+    ListOption *_selectedSort;
+    NSDictionary *_selectedSortParam;
+    NSArray<CategoryDetail*> *_selectedCategories;
 }
 
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
@@ -299,21 +308,11 @@
     if ([sender isKindOfClass:[UIButton class]]) {
         UIButton *button = (UIButton *)sender;
         if (button.tag == 1) {
-            
-            SortViewController *controller = [SortViewController new];
-            controller.sortType = SortCatalogDetailSeach;
-            controller.selectedIndexPath = _sortIndexPath;
-            controller.delegate = self;
-            
-            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
-            navigationController.navigationBar.translucent = NO;
-            [self.navigationController presentViewController:navigationController animated:YES completion:nil];
-        
+            [self didTapSortButton:sender];
+
         } else if (button.tag == 2) {
         
-            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:_filterCatalogController];
-            navigationController.navigationBar.translucent = NO;
-            [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+            [self didTapFilterButton:sender];
 
         } else if (button.tag == 3) {
             if (_catalog) {
@@ -327,6 +326,95 @@
             }
         }
     }
+}
+
+-(NSString*)sourceFilter{
+     return @"catalog_product";
+}
+
+-(BOOL)isUseDynamicFilter{
+    if(FBTweakValue(@"Dynamic", @"Filter", @"Enabled", YES)) {
+        return YES;
+    } else {
+        return NO;
+    }
+}
+
+- (IBAction)didTapSortButton:(id)sender {
+    if ([self isUseDynamicFilter]) {
+        [self pushDynamicSort];
+    } else{
+        [self pushSort];
+    }
+}
+
+-(void)pushDynamicSort{
+    FiltersController *controller = [[FiltersController alloc]initWithSource:[self sourceFilter] sortResponse:_filterResponse?:[FilterData new] selectedSort:_selectedSort presentedVC:self onCompletion:^(ListOption * sort, NSDictionary*paramSort) {
+        _selectedSortParam = paramSort;
+        _selectedSort = sort;
+        
+        [_catalog_shops removeAllObjects];
+        
+        [_tableView reloadData];
+        [_tableView setTableFooterView:_footerView];
+        
+        [_activityIndicatorView startAnimating];
+        
+        _catalogId = _catalog.result.catalog_info.catalog_id;
+        _orderBy = sort;
+        _page = 0;
+        
+        [_networkManager doRequest];
+        
+    } response:^(FilterData * filterResponse) {
+        _filterResponse = filterResponse;
+    }];
+}
+
+-(void)pushSort{
+    SortViewController *controller = [SortViewController new];
+    controller.sortType = SortCatalogDetailSeach;
+    controller.selectedIndexPath = _sortIndexPath;
+    controller.delegate = self;
+    
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
+    navigationController.navigationBar.translucent = NO;
+    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+    
+}
+
+-(IBAction)didTapFilterButton:(id)sender{
+    if ([self isUseDynamicFilter]) {
+        [self pushDynamicFilter];
+    } else {
+        [self pushFilter];
+    }
+}
+
+-(void)pushFilter{
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:_filterCatalogController];
+    navigationController.navigationBar.translucent = NO;
+    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+}
+
+-(void)pushDynamicFilter{
+    FiltersController *controller = [[FiltersController alloc]initWithSource:[self sourceFilter] filterResponse:_filterResponse?:[FilterData new] categories:nil selectedCategories:_selectedCategories selectedFilters:_selectedFilters presentedVC:self onCompletion:^(NSArray<CategoryDetail *> * selectedCategories , NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
+        
+        _selectedCategories = selectedCategories;
+        _selectedFilters = selectedFilters;
+        _selectedFilterParam = paramFilters;
+        
+        [_catalog_shops removeAllObjects];
+        [_tableView reloadData];
+        [_tableView setTableFooterView:_footerView];
+        [_activityIndicatorView startAnimating];
+        _page = 0;
+        
+        [_networkManager doRequest];
+        
+    } response:^(FilterData * filterResponse){
+        _filterResponse = filterResponse;
+    }];
 }
 
 #pragma mark - Network manager delegate
