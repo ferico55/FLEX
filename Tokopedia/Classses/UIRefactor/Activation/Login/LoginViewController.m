@@ -51,9 +51,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 
     UIBarButtonItem *_barbuttonsignin;
 
-    NSDictionary *_facebookUserData;
-
-    GIDGoogleUser *_gidGoogleUser;
     UserAuthentificationManager *_userManager;
     
     ActivationRequest *_activationRequest;
@@ -664,8 +661,6 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
 }
 
 - (void)didReceiveFacebookUserData:(id)data {
-    _facebookUserData = data;
-    
     NSString *gender = @"";
     if ([[data objectForKey:@"gender"] isEqualToString:@"male"]) {
         gender = @"1";
@@ -802,9 +797,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
         _facebookLoginButton.hidden = YES;
         self.googleSignInButton.hidden = YES;
         [_activityIndicator startAnimating];
-        
-        _gidGoogleUser = user;
-        
+
         [self requestLoginGoogleWithUser:user];
     }
 }
