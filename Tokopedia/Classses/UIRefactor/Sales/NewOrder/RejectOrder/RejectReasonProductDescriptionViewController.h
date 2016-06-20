@@ -7,7 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "OrderProduct.h"
+
+@protocol RejectReasonProductDescriptionDelegate <NSObject>
+- (void)didChangeProductDescription:(OrderProduct*)orderProduct;
+@end
 
 @interface RejectReasonProductDescriptionViewController : UIViewController
-
+@property (strong, nonatomic) OrderProduct *orderProduct;
+@property (weak, nonatomic) id<RejectReasonProductDescriptionDelegate> delegate;
 @end

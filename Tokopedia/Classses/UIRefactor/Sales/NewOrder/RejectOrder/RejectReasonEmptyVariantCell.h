@@ -9,8 +9,6 @@
 #import <UIKit/UIKit.h>
 @class ProductModelView;
 @protocol RejectReasonEmptyVariantDelegate <NSObject>
-
-@optional
 - (void)tableViewCell:(UITableViewCell *)cell changeProductDescriptionAtIndexPath:(NSIndexPath *)indexPath;
 @end
 

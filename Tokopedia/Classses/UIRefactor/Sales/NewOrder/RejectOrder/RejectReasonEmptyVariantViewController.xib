@@ -33,6 +33,9 @@
                     <state key="normal" title="Konfirmasi">
                         <color key="titleColor" red="0.99963909390000005" green="1" blue="0.99975615740000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
+                    <connections>
+                        <action selector="confirmButtonTapped:" destination="-1" eventType="touchUpInside" id="RmR-AI-k0t"/>
+                    </connections>
                 </button>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="default" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="ak1-Wf-lIy">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="436"/>

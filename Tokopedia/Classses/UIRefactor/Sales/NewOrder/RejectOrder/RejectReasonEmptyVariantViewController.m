@@ -8,8 +8,9 @@
 
 #import "RejectReasonEmptyVariantViewController.h"
 #import "RejectReasonEmptyVariantCell.h"
+#import "RejectReasonProductDescriptionViewController.h"
 
-@interface RejectReasonEmptyVariantViewController ()<UITableViewDelegate, UITableViewDataSource, RejectReasonEmptyVariantDelegate>
+@interface RejectReasonEmptyVariantViewController ()<UITableViewDelegate, UITableViewDataSource, RejectReasonEmptyVariantDelegate, RejectReasonProductDescriptionDelegate>
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UIButton *confirmButton;
 
@@ -44,7 +45,7 @@
     static NSString *cellIdentifer = @"RejectReasonEmptyVariantCell";
     
     RejectReasonEmptyVariantCell *cell = (RejectReasonEmptyVariantCell *)[_tableView dequeueReusableCellWithIdentifier:cellIdentifer];
-    cell.delegate = self;
+    
     
     if (cell == nil) {
         NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:cellIdentifer
@@ -54,6 +55,7 @@
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     [cell setSelected:NO animated:NO];
+    cell.delegate = self;
     OrderProduct *currentProduct = [_order.order_products objectAtIndex:indexPath.row];
     [cell setViewModel:currentProduct.viewModel];
     return cell;
@@ -91,10 +93,17 @@
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
+#pragma mark - Cell Delegate
 -(void)tableViewCell:(UITableViewCell *)cell changeProductDescriptionAtIndexPath:(NSIndexPath *)indexPath{
     OrderProduct *selectedProduct = [_order.order_products objectAtIndex:indexPath.row];
-    
+    RejectReasonProductDescriptionViewController *vc = [[RejectReasonProductDescriptionViewController alloc] init];
+    vc.orderProduct = selectedProduct;
+    vc.delegate = self;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
+#pragma mark - Product Description Delegate
+-(void)didChangeProductDescription:(OrderProduct *)orderProduct{
+}
 @end
 
