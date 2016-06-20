@@ -691,7 +691,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                                  @"action" : @"do_login"
                                  };
 
-    [self doThirdPartySignInWithUserId:userId email:email provider:@"1"];
+    [self doThirdPartySignInWithUserId:userId email:email provider:@"1" userProfile:[CreatePasswordUserProfile fromFacebook:data]];
     
     _loadingView.hidden = NO;
     _emailTextField.hidden = YES;
@@ -819,10 +819,10 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
 
 #pragma mark - Activation Request
 - (void)requestLoginGoogleWithUser:(GIDGoogleUser *)user {
-    [self doThirdPartySignInWithUserId:user.userID email:user.profile.email provider:@"2"];
+    [self doThirdPartySignInWithUserId:user.userID email:user.profile.email provider:@"2" userProfile:[CreatePasswordUserProfile fromGoogle:user]];
 }
 
-- (void)doThirdPartySignInWithUserId:(NSString *)userId email:(NSString *)email provider:(NSString *)provider {
+- (void)doThirdPartySignInWithUserId:(NSString *)userId email:(NSString *)email provider:(NSString *)provider userProfile:(CreatePasswordUserProfile *)userProfile {
     __weak typeof(self) weakSelf = self;
 
     [self thirdPartySignInWithUserId:userId
@@ -851,15 +851,12 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                              [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];
 
                              CreatePasswordViewController *controller = [CreatePasswordViewController new];
-                             if (_facebookUserData) {
-                                 controller.userProfile = [CreatePasswordUserProfile fromFacebook:_facebookUserData];
-                             } else if (_gidGoogleUser) {
-                                 controller.userProfile = [CreatePasswordUserProfile fromGoogle:_gidGoogleUser];
-                             }
+
+                             controller.userProfile = userProfile;
 
                              controller.onPasswordCreated = ^{
                                  [controller dismissViewControllerAnimated:YES completion:nil];
-                                 [weakSelf doThirdPartySignInWithUserId:userId email:email provider:provider];
+                                 [weakSelf doThirdPartySignInWithUserId:userId email:email provider:provider userProfile:userProfile];
                              };
 
                              UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
