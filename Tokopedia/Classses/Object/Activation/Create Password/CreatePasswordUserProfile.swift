@@ -23,4 +23,12 @@ class CreatePasswordUserProfile: NSObject {
 
         return userProfile
     }
+
+    static func fromGoogle(user: GIDGoogleUser) -> CreatePasswordUserProfile {
+        let userProfile = CreatePasswordUserProfile()
+        userProfile.email = user.profile.email
+        userProfile.name = user.profile.name
+
+        return userProfile
+    }
 }

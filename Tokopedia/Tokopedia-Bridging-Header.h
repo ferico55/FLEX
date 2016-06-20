@@ -26,3 +26,4 @@
 #import "MainViewController.h"
 #import <JLPermissions/JLNotificationPermission.h>
 #import "TPAnalytics.h"
+#import <GoogleSignIn/GoogleSignIn.h>

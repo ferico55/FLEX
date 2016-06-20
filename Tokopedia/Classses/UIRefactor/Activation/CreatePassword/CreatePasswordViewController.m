@@ -122,9 +122,7 @@
 
 - (void)setGidGoogleUser:(GIDGoogleUser *)gidGoogleUser {
     _gidGoogleUser = gidGoogleUser;
-    _userProfile = [CreatePasswordUserProfile new];
-    _userProfile.email = gidGoogleUser.profile.email;
-    _userProfile.name = gidGoogleUser.profile.name;
+    _userProfile = [CreatePasswordUserProfile fromGoogle:gidGoogleUser];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
