@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "NotificationFormNotif.h"
 
-@interface NotificationFormResult : NSObject
+@interface NotificationFormResult : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NotificationFormNotif *notification;
 
