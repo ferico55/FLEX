@@ -115,8 +115,6 @@
         controller.title = _selectedReason.reason_text;
         [self.navigationController pushViewController:controller animated:YES];
     }
-    
-    
 }
 
 #pragma mark - Request

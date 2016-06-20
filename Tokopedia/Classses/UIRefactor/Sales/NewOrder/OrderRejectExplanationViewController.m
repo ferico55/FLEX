@@ -64,7 +64,7 @@
                 [alert show];
             } else {
                 [self.delegate didFinishWritingExplanation:_textView.text];
-                [self dismissViewControllerAnimated:YES completion:nil];
+                [self.navigationController popViewControllerAnimated:YES];
             }
         }
     }
