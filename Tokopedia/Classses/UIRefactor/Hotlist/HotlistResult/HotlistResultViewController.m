@@ -784,10 +784,6 @@ static NSString const *rows = @"12";
 }
 
 #pragma mark - Promo request delegate
-- (void)isValidToLoadNextPage:(NSInteger)page {
-    
-}
-
 - (void)requestPromo {
     _promoRequest.page = _page;
     
