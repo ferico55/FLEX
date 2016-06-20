@@ -36,6 +36,7 @@
 
 #import "ActivationRequest.h"
 #import "NSString+TPBaseUrl.h"
+#import "SecurityAnswer.h"
 
 static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jdpts.apps.googleusercontent.com";
 
@@ -577,9 +578,11 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
         controller.deviceID = _userManager.getMyDeviceToken;
         controller.successAnswerCallback = ^(SecurityAnswer* answer) {
             [secureStorage setKeychainWithValue:answer.data.uuid withKey:@"securityQuestionUUID"];
-            [self authenticateToMarketplaceWithAccountInfo:_accountInfo oAuthToken:_oAuthToken successCallback:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                [self requestSuccessLogin:successResult withOperation:operation];
-            }                              failureCallback:^(NSError *errorResult) {
+            [self authenticateToMarketplaceWithAccountInfo:_accountInfo oAuthToken:_oAuthToken
+                                           successCallback:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                               [self requestSuccessLogin:successResult withOperation:operation];
+                                           }
+                                           failureCallback:^(NSError *errorResult) {
 
             }];
         };
