@@ -149,7 +149,7 @@ ImageSearchRequestDelegate
     NSIndexPath *_sortIndexPath;
     NSArray *_initialBreadcrumb;
     
-    FilterResponse *_filterResponse;
+    FilterData *_filterResponse;
     NSArray<ListOption*> *_selectedFilters;
     NSDictionary *_selectedFilterParam;
     ListOption *_selectedSort;
@@ -200,7 +200,7 @@ ImageSearchRequestDelegate
     CGFloat headerHeight = [PromoCollectionReusableView collectionViewHeightForType:_promoCellType];
     [_flowLayout setHeaderReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, headerHeight)];
     [_flowLayout setFooterReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 50)];
-    [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 10, 10)];
+//    [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 10, 10)];
     
     [_collectionView setCollectionViewLayout:_flowLayout];
     [_collectionView setAlwaysBounceVertical:YES];
@@ -216,7 +216,7 @@ ImageSearchRequestDelegate
     [_params setDictionary:_data];
     [self setDefaultSort];
     
-    if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
+    if ([[_data objectForKey:@"type"] isEqualToString:@"search_product"]||[[_data objectForKey:@"type"] isEqualToString:[self directoryType]]) {
         if(self.isFromAutoComplete) {
             [TPAnalytics trackScreenName:@"Product Search Results (From Auto Complete Search)" gridType:self.cellType];
             self.screenName = @"Product Search Results (From Auto Complete Search)";
@@ -325,7 +325,7 @@ ImageSearchRequestDelegate
     sort.name = @"Paling Sesuai";
     sort.value = @"23";
     sort.key = @"ob";
-    sort.type = @"checkmark";
+    sort.input_type = @"checkbox";
     return sort;
 }
 
@@ -426,44 +426,39 @@ ImageSearchRequestDelegate
 - (UICollectionReusableView*)collectionView:(UICollectionView*)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
     UICollectionReusableView *reusableView = nil;
     if (kind == UICollectionElementKindSectionHeader) {
-        if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY] &&
+        if (([[_data objectForKey:@"type"] isEqualToString:@"search_product"]||[[_data objectForKey:@"type"] isEqualToString:[self directoryType]]) &&
             _promo.count > indexPath.section) {
             
             NSArray *currentPromo = [_promo objectAtIndex:indexPath.section];
-            if(_promoCellType == PromoCollectionViewCellTypeThumbnail){
-                if(indexPath.section % 2 == 0){
-                    if (currentPromo && currentPromo.count > 0) {
-                        reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"PromoCollectionReusableView"
-                                                                                 forIndexPath:indexPath];
-                        NSMutableArray<PromoResult*> *combinedPromoResults = [NSMutableArray arrayWithArray:[_promo objectAtIndex:indexPath.section]];
-                        if(_promo.count > indexPath.section){
-                            [combinedPromoResults addObjectsFromArray:[_promo objectAtIndex:indexPath.section+1]];
-                        }
-                        ((PromoCollectionReusableView *)reusableView).collectionViewCellType = _promoCellType;
-                        ((PromoCollectionReusableView *)reusableView).promo = combinedPromoResults;
-                        ((PromoCollectionReusableView *)reusableView).scrollPosition = [_promoScrollPosition objectAtIndex:indexPath.section];
-                        ((PromoCollectionReusableView *)reusableView).delegate = self;
-                        ((PromoCollectionReusableView *)reusableView).indexPath = indexPath;
-                        if (self.scrollDirection == ScrollDirectionDown && indexPath.section == 1) {
-                            [((PromoCollectionReusableView *)reusableView) scrollToCenter];
-                        }
-                    }
-                }
-            }else{
+//            if(_promoCellType == PromoCollectionViewCellTypeThumbnail){
+//                if(indexPath.section % 2 == 0){
+//                    if (currentPromo && currentPromo.count > 0) {
+//                        reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"PromoCollectionReusableView"
+//                                                                                 forIndexPath:indexPath];
+//                        NSMutableArray<PromoResult*> *combinedPromoResults = [NSMutableArray arrayWithArray:[_promo objectAtIndex:indexPath.section]];
+//                        if(_promo.count > indexPath.section){
+//                            [combinedPromoResults addObjectsFromArray:[_promo objectAtIndex:indexPath.section+1]];
+//                        }
+//                        ((PromoCollectionReusableView *)reusableView).collectionViewCellType = _promoCellType;
+//                        ((PromoCollectionReusableView *)reusableView).promo = combinedPromoResults;
+//                        ((PromoCollectionReusableView *)reusableView).delegate = self;
+//                        ((PromoCollectionReusableView *)reusableView).indexPath = indexPath;
+//                        if (self.scrollDirection == ScrollDirectionDown && indexPath.section == 1) {
+//                            [((PromoCollectionReusableView *)reusableView) scrollToCenter];
+//                        }
+//                    }
+//                }
+//            }else{
                 if (currentPromo && currentPromo.count > 0) {
                     reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"PromoCollectionReusableView"
                                                                              forIndexPath:indexPath];
                     ((PromoCollectionReusableView *)reusableView).collectionViewCellType = _promoCellType;
                     ((PromoCollectionReusableView *)reusableView).promo = [_promo objectAtIndex:indexPath.section];
-                    ((PromoCollectionReusableView *)reusableView).scrollPosition = [_promoScrollPosition objectAtIndex:indexPath.section];
                     ((PromoCollectionReusableView *)reusableView).delegate = self;
                     ((PromoCollectionReusableView *)reusableView).indexPath = indexPath;
-                    if (self.scrollDirection == ScrollDirectionDown && indexPath.section == 1) {
-                        [((PromoCollectionReusableView *)reusableView) scrollToCenter];
-                    }
                     
                 }
-            }
+//            }
         } else {
             reusableView = nil;
         }
@@ -513,23 +508,23 @@ ImageSearchRequestDelegate
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
     CGSize size = CGSizeZero;
-    if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
+    if ([[_data objectForKey:@"type"] isEqualToString:@"search_product"]||[[_data objectForKey:@"type"] isEqualToString:[self directoryType]]) {
         if (_promo.count > section) {
             NSArray *currentPromo = [_promo objectAtIndex:section];
             
-            if(_promoCellType == PromoCollectionViewCellTypeThumbnail){
-                if(section % 2 == 0){
-                    if (currentPromo && currentPromo.count > 0) {
-                        CGFloat headerHeight = [PromoCollectionReusableView collectionViewHeightForType:_promoCellType];
-                        size = CGSizeMake(self.view.frame.size.width, headerHeight);
-                    }
-                }
-            }else{
+//            if(_promoCellType == PromoCollectionViewCellTypeThumbnail){
+//                if(section % 2 == 0){
+//                    if (currentPromo && currentPromo.count > 0) {
+//                        CGFloat headerHeight = [PromoCollectionReusableView collectionViewHeightForType:_promoCellType];
+//                        size = CGSizeMake(self.view.frame.size.width, headerHeight);
+//                    }
+//                }
+//            }else{
                 if (currentPromo && currentPromo.count > 0) {
                     CGFloat headerHeight = [PromoCollectionReusableView collectionViewHeightForType:_promoCellType];
                     size = CGSizeMake(self.view.frame.size.width, headerHeight);
                 }
-            }
+//            }
         }
     }
     return size;
@@ -688,7 +683,7 @@ ImageSearchRequestDelegate
     controller.selectedIndexPath = _sortIndexPath;
     if(_isFromImageSearch){
         controller.sortType = SortImageSearch;
-    }else if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
+    }else if ([[_data objectForKey:@"type"] isEqualToString:@"search_product"]||[[_data objectForKey:@"type"] isEqualToString:[self directoryType]]) {
         controller.sortType = SortProductSearch;
     } else {
         controller.sortType = SortCatalogSearch;
@@ -699,7 +694,7 @@ ImageSearchRequestDelegate
 }
 
 -(void)pushDynamicSort{
-    FiltersController *controller = [[FiltersController alloc]initWithSortResponse:_filterResponse?:[FilterResponse new] selectedSort:_selectedSort presentedVC:self onCompletion:^(ListOption * sort, NSDictionary*paramSort) {
+    FiltersController *controller = [[FiltersController alloc]initWithSource:[_data objectForKey:kTKPDSEARCH_DATATYPE]?:@"" sortResponse:_filterResponse?:[FilterData new] selectedSort:_selectedSort presentedVC:self onCompletion:^(ListOption * sort, NSDictionary*paramSort) {
         _selectedSortParam = paramSort;
         _selectedSort = sort;
         
@@ -727,7 +722,7 @@ ImageSearchRequestDelegate
             [self refreshView:nil];
         }
         [self refreshView:nil];
-    } response:^(FilterResponse * filterResponse) {
+    } response:^(FilterData * filterResponse) {
         _filterResponse = filterResponse;
     }];
 }
@@ -749,7 +744,7 @@ ImageSearchRequestDelegate
 }
 
 -(void)pushDynamicFilter{
-    FiltersController *controller = [[FiltersController alloc]initWithFilterResponse:_filterResponse?:[FilterResponse new] categories:[_initialBreadcrumb copy] selectedCategories:_selectedCategories selectedFilters:_selectedFilters presentedVC:self onCompletion:^(NSArray<CategoryDetail *> * selectedCategories , NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
+    FiltersController *controller = [[FiltersController alloc]initWithSource:[_data objectForKey:kTKPDSEARCH_DATATYPE]?:@"" filterResponse:_filterResponse?:[FilterData new] categories:[_initialBreadcrumb copy] selectedCategories:_selectedCategories selectedFilters:_selectedFilters presentedVC:self onCompletion:^(NSArray<CategoryDetail *> * selectedCategories , NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
         
         _selectedCategories = selectedCategories;
         _selectedFilters = selectedFilters;
@@ -760,7 +755,7 @@ ImageSearchRequestDelegate
         [_params setObject:[_data objectForKey:@"search"]?:@"" forKey:@"search"];
         [self refreshView:nil];
         
-    } response:^(FilterResponse * filterResponse){
+    } response:^(FilterData * filterResponse){
         _filterResponse = filterResponse;
     }];
 }
@@ -768,7 +763,7 @@ ImageSearchRequestDelegate
 -(void)pushFilter{
     // Action Filter Button
     FilterViewController *vc = [FilterViewController new];
-    if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY])
+    if ([[_data objectForKey:@"type"] isEqualToString:@"search_product"]||[[_data objectForKey:@"type"] isEqualToString:[self directoryType]])
         vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPEPRODUCTVIEWKEY),
                     kTKPDFILTER_DATAFILTERKEY: _params
                     };
@@ -799,12 +794,12 @@ ImageSearchRequestDelegate
 -(NSDictionary *)parameterFilter{
     NSMutableDictionary *parameter = [[NSMutableDictionary alloc]init];
     [parameter setObject:@"ios" forKey:@"device"];
-    [parameter setObject:[_params objectForKey:@"sc"]?:@"" forKey:@"sc"];
-    [parameter setObject:[_params objectForKey:@"floc"]?:@"" forKey:@"floc"];
-    [parameter setObject:[_params objectForKey:@"ob"]?:@"" forKey:@"ob"];
-    [parameter setObject:[_params objectForKey:@"pmin"]?:@"" forKey:@"pmin"];
-    [parameter setObject:[_params objectForKey:@"pmax"]?:@"" forKey:@"pmax"];
-    [parameter setObject:[_params objectForKey:@"fshop"]?:@"" forKey:@"fshop"];
+    [parameter setObject:[_params objectForKey:@"department_id"]?:@"" forKey:@"sc"];
+    [parameter setObject:[_params objectForKey:@"location"]?:@"" forKey:@"floc"];
+    [parameter setObject:[_params objectForKey:@"order_by"]?:@"" forKey:@"ob"];
+    [parameter setObject:[_params objectForKey:@"price_min"]?:@"" forKey:@"pmin"];
+    [parameter setObject:[_params objectForKey:@"price_max"]?:@"" forKey:@"pmax"];
+    [parameter setObject:[_params objectForKey:@"shop_type"]?:@"" forKey:@"fshop"];
     [parameter setObject:[_params objectForKey:@"sc_identifier"]?:@"" forKey:@"sc_identifier"];
     if(_isFromImageSearch){
         [parameter setObject:_image_url forKey:@"image_url"];
@@ -897,7 +892,8 @@ ImageSearchRequestDelegate
     NSDictionary *pathDictionary = @{
                                      @"search_catalog" : @"/search/v2.1/catalog",
                                      @"search_shop" : @"/search/v1/shop",
-                                     @"search_product" : @"/search/v2.1/product"
+                                     @"search_product" : @"/search/v2.1/product",
+                                     [self directoryType] : @"/search/v2.1/product"
                                      };
     return pathDictionary;
 }
@@ -977,6 +973,10 @@ ImageSearchRequestDelegate
     }
 }
 
+-(NSString*)directoryType{
+    return @"directory";
+}
+
 - (void)searchMappingResult:(RKMappingResult *)mappingResult {
     SearchAWS *search = [mappingResult.dictionary objectForKey:@""];
     _searchObject = search;
@@ -1019,7 +1019,7 @@ ImageSearchRequestDelegate
         }
         
         
-        if([[_data objectForKey:@"type"] isEqualToString:@"search_product"]) {
+        if([[_data objectForKey:@"type"] isEqualToString:@"search_product"]||[[_data objectForKey:@"type"] isEqualToString:[self directoryType]]) {
             if(search.data.products.count > 0) {
                 [_product addObject: search.data.products];
                 [TPAnalytics trackProductImpressions:search.data.products];
@@ -1248,33 +1248,32 @@ ImageSearchRequestDelegate
         
         [_promoRequest requestForProductQuery:searchQuery
                                    department:departmentId
-                                         page:page
+                                         page:page/2
                                        source:source
                                     onSuccess:^(NSArray<PromoResult *> *promoResult) {
                                         if (promoResult) {
                                             if(promoResult.count > 2){
-                                                NSRange arrayRangeToBeTaken = NSMakeRange(0, promoResult.count/2);
-                                                NSArray *promoArrayFirstHalf = [promoResult subarrayWithRange:arrayRangeToBeTaken];
-                                                arrayRangeToBeTaken.location = arrayRangeToBeTaken.length;
-                                                arrayRangeToBeTaken.length = promoResult.count - arrayRangeToBeTaken.length;
-                                                NSArray *promoArrayLastHalf = [promoResult subarrayWithRange:arrayRangeToBeTaken];
-                                                
-                                                [_promo addObject:promoArrayLastHalf];
-                                                [_promo addObject:promoArrayFirstHalf];
-                                                [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
-                                                [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
+                                                if(IS_IPAD) {
+                                                    [_promo addObject:promoResult];
+                                                } else {
+                                                    NSRange arrayRangeToBeTaken = NSMakeRange(0, promoResult.count/2);
+                                                    NSArray *promoArrayFirstHalf = [promoResult subarrayWithRange:arrayRangeToBeTaken];
+                                                    arrayRangeToBeTaken.location = arrayRangeToBeTaken.length;
+                                                    arrayRangeToBeTaken.length = promoResult.count - arrayRangeToBeTaken.length;
+                                                    NSArray *promoArrayLastHalf = [promoResult subarrayWithRange:arrayRangeToBeTaken];
+                                                    
+                                                    [_promo addObject:promoArrayLastHalf];
+                                                    [_promo addObject:promoArrayFirstHalf];
+                                                }
                                             }else{
                                                 [_promo addObject:promoResult];
                                                 [_promo addObject:[NSArray new]];
-                                                [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
-                                                [_promoScrollPosition addObject:[NSNumber numberWithInteger:0]];
                                             }
-                                        } else if (promoResult == nil && _start == [startPerPage integerValue]) {
-                                            [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
                                         }
+                                        
                                         [_collectionView reloadData];
                                     } onFailure:^(NSError *error) {
-                                        [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
+//                                        [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
                                         [_collectionView reloadData];
                                     }];
     }
@@ -1285,7 +1284,7 @@ ImageSearchRequestDelegate
 }
 
 - (void)didSelectPromoProduct:(PromoResult *)promoResult {
-    if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
+    if ([[_data objectForKey:@"type"] isEqualToString:@"search_product"]||[[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:[self directoryType]]){
         NavigateViewController *navigateController = [NavigateViewController new];
         NSDictionary *productData = @{
             @"product_id"       : promoResult.product.product_id?:@"",

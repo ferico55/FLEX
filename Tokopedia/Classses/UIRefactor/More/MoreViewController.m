@@ -847,12 +847,14 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
     if (permissionStatus == JLPermissionNotDetermined) {
         permission.extraAlertEnabled = false;
         [permission authorize: ^(NSString *deviceId, NSError *error) {
+            [TPAnalytics trackPushNotificationAccepted: deviceId != nil];
             [self togglePushNotificationCellVisibility];
         }];
     } else {
         ActivatePushInstructionViewController *viewController = [ActivatePushInstructionViewController new];
         
         viewController.viewControllerDidClosed = ^{
+            [TPAnalytics trackOpenPushNotificationSetting];
             [[JLNotificationPermission sharedInstance] displayAppSystemSettings];
         };
         [_wrapperViewController presentViewController:viewController animated:YES completion:nil];

@@ -19,6 +19,14 @@
     return [_shop_name kv_decodeHTMLCharacterEntities];
 }
 
+- (BOOL)is_product_preorder {
+    return _product_preorder == 1 ? YES : NO;
+}
+
+- (BOOL)is_product_wholesale {
+    return _product_wholesale == 1 ? YES : NO;
+}
+
 - (ProductModelView*)viewModel {
     if(_viewModel == nil) {
         ProductModelView *viewModel = [[ProductModelView alloc] init];
@@ -29,6 +37,9 @@
         [viewModel setIsGoldShopProduct:[self.shop_gold_status isEqualToString:@"1"]];
         [viewModel setIsProductBuyAble:[self.product_available isEqualToString:@"1"]];
         [viewModel setLuckyMerchantImageURL:self.shop_lucky];
+        [viewModel setIsWholesale:self.is_product_wholesale];
+        [viewModel setIsProductPreorder:self.is_product_preorder];
+        [viewModel setShopLocation:self.shop_location];
         
         _viewModel = viewModel;
     }

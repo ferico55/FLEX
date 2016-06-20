@@ -20,6 +20,14 @@
 @property (nonatomic, strong) NSString *product_name;
 @property (nonatomic, strong) NSString *shop_lucky;
 
+// this is happen because product_wholesale from API is integer format
+// we have to fix API Spec first
+@property NSInteger product_preorder;
+@property NSInteger product_wholesale;
+
+@property(nonatomic, assign) BOOL is_product_preorder;
+@property(nonatomic, assign) BOOL is_product_wholesale;
+
 @property (nonatomic, strong) ProductModelView *viewModel;
 
 @end
