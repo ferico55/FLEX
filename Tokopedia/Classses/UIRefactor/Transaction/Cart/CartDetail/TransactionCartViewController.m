@@ -2302,7 +2302,7 @@
 
 -(void)doRequestVoucher{
     [self isLoading:YES];
-    NSString *voucherCode = [_dataInput objectForKey:API_VOUCHER_CODE_KEY];
+    NSString *voucherCode = [_dataInput objectForKey:API_VOUCHER_CODE_KEY]?:@"";
     [RequestCart fetchVoucherCode:voucherCode success:^(TransactionVoucherData *data) {
         
         _voucherData = data;
@@ -2368,7 +2368,7 @@
                                                            DATA_TYPE_KEY:@(TYPE_CART_SUMMARY),
                                                            DATA_CART_GATEWAY_KEY :selectedGateway?:[TransactionCartGateway new],
                                                            DATA_CC_KEY : data.credit_card_data?:[CCData new],
-                                                           API_VOUCHER_CODE_KEY: [_dataInput objectForKey:API_VOUCHER_CODE_KEY]
+                                                           API_VOUCHER_CODE_KEY: [_dataInput objectForKey:API_VOUCHER_CODE_KEY]?:@""
                                                            };
                                 [_delegate didFinishRequestCheckoutData:userInfo];
                                 [self isLoading:NO];
