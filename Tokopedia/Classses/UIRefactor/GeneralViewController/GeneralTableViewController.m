@@ -27,6 +27,7 @@
 @implementation GeneralTableViewController
 @synthesize isObjectCategory;
 
+
 - (void)viewDidLoad {
 
     [super viewDidLoad];

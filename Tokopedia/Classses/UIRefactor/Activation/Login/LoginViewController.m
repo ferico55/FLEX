@@ -679,7 +679,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 
             TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
             [secureStorage setKeychainWithValue:@(_login.result.is_login) withKey:kTKPD_ISLOGINKEY];
-//            [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_TMP_USERIDKEY];
+            [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_TMP_USERIDKEY];
             
             [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];
 
@@ -785,6 +785,19 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     
     // Login UA
     [TPAnalytics trackLoginUserID:_login.result.user_id];
+    
+    NSDictionary *authenticatedData = @{
+    @"event": @"authenticated",
+    @"contactInfo": @{
+            @"userSeller": _login.result.seller_status,
+            @"userFullName": _login.result.full_name,
+            @"userEmail": [_activation objectForKey:kTKPDACTIVATION_DATAEMAILKEY]?:@"",
+            @"userId": _login.result.user_id,
+            @"userMSISNVerified": _login.result.msisdn_is_verified,
+            @"shopID": _login.result.shop_id
+        },
+    };
+    [TPAnalytics trackAuthenticated:authenticatedData];
     
     //add user login to GA
     id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
@@ -1237,7 +1250,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                                                     
                                                     TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
                                                     [secureStorage setKeychainWithValue:@(NO) withKey:kTKPD_ISLOGINKEY];
-//                                                    [secureStorage setKeychainWithValue:result.result.user_id withKey:kTKPD_TMP_USERIDKEY];
+                                                    [secureStorage setKeychainWithValue:result.result.user_id withKey:kTKPD_TMP_USERIDKEY];
                                                     
                                                     [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];
                                                     

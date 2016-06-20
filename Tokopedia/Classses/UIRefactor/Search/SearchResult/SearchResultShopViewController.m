@@ -24,6 +24,7 @@
 #import "LoadingView.h"
 #import "NoResultReusableView.h"
 #import "ShopContainerViewController.h"
+#import "SpellCheckRequest.h"
 
 static NSString const *rows = @"12";
 
@@ -33,6 +34,8 @@ static NSString const *rows = @"12";
 @property (weak, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 @property (weak, nonatomic) IBOutlet UIView *shopview;
+@property (strong, nonatomic) SpellCheckRequest *spellCheckRequest;
+@property (strong, nonatomic) IBOutlet UIImageView *activeFilterImageView;
 
 @end
 
@@ -53,6 +56,10 @@ static NSString const *rows = @"12";
     NSTimeInterval _timeinterval;
     
     NSIndexPath *_sortIndexPath;
+    
+    FilterResponse *_filterResponse;
+    NSArray<ListOption*> *_selectedFilters;
+    NSDictionary *_selectedFilterParam;
 }
 
 - (void)initNoResultView{
@@ -214,6 +221,51 @@ static NSString const *rows = @"12";
 
 
 - (IBAction)tapFilterButton:(id)sender {
+	if ([self isUseDynamicFilter]) {
+        [self pushDynamicFilter];
+    } else {
+        [self pushFilter];
+    }
+}
+
+#pragma mark - TKPDTabNavigationController Tap Button Notification
+
+-(IBAction)tap:(id)sender
+{
+    UIButton *button = (UIButton *)sender;
+    switch (button.tag) {
+        case 10:
+        {
+            // Action Sort Button
+            SortViewController *controller = [SortViewController new];
+            controller.selectedIndexPath = _sortIndexPath;
+            controller.delegate = self;
+            controller.sortType = SortShopSearch;
+            
+            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:controller];
+            [self.navigationController presentViewController:nav animated:YES completion:nil];
+            
+            break;
+        }
+        case 11:
+        {
+            [self didTapFilterButton:sender];
+            break;
+        }
+        default:
+            break;
+    }
+}
+
+-(IBAction)didTapFilterButton:(UIButton*)button{
+    if ([self isUseDynamicFilter]) {
+        [self pushDynamicFilter];
+    } else {
+        [self pushFilter];
+    }
+}
+
+-(void)pushFilter{
     FilterViewController *vc = [FilterViewController new];
     vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPESHOPVIEWKEY),
                 kTKPDFILTER_DATAFILTERKEY: _params};
@@ -222,7 +274,42 @@ static NSString const *rows = @"12";
     [self.navigationController presentViewController:nav animated:YES completion:nil];
 }
 
-- (LoadingView *)getLoadView {
+-(void)pushDynamicFilter{
+    FiltersController *controller = [[FiltersController alloc]initWithFilterResponse:_filterResponse?:[FilterResponse new] categories:nil selectedCategories:nil selectedFilters:_selectedFilters presentedVC:self onCompletion:^(NSArray<CategoryDetail *> * selectedCategories , NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
+        
+        _selectedFilters = selectedFilters;
+        _selectedFilterParam = paramFilters;
+        _activeFilterImageView.hidden = (_selectedFilters.count == 0);
+        [self refreshView:nil];
+        
+    } response:^(FilterResponse * filterResponse){
+        _filterResponse = filterResponse;
+    }];
+}
+
+-(BOOL)isUseDynamicFilter{
+    if(FBTweakValue(@"Dynamic", @"Filter", @"Enabled", YES)) {
+        return YES;
+    } else {
+        return NO;
+    }
+}
+
+#pragma mark - Methods
+- (TokopediaNetworkManager *)getNetworkManager
+{
+    if(tokopediaNetworkManager == nil)
+    {
+        tokopediaNetworkManager = [TokopediaNetworkManager new];
+        tokopediaNetworkManager.delegate = self;
+        tokopediaNetworkManager.isParameterNotEncrypted = YES;
+    }
+    
+    return tokopediaNetworkManager;
+}
+
+- (LoadingView *)getLoadView
+{
     if(loadingView == nil)
     {
         loadingView = [LoadingView new];
@@ -260,7 +347,16 @@ static NSString const *rows = @"12";
 }
 
 
+#pragma mark - TokopediaNetworkManager Delegate
 - (NSDictionary*)parameters {
+    if ([self isUseDynamicFilter]) {
+        return [self parameterDynamicFilter];
+    } else {
+        return [self parameterFilter];
+    }
+}
+
+-(NSDictionary*)parameterFilter{
     NSString *querry = [_params objectForKey:kTKPDSEARCH_DATASEARCHKEY];
     NSString *categoryID = [_params objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
     
@@ -277,10 +373,40 @@ static NSString const *rows = @"12";
                             @"pmax" : [_params objectForKey:kTKPDSEARCH_APIPRICEMAXKEY]?:@"",
                             @"source" : @"search"
                             };
-    
-    return param;
+     return param;
 }
 
+-(NSDictionary*)parameterDynamicFilter{
+    NSString *querry = [_params objectForKey:kTKPDSEARCH_DATASEARCHKEY];
+    NSString *type = kTKPDSEARCH_DATASEARCHSHOPKEY;
+    NSString *deptid = [_params objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
+    
+    NSDictionary* param;
+    
+    if (deptid == nil ) {
+        param = @{@"q"       :   querry?:@"",
+                  @"start" : @(_start),
+                  @"rows" : rows,
+                  @"device" : @"ios",
+                  };
+    } else {
+        param = @{@"sc"   :   deptid?:@"",
+                  @"start" : @(_start),
+                  @"rows" : rows,
+                  @"device" : @"ios",
+                  };
+    }
+    
+    NSMutableDictionary *parameter =[NSMutableDictionary new];
+    [parameter addEntriesFromDictionary:param];
+    [parameter addEntriesFromDictionary:_selectedFilterParam];
+    
+    return [parameter copy];
+}
+
+- (int)getRequestMethod:(int)tag {
+    return RKRequestMethodGET;
+}
 
 - (RKObjectMapping*) mapping {
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[SearchItem class]];

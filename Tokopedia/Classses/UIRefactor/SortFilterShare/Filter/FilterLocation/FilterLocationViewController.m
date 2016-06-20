@@ -70,10 +70,10 @@
                                                                       style:UIBarButtonItemStyleBordered
                                                                      target:self
                                                                      action:@selector(tap:)];
-    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
-    barButtonItem.tag = 10;
-    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+//    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
+//    barButtonItem.tag = 10;
+//    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
+//    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
     barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Selesai"
                                                   style:UIBarButtonItemStyleDone
@@ -172,7 +172,9 @@
                                        kTKPDFILTER_APILOCATIONNAMEKEY :  _locationnames[indexpath.row]?:@"none",
                                        kTKPDFILTERLOCATION_DATAINDEXPATHKEY:indexpath
                                        };
-                [_delegate FilterLocationViewController:self withdata:data];
+                if ([self.delegate respondsToSelector:@selector(FilterLocationViewController:withdata:)]) {
+                    [_delegate FilterLocationViewController:self withdata:data];
+                }
                 [self.navigationController popViewControllerAnimated:YES];
                 break;
             }
@@ -248,8 +250,7 @@
 }
 
 #pragma mark - Cell Delegate
--(void)FilterLocationViewCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
-{
+-(void)FilterLocationViewCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath {
     //[self.navigationController dismissViewControllerAnimated:YES completion:nil];
     [_selectedlocation setObject:indexpath forKey:kTKPDFILTER_DATAINDEXPATHKEY];
     [_table reloadData];

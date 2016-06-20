@@ -10,6 +10,7 @@
 #define KTKPDMESSAGE_DETAILCELLIDENTIFIER @"InboxMessageDetailCellIdentifier"
 #import <UIKit/UIKit.h>
 #import "ViewLabelUser.h"
+#import "TTTAttributedLabel.h"
 
 @class InboxMessageDetailList;
 #define CHeightUserLabel 27
@@ -21,11 +22,11 @@
 @end
 
 
-@interface InboxMessageDetailCell : UITableViewCell {
+@interface InboxMessageDetailCell : UITableViewCell <TTTAttributedLabelDelegate> {
 
     UIImageView* avatarImageView;
     UILabel* timeLabel;
-    UILabel* messageLabel;
+    TTTAttributedLabel* messageLabel;
     BOOL sent;
     
     @private UIView * messageView;
@@ -41,7 +42,7 @@
 @property (strong,nonatomic) NSDictionary *data;
 @property (nonatomic, strong) ViewLabelUser *viewLabelUser;
 @property (nonatomic, readonly) UIView * messageView;
-@property (nonatomic, readonly) UILabel * messageLabel;
+@property (nonatomic, readonly) TTTAttributedLabel* messageLabel;
 @property (nonatomic, readonly) UILabel * timeLabel;
 @property (nonatomic, readonly) UIImageView * avatarImageView;
 @property (nonatomic, readonly) UIImageView * balloonView;
@@ -50,6 +51,8 @@
 
 
 @property(nonatomic, strong) InboxMessageDetailList *message;
+@property(copy) void(^onTapUser)(NSString* userId);
+@property(copy) void(^onTapMessageWithUrl)(NSURL* url);
 
 /**Returns the text margin in horizontal direction.
  @return CGFloat containing the horizontal text margin.

@@ -13,6 +13,7 @@
 #import "TKPDAlert.h"
 #import "HomeTabViewController.h"
 #import "StickyAlertView.h"
+#import "UserAuthentificationManager.h"
 
 @interface PhoneVerificationViewController ()
 <TokopediaNetworkManagerDelegate,

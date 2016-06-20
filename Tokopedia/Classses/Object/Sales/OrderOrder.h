@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface OrderOrder : NSObject
+@interface OrderOrder : NSObject <TKPObjectMapping>
 
 @property (strong, nonatomic) NSString *is_allow_manage_tx;
 @property (strong, nonatomic) NSString *shop_name;

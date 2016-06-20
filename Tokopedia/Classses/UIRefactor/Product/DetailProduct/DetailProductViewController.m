@@ -575,12 +575,12 @@ OtherProductDelegate
                 // Move To warehouse
                 if ([_product.result.product.product_status integerValue] == PRODUCT_STATE_BANNED ||
                     [_product.result.product.product_status integerValue] == PRODUCT_STATE_PENDING) {
-                    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Tidak dapat menggudangkan produk. Produk sedang dalam pengawasan."] delegate:self];
+                    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Permintaan Anda tidak dapat diproses, produk sedang dalam pengawasan."] delegate:self];
                     [alert show];
                 }
                 else
                 {
-                    UIAlertView *alert =[[UIAlertView alloc]initWithTitle:@"Apakah Anda yakin gudangkan produk?" message:nil delegate:self cancelButtonTitle:@"Tidak" otherButtonTitles:@"Ya", nil];
+                    UIAlertView *alert =[[UIAlertView alloc]initWithTitle:@"Apakah Anda yakin ingin mengubah produk menjadi tidak dijual?" message:nil delegate:self cancelButtonTitle:@"Tidak" otherButtonTitles:@"Ya", nil];
                     [alert show];
                 }
                 break;
@@ -795,12 +795,13 @@ OtherProductDelegate
                 // Move To warehouse
                 if ([_product.result.product.product_status integerValue] == PRODUCT_STATE_BANNED ||
                     [_product.result.product.product_status integerValue] == PRODUCT_STATE_PENDING) {
-                    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Tidak dapat menggudangkan produk. Produk sedang dalam pengawasan."] delegate:self];
+                    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Permintaan Anda tidak dapat diproses, produk sedang dalam pengawasan."] delegate:self];
                     [alert show];
                 }
                 else
                 {
-                    UIAlertView *alert =[[UIAlertView alloc]initWithTitle:@"Apakah Anda yakin gudangkan produk?" message:nil delegate:self cancelButtonTitle:@"Tidak" otherButtonTitles:@"Ya", nil];
+                    UIAlertView *alert =[[UIAlertView alloc]initWithTitle:@"Apakah stok produk ini kosong?" message:nil delegate:self cancelButtonTitle:@"Tidak" otherButtonTitles:@"Ya", nil];
+                    alert.tag = 1;
                     [alert show];
                 }
                 break;
@@ -825,15 +826,11 @@ OtherProductDelegate
             }
             case UIGestureRecognizerStateEnded: {
                 // Move To Etalase
-                EtalaseViewController *controller = [EtalaseViewController new];
-                controller.delegate = self;
-                controller.shopId =_product.result.shop_info.shop_id;
-                controller.isEditable = NO;
-                controller.showOtherEtalase = NO;
-                controller.enableAddEtalase = YES;
                 
-                [controller setInitialSelectedEtalase:selectedEtalase];
-                [self.navigationController pushViewController:controller animated:YES];
+                UIAlertView *alert =[[UIAlertView alloc]initWithTitle:@"Apakah stok produk ini tersedia?" message:nil delegate:self cancelButtonTitle:@"Tidak" otherButtonTitles:@"Ya", nil];
+                alert.tag = 2;
+                [alert show];
+                
                 break;
             }
                 
@@ -1289,7 +1286,7 @@ OtherProductDelegate
         return [_detailProductPostUrl isEqualToString:@""] ? kTKPDDETAILPRODUCT_APIPATH : _detailProductPostUrl;
     else if(tag == CTagOtherProduct)
         //return [_detailProductPostUrl isEqualToString:@""] ? kTKPDDETAILPRODUCT_APIPATH : _detailProductPostUrl;
-        return @"/search/v1/product";
+        return @"search/v2.1/product";
     else if(tag == CTagFavorite)
         return @"action/favorite-shop.pl";
     else if(tag == CTagUnWishList)
@@ -2321,11 +2318,11 @@ OtherProductDelegate
     
     SearchResultViewController *vc = [SearchResultViewController new];
     NSString *deptid = breadcrumb.department_id;
-    vc.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : deptid?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY,kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
+    vc.data =@{@"sc" : deptid?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY,kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
     SearchResultViewController *vc1 = [SearchResultViewController new];
-    vc1.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : deptid?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY,kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
+    vc1.data =@{@"sc" : deptid?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY,kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
     SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
-    vc2.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : deptid?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY,kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
+    vc2.data =@{@"sc" : deptid?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY,kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
     NSArray *viewcontrollers = @[vc,vc1,vc2];
     
     TKPDTabNavigationController *c = [TKPDTabNavigationController new];
@@ -2878,7 +2875,7 @@ OtherProductDelegate
             SearchAWS *otherProduct = [result objectForKey:@""];
             BOOL status = [otherProduct.status isEqualToString:kTKPDREQUEST_OKSTATUS];
             if (status) {
-                _otherProductObj = [NSArray arrayWithArray:otherProduct.result.products];
+                _otherProductObj = [NSArray arrayWithArray:otherProduct.data.products];
                 [self setOtherProducts];
             }
         }
@@ -3134,14 +3131,28 @@ OtherProductDelegate
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (buttonIndex == 1) {
-        NSString *productId = _product.result.product.product_id;
-        [ProductRequest moveProductToWarehouse:productId
-                 setCompletionBlockWithSuccess:^(ShopSettings *response) {
-                     
-                 } failure:^(NSArray *errorMessages) {
-                     
-                 }];
+    if(alertView.tag == 1){
+        if (buttonIndex == 1) {
+            NSString *productId = _product.result.product.product_id;
+            [ProductRequest moveProductToWarehouse:productId
+                     setCompletionBlockWithSuccess:^(ShopSettings *response) {
+                         
+                     } failure:^(NSArray *errorMessages) {
+                         
+                     }];
+        }
+    }else{
+        if(buttonIndex == 1){
+            EtalaseViewController *controller = [EtalaseViewController new];
+            controller.delegate = self;
+            controller.shopId =_product.result.shop_info.shop_id;
+            controller.isEditable = NO;
+            controller.showOtherEtalase = NO;
+            controller.enableAddEtalase = YES;
+            
+            [controller setInitialSelectedEtalase:selectedEtalase];
+            [self.navigationController pushViewController:controller animated:YES];
+        }
     }
 }
 -(void)didSelectEtalase:(EtalaseList *)selectedEtalasee{
@@ -3150,7 +3161,7 @@ OtherProductDelegate
     [ProductRequest moveProduct:productId
                       toEtalase:selectedEtalase
   setCompletionBlockWithSuccess:^(ShopSettings *response) {
-      NSArray *messages = @[@"Anda telah berhasil memindahkan produk ke etalase"];
+      NSArray *messages = @[@"Produk berhasil tampil di etalase"];
       StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:messages delegate:self];
       [alert show];
       [[NSNotificationCenter defaultCenter] postNotificationName:ADD_PRODUCT_POST_NOTIFICATION_NAME

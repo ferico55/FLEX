@@ -390,19 +390,10 @@
     if(![[data objectForKey:@"st"] isEqualToString:@"shop"]) {
         SearchResultViewController *vc = [SearchResultViewController new];
         vc.delegate = viewController;
-        vc.data =@{
-                   @"search" : [data objectForKey:@"q"]?:@"",
-                   @"type" : [NSString stringWithFormat:@"search_%@",[data objectForKey:@"st"]]?:@"",
-                   @"location" : [data objectForKey:@"floc"]?:@"",
-                   @"price_min" : [data objectForKey:@"pmin"]?:@"",
-                   @"price_max" : [data objectForKey:@"pmax"]?:@"",
-                   @"order_by" :[data objectForKey:@"ob"]?:@"",
-                   @"shop_type" : [data objectForKey:@"fshop"]?:@"",
-                   @"department_1" : [data objectForKey:@"department_1"]?:@"",
-                   @"department_2" : [data objectForKey:@"department_2"]?:@"",
-                   @"department_3" : [data objectForKey:@"department_3"]?:@"",
-                   @"sc_identifier" : [data objectForKey:@"sc_identifier"]?:@"",
-                   };
+        NSMutableDictionary *datas = [NSMutableDictionary new];
+        [datas addEntriesFromDictionary:data];
+        [datas setObject:[NSString stringWithFormat:@"search_%@",[data objectForKey:@"st"]]?:@"" forKey:@"type"];
+        vc.data =[datas copy];
         NSString *title = @"";
         if ([data objectForKey:@"q"]) {
             title = [[data objectForKey:@"q"] capitalizedString];
@@ -415,18 +406,10 @@
         [viewController.navigationController pushViewController:vc animated:YES];
     } else {
         SearchResultShopViewController *vc = [SearchResultShopViewController new];
-        vc.data =@{
-                   @"search" : [data objectForKey:@"q"]?:@"",
-                   @"type" : [NSString stringWithFormat:@"search_%@",[data objectForKey:@"st"]]?:@"",
-                   @"location" : [data objectForKey:@"floc"]?:@"",
-                   @"price_min" : [data objectForKey:@"pmin"]?:@"",
-                   @"price_max" : [data objectForKey:@"pmax"]?:@"",
-                   @"order_by" :[data objectForKey:@"ob"]?:@"",
-                   @"shop_type" : [data objectForKey:@"fshop"]?:@"",
-                   @"department_1" : [data objectForKey:@"department_1"]?:@"",
-                   @"department_2" : [data objectForKey:@"department_2"]?:@"",
-                   @"department_3" : [data objectForKey:@"department_3"]?:@"",
-                   };
+        NSMutableDictionary *datas = [NSMutableDictionary new];
+        [datas addEntriesFromDictionary:data];
+        [datas setObject:[NSString stringWithFormat:@"search_%@",[data objectForKey:@"st"]]?:@"" forKey:@"type"];
+        vc.data =[datas copy];
         vc.title = [data objectForKey:@"q"];
         vc.hidesBottomBarWhenPushed = YES;
         [viewController.navigationController pushViewController:vc animated:YES];

@@ -18,7 +18,7 @@
                                                         kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
 
     //relation
-    RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
+    RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"data"
                                                                                   toKeyPath:kTKPD_APIRESULTKEY
                                                                                 withMapping:[ProductTalkCommentActionResult mapping]];
     [statusMapping addPropertyMapping:resulRel];

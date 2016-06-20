@@ -25,6 +25,7 @@
 #import "TalkList.h"
 #import "stringrestkit.h"
 #import "string_inbox_talk.h"
+#import "WebViewController.h"
 
 #import <UITableView+FDTemplateLayoutCell/UITableView+FDTemplateLayoutCell.h>
 
@@ -35,7 +36,6 @@
     UIScrollViewDelegate,
     UITextViewDelegate,
     MGSwipeTableCellDelegate,
-    ReportViewControllerDelegate,
     LoginViewDelegate,
     GeneralTalkCommentCellDelegate,
     SmileyDelegate,
@@ -66,6 +66,7 @@
     TokopediaNetworkManager *_talkCommentNetworkManager;
     TokopediaNetworkManager *_sendCommentNetworkManager;
     TokopediaNetworkManager *_deleteCommentNetworkManager;
+    TokopediaNetworkManager *_reportNetworkManager;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
@@ -100,7 +101,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     
-    
+
     
     if (self) {
         _marksOpenedTalksAsRead = NO;
@@ -144,8 +145,16 @@
 
 
     _talkCommentNetworkManager = [TokopediaNetworkManager new];
+    _talkCommentNetworkManager.isUsingHmac = YES;
+
     _sendCommentNetworkManager = [TokopediaNetworkManager new];
+    _sendCommentNetworkManager.isUsingHmac = YES;
+
     _deleteCommentNetworkManager = [TokopediaNetworkManager new];
+    _deleteCommentNetworkManager.isUsingHmac = YES;
+
+    _reportNetworkManager = [TokopediaNetworkManager new];
+    _reportNetworkManager.isUsingHmac = YES;
 
     _list = [NSMutableArray new];
 
@@ -160,11 +169,11 @@
     _auth = [auth mutableCopy];
 
     if(_marksOpenedTalksAsRead) {
-        _urlPath = kTKPDINBOX_TALK_APIPATH;
+        _urlPath = @"/v4/inbox-talk/get_inbox_detail_talk.pl";
         _urlAction = kTKPDDETAIL_APIGETINBOXDETAIL;
         
     } else {
-        _urlPath = kTKPDDETAILTALK_APIPATH;
+        _urlPath = @"/v4/talk/get_comment_by_talk_id.pl";
         _urlAction = kTKPDDETAIL_APIGETCOMMENTBYTALKID;
     }
     
@@ -265,12 +274,25 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     GeneralTalkCommentCell* cell = [tableView dequeueReusableCellWithIdentifier:kTKPDGENERALTALKCOMMENTCELL_IDENTIFIER];
+    __weak __typeof(self) weakSelf = self;
     if (cell == nil) {
         cell = [GeneralTalkCommentCell newcell];
     }
     
     cell.delegate = self;
     cell.del = self;
+    cell.onTapTalkWithUrl = ^(NSURL* url){
+        WebViewController *controller = [[WebViewController alloc] init];
+        controller.strURL = url.absoluteString;
+        controller.strTitle = url.absoluteString;
+        controller.onTapLinkWithUrl = ^(NSURL* url) {
+            if([url.absoluteString isEqualToString:@"https://www.tokopedia.com/"]) {
+                [weakSelf.navigationController popViewControllerAnimated:YES];
+            }
+        };
+        
+        [weakSelf.navigationController pushViewController:controller animated:YES];
+    };
 
     TalkCommentList *list = _list[indexPath.row];
 
@@ -451,8 +473,8 @@
                             kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : [_data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTIDKEY]
                             };
 
-    [_sendCommentNetworkManager requestWithBaseUrl:[NSString basicUrl]
-                                              path:kTKPDACTIONTALK_APIPATH
+    [_sendCommentNetworkManager requestWithBaseUrl:[NSString v4Url]
+                                              path:@"/v4/action/talk/add_comment_talk.pl"
                                             method:RKRequestMethodPOST
                                          parameter:param
                                            mapping:[ProductTalkCommentAction mapping]
@@ -681,6 +703,7 @@
 -(NSArray*) swipeTableCell:(MGSwipeTableCell*) cell swipeButtonsForDirection:(MGSwipeDirection)direction
              swipeSettings:(MGSwipeSettings*) swipeSettings expansionSettings:(MGSwipeExpansionSettings*) expansionSettings
 {
+    __weak __typeof(self) weakSelf = self;
     
     swipeSettings.transition = MGSwipeTransitionStatic;
     expansionSettings.buttonIndex = -1; //-1 not expand, 0 expand
@@ -703,14 +726,18 @@
             MGSwipeButton * report = [MGSwipeButton buttonWithTitle:@"Laporkan" backgroundColor:[UIColor colorWithRed:0 green:122/255.0 blue:255.05 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
                 _reportAction = @"report_comment_talk";
                 ReportViewController *reportController = [ReportViewController new];
-                reportController.delegate = self;
-                [self.navigationController pushViewController:reportController animated:YES];
+
+                reportController.onFinishWritingReport = ^(NSString *message) {
+                    [weakSelf reportCommentWithMessage:message];
+                };
+
+                [weakSelf.navigationController pushViewController:reportController animated:YES];
                 return YES;
             }];
             return @[report];
         } else {
             MGSwipeButton * trash = [MGSwipeButton buttonWithTitle:@"Hapus" backgroundColor:[UIColor colorWithRed:255/255 green:59/255.0 blue:48/255.0 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
-                [self deleteCommentTalkAtIndexPath:indexPath];
+                [weakSelf deleteCommentTalkAtIndexPath:indexPath];
                 return YES;
             }];
             
@@ -797,8 +824,8 @@
             @"talk_id" : [_data objectForKey:@"talk_id"]
     };
 
-    [_deleteCommentNetworkManager requestWithBaseUrl:[NSString basicUrl]
-                                                path:kTKPDACTIONTALK_APIPATH
+    [_deleteCommentNetworkManager requestWithBaseUrl:[NSString v4Url]
+                                                path:@"/v4/action/talk/delete_comment_talk.pl"
                                               method:RKRequestMethodPOST
                                            parameter:param
                                              mapping:[GeneralAction mapping]
@@ -836,7 +863,7 @@
         [alert show];
     }
     
-    if ([generalaction.result.is_success isEqualToString:@"1"]) {
+    if ([generalaction.data.is_success isEqualToString:@"1"]) {
         NSArray *array =  [[NSArray alloc] initWithObjects:CStringBerhasilMenghapusKomentarDiskusi, nil];
         StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:array delegate:self];
         [stickyAlertView show];
@@ -867,38 +894,65 @@
 
 
 #pragma mark - Report Delegate
-- (NSDictionary *)getParameter {
-    return @{
-             @"action" : _reportAction,
-             @"talk_id" : [_data objectForKey:kTKPDTALKCOMMENT_TALKID]?:@(0),
-             @"talk_comment_id" : [_datainput objectForKey:@"comment_id"]?:@(0),
-             @"product_id" : [_data objectForKey:@"product_id"],
-             };
-}
 
-- (NSString *)getPath {
-    return @"action/talk.pl";
-}
+- (void)reportCommentWithMessage:(NSString *)textMessage {
 
-- (UIViewController *)didReceiveViewController {
-    return self;
+    NSDictionary *parameter = @{
+            @"action" : _reportAction,
+            @"talk_id" : [_data objectForKey:kTKPDTALKCOMMENT_TALKID]?:@(0),
+            @"talk_comment_id" : [_datainput objectForKey:@"comment_id"]?:@(0),
+            @"product_id" : [_data objectForKey:@"product_id"],
+            @"text_message": textMessage
+    };
+
+    [_reportNetworkManager requestWithBaseUrl:[NSString v4Url]
+                                         path:@"/v4/action/talk/report_comment_talk.pl"
+                                       method:RKRequestMethodPOST
+                                    parameter:parameter
+                                      mapping:[GeneralAction mapping]
+                                    onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                        [self.navigationController popToViewController:self animated:YES];
+
+                                        // need to do dispatch because this view controller's window is nil until the report view controller
+                                        // is popped from navigation stack
+                                        dispatch_async(dispatch_get_main_queue(), ^{
+                                            GeneralAction *action = successResult.dictionary[@""];
+                                            if (action.data.is_success.boolValue) {
+                                                StickyAlertView *alertView = [[StickyAlertView alloc] initWithSuccessMessages:@[SUCCESS_REPORT_TALK]
+                                                                                                                     delegate:self];
+
+                                                [alertView show];
+                                            } else {
+                                                StickyAlertView *alertView = [[StickyAlertView alloc] initWithErrorMessages:action.message_error
+                                                                                                                   delegate:self];
+
+                                                [alertView show];
+                                            }
+                                        });
+
+                                    }
+                                    onFailure:^(NSError *errorResult) {
+
+                                    }];
 }
 
 #pragma mark - LoginView Delegate
+
 - (void)redirectViewController:(id)viewController {
 
 }
-
 #pragma mark - Notification Delegate
+
 - (void)userDidLogin:(NSNotification*)notification {
     _userManager = [UserAuthentificationManager new];
 }
 
 - (void)userDidLogout:(NSNotification*)notification {
-    _userManager = [UserAuthentificationManager new];    
+    _userManager = [UserAuthentificationManager new];
 }
-
 #pragma mark - CMPopTipView Delegate
+
+
 - (void)dismissAllPopTipViews
 {
     [cmPopTitpView dismissAnimated:YES];
@@ -910,9 +964,8 @@
 {
     [self dismissAllPopTipViews];
 }
-
-
 #pragma mark - Smiley Delegate
+
 - (void)actionVote:(id)sender {
     [self dismissAllPopTipViews];
 }
@@ -920,7 +973,7 @@
 -(void)replaceDataSelected:(NSDictionary *)data
 {
     _data = data;
-    
+
     if (data) {
         _page = 1;
         [_list removeAllObjects];
@@ -941,9 +994,9 @@
             kTKPDDETAIL_APIPAGEKEY : @(_page)
     };
 
-    [_talkCommentNetworkManager requestWithBaseUrl:[NSString basicUrl]
+    [_talkCommentNetworkManager requestWithBaseUrl:[NSString v4Url]
                                               path:_urlPath
-                                            method:RKRequestMethodPOST
+                                            method:RKRequestMethodGET
                                          parameter:param
                                            mapping:[TalkComment mapping]
                                          onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {

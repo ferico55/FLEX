@@ -29,13 +29,9 @@
 
 @implementation ProductTalkFormViewController {
     UIRefreshControl *_refreshControl;
-    __weak RKObjectManager *_objectmanager;
-    __weak RKManagedObjectRequestOperation *_request;
-    
-    NSInteger _requestcount;
-    NSTimer *_timer;
-    NSOperationQueue *_operationQueue;
-    
+
+    TokopediaNetworkManager *_networkManager;
+    UIBarButtonItem *_sendButton;
 }
 
 
@@ -52,13 +48,15 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
+    _networkManager = [TokopediaNetworkManager new];
+    _networkManager.isUsingHmac = YES;
+
     if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0.0")) {
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
     
     UIBarButtonItem *barbuttonleft;
-    UIBarButtonItem *barbuttonright;
     //NSBundle* bundle = [NSBundle mainBundle];
     
     barbuttonleft = [[UIBarButtonItem alloc] initWithTitle:@"Batal" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
@@ -66,19 +64,15 @@
     [barbuttonleft setTag:10];
     self.navigationItem.leftBarButtonItem = barbuttonleft;
     
-    barbuttonright = [[UIBarButtonItem alloc] initWithTitle:@"Kirim" style:UIBarButtonItemStyleDone target:(self) action:@selector(tap:)];
-    [barbuttonright setTintColor:[UIColor whiteColor]];
-    [barbuttonright setTag:11];
+    _sendButton = [[UIBarButtonItem alloc] initWithTitle:@"Kirim" style:UIBarButtonItemStyleDone target:(self) action:@selector(tap:)];
+    [_sendButton setTintColor:[UIColor whiteColor]];
+    [_sendButton setTag:11];
     
-    self.navigationItem.rightBarButtonItem = barbuttonright;
+    self.navigationItem.rightBarButtonItem = _sendButton;
     
     _talkfield.delegate = self;
     _talkfield.text = kTKPDMESSAGE_PLACEHOLDER;
     _talkfield.textColor = [UIColor lightGrayColor]; //optional
-    
-    _operationQueue = [NSOperationQueue new];
-    
-    
 }
 
 - (void)textViewDidBeginEditing:(UITextView *)textView
@@ -129,32 +123,26 @@
 }
 
 -(void)doProductTalkForm {
+    _sendButton.enabled = NO;
+
     NSDictionary* param = @{
-                            kTKPDDETAIL_APIACTIONKEY:kTKPDTALK_ADDTALK,
                             kTKPDTALK_TALKMESSAGE:_talkfield.text,
                             kTKPDMESSAGE_PRODUCTIDKEY:[_data objectForKey:kTKPDMESSAGE_PRODUCTIDKEY]
                             };
-    
-    _requestcount ++;
-    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:@"action/talk.pl" parameters:[param encrypt]];
-    
-    
-    [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestsuccess:mappingResult withOperation:operation];
-        [_refreshControl endRefreshing];
-        [_timer invalidate];
-        _timer = nil;
-        
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        /** failure **/
 
-    }];
-    
-    [_operationQueue addOperation:_request];
-    
-    _timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
-
+    [_networkManager requestWithBaseUrl:[NSString v4Url]
+                                   path:@"/v4/action/talk/add_product_talk.pl"
+                                 method:RKRequestMethodPOST
+                              parameter:param
+                                mapping:[ProductTalkForm mapping]
+                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                  [self requestsuccess:successResult withOperation:operation];
+                                  [_refreshControl endRefreshing];
+                                  _sendButton.enabled = YES;
+                              }
+                              onFailure:^(NSError *errorResult) {
+                                  _sendButton.enabled = YES;
+                              }];
 }
 
 -(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation*)operation{
@@ -187,28 +175,6 @@
     
 }
 
--(void) configureRestkit {
-    // initialize RestKit
-    _objectmanager =  [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ProductTalkForm class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ProductTalkFormResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{@"is_success":@"is_success", @"talk_id":@"talk_id"}];
-    
-    //relation
-    RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
-    [statusMapping addPropertyMapping:resulRel];
-    
-    //register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:@"action/talk.pl" keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectmanager addResponseDescriptor:responseDescriptorStatus];
-}
-
 -(void) requesttimeout {
     
 }
@@ -227,13 +193,11 @@
             }
             
             case 11 : {
-                if (_request.isExecuting) return;
-                if(_talkfield.text.length < 6 || [_talkfield.text isEqualToString:kTKPDMESSAGE_PLACEHOLDER]) {
+                if(_talkfield.text.length < 5 || [_talkfield.text isEqualToString:kTKPDMESSAGE_PLACEHOLDER]) {
                     NSArray *array = [[NSArray alloc] initWithObjects:KTKPDMESSAGE_EMPTYFORM2, nil];
                     StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
                     [alert show];
                 } else {
-                    [self configureRestkit];
                     [self doProductTalkForm];
                 }
                 
@@ -245,25 +209,6 @@
                 break;
         }
         
-    }
-    
-    if([sender isKindOfClass:[UIButton class]]) {
-        UIButton *button = (UIButton*)sender;
-        
-        switch (button.tag) {
-            case 10: {
-                
-                break;
-            }
-                
-            case 11 : {
-                if (_request.isExecuting) return;
-                [self doProductTalkForm];
-                break;
-            }
-            default:
-                break;
-        }
     }
 }
 

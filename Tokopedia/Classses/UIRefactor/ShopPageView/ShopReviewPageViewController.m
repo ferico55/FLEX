@@ -292,10 +292,6 @@
                               }];
     
     [self initNotification];
-//    [self configureRestKit];
-//    
-//    [self loadData];
-    
 }
 
 
@@ -366,11 +362,6 @@
                                       
                                       
                                   }];
-
-//        [self configureRestKit];
-//        if (_isNoData && _page < 1) {
-//            [self loadData];
-//        }
     }
 }
 
@@ -892,6 +883,7 @@
     productDetailReputationViewController.detailReputationReview = reviewList;
     productDetailReputationViewController.isMyProduct = (_auth!=nil && [[NSString stringWithFormat:@"%@", [_auth objectForKey:@"user_id"]] isEqualToString:reviewList.product_owner.user_id]);
     productDetailReputationViewController.shopBadgeLevel = _shop.result.stats.shop_badge_level;
+    productDetailReputationViewController.shopImage = _shop.result.info.shop_avatar;
     productDetailReputationViewController.indexPathSelected = indexPath;
     productDetailReputationViewController.strProductID = reviewList.review_product_id;
     productDetailReputationViewController.isShowingProductView = YES;

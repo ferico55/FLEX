@@ -100,6 +100,9 @@
     [_tambahEtalaseTextField setText:@""];
     selectedIndexPath = indexPath;
     EtalaseList *selectedEtalase = indexPath.section == 0?[otherEtalaseList objectAtIndex:indexPath.row]:[etalaseList objectAtIndex:indexPath.row];
+    if ([self.delegate respondsToSelector:@selector(didSelectEtalaseFilter:)]) {
+        [self.delegate didSelectEtalaseFilter:selectedEtalase];
+    }
     if(_isEditable){
         [[alertView textFieldAtIndex:0] setText:selectedEtalase.etalase_name];
         [alertView show];
@@ -160,28 +163,12 @@
     }
 }
 
-//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-//    if(section == 0){
-//        return 0;
-//    }else if(section == 1){
-//        return _enableAddEtalase?_tambahEtalaseView.frame.size.height:0;
-//    }
-//    return 0;
-//}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
     if (_showOtherEtalase && section == 0) {
         return 10;
     }
     return 0;
 }
-
-//- (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-//    if(_enableAddEtalase && section == 1){
-//        return _tambahEtalaseView;
-//    }
-//    return nil;
-//}
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -215,9 +202,13 @@
     if(selectedIndexPath){
         if(!_isEditable){
             if(selectedIndexPath.section == 0){
-                [_delegate didSelectEtalase:otherEtalaseList[selectedIndexPath.row]];
+                if ([self.delegate respondsToSelector:@selector(didSelectEtalase:)]) {
+                    [self.delegate didSelectEtalase:otherEtalaseList[selectedIndexPath.row]];
+                }
             }else{
-                [_delegate didSelectEtalase:etalaseList[selectedIndexPath.row]];
+                if ([self.delegate respondsToSelector:@selector(didSelectEtalase:)]) {
+                    [self.delegate didSelectEtalase:etalaseList[selectedIndexPath.row]];
+                }
             }
             
         }

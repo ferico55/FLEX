@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "CategoryDetail.h"
+#import "Tokopedia-Swift.h"
 
 typedef NS_ENUM(NSInteger, FilterCategoryType) {
     FilterCategoryTypeHotlist,
@@ -18,7 +18,9 @@ typedef NS_ENUM(NSInteger, FilterCategoryType) {
 
 @protocol FilterCategoryViewDelegate <NSObject>
 
+@optional
 - (void)didSelectCategory:(CategoryDetail *)category;
+- (void)didSelectCategoryFilter:(CategoryDetail *)category;
 
 @end
 
@@ -28,5 +30,7 @@ typedef NS_ENUM(NSInteger, FilterCategoryType) {
 @property (weak, nonatomic) CategoryDetail *selectedCategory;
 @property (weak, nonatomic) id<FilterCategoryViewDelegate> delegate;
 @property FilterCategoryType filterType;
+
+-(void)resetSelectedFilter;
 
 @end

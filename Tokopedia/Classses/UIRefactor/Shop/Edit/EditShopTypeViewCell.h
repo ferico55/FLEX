@@ -7,12 +7,20 @@
 //
 
 #import <UIKit/UIKit.h>
+@protocol EditShopTypeViewCellDelegate <NSObject>
+-(void)merchantInfoButtonTapped;
 
+@end
 @interface EditShopTypeViewCell : UITableViewCell
 
-@property (weak, nonatomic) IBOutlet UIView *goldMerchantBadgeView;
-@property (weak, nonatomic) IBOutlet UILabel *regularMerchantLabel;
+@property (nonatomic, weak) id<EditShopTypeViewCellDelegate> delegate;
 
-- (void)showsGoldMerchantBadge;
+@property (weak, nonatomic) IBOutlet UIView *goldMerchantBadgeView;
+@property (weak, nonatomic) IBOutlet UILabel *merchantStatusLabel;
+@property (strong, nonatomic) IBOutlet UILabel *merchantDescriptionLabel;
+@property (strong, nonatomic) IBOutlet UIButton *merchantInfoButton;
+
+- (void)initializeInterfaceWithGoldMerchantStatus:(BOOL)isGoldMerchant;
+- (void)initializeInterfaceWithGoldMerchantStatus:(BOOL)isGoldMerchant expiryDate:(NSString*)expiryDate;
 
 @end

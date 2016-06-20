@@ -29,6 +29,7 @@
 @property (nonatomic, strong) NSString *product_name;
 @property (nonatomic, strong) NSString *product_currency_symbol;
 @property (nonatomic, strong) NSString *product_no_idr_price;
+@property (nonatomic, strong) NSString *product_etalase_id;
 
 + (RKObjectMapping *)objectMapping;
 

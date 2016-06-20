@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface OrderCustomer : NSObject
+@interface OrderCustomer : NSObject <TKPObjectMapping>
 
 @property (strong, nonatomic) NSString *customer_url;
 @property (strong, nonatomic) NSString *customer_id;
