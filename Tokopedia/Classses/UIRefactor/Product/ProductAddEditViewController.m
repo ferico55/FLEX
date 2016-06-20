@@ -600,16 +600,9 @@ FilterCategoryViewDelegate
                 if (indexPath.row == BUTTON_PRODUCT_CATEGORY) {
                     NSString *departmentTitle = @"Pilih Kategori";
                     if ([_dataInput objectForKey:DATA_CATEGORY_KEY]) {
-                        if ([[_dataInput objectForKey:DATA_CATEGORY_KEY] isKindOfClass:[Breadcrumb class]]) {
-                            Breadcrumb *breadcrumb = [_dataInput objectForKey:DATA_CATEGORY_KEY];
-                            if (![breadcrumb.department_name isEqualToString:@""]) {
-                                departmentTitle = breadcrumb.department_name;
-                            }
-                        } else if ([[_dataInput objectForKey:DATA_CATEGORY_KEY] isKindOfClass:[CategoryDetail class]]) {
-                            CategoryDetail *category = [_dataInput objectForKey:DATA_CATEGORY_KEY];
-                            if (![category.name isEqualToString:@""]) {
-                                departmentTitle = category.name;
-                            }
+                        CategoryDetail *category = [_dataInput objectForKey:DATA_CATEGORY_KEY];
+                        if (![category.name isEqualToString:@""]) {
+                            departmentTitle = category.name;
                         }
                     }
                     cell.detailTextLabel.text = departmentTitle;
@@ -722,14 +715,7 @@ FilterCategoryViewDelegate
                     FilterCategoryViewController *controller = [FilterCategoryViewController new];
                     controller.filterType = FilterCategoryTypeProductAddEdit;
                     controller.delegate = self;
-                    if ([_dataInput objectForKey:DATA_CATEGORY_KEY]) {
-                        if ([[_dataInput objectForKey:DATA_CATEGORY_KEY] isKindOfClass:[CategoryDetail class]]) {
-                            CategoryDetail *category = [_dataInput objectForKey:DATA_CATEGORY_KEY];
-                            if (![category.name isEqualToString:@""]) {
-                                controller.selectedCategory = category;
-                            }
-                        }
-                    }
+                    controller.selectedCategory = [_dataInput objectForKey:DATA_CATEGORY_KEY];
                     UINavigationController *navigation = [[UINavigationController new] initWithRootViewController:controller];
                     navigation.navigationBar.translucent = NO;
                     [self.navigationController presentViewController:navigation animated:YES completion:nil];
@@ -856,16 +842,11 @@ FilterCategoryViewDelegate
         return param;
     }
     if (tag == TAG_REQUEST_LIST_CATALOG) {
-        NSString *categoryId = @"";
-        if ([[_dataInput objectForKey:DATA_CATEGORY_KEY] isKindOfClass:[CategoryDetail class]]) {
-            categoryId = [[_dataInput objectForKey:DATA_CATEGORY_KEY] categoryId];
-        } else if ([[_dataInput objectForKey:DATA_CATEGORY_KEY] isKindOfClass:[CategoryDetail class]]) {
-            categoryId = [[_dataInput objectForKey:DATA_CATEGORY_KEY] categoryId];
-        }
+        CategoryDetail *category = [_dataInput objectForKey:DATA_CATEGORY_KEY];
         NSDictionary *param = @{
                                 kTKPDDETAIL_APIACTIONKEY    : ACTION_GET_CATALOG,
                                 @"product_name"             : _productNameTextField.text?:@"",
-                                @"product_department_id"    : categoryId,
+                                @"product_department_id"    : category.categoryId,
                                 };
         return param;
     }
@@ -1996,18 +1977,8 @@ FilterCategoryViewDelegate
     NSString *productWeight = product.product_weight;
     NSString *productWeightUnitID = product.product_weight_unit;
     
-    NSString *departmentID = @"";
-    if ([[_dataInput objectForKey:DATA_CATEGORY_KEY] isKindOfClass:[Breadcrumb class]]) {
-        Breadcrumb *breadcrumb = [_dataInput objectForKey:DATA_CATEGORY_KEY];
-        if (![breadcrumb.department_id isEqualToString:@""]) {
-            departmentID = breadcrumb.department_id;
-        }
-    } else if ([[_dataInput objectForKey:DATA_CATEGORY_KEY] isKindOfClass:[CategoryDetail class]]) {
-        CategoryDetail *category = [_dataInput objectForKey:DATA_CATEGORY_KEY];
-        if (![category.categoryId isEqualToString:@""]) {
-            departmentID = category.categoryId;
-        }
-    }
+    CategoryDetail *category = [_dataInput objectForKey:DATA_CATEGORY_KEY];
+    NSString *departmentID = category.categoryId?: @"";
     
     BOOL isPriceCurrencyRupiah = ([productPriceCurrencyID integerValue] == PRICE_CURRENCY_ID_RUPIAH);
     BOOL isPriceCurrencyUSD = ([productPriceCurrencyID integerValue] == PRICE_CURRENCY_ID_USD);
