@@ -10,4 +10,10 @@
 
 @implementation TrackOrderResult
 
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[self class]];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"track_order" toKeyPath:@"track_order" withMapping:[TrackOrder mapping]]];
+    return mapping;
+}
+
 @end
