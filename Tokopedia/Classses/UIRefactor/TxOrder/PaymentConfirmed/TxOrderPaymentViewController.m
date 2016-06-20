@@ -197,10 +197,14 @@
 
 #pragma mark - View Action
 - (IBAction)tapUploadProof:(id)sender {
+    [_activeTextField resignFirstResponder];
+    [_activeTextView resignFirstResponder];
     _photoPicker = [self photoPicker];
 }
 
 - (IBAction)tapUploadProofInfo:(id)sender {
+    [_activeTextField resignFirstResponder];
+    [_activeTextView resignFirstResponder];
     AlertInfoView *alert = [AlertInfoView new];
     alert.delegate = self;
     [alert setText:@"Info"];
@@ -724,7 +728,7 @@
         [self.navigationController popViewControllerAnimated:YES];
     }
     else{
-        NSInteger paymentAmount = [[_dataInput objectForKey:DATA_TOTAL_PAYMENT_KEY] integerValue];
+        NSInteger paymentAmount = [self getPaymentOrder];
         MethodList *method = [_dataInput objectForKey:DATA_SELECTED_PAYMENT_METHOD_KEY];
         NSMutableArray *viewControllers = [NSMutableArray new];
         [viewControllers addObjectsFromArray:self.navigationController.viewControllers];
@@ -738,8 +742,7 @@
         [formatter setUsesGroupingSeparator:YES];
         [formatter setSecondaryGroupingSize:3];
         NSString *price = (paymentAmount>0)?[formatter stringFromNumber:@(paymentAmount)]:@"0";
-        TxOrderConfirmPaymentFormForm *form = [_dataInput objectForKey:DATA_DETAIL_ORDER_CONFIRMATION_KEY];
-        vc.totalPaymentValue = [self isPaymentTypeSaldoTokopedia]?form.order.order_left_amount_idr:[NSString stringWithFormat:@"Rp %@,-",price];
+        vc.totalPaymentValue = [NSString stringWithFormat:@"Rp %@,-",price];
         vc.methodName = method.method_name;
         [viewControllers replaceObjectAtIndex:viewControllers.count-1 withObject:vc];
         self.navigationController.viewControllers = viewControllers;
@@ -1030,6 +1033,13 @@
     return paymentOrderLeft;
 }
 
+-(NSInteger)getPaymentOrder{
+    NSInteger paymentOrderLeft = (_isConfirmed)?
+    [[self getPaymentEditForm].payment.order_left_amount integerValue]:
+    [[self getPaymentAmount] integerValue];
+    return paymentOrderLeft;
+}
+
 -(TxOrderConfirmPaymentFormForm*)getPaymentConfirmationForm{
     return [_dataInput objectForKey:DATA_DETAIL_ORDER_CONFIRMATION_KEY]?:[TxOrderConfirmPaymentFormForm new];
 }
@@ -1039,7 +1049,9 @@
 }
 
 -(NSString*)getPaymentAmount{
-    return  _totalPaymentTextField.text?:@"";
+    NSString *amount = _totalPaymentTextField.text?:@"";
+    amount = [amount stringByReplacingOccurrencesOfString:@"." withString:@""];
+    return  amount;
 }
 
 -(void)setDefaultDataConfirmed:(TxOrderPaymentEditForm*)form
