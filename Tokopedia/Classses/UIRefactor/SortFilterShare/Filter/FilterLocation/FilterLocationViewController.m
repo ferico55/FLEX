@@ -248,4 +248,12 @@
         }
 	}
 }
+
+#pragma mark - Cell Delegate
+-(void)FilterLocationViewCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath {
+    //[self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    [_selectedlocation setObject:indexpath forKey:kTKPDFILTER_DATAINDEXPATHKEY];
+    [_table reloadData];
+}
+
 @end

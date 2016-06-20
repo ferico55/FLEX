@@ -7,28 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
-
-#define kTKPDSEARCHRESULTSHOPCELL_IDENTIFIER @"SearchResultCellShopIdentifier"
-
-@protocol SearchResultShopCellDelegate <NSObject>
-@required
--(void)SearchResultShopCell:(UITableViewCell*)cell withindexpath:(NSIndexPath*)indexpath;
-
-@end
+#import "Tokopedia-Swift.h"
 
 @interface SearchResultShopCell : UITableViewCell
 
-
-@property (nonatomic, weak) id<SearchResultShopCellDelegate> delegate;
-
-
-@property (weak, nonatomic) IBOutlet UIImageView *thumb;
-@property (weak, nonatomic) IBOutlet UILabel *shopname;
-@property (weak, nonatomic) IBOutlet UIButton *favbutton;
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
+@property (weak, nonatomic) IBOutlet UIImageView *shopImage;
+@property (weak, nonatomic) IBOutlet UILabel *shopName;
+@property (weak, nonatomic) IBOutlet UILabel *shopLocation;
 @property (weak, nonatomic) IBOutlet UIImageView *goldBadgeView;
-@property (strong, nonatomic) NSIndexPath *indexpath;
 
-+ (id)newcell;
+@property (weak, nonatomic) SearchShopModelView* modelView;
+
 
 @end

@@ -26,6 +26,7 @@ typedef NS_ENUM(NSInteger, PromoCollectionViewCellType) {
 
 @property (strong, nonatomic) NSArray<PromoResult*> *promo;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+@property(strong, nonatomic) IBOutlet UIImageView* infoButton;
 @property (nonatomic) PromoCollectionViewCellType collectionViewCellType;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *collectionViewHeightConstraint;
 @property (weak, nonatomic) id<PromoCollectionViewDelegate> delegate;

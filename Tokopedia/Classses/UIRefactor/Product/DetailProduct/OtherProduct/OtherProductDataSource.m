@@ -39,8 +39,12 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                   cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     ProductCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"ProductCellIdentifier" forIndexPath:indexPath];
     SearchAWSProduct *product = [self.products objectAtIndex:indexPath.row];
-    product.shop_name = @"";
+    
     [cell setViewModel:product.viewModel];
+    cell.productShop.hidden = YES;
+    cell.locationImage.hidden = YES;
+    cell.shopLocation.hidden = YES;
+    
     return cell;
 }
 
@@ -63,7 +67,8 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
         CGFloat cellWidth = screenWidth/numberOfCell - 12;
         return CGSizeMake(cellWidth, cellHeight);
     } else {
-        return [ProductCellSize sizeWithType:UITableViewCellTypeTwoColumn];
+        CGSize normalSize = [ProductCellSize sizeWithType:UITableViewCellTypeTwoColumn];
+        return CGSizeMake(normalSize.width, normalSize.height - 30);
     }
 }
 

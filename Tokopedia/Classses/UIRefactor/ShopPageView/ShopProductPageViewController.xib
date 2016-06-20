@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -35,7 +35,6 @@
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7aR-jB-LOh" userLabel="DividerH">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
-                            <animations/>
                             <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="1" id="wp5-Dr-pUa"/>
@@ -46,7 +45,6 @@
                             <subviews>
                                 <button opaque="NO" tag="10" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uPB-5U-cIA">
                                     <rect key="frame" x="0.0" y="0.0" width="80" height="44"/>
-                                    <animations/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="44" id="b0M-Cd-3fy"/>
                                     </constraints>
@@ -64,7 +62,6 @@
                                 </button>
                                 <button opaque="NO" tag="10" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LlN-6Q-xg3">
                                     <rect key="frame" x="29" y="11" width="22" height="22"/>
-                                    <animations/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="22" id="kTU-jd-TBV"/>
                                         <constraint firstAttribute="height" constant="22" id="lBH-pr-B4z"/>
@@ -94,14 +91,12 @@
                                 </button>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nag-A7-Jys" userLabel="Vertical Border">
                                     <rect key="frame" x="79" y="9" width="1" height="22"/>
-                                    <animations/>
                                     <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="1" id="0Ou-5d-gth"/>
                                     </constraints>
                                 </view>
                             </subviews>
-                            <animations/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="bottom" secondItem="Nag-A7-Jys" secondAttribute="bottom" constant="13" id="3hT-WO-2Ev"/>
@@ -139,7 +134,6 @@
                             <subviews>
                                 <button opaque="NO" tag="11" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tLe-7V-Cow">
                                     <rect key="frame" x="0.0" y="0.0" width="79" height="44"/>
-                                    <animations/>
                                     <state key="normal">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
@@ -149,7 +143,6 @@
                                 </button>
                                 <button opaque="NO" tag="11" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3b2-dN-r1K">
                                     <rect key="frame" x="29" y="11" width="22" height="22"/>
-                                    <animations/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="22" id="I4M-ow-uCq"/>
                                         <constraint firstAttribute="width" constant="22" id="Npk-yQ-eh2"/>
@@ -179,14 +172,12 @@
                                 </button>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JeA-NV-EG8" userLabel="Vertical Border">
                                     <rect key="frame" x="79" y="9" width="1" height="22"/>
-                                    <animations/>
                                     <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="1" id="DD6-CS-eH7"/>
                                     </constraints>
                                 </view>
                             </subviews>
-                            <animations/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstItem="tLe-7V-Cow" firstAttribute="top" secondItem="xTR-gW-UnV" secondAttribute="top" id="9QS-RF-iPE"/>
@@ -224,7 +215,6 @@
                             <subviews>
                                 <button opaque="NO" clipsSubviews="YES" tag="13" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jqd-HS-fyI">
                                     <rect key="frame" x="0.0" y="0.0" width="79" height="44"/>
-                                    <animations/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="44" id="PGQ-yj-bi8"/>
                                     </constraints>
@@ -242,7 +232,6 @@
                                 </button>
                                 <button opaque="NO" tag="13" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XQ1-7n-awT">
                                     <rect key="frame" x="29" y="11" width="22" height="22"/>
-                                    <animations/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="22" id="MhW-xM-aVi"/>
                                         <constraint firstAttribute="width" constant="22" id="O2x-qm-mPt"/>
@@ -272,14 +261,12 @@
                                 </button>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rVL-OA-lS0" userLabel="Vertical Border">
                                     <rect key="frame" x="79" y="9" width="1" height="22"/>
-                                    <animations/>
                                     <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="1" id="cy8-hd-JQE"/>
                                     </constraints>
                                 </view>
                             </subviews>
-                            <animations/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="bottom" secondItem="jqd-HS-fyI" secondAttribute="bottom" id="9mI-LL-zif"/>
@@ -317,7 +304,6 @@
                             <subviews>
                                 <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gt7-R1-HEe">
                                     <rect key="frame" x="0.0" y="0.0" width="80" height="44"/>
-                                    <animations/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="44" id="kyJ-Mu-4T2"/>
                                     </constraints>
@@ -335,7 +321,6 @@
                                 </button>
                                 <button opaque="NO" tag="11" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NVF-1o-j7L">
                                     <rect key="frame" x="29" y="11" width="22" height="22"/>
-                                    <animations/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="22" id="CS7-4j-Zxj"/>
                                         <constraint firstAttribute="width" constant="22" id="ecQ-eK-KgA"/>
@@ -364,7 +349,6 @@
                                     </connections>
                                 </button>
                             </subviews>
-                            <animations/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstItem="Gt7-R1-HEe" firstAttribute="top" secondItem="yOl-TV-hea" secondAttribute="top" id="4La-yZ-p2l"/>
@@ -395,7 +379,6 @@
                             </variation>
                         </view>
                     </subviews>
-                    <animations/>
                     <constraints>
                         <constraint firstItem="bom-db-7Zb" firstAttribute="top" secondItem="7aR-jB-LOh" secondAttribute="bottom" constant="-1" id="7bv-YB-fis"/>
                         <constraint firstItem="bom-db-7Zb" firstAttribute="width" secondItem="rtG-5l-uP9" secondAttribute="width" id="8LI-2i-6m6"/>
@@ -430,9 +413,8 @@
                 </view>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="5EI-FS-xn5">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="440"/>
-                    <animations/>
                     <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="O0b-PL-j9s">
+                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="O0b-PL-j9s">
                         <size key="itemSize" width="50" height="50"/>
                         <size key="headerReferenceSize" width="0.0" height="0.0"/>
                         <size key="footerReferenceSize" width="0.0" height="0.0"/>
@@ -448,7 +430,6 @@
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="emW-sb-Xdp">
                             <rect key="frame" x="0.0" y="37" width="80" height="3"/>
-                            <animations/>
                             <color key="backgroundColor" red="0.070588235289999995" green="0.78039215689999997" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="3" id="cLX-W4-Rhx"/>
@@ -456,7 +437,6 @@
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hLU-Ua-Tc2">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
-                            <animations/>
                             <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="1" id="3Hj-A8-iX9"/>
@@ -464,7 +444,6 @@
                         </view>
                         <button opaque="NO" tag="13" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GrA-8i-0VJ">
                             <rect key="frame" x="0.0" y="0.0" width="80" height="40"/>
-                            <animations/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="40" id="dJo-eJ-tS3"/>
                             </constraints>
@@ -479,7 +458,6 @@
                         </button>
                         <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jip-jj-3li">
                             <rect key="frame" x="80" y="0.0" width="80" height="40"/>
-                            <animations/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="40" id="HGl-ZE-Osq"/>
                             </constraints>
@@ -494,7 +472,6 @@
                         </button>
                         <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tvH-Fe-fjN">
                             <rect key="frame" x="160" y="0.0" width="80" height="40"/>
-                            <animations/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="40" id="J9f-H7-sqr"/>
                             </constraints>
@@ -509,7 +486,6 @@
                         </button>
                         <button opaque="NO" tag="12" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gb1-NS-Fc5">
                             <rect key="frame" x="240" y="0.0" width="80" height="40"/>
-                            <animations/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="40" id="JfM-vS-s9a"/>
                             </constraints>
@@ -524,7 +500,6 @@
                         </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dI5-1P-C0e">
                             <rect key="frame" x="80" y="10" width="1" height="20"/>
-                            <animations/>
                             <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="1" id="Hxo-Nx-cTd"/>
@@ -533,7 +508,6 @@
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ew2-OS-Kws">
                             <rect key="frame" x="160" y="10" width="1" height="20"/>
-                            <animations/>
                             <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="20" id="1dY-EE-Z62"/>
@@ -542,7 +516,6 @@
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bKT-Lu-9DG">
                             <rect key="frame" x="240" y="10" width="1" height="20"/>
-                            <animations/>
                             <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="20" id="UQ0-bO-jaT"/>
@@ -550,7 +523,6 @@
                             </constraints>
                         </view>
                     </subviews>
-                    <animations/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="Gb1-NS-Fc5" firstAttribute="width" secondItem="GrA-8i-0VJ" secondAttribute="width" id="1p9-7N-NiE"/>
@@ -588,7 +560,6 @@
                     </constraints>
                 </view>
             </subviews>
-            <animations/>
             <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstItem="5EI-FS-xn5" firstAttribute="leading" secondItem="56G-bC-GIm" secondAttribute="leading" id="5nC-LJ-H8U"/>
@@ -617,10 +588,8 @@
             <subviews>
                 <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="wLh-HR-YVh">
                     <rect key="frame" x="150" y="8" width="20" height="20"/>
-                    <animations/>
                 </activityIndicatorView>
             </subviews>
-            <animations/>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstAttribute="centerY" secondItem="wLh-HR-YVh" secondAttribute="centerY" id="R3H-Eu-ZpU"/>
@@ -636,14 +605,12 @@
             <subviews>
                 <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="Uzb-YT-AsY">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                    <animations/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="RTT-7B-RvC"/>
                     </constraints>
                     <textInputTraits key="textInputTraits"/>
                 </searchBar>
             </subviews>
-            <animations/>
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstItem="Uzb-YT-AsY" firstAttribute="leading" secondItem="GPk-s2-Kf1" secondAttribute="leading" id="B9E-AY-cKW"/>
