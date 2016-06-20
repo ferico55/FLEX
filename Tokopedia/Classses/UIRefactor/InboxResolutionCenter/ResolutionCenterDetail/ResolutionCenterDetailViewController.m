@@ -1267,7 +1267,7 @@
                 _addedLastConversation = [ResolutionConversation new];
                 _addedLastConversation.flag_received = [resolution.result.detail.resolution_last.last_flag_received integerValue];
                 _addedLastConversation.system_flag = 1;
-                _addedLastConversation.action_by = [resolution.result.detail.resolution_last.last_action_by integerValue];
+                _addedLastConversation.action_by = (resolution.result.detail.resolution_by.by_customer == 1)?ACTION_BY_BUYER:ACTION_BY_SELLER;
                 _addedLastConversation.solution = resolution.result.detail.resolution_last.last_solution;
                 _addedLastConversation.solution_flag = 1;
                 _addedLastConversation.isAddedConversation = [self isNeedAddList]?YES:NO;
