@@ -2228,7 +2228,6 @@
 		7ABCE1B21D17A62700CD6823 /* icon_filter@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7ABCD8761D17A62600CD6823 /* icon_filter@3x.png */; };
 		7ABCE1B31D17A62700CD6823 /* icon_grid_dua@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7ABCD8771D17A62600CD6823 /* icon_grid_dua@3x.png */; };
 		7ABCE1B41D17A62700CD6823 /* icon_grid_satu@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7ABCD8781D17A62600CD6823 /* icon_grid_satu@3x.png */; };
-		7ABCE1B51D17A62700CD6823 /* icon_grid_tiga@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7ABCD8791D17A62600CD6823 /* icon_grid_tiga@3x.png */; };
 		7ABCE1B61D17A62700CD6823 /* icon_share@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7ABCD87A1D17A62600CD6823 /* icon_share@3x.png */; };
 		7ABCE1B71D17A62700CD6823 /* icon_urutkan@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7ABCD87B1D17A62600CD6823 /* icon_urutkan@3x.png */; };
 		7ABCE1B81D17A62700CD6823 /* icon_urutkan_alt@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7ABCD87C1D17A62600CD6823 /* icon_urutkan_alt@3x.png */; };
@@ -12746,7 +12745,6 @@
 				7ABCDE071D17A62700CD6823 /* ShopInfoAddressView.xib in Resources */,
 				7ABCE0EB1D17A62700CD6823 /* icon_smile@3x.png in Resources */,
 				7ABCE1071D17A62700CD6823 /* icon_speed_neutral.png in Resources */,
-				7ABCE1B51D17A62700CD6823 /* icon_grid_tiga@3x.png in Resources */,
 				7ABCDC681D17A62600CD6823 /* InboxMessageCell.xib in Resources */,
 				7ABCDCE01D17A62600CD6823 /* DetailPriceAlertTableViewCell.xib in Resources */,
 				7ABCDF1E1D17A62700CD6823 /* icon_5.png in Resources */,
