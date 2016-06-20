@@ -700,6 +700,8 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
 }
 
 - (void)thirdPartySignInWithUserProfile:(CreatePasswordUserProfile *)userProfile successCallback:(void (^)(RKMappingResult *, RKObjectRequestOperation *))successCallback failureCallback:(void (^)(NSError *))failureCallback {
+    __weak typeof(self) weakSelf = self;
+
     NSDictionary *parameter = @{
                                 @"grant_type": @"extension",
                                 @"social_id": userProfile.userId,
@@ -721,10 +723,34 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                                                                                    _oAuthToken = oAuthToken;
                                                                                    _accountInfo = mappingResult.dictionary[@""];
 
-                                                                                   [self authenticateToMarketplaceWithAccountInfo:_accountInfo
-                                                                                                                       oAuthToken:oAuthToken
-                                                                                                                  successCallback:successCallback
-                                                                                                                  failureCallback:failureCallback];
+                                                                                   if (_accountInfo.createdPassword) {
+                                                                                       [self authenticateToMarketplaceWithAccountInfo:_accountInfo
+                                                                                                                           oAuthToken:oAuthToken
+                                                                                                                      successCallback:successCallback
+                                                                                                                      failureCallback:failureCallback];
+                                                                                   } else {
+                                                                                       TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+                                                                                       [secureStorage setKeychainWithValue:@(NO) withKey:kTKPD_ISLOGINKEY];
+
+                                                                                       [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];
+
+                                                                                       CreatePasswordViewController *controller = [CreatePasswordViewController new];
+
+                                                                                       controller.userProfile = userProfile;
+
+                                                                                       controller.onPasswordCreated = ^{
+                                                                                           [controller dismissViewControllerAnimated:YES completion:nil];
+                                                                                           [weakSelf authenticateToMarketplaceWithAccountInfo:_accountInfo
+                                                                                                                                   oAuthToken:oAuthToken
+                                                                                                                              successCallback:successCallback
+                                                                                                                              failureCallback:failureCallback];
+                                                                                       };
+
+                                                                                       UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
+                                                                                       navigationController.navigationBar.translucent = NO;
+
+                                                                                       [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+                                                                                   }
                                                                                }
                                                                                failureCallback:failureCallback];
                                                            }
@@ -822,7 +848,6 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
 }
 
 - (void)doThirdPartySignInWithUserProfile:(CreatePasswordUserProfile *)userProfile {
-    __weak typeof(self) weakSelf = self;
 
     [self thirdPartySignInWithUserProfile:userProfile
             successCallback:^(RKMappingResult *result, RKObjectRequestOperation *operation) {
@@ -833,33 +858,11 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                 [[GIDSignIn sharedInstance] signOut];
                 [[GIDSignIn sharedInstance] disconnect];
 
-                if (_accountInfo.createdPassword) {
-                    if (login.result.security && ![login.result.security.allow_login isEqualToString:@"1"]) {
-                        [self checkSecurityQuestion:login];
-                    } else {
-                        [self onLoginSuccess:login];
-                        [secureStorage setKeychainWithValue:userProfile.email withKey:kTKPD_USEREMAIL];
-                    }
+                if (login.result.security && ![login.result.security.allow_login isEqualToString:@"1"]) {
+                    [self checkSecurityQuestion:login];
                 } else {
-                    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
-                    [secureStorage setKeychainWithValue:@(NO) withKey:kTKPD_ISLOGINKEY];
-                    [secureStorage setKeychainWithValue:login.result.user_id withKey:kTKPD_TMP_USERIDKEY];
-
-                    [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];
-
-                    CreatePasswordViewController *controller = [CreatePasswordViewController new];
-
-                    controller.userProfile = userProfile;
-
-                    controller.onPasswordCreated = ^{
-                        [controller dismissViewControllerAnimated:YES completion:nil];
-                        [weakSelf doThirdPartySignInWithUserProfile:userProfile];
-                    };
-
-                    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
-                    navigationController.navigationBar.translucent = NO;
-
-                    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+                    [self onLoginSuccess:login];
+                    [secureStorage setKeychainWithValue:userProfile.email withKey:kTKPD_USEREMAIL];
                 }
             }
             failureCallback:^(NSError *error) {
