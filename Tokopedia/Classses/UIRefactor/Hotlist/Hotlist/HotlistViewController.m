@@ -249,7 +249,7 @@
             }
         }
         
-        [parameters setValue:@"search_product" forKey:kTKPDSEARCH_DATATYPE];
+        [parameters setValue:@"directory" forKey:kTKPDSEARCH_DATATYPE];
         
         SearchResultViewController *controller = [SearchResultViewController new];
         controller.data = parameters;
