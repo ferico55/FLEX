@@ -10,4 +10,11 @@
 
 @implementation Track
 
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[self class]];
+    [mapping addAttributeMappingsFromArray:@[@"status", @"server_process_time"]];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data" toKeyPath:@"result" withMapping:[TrackOrderResult mapping]]];
+    return mapping;
+}
+
 @end
