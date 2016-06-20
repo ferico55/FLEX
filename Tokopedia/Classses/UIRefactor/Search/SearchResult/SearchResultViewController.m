@@ -897,7 +897,8 @@ ImageSearchRequestDelegate
     NSDictionary *pathDictionary = @{
                                      @"search_catalog" : @"/search/v2.1/catalog",
                                      @"search_shop" : @"/search/v1/shop",
-                                     @"search_product" : @"/search/v2.1/product"
+                                     @"search_product" : @"/search/v2.1/product",
+                                     [self directoryType] : @"/search/v2.1/product"
                                      };
     return pathDictionary;
 }
@@ -977,6 +978,10 @@ ImageSearchRequestDelegate
     }
 }
 
+-(NSString*)directoryType{
+    return @"directory";
+}
+
 - (void)searchMappingResult:(RKMappingResult *)mappingResult {
     SearchAWS *search = [mappingResult.dictionary objectForKey:@""];
     _searchObject = search;
@@ -1019,7 +1024,7 @@ ImageSearchRequestDelegate
         }
         
         
-        if([[_data objectForKey:@"type"] isEqualToString:@"search_product"]) {
+        if([[_data objectForKey:@"type"] isEqualToString:@"search_product"]||[[_data objectForKey:@"type"] isEqualToString:[self directoryType]]) {
             if(search.data.products.count > 0) {
                 [_product addObject: search.data.products];
                 [TPAnalytics trackProductImpressions:search.data.products];
