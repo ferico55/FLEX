@@ -178,7 +178,7 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
         
         let listKeyFilters = ListFilters.map({$0.key})
         for selectedFilter in selectedFilters {
-            if selectedFilter.type == self.textInputType() {
+            if selectedFilter.input_type == self.textInputType() {
                 if listKeyFilters .contains(selectedFilter.key) {
                     textFieldIsActive = true
                 }
@@ -189,7 +189,7 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
     }
     
     private func textInputType()-> NSString{
-        return "textinput"
+        return "textbox"
     }
     
     private func categoryTitle() -> NSString{

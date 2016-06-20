@@ -279,7 +279,7 @@ static NSString const *rows = @"12";
     sort.name = @"Paling Sesuai";
     sort.value = @"23";
     sort.key = @"ob";
-    sort.type = @"checkmark";
+    sort.input_type = @"checkbox";
     return sort;
 }
 

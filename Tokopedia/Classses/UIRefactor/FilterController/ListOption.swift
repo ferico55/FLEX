@@ -13,7 +13,7 @@ class ListOption: NSObject, TKPObjectMapping, NSCopying {
     var name : String = ""
     var value : String = ""
     var key : String = ""
-    var type : String = ""
+    var input_type : String = ""
     var isSelected : Bool = false
     
     required override init() {
@@ -22,7 +22,7 @@ class ListOption: NSObject, TKPObjectMapping, NSCopying {
     required init(_ model: ListOption) {
         name = model.name
         key = model.key
-        type = model.type
+        input_type = model.input_type
         value = model.value
         isSelected = model.isSelected
     }
@@ -36,7 +36,7 @@ class ListOption: NSObject, TKPObjectMapping, NSCopying {
             "name"  : "name",
             "value" : "value",
             "key"   : "key",
-            "type"  : "type"
+            "input_type"  : "input_type"
         ]
     }
     
