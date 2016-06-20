@@ -691,7 +691,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                                  @"action" : @"do_login"
                                  };
 
-    [self doThirdPartySignInWithUserId:userId email:email provider:@"1" userProfile:[CreatePasswordUserProfile fromFacebook:data]];
+    [self doThirdPartySignInWithUserProfile:[CreatePasswordUserProfile fromFacebook:data]];
     
     _loadingView.hidden = NO;
     _emailTextField.hidden = YES;
@@ -704,16 +704,12 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
     [_activityIndicator startAnimating];
 }
 
-- (void)thirdPartySignInWithUserId:(NSString *)userId
-                             email:(NSString *)email
-                          provider:(NSString *)provider
-                   successCallback:(void (^)(RKMappingResult *, RKObjectRequestOperation *))successCallback
-                   failureCallback:(void (^)(NSError *))failureCallback {
+- (void)thirdPartySignInWithUserProfile:(CreatePasswordUserProfile *)userProfile successCallback:(void (^)(RKMappingResult *, RKObjectRequestOperation *))successCallback failureCallback:(void (^)(NSError *))failureCallback {
     NSDictionary *parameter = @{
                                 @"grant_type": @"extension",
-                                @"social_id": userId,
-                                @"social_type": provider,
-                                @"email": email
+                                @"social_id": userProfile.userId,
+                                @"social_type": userProfile.provider,
+                                @"email": userProfile.email
                                 };
 
     [_thirdPartySignInNetworkManager requestNotObfuscatedWithBaseUrl:[NSString accountsUrl]
@@ -819,55 +815,53 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
 
 #pragma mark - Activation Request
 - (void)requestLoginGoogleWithUser:(GIDGoogleUser *)user {
-    [self doThirdPartySignInWithUserId:user.userID email:user.profile.email provider:@"2" userProfile:[CreatePasswordUserProfile fromGoogle:user]];
+    [self doThirdPartySignInWithUserProfile:[CreatePasswordUserProfile fromGoogle:user]];
 }
 
-- (void)doThirdPartySignInWithUserId:(NSString *)userId email:(NSString *)email provider:(NSString *)provider userProfile:(CreatePasswordUserProfile *)userProfile {
+- (void)doThirdPartySignInWithUserProfile:(CreatePasswordUserProfile *)userProfile {
     __weak typeof(self) weakSelf = self;
 
-    [self thirdPartySignInWithUserId:userId
-                               email:email
-                            provider:provider
-                     successCallback:^(RKMappingResult *result, RKObjectRequestOperation *operation) {
-                         Login *login = result.dictionary[@""];
+    [self thirdPartySignInWithUserProfile:userProfile
+            successCallback:^(RKMappingResult *result, RKObjectRequestOperation *operation) {
+                Login *login = result.dictionary[@""];
 
-                         TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+                TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
 
-                         [[GIDSignIn sharedInstance] signOut];
-                         [[GIDSignIn sharedInstance] disconnect];
+                [[GIDSignIn sharedInstance] signOut];
+                [[GIDSignIn sharedInstance] disconnect];
 
-                         if (_accountInfo.createdPassword) {
-                             if (login.result.security && ![login.result.security.allow_login isEqualToString:@"1"]) {
-                                 [self checkSecurityQuestion:login];
-                             } else {
-                                 [self onLoginSuccess:login];
-                                 [secureStorage setKeychainWithValue:email withKey:kTKPD_USEREMAIL];
-                             }
-                         } else {
-                             TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-                             [secureStorage setKeychainWithValue:@(NO) withKey:kTKPD_ISLOGINKEY];
-                             [secureStorage setKeychainWithValue:login.result.user_id withKey:kTKPD_TMP_USERIDKEY];
+                if (_accountInfo.createdPassword) {
+                    if (login.result.security && ![login.result.security.allow_login isEqualToString:@"1"]) {
+                        [self checkSecurityQuestion:login];
+                    } else {
+                        [self onLoginSuccess:login];
+                        [secureStorage setKeychainWithValue:userProfile.email withKey:kTKPD_USEREMAIL];
+                    }
+                } else {
+                    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+                    [secureStorage setKeychainWithValue:@(NO) withKey:kTKPD_ISLOGINKEY];
+                    [secureStorage setKeychainWithValue:login.result.user_id withKey:kTKPD_TMP_USERIDKEY];
 
-                             [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];
+                    [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];
 
-                             CreatePasswordViewController *controller = [CreatePasswordViewController new];
+                    CreatePasswordViewController *controller = [CreatePasswordViewController new];
 
-                             controller.userProfile = userProfile;
+                    controller.userProfile = userProfile;
 
-                             controller.onPasswordCreated = ^{
-                                 [controller dismissViewControllerAnimated:YES completion:nil];
-                                 [weakSelf doThirdPartySignInWithUserId:userId email:email provider:provider userProfile:userProfile];
-                             };
+                    controller.onPasswordCreated = ^{
+                        [controller dismissViewControllerAnimated:YES completion:nil];
+                        [weakSelf doThirdPartySignInWithUserProfile:userProfile];
+                    };
 
-                             UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
-                             navigationController.navigationBar.translucent = NO;
+                    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
+                    navigationController.navigationBar.translucent = NO;
 
-                             [self.navigationController presentViewController:navigationController animated:YES completion:nil];
-                         }
-                     }
-                     failureCallback:^(NSError *error) {
-                         [StickyAlertView showErrorMessage:@[@"Sign in gagal silahkan coba lagi."]];
-                     }];
+                    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+                }
+            }
+            failureCallback:^(NSError *error) {
+                [StickyAlertView showErrorMessage:@[@"Sign in gagal silahkan coba lagi."]];
+            }];
 }
 
 @end
