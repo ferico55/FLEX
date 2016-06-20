@@ -284,7 +284,7 @@
     cell.onTapTalkWithUrl = ^(NSURL* url){
         WebViewController *controller = [[WebViewController alloc] init];
         controller.strURL = url.absoluteString;
-        controller.strTitle = url.absoluteString;
+        controller.strTitle = @"Mengarahkan...";
         controller.onTapLinkWithUrl = ^(NSURL* url) {
             if([url.absoluteString isEqualToString:@"https://www.tokopedia.com/"]) {
                 [weakSelf.navigationController popViewControllerAnimated:YES];
