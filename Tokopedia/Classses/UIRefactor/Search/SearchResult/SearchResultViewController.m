@@ -216,7 +216,7 @@ ImageSearchRequestDelegate
     [_params setDictionary:_data];
     [self setDefaultSort];
     
-    if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
+    if ([[_data objectForKey:@"type"] isEqualToString:@"search_product"]||[[_data objectForKey:@"type"] isEqualToString:[self directoryType]]) {
         if(self.isFromAutoComplete) {
             [TPAnalytics trackScreenName:@"Product Search Results (From Auto Complete Search)" gridType:self.cellType];
             self.screenName = @"Product Search Results (From Auto Complete Search)";
@@ -426,7 +426,7 @@ ImageSearchRequestDelegate
 - (UICollectionReusableView*)collectionView:(UICollectionView*)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
     UICollectionReusableView *reusableView = nil;
     if (kind == UICollectionElementKindSectionHeader) {
-        if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY] &&
+        if (([[_data objectForKey:@"type"] isEqualToString:@"search_product"]||[[_data objectForKey:@"type"] isEqualToString:[self directoryType]]) &&
             _promo.count > indexPath.section) {
             
             NSArray *currentPromo = [_promo objectAtIndex:indexPath.section];
@@ -508,7 +508,7 @@ ImageSearchRequestDelegate
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
     CGSize size = CGSizeZero;
-    if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
+    if ([[_data objectForKey:@"type"] isEqualToString:@"search_product"]||[[_data objectForKey:@"type"] isEqualToString:[self directoryType]]) {
         if (_promo.count > section) {
             NSArray *currentPromo = [_promo objectAtIndex:section];
             
@@ -683,7 +683,7 @@ ImageSearchRequestDelegate
     controller.selectedIndexPath = _sortIndexPath;
     if(_isFromImageSearch){
         controller.sortType = SortImageSearch;
-    }else if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
+    }else if ([[_data objectForKey:@"type"] isEqualToString:@"search_product"]||[[_data objectForKey:@"type"] isEqualToString:[self directoryType]]) {
         controller.sortType = SortProductSearch;
     } else {
         controller.sortType = SortCatalogSearch;
@@ -763,7 +763,7 @@ ImageSearchRequestDelegate
 -(void)pushFilter{
     // Action Filter Button
     FilterViewController *vc = [FilterViewController new];
-    if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY])
+    if ([[_data objectForKey:@"type"] isEqualToString:@"search_product"]||[[_data objectForKey:@"type"] isEqualToString:[self directoryType]])
         vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPEPRODUCTVIEWKEY),
                     kTKPDFILTER_DATAFILTERKEY: _params
                     };
@@ -1284,7 +1284,7 @@ ImageSearchRequestDelegate
 }
 
 - (void)didSelectPromoProduct:(PromoResult *)promoResult {
-    if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
+    if ([[_data objectForKey:@"type"] isEqualToString:@"search_product"]||[[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:[self directoryType]]){
         NavigateViewController *navigateController = [NavigateViewController new];
         NSDictionary *productData = @{
             @"product_id"       : promoResult.product.product_id?:@"",
