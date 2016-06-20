@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Breadcrumb.h"
 #import "ReputationDetail.h"
 //#import "Tokopedia-Swift.h"
 
@@ -26,7 +25,7 @@
 - (NSString*)getShopId;
 - (NSString*)getShopName;
 - (NSString*)getShopHasTerm;
-- (CategoryDetail*)getLastProductAddCategory;
+- (CategoryDetail *)getLastProductAddCategory;
 - (NSString*)getMyDeviceToken;
 - (NSString*)getMyDeviceIdToken;
 - (BOOL)isMyShopWithShopId:(NSString*)shopId;
