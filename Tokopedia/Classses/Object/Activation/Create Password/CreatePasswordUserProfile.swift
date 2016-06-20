@@ -13,6 +13,7 @@ class CreatePasswordUserProfile: NSObject {
     var email: String?
     var birthDay: String?
     var gender: String?
+    var provider: String = ""
 
     static func fromFacebook(userData: [String: String]) -> CreatePasswordUserProfile {
         let userProfile = CreatePasswordUserProfile()
@@ -20,6 +21,7 @@ class CreatePasswordUserProfile: NSObject {
         userProfile.name = userData["name"]
         userProfile.birthDay = userData["birthday"]
         userProfile.gender = userData["gender"] == "male" ? "1": "2"
+        userProfile.provider = "1"
 
         return userProfile
     }
@@ -28,6 +30,7 @@ class CreatePasswordUserProfile: NSObject {
         let userProfile = CreatePasswordUserProfile()
         userProfile.email = user.profile.email
         userProfile.name = user.profile.name
+        userProfile.provider = "2"
 
         return userProfile
     }

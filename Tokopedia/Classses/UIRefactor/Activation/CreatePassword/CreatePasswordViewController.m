@@ -478,14 +478,8 @@
 }
 
 - (void)trackRegistration {
-    NSDictionary *trackerValues;
-    if (_gidGoogleUser) {
-        trackerValues = @{AFEventParamRegistrationMethod : @"Google Registration"};
-    } else if (_facebookUserData) {
-        trackerValues = @{AFEventParamRegistrationMethod : @"Facebook Registration"};
-    } else {
-        trackerValues = @{};
-    }
+    NSString* eventType = [_userProfile.provider isEqualToString:@"1"]?@"Facebook Registration":@"Google Registration";
+    NSDictionary *trackerValues = @{AFEventParamRegistrationMethod : eventType};
 
     [[AppsFlyerTracker sharedTracker] trackEvent:AFEventCompleteRegistration withValues:trackerValues];
 }
