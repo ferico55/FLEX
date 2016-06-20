@@ -371,6 +371,8 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
                                       oAuthToken:(OAuthToken *)oAuthToken
                                  successCallback:(void (^)(RKMappingResult *, RKObjectRequestOperation *))successCallback
                                  failureCallback:(void (^)(NSError *))failureCallback {
+    __weak typeof(self) weakSelf = self;
+
     TKPDSecureStorage *storage = [TKPDSecureStorage standardKeyChains];
     [storage setKeychainWithValue:accountInfo.userId withKey:@"tmp_user_id"];
     
@@ -393,7 +395,12 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
                                          onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                              Login *login = successResult.dictionary[@""];
                                              if (login.result.security && ![login.result.security.allow_login isEqualToString:@"1"]) {
-                                                 [self checkSecurityQuestion:login];
+                                                 [self verifyPhoneNumber:login onPhoneNumberVerified: ^{
+                                                     [weakSelf authenticateToMarketplaceWithAccountInfo:accountInfo
+                                                                                             oAuthToken:oAuthToken
+                                                                                        successCallback:successCallback
+                                                                                        failureCallback:failureCallback];
+                                                 }];
                                              } else {
                                                  successCallback(successResult, operation);
                                              }
@@ -562,38 +569,26 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     }
 }
 
-- (void)checkSecurityQuestion:(Login *)login {
-    if(FBTweakValue(@"Security", @"Question", @"Enabled", YES)) {
-        TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-        [secureStorage setKeychainWithValue:login.result.user_id withKey:kTKPD_USERIDKEY];
-        
-        //    SecurityQuestionViewController *controller = [[SecurityQuestionViewController alloc] initWithNibName:@"SecurityQuestionViewController" bundle:nil];
-        SecurityQuestionViewController* controller = [SecurityQuestionViewController new];
-        controller.questionType1 = login.result.security.user_check_security_1;
-        controller.questionType2 = login.result.security.user_check_security_2;
-        
-        controller.userID = login.result.user_id;
-        controller.deviceID = _userManager.getMyDeviceToken;
-        controller.successAnswerCallback = ^(SecurityAnswer* answer) {
-            [secureStorage setKeychainWithValue:answer.data.uuid withKey:@"securityQuestionUUID"];
-            [self authenticateToMarketplaceWithAccountInfo:_accountInfo oAuthToken:_oAuthToken
-                                           successCallback:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                               [self requestSuccessLogin:successResult withOperation:operation];
-                                           }
-                                           failureCallback:^(NSError *errorResult) {
+- (void)verifyPhoneNumber:(Login *)login onPhoneNumberVerified:(void (^)())verifiedCallback {
+    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+    [secureStorage setKeychainWithValue:login.result.user_id withKey:kTKPD_USERIDKEY];
 
-            }];
-        };
-        
-        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
-        navigationController.navigationBar.translucent = NO;
-        
-        [self.navigationController presentViewController:navigationController animated:YES completion:nil];
-    } else {
-        [self onLoginSuccess:login];
-    }
-    
-    
+    //    SecurityQuestionViewController *controller = [[SecurityQuestionViewController alloc] initWithNibName:@"SecurityQuestionViewController" bundle:nil];
+    SecurityQuestionViewController* controller = [SecurityQuestionViewController new];
+    controller.questionType1 = login.result.security.user_check_security_1;
+    controller.questionType2 = login.result.security.user_check_security_2;
+
+    controller.userID = login.result.user_id;
+    controller.deviceID = _userManager.getMyDeviceToken;
+    controller.successAnswerCallback = ^(SecurityAnswer* answer) {
+        [secureStorage setKeychainWithValue:answer.data.uuid withKey:@"securityQuestionUUID"];
+        verifiedCallback();
+    };
+
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
+    navigationController.navigationBar.translucent = NO;
+
+    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
 }
 
 #pragma mark - Delegate
