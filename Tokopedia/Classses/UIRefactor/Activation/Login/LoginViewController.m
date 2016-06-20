@@ -852,9 +852,9 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
 
                              CreatePasswordViewController *controller = [CreatePasswordViewController new];
                              if (_facebookUserData) {
-                                 controller.facebookUserData = _facebookUserData;
+                                 controller.userProfile = [CreatePasswordUserProfile fromFacebook:_facebookUserData];
                              } else if (_gidGoogleUser) {
-                                 controller.gidGoogleUser = _gidGoogleUser;
+                                 controller.userProfile = [CreatePasswordUserProfile fromGoogle:_gidGoogleUser];
                              }
 
                              controller.onPasswordCreated = ^{
