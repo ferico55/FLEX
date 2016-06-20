@@ -390,7 +390,14 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
                                             header:header
                                          parameter:parameter
                                            mapping:[Login mapping]
-                                         onSuccess:successCallback
+                                         onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                             Login *login = successResult.dictionary[@""];
+                                             if (login.result.security && ![login.result.security.allow_login isEqualToString:@"1"]) {
+                                                 [self checkSecurityQuestion:login];
+                                             } else {
+                                                 successCallback(successResult, operation);
+                                             }
+                                         }
                                          onFailure:failureCallback];
 }
 
@@ -443,16 +450,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 
     BOOL status = [login.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     if (status) {
-        if (login.result.is_login) {
-            [self onLoginSuccess:login];
-        }
-        else{
-            if(login.result.security && ![login.result.security.allow_login isEqualToString:@"1"]) {
-                [self checkSecurityQuestion:login];
-            } else {
-                [StickyAlertView showErrorMessage:login.message_error];
-            }
-        }
+        [self onLoginSuccess:login];
     }
     else {
         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Sign in gagal silahkan coba lagi."]
@@ -861,12 +859,9 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                 [[GIDSignIn sharedInstance] signOut];
                 [[GIDSignIn sharedInstance] disconnect];
 
-                if (login.result.security && ![login.result.security.allow_login isEqualToString:@"1"]) {
-                    [self checkSecurityQuestion:login];
-                } else {
-                    [self onLoginSuccess:login];
-                    [secureStorage setKeychainWithValue:userProfile.email withKey:kTKPD_USEREMAIL];
-                }
+                [self onLoginSuccess:login];
+                [secureStorage setKeychainWithValue:userProfile.email withKey:kTKPD_USEREMAIL];
+
             }
             failureCallback:^(NSError *error) {
                 [StickyAlertView showErrorMessage:@[@"Sign in gagal silahkan coba lagi."]];
