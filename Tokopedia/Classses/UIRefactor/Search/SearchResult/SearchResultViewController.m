@@ -699,7 +699,7 @@ ImageSearchRequestDelegate
 }
 
 -(void)pushDynamicSort{
-    FiltersController *controller = [[FiltersController alloc]initWithSortResponse:_filterResponse?:[FilterData new] selectedSort:_selectedSort presentedVC:self onCompletion:^(ListOption * sort, NSDictionary*paramSort) {
+    FiltersController *controller = [[FiltersController alloc]initWithSource:[_data objectForKey:kTKPDSEARCH_DATATYPE]?:@"" sortResponse:_filterResponse?:[FilterData new] selectedSort:_selectedSort presentedVC:self onCompletion:^(ListOption * sort, NSDictionary*paramSort) {
         _selectedSortParam = paramSort;
         _selectedSort = sort;
         
@@ -749,7 +749,7 @@ ImageSearchRequestDelegate
 }
 
 -(void)pushDynamicFilter{
-    FiltersController *controller = [[FiltersController alloc]initWithFilterResponse:_filterResponse?:[FilterData new] categories:[_initialBreadcrumb copy] selectedCategories:_selectedCategories selectedFilters:_selectedFilters presentedVC:self onCompletion:^(NSArray<CategoryDetail *> * selectedCategories , NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
+    FiltersController *controller = [[FiltersController alloc]initWithSource:[_data objectForKey:kTKPDSEARCH_DATATYPE]?:@"" filterResponse:_filterResponse?:[FilterData new] categories:[_initialBreadcrumb copy] selectedCategories:_selectedCategories selectedFilters:_selectedFilters presentedVC:self onCompletion:^(NSArray<CategoryDetail *> * selectedCategories , NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
         
         _selectedCategories = selectedCategories;
         _selectedFilters = selectedFilters;

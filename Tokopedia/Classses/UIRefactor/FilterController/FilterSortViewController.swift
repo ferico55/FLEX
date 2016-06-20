@@ -16,15 +16,16 @@ class FilterSortViewController: UIViewController, UITableViewDelegate, UITableVi
     private var completionHandler:(ListOption, [String:String])->Void = {_ in}
     private var completionHandlerResponse:(FilterData)->Void = {_ in}
     private var tableView: UITableView = UITableView()
-    
+    private var source : String = ""
     private var refreshControl : UIRefreshControl = UIRefreshControl()
     
-    init(items:[ListOption],selectedObject:ListOption, onCompletion: ((ListOption, [String:String]) -> Void), response:((FilterData) -> Void)){
+    init(source: String, items:[ListOption],selectedObject:ListOption, onCompletion: ((ListOption, [String:String]) -> Void), response:((FilterData) -> Void)){
         
         completionHandler = onCompletion
         completionHandlerResponse = response
         self.items = items
         self.selectedObject = selectedObject
+        self.source = source
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -133,7 +134,7 @@ class FilterSortViewController: UIViewController, UITableViewDelegate, UITableVi
     }
 
     private func requestFilter(){
-        RequestFilter .fetchFilter({ (response) in
+        RequestFilter.fetchFilter(source, success: { (response) in
             self.items.removeAll()
             
             var indexPaths : [NSIndexPath] = []
