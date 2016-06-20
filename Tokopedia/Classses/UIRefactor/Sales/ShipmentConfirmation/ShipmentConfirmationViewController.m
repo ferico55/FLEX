@@ -20,7 +20,7 @@
 #import "NavigateViewController.h"
 #import "ActionOrder.h"
 #import "StickyAlertView.h"
-#import "RequestShipmentCourier.h"
+#import "ShipmentOrder.h"
 #import "ShipmentCourier.h"
 #import "UITableView+IndexPath.h"
 
@@ -28,16 +28,15 @@
 
 @interface ShipmentConfirmationViewController ()
 <
-UITableViewDataSource,
-UITableViewDelegate,
-UIAlertViewDelegate,
-SalesOrderCellDelegate,
-OrderDetailDelegate,
-FilterShipmentConfirmationDelegate,
-SubmitShipmentConfirmationDelegate,
-ChangeCourierDelegate,
-CancelShipmentConfirmationDelegate,
-RequestShipmentCourierDelegate
+    UITableViewDataSource,
+    UITableViewDelegate,
+    UIAlertViewDelegate,
+    SalesOrderCellDelegate,
+    OrderDetailDelegate,
+    FilterShipmentConfirmationDelegate,
+    SubmitShipmentConfirmationDelegate,
+    ChangeCourierDelegate,
+    CancelShipmentConfirmationDelegate
 >
 
 @property (strong, nonatomic) IBOutlet UIView *headerView;
@@ -71,6 +70,7 @@ RequestShipmentCourierDelegate
 
 @property (strong, nonatomic) TokopediaNetworkManager *networkManager;
 @property (strong, nonatomic) TokopediaNetworkManager *actionNetworkManager;
+@property (strong, nonatomic) TokopediaNetworkManager *courierNetworkManager;
 
 @property (strong, nonatomic) FilterShipmentConfirmationViewController *filterController;
 
@@ -93,7 +93,11 @@ RequestShipmentCourierDelegate
     
     self.actionNetworkManager = [TokopediaNetworkManager new];
     self.actionNetworkManager.isUsingHmac = YES;
-    
+
+    self.courierNetworkManager = [TokopediaNetworkManager new];
+    self.courierNetworkManager.isUsingHmac = YES;
+    [self requestShipmentCouriers];
+
     self.dueDate = @"";
     self.invoiceNumber = @"";
     
@@ -114,10 +118,6 @@ RequestShipmentCourierDelegate
     
     self.filterController = [FilterShipmentConfirmationViewController new];
     self.filterController.delegate = self;
-    
-    RequestShipmentCourier *courier = [RequestShipmentCourier new];
-    courier.delegate = self;
-    [courier request];
     
     [self fetchShipmentConfirmationData];
 }
@@ -430,7 +430,7 @@ RequestShipmentCourierDelegate
     navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
     navigationController.navigationBar.translucent = NO;
     navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    _filterController.couriers = _shipmentCouriers;
+    self.filterController.couriers = _shipmentCouriers;
     navigationController.viewControllers = @[_filterController];
     [self.navigationController presentViewController:navigationController animated:YES completion:nil];
 }
@@ -624,13 +624,20 @@ RequestShipmentCourierDelegate
 
 #pragma mark - Shipment courier request delegate
 
-- (void)didReceiveShipmentCourier:(NSArray *)couriers {
-    _shipmentCouriers = couriers;
+- (void)requestShipmentCouriers {
+    [self.courierNetworkManager requestWithBaseUrl:[NSString v4Url]
+                                              path:@"/v4/myshop-order/get_edit_shipping_form.pl"
+                                            method:RKRequestMethodGET
+                                         parameter:@{}
+                                           mapping:[ShipmentOrder mapping]
+                                         onSuccess:^(RKMappingResult *mappingResult,
+                                                     RKObjectRequestOperation *operation) {
+                                             ShipmentOrder *shipment = [mappingResult.dictionary objectForKey:@""];
+                                             self.shipmentCouriers = shipment.data.shipment;
+                                         } onFailure:nil];
 }
 
-- (void)requestShipmentCourierError {
-    
-}
+#pragma mark - Order detail delegate
 
 - (void)successConfirmOrder:(OrderTransaction *)order {
     NSInteger index = [_orders indexOfObject:order];
