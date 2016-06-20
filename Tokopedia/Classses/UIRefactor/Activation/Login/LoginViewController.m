@@ -60,9 +60,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     TokopediaNetworkManager *_marketplaceNetworkManager;
     TokopediaNetworkManager *_getUserInfoNetworkManager;
     TokopediaNetworkManager *_thirdPartySignInNetworkManager;
-    
-    AccountInfo *_accountInfo;
-    OAuthToken *_oAuthToken;
 }
 
 @property (strong, nonatomic) IBOutlet TextField *emailTextField;
@@ -337,10 +334,9 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
                                                OAuthToken *oAuthToken = result.dictionary[@""];
                                                [self getUserInfoWithOAuthToken:oAuthToken
                                                                successCallback:^(RKMappingResult *mappingResult, RKObjectRequestOperation *operation) {
-                                                                   _oAuthToken = oAuthToken;
-                                                                   _accountInfo = mappingResult.dictionary[@""];
+                                                                   AccountInfo *accountInfo = mappingResult.dictionary[@""];
 
-                                                                   [self authenticateToMarketplaceWithAccountInfo:_accountInfo
+                                                                   [self authenticateToMarketplaceWithAccountInfo:accountInfo
                                                                                                        oAuthToken:oAuthToken
                                                                                                   successCallback:successCallback
                                                                                                   failureCallback:failureCallback];
@@ -716,11 +712,10 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
 
                                                                [self getUserInfoWithOAuthToken:mappingResult.dictionary[@""]
                                                                                successCallback:^(RKMappingResult *mappingResult, RKObjectRequestOperation *operation) {
-                                                                                   _oAuthToken = oAuthToken;
-                                                                                   _accountInfo = mappingResult.dictionary[@""];
+                                                                                   AccountInfo *accountInfo = mappingResult.dictionary[@""];
 
-                                                                                   if (_accountInfo.createdPassword) {
-                                                                                       [self authenticateToMarketplaceWithAccountInfo:_accountInfo
+                                                                                   if (accountInfo.createdPassword) {
+                                                                                       [self authenticateToMarketplaceWithAccountInfo:accountInfo
                                                                                                                            oAuthToken:oAuthToken
                                                                                                                       successCallback:successCallback
                                                                                                                       failureCallback:failureCallback];
@@ -736,7 +731,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
 
                                                                                        controller.onPasswordCreated = ^{
                                                                                            [controller dismissViewControllerAnimated:YES completion:nil];
-                                                                                           [weakSelf authenticateToMarketplaceWithAccountInfo:_accountInfo
+                                                                                           [weakSelf authenticateToMarketplaceWithAccountInfo:accountInfo
                                                                                                                                    oAuthToken:oAuthToken
                                                                                                                               successCallback:successCallback
                                                                                                                               failureCallback:failureCallback];
@@ -856,7 +851,6 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
 
                 [self onLoginSuccess:login];
                 [secureStorage setKeychainWithValue:userProfile.email withKey:kTKPD_USEREMAIL];
-
             }
             failureCallback:^(NSError *error) {
                 [StickyAlertView showErrorMessage:@[@"Sign in gagal silahkan coba lagi."]];
