@@ -98,7 +98,7 @@
     controller.delegate = vc;
     controller.callbackURL = data.callback_url;
     controller.title = gatewayName?:@"Pembayaran";
-    controller.gatewayCode = gatewayName;
+    controller.gatewayCode = data.parameter[@"gateway_code"];
     
     [vc.navigationController pushViewController:controller animated:YES];
 }
@@ -560,8 +560,6 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    
-    self.title = @"Pembayaran";
 }
 
 @end

@@ -2408,7 +2408,7 @@
                                 saldo:_saldoTokopediaAmountTextField.text
                           voucherCode:voucherCode success:^(TransactionActionResult *data) {
                               
-                              [TransactionCartWebViewViewController pushToppayFrom:self data:data gatewayID:[_cartSummary.gateway integerValue] gatewayName:data.parameter[@"gateway_code"]];
+                              [TransactionCartWebViewViewController pushToppayFrom:self data:data gatewayID:[gatewayID integerValue] gatewayName:gateway.gateway_name];
                               _popFromToppay = YES;
                               [self isLoading:NO];
 
