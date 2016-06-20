@@ -149,7 +149,7 @@ ImageSearchRequestDelegate
     NSIndexPath *_sortIndexPath;
     NSArray *_initialBreadcrumb;
     
-    FilterResponse *_filterResponse;
+    FilterData *_filterResponse;
     NSArray<ListOption*> *_selectedFilters;
     NSDictionary *_selectedFilterParam;
     ListOption *_selectedSort;
@@ -699,7 +699,7 @@ ImageSearchRequestDelegate
 }
 
 -(void)pushDynamicSort{
-    FiltersController *controller = [[FiltersController alloc]initWithSortResponse:_filterResponse?:[FilterResponse new] selectedSort:_selectedSort presentedVC:self onCompletion:^(ListOption * sort, NSDictionary*paramSort) {
+    FiltersController *controller = [[FiltersController alloc]initWithSortResponse:_filterResponse?:[FilterData new] selectedSort:_selectedSort presentedVC:self onCompletion:^(ListOption * sort, NSDictionary*paramSort) {
         _selectedSortParam = paramSort;
         _selectedSort = sort;
         
@@ -727,7 +727,7 @@ ImageSearchRequestDelegate
             [self refreshView:nil];
         }
         [self refreshView:nil];
-    } response:^(FilterResponse * filterResponse) {
+    } response:^(FilterData * filterResponse) {
         _filterResponse = filterResponse;
     }];
 }
@@ -749,7 +749,7 @@ ImageSearchRequestDelegate
 }
 
 -(void)pushDynamicFilter{
-    FiltersController *controller = [[FiltersController alloc]initWithFilterResponse:_filterResponse?:[FilterResponse new] categories:[_initialBreadcrumb copy] selectedCategories:_selectedCategories selectedFilters:_selectedFilters presentedVC:self onCompletion:^(NSArray<CategoryDetail *> * selectedCategories , NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
+    FiltersController *controller = [[FiltersController alloc]initWithFilterResponse:_filterResponse?:[FilterData new] categories:[_initialBreadcrumb copy] selectedCategories:_selectedCategories selectedFilters:_selectedFilters presentedVC:self onCompletion:^(NSArray<CategoryDetail *> * selectedCategories , NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
         
         _selectedCategories = selectedCategories;
         _selectedFilters = selectedFilters;
@@ -760,7 +760,7 @@ ImageSearchRequestDelegate
         [_params setObject:[_data objectForKey:@"search"]?:@"" forKey:@"search"];
         [self refreshView:nil];
         
-    } response:^(FilterResponse * filterResponse){
+    } response:^(FilterData * filterResponse){
         _filterResponse = filterResponse;
     }];
 }

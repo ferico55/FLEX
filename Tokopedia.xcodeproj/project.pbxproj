@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2D50139230438B54812D14B9 /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */; };
+		452951B61D17A47900A22AB5 /* FilterData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452951B51D17A47800A22AB5 /* FilterData.swift */; };
 		4572CF951D13FF1800275FA9 /* TPAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 4572C0D81D13FF1400275FA9 /* TPAnalytics.m */; };
 		4572CF961D13FF1800275FA9 /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 4572C0DB1D13FF1400275FA9 /* URLCacheAlert.m */; };
 		4572CF971D13FF1800275FA9 /* URLCacheConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 4572C0DD1D13FF1400275FA9 /* URLCacheConnection.m */; };
@@ -2411,6 +2412,7 @@
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
 		2D733D9158C7BF957D514506 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
+		452951B51D17A47800A22AB5 /* FilterData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterData.swift; sourceTree = "<group>"; };
 		4572C0D71D13FF1400275FA9 /* TPAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPAnalytics.h; sourceTree = "<group>"; };
 		4572C0D81D13FF1400275FA9 /* TPAnalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPAnalytics.m; sourceTree = "<group>"; };
 		4572C0DA1D13FF1400275FA9 /* URLCacheAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheAlert.h; sourceTree = "<group>"; };
@@ -8794,6 +8796,7 @@
 		4572C7331D13FF1500275FA9 /* FilterController */ = {
 			isa = PBXGroup;
 			children = (
+				452951B51D17A47800A22AB5 /* FilterData.swift */,
 				4572C7341D13FF1500275FA9 /* CategoryFilterViewController.swift */,
 				4572C7351D13FF1500275FA9 /* FilterCells.swift */,
 				4572C7361D13FF1500275FA9 /* FilterResponse.swift */,
@@ -14353,6 +14356,7 @@
 				4572D3F91D13FF1900275FA9 /* ChooseProductCell.m in Sources */,
 				4572D4A91D13FF1900275FA9 /* ShopPageRequest.m in Sources */,
 				4572CFAC1D13FF1800275FA9 /* UITextView+UITextView_Placeholder.m in Sources */,
+				452951B61D17A47900A22AB5 /* FilterData.swift in Sources */,
 				4572D1B81D13FF1900275FA9 /* UploadDataImage.m in Sources */,
 				4572D24C1D13FF1900275FA9 /* FilterCategoryViewController.m in Sources */,
 				4572D04B1D13FF1800275FA9 /* HotlistDetailResult.m in Sources */,

@@ -14,12 +14,12 @@ class FilterSortViewController: UIViewController, UITableViewDelegate, UITableVi
 //    private var tempSelectedObject : ListOption = ListOption()
     private weak var selectedObject : ListOption? = ListOption()
     private var completionHandler:(ListOption, [String:String])->Void = {_ in}
-    private var completionHandlerResponse:(FilterResponse)->Void = {_ in}
+    private var completionHandlerResponse:(FilterData)->Void = {_ in}
     private var tableView: UITableView = UITableView()
     
     private var refreshControl : UIRefreshControl = UIRefreshControl()
     
-    init(items:[ListOption],selectedObject:ListOption, onCompletion: ((ListOption, [String:String]) -> Void), response:((FilterResponse) -> Void)){
+    init(items:[ListOption],selectedObject:ListOption, onCompletion: ((ListOption, [String:String]) -> Void), response:((FilterData) -> Void)){
         
         completionHandler = onCompletion
         completionHandlerResponse = response

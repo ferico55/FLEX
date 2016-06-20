@@ -10,7 +10,7 @@ import UIKit
 
 class RequestFilter: NSObject {
 
-    class func fetchFilter(success: ((response:FilterResponse) -> Void), failed:((NSError)->Void)) {
+    class func fetchFilter(success: ((response:FilterData) -> Void), failed:((NSError)->Void)) {
         let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
         networkManager.requestWithBaseUrl(NSString.aceUrl(),
@@ -23,7 +23,7 @@ class RequestFilter: NSObject {
                                             let result : Dictionary = mappingResult.dictionary() as Dictionary
                                             let response : FilterResponse = result[""] as! FilterResponse
                                             
-                                            success(response: response)
+                                            success(response: response.data)
                                             
         }) { (error) in
             failed(error)
