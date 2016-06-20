@@ -116,12 +116,10 @@
 }
 
 - (void)setFacebookUserData:(NSDictionary *)facebookUserData {
-    _facebookUserData = facebookUserData;
     _userProfile = [CreatePasswordUserProfile fromFacebook:facebookUserData];
 }
 
 - (void)setGidGoogleUser:(GIDGoogleUser *)gidGoogleUser {
-    _gidGoogleUser = gidGoogleUser;
     _userProfile = [CreatePasswordUserProfile fromGoogle:gidGoogleUser];
 }
 
