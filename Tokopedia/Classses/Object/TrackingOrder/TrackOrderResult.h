@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "TrackOrder.h"
 
-@interface TrackOrderResult : NSObject
+@interface TrackOrderResult : NSObject <TKPObjectMapping>
 
 @property (strong, nonatomic) TrackOrder *track_order;
 

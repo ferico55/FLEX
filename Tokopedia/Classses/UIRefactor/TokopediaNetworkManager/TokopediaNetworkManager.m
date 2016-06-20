@@ -301,7 +301,8 @@
     [_objectManager.HTTPClient setDefaultHeader:@"Accept-Language" value:@"id-ID"];
     NSString *xDevice = [NSString stringWithFormat:@"ios-%@",appVersion];
     [_objectManager.HTTPClient setDefaultHeader:@"X-Device" value:xDevice];
-    
+    [_objectManager.HTTPClient setDefaultHeader:@"Accept-Encoding" value:@"gzip"];
+
     if(self.isUsingHmac) {
         TkpdHMAC *hmac = [TkpdHMAC new];
         NSString* date = [hmac getDate];
@@ -359,7 +360,9 @@
         NSString* status = [mappedResult performSelector:@selector(status)];
         
             if([status isEqualToString:@"OK"]) {
-                successCallback(mappingResult, operation);
+                if (successCallback) {
+                    successCallback(mappingResult, operation);
+                }
             } else if ([status isEqualToString:@"INVALID_REQUEST"]) {
                 
             } else if ([status isEqualToString:@"UNDER_MAINTENANCE"]) {
@@ -369,7 +372,9 @@
                 [[NSNotificationCenter defaultCenter] postNotificationName:TkpdNotificationForcedLogout object:nil userInfo:@{}];
             }
         } else {
-            successCallback(mappingResult, operation);
+            if (successCallback) {
+                successCallback(mappingResult, operation);
+            }
         }
         
         [_requestTimer invalidate];

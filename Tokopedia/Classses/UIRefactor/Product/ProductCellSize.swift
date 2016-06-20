@@ -12,34 +12,23 @@ import Foundation
     class func sizeWithType(cellType : Int) -> CGSize {
         var numberOfCell: CGFloat
         var cellHeight: CGFloat
-        
-        if(UIDevice.currentDevice().userInterfaceIdiom == .Pad) {
-            //two column
-            if(cellType == 1) {
-                numberOfCell = 4
-                cellHeight = 250
-            } else if(cellType == 2) {
-                numberOfCell = 6
-                cellHeight = 150
-            } else {
-                numberOfCell = 2
-                cellHeight = 450
-            }
-        } else {
-            if(cellType == 1) {
-                numberOfCell = 2
-                cellHeight = (UIScreen.mainScreen().bounds.size.width / numberOfCell) - 15 + 60
-            } else if(cellType == 2) {
-                numberOfCell = 3
-                cellHeight = UIScreen.mainScreen().bounds.size.width / 3 - 15
-            } else {
-                numberOfCell = 1
-                cellHeight = UIScreen.mainScreen().bounds.size.width + 100
-            }
-        }
-        
         let screenWidth = UIScreen.mainScreen().bounds.size.width
-        let cellWidth = screenWidth/numberOfCell - 15
+        let isPad = (UIDevice.currentDevice().userInterfaceIdiom == .Pad)
+    
+        var cellWidth: CGFloat;
+        if(cellType == 1) {
+            numberOfCell = isPad ? 4 : 2
+            cellWidth = screenWidth/numberOfCell
+            cellHeight = cellWidth + 85
+        } else if(cellType == 2) {
+            numberOfCell = isPad ? 2 : 1
+            cellWidth = screenWidth/numberOfCell
+            cellHeight = 120
+        } else {
+            numberOfCell = isPad ? 2 : 1
+            cellWidth = screenWidth/numberOfCell
+            cellHeight = cellWidth + 90
+        }
         
         
         return CGSizeMake(cellWidth, cellHeight);
@@ -48,17 +37,14 @@ import Foundation
     class func sizeWishlistCell() -> CGSize {
         var numberOfCell: CGFloat
         var cellHeight: CGFloat
-        
-        if(UIDevice.currentDevice().userInterfaceIdiom == .Pad) {
-            numberOfCell = 4
-            cellHeight = 300
-        } else {
-            numberOfCell = 2
-            cellHeight = (UIScreen.mainScreen().bounds.size.width / numberOfCell) - 15 + 100
-        }
-        
+        var cellWidth: CGFloat
         let screenWidth = UIScreen.mainScreen().bounds.size.width
-        let cellWidth = screenWidth/numberOfCell - 15
+        let isPad = (UIDevice.currentDevice().userInterfaceIdiom == .Pad)
+        
+        numberOfCell = isPad ? 4 : 2
+        cellWidth = screenWidth/numberOfCell
+        cellHeight = cellWidth + 120
+    
         
         
         return CGSizeMake(cellWidth, cellHeight);

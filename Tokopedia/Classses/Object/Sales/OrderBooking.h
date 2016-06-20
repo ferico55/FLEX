@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface OrderBooking : NSObject
+@interface OrderBooking : NSObject <TKPObjectMapping>
 
 @property (strong, nonatomic) NSString *shop_id;
 @property (strong, nonatomic) NSString *api_url;

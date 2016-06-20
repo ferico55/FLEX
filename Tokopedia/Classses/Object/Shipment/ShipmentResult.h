@@ -9,8 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "ShipmentCourier.h"
 
-@interface ShipmentResult : NSObject
+@interface ShipmentResult : NSObject <TKPObjectMapping>
 
-@property (nonatomic, strong) NSMutableArray *shipment;
+@property (nonatomic, strong) NSArray *shipment;
 
 @end

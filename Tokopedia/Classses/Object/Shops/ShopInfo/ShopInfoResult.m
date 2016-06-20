@@ -25,6 +25,9 @@
 
     RKRelationshipMapping *imageRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"image" toKeyPath:@"image" withMapping:[ShopInfoImage mapping]];
     [mapping addPropertyMapping:imageRelationship];
+    
+    RKRelationshipMapping *scheduleRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"closed_schedule_detail" toKeyPath:@"closed_schedule_detail" withMapping:[ClosedScheduleDetail mapping]];
+    [mapping addPropertyMapping:scheduleRelationship];
 
     return mapping;
 }

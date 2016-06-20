@@ -21,29 +21,18 @@
     GeneralTableViewControllerDelegate,
     BarCodeDelegate
 >
-{
-    BOOL _changeCourier;
-    NSString *_receiptNumber;
-    ShipmentCourier *_selectedCourier;
-    ShipmentCourierPackage *_selectedCourierPackage;
 
-    NSString *strNoResi;
-    BOOL _shouldReloadData;
-
-    __weak RKObjectManager *_actionObjectManager;
-    __weak RKManagedObjectRequestOperation *_actionRequest;
-    RKResponseDescriptor *_responseActionDescriptorStatus;
-
-    NSOperationQueue *_operationQueue;
-}
+@property BOOL changeCourier;
+@property (strong, nonatomic) NSString *receiptNumber;
+@property (strong, nonatomic) ShipmentCourier *selectedCourier;
+@property (strong, nonatomic) ShipmentCourierPackage *selectedCourierPackage;
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
-@property (strong, nonatomic) IBOutlet UIView *headerView;
-@property (weak, nonatomic) IBOutlet UILabel *headerTextLabel;
-
 @property (strong, nonatomic) IBOutlet UIView *footerView;
 @property (weak, nonatomic) IBOutlet UILabel *footerTextLabel;
+
+@property (strong, nonatomic) TokopediaNetworkManager *networkManager;
 
 @end
 
@@ -75,10 +64,6 @@
         }
     }
     
-    _shouldReloadData = NO;
-    
-    _operationQueue = [NSOperationQueue new];
-    
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(keyboardWillShow:)
                name:UIKeyboardWillShowNotification
@@ -86,6 +71,9 @@
     [nc addObserver:self selector:@selector(keyboardWillHide:)
                name:UIKeyboardWillHideNotification
              object:nil];
+    
+    self.networkManager = [TokopediaNetworkManager new];
+    self.networkManager.isUsingHmac = YES;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -186,7 +174,7 @@
         textField.placeholder = @"Nomor resi";
         textField.tag = 1;
         textField.font = [UIFont fontWithName:@"GothamBook" size:14];
-        textField.text = strNoResi;
+        textField.text = _receiptNumber;
         [cell addSubview:textField];
         
         
@@ -389,50 +377,16 @@
 
 #pragma mark - Resktit methods for actions
 
-- (void)configureActionReskit
-{
-    _actionObjectManager =  [RKObjectManager sharedClient];
-    
-    NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-    [_actionObjectManager.HTTPClient setDefaultHeader:@"X-APP-VERSION" value:appVersion];
-
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ActionOrder class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{
-                                                        kTKPD_APISTATUSKEY              : kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY   : kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        kTKPD_APISTATUSMESSAGEKEY       : kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY        : kTKPD_APIERRORMESSAGEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ActionOrderResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{kTKPD_APIISSUCCESSKEY : kTKPD_APIISSUCCESSKEY}];
-    
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                  toKeyPath:kTKPD_APIRESULTKEY
-                                                                                withMapping:resultMapping]];
-    
-    RKResponseDescriptor *actionResponseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                                        method:RKRequestMethodPOST
-                                                                                                   pathPattern:API_NEW_ORDER_ACTION_PATH
-                                                                                                       keyPath:@""
-                                                                                                   statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_actionObjectManager addResponseDescriptor:actionResponseDescriptorStatus];
-}
-
-- (void)request
-{
-    [self configureActionReskit];
-    
+- (void)request {
     UserAuthentificationManager *auth = [UserAuthentificationManager new];
     NSString *userId = auth.getUserId;
-    
+
     UITableViewCell *cell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
     UITextField *textField = (UITextField *)[cell viewWithTag:1];
-    
-    NSDictionary *param;
+
+    NSDictionary *parameters;
     if (_changeCourier) {
-        param = @{
+        parameters = @{
                   API_ACTION_KEY              : API_PROCEED_SHIPPING_KEY,
                   API_ACTION_TYPE_KEY         : @"confirm",
                   API_USER_ID_KEY             : userId,
@@ -443,7 +397,7 @@
                   API_SHIPMENT_REF_KEY        : textField.text ?: @"",
                   };
     } else {
-        param = @{
+        parameters = @{
                   API_ACTION_KEY              : API_PROCEED_SHIPPING_KEY,
                   API_ACTION_TYPE_KEY         : @"confirm",
                   API_USER_ID_KEY             : userId,
@@ -452,36 +406,21 @@
                   };
     }
     
-    _actionRequest = [_actionObjectManager appropriateObjectRequestOperationWithObject:self
-                                                                                method:RKRequestMethodPOST
-                                                                                  path:API_NEW_ORDER_ACTION_PATH
-                                                                            parameters:[param encrypt]];
-    [_operationQueue addOperation:_actionRequest];
-    
-    NSLog(@"\n\n\nRequest Operation : %@\n\n\n", _actionRequest);
-    
-    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
-                                                      target:self
-                                                    selector:@selector(timeout:)
-                                                    userInfo:nil
-                                                     repeats:NO];
-    
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-    
-    [_actionRequest setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self actionRequestSuccess:mappingResult withOperation:operation];
-        [timer invalidate];
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [self actionRequestFailure:error orderId:self.order.order_detail.detail_order_id];
-        [timer invalidate];
-    }];
+    [self.networkManager requestWithBaseUrl:[NSString v4Url]
+                                       path:@"/v4/action/myshop-order/proceed_shipping.pl"
+                                     method:RKRequestMethodPOST
+                                  parameter:parameters
+                                    mapping:[ActionOrder mapping]
+                                  onSuccess:^(RKMappingResult *mappingResult,
+                                              RKObjectRequestOperation *operation) {
+                                      [self actionRequestSuccess:mappingResult];
+                                  } onFailure:^(NSError *error) {
+                                      [self actionRequestFailure:error];
+                                  }];
 }
 
-- (void)actionRequestSuccess:(id)object withOperation:(RKObjectRequestOperation *)operation
-{
-    NSDictionary *result = ((RKMappingResult *)object).dictionary;
-    
-    ActionOrder *actionOrder = [result objectForKey:@""];
+- (void)actionRequestSuccess:(RKMappingResult *)mappingResult {
+    ActionOrder *actionOrder = [mappingResult.dictionary objectForKey:@""];
     BOOL status = [actionOrder.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status && [actionOrder.result.is_success boolValue]) {
@@ -508,28 +447,21 @@
     }
 }
 
-- (void)actionRequestFailure:(id)object orderId:(NSString *)orderId
-{
-    NSLog(@"\n\nRequest error : %@\n\n", object);
-    NSString *error = [object localizedDescription];
-    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[error]
+- (void)actionRequestFailure:(NSError *)error {
+    NSLog(@"\n\nRequest error : %@\n\n", error);
+    NSString *errorString = [error localizedDescription];
+    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[errorString]
                                                                    delegate:self];
     [alert show];
 }
 
-- (void)timeout:(NSTimer *)timer
-{
-}
-
-
 #pragma mark - BarCode Delegate
-- (void)didFinishScan:(NSString *)strResult
-{
-    if(strResult != nil) {
-        strNoResi = strResult;
+
+- (void)didFinishScan:(NSString *)receiptNumber {
+    if(receiptNumber != nil) {
+        self.receiptNumber = receiptNumber;
         [_tableView reloadData];
     }
-    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

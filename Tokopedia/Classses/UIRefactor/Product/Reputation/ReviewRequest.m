@@ -638,7 +638,7 @@
                                                            onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                                                NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
                                                                ResponseComment *obj = [result objectForKey:@""];
-                                                               successCallback(obj.result);
+                                                               successCallback(obj.data);
                                                            } onFailure:^(NSError *errorResult) {
                                                                errorCallback(errorResult);
                                                            }];

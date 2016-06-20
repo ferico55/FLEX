@@ -85,11 +85,11 @@
         if (button.tag == 1) {
             [self.navigationController dismissViewControllerAnimated:YES completion:nil];
         } else if (button.tag == 2) {
-            if (_invoice.length > 4) {
+            if (_invoice.length > 2) {
                 [self.delegate filterShipmentStatusInvoice:_invoice];
                 [self.navigationController dismissViewControllerAnimated:YES completion:nil];
             } else {
-                NSString *message = @"Search Keyword terlalu pendek, minimum 5 karakter";
+                NSString *message = @"Search Keyword terlalu pendek, minimum 3 karakter";
                 StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[message] delegate:self];
                 [alert show];
             }

@@ -43,4 +43,13 @@
     return mapping;
 }
 
+- (NSString *)seller_status {
+    if ([self.shop_id isEqualToString:@""] ||
+        [self.shop_id isEqualToString:@"0"]) {
+        return @"0";
+    } else {
+        return @"1";
+    }
+}
+
 @end

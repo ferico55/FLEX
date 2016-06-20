@@ -59,8 +59,7 @@
     return html;
 }
 
-+(NSString *)getLinkFromHTMLString:(NSString*)html
-{
++(NSString *)getLinkFromHTMLString:(NSString*)html {
     NSScanner *myScanner;
     NSString *text = nil;
     myScanner = [NSScanner scannerWithString:html];
@@ -162,6 +161,19 @@
     price = [price stringByReplacingOccurrencesOfString:@"," withString:@""];
     
     return price;
+}
+
++ (NSString *)stringReplaceAhrefWithUrl:(NSString *)string{
+    NSString *leadingTrailingWhiteSpacesPattern = @"<a[^>]+href=\".*?\"[^>]*>(.*?)</a>";
+    
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:leadingTrailingWhiteSpacesPattern options:NSRegularExpressionCaseInsensitive|NSRegularExpressionUseUnicodeWordBoundaries error:NULL];
+    
+    NSRange stringRange = NSMakeRange(0, string.length);
+    NSString *trimmedString = [regex stringByReplacingMatchesInString:string options:NSMatchingReportProgress range:stringRange withTemplate:@"$1"];
+    
+    NSString* replacedString = [trimmedString stringByReplacingOccurrencesOfString:@"&bull;" withString:@"*"];
+    
+    return replacedString;
 }
 
 

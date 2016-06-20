@@ -18,7 +18,7 @@
 #import "OrderDestination.h"
 #import "OrderSellerShop.h"
 
-@interface OrderTransaction : NSObject
+@interface OrderTransaction : NSObject <TKPObjectMapping>
 
 @property (strong, nonatomic) NSString *order_JOB_status;
 @property (strong, nonatomic) OrderCustomer *order_customer;
