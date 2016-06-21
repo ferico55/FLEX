@@ -191,6 +191,10 @@ static NSString const *rows = @"12";
     _promo = [NSMutableArray new];
     _promoScrollPosition = [NSMutableArray new];
 
+    CGRect newFrame = _iPadView.frame;
+    newFrame.size.width = [UIScreen mainScreen].bounds.size.width;
+    _iPadView.frame = newFrame;
+    
     if(IS_IPAD) {
         [_header removeFromSuperview];
     } else {
@@ -206,9 +210,7 @@ static NSString const *rows = @"12";
         [_descriptionview setFrame:CGRectMake(350, _imageview.frame.origin.y, _imageview.frame.size.width, _imageview.frame.size.height)];
         [_pagecontrol bringSubviewToFront:_descriptionview];
         
-        CGRect newFrame = _iPadView.frame;
-        newFrame.size.width = [UIScreen mainScreen].bounds.size.width;
-        _iPadView.frame = newFrame;
+        
     }
     
     NSDictionary *data = [[TKPDSecureStorage standardKeyChains] keychainDictionary];
