@@ -293,7 +293,12 @@
 }
 
 - (void)scrollToCategory:(CategoryDetail *)category {
-    NSInteger index = [self.categories indexOfObject:category];
+    NSInteger index = 0;
+    for (CategoryDetail *category in self.categories) {
+        if ([self.selectedCategory isEqual:category]) {
+            index = [self.categories indexOfObject:category];
+        }
+    }
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
     [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
 }

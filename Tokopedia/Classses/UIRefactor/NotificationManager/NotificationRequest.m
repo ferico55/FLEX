@@ -141,8 +141,11 @@
                                      method:RKRequestMethodGET
                                   parameter:@{}
                                     mapping:[GeneralAction mapping]
-                                  onSuccess:nil
-                                  onFailure:nil];
+                                  onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                      
+                                  } onFailure:^(NSError *errorResult) {
+                                      
+                                  }];
 }
 
 @end

@@ -108,4 +108,11 @@ import UIKit
         return mapping
     }
 
+    override func isEqual(object: AnyObject?) -> Bool {
+        if (object?.categoryId == categoryId) {
+            return true
+        } else {
+            return false
+        }
+    }
 }
