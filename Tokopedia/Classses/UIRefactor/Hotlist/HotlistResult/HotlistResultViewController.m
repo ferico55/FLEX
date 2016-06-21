@@ -114,7 +114,7 @@ static NSString const *rows = @"12";
     CategoryDetail *_selectedCategory;
     TokopediaNetworkManager *_requestHotlistManager;
     
-    FilterResponse *_filterResponse;
+    FilterData *_filterResponse;
     NSArray<ListOption*> *_selectedFilters;
     NSDictionary *_selectedFilterParam;
     ListOption *_selectedSort;
@@ -281,7 +281,7 @@ static NSString const *rows = @"12";
     sort.name = @"Paling Sesuai";
     sort.value = @"23";
     sort.key = @"ob";
-    sort.type = @"checkmark";
+    sort.input_type = @"checkbox";
     return sort;
 }
 
@@ -347,13 +347,17 @@ static NSString const *rows = @"12";
     }
 }
 
+-(NSString*)hotlistSearchType{
+    return @"hotlist";
+}
+
 -(void)pushDynamicSort{
-    FiltersController *controller = [[FiltersController alloc]initWithSortResponse:_filterResponse?:[FilterResponse new] selectedSort:_selectedSort presentedVC:self onCompletion:^(ListOption * sort, NSDictionary*paramSort) {
+    FiltersController *controller = [[FiltersController alloc]initWithSource:[self hotlistSearchType] sortResponse:_filterResponse?:[FilterData new] selectedSort:_selectedSort presentedVC:self onCompletion:^(ListOption * sort, NSDictionary*paramSort) {
         _selectedSortParam = paramSort;
         _selectedSort = sort;
         _activeSortImageView.hidden = (_selectedSort == nil);
         [self refreshView:nil];
-    } response:^(FilterResponse * filterResponse) {
+    } response:^(FilterData * filterResponse) {
         _filterResponse = filterResponse;
     }];
 }
@@ -376,7 +380,7 @@ static NSString const *rows = @"12";
 }
 
 -(void)pushDynamicFilter{
-    FiltersController *controller = [[FiltersController alloc]initWithFilterResponse:_filterResponse?:[FilterResponse new] categories:[_initialCategories copy] selectedCategories:_selectedCategories selectedFilters:_selectedFilters presentedVC:self onCompletion:^(NSArray<CategoryDetail *> * selectedCategories , NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
+    FiltersController *controller = [[FiltersController alloc]initWithSource:[self hotlistSearchType] filterResponse:_filterResponse?:[FilterData new] categories:[_initialCategories copy] selectedCategories:_selectedCategories selectedFilters:_selectedFilters presentedVC:self onCompletion:^(NSArray<CategoryDetail *> * selectedCategories , NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
         
         _selectedCategories = selectedCategories;
         _selectedFilters = selectedFilters;
@@ -386,7 +390,7 @@ static NSString const *rows = @"12";
         
         [self refreshView:nil];
         
-    } response:^(FilterResponse * filterResponse){
+    } response:^(FilterData * filterResponse){
         _filterResponse = filterResponse;
     }];
 }

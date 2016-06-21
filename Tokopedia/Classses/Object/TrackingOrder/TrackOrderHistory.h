@@ -14,4 +14,6 @@
 @property (strong, nonatomic) NSString *status;
 @property (strong, nonatomic) NSString *city;
 
++ (RKObjectMapping *)mapping;
+
 @end

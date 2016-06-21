@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "TrackOrderDetail.h"
+#import "TrackOrderHistory.h"
 
 @interface TrackOrder : NSObject <TKPObjectMapping>
 

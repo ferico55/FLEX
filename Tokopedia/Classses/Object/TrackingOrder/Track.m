@@ -10,6 +10,7 @@
 
 @implementation Track
 
+
 + (RKObjectMapping *)mapping {
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[self class]];
     [mapping addAttributeMappingsFromArray:@[@"status", @"server_process_time"]];

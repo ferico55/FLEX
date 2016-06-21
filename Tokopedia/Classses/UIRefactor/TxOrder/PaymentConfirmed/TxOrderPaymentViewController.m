@@ -197,10 +197,14 @@
 
 #pragma mark - View Action
 - (IBAction)tapUploadProof:(id)sender {
+    [_activeTextField resignFirstResponder];
+    [_activeTextView resignFirstResponder];
     _photoPicker = [self photoPicker];
 }
 
 - (IBAction)tapUploadProofInfo:(id)sender {
+    [_activeTextField resignFirstResponder];
+    [_activeTextView resignFirstResponder];
     AlertInfoView *alert = [AlertInfoView new];
     alert.delegate = self;
     [alert setText:@"Info"];
@@ -648,8 +652,8 @@
     
     NSString * paymentID = [[_paymentID valueForKey:@"description"] componentsJoinedByString:@"~"];
     MethodList *method = [_dataInput objectForKey:DATA_SELECTED_PAYMENT_METHOD_KEY];
-    SystemBankAcount *systemBank = [_dataInput objectForKey:DATA_SELECTED_SYSTEM_BANK_KEY];
-    BankAccountFormList *bank = [_dataInput objectForKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
+    SystemBankAcount *systemBank = [self getSelectedSystemBank];
+    BankAccountFormList *bank = [self getSelectedAccountBank];
     NSDate *paymentDate = [_dataInput objectForKey:DATA_PAYMENT_DATE_KEY]?:[NSDate date];
     NSString *totalPayment = [_totalPaymentTextField.text stringByReplacingOccurrencesOfString:@"." withString:@""];
     NSString *bankAccountID = _isNewRekening?@"0":bank.bank_account_id?:@"";
@@ -724,7 +728,7 @@
         [self.navigationController popViewControllerAnimated:YES];
     }
     else{
-        NSInteger paymentAmount = [[_dataInput objectForKey:DATA_TOTAL_PAYMENT_KEY] integerValue];
+        NSInteger paymentAmount = [self getPaymentOrder];
         MethodList *method = [_dataInput objectForKey:DATA_SELECTED_PAYMENT_METHOD_KEY];
         NSMutableArray *viewControllers = [NSMutableArray new];
         [viewControllers addObjectsFromArray:self.navigationController.viewControllers];
@@ -738,8 +742,7 @@
         [formatter setUsesGroupingSeparator:YES];
         [formatter setSecondaryGroupingSize:3];
         NSString *price = (paymentAmount>0)?[formatter stringFromNumber:@(paymentAmount)]:@"0";
-        TxOrderConfirmPaymentFormForm *form = [_dataInput objectForKey:DATA_DETAIL_ORDER_CONFIRMATION_KEY];
-        vc.totalPaymentValue = [self isPaymentTypeSaldoTokopedia]?form.order.order_left_amount_idr:[NSString stringWithFormat:@"Rp %@,-",price];
+        vc.totalPaymentValue = [NSString stringWithFormat:@"Rp %@,-",price];
         vc.methodName = method.method_name;
         [viewControllers replaceObjectAtIndex:viewControllers.count-1 withObject:vc];
         self.navigationController.viewControllers = viewControllers;
@@ -896,79 +899,122 @@
     [self.navigationController pushViewController:controller animated:YES];
 }
 
+-(SystemBankAcount*)getSelectedSystemBank{
+    return [_dataInput objectForKey:DATA_SELECTED_SYSTEM_BANK_KEY]?:[SystemBankAcount new];
+}
+
+-(BankAccountFormList *)getSelectedAccountBank{
+    return [_dataInput objectForKey:DATA_SELECTED_BANK_ACCOUNT_KEY]?:[BankAccountFormList new];
+}
+
+-(NSString*)getPassword{
+    return [_dataInput objectForKey:DATA_PASSWORD_KEY]?:@"";
+}
+
+-(NSString*)getDepositorName{
+    return [_dataInput objectForKey:DATA_DEPOSITOR_KEY]?:@"";
+}
+
+-(BOOL)isValidPaymentType{
+    if ([self isPaymentTypeDefault]) {
+        return NO;
+    }
+    return YES;
+}
+
+-(NSString *)errorNillBankAccountName{
+    return @"Nama Pemilik Akun Bank harus diisi";
+}
+
+-(NSString *)errorNillBankAcountNumber{
+     return @"Nomor Rekening harus diisi";
+}
+
+-(NSString *)errorNillBankName{
+    return @"Nama Bank harus diisi";
+}
+
+-(NSString*)errorNillSystemBank{
+    return @"Bank Tujuan belum dipilih";
+}
+
+-(NSString*)errorNillAccountBank{
+    return @"Akun Bank belum dipilih";
+}
+
+-(NSString*)errorNillPasswordTokopedia{
+    return @"Kata sandi harus diisi";
+}
+
+-(NSString*)errorNilDepositorName{
+    return @"Nama Penyetor harus diisi";
+}
+
+-(NSString*)errorInvalidPaymentAmount{
+    NSString *error = [NSString stringWithFormat:@"Jumlah pembayaran yang diinput tidak mencukupi. Total Pembayaran sebesar Rp %zd,-",[self getPaymentOrderLeft]];
+    return error;
+}
+
 -(BOOL)isValidInput
 {
     BOOL isValid = YES;
     
     NSMutableArray *errorMessage = [NSMutableArray new];
     
-    SystemBankAcount *systemBank = [_dataInput objectForKey:DATA_SELECTED_SYSTEM_BANK_KEY];
-    BankAccountFormList *bank = [_dataInput objectForKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
-    NSString *password = [_dataInput objectForKey:DATA_PASSWORD_KEY];
-    NSString *depositor = [_dataInput objectForKey:DATA_DEPOSITOR_KEY];
-    
-    if ([self isPaymentTypeDefault]) {
+    if (![self isValidPaymentType]) {
         StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Pilih metode pembayaran"] delegate:self];
         [alert show];
         return NO;
     }
     
     if ([self isPaymentTypeBank] && _isNewRekening) {
-        if (!bank.bank_account_name) {
-            [errorMessage addObject:ERRORMESSAGE_NILL_BANK_ACCOUNT_NAME];
+        if (![self getSelectedAccountBank].bank_account_name) {
+            [errorMessage addObject:[self errorNillBankAccountName]];
             isValid = NO;
         }
-        if (!bank.bank_account_number) {
-            [errorMessage addObject:ERRORMESSAGE_NILL_BANK_ACCOUNT_NUMBER];
+        if (![self getSelectedAccountBank].bank_account_number) {
+            [errorMessage addObject:[self errorNillBankAcountNumber]];
             isValid = NO;
         }
-        if (!bank.bank_name) {
-            [errorMessage addObject:ERRORMESSAGE_NILL_BANK_NAME];
+        if (![self getSelectedAccountBank].bank_name) {
+            [errorMessage addObject:[self errorNillBankName]];
             isValid = NO;
         }
-        if (!systemBank.sysbank_id) {
-            [errorMessage addObject:ERRORMESSAGE_NILL_SYSTEM_BANK];
+        if (![self getSelectedSystemBank].sysbank_id) {
+            [errorMessage addObject:[self errorNillSystemBank]];
             isValid = NO;
         }
     }
     else if ([self isPaymentTypeBank]) {
-        if (!systemBank.sysbank_id || [systemBank.sysbank_id isEqualToString:@""]) {
-            [errorMessage addObject:ERRORMESSAGE_NILL_SYSTEM_BANK];
+        if (![self getSelectedSystemBank].sysbank_id || [[self getSelectedSystemBank].sysbank_id isEqualToString:@""]) {
+            [errorMessage addObject:[self errorNillSystemBank]];
             isValid = NO;
         }
-        if (!bank.bank_id) {
-            [errorMessage addObject:ERRORMESSAGE_NILL_BANK_ACCOUNT];
+        if (![self getSelectedAccountBank].bank_id) {
+            [errorMessage addObject:[self errorNillAccountBank]];
             isValid = NO;
         }
     }
     else if ([self isPaymentTypeSaldoTokopedia])
     {
-        if (!password || [password isEqualToString:@""]) {
-            [errorMessage addObject:ERRORMESSAGE_NILL_PASSWORD_TOKOPEDIA];
+        if (![self getPassword] || [[self getPassword] isEqualToString:@""]) {
+            [errorMessage addObject:[self errorNillPasswordTokopedia]];
             isValid = NO;
         }
     }
     else if ([self isPaymentTypeTransfer]) {
-        if (!depositor || [depositor isEqualToString:@""]) {
-            [errorMessage addObject:ERRORMESSAGE_NILL_DEPOSITOR];
+        if (![self getDepositorName] || [[self getDepositorName] isEqualToString:@""]) {
+            [errorMessage addObject:[self errorNilDepositorName]];
             isValid = NO;
         }
-        if (!systemBank.sysbank_id) {
-            [errorMessage addObject:ERRORMESSAGE_NILL_SYSTEM_BANK];
+        if (![self getSelectedSystemBank].sysbank_id) {
+            [errorMessage addObject:[self errorNillSystemBank]];
             isValid = NO;
         }
     }
-    NSString *paymentAmount = [_dataInput objectForKey:DATA_TOTAL_PAYMENT_KEY]?:@"";
     
-    TxOrderConfirmPaymentFormForm *form = [_dataInput objectForKey:DATA_DETAIL_ORDER_CONFIRMATION_KEY];
-    TxOrderPaymentEditForm *formIsConfirmed = [_dataInput objectForKey:DATA_DETAIL_ORDER_CONFIRMED_KEY];
-    
-    NSInteger paymentOrderLeft = (_isConfirmed)?
-    ([formIsConfirmed.payment.order_left_amount integerValue] - [formIsConfirmed.payment.order_confirmation_code integerValue]):
-    ([form.order.order_left_amount integerValue] - [form.order.order_confirmation_code integerValue]);
-    
-    if (![self isPaymentTypeSaldoTokopedia] && [paymentAmount integerValue]<paymentOrderLeft) {
-        [errorMessage addObject:[NSString stringWithFormat:ERRORMESSAGE_INVALID_PAYMENT_AMOUNT,paymentOrderLeft]];
+    if (![self isPaymentTypeSaldoTokopedia] && [[self getPaymentAmount] integerValue]<[self getPaymentOrderLeft]) {
+        [errorMessage addObject:[self errorInvalidPaymentAmount]];
         isValid = NO;
     }
 
@@ -978,6 +1024,34 @@
     }
     
     return isValid;
+}
+
+-(NSInteger)getPaymentOrderLeft{
+    NSInteger paymentOrderLeft = (_isConfirmed)?
+    ([[self getPaymentEditForm].payment.order_left_amount integerValue] - [[self getPaymentEditForm].payment.order_confirmation_code integerValue]):
+    ([[self getPaymentConfirmationForm].order.order_left_amount integerValue] - [[self getPaymentConfirmationForm].order.order_confirmation_code integerValue]);
+    return paymentOrderLeft;
+}
+
+-(NSInteger)getPaymentOrder{
+    NSInteger paymentOrderLeft = (_isConfirmed)?
+    [[self getPaymentEditForm].payment.order_left_amount integerValue]:
+    [[self getPaymentAmount] integerValue];
+    return paymentOrderLeft;
+}
+
+-(TxOrderConfirmPaymentFormForm*)getPaymentConfirmationForm{
+    return [_dataInput objectForKey:DATA_DETAIL_ORDER_CONFIRMATION_KEY]?:[TxOrderConfirmPaymentFormForm new];
+}
+
+-(TxOrderPaymentEditForm*)getPaymentEditForm{
+    return [_dataInput objectForKey:DATA_DETAIL_ORDER_CONFIRMED_KEY]?:[TxOrderPaymentEditForm new];
+}
+
+-(NSString*)getPaymentAmount{
+    NSString *amount = _totalPaymentTextField.text?:@"";
+    amount = [amount stringByReplacingOccurrencesOfString:@"." withString:@""];
+    return  amount;
 }
 
 -(void)setDefaultDataConfirmed:(TxOrderPaymentEditForm*)form
