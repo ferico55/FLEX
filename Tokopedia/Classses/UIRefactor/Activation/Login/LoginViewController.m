@@ -570,9 +570,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 
 - (void)verifyPhoneNumber:(Login *)login onPhoneNumberVerified:(void (^)())verifiedCallback {
     TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-    [secureStorage setKeychainWithValue:login.result.user_id withKey:kTKPD_USERIDKEY];
 
-    //    SecurityQuestionViewController *controller = [[SecurityQuestionViewController alloc] initWithNibName:@"SecurityQuestionViewController" bundle:nil];
     SecurityQuestionViewController* controller = [SecurityQuestionViewController new];
     controller.questionType1 = login.result.security.user_check_security_1;
     controller.questionType2 = login.result.security.user_check_security_2;
@@ -724,9 +722,6 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                                                                                 successCallback:successCallback
                                                                                 failureCallback:failureCallback];
                                              } else {
-                                                 TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
-                                                 [secureStorage setKeychainWithValue:@(NO) withKey:kTKPD_ISLOGINKEY];
-
                                                  [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];
 
                                                  CreatePasswordViewController *controller = [CreatePasswordViewController new];
