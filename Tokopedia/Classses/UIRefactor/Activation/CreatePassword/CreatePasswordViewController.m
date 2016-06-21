@@ -381,6 +381,8 @@
                                             birthdayMonth:[self getBirthdayMonth]
                                              birthdayYear:[self getBirthdayYear]
                                               registerTOS:@"1"
+                                               oAuthToken:self.oAuthToken
+                                              accountInfo:self.accountInfo
                                                 onSuccess:^(CreatePassword *result) {
                                                     BOOL status = [result.status isEqualToString:kTKPDREQUEST_OKSTATUS];
                                                     if (status && [result.result.is_success boolValue]) {

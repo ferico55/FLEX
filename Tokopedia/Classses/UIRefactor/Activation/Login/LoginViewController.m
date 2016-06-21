@@ -708,7 +708,10 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                                              } else {
                                                  [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];
 
-                                                 [self createPasswordWithUserProfile:userProfile onPasswordCreated:^{
+                                                 [self createPasswordWithUserProfile:userProfile
+                                                                          oAuthToken:oAuthToken
+                                                                         accountInfo:accountInfo
+                                                                   onPasswordCreated:^{
                                                      [weakSelf authenticateToMarketplaceWithAccountInfo:accountInfo
                                                                                              oAuthToken:oAuthToken
                                                                                         successCallback:successCallback
@@ -722,11 +725,16 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                      onFailure:failureCallback];
 }
 
-- (void)createPasswordWithUserProfile:(CreatePasswordUserProfile *)userProfile onPasswordCreated:(void (^)())passwordCreated {
+- (void)createPasswordWithUserProfile:(CreatePasswordUserProfile *)userProfile
+                           oAuthToken:(OAuthToken *)oAuthToken
+                          accountInfo:(AccountInfo *)accountInfo
+                    onPasswordCreated:(void (^)())passwordCreated {
     CreatePasswordViewController *controller = [CreatePasswordViewController new];
 
     controller.userProfile = userProfile;
     controller.onPasswordCreated = passwordCreated;
+    controller.oAuthToken = oAuthToken;
+    controller.accountInfo = accountInfo;
 
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
     navigationController.navigationBar.translucent = NO;

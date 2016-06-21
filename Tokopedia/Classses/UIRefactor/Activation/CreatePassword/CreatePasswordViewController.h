@@ -13,6 +13,8 @@
 #import <GoogleSignIn/GoogleSignIn.h>
 
 @class CreatePasswordUserProfile;
+@class OAuthToken;
+@class AccountInfo;
 
 @interface CreatePasswordViewController : UIViewController
 
@@ -22,4 +24,6 @@
 
 @property (copy) void(^onPasswordCreated)();
 
+@property(nonatomic, strong) OAuthToken *oAuthToken;
+@property(nonatomic, strong) AccountInfo *accountInfo;
 @end
