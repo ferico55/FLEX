@@ -105,10 +105,9 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     _networkManager = [TokopediaNetworkManager new];
 
     _marketplaceNetworkManager = [TokopediaNetworkManager new];
-    _marketplaceNetworkManager.isUsingHmac = YES;
-    
+    _marketplaceNetworkManager.isParameterNotEncrypted = YES;
+
     _getUserInfoNetworkManager = [TokopediaNetworkManager new];
-    
     _thirdPartySignInNetworkManager = [TokopediaNetworkManager new];
 
     UIImage *iconToped = [UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE];
@@ -377,7 +376,8 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
                              };
     
     NSDictionary *parameter = @{
-                                    @"uuid": securityQuestionUUID
+                                    @"uuid": securityQuestionUUID,
+                                    @"user_id": accountInfo.userId
                                 };
 
     [_marketplaceNetworkManager requestWithBaseUrl:[NSString v4Url]
