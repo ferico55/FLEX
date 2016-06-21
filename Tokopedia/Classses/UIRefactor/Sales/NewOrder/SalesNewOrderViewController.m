@@ -485,9 +485,6 @@ RejectReasonDelegate
     }
 }
 
--(void)didChooseRejectReason:(RejectReason *)reason withExplanation:(NSString *)explanation{
-    
-}
 
 - (void)showManageProductQuantityPage {
     ProductQuantityViewController *controller = [[ProductQuantityViewController alloc] init];
@@ -499,6 +496,10 @@ RejectReasonDelegate
     navigationController.navigationBar.translucent = NO;
 
     [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+}
+
+-(void)didChooseRejectReason:(RejectReason *)reason withExplanation:(NSString *)explanation{
+    
 }
 
 - (void)showChooseAcceptedProductPage {
@@ -579,16 +580,6 @@ RejectReasonDelegate
                    reason:(NSString *)reason
                  products:(NSArray *)products
           productQuantity:(NSArray *)productQuantity {
-}
-
-- (void)requestActionType:(NSString *)type
-                   reason:(RejectReason *)reason
-              explanation:(NSString*)explanation
-                 products:(NSArray *)products
-          productQuantity:(NSArray *)productQuantity {
-    
-    UserAuthentificationManager *auth = [UserAuthentificationManager new];
-    NSString *userId = auth.getUserId;
 
     NSString *productIds = @"";
     for (OrderProduct *product in products) {
@@ -612,16 +603,12 @@ RejectReasonDelegate
         @"list_product_id": productIds?:@"",
         @"order_id": orderId,
         @"qty_accept": productQuantities?:@"",
-        @"reason": explanation?:@"",
-        @"user_id":userId,
-        @"closed_note":@"",
-        @"closed_end":@"",
-        @"reason_code":reason.reason_code
+        @"reason": reason?:@"",
     };
     
     [self.actionNetworkManager requestWithBaseUrl:[NSString v4Url]
                                              path:@"/v4/action/myshop-order/proceed_order.pl"
-                                           method:RKRequestMethodGET
+                                           method:RKRequestMethodPOST
                                         parameter:parameters
                                           mapping:[ActionOrder mapping]
                                         onSuccess:^(RKMappingResult *mappingResult,

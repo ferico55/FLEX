@@ -210,7 +210,7 @@ typedef enum
     editedAddress.longitude = [[NSNumber numberWithDouble:longitude] stringValue];;
     
     [RequestEditAddress fetchEditAddress:_selectedAddress
-                              isFromCart:@"0"
+                              isFromCart:@"1"
                                  success:^(ProfileSettingsResult *data) {
                                      
                                      TKPAddressStreet *tkpAddressStreet = [TKPAddressStreet new];
@@ -832,7 +832,7 @@ typedef enum
     [self adjustViewIsLoading:YES];
     
     [RequestAddAddress fetchAddAddress:address
-                            isFromCart:@"0"
+                            isFromCart:@"1"
                                success:^(ProfileSettingsResult *data, AddressFormList *address) {
                                    
                                    [self adjustViewIsLoading:NO];
@@ -858,8 +858,8 @@ typedef enum
         textField.text = product.product_min_order;
     }
     
-    [self doCalculate];
-    [_tableView reloadData];
+    [self doCalculate];    
+    [self requestRate];
 }
 
 - (BOOL)textField:(UITextField*)textField shouldChangeCharactersInRange:(NSRange)range

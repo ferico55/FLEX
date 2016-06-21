@@ -10,6 +10,7 @@
 #import "ShipmentShopData.h"
 #import "ShipmentCourierData.h"
 #import "ShipmentProvinceData.h"
+#import "Payment.h"
 
 @interface ShipmentData : NSObject
 
@@ -17,6 +18,9 @@
 @property (strong, nonatomic) NSArray *courier;
 @property (strong, nonatomic) NSArray *provinces;
 @property (strong, nonatomic) NSArray *provincesName;
+
+@property (strong, nonatomic) NSDictionary *loc;
+@property (strong, nonatomic) NSArray *paymentOptions;
 
 + (RKObjectMapping *)mapping;
 

@@ -26,11 +26,6 @@
         shouldBeginEditing = NO;
     } else {
         shouldBeginEditing = YES;
-        if (text.length == 0) {
-            textView.placeholderLabel.text = @"Tulis alamat pickup dengan lengkap";
-        } else {
-            textView.placeholderLabel.text = @"";
-        }
     }
     return shouldBeginEditing;
 }

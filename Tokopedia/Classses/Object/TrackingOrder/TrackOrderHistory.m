@@ -10,4 +10,15 @@
 
 @implementation TrackOrderHistory
 
+- (NSString *)status {
+    return [_status kv_decodeHTMLCharacterEntities];
+}
+
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[self class]];
+    [mapping addAttributeMappingsFromArray:@[@"date", @"status", @"city"]];
+
+    return mapping;
+}
+
 @end

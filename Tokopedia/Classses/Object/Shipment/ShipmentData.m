@@ -12,6 +12,7 @@
 
 + (RKObjectMapping *)mapping {
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addAttributeMappingsFromArray:@[@"loc"]];
     
     RKRelationshipMapping *dataRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"shop_shipping" toKeyPath:@"shop" withMapping:[ShipmentShopData mapping]];
     [mapping addPropertyMapping:dataRelationship];
@@ -22,6 +23,9 @@
     RKRelationshipMapping *provinceRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"provinces_cities_districts" toKeyPath:@"provinces" withMapping:[ShipmentProvinceData mapping]];
     [mapping addPropertyMapping:provinceRelationship];
 
+    RKRelationshipMapping *paymentOptionsMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"payment_options" toKeyPath:@"paymentOptions" withMapping:[Payment mapping]];
+    [mapping addPropertyMapping:paymentOptionsMapping];
+    
     return mapping;
 }
 

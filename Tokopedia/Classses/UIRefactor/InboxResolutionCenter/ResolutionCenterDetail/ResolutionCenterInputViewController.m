@@ -129,6 +129,7 @@
                                                  name:UIKeyboardWillHideNotification object:nil];
     
     [self adjustFooterButton];
+    [self adjustActionLabel];
     
     RequestGenerateHost *requestHost = [RequestGenerateHost new];
     [requestHost configureRestkitGenerateHost];
@@ -148,6 +149,28 @@
     
     [_lastSolutionLabel setCustomAttributedText:_lastSolution];
 }
+
+-(void)adjustActionLabel
+{
+    NSString *actionByString;
+    UIColor *actionByBgColor;
+    
+    if(_resolution.resolution_by.by_customer == 1)
+    {
+        actionByString = @"Pembeli";
+        actionByBgColor = COLOR_BUYER;
+    }
+    else
+    {
+        actionByString = @"Penjual";
+        actionByBgColor = COLOR_SELLER;
+    }
+    
+    _buyerSellerLabel.backgroundColor = actionByBgColor;
+    _buyerSellerLabel.text = actionByString;
+}
+
+
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];

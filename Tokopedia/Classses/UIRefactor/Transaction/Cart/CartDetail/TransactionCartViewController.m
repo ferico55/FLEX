@@ -968,12 +968,16 @@
         {
             NSInteger grandTotal = ([self isUseGrandTotalWithoutLP])?[[_dataInput objectForKey:DATA_CART_GRAND_TOTAL_WO_LP] integerValue]:[[_dataInput objectForKey:DATA_CART_GRAND_TOTAL] integerValue];
             NSNumber *deposit = [_dataInput objectForKey:DATA_USED_SALDO_KEY];
-            if ([deposit integerValue] >= grandTotal)
+            if ([deposit integerValue] == 0) {
+                isValid = NO;
+                [messageError addObject:@"Saldo Tokopedia harus diisi."];
+            }
+            else if ([deposit integerValue] >= grandTotal)
             {
                 isValid = NO;
                 [messageError addObject:@"Jumlah Saldo Tokopedia yang Anda masukkan terlalu banyak. Gunakan Pembayaran Saldo Tokopedia apabila mencukupi."];
             }
-            if ([deposit integerValue]> [self depositAmountUser]) {
+            else if ([deposit integerValue]> [self depositAmountUser]) {
                 isValid = NO;
                 [messageError addObject:@"Saldo Tokopedia Anda tidak mencukupi."];
             }
@@ -2298,7 +2302,7 @@
 
 -(void)doRequestVoucher{
     [self isLoading:YES];
-    NSString *voucherCode = [_dataInput objectForKey:API_VOUCHER_CODE_KEY];
+    NSString *voucherCode = [_dataInput objectForKey:API_VOUCHER_CODE_KEY]?:@"";
     [RequestCart fetchVoucherCode:voucherCode success:^(TransactionVoucherData *data) {
         
         _voucherData = data;
@@ -2363,7 +2367,8 @@
                                 NSDictionary *userInfo = @{DATA_CART_SUMMARY_KEY:_cartSummary?:[TransactionSummaryDetail new],
                                                            DATA_TYPE_KEY:@(TYPE_CART_SUMMARY),
                                                            DATA_CART_GATEWAY_KEY :selectedGateway?:[TransactionCartGateway new],
-                                                           DATA_CC_KEY : data.credit_card_data?:[CCData new]
+                                                           DATA_CC_KEY : data.credit_card_data?:[CCData new],
+                                                           API_VOUCHER_CODE_KEY: [_dataInput objectForKey:API_VOUCHER_CODE_KEY]?:@""
                                                            };
                                 [_delegate didFinishRequestCheckoutData:userInfo];
                                 [self isLoading:NO];
@@ -2403,7 +2408,7 @@
                                 saldo:_saldoTokopediaAmountTextField.text
                           voucherCode:voucherCode success:^(TransactionActionResult *data) {
                               
-                              [TransactionCartWebViewViewController pushToppayFrom:self data:data gatewayID:[_cartSummary.gateway integerValue] gatewayName:data.parameter[@"gateway_code"]];
+                              [TransactionCartWebViewViewController pushToppayFrom:self data:data gatewayID:[gatewayID integerValue] gatewayName:gateway.gateway_name];
                               _popFromToppay = YES;
                               [self isLoading:NO];
 
@@ -2437,7 +2442,10 @@
                 break;
             default:
             {
-                NSDictionary *userInfo = @{DATA_CART_RESULT_KEY:data};
+                NSDictionary *userInfo = @{
+                                           DATA_CART_RESULT_KEY:data,
+                                           API_VOUCHER_CODE_KEY: [_data objectForKey:API_VOUCHER_CODE_KEY]
+                                           };
                 [self.delegate didFinishRequestBuyData:userInfo];
                 [_dataInput removeAllObjects];
             }

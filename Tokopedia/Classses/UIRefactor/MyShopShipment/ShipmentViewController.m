@@ -11,6 +11,8 @@
 #import "GeneralTableViewController.h"
 #import "NavigateViewController.h"
 #import "ShipmentWebViewController.h"
+#import "ShopPaymentViewController.h"
+
 #import "Tokopedia-Swift.h"
 
 #import "ShipmentLocationViewCell.h"
@@ -26,6 +28,7 @@
 
 #import "ShipmentResponse.h"
 #import "ShopSettings.h"
+#import "AddShop.h"
 
 #import "NSURL+Dictionary.h"
 
@@ -39,10 +42,15 @@
 @property (strong, nonatomic) NSArray *couriers;
 @property (strong, nonatomic) NSArray *provinces;
 @property (strong, nonatomic) NSArray *provincesName;
+
 @property (strong, nonatomic) ShipmentShopData *shop;
 @property (strong, nonatomic) ShipmentProvinceData *selectedProvince;
 @property (strong, nonatomic) ShipmentCityData *selectedCity;
 @property (strong, nonatomic) ShipmentDistrictData *selectedDistrict;
+
+@property (strong, nonatomic) NSArray *paymentOptions;
+@property (strong, nonatomic) NSDictionary *loc;
+
 @property (strong, nonatomic) TokopediaNetworkManager *networkManager;
 
 @property (strong, nonatomic) UIActivityIndicatorView *indicatorView;
@@ -53,16 +61,27 @@
 
 #pragma mark - View life cycle
 
-- (id)initWithStyle:(UITableViewStyle)style {
+- (id)initWithShipmentType:(ShipmentType)type {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.title = @"Pengiriman";
         self.tableView.backgroundColor = [UIColor colorWithRed:231.0/255.0 green:231.0/255.0 blue:231.0/255.0 alpha:1];
         self.tableView.tableFooterView = self.tableFooterView;
         self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
+        if ([self.tableView respondsToSelector:@selector(setSeparatorInset:)]) {
+            [self.tableView setSeparatorInset:UIEdgeInsetsZero];
+        }
+        if ([self.tableView respondsToSelector:@selector(setLayoutMargins:)]) {
+            [self.tableView setLayoutMargins:UIEdgeInsetsZero];
+        }
+        if([self.tableView respondsToSelector:@selector(setCellLayoutMarginsFollowReadableWidth:)]) {
+            self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
+        }
         self.navigationItem.backBarButtonItem = self.backButton;
         self.navigationItem.rightBarButtonItem = self.disabledSaveButton;
         self.refreshControl = self.customRefreshControl;
+        self.shipmentType = type;
+        [self fetchLogisticFormData];
     }
     return self;
 }
@@ -72,7 +91,6 @@
     [self registerNibs];
     self.networkManager = [TokopediaNetworkManager new];
     self.networkManager.isUsingHmac = YES;
-    [self fetchLogisticFormData];
 }
 
 - (void)registerNibs {
@@ -90,12 +108,14 @@
 #pragma mark - Bar button items
 
 - (UIBarButtonItem *)saveButton {
-    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@"Simpan" style:UIBarButtonItemStyleDone target:self action:@selector(saveLogisticData)];
+    NSString *title = self.shipmentType == ShipmentTypeOpenShop? @"Lanjut": @"Simpan";
+    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStyleDone target:self action:@selector(saveLogisticData)];
     return button;
 }
 
 - (UIBarButtonItem *)disabledSaveButton {
-    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@"Simpan" style:UIBarButtonItemStyleDone target:self action:@selector(saveLogisticData)];
+    NSString *title = self.shipmentType == ShipmentTypeOpenShop? @"Lanjut": @"Simpan";
+    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStyleDone target:self action:@selector(saveLogisticData)];
     button.enabled = NO;
     button.tintColor = [[UIColor whiteColor] colorWithAlphaComponent:0.5];
     return button;
@@ -125,11 +145,18 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     NSInteger numberOfSections = 0;
-    if (self.shop) {
-        numberOfSections += 2;
-    }
-    if (self.couriers.count > 0) {
-        numberOfSections += self.couriers.count;
+    if (self.shipmentType == ShipmentTypeOpenShop) {
+        if (self.provinces.count > 0) {
+            numberOfSections += 2;
+        }
+        if ([self.selectedProvince.provinceId isEqualToString:@"13"] || self.selectedDistrict) {
+            numberOfSections += self.couriers.count;
+        }
+    } else {
+        if (self.couriers.count > 0) {
+            numberOfSections += 2; // add 2 sections for locations and pickup
+            numberOfSections += self.couriers.count;
+        }
     }
     return numberOfSections;
 }
@@ -272,6 +299,10 @@
     cell.textLabel.text = [NSString stringWithFormat:@"Kota ini tidak terjangkau oleh  %@", courier.name];
     [cell.textLabel sizeToFit];
     return cell;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView indentationLevelForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 0;
 }
 
 #pragma mark - Table view for footer in section
@@ -443,16 +474,20 @@
     [self.indicatorView startAnimating];
     self.navigationItem.rightBarButtonItem = self.disabledSaveButton;
     
-    NSDictionary *parameters = @{};
+    NSMutableDictionary *mutableParameters = [NSMutableDictionary new];
     // 13 id provinsi jakarta
     if ([self.selectedProvince.provinceId isEqualToString:@"13"]) {
-        parameters = @{@"district_id": @"5573"};
+        [mutableParameters setValue:@"5573" forKey:@"district_id"];
     } else if (self.selectedDistrict) {
-        parameters = @{@"district_id": _selectedDistrict.districtId};
+        [mutableParameters setValue:_selectedDistrict.districtId forKey:@"district_id"];
     }
+
+    NSString *path = self.shipmentType == ShipmentTypeOpenShop? @"/v4/myshop/get_open_shop_form.pl": @"/v4/myshop-shipment/get_shipping_info.pl";
+
+    NSDictionary *parameters = [mutableParameters copy];
     
-    [self.networkManager requestWithBaseUrl:@"http://ws-staging.tokopedia.com"
-                                       path:@"/v4/myshop-shipment/get_shipping_info.pl"
+    [self.networkManager requestWithBaseUrl:[NSString v4Url]
+                                       path:path
                                      method:RKRequestMethodGET
                                   parameter:parameters
                                     mapping:[ShipmentResponse mapping]
@@ -464,6 +499,7 @@
                                           [self didReceiveLogisticData:response.data];                                          
                                       }
                                       [self.refreshControl endRefreshing];
+                                      [self checkActiveServices];
                                   }
                                   onFailure:^(NSError *errorResult) {
                                       if (errorResult) {
@@ -472,6 +508,7 @@
                                           [self didReceiveErrorMessages:@[@"Mohon maaf sedang terjadi gangguan."]];
                                       }
                                       [self.refreshControl endRefreshing];
+                                      [self checkActiveServices];
                                   }];
 }
 
@@ -484,9 +521,12 @@
             }
         }
     }
+    
     self.couriers = couriers;
     self.shop = data.shop;
-    
+    self.loc = data.loc;
+    self.paymentOptions = data.paymentOptions;
+
     if (self.provinces == nil) {
         self.provinces = data.provinces;
         [self setProvinceCityDistrict];
@@ -526,16 +566,7 @@
     }
 }
 
-- (void)saveLogisticData {
-    if (![self.selectedProvince.provinceId isEqualToString:@"13"] && _selectedDistrict == nil) {
-        NSArray *messages = @[@"Kota Asal harus dilengkapi."];
-        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messages delegate:self];
-        [alert show];
-        return;
-    }
-    
-    self.navigationItem.rightBarButtonItem = self.loadingView;
-
+- (NSDictionary *)parameters {
     NSMutableDictionary *parameters = [NSMutableDictionary new];
     NSMutableDictionary *couriers = [NSMutableDictionary new];
     for (ShipmentCourierData *courier in self.couriers) {
@@ -545,7 +576,7 @@
                 if ([service.active boolValue]) {
                     [services setObject:@"1" forKey:service.productId];
                 }
-            }            
+            }
         }
         if (services.allValues.count > 0) {
             [couriers setObject:services forKey:courier.courierId];
@@ -562,36 +593,76 @@
     
     NSString *latitude = [NSString stringWithFormat:@"%f", _shop.latitude];
     NSString *longitude = [NSString stringWithFormat:@"%f", _shop.longitude];
-
+    
+    NSString *courierOrigin = _selectedDistrict.districtId?: _shop.districtId?: @"";
+    
+    // 13 id provinsi jakarta
+    if ([self.selectedProvince.provinceId isEqualToString:@"13"]) {
+        courierOrigin = @"5573";
+    }
+    
+    NSString *postalCode = _shop.postalCode?:@"";
+    
     UserAuthentificationManager *user = [UserAuthentificationManager new];
     
     [parameters addEntriesFromDictionary:@{
-        @"courier_origin": _selectedDistrict.districtId?: _shop.districtId?: @"",
-        @"postal": _shop.postalCode?:@"",
-        @"addr_street": _shop.address?:@"",
-        @"latitude": latitude?:@"",
-        @"longitude": longitude?:@"",
-        @"shop_id": user.getShopId,
-    }];
+                                           @"courier_origin": courierOrigin,
+                                           @"postal": postalCode,
+                                           @"addr_street": _shop.address?:@"",
+                                           @"latitude": latitude?:@"",
+                                           @"longitude": longitude?:@"",
+                                           @"shop_id": user.getShopId,
+                                           }];
+    
+    if (self.shipmentType == ShipmentTypeOpenShop) {
+        [parameters setValue:_shopName forKey:@"shop_name"];
+        [parameters setValue:_shopLogo forKey:@"shop_logo"];
+        [parameters setValue:_shopDomain forKey:@"shop_domain"];
+        [parameters setValue:_shopTagline forKey:@"shop_tag_line"];
+        [parameters setValue:_shopShortDescription forKey:@"shop_short_desc"];
+        [parameters setValue:courierOrigin forKey:@"shop_courier_origin"];
+        [parameters setValue:postalCode forKey:@"shop_postal"];
+    }
+    return parameters;
+}
 
-    // 13 id provinsi jakarta
-    if ([self.selectedProvince.provinceId isEqualToString:@"13"]) {
-        [parameters setObject:@"5573" forKey:@"courier_origin"];
+- (void)saveLogisticData {
+    if (![self.selectedProvince.provinceId isEqualToString:@"13"] && _selectedDistrict == nil) {
+        NSArray *messages = @[@"Kota Asal harus dilengkapi."];
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messages delegate:self];
+        [alert show];
+        return;
     }
     
-    [self.networkManager requestWithBaseUrl:@"https://ws-staging.tokopedia.com"
-                                       path:@"/v4/action/myshop-shipment/update_shipping_info.pl"
-                                     method:RKRequestMethodGET
-                                  parameter:parameters
-                                    mapping:[ShipmentResponse mapping]
+    if (self.shipmentType == ShipmentTypeOpenShop) {
+        ShopPaymentViewController *controller = [ShopPaymentViewController new];
+        controller.openShop = YES;
+        controller.parameters = [self parameters];
+        controller.loc = self.loc;
+        controller.paymentOptions = self.paymentOptions;
+        controller.shopLogo = self.shopLogo;
+        controller.generatedHost = self.generatedHost;
+        [self.navigationController pushViewController:controller animated:YES];
+        return;
+    }
+    
+    self.navigationItem.rightBarButtonItem = self.loadingView;
+    
+    NSString *path = @"/v4/action/myshop-shipment/update_shipping_info.pl";
+
+    [self.networkManager requestWithBaseUrl:[NSString v4Url]
+                                       path:path
+                                     method:RKRequestMethodPOST
+                                  parameter:[self parameters]
+                                    mapping:[AddShop mapping]
                                   onSuccess:^(RKMappingResult *mappingResult, RKObjectRequestOperation *operation) {
-                                      ShipmentResponse *response = mappingResult.dictionary[@""];
+                                      self.navigationItem.rightBarButtonItem = self.saveButton;
+                                      AddShop *response = mappingResult.dictionary[@""];
                                       if (response.message_status) {
                                           [self didReceiveSuccessMessages:response.message_status];
                                       } else if(response.message_error) {
                                           [self didReceiveErrorMessages:response.message_error];
                                       }
-                                      self.navigationItem.rightBarButtonItem = self.saveButton;
                                   }
                                   onFailure:^(NSError *errorResult) {
                                       if (errorResult) {
@@ -681,16 +752,17 @@
 }
 
 - (void)showAddressFromLatitude:(CLLocationDegrees)latitude longitude:(CLLocationDegrees)longitude {
+    __weak typeof(self) welf = self;
     CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(latitude, longitude);
     [[GMSGeocoder geocoder] reverseGeocodeCoordinate:coordinate
                                    completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error) {
                                        if (error || response == nil){
-                                           self.shop.locationAddress = @"Tandai lokasi anda";
+                                           welf.shop.locationAddress = @"Tandai lokasi anda";
                                        } else {
                                            GMSAddress *placemark = [response results][0];
-                                           self.shop.locationAddress = [self streetNameFromAddress:placemark];
+                                           welf.shop.locationAddress = [self streetNameFromAddress:placemark];
                                        }
-                                       [self.tableView reloadData];
+                                       [welf.tableView reloadData];
                                    }];
 }
 
@@ -754,6 +826,15 @@
 - (void)addressTextViewDidChange:(NSNotification *)notification {
     TKPDTextView *textView = notification.object;
     self.shop.address = textView.text;
+}
+
+#pragma mark - Getter
+
+- (ShipmentShopData *)shop {
+    if (_shop == nil) {
+        _shop = [ShipmentShopData new];
+    }
+    return _shop;
 }
 
 @end

@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NotificationPurchase : NSObject
+@interface NotificationPurchase : NSObject <TKPObjectMapping>
 
 @property (strong, nonatomic) NSString *purchase_reorder;
 @property (strong, nonatomic) NSString *purchase_payment_confirm;

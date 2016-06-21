@@ -10,7 +10,6 @@
 #import "SegmentedReviewReputationViewController.h"
 #import "AlertPriceNotificationViewController.h"
 #import "detail.h"
-#import "CreateShopViewController.h"
 #import "MoreViewController.h"
 #import "more.h"
 #import "TKPDSecureStorage.h"
@@ -848,12 +847,14 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
     if (permissionStatus == JLPermissionNotDetermined) {
         permission.extraAlertEnabled = false;
         [permission authorize: ^(NSString *deviceId, NSError *error) {
+            [TPAnalytics trackPushNotificationAccepted: deviceId != nil];
             [self togglePushNotificationCellVisibility];
         }];
     } else {
         ActivatePushInstructionViewController *viewController = [ActivatePushInstructionViewController new];
         
         viewController.viewControllerDidClosed = ^{
+            [TPAnalytics trackOpenPushNotificationSetting];
             [[JLNotificationPermission sharedInstance] displayAppSystemSettings];
         };
         [_wrapperViewController presentViewController:viewController animated:YES completion:nil];
@@ -953,9 +954,8 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
 #pragma mark - Action
 - (IBAction)actionCreateShop:(id)sender
 {
-    CreateShopViewController *createShopViewController = [CreateShopViewController new];
-    createShopViewController.moreViewController = self;
-    [self pushViewController:createShopViewController];
+    OpenShopViewController *controller = [[OpenShopViewController alloc] initWithNibName:@"OpenShopViewController" bundle:nil];
+    [self pushViewController:controller];
 }
 
 - (void)updateSaldoTokopedia:(NSNotification*)notification {

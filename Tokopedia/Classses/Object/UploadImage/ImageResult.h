@@ -19,6 +19,8 @@
 @property (nonatomic, strong) NSArray *message_error;
 @property (nonatomic, strong) NSString *src;
 @property (nonatomic, strong) UploadDataImage *image;
+@property (nonatomic, strong) UploadDataImage *upload;
+@property (nonatomic, strong) UploadDataImage *data;
 
 + (RKObjectMapping*)mapping;
 

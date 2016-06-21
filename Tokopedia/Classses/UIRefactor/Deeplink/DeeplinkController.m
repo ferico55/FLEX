@@ -15,12 +15,10 @@
 #import "TKPDTabNavigationController.h"
 #import <GoogleAppIndexing/GoogleAppIndexing.h>
 #import "MyWishlistViewController.h"
-#import "CreateShopViewController.h"
 #import "ProductAddEditViewController.h"
 #import "TransactionCartRootViewController.h"
 #import "ContactUsWireframe.h"
 #import "TPContactUsDependencies.h"
-#import "MyShopShipmentTableViewController.h"
 
 #import "string_product.h"
 
@@ -220,44 +218,16 @@
     NSDictionary *data = urlDict;
     
     SearchResultViewController *vc = [[SearchResultViewController alloc] init];
-    vc.data = @{
-        @"search"       : [data objectForKey:@"q"]?:@"",
-        @"type"         : @"search_product",
-        @"location"     : [data objectForKey:@"floc"]?:@"",
-        @"price_min"    : [data objectForKey:@"pmin"]?:@"",
-        @"price_max"    : [data objectForKey:@"pmax"]?:@"",
-        @"order_by"     : [data objectForKey:@"ob"]?:@"",
-        @"shop_type"    : [data objectForKey:@"fshop"]?:@"",
-        @"department_1" : [data objectForKey:@"department_1"]?:@"",
-        @"department_2" : [data objectForKey:@"department_2"]?:@"",
-        @"department_3" : [data objectForKey:@"department_3"]?:@"",
-    };
+    NSMutableDictionary *datas = [NSMutableDictionary new];
+    [datas addEntriesFromDictionary:data];
+    [datas setObject:@"search_product" forKey:@"type"];
+    vc.data = [datas copy];
     SearchResultViewController *vc1 = [[SearchResultViewController alloc] init];
-    vc1.data = @{
-        @"search"       : [data objectForKey:@"q"]?:@"",
-        @"type"         : @"search_catalog",
-        @"location"     : [data objectForKey:@"floc"]?:@"",
-        @"price_min"    : [data objectForKey:@"pmin"]?:@"",
-        @"price_max"    : [data objectForKey:@"pmax"]?:@"",
-        @"order_by"     : [data objectForKey:@"ob"]?:@"",
-        @"shop_type"    : [data objectForKey:@"fshop"]?:@"",
-        @"department_1" : [data objectForKey:@"department_1"]?:@"",
-        @"department_2" : [data objectForKey:@"department_2"]?:@"",
-        @"department_3" : [data objectForKey:@"department_3"]?:@"",
-    };
+    [datas setObject:@"search_catalog" forKey:@"type"];
+    vc.data = [datas copy];
     SearchResultShopViewController *vc2 = [[SearchResultShopViewController alloc] init];
-    vc2.data = @{
-        @"search"       : [data objectForKey:@"q"]?:@"",
-        @"type"         : @"search_shop",
-        @"location"     : [data objectForKey:@"floc"]?:@"",
-        @"price_min"    : [data objectForKey:@"pmin"]?:@"",
-        @"price_max"    : [data objectForKey:@"pmax"]?:@"",
-        @"order_by"     : [data objectForKey:@"ob"]?:@"",
-        @"shop_type"    : [data objectForKey:@"fshop"]?:@"",
-        @"department_1" : [data objectForKey:@"department_1"]?:@"",
-        @"department_2" : [data objectForKey:@"department_2"]?:@"",
-        @"department_3" : [data objectForKey:@"department_3"]?:@"",
-    };
+    [datas setObject:@"search_shop" forKey:@"type"];
+    vc.data = [datas copy];
 
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
         NSArray *viewcontrollers = @[vc,vc1,vc2];
@@ -326,7 +296,7 @@
 - (void)redirectToCreateShop {
     UserAuthentificationManager *auth = [UserAuthentificationManager new];
     if (auth.getUserId && [auth.getShopId isEqualToString:@""]) {
-        CreateShopViewController *controller = [CreateShopViewController new];
+        OpenShopViewController *controller = [OpenShopViewController new];
         self.activeController.hidesBottomBarWhenPushed = YES;
         [self.activeController.navigationController pushViewController:controller animated:YES];
         self.activeController.hidesBottomBarWhenPushed = NO;
@@ -364,8 +334,7 @@
 }
 
 - (void)redirectToShipmentSetting {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    MyShopShipmentTableViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"MyShopShipmentTableViewController"];
+    OpenShopViewController *controller = [OpenShopViewController new];
     [self.activeController.navigationController pushViewController:controller animated:YES];
 }
 

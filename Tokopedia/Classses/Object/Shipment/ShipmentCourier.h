@@ -8,12 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
-@interface ShipmentCourier : NSObject
+@interface ShipmentCourier : NSObject <TKPObjectMapping>
 
 @property (strong, nonatomic) NSString *shipment_id;
 @property (strong, nonatomic) NSString *shipment_name;
 @property (strong, nonatomic) NSArray *shipment_package;
-@property (nonatomic) NSInteger *shipment_available;
+@property BOOL shipment_available;
 @property (strong, nonatomic) NSString *shipment_image;
 
 - (id)description;

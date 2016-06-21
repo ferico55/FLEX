@@ -113,7 +113,7 @@
         }
         case 4:
         {
-            ShipmentViewController *controller = [ShipmentViewController new];
+            ShipmentViewController *controller = [[ShipmentViewController alloc] initWithShipmentType:ShipmentTypeSettings];
             [self.navigationController pushViewController:controller animated:YES];
             break;
         }

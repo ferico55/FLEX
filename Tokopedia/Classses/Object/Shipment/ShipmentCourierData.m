@@ -39,7 +39,8 @@
 }
 
 - (BOOL)showsAdditionalOptions {
-    if ([_URLAdditionalOption isEqualToString:@""]) {
+    if ([_URLAdditionalOption isEqualToString:@""] ||
+        [_URLAdditionalOption isEqualToString:@"0"]) {
         return NO;
     } else {
         return YES;
@@ -64,7 +65,8 @@
 
 - (BOOL)showsWeightPolicy {
     if ([_available boolValue]) {
-        if ([_weightPolicy isEqualToString:@""]) {
+        if ([_weightPolicy isEqualToString:@""] ||
+            [_weightPolicy isEqualToString:@"0"]) {
             return NO;
         } else {
             return YES;

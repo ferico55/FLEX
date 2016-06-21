@@ -37,6 +37,16 @@
     [self.view addSubview:_webView];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    self.webView.hidden = NO;
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    self.webView.hidden = YES;
+}
+
 - (NSURL *)URLWithAdditionalParameters {
     UserAuthentificationManager *auth = [UserAuthentificationManager new];
     NSString *hash = [[NSString stringWithFormat:@"%@~%@", auth.getUserId, auth.getMyDeviceToken] encryptWithMD5];
@@ -80,6 +90,10 @@
         }
         [self.navigationController popViewControllerAnimated:YES];
     }
+}
+
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+    return YES;
 }
 
 - (UIBarButtonItem *)doneButton {

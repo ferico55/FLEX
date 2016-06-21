@@ -8,11 +8,12 @@
 
 import UIKit
 
-class OpenShopViewController: UITableViewController, UITextFieldDelegate, TKPDPhotoPickerDelegate, GenerateHostDelegate {
+@objc(OpenShopViewController) class OpenShopViewController: UITableViewController, UITextFieldDelegate, TKPDPhotoPickerDelegate, GenerateHostDelegate {
     
     var imagePicker: TKPDPhotoPicker!
     
-    var shopDomain: NSString!
+    var shopDomain: String!
+    var shopDomainError: [String] = []
     var shopImage: UIImage!
     var shopName: NSString!
     var shopTagline: NSString!
@@ -23,28 +24,54 @@ class OpenShopViewController: UITableViewController, UITextFieldDelegate, TKPDPh
     var imageObject: Dictionary<String, Dictionary<String, AnyObject?>>!
     var uploadImageResponse: ImageResult!
     
+    var requestObject: RequestObjectUploadImage!
+    
     var domainIsValid: Bool!
     var enableChangePhotoButton: Bool!
     
-    @IBOutlet weak var checkDomainButton: UIButton!
+    var pushToShipment: Bool!
+    
+    @IBOutlet var checkDomainButton: UIButton!
     @IBOutlet var checkDomainView: UIView!
     @IBOutlet var domainHeaderView: UIView!
     @IBOutlet var shopImageHeaderView: UIView!
     @IBOutlet var shopImageFooterView: UIView!
     @IBOutlet var shopInformationHeaderView: UIView!
     
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+        let nib = nibNameOrNil ?? "OpenShopViewController"
+        super.init(nibName: nib, bundle: nibBundleOrNil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         title = "Buka Toko"
         
+        hidesBottomBarWhenPushed = true
+        
         let saveButton: UIBarButtonItem = UIBarButtonItem(title: "Lanjut", style: .Done, target: self, action:#selector(didTapContinueButton))
         navigationItem.rightBarButtonItem = saveButton
-
-        enableChangePhotoButton = false
-        checkDomainButton.layer.cornerRadius = 2
         
+        shopDomain = ""
+        domainIsValid = false
         shopImage = UIImage(named: "icon_default_shop")
+        shopName =  ""
+        shopTagline = ""
+        shopDescription = ""
+        enableChangePhotoButton = false
+        pushToShipment = false
+        
+        let requestHost: RequestGenerateHost = RequestGenerateHost()
+        requestHost.delegate = self
+        requestHost.configureRestkitGenerateHost()
+        requestHost.requestGenerateHost()
+        
+        checkDomainButton.layer.cornerRadius = 2
         
         tableView.contentInset = UIEdgeInsetsMake(0, 0, 60, 0)
         
@@ -53,19 +80,19 @@ class OpenShopViewController: UITableViewController, UITextFieldDelegate, TKPDPh
         tableView.registerNib(UINib(nibName: "OpenShopNameViewCell", bundle: nil), forCellReuseIdentifier: "OpenShopName")
         tableView.registerNib(UINib(nibName: "EditShopDescriptionViewCell", bundle: nil), forCellReuseIdentifier: "shopDescription")
         tableView.registerNib(UINib(nibName: "ShopTagDescriptionViewCell", bundle: nil), forCellReuseIdentifier: "ShopTagDescriptionViewCell")
-        
-        let requestHost: RequestGenerateHost = RequestGenerateHost()
-        requestHost.delegate = self
-        requestHost.configureRestkitGenerateHost()
-        requestHost.requestGenerateHost()
     }
-
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
 
     // MARK: - Table view data source
 
+    
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 3
     }
@@ -87,6 +114,13 @@ class OpenShopViewController: UITableViewController, UITextFieldDelegate, TKPDPh
             if let domainCell = tableView.dequeueReusableCellWithIdentifier("OpenShopDomain") as? OpenShopDomainViewCell {
                 domainCell.domainTextField.addTarget(self, action: #selector(OpenShopViewController.shopDomainDidChange(_:)), forControlEvents: UIControlEvents.EditingChanged)
                 domainCell.domainTextField.delegate = self
+                let domain = String(format: "https://tokopedia.com/%@", shopDomain)
+                domainCell.domainTextField.text = domain
+                if (domainIsValid == true) {
+                    domainCell.accessoryType = .Checkmark
+                } else {
+                    domainCell.accessoryType = .None
+                }
                 cell = domainCell
             }
         } else if indexPath.section == 1 {
@@ -136,13 +170,9 @@ class OpenShopViewController: UITableViewController, UITextFieldDelegate, TKPDPh
                     cell = nameCell
                 }
             } else if indexPath.row == 1 {
-                if let taglineCell = tableView.dequeueReusableCellWithIdentifier("shopDescription") as? EditShopDescriptionViewCell {
-                    cell = taglineCell
-                }
+                return 60
             } else if indexPath.row == 2 {
-                if let descriptionCell = tableView.dequeueReusableCellWithIdentifier("shopDescription") as? EditShopDescriptionViewCell {
-                    cell = descriptionCell
-                }
+                return 90
             }
         }
         return cell.frame.size.height
@@ -195,15 +225,21 @@ class OpenShopViewController: UITableViewController, UITextFieldDelegate, TKPDPh
     func didTapContinueButton() -> Void {
         var errorMessages: [String] = []
         if domainIsValid == false {
-            errorMessages.append("Domain harus diisi.")
+            if shopDomainError.count > 0 {
+                errorMessages.appendContentsOf(shopDomainError)
+            } else if shopDomain.characters.count == 0 {
+                errorMessages.append("Domain harus diisi.")
+            } else {
+                errorMessages.append("Mohon cek domain terlebih dahulu.")
+            }
         }
-        if shopName.length > 0 {
+        if shopName.length == 0 {
             errorMessages.append("Nama Toko harus diisi")
         }
-        if shopTagline.length > 0 {
+        if shopTagline.length == 0 {
             errorMessages.append("Slogan harus diisi.")
         }
-        if shopDescription.length > 0 {
+        if shopDescription.length == 0 {
             errorMessages.append("Deskripsi harus diisi.")
         }
         if errorMessages.count > 0 {
@@ -211,14 +247,25 @@ class OpenShopViewController: UITableViewController, UITextFieldDelegate, TKPDPh
             alert.show()
             return;
         }
-        let controller: ShipmentViewController = ShipmentViewController()
+        let shopImageURL = (uploadImageResponse != nil) ? uploadImageResponse.image.pic_src as String : ""
+                
+        let controller: ShipmentViewController = ShipmentViewController(shipmentType: .OpenShop)
+        controller.shopName = shopName as String
+        
+        controller.shopDomain = shopDomain as String
+        controller.shopLogo = shopImageURL
+        controller.shopTagline = shopTagline as String
+        controller.shopShortDescription = shopDescription as String
+        controller.generatedHost = generatedHost.result.generated_host
         self.navigationController?.pushViewController(controller, animated: true)
     }
 
     
     func shopDomainDidChange(textField: UITextField) -> Void {
         let text = textField.text! as NSString
-        shopDomain = text.substringWithRange(NSRange(location: 22, length: text.length))
+        shopDomain = text.substringWithRange(NSRange(location: 22, length: text.length - 22))
+        domainIsValid = false
+        shopDomainError.removeAll()
     }
 
     func shopNameDidChange(textField: UITextField) -> Void {
@@ -226,13 +273,13 @@ class OpenShopViewController: UITableViewController, UITextFieldDelegate, TKPDPh
     }
 
     func shopTaglineDidChange(notification: NSNotification) -> Void {
-        let textField = notification.object as! UITextField
-        shopTagline = textField.text
+        let textView = notification.object as! RSKPlaceholderTextView
+        shopTagline = textView.text
     }
     
     func shopDescriptionDidChange(notification: NSNotification) -> Void {
-        let textField = notification.object as! UITextField
-        shopDescription = textField.text
+        let textView = notification.object as! RSKPlaceholderTextView
+        shopDescription = textView.text
     }
     
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
@@ -259,11 +306,17 @@ class OpenShopViewController: UITableViewController, UITextFieldDelegate, TKPDPh
                                    onSuccess: { (mappingResult: RKMappingResult!, operation: RKObjectRequestOperation!) in
                                         let dictionary: NSDictionary = mappingResult.dictionary()
                                         let response = dictionary.objectForKey("") as! AddShop
-                                        if response.message_error.count > 0 {
-                                            let alert: StickyAlertView = StickyAlertView.init(errorMessages: response.message_error, delegate: self)
+                                        if (response.message_error != nil) {
+                                            self.shopDomainError = response.message_error as! [String]
+                                            let alert: StickyAlertView = StickyAlertView.init(errorMessages: self.shopDomainError, delegate: self)
                                             alert.show()
-                                        } else if response.result.is_success == "1" {
+                                        } else if response.result.status_domain == "1" {
                                             self.domainIsValid = true
+                                            self.tableView.reloadRowsAtIndexPaths([NSIndexPath (forRow: 0, inSection: 0)], withRowAnimation: .Automatic)
+
+                                            if (self.pushToShipment == true) {
+                                                
+                                            }
                                         }
                                     }) { (error: NSError!) in
         
@@ -281,6 +334,7 @@ class OpenShopViewController: UITableViewController, UITextFieldDelegate, TKPDPh
         ]
 
         shopImage = photoDictionary["photo"] as! UIImage
+        
         enableChangePhotoButton = false
         
         tableView.reloadData()
@@ -290,10 +344,10 @@ class OpenShopViewController: UITableViewController, UITextFieldDelegate, TKPDPh
         let uploadHost = NSString(format: "https://%@", generatedHost.result.generated_host.upload_host) as String
         
         let requestObject: RequestObjectUploadImage = RequestObjectUploadImage()
-        requestObject.add_new = "1"
         requestObject.server_id = generatedHost.result.generated_host.server_id
         requestObject.user_id = UserAuthentificationManager().getUserId();
-
+        requestObject.add_new = "1"
+        
         RequestUploadImage.requestUploadImage(shopImage,
                                               withUploadHost:uploadHost,
                                               path: "/web-service/v4/action/upload-image/upload_shop_image.pl",
@@ -317,6 +371,11 @@ class OpenShopViewController: UITableViewController, UITextFieldDelegate, TKPDPh
 
     func successGenerateHost(generateHostResponse: GenerateHost!) {
         generatedHost = generateHostResponse
+        
+        requestObject = RequestObjectUploadImage()
+        requestObject.server_id = generatedHost.result.generated_host.server_id
+        requestObject.user_id = UserAuthentificationManager().getUserId();
+
         enableChangePhotoButton = true
         tableView.reloadData()
     }

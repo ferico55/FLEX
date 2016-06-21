@@ -27,7 +27,6 @@ class TKPMapView: GMSMapView {
         infoWindowView.whiteLocationInfoView!.layer.cornerRadius = 5
 
         marker.map = self;
-        marker.appearAnimation = kGMSMarkerAnimationNone
         marker.icon = UIImage(named:"icon_pinpoin_toped.png")
         marker.infoWindowAnchor = CGPointMake(0.45, 0.0);
         self.selectedMarker = marker

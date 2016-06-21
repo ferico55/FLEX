@@ -326,11 +326,13 @@ typedef enum TagRequest {
 }
 
 - (void)request {
-    _networkManager = [TokopediaNetworkManager new];
-    _networkManager.delegate = self;
-    _networkManager.tagRequest = OrderDetailTag;
-    _networkManager.isUsingHmac = YES;
-    [_networkManager doRequest];
+    if (_shouldRequestIDropCode) {
+        _networkManager = [TokopediaNetworkManager new];
+        _networkManager.delegate = self;
+        _networkManager.tagRequest = OrderDetailTag;
+        _networkManager.isUsingHmac = YES;
+        [_networkManager doRequest];
+    }
 }
 
 - (void)initializeTableView {
@@ -733,12 +735,14 @@ typedef enum TagRequest {
 }
 
 - (IBAction)tapGetCode:(id)sender {
-    _courierAgentLabel.text = [[NSString stringWithFormat:@"%@ (%@)",
-                                         _transaction.order_shipment.shipment_name,
-                                         _transaction.order_shipment.shipment_product] stringByAppendingString:@" - Loading..."];
-    [_getCodeButton setHidden:YES];
-    _getCodeButton.enabled = NO;
-    [_networkManager doRequest];
+    if (_shouldRequestIDropCode) {
+        _courierAgentLabel.text = [[NSString stringWithFormat:@"%@ (%@)",
+                                    _transaction.order_shipment.shipment_name,
+                                    _transaction.order_shipment.shipment_product] stringByAppendingString:@" - Loading..."];
+        [_getCodeButton setHidden:YES];
+        _getCodeButton.enabled = NO;
+        [_networkManager doRequest];
+    }
 }
 
 #pragma mark - Alert delegate

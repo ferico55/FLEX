@@ -7,14 +7,23 @@
 //
 
 #import "ShopPaymentViewController.h"
-#import "SettingPayment.h"
+#import "BerhasilBukaTokoViewController.h"
 #import "MyShopPaymentCell.h"
 #import "LoadingView.h"
+
+#import "SettingPayment.h"
+#import "ShipmentCourierData.h"
+#import "AddShop.h"
+#import "RequestUploadImage.h"
+#import "ImageResult.h"
+
 #import "UITableView+LoadingView.h"
+#import "NSURL+Dictionary.h"
+
+#import "Tokopedia-Swift.h"
 
 @interface ShopPaymentViewController () <LoadingViewDelegate>
 
-@property (strong, nonatomic) NSArray *paymentOptions;
 @property (strong, nonnull) NSString *titleForFooter;
 @property (strong, nonatomic) TokopediaNetworkManager *networkManager;
 
@@ -39,10 +48,6 @@
     
     self.title = @"Pembayaran";
     
-    self.networkManager = [TokopediaNetworkManager new];
-    self.networkManager.isUsingHmac = YES;
-    [self fetchPaymentData];
-    
     UINib *nib = [UINib nibWithNibName:@"MyShopPaymentCell" bundle:nil];
     [self.tableView registerNib:nib forCellReuseIdentifier:@"MyShopPaymentCellIdentifier"];
     
@@ -51,10 +56,41 @@
     
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
+    
+    self.networkManager = [TokopediaNetworkManager new];
+    self.networkManager.isUsingHmac = YES;
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    if (self.openShop) {
+        self.navigationItem.rightBarButtonItem = self.saveButton;
+        for (Payment *payment in self.paymentOptions) {
+            if ([self.loc objectForKey:payment.payment_id]) {
+                payment.payment_info = [self.loc objectForKey:payment.payment_id];
+            }
+        }
+    } else if (self.paymentOptions == nil) {
+        [self fetchPaymentData];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+}
+
+#pragma mark - Bar button items
+
+- (UIBarButtonItem *)loadingBarButton {
+    UIActivityIndicatorView *indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    [indicatorView startAnimating];
+    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithCustomView:indicatorView];
+    return button;
+}
+
+- (UIBarButtonItem *)saveButton {
+    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@"Selesai" style:UIBarButtonItemStyleDone target:self action:@selector(validateShop)];
+    return button;
 }
 
 #pragma mark - Table view data source
@@ -94,19 +130,8 @@
     
     cell.indexPath = indexPath;
     
-    NSURL *url = [NSURL URLWithString:payment.payment_image];
-    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url
-                                                  cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                              timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-    
-    cell.thumbnailImageView.image = nil;
-    [cell.thumbnailImageView setImageWithURLRequest:request
-                                   placeholderImage:nil
-                                            success:^(NSURLRequest *request,
-                                                      NSHTTPURLResponse *response,
-                                                      UIImage *image) {
-                              [cell.thumbnailImageView setImage:image];
-                          } failure:nil];
+    [cell.thumbnailImageView setImageWithURL:[NSURL URLWithString:payment.payment_image]];
+
     return cell;
 }
 
@@ -182,6 +207,112 @@
     }
 }
 
+- (void)validateShop {
+    self.navigationItem.rightBarButtonItem = self.loadingBarButton;
+    NSString *path = @"/v4/action/myshop/open_shop_validation.pl";
+    [self.networkManager requestWithBaseUrl:[NSString v4Url]
+                                       path:path
+                                     method:RKRequestMethodGET
+                                  parameter:_parameters
+                                    mapping:[AddShop mapping]
+                                  onSuccess:^(RKMappingResult *mappingResult, RKObjectRequestOperation *operation) {
+                                      self.navigationItem.rightBarButtonItem = self.saveButton;
+                                      AddShop *response = mappingResult.dictionary[@""];
+                                      if (response.message_status) {
+                                          [self didReceiveSuccessMessages:response.message_status];
+                                      }
+                                      if(response.message_error) {
+                                          [self didReceiveErrorMessages:response.message_error];
+                                      } else {
+                                          self.postKey = response.result.post_key;
+                                          if (self.shopLogo && self.postKey) {
+                                              [self openShopPicture];
+                                          } else {
+                                              TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+                                              [secureStorage setKeychainWithValue:response.result.shop_id withKey:kTKPD_SHOPIDKEY];
+                                              [secureStorage setKeychainWithValue:[_parameters objectForKey:@"shop_name"] withKey:kTKPD_SHOPNAMEKEY];
+                                              [secureStorage setKeychainWithValue:@(0) withKey:kTKPD_SHOPISGOLD];
+ 
+                                              [[NSNotificationCenter defaultCenter] postNotificationName:@"shopCreated" object:self];
+                                              OpenShopSuccessViewController *controller = [[OpenShopSuccessViewController alloc] initWithNibName:@"OpenShopSuccessViewController" bundle:nil];                                              
+                                              controller.shopName = [_parameters objectForKey:@"shop_name"];
+                                              controller.shopDomain = [_parameters objectForKey:@"shop_domain"];
+                                              controller.shopUrl = response.result.shop_url;
+                                              [self.navigationController pushViewController:controller animated:YES];
+                                          }
+                                      }
+                                  }
+                                  onFailure:^(NSError *errorResult) {
+                                      if (errorResult) {
+                                          [self didReceiveErrorMessages:@[errorResult.localizedDescription]];
+                                      } else {
+                                          [self didReceiveErrorMessages:@[@"Mohon maaf sedang terjadi gangguan."]];
+                                      }
+                                      self.navigationItem.rightBarButtonItem = self.saveButton;
+                                  }];
+}
+
+- (void)submitShop {
+    NSString *path = @"/v4/action/myshop/open_shop_submit.pl";
+    NSDictionary *parameters = @{@"post_key": _postKey?:@"", @"file_uploaded": _fileUploaded?:@""};
+    [self.networkManager requestWithBaseUrl:[NSString v4Url]
+                                       path:path
+                                     method:RKRequestMethodGET
+                                  parameter:parameters
+                                    mapping:[AddShop mapping]
+                                  onSuccess:^(RKMappingResult *mappingResult,
+                                              RKObjectRequestOperation *operation) {
+                                      AddShop *response = [mappingResult.dictionary objectForKey:@""];
+                                      if ([response.result.is_success boolValue]) {
+                                          TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+                                          [secureStorage setKeychainWithValue:response.result.shop_id withKey:kTKPD_SHOPIDKEY];
+                                          [secureStorage setKeychainWithValue:[_parameters objectForKey:@"shop_name"] withKey:kTKPD_SHOPNAMEKEY];
+                                          [secureStorage setKeychainWithValue:self.shopLogo withKey:kTKPD_SHOPIMAGEKEY];
+                                          [secureStorage setKeychainWithValue:@(0) withKey:kTKPD_SHOPISGOLD];
+                                          [[NSNotificationCenter defaultCenter] postNotificationName:@"shopCreated" object:self];
+                                          OpenShopSuccessViewController *controller = [[OpenShopSuccessViewController alloc] initWithNibName:@"OpenShopSuccessViewController" bundle:nil];
+                                          controller.shopName = [_parameters objectForKey:@"shop_name"];
+                                          controller.shopDomain = [_parameters objectForKey:@"shop_domain"];
+                                          controller.shopUrl = response.result.shop_url;
+                                          [self.navigationController pushViewController:controller animated:YES];
+                                            }
+                                  } onFailure:^(NSError *errorResult) {
+                                      [self didReceiveErrorMessages:@[errorResult.localizedDescription]];
+                                  }];
+}
+
+- (void)didReceiveErrorMessages:(NSArray *)errorMessages {
+    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
+    [alert show];
+}
+
+- (void)didReceiveSuccessMessages:(NSArray *)successMessages {
+    StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:self];
+    [alert show];
+}
+
+- (void)openShopPicture {
+    NSString *baseURL = [NSString stringWithFormat:@"https://%@", self.generatedHost.upload_host];
+    NSString *path = @"/web-service/v4/action/upload-image-helper/open_shop_picture.pl";
+    NSString *serverId = self.generatedHost.server_id;
+    NSDictionary *parameters = @{@"shop_logo": _shopLogo?:@"", @"server_id": serverId?:@""};
+    [self.networkManager requestWithBaseUrl:baseURL
+                                       path:path
+                                     method:RKRequestMethodPOST
+                                  parameter:parameters
+                                    mapping:[ImageResult mapping]
+                                  onSuccess:^(RKMappingResult *mappingResult,
+                                              RKObjectRequestOperation *operation) {
+                                      ImageResult *response = [mappingResult.dictionary objectForKey:@""];
+                                      if ([response.data.is_success boolValue]) {
+                                          self.fileUploaded = response.data.file_uploaded;
+                                          [self submitShop];
+                                      }
+                                  } onFailure:^(NSError *errorResult) {
+                                      [self didReceiveErrorMessages:@[errorResult.localizedDescription]];
+                                  }];
+}
+
 #pragma mark - Loading view delegate
 
 - (void)pressRetryButton {
@@ -191,7 +322,11 @@
 #pragma mark - Refresh control
 
 - (void)refresh:(UIRefreshControl *)refreshControl {
-    [self fetchPaymentData];
+    if (self.openShop) {
+        [refreshControl endRefreshing];
+    } else {
+        [self fetchPaymentData];
+    }
 }
 
 @end

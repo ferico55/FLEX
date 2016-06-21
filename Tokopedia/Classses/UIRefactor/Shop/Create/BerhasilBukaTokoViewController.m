@@ -77,9 +77,6 @@
     }
     [tempController insertObject:container atIndex:tempController.count];
     
-    if(isAnyImage) {
-        [((MoreViewController *) [self.navigationController.viewControllers firstObject]) updateImageURL];
-    }
     self.navigationController.viewControllers = tempController;
 }
 

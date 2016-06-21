@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface TrackOrderDetail : NSObject
+@interface TrackOrderDetail : NSObject <TKPObjectMapping>
 
 @property (strong, nonatomic) NSString *shipper_city;
 @property (strong, nonatomic) NSString *shipper_name;

@@ -38,4 +38,21 @@ class ShopTagDescriptionViewCell: UITableViewCell, UITextViewDelegate {
         }
     }
     
+    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+        if (textView.tag == 1) {
+            if (range.location == 48 && range.length == 0) {
+                return false
+            } else if (range.location + text.characters.count > 48) {
+                return false
+            }
+        } else if (textView.tag == 2) {
+            if (range.location == 120 && range.length == 0) {
+                return false
+            } else if (range.location + text.characters.count > 120) {
+                return false
+            }
+        }
+        return true
+    }
+    
 }

@@ -30,16 +30,16 @@
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="2TU-7H-Jij" customClass="RSKPlaceholderTextView" customModule="Tokopedia" customModuleProvider="target">
+                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="2TU-7H-Jij" customClass="RSKPlaceholderTextView" customModule="Tokopedia" customModuleProvider="target">
                         <rect key="frame" x="10" y="0.0" width="310" height="43"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="43" id="uis-17-9do"/>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="43" id="uis-17-9do"/>
                         </constraints>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                         <connections>
-                            <outlet property="delegate" destination="KGk-i7-Jjw" id="fnu-Kw-Ok5"/>
+                            <outlet property="delegate" destination="KGk-i7-Jjw" id="UNw-1G-1tT"/>
                         </connections>
                     </textView>
                 </subviews>

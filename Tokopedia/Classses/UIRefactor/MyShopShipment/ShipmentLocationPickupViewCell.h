@@ -8,10 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "TKPDTextView.h"
+#import "Tokopedia-Swift.h"
 
 @interface ShipmentLocationPickupViewCell : UITableViewCell <UITextViewDelegate>
 
-@property (weak, nonatomic) IBOutlet TKPDTextView *pickupAddressTextView;
+@property (weak, nonatomic) IBOutlet RSKPlaceholderTextView *pickupAddressTextView;
 @property (weak, nonatomic) IBOutlet UILabel *pickupLocationLabel;
 
 @end

@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "NotificationResult.h"
 
-@interface Notification : NSObject
+@interface Notification : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSArray *message_error;
 @property (nonatomic, strong) NSString *status;

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -15,11 +15,11 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="MyShopPaymentCellIdentifier" rowHeight="220" id="kqP-WY-wxe" customClass="MyShopPaymentCell">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="220"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="MyShopPaymentCellIdentifier" rowHeight="165" id="kqP-WY-wxe" customClass="MyShopPaymentCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="165"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kqP-WY-wxe" id="Srd-3C-ZOM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="219.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="164.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="0Ex-rf-vgh">
@@ -50,9 +50,9 @@
                 </subviews>
                 <constraints>
                     <constraint firstItem="0Ex-rf-vgh" firstAttribute="leading" secondItem="Srd-3C-ZOM" secondAttribute="leading" constant="125" id="60n-HJ-3Lh"/>
-                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="HwM-AJ-T7g" secondAttribute="bottom" constant="20" id="6Zg-Tm-57h"/>
                     <constraint firstItem="TBA-9b-4g5" firstAttribute="top" secondItem="0Ex-rf-vgh" secondAttribute="bottom" constant="9" id="6gM-bc-h5B"/>
                     <constraint firstItem="0Ex-rf-vgh" firstAttribute="top" secondItem="Srd-3C-ZOM" secondAttribute="top" constant="20" id="JWS-nJ-53l"/>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="HwM-AJ-T7g" secondAttribute="bottom" constant="34.5" id="Nr1-9q-6bW"/>
                     <constraint firstItem="HwM-AJ-T7g" firstAttribute="leading" secondItem="Srd-3C-ZOM" secondAttribute="leading" constant="15" id="UcS-Ao-uX0"/>
                     <constraint firstAttribute="trailing" secondItem="TBA-9b-4g5" secondAttribute="trailing" constant="15" id="WMF-Tt-hf0"/>
                     <constraint firstItem="HwM-AJ-T7g" firstAttribute="top" secondItem="TBA-9b-4g5" secondAttribute="bottom" constant="10" id="ZiD-mc-2DA"/>
@@ -66,6 +66,7 @@
                 <outlet property="nameLabel" destination="TBA-9b-4g5" id="BWP-Y0-STq"/>
                 <outlet property="thumbnailImageView" destination="0Ex-rf-vgh" id="PDX-Zg-ZKw"/>
             </connections>
+            <point key="canvasLocation" x="375" y="161.5"/>
         </tableViewCell>
     </objects>
 </document>

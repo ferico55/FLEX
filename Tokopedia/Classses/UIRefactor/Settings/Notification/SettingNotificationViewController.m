@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 
-#import "string_alert.h"
 #import "profile.h"
 #import "ProfileSettings.h"
 #import "NotificationForm.h"
@@ -14,517 +13,209 @@
 #import "SettingNotificationViewController.h"
 #import "SettingNotificationCell.h"
 
-@interface SettingNotificationViewController ()<SettingNotificationCellDelegate>{
-    
-    BOOL _isnodata;
-    
-    NSArray *_listMenu;
-    NSArray *_listDescription;
-    NSMutableArray *_listSwitchStatus;
-    
-    UIRefreshControl *_refreshControl;
-    NSInteger _requestCount;
-    NSInteger _requestCountAction;
-    
-    __weak RKObjectManager *_objectManagerAction;
-    __weak RKManagedObjectRequestOperation *_requestAction;
-    __weak RKObjectManager *_objectManager;
-    __weak RKManagedObjectRequestOperation *_request;
-    NSOperationQueue *_operationQueue;
-    
-    NSMutableDictionary *_dataInput;
-    
-    NotificationForm * _form;
-    
-    UIBarButtonItem *_saveBarButtonItem;
-}
+@interface SettingNotificationViewController () <SettingNotificationCellDelegate>
 
+@property BOOL isnodata;
+
+@property (strong, nonatomic) NSArray *listMenu;
+@property (strong, nonatomic) NSArray *listDescription;
+@property (strong, nonatomic) NSMutableArray *listSwitchStatus;
+
+@property (strong, nonatomic) NSMutableDictionary *parameters;
+
+@property (strong, nonatomic) UIRefreshControl *refreshControl;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
--(void)cancel;
--(void)configureRestKit;
--(void)request;
--(void)requestSuccess:(id)object withOperation:(RKObjectRequestOperation*)operation;
--(void)requestFailure:(id)object;
--(void)requestProcess:(id)object;
--(void)requestTimeout;
-
--(void)cancelAction;
--(void)configureActionRestKit;
--(void)requestAction:(id)userinfo;
--(void)requestSuccessAction:(id)object withOperation:(RKObjectRequestOperation*)operation;
--(void)requestFailureAction:(id)object;
--(void)requestProcessAction:(id)object;
--(void)requestTimeoutAction;
+@property (strong, nonatomic) TokopediaNetworkManager *networkManager;
 
 @end
 
 @implementation SettingNotificationViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        self.title = TITLE_SETTING_NOTIFICATION;
-    }
-    return self;
-}
-
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     
-    _dataInput = [NSMutableDictionary new];
-    _operationQueue = [NSOperationQueue new];
-    _listSwitchStatus = [NSMutableArray new];
-    
-    _saveBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:kTKPDPROFILESAVE
-                                                          style:UIBarButtonItemStyleDone
-                                                         target:(self)
-                                                         action:@selector(tap:)];
-    _saveBarButtonItem.tag = 11;
-    self.navigationItem.rightBarButtonItem = _saveBarButtonItem;
+    self.title = @"Notifikasi";
 
+    self.navigationItem.rightBarButtonItem = self.saveBarButton;
     
-    [self configureActionRestKit];
-    [self configureRestKit];
+    self.listMenu = @[@"Buletin", @"Review", @"Diskusi Produk", @"Pesan Pribadi", @"Pesan Pribadi dari Admin"];
+    self.listDescription = @[@"Setiap promosi, tips & tricks, informasi update seputar Tokopedia",
+                             @"Setiap Review dan  Komentar yang saya terima",
+                             @"Setiap Diskusi Produk dan Komentar yang saya terima",
+                             @"Setiap pesan pribadi yang saya terima",
+                             @"Setiap pesan pribadi dari admin yang saya terima"];
+    self.listSwitchStatus = [NSMutableArray new];
+
+    self.parameters = [NSMutableDictionary new];
+
+    self.tableView.contentInset = UIEdgeInsetsMake(40, 0, 0, 0);
+    
+    self.networkManager = [TokopediaNetworkManager new];
+    self.networkManager.isUsingHmac = YES;
     [self request];
-    
-    _listMenu = ARRAY_LIST_NOTIFICATION;
-    _listDescription = ARRAY_LIST_NOTIFICATION_DESCRIPTION;
-
-    _tableView.contentInset = UIEdgeInsetsMake(-10, 0, 0, 0);
 }
 
-- (void)viewWillLayoutSubviews
-{
-    [super viewWillLayoutSubviews];
+#pragma mark - Bar button item
+
+- (UIBarButtonItem *)saveBarButton {
+    UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithTitle:@"Simpan"
+                                                                   style:UIBarButtonItemStyleDone
+                                                                  target:self
+                                                                  action:@selector(didTapSaveButton:)];
+    return saveButton;
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
+- (UIBarButtonItem *)loadingBarButton {
+    UIActivityIndicatorView *indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    [indicatorView startAnimating];
+    UIBarButtonItem *loadingButton = [[UIBarButtonItem alloc] initWithCustomView:indicatorView];
+    return loadingButton;
 }
 
--(void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    [self cancel];
+#pragma mark - Attrbutes 
+
+- (NSDictionary *)textAttributes {
+    NSMutableParagraphStyle *style = [NSMutableParagraphStyle new];
+    style.lineSpacing = 4.0;
+    NSDictionary *attributes = @{
+        NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:12],
+        NSParagraphStyleAttributeName  : style,
+        NSForegroundColorAttributeName : [UIColor colorWithRed:117.0/255.0 green:117.0/255.0 blue:117.0/255.0 alpha:1],
+    };
+    return attributes;
 }
 
 #pragma mark - Memory Management
--(void)dealloc{
-    NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
-}
-- (void)didReceiveMemoryWarning
-{
+
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - View Action
--(IBAction)tap:(id)sender
-{
-    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
-        UIBarButtonItem *btn = (UIBarButtonItem *)sender;
-        switch (btn.tag) {
-            case 11:
-                //Done Button
-                [self requestAction:_dataInput];
-                break;
-            case 12:
-            {
-                [self.navigationController popViewControllerAnimated:YES];
-            }
-            default:
-                break;
-        }
-    }
+
+- (void)didTapSaveButton:(id)sender {
+    [self requestAction];
 }
 
 #pragma mark - TableView Data Source
--(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
-    view.backgroundColor = [UIColor clearColor];
-    return view;
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return self.listMenu.count;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    NSInteger listMenuCount = _listMenu.count;
-    return listMenuCount;
-}
-
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-
-    UITableViewCell* cell = nil;
-    NSString *cellid = kTKPDSETTINGNOTIFICATIONCELL_IDENTIFIER;
-    
-    cell = (SettingNotificationCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    SettingNotificationCell *cell = [tableView dequeueReusableCellWithIdentifier:kTKPDSETTINGNOTIFICATIONCELL_IDENTIFIER];
     if (cell == nil) {
         cell = [SettingNotificationCell newcell];
-        ((SettingNotificationCell*)cell).delegate = self;
+        cell.delegate = self;
     }
+    cell.indexPath = indexPath;
+    
+    cell.notificationName.text = self.listMenu[indexPath.row];
+    
+    NSString *description = self.listDescription[indexPath.row];
+    cell.notificationDetail.attributedText = [[NSAttributedString alloc] initWithString:description attributes:self.textAttributes];
 
-    ((SettingNotificationCell*)cell).indexPath = indexPath;
-    ((SettingNotificationCell*)cell).notificationName.text = _listMenu[indexPath.row];
-
-    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 4.0;
-    
-    NSDictionary *attributes = @{
-                                 NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:12],
-                                 NSParagraphStyleAttributeName  : style,
-                                 NSForegroundColorAttributeName : [UIColor colorWithRed:117.0/255.0
-                                                                                  green:117.0/255.0
-                                                                                   blue:117.0/255.0
-                                                                                  alpha:1],
-                                 };
-    
-    ((SettingNotificationCell*)cell).notificationDetail.attributedText = [[NSAttributedString alloc] initWithString:_listDescription[indexPath.row]
-                                                                                                         attributes:attributes];
-    NSInteger listSwitchStatusCount = _listSwitchStatus.count;
-    ((SettingNotificationCell*)cell).settingSwitch.on = (listSwitchStatusCount>0)?[_listSwitchStatus[indexPath.row]boolValue]:YES;
-    
+    if (self.listSwitchStatus.count > 0) {
+        cell.settingSwitch.on = [self.listSwitchStatus[indexPath.row] boolValue];
+    } else {
+        cell.settingSwitch.on = YES;
+    }
     return cell;
 }
 
--(void)SettingNotificationCell:(SettingNotificationCell *)cell withIndexPath:(NSIndexPath *)indexPath
-{
-    switch (indexPath.row) {
-        case 0:
-        {
-            //newslatter
-            [_dataInput setObject:@(cell.settingSwitch.on) forKey:kTKPDPROFILESETTING_APIFLAGNEWSLATTERKEY];
-            break;
-        }
-        case 1:
-        {
-            //review
-            [_dataInput setObject:@(cell.settingSwitch.on) forKey:kTKPDPROFILESETTING_APIFLAGREVIEWKEY];
-            break;
-        }
-        case 2:
-        {
-            //product discuss
-            [_dataInput setObject:@(cell.settingSwitch.on) forKey:kTKPDPROFILESETTING_APIFLAGTALKPRODUCTKEY];
-            break;
-        }
-        case 3:
-        {
-            //message
-            [_dataInput setObject:@(cell.settingSwitch.on) forKey:kTKPDPROFILESETTING_APIFLAGMESSAGEKEY];
-            break;
-        }
-        case 4:
-        {
-            //admin message
-            [_dataInput setObject:@(cell.settingSwitch.on) forKey:kTKPDPROFILESETTING_APIFLAGADMINMESSAGEKEY];
-            break;
-        }
-        default:
-            break;
+- (void)SettingNotificationCell:(SettingNotificationCell *)cell withIndexPath:(NSIndexPath *)indexPath {
+    NSString *isOn = cell.settingSwitch.on? @"1": @"0";
+    if (indexPath.row == 0) {
+        [self.parameters setObject:isOn forKey:@"flag_newsletter"];
+    } else if (indexPath.row == 1) {
+        [self.parameters setObject:isOn forKey:@"flag_review"];
+    } else if (indexPath.row == 2) {
+        [self.parameters setObject:isOn forKey:@"flag_talk_product"];
+    } else if (indexPath.row == 3) {
+        [self.parameters setObject:isOn forKey:@"flag_message"];
+    } else if (indexPath.row == 4) {
+        [self.parameters setObject:isOn forKey:@"flag_admin_message"];
     }
 }
-
 
 #pragma mark - Request + Mapping
--(void)cancel
-{
-    [_request cancel];
-    _request = nil;
-    [_objectManager.operationQueue cancelAllOperations];
-    _objectManager = nil;
+
+- (void)request {
+    self.navigationItem.rightBarButtonItem.enabled = NO;
+    __weak typeof(self) weakSelf = self;
+    [self.networkManager requestWithBaseUrl:[NSString v4Url]
+                                       path:@"/v4/people/get_notification.pl"
+                                     method:RKRequestMethodGET
+                                  parameter:@{}
+                                    mapping:[NotificationForm mapping]
+                                  onSuccess:^(RKMappingResult *mappingResult,
+                                              RKObjectRequestOperation *operation) {
+                                      weakSelf.navigationItem.rightBarButtonItem = self.saveBarButton;
+                                      [weakSelf didReceiveMappingResult:mappingResult];
+                                  } onFailure:^(NSError *errorResult) {
+                                      [weakSelf didReceiverErrorMessage:errorResult.localizedDescription];
+                                  }];
 }
 
--(void)configureRestKit
-{
-    _objectManager = [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[NotificationForm class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[NotificationFormResult class]];
-
-    RKObjectMapping *notificationMapping = [RKObjectMapping mappingForClass:[NotificationFormNotif class]];
-    [notificationMapping addAttributeMappingsFromDictionary:@{kTKPDPROFILESETTING_APIFLAGNEWSLATTERKEY:kTKPDPROFILESETTING_APIFLAGNEWSLATTERKEY,
-                                                              kTKPDPROFILESETTING_APIFLAGREVIEWKEY:kTKPDPROFILESETTING_APIFLAGREVIEWKEY,
-                                                              kTKPDPROFILESETTING_APIFLAGTALKPRODUCTKEY:kTKPDPROFILESETTING_APIFLAGTALKPRODUCTKEY,
-                                                              kTKPDPROFILESETTING_APIFLAGMESSAGEKEY:kTKPDPROFILESETTING_APIFLAGMESSAGEKEY,
-                                                              kTKPDPROFILESETTING_APIFLAGADMINMESSAGEKEY:kTKPDPROFILESETTING_APIFLAGADMINMESSAGEKEY
-                                                              }];
-    
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDPROFILESETTING_APINOTIFICATIONKEY toKeyPath:kTKPDPROFILESETTING_APINOTIFICATIONKEY withMapping:notificationMapping]];
-    
-    // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDPROFILE_SETTINGAPIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectManager addResponseDescriptor:responseDescriptor];
-}
-
--(void)request
-{
-    if (_request.isExecuting) return;
-    
-    _saveBarButtonItem.enabled = NO;
-    
-    UserAuthentificationManager *user = [UserAuthentificationManager new];
-    
-    NSDictionary* param = @{kTKPDPROFILE_APIACTIONKEY:kTKPDPROFILE_APIGETEMAILNOTIFKEY,
-                            kTKPDPROFILE_APIUSERIDKEY : user.getUserId,
-                            };
-    _requestCount ++;
-    
-    _request = [_objectManager appropriateObjectRequestOperationWithObject:self
-                                                                    method:RKRequestMethodPOST
-                                                                      path:kTKPDPROFILE_SETTINGAPIPATH
-                                                                parameters:[param encrypt]];
-    
-    NSTimer *timer;
-    /* file doesn't exist or hasn't been updated */
-    [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestSuccess:mappingResult withOperation:operation];
-        _saveBarButtonItem.enabled = YES;
-        [timer invalidate];
-        
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        /** failure **/
-        [self requestFailure:error];
-        _saveBarButtonItem.enabled = YES;
-        [self.view setUserInteractionEnabled:YES];
-        [timer invalidate];
-    }];
-    
-    [_operationQueue addOperation:_request];
-    
-    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
-                                            target:self
-                                          selector:@selector(requestTimeout)
-                                          userInfo:nil
-                                           repeats:NO];
-    
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-}
-
--(void)requestSuccess:(id)object withOperation:(RKObjectRequestOperation *)operation
-{
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id stat = [result objectForKey:@""];
-    _form = stat;
-    BOOL status = [_form.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
+- (void)didReceiveMappingResult:(RKMappingResult *)mappingResult {
+    NotificationForm *response = [mappingResult.dictionary objectForKey:@""];
+    BOOL status = [response.status isEqualToString:@"OK"];
     if (status) {
-        [self requestProcess:object];
-    }
-}
-
--(void)requestFailure:(id)object
-{
-    [self requestProcess:object];
-}
-
--(void)requestProcess:(id)object
-{
-    if (object) {
-        if ([object isKindOfClass:[RKMappingResult class]]) {
-            NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            id stat = [result objectForKey:@""];
-            _form = stat;
-            BOOL status = [_form.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-            
-            if (status) {
-                if (!_form.message_error) {
-                    [self setDefaultData:_form.result.notification];
-                    [_tableView reloadData];
-                } else {
-                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:_form.message_error delegate:self];
-                    [alert show];
-                    
-                    self.navigationItem.rightBarButtonItem = _saveBarButtonItem;
-                    [_saveBarButtonItem setEnabled:YES];
-                }
-            }
-        }
-        else{
-            
-            [self cancelAction];
-            NSError *error = object;
-            if (!([error code] == NSURLErrorCancelled)){
-                NSString *errorDescription = error.localizedDescription;
-                UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-                [errorAlert show];
-            }
+        if (response.message_error) {
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:response.message_error delegate:self];
+            [alert show];
+        } else {
+            NotificationFormNotif *notification = response.result.notification;
+            [self.listSwitchStatus addObject:notification.flag_newsletter];
+            [self.listSwitchStatus addObject:notification.flag_review];
+            [self.listSwitchStatus addObject:notification.flag_talk_product];
+            [self.listSwitchStatus addObject:notification.flag_message];
+            [self.listSwitchStatus addObject:notification.flag_admin_message];
+            [self.tableView reloadData];
         }
     }
 }
 
--(void)requestTimeout
-{
-    [self cancel];
+- (void)didReceiverErrorMessage:(NSString *)errorMessage {
+    self.navigationItem.rightBarButtonItem.enabled = YES;
+    UIAlertView *errorAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:errorMessage  delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+    [errorAlert show];
 }
 
 #pragma mark Request Action
--(void)cancelAction
-{
-    [_requestAction cancel];
-    _requestAction = nil;
-    [_objectManagerAction.operationQueue cancelAllOperations];
-    _objectManagerAction = nil;
+
+- (void)requestAction {
+    self.navigationItem.rightBarButtonItem = self.loadingBarButton;
+    __weak typeof(self) weakSelf = self;
+    self.networkManager.timeInterval = 100.0;
+    [self.networkManager requestWithBaseUrl:[NSString v4Url]
+                                       path:@"/v4/action/people/edit_notification.pl"
+                                     method:RKRequestMethodPOST
+                                  parameter:self.parameters
+                                    mapping:[ProfileSettings mapping]
+                                  onSuccess:^(RKMappingResult *mappingResult,
+                                              RKObjectRequestOperation *operation) {
+                                      weakSelf.navigationItem.rightBarButtonItem = self.saveBarButton;
+                                      [weakSelf didReceiveActionMappingResult:mappingResult];
+                                  } onFailure:^(NSError *errorResult) {
+                                      weakSelf.navigationItem.rightBarButtonItem = self.saveBarButton;
+                                      [weakSelf didReceiverErrorMessage:errorResult.localizedDescription];
+                                  }];
 }
 
-- (void)configureActionRestKit
-{
-    //TraktAPIClient *client = [TraktAPIClient sharedClient];
-    _objectManagerAction = [RKObjectManager sharedClient];
-    
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ProfileSettings class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ProfileSettingsResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{kTKPDPROFILE_APIISSUCCESSKEY:kTKPDPROFILE_APIISSUCCESSKEY}];
-    
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    
-    // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDPROFILE_PROFILESETTINGAPIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectManagerAction addResponseDescriptor:responseDescriptor];
-}
-
-- (void)requestAction:(id)userinfo
-{
-    if (_requestAction.isExecuting) return;
-    
-    NSDictionary *data = userinfo;
-        
-    _saveBarButtonItem.enabled = NO;
-    
-    NSDictionary* param = @{kTKPDPROFILE_APIACTIONKEY:kTKPDPROFILE_APIEDITNOTIFICATIONKEY,
-                            kTKPDPROFILESETTING_APIFLAGNEWSLATTERKEY : [data objectForKey:kTKPDPROFILESETTING_APIFLAGNEWSLATTERKEY]?:_form.result.notification.flag_newsletter,
-                            kTKPDPROFILESETTING_APIFLAGREVIEWKEY : [data objectForKey:kTKPDPROFILESETTING_APIFLAGREVIEWKEY]?:_form.result.notification.flag_review,
-                            kTKPDPROFILESETTING_APIFLAGTALKPRODUCTKEY :[data objectForKey:kTKPDPROFILESETTING_APIFLAGTALKPRODUCTKEY]?:_form.result.notification.flag_talk_product,
-                            kTKPDPROFILESETTING_APIFLAGMESSAGEKEY:[data objectForKey:kTKPDPROFILESETTING_APIFLAGMESSAGEKEY]?:_form.result.notification.flag_message,
-                            kTKPDPROFILESETTING_APIFLAGADMINMESSAGEKEY:[data objectForKey:kTKPDPROFILESETTING_APIFLAGADMINMESSAGEKEY]?:_form.result.notification.flag_admin_message
-                            };
-    _requestCountAction ++;
-    
-    _requestAction = [_objectManagerAction appropriateObjectRequestOperationWithObject:self
-                                                                                method:RKRequestMethodPOST
-                                                                                  path:kTKPDPROFILE_PROFILESETTINGAPIPATH
-                                                                            parameters:[param encrypt]];
-    NSTimer *timer;
-    //[_cachecontroller clearCache];
-    /* file doesn't exist or hasn't been updated */
-    [_requestAction setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestSuccessAction:mappingResult withOperation:operation];
-        _saveBarButtonItem.enabled = YES;
-        [timer invalidate];
-        
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        /** failure **/
-        [self requestFailureAction:error];
-        _saveBarButtonItem.enabled = YES;
-        [timer invalidate];
-    }];
-    
-    [_operationQueue addOperation:_requestAction];
-    
-    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutAction) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-}
-
--(void)requestSuccessAction:(id)object withOperation:(RKObjectRequestOperation*)operation
-{
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id stat = [result objectForKey:@""];
-    ProfileSettings *setting = stat;
-    BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if (status) {
-        [self requestProcessAction:object];
-    }
-}
-
-
--(void)requestTimeoutAction
-{
-    [self cancelAction];
-}
-
-
--(void)requestFailureAction:(id)object
-{
-    [self requestProcessAction:object];
-}
-
--(void)requestProcessAction:(id)object
-{
-    if (object) {
-        if ([object isKindOfClass:[RKMappingResult class]]) {
-            NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            id stat = [result objectForKey:@""];
-            ProfileSettings *setting = stat;
-            BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-            
-            if (status) {
-                if (setting.result.is_success == 1) {
-                    StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:setting.message_status
-                                                                                     delegate:self];
-                    [alert show];
-                    
-                    [self.navigationController popViewControllerAnimated:YES];
-                } else {
-                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:setting.message_error
-                                                                                   delegate:self];
-                    [alert show];
-
-                    self.navigationItem.rightBarButtonItem = _saveBarButtonItem;
-                    [_saveBarButtonItem setEnabled:YES];
-                }
-            }
-        }
-        else{
-            
-            [self cancelAction];
-            NSError *error = object;
-            if (!([error code] == NSURLErrorCancelled)){
-                NSString *errorDescription = error.localizedDescription;
-                UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE
-                                                                    message:errorDescription
-                                                                   delegate:self
-                                                          cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE
-                                                          otherButtonTitles:nil];
-                [errorAlert show];
-            }
-        }
-    }
-}
-
-
-#pragma mark - Methods
-
--(void)setDefaultData:(id)object
-{
-    NotificationFormNotif *notif = object;
-    if (notif) {
-        [_listSwitchStatus addObject:notif.flag_newsletter];
-        [_listSwitchStatus addObject:notif.flag_review];
-        [_listSwitchStatus addObject:notif.flag_talk_product];
-        [_listSwitchStatus addObject:notif.flag_message];
-        [_listSwitchStatus addObject:notif.flag_admin_message];
+- (void)didReceiveActionMappingResult:(RKMappingResult *)mappingResult {
+    ProfileSettings *response = [mappingResult.dictionary objectForKey:@""];
+    if (response.message_status) {
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:response.message_status
+                                                                         delegate:self];
+        [alert show];
+        [self.navigationController popViewControllerAnimated:YES];
+    } else if (response.message_error) {
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:response.message_error
+                                                                       delegate:self];
+        [alert show];
     }
 }
 
