@@ -370,8 +370,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     __weak typeof(self) weakSelf = self;
 
     TKPDSecureStorage *storage = [TKPDSecureStorage standardKeyChains];
-    [storage setKeychainWithValue:accountInfo.userId withKey:@"tmp_user_id"];
-    
     NSString *securityQuestionUUID = [storage keychainDictionary][@"securityQuestionUUID"]?:@"";
     
     NSDictionary *header = @{
