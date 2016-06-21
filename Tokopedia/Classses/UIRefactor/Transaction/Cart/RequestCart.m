@@ -120,7 +120,8 @@
     NSString * dropshipString = [[tempDropshipStringList valueForKey:@"description"] componentsJoinedByString:@"*~*"];
     
     NSString * partialString = [[tempPartialStringList valueForKey:@"description"] componentsJoinedByString:@"*~*"];
-    NSNumber *deposit = [[NSNumberFormatter IDRFormarter] numberFromString:saldo];
+    NSString *saldoWithIDR = [NSString stringWithFormat:@"Rp %@",saldo];
+    NSNumber *deposit = [[NSNumberFormatter IDRFormarter] numberFromString:saldoWithIDR];
     
     NSString *usedSaldo = @"0";
     if (isUsingSaldo) {
@@ -134,7 +135,7 @@
                                       @"dropship_str"   :dropshipString,
                                       @"partial_str"    :partialString,
                                       @"use_deposit"    :@(isUsingSaldo),
-                                      @"deposit_amt"    :usedSaldo,
+                                      @"deposit_amt"    :usedSaldo?:@"",
                                       @"lp_flag"        :@"1",
                                       };
     
@@ -158,7 +159,7 @@
          NSDictionary *result = successResult.dictionary;
          TransactionAction *cart = [result objectForKey:@""];
          
-         if (cart.data.parameter != nil) {
+         if (cart.data.parameter != nil && cart.message_error.count == 0) {
              NSArray *successMessages = cart.message_status;
              if (successMessages.count > 0) {
                  [StickyAlertView showSuccessMessage:successMessages];

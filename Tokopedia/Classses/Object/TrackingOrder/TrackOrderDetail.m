@@ -13,6 +13,7 @@
 + (RKObjectMapping *)mapping {
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[self class]];
     [mapping addAttributeMappingsFromArray:@[@"shipper_city", @"shipper_name", @"receiver_city", @"send_date", @"receiver_name", @"service_code", @"delivered"]];
+    
     return mapping;
 }
 
