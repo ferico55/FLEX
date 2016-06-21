@@ -315,18 +315,30 @@ ImageSearchRequestDelegate
 }
 
 -(void)setDefaultSort{
-    [_params setObject:[self defaultSortID] forKey:@"ob"];
+    [_params setObject:[self defaultSortID] forKey:[self defaultSortKey]];
     _selectedSort = [self defaultSortDynamicFilter];
-    _selectedSortParam = @{@"ob":[self defaultSortID]};
+    _selectedSortParam = @{[self defaultSortKey]:[self defaultSortID]};
 }
 
 -(ListOption*)defaultSortDynamicFilter{
     ListOption *sort = [ListOption new];
-    sort.name = @"Paling Sesuai";
-    sort.value = @"23";
-    sort.key = @"ob";
-    sort.input_type = @"checkbox";
+    sort.name = [self defaultSortName];
+    sort.value = [self defaultSortID];
+    sort.key = [self defaultSortKey];
+    sort.input_type = [self defaultSortInputType];
     return sort;
+}
+
+-(NSString *)defaultSortInputType{
+    return @"checkbox";
+}
+
+-(NSString*)defaultSortName{
+    return @"Paling Sesuai";
+}
+
+-(NSString*)defaultSortKey{
+    return @"ob";
 }
 
 -(NSString*)defaultSortID{
