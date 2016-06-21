@@ -47,5 +47,15 @@
 #import "ShopContainerViewController.h"
 
 #import <GoogleMaps/GoogleMaps.h>
+
+#import "TPAnalytics.h"
+#import "EtalaseList.h"
+#import "MHVerticalTabBarController.h"
+#import "EtalaseViewController.h"
+//#import "FilterLocationViewController.h"
+#import "GeneralTableViewController.h"
+#import "DBManager.h"
+#import "AddressObj.h"
+#import "FilterCategoryViewCell.h"
+#import "TKPObjectMapping.h"
 #import <UIView+BlocksKit.h>
-#import <BlocksKit/BlocksKit.h>

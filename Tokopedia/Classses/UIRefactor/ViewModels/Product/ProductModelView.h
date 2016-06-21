@@ -15,6 +15,7 @@
 @property (strong, nonatomic) NSString *productPrice;
 @property (strong, nonatomic) NSString *productPriceIDR;
 @property (strong, nonatomic) NSString *productShop;
+@property (strong, nonatomic) NSString *shopLocation;
 @property (strong, nonatomic) NSString *productThumbUrl;
 @property (strong, nonatomic) NSString *productReview;
 @property (strong, nonatomic) NSString *productTalk;
@@ -31,5 +32,7 @@
 
 @property BOOL isProductBuyAble;
 @property BOOL isGoldShopProduct;
+@property BOOL isWholesale;
+@property BOOL isProductPreorder;
 
 @end

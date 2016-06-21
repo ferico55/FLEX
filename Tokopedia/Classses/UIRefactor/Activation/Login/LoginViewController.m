@@ -852,7 +852,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 - (void)checkSecurityQuestion {
     if(FBTweakValue(@"Security", @"Question", @"Enabled", YES)) {
         TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-        [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_USERIDKEY];
+//        [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_USERIDKEY];
         
         //    SecurityQuestionViewController *controller = [[SecurityQuestionViewController alloc] initWithNibName:@"SecurityQuestionViewController" bundle:nil];
         SecurityQuestionViewController* controller = [SecurityQuestionViewController new];

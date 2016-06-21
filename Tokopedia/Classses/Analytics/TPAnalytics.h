@@ -50,4 +50,7 @@
 + (void)trackSuccessSubmitReview:(NSInteger)status;
 + (void)trackSearchInboxReview;
 
++ (void)trackPushNotificationAccepted:(BOOL)accepted;
++ (void)trackOpenPushNotificationSetting;
+
 @end

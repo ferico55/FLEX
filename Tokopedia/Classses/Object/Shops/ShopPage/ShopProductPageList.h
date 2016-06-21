@@ -32,7 +32,7 @@
 @property(nonatomic, strong) NSString* product_sold_count;
 @property(nonatomic, strong) NSString* product_returnable;
 @property(nonatomic, strong) NSString* shop_location;
-@property(nonatomic, strong) NSString* product_preorder;
+//@property(nonatomic, strong) NSString* product_preorder;
 @property(nonatomic, strong) NSString* product_normal_price;
 @property(nonatomic, strong) NSString* product_image_300;
 @property(nonatomic, strong) NSString* shop_name;
@@ -40,6 +40,13 @@
 @property(nonatomic, strong) NSString* shop_is_owner;
 @property(nonatomic, strong) NSString* product_url;
 @property(nonatomic, strong) NSString* product_name;
+
+@property NSInteger product_wholesale;
+@property NSInteger product_preorder;
+
+@property (nonatomic, assign) BOOL is_product_preorder;
+@property (nonatomic, assign) BOOL is_product_wholesale;
+
 
 @property (nonatomic, strong) ProductModelView *viewModel;
 

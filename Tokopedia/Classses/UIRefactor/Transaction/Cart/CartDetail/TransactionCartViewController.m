@@ -2409,7 +2409,7 @@
 
 -(void)doRequestVoucher{
     [self isLoading:YES];
-    NSString *voucherCode = [_dataInput objectForKey:API_VOUCHER_CODE_KEY];
+    NSString *voucherCode = [_dataInput objectForKey:API_VOUCHER_CODE_KEY]?:@"";
     [RequestCart fetchVoucherCode:voucherCode success:^(TransactionVoucher *data) {
         if (data.message_error.count > 0) {
             
@@ -2488,7 +2488,7 @@
                                                            DATA_TYPE_KEY:@(TYPE_CART_SUMMARY),
                                                            DATA_CART_GATEWAY_KEY :selectedGateway?:[TransactionCartGateway new],
                                                            DATA_CC_KEY : data.credit_card_data?:[CCData new],
-                                                           API_VOUCHER_CODE_KEY: [_dataInput objectForKey:API_VOUCHER_CODE_KEY]
+                                                           API_VOUCHER_CODE_KEY: [_dataInput objectForKey:API_VOUCHER_CODE_KEY]?:@""
                                                            };
                                 [_delegate didFinishRequestCheckoutData:userInfo];
                                 [self isLoading:NO];
@@ -2536,7 +2536,7 @@
                                 saldo:_saldoTokopediaAmountTextField.text
                           voucherCode:voucherCode success:^(TransactionActionResult *data) {
                               
-                              [TransactionCartWebViewViewController pushToppayFrom:self data:data gatewayID:[_cartSummary.gateway integerValue] gatewayName:data.parameter[@"gateway_code"]];
+                              [TransactionCartWebViewViewController pushToppayFrom:self data:data gatewayID:[gatewayID integerValue] gatewayName:gateway.gateway_name];
                               _popFromToppay = YES;
                               [self isLoading:NO];
 

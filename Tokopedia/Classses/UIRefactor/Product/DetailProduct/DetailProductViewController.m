@@ -1286,7 +1286,7 @@ OtherProductDelegate
         return [_detailProductPostUrl isEqualToString:@""] ? kTKPDDETAILPRODUCT_APIPATH : _detailProductPostUrl;
     else if(tag == CTagOtherProduct)
         //return [_detailProductPostUrl isEqualToString:@""] ? kTKPDDETAILPRODUCT_APIPATH : _detailProductPostUrl;
-        return @"/search/v1/product";
+        return @"/search/v2.1/product";
     else if(tag == CTagFavorite)
         return @"action/favorite-shop.pl";
     else if(tag == CTagUnWishList)
@@ -1492,41 +1492,8 @@ OtherProductDelegate
         _objectOtherProductManager = [RKObjectManager sharedClient:[NSString aceUrl]];
         
         
-        RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[SearchAWS class]];
-        [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                            kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY
-                                                            }];
-        
-        
-        RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[SearchAWSResult class]];
-        
-        [resultMapping addAttributeMappingsFromDictionary:@{kTKPDSEARCH_APIHASCATALOGKEY:kTKPDSEARCH_APIHASCATALOGKEY,
-                                                            kTKPDSEARCH_APISEARCH_URLKEY:kTKPDSEARCH_APISEARCH_URLKEY,
-                                                            @"st":@"st",@"redirect_url" : @"redirect_url", @"department_id" : @"department_id", @"share_url" : @"share_url"
-                                                            }];
-        
-        RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[SearchAWSProduct class]];
-        //product
-        [listMapping addAttributeMappingsFromArray:@[@"product_image", @"product_image_full", @"product_price", @"product_name", @"product_shop", @"product_id", @"product_review_count", @"product_talk_count", @"shop_gold_status", @"shop_name", @"is_owner",@"shop_location", @"shop_lucky" ]];
-        
-        // paging mapping
-        RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
-        [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDSEARCH_APIURINEXTKEY:kTKPDSEARCH_APIURINEXTKEY}];
-        
-        //add list relationship
-        [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-        
-        
-        RKRelationshipMapping *productsRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"products" toKeyPath:@"products" withMapping:listMapping];
-        
-        [resultMapping addPropertyMapping:productsRel];
-        
-        // add page relationship
-        RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDSEARCH_APIPAGINGKEY toKeyPath:kTKPDSEARCH_APIPAGINGKEY withMapping:pagingMapping];
-        [resultMapping addPropertyMapping:pageRel];
-        
         // register mappings with the provider using a response descriptor
-        RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+        RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[SearchAWS mapping]
                                                                                                 method:[self getRequestMethod:CTagOtherProduct]
                                                                                            pathPattern:[self getPath:CTagOtherProduct]
                                                                                                keyPath:@""
@@ -2351,11 +2318,11 @@ OtherProductDelegate
     
     SearchResultViewController *vc = [SearchResultViewController new];
     NSString *deptid = breadcrumb.department_id;
-    vc.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : deptid?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY,kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
+    vc.data =@{@"sc" : deptid?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY,kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
     SearchResultViewController *vc1 = [SearchResultViewController new];
-    vc1.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : deptid?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY,kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
+    vc1.data =@{@"sc" : deptid?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY,kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
     SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
-    vc2.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : deptid?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY,kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
+    vc2.data =@{@"sc" : deptid?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY,kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
     NSArray *viewcontrollers = @[vc,vc1,vc2];
     
     TKPDTabNavigationController *c = [TKPDTabNavigationController new];
@@ -2908,7 +2875,7 @@ OtherProductDelegate
             SearchAWS *otherProduct = [result objectForKey:@""];
             BOOL status = [otherProduct.status isEqualToString:kTKPDREQUEST_OKSTATUS];
             if (status) {
-                _otherProductObj = [NSArray arrayWithArray:otherProduct.result.products];
+                _otherProductObj = [NSArray arrayWithArray:otherProduct.data.products];
                 [self setOtherProducts];
             }
         }

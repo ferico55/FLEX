@@ -131,13 +131,13 @@ typedef enum TagRequest {
     [_collectionView addSubview:_refreshControl];
     
     [_flowLayout setFooterReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 50)];
-    [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
+//    [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
     [_collectionView setCollectionViewLayout:_flowLayout];
     [_collectionView setAlwaysBounceVertical:YES];
     
 //    [_collectionView setContentInset:UIEdgeInsetsMake(5, 0, 150 * heightMultiplier, 0)];
     
-    [_flowLayout setItemSize:CGSizeMake((productCollectionViewCellWidthNormal * widthMultiplier), (productCollectionViewCellHeightNormal * heightMultiplier))];
+//    [_flowLayout setItemSize:CGSizeMake((productCollectionViewCellWidthNormal * widthMultiplier), (productCollectionViewCellHeightNormal * heightMultiplier))];
     
     [self.view setFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, [[UIScreen mainScreen]bounds].size.height)];
     
@@ -190,11 +190,13 @@ typedef enum TagRequest {
     
     WishListObjectList *list = [_product objectAtIndex:indexPath.row];
     [cell setViewModel:list.viewModel];
+    
+    __weak typeof(self) weakSelf = self;
     cell.tappedBuyButton = ^(ProductWishlistCell* tappedCell){
         TransactionATCViewController *transactionVC = [TransactionATCViewController new];
         transactionVC.productID = list.product_id;
         transactionVC.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:transactionVC animated:YES];
+        [weakSelf.navigationController pushViewController:transactionVC animated:YES];
     };
     
     cell.tappedTrashButton = ^(ProductWishlistCell* tappedCell) {
@@ -230,8 +232,13 @@ typedef enum TagRequest {
                                     parameter:@{@"product_id" : list.product_id, @"user_id" : [_userManager getUserId]}
                                       mapping:[self actionRemoveWishlistMapping]
                                     onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                        [_product removeObjectAtIndex:indexPath.row];
-                                        [_collectionView deleteItemsAtIndexPaths:@[indexPath]];
+                                        [_collectionView performBatchUpdates:^ {
+                                            [_product removeObjectAtIndex:indexPath.row];
+                                            [_collectionView deleteItemsAtIndexPaths:@[indexPath]];
+                                        } completion:^(BOOL finished) {
+                                            [_collectionView reloadData];
+                                        }];
+                                        
                                     } onFailure:nil];
 }
 
@@ -265,10 +272,10 @@ typedef enum TagRequest {
 }
 
 
-- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
-    
-    return UIEdgeInsetsMake(10, 10, 10, 10);
-}
+//- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
+//    
+//    return UIEdgeInsetsMake(10, 10, 10, 10);
+//}
 
 #pragma mark - Memory Management
 -(void)dealloc{
@@ -345,7 +352,7 @@ typedef enum TagRequest {
                                                  KTKPDSHOP_NAME,
                                                  KTKPDPRODUCT_NAME,
                                                  @"shop_lucky",
-                                                 @"product_available"
+                                                 @"product_available", @"product_wholesale", @"product_preorder"
                                                  ]];
     
     //relation

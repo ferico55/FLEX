@@ -84,7 +84,12 @@
 -(BOOL) webView:(UIWebView *)inWeb shouldStartLoadWithRequest:(NSURLRequest *)inRequest navigationType:(UIWebViewNavigationType)inType {
     if ( inType == UIWebViewNavigationTypeLinkClicked && _isLPWebView) {
         [[UIApplication sharedApplication] openURL:[inRequest URL]];
+        
         return NO;
+    }
+    
+    if(self.onTapLinkWithUrl) {
+        self.onTapLinkWithUrl([inRequest URL]);
     }
     
     return YES;

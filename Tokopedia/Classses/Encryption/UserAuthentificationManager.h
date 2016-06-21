@@ -7,9 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Breadcrumb.h"
 #import "ReputationDetail.h"
-#import "CategoryDetail.h"
+//#import "Tokopedia-Swift.h"
+
+@class CategoryDetail;
 
 @interface UserAuthentificationManager : NSObject {
     id userLoginData;

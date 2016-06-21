@@ -11,6 +11,7 @@
 #import "NSString+MD5.h"
 #import "activation.h"
 #import "MainViewController.h"
+#import "Tokopedia-swift.h"
 
 @implementation UserAuthentificationManager {
     NSMutableDictionary *_auth;
@@ -96,11 +97,11 @@
     return [NSString stringWithFormat: @"%@", shopHasTerms]?:@"";
 }
 
--(Breadcrumb*)getLastProductAddCategory
+-(CategoryDetail *)getLastProductAddCategory
 {
-    Breadcrumb *category = [Breadcrumb new];
-    category.department_id = [_auth objectForKey:LAST_CATEGORY_VALUE]?:@"";
-    category.department_name = [_auth objectForKey:LAST_CATEGORY_NAME]?:@"";
+    CategoryDetail *category = [[CategoryDetail alloc] init];
+    category.categoryId = [NSString stringWithFormat:@"%@", [_auth objectForKey:LAST_CATEGORY_VALUE]];
+    category.name = [NSString stringWithFormat:@"%@", [_auth objectForKey:LAST_CATEGORY_NAME]];
     return category;
 }
 

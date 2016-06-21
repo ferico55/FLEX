@@ -109,7 +109,7 @@
     [priceAlertCell.contentView removeConstraint:priceAlertCell.getConstraintX];
     [priceAlertCell.contentView removeConstraint:priceAlertCell.getConstraintY];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notificationUpdatePriceAlert:) name:@"TkpdUpdatePriceAlert" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notificationUpdatePriceAlert:) name:@"UpdatePriceAlert" object:nil];
     
     _request = [PriceAlertRequest new];
     

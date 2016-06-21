@@ -10,4 +10,11 @@
 
 @implementation NotificationForm
 
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[self class]];
+    [mapping addAttributeMappingsFromArray:@[@"message_error", @"message_status", @"status", @"server_process_time"]];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data" toKeyPath:@"result" withMapping:[NotificationFormResult mapping]]];
+    return mapping;
+}
+
 @end

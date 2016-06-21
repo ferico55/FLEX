@@ -189,7 +189,7 @@
                                                  priceAlertPrice:[self getPriceAlert]
                                                        onSuccess:^(GeneralActionResult *result) {
                                                            [self setLoadingDoingAction:NO];
-                                                           [[NSNotificationCenter defaultCenter] postNotificationName:@"TkpdUpdatePriceAlert" object:nil userInfo:@{@"price":[self formatRupiah:[txtPrice.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]]}];
+                                                           [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdatePriceAlert" object:nil userInfo:@{@"price":[self formatRupiah:[txtPrice.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]]}];
                                                            
                                                            StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringSuccessEditPriceAlert] delegate:self];
                                                            [stickyAlertView show];

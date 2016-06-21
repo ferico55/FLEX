@@ -123,7 +123,8 @@
     NSString * dropshipString = [[tempDropshipStringList valueForKey:@"description"] componentsJoinedByString:@"*~*"];
     
     NSString * partialString = [[tempPartialStringList valueForKey:@"description"] componentsJoinedByString:@"*~*"];
-    NSNumber *deposit = [[NSNumberFormatter IDRFormarter] numberFromString:saldo];
+    NSString *saldoWithIDR = [NSString stringWithFormat:@"Rp %@",saldo];
+    NSNumber *deposit = [[NSNumberFormatter IDRFormarter] numberFromString:saldoWithIDR];
     
     NSString *usedSaldo = @"0";
     if (isUsingSaldo) {
@@ -137,7 +138,7 @@
                                       @"dropship_str"   :dropshipString,
                                       @"partial_str"    :partialString,
                                       @"use_deposit"    :@(isUsingSaldo),
-                                      @"deposit_amt"    :usedSaldo,
+                                      @"deposit_amt"    :usedSaldo?:@"",
                                       @"lp_flag"        :@"1",
                                       };
     
@@ -157,24 +158,24 @@
                                 method:RKRequestMethodGET
                              parameter:param
                                mapping:[TransactionAction mapping]
-                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                 NSDictionary *result = successResult.dictionary;
-                                 TransactionAction *cart = [result objectForKey:@""];
-                                 
-                                 if (cart.data.parameter != nil) {
-                                     NSArray *successMessages = cart.message_status;
-                                     if (successMessages.count > 0) {
-                                         [StickyAlertView showSuccessMessage:successMessages];
-                                     }
-                                     success(cart.data);
-                                 } else {
-                                     [StickyAlertView showErrorMessage:cart.message_error?:@[@"Error"]];
-                                     error(nil);
-                                 }
-                                 
-                             } onFailure:^(NSError *errorResult) {
-                                 error(errorResult);
-                             }];
+     onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+         NSDictionary *result = successResult.dictionary;
+         TransactionAction *cart = [result objectForKey:@""];
+         
+         if (cart.data.parameter != nil && cart.message_error.count == 0) {
+             NSArray *successMessages = cart.message_status;
+             if (successMessages.count > 0) {
+                 [StickyAlertView showSuccessMessage:successMessages];
+             }
+             success(cart.data);
+         } else {
+             [StickyAlertView showErrorMessage:cart.message_error?:@[@"Error"]];
+             error(nil);
+         }
+         
+     } onFailure:^(NSError *errorResult) {
+         error(errorResult);
+     }];
 }
 
 

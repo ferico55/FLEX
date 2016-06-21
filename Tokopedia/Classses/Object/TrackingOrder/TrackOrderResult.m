@@ -10,4 +10,15 @@
 
 @implementation TrackOrderResult
 
+-(void)setTrack_shipping:(TrackOrder *)track_shipping{
+    _track_order = track_shipping;
+}
+
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[self class]];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"track_order" toKeyPath:@"track_order" withMapping:[TrackOrder mapping]]];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"track_shipping" toKeyPath:@"track_shipping" withMapping:[TrackOrder mapping]]];
+    return mapping;
+}
+
 @end
