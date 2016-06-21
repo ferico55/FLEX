@@ -8,6 +8,7 @@
 
 #import "RejectReasonProductDescriptionViewController.h"
 #import "TKPDTextView.h"
+#import "RejectOrderRequest.h"
 
 @interface RejectReasonProductDescriptionViewController ()<UIScrollViewDelegate, UITextViewDelegate>
 @property (strong, nonatomic) IBOutlet UIImageView *productImage;
@@ -20,10 +21,15 @@
 
 @end
 
-@implementation RejectReasonProductDescriptionViewController
+@implementation RejectReasonProductDescriptionViewController{
+    RejectOrderRequest* rejectOrderRequest;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    rejectOrderRequest = [RejectOrderRequest new];
+    
     UIBarButtonItem *doneButton = [[UIBarButtonItem alloc]
                                        initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                        target:self action:@selector(doneButtonClicked:)];
@@ -61,8 +67,24 @@
 }
 
 -(IBAction)doneButtonClicked:(id)sender{
-    [self.delegate didChangeProductDescription:_orderProduct.product_description withEmptyStock:_orderProduct.emptyStock];
-    [self.navigationController popViewControllerAnimated:YES];
+    if(_productDescriptionTextView.text && ![_productDescriptionTextView.text isEqualToString:@""]){
+        _orderProduct.product_description = _productDescriptionTextView.text;
+        [rejectOrderRequest requestActionChangeProductDescriptionWithId:_orderProduct.product_id
+                                                            description:_orderProduct.product_description
+                                                              onSuccess:^(NSString *isSuccess) {
+                                                                  if([isSuccess boolValue]){
+                                                                      [self.delegate didChangeProductDescription:_orderProduct.product_description withEmptyStock:_orderProduct.emptyStock];
+                                                                      [self.navigationController popViewControllerAnimated:YES];
+                                                                  }
+                                                              } onFailure:^(NSError *error) {
+                                                                  StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Kendala koneksi internet"] delegate:self];
+                                                                  [alert show];
+                                                              }];
+    }else{
+        StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Deskripsi produk tidak boleh kosong"] delegate:self];
+        [alert show];
+    }
+    
 }
 - (IBAction)emptyStockButtonClicked:(id)sender {
     if(!_orderProduct.emptyStock){

@@ -22,5 +22,5 @@ GeneralAction : NSObject
 
 + (RKObjectMapping*)mapping;
 
-+ (RKObjectMapping *)mapping;
++ (RKObjectMapping*)generalMapping;
 @end

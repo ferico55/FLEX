@@ -12,4 +12,8 @@
 @interface RejectOrderRequest : NSObject
 -(void)requestForOrderRejectionReasonOnSuccess:(void (^)(NSArray*))successCallback
                                    onFailure:(void (^)(NSError *))errorCallback;
+-(void)requestActionChangeProductDescriptionWithId:(NSString*)productId
+                                       description:(NSString*)description
+                                         onSuccess:(void (^)(NSString*))successCallback
+                                         onFailure:(void (^)(NSError *))errorCallback;
 @end

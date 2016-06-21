@@ -21,4 +21,11 @@
     return generalActionResultMapping;
 }
 
++(RKObjectMapping *)generalMapping{
+    RKObjectMapping *generalActionResultMapping = [RKObjectMapping mappingForClass:[GeneralActionResult class]];
+    
+    [generalActionResultMapping addAttributeMappingsFromArray:@[@"is_success"]];
+    
+    return generalActionResultMapping;
+}
 @end
