@@ -304,7 +304,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
             successCallback:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                 _barbuttonsignin.enabled = YES;
                 [self unsetLoggingInState];
-                [self requestSuccessLogin:successResult withOperation:operation];
+                [self onLoginSuccess:successResult.dictionary[@""] email:email];
             }
             failureCallback:^(NSError *error) {
                 _barbuttonsignin.enabled = YES;
@@ -450,24 +450,8 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     [_loginButton setTitle:@"Masuk" forState:UIControlStateNormal];
 }
 
-- (void)requestSuccessLogin:(RKMappingResult *)mappingResult withOperation:(RKObjectRequestOperation*)operation
-{
-    Login *login = mappingResult.dictionary[@""];
-
-    BOOL status = [login.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    if (status) {
-        [self onLoginSuccess:login];
-    }
-    else {
-        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Sign in gagal silahkan coba lagi."]
-                                                                       delegate:self];
-        [alert show];
-        [self cancelLogin];
-    }
-}
-
-- (void)onLoginSuccess:(Login *)login {
-    [self storeCredentialToKeychain:login];
+- (void)onLoginSuccess:(Login *)login email:(NSString *)email {
+    [self storeCredentialToKeychain:login email:email];
     [self trackUserSignIn:login];
 
     [self notifyUserDidLogin];
@@ -532,7 +516,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];
 }
 
-- (void)storeCredentialToKeychain:(Login *)login {
+- (void)storeCredentialToKeychain:(Login *)login email:(NSString *)email {
     TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
     [secureStorage setKeychainWithValue:@(login.result.is_login) withKey:kTKPD_ISLOGINKEY];
     [secureStorage setKeychainWithValue:login.result.user_id withKey:kTKPD_USERIDKEY];
@@ -555,7 +539,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     [secureStorage setKeychainWithValue:login.result.msisdn_show_dialog withKey:kTKPDLOGIN_API_MSISDN_SHOW_DIALOG_KEY];
     [secureStorage setKeychainWithValue:login.result.device_token_id withKey:kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY];
     [secureStorage setKeychainWithValue:login.result.shop_has_terms withKey:kTKPDLOGIN_API_HAS_TERM_KEY];
-    [secureStorage setKeychainWithValue:[_activation objectForKey:kTKPDACTIVATION_DATAEMAILKEY] withKey:kTKPD_USEREMAIL];
+    [secureStorage setKeychainWithValue:email withKey:kTKPD_USEREMAIL];
 
     if(login.result.user_reputation != nil) {
         ReputationDetail *reputation = login.result.user_reputation;
@@ -843,13 +827,10 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
             successCallback:^(RKMappingResult *result, RKObjectRequestOperation *operation) {
                 Login *login = result.dictionary[@""];
 
-                TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
-
                 [[GIDSignIn sharedInstance] signOut];
                 [[GIDSignIn sharedInstance] disconnect];
 
-                [self onLoginSuccess:login];
-                [secureStorage setKeychainWithValue:userProfile.email withKey:kTKPD_USEREMAIL];
+                [self onLoginSuccess:login email:userProfile.email];
             }
             failureCallback:^(NSError *error) {
                 [StickyAlertView showErrorMessage:@[@"Sign in gagal silahkan coba lagi."]];
