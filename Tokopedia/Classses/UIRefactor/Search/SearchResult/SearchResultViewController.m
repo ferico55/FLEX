@@ -314,34 +314,90 @@ ImageSearchRequestDelegate
     
 }
 
--(void)setDefaultSort{
-    [_params setObject:[self defaultSortID] forKey:[self defaultSortKey]];
-    _selectedSort = [self defaultSortDynamicFilter];
-    _selectedSortParam = @{[self defaultSortKey]:[self defaultSortID]};
+-(NSString*)getSearchSource{
+    return [_data objectForKey:@"type"]?:@"";
 }
 
--(ListOption*)defaultSortDynamicFilter{
+-(NSString*)searchProductSource{
+    return @"search_product";
+}
+
+-(NSString*)searchCatalogSource{
+    return @"search_catalog";
+}
+
+-(void)setDefaultSort{
+    if ([[self getSearchSource] isEqualToString:[self searchProductSource]]) {
+        [self setDefaultSortProduct];
+    }
+    if ([[self getSearchSource] isEqualToString:[self searchCatalogSource]]) {
+        [self setDefaultSortCatalog];
+    }
+    if ([[self getSearchSource] isEqualToString:[self directoryType]]) {
+        [self setDefaultSortDirectory];
+    }
+}
+
+-(void)setDefaultSortDirectory{
+    [_params setObject:[self defaultSortDirectoryID] forKey:[self defaultSortDirectoryKey]];
+    _selectedSort = [self defaultSortDirectory];
+    _selectedSortParam = @{[self defaultSortDirectoryKey]:[self defaultSortDirectoryID]};
+}
+
+-(ListOption*)defaultSortDirectory{
     ListOption *sort = [ListOption new];
-    sort.name = [self defaultSortName];
-    sort.value = [self defaultSortID];
-    sort.key = [self defaultSortKey];
-    sort.input_type = [self defaultSortInputType];
+    sort.value = [self defaultSortDirectoryID];
+    sort.key = [self defaultSortDirectoryKey];
     return sort;
 }
 
--(NSString *)defaultSortInputType{
-    return @"checkbox";
-}
-
--(NSString*)defaultSortName{
-    return @"Paling Sesuai";
-}
-
--(NSString*)defaultSortKey{
+-(NSString*)defaultSortDirectoryKey{
     return @"ob";
 }
 
--(NSString*)defaultSortID{
+-(NSString*)defaultSortDirectoryID{
+    return @"1";
+}
+
+-(void)setDefaultSortCatalog{
+    [_params setObject:[self defaultSortCatalogID] forKey:[self defaultSortCatalogKey]];
+    _selectedSort = [self defaultSortCatalog];
+    _selectedSortParam = @{[self defaultSortCatalogKey]:[self defaultSortCatalogID]};
+}
+
+-(ListOption*)defaultSortCatalog{
+    ListOption *sort = [ListOption new];
+    sort.value = [self defaultSortCatalogID];
+    sort.key = [self defaultSortCatalogKey];
+    return sort;
+}
+
+-(NSString*)defaultSortCatalogKey{
+    return @"ob";
+}
+
+-(NSString*)defaultSortCatalogID{
+    return @"1";
+}
+
+-(void)setDefaultSortProduct{
+    [_params setObject:[self defaultSortProductID] forKey:[self defaultSortProductKey]];
+    _selectedSort = [self defaultSortProduct];
+    _selectedSortParam = @{[self defaultSortProductKey]:[self defaultSortProductID]};
+}
+
+-(ListOption*)defaultSortProduct{
+    ListOption *sort = [ListOption new];
+    sort.value = [self defaultSortProductID];
+    sort.key = [self defaultSortProductKey];
+    return sort;
+}
+
+-(NSString*)defaultSortProductKey{
+    return @"ob";
+}
+
+-(NSString*)defaultSortProductID{
     return @"23";
 }
 

@@ -276,19 +276,9 @@ static NSString const *rows = @"12";
 
 -(ListOption*)defaultSortDynamicFilter{
     ListOption *sort = [ListOption new];
-    sort.name = [self defaultSortName];
     sort.value = [self defaultSortID];
     sort.key = [self defaultSortKey];
-    sort.input_type = [self defaultSortInputType];
     return sort;
-}
-
--(NSString *)defaultSortInputType{
-    return @"checkbox";
-}
-
--(NSString*)defaultSortName{
-    return @"Paling Sesuai";
 }
 
 -(NSString*)defaultSortKey{
@@ -296,7 +286,7 @@ static NSString const *rows = @"12";
 }
 
 -(NSString*)defaultSortID{
-    return @"23";
+    return @"1";
 }
 
 - (void)registerAllNib {
