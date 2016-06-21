@@ -360,9 +360,7 @@
         NSString* status = [mappedResult performSelector:@selector(status)];
         
             if([status isEqualToString:@"OK"]) {
-                if (successCallback) {
-                    successCallback(mappingResult, operation);
-                }
+                successCallback(mappingResult, operation);
             } else if ([status isEqualToString:@"INVALID_REQUEST"]) {
                 
             } else if ([status isEqualToString:@"UNDER_MAINTENANCE"]) {
@@ -372,9 +370,7 @@
                 [[NSNotificationCenter defaultCenter] postNotificationName:TkpdNotificationForcedLogout object:nil userInfo:@{}];
             }
         } else {
-            if (successCallback) {
-                successCallback(mappingResult, operation);
-            }
+            successCallback(mappingResult, operation);
         }
         
         [_requestTimer invalidate];

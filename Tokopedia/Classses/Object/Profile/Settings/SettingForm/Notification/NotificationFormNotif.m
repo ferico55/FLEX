@@ -10,4 +10,10 @@
 
 @implementation NotificationFormNotif
 
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[self class]];
+    [mapping addAttributeMappingsFromArray:@[@"flag_talk_product", @"flag_admin_message", @"flag_message", @"flag_review", @"flag_newsletter"]];
+    return mapping;
+}
+
 @end
