@@ -708,27 +708,30 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                                              } else {
                                                  [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];
 
-                                                 CreatePasswordViewController *controller = [CreatePasswordViewController new];
-
-                                                 controller.userProfile = userProfile;
-
-                                                 controller.onPasswordCreated = ^{
-                                                     [controller dismissViewControllerAnimated:YES completion:nil];
+                                                 [self createPasswordWithUserProfile:userProfile onPasswordCreated:^{
                                                      [weakSelf authenticateToMarketplaceWithAccountInfo:accountInfo
                                                                                              oAuthToken:oAuthToken
                                                                                         successCallback:successCallback
                                                                                         failureCallback:failureCallback];
-                                                 };
+                                                 }];
 
-                                                 UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
-                                                 navigationController.navigationBar.translucent = NO;
-
-                                                 [self.navigationController presentViewController:navigationController animated:YES completion:nil];
                                              }
                                          }
                                          failureCallback:failureCallback];
                      }
                      onFailure:failureCallback];
+}
+
+- (void)createPasswordWithUserProfile:(CreatePasswordUserProfile *)userProfile onPasswordCreated:(void (^)())passwordCreated {
+    CreatePasswordViewController *controller = [CreatePasswordViewController new];
+
+    controller.userProfile = userProfile;
+    controller.onPasswordCreated = passwordCreated;
+
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
+    navigationController.navigationBar.translucent = NO;
+
+    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
 }
 
 - (void)loginButtonDidLogOut:(FBSDKLoginButton *)loginButton {

@@ -387,6 +387,7 @@
                                                         [self trackRegistration];
 
                                                         if (_onPasswordCreated) {
+                                                            [self dismissViewControllerAnimated:YES completion:nil];
                                                             _onPasswordCreated();
                                                         } else {
                                                             [self requestLogin];
