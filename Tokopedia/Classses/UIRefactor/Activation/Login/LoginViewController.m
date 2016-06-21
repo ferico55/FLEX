@@ -103,12 +103,16 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     [super viewDidLoad];
     _userManager = [[UserAuthentificationManager alloc]init];
     _networkManager = [TokopediaNetworkManager new];
+    _networkManager.isParameterNotEncrypted = YES;
 
     _marketplaceNetworkManager = [TokopediaNetworkManager new];
     _marketplaceNetworkManager.isParameterNotEncrypted = YES;
 
     _getUserInfoNetworkManager = [TokopediaNetworkManager new];
+    _getUserInfoNetworkManager.isParameterNotEncrypted = YES;
+
     _thirdPartySignInNetworkManager = [TokopediaNetworkManager new];
+    _thirdPartySignInNetworkManager.isParameterNotEncrypted = YES;
 
     UIImage *iconToped = [UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE];
     UIImageView *topedImageView = [[UIImageView alloc] initWithImage:iconToped];
@@ -323,26 +327,27 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
      */
     NSDictionary *header = [self basicAuthorizationHeader];
 
-    [_networkManager requestNotObfuscatedWithBaseUrl:[NSString accountsUrl]
-                                                path:@"/token"
-                                              method:RKRequestMethodPOST
-                                              header:header
-                                           parameter:parameters
-                                             mapping:[OAuthToken mapping]
-                                           onSuccess:^(RKMappingResult *result, RKObjectRequestOperation *operation) {
-                                               OAuthToken *oAuthToken = result.dictionary[@""];
-                                               [self getUserInfoWithOAuthToken:oAuthToken
-                                                               successCallback:^(RKMappingResult *mappingResult, RKObjectRequestOperation *operation) {
-                                                                   AccountInfo *accountInfo = mappingResult.dictionary[@""];
+    [_networkManager
+            requestWithBaseUrl:[NSString accountsUrl]
+                          path:@"/token"
+                        method:RKRequestMethodPOST
+                        header:header
+                     parameter:parameters
+                       mapping:[OAuthToken mapping]
+                     onSuccess:^(RKMappingResult *result, RKObjectRequestOperation *operation) {
+                         OAuthToken *oAuthToken = result.dictionary[@""];
+                         [self getUserInfoWithOAuthToken:oAuthToken
+                                         successCallback:^(RKMappingResult *mappingResult, RKObjectRequestOperation *operation) {
+                                             AccountInfo *accountInfo = mappingResult.dictionary[@""];
 
-                                                                   [self authenticateToMarketplaceWithAccountInfo:accountInfo
-                                                                                                       oAuthToken:oAuthToken
-                                                                                                  successCallback:successCallback
-                                                                                                  failureCallback:failureCallback];
-                                                               }
-                                                               failureCallback:failureCallback];
-                                           }
-                                           onFailure:failureCallback];
+                                             [self authenticateToMarketplaceWithAccountInfo:accountInfo
+                                                                                 oAuthToken:oAuthToken
+                                                                            successCallback:successCallback
+                                                                            failureCallback:failureCallback];
+                                         }
+                                         failureCallback:failureCallback];
+                     }
+                     onFailure:failureCallback];
 }
 
 - (void)getUserInfoWithOAuthToken:(OAuthToken *)oAuthToken
@@ -352,14 +357,14 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
                              @"Authorization": [NSString stringWithFormat:@"%@ %@", oAuthToken.tokenType, oAuthToken.accessToken]
                              };
 
-    [_getUserInfoNetworkManager requestNotObfuscatedWithBaseUrl:[NSString accountsUrl]
-                                                           path:@"/info"
-                                                         method:RKRequestMethodGET
-                                                         header:header
-                                                      parameter:@{}
-                                                        mapping:[AccountInfo mapping]
-                                                      onSuccess:successCallback
-                                                      onFailure:failureCallback];
+    [_getUserInfoNetworkManager requestWithBaseUrl:[NSString accountsUrl]
+                                              path:@"/info"
+                                            method:RKRequestMethodGET
+                                            header:header
+                                         parameter:@{}
+                                           mapping:[AccountInfo mapping]
+                                         onSuccess:successCallback
+                                         onFailure:failureCallback];
 }
 
 - (void)authenticateToMarketplaceWithAccountInfo:(AccountInfo *)accountInfo
@@ -699,51 +704,52 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                                 @"email": userProfile.email
                                 };
 
-    [_thirdPartySignInNetworkManager requestNotObfuscatedWithBaseUrl:[NSString accountsUrl]
-                                                                path:@"/token"
-                                                              method:RKRequestMethodPOST
-                                                              header:[self basicAuthorizationHeader]
-                                                           parameter:parameter
-                                                             mapping:[OAuthToken mapping]
-                                                           onSuccess:^(RKMappingResult *mappingResult, RKObjectRequestOperation *operation) {
-                                                               OAuthToken *oAuthToken = mappingResult.dictionary[@""];
+    [_thirdPartySignInNetworkManager
+            requestWithBaseUrl:[NSString accountsUrl]
+                          path:@"/token"
+                        method:RKRequestMethodPOST
+                        header:[self basicAuthorizationHeader]
+                     parameter:parameter
+                       mapping:[OAuthToken mapping]
+                     onSuccess:^(RKMappingResult *mappingResult, RKObjectRequestOperation *operation) {
+                         OAuthToken *oAuthToken = mappingResult.dictionary[@""];
 
-                                                               [self getUserInfoWithOAuthToken:mappingResult.dictionary[@""]
-                                                                               successCallback:^(RKMappingResult *mappingResult, RKObjectRequestOperation *operation) {
-                                                                                   AccountInfo *accountInfo = mappingResult.dictionary[@""];
+                         [self getUserInfoWithOAuthToken:mappingResult.dictionary[@""]
+                                         successCallback:^(RKMappingResult *mappingResult, RKObjectRequestOperation *operation) {
+                                             AccountInfo *accountInfo = mappingResult.dictionary[@""];
 
-                                                                                   if (accountInfo.createdPassword) {
-                                                                                       [self authenticateToMarketplaceWithAccountInfo:accountInfo
-                                                                                                                           oAuthToken:oAuthToken
-                                                                                                                      successCallback:successCallback
-                                                                                                                      failureCallback:failureCallback];
-                                                                                   } else {
-                                                                                       TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
-                                                                                       [secureStorage setKeychainWithValue:@(NO) withKey:kTKPD_ISLOGINKEY];
+                                             if (accountInfo.createdPassword) {
+                                                 [self authenticateToMarketplaceWithAccountInfo:accountInfo
+                                                                                     oAuthToken:oAuthToken
+                                                                                successCallback:successCallback
+                                                                                failureCallback:failureCallback];
+                                             } else {
+                                                 TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+                                                 [secureStorage setKeychainWithValue:@(NO) withKey:kTKPD_ISLOGINKEY];
 
-                                                                                       [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];
+                                                 [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];
 
-                                                                                       CreatePasswordViewController *controller = [CreatePasswordViewController new];
+                                                 CreatePasswordViewController *controller = [CreatePasswordViewController new];
 
-                                                                                       controller.userProfile = userProfile;
+                                                 controller.userProfile = userProfile;
 
-                                                                                       controller.onPasswordCreated = ^{
-                                                                                           [controller dismissViewControllerAnimated:YES completion:nil];
-                                                                                           [weakSelf authenticateToMarketplaceWithAccountInfo:accountInfo
-                                                                                                                                   oAuthToken:oAuthToken
-                                                                                                                              successCallback:successCallback
-                                                                                                                              failureCallback:failureCallback];
-                                                                                       };
+                                                 controller.onPasswordCreated = ^{
+                                                     [controller dismissViewControllerAnimated:YES completion:nil];
+                                                     [weakSelf authenticateToMarketplaceWithAccountInfo:accountInfo
+                                                                                             oAuthToken:oAuthToken
+                                                                                        successCallback:successCallback
+                                                                                        failureCallback:failureCallback];
+                                                 };
 
-                                                                                       UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
-                                                                                       navigationController.navigationBar.translucent = NO;
+                                                 UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
+                                                 navigationController.navigationBar.translucent = NO;
 
-                                                                                       [self.navigationController presentViewController:navigationController animated:YES completion:nil];
-                                                                                   }
-                                                                               }
-                                                                               failureCallback:failureCallback];
-                                                           }
-                                                           onFailure:failureCallback];
+                                                 [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+                                             }
+                                         }
+                                         failureCallback:failureCallback];
+                     }
+                     onFailure:failureCallback];
 }
 
 - (void)loginButtonDidLogOut:(FBSDKLoginButton *)loginButton {
