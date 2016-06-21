@@ -41,16 +41,42 @@
 -(IBAction)tap:(id)sender
 {
     UIActionSheet* popup = nil;
-    if([_viewModelProduct.productErrorMessage isEqualToString:@""] ||
-       [_viewModelProduct.productErrorMessage isEqualToString:@"0"] ||
-       _viewModelProduct.productErrorMessage == nil ||
-       [_viewModelProduct.productErrorMessage isEqualToString:@"Maksimal pembelian produk ini adalah 999 item"]) {
-        popup = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Batal" destructiveButtonTitle:@"Hapus" otherButtonTitles:
-                                @"Edit",
-                                nil];
-    }
-    else {
-        popup = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Batal" destructiveButtonTitle:@"Hapus" otherButtonTitles:nil];
+    
+    if (_viewModelProduct.productErrors.count > 0) {
+        if ([_viewModelProduct.productErrors[0].name isEqualToString:@"product-less-than-min"] ||
+            [_viewModelProduct.productErrors[0].name isEqualToString:@"product-more-than-max"]) {
+            popup = [[UIActionSheet alloc] initWithTitle:nil
+                                                delegate:self
+                                       cancelButtonTitle:@"Batal"
+                                  destructiveButtonTitle:@"Hapus"
+                                       otherButtonTitles:@"Edit", nil];
+        } else {
+            popup = [[UIActionSheet alloc] initWithTitle:nil
+                                                delegate:self
+                                       cancelButtonTitle:@"Batal"
+                                  destructiveButtonTitle:@"Hapus"
+                                       otherButtonTitles:nil];
+        }
+    } else if (_viewModelCart.errors.count > 0) {
+        if ([_viewModelCart.errors[0].name isEqualToString:@"shopping-limit-exceeded"]) {
+            popup = [[UIActionSheet alloc] initWithTitle:nil
+                                                delegate:self
+                                       cancelButtonTitle:@"Batal"
+                                  destructiveButtonTitle:@"Hapus"
+                                       otherButtonTitles:@"Edit", nil];
+        } else {
+            popup = [[UIActionSheet alloc] initWithTitle:nil
+                                                delegate:self
+                                       cancelButtonTitle:@"Batal"
+                                  destructiveButtonTitle:@"Hapus"
+                                       otherButtonTitles:nil];
+        }
+    } else {
+        popup = [[UIActionSheet alloc] initWithTitle:nil
+                                            delegate:self
+                                   cancelButtonTitle:@"Batal"
+                              destructiveButtonTitle:@"Hapus"
+                                   otherButtonTitles:@"Edit", nil];
     }
     
     [popup showFromRect:_editButton.frame inView:self animated:YES];
@@ -157,30 +183,15 @@
     if (viewModel.productErrors.count > 0) {
         Errors *error = viewModel.productErrors[0];
         
-        UIFont *boldFont = [UIFont fontWithName:@"Gotham Medium" size:14.0f];
-        UIFont *font = [UIFont fontWithName:@"Gotham Book" size:13.0f];
-        
-        NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-        paragraphStyle.paragraphSpacing = 0.25 * boldFont.lineHeight;
-        
-        NSMutableAttributedString *title = [[NSMutableAttributedString alloc] initWithString:error.title
-                                                                                  attributes:@{NSFontAttributeName: [UIFont fontWithName:@"Gotham Medium" size:14.0f],
-                                                                                               NSParagraphStyleAttributeName:paragraphStyle}];
-        paragraphStyle.paragraphSpacing = 0.25 * font.lineHeight;
-        
-        NSAttributedString *errorDesc = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"\n%@", error.desc]
-                                                                        attributes:@{NSFontAttributeName: [UIFont fontWithName:@"Gotham Book" size:13.0f],
-                                                                                     NSParagraphStyleAttributeName:paragraphStyle}];
-        
-        [title appendAttributedString:errorDesc];
-        
-        CGSize maximumLabelSize = CGSizeMake([[UIScreen mainScreen] bounds].size.width,9999);
+        NSString *errorText = [NSString stringWithFormat:@"%@\n\n%@", error.title, error.desc];
+        CGSize maximumLabelSize = CGSizeMake(250,9999);
         NSStringDrawingContext *context = [NSStringDrawingContext new];
-        CGSize expectedLabelSize = [title boundingRectWithSize:maximumLabelSize
-                                                       options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
-                                                       context:context].size;
+        CGSize expectedLabelSize = [errorText boundingRectWithSize:maximumLabelSize
+                                                        options:NSStringDrawingUsesLineFragmentOrigin
+                                                     attributes:@{NSFontAttributeName:[UIFont fontWithName:@"Gotham Book" size:14.0f]}
+                                                        context:context].size;
+        _errorLabel.text = errorText;
         _errorViewHeightConstraint.constant = expectedLabelSize.height + 16;
-        _errorLabel.attributedText = title;
     } else {
         _errorViewHeightConstraint.constant = 0;
     }

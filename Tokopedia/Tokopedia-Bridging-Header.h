@@ -47,5 +47,5 @@
 #import "ShopContainerViewController.h"
 
 #import <GoogleMaps/GoogleMaps.h>
-
+#import <UIView+BlocksKit.h>
 #import <BlocksKit/BlocksKit.h>

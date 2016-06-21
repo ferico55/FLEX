@@ -465,8 +465,8 @@
 
     if (section < _list.count)
     {
-        if (_list[section].errors.count > 0 && ([_list[section].errors[0].name isEqualToString:@"shop-closed"])) {
-            NSString *string = [NSString stringWithFormat:@"%@\n%@", _list[section].errors[0].title, _list[section].errors[0].desc];
+        if (_list[section].errors.count > 0) {
+            NSString *string = [NSString stringWithFormat:@"%@\n\n%@", _list[section].errors[0].title, _list[section].errors[0].desc];
             return 44 + [self getLabelHeightWithText:string];
         } else {
             return 44;
@@ -1043,18 +1043,24 @@
         if ([_list[i].cart_is_dropshipper integerValue] == 1) {
             if ([_list[i].cart_dropship_name isEqualToString:@""] || _list[i].cart_dropship_name==nil) {
                 isValid = NO;
+                _list[i].isDropshipperNameError = YES;
                 if (![messageError containsObject:ERRORMESSAGE_SENDER_NAME_NILL])
                     [messageError addObject:ERRORMESSAGE_SENDER_NAME_NILL];
+            } else {
+                _list[i].isDropshipperNameError = NO;
             }
             if ([_list[i].cart_dropship_phone isEqualToString:@""] || _list[i].cart_dropship_phone==nil) {
                 isValid = NO;
+                _list[i].isDropshipperPhoneError = YES;
                 if (![messageError containsObject:ERRORMESSAGE_SENDER_PHONE_NILL])
                     [messageError addObject:ERRORMESSAGE_SENDER_PHONE_NILL];
-            }
-            else if (_list[i].cart_dropship_phone.length < 6) {
+            } else if (_list[i].cart_dropship_phone.length < 6) {
                 isValid = NO;
+                _list[i].isDropshipperPhoneError = YES;
                 if (![messageError containsObject:@"Nomor telepon terlalu pendek, minimum 6 karakter."])
                     [messageError addObject:@"Nomor telepon terlalu pendek, minimum 6 karakter."];
+            } else {
+                _list[i].isDropshipperPhoneError = NO;
             }
         }
     }
@@ -1357,9 +1363,7 @@
                 [_dataInput setObject:voucherCode forKey:API_VOUCHER_CODE_KEY];
                 if ([CartValidation isValidInputVoucherCode:voucherCode]) {
                     [self doRequestVoucher];
-                }
-                else
-                {
+                } else {
                     [_dataInput removeObjectForKey:API_VOUCHER_CODE_KEY];
                 }
             }
@@ -2017,7 +2021,6 @@
         if (indexPath.row == 0) {
             return 0;
         }
-//            return [self errorLabelHeight:list];
         else if(indexPath.row <= list.cart_products.count) {
             ProductDetail *product = list.cart_products[indexPath.row-1];
 //            return [_tableView fd_heightForCellWithIdentifier:@"TransactionCartCellIdentifier"
@@ -2281,28 +2284,13 @@
     if (product.errors.count > 0) {
         Errors *error = product.errors[0];
         
-        UIFont *boldFont = [UIFont fontWithName:@"Gotham Medium" size:14.0f];
-        UIFont *font = [UIFont fontWithName:@"Gotham Book" size:13.0f];
-        
-        NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-        paragraphStyle.paragraphSpacing = 0.25 * boldFont.lineHeight;
-        
-        NSMutableAttributedString *title = [[NSMutableAttributedString alloc] initWithString:error.title
-                                                                                  attributes:@{NSFontAttributeName: [UIFont fontWithName:@"Gotham Medium" size:14.0f],
-                                                                                               NSParagraphStyleAttributeName:paragraphStyle}];
-        paragraphStyle.paragraphSpacing = 0.25 * font.lineHeight;
-        
-        NSAttributedString *errorDesc = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"\n%@", error.desc]
-                                                                        attributes:@{NSFontAttributeName: [UIFont fontWithName:@"Gotham Book" size:13.0f],
-                                                                                     NSParagraphStyleAttributeName:paragraphStyle}];
-        
-        [title appendAttributedString:errorDesc];
-        
+        NSString *errorText = [NSString stringWithFormat:@"%@\n\n%@", error.title, error.desc];
         CGSize maximumLabelSize = CGSizeMake(250,9999);
         NSStringDrawingContext *context = [NSStringDrawingContext new];
-        expectedErrorLabelSize = [title boundingRectWithSize:maximumLabelSize
-                                                       options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
-                                                       context:context].size;
+        expectedErrorLabelSize = [errorText boundingRectWithSize:maximumLabelSize
+                                                           options:NSStringDrawingUsesLineFragmentOrigin
+                                                        attributes:@{NSFontAttributeName:[UIFont fontWithName:@"Gotham Book" size:14.0f]}
+                                                           context:context].size;
         expectedErrorLabelSize.height = expectedErrorLabelSize.height + 16;
     } else {
         expectedErrorLabelSize.height = 0;
@@ -2358,6 +2346,15 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:EDIT_CART_INSURANCE_POST_NOTIFICATION_NAME object:nil userInfo:info];
         
         [self isLoading:NO];
+        
+        if (list[_indexSelectedShipment].errors.count > 0) {
+            Errors *error = list[_indexSelectedShipment].errors[0];
+            if ([error.name isEqualToString:@"courier-cannot-reach"]) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"ShowErrorMessageOnShippingPage"
+                                                                    object:nil
+                                                                  userInfo:@{@"errors":error}];
+            }
+        }
         
     } error:^(NSError *error) {
         [_noInternetConnectionView generateRequestErrorViewWithError:error];

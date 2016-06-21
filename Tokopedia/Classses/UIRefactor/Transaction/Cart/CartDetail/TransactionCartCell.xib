@@ -11,6 +11,7 @@
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
+            <string>GothamBook</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -33,17 +34,10 @@
                                     <constraint firstAttribute="width" constant="44" id="cag-hC-HbV"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zWN-Jd-VQe">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zWN-Jd-VQe">
                                 <rect key="frame" x="15" y="8" width="253" height="28"/>
-                                <attributedString key="attributedText">
-                                    <fragment content="Label">
-                                        <attributes>
-                                            <color key="NSColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="calibratedRGB"/>
-                                            <font key="NSFont" size="13" name="GothamBook"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="6" tighteningFactorForTruncation="0.0"/>
-                                        </attributes>
-                                    </fragment>
-                                </attributedString>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                                <color key="textColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>

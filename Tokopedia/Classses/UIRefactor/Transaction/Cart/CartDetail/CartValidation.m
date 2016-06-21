@@ -25,12 +25,12 @@
     }
     
     if (!isValid) {
-//        [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:errorMessages]
-//                                                 type:0
-//                                             duration:4.0
-//                                          buttonTitle:nil
-//                                          dismissable:YES
-//                                               action:nil];
+        [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:errorMessages]
+                                                 type:0
+                                             duration:4.0
+                                          buttonTitle:nil
+                                          dismissable:YES
+                                               action:nil];
     }
     
     return  isValid;

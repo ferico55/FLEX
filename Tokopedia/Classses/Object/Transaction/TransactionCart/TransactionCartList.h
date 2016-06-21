@@ -59,6 +59,9 @@
 @property (nonatomic, strong) NSString *cart_is_partial;
 @property (nonatomic, strong) NSArray<Errors *> *errors;
 
+@property BOOL isDropshipperNameError;
+@property BOOL isDropshipperPhoneError;
+
 @property (nonatomic, strong) ShopInfo *cart_shop;
 
 @property (nonatomic, strong) CartModelView *viewModel;

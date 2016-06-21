@@ -66,12 +66,15 @@
     [cell.textField setPlaceholder:placeholder];
     [cell.textField setText:text];
     
+    
     if ([placeholder isEqualToString:@"Nama Pengirim"]) {
         cell.textField.tag = indexPath.section + 1;
         cell.textField.keyboardType = UIKeyboardTypeDefault;
+        cell.errorIcon.hidden = !cart.isDropshipperNameError;
     } else {
         cell.textField.tag = -indexPath.section - 1;
         cell.textField.keyboardType = UIKeyboardTypeNumberPad;
+        cell.errorIcon.hidden = !cart.isDropshipperPhoneError;
     }
     
     return cell;

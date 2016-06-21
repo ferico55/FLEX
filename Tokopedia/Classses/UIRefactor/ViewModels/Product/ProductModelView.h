@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Errors.h"
 
 @interface ProductModelView : NSObject
 
@@ -25,7 +26,8 @@
 @property (strong, nonatomic) NSString *productNotes;
 @property (strong, nonatomic) NSString *productErrorMessage;
 
-@property (strong, nonatomic) NSArray *productErrors;
+@property (strong, nonatomic) NSArray<Errors *> *productErrors;
+@property (strong, nonatomic) NSArray<Errors *> *cartErrors;
 
 @property BOOL isProductBuyAble;
 @property BOOL isGoldShopProduct;

@@ -195,12 +195,12 @@
                                  NSDictionary *result = successResult.dictionary;
                                  TransactionVoucher *cart = [result objectForKey:@""];
 //                                     [StickyAlertView showErrorMessage:cart.message_error];
-//                                     [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:cart.message_error]
-//                                                                              type:0
-//                                                                          duration:4.0
-//                                                                       buttonTitle:nil
-//                                                                       dismissable:YES
-//                                                                            action:nil];
+                                     [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:cart.message_error]
+                                                                              type:0
+                                                                          duration:4.0
+                                                                       buttonTitle:nil
+                                                                       dismissable:YES
+                                                                            action:nil];
                                  success(cart);
                                  
                              } onFailure:^(NSError *errorResult) {
