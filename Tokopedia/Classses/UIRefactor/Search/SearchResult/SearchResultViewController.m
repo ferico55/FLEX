@@ -46,7 +46,7 @@
 #import "PromoCollectionReusableView.h"
 #import "PromoRequest.h"
 
-#import "Localytics.h"
+#import "TPLocalytics.h"
 #import "UIActivityViewController+Extensions.h"
 #import "NoResultReusableView.h"
 #import "SpellCheckRequest.h"
@@ -1065,6 +1065,14 @@ ImageSearchRequestDelegate
         _initialBreadcrumb = search.data.breadcrumb;
         if ([_delegate respondsToSelector:@selector(updateCategories:)]) {
             [_delegate updateCategories:search.data.breadcrumb];
+        }
+    }
+
+    if (_start == 0) {
+        if (search.data.products.count > 0) {
+            [Localytics tagEvent:@"Search Summary" attributes:@{@"Search Results Found": @"Yes"}];
+        } else {
+            [Localytics tagEvent:@"Search Summary" attributes:@{@"Search Results Found": @"No"}];
         }
     }
     

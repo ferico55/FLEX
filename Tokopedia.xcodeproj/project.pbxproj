@@ -1365,7 +1365,6 @@
 		8548B3A11D1A58F100D11E22 /* TrackOrderHistoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8548A9C61D1A58E900D11E22 /* TrackOrderHistoryCell.xib */; };
 		8548B3A21D1A58F100D11E22 /* TrackOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8548A9C81D1A58E900D11E22 /* TrackOrderViewController.m */; };
 		8548B3A31D1A58F100D11E22 /* TrackOrderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8548A9C91D1A58E900D11E22 /* TrackOrderViewController.xib */; };
-		8548B3A41D1A58F100D11E22 /* ATCPushLocalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 8548A9CD1D1A58E900D11E22 /* ATCPushLocalytics.m */; };
 		8548B3A51D1A58F100D11E22 /* RequestAddAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 8548A9CF1D1A58E900D11E22 /* RequestAddAddress.m */; };
 		8548B3A61D1A58F100D11E22 /* RequestATC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8548A9D11D1A58E900D11E22 /* RequestATC.m */; };
 		8548B3A71D1A58F100D11E22 /* RequestEditAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 8548A9D31D1A58E900D11E22 /* RequestEditAddress.m */; };
@@ -2374,6 +2373,7 @@
 		8548B7921D1A58F200D11E22 /* Tokopedia-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8548AE5F1D1A58F000D11E22 /* Tokopedia-Info.plist */; };
 		8548B7931D1A58F200D11E22 /* Tokopedia.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 8548AE611D1A58F000D11E22 /* Tokopedia.entitlements */; };
 		8548B7941D1A58F200D11E22 /* Tokopedia.xcworkspace in Resources */ = {isa = PBXBuildFile; fileRef = 8548AE621D1A58F000D11E22 /* Tokopedia.xcworkspace */; };
+		8548B7971D1A75B400D11E22 /* TPLocalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 8548B7961D1A75B400D11E22 /* TPLocalytics.m */; };
 		8565E1DA1B9401E600843388 /* GoogleOpenSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8565E1D81B9401E600843388 /* GoogleOpenSource.framework */; };
 		8565E1DB1B9401E600843388 /* GooglePlus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8565E1D91B9401E600843388 /* GooglePlus.framework */; };
 		8565E1DD1B94048800843388 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8565E1DC1B94048800843388 /* AddressBook.framework */; };
@@ -4819,8 +4819,6 @@
 		8548A9C71D1A58E900D11E22 /* TrackOrderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrackOrderViewController.h; sourceTree = "<group>"; };
 		8548A9C81D1A58E900D11E22 /* TrackOrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TrackOrderViewController.m; sourceTree = "<group>"; };
 		8548A9C91D1A58E900D11E22 /* TrackOrderViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TrackOrderViewController.xib; sourceTree = "<group>"; };
-		8548A9CC1D1A58E900D11E22 /* ATCPushLocalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATCPushLocalytics.h; sourceTree = "<group>"; };
-		8548A9CD1D1A58E900D11E22 /* ATCPushLocalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATCPushLocalytics.m; sourceTree = "<group>"; };
 		8548A9CE1D1A58E900D11E22 /* RequestAddAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestAddAddress.h; sourceTree = "<group>"; };
 		8548A9CF1D1A58E900D11E22 /* RequestAddAddress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestAddAddress.m; sourceTree = "<group>"; };
 		8548A9D01D1A58E900D11E22 /* RequestATC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestATC.h; sourceTree = "<group>"; };
@@ -5941,6 +5939,8 @@
 		8548AE601D1A58F000D11E22 /* Tokopedia-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Tokopedia-Prefix.pch"; sourceTree = "<group>"; };
 		8548AE611D1A58F000D11E22 /* Tokopedia.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Tokopedia.entitlements; sourceTree = "<group>"; };
 		8548AE621D1A58F000D11E22 /* Tokopedia.xcworkspace */ = {isa = PBXFileReference; lastKnownFileType = wrapper.workspace; path = Tokopedia.xcworkspace; sourceTree = "<group>"; };
+		8548B7951D1A75B400D11E22 /* TPLocalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPLocalytics.h; sourceTree = "<group>"; };
+		8548B7961D1A75B400D11E22 /* TPLocalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPLocalytics.m; sourceTree = "<group>"; };
 		8565E1D81B9401E600843388 /* GoogleOpenSource.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleOpenSource.framework; sourceTree = "<group>"; };
 		8565E1D91B9401E600843388 /* GooglePlus.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GooglePlus.framework; sourceTree = "<group>"; };
 		8565E1DC1B94048800843388 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
@@ -6096,6 +6096,8 @@
 			children = (
 				85489F851D1A58E400D11E22 /* TPAnalytics.h */,
 				85489F861D1A58E400D11E22 /* TPAnalytics.m */,
+				8548B7951D1A75B400D11E22 /* TPLocalytics.h */,
+				8548B7961D1A75B400D11E22 /* TPLocalytics.m */,
 			);
 			path = Analytics;
 			sourceTree = "<group>";
@@ -10477,8 +10479,6 @@
 		8548A9CB1D1A58E900D11E22 /* AddToCart */ = {
 			isa = PBXGroup;
 			children = (
-				8548A9CC1D1A58E900D11E22 /* ATCPushLocalytics.h */,
-				8548A9CD1D1A58E900D11E22 /* ATCPushLocalytics.m */,
 				8548A9CE1D1A58E900D11E22 /* RequestAddAddress.h */,
 				8548A9CF1D1A58E900D11E22 /* RequestAddAddress.m */,
 				8548A9D01D1A58E900D11E22 /* RequestATC.h */,
@@ -13787,7 +13787,6 @@
 				8548B0781D1A58F100D11E22 /* TxOrderPaymentEditBankAccount.m in Sources */,
 				8548AEB31D1A58F100D11E22 /* CatalogShopAWSProductResult.m in Sources */,
 				8548AF121D1A58F100D11E22 /* HotlistBannerQuery.m in Sources */,
-				8548B3A41D1A58F100D11E22 /* ATCPushLocalytics.m in Sources */,
 				8548AFA81D1A58F100D11E22 /* PromoResult.m in Sources */,
 				8548B3291D1A58F100D11E22 /* SettingPrivacyCell.m in Sources */,
 				8548B05D1D1A58F100D11E22 /* TransactionSummaryDetail.m in Sources */,
@@ -13860,6 +13859,7 @@
 				8548B0C31D1A58F100D11E22 /* AlertBaseUrl.m in Sources */,
 				8548B2A91D1A58F100D11E22 /* ProductReputationViewModel.m in Sources */,
 				8548AF111D1A58F100D11E22 /* HotlistBannerInfo.m in Sources */,
+				8548B7971D1A75B400D11E22 /* TPLocalytics.m in Sources */,
 				8548B2511D1A58F100D11E22 /* GalleryViewController.m in Sources */,
 				8548B3B91D1A58F100D11E22 /* TransactionCartEditViewController.m in Sources */,
 				8548B01D1D1A58F100D11E22 /* PosMinWeight.m in Sources */,
