@@ -37,6 +37,7 @@
 #import "ActivationRequest.h"
 #import "NSString+TPBaseUrl.h"
 #import "SecurityAnswer.h"
+#import "AuthenticationService.h"
 
 static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jdpts.apps.googleusercontent.com";
 
@@ -53,6 +54,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     UIBarButtonItem *_barbuttonsignin;
 
     UserAuthentificationManager *_userManager;
+    __weak UIViewController *_viewController;
 }
 
 @property (strong, nonatomic) IBOutlet TextField *emailTextField;
@@ -298,6 +300,9 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
                      password:(NSString *)pass
               successCallback:(void (^)(Login *))successCallback
               failureCallback:(void (^)(NSError *))failureCallback {
+    _viewController = self;
+    [AuthenticationService sharedService].viewController = self;
+
     NSDictionary *parameters = @{
                             @"grant_type": @"password",
                             @"username": email,
@@ -385,7 +390,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                  Login *login = successResult.dictionary[@""];
                                  if (login.result.security && ![login.result.security.allow_login isEqualToString:@"1"]) {
-                                     [self verifyPhoneNumber:login onPhoneNumberVerified:^{
+                                     [[AuthenticationService sharedService] verifyPhoneNumber:login onPhoneNumberVerified:^{
                                          [weakSelf authenticateToMarketplaceWithAccountInfo:accountInfo
                                                                                  oAuthToken:oAuthToken
                                                                     onAuthenticationSuccess:successCallback
@@ -546,26 +551,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     }
 }
 
-- (void)verifyPhoneNumber:(Login *)login onPhoneNumberVerified:(void (^)())verifiedCallback {
-    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-
-    SecurityQuestionViewController* controller = [SecurityQuestionViewController new];
-    controller.questionType1 = login.result.security.user_check_security_1;
-    controller.questionType2 = login.result.security.user_check_security_2;
-
-    controller.userID = login.result.user_id;
-    controller.deviceID = _userManager.getMyDeviceToken;
-    controller.successAnswerCallback = ^(SecurityAnswer* answer) {
-        [secureStorage setKeychainWithValue:answer.data.uuid withKey:@"securityQuestionUUID"];
-        verifiedCallback();
-    };
-
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
-    navigationController.navigationBar.translucent = NO;
-
-    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
-}
-
 #pragma mark - Delegate
 -(void)textFieldDidBeginEditing:(UITextField *)textField
 {
@@ -676,9 +661,9 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
     [_activityIndicator startAnimating];
 }
 
-- (void)getTokenAndAccountInfoWithUserProfile:(CreatePasswordUserProfile *)userProfile
-                              successCallback:(void (^)(Login *))successCallback
-                              failureCallback:(void (^)(NSError *))failureCallback {
+- (void)loginWithUserProfile:(CreatePasswordUserProfile *)userProfile
+             successCallback:(void (^)(Login *))successCallback
+             failureCallback:(void (^)(NSError *))failureCallback {
     __weak typeof(self) weakSelf = self;
 
     NSDictionary *parameter = @{
@@ -842,13 +827,16 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                          onSignInComplete:(void (^)(Login *))onSignInComplete
                                 onFailure:(void (^)(NSError *))onFailure {
 
-    [self getTokenAndAccountInfoWithUserProfile:userProfile
-                                successCallback:^(Login *login) {
-                                    login.result.email = userProfile.email;
+    _viewController = self;
+    [AuthenticationService sharedService].viewController = self;
 
-                                    onSignInComplete(login);
-                                }
-                                failureCallback:onFailure];
+    [self loginWithUserProfile:userProfile
+               successCallback:^(Login *login) {
+                   login.result.email = userProfile.email;
+
+                   onSignInComplete(login);
+               }
+               failureCallback:onFailure];
 }
 
 @end

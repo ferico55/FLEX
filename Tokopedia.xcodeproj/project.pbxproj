@@ -2255,6 +2255,7 @@
 		923B9DC81D0165E5002B3792 /* VTTransactionDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 923B98321D0165E4002B3792 /* VTTransactionDetails.m */; };
 		923B9DCA1D016844002B3792 /* AccountInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 923B9DC91D016844002B3792 /* AccountInfo.swift */; };
 		92738A5A1D125B3F002163FD /* CreatePasswordUserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92738A591D125B3F002163FD /* CreatePasswordUserProfile.swift */; };
+		92A502D91D1A3C42008B1C87 /* AuthenticationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 92A502D81D1A3C42008B1C87 /* AuthenticationService.m */; };
 		BBA2937F1CC624AB000630FB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BBA285A51CC624A1000630FB /* AppDelegate.m */; };
 		BBA298CE1CC624AC000630FB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BBA290691CC624A5000630FB /* InfoPlist.strings */; };
 		BBA298CF1CC624AC000630FB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BBA2906B1CC624A5000630FB /* GoogleService-Info.plist */; };
@@ -5667,6 +5668,8 @@
 		923B98321D0165E4002B3792 /* VTTransactionDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTTransactionDetails.m; sourceTree = "<group>"; };
 		923B9DC91D016844002B3792 /* AccountInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountInfo.swift; sourceTree = "<group>"; };
 		92738A591D125B3F002163FD /* CreatePasswordUserProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatePasswordUserProfile.swift; sourceTree = "<group>"; };
+		92A502D71D1A3C42008B1C87 /* AuthenticationService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthenticationService.h; sourceTree = "<group>"; };
+		92A502D81D1A3C42008B1C87 /* AuthenticationService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthenticationService.m; sourceTree = "<group>"; };
 		AAA12C6A69BF6CB5F8EE3287 /* Pods-Tokopedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug.xcconfig"; sourceTree = "<group>"; };
 		BBA285A41CC624A1000630FB /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		BBA285A51CC624A1000630FB /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -9069,6 +9072,8 @@
 				923B923C1D0165E2002B3792 /* Logout */,
 				923B923F1D0165E2002B3792 /* PhoneVerification */,
 				923B92461D0165E2002B3792 /* Register */,
+				92A502D71D1A3C42008B1C87 /* AuthenticationService.h */,
+				92A502D81D1A3C42008B1C87 /* AuthenticationService.m */,
 			);
 			path = Activation;
 			sourceTree = "<group>";
@@ -13112,6 +13117,7 @@
 				923B98F11D0165E4002B3792 /* InboxMessageDetailList.m in Sources */,
 				923B9A4E1D0165E4002B3792 /* UploadImage.m in Sources */,
 				923B98731D0165E4002B3792 /* SecurityAnswer.m in Sources */,
+				92A502D91D1A3C42008B1C87 /* AuthenticationService.m in Sources */,
 				923B98811D0165E4002B3792 /* CatalogShopAWS.m in Sources */,
 				923B9C1A1D0165E5002B3792 /* DetailReputationReviewComponent.mm in Sources */,
 				923B9A831D0165E4002B3792 /* RequestAddress.m in Sources */,
