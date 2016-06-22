@@ -30,8 +30,10 @@ import UIKit
     private var lastSelectedIndexPath : NSIndexPath?
     private var completionHandler:([CategoryDetail])->Void = {(arg:[CategoryDetail]) -> Void in}
     private var refreshControl : UIRefreshControl = UIRefreshControl()
+    private var rootCategoryID :String = ""
     
-    init(selectedCategories:[CategoryDetail], initialCategories:[CategoryDetail], onCompletion: (([CategoryDetail]) -> Void)){
+    init(rootCategoryID:String, selectedCategories:[CategoryDetail], initialCategories:[CategoryDetail], onCompletion: (([CategoryDetail]) -> Void)){
+        self.rootCategoryID = rootCategoryID;
         completionHandler = onCompletion
         self.selectedCategories =  selectedCategories.map { ($0.copy() as! CategoryDetail) }
         self.initialCategories = initialCategories.map { ($0.copy() as! CategoryDetail) }
@@ -103,7 +105,7 @@ import UIKit
     }
     
     func requestCategory() {
-        RequestFilterCategory.fetchListFilterCategory({ (categories) in
+        RequestFilterCategory.fetchListFilterCategory(rootCategoryID, success: { (categories) in
             self.tableView.setContentOffset(CGPointZero, animated:true)
             self.refreshControl.endRefreshing()
             

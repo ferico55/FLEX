@@ -155,6 +155,8 @@ ImageSearchRequestDelegate
     ListOption *_selectedSort;
     NSDictionary *_selectedSortParam;
     NSArray<CategoryDetail*> *_selectedCategories;
+    
+    NSString *_rootCategoryID;
 }
 
 #pragma mark - Initialization
@@ -417,7 +419,8 @@ ImageSearchRequestDelegate
     _data = data;
     
     if (_data) {
-        [_params setObject:data[@"department_id"] forKey:@"sc"];
+        [_params setObject:data[@"sc"] forKey:@"sc"];
+        _rootCategoryID = data[@"sc"]?:@"";
     }
 }
 
@@ -812,7 +815,13 @@ ImageSearchRequestDelegate
 }
 
 -(void)pushDynamicFilter{
-    FiltersController *controller = [[FiltersController alloc]initWithSource:[_data objectForKey:kTKPDSEARCH_DATATYPE]?:@"" filterResponse:_filterResponse?:[FilterData new] categories:[_initialBreadcrumb copy] selectedCategories:_selectedCategories selectedFilters:_selectedFilters presentedVC:self onCompletion:^(NSArray<CategoryDetail *> * selectedCategories , NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
+    FiltersController *controller = [[FiltersController alloc]initWithSource:[_data objectForKey:kTKPDSEARCH_DATATYPE]?:@""
+                                                              filterResponse:_filterResponse?:[FilterData new]
+                                                              rootCategoryID:_rootCategoryID
+                                                                  categories:[_initialBreadcrumb copy]
+                                                          selectedCategories:_selectedCategories
+                                                             selectedFilters:_selectedFilters
+                                                                 presentedVC:self onCompletion:^(NSArray<CategoryDetail *> * selectedCategories , NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
         
         _selectedCategories = selectedCategories;
         _selectedFilters = selectedFilters;
@@ -890,9 +899,9 @@ ImageSearchRequestDelegate
 -(NSDictionary*)parameterDynamicFilter{
     NSString *selectedCategory = [[_selectedCategories valueForKey:@"categoryId"] componentsJoinedByString:@","];
     NSString *categories;
-    if (![[_params objectForKey:@"sc"] isEqualToString:@""] && _selectedCategories.count > 0) {
+    if (![[_params objectForKey:@"sc"] isEqualToString:@""] && _selectedCategories.count > 0 && [_rootCategoryID isEqualToString:@""]) {
         categories = [NSString stringWithFormat:@"%@,%@",selectedCategory,[_params objectForKey:@"sc"]?:@""];
-    } else if (![[_params objectForKey:@"sc"] isEqualToString:@""]){
+    } else if (![[_params objectForKey:@"sc"] isEqualToString:@""] && _selectedCategories.count == 0){
         categories = [_params objectForKey:@"sc"]?:@"";
     } else {
         categories = selectedCategory;
@@ -1287,7 +1296,7 @@ ImageSearchRequestDelegate
 
 - (BOOL) isUsingAnyFilter{
     BOOL isUsingLocationFilter = [_params objectForKey:@"floc"] != nil && ![[_params objectForKey:@"floc"] isEqualToString:@""];
-    BOOL isUsingDepFilter = [_params objectForKey:@"department_id"] != nil;
+    BOOL isUsingDepFilter = [_params objectForKey:@"sc"] != nil;
     BOOL isUsingPriceMinFilter = [_params objectForKey:@"pmin"] != nil && ![[[NSString alloc]initWithFormat:@"%@", [_params objectForKey:@"pmin"]] isEqualToString:@"0"];
     BOOL isUsingPriceMaxFilter = [_params objectForKey:@"pmax"] != nil && ![[[NSString alloc]initWithFormat:@"%@", [_params objectForKey:@"pmax"]] isEqualToString:@"0"];;
     BOOL isUsingShopTypeFilter = [_params objectForKey:@"fshop"] != nil && ![[[NSString alloc]initWithFormat:@"%@", [_params objectForKey:@"fshop"]] isEqualToString:@"0"];;
