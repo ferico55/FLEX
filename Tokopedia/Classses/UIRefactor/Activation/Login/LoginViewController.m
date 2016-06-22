@@ -54,7 +54,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     UIBarButtonItem *_barbuttonsignin;
 
     UserAuthentificationManager *_userManager;
-    __weak UIViewController *_viewController;
 }
 
 @property (strong, nonatomic) IBOutlet TextField *emailTextField;
@@ -281,126 +280,21 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     [self setLoggingInState];
     _barbuttonsignin.enabled = NO;
 
-    [self requestLoginWithEmail:email
-                       password:pass
-            successCallback:^(Login *login) {
-                _barbuttonsignin.enabled = YES;
-                [self unsetLoggingInState];
+    [[AuthenticationService sharedService]
+            loginWithEmail:email
+                  password:pass
+        fromViewController:self
+           successCallback:^(Login *login) {
+               _barbuttonsignin.enabled = YES;
+               [self unsetLoggingInState];
 
-                login.result.email = email;
-                [self onLoginSuccess:login];
-            }
-            failureCallback:^(NSError *error) {
-                _barbuttonsignin.enabled = YES;
-                [self unsetLoggingInState];
-            }];
-}
-
-- (void)requestLoginWithEmail:(NSString *)email
-                     password:(NSString *)pass
-              successCallback:(void (^)(Login *))successCallback
-              failureCallback:(void (^)(NSError *))failureCallback {
-    _viewController = self;
-    [AuthenticationService sharedService].viewController = self;
-
-    NSDictionary *parameters = @{
-                            @"grant_type": @"password",
-                            @"username": email,
-                            @"password": pass
-                    };
-
-    /**
-     [_objectManager.HTTPClient setDefaultHeader:@"Authorization" value:@"Basic N2VhOTE5MTgyZmY6YjM2Y2JmOTA0ZDE0YmJmOTBlN2YyNTQzMTU5NWEzNjQ="];
-     */
-    NSDictionary *header = [self basicAuthorizationHeader];
-
-    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
-    networkManager.isParameterNotEncrypted = YES;
-
-    [networkManager
-            requestWithBaseUrl:[NSString accountsUrl]
-                          path:@"/token"
-                        method:RKRequestMethodPOST
-                        header:header
-                     parameter:parameters
-                       mapping:[OAuthToken mapping]
-                     onSuccess:^(RKMappingResult *result, RKObjectRequestOperation *operation) {
-                         OAuthToken *oAuthToken = result.dictionary[@""];
-                         [self getUserInfoWithOAuthToken:oAuthToken
-                                         successCallback:^(AccountInfo *accountInfo) {
-                                             [self authenticateToMarketplaceWithAccountInfo:accountInfo
-                                                                                 oAuthToken:oAuthToken
-                                                                    onAuthenticationSuccess:successCallback
-                                                                            failureCallback:failureCallback];
-                                         }
-                                         failureCallback:failureCallback];
-                     }
-                     onFailure:failureCallback];
-}
-
-- (void)getUserInfoWithOAuthToken:(OAuthToken *)oAuthToken
-                  successCallback:(void (^)(AccountInfo *))successCallback
-                  failureCallback:(void (^)(NSError *))failureCallback {
-    NSDictionary *header = @{
-                             @"Authorization": [NSString stringWithFormat:@"%@ %@", oAuthToken.tokenType, oAuthToken.accessToken]
-                             };
-
-    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
-    networkManager.isParameterNotEncrypted = YES;
-
-    [networkManager requestWithBaseUrl:[NSString accountsUrl]
-                                  path:@"/info"
-                                method:RKRequestMethodGET
-                                header:header
-                             parameter:@{}
-                               mapping:[AccountInfo mapping]
-                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                 successCallback(successResult.dictionary[@""]);
-                             }
-                             onFailure:failureCallback];
-}
-
-- (void)authenticateToMarketplaceWithAccountInfo:(AccountInfo *)accountInfo
-                                      oAuthToken:(OAuthToken *)oAuthToken
-                         onAuthenticationSuccess:(void (^)(Login *))successCallback
-                                 failureCallback:(void (^)(NSError *))failureCallback {
-    __weak typeof(self) weakSelf = self;
-
-    TKPDSecureStorage *storage = [TKPDSecureStorage standardKeyChains];
-    NSString *securityQuestionUUID = [storage keychainDictionary][@"securityQuestionUUID"]?:@"";
-
-    NSDictionary *header = @{
-            @"Authorization": [NSString stringWithFormat:@"%@ %@", oAuthToken.tokenType, oAuthToken.accessToken]
-    };
-
-    NSDictionary *parameter = @{
-            @"uuid": securityQuestionUUID,
-            @"user_id": accountInfo.userId
-    };
-
-    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
-    networkManager.isParameterNotEncrypted = YES;
-
-    [networkManager requestWithBaseUrl:[NSString v4Url]
-                                  path:@"/v4/session/make_login.pl"
-                                method:RKRequestMethodPOST
-                                header:header
-                             parameter:parameter
-                               mapping:[Login mapping]
-                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                 Login *login = successResult.dictionary[@""];
-                                 if (login.result.security && ![login.result.security.allow_login isEqualToString:@"1"]) {
-                                     [[AuthenticationService sharedService] verifyPhoneNumber:login onPhoneNumberVerified:^{
-                                         [weakSelf authenticateToMarketplaceWithAccountInfo:accountInfo
-                                                                                 oAuthToken:oAuthToken
-                                                                    onAuthenticationSuccess:successCallback
-                                                                            failureCallback:failureCallback];
-                                     }];
-                                 } else {
-                                     successCallback(login);
-                                 }
-                             }
-                             onFailure:failureCallback];
+               login.result.email = email;
+               [self onLoginSuccess:login];
+           }
+           failureCallback:^(NSError *error) {
+               _barbuttonsignin.enabled = YES;
+               [self unsetLoggingInState];
+           }];
 }
 
 #pragma mark - Memory Management
@@ -642,14 +536,16 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                                  @"action" : @"do_login"
                                  };
 
-    [self doThirdPartySignInWithUserProfile:[CreatePasswordUserProfile fromFacebook:data]
-                           onSignInComplete:^(Login *login) {
-                               [self onLoginSuccess:login];
-                           }
-                                  onFailure:^(NSError *error) {
-                                      [StickyAlertView showErrorMessage:@[@"Sign in gagal silahkan coba lagi."]];
-                                  }];
-    
+    [[AuthenticationService sharedService]
+            doThirdPartySignInWithUserProfile:[CreatePasswordUserProfile fromFacebook:data]
+                           fromViewController:self
+                             onSignInComplete:^(Login *login) {
+                                 [self onLoginSuccess:login];
+                             }
+                                    onFailure:^(NSError *error) {
+                                        [StickyAlertView showErrorMessage:@[@"Sign in gagal silahkan coba lagi."]];
+                                    }];
+
     _loadingView.hidden = NO;
     _emailTextField.hidden = YES;
     _passwordTextField.hidden = YES;
@@ -659,72 +555,6 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
     self.googleSignInButton.hidden = YES;
     
     [_activityIndicator startAnimating];
-}
-
-- (void)loginWithUserProfile:(CreatePasswordUserProfile *)userProfile
-             successCallback:(void (^)(Login *))successCallback
-             failureCallback:(void (^)(NSError *))failureCallback {
-    __weak typeof(self) weakSelf = self;
-
-    NSDictionary *parameter = @{
-                                @"grant_type": @"extension",
-                                @"social_id": userProfile.userId,
-                                @"social_type": userProfile.provider,
-                                @"email": userProfile.email
-                                };
-
-    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
-    networkManager.isParameterNotEncrypted = YES;
-
-    [networkManager
-            requestWithBaseUrl:[NSString accountsUrl]
-                          path:@"/token"
-                        method:RKRequestMethodPOST
-                        header:[self basicAuthorizationHeader]
-                     parameter:parameter
-                       mapping:[OAuthToken mapping]
-                     onSuccess:^(RKMappingResult *mappingResult, RKObjectRequestOperation *operation) {
-                         OAuthToken *oAuthToken = mappingResult.dictionary[@""];
-
-                         [self getUserInfoWithOAuthToken:mappingResult.dictionary[@""]
-                                         successCallback:^(AccountInfo *accountInfo) {
-                                             if (accountInfo.createdPassword) {
-                                                 [weakSelf authenticateToMarketplaceWithAccountInfo:accountInfo
-                                                                                         oAuthToken:oAuthToken
-                                                                            onAuthenticationSuccess:successCallback
-                                                                                    failureCallback:failureCallback];
-                                             } else {
-                                                 [self createPasswordWithUserProfile:userProfile
-                                                                          oAuthToken:oAuthToken
-                                                                         accountInfo:accountInfo
-                                                                   onPasswordCreated:^{
-                                                                       [weakSelf authenticateToMarketplaceWithAccountInfo:accountInfo
-                                                                                                               oAuthToken:oAuthToken
-                                                                                                  onAuthenticationSuccess:successCallback
-                                                                                                          failureCallback:failureCallback];
-                                                 }];
-                                             }
-                                         }
-                                         failureCallback:failureCallback];
-                     }
-                     onFailure:failureCallback];
-}
-
-- (void)createPasswordWithUserProfile:(CreatePasswordUserProfile *)userProfile
-                           oAuthToken:(OAuthToken *)oAuthToken
-                          accountInfo:(AccountInfo *)accountInfo
-                    onPasswordCreated:(void (^)())passwordCreated {
-    CreatePasswordViewController *controller = [CreatePasswordViewController new];
-
-    controller.userProfile = userProfile;
-    controller.onPasswordCreated = passwordCreated;
-    controller.oAuthToken = oAuthToken;
-    controller.accountInfo = accountInfo;
-
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
-    navigationController.navigationBar.translucent = NO;
-
-    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
 }
 
 - (void)loginButtonDidLogOut:(FBSDKLoginButton *)loginButton {
@@ -814,29 +644,15 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
 
 #pragma mark - Activation Request
 - (void)requestLoginGoogleWithUser:(GIDGoogleUser *)user {
-    [self doThirdPartySignInWithUserProfile:[CreatePasswordUserProfile fromGoogle:user]
-                           onSignInComplete:^(Login *login) {
-                               [self onLoginSuccess:login];
-                           }
-                                  onFailure:^(NSError *error) {
-                                      [StickyAlertView showErrorMessage:@[@"Sign in gagal silahkan coba lagi."]];
-                                  }];
-}
-
-- (void)doThirdPartySignInWithUserProfile:(CreatePasswordUserProfile *)userProfile
-                         onSignInComplete:(void (^)(Login *))onSignInComplete
-                                onFailure:(void (^)(NSError *))onFailure {
-
-    _viewController = self;
-    [AuthenticationService sharedService].viewController = self;
-
-    [self loginWithUserProfile:userProfile
-               successCallback:^(Login *login) {
-                   login.result.email = userProfile.email;
-
-                   onSignInComplete(login);
-               }
-               failureCallback:onFailure];
+    [[AuthenticationService sharedService]
+            doThirdPartySignInWithUserProfile:[CreatePasswordUserProfile fromGoogle:user]
+                           fromViewController:self
+                             onSignInComplete:^(Login *login) {
+                                 [self onLoginSuccess:login];
+                             }
+                                    onFailure:^(NSError *error) {
+                                        [StickyAlertView showErrorMessage:@[@"Sign in gagal silahkan coba lagi."]];
+                                    }];
 }
 
 @end
