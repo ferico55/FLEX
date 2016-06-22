@@ -11,7 +11,6 @@ import UIKit
 class FilterSortViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     private var items : [ListOption] = []
-//    private var tempSelectedObject : ListOption = ListOption()
     private weak var selectedObject : ListOption? = ListOption()
     private var completionHandler:(ListOption, [String:String])->Void = {_ in}
     private var completionHandlerResponse:(FilterData)->Void = {_ in}
