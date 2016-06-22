@@ -8,13 +8,6 @@
 
 import UIKit
 
-@objc enum CategoryFilterType : Int {
-    case Hotlist
-    case Category
-    case SearchProduct
-    case AddProduct
-}
-
 @objc enum DirectionArrow : Int {
     case Up
     case Down
@@ -25,7 +18,6 @@ import UIKit
     private var initialCategories: [CategoryDetail] = []
     private var categories : [CategoryDetail] = []
     private var selectedCategories : [CategoryDetail] = []
-    private var filterType : CategoryFilterType?
     private var tableView : UITableView = UITableView()
     private var lastSelectedIndexPath : NSIndexPath?
     private var completionHandler:([CategoryDetail])->Void = {(arg:[CategoryDetail]) -> Void in}
