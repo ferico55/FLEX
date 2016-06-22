@@ -45,6 +45,8 @@
 
 #import "TxOrderTabViewController.h"
 
+#import "TPLocalytics.h"
+
 #define DurationInstallmentFormat @"%@ bulan (%@)"
 
 @interface TransactionCartViewController ()
@@ -2257,6 +2259,8 @@
         
         [self isLoading:NO];
         
+        [TPLocalytics trackCartView:_cart];
+        
     } error:^(NSError *error) {
         _paymentMethodView.hidden = YES;
         if (_list.count <=0) {
@@ -2264,7 +2268,6 @@
         }
         [self isLoading:NO];
     }];
-    
 }
 
 -(void)doCancelCart{
