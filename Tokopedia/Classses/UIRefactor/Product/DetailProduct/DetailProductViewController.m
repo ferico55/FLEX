@@ -93,6 +93,8 @@
 
 #import "PriceAlertRequest.h"
 
+#import "TPLocalytics.h"
+
 #pragma mark - CustomButton Expand Desc
 @interface CustomButtonExpandDesc : UIButton
 @property (nonatomic) int objSection;
@@ -2254,7 +2256,8 @@ OtherProductDelegate
             
             //Track in GA
             [TPAnalytics trackProductView:_product.result.product];
-            
+            [TPLocalytics trackProductView:_product];
+
             _isnodata = NO;
             [_table reloadData];
             
@@ -2296,7 +2299,6 @@ OtherProductDelegate
             UIView *backgroundGreyView = [[UIView alloc] initWithFrame:frame];
             backgroundGreyView.backgroundColor = [UIColor clearColor];
             [self.view insertSubview:backgroundGreyView belowSubview:self.table];
-            
         }
     }
 }
