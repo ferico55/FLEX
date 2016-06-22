@@ -677,7 +677,9 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
     [_activityIndicator startAnimating];
 }
 
-- (void)thirdPartySignInWithUserProfile:(CreatePasswordUserProfile *)userProfile successCallback:(void (^)(RKMappingResult *, RKObjectRequestOperation *))successCallback failureCallback:(void (^)(NSError *))failureCallback {
+- (void)getTokenAndAccountInfoWithUserProfile:(CreatePasswordUserProfile *)userProfile
+                              successCallback:(void (^)(RKMappingResult *, RKObjectRequestOperation *))successCallback
+                              failureCallback:(void (^)(NSError *))failureCallback {
     __weak typeof(self) weakSelf = self;
 
     NSDictionary *parameter = @{
@@ -721,7 +723,6 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                                                                                         successCallback:successCallback
                                                                                         failureCallback:failureCallback];
                                                  }];
-
                                              }
                                          }
                                          failureCallback:failureCallback];
@@ -846,14 +847,14 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                          onSignInComplete:(void (^)(Login *))onSignInComplete
                                 onFailure:(void (^)(NSError *))onFailure {
 
-    [self thirdPartySignInWithUserProfile:userProfile
-                          successCallback:^(RKMappingResult *result, RKObjectRequestOperation *operation) {
-                              Login *login = result.dictionary[@""];
-                              login.result.email = userProfile.email;
+    [self getTokenAndAccountInfoWithUserProfile:userProfile
+                                successCallback:^(RKMappingResult *result, RKObjectRequestOperation *operation) {
+                                    Login *login = result.dictionary[@""];
+                                    login.result.email = userProfile.email;
 
-                              onSignInComplete(login);
-                          }
-                          failureCallback:onFailure];
+                                    onSignInComplete(login);
+                                }
+                                failureCallback:onFailure];
 }
 
 @end
