@@ -486,6 +486,7 @@
                 controller.categories = [_initialCategories mutableCopy];
                 controller.selectedCategory = _selectedCategory;
                 if ([_data objectForKey:@"department_id"]) {
+                    controller.rootCategoryID = [_data objectForKey:@"department_id"]?:@"";
                     controller.filterType = FilterCategoryTypeCategory;
                 } else {
                     controller.filterType = FilterCategoryTypeSearchProduct;
