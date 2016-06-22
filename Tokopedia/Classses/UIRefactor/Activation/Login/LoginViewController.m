@@ -281,11 +281,10 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 
     [self requestLoginWithEmail:email
                        password:pass
-            successCallback:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+            successCallback:^(Login *login) {
                 _barbuttonsignin.enabled = YES;
                 [self unsetLoggingInState];
 
-                Login *login = successResult.dictionary[@""];
                 login.result.email = email;
                 [self onLoginSuccess:login];
             }
@@ -297,7 +296,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 
 - (void)requestLoginWithEmail:(NSString *)email
                      password:(NSString *)pass
-              successCallback:(void (^)(RKMappingResult *, RKObjectRequestOperation *))successCallback
+              successCallback:(void (^)(Login *))successCallback
               failureCallback:(void (^)(NSError *))failureCallback {
     NSDictionary *parameters = @{
                             @"grant_type": @"password",
@@ -326,7 +325,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
                                          successCallback:^(AccountInfo *accountInfo) {
                                              [self authenticateToMarketplaceWithAccountInfo:accountInfo
                                                                                  oAuthToken:oAuthToken
-                                                                            successCallback:successCallback
+                                                                    onAuthenticationSuccess:successCallback
                                                                             failureCallback:failureCallback];
                                          }
                                          failureCallback:failureCallback];
@@ -358,21 +357,21 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 
 - (void)authenticateToMarketplaceWithAccountInfo:(AccountInfo *)accountInfo
                                       oAuthToken:(OAuthToken *)oAuthToken
-                                 successCallback:(void (^)(RKMappingResult *, RKObjectRequestOperation *))successCallback
+                         onAuthenticationSuccess:(void (^)(Login *))successCallback
                                  failureCallback:(void (^)(NSError *))failureCallback {
     __weak typeof(self) weakSelf = self;
 
     TKPDSecureStorage *storage = [TKPDSecureStorage standardKeyChains];
     NSString *securityQuestionUUID = [storage keychainDictionary][@"securityQuestionUUID"]?:@"";
-    
+
     NSDictionary *header = @{
-                             @"Authorization": [NSString stringWithFormat:@"%@ %@", oAuthToken.tokenType, oAuthToken.accessToken]
-                             };
-    
+            @"Authorization": [NSString stringWithFormat:@"%@ %@", oAuthToken.tokenType, oAuthToken.accessToken]
+    };
+
     NSDictionary *parameter = @{
-                                    @"uuid": securityQuestionUUID,
-                                    @"user_id": accountInfo.userId
-                                };
+            @"uuid": securityQuestionUUID,
+            @"user_id": accountInfo.userId
+    };
 
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
     networkManager.isParameterNotEncrypted = YES;
@@ -389,11 +388,11 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
                                      [self verifyPhoneNumber:login onPhoneNumberVerified:^{
                                          [weakSelf authenticateToMarketplaceWithAccountInfo:accountInfo
                                                                                  oAuthToken:oAuthToken
-                                                                            successCallback:successCallback
+                                                                    onAuthenticationSuccess:successCallback
                                                                             failureCallback:failureCallback];
                                      }];
                                  } else {
-                                     successCallback(successResult, operation);
+                                     successCallback(login);
                                  }
                              }
                              onFailure:failureCallback];
@@ -678,7 +677,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
 }
 
 - (void)getTokenAndAccountInfoWithUserProfile:(CreatePasswordUserProfile *)userProfile
-                              successCallback:(void (^)(RKMappingResult *, RKObjectRequestOperation *))successCallback
+                              successCallback:(void (^)(Login *))successCallback
                               failureCallback:(void (^)(NSError *))failureCallback {
     __weak typeof(self) weakSelf = self;
 
@@ -706,9 +705,9 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                                          successCallback:^(AccountInfo *accountInfo) {
                                              if (accountInfo.createdPassword) {
                                                  [weakSelf authenticateToMarketplaceWithAccountInfo:accountInfo
-                                                                                     oAuthToken:oAuthToken
-                                                                                successCallback:successCallback
-                                                                                failureCallback:failureCallback];
+                                                                                         oAuthToken:oAuthToken
+                                                                            onAuthenticationSuccess:successCallback
+                                                                                    failureCallback:failureCallback];
                                              } else {
                                                  [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];
 
@@ -716,10 +715,10 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                                                                           oAuthToken:oAuthToken
                                                                          accountInfo:accountInfo
                                                                    onPasswordCreated:^{
-                                                     [weakSelf authenticateToMarketplaceWithAccountInfo:accountInfo
-                                                                                             oAuthToken:oAuthToken
-                                                                                        successCallback:successCallback
-                                                                                        failureCallback:failureCallback];
+                                                                       [weakSelf authenticateToMarketplaceWithAccountInfo:accountInfo
+                                                                                                               oAuthToken:oAuthToken
+                                                                                                  onAuthenticationSuccess:successCallback
+                                                                                                          failureCallback:failureCallback];
                                                  }];
                                              }
                                          }
@@ -846,8 +845,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                                 onFailure:(void (^)(NSError *))onFailure {
 
     [self getTokenAndAccountInfoWithUserProfile:userProfile
-                                successCallback:^(RKMappingResult *result, RKObjectRequestOperation *operation) {
-                                    Login *login = result.dictionary[@""];
+                                successCallback:^(Login *login) {
                                     login.result.email = userProfile.email;
 
                                     onSignInComplete(login);
