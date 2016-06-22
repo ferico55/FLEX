@@ -20,7 +20,8 @@
 <
     UITableViewDataSource,
     UITableViewDelegate,
-    UITextViewDelegate
+    UITextViewDelegate,
+    UIAlertViewDelegate
 >
 
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
@@ -394,10 +395,11 @@
 }
 
 - (void)redirectToInboxTicketDetail {
-    NSArray *successMessages = @[@"Pesan Anda telah terkirim!"];
-    StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:self];
+    NSString *title = @"Pesanan sudah berhasil terkirim";
+    NSString *message = @"Customer Care Tokopedia akan membalas pesan tersebut ke email kamu. Silakan cek email secara berkala.";
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+    alert.delegate = self;
     [alert show];
-    [self.eventHandler showInboxTicketDetailFromNavigation:self.navigationController];
 }
 
 - (void)showUploadedPhoto:(UIImage *)image {
@@ -415,6 +417,13 @@
     NSArray *messages = [[notification userInfo] valueForKey:kTKPD_SETUSERSTICKYERRORMESSAGEKEY];
     StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messages delegate:self];
     [alert show];
+}
+
+#pragma mark - Alert
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_REDIRECT_TO_HOME object:self];
 }
 
 @end

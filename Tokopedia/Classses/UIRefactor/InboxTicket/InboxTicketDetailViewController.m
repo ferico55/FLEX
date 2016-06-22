@@ -868,16 +868,11 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
 
 - (IBAction)didTouchUpRatingNoButton:(UIButton *)sender {
     _rating = NO;
-    InboxTicketReplyViewController *controller = [InboxTicketReplyViewController new];
-    controller.inboxTicket = self.inboxTicket;
-    controller.rating = @"2";
-    
-    UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:controller];
-    navigation.navigationBar.translucent = NO;
-    
-    [self.navigationController presentViewController:navigation
-                                            animated:YES
-                                          completion:nil];
+    _yesButton.hidden = YES;
+    _noButton.hidden = YES;
+    _ratingActivityIndicator.hidden = NO;
+    [_ratingActivityIndicator startAnimating];
+    [_ratingNetworkManager doRequest];
 }
 
 - (IBAction)didTouchLastCloseButton:(UIButton *)sender {
