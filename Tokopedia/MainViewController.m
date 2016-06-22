@@ -698,7 +698,10 @@ typedef enum TagRequest {
     
     [storage setKeychainWithValue:_persistToken?:@"" withKey:@"device_token"];
     [storage setKeychainWithValue:_persistBaseUrl?:@"" withKey:@"AppBaseUrl"];
-    [storage setKeychainWithValue:securityQuestionUUID withKey:@"securityQuestionUUID"];
+    if(securityQuestionUUID) {
+        [storage setKeychainWithValue:securityQuestionUUID withKey:@"securityQuestionUUID"];
+    }
+    
     
     [self removeCacheUser];
     

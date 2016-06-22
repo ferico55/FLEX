@@ -100,6 +100,8 @@
     NSURL *_deeplinkUrl;
     
     BOOL _shouldDisplayPushNotificationCell;
+    
+    CGRect _defaultTableFrame;
 }
 
 @property (weak, nonatomic) IBOutlet UILabel *depositLabel;
@@ -166,6 +168,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     // Add logo in navigation bar
     self.title = kTKPDMORE_TITLE;
     UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
@@ -884,7 +887,8 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
         [emailController setToRecipients:@[@"ios.feedback@tokopedia.com"]];
         [emailController.navigationBar setTintColor:[UIColor whiteColor]];
         
-
+        //prevent changing table frame from setStatusBarHidden
+        _defaultTableFrame = self.tableView.frame;
         [self presentViewController:emailController animated:YES completion:^() {
             [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
         }];
@@ -1004,7 +1008,10 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
 - (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
     [self dismissViewControllerAnimated:YES completion:^() {
         [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
-        self.tableView.frame = CGRectMake(0, 0, self.tableView.frame.size.width, self.tableView.frame.size.height);
+        
+        //undesired changes from tableview frame when setStatusBarHidden
+        //need to reframe tableView
+        self.tableView.frame = _defaultTableFrame;
     }];
 }
 

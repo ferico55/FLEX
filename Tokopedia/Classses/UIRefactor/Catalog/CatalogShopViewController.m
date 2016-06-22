@@ -149,6 +149,7 @@
     [_networkManager doRequest];
     
     [self initNoResultView];
+    [self setDefaultSort];
 }
 
 - (void)initNoResultView{
@@ -333,7 +334,7 @@
 }
 
 -(BOOL)isUseDynamicFilter{
-    if(FBTweakValue(@"Dynamic", @"Filter", @"Enabled", YES)) {
+    if(FBTweakValue(@"Dynamic", @"Filter", @"Enabled", NO)) {
         return YES;
     } else {
         return NO;
@@ -424,6 +425,27 @@
 }
 
 - (NSDictionary *)getParameter:(int)tag {
+    if ([self isUseDynamicFilter]) {
+        return [self parameterDynamicFilter];
+    } else {
+        return [self parameterFilter];
+    }
+}
+
+-(NSDictionary*)parameterDynamicFilter{
+    NSMutableDictionary *parameter =[NSMutableDictionary new];
+    [parameter addEntriesFromDictionary:_selectedFilterParam];
+    [parameter addEntriesFromDictionary:_selectedSortParam];
+    [parameter setObject:@"catalog" forKey:@"source"];
+    [parameter setObject:@"ios" forKey:@"device"];
+    [parameter setObject:@(_startPerPage) forKey:@"rows"];
+    [parameter setObject:@((_page*_startPerPage)) forKey:@"start"];
+    [parameter setObject:_catalog.result.catalog_info.catalog_id?:@"" forKey:@"ctg_id"];
+    
+    return [parameter copy];
+}
+
+-(NSDictionary*)parameterFilter{
     NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
     [parameters setObject:@"ios" forKey:@"device"];
     [parameters setObject:@(_startPerPage) forKey:@"rows"];
@@ -436,6 +458,27 @@
     [parameters setObject:@"catalog" forKey:@"source"];
     
     return parameters;
+}
+
+-(void)setDefaultSort{
+    _orderBy = [self defaultSortID];
+    _selectedSort = [self defaultSort];
+    _selectedSortParam = @{[self defaultSortKey]:[self defaultSortID]};
+}
+
+-(ListOption*)defaultSort{
+    ListOption *sort = [ListOption new];
+    sort.value = [self defaultSortID];
+    sort.key = [self defaultSortKey];
+    return sort;
+}
+
+-(NSString*)defaultSortKey{
+    return @"ob";
+}
+
+-(NSString*)defaultSortID{
+    return @"1";
 }
 
 - (id)getObjectManager:(int)tag {
