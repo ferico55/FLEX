@@ -53,13 +53,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     UIBarButtonItem *_barbuttonsignin;
 
     UserAuthentificationManager *_userManager;
-    
-    ActivationRequest *_activationRequest;
-
-    TokopediaNetworkManager *_networkManager;
-    TokopediaNetworkManager *_marketplaceNetworkManager;
-    TokopediaNetworkManager *_getUserInfoNetworkManager;
-    TokopediaNetworkManager *_thirdPartySignInNetworkManager;
 }
 
 @property (strong, nonatomic) IBOutlet TextField *emailTextField;
@@ -102,17 +95,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 {    
     [super viewDidLoad];
     _userManager = [[UserAuthentificationManager alloc]init];
-    _networkManager = [TokopediaNetworkManager new];
-    _networkManager.isParameterNotEncrypted = YES;
-
-    _marketplaceNetworkManager = [TokopediaNetworkManager new];
-    _marketplaceNetworkManager.isParameterNotEncrypted = YES;
-
-    _getUserInfoNetworkManager = [TokopediaNetworkManager new];
-    _getUserInfoNetworkManager.isParameterNotEncrypted = YES;
-
-    _thirdPartySignInNetworkManager = [TokopediaNetworkManager new];
-    _thirdPartySignInNetworkManager.isParameterNotEncrypted = YES;
 
     UIImage *iconToped = [UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE];
     UIImageView *topedImageView = [[UIImageView alloc] initWithImage:iconToped];
@@ -144,8 +126,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     
     _activation = [NSMutableDictionary new];
 
-    _activationRequest = [ActivationRequest new];
-    
     googleSignInButton.layer.shadowOffset = CGSizeMake(1, 1);
 }
 
@@ -327,7 +307,10 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
      */
     NSDictionary *header = [self basicAuthorizationHeader];
 
-    [_networkManager
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    networkManager.isParameterNotEncrypted = YES;
+
+    [networkManager
             requestWithBaseUrl:[NSString accountsUrl]
                           path:@"/token"
                         method:RKRequestMethodPOST
@@ -357,14 +340,17 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
                              @"Authorization": [NSString stringWithFormat:@"%@ %@", oAuthToken.tokenType, oAuthToken.accessToken]
                              };
 
-    [_getUserInfoNetworkManager requestWithBaseUrl:[NSString accountsUrl]
-                                              path:@"/info"
-                                            method:RKRequestMethodGET
-                                            header:header
-                                         parameter:@{}
-                                           mapping:[AccountInfo mapping]
-                                         onSuccess:successCallback
-                                         onFailure:failureCallback];
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    networkManager.isParameterNotEncrypted = YES;
+
+    [networkManager requestWithBaseUrl:[NSString accountsUrl]
+                                  path:@"/info"
+                                method:RKRequestMethodGET
+                                header:header
+                             parameter:@{}
+                               mapping:[AccountInfo mapping]
+                             onSuccess:successCallback
+                             onFailure:failureCallback];
 }
 
 - (void)authenticateToMarketplaceWithAccountInfo:(AccountInfo *)accountInfo
@@ -385,26 +371,29 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
                                     @"user_id": accountInfo.userId
                                 };
 
-    [_marketplaceNetworkManager requestWithBaseUrl:[NSString v4Url]
-                                              path:@"/v4/session/make_login.pl"
-                                            method:RKRequestMethodPOST
-                                            header:header
-                                         parameter:parameter
-                                           mapping:[Login mapping]
-                                         onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                             Login *login = successResult.dictionary[@""];
-                                             if (login.result.security && ![login.result.security.allow_login isEqualToString:@"1"]) {
-                                                 [self verifyPhoneNumber:login onPhoneNumberVerified: ^{
-                                                     [weakSelf authenticateToMarketplaceWithAccountInfo:accountInfo
-                                                                                             oAuthToken:oAuthToken
-                                                                                        successCallback:successCallback
-                                                                                        failureCallback:failureCallback];
-                                                 }];
-                                             } else {
-                                                 successCallback(successResult, operation);
-                                             }
-                                         }
-                                         onFailure:failureCallback];
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    networkManager.isParameterNotEncrypted = YES;
+
+    [networkManager requestWithBaseUrl:[NSString v4Url]
+                                  path:@"/v4/session/make_login.pl"
+                                method:RKRequestMethodPOST
+                                header:header
+                             parameter:parameter
+                               mapping:[Login mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                 Login *login = successResult.dictionary[@""];
+                                 if (login.result.security && ![login.result.security.allow_login isEqualToString:@"1"]) {
+                                     [self verifyPhoneNumber:login onPhoneNumberVerified:^{
+                                         [weakSelf authenticateToMarketplaceWithAccountInfo:accountInfo
+                                                                                 oAuthToken:oAuthToken
+                                                                            successCallback:successCallback
+                                                                            failureCallback:failureCallback];
+                                     }];
+                                 } else {
+                                     successCallback(successResult, operation);
+                                 }
+                             }
+                             onFailure:failureCallback];
 }
 
 #pragma mark - Memory Management
@@ -686,7 +675,10 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                                 @"email": userProfile.email
                                 };
 
-    [_thirdPartySignInNetworkManager
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    networkManager.isParameterNotEncrypted = YES;
+
+    [networkManager
             requestWithBaseUrl:[NSString accountsUrl]
                           path:@"/token"
                         method:RKRequestMethodPOST
@@ -701,7 +693,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                                              AccountInfo *accountInfo = mappingResult.dictionary[@""];
 
                                              if (accountInfo.createdPassword) {
-                                                 [self authenticateToMarketplaceWithAccountInfo:accountInfo
+                                                 [weakSelf authenticateToMarketplaceWithAccountInfo:accountInfo
                                                                                      oAuthToken:oAuthToken
                                                                                 successCallback:successCallback
                                                                                 failureCallback:failureCallback];
