@@ -42,6 +42,16 @@
 
 @implementation TransactionCartEditViewController
 
+- (IBAction)quantityStepperValueChanged:(UIStepper *)sender {
+    NSInteger qty = [_quantityTextField.text integerValue];
+    qty += (int)sender.value;
+    qty = fmax(0, qty);
+    
+    _quantityTextField.text = [NSString stringWithFormat: @"%d", (int)qty];
+    
+    sender.value = 0;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
