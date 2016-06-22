@@ -46,13 +46,14 @@ class FilterSortViewController: UIViewController, UITableViewDelegate, UITableVi
         tableView = UITableView.init(frame: CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height), style: .Plain)
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.backgroundColor = UIColor.init(red: 231.0/255.0, green: 231.0/255.0, blue: 231.0/255.0, alpha: 1)
         self.tableView.tableFooterView = UIView.init(frame: CGRectMake(0, 0, 1, 1))
         
         self.view.addSubview(self.tableView)
         
         self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
         
-        refreshControl.addTarget(self, action: Selector("requestFilter"), forControlEvents: UIControlEvents.ValueChanged)
+        refreshControl.addTarget(self, action: #selector(requestFilter), forControlEvents: UIControlEvents.ValueChanged)
         tableView.addSubview(refreshControl)
         
         if items.count == 0 {
@@ -132,9 +133,10 @@ class FilterSortViewController: UIViewController, UITableViewDelegate, UITableVi
         cell?.accessoryType = .None
     }
 
-    private func requestFilter(){
+    func requestFilter(){
         RequestFilter.fetchFilter(source, success: { (response) in
             self.items.removeAll()
+            self.tableView.reloadData()
             
             var indexPaths : [NSIndexPath] = []
             for (index,item) in response.sort.enumerate() {
