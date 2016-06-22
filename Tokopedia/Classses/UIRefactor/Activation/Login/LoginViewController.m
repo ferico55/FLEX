@@ -323,9 +323,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
                      onSuccess:^(RKMappingResult *result, RKObjectRequestOperation *operation) {
                          OAuthToken *oAuthToken = result.dictionary[@""];
                          [self getUserInfoWithOAuthToken:oAuthToken
-                                         successCallback:^(RKMappingResult *mappingResult, RKObjectRequestOperation *operation) {
-                                             AccountInfo *accountInfo = mappingResult.dictionary[@""];
-
+                                         successCallback:^(AccountInfo *accountInfo) {
                                              [self authenticateToMarketplaceWithAccountInfo:accountInfo
                                                                                  oAuthToken:oAuthToken
                                                                             successCallback:successCallback
@@ -337,7 +335,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 }
 
 - (void)getUserInfoWithOAuthToken:(OAuthToken *)oAuthToken
-                  successCallback:(void (^)(RKMappingResult *, RKObjectRequestOperation *))successCallback
+                  successCallback:(void (^)(AccountInfo *))successCallback
                   failureCallback:(void (^)(NSError *))failureCallback {
     NSDictionary *header = @{
                              @"Authorization": [NSString stringWithFormat:@"%@ %@", oAuthToken.tokenType, oAuthToken.accessToken]
@@ -352,7 +350,9 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
                                 header:header
                              parameter:@{}
                                mapping:[AccountInfo mapping]
-                             onSuccess:successCallback
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                 successCallback(successResult.dictionary[@""]);
+                             }
                              onFailure:failureCallback];
 }
 
@@ -703,9 +703,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                          OAuthToken *oAuthToken = mappingResult.dictionary[@""];
 
                          [self getUserInfoWithOAuthToken:mappingResult.dictionary[@""]
-                                         successCallback:^(RKMappingResult *mappingResult, RKObjectRequestOperation *operation) {
-                                             AccountInfo *accountInfo = mappingResult.dictionary[@""];
-
+                                         successCallback:^(AccountInfo *accountInfo) {
                                              if (accountInfo.createdPassword) {
                                                  [weakSelf authenticateToMarketplaceWithAccountInfo:accountInfo
                                                                                      oAuthToken:oAuthToken
