@@ -248,31 +248,16 @@ import UIKit
     
     func doCollapseCategory(selectedCategory:(CategoryDetail)) {
         selectedCategory.isExpanded = false
-        for (_,category) in self.categories.enumerate() {
-            if category.parent == selectedCategory.categoryId {
-                category.isExpanded = false
-
-                self.tableView.beginUpdates()
-                let location : Int  = categories.indexOf(category)!
-                categories.removeAtIndex(location)
-                self.tableView.deleteRowsAtIndexPaths([NSIndexPath.init(forRow:location , inSection: 0)], withRowAnimation: .Automatic)
-                self.tableView.endUpdates()
-                
-                
-                for (_,categoryChild) in category.child.enumerate() {
-                    categoryChild.isExpanded = false
-                    if categoryChild.parent == category.categoryId {
-                        let result = categories.filter { $0==categoryChild }
-                        if result.isEmpty == false {
-                            self.tableView.beginUpdates()
-                            let location : Int  = categories.indexOf(categoryChild)!
-                            categories.removeAtIndex(location)
-                            self.tableView.deleteRowsAtIndexPaths([NSIndexPath.init(forRow:location , inSection: 0)], withRowAnimation: .Automatic)
-                            self.tableView.endUpdates()
-                        }
-                    }
-                }
-            }
+        for (index,category) in self.categories.enumerate() where category.parent == selectedCategory.categoryId {
+            
+            self.tableView.beginUpdates()
+            categories.removeAtIndex(index)
+            self.tableView.deleteRowsAtIndexPaths([NSIndexPath.init(forRow:index , inSection: 0)], withRowAnimation: .Automatic)
+            self.tableView.endUpdates()
+            self.doCollapseCategory(category)
+            self.doCollapseCategory(selectedCategory)
+            break
+            
         }
     }
     
