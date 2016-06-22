@@ -107,6 +107,17 @@ typedef enum
 
 @implementation TransactionATCViewController
 
+- (IBAction)productQuantityStepperValueChanged:(UIStepper *)sender {
+    NSInteger qty = [_productQuantityTextField.text integerValue];
+    qty += (int)sender.value;
+    qty = fmax(0, qty);
+    
+    _productQuantityTextField.text = [NSString stringWithFormat: @"%d", (int)qty];
+    
+    sender.value = 0;
+}
+
+
 #pragma mark - Initialization
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
