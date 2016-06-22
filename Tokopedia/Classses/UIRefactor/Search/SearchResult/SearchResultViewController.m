@@ -314,22 +314,90 @@ ImageSearchRequestDelegate
     
 }
 
--(void)setDefaultSort{
-    [_params setObject:[self defaultSortID] forKey:@"ob"];
-    _selectedSort = [self defaultSortDynamicFilter];
-    _selectedSortParam = @{@"ob":[self defaultSortID]};
+-(NSString*)getSearchSource{
+    return [_data objectForKey:@"type"]?:@"";
 }
 
--(ListOption*)defaultSortDynamicFilter{
+-(NSString*)searchProductSource{
+    return @"search_product";
+}
+
+-(NSString*)searchCatalogSource{
+    return @"search_catalog";
+}
+
+-(void)setDefaultSort{
+    if ([[self getSearchSource] isEqualToString:[self searchProductSource]]) {
+        [self setDefaultSortProduct];
+    }
+    if ([[self getSearchSource] isEqualToString:[self searchCatalogSource]]) {
+        [self setDefaultSortCatalog];
+    }
+    if ([[self getSearchSource] isEqualToString:[self directoryType]]) {
+        [self setDefaultSortDirectory];
+    }
+}
+
+-(void)setDefaultSortDirectory{
+    [_params setObject:[self defaultSortDirectoryID] forKey:[self defaultSortDirectoryKey]];
+    _selectedSort = [self defaultSortDirectory];
+    _selectedSortParam = @{[self defaultSortDirectoryKey]:[self defaultSortDirectoryID]};
+}
+
+-(ListOption*)defaultSortDirectory{
     ListOption *sort = [ListOption new];
-    sort.name = @"Paling Sesuai";
-    sort.value = @"23";
-    sort.key = @"ob";
-    sort.input_type = @"checkbox";
+    sort.value = [self defaultSortDirectoryID];
+    sort.key = [self defaultSortDirectoryKey];
     return sort;
 }
 
--(NSString*)defaultSortID{
+-(NSString*)defaultSortDirectoryKey{
+    return @"ob";
+}
+
+-(NSString*)defaultSortDirectoryID{
+    return @"1";
+}
+
+-(void)setDefaultSortCatalog{
+    [_params setObject:[self defaultSortCatalogID] forKey:[self defaultSortCatalogKey]];
+    _selectedSort = [self defaultSortCatalog];
+    _selectedSortParam = @{[self defaultSortCatalogKey]:[self defaultSortCatalogID]};
+}
+
+-(ListOption*)defaultSortCatalog{
+    ListOption *sort = [ListOption new];
+    sort.value = [self defaultSortCatalogID];
+    sort.key = [self defaultSortCatalogKey];
+    return sort;
+}
+
+-(NSString*)defaultSortCatalogKey{
+    return @"ob";
+}
+
+-(NSString*)defaultSortCatalogID{
+    return @"1";
+}
+
+-(void)setDefaultSortProduct{
+    [_params setObject:[self defaultSortProductID] forKey:[self defaultSortProductKey]];
+    _selectedSort = [self defaultSortProduct];
+    _selectedSortParam = @{[self defaultSortProductKey]:[self defaultSortProductID]};
+}
+
+-(ListOption*)defaultSortProduct{
+    ListOption *sort = [ListOption new];
+    sort.value = [self defaultSortProductID];
+    sort.key = [self defaultSortProductKey];
+    return sort;
+}
+
+-(NSString*)defaultSortProductKey{
+    return @"ob";
+}
+
+-(NSString*)defaultSortProductID{
     return @"23";
 }
 
@@ -669,7 +737,7 @@ ImageSearchRequestDelegate
 }
 
 -(BOOL)isUseDynamicFilter{
-    if(FBTweakValue(@"Dynamic", @"Filter", @"Enabled", YES)) {
+    if(FBTweakValue(@"Dynamic", @"Filter", @"Enabled", NO)) {
         return YES;
     } else {
         return NO;
@@ -794,11 +862,11 @@ ImageSearchRequestDelegate
 -(NSDictionary *)parameterFilter{
     NSMutableDictionary *parameter = [[NSMutableDictionary alloc]init];
     [parameter setObject:@"ios" forKey:@"device"];
-    [parameter setObject:[_params objectForKey:@"department_id"]?:@"" forKey:@"sc"];
+    [parameter setObject:[_params objectForKey:@"sc"]?:@"" forKey:@"sc"];
     [parameter setObject:[_params objectForKey:@"location"]?:@"" forKey:@"floc"];
-    [parameter setObject:[_params objectForKey:@"order_by"]?:@"" forKey:@"ob"];
-    [parameter setObject:[_params objectForKey:@"price_min"]?:@"" forKey:@"pmin"];
-    [parameter setObject:[_params objectForKey:@"price_max"]?:@"" forKey:@"pmax"];
+    [parameter setObject:[_params objectForKey:@"ob"]?:@"" forKey:@"ob"];
+    [parameter setObject:[_params objectForKey:@"pmin"]?:@"" forKey:@"pmin"];
+    [parameter setObject:[_params objectForKey:@"pmax"]?:@"" forKey:@"pmax"];
     [parameter setObject:[_params objectForKey:@"shop_type"]?:@"" forKey:@"fshop"];
     [parameter setObject:[_params objectForKey:@"sc_identifier"]?:@"" forKey:@"sc_identifier"];
     if(_isFromImageSearch){
