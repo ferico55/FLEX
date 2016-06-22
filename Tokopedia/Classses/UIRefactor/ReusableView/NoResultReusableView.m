@@ -76,7 +76,7 @@
         [self setNoResultDesc:@"Harap coba lagi"];
     }
     
-    [self setNoResultImage:@"no-result.png"];
+    [self setNoResultImage:NO_RESULT_ICON];
     [_button.layer setCornerRadius:3.0];
     [self hideButton:NO];
     [self setNoResultButtonTitle:@"Coba Lagi"];
