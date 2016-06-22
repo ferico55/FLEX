@@ -601,9 +601,9 @@ FilterCategoryViewDelegate
                     NSString *departmentTitle = @"Pilih Kategori";
                     if ([_dataInput objectForKey:DATA_CATEGORY_KEY]) {
                         CategoryDetail *category = [_dataInput objectForKey:DATA_CATEGORY_KEY];
-                        if (![category.name isEqualToString:@""]) {
-                            departmentTitle = category.name;
-                        }
+                        departmentTitle = category.name;
+                    } else {
+                        departmentTitle = @"Pilih Kategori";
                     }
                     cell.detailTextLabel.text = departmentTitle;
                 }
@@ -846,7 +846,7 @@ FilterCategoryViewDelegate
         NSDictionary *param = @{
                                 kTKPDDETAIL_APIACTIONKEY    : ACTION_GET_CATALOG,
                                 @"product_name"             : _productNameTextField.text?:@"",
-                                @"product_department_id"    : category.categoryId,
+                                @"product_department_id"    : category.categoryId?:@"",
                                 };
         return param;
     }
