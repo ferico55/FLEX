@@ -26,7 +26,7 @@
 
 #import <GoogleOpenSource/GoogleOpenSource.h>
 
-#import "Localytics.h"
+#import "TPLocalytics.h"
 
 #import "TAGDataLayer.h"
 
@@ -423,6 +423,10 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 //        [[FBSession activeSession] close];
 //        [FBSession setActiveSession:nil];
 //    }
+
+    if (_facebookUserData) {
+        [TPLocalytics trackRegistrationWith:RegistrationPlatformFacebook success:YES];
+    }
 }
 
 - (void)configureRestKit
@@ -516,13 +520,12 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
             StickyAlertView *alertView = [[StickyAlertView alloc] initWithErrorMessages:_register.message_error
                                                                                delegate:self];
             [alertView show];
+            [TPLocalytics trackRegistrationWith:RegistrationPlatformEmail success:NO];
         } else {
             [self.view layoutSubviews];
             
             [[AppsFlyerTracker sharedTracker] trackEvent:AFEventCompleteRegistration withValues:@{AFEventParamRegistrationMethod : @"Manual Registration"}];
             
-            [Localytics setValue:@"Yes" forProfileAttribute:@"Is Login"];
-
             TKPDAlert *alert = [TKPDAlert newview];
             NSString *text = [NSString stringWithFormat:@"Silakan lakukan verifikasi melalui email yang telah di kirimkan ke\n %@", _textfieldemail.text];
             alert.text = text;
@@ -531,6 +534,10 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
             [alert show];
             
             self.navigationItem.leftBarButtonItem = nil;
+            
+            [[AppsFlyerTracker sharedTracker] trackEvent:AFEventCompleteRegistration withValues:@{AFEventParamRegistrationMethod : @"Manual Registration"}];
+
+            [TPLocalytics trackRegistrationWith:RegistrationPlatformEmail success:YES];
         }
     }
     _texfieldfullname.enabled = YES;
@@ -933,7 +940,10 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
             
             [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification object:nil];
             
-            [Localytics setValue:@"Yes" forProfileAttribute:@"Is Login"];
+            if (_facebookUserData) {
+                [TPLocalytics trackRegistrationWith:RegistrationPlatformFacebook success:YES];
+            }
+            
         }
         else if ([_login.result.status isEqualToString:@"1"]) {
 
@@ -1199,7 +1209,8 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                                                         
                                                         [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification object:nil];
                                                         
-                                                        [Localytics setValue:@"Yes" forProfileAttribute:@"Is Login"];
+                                                        [TPLocalytics trackLoginStatus:YES];
+
                                                     } else if ([_login.result.status isEqualToString:@"1"]) {
                                                         
                                                         TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
@@ -1222,18 +1233,26 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                                                         
                                                         [self.navigationController presentViewController:navigationController animated:YES completion:nil];
                                                         
+                                                        [TPLocalytics trackRegistrationWith:RegistrationPlatformGoogle success:YES];
+
                                                     }
                                                     else {
                                                         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:_login.message_error
                                                                                                                        delegate:self];
                                                         [alert show];
+                                                        
                                                         [self cancel];
+                                                        
+                                                        [TPLocalytics trackRegistrationWith:RegistrationPlatformGoogle success:NO];
                                                     }
                                                 } else {
                                                     StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Sign in gagal silahkan coba lagi."]
                                                                                                                    delegate:self];
                                                     [alert show];
+                                                    
                                                     [self cancel];
+                                                    
+                                                    [TPLocalytics trackRegistrationWith:RegistrationPlatformGoogle success:NO];
                                                 }
                                             }
                                             onFailure:^(NSError *error) {
@@ -1241,6 +1260,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                                                 _act.hidden = YES;
                                                 [_act stopAnimating];
                                                 [self cancel];
+                                                [TPLocalytics trackRegistrationWith:RegistrationPlatformGoogle success:NO];
                                             }];
 }
 

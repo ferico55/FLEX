@@ -10,6 +10,7 @@
 #import "TokopediaNetworkManager.h"
 #import "Login.h"
 #import "GeneralAction.h"
+#import "TPLocalytics.h"
 
 @implementation ActivationRequest {
     TokopediaNetworkManager *doLoginPlusNetworkManager;
@@ -64,6 +65,7 @@
                                             successCallback(obj);
                                         }
                                         onFailure:^(NSError *errorResult) {
+                                            [TPLocalytics trackRegistrationWith:RegistrationPlatformGoogle success:NO];
                                             errorCallback(errorResult);
                                         }];
     
@@ -124,9 +126,11 @@
                                   onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                       NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
                                       Login *obj = [result objectForKey:@""];
+                                      [TPLocalytics trackLoginStatus:YES];
                                       successCallback(obj);
                                   }
                                   onFailure:^(NSError *errorResult) {
+                                      [TPLocalytics trackLoginStatus:NO];
                                       errorCallback(errorResult);
                                   }];
 }

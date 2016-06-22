@@ -31,7 +31,7 @@
 
 #import <GoogleOpenSource/GoogleOpenSource.h>
 
-#import "Localytics.h"
+#import "TPLocalytics.h"
 #import "Tokopedia-Swift.h"
 
 #import <GoogleSignIn/GoogleSignIn.h>
@@ -363,6 +363,8 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     FBSDKLoginManager *loginManager = [[FBSDKLoginManager alloc] init];
     [loginManager logOut];
     [FBSDKAccessToken setCurrentAccessToken:nil];
+    
+    [TPLocalytics trackLoginStatus:NO];
 }
 
 - (void)setLoggingInState {
@@ -846,7 +848,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
                                                         object:nil
                                                       userInfo:nil];
     
-    [Localytics setValue:@"Yes" forProfileAttribute:@"Is Login"];
+    [TPLocalytics trackLoginStatus:YES];
 }
 
 - (void)checkSecurityQuestion {

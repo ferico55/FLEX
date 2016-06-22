@@ -19,7 +19,7 @@
 #import "PlacePickerViewController.h"
 #import "NavigateViewController.h"
 #import "RequestATC.h"
-#import "ATCPushLocalytics.h"
+#import "TPLocalytics.h"
 
 #import "NSNumberFormatter+IDRFormater.h"
 
@@ -1025,7 +1025,6 @@ replacementString:(NSString*)string
 }
 
 - (void)pushLocalyticsData {
-    
     ProductDetail *product = _selectedProduct;
     NSCharacterSet *notAllowedChars = [NSCharacterSet characterSetWithCharactersInString:@"Rp."];
     NSString *productPrice = [[product.product_price componentsSeparatedByCharactersInSet:notAllowedChars] componentsJoinedByString:@""];
@@ -1033,7 +1032,7 @@ replacementString:(NSString*)string
     product.product_total_price = [NSString stringWithFormat:@"%zd",totalPrice];
     product.product_quantity =_productQuantityTextField.text;
 
-    [ATCPushLocalytics pushLocalyticsATCProduct:product];
+    [TPAnalytics trackAddToCart:product];
 }
 
 @end
