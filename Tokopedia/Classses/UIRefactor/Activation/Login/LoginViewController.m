@@ -284,7 +284,10 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
             successCallback:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                 _barbuttonsignin.enabled = YES;
                 [self unsetLoggingInState];
-                [self onLoginSuccess:successResult.dictionary[@""] email:email];
+
+                Login *login = successResult.dictionary[@""];
+                login.result.email = email;
+                [self onLoginSuccess:login];
             }
             failureCallback:^(NSError *error) {
                 _barbuttonsignin.enabled = YES;
@@ -439,8 +442,8 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     [_loginButton setTitle:@"Masuk" forState:UIControlStateNormal];
 }
 
-- (void)onLoginSuccess:(Login *)login email:(NSString *)email {
-    [self storeCredentialToKeychain:login email:email];
+- (void)onLoginSuccess:(Login *)login {
+    [self storeCredentialToKeychain:login];
     [self trackUserSignIn:login];
 
     [self notifyUserDidLogin];
@@ -505,7 +508,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];
 }
 
-- (void)storeCredentialToKeychain:(Login *)login email:(NSString *)email {
+- (void)storeCredentialToKeychain:(Login *)login {
     TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
     [secureStorage setKeychainWithValue:@(login.result.is_login) withKey:kTKPD_ISLOGINKEY];
     [secureStorage setKeychainWithValue:login.result.user_id withKey:kTKPD_USERIDKEY];
@@ -528,7 +531,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     [secureStorage setKeychainWithValue:login.result.msisdn_show_dialog withKey:kTKPDLOGIN_API_MSISDN_SHOW_DIALOG_KEY];
     [secureStorage setKeychainWithValue:login.result.device_token_id withKey:kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY];
     [secureStorage setKeychainWithValue:login.result.shop_has_terms withKey:kTKPDLOGIN_API_HAS_TERM_KEY];
-    [secureStorage setKeychainWithValue:email withKey:kTKPD_USEREMAIL];
+    [secureStorage setKeychainWithValue:login.result.email withKey:kTKPD_USEREMAIL];
 
     if(login.result.user_reputation != nil) {
         ReputationDetail *reputation = login.result.user_reputation;
@@ -829,11 +832,12 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
     [self thirdPartySignInWithUserProfile:userProfile
             successCallback:^(RKMappingResult *result, RKObjectRequestOperation *operation) {
                 Login *login = result.dictionary[@""];
+                login.result.email = userProfile.email;
 
                 [[GIDSignIn sharedInstance] signOut];
                 [[GIDSignIn sharedInstance] disconnect];
 
-                [self onLoginSuccess:login email:userProfile.email];
+                [self onLoginSuccess:login];
             }
             failureCallback:^(NSError *error) {
                 [StickyAlertView showErrorMessage:@[@"Sign in gagal silahkan coba lagi."]];
