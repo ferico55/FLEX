@@ -7,7 +7,24 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Localytics.h"
+#import "TransactionCartResult.h"
+#import "Product.h"
+#import "SearchAWS.h"
+
+typedef NS_ENUM(NSInteger, RegistrationPlatform) {
+    RegistrationPlatformFacebook,
+    RegistrationPlatformGoogle,
+    RegistrationPlatformEmail,
+};
 
 @interface TPLocalytics : NSObject
+
++ (void)trackCartView:(TransactionCartResult *)cart;
++ (void)trackAddToCart:(ProductDetail *)product;
++ (void)trackProductView:(Product *)product;
+
++ (void)trackRegistrationWith:(RegistrationPlatform)platform success:(BOOL)success;
++ (void)trackLoginStatus:(BOOL)status;
 
 @end
