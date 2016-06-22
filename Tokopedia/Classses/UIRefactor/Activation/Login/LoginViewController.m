@@ -709,8 +709,6 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                                                                             onAuthenticationSuccess:successCallback
                                                                                     failureCallback:failureCallback];
                                              } else {
-                                                 [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];
-
                                                  [self createPasswordWithUserProfile:userProfile
                                                                           oAuthToken:oAuthToken
                                                                          accountInfo:accountInfo
