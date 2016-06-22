@@ -799,7 +799,11 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
             @"shopID": _login.result.shop_id
         },
     };
+    
     [TPAnalytics trackAuthenticated:authenticatedData];
+    [TPLocalytics trackLoginStatus:YES];
+    [Localytics setValue:_login.result.user_id forProfileAttribute:@"user_id"];
+    [Localytics setValue:[_activation objectForKey:kTKPDACTIVATION_DATAEMAILKEY] forProfileAttribute:@"user_email"];
     
     //add user login to GA
     id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
@@ -847,8 +851,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
                                                         object:nil
                                                       userInfo:nil];
-    
-    [TPLocalytics trackLoginStatus:YES];
 }
 
 - (void)checkSecurityQuestion {
