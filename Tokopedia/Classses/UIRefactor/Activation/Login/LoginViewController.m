@@ -443,6 +443,9 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 }
 
 - (void)onLoginSuccess:(Login *)login {
+    [[GIDSignIn sharedInstance] signOut];
+    [[GIDSignIn sharedInstance] disconnect];
+
     [self storeCredentialToKeychain:login];
     [self trackUserSignIn:login];
 
@@ -655,7 +658,13 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                                  @"action" : @"do_login"
                                  };
 
-    [self doThirdPartySignInWithUserProfile:[CreatePasswordUserProfile fromFacebook:data]];
+    [self doThirdPartySignInWithUserProfile:[CreatePasswordUserProfile fromFacebook:data]
+                           onSignInComplete:^(Login *login) {
+                               [self onLoginSuccess:login];
+                           }
+                                  onFailure:^(NSError *error) {
+                                      [StickyAlertView showErrorMessage:@[@"Sign in gagal silahkan coba lagi."]];
+                                  }];
     
     _loadingView.hidden = NO;
     _emailTextField.hidden = YES;
@@ -824,24 +833,27 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
 
 #pragma mark - Activation Request
 - (void)requestLoginGoogleWithUser:(GIDGoogleUser *)user {
-    [self doThirdPartySignInWithUserProfile:[CreatePasswordUserProfile fromGoogle:user]];
+    [self doThirdPartySignInWithUserProfile:[CreatePasswordUserProfile fromGoogle:user]
+                           onSignInComplete:^(Login *login) {
+                               [self onLoginSuccess:login];
+                           }
+                                  onFailure:^(NSError *error) {
+                                      [StickyAlertView showErrorMessage:@[@"Sign in gagal silahkan coba lagi."]];
+                                  }];
 }
 
-- (void)doThirdPartySignInWithUserProfile:(CreatePasswordUserProfile *)userProfile {
+- (void)doThirdPartySignInWithUserProfile:(CreatePasswordUserProfile *)userProfile
+                         onSignInComplete:(void (^)(Login *))onSignInComplete
+                                onFailure:(void (^)(NSError *))onFailure {
 
     [self thirdPartySignInWithUserProfile:userProfile
-            successCallback:^(RKMappingResult *result, RKObjectRequestOperation *operation) {
-                Login *login = result.dictionary[@""];
-                login.result.email = userProfile.email;
+                          successCallback:^(RKMappingResult *result, RKObjectRequestOperation *operation) {
+                              Login *login = result.dictionary[@""];
+                              login.result.email = userProfile.email;
 
-                [[GIDSignIn sharedInstance] signOut];
-                [[GIDSignIn sharedInstance] disconnect];
-
-                [self onLoginSuccess:login];
-            }
-            failureCallback:^(NSError *error) {
-                [StickyAlertView showErrorMessage:@[@"Sign in gagal silahkan coba lagi."]];
-            }];
+                              onSignInComplete(login);
+                          }
+                          failureCallback:onFailure];
 }
 
 @end
