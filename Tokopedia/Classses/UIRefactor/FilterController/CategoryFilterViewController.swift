@@ -44,8 +44,6 @@ import UIKit
         tableView.allowsMultipleSelection = true
         tableView.allowsMultipleSelectionDuringEditing = true
         tableView.allowsSelection = true
-        refreshControl.addTarget(self, action: #selector(CategoryFilterViewController.refresh(_:)), forControlEvents: UIControlEvents.ValueChanged)
-        tableView.addSubview(refreshControl)
         tableView.delegate = self
         tableView.dataSource = self
         tableView.tableFooterView = UIView.init(frame: CGRectMake(0, 0, 1, 1))
@@ -54,6 +52,9 @@ import UIKit
         self.view.addSubview(tableView)
         
         if (self.initialCategories.count == 0) {
+            refreshControl.addTarget(self, action: #selector(CategoryFilterViewController.refresh(_:)), forControlEvents: UIControlEvents.ValueChanged)
+            tableView.addSubview(refreshControl)
+            
             tableView.setContentOffset(CGPointMake(0, -refreshControl.frame.size.height), animated:true)
             refreshControl.beginRefreshing()
 
@@ -95,6 +96,10 @@ import UIKit
     
     func requestCategory() {
         RequestFilterCategory.fetchListFilterCategory(rootCategoryID, success: { (categories) in
+            
+            self.categories.removeAll()
+            self.tableView.reloadData()
+            
             self.tableView.setContentOffset(CGPointZero, animated:true)
             self.refreshControl.endRefreshing()
             
