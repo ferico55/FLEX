@@ -247,7 +247,7 @@ class FiltersListDataSource:  NSObject, UITableViewDelegate, UITableViewDataSour
         
         let newString = (textField.text! as NSString).stringByReplacingCharactersInRange(range, withString: string)
         
-        var item : ListOption = self.item(textField.tag)
+        let item : ListOption = self.item(textField.tag)
         
         let selectedObject = item.copy() as! ListOption
         selectedObject.value = "\(newString)"
