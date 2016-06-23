@@ -80,13 +80,10 @@ import UIKit
     
     func showPresetCategories() {
         for category in self.initialCategories {
-            category.isSelected = false
             for childCategory in category.child {
-                childCategory.isSelected = false
                 childCategory.parent = category.categoryId;
                 for lastCategory in childCategory.child {
                     lastCategory.parent = childCategory.categoryId;
-                    lastCategory.isSelected = false
                 }
             }
         }
@@ -141,7 +138,7 @@ import UIKit
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
         
         let category : CategoryDetail = categories[indexPath.row]
-        if category.isSelected {
+        if self.selectedCategories .contains(category) {
             cell.setSelected(true, animated: false)
         }
     }
