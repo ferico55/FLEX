@@ -88,7 +88,9 @@ TKPDAlertViewDelegate
     }
 }
 - (IBAction)skipButtonTapped:(id)sender {
-    [self.delegate redirectViewController:_redirectViewController];
+    if (_delegate) {
+        [self.delegate redirectViewController:_redirectViewController];        
+    }
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
