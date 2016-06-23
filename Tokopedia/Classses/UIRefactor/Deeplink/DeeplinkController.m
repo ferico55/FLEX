@@ -20,6 +20,7 @@
 #import "ContactUsWireframe.h"
 #import "TPContactUsDependencies.h"
 #import "HelloPhoneVerificationViewController.h"
+#import "LoginViewController.h"
 
 #import "string_product.h"
 
@@ -151,6 +152,9 @@
     }
     else if ([[url absoluteString] rangeOfString:@"msisdn-verification.pl"].location != NSNotFound) {
         [self redirectToPhoneVerification];
+    }
+    else if ([[url absoluteString] rangeOfString:@"login.pl"].location != NSNotFound) {
+        [self redirectToLogin];
     }
     else if(explodedPathUrl.count == 2) {
         //shop
@@ -342,10 +346,23 @@
 }
 
 - (void)redirectToPhoneVerification {
-    HelloPhoneVerificationViewController *controller = [HelloPhoneVerificationViewController new];
-    controller.redirectViewController = self.activeController;
+    UserAuthentificationManager *auth = [UserAuthentificationManager new];
+    if (auth.isLogin) {
+        HelloPhoneVerificationViewController *controller = [HelloPhoneVerificationViewController new];
+        controller.redirectViewController = self.activeController;
+        UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:controller];
+        navigation.navigationBarHidden = YES;
+        [self.activeController.navigationController presentViewController:navigation animated:YES completion:NULL];
+    } else {
+        [self redirectToLogin];
+    }
+}
+
+- (void)redirectToLogin {
+    LoginViewController *controller = [LoginViewController new];
+    controller.isPresentedViewController = YES;
     UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:controller];
-    navigation.navigationBarHidden = YES;
+    navigation.navigationBar.translucent = NO;
     [self.activeController.navigationController presentViewController:navigation animated:YES completion:NULL];
 }
 
