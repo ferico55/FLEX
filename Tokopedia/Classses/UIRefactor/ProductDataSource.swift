@@ -63,8 +63,8 @@ import UIKit
     
     func indexPathForInsertions(products: Array<SearchAWSProduct>) -> [NSIndexPath] {
         var indexPaths:[NSIndexPath] = []
-        
-        for var index = 0; index < products.count; index++ {
+
+        for index in 0 ..< products.count {
             indexPaths.append(NSIndexPath(forItem: index + _products.count, inSection: 0))
         }
         
