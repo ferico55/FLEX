@@ -45,6 +45,8 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (weak, nonatomic) IBOutlet UILabel *alertLabel;
 
+@property (strong, nonatomic) UIRefreshControl *refreshControl;
+
 // parameters
 @property (strong, nonatomic) NSString *start;
 @property (strong, nonatomic) NSString *end;
@@ -103,7 +105,7 @@
     
     self.start = @"";
     self.end = @"";
-    self.page = @"";
+    self.page = @"1";
     self.perPage = @"";
     
     self.numberOfProcessedOrder = 0;
@@ -112,7 +114,10 @@
     
     self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 10, 0);
     self.tableView.tableHeaderView = _headerView;
-    [self.tableView addSubview:self.refreshControl];
+
+    self.refreshControl = [UIRefreshControl new];
+    [self.refreshControl addTarget:self action:@selector(refreshData) forControlEvents:UIControlEventValueChanged];
+    [self.tableView addSubview:_refreshControl];
     
     self.alertLabel.attributedText = self.alertAttributedString;
     
@@ -149,14 +154,6 @@
                                                               target:self
                                                               action:@selector(tap:)];
     return button;
-}
-
-#pragma mark - Refresh control
-
-- (UIRefreshControl *)refreshControl {
-    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
-    [refreshControl addTarget:self action:@selector(refreshData) forControlEvents:UIControlEventValueChanged];
-    return refreshControl;
 }
 
 #pragma mark - Note view
@@ -282,10 +279,8 @@
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if ([tableView isLastIndexPath:indexPath]) {
-        if (self.nextURL) {
-            [self fetchShipmentConfirmationData];
-        }
+    if ([tableView isLastIndexPath:indexPath] && self.nextURL) {
+        [self fetchShipmentConfirmationData];
     }
 }
 
@@ -404,7 +399,6 @@
     self.nextURL =  [NSURL URLWithString:response.result.paging.uri_next];
     self.page = [self.nextURL valueForKey:@"page"];
     
-    
     NSLog(@"next page : %ld",(long)_page);
     
     if (self.page == 0) {
@@ -420,6 +414,7 @@
         self.tableView.sectionFooterHeight = noResultView.frame.size.height;
     }
     
+    [self.refreshControl endRefreshing];
     [self.tableView reloadData];
 }
 
@@ -459,7 +454,7 @@
     _courier = courier;
     
     self.start = @"0";
-    self.page = @"0";
+    self.page = @"1";
     self.perPage = @"6";
     
     [self.orders removeAllObjects];
@@ -617,7 +612,7 @@
 
 - (void)refreshData {
     self.start = @"0";
-    self.page = @"0";
+    self.page = @"1";
     self.perPage = @"6";
     [self fetchShipmentConfirmationData];
 }
