@@ -70,6 +70,7 @@
     TPAnalytics *analytics = [[self alloc] init];
     [analytics.dataLayer push:@{@"user_id" : [analytics.userManager getUserId]?:@""}];
     [Localytics setValue:[analytics.userManager getUserId]?:@"" forProfileAttribute:@"user_id"];
+    [Localytics setValue:[analytics.userManager getShopId]?:@"" forProfileAttribute:@"shop_id"];
 }
 
 - (NSString *)getProductListName:(id)product {
