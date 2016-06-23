@@ -200,6 +200,14 @@
     return height;
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    if (section == 2) {
+        return @"    Pilih Kurir";
+    } else {
+        return nil;
+    }
+}
+
 #pragma mark - Table view cell
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
