@@ -29,6 +29,8 @@
 #import "TAGDataLayer.h"
 
 #import "ActivationRequest.h"
+#import "AuthenticationService.h"
+#import "Tokopedia-Swift.h"
 
 static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jdpts.apps.googleusercontent.com";
 
@@ -694,133 +696,25 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                                  kTKPDLOGIN_API_GENDER_KEY       : gender,
                                  kTKPDLOGIN_API_FB_TOKEN_KEY     : accessToken.tokenString?:@"",
                                  };
-    
-    [self requestThirdAppUser:parameters];
+
+    [[AuthenticationService sharedService]
+            doThirdPartySignInWithUserProfile:[CreatePasswordUserProfile fromFacebook:data]
+                           fromViewController:self
+                             onSignInComplete:^(Login *login) {
+                                [self onLoginSuccess:login];
+                             }
+                                    onFailure:^(NSError *error) {
+                                        [StickyAlertView showErrorMessage:@[@"Sign in gagal silahkan coba lagi."]];
+                                    }];
 }
 
 - (void)loginButtonDidLogOut:(FBSDKLoginButton *)loginButton {
     [self cancel];
 }
 
-#pragma mark - Restkit Facebook login
-
-- (void)configureRestKitFacebookLogin
-{
-    // initialize RestKit
-    _thirdAppObjectManager =  [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Login class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[LoginResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{kTKPDLOGIN_APIISLOGINKEY    : kTKPDLOGIN_APIISLOGINKEY,
-                                                        kTKPDLOGIN_APISHOPIDKEY     : kTKPDLOGIN_APISHOPIDKEY,
-                                                        kTKPDLOGIN_APIUSERIDKEY     : kTKPDLOGIN_APIUSERIDKEY,
-                                                        kTKPDLOGIN_APIFULLNAMEKEY   : kTKPDLOGIN_APIFULLNAMEKEY,
-                                                        kTKPDLOGIN_APIIMAGEKEY      : kTKPDLOGIN_APIIMAGEKEY,
-                                                        kTKPDLOGIN_APISHOPNAMEKEY   : kTKPDLOGIN_APISHOPNAMEKEY,
-                                                        kTKPDLOGIN_APISHOPAVATARKEY : kTKPDLOGIN_APISHOPAVATARKEY,
-                                                        kTKPDLOGIN_APISHOPISGOLDKEY : kTKPDLOGIN_APISHOPISGOLDKEY,
-                                                        kTKPDLOGIN_API_STATUS_KEY               : kTKPDLOGIN_API_STATUS_KEY,
-                                                        kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY   : kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY,
-                                                        kTKPDLOGIN_API_MSISDN_SHOW_DIALOG_KEY   : kTKPDLOGIN_API_MSISDN_SHOW_DIALOG_KEY,
-                                                        kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY : kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY,
-                                                        kTKPDLOGIN_API_HAS_TERM_KEY : kTKPDLOGIN_API_HAS_TERM_KEY
-                                                        }];
-    //add relationship mapping
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                  toKeyPath:kTKPD_APIRESULTKEY
-                                                                                withMapping:resultMapping]];
-    
-    // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                                  method:RKRequestMethodPOST
-                                                                                             pathPattern:kTKPDLOGIN_FACEBOOK_APIPATH
-                                                                                                 keyPath:@""
-                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_thirdAppObjectManager addResponseDescriptor:responseDescriptorStatus];
-}
-
-- (void)requestThirdAppUser:(NSDictionary *)data
-{
-    if (_thirdAppLoginRequest.isExecuting) return;
-    
-    [self configureRestKitFacebookLogin];
-    
-    _requestcount++;
-    
-    NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithDictionary:data];
-    [parameters setObject:kTKPDREGISTER_APIDOLOGINKEY forKey:kTKPDREGISTER_APIACTIONKEY];
-    NSLog(@"\n\n\n%@\n\n\n", parameters);
-    
-    _thirdAppLoginRequest = [_thirdAppObjectManager appropriateObjectRequestOperationWithObject:self
-                                                                                         method:RKRequestMethodPOST
-                                                                                           path:kTKPDLOGIN_FACEBOOK_APIPATH
-                                                                                     parameters:[parameters encrypt]];
-    
-    NSLog(@"\n\n\n%@\n\n\n", _thirdAppLoginRequest);
-    
-    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
-                                                      target:self
-                                                    selector:@selector(requesttimeout)
-                                                    userInfo:nil
-                                                     repeats:NO];
-    
-    [[NSRunLoop currentRunLoop] addTimer:timer
-                                 forMode:NSRunLoopCommonModes];
-    
-    [_thirdAppLoginRequest setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [timer invalidate];
-        [self requestThirdAppLoginResult:mappingResult withOperation:operation];
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [timer invalidate];
-        [self requestfailure:error];
-    }];
-    
-    [_operationQueue addOperation:_thirdAppLoginRequest];
-}
-
-- (void)requestThirdAppLoginResult:(RKMappingResult *)mappingResult withOperation:(RKObjectRequestOperation *)operation
-{
-    Login *login = mappingResult.dictionary[@""];
-    [self thirdPartyLoginSuccess:login];
-}
-
-- (void)thirdPartyLoginSuccess:(Login *)login {
-    BOOL status = [login.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    if (status) {
-        if ([login.result.status isEqualToString:@"2"]) {
-            
-            [[GIDSignIn sharedInstance] signOut];
-            [[GIDSignIn sharedInstance] disconnect];
-            
-            TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-            [secureStorage setKeychainWithValue:@(login.result.is_login) withKey:kTKPD_ISLOGINKEY];
-            [secureStorage setKeychainWithValue:login.result.user_id withKey:kTKPD_USERIDKEY];
-            [secureStorage setKeychainWithValue:login.result.full_name withKey:kTKPD_FULLNAMEKEY];
-            
-            if(login.result.user_image != nil) {
-                [secureStorage setKeychainWithValue:login.result.user_image withKey:kTKPD_USERIMAGEKEY];
-            }
-            
-            [secureStorage setKeychainWithValue:login.result.shop_id withKey:kTKPD_SHOPIDKEY];
-            [secureStorage setKeychainWithValue:login.result.shop_name withKey:kTKPD_SHOPNAMEKEY];
-            
-            if(login.result.shop_avatar != nil) {
-                [secureStorage setKeychainWithValue:login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
-            }
-            [secureStorage setKeychainWithValue:@(login.result.shop_is_gold) withKey:kTKPD_SHOPISGOLD];
-            [secureStorage setKeychainWithValue:login.result.device_token_id withKey:kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY];
-            [secureStorage setKeychainWithValue:login.result.msisdn_is_verified withKey:kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY];
-            [secureStorage setKeychainWithValue:login.result.msisdn_show_dialog withKey:kTKPDLOGIN_API_MSISDN_SHOW_DIALOG_KEY];
-            [secureStorage setKeychainWithValue:login.result.shop_has_terms withKey:kTKPDLOGIN_API_HAS_TERM_KEY];
-            
-            if ([self.navigationController.viewControllers[0] isKindOfClass:[LoginViewController class]]) {
-                LoginViewController *loginController = (LoginViewController *)self.navigationController.viewControllers[0];
+- (void)navigateToProperPage {
+    if ([self.navigationController.viewControllers[0] isKindOfClass:[LoginViewController class]]) {
+                LoginViewController *loginController = (LoginViewController *) self.navigationController.viewControllers[0];
                 if (loginController.isPresentedViewController && [loginController.delegate respondsToSelector:@selector(redirectViewController:)]) {
                     [loginController.delegate redirectViewController:loginController.redirectViewController];
                     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
@@ -837,45 +731,6 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                                                                     object:nil
                                                                   userInfo:nil];
             }
-            
-            [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification object:nil];
-            
-            [Localytics setValue:@"Yes" forProfileAttribute:@"Is Login"];
-        }
-        else if ([login.result.status isEqualToString:@"1"]) {
-
-            TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-            [secureStorage setKeychainWithValue:@(NO) withKey:kTKPD_ISLOGINKEY];
-            [secureStorage setKeychainWithValue:login.result.user_id withKey:kTKPD_TMP_USERIDKEY];
-
-            CreatePasswordViewController *controller = [CreatePasswordViewController new];
-            if (_facebookUserData) {
-                controller.facebookUserData = _facebookUserData;
-            } else if (_gidGoogleUser) {
-                controller.gidGoogleUser = _gidGoogleUser;
-            }
-            
-            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
-            navigationController.navigationBar.translucent = NO;
-            
-            [self.navigationController presentViewController:navigationController animated:YES completion:nil];
-            
-        }
-        else
-        {
-            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:login.message_error
-                                                                           delegate:self];
-            [alert show];
-            [self cancel];
-        }
-    }
-    else
-    {
-        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Sign in gagal silahkan coba lagi."]
-                                                                       delegate:self];
-        [alert show];
-        [self cancel];
-    }
 }
 
 - (IBAction)tapTerms:(id)sender {
@@ -968,28 +823,63 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
 
 #pragma mark - Activation Request
 - (void)requestLoginGoogleWithUser:(GIDGoogleUser *)user {
-    NSString *securityQuestionUUID = [[[TKPDSecureStorage standardKeyChains] keychainDictionary] objectForKey:@"securityQuestionUUID"];
-    NSString *uuid = securityQuestionUUID.length ? securityQuestionUUID : @"";
-    
-    [_activationRequest requestDoLoginPlusWithAppType:@"2"
-                                             birthday:@""
-                                             deviceID:@""
-                                                email:user.profile.email
-                                               gender:@""
-                                               userID:user.userID
-                                                 name:user.profile.name
-                                               osType:@""
-                                              picture:@""
-                                                 uuid:uuid
-                                            onSuccess:^(Login *result) {
-                                                [self thirdPartyLoginSuccess:result];
-                                            }
-                                            onFailure:^(NSError *error) {
-                                                _texfieldfullname.enabled = YES;
-                                                _act.hidden = YES;
-                                                [_act stopAnimating];
-                                                [self cancel];
-                                            }];
+    [[AuthenticationService sharedService]
+            doThirdPartySignInWithUserProfile:[CreatePasswordUserProfile fromGoogle:user]
+                           fromViewController:self
+                             onSignInComplete:^(Login *login) {
+                                 [self onLoginSuccess:login];
+                             }
+                                    onFailure:^(NSError *error) {
+                                        [StickyAlertView showErrorMessage:@[@"Sign in gagal silahkan coba lagi."]];
+                                    }];
+}
+
+- (void)storeCredentialToKeychain:(Login *)login {
+    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+    [secureStorage setKeychainWithValue:@(login.result.is_login) withKey:kTKPD_ISLOGINKEY];
+    [secureStorage setKeychainWithValue:login.result.user_id withKey:kTKPD_USERIDKEY];
+    [secureStorage setKeychainWithValue:login.result.full_name withKey:kTKPD_FULLNAMEKEY];
+
+
+    if(login.result.user_image != nil) {
+        [secureStorage setKeychainWithValue:login.result.user_image withKey:kTKPD_USERIMAGEKEY];
+    }
+
+    [secureStorage setKeychainWithValue:login.result.shop_id withKey:kTKPD_SHOPIDKEY];
+    [secureStorage setKeychainWithValue:login.result.shop_name withKey:kTKPD_SHOPNAMEKEY];
+
+    if(login.result.shop_avatar != nil) {
+        [secureStorage setKeychainWithValue:login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
+    }
+
+    [secureStorage setKeychainWithValue:@(login.result.shop_is_gold) withKey:kTKPD_SHOPISGOLD];
+    [secureStorage setKeychainWithValue:login.result.msisdn_is_verified withKey:kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY];
+    [secureStorage setKeychainWithValue:login.result.msisdn_show_dialog withKey:kTKPDLOGIN_API_MSISDN_SHOW_DIALOG_KEY];
+    [secureStorage setKeychainWithValue:login.result.device_token_id withKey:kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY];
+    [secureStorage setKeychainWithValue:login.result.shop_has_terms withKey:kTKPDLOGIN_API_HAS_TERM_KEY];
+    [secureStorage setKeychainWithValue:login.result.email withKey:kTKPD_USEREMAIL];
+
+    if(login.result.user_reputation != nil) {
+        ReputationDetail *reputation = login.result.user_reputation;
+        [secureStorage setKeychainWithValue:@(YES) withKey:@"has_reputation"];
+        [secureStorage setKeychainWithValue:reputation.positive withKey:@"reputation_positive"];
+        [secureStorage setKeychainWithValue:reputation.positive_percentage withKey:@"reputation_positive_percentage"];
+        [secureStorage setKeychainWithValue:reputation.no_reputation withKey:@"no_reputation"];
+        [secureStorage setKeychainWithValue:reputation.negative withKey:@"reputation_negative"];
+        [secureStorage setKeychainWithValue:reputation.neutral withKey:@"reputation_neutral"];
+    }
+}
+
+- (void)onLoginSuccess:(Login *)login {
+    [[GIDSignIn sharedInstance] signOut];
+    [[GIDSignIn sharedInstance] disconnect];
+
+    [self storeCredentialToKeychain:login];
+    [self navigateToProperPage];
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification object:nil];
+
+    [Localytics setValue:@"Yes" forProfileAttribute:@"Is Login"];
 }
 
 @end
