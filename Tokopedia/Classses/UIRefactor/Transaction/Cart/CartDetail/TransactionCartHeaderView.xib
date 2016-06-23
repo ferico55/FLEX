@@ -123,6 +123,7 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="LMBadgeImageView" destination="lJa-Fl-foS" id="565-IQ-Ymy"/>
+                <outlet property="constraintXShopName" destination="U3v-Uc-grx" id="yXW-aG-3rb"/>
                 <outlet property="constraintwidthbadge" destination="yHd-pe-hYn" id="RAw-6H-o80"/>
                 <outlet property="deleteButton" destination="z9V-lt-b5H" id="O8B-7q-YXp"/>
                 <outlet property="errorLabel" destination="oQE-t2-vGG" id="7bZ-hC-PUu"/>

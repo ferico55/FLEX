@@ -50,15 +50,19 @@
     
     if (viewModel.errors.count > 0) {
         Errors *error = viewModel.errors[0];
-        NSString *string = [NSString stringWithFormat:@"%@\n\n%@", error.title, error.desc];
-        CGSize maximumLabelSize = CGSizeMake(250,9999);
-        NSStringDrawingContext *context = [NSStringDrawingContext new];
-        CGSize expectedLabelSize = [string boundingRectWithSize:maximumLabelSize
-                                                        options:NSStringDrawingUsesLineFragmentOrigin
-                                                     attributes:@{NSFontAttributeName:[UIFont fontWithName:@"Gotham Book" size:18.0f]}
-                                                        context:context].size;
-        _errorViewHeightConstraint.constant = expectedLabelSize.height;
-        _errorLabel.text = string;
+        if (![error.name isEqualToString:@"product-not-available"]) {
+            NSString *string = [NSString stringWithFormat:@"%@\n\n%@", error.title, error.desc];
+            CGSize maximumLabelSize = CGSizeMake(250,9999);
+            NSStringDrawingContext *context = [NSStringDrawingContext new];
+            CGSize expectedLabelSize = [string boundingRectWithSize:maximumLabelSize
+                                                            options:NSStringDrawingUsesLineFragmentOrigin
+                                                         attributes:@{NSFontAttributeName:[UIFont fontWithName:@"Gotham Book" size:18.0f]}
+                                                            context:context].size;
+            _errorViewHeightConstraint.constant = expectedLabelSize.height;
+            _errorLabel.text = string;
+        } else {
+            _errorViewHeightConstraint.constant = 0;
+        }
     } else {
         _errorViewHeightConstraint.constant = 0;
     }

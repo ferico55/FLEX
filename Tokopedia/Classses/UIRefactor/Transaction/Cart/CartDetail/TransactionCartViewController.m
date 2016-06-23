@@ -468,8 +468,12 @@
     if (section < _list.count)
     {
         if (_list[section].errors.count > 0) {
-            NSString *string = [NSString stringWithFormat:@"%@\n\n%@", _list[section].errors[0].title, _list[section].errors[0].desc];
-            return 44 + [self getLabelHeightWithText:string];
+            if (![_list[section].errors[0].name isEqualToString:@"product-not-available"]) {
+                NSString *string = [NSString stringWithFormat:@"%@\n\n%@", _list[section].errors[0].title, _list[section].errors[0].desc];
+                return 44 + [self getLabelHeightWithText:string];
+            } else {
+                return 44;
+            }
         } else {
             return 44;
         }
