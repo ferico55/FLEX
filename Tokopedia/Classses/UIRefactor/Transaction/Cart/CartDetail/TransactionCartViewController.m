@@ -53,6 +53,8 @@
 
 #import "UITableView+FDTemplateLayoutCell.h"
 
+#import "TPLocalytics.h"
+
 #define DurationInstallmentFormat @"%@ bulan (%@)"
 
 @interface TransactionCartViewController ()
@@ -2368,6 +2370,8 @@
                 }
             }
         }
+        [TPLocalytics trackCartView:_cart];
+        
     } error:^(NSError *error) {
         [_noInternetConnectionView generateRequestErrorViewWithError:error];
         [_tableView addSubview:_noInternetConnectionView];
@@ -2377,7 +2381,6 @@
         }
         [self isLoading:NO];
     }];
-    
 }
 
 -(void)doCancelCart{

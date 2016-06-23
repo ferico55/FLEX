@@ -344,7 +344,7 @@
     if (self.filterType == FilterCategoryTypeCategory) {
         NSMutableArray *deletedCategories = [NSMutableArray new];
         for (CategoryDetail *category in self.initialCategories) {
-            if (![category.tree isEqualToString:@"1"] && category.isExpanded == NO) {
+            if ([category.tree isEqualToString:@"1"] && category.isExpanded == NO) {
                 [deletedCategories addObject:category];
             }
         }

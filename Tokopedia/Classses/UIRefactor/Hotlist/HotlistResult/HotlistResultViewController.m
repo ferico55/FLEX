@@ -270,24 +270,25 @@ static NSString const *rows = @"12";
 }
 
 -(void)setDefaultSort{
-    [_detailfilter setObject:[self defaultSortID] forKey:@"ob"];
+    [_detailfilter setObject:[self defaultSortID] forKey:[self defaultSortKey]];
     _selectedSort = [self defaultSortDynamicFilter];
-    _selectedSortParam = @{@"ob":[self defaultSortID]};
+    _selectedSortParam = @{[self defaultSortKey]:[self defaultSortID]};
     
 }
 
 -(ListOption*)defaultSortDynamicFilter{
     ListOption *sort = [ListOption new];
-    sort.name = @"Paling Sesuai";
-    sort.value = @"23";
-    sort.key = @"ob";
-    sort.input_type = @"checkbox";
+    sort.value = [self defaultSortID];
+    sort.key = [self defaultSortKey];
     return sort;
 }
 
+-(NSString*)defaultSortKey{
+    return @"ob";
+}
 
 -(NSString*)defaultSortID{
-    return @"23";
+    return @"1";
 }
 
 - (void)registerAllNib {
@@ -319,7 +320,7 @@ static NSString const *rows = @"12";
 }
 
 -(BOOL)isUseDynamicFilter{
-    if(FBTweakValue(@"Dynamic", @"Filter", @"Enabled", YES)) {
+    if(FBTweakValue(@"Dynamic", @"Filter", @"Enabled", NO)) {
         return YES;
     } else {
         return NO;
@@ -347,12 +348,12 @@ static NSString const *rows = @"12";
     }
 }
 
--(NSString*)hotlistSearchType{
-    return @"hotlist";
+-(NSString*)hotlistFilterSource{
+    return @"hot_product";
 }
 
 -(void)pushDynamicSort{
-    FiltersController *controller = [[FiltersController alloc]initWithSource:[self hotlistSearchType] sortResponse:_filterResponse?:[FilterData new] selectedSort:_selectedSort presentedVC:self onCompletion:^(ListOption * sort, NSDictionary*paramSort) {
+    FiltersController *controller = [[FiltersController alloc]initWithSource:[self hotlistFilterSource] sortResponse:_filterResponse?:[FilterData new] selectedSort:_selectedSort presentedVC:self onCompletion:^(ListOption * sort, NSDictionary*paramSort) {
         _selectedSortParam = paramSort;
         _selectedSort = sort;
         _activeSortImageView.hidden = (_selectedSort == nil);
@@ -380,7 +381,7 @@ static NSString const *rows = @"12";
 }
 
 -(void)pushDynamicFilter{
-    FiltersController *controller = [[FiltersController alloc]initWithSource:[self hotlistSearchType] filterResponse:_filterResponse?:[FilterData new] categories:[_initialCategories copy] selectedCategories:_selectedCategories selectedFilters:_selectedFilters presentedVC:self onCompletion:^(NSArray<CategoryDetail *> * selectedCategories , NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
+    FiltersController *controller = [[FiltersController alloc]initWithSource:[self hotlistFilterSource] filterResponse:_filterResponse?:[FilterData new] categories:[_initialCategories copy] selectedCategories:_selectedCategories selectedFilters:_selectedFilters presentedVC:self onCompletion:^(NSArray<CategoryDetail *> * selectedCategories , NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
         
         _selectedCategories = selectedCategories;
         _selectedFilters = selectedFilters;
@@ -630,7 +631,7 @@ static NSString const *rows = @"12";
 #pragma mark - Sort Delegate
 - (void)didSelectSort:(NSString *)sort atIndexPath:(NSIndexPath *)indexPath {
     _sortIndexPath = indexPath;
-    [_detailfilter setObject:sort forKey:@"ob"];
+    [_detailfilter setObject:sort forKey:[self defaultSortKey]];
     [self refreshView:nil];
 }
 

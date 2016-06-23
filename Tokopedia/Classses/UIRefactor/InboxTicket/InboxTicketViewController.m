@@ -89,7 +89,6 @@ NoResultDelegate
                                   desc:@""
                               btnTitle:@"Halaman Bantuan"];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAddTicket:) name:@"didAddTicket" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRemoveTicket:) name:@"didRemoveTicket" object:nil];
 }
 
 #pragma mark - Table view data source
@@ -185,8 +184,30 @@ NoResultDelegate
     } else if ([self.delegate respondsToSelector:@selector(pushViewController:)]) {
         [self.delegate pushViewController:controller];
     }
-    
-    
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    if (_tickets.count == 0) {
+        return nil;
+    }
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 100)];
+    view.backgroundColor = [UIColor colorWithRed:255.0/255.0 green:249.0/255.0 blue:198.0/255.0 alpha:1];
+    NSMutableParagraphStyle *style = [NSMutableParagraphStyle new];
+    style.lineSpacing = 4;
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(15, 10, self.view.frame.size.width-30, 80)];
+    NSString *string = @"Pengumuman:\nMulai tanggal 16 Juni 2016, semua pesan ke Layanan Pengguna akan dijawab melalui email Anda yang terdaftar, karena fitur tersebut akan dihapus pada bulan Juli 2016.";
+    NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:string];
+    [attributedText addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, string.length)];
+    [attributedText addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"GothamMedium" size:12] range:NSMakeRange(0, 11)];
+    [attributedText addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"GothamBook" size:12] range:NSMakeRange(11, string.length - 11)];
+    label.attributedText = attributedText;
+    label.numberOfLines = 0;
+    [view addSubview:label];
+    return view;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return _tickets.count > 0? 100: 0;
 }
 
 #pragma mark - Tokopedia network manager

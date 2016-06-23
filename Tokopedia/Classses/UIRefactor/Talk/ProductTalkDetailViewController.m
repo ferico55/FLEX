@@ -520,9 +520,7 @@
         comment.comment_message = _growingtextview.text;
 
         if ([_auth objectForKey:@"shop_id"]) {
-            //TODO: the UserAuthenticationManager actually returns shop id as NSNumber*,
-            //so we need to get the string value of it. need to fix data type problem
-            NSString* userShopId = [((NSNumber*)[_userManager getShopId]) stringValue];
+            NSString* userShopId = [_userManager getShopId];
 
             if ([[_data objectForKey:@"talk_shop_id"] isEqualToString:userShopId]) {
                 comment.comment_shop_name = [_auth objectForKey:@"shop_name"];
