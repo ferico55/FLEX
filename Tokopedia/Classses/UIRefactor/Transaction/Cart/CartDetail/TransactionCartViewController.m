@@ -1038,10 +1038,13 @@
             }
         }
     }
-
-    for (int i = 0; i<_list.count; i++) {
+    
+    NSInteger firstErrorCartIndex = -1;
+    
+    for (NSInteger i = 0; i < _list.count; i++) {
         if ([_list[i].cart_is_dropshipper integerValue] == 1) {
             if ([_list[i].cart_dropship_name isEqualToString:@""] || _list[i].cart_dropship_name==nil) {
+                firstErrorCartIndex = (firstErrorCartIndex != -1)?:i;
                 isValid = NO;
                 _list[i].isDropshipperNameError = YES;
                 if (![messageError containsObject:ERRORMESSAGE_SENDER_NAME_NILL])
@@ -1050,11 +1053,13 @@
                 _list[i].isDropshipperNameError = NO;
             }
             if ([_list[i].cart_dropship_phone isEqualToString:@""] || _list[i].cart_dropship_phone==nil) {
+                firstErrorCartIndex = (firstErrorCartIndex != -1)?:i;
                 isValid = NO;
                 _list[i].isDropshipperPhoneError = YES;
                 if (![messageError containsObject:ERRORMESSAGE_SENDER_PHONE_NILL])
                     [messageError addObject:ERRORMESSAGE_SENDER_PHONE_NILL];
             } else if (_list[i].cart_dropship_phone.length < 6) {
+                firstErrorCartIndex = (firstErrorCartIndex != -1)?:i;
                 isValid = NO;
                 _list[i].isDropshipperPhoneError = YES;
                 if (![messageError containsObject:@"Nomor telepon terlalu pendek, minimum 6 karakter."])
@@ -1064,6 +1069,12 @@
             }
         }
     }
+    
+    if (firstErrorCartIndex != -1) {
+        [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:firstErrorCartIndex] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    }
+    
+    
     
     NSLog(@"%d",isValid);
     if (!isValid && messageError.count > 0) {
@@ -2347,15 +2358,16 @@
         
         [self isLoading:NO];
         
-        if (list[_indexSelectedShipment].errors.count > 0) {
-            Errors *error = list[_indexSelectedShipment].errors[0];
-            if ([error.name isEqualToString:@"courier-cannot-reach"]) {
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"ShowErrorMessageOnShippingPage"
-                                                                    object:nil
-                                                                  userInfo:@{@"errors":error}];
+        if (list.count > 0) {
+            if (list[_indexSelectedShipment].errors.count > 0) {
+                Errors *error = list[_indexSelectedShipment].errors[0];
+                if ([error.name isEqualToString:@"courier-cannot-reach"]) {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"ShowErrorMessageOnShippingPage"
+                                                                        object:nil
+                                                                      userInfo:@{@"errors":error}];
+                }
             }
         }
-        
     } error:^(NSError *error) {
         [_noInternetConnectionView generateRequestErrorViewWithError:error];
         [_tableView addSubview:_noInternetConnectionView];
@@ -2496,11 +2508,12 @@
                                 if (error) {
                                     [_noInternetConnectionView generateRequestErrorViewWithError:error];
                                     [_tableView addSubview:_noInternetConnectionView];
+                                    [self doClearAllData];
+                                    [_refreshControl beginRefreshing];
+                                    [_tableView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
+                                    _paymentMethodView.hidden = YES;
                                 }
-                                [self doClearAllData];
-                                [_refreshControl beginRefreshing];
-                                [_tableView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
-                                _paymentMethodView.hidden = YES;
+                                
                                 [self isLoading:NO];
                             }];
 }

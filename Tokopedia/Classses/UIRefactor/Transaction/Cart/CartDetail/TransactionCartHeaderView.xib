@@ -104,6 +104,9 @@
                         <constraint firstAttribute="bottom" secondItem="FYa-Qi-T9k" secondAttribute="bottom" constant="5" id="mtZ-mn-K0a"/>
                         <constraint firstItem="z9V-lt-b5H" firstAttribute="leading" secondItem="FYa-Qi-T9k" secondAttribute="trailing" id="y2h-Ha-50z"/>
                     </constraints>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="t9m-IX-MvS" appends="YES" id="Lc0-W2-0Tp"/>
+                    </connections>
                 </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -126,13 +129,12 @@
                 <outlet property="errorView" destination="F6y-sY-B5I" id="liL-p1-Qdx"/>
                 <outlet property="errorViewHeightConstraint" destination="OEe-bR-fVQ" id="iuQ-Wk-zwi"/>
                 <outlet property="shopNameLabel" destination="FYa-Qi-T9k" id="cQk-2z-gm1"/>
-                <outletCollection property="gestureRecognizers" destination="t9m-IX-MvS" appends="YES" id="81L-Lr-euL"/>
             </connections>
             <point key="canvasLocation" x="346" y="111"/>
         </view>
         <tapGestureRecognizer id="t9m-IX-MvS">
             <connections>
-                <action selector="gesture:" destination="iN0-l3-epB" id="agg-04-liv"/>
+                <action selector="gesture:" destination="iN0-l3-epB" id="EjC-oS-H3o"/>
             </connections>
         </tapGestureRecognizer>
     </objects>
