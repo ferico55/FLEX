@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface ShipmentCourierPackage : NSObject
+@interface ShipmentCourierPackage : NSObject <TKPObjectMapping>
 
 @property (strong, nonatomic) NSString *desc;
 @property (strong, nonatomic) NSString *active;
