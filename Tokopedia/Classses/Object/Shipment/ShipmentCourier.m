@@ -7,6 +7,7 @@
 //
 
 #import "ShipmentCourier.h"
+#import "ShipmentCourierPackage.h"
 
 @implementation ShipmentCourier
 
@@ -29,6 +30,7 @@
 {
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
     [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"shipment_package" toKeyPath:@"shipment_package" withMapping:[ShipmentCourierPackage mapping]]];
     return mapping;
 }
 
