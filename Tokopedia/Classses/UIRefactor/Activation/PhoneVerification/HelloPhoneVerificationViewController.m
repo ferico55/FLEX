@@ -135,7 +135,7 @@ TKPDAlertViewDelegate
     if(tag == RequestPhoneNumber){
         return @{kTKPDPROFILE_APIACTIONKEY : kTKPDPROFILE_APIGETPROFILEKEY};
     }else if(tag == RequestOTP){
-        NSString *userId = [_auth objectForKey:@"user_id"];
+        NSString *userId = [_userManager getUserId];
         NSDictionary *dict = @{@"phone"     : _phone,
                                @"user_id"   : userId,
                                @"email_code": @"",

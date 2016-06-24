@@ -455,7 +455,7 @@
     
     ProductDetailReputationViewController *productDetailReputationViewController = [ProductDetailReputationViewController new];
     productDetailReputationViewController.isFromInboxNotification = YES;
-    productDetailReputationViewController.isMyProduct = (auth!=nil && [[NSString stringWithFormat:@"%@", [auth objectForKey:@"user_id"]] isEqualToString:detailReputationReview.product_owner.user_id]);
+    productDetailReputationViewController.isMyProduct = (auth!=nil && [[_userManager getUserId] isEqualToString:detailReputationReview.product_owner.user_id]);
     productDetailReputationViewController.shopBadgeLevel = detailReputationReview.shop_badge_level;
     productDetailReputationViewController.strProductID = detailReputationReview.product_id;
     productDetailReputationViewController.detailReputationReview = detailReputationReview;
