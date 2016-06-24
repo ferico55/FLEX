@@ -26,7 +26,9 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
     
     private var completionHandlerResponse:(FilterData)->Void = {_ in }
     
-    init(source: String, filterResponse:FilterData, categories: [CategoryDetail], selectedCategories:[CategoryDetail], selectedFilters:[ListOption], presentedVC:(UIViewController), onCompletion: ((selectedCategories:[CategoryDetail], selectedFilters:[ListOption], paramFilter:[String : String]) -> Void), response:((FilterData) -> Void)){
+    private var rootCategoryID : String = ""
+    
+    init(source: String, filterResponse:FilterData, rootCategoryID:String, categories: [CategoryDetail], selectedCategories:[CategoryDetail], selectedFilters:[ListOption], presentedVC:(UIViewController), onCompletion: ((selectedCategories:[CategoryDetail], selectedFilters:[ListOption], paramFilter:[String : String]) -> Void), response:((FilterData) -> Void)){
         
         self.filterResponse = filterResponse
         self.categories = categories
@@ -35,6 +37,7 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
         self.completionHandlerFilter = onCompletion
         self.presentedController = presentedVC
         self.source = source
+        self.rootCategoryID = rootCategoryID
         completionHandlerResponse = response
         
         super.init()
@@ -130,7 +133,7 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
     private func adjustControllers(){
         for filter in filterResponse.filter {
             if filter.title == categoryTitle() {
-                let controller : CategoryFilterViewController = CategoryFilterViewController.init(selectedCategories: selectedCategories, initialCategories:categories) { (selectedCategory) in
+                let controller : CategoryFilterViewController = CategoryFilterViewController.init(rootCategoryID:rootCategoryID, selectedCategories: selectedCategories, initialCategories:categories) { (selectedCategory) in
                     self.selectedCategories = selectedCategory
                     self .adjustImageTabBarButton((self.selectedCategories.count>0))
                 }
