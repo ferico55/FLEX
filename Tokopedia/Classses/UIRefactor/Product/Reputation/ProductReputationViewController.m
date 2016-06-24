@@ -66,6 +66,7 @@ static NSInteger userViewHeight = 70;
     ReviewRequest *reviewRequest;
     ReviewResult *reviewResult;
     BOOL isShowingMore, animationHasShown;
+    UserAuthentificationManager *_userManager;
 }
 
 - (void)viewDidLoad {
@@ -84,7 +85,7 @@ static NSInteger userViewHeight = 70;
     btnFilter6Month.tag = 0;
     btnFilterAllTime.tag = 1;
     
-    UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
+    _userManager = [UserAuthentificationManager new];
     auth = [_userManager getUserLoginData];
     [self setLoadingView:YES];
     helpfulReviewRequest = [HelpfulReviewRequest new];
@@ -765,7 +766,7 @@ static NSInteger userViewHeight = 70;
     ProductDetailReputationViewController *productDetailReputationViewController = [ProductDetailReputationViewController new];
     
     [self mappingAttribute:detailReputationReview];
-    productDetailReputationViewController.isMyProduct = (auth!=nil && [[NSString stringWithFormat:@"%@", [auth objectForKey:@"user_id"]] isEqualToString:detailReputationReview.product_owner.user_id]);
+    productDetailReputationViewController.isMyProduct = (auth!=nil && [[_userManager getUserId] isEqualToString:detailReputationReview.product_owner.user_id]);
     productDetailReputationViewController.detailReputationReview = detailReputationReview;
     productDetailReputationViewController.indexPathSelected = indexPath;
     productDetailReputationViewController.strProductID = _strProductID;

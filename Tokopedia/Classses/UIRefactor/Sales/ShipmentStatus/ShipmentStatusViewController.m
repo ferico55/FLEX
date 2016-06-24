@@ -89,13 +89,13 @@
     
     self.orders = [NSMutableArray new];
     
-    self.refreshControl = [[UIRefreshControl alloc] init];
+    self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 10, 0);
+    self.tableView.tableFooterView = _footerView;
+
+    self.refreshControl = [UIRefreshControl new];
     [self.refreshControl addTarget:self action:@selector(refreshData) forControlEvents:UIControlEventValueChanged];
     [self.tableView addSubview:_refreshControl];
-
-    self.tableView.tableFooterView = _footerView;
-    self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 10, 0);
-
+    
     self.filterController = [FilterShipmentStatusViewController new];
     self.filterController.delegate = self;
     
@@ -221,15 +221,11 @@
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1;
-    if (row == indexPath.row) {
-        NSLog(@"%@", NSStringFromSelector(_cmd));
-        if ([tableView isLastIndexPath:indexPath] && self.nextURL) {
-            self.tableView.tableFooterView = _footerView;
-            [self fetchOrderData];
-        } else {
-            self.tableView.tableFooterView = nil;
-        }
+    if ([tableView isLastIndexPath:indexPath] && self.nextURL) {
+        self.tableView.tableFooterView = _footerView;
+        [self fetchOrderData];
+    } else {
+        self.tableView.tableFooterView = nil;
     }
 }
 
@@ -297,6 +293,7 @@
         self.tableView.sectionFooterHeight = noResultView.frame.size.height;
     }
     
+    [self.refreshControl endRefreshing];
     [self.tableView reloadData];
 }
 

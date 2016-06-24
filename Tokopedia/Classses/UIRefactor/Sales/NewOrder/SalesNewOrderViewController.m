@@ -84,6 +84,8 @@
 @property (strong, nonatomic) IBOutlet UIView *footerView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
+@property (strong, nonatomic) UIRefreshControl *refreshControl;
+
 @end
 
 @implementation SalesNewOrderViewController
@@ -117,7 +119,10 @@
     self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 10, 0);
     self.tableView.tableHeaderView = _alertView;
     self.tableView.tableFooterView = _footerView;
-    [self.tableView addSubview:self.refreshControl];
+    
+    self.refreshControl = [UIRefreshControl new];
+    [self.refreshControl addTarget:self action:@selector(refreshData) forControlEvents:UIControlEventValueChanged];
+    [self.tableView addSubview:_refreshControl];
     
     self.alertLabel.attributedText = self.alertAttributedString;
     
@@ -151,14 +156,6 @@
                                                                        target:self
                                                                        action:@selector(didTapFilterButton:)];
     return filterBarButton;
-}
-
-#pragma mark - Refresh control
-
-- (UIRefreshControl *)refreshControl {
-    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
-    [refreshControl addTarget:self action:@selector(refreshData) forControlEvents:UIControlEventValueChanged];
-    return refreshControl;
 }
 
 #pragma mark - Note view
@@ -276,10 +273,8 @@
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if ([tableView isLastIndexPath:indexPath]) {
-        if (self.nextURL) {
-            [self fetchLatestOrderData];
-        }
+    if ([tableView isLastIndexPath:indexPath] && self.nextURL) {
+        [self fetchLatestOrderData];
     }
 }
 
@@ -547,6 +542,7 @@
                                               self.tableView.tableFooterView = nil;
                                           }
                                           self.activityIndicator.hidden = YES;
+                                          [self.refreshControl endRefreshing];
                                           [self.tableView reloadData];
                                       }
                                   } onFailure:^(NSError *errorResult) {

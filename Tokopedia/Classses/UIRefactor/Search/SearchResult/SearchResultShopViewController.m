@@ -279,7 +279,14 @@ static NSString const *rows = @"12";
 }
 
 -(void)pushDynamicFilter{
-    FiltersController *controller = [[FiltersController alloc]initWithSource:[self searchShopType] filterResponse:_filterResponse?:[FilterData new] categories:nil selectedCategories:nil selectedFilters:_selectedFilters presentedVC:self onCompletion:^(NSArray<CategoryDetail *> * selectedCategories , NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
+    FiltersController *controller = [[FiltersController alloc]initWithSource:[self searchShopType]
+                                                              filterResponse:_filterResponse?:[FilterData new]
+                                                              rootCategoryID:@""
+                                                                  categories:nil
+                                                          selectedCategories:nil
+                                                             selectedFilters:_selectedFilters
+                                                                 presentedVC:self
+                                                                onCompletion:^(NSArray<CategoryDetail *> * selectedCategories , NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
         
         _selectedFilters = selectedFilters;
         _selectedFilterParam = paramFilters;

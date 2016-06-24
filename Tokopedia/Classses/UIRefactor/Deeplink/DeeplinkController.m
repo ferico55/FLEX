@@ -19,6 +19,8 @@
 #import "TransactionCartRootViewController.h"
 #import "ContactUsWireframe.h"
 #import "TPContactUsDependencies.h"
+#import "HelloPhoneVerificationViewController.h"
+#import "LoginViewController.h"
 
 #import "string_product.h"
 
@@ -148,6 +150,12 @@
     else if ([[url absoluteString] rangeOfString:@"tab=shipping"].location != NSNotFound) {
         [self redirectToShipmentSetting];
     }
+    else if ([[url absoluteString] rangeOfString:@"msisdn-verification.pl"].location != NSNotFound) {
+        [self redirectToPhoneVerification];
+    }
+    else if ([[url absoluteString] rangeOfString:@"login.pl"].location != NSNotFound) {
+        [self redirectToLogin];
+    }
     else if(explodedPathUrl.count == 2) {
         //shop
         if([self isUrlContainPerlPostfix:explodedPathUrl[1]]) {
@@ -155,7 +163,6 @@
         } else {
             [self redirectToShop:explodedPathUrl];
         }
-
     }
     else if(explodedPathUrl.count == 3) {
         //product
@@ -336,6 +343,27 @@
 - (void)redirectToShipmentSetting {
     OpenShopViewController *controller = [OpenShopViewController new];
     [self.activeController.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)redirectToPhoneVerification {
+    UserAuthentificationManager *auth = [UserAuthentificationManager new];
+    if (auth.isLogin) {
+        HelloPhoneVerificationViewController *controller = [HelloPhoneVerificationViewController new];
+        controller.redirectViewController = self.activeController;
+        UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:controller];
+        navigation.navigationBarHidden = YES;
+        [self.activeController.navigationController presentViewController:navigation animated:YES completion:NULL];
+    } else {
+        [self redirectToLogin];
+    }
+}
+
+- (void)redirectToLogin {
+    LoginViewController *controller = [LoginViewController new];
+    controller.isPresentedViewController = YES;
+    UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:controller];
+    navigation.navigationBar.translucent = NO;
+    [self.activeController.navigationController presentViewController:navigation animated:YES completion:NULL];
 }
 
 #pragma mark - Static method

@@ -31,7 +31,7 @@
 
 +(void)fetchCancelComplainID:(NSString*)complainID
                       detail:(InboxResolutionCenterList*)resolution
-                     success:(void (^)(InboxResolutionCenterList *resolution, NSString* uriNext))success
+                     success:(void (^)(InboxResolutionCenterList *resolution))success
                      failure:(void (^)(NSError *error))failure;
 
 @end

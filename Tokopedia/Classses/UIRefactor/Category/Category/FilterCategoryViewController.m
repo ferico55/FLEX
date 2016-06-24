@@ -114,7 +114,7 @@
 }
 
 - (void)loadData {
-    [RequestFilterCategory fetchListFilterCategory:^(NSArray<CategoryDetail *> * categories) {
+    [RequestFilterCategory fetchListFilterCategory:_rootCategoryID?:@"" success:^(NSArray<CategoryDetail *> * categories) {
         self.initialCategories = [NSMutableArray arrayWithArray:categories];
         if (self.filterType == FilterCategoryTypeSearchProduct) {
             CategoryDetail *category = [CategoryDetail new];

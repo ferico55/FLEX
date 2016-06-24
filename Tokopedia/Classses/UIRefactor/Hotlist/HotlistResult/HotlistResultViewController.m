@@ -120,6 +120,8 @@ static NSString const *rows = @"12";
     ListOption *_selectedSort;
     NSDictionary *_selectedSortParam;
     NSArray<CategoryDetail*> *_selectedCategories;
+    
+    NSString *_rootCategoryID;
 }
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageview;
@@ -381,7 +383,14 @@ static NSString const *rows = @"12";
 }
 
 -(void)pushDynamicFilter{
-    FiltersController *controller = [[FiltersController alloc]initWithSource:[self hotlistFilterSource] filterResponse:_filterResponse?:[FilterData new] categories:[_initialCategories copy] selectedCategories:_selectedCategories selectedFilters:_selectedFilters presentedVC:self onCompletion:^(NSArray<CategoryDetail *> * selectedCategories , NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
+    FiltersController *controller = [[FiltersController alloc]initWithSource:[self hotlistFilterSource]
+                                                              filterResponse:_filterResponse?:[FilterData new]
+                                                             rootCategoryID:@""
+                                                                  categories:[_initialCategories copy]
+                                                          selectedCategories:_selectedCategories
+                                                             selectedFilters:_selectedFilters
+                                                                 presentedVC:self
+                                                                onCompletion:^(NSArray<CategoryDetail *> * selectedCategories , NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
         
         _selectedCategories = selectedCategories;
         _selectedFilters = selectedFilters;
@@ -894,6 +903,7 @@ static NSString const *rows = @"12";
         @"type" : q.type?:@""
     };
     
+    _rootCategoryID = q.sc;
     [_detailfilter addEntriesFromDictionary:query];
     _selectedFilterParam = query;
     [self setDefaultSort];
@@ -977,9 +987,9 @@ static NSString const *rows = @"12";
     
     NSString *selectedCategory = [[_selectedCategories valueForKey:@"categoryId"] componentsJoinedByString:@","];
     NSString *categories;
-    if (![[_detailfilter objectForKey:@"sc"] isEqualToString:@""] && _selectedCategories.count > 0) {
+    if (![[_detailfilter objectForKey:@"sc"] isEqualToString:@""] && _selectedCategories.count > 0 && [_rootCategoryID isEqualToString:@""]) {
         categories = [NSString stringWithFormat:@"%@,%@",selectedCategory,[_detailfilter objectForKey:@"sc"]?:@""];
-    } else if (![[_detailfilter objectForKey:@"sc"] isEqualToString:@""]){
+    } else if (![[_detailfilter objectForKey:@"sc"] isEqualToString:@""] && _selectedCategories.count == 0){
         categories = [_detailfilter objectForKey:@"sc"]?:@"";
     } else {
         categories = selectedCategory;
