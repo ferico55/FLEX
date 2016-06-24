@@ -97,6 +97,7 @@
         
         NSMutableDictionary *mappingsDictionary = [[NSMutableDictionary alloc] init];
         RKObjectManager *objectManager = [RKObjectManager sharedManager];
+        [objectManager addResponseDescriptor:[Notification responseDescriptor]];
         for (RKResponseDescriptor *descriptor in objectManager.responseDescriptors) {
             [mappingsDictionary setObject:descriptor.mapping forKey:descriptor.keyPath];
         }
