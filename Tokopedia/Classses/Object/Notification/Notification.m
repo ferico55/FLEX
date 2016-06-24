@@ -17,4 +17,14 @@
     return mapping;
 }
 
++ (RKResponseDescriptor *)responseDescriptor {
+    NSIndexSet *statusCodes = RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful);
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[self mapping]
+                                                                                            method:RKRequestMethodAny
+                                                                                       pathPattern:@"/v4/notification/get_notification.pl"
+                                                                                           keyPath:@""
+                                                                                       statusCodes:statusCodes];
+    return responseDescriptor;
+}
+
 @end
