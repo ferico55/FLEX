@@ -307,7 +307,7 @@
     NSDictionary *queries = [NSDictionary dictionaryFromURLString:_order.order_button.button_res_center_url];
     NSString *resolutionID = [queries objectForKey:@"id"];
     
-    [RequestCancelResolution fetchCancelComplainID:resolutionID detail:resolution success:^(InboxResolutionCenterList *resolution, NSString *uriNext) {
+    [RequestCancelResolution fetchCancelComplainID:resolutionID detail:resolution success:^(InboxResolutionCenterList *resolution) {
     } failure:^(NSError *error) {
         
     }];
