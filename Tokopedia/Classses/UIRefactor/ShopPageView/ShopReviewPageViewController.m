@@ -119,6 +119,7 @@
     NoResultReusableView *_noResultView;
     
     TokopediaNetworkManager *_networkManager;
+    UserAuthentificationManager *_userManager;
 }
 
 #pragma mark - Initialization
@@ -172,7 +173,7 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogin:) name:TKPDUserDidLoginNotification object:nil];
     [self addBottomInsetWhen14inch];
-    UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
+    _userManager = [UserAuthentificationManager new];
     _auth = [_userManager getUserLoginData];
 
     style = [[NSMutableParagraphStyle alloc] init];
@@ -881,7 +882,7 @@
     
     ProductDetailReputationViewController *productDetailReputationViewController = [ProductDetailReputationViewController new];
     productDetailReputationViewController.detailReputationReview = reviewList;
-    productDetailReputationViewController.isMyProduct = (_auth!=nil && [[NSString stringWithFormat:@"%@", [_auth objectForKey:@"user_id"]] isEqualToString:reviewList.product_owner.user_id]);
+    productDetailReputationViewController.isMyProduct = (_auth!=nil && [[_userManager getUserId] isEqualToString:reviewList.product_owner.user_id]);
     productDetailReputationViewController.shopBadgeLevel = _shop.result.stats.shop_badge_level;
     productDetailReputationViewController.shopImage = _shop.result.info.shop_avatar;
     productDetailReputationViewController.indexPathSelected = indexPath;

@@ -595,7 +595,7 @@
             [reviewRequest actionLikeWithReviewId:_detailReputationReview.review_id
                                            shopId:_detailReputationReview.shop_id?:_detailReputationReview.review_shop_id
                                         productId:_detailReputationReview.product_id?:_detailReputationReview.review_product_id
-                                           userId:[auth objectForKey:@"user_id"]
+                                           userId:[_userManager getUserId]
                                         onSuccess:^(LikeDislikePostResult *likeDislikePostResult) {
                                             
                                             if([likeDislikePostResult.is_success isEqualToString:@"1"]){
@@ -616,7 +616,7 @@
             [reviewRequest actionCancelLikeDislikeWithReviewId:_detailReputationReview.review_id
                                                         shopId:_detailReputationReview.shop_id?:_detailReputationReview.review_shop_id
                                                      productId:_detailReputationReview.product_id?:_detailReputationReview.review_product_id
-                                                        userId:[auth objectForKey:@"user_id"]
+                                                        userId:[_userManager getUserId]
                                                      onSuccess:^(LikeDislikePostResult *likeDislikePostResult) {
                                                          if([likeDislikePostResult.is_success isEqualToString:@"1"]){
                                                              [[productReputationCell getBtnLike] setTitle:likeDislikePostResult.content.total_like_dislike.total_like forState:UIControlStateNormal];
@@ -649,7 +649,7 @@
             [reviewRequest actionDislikeWithReviewId:_detailReputationReview.review_id
                                               shopId:_detailReputationReview.shop_id?:_detailReputationReview.review_shop_id
                                            productId:_detailReputationReview.product_id?:_detailReputationReview.review_product_id
-                                              userId:[auth objectForKey:@"user_id"]
+                                              userId:[_userManager getUserId]
                                            onSuccess:^(LikeDislikePostResult *likeDislikePostResult) {
                                                if([likeDislikePostResult.is_success isEqualToString:@"1"]){
                                                    _strLikeStatus = @"2";
@@ -669,7 +669,7 @@
             [reviewRequest actionCancelLikeDislikeWithReviewId:_detailReputationReview.review_id
                                                         shopId:_detailReputationReview.shop_id?:_detailReputationReview.review_shop_id
                                                      productId:_detailReputationReview.product_id?:_detailReputationReview.review_product_id
-                                                        userId:[auth objectForKey:@"user_id"]
+                                                        userId:[_userManager getUserId]
                                                      onSuccess:^(LikeDislikePostResult *likeDislikePostResult) {
                                                          if([likeDislikePostResult.is_success isEqualToString:@"1"]){
                                                              _strLikeStatus = @"3";
