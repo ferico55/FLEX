@@ -288,7 +288,7 @@ typedef enum
             [_pinLocationNameButton setCustomAttributedText:@"Tandai lokasi Anda"];
             
         } else{
-            GMSAddress *placemark = [response results][0];
+            GMSAddress *placemark = [response results].firstObject;
             _pinLocationNameButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
             [_pinLocationNameButton setCustomAttributedText:[self addressString:placemark]];
         }
@@ -344,8 +344,8 @@ typedef enum
             shipment.auto_resi_image = @"";
         }
     }
-    _selectedShipment = shipments[0];
-    _selectedShipmentPackage = shipments[0].products[0];
+    _selectedShipment = shipments.firstObject;
+    _selectedShipmentPackage = _selectedShipment.products.firstObject;
 }
 
 #pragma mark - Table View Data Source
@@ -758,7 +758,7 @@ typedef enum
             }
         }
         _selectedShipment = shipmentObject;
-        _selectedShipmentPackage = _selectedShipment.products[0];
+        _selectedShipmentPackage = _selectedShipment.products.firstObject;
     }
     else if (indexPath.row == TAG_BUTTON_TRANSACTION_SERVICE_TYPE)
     {
