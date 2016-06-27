@@ -15,6 +15,7 @@
 #import "TransactionCartList.h"
 #import "PromoResult.h"
 #import "Localytics.h"
+#import "NSURL+Dictionary.h"
 
 @interface TPAnalytics ()
 
@@ -404,6 +405,19 @@
                            @"event": @"openPushNotificationSetting"
                            };
     
+    [analytics.dataLayer push:data];
+}
+
++ (void)trackCampaign:(NSURL *)url {
+    TPAnalytics *analytics = [[self alloc] init];
+    NSDictionary *data = @{
+        @"utmSource": [url.parameters objectForKey:@"utm_source"]?:@"",
+        @"utmMedium": [url.parameters objectForKey:@"utm_medium"]?:@"",
+        @"utmCampaign": [url.parameters objectForKey:@"utm_campaign"]?:@"",
+        @"utmContent": [url.parameters objectForKey:@"utm_content"]?:@"",
+        @"utmTerm": [url.parameters objectForKey:@"utm_term"]?:@"",
+        @"gclid": [url.parameters objectForKey:@"gclid"]?:@"",
+    };
     [analytics.dataLayer push:data];
 }
 
