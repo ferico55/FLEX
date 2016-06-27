@@ -158,8 +158,6 @@ typedef enum
     
     _tableView.estimatedRowHeight = 100.0;
     _tableView.rowHeight = UITableViewAutomaticDimension;
-    
-    [_messageZeroShipmentLabel setCustomAttributedText:_messageZeroShipmentLabel.text];
 }
 
 -(void)refreshView{
@@ -326,6 +324,7 @@ typedef enum
                               
                           } onFailure:^(NSError *errorResult) {
                               if (_selectedAddress.address_id != 0) {
+                                  [_messageZeroShipmentLabel setCustomAttributedText:[self messageZeroShipmentDefault]];
                                   _tableView.tableHeaderView = _messageZeroShipmentView;
                               } else{
                                       _tableView.tableHeaderView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 1, 1)];
@@ -346,6 +345,19 @@ typedef enum
     }
     _selectedShipment = shipments.firstObject;
     _selectedShipmentPackage = _selectedShipment.products.firstObject;
+    
+    if (shipments.count == 0) {
+        [_messageZeroShipmentLabel setCustomAttributedText:[self messageZeroShipmentAvailable]];
+        _tableView.tableHeaderView = _messageZeroShipmentView;
+    }
+}
+
+-(NSString *)messageZeroShipmentAvailable{
+    return @"Mohon maaf alamat tujuan tidak didukung kurir.\nSilahkan perbarui alamat anda.";
+}
+
+-(NSString *)messageZeroShipmentDefault{
+    return @"Maaf, kami belum dapat melakukan kalkulasi ongkos kirim menuju alamat Anda. Tim kami akan segera melakukan pemeriksaan.";
 }
 
 #pragma mark - Table View Data Source
