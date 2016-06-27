@@ -236,11 +236,11 @@
     UserAuthentificationManager* authManager = [UserAuthentificationManager new];
     NSString* deviceId = [authManager getMyDeviceToken];
     
-    if ([@"0" isEqualToString:deviceId]) {
+    if ([@"0" isEqualToString:deviceId] || [deviceId isEqualToString:@"SIMULATORDUMMY"]) {
         deviceId = [[NSUUID UUID] UUIDString];
+        
+        [[TKPDSecureStorage standardKeyChains] setKeychainWithValue:deviceId withKey:kTKPD_DEVICETOKENKEY];
     }
-    
-    [[TKPDSecureStorage standardKeyChains] setKeychainWithValue:deviceId withKey:kTKPD_DEVICETOKENKEY];
 }
 
 @end
