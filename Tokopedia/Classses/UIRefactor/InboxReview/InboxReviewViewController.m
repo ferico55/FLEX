@@ -308,7 +308,7 @@
             TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
             _auth = [secureStorage keychainDictionary];
             _auth = [_auth mutableCopy];
-            NSString *userId = [[_auth objectForKey:@"user_id"] stringValue];
+            NSString *userId = [_userManager getUserId];
             if(userId && ![list.review_user_id isEqualToString:userId]) {
                 ((GeneralReviewCell*)cell).reportReviewButton.hidden = NO;
             } else {

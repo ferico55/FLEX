@@ -13,6 +13,7 @@
 #import "TKPDAlert.h"
 #import "HomeTabViewController.h"
 #import "StickyAlertView.h"
+#import "UserAuthentificationManager.h"
 
 @interface PhoneVerificationViewController ()
 <TokopediaNetworkManagerDelegate,
@@ -92,7 +93,7 @@ UIAlertViewDelegate, UITextFieldDelegate>
 #pragma mark - Tokopedia Network Manager Delegate
 
 - (NSDictionary*)getParameter:(int)tag{
-    NSString *userId = [_auth objectForKey:@"user_id"];
+    NSString *userId = [_userManager getUserId];
     NSDictionary *dict = @{@"phone"     : _phone,
                            @"user_id"   : userId,
                            @"code"      : _otpTextField.text

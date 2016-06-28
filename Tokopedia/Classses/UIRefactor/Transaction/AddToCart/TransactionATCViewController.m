@@ -19,7 +19,7 @@
 #import "PlacePickerViewController.h"
 #import "NavigateViewController.h"
 #import "RequestATC.h"
-#import "ATCPushLocalytics.h"
+#import "TPLocalytics.h"
 
 #import "NSNumberFormatter+IDRFormater.h"
 
@@ -158,8 +158,6 @@ typedef enum
     
     _tableView.estimatedRowHeight = 100.0;
     _tableView.rowHeight = UITableViewAutomaticDimension;
-    
-    [_messageZeroShipmentLabel setCustomAttributedText:_messageZeroShipmentLabel.text];
 }
 
 -(void)refreshView{
@@ -210,7 +208,7 @@ typedef enum
     editedAddress.longitude = [[NSNumber numberWithDouble:longitude] stringValue];;
     
     [RequestEditAddress fetchEditAddress:_selectedAddress
-                              isFromCart:@"0"
+                              isFromCart:@"1"
                                  success:^(ProfileSettingsResult *data) {
                                      
                                      TKPAddressStreet *tkpAddressStreet = [TKPAddressStreet new];
@@ -288,7 +286,7 @@ typedef enum
             [_pinLocationNameButton setCustomAttributedText:@"Tandai lokasi Anda"];
             
         } else{
-            GMSAddress *placemark = [response results][0];
+            GMSAddress *placemark = [response results].firstObject;
             _pinLocationNameButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
             [_pinLocationNameButton setCustomAttributedText:[self addressString:placemark]];
         }
@@ -326,6 +324,7 @@ typedef enum
                               
                           } onFailure:^(NSError *errorResult) {
                               if (_selectedAddress.address_id != 0) {
+                                  [_messageZeroShipmentLabel setCustomAttributedText:[self messageZeroShipmentDefault]];
                                   _tableView.tableHeaderView = _messageZeroShipmentView;
                               } else{
                                       _tableView.tableHeaderView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 1, 1)];
@@ -344,8 +343,21 @@ typedef enum
             shipment.auto_resi_image = @"";
         }
     }
-    _selectedShipment = shipments[0];
-    _selectedShipmentPackage = shipments[0].products[0];
+    _selectedShipment = shipments.firstObject;
+    _selectedShipmentPackage = _selectedShipment.products.firstObject;
+    
+    if (shipments.count == 0) {
+        [_messageZeroShipmentLabel setCustomAttributedText:[self messageZeroShipmentAvailable]];
+        _tableView.tableHeaderView = _messageZeroShipmentView;
+    }
+}
+
+-(NSString *)messageZeroShipmentAvailable{
+    return @"Mohon maaf alamat tujuan tidak didukung kurir.\nSilahkan perbarui alamat anda.";
+}
+
+-(NSString *)messageZeroShipmentDefault{
+    return @"Maaf, kami belum dapat melakukan kalkulasi ongkos kirim menuju alamat Anda. Tim kami akan segera melakukan pemeriksaan.";
 }
 
 #pragma mark - Table View Data Source
@@ -758,7 +770,7 @@ typedef enum
             }
         }
         _selectedShipment = shipmentObject;
-        _selectedShipmentPackage = _selectedShipment.products[0];
+        _selectedShipmentPackage = _selectedShipment.products.firstObject;
     }
     else if (indexPath.row == TAG_BUTTON_TRANSACTION_SERVICE_TYPE)
     {
@@ -832,7 +844,7 @@ typedef enum
     [self adjustViewIsLoading:YES];
     
     [RequestAddAddress fetchAddAddress:address
-                            isFromCart:@"0"
+                            isFromCart:@"1"
                                success:^(ProfileSettingsResult *data, AddressFormList *address) {
                                    
                                    [self adjustViewIsLoading:NO];
@@ -858,8 +870,8 @@ typedef enum
         textField.text = product.product_min_order;
     }
     
-    [self doCalculate];
-    [_tableView reloadData];
+    [self doCalculate];    
+    [self requestRate];
 }
 
 - (BOOL)textField:(UITextField*)textField shouldChangeCharactersInRange:(NSRange)range
@@ -1025,7 +1037,6 @@ replacementString:(NSString*)string
 }
 
 - (void)pushLocalyticsData {
-    
     ProductDetail *product = _selectedProduct;
     NSCharacterSet *notAllowedChars = [NSCharacterSet characterSetWithCharactersInString:@"Rp."];
     NSString *productPrice = [[product.product_price componentsSeparatedByCharactersInSet:notAllowedChars] componentsJoinedByString:@""];
@@ -1033,7 +1044,7 @@ replacementString:(NSString*)string
     product.product_total_price = [NSString stringWithFormat:@"%zd",totalPrice];
     product.product_quantity =_productQuantityTextField.text;
 
-    [ATCPushLocalytics pushLocalyticsATCProduct:product];
+    [TPAnalytics trackAddToCart:product];
 }
 
 @end

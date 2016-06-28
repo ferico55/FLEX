@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NotificationFormNotif : NSObject
+@interface NotificationFormNotif : NSObject <TKPObjectMapping>
 
 @property (strong, nonatomic) NSString *flag_talk_product;
 @property (strong, nonatomic) NSString *flag_admin_message;

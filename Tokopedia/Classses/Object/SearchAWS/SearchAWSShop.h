@@ -7,11 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Tokopedia-Swift.h"
 
 @interface SearchAWSShop : NSObject
 
 @property (nonatomic, strong) NSString *shop_is_fave_shop;
-@property (nonatomic, strong) NSString *shop_gold_status;
+@property NSInteger shop_gold_status;
 
 @property (nonatomic, strong) NSString *shop_id;
 @property (nonatomic, strong) NSString *shop_name;
@@ -34,6 +35,8 @@
 @property (nonatomic, strong) NSString *shop_lucky;
 @property (nonatomic, strong) NSString *reputation_image_uri;
 @property (nonatomic, strong) NSString *reputation_score;
+
+@property (nonatomic, strong) SearchShopModelView* modelView;
 
 
 @end

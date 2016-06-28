@@ -219,6 +219,9 @@ typedef enum TagRequest {
     	
     _data = nil;
     [self presentcontrollers];
+    
+    [Localytics setCustomerId:[_userManager getUserId]];
+    [Localytics setValue:[_userManager getUserId] forProfileAttribute:@"user_id"];
 }
 
 -(void)presentcontrollers
@@ -695,7 +698,10 @@ typedef enum TagRequest {
     
     [storage setKeychainWithValue:_persistToken?:@"" withKey:@"device_token"];
     [storage setKeychainWithValue:_persistBaseUrl?:@"" withKey:@"AppBaseUrl"];
-    [storage setKeychainWithValue:securityQuestionUUID withKey:@"securityQuestionUUID"];
+    if(securityQuestionUUID) {
+        [storage setKeychainWithValue:securityQuestionUUID withKey:@"securityQuestionUUID"];
+    }
+    
     
     [self removeCacheUser];
     

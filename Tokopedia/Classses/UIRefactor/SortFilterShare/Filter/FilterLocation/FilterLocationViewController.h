@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Tokopedia-Swift.h"
 
 #pragma mark - Filter Location View Controller Delegate
 @protocol FilterLocationViewControllerDelegate <NSObject>

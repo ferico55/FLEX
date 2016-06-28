@@ -346,8 +346,8 @@ static CGFloat rowHeight = 40;
                                                         API_CATALOG_ID_KEY]];
     
     RKObjectMapping *catalogPriceMapping = [RKObjectMapping mappingForClass:[CatalogPrice class]];
-    [catalogPriceMapping addAttributeMappingsFromArray:@[API_PRICE_MIN_KEY,
-                                                         API_PRICE_MAX_KEY]];
+    [catalogPriceMapping addAttributeMappingsFromArray:@[@"price_min",
+                                                         @"price_max"]];
     
     RKObjectMapping *catalogImageMapping = [RKObjectMapping mappingForClass:[CatalogImages class]];
     [catalogImageMapping addAttributeMappingsFromArray:@[API_IMAGE_PRIMARY_KEY,

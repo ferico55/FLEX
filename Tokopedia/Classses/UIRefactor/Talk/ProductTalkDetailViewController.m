@@ -25,6 +25,7 @@
 #import "TalkList.h"
 #import "stringrestkit.h"
 #import "string_inbox_talk.h"
+#import "WebViewController.h"
 
 #import <UITableView+FDTemplateLayoutCell/UITableView+FDTemplateLayoutCell.h>
 
@@ -273,12 +274,25 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     GeneralTalkCommentCell* cell = [tableView dequeueReusableCellWithIdentifier:kTKPDGENERALTALKCOMMENTCELL_IDENTIFIER];
+    __weak __typeof(self) weakSelf = self;
     if (cell == nil) {
         cell = [GeneralTalkCommentCell newcell];
     }
     
     cell.delegate = self;
     cell.del = self;
+    cell.onTapTalkWithUrl = ^(NSURL* url){
+        WebViewController *controller = [[WebViewController alloc] init];
+        controller.strURL = url.absoluteString;
+        controller.strTitle = @"Mengarahkan...";
+        controller.onTapLinkWithUrl = ^(NSURL* url) {
+            if([url.absoluteString isEqualToString:@"https://www.tokopedia.com/"]) {
+                [weakSelf.navigationController popViewControllerAnimated:YES];
+            }
+        };
+        
+        [weakSelf.navigationController pushViewController:controller animated:YES];
+    };
 
     TalkCommentList *list = _list[indexPath.row];
 
@@ -506,9 +520,7 @@
         comment.comment_message = _growingtextview.text;
 
         if ([_auth objectForKey:@"shop_id"]) {
-            //TODO: the UserAuthenticationManager actually returns shop id as NSNumber*,
-            //so we need to get the string value of it. need to fix data type problem
-            NSString* userShopId = [((NSNumber*)[_userManager getShopId]) stringValue];
+            NSString* userShopId = [_userManager getShopId];
 
             if ([[_data objectForKey:@"talk_shop_id"] isEqualToString:userShopId]) {
                 comment.comment_shop_name = [_auth objectForKey:@"shop_name"];

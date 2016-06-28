@@ -10,9 +10,14 @@
 
 @implementation ShipmentCourierPackage
 
-- (id)description
-{
+- (id)description {
     return _name;
+}
+
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[self class]];
+    [mapping addAttributeMappingsFromArray:@[@"desc", @"active", @"name", @"sp_id"]];
+    return mapping;
 }
 
 @end

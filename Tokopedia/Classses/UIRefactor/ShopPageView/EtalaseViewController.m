@@ -100,6 +100,9 @@
     [_tambahEtalaseTextField setText:@""];
     selectedIndexPath = indexPath;
     EtalaseList *selectedEtalase = indexPath.section == 0?[otherEtalaseList objectAtIndex:indexPath.row]:[etalaseList objectAtIndex:indexPath.row];
+    if ([self.delegate respondsToSelector:@selector(didSelectEtalaseFilter:)]) {
+        [self.delegate didSelectEtalaseFilter:selectedEtalase];
+    }
     if(_isEditable){
         [[alertView textFieldAtIndex:0] setText:selectedEtalase.etalase_name];
         [alertView show];
@@ -199,9 +202,13 @@
     if(selectedIndexPath){
         if(!_isEditable){
             if(selectedIndexPath.section == 0){
-                [_delegate didSelectEtalase:otherEtalaseList[selectedIndexPath.row]];
+                if ([self.delegate respondsToSelector:@selector(didSelectEtalase:)]) {
+                    [self.delegate didSelectEtalase:otherEtalaseList[selectedIndexPath.row]];
+                }
             }else{
-                [_delegate didSelectEtalase:etalaseList[selectedIndexPath.row]];
+                if ([self.delegate respondsToSelector:@selector(didSelectEtalase:)]) {
+                    [self.delegate didSelectEtalase:etalaseList[selectedIndexPath.row]];
+                }
             }
             
         }
@@ -376,7 +383,7 @@
         _isLoading = YES;
         UserAuthentificationManager *auth = [UserAuthentificationManager new];
         NSDictionary *loginData = [auth getUserLoginData];
-        NSString *userId = [loginData objectForKey:@"user_id"]?:@"";
+        NSString *userId = [auth getUserId]?:@"";
         [etalaseRequest requestActionAddEtalaseWithName:[_tambahEtalaseTextField text]
                                                  userId:userId
                                               onSuccess:^(ShopSettings *shopSettings) {
@@ -417,7 +424,7 @@
             _isLoading = YES;
             UserAuthentificationManager *auth = [UserAuthentificationManager new];
             NSDictionary *loginData = [auth getUserLoginData];
-            NSString *userId = [loginData objectForKey:@"user_id"]?:@"";
+            NSString *userId = [auth getUserId]?:@"";
             EtalaseList *selectedEtalase = [etalaseList objectAtIndex:selectedIndexPath.row];
             [etalaseRequest requestActionEditEtalaseWithId:selectedEtalase.etalase_id
                                                       name:name
@@ -463,7 +470,7 @@
         EtalaseList *selectedEtalase = [etalaseList objectAtIndex:indexPath.row];
         UserAuthentificationManager *auth = [UserAuthentificationManager new];
         NSDictionary *loginData = [auth getUserLoginData];
-        NSString *userId = [loginData objectForKey:@"user_id"]?:@"";
+        NSString *userId = [auth getUserId]?:@"";
         [etalaseRequest requestActionDeleteEtalaseWithId:selectedEtalase.etalase_id
                                                   userId:userId
                                                onSuccess:^(ShopSettings *shopSettings) {

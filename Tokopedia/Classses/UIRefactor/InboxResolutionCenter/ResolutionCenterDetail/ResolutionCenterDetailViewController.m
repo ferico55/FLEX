@@ -888,6 +888,8 @@
     
     if ([conversation.show_edit_addr_button integerValue]==1) {
         buttonTitle = BUTTON_TITLE_EDIT_ADDRESS;
+    } else {
+        buttonTitle = @"Lacak";
     }
     
     if (conversation.isAddedConversation)
@@ -1043,8 +1045,12 @@
         buttonCount +=1;
     }
     
-    if ([self isShowTrackAndEditButton:conversation]) {
-        buttonCount +=2;
+    if (conversation.show_track_button == 1){
+        buttonCount +=1;
+    }
+    
+    if (conversation.show_edit_resi_button == 1) {
+        buttonCount +=1;
     }
 
     if (conversation.isAddedConversation) {
@@ -1261,7 +1267,7 @@
                 _addedLastConversation = [ResolutionConversation new];
                 _addedLastConversation.flag_received = [resolution.result.detail.resolution_last.last_flag_received integerValue];
                 _addedLastConversation.system_flag = 1;
-                _addedLastConversation.action_by = [resolution.result.detail.resolution_last.last_action_by integerValue];
+                _addedLastConversation.action_by = (resolution.result.detail.resolution_by.by_customer == 1)?ACTION_BY_BUYER:ACTION_BY_SELLER;
                 _addedLastConversation.solution = resolution.result.detail.resolution_last.last_solution;
                 _addedLastConversation.solution_flag = 1;
                 _addedLastConversation.isAddedConversation = [self isNeedAddList]?YES:NO;
@@ -1448,7 +1454,9 @@
         if (resolution.result.is_success == 1) {
             StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:resolution.message_status?:@[@"Sukses"] delegate:self];
             [alert show];
-            [_delegate didResponseComplain:_indexPath];
+             if ([_delegate respondsToSelector:@selector(didResponseComplain:)]) {
+                [_delegate didResponseComplain:_indexPath];
+             }
             [self refreshRequest];
             
 //            if ([action isEqualToString:ACTION_FINISH_RESOLUTION]||
@@ -1641,7 +1649,9 @@
 
 -(void)didSuccessReplay
 {
-    [_delegate didResponseComplain:_indexPath];
+    if ([_delegate respondsToSelector:@selector(didResponseComplain:)]) {
+        [_delegate didResponseComplain:_indexPath];
+    }
     [self refreshRequest];
 }
 

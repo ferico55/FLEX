@@ -14,5 +14,10 @@
     return [_shop_name kv_decodeHTMLCharacterEntities];
 }
 
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[self class]];
+    [mapping addAttributeMappingsFromArray:@[@"is_allow_manage_tx", @"shop_name", @"is_gold_shop"]];
+    return mapping;
+}
 
 @end

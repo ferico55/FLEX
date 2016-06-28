@@ -35,6 +35,7 @@
 #import "FavoriteShopRequest.h"
 #import "PromoRequest.h"
 
+
 @interface ShopContainerViewController () <UIScrollViewDelegate, LoginViewDelegate, UIPageViewControllerDelegate, CMPopTipViewDelegate, FavoriteShopRequestDelegate> {
     BOOL _isNoData, isDoingFavorite, isDoingMessage;
     BOOL _isRefreshView;
@@ -287,7 +288,7 @@
     NSString *shopDomain = [_data objectForKey:@"shop_domain"]?:@"";
     [shopPageRequest requestForShopPageContainerWithShopId:shopId shopDomain:shopDomain onSuccess:^(Shop *shop) {
         _shop = shop;
-        if ([_userManager isMyShopWithShopId:[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]]) {
+        if ([_userManager isMyShopWithShopId:_shop.result.info.shop_id]) {
             self.navigationItem.rightBarButtonItems = @[_settingBarButton,_fixedSpace, _addProductBarButton,_fixedSpace, _infoBarButton];
             _addProductBarButton.enabled = YES;
             _settingBarButton.enabled = YES;

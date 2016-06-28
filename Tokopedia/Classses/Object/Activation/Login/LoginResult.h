@@ -40,4 +40,6 @@
 
 + (RKObjectMapping *)mapping;
 
+@property (nonatomic, strong) NSString *seller_status;
+
 @end

@@ -16,5 +16,6 @@
 + (NSString*)topAdsUrl;
 + (NSString*)keroUrl;
 + (NSString*)accountsUrl;
++ (NSString*)hadesUrl;
 
 @end

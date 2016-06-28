@@ -141,6 +141,12 @@
             }
             break;
         }
+        case kTKPDALERT_DATAALERTTYPECLOSESHOPKEY: {
+            if (_isSetMinimumDate) {
+                _datepicker.minimumDate = _startDate;
+            }
+            break;
+        }
         default:
         {
             if (_isSetMinimumDate) _datepicker.maximumDate = [NSDate date];

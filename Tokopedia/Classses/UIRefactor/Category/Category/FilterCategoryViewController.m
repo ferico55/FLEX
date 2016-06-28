@@ -7,9 +7,9 @@
 //
 
 #import "FilterCategoryViewController.h"
-#import "CategoryResponse.h"
 #import "FilterCategoryViewCell.h"
 #import "LoadingView.h"
+#import "Tokopedia-Swift.h"
 
 #define cellIdentifier @"filterCategoryViewCell"
 
@@ -77,7 +77,7 @@
 - (void)updateDoneButtonAppearance {
     UIBarButtonItem *doneButton = self.navigationItem.rightBarButtonItem;
     if (self.filterType == FilterCategoryTypeProductAddEdit) {
-        if (self.selectedCategory.hasChildCategories || self.selectedCategory == nil) {
+        if (self.selectedCategory.child.count > 0 || self.selectedCategory == nil) {
             doneButton.enabled = NO;
             doneButton.tintColor = [[UIColor whiteColor] colorWithAlphaComponent:0.5];
         } else {
@@ -114,9 +114,26 @@
 }
 
 - (void)loadData {
-    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
-    networkManager.delegate = self;
-    [networkManager doRequest];
+    [RequestFilterCategory fetchListFilterCategory:_rootCategoryID?:@"" success:^(NSArray<CategoryDetail *> * categories) {
+        self.initialCategories = [NSMutableArray arrayWithArray:categories];
+        if (self.filterType == FilterCategoryTypeSearchProduct) {
+            CategoryDetail *category = [CategoryDetail new];
+            category.categoryId = @"0";
+            category.name = @"Semua Kategori";
+            category.tree = @"1";
+            [self.initialCategories insertObject:category atIndex:0];
+        }
+        [self expandSelectedCategories];
+        [self hidesOtherCategories];
+        if (self.selectedCategory) {
+            [self scrollToCategory:self.selectedCategory];
+        }
+        [self updateDoneButtonAppearance];
+        [self.tableView reloadData];
+        
+    } failed:^(NSError * error) {
+        [self requestFail];
+    }];
 }
 
 - (void)showPresetCategories {
@@ -195,14 +212,14 @@
         }
     } else {
         // Selected category is last category
-        if (category.isLastCategory && [category isEqual:_selectedCategory]) {
+        if (category.child.count == 0 && [category isEqual:_selectedCategory]) {
             [cell showCheckmark];
         } else {
             [cell hideCheckmark];
         }
     }
     
-    if (category.hasChildCategories) {
+    if (category.child.count > 0) {
         [cell showArrow];
         ArrowDirection direction = category.isExpanded ? ArrowDirectionUp : ArrowDirectionDown;
         [cell setArrowDirection:direction];
@@ -276,97 +293,16 @@
 }
 
 - (void)scrollToCategory:(CategoryDetail *)category {
-    NSInteger index = [self.categories indexOfObject:category];
+    NSInteger index = 0;
+    for (CategoryDetail *category in self.categories) {
+        if ([self.selectedCategory isEqual:category]) {
+            index = [self.categories indexOfObject:category];
+        }
+    }
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
     [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
 }
 
-#pragma mark - Tokopedia network
-
-- (NSString *)getPath:(int)tag {
-    return @"v0/categories";
-}
-
-- (NSDictionary *)getParameter:(int)tag {
-    return @{};
-}
-
-- (int)getRequestMethod:(int)tag {
-    return RKRequestMethodGET;
-}
-
-- (id)getObjectManager:(int)tag {
-    RKObjectManager *objectManager = [RKObjectManager sharedClient:@"https://hades.tokopedia.com/"];
-    
-    RKObjectMapping *responseMapping = [RKObjectMapping mappingForClass:[CategoryResponse class]];
-    [responseMapping addAttributeMappingsFromArray:@[@"status"]];
-    
-    RKObjectMapping *responseDataMapping = [RKObjectMapping mappingForClass:[CategoryData class]];
-
-    NSDictionary *categoryIdMapping = @{@"id" : @"categoryId"};
-    NSArray *categoryAttributeMappings = @[@"name", @"weight", @"parent", @"tree", @"has_catalog", @"identifer", @"url"];
-    
-    RKObjectMapping *categoryMapping = [RKObjectMapping mappingForClass:[CategoryDetail class]];
-    [categoryMapping addAttributeMappingsFromDictionary:categoryIdMapping];
-    [categoryMapping addAttributeMappingsFromArray:categoryAttributeMappings];
-    
-    RKObjectMapping *categoryChildMapping = [RKObjectMapping mappingForClass:[CategoryDetail class]];
-    [categoryChildMapping addAttributeMappingsFromDictionary:categoryIdMapping];
-    [categoryChildMapping addAttributeMappingsFromArray:categoryAttributeMappings];
-    
-    RKObjectMapping *categoryLastChildMapping = [RKObjectMapping mappingForClass:[CategoryDetail class]];
-    [categoryLastChildMapping addAttributeMappingsFromDictionary:categoryIdMapping];
-    [categoryLastChildMapping addAttributeMappingsFromArray:categoryAttributeMappings];
-
-    RKRelationshipMapping *reponseDataRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"result" toKeyPath:@"result" withMapping:responseDataMapping];
-    [responseMapping addPropertyMapping:reponseDataRelationship];
-
-    RKRelationshipMapping *categoryRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"categories" toKeyPath:@"categories" withMapping:categoryMapping];
-    [responseDataMapping addPropertyMapping:categoryRelationship];
-
-    RKRelationshipMapping *categoryChildRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"child" toKeyPath:@"child" withMapping:categoryMapping];
-    [categoryMapping addPropertyMapping:categoryChildRelationship];
-
-    RKRelationshipMapping *categoryLastChildRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"child" toKeyPath:@"child" withMapping:categoryMapping];
-    [categoryChildMapping addPropertyMapping:categoryLastChildRelationship];
-    
-    NSString *path = [self getPath:0];
-    NSInteger method = [self getRequestMethod:0];
-    
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:responseMapping method:method pathPattern:path keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-    [objectManager addResponseDescriptor:responseDescriptor];
-    
-    return objectManager;
-}
-
-- (NSString *)getRequestStatus:(RKMappingResult *)mappingResult withTag:(int)tag {
-    CategoryResponse *response = [mappingResult.dictionary objectForKey:@""];
-    return response.status;
-}
-
-- (void)actionBeforeRequest:(int)tag {
-    
-}
-
-- (void)actionAfterRequest:(RKMappingResult *)mappingResult
-             withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
-    CategoryResponse *response = [mappingResult.dictionary objectForKey:@""];
-    self.initialCategories = [NSMutableArray arrayWithArray:response.result.categories];
-    if (self.filterType == FilterCategoryTypeSearchProduct) {
-        CategoryDetail *category = [CategoryDetail new];
-        category.categoryId = @"0";
-        category.name = @"Semua Kategori";
-        category.tree = @"1";
-        [self.initialCategories insertObject:category atIndex:0];
-    }
-    [self expandSelectedCategories];
-    [self hidesOtherCategories];
-    if (self.selectedCategory) {
-        [self scrollToCategory:self.selectedCategory];
-    }
-    [self updateDoneButtonAppearance];
-    [self.tableView reloadData];
-}
 
 - (void)expandSelectedCategories {
     [self collapseAllCategories];
@@ -453,14 +389,6 @@
             }
         }
     }
-}
-
-- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
-    [self requestFail];
-}
-
-- (void)actionAfterFailRequestMaxTries:(int)tag {
-    [self requestFail];
 }
 
 - (void)requestFail {

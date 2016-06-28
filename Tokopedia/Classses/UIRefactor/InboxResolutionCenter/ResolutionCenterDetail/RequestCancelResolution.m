@@ -143,10 +143,9 @@
         ResolutionAction *response = [successResult.dictionary objectForKey:@""];
         if (response.result.is_success == 1) {
             success(resolution);
-//            StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:response.result.message_status?:@[@"Anda telah berhasil membatalkan komplain"] delegate:self];
-//            [alert show];
-
+            [StickyAlertView showSuccessMessage:response.message_status?:@[@"Anda telah berhasil membatalkan komplain"]];
         } else{
+            [StickyAlertView showErrorMessage:response.message_error?:@[@"Anda gagal membatalkan komplain"]];
             failure(nil);
         }
         

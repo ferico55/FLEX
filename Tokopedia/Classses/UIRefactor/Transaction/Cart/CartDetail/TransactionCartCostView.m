@@ -38,7 +38,7 @@
     NSString *formatAdditionalFeeValue = [[NSNumberFormatter IDRFormarter] stringFromNumber:@(aditionalFeeValue)];
     [self.insuranceLabel setText:formatAdditionalFeeValue animated:YES];
     [self.shippingCostLabel setText:viewModel.shippingRateIDR animated:YES];
-    [self.totalLabel setText:viewModel.totalProductPriceIDR animated:YES];
+    [self.totalLabel setText:viewModel.totalAmountIDR animated:YES];
 }
 
 @end

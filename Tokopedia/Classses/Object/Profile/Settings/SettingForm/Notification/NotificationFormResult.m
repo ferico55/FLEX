@@ -10,4 +10,10 @@
 
 @implementation NotificationFormResult
 
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[self class]];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"notification" toKeyPath:@"notification" withMapping:[NotificationFormNotif mapping]]];
+    return mapping;
+}
+
 @end

@@ -36,7 +36,7 @@
 + (void)trackCheckoutOption:(NSString *)option
                        step:(NSInteger)step;
 
-+ (void)trackPurchaseID:(NSString *)purchaseID carts:(NSArray *)carts;
++ (void)trackPurchaseID:(NSString *)purchaseID carts:(NSArray *)carts coupon:(NSString *)coupon;
 
 + (void)trackLoginUserID:(NSString *)userID;
 + (void)trackExeptionDescription:(NSString *)description;
@@ -45,5 +45,12 @@
 
 + (void)trackSnapSearchCategory:(NSString *)categoryName;
 + (void)trackSnapSearchAddToCart:(ProductDetail *)product;
+
++ (void)trackAuthenticated:(NSDictionary *)data;
++ (void)trackSuccessSubmitReview:(NSInteger)status;
++ (void)trackSearchInboxReview;
+
++ (void)trackPushNotificationAccepted:(BOOL)accepted;
++ (void)trackOpenPushNotificationSetting;
 
 @end
