@@ -999,7 +999,7 @@
             return [CartValidation isValidInputKlikBCACart:_cart];
         }
         if (gateway == TYPE_GATEWAY_INDOMARET) {
-            return  [CartValidation isValidInputIndomaretCart:_cart];
+            return [CartValidation isValidInputIndomaretCart:_cart];
         }
         if (_isUsingSaldoTokopedia)
         {
@@ -1050,7 +1050,9 @@
     for (NSInteger i = 0; i < _list.count; i++) {
         if ([_list[i].cart_is_dropshipper integerValue] == 1) {
             if ([_list[i].cart_dropship_name isEqualToString:@""] || _list[i].cart_dropship_name==nil) {
-                firstErrorCartIndex = (firstErrorCartIndex != -1)?:i;
+                if (firstErrorCartIndex == -1) {
+                    firstErrorCartIndex = i;
+                }
                 isValid = NO;
                 _list[i].isDropshipperNameError = YES;
                 if (![messageError containsObject:ERRORMESSAGE_SENDER_NAME_NILL])
@@ -1059,13 +1061,17 @@
                 _list[i].isDropshipperNameError = NO;
             }
             if ([_list[i].cart_dropship_phone isEqualToString:@""] || _list[i].cart_dropship_phone==nil) {
-                firstErrorCartIndex = (firstErrorCartIndex != -1)?:i;
+                if (firstErrorCartIndex == -1) {
+                    firstErrorCartIndex = i;
+                }
                 isValid = NO;
                 _list[i].isDropshipperPhoneError = YES;
                 if (![messageError containsObject:ERRORMESSAGE_SENDER_PHONE_NILL])
                     [messageError addObject:ERRORMESSAGE_SENDER_PHONE_NILL];
             } else if (_list[i].cart_dropship_phone.length < 6) {
-                firstErrorCartIndex = (firstErrorCartIndex != -1)?:i;
+                if (firstErrorCartIndex == -1) {
+                    firstErrorCartIndex = i;
+                }
                 isValid = NO;
                 _list[i].isDropshipperPhoneError = YES;
                 if (![messageError containsObject:@"Nomor telepon terlalu pendek, minimum 6 karakter."])
@@ -1077,7 +1083,7 @@
     }
     
     if (firstErrorCartIndex != -1) {
-        [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:firstErrorCartIndex] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+        [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:6 inSection:firstErrorCartIndex] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
     }
     
     
@@ -2250,9 +2256,7 @@
     }
     else if (indexPath.section == _list.count+3)
     {
-//        if (indexPath.row == 1) {
-            return 0;
-//        }
+        return 0;
     }
     return DEFAULT_ROW_HEIGHT;
 }
@@ -2429,42 +2433,34 @@
 -(void)doRequestVoucher{
     [self isLoading:YES];
     NSString *voucherCode = [_dataInput objectForKey:API_VOUCHER_CODE_KEY]?:@"";
-    [RequestCart fetchVoucherCode:voucherCode success:^(TransactionVoucher *data) {
-        if (data.message_error.count > 0) {
-            
-        } else {
-            _voucherData = data.result.data_voucher;
-            
-            _voucherCodeButton.hidden = YES;
-            _voucherAmountLabel.hidden = NO;
-            
-            NSInteger voucher = [_voucherData.voucher_amount integerValue];
-            NSString *voucherString = [[NSNumberFormatter IDRFormarter] stringFromNumber:[NSNumber numberWithInteger:voucher]];
-            voucherString = [NSString stringWithFormat:@"Anda mendapatkan voucher %@", voucherString];
-            _voucherAmountLabel.text = voucherString;
-            _voucherAmountLabel.font = [UIFont fontWithName:@"GothamBook" size:12];
-            
-            _buttonVoucherInfo.hidden = YES;
-            _buttonCancelVoucher.hidden = NO;
-            
-            [self adjustGrandTotalWithDeposit:_saldoTokopediaAmountTextField.text];
-        }
-        
-        [self isLoading:NO];
-        [_tableView reloadData];
-    } error:^(NSError *error) {
-        if (error) {
-            [self doClearAllData];
-            [_refreshControl beginRefreshing];
-            [_tableView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
-            _paymentMethodView.hidden = YES;
-            [_noInternetConnectionView generateRequestErrorViewWithError:error];
-            [_tableView addSubview:_noInternetConnectionView];
-        }
-        
-        [_dataInput removeObjectForKey:API_VOUCHER_CODE_KEY];
-        [self isLoading:NO];
-    }];
+    [RequestCart fetchVoucherCode:voucherCode
+                          success:^(TransactionVoucher *data) {
+                              if (data.message_error.count > 0) {
+                                  
+                              } else {
+                                  _voucherData = data.result.data_voucher;
+                                  
+                                  _voucherCodeButton.hidden = YES;
+                                  _voucherAmountLabel.hidden = NO;
+                                  
+                                  NSInteger voucher = [_voucherData.voucher_amount integerValue];
+                                  NSString *voucherString = [[NSNumberFormatter IDRFormarter] stringFromNumber:[NSNumber numberWithInteger:voucher]];
+                                  voucherString = [NSString stringWithFormat:@"Anda mendapatkan voucher %@", voucherString];
+                                  _voucherAmountLabel.text = voucherString;
+                                  _voucherAmountLabel.font = [UIFont fontWithName:@"GothamBook" size:12];
+                                  
+                                  _buttonVoucherInfo.hidden = YES;
+                                  _buttonCancelVoucher.hidden = NO;
+                                  
+                                  [self adjustGrandTotalWithDeposit:_saldoTokopediaAmountTextField.text];
+                              }
+                              
+                              [self isLoading:NO];
+                              [_tableView reloadData];
+                          } error:^(NSError *error) {
+                              [_dataInput removeObjectForKey:API_VOUCHER_CODE_KEY];
+                              [self isLoading:NO];
+                          }];
 }
 
 -(void)doCheckout{
@@ -2512,15 +2508,6 @@
                                 [_delegate didFinishRequestCheckoutData:userInfo];
                                 [self isLoading:NO];
                             } error:^(NSError *error) {
-                                if (error) {
-                                    [_noInternetConnectionView generateRequestErrorViewWithError:error];
-                                    [_tableView addSubview:_noInternetConnectionView];
-                                    [self doClearAllData];
-                                    [_refreshControl beginRefreshing];
-                                    [_tableView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
-                                    _paymentMethodView.hidden = YES;
-                                }
-                                
                                 [self isLoading:NO];
                             }];
 }
@@ -2554,22 +2541,23 @@
                         partialDetail:partialDetail
                          isUsingSaldo:_isUsingSaldoTokopedia
                                 saldo:_saldoTokopediaAmountTextField.text
-                          voucherCode:voucherCode success:^(TransactionActionResult *data) {
-                              
-                              [TransactionCartWebViewViewController pushToppayFrom:self data:data gatewayID:[gatewayID integerValue] gatewayName:gateway.gateway_name];
-                              _popFromToppay = YES;
-                              [self isLoading:NO];
-
-                          } error:^(NSError *error) {
-                              [self doClearAllData];
-                              [_refreshControl beginRefreshing];
-                              [_tableView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
-                              _paymentMethodView.hidden = YES;
-                              [_noInternetConnectionView generateRequestErrorViewWithError:error];
-                              [_tableView addSubview:_noInternetConnectionView];
-                              [self isLoading:NO];
-                              
-                          }];
+                          voucherCode:voucherCode
+                              success:^(TransactionActionResult *data) {
+                                  
+                                  [TransactionCartWebViewViewController pushToppayFrom:self data:data gatewayID:[gatewayID integerValue] gatewayName:gateway.gateway_name];
+                                  _popFromToppay = YES;
+                                  [self isLoading:NO];
+                                  
+                              } error:^(NSError *error) {
+                                  [self doClearAllData];
+                                  [_refreshControl beginRefreshing];
+                                  [_tableView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
+                                  _paymentMethodView.hidden = YES;
+                                  [_noInternetConnectionView generateRequestErrorViewWithError:error];
+                                  [_tableView addSubview:_noInternetConnectionView];
+                                  [self isLoading:NO];
+                                  
+                              }];
 }
 
 -(void)doRequestBuy{
@@ -2581,56 +2569,67 @@
     NSString *password = _passwordTextField.text?:@"";
     NSString *userIDKlikBCA = _userIDKlikBCATextField.text?:@"";
     
-    [RequestCart fetchBuy:_cartSummary dataCC:_dataInput mandiriToken:mandiriToken cardNumber:cardNumber password:password klikBCAUserID:userIDKlikBCA success:^(TransactionBuyResult *data) {
-        
-        TransactionSummaryDetail *summary = data.transaction;
-        [TPAnalytics trackCheckout:summary.carts step:2 option:summary.gateway_name];
-        
-        _cartBuy = data;
-        switch ([_cartSummary.gateway integerValue]) {
-            case TYPE_GATEWAY_MANDIRI_E_CASH:
-            {
-                [TransactionCartWebViewViewController pushMandiriECashFrom:self cartDetail:summary LinkMandiri:data.link_mandiri?:@""];
-            }
-                break;
-            default:
-            {
-                NSDictionary *userInfo = @{
-                                           DATA_CART_RESULT_KEY:data,
-                                           API_VOUCHER_CODE_KEY: [_data objectForKey:API_VOUCHER_CODE_KEY]
-                                           };
-                [self.delegate didFinishRequestBuyData:userInfo];
-                [_dataInput removeAllObjects];
-            }
-                break;
-        }
-        [self isLoading:NO];
-    } error:^(NSError *error) {
-        [self doClearAllData];
-        [_refreshControl beginRefreshing];
-        [_tableView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
-        _paymentMethodView.hidden = YES;
-        [_noInternetConnectionView generateRequestErrorViewWithError:error];
-        [_tableView addSubview:_noInternetConnectionView];
-        [self isLoading:NO];
-    }];
+    [RequestCart fetchBuy:_cartSummary
+                   dataCC:_dataInput
+             mandiriToken:mandiriToken
+               cardNumber:cardNumber
+                 password:password
+            klikBCAUserID:userIDKlikBCA
+                  success:^(TransactionBuyResult *data) {
+                      
+                      TransactionSummaryDetail *summary = data.transaction;
+                      [TPAnalytics trackCheckout:summary.carts step:2 option:summary.gateway_name];
+                      
+                      _cartBuy = data;
+                      switch ([_cartSummary.gateway integerValue]) {
+                          case TYPE_GATEWAY_MANDIRI_E_CASH:
+                          {
+                              [TransactionCartWebViewViewController pushMandiriECashFrom:self
+                                                                              cartDetail:summary
+                                                                             LinkMandiri:data.link_mandiri?:@""];
+                          }
+                              break;
+                          default:
+                          {
+                              NSDictionary *userInfo = @{
+                                                         DATA_CART_RESULT_KEY:data,
+                                                         API_VOUCHER_CODE_KEY: [_data objectForKey:API_VOUCHER_CODE_KEY]
+                                                         };
+                              [self.delegate didFinishRequestBuyData:userInfo];
+                              [_dataInput removeAllObjects];
+                          }
+                              break;
+                      }
+                      [self isLoading:NO];
+                  } error:^(NSError *error) {
+                      if (error) {
+                          [self doClearAllData];
+                          [_refreshControl beginRefreshing];
+                          [_tableView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
+                          _paymentMethodView.hidden = YES;
+                          [_noInternetConnectionView generateRequestErrorViewWithError:error];
+                          [_tableView addSubview:_noInternetConnectionView];
+                      }
+                      [self isLoading:NO];
+                  }];
 }
 
 -(void)doRequestEditProduct:(ProductDetail*)product{
-    [RequestCart fetchEditProduct:product success:^(TransactionAction *data) {
-        if (_indexPage == 0) {
-            [self requestCartData];
-        }
-        [_tableView reloadData];
-    } error:^(NSError *error) {
-        [self doClearAllData];
-        [_refreshControl beginRefreshing];
-        [_tableView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
-        _paymentMethodView.hidden = YES;
-        [_noInternetConnectionView generateRequestErrorViewWithError:error];
-        [_tableView addSubview:_noInternetConnectionView];
-        [self isLoading:NO];
-    }];
+    [RequestCart fetchEditProduct:product
+                          success:^(TransactionAction *data) {
+                              if (_indexPage == 0) {
+                                  [self requestCartData];
+                              }
+                              [_tableView reloadData];
+                          } error:^(NSError *error) {
+                              [self doClearAllData];
+                              [_refreshControl beginRefreshing];
+                              [_tableView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
+                              _paymentMethodView.hidden = YES;
+                              [_noInternetConnectionView generateRequestErrorViewWithError:error];
+                              [_tableView addSubview:_noInternetConnectionView];
+                              [self isLoading:NO];
+                          }];
 }
 
 #pragma mark - Delegate LoadingView
@@ -2640,7 +2639,9 @@
 
 #pragma mark - Sending data to GA
 - (void)sendingProductDataToGA {
-    [CartGAHandler sendingProductCart:_cart.list page:_indexPage gateway:[_dataInput objectForKey:@"gateway"]];
+    [CartGAHandler sendingProductCart:_cart.list
+                                 page:_indexPage
+                              gateway:[_dataInput objectForKey:@"gateway"]];
 }
 
 #pragma mark - NoResult Delegate

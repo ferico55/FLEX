@@ -9,7 +9,6 @@
 import Foundation
 import UIKit
 
-
 // For convenience methods
 public extension UIViewController {
     
@@ -133,6 +132,7 @@ public class SwiftOverlays: NSObject {
     static let bannerDissapearAnimationDuration = 0.5
 
     static var bannerWindow : UIWindow?
+    static var isShowingNotification = false
     
     public class Utils {
         
@@ -422,23 +422,26 @@ public class SwiftOverlays: NSObject {
         let gestureRecognizer = UITapGestureRecognizer(target: self, action: selector)
         notificationView.addGestureRecognizer(gestureRecognizer)
         
-        bannerWindow!.addSubview(notificationView)
-        
-        if animated {
-            let frame = notificationView.frame
-            let origin = CGPoint(x: 0, y: -frame.height)
-            notificationView.frame = CGRect(origin: origin, size: frame.size)
+        if !isShowingNotification && !notificationView.isDescendantOfView(bannerWindow!) {
+            bannerWindow!.addSubview(notificationView)
+            isShowingNotification = true
             
-            // Show appearing animation, schedule calling closing selector after completed
-            UIView.animateWithDuration(bannerDissapearAnimationDuration, animations: { 
+            if animated {
                 let frame = notificationView.frame
-                notificationView.frame = frame.offsetBy(dx: 0, dy: frame.height)
-            }, completion: { (finished) in
+                let origin = CGPoint(x: 0, y: -frame.height)
+                notificationView.frame = CGRect(origin: origin, size: frame.size)
+                
+                // Show appearing animation, schedule calling closing selector after completed
+                UIView.animateWithDuration(bannerDissapearAnimationDuration, animations: {
+                    let frame = notificationView.frame
+                    notificationView.frame = frame.offsetBy(dx: 0, dy: frame.height)
+                    }, completion: { (finished) in
+                        self.performSelector(selector, withObject: notificationView, afterDelay: duration)
+                })
+            } else {
+                // Schedule calling closing selector right away
                 self.performSelector(selector, withObject: notificationView, afterDelay: duration)
-            })
-        } else {
-            // Schedule calling closing selector right away
-            self.performSelector(selector, withObject: notificationView, afterDelay: duration)
+            }
         }
     }
     
@@ -463,6 +466,7 @@ public class SwiftOverlays: NSObject {
                 notificationView?.removeFromSuperview()
                 
                 bannerWindow?.hidden = true
+                isShowingNotification = false
             }
         )
     }

@@ -85,7 +85,6 @@
     transactionSummary.gatewayID = [gatewayID integerValue];
     
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
-    networkManager.isUsingDefaultError = NO;
     [networkManager requestWithBaseUrl:[NSString basicUrl]
                                   path:@"tx.pl"
                                 method:RKRequestMethodPOST
@@ -185,7 +184,6 @@
                             @"voucher_code" : voucherCode
                             };
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
-    networkManager.isUsingDefaultError = NO;
     [networkManager requestWithBaseUrl:[NSString basicUrl]
                                   path:@"tx-voucher.pl"
                                 method:RKRequestMethodPOST
@@ -195,13 +193,12 @@
                                  
                                  NSDictionary *result = successResult.dictionary;
                                  TransactionVoucher *cart = [result objectForKey:@""];
-//                                     [StickyAlertView showErrorMessage:cart.message_error];
-                                     [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:cart.message_error]
-                                                                              type:0
-                                                                          duration:4.0
-                                                                       buttonTitle:nil
-                                                                       dismissable:YES
-                                                                            action:nil];
+                                 [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:cart.message_error]
+                                                                          type:0
+                                                                      duration:4.0
+                                                                   buttonTitle:nil
+                                                                   dismissable:YES
+                                                                        action:nil];
                                  success(cart);
                                  
                              } onFailure:^(NSError *errorResult) {
@@ -293,7 +290,6 @@
     transactionBuy.gatewayID = [gatewayID integerValue];
     
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
-    networkManager.isUsingDefaultError = NO;
     [networkManager requestWithBaseUrl:[NSString basicUrl]
                                   path:@"tx.pl"
                                 method:RKRequestMethodPOST
@@ -325,9 +321,7 @@
                                          [cacheController connectionDidFinish:cacheConnection];
                                          [operation.HTTPRequestOperation.responseData writeToFile:cachepath atomically:YES];
                                      }
-                                 }
-                                 else
-                                 {
+                                 } else {
                                      [StickyAlertView showErrorMessage:cart.message_error?:@[@"Error"]];
                                      error(nil);
                                  }

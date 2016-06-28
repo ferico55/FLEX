@@ -164,6 +164,10 @@
 }
 
 + (NSString *)joinStringsWithBullets:(NSArray *)strings {
+    if (strings.count == 1) {
+        return strings[0];
+    }
+    
     return [NSString stringWithFormat:@"\u25CF %@", [[strings valueForKey:@"description"] componentsJoinedByString:@"\n\u25CF "]];
 }
 + (NSString *)stringReplaceAhrefWithUrl:(NSString *)string{
