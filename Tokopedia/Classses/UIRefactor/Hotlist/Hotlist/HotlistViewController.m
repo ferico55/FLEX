@@ -206,6 +206,9 @@
                             @"hotlist_id"               : hotlist.hotlist_id
                             };
         controller.hidesBottomBarWhenPushed = YES;
+        
+        [TPAnalytics trackClickEvent:@"clickHotlist" category:@"Hotlist" label:hotlist.title];
+        
         [self.navigationController pushViewController:controller animated:YES];
         
     } else if ([hotlist.url rangeOfString:@"/p/"].length) {

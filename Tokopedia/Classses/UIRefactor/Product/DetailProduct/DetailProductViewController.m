@@ -616,6 +616,9 @@ OtherProductDelegate
                             kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]
                             };
                 [self.navigationController pushViewController:vc animated:YES];
+                
+                [TPAnalytics trackClickEvent:@"clickPDP" category:@"Product Detail Page" label:@"Review"];
+                
                 break;
             }
             case 13:
@@ -639,7 +642,11 @@ OtherProductDelegate
                 [data setObject:image.image_src==nil?@"":image.image_src forKey:@"talk_product_image"];
                 
                 vc.data = data;
+
                 [self.navigationController pushViewController:vc animated:YES];
+                
+                [TPAnalytics trackClickEvent:@"clickPDP" category:@"Product Detail Page" label:@"Review"];
+
                 break;
             }
             case 15:
@@ -2545,7 +2552,9 @@ OtherProductDelegate
                                                                                           url:url
                                                                                        anchor:sender];
         
-        [self presentViewController:controller animated:YES completion:nil];
+        [self presentViewController:controller animated:YES completion:^{
+            [TPAnalytics trackClickEvent:@"clickPDP" category:@"Product Detail Page" label:@"Share"];
+        }];
         
     }
 }
