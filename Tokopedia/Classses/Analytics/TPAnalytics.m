@@ -15,6 +15,7 @@
 #import "TransactionCartList.h"
 #import "PromoResult.h"
 #import "Localytics.h"
+#import "NSURL+Dictionary.h"
 
 @interface TPAnalytics ()
 
@@ -43,10 +44,10 @@
         @"event": @"authenticated",
         @"contactInfo": @{
                 @"userSeller": [auth.getShopId isEqualToString:@"0"]? @"0": @"1",
-                @"userFullName": [auth.getUserLoginData objectForKey:@"full_name"],
-                @"userEmail": [auth.getUserLoginData objectForKey:@"user_email"],
+                @"userFullName": [auth.getUserLoginData objectForKey:@"full_name"]?:@"",
+                @"userEmail": [auth.getUserLoginData objectForKey:@"user_email"]?:@"",
                 @"userId": auth.getUserId,
-                @"userMSISNVerified": [auth.getUserLoginData objectForKey:@"msisdn_is_verified"],
+                @"userMSISNVerified": [auth.getUserLoginData objectForKey:@"msisdn_is_verified"]?:@"",
                 @"shopID": auth.getShopId
             },
         };
@@ -404,6 +405,29 @@
                            @"event": @"openPushNotificationSetting"
                            };
     
+    [analytics.dataLayer push:data];
+}
+
++ (void)trackCampaign:(NSURL *)url {
+    TPAnalytics *analytics = [[self alloc] init];
+    NSDictionary *data = @{
+        @"utmSource": [url.parameters objectForKey:@"utm_source"]?:@"",
+        @"utmMedium": [url.parameters objectForKey:@"utm_medium"]?:@"",
+        @"utmCampaign": [url.parameters objectForKey:@"utm_campaign"]?:@"",
+        @"utmContent": [url.parameters objectForKey:@"utm_content"]?:@"",
+        @"utmTerm": [url.parameters objectForKey:@"utm_term"]?:@"",
+        @"gclid": [url.parameters objectForKey:@"gclid"]?:@"",
+    };
+    [analytics.dataLayer push:data];
+}
+
++ (void)trackClickEvent:(NSString *)event category:(NSString *)category label:(NSString *)label {
+    TPAnalytics *analytics = [[self alloc] init];
+    NSDictionary *data = @{
+        @"event": event,
+        @"eventCategory": category,
+        @"eventLabel": label
+    };
     [analytics.dataLayer push:data];
 }
 
