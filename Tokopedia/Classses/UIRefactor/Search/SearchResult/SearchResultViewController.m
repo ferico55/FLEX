@@ -420,7 +420,7 @@ ImageSearchRequestDelegate
     
     if (_data) {
         [_params setObject:data[@"sc"] forKey:@"sc"];
-        [_params setObject:data[@"department_name"] forKey:@"department_name"];
+        [_params setObject:data[@"department_name"]?:@"" forKey:@"department_name"];
         _rootCategoryID = data[@"sc"]?:@"";
     }
 }
@@ -734,8 +734,8 @@ ImageSearchRequestDelegate
 
 #pragma mark - Category notification
 - (void)changeCategory:(NSNotification *)notification {
-    [_params setObject:[notification.userInfo objectForKey:@"department_id"] forKey:@"sc"];
-    [_params setObject:[notification.userInfo objectForKey:@"department_name"] forKey:@"department_name"];
+    [_params setObject:[notification.userInfo objectForKey:@"department_id"]?:@"" forKey:@"sc"];
+    [_params setObject:[notification.userInfo objectForKey:@"department_name"]?:@"" forKey:@"department_name"];
     [_params setObject:[_data objectForKey:@"search"]?:@"" forKey:@"search"];
     
     [self refreshView:nil];
