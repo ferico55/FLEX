@@ -22,6 +22,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RejectReasonEditPriceViewController">
             <connections>
+                <outlet property="currencyLabel" destination="t11-kT-Hsq" id="MGD-FP-hjF"/>
                 <outlet property="emptyStockButton" destination="OZB-FP-MyL" id="yy9-eP-Hfe"/>
                 <outlet property="priceInfoCell" destination="j2F-Zl-PDX" id="hwg-k3-xmB"/>
                 <outlet property="priceInputCell" destination="wch-Kh-9yL" id="kmX-ua-xRR"/>
@@ -33,6 +34,7 @@
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="weightInfoCell" destination="C5Z-bE-5Wh" id="alB-zg-v1r"/>
                 <outlet property="weightInputCell" destination="Cvc-U0-oKh" id="Cbq-J6-q8s"/>
+                <outlet property="weightLabel" destination="MKU-oy-Zv3" id="484-Kc-O8C"/>
                 <outlet property="weightTextField" destination="h89-sG-P3Q" id="Zev-tM-RAh"/>
             </connections>
         </placeholder>
@@ -184,7 +186,7 @@
                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="kZ6-G7-Odo">
                         <rect key="frame" x="0.0" y="0.0" width="296" height="43"/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
-                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="numberPad"/>
+                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="numberPad" enablesReturnKeyAutomatically="YES"/>
                     </textField>
                 </subviews>
                 <constraints>
@@ -206,7 +208,7 @@
                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="h89-sG-P3Q">
                         <rect key="frame" x="0.0" y="0.0" width="296" height="43"/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
-                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="numberPad"/>
+                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="numberPad" enablesReturnKeyAutomatically="YES"/>
                     </textField>
                 </subviews>
                 <constraints>

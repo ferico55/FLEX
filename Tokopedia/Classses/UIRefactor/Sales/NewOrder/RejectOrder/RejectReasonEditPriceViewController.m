@@ -12,7 +12,7 @@
 #define CURRENCY_PICKER 11
 #define WEIGHT_PICKER 12
 
-@interface RejectReasonEditPriceViewController ()<UITableViewDelegate, UITableViewDataSource, TKPDAlertViewDelegate>
+@interface RejectReasonEditPriceViewController ()<UITableViewDelegate, UITableViewDataSource, TKPDAlertViewDelegate, UIScrollViewDelegate>
 
 @property (strong, nonatomic) NSString *priceKey;
 @property (strong, nonatomic) NSString *weightKey;
@@ -23,7 +23,6 @@
 @property (strong, nonatomic) IBOutlet UIImageView *productImage;
 @property (strong, nonatomic) IBOutlet UIButton *emptyStockButton;
 
-@property (strong, nonatomic) UIScrollView *scrollView;
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UITableViewCell *productInfoCell;
 @property (strong, nonatomic) IBOutlet UITableViewCell *priceInfoCell;
@@ -31,18 +30,34 @@
 @property (strong, nonatomic) IBOutlet UITableViewCell *weightInfoCell;
 @property (strong, nonatomic) IBOutlet UITableViewCell *weightInputCell;
 
+@property (strong, nonatomic) IBOutlet UILabel *currencyLabel;
+@property (strong, nonatomic) IBOutlet UILabel *weightLabel;
+
 @end
 
-@implementation RejectReasonEditPriceViewController
+@implementation RejectReasonEditPriceViewController{
+    BOOL shouldDismissKeyboard;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     _tableView.delegate = self;
     _tableView.dataSource = self;
     
+    _productName.text = _orderProduct.product_name;
     _priceTextField.text = _orderProduct.product_price;
     _weightTextField.text = _orderProduct.product_weight;
+    
+    if([_orderProduct.product_price_currency isNumber]){
+        NSInteger index = [_orderProduct.product_price_currency integerValue];
+        NSString *name = [ARRAY_PRICE_CURRENCY[index] objectForKey:DATA_NAME_KEY];
+        _currencyLabel.text = name;
+    }
+    if([_orderProduct.product_weight_unit isNumber]){
+        NSInteger index = [_orderProduct.product_weight_unit integerValue];
+        NSString *name = [ARRAY_WEIGHT_UNIT[index] objectForKey:DATA_NAME_KEY];
+        _weightLabel.text = name;
+    }
     
     if(_orderProduct.emptyStock){
         [_emptyStockButton setBackgroundColor:[UIColor colorWithRed:0.699 green:0.699 blue:0.699 alpha:1]];
@@ -51,6 +66,7 @@
         [_emptyStockButton setBackgroundColor:[UIColor whiteColor]];
         [_emptyStockButton setTitleColor:[UIColor colorWithRed:0.699 green:0.699 blue:0.699 alpha:1] forState:UIControlStateNormal];
     }
+    [self registerForKeyboardNotifications];
     
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_orderProduct.product_picture] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     
@@ -69,7 +85,16 @@
     [super didReceiveMemoryWarning];
 }
 
-#pragma mark - Table View
+- (void)registerForKeyboardNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWasShown:)
+                                                 name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillBeHidden:)
+                                                 name:UIKeyboardWillHideNotification object:nil];
+}
+
 #pragma mark - Table View
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 3;
@@ -110,24 +135,19 @@
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-}
-
-
-- (IBAction)currencyButtonTapped:(id)sender {
-    AlertPickerView *v = [AlertPickerView newview];
-    v.pickerData = ARRAY_PRICE_CURRENCY;
-    v.tag = CURRENCY_PICKER;
-    v.delegate = self;
-    [v show];
-}
-
-- (IBAction)weightButtonTapped:(id)sender {
-    AlertPickerView *v = [AlertPickerView newview];
-    v.pickerData = ARRAY_WEIGHT_UNIT;
-    v.tag = WEIGHT_PICKER;
-    v.delegate = self;
-    [v show];
+    if(indexPath.section == 1 && indexPath.row == 0){
+        AlertPickerView *v = [AlertPickerView newview];
+        v.pickerData = ARRAY_PRICE_CURRENCY;
+        v.tag = CURRENCY_PICKER;
+        v.delegate = self;
+        [v show];
+    }else if(indexPath.section == 2 && indexPath.row == 0){
+        AlertPickerView *v = [AlertPickerView newview];
+        v.pickerData = ARRAY_WEIGHT_UNIT;
+        v.tag = WEIGHT_PICKER;
+        v.delegate = self;
+        [v show];
+    }
 }
 
 - (IBAction)emptyStockButtonTapped:(id)sender {
@@ -142,17 +162,50 @@
     }
 }
 
+#pragma mark - UITextField Delegate
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    if(shouldDismissKeyboard){
+        [_weightTextField resignFirstResponder];
+        [_priceTextField resignFirstResponder];
+        UIEdgeInsets contentInsets = UIEdgeInsetsZero;
+        _tableView.contentInset = contentInsets;
+        _tableView.scrollIndicatorInsets = contentInsets;
+        shouldDismissKeyboard = NO;
+    }
+}
+
+#pragma mark - keyboard scroll
+
+- (void)keyboardWasShown:(NSNotification*)aNotification
+{
+    if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad){
+        CGPoint scrollPoint = CGPointMake(0, 70);
+        [_tableView setContentOffset:scrollPoint animated:NO];
+        shouldDismissKeyboard = YES;
+    }
+}
+
+// Called when the UIKeyboardWillHideNotification is sent
+- (void)keyboardWillBeHidden:(NSNotification*)aNotification
+{
+//    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
+//    _tableView.contentInset = contentInsets;
+//    _tableView.scrollIndicatorInsets = contentInsets;
+}
+
+
 #pragma mark - Alert View Delegate
 -(void)alertView:(TKPDAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if(alertView.tag == CURRENCY_PICKER){
         NSInteger index = [[alertView.data objectForKey:DATA_INDEX_KEY] integerValue];
         _priceKey = [ARRAY_PRICE_CURRENCY[index] objectForKey:DATA_VALUE_KEY];
         NSString *name = [ARRAY_PRICE_CURRENCY[index] objectForKey:DATA_NAME_KEY];
-        
+        _currencyLabel.text = name;
     }else if(alertView.tag == WEIGHT_PICKER){
         NSInteger index = [[alertView.data objectForKey:DATA_INDEX_KEY] integerValue];
         _weightKey = [ARRAY_WEIGHT_UNIT[index] objectForKey:DATA_VALUE_KEY];
         NSString *name = [ARRAY_WEIGHT_UNIT[index] objectForKey:DATA_NAME_KEY];
+        _weightLabel.text = name;
     }
 }
 
