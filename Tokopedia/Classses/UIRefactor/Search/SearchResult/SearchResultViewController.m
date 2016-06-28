@@ -420,6 +420,7 @@ ImageSearchRequestDelegate
     
     if (_data) {
         [_params setObject:data[@"sc"] forKey:@"sc"];
+        [_params setObject:data[@"department_name"] forKey:@"department_name"];
         _rootCategoryID = data[@"sc"]?:@"";
     }
 }
@@ -734,6 +735,7 @@ ImageSearchRequestDelegate
 #pragma mark - Category notification
 - (void)changeCategory:(NSNotification *)notification {
     [_params setObject:[notification.userInfo objectForKey:@"department_id"] forKey:@"sc"];
+    [_params setObject:[notification.userInfo objectForKey:@"department_name"] forKey:@"department_name"];
     [_params setObject:[_data objectForKey:@"search"]?:@"" forKey:@"search"];
     
     [self refreshView:nil];
@@ -1080,9 +1082,11 @@ ImageSearchRequestDelegate
     if(search.data.department_id && ![search.data.department_id isEqualToString:@"0"]) {
         NSString *departementID = search.data.department_id?:@"";
         [_params setObject:departementID forKey:@"sc"];
+        NSString *departementName = [_params objectForKey:@"department_name"]?:@"";
         if ([_delegate respondsToSelector:@selector(updateTabCategory:)]) {
             CategoryDetail *category = [CategoryDetail new];
             category.categoryId = departementID;
+            category.name = departementName;
             [_delegate updateTabCategory:category];
         }
     }
@@ -1186,6 +1190,7 @@ ImageSearchRequestDelegate
         // redirect uri to search category
         else if ([query[1] isEqualToString:kTKPDSEARCH_DATAURLREDIRECTCATEGORY]) {
             NSString *departementID = search.data.department_id?:@"";
+            NSString *departementName = [_params objectForKey:@"department_name"]?:@"";
             [_params setObject:departementID forKey:@"sc"];
             [_params removeObjectForKey:@"search"];
             [_networkManager requestCancel];
@@ -1193,6 +1198,7 @@ ImageSearchRequestDelegate
             if ([self.delegate respondsToSelector:@selector(updateTabCategory:)]) {
                 CategoryDetail *category = [CategoryDetail new];
                 category.categoryId = departementID;
+                category.name = departementName;
                 [self.delegate updateTabCategory:category];
             }
             

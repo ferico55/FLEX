@@ -565,7 +565,7 @@
 
 #pragma mark - Category delegate
 - (void)didSelectCategory:(CategoryDetail *)category {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_DEPARTMENTIDPOSTNOTIFICATIONNAMEKEY object:self userInfo:@{@"department_id" : category.categoryId}];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_DEPARTMENTIDPOSTNOTIFICATIONNAMEKEY object:self userInfo:@{@"department_id" : category.categoryId, @"department_name" : category.name}];
     [_data setObject:category.categoryId forKey:@"selected_id"];
 }
 
