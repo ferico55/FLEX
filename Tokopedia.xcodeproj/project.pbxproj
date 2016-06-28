@@ -2408,6 +2408,12 @@
 		BB78452F1D18F66B0068EF6B /* Tokopedia-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB783BEB1D18F66A0068EF6B /* Tokopedia-Info.plist */; };
 		BB7845301D18F66B0068EF6B /* Tokopedia.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = BB783BED1D18F66B0068EF6B /* Tokopedia.entitlements */; };
 		BB7845311D18F66B0068EF6B /* Tokopedia.xcworkspace in Resources */ = {isa = PBXBuildFile; fileRef = BB783BEE1D18F66B0068EF6B /* Tokopedia.xcworkspace */; };
+		BB7845351D1919020068EF6B /* RejectReasonWrongPriceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB7845331D1919020068EF6B /* RejectReasonWrongPriceViewController.m */; };
+		BB7845361D1919020068EF6B /* RejectReasonWrongPriceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB7845341D1919020068EF6B /* RejectReasonWrongPriceViewController.xib */; };
+		BB78453A1D1919FC0068EF6B /* RejectReasonWrongPriceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BB7845381D1919FC0068EF6B /* RejectReasonWrongPriceCell.m */; };
+		BB78453B1D1919FC0068EF6B /* RejectReasonWrongPriceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB7845391D1919FC0068EF6B /* RejectReasonWrongPriceCell.xib */; };
+		BB78453F1D1933390068EF6B /* RejectReasonEditPriceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB78453D1D1933390068EF6B /* RejectReasonEditPriceViewController.m */; };
+		BB7845401D1933390068EF6B /* RejectReasonEditPriceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB78453E1D1933390068EF6B /* RejectReasonEditPriceViewController.xib */; };
 		F25F6F270D531ED13A92CDB9 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4868E459AB2A65D133732296 /* libPods-Tokopedia.a */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
 		FC23B85A1ACD659900879D75 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8581ACD659900879D75 /* Fabric.framework */; };
@@ -6005,6 +6011,15 @@
 		BB783BEC1D18F66A0068EF6B /* Tokopedia-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Tokopedia-Prefix.pch"; sourceTree = "<group>"; };
 		BB783BED1D18F66B0068EF6B /* Tokopedia.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Tokopedia.entitlements; sourceTree = "<group>"; };
 		BB783BEE1D18F66B0068EF6B /* Tokopedia.xcworkspace */ = {isa = PBXFileReference; lastKnownFileType = wrapper.workspace; path = Tokopedia.xcworkspace; sourceTree = "<group>"; };
+		BB7845321D1919020068EF6B /* RejectReasonWrongPriceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RejectReasonWrongPriceViewController.h; sourceTree = "<group>"; };
+		BB7845331D1919020068EF6B /* RejectReasonWrongPriceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RejectReasonWrongPriceViewController.m; sourceTree = "<group>"; };
+		BB7845341D1919020068EF6B /* RejectReasonWrongPriceViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RejectReasonWrongPriceViewController.xib; sourceTree = "<group>"; };
+		BB7845371D1919FC0068EF6B /* RejectReasonWrongPriceCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RejectReasonWrongPriceCell.h; sourceTree = "<group>"; };
+		BB7845381D1919FC0068EF6B /* RejectReasonWrongPriceCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RejectReasonWrongPriceCell.m; sourceTree = "<group>"; };
+		BB7845391D1919FC0068EF6B /* RejectReasonWrongPriceCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RejectReasonWrongPriceCell.xib; sourceTree = "<group>"; };
+		BB78453C1D1933390068EF6B /* RejectReasonEditPriceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RejectReasonEditPriceViewController.h; sourceTree = "<group>"; };
+		BB78453D1D1933390068EF6B /* RejectReasonEditPriceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RejectReasonEditPriceViewController.m; sourceTree = "<group>"; };
+		BB78453E1D1933390068EF6B /* RejectReasonEditPriceViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RejectReasonEditPriceViewController.xib; sourceTree = "<group>"; };
 		C8A1445074FECD393EA18C17 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		FC23B8571ACD659900879D75 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		FC23B8581ACD659900879D75 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
@@ -10454,6 +10469,15 @@
 				BB7835E41D18F6630068EF6B /* RejectReasonViewController.h */,
 				BB7835E51D18F6630068EF6B /* RejectReasonViewController.m */,
 				BB7835E61D18F6630068EF6B /* RejectReasonViewController.xib */,
+				BB7845321D1919020068EF6B /* RejectReasonWrongPriceViewController.h */,
+				BB7845331D1919020068EF6B /* RejectReasonWrongPriceViewController.m */,
+				BB7845341D1919020068EF6B /* RejectReasonWrongPriceViewController.xib */,
+				BB7845371D1919FC0068EF6B /* RejectReasonWrongPriceCell.h */,
+				BB7845381D1919FC0068EF6B /* RejectReasonWrongPriceCell.m */,
+				BB7845391D1919FC0068EF6B /* RejectReasonWrongPriceCell.xib */,
+				BB78453C1D1933390068EF6B /* RejectReasonEditPriceViewController.h */,
+				BB78453D1D1933390068EF6B /* RejectReasonEditPriceViewController.m */,
+				BB78453E1D1933390068EF6B /* RejectReasonEditPriceViewController.xib */,
 			);
 			path = RejectOrder;
 			sourceTree = "<group>";
@@ -12940,6 +12964,7 @@
 				BB78424E1D18F66B0068EF6B /* icon_arrow_right_grey@2x.png in Resources */,
 				BB7842BD1D18F66B0068EF6B /* icon_close_circle.png in Resources */,
 				BB78440E1D18F66B0068EF6B /* icon_speed_neutral@3x.png in Resources */,
+				BB7845401D1933390068EF6B /* RejectReasonEditPriceViewController.xib in Resources */,
 				BB78421F1D18F66B0068EF6B /* icon_3.png in Resources */,
 				BB7840131D18F66B0068EF6B /* InboxReviewCell.xib in Resources */,
 				BB783F471D18F66B0068EF6B /* HotlistResultAWSViewController.xib in Resources */,
@@ -13621,6 +13646,7 @@
 				BB7844251D18F66B0068EF6B /* icon_time_grey@3x.png in Resources */,
 				BB7844061D18F66B0068EF6B /* icon_speed_grey.png in Resources */,
 				BB7844261D18F66B0068EF6B /* icon_toped_alert.png in Resources */,
+				BB78453B1D1919FC0068EF6B /* RejectReasonWrongPriceCell.xib in Resources */,
 				BB7840461D18F66B0068EF6B /* ReputationShopHeader.xib in Resources */,
 				BB7841511D18F66B0068EF6B /* TransactionShipmentATCTableViewController.xib in Resources */,
 				BB7845151D18F66B0068EF6B /* icon_pesan_ulang.png in Resources */,
@@ -13640,6 +13666,7 @@
 				BB7841BA1D18F66B0068EF6B /* UserProfileBiodataViewController.xib in Resources */,
 				BB78426F1D18F66B0068EF6B /* icon_button_wishlist_active@2x.png in Resources */,
 				BB78429E1D18F66B0068EF6B /* icon_category_list_white@2x.png in Resources */,
+				BB7845361D1919020068EF6B /* RejectReasonWrongPriceViewController.xib in Resources */,
 				BB783F5E1D18F66B0068EF6B /* InboxResolSplitViewController.xib in Resources */,
 				BB783E401D18F66B0068EF6B /* CreatePasswordViewController.xib in Resources */,
 				BB7843331D18F66B0068EF6B /* icon_medal_gold.png in Resources */,
@@ -14355,6 +14382,7 @@
 				BB783C281D18F66B0068EF6B /* Logout.m in Sources */,
 				BB783D351D18F66B0068EF6B /* PromoShop.m in Sources */,
 				BB783C201D18F66B0068EF6B /* RSA.m in Sources */,
+				BB7845351D1919020068EF6B /* RejectReasonWrongPriceViewController.m in Sources */,
 				BB783BFD1D18F66B0068EF6B /* NSStringCategory.m in Sources */,
 				BB783F4D1D18F66B0068EF6B /* InboxMessageCell.m in Sources */,
 				BB7841331D18F66B0068EF6B /* ProductTalkViewController.m in Sources */,
@@ -14895,6 +14923,7 @@
 				BB783E481D18F66B0068EF6B /* RegisterViewController.m in Sources */,
 				BB783CF11D18F66B0068EF6B /* InboxReputation.m in Sources */,
 				BB783CC61D18F66B0068EF6B /* InboxReviewAction.m in Sources */,
+				BB78453A1D1919FC0068EF6B /* RejectReasonWrongPriceCell.m in Sources */,
 				BB783D801D18F66B0068EF6B /* EtalaseResult.m in Sources */,
 				BB783C711D18F66B0068EF6B /* ReviewProductOwner.m in Sources */,
 				BB783DE81D18F66B0068EF6B /* TransactionSummaryBCAParam.m in Sources */,
@@ -15247,6 +15276,7 @@
 				BB783E061D18F66B0068EF6B /* TxOrderPaymentEditMethod.m in Sources */,
 				BB783E861D18F66B0068EF6B /* ImageThumbnailCell.swift in Sources */,
 				BB783CC41D18F66B0068EF6B /* ResolutionShop.m in Sources */,
+				BB78453F1D1933390068EF6B /* RejectReasonEditPriceViewController.m in Sources */,
 				BB783C5A1D18F66B0068EF6B /* CatalogInfo.m in Sources */,
 				BB783FCC1D18F66B0068EF6B /* PriceAlertRequest.m in Sources */,
 				BB783E7F1D18F66B0068EF6B /* CameraCollectionViewController.m in Sources */,

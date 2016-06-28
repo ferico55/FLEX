@@ -25,7 +25,12 @@
                       @"order_subtotal_price_idr",
                       @"product_reject_quantity",
                       @"product_name",
-                      @"product_url"
+                      @"product_url",
+                      @"product_description",
+                      @"product_normal_price",
+                      @"product_current_weight",
+                      @"product_price_currency",
+                      @"product_weight_unit"
                       ];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }

@@ -173,7 +173,7 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kXi-jR-YCI">
                             <rect key="frame" x="0.0" y="475" width="320" height="60"/>
                             <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tutup toko yang terjadwal akan berlaku mulai pukul 00:00 dan berakhir pukul 23:59 sesuai tanggal yang telah ditentukan." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2TZ-3u-dFD">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Tutup toko yang terjadwal akan berlaku mulai pukul 00:00 dan berakhir pukul 23:59 sesuai tanggal yang telah ditentukan." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2TZ-3u-dFD">
                                     <rect key="frame" x="8" y="14" width="304" height="33"/>
                                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -602,7 +602,7 @@
                         <constraint firstAttribute="width" constant="45" id="pfR-S1-RDh"/>
                     </constraints>
                 </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Saved!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bIg-DG-8Lh">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Saved!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bIg-DG-8Lh">
                     <rect key="frame" x="8" y="67" width="288" height="12"/>
                     <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>

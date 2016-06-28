@@ -26,6 +26,11 @@
 @property (strong, nonatomic) NSString *product_name;
 @property (strong, nonatomic) NSString *product_url;
 @property (strong, nonatomic) NSString *product_description;
+@property (strong, nonatomic) NSString *product_normal_price;
+@property (strong, nonatomic) NSString *product_current_weight;
+@property (strong, nonatomic) NSString *product_price_currency;
+@property (strong, nonatomic) NSString *product_weight_unit;
+
 
 @property (strong, nonatomic) ProductModelView *viewModel;
 
