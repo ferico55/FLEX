@@ -66,7 +66,7 @@
              };
 }
 
-- (void)didReceivePasswordRecoveryResult:(RKMappingResult*)successResult withOperation:(RKObjectRequestOperation *)operation{
+- (void)actionAfterSuccessfulRequestWithResult:(RKMappingResult*)successResult {
     NSDictionary *resultDict = (successResult).dictionary;
     id stat = [resultDict objectForKey:@""];
     GeneralAction *action = stat;
@@ -100,7 +100,7 @@
                               parameter:[self parameters]
                                 mapping:[GeneralAction mapping]
                               onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                  [self didReceivePasswordRecoveryResult:successResult withOperation:operation];
+                                  [self actionAfterSuccessfulRequestWithResult:successResult];
                               }
                               onFailure:^(NSError *errorResult) {
                               }];

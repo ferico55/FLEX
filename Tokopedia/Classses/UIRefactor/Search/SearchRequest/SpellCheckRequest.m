@@ -52,14 +52,14 @@ typedef NS_ENUM(NSInteger, SpellCheckNetworkManager) {
                               parameter:[self parameters]
                                 mapping:[SpellCheckResponse mapping]
                               onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                  [self didReceiveSpellSuggestion:successResult];
+                                  [self actionAfterSuccessfulRequestWithResult:successResult];
                               }
                               onFailure:^(NSError *errorResult) {
                               }];
     
 }
 
-- (void)didReceiveSpellSuggestion:(RKMappingResult*)successResult {
+- (void)actionAfterSuccessfulRequestWithResult:(RKMappingResult*)successResult {
     SpellCheckResponse *response = [[successResult dictionary] objectForKey:@""];
     NSString *suggest = [[response.data.suggest capitalizedString] stringByReplacingOccurrencesOfString:@"%20" withString:@" "];
     [self.delegate respondsToSelector:@selector(didReceiveSpellSuggestion:totalData:)];

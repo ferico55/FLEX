@@ -97,7 +97,7 @@
         [networkManager requestWithBaseUrl:[NSString basicUrl]
                                       path:@"address.pl"
                                     method:RKRequestMethodPOST
-                                 parameter:[self getParameter:networkManager.tagRequest]
+                                 parameter:[self parameters:networkManager.tagRequest]
                                    mapping:[AddressObj mapping]
                                  onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                      [self actionAfterSuccessfulRequestWithResult:successResult withOperation:operation];
@@ -109,7 +109,7 @@
 }
 
 #pragma mark - Network Manager Delegate
--(NSDictionary *)getParameter:(int)tag
+-(NSDictionary *)parameters:(int)tag
 {
     NSDictionary *param =@{};
     if (tag == TagRequestGetProvince) {
