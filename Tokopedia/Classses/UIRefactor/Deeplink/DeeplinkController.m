@@ -104,6 +104,9 @@
 }
 
 - (void)redirectToViewControllerWithURL:(NSURL *)url {
+    
+    [TPAnalytics trackCampaign:url];
+    
     NSArray *explodedPathUrl = [[url path] componentsSeparatedByString:@"/"];
     
     if ([[url absoluteString] rangeOfString:@"/home"].location != NSNotFound) {
