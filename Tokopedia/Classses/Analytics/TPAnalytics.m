@@ -44,10 +44,10 @@
         @"event": @"authenticated",
         @"contactInfo": @{
                 @"userSeller": [auth.getShopId isEqualToString:@"0"]? @"0": @"1",
-                @"userFullName": [auth.getUserLoginData objectForKey:@"full_name"],
-                @"userEmail": [auth.getUserLoginData objectForKey:@"user_email"],
+                @"userFullName": [auth.getUserLoginData objectForKey:@"full_name"]?:@"",
+                @"userEmail": [auth.getUserLoginData objectForKey:@"user_email"]?:@"",
                 @"userId": auth.getUserId,
-                @"userMSISNVerified": [auth.getUserLoginData objectForKey:@"msisdn_is_verified"],
+                @"userMSISNVerified": [auth.getUserLoginData objectForKey:@"msisdn_is_verified"]?:@"",
                 @"shopID": auth.getShopId
             },
         };
