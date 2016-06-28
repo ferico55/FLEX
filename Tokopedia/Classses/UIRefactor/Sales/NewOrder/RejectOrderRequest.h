@@ -16,4 +16,14 @@
                                        description:(NSString*)description
                                          onSuccess:(void (^)(NSString*))successCallback
                                          onFailure:(void (^)(NSError *))errorCallback;
+-(void)requestActionUpdateProductPrice:(NSString*)price
+                              currency:(NSString*)currency
+                                weight:(NSString*)weight
+                            weightUnit:(NSString*)weightUnit
+                             productId:(NSString*)productId
+                             onSuccess:(void (^)(NSString*))successCallback
+                             onFailure:(void (^)(NSError *))errorCallback;
+
+
+
 @end

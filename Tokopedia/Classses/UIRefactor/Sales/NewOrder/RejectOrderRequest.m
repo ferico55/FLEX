@@ -13,6 +13,7 @@
 @implementation RejectOrderRequest{
     TokopediaNetworkManager *orderRejectionReasonNetworkManager;
     TokopediaNetworkManager *changeDescriptionNetworkManager;
+    TokopediaNetworkManager *changePriceWeightNetworkManager;
 }
 -(void)requestForOrderRejectionReasonOnSuccess:(void (^)(NSArray *))successCallback onFailure:(void (^)(NSError *))errorCallback{
     orderRejectionReasonNetworkManager = [TokopediaNetworkManager new];
@@ -52,4 +53,41 @@
                                                   errorCallback(errorResult);
                                               }];
 }
+
+-(void)requestActionUpdateProductPrice:(NSString *)price currency:(NSString *)currency weight:(NSString *)weight weightUnit:(NSString *)weightUnit productId:(NSString *)productId onSuccess:(void (^)(NSString *))successCallback onFailure:(void (^)(NSError *))errorCallback{
+    changePriceWeightNetworkManager = [TokopediaNetworkManager new];
+    changePriceWeightNetworkManager.isUsingHmac = YES;
+    changePriceWeightNetworkManager.isUsingDefaultError = NO;
+    
+    UserAuthentificationManager *auth = [UserAuthentificationManager new];
+    [changePriceWeightNetworkManager requestWithBaseUrl:[NSString v4Url]
+                                                   path:@"/v4/action/product/edit_weight_price.pl"
+                                                 method:RKRequestMethodPOST
+                                              parameter:@{@"product_id": productId,
+                                                          @"product_price":price,
+                                                          @"product_price_currency":currency,
+                                                          @"product_weight_value":weight,
+                                                          @"product_weight_unit":weightUnit,
+                                                          @"user_id":[auth getUserId]
+                                                          }
+                                                mapping:[GeneralAction generalMapping]
+                                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                                  GeneralAction *result = [successResult.dictionary objectForKey:@""];
+                                                  successCallback(result.data.is_success);
+                                              } onFailure:^(NSError *errorResult) {
+                                                  errorCallback(errorResult);
+                                              }];
+}
 @end
+
+
+
+
+
+
+
+
+
+
+
+

@@ -9,6 +9,8 @@
 #import "RejectReasonEditPriceViewController.h"
 #import "AlertPickerView.h"
 #import "string_product.h"
+#import "RejectOrderRequest.h"
+
 #define CURRENCY_PICKER 11
 #define WEIGHT_PICKER 12
 
@@ -32,7 +34,7 @@
 
 @property (strong, nonatomic) IBOutlet UILabel *currencyLabel;
 @property (strong, nonatomic) IBOutlet UILabel *weightLabel;
-
+@property (strong, nonatomic) RejectOrderRequest *rejectOrderRequest;
 @end
 
 @implementation RejectReasonEditPriceViewController{
@@ -45,17 +47,17 @@
     _tableView.dataSource = self;
     
     _productName.text = _orderProduct.product_name;
-    _priceTextField.text = _orderProduct.product_price;
-    _weightTextField.text = _orderProduct.product_weight;
+    _priceTextField.text = _orderProduct.product_normal_price;
+    _weightTextField.text = _orderProduct.product_current_weight;
     
     if([_orderProduct.product_price_currency isNumber]){
         NSInteger index = [_orderProduct.product_price_currency integerValue];
-        NSString *name = [ARRAY_PRICE_CURRENCY[index] objectForKey:DATA_NAME_KEY];
+        NSString *name = [ARRAY_PRICE_CURRENCY[index-1] objectForKey:DATA_NAME_KEY];
         _currencyLabel.text = name;
     }
     if([_orderProduct.product_weight_unit isNumber]){
         NSInteger index = [_orderProduct.product_weight_unit integerValue];
-        NSString *name = [ARRAY_WEIGHT_UNIT[index] objectForKey:DATA_NAME_KEY];
+        NSString *name = [ARRAY_WEIGHT_UNIT[index-1] objectForKey:DATA_NAME_KEY];
         _weightLabel.text = name;
     }
     
@@ -79,6 +81,14 @@
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
         [self.productImage setImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"]];
     }];
+    
+    
+    UIBarButtonItem *submitButton = [[UIBarButtonItem alloc]
+                                       initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                       target:self action:@selector(submitButtonTapped:)];
+    self.navigationItem.rightBarButtonItem = submitButton;
+    
+    _rejectOrderRequest = [RejectOrderRequest new];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -160,6 +170,39 @@
         [_emptyStockButton setTitleColor:[UIColor colorWithRed:0.699 green:0.699 blue:0.699 alpha:1] forState:UIControlStateNormal];
         _orderProduct.emptyStock = NO;
     }
+}
+
+#pragma mark - Button Actions
+-(IBAction)submitButtonTapped:(id)sender{
+    if([self validateForm]){
+        [_rejectOrderRequest requestActionUpdateProductPrice:_priceTextField.text
+                                                    currency:_orderProduct.product_price_currency
+                                                      weight:_weightTextField.text
+                                                  weightUnit:_orderProduct.product_weight_unit
+                                                   productId:_orderProduct.product_id
+                                                   onSuccess:^(NSString *is_success) {
+                                                       if([is_success boolValue]){
+                                                           [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                                                       }else{
+                                                           StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Terjadi kendala pada server"] delegate:self];
+                                                           [alert show];
+                                                       }
+                                                   } onFailure:^(NSError *error) {
+                                                       StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Kendala koneksi internet"] delegate:self];
+                                                       [alert show];
+                                                   }];
+    }
+}
+
+-(BOOL)validateForm{
+    BOOL isValidateSuccess = YES;
+    if(![_priceTextField.text isNumber]){
+        isValidateSuccess = NO;
+    }
+    if(![_weightTextField.text isNumber]){
+        isValidateSuccess = NO;
+    }
+    return isValidateSuccess;
 }
 
 #pragma mark - UITextField Delegate
