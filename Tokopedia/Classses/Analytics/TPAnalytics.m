@@ -421,4 +421,14 @@
     [analytics.dataLayer push:data];
 }
 
++ (void)trackClickEvent:(NSString *)event category:(NSString *)category label:(NSString *)label {
+    TPAnalytics *analytics = [[self alloc] init];
+    NSDictionary *data = @{
+        @"event": event,
+        @"eventCategory": category,
+        @"eventLabel": label
+    };
+    [analytics.dataLayer push:data];
+}
+
 @end
