@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "RejectOrderResponse.h"
 #import "GeneralAction.h"
+#import "Order.h"
 
 @interface RejectOrderRequest : NSObject
 -(void)requestForOrderRejectionReasonOnSuccess:(void (^)(NSArray*))successCallback
@@ -24,7 +25,14 @@
                              productId:(NSString*)productId
                              onSuccess:(void (^)(GeneralAction*))successCallback
                              onFailure:(void (^)(NSError *))errorCallback;
-
+-(void)requestNewOrderWithInvoiceNumber:(NSString*)invoiceNumber
+                              onSuccess:(void (^)(OrderTransaction*))successCallback
+                              onFailure:(void (^)(NSError *))errorCallback;
+-(void)requestNewOrderWithDeadline:(NSString*)deadline
+                            filter:(NSString*)filter
+                              page:(NSString*)page
+                         onSuccess:(void (^)(Order*))successCallback
+                         onFailure:(void (^)(NSError *))errorCallback;
 
 
 @end

@@ -6,9 +6,12 @@
 //  Copyright © 2016 TOKOPEDIA. All rights reserved.
 //
 
+#import <BlocksKit/BlocksKit.h>
+#import "NSArray+BlocksKit.h"
 #import "RejectReasonWrongPriceViewController.h"
 #import "RejectReasonWrongPriceCell.h"
 #import "RejectReasonEditPriceViewController.h"
+#import "RejectOrderRequest.h"
 
 @interface RejectReasonWrongPriceViewController ()<UITableViewDelegate, UITableViewDataSource, RejectReasonWrongPriceDelegate, RejectReasonEditPriceDelegate>
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
@@ -18,12 +21,15 @@
 
 @implementation RejectReasonWrongPriceViewController{
     UIRefreshControl *_refreshControl;
+    RejectOrderRequest *_rejectOrderRequest;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     _tableView.dataSource = self;
     _tableView.delegate = self;
+    
+    _rejectOrderRequest = [RejectOrderRequest new];
     
     _refreshControl = [[UIRefreshControl alloc] init];
     _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
@@ -102,15 +108,31 @@
 -(void)tableViewCell:(UITableViewCell *)cell changeProductPriceAtIndexPath:(NSIndexPath *)indexPath{
     RejectReasonEditPriceViewController *vc = [RejectReasonEditPriceViewController new];
     vc.orderProduct = [_order.order_products objectAtIndex:indexPath.row];
+    vc.delegate = self;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
 -(void)refreshList{
-    [_tableView reloadData];
+    [_rejectOrderRequest requestNewOrderWithInvoiceNumber:_order.order_detail.detail_invoice onSuccess:^(OrderTransaction *orderTransaction) {
+        _order = orderTransaction;
+        [_tableView reloadData];
+    } onFailure:^(NSError *error) {
+        
+    }];
 }
 
--(void)didChangeProductPriceWeight{
-    [self refreshList];
+-(void)didChangeProductPriceWeight:(OrderProduct *)orderProduct{    
+    [_order.order_products bk_each:^(id obj) {
+        OrderProduct* selected = obj;
+        if([selected.product_id isEqualToString:orderProduct.product_id]){
+            selected.product_weight = orderProduct.product_weight;
+            selected.product_price = orderProduct.product_price;
+            selected.product_weight_unit = orderProduct.product_weight_unit;
+            selected.product_price_currency = orderProduct.product_price_currency;
+        }
+    }];
+    [_tableView reloadData];
+    
 }
 
 

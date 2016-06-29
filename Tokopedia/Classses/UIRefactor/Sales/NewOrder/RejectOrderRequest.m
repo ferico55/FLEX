@@ -13,6 +13,7 @@
     TokopediaNetworkManager *orderRejectionReasonNetworkManager;
     TokopediaNetworkManager *changeDescriptionNetworkManager;
     TokopediaNetworkManager *changePriceWeightNetworkManager;
+    TokopediaNetworkManager *newOrderNetworkManager;
 }
 -(void)requestForOrderRejectionReasonOnSuccess:(void (^)(NSArray *))successCallback onFailure:(void (^)(NSError *))errorCallback{
     orderRejectionReasonNetworkManager = [TokopediaNetworkManager new];
@@ -76,6 +77,42 @@
                                               } onFailure:^(NSError *errorResult) {
                                                   errorCallback(errorResult);
                                               }];
+}
+
+-(void)requestNewOrderWithInvoiceNumber:(NSString *)invoiceNumber onSuccess:(void (^)(OrderTransaction *))successCallback onFailure:(void (^)(NSError *))errorCallback{
+    [self requestNewOrderWithDeadline:@"" filter:invoiceNumber page:@"1" onSuccess:^(Order *order) {
+        if([order.result.list firstObject]){
+            successCallback([order.result.list firstObject]);
+        }else{
+            errorCallback(nil);
+        }
+    } onFailure:^(NSError *error) {
+        errorCallback(error);
+    }];
+}
+
+-(void)requestNewOrderWithDeadline:(NSString *)deadline filter:(NSString *)filter page:(NSString *)page onSuccess:(void (^)(Order *))successCallback onFailure:(void (^)(NSError *))errorCallback{
+    newOrderNetworkManager = [TokopediaNetworkManager new];
+    newOrderNetworkManager.isUsingHmac = YES;
+    newOrderNetworkManager.isUsingDefaultError = NO;
+    
+    NSDictionary *parameters = @{
+                                 @"deadline": deadline,
+                                 @"status": filter,
+                                 @"page": page,
+                                 };
+    [newOrderNetworkManager requestWithBaseUrl:[NSString v4Url]
+                                       path:@"/v4/myshop-order/get_order_new.pl"
+                                     method:RKRequestMethodGET
+                                  parameter:parameters
+                                    mapping:[Order mapping]
+                                  onSuccess:^(RKMappingResult *mappingResult,
+                                              RKObjectRequestOperation *operation) {
+                                      Order *response = mappingResult.dictionary[@""];
+                                      successCallback(response);
+                                  } onFailure:^(NSError *errorResult) {
+                                      errorCallback(errorResult);
+                                  }];
 }
 @end
 

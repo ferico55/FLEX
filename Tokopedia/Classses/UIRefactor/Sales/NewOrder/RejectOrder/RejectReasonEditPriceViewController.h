@@ -10,7 +10,7 @@
 #import "OrderProduct.h"
 
 @protocol RejectReasonEditPriceDelegate <NSObject>
-- (void) didChangeProductPriceWeight;
+- (void) didChangeProductPriceWeight:(OrderProduct*)orderProduct;
 @end
 
 @interface RejectReasonEditPriceViewController : UIViewController

@@ -179,8 +179,20 @@
                                                    productId:_orderProduct.product_id
                                                    onSuccess:^(GeneralAction *result) {
                                                        if([result.data.is_success boolValue]){
-                                                           [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-                                                           [_delegate didChangeProductPriceWeight];
+                                                           NSInteger currencyIndex = [_orderProduct.product_price_currency integerValue];
+                                                           NSString *currencyName = [ARRAY_PRICE_CURRENCY[currencyIndex-1] objectForKey:DATA_NAME_KEY];
+                                                           
+                                                           NSInteger weightIndex = [_orderProduct.product_weight_unit integerValue];
+                                                           NSString *weightName = [ARRAY_WEIGHT_UNIT[weightIndex-1] objectForKey:DATA_NAME_KEY];
+                                                           
+                                                           
+                                                           _orderProduct.product_price = [currencyName stringByAppendingString:[@" " stringByAppendingString:_priceTextField.text]];
+                                                           _orderProduct.product_normal_price = _priceTextField.text;
+                                                           _orderProduct.product_weight = [_weightTextField.text stringByAppendingString:[@" " stringByAppendingString:weightName]];
+                                                           _orderProduct.product_current_weight = _weightTextField.text;
+                                                           
+                                                           [self.navigationController popViewControllerAnimated:YES];
+                                                           [_delegate didChangeProductPriceWeight:_orderProduct];
                                                        }else{
                                                            StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:result.message_error delegate:self];
                                                            [alert show];

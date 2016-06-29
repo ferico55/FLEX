@@ -20,7 +20,9 @@
     [_productPrice setText:viewModel.productPriceIDR];
     
     //to make the "stok kosong" label fit next to price label
-    [_productPrice sizeToFit];
+    //[_productPrice sizeToFit];
+    
+    [_productWeight setText:viewModel.productTotalWeight];
     
     [_emptyStockLabel setHidden:viewModel.isProductBuyAble];
     
