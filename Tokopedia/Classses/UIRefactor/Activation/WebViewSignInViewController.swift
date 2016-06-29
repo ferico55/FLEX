@@ -19,7 +19,7 @@ class WebViewSignInViewController: UIViewController {
 
         let request = NSMutableURLRequest()
         request.setValue("Mozilla/5.0 (iPod; U; CPU iPhone OS 4_3_3 like Mac OS X; ja-jp) AppleWebKit/533.17.9 (KHTML, like Gecko) Version/5.0.2 Mobile/8J2 Safari/6533.18.5", forHTTPHeaderField: "User-Agent")
-        request.URL = NSURL(string: "https://accounts-alpha.tokopedia.com/wv/yahoo-login")
+        request.URL = NSURL(string: "\(NSString.accountsUrl)/wv/yahoo-login")
 
         webView.loadRequest(request)
         webView.bk_shouldStartLoadBlock = {(webView, request, navigationType) in
