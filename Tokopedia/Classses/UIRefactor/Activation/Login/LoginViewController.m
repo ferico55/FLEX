@@ -281,11 +281,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (NSDictionary *)basicAuthorizationHeader {
-    return @{@"Authorization": @"Basic MTAwMTo3YzcxNDFjMTk3Zjg5Nzg3MWViM2I1YWY3MWU1YWVjNzAwMzYzMzU1YTc5OThhNGUxMmMzNjAwYzdkMzE="};
-//    return @{@"Authorization": @"Basic N2VhOTE5MTgyZmY6YjM2Y2JmOTA0ZDE0YmJmOTBlN2YyNTQzMTU5NWEzNjQ="};
-}
-
 - (void)doLoginWithEmail:(NSString *)email password:(NSString *)pass {
     [self setLoggingInState];
     _barbuttonsignin.enabled = NO;
