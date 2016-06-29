@@ -2391,6 +2391,8 @@
 		9293F0041D23723E00699EDA /* VTItemDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 9293EA2E1D23723C00699EDA /* VTItemDetails.m */; };
 		9293F0051D23723E00699EDA /* VTToken.m in Sources */ = {isa = PBXBuildFile; fileRef = 9293EA301D23723C00699EDA /* VTToken.m */; };
 		9293F0061D23723E00699EDA /* VTTransactionDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 9293EA321D23723C00699EDA /* VTTransactionDetails.m */; };
+		9293F0081D23748F00699EDA /* WebViewSignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9293F0071D23748F00699EDA /* WebViewSignInViewController.swift */; };
+		9293F00A1D23751100699EDA /* WebViewSignInViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9293F0091D23751100699EDA /* WebViewSignInViewController.xib */; };
 		F25F6F270D531ED13A92CDB9 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4868E459AB2A65D133732296 /* libPods-Tokopedia.a */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
 		FC23B85A1ACD659900879D75 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8581ACD659900879D75 /* Fabric.framework */; };
@@ -5958,6 +5960,8 @@
 		9293EA301D23723C00699EDA /* VTToken.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTToken.m; sourceTree = "<group>"; };
 		9293EA311D23723C00699EDA /* VTTransactionDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTTransactionDetails.h; sourceTree = "<group>"; };
 		9293EA321D23723C00699EDA /* VTTransactionDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTTransactionDetails.m; sourceTree = "<group>"; };
+		9293F0071D23748F00699EDA /* WebViewSignInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewSignInViewController.swift; sourceTree = "<group>"; };
+		9293F0091D23751100699EDA /* WebViewSignInViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WebViewSignInViewController.xib; sourceTree = "<group>"; };
 		AAA12C6A69BF6CB5F8EE3287 /* Pods-Tokopedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug.xcconfig"; sourceTree = "<group>"; };
 		C8A1445074FECD393EA18C17 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		FC23B8571ACD659900879D75 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
@@ -9476,6 +9480,8 @@
 				9293E4051D23723900699EDA /* Logout */,
 				9293E4081D23723900699EDA /* PhoneVerification */,
 				9293E40F1D23723900699EDA /* Register */,
+				9293F0071D23748F00699EDA /* WebViewSignInViewController.swift */,
+				9293F0091D23751100699EDA /* WebViewSignInViewController.xib */,
 			);
 			path = Activation;
 			sourceTree = "<group>";
@@ -12845,6 +12851,7 @@
 				8548B54E1D1A58F200D11E22 /* icon_facebook.png in Resources */,
 				9293ED531D23723D00699EDA /* GeneralCheckmarkCell.xib in Resources */,
 				8548B4F81D1A58F200D11E22 /* icon_4@3x.png in Resources */,
+				9293F00A1D23751100699EDA /* WebViewSignInViewController.xib in Resources */,
 				8548B49A1D1A58F200D11E22 /* icon-back.png in Resources */,
 				9293EFE71D23723E00699EDA /* UserContainerViewController.xib in Resources */,
 				8548B4E81D1A58F200D11E22 /* icon_0@3x.png in Resources */,
@@ -14351,6 +14358,7 @@
 				9293EBCD1D23723D00699EDA /* NotesResult.m in Sources */,
 				9293ECCA1D23723D00699EDA /* TPLiveCameraView.m in Sources */,
 				9293EFE81D23723E00699EDA /* UserPageHeader.m in Sources */,
+				9293F0081D23748F00699EDA /* WebViewSignInViewController.swift in Sources */,
 				9293EDBA1D23723D00699EDA /* InboxReviewSplitViewController.m in Sources */,
 				9293EBB61D23723D00699EDA /* ShipmentCourierData.m in Sources */,
 				9293EAF41D23723C00699EDA /* InboxMessageDetailBetween.m in Sources */,
