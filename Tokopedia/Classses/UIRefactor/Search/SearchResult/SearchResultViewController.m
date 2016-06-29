@@ -767,7 +767,12 @@ ImageSearchRequestDelegate
 }
 
 -(void)pushDynamicSort{
-    FiltersController *controller = [[FiltersController alloc]initWithSource:[_data objectForKey:kTKPDSEARCH_DATATYPE]?:@"" sortResponse:_filterResponse?:[FilterData new] selectedSort:_selectedSort presentedVC:self onCompletion:^(ListOption * sort, NSDictionary*paramSort) {
+    FiltersController *controller = [[FiltersController alloc]initWithSource:[_data objectForKey:kTKPDSEARCH_DATATYPE]?:@""
+                                                                sortResponse:_filterResponse?:[FilterData new]
+                                                                selectedSort:_selectedSort
+                                                                 presentedVC:self
+                                                                onCompletion:^(ListOption * sort, NSDictionary*paramSort) {
+        
         _selectedSortParam = paramSort;
         _selectedSort = sort;
         

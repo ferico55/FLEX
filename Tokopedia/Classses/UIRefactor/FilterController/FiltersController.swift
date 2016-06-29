@@ -8,6 +8,26 @@
 
 import UIKit
 
+@objc enum Source :Int {
+    case Hotlist, Product, Catalog, Shop, Directory, Default
+    func simpleDescription() -> String {
+        switch self {
+        case .Hotlist:
+            return "hot_product"
+        case .Product:
+            return "search_product"
+        case .Catalog:
+            return "search_catalog"
+        case .Shop:
+            return "search_shop"
+        case .Directory:
+            return "directory"
+        case .Default:
+            return ""
+        }
+    }
+}
+
 class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
     
     private var filterResponse : FilterData = FilterData()
@@ -37,6 +57,23 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
         self.completionHandlerFilter = onCompletion
         self.presentedController = presentedVC
         self.source = source
+        self.rootCategoryID = rootCategoryID
+        completionHandlerResponse = response
+        
+        super.init()
+        
+        self .presentControllerFilter()
+    }
+    
+    init(searchDataSource: Source, filterResponse:FilterData, rootCategoryID:String, categories: [CategoryDetail], selectedCategories:[CategoryDetail], selectedFilters:[ListOption], presentedVC:(UIViewController), onCompletion: ((selectedCategories:[CategoryDetail], selectedFilters:[ListOption], paramFilter:[String : String]) -> Void), response:((FilterData) -> Void)){
+        
+        self.filterResponse = filterResponse
+        self.categories = categories
+        self.selectedCategories = selectedCategories
+        self.selectedFilters = selectedFilters
+        self.completionHandlerFilter = onCompletion
+        self.presentedController = presentedVC
+        self.source = searchDataSource.simpleDescription()
         self.rootCategoryID = rootCategoryID
         completionHandlerResponse = response
         
