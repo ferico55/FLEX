@@ -214,42 +214,44 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
         UIButton *btn = (UIButton*)sender;
         switch (btn.tag) {
             case 10: {
-                /** SIGN IN **/
-                NSString *email = [_activation objectForKey:kTKPDACTIVATION_DATAEMAILKEY];
-                NSString *pass = [_activation objectForKey:kTKPDACTIVATION_DATAPASSKEY];
-                NSMutableArray *messages = [NSMutableArray new];
-                BOOL valid = NO;
-                NSString *message;
-                if (email && pass && ![email isEqualToString:@""] && ![pass isEqualToString:@""] && [email isEmail]) {
-                    valid = YES;
-                }
-                if (!email||[email isEqualToString:@""]) {
-                    message = @"Email harus diisi.";
-                    [messages addObject:message];
-                    valid = NO;
-                }
-                if (email) {
-                    if (![email isEmail]) {
-                        message = @"Format email salah.";
-                        [messages addObject:message];
-                        valid = NO;
-                    }
-                }
-                if (!pass || [pass isEqualToString:@""]) {
-                    message = @"Password harus diisi";
-                    [messages addObject:message];
-                    valid = NO;
-                }
-                
-                if (valid) {
-                    [self doLoginWithEmail:email password:pass];
-                }
-                else{
-                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messages delegate:self];
-                    [alert show];
-                }
+//                /** SIGN IN **/
+//                NSString *email = [_activation objectForKey:kTKPDACTIVATION_DATAEMAILKEY];
+//                NSString *pass = [_activation objectForKey:kTKPDACTIVATION_DATAPASSKEY];
+//                NSMutableArray *messages = [NSMutableArray new];
+//                BOOL valid = NO;
+//                NSString *message;
+//                if (email && pass && ![email isEqualToString:@""] && ![pass isEqualToString:@""] && [email isEmail]) {
+//                    valid = YES;
+//                }
+//                if (!email||[email isEqualToString:@""]) {
+//                    message = @"Email harus diisi.";
+//                    [messages addObject:message];
+//                    valid = NO;
+//                }
+//                if (email) {
+//                    if (![email isEmail]) {
+//                        message = @"Format email salah.";
+//                        [messages addObject:message];
+//                        valid = NO;
+//                    }
+//                }
+//                if (!pass || [pass isEqualToString:@""]) {
+//                    message = @"Password harus diisi";
+//                    [messages addObject:message];
+//                    valid = NO;
+//                }
+//
+//                if (valid) {
+//                    [self doLoginWithEmail:email password:pass];
+//                }
+//                else{
+//                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messages delegate:self];
+//                    [alert show];
+//                }
+//
+//                NSLog(@"message : %@", messages);
 
-                NSLog(@"message : %@", messages);
+                [self loginWithYahoo];
                 break;
             }
                 
@@ -269,6 +271,14 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
             [[GIDSignIn sharedInstance] signIn];
         }        
     }
+}
+
+- (void)loginWithYahoo {
+    WebViewSignInViewController *controller = [WebViewSignInViewController new];
+    controller.onReceiveToken = ^(NSString *token) {
+        
+    };
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (NSDictionary *)basicAuthorizationHeader {
