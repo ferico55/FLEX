@@ -271,7 +271,6 @@ class FiltersListDataSource:  NSObject, UITableViewDelegate, UITableViewDataSour
     func resetSelectedFilter() -> Void {
         selectedObjects = []
         items.forEach({$0.isSelected = false})
-        self.tableView!.reloadData()
     }
 
 }
