@@ -2252,8 +2252,6 @@
 		8548B7191D1A58F200D11E22 /* thumb_product.png in Resources */ = {isa = PBXBuildFile; fileRef = 8548ADC01D1A58EF00D11E22 /* thumb_product.png */; };
 		8548B71A1D1A58F200D11E22 /* icon_etalase@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8548ADC21D1A58EF00D11E22 /* icon_etalase@3x.png */; };
 		8548B71B1D1A58F200D11E22 /* icon_filter@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8548ADC31D1A58EF00D11E22 /* icon_filter@3x.png */; };
-		8548B71C1D1A58F200D11E22 /* icon_grid_dua@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8548ADC41D1A58EF00D11E22 /* icon_grid_dua@3x.png */; };
-		8548B71D1D1A58F200D11E22 /* icon_grid_satu@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8548ADC51D1A58EF00D11E22 /* icon_grid_satu@3x.png */; };
 		8548B71E1D1A58F200D11E22 /* icon_share@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8548ADC61D1A58EF00D11E22 /* icon_share@3x.png */; };
 		8548B71F1D1A58F200D11E22 /* icon_urutkan@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8548ADC71D1A58EF00D11E22 /* icon_urutkan@3x.png */; };
 		8548B7201D1A58F200D11E22 /* icon_urutkan_alt@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8548ADC81D1A58EF00D11E22 /* icon_urutkan_alt@3x.png */; };
@@ -13141,7 +13139,6 @@
 				8548B5CB1D1A58F200D11E22 /* icon_neutral_grey@3x.png in Resources */,
 				8548B5531D1A58F200D11E22 /* icon_google@2x.png in Resources */,
 				8548B7481D1A58F200D11E22 /* icon_hotlist@3x.png in Resources */,
-				8548B71C1D1A58F200D11E22 /* icon_grid_dua@3x.png in Resources */,
 				8548B3381D1A58F100D11E22 /* OpenShopImageViewCell.xib in Resources */,
 				8548B4AB1D1A58F200D11E22 /* icon_arrow_down@2x.png in Resources */,
 				8548B7071D1A58F200D11E22 /* onboarding_toped_1f.png in Resources */,
@@ -13175,7 +13172,6 @@
 				8548B5F71D1A58F200D11E22 /* icon_problem_buyer@2x.png in Resources */,
 				8548B1B61D1A58F100D11E22 /* HotlistViewController.xib in Resources */,
 				8548B12C1D1A58F100D11E22 /* ContactUsViewController.xib in Resources */,
-				8548B71D1D1A58F200D11E22 /* icon_grid_satu@3x.png in Resources */,
 				8548B47A1D1A58F200D11E22 /* icon_21.png in Resources */,
 				8548B7531D1A58F200D11E22 /* icon_search_active@2x.png in Resources */,
 				8548B4E61D1A58F200D11E22 /* icon_category@2x.png in Resources */,
