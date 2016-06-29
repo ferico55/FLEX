@@ -56,6 +56,7 @@ class FiltersListDataSource:  NSObject, UITableViewDelegate, UITableViewDataSour
         searchBar.tintColor = UIColor.grayColor()
         
         self.tableView!.allowsMultipleSelection = true
+        self.tableView!.reloadData()
     }
     
     required init?(coder aDecoder: NSCoder) {
