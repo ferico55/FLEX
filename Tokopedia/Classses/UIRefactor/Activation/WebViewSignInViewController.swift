@@ -30,6 +30,7 @@ class WebViewSignInViewController: UIViewController {
             if (path == "/mappauth/code") {
                 let code = url.parameters()["code"] as! String
                 self.onReceiveToken?(code)
+                return false
             }
 
             return true
