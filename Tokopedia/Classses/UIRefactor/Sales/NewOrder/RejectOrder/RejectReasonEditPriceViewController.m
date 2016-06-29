@@ -183,6 +183,7 @@
                                                    onSuccess:^(GeneralAction *result) {
                                                        if([result.data.is_success boolValue]){
                                                            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                                                           [_delegate didChangeProductPriceWeight];
                                                        }else{
                                                            StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:result.message_error delegate:self];
                                                            [alert show];

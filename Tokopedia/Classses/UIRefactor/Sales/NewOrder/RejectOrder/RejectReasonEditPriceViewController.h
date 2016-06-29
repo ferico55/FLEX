@@ -9,6 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "OrderProduct.h"
 
+@protocol RejectReasonEditPriceDelegate <NSObject>
+- (void) didChangeProductPriceWeight;
+@end
+
 @interface RejectReasonEditPriceViewController : UIViewController
 @property (strong, nonatomic) OrderProduct* orderProduct;
+@property (weak, nonatomic) id<RejectReasonEditPriceDelegate> delegate;
 @end

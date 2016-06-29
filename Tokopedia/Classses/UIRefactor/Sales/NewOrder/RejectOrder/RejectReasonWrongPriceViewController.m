@@ -10,7 +10,7 @@
 #import "RejectReasonWrongPriceCell.h"
 #import "RejectReasonEditPriceViewController.h"
 
-@interface RejectReasonWrongPriceViewController ()<UITableViewDelegate, UITableViewDataSource, RejectReasonWrongPriceDelegate>
+@interface RejectReasonWrongPriceViewController ()<UITableViewDelegate, UITableViewDataSource, RejectReasonWrongPriceDelegate, RejectReasonEditPriceDelegate>
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UIButton *confirmButton;
 
@@ -107,6 +107,10 @@
 
 -(void)refreshList{
     [_tableView reloadData];
+}
+
+-(void)didChangeProductPriceWeight{
+    [self refreshList];
 }
 
 
