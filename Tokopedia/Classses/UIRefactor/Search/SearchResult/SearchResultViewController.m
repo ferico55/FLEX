@@ -815,33 +815,61 @@ ImageSearchRequestDelegate
 
 -(IBAction)didTapFilterButton:(UIButton*)sender{
     if ([self isUseDynamicFilter]) {
-        [self pushDynamicFilter];
+        [self searchWithDynamicFilter];
     } else {
         [self pushFilter];
     }
 }
 
--(void)pushDynamicFilter{
-    FiltersController *controller = [[FiltersController alloc]initWithSource:[_data objectForKey:kTKPDSEARCH_DATATYPE]?:@""
-                                                              filterResponse:_filterResponse?:[FilterData new]
-                                                              rootCategoryID:_rootCategoryID
-                                                                  categories:[_initialBreadcrumb copy]
-                                                          selectedCategories:_selectedCategories
-                                                             selectedFilters:_selectedFilters
-                                                                 presentedVC:self onCompletion:^(NSArray<CategoryDetail *> * selectedCategories , NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
-        
-        _selectedCategories = selectedCategories;
-        _selectedFilters = selectedFilters;
-        _selectedFilterParam = paramFilters;
-        for (UIImageView *image in _activeFilterImageViews) {
-            image.hidden = (_selectedCategories.count + selectedFilters.count == 0);
-        }
-        [_params setObject:[_data objectForKey:@"search"]?:@"" forKey:@"search"];
-        [self refreshView:nil];
-        
-    } response:^(FilterData * filterResponse){
-        _filterResponse = filterResponse;
-    }];
+-(Source)getSourceSearchData{
+    NSString * type = [_data objectForKey:kTKPDSEARCH_DATATYPE]?:@"";
+    if ([type isEqualToString:@"hot_product"]) {
+        return SourceHotlist;
+    } else if ([type isEqualToString:@"search_product"]) {
+        return SourceProduct;
+    } else if ([type isEqualToString:@"search_catalog"]) {
+        return SourceCatalog;
+    } else if ([type isEqualToString:@"search_shop"]) {
+        return SourceShop;
+    } else if ([type isEqualToString:@"directory"]) {
+        return SourceDirectory;
+    } else {
+        return SourceDefault;
+    }
+}
+
+-(void)searchWithDynamicFilter{
+    FiltersController *controller = [[FiltersController alloc]initWithSearchDataSource:[self getSourceSearchData]
+                                                                        filterResponse:_filterResponse?:[FilterData new]
+                                                                        rootCategoryID:_rootCategoryID
+                                                                            categories:[_initialBreadcrumb copy]
+                                                                    selectedCategories:_selectedCategories
+                                                                       selectedFilters:_selectedFilters
+                                                                           presentedVC:self onCompletion:^(NSArray<CategoryDetail *> * selectedCategories , NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
+                                                                               
+                                                                               _selectedCategories = selectedCategories;
+                                                                               _selectedFilters = selectedFilters;
+                                                                               _selectedFilterParam = paramFilters;
+                                                                               [self showFilterIsActive:[self hasSelectedFilterOrCategory]];
+                                                                               
+                                                                               [_params setObject:[_data objectForKey:@"search"]?:@"" forKey:@"search"];
+                                                                               [self refreshView:nil];
+                                                                               
+                                                                           } response:^(FilterData * filterResponse){
+                                                                               
+                                                                               _filterResponse = filterResponse;
+                                                                               
+                                                                           }];
+}
+
+-(BOOL)hasSelectedFilterOrCategory{
+    return (_selectedCategories.count + _selectedFilters.count == 0);
+}
+
+-(void)showFilterIsActive:(BOOL)isActive{
+    for (UIImageView *image in _activeFilterImageViews) {
+        image.hidden = !isActive;
+    }
 }
 
 -(void)pushFilter{
