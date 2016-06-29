@@ -57,14 +57,7 @@
     [TPAnalytics trackScreenName:@"Forgot Password Page"];
 }
 
-#pragma mark - Tokopedia Network Delegate
-
-- (NSDictionary *)parameters{
-    return @{
-             @"action" : TKPD_FORGETPASS_ACTION,
-             @"email" : [_emailText text]
-             };
-}
+#pragma mark - requestWithBaseUrl Methods
 
 - (void)actionAfterSuccessfulRequestWithResult:(RKMappingResult*)successResult {
     NSDictionary *resultDict = (successResult).dictionary;
@@ -97,7 +90,8 @@
     [_networkManager requestWithBaseUrl: [NSString basicUrl]
                                    path:TKPD_FORGETPASS_PATH
                                  method: RKRequestMethodPOST
-                              parameter:[self parameters]
+                              parameter:@{@"action" : TKPD_FORGETPASS_ACTION,
+                                          @"email" : [_emailText text]}
                                 mapping:[GeneralAction mapping]
                               onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                   [self actionAfterSuccessfulRequestWithResult:successResult];

@@ -35,38 +35,6 @@
     return networkManager;
 }
 
-- (void)initCache {
-    _cacheConnection = (_cacheConnection)?:[URLCacheConnection new];
-    _cacheController = (_cacheController)?:[URLCacheController new];
-    
-    NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:@"address"];
-    
-    switch (_tag) {
-        case 10:
-            _cachePath = [path stringByAppendingPathComponent:@"address_province"];
-            break;
-        case 11:
-        {
-            NSString *pathString = [NSString stringWithFormat:@"address_city_%@",_provinceID];
-            _cachePath = [path stringByAppendingPathComponent:pathString];
-            break;
-        }
-        case 12:
-        {
-            NSString *pathString = [NSString stringWithFormat:@"address_district_%@_%@",_provinceID,_cityID];
-            _cachePath = [path stringByAppendingPathComponent:pathString];
-            break;
-        }
-        default:
-            break;
-    }
-    
-    
-    _cacheController.filePath = _cachePath;
-    _cacheController.URLCacheInterval = 300.0;
-    [_cacheController initCacheWithDocumentPath:path];
-}
-
 -(void)doRequestProvinces
 {
     [self setNetworkManager:_provinceNetworkManager withTag:TagRequestGetProvince];
@@ -108,7 +76,7 @@
     }
 }
 
-#pragma mark - Network Manager Delegate
+#pragma mark - requestWithBaseUrl Methods
 -(NSDictionary *)parameters:(int)tag
 {
     NSDictionary *param =@{};
@@ -130,21 +98,6 @@
     }
     
     return param;
-}
-
--(id)getObjectManager
-{
-    RKObjectManager *objecManager = [RKObjectManager sharedClient];
-    
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[AddressObj mapping]
-                                                                                            method:RKRequestMethodPOST
-                                                                                       pathPattern:@"address.pl"
-                                                                                           keyPath:@""
-                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [objecManager addResponseDescriptor:responseDescriptor];
-    
-    return objecManager;
 }
 
 -(void)actionAfterSuccessfulRequestWithResult:(RKMappingResult *)successResult withOperation:(RKObjectRequestOperation *)operation
@@ -174,6 +127,40 @@
     }
     
     [_delegate failedRequestAddress:errors];
+}
+
+#pragma mark - Cache
+
+- (void)initCache {
+    _cacheConnection = (_cacheConnection)?:[URLCacheConnection new];
+    _cacheController = (_cacheController)?:[URLCacheController new];
+    
+    NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:@"address"];
+    
+    switch (_tag) {
+        case 10:
+            _cachePath = [path stringByAppendingPathComponent:@"address_province"];
+            break;
+        case 11:
+        {
+            NSString *pathString = [NSString stringWithFormat:@"address_city_%@",_provinceID];
+            _cachePath = [path stringByAppendingPathComponent:pathString];
+            break;
+        }
+        case 12:
+        {
+            NSString *pathString = [NSString stringWithFormat:@"address_district_%@_%@",_provinceID,_cityID];
+            _cachePath = [path stringByAppendingPathComponent:pathString];
+            break;
+        }
+        default:
+            break;
+    }
+    
+    
+    _cacheController.filePath = _cachePath;
+    _cacheController.URLCacheInterval = 300.0;
+    [_cacheController initCacheWithDocumentPath:path];
 }
 
 - (RKMappingResult*)getFromCache {
@@ -214,5 +201,21 @@
     [_cacheController connectionDidFinish:_cacheConnection];
     [operation.HTTPRequestOperation.responseData writeToFile:_cachePath atomically:YES];
 }
+
+-(id)getObjectManager
+{
+    RKObjectManager *objecManager = [RKObjectManager sharedClient];
+    
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[AddressObj mapping]
+                                                                                            method:RKRequestMethodPOST
+                                                                                       pathPattern:@"address.pl"
+                                                                                           keyPath:@""
+                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    [objecManager addResponseDescriptor:responseDescriptor];
+    
+    return objecManager;
+}
+
 
 @end
