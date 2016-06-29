@@ -987,7 +987,7 @@ static NSString const *rows = @"12";
     
     NSString *selectedCategory = [[_selectedCategories valueForKey:@"categoryId"] componentsJoinedByString:@","];
     NSString *categories;
-    if (![[_detailfilter objectForKey:@"sc"] isEqualToString:@""] && _selectedCategories.count > 0 && [_rootCategoryID isEqualToString:@""]) {
+    if ([[_detailfilter objectForKey:@"sc"] integerValue] != 0 && _selectedCategories.count > 0 && [_rootCategoryID isEqualToString:@""]) {
         categories = [NSString stringWithFormat:@"%@,%@",selectedCategory,[_detailfilter objectForKey:@"sc"]?:@""];
     } else if (![[_detailfilter objectForKey:@"sc"] isEqualToString:@""] && _selectedCategories.count == 0){
         categories = [_detailfilter objectForKey:@"sc"]?:@"";
