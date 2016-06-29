@@ -50,6 +50,7 @@
        failureCallback:(void (^)(NSError *))failureCallback;
 
 - (void)loginWithTokenString:(NSString *)token
+          fromViewController:(UIViewController *)viewController
              successCallback:(void (^)(Login *))successCallback
              failureCallback:(void (^)(NSError *))failureCallback;
 @end

@@ -12,12 +12,17 @@ import UIKit
 class AccountInfo: NSObject {
     var userId: String!
     var createdPassword: Bool = false
+    var email = ""
+    var name = ""
+
 
     class func mapping() -> RKObjectMapping {
         let mapping = RKObjectMapping(forClass: self)
         mapping.addAttributeMappingsFromDictionary([
             "user_id": "userId",
-            "created_password": "createdPassword"
+            "created_password": "createdPassword",
+            "email":"email",
+            "name":"name"
         ])
         
         return mapping

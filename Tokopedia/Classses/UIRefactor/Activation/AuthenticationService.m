@@ -233,8 +233,10 @@
 }
 
 - (void)loginWithTokenString:(NSString *)token
+          fromViewController:(UIViewController *)viewController
              successCallback:(void (^)(Login *))successCallback
              failureCallback:(void (^)(NSError *))failureCallback {
+    _viewController = viewController;
 
     NSDictionary *parameter = @{
             @"grant_type":@"authorization_code",
@@ -263,15 +265,21 @@
                                                                         onAuthenticationSuccess:successCallback
                                                                                 failureCallback:failureCallback];
                                              } else {
-//                            [self createPasswordWithUserProfile:userProfile
-//                                                     oAuthToken:oAuthToken
-//                                                    accountInfo:accountInfo
-//                                              onPasswordCreated:^{
-//                                                  [self authenticateToMarketplaceWithAccountInfo:accountInfo
-//                                                                                      oAuthToken:oAuthToken
-//                                                                         onAuthenticationSuccess:successCallback
-//                                                                                 failureCallback:failureCallback];
-//                                              }];
+                                                 CreatePasswordUserProfile *userProfile = [CreatePasswordUserProfile new];
+                                                 userProfile.provider = @"4";
+                                                 userProfile.email = accountInfo.email;
+                                                 userProfile.name = accountInfo.name;
+
+
+                                                 [self createPasswordWithUserProfile:userProfile
+                                                                          oAuthToken:oAuthToken
+                                                                         accountInfo:accountInfo
+                                                                   onPasswordCreated:^{
+                                                                       [self authenticateToMarketplaceWithAccountInfo:accountInfo
+                                                                                                           oAuthToken:oAuthToken
+                                                                                              onAuthenticationSuccess:successCallback
+                                                                                                      failureCallback:failureCallback];
+                                                                   }];
                                              }
                                          }
                                          failureCallback:failureCallback];

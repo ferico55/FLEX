@@ -280,6 +280,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 
         [[AuthenticationService sharedService]
                 loginWithTokenString:token
+                  fromViewController:self
                      successCallback:^(Login *login) {
                          [self onLoginSuccess:login];
                      }
