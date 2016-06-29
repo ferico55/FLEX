@@ -8,7 +8,6 @@
 
 #import "RejectOrderRequest.h"
 #import "TokopediaNetworkManager.h"
-#import "GeneralAction.h"
 
 @implementation RejectOrderRequest{
     TokopediaNetworkManager *orderRejectionReasonNetworkManager;
@@ -54,7 +53,7 @@
                                               }];
 }
 
--(void)requestActionUpdateProductPrice:(NSString *)price currency:(NSString *)currency weight:(NSString *)weight weightUnit:(NSString *)weightUnit productId:(NSString *)productId onSuccess:(void (^)(NSString *))successCallback onFailure:(void (^)(NSError *))errorCallback{
+-(void)requestActionUpdateProductPrice:(NSString *)price currency:(NSString *)currency weight:(NSString *)weight weightUnit:(NSString *)weightUnit productId:(NSString *)productId onSuccess:(void (^)(GeneralAction *))successCallback onFailure:(void (^)(NSError *))errorCallback{
     changePriceWeightNetworkManager = [TokopediaNetworkManager new];
     changePriceWeightNetworkManager.isUsingHmac = YES;
     changePriceWeightNetworkManager.isUsingDefaultError = NO;
@@ -73,7 +72,7 @@
                                                 mapping:[GeneralAction generalMapping]
                                               onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                                   GeneralAction *result = [successResult.dictionary objectForKey:@""];
-                                                  successCallback(result.data.is_success);
+                                                  successCallback(result);
                                               } onFailure:^(NSError *errorResult) {
                                                   errorCallback(errorResult);
                                               }];

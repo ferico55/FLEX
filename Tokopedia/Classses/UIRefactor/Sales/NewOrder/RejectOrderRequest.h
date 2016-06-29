@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "RejectOrderResponse.h"
+#import "GeneralAction.h"
 
 @interface RejectOrderRequest : NSObject
 -(void)requestForOrderRejectionReasonOnSuccess:(void (^)(NSArray*))successCallback
@@ -21,7 +22,7 @@
                                 weight:(NSString*)weight
                             weightUnit:(NSString*)weightUnit
                              productId:(NSString*)productId
-                             onSuccess:(void (^)(NSString*))successCallback
+                             onSuccess:(void (^)(GeneralAction*))successCallback
                              onFailure:(void (^)(NSError *))errorCallback;
 
 

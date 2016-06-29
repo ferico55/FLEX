@@ -180,11 +180,11 @@
                                                       weight:_weightTextField.text
                                                   weightUnit:_orderProduct.product_weight_unit
                                                    productId:_orderProduct.product_id
-                                                   onSuccess:^(NSString *is_success) {
-                                                       if([is_success boolValue]){
+                                                   onSuccess:^(GeneralAction *result) {
+                                                       if([result.data.is_success boolValue]){
                                                            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                                                        }else{
-                                                           StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Terjadi kendala pada server"] delegate:self];
+                                                           StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:result.message_error delegate:self];
                                                            [alert show];
                                                        }
                                                    } onFailure:^(NSError *error) {
