@@ -20,7 +20,6 @@
 @end
 
 @implementation RejectReasonWrongPriceViewController{
-    UIRefreshControl *_refreshControl;
     RejectOrderRequest *_rejectOrderRequest;
 }
 
@@ -30,12 +29,6 @@
     _tableView.delegate = self;
     
     _rejectOrderRequest = [RejectOrderRequest new];
-    
-    _refreshControl = [[UIRefreshControl alloc] init];
-    _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
-    [_refreshControl addTarget:self action:@selector(refreshList)forControlEvents:UIControlEventValueChanged];
-    [_tableView addSubview:_refreshControl];
-
 }
 
 - (void)didReceiveMemoryWarning {
@@ -112,16 +105,7 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
--(void)refreshList{
-    [_rejectOrderRequest requestNewOrderWithInvoiceNumber:_order.order_detail.detail_invoice onSuccess:^(OrderTransaction *orderTransaction) {
-        _order = orderTransaction;
-        [_tableView reloadData];
-    } onFailure:^(NSError *error) {
-        
-    }];
-}
-
--(void)didChangeProductPriceWeight:(OrderProduct *)orderProduct{    
+-(void)didChangeProductPriceWeight:(OrderProduct *)orderProduct{
     [_order.order_products bk_each:^(id obj) {
         OrderProduct* selected = obj;
         if([selected.product_id isEqualToString:orderProduct.product_id]){
@@ -132,7 +116,6 @@
         }
     }];
     [_tableView reloadData];
-    
 }
 
 
