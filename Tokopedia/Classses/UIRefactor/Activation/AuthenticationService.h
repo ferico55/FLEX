@@ -49,4 +49,7 @@
        successCallback:(void (^)(Login *))successCallback
        failureCallback:(void (^)(NSError *))failureCallback;
 
+- (void)loginWithTokenString:(NSString *)token
+             successCallback:(void (^)(Login *))successCallback
+             failureCallback:(void (^)(NSError *))failureCallback;
 @end

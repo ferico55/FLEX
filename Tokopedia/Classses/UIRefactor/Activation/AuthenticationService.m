@@ -232,4 +232,54 @@
                      onFailure:failureCallback];
 }
 
+- (void)loginWithTokenString:(NSString *)token
+             successCallback:(void (^)(Login *))successCallback
+             failureCallback:(void (^)(NSError *))failureCallback {
+
+    NSDictionary *parameter = @{
+            @"grant_type":@"authorization_code",
+            @"code":token,
+            @"redirect_uri": [NSString stringWithFormat:@"%@/mappauth/code", [NSString accountsUrl]]
+    };
+
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    networkManager.isParameterNotEncrypted = YES;
+
+    [networkManager
+            requestWithBaseUrl:[NSString accountsUrl]
+                          path:@"/token"
+                        method:RKRequestMethodPOST
+                        header:[self basicAuthorizationHeader]
+                     parameter:parameter
+                       mapping:[OAuthToken mapping]
+                     onSuccess:^(RKMappingResult *mappingResult, RKObjectRequestOperation *operation) {
+                         OAuthToken *oAuthToken = mappingResult.dictionary[@""];
+
+                         [self getUserInfoWithOAuthToken:oAuthToken
+                                         successCallback:^(AccountInfo *accountInfo) {
+                                             if (accountInfo.createdPassword) {
+                                                 [self authenticateToMarketplaceWithAccountInfo:accountInfo
+                                                                                     oAuthToken:oAuthToken
+                                                                        onAuthenticationSuccess:successCallback
+                                                                                failureCallback:failureCallback];
+                                             } else {
+//                            [self createPasswordWithUserProfile:userProfile
+//                                                     oAuthToken:oAuthToken
+//                                                    accountInfo:accountInfo
+//                                              onPasswordCreated:^{
+//                                                  [self authenticateToMarketplaceWithAccountInfo:accountInfo
+//                                                                                      oAuthToken:oAuthToken
+//                                                                         onAuthenticationSuccess:successCallback
+//                                                                                 failureCallback:failureCallback];
+//                                              }];
+                                             }
+                                         }
+                                         failureCallback:failureCallback];
+                     }
+                     onFailure:^(NSError *errorResult) {
+
+                     }];
+}
+
+
 @end

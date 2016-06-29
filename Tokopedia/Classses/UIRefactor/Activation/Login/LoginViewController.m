@@ -276,7 +276,16 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 - (void)loginWithYahoo {
     WebViewSignInViewController *controller = [WebViewSignInViewController new];
     controller.onReceiveToken = ^(NSString *token) {
-        
+        [controller.navigationController popViewControllerAnimated:YES];
+
+        [[AuthenticationService sharedService]
+                loginWithTokenString:token
+                     successCallback:^(Login *login) {
+                         [self onLoginSuccess:login];
+                     }
+                     failureCallback:^(NSError *error) {
+
+                     }];
     };
     [self.navigationController pushViewController:controller animated:YES];
 }
