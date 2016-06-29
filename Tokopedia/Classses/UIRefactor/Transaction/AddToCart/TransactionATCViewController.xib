@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -275,7 +275,7 @@
                         </constraints>
                     </view>
                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="0" placeholder="0" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="YBU-6k-Lh7">
-                        <rect key="frame" x="0.0" y="0.0" width="305" height="44"/>
+                        <rect key="frame" x="118" y="0.0" width="85" height="44"/>
                         <color key="textColor" red="0.3803921569" green="0.3803921569" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
@@ -283,19 +283,35 @@
                             <outlet property="delegate" destination="-1" id="KrB-CG-Fyb"/>
                         </connections>
                     </textField>
+                    <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" minimumValue="-1" maximumValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="Bcl-ys-95m">
+                        <rect key="frame" x="218" y="7" width="94" height="29"/>
+                        <connections>
+                            <action selector="productQuantityStepperValueChanged:" destination="-1" eventType="valueChanged" id="ztX-C5-HOS"/>
+                        </connections>
+                    </stepper>
                 </subviews>
                 <constraints>
                     <constraint firstItem="YBU-6k-Lh7" firstAttribute="top" secondItem="xRH-wE-zn0" secondAttribute="top" id="05n-26-rYY"/>
                     <constraint firstAttribute="bottom" secondItem="5E9-EX-haC" secondAttribute="bottom" constant="-1" id="6V1-Ma-sl7"/>
                     <constraint firstAttribute="trailing" secondItem="YBU-6k-Lh7" secondAttribute="trailing" constant="15" id="7Mj-hs-rFK"/>
+                    <constraint firstItem="Bcl-ys-95m" firstAttribute="centerY" secondItem="YBU-6k-Lh7" secondAttribute="centerY" id="9wO-JF-45M"/>
                     <constraint firstItem="YBU-6k-Lh7" firstAttribute="leading" secondItem="5E9-EX-haC" secondAttribute="trailing" constant="-110" id="B01-nM-vfT"/>
                     <constraint firstAttribute="bottom" secondItem="b6x-JR-f9O" secondAttribute="bottom" id="Eoc-rz-739"/>
                     <constraint firstItem="b6x-JR-f9O" firstAttribute="top" secondItem="YBU-6k-Lh7" secondAttribute="bottom" constant="-2" id="Rrq-Py-pqV"/>
                     <constraint firstItem="b6x-JR-f9O" firstAttribute="leading" secondItem="xRH-wE-zn0" secondAttribute="leading" id="ZYO-fo-L2F"/>
+                    <constraint firstItem="YBU-6k-Lh7" firstAttribute="leading" secondItem="5E9-EX-haC" secondAttribute="trailing" constant="8" id="bOM-PW-3Pr"/>
                     <constraint firstItem="5E9-EX-haC" firstAttribute="leading" secondItem="xRH-wE-zn0" secondAttribute="leading" constant="15" id="eR4-6f-e9b"/>
+                    <constraint firstItem="Bcl-ys-95m" firstAttribute="leading" secondItem="YBU-6k-Lh7" secondAttribute="trailing" constant="15" id="ev7-pq-NJJ"/>
                     <constraint firstItem="5E9-EX-haC" firstAttribute="top" secondItem="xRH-wE-zn0" secondAttribute="top" id="w08-DX-fdn"/>
                     <constraint firstAttribute="trailing" secondItem="b6x-JR-f9O" secondAttribute="trailing" id="xoQ-YF-z3h"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="Bcl-ys-95m" secondAttribute="trailing" id="yrP-Do-Ikw"/>
                 </constraints>
+                <variation key="default">
+                    <mask key="constraints">
+                        <exclude reference="7Mj-hs-rFK"/>
+                        <exclude reference="B01-nM-vfT"/>
+                    </mask>
+                </variation>
             </tableViewCellContentView>
             <point key="canvasLocation" x="498" y="-455"/>
         </tableViewCell>
