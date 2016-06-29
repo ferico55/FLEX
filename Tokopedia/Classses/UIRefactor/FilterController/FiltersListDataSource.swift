@@ -141,19 +141,21 @@ class FiltersListDataSource:  NSObject, UITableViewDelegate, UITableViewDataSour
         
         let item : ListOption = self.item(indexPath.row)
         
-        if item.isSelected {
-            item.isSelected = false
-            self.tableView!.deselectRowAtIndexPath(indexPath, animated: false)
-            for (index, selected) in selectedObjects.enumerate() {
-                if selected == item{
-                    selectedObjects.removeAtIndex(index)
+        if item.input_type != textInputType() {
+            if item.isSelected {
+                item.isSelected = false
+                self.tableView!.deselectRowAtIndexPath(indexPath, animated: false)
+                for (index, selected) in selectedObjects.enumerate() {
+                    if selected == item{
+                        selectedObjects.removeAtIndex(index)
+                    }
                 }
+            } else{
+                item.isSelected = true
+                selectedObjects.append(item)
             }
-        } else{
-            item.isSelected = true
-            selectedObjects.append(item)
+            completionHandler(selectedObjects)
         }
-        completionHandler(selectedObjects)
     }
     
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
