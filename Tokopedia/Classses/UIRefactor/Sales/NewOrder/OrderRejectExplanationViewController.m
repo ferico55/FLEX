@@ -9,6 +9,8 @@
 #import "OrderRejectExplanationViewController.h"
 #import "UITextView+UITextView_Placeholder.h"
 #import "TKPDTextView.h"
+#import <BlocksKit/BlocksKit.h>
+#import "UIBarButtonItem+BlocksKit.h"
 
 @interface OrderRejectExplanationViewController ()
 
@@ -20,22 +22,21 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     self.title = @"Keterangan";
-
-    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
-                                                                     style:UIBarButtonItemStyleBordered
-                                                                    target:self
-                                                                    action:@selector(tap:)];
-    cancelButton.tag = 1;
-    self.navigationItem.leftBarButtonItem = cancelButton;
     
-    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Selesai"
-                                                                   style:UIBarButtonItemStyleDone
-                                                                  target:self
-                                                                  action:@selector(tap:)];
-    doneButton.tag = 2;
-    self.navigationItem.rightBarButtonItem = doneButton;
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] bk_initWithTitle:@"Batal" style:UIBarButtonItemStyleBordered handler:^(id sender) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }];;
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] bk_initWithTitle:@"Selesai" style:UIBarButtonItemStyleDone handler:^(id sender) {
+        if (_textView.text.length == 0) {
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Keterangan harus diisi."] delegate:self];
+            [alert show];
+        } else {
+            [self.delegate didFinishWritingExplanation:_textView.text];
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+    }];
 
     _textView.placeholder = @"Tulis Keterangan";
 }
@@ -48,26 +49,6 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-}
-
-#pragma mark - Actions
-
-- (IBAction)tap :(id)sender
-{
-    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
-        UIBarButtonItem *button = (UIBarButtonItem *)sender;
-        if (button.tag == 1) {
-            [self dismissViewControllerAnimated:YES completion:nil];
-        } else if (button.tag == 2) {
-            if (_textView.text.length == 0) {
-                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Keterangan harus diisi."] delegate:self];
-                [alert show];
-            } else {
-                [self.delegate didFinishWritingExplanation:_textView.text];
-                [self.navigationController popViewControllerAnimated:YES];
-            }
-        }
-    }
 }
 
 @end
