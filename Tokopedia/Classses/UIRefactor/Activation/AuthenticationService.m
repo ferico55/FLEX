@@ -26,8 +26,7 @@
 }
 
 - (NSDictionary *)basicAuthorizationHeader {
-    return @{@"Authorization": @"Basic MTAwMTo3YzcxNDFjMTk3Zjg5Nzg3MWViM2I1YWY3MWU1YWVjNzAwMzYzMzU1YTc5OThhNGUxMmMzNjAwYzdkMzE="};
-//    return @{@"Authorization": @"Basic N2VhOTE5MTgyZmY6YjM2Y2JmOTA0ZDE0YmJmOTBlN2YyNTQzMTU5NWEzNjQ="};
+    return @{@"Authorization": @"Basic N2VhOTE5MTgyZmY6YjM2Y2JmOTA0ZDE0YmJmOTBlN2YyNTQzMTU5NWEzNjQ="};
 }
 
 - (void)verifyPhoneNumber:(Login *)login onPhoneNumberVerified:(void (^)())verifiedCallback {
