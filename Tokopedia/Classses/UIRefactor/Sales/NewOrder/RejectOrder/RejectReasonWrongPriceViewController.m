@@ -16,12 +16,20 @@
 
 @end
 
-@implementation RejectReasonWrongPriceViewController
+@implementation RejectReasonWrongPriceViewController{
+    UIRefreshControl *_refreshControl;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     _tableView.dataSource = self;
     _tableView.delegate = self;
+    
+    _refreshControl = [[UIRefreshControl alloc] init];
+    _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
+    [_refreshControl addTarget:self action:@selector(refreshList)forControlEvents:UIControlEventValueChanged];
+    [_tableView addSubview:_refreshControl];
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -64,7 +72,7 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     
-    NSString *sectionTitle = @"Atur stok kosong pada produk:";
+    NSString *sectionTitle = @"Atur harga dan berat pada produk:";
     
     // Create label with section title
     UILabel *label = [[UILabel alloc] init];
@@ -95,6 +103,10 @@
     RejectReasonEditPriceViewController *vc = [RejectReasonEditPriceViewController new];
     vc.orderProduct = [_order.order_products objectAtIndex:indexPath.row];
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+-(void)refreshList{
+    [_tableView reloadData];
 }
 
 
