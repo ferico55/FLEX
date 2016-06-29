@@ -23,6 +23,8 @@
     
     [_emptyStockLabel setHidden:viewModel.isProductBuyAble];
     
+    [_productDescription setText:viewModel.productDescription];
+    
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:viewModel.productThumbUrl] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     
     [_productImage setContentMode:UIViewContentModeScaleAspectFill];

@@ -40,6 +40,7 @@
     self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width, 1000);
     _scrollViewHeight.constant = [UIScreen mainScreen].bounds.size.height;
     _productDescriptionTextView.delegate = self;
+    _productDescriptionTextView.text = _orderProduct.product_description;
     
     _productName.text = _orderProduct.product_name;
     _productPrice.text = _orderProduct.product_price;

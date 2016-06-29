@@ -52,6 +52,7 @@
     tempViewModel.productTotalWeight = _product_weight;
     tempViewModel.productNotes = [_product_notes kv_decodeHTMLCharacterEntities];
     tempViewModel.isProductBuyAble = !_emptyStock;
+    tempViewModel.productDescription = _product_description;
     
     _viewModel = tempViewModel;
     return _viewModel;
