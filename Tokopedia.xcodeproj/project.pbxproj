@@ -38,6 +38,8 @@
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
 		85C494BF1AD790DD008A314A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BE1AD790DD008A314A /* libz.dylib */; };
 		85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494C01AD790E4008A314A /* CoreData.framework */; };
+		BB6CEFD71D250E6F007E55CA /* RejectReasonCloseShopViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB6CEFD51D250E6F007E55CA /* RejectReasonCloseShopViewController.m */; };
+		BB6CEFD81D250E6F007E55CA /* RejectReasonCloseShopViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB6CEFD61D250E6F007E55CA /* RejectReasonCloseShopViewController.xib */; };
 		BB783BEF1D18F66B0068EF6B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BB782CAD1D18F6600068EF6B /* AppDelegate.m */; };
 		BB783BF01D18F66B0068EF6B /* TPAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = BB782CB11D18F6600068EF6B /* TPAnalytics.m */; };
 		BB783BF11D18F66B0068EF6B /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = BB782CB41D18F6600068EF6B /* URLCacheAlert.m */; };
@@ -2478,6 +2480,9 @@
 		85C494BE1AD790DD008A314A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		85C494C01AD790E4008A314A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		AAA12C6A69BF6CB5F8EE3287 /* Pods-Tokopedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug.xcconfig"; sourceTree = "<group>"; };
+		BB6CEFD41D250E6F007E55CA /* RejectReasonCloseShopViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RejectReasonCloseShopViewController.h; sourceTree = "<group>"; };
+		BB6CEFD51D250E6F007E55CA /* RejectReasonCloseShopViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RejectReasonCloseShopViewController.m; sourceTree = "<group>"; };
+		BB6CEFD61D250E6F007E55CA /* RejectReasonCloseShopViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RejectReasonCloseShopViewController.xib; sourceTree = "<group>"; };
 		BB782CAC1D18F6600068EF6B /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		BB782CAD1D18F6600068EF6B /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		BB782CB01D18F6600068EF6B /* TPAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPAnalytics.h; sourceTree = "<group>"; };
@@ -10445,6 +10450,9 @@
 		BB7835CE1D18F6630068EF6B /* RejectOrder */ = {
 			isa = PBXGroup;
 			children = (
+				BB6CEFD41D250E6F007E55CA /* RejectReasonCloseShopViewController.h */,
+				BB6CEFD51D250E6F007E55CA /* RejectReasonCloseShopViewController.m */,
+				BB6CEFD61D250E6F007E55CA /* RejectReasonCloseShopViewController.xib */,
 				BB7835CF1D18F6630068EF6B /* RejectOrderResponse.h */,
 				BB7835D01D18F6630068EF6B /* RejectOrderResponse.m */,
 				BB7835D11D18F6630068EF6B /* RejectReason.h */,
@@ -13611,6 +13619,7 @@
 				BB78422B1D18F66B0068EF6B /* icon_9.png in Resources */,
 				BB7843151D18F66B0068EF6B /* icon_love.png in Resources */,
 				BB78423A1D18F66B0068EF6B /* grey-bg.png in Resources */,
+				BB6CEFD81D250E6F007E55CA /* RejectReasonCloseShopViewController.xib in Resources */,
 				BB783EF01D18F66B0068EF6B /* DepositListBankCell.xib in Resources */,
 				BB783FFB1D18F66B0068EF6B /* ProductListMyShopViewController.xib in Resources */,
 				BB78426E1D18F66B0068EF6B /* icon_button_wishlist_active.png in Resources */,
@@ -14860,6 +14869,7 @@
 				BB78400A1D18F66B0068EF6B /* GiveReviewResponseViewController.m in Sources */,
 				BB7840111D18F66B0068EF6B /* ImageStorage.m in Sources */,
 				BB78402E1D18F66B0068EF6B /* ReviewSummaryViewController.m in Sources */,
+				BB6CEFD71D250E6F007E55CA /* RejectReasonCloseShopViewController.m in Sources */,
 				BB783D541D18F66B0068EF6B /* OrderTransaction.m in Sources */,
 				BB7841B31D18F66B0068EF6B /* PenilaianUserCell.m in Sources */,
 				BB783D781D18F66B0068EF6B /* ShipmentShopData.m in Sources */,
