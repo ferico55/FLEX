@@ -284,9 +284,7 @@
                                          }
                                          failureCallback:failureCallback];
                      }
-                     onFailure:^(NSError *errorResult) {
-
-                     }];
+                     onFailure:failureCallback];
 }
 
 
