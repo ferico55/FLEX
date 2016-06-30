@@ -68,7 +68,7 @@
     };
 
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
-    networkManager.isParameterNotEncrypted = YES;
+    networkManager.isUsingHmac = YES;
 
     [networkManager requestWithBaseUrl:[NSString v4Url]
                                   path:@"/v4/session/make_login.pl"
