@@ -8,12 +8,15 @@
 
 #import "RejectOrderRequest.h"
 #import "TokopediaNetworkManager.h"
+#import <BlocksKit/BlocksKit.h>
+#import "NSArray+BlocksKit.h"
 
 @implementation RejectOrderRequest{
     TokopediaNetworkManager *orderRejectionReasonNetworkManager;
     TokopediaNetworkManager *changeDescriptionNetworkManager;
     TokopediaNetworkManager *changePriceWeightNetworkManager;
     TokopediaNetworkManager *newOrderNetworkManager;
+    TokopediaNetworkManager *proceedOrderNetworkManager;
 }
 -(void)requestForOrderRejectionReasonOnSuccess:(void (^)(NSArray *))successCallback onFailure:(void (^)(NSError *))errorCallback{
     orderRejectionReasonNetworkManager = [TokopediaNetworkManager new];
@@ -97,9 +100,9 @@
     newOrderNetworkManager.isUsingDefaultError = NO;
     
     NSDictionary *parameters = @{
-                                 @"deadline": deadline,
-                                 @"status": filter,
-                                 @"page": page,
+                                 @"deadline"    : deadline,
+                                 @"status"      : filter,
+                                 @"page"        : page,
                                  };
     [newOrderNetworkManager requestWithBaseUrl:[NSString v4Url]
                                        path:@"/v4/myshop-order/get_order_new.pl"
@@ -113,6 +116,44 @@
                                   } onFailure:^(NSError *errorResult) {
                                       errorCallback(errorResult);
                                   }];
+}
+
+-(void)requestActionRejectOrderWithOrderId:(NSString *)orderId emptyProducts:(NSArray *)products reasonCode:(NSString *)reasonCode onSuccess:(void (^)(GeneralAction *))successCallback onFailure:(void (^)(NSError *))errorCallback{
+    proceedOrderNetworkManager = [TokopediaNetworkManager new];
+    proceedOrderNetworkManager.isUsingHmac = YES;
+    proceedOrderNetworkManager.isUsingDefaultError = NO;
+    
+    NSString* emptyStockString = [self generateEmptyStockProductString:[self filterEmptyStockProducts:products]];
+    UserAuthentificationManager *auth = [UserAuthentificationManager new];
+    [proceedOrderNetworkManager requestWithBaseUrl:[NSString v4Url]
+                                              path:@"/v4/action/myshop-order/proceed_order.pl"
+                                            method:RKRequestMethodPOST
+                                         parameter:@{@"action_type"     :@"reject",
+                                                     @"list_product_id" :emptyStockString,
+                                                     @"reason_code"     :reasonCode,
+                                                     @"user_id"         :[auth getUserId],
+                                                     @"order_id"        :orderId
+                                                     }
+                                           mapping:[GeneralAction generalMapping]
+                                         onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                             GeneralAction *result = [successResult.dictionary objectForKey:@""];
+                                             successCallback(result);
+                                         } onFailure:^(NSError *errorResult) {
+                                             errorCallback(errorResult);
+                                         }];
+    
+}
+
+-(NSArray*)filterEmptyStockProducts:(NSArray*)products{
+    return [products bk_select:^BOOL(OrderProduct* obj) {
+        return obj.emptyStock;
+    }];
+}
+
+-(NSString*)generateEmptyStockProductString:(NSArray*)products{
+    return [products bk_reduce:@"" withBlock:^id(NSString* sum, OrderProduct* obj) {
+        return [NSString stringWithFormat:@"%@~%@", obj.product_id, sum];
+    }];
 }
 @end
 

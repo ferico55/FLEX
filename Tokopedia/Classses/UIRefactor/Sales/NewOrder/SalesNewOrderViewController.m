@@ -86,6 +86,8 @@ RejectReasonDelegate
 @property (strong, nonatomic) IBOutlet UIView *footerView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
+@property BOOL needToDoLazyCellRemoval;
+
 @end
 
 @implementation SalesNewOrderViewController
@@ -122,8 +124,16 @@ RejectReasonDelegate
     [self.tableView addSubview:self.refreshControl];
     
     self.alertLabel.attributedText = self.alertAttributedString;
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applyOperation) name:@"applyOperation" object:nil];
     [self fetchLatestOrderData];
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    if(_needToDoLazyCellRemoval){
+        [self performSelector:@selector(removeFinishedCell) withObject:nil afterDelay:0.5];
+        _needToDoLazyCellRemoval = NO;
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -135,6 +145,19 @@ RejectReasonDelegate
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+}
+
+-(void)applyOperation{
+    _needToDoLazyCellRemoval = YES;
+}
+
+-(void)removeFinishedCell{
+    if(_selectedIndexPath != nil){
+        [self.orders removeObjectAtIndex:_selectedIndexPath.row];
+        [self.tableView deleteRowsAtIndexPaths:@[_selectedIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self performSelector:@selector(reloadData) withObject:nil afterDelay:0.5];
+        _selectedIndexPath = nil;
+    }
 }
 
 #pragma mark - Bar button item

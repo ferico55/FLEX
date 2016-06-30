@@ -11,6 +11,11 @@
 #import "GeneralAction.h"
 #import "Order.h"
 
+#define EMPTY_STOCK @"1"
+#define EMPTY_VARIANT @"2"
+#define WRONG_PRICE_WEIGHT @"3"
+#define SHOP_IS_CLOSED @"4"
+
 @interface RejectOrderRequest : NSObject
 -(void)requestForOrderRejectionReasonOnSuccess:(void (^)(NSArray*))successCallback
                                    onFailure:(void (^)(NSError *))errorCallback;
@@ -33,6 +38,11 @@
                               page:(NSString*)page
                          onSuccess:(void (^)(Order*))successCallback
                          onFailure:(void (^)(NSError *))errorCallback;
+-(void)requestActionRejectOrderWithOrderId:(NSString*)orderId
+                             emptyProducts:(NSArray*)products
+                                reasonCode:(NSString*)reasonCode
+                                 onSuccess:(void (^)(GeneralAction*))successCallback
+                                 onFailure:(void (^)(NSError *))errorCallback;
 
 
 @end

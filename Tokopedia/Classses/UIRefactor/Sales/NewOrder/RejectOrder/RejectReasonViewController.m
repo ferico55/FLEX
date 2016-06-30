@@ -12,12 +12,7 @@
 #import "RejectReasonEmptyStockViewController.h"
 #import "RejectReasonEmptyVariantViewController.h"
 #import "RejectReasonWrongPriceViewController.h"
-
-
-#define EMPTY_STOCK @"1"
-#define EMPTY_VARIANT @"2"
-#define WRONG_PRICE_WEIGHT @"3"
-#define SHOP_IS_CLOSED @"4"
+#import "RejectOrderRequest.h"
 
 @interface RejectReasonViewController ()<UITableViewDelegate, UIScrollViewDelegate, UITableViewDataSource, RejectExplanationDelegate>
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
