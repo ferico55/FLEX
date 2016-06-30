@@ -393,9 +393,18 @@ typedef enum
 
 -(RateAttributes*)getSelectedShipmentFromShipments:(NSArray<RateAttributes*> *)shipments{
     if ([self shipments:shipments containsShipment:_selectedShipment]) {
+        [self updateSelectedShipmentPriceFromShipments:shipments];
         return _selectedShipment;
     } else {
         return shipments.firstObject;
+    }
+}
+
+-(void)updateSelectedShipmentPriceFromShipments:(NSArray<RateAttributes*> *)shipments{
+    for (RateAttributes* shipmentObject in shipments) {
+        if ([shipmentObject.shipper_id integerValue] == [_selectedShipment.shipper_id integerValue]) {
+            _selectedShipment = shipmentObject;
+        }
     }
 }
 
