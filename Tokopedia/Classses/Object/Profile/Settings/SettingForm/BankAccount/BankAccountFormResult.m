@@ -10,4 +10,19 @@
 
 @implementation BankAccountFormResult
 
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[BankAccountFormResult class]];
+    
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"paging"
+                                                                            toKeyPath:@"paging"
+                                                                          withMapping:[Paging mapping]]];
+    
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"list"
+                                                                            toKeyPath:@"list"
+                                                                          withMapping:[BankAccountFormList mapping]]];
+    
+    return mapping;
+    
+}
+
 @end
