@@ -17,5 +17,6 @@
 @interface OrderRejectExplanationViewController : UIViewController
 
 @property (weak, nonatomic) id<RejectExplanationDelegate> delegate;
+@property (strong, nonatomic) NSString* reasonCode;
 
 @end

@@ -11,4 +11,5 @@
 
 @interface RejectReasonEmptyStockViewController : UIViewController
 @property (strong, nonatomic) OrderTransaction* order;
+@property (strong, nonatomic) NSString* reasonCode;
 @end

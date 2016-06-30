@@ -94,6 +94,7 @@
     if([_selectedReason.reason_code isEqualToString:EMPTY_STOCK]){
         RejectReasonEmptyStockViewController *vc = [[RejectReasonEmptyStockViewController alloc]init];
         vc.order = self.order;
+        vc.reasonCode = EMPTY_STOCK;
         vc.title = _selectedReason.reason_text;
         [self.navigationController pushViewController:vc animated:YES];
     }else if([_selectedReason.reason_code isEqualToString:EMPTY_VARIANT]){
@@ -112,6 +113,7 @@
         OrderRejectExplanationViewController *controller = [[OrderRejectExplanationViewController alloc] init];
         controller.delegate = self;
         controller.title = _selectedReason.reason_text;
+        controller.reasonCode = _selectedReason.reason_code;
         [self.navigationController pushViewController:controller animated:YES];
     }
 }

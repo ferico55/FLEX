@@ -63,7 +63,6 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    
     NSString *sectionTitle = @"Atur stok kosong pada produk:";
     
     // Create label with section title
@@ -91,7 +90,7 @@
 - (IBAction)confirmButtonTapped:(id)sender {
     [_rejectOrderRequest requestActionRejectOrderWithOrderId:_order.order_detail.detail_order_id
                                                emptyProducts:_order.order_products
-                                                  reasonCode:EMPTY_STOCK
+                                                  reasonCode:_reasonCode
                                                    onSuccess:^(GeneralAction *result) {
                                                        if([result.data.is_success boolValue]){
                                                            [[NSNotificationCenter defaultCenter] postNotificationName:@"applyOperation" object:nil];
@@ -104,8 +103,6 @@
                                                        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Kendala koneksi internet"] delegate:self];
                                                        [alert show];
                                                    }];
-    
-    
 }
 
 @end

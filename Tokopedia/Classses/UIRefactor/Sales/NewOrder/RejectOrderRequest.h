@@ -43,6 +43,8 @@
                                 reasonCode:(NSString*)reasonCode
                                  onSuccess:(void (^)(GeneralAction*))successCallback
                                  onFailure:(void (^)(NSError *))errorCallback;
-
-
+-(void)requestActionRejectOrderWithOrderId:(NSString*)orderId
+                                reasonCode:(NSString*)reasonCode
+                                 onSuccess:(void (^)(GeneralAction*))successCallback
+                                 onFailure:(void (^)(NSError *))errorCallback;
 @end
