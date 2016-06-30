@@ -144,6 +144,31 @@
     
 }
 
+-(void)requestActionRejectOrderWithOrderId:(NSString *)orderId reasonCode:(NSString *)reasonCode onSuccess:(void (^)(GeneralAction *))successCallback onFailure:(void (^)(NSError *))errorCallback{
+    proceedOrderNetworkManager = [TokopediaNetworkManager new];
+    proceedOrderNetworkManager.isUsingHmac = YES;
+    proceedOrderNetworkManager.isUsingDefaultError = NO;
+    
+    NSString* emptyStockString = [self generateEmptyStockProductString:[self filterEmptyStockProducts:products]];
+    UserAuthentificationManager *auth = [UserAuthentificationManager new];
+    [proceedOrderNetworkManager requestWithBaseUrl:[NSString v4Url]
+                                              path:@"/v4/action/myshop-order/proceed_order.pl"
+                                            method:RKRequestMethodPOST
+                                         parameter:@{@"action_type"     :@"reject",
+                                                     @"list_product_id" :emptyStockString,
+                                                     @"reason_code"     :reasonCode,
+                                                     @"user_id"         :[auth getUserId],
+                                                     @"order_id"        :orderId
+                                                     }
+                                           mapping:[GeneralAction generalMapping]
+                                         onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                             GeneralAction *result = [successResult.dictionary objectForKey:@""];
+                                             successCallback(result);
+                                         } onFailure:^(NSError *errorResult) {
+                                             errorCallback(errorResult);
+                                         }];
+}
+
 -(NSArray*)filterEmptyStockProducts:(NSArray*)products{
     return [products bk_select:^BOOL(OrderProduct* obj) {
         return obj.emptyStock;
