@@ -230,6 +230,8 @@ typedef enum
     _selectedAddress.longitude = [[NSNumber numberWithDouble:longitude] stringValue];
     _selectedAddress.latitude = [[NSNumber numberWithDouble:latitude]stringValue];
     
+    [self requestRate];
+    
     [self adjustViewIsLoading:NO];
 }
 
@@ -374,13 +376,36 @@ typedef enum
             shipment.auto_resi_image = @"";
         }
     }
-    _selectedShipment = shipments.firstObject;
+    _selectedShipment = [self getSelectedShipmentFromShipments:shipments];
     _selectedShipmentPackage = _selectedShipment.products.firstObject;
     
-    if (shipments.count == 0) {
-        [_messageZeroShipmentLabel setCustomAttributedText:[self messageZeroShipmentAvailable]];
+    [self isShowZeroShipmentErrorMessage:(shipments.count == 0) messageError:[self messageZeroShipmentAvailable]];
+}
+
+-(void)isShowZeroShipmentErrorMessage:(BOOL)isShow messageError:(NSString*)messageError{
+    if (isShow) {
+        [_messageZeroShipmentLabel setCustomAttributedText:messageError];
         _tableView.tableHeaderView = _messageZeroShipmentView;
+    } else {
+        _tableView.tableHeaderView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 1, 1)];
     }
+}
+
+-(RateAttributes*)getSelectedShipmentFromShipments:(NSArray<RateAttributes*> *)shipments{
+    if ([self shipments:shipments containsShipment:_selectedShipment]) {
+        return _selectedShipment;
+    } else {
+        return shipments.firstObject;
+    }
+}
+
+-(BOOL)shipments:(NSArray<RateAttributes*> *)shipments containsShipment:(RateAttributes*)shipment{
+    for (RateAttributes* shipmentObject in shipments) {
+        if ([shipmentObject.shipper_id integerValue] == [shipment.shipper_id integerValue]) {
+            return YES;
+        }
+    }
+    return NO;
 }
 
 -(NSString *)messageZeroShipmentAvailable{
