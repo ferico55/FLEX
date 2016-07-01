@@ -189,6 +189,7 @@ static CGFloat messageTextSize = 17.0;
     }
     
     self.viewLabelUser.frame = rectViewLabelUser;
+    self.viewLabelUser.text = _message.user_name;
     self.balloonView.image = [InboxMessageDetailCell balloonImage:self.sent isSelected:self.selected];
     
     /*Sets the pre-initialized frames  for the balloonView and messageView.*/
