@@ -50,8 +50,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     
     CGPoint _keyboardPosition;
     CGSize _keyboardSize;
-    
-    CGRect _containerDefault;
+
     CGSize _scrollviewContentSize;
 
     Register *_register;
@@ -66,12 +65,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     __weak RKManagedObjectRequestOperation *_thirdAppLoginRequest;
 
     NSOperationQueue *_operationQueue;
-    
-    NSDictionary *_facebookUserData;
-
-    GIDGoogleUser *_gidGoogleUser;
-    
-    ActivationRequest *_activationRequest;
 
     TokopediaNetworkManager *_networkManager;
 }
@@ -147,8 +140,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     
     _signInButton.layer.shadowOffset = CGSizeMake(1, 1);
     
-    _activationRequest = [ActivationRequest new];
-
     [_container addSubview:_contentView];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -670,9 +661,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
     
     _loadingView.hidden = NO;
     [_facebookLoginActivityIndicator startAnimating];
-    
-    _facebookUserData = data;
-    
+
     NSString *gender = @"";
     if ([[data objectForKey:@"gender"] isEqualToString:@"male"]) {
         gender = @"1";
@@ -811,8 +800,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
 #pragma mark - Google Sign In Delegate
 - (void)signIn:(GIDSignIn *)signIn didSignInForUser:(GIDGoogleUser *)user withError:(NSError *)error {
     if (user) {
-        _gidGoogleUser = user;
-        
+
         [self requestLoginGoogleWithUser:user];
     }
 }
