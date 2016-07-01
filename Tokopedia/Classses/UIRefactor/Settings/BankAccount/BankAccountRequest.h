@@ -18,4 +18,9 @@
 - (void)requestSetDefaultBankAccountWithAccountID:(NSString *)accountID
                                         onSuccess:(void (^)(ProfileSettings *result))successCallback
                                         onFailure:(void (^)(NSError *error))errorCallback;
+
+- (void)requestDeleteBankAccountWithAccountID:(NSString *)accountID
+                                    onSuccess:(void (^)(ProfileSettings *result))successCallback
+                                    onFailure:(void (^)(NSError *error))errorCallback;
+
 @end

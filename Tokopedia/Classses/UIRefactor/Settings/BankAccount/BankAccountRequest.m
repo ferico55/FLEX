@@ -107,4 +107,24 @@
                               }];
 }
 
+- (void)requestDeleteBankAccountWithAccountID:(NSString *)accountID
+                                    onSuccess:(void (^)(ProfileSettings *))successCallback
+                                    onFailure:(void (^)(NSError *))errorCallback {
+    _networkManager.isUsingHmac = YES;
+    
+    [_networkManager requestWithBaseUrl:[NSString v4Url]
+                                   path:@"/v4/action/people/delete_bank_account.pl"
+                                 method:RKRequestMethodPOST
+                              parameter:@{@"account_id" : accountID}
+                                mapping:[ProfileSettings mapping]
+                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                  ProfileSettings *obj = [successResult.dictionary objectForKey:@""];
+                                  successCallback(obj);
+                              }
+                              onFailure:^(NSError *errorResult) {
+                                  errorCallback(errorResult);
+                              }];
+    
+}
+
 @end
