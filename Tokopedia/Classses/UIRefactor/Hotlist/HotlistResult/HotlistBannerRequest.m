@@ -71,7 +71,7 @@
     NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
     HotlistBanner *banner = [result objectForKey:@""];
     
-    [_delegate didReceiveBannerHotlist:banner.result];
+    [_delegate didReceiveBannerHotlist:banner.data];
 }
 
 - (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
@@ -83,11 +83,12 @@
                             onFailure:(void(^)(NSError * error))failure{
     
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    networkManager.isUsingHmac = YES;
     
-    NSDictionary *parameter = @{@"action" : @"get_hotlist_banner", @"key" : query?:@""};
+    NSDictionary *parameter = @{@"key" : query?:@""};
     
-    [networkManager requestWithBaseUrl:[NSString basicUrl]
-                                  path:@"hotlist.pl"
+    [networkManager requestWithBaseUrl:[NSString v4Url]
+                                  path:@"/v4/hotlist/get_hotlist_banner.pl"
                                 method:RKRequestMethodGET
                              parameter:parameter
                                mapping:[HotlistBanner mapping]
@@ -96,7 +97,7 @@
                                  HotlistBanner *banner = [successResult.dictionary objectForKey:@""];
                                  
                                  if ( banner!= nil && banner.message_error.count == 0) {
-                                     success(banner.result);
+                                     success(banner.data);
                                  } else{
                                      [StickyAlertView showErrorMessage:banner.message_error?:@[@"Gagal memuat hotlist"]];
                                      failure(nil);
