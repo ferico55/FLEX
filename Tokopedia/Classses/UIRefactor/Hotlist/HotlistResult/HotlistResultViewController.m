@@ -986,7 +986,7 @@ static NSString const *rows = @"12";
     
     NSDictionary* param = @{
                             @"device":@"ios",
-                            @"q" : [_detailfilter objectForKey:kTKPDHOME_DATAQUERYKEY]?:[_data objectForKey:kTKPDHOME_DATAQUERYKEY],
+                            @"q" : [_detailfilter objectForKey:@"q"]?:[_data objectForKey:@"q"],
                             @"start" : @(_start),
                             @"rows" : rows,
                             @"hashtag" : [self isInitialRequest] ? @"true" : @"",
@@ -1012,7 +1012,7 @@ static NSString const *rows = @"12";
 
     NSDictionary* param = @{
                             @"device":@"ios",
-                            @"q" : [_detailfilter objectForKey:kTKPDHOME_DATAQUERYKEY]?:[_data objectForKey:kTKPDHOME_DATAQUERYKEY],
+                            @"q" : [_detailfilter objectForKey:@"q"]?:[_data objectForKey:@"q"],
                             @"start" : @(_start),
                             @"rows" : rows,
                             @"ob" : [_detailfilter objectForKey:@"ob"]?:@"",
