@@ -55,14 +55,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 
     Register *_register;
 
-    NSInteger _requestcount;
-    NSTimer *_timer;
-
-    __weak RKObjectManager *_objectmanager;
-    __weak RKManagedObjectRequestOperation *_request;
-
-    NSOperationQueue *_operationQueue;
-
     TokopediaNetworkManager *_networkManager;
 }
 
@@ -111,8 +103,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     [super viewDidLoad];
     
     _datainput = [NSMutableDictionary new];
-
-    _operationQueue =[NSOperationQueue new];
 
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.isUsingHmac = YES;
@@ -390,7 +380,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
                               onFailure:^(NSError *errorResult) {
                                   _act.hidden = YES;
                                   [_act stopAnimating];
-                                  [self requestfailure:errorResult];
+                                  [self requestfailure];
                               }];
 }
 
@@ -423,25 +413,11 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     _texfieldfullname.enabled = YES;
 }
 
--(void)requestfailure:(id)object
-{
+- (void)requestfailure {
     [self cancel];
-    NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
-    if ([(NSError*)object code] == NSURLErrorCancelled) {
-        if (_requestcount<kTKPDREQUESTCOUNTMAX) {
-            NSLog(@" ==== REQUESTCOUNT %zd =====",_requestcount);
-            _act.hidden = NO;
-            [_act startAnimating];
-        }
-        else
-        {
-            _act.hidden = YES;
-            [_act stopAnimating];
-        }
-    } else {
-        _act.hidden = YES;
-        [_act stopAnimating];
-    }
+
+    _act.hidden = YES;
+    [_act stopAnimating];
     _texfieldfullname.enabled = YES;
 }
 
