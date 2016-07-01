@@ -817,7 +817,6 @@ typedef enum
 -(void)successActionCalculate:(TransactionCalculatePriceResult*)data{
     _selectedProduct.product_price = data.product.price;
     [self setProduct:_selectedProduct];
-    _ATCForm.form.shipment = data.shipment;
     [self adjustViewIsLoading:NO];
     [_tableView reloadData];
 }
@@ -913,8 +912,8 @@ typedef enum
         [self requestAddAddress:address];
         return;
     }
-    NSString *addressID = [NSString stringWithFormat:@"%zd",address.address_id];
-    [self requestFormWithAddressID:addressID];
+    [self setAddress:address];
+    [self requestRate];
 }
 
 -(void)requestAddAddress:(AddressFormList*)address{
@@ -936,8 +935,8 @@ typedef enum
 
 -(void)successAddAddress:(AddressFormList*)address result:(ProfileSettingsResult *)result {
     [self adjustViewIsLoading:NO];
-    NSString *addressID = [NSString stringWithFormat:@"%zd",address.address_id];
-    [self requestFormWithAddressID:addressID];
+    [self setAddress:address];
+    [self requestRate];
 }
 
 -(void)failedAddAddress:(AddressFormList*)address error:(NSError*)error{
