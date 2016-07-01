@@ -60,9 +60,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 
     __weak RKObjectManager *_objectmanager;
     __weak RKManagedObjectRequestOperation *_request;
-    
-    __weak RKObjectManager *_thirdAppObjectManager;
-    __weak RKManagedObjectRequestOperation *_thirdAppLoginRequest;
 
     NSOperationQueue *_operationQueue;
 
@@ -139,7 +136,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     _loginView.readPermissions = @[@"public_profile", @"email", @"user_birthday"];
     
     _signInButton.layer.shadowOffset = CGSizeMake(1, 1);
-    
+
     [_container addSubview:_contentView];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -251,7 +248,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
                     phone.length >= 6 &&
                     pass.length >= 6 &&
                     isagree) {
-                    [self configureRestKit];
                     [self LoadDataAction:_datainput];
                 }
                 else
@@ -350,18 +346,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 #pragma mark - Request + Mapping
 -(void)cancel
 {
-    [_request cancel];
-    _request = nil;
-    
-    [_thirdAppLoginRequest cancel];
-    _thirdAppLoginRequest = nil;
-
-    [_objectmanager.operationQueue cancelAllOperations];
-    _objectmanager = nil;
-    
-    [_thirdAppObjectManager.operationQueue cancelAllOperations];
-    _thirdAppObjectManager = nil;
-    
     _loadingView.hidden = YES;
     [_container addSubview:_contentView];
     _container.contentSize = CGSizeMake(self.view.frame.size.width,
@@ -374,31 +358,12 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 //    }
 }
 
-- (void)configureRestKit
-{
-    // initialize RestKit
-    _objectmanager =  [RKObjectManager sharedClient];
-    RKObjectMapping *statusMapping = [Register mapping];
-
-
-    // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                                  method:RKRequestMethodPOST
-                                                                                             pathPattern:kTKPDREGISTER_APIPATH
-                                                                                                 keyPath:@""
-                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectmanager addResponseDescriptor:responseDescriptorStatus];
-}
-
--(void)LoadDataAction:(id)userinfo
+-(void)LoadDataAction:(NSDictionary *)data
 {
     _act.hidden = NO;
     [_act startAnimating];
 
     _texfieldfullname.enabled = NO;
-
-    NSDictionary *data = userinfo;
 
     NSDictionary* param = @{kTKPDREGISTER_APIACTIONKEY :kTKPDREGISTER_APIDOREGISTERKEY,
             kTKPDREGISTER_APIFULLNAMEKEY:[data objectForKey:kTKPDREGISTER_APIFULLNAMEKEY],
