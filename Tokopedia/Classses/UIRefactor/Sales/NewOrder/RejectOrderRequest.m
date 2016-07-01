@@ -144,7 +144,7 @@
     
 }
 
--(void)requestActionRejectOrderWithOrderId:(NSString *)orderId reasonCode:(NSString *)reasonCode onSuccess:(void (^)(GeneralAction *))successCallback onFailure:(void (^)(NSError *))errorCallback{
+-(void)requestActionRejectOrderWithOrderId:(NSString *)orderId reason:(NSString*)reason reasonCode:(NSString *)reasonCode onSuccess:(void (^)(GeneralAction *))successCallback onFailure:(void (^)(NSError *))errorCallback{
     proceedOrderNetworkManager = [TokopediaNetworkManager new];
     proceedOrderNetworkManager.isUsingHmac = YES;
     proceedOrderNetworkManager.isUsingDefaultError = NO;
@@ -155,6 +155,7 @@
                                             method:RKRequestMethodPOST
                                          parameter:@{@"action_type"     :@"reject",
                                                      @"reason_code"     :reasonCode,
+                                                     @"reason"          :reason,
                                                      @"user_id"         :[auth getUserId],
                                                      @"order_id"        :orderId
                                                      }

@@ -38,10 +38,11 @@
             [alert show];
         } else {
             [welf.rejectOrderRequest requestActionRejectOrderWithOrderId:welf.order.order_detail.detail_order_id
+                                                                  reason:_textView.text
                                                               reasonCode:welf.reasonCode
                                                                onSuccess:^(GeneralAction *result) {
                                                                    if([result.data.is_success boolValue]){
-                                                                       [[NSNotificationCenter defaultCenter] postNotificationName:@"applyOperation" object:nil];
+                                                                       [[NSNotificationCenter defaultCenter] postNotificationName:@"applyRejectOperation" object:nil];
                                                                        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                                                                    }else{
                                                                        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:result.message_error delegate:welf];

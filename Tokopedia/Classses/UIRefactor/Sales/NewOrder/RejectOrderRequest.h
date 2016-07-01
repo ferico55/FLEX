@@ -44,6 +44,7 @@
                                  onSuccess:(void (^)(GeneralAction*))successCallback
                                  onFailure:(void (^)(NSError *))errorCallback;
 -(void)requestActionRejectOrderWithOrderId:(NSString*)orderId
+                                    reason:(NSString*)reason
                                 reasonCode:(NSString*)reasonCode
                                  onSuccess:(void (^)(GeneralAction*))successCallback
                                  onFailure:(void (^)(NSError *))errorCallback;

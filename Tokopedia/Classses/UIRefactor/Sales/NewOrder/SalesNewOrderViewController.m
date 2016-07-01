@@ -122,7 +122,7 @@
     [self.tableView addSubview:self.refreshControl];
     
     self.alertLabel.attributedText = self.alertAttributedString;
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applyOperation) name:@"applyOperation" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applyRejectOperation) name:@"applyRejectOperation" object:nil];
     [self fetchLatestOrderData];
 }
 
@@ -145,7 +145,7 @@
     [super didReceiveMemoryWarning];
 }
 
--(void)applyOperation{
+-(void)applyRejectOperation{
     _needToDoLazyCellRemoval = YES;
 }
 
@@ -155,6 +155,9 @@
         [self.tableView deleteRowsAtIndexPaths:@[_selectedIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
         [self performSelector:@selector(reloadData) withObject:nil afterDelay:0.5];
         _selectedIndexPath = nil;
+        
+        StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:@[@"Anda berhasil membatalkan pesanan"] delegate:self];
+        [alert show];
     }
 }
 

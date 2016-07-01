@@ -93,7 +93,7 @@
                                                   reasonCode:_reasonCode
                                                    onSuccess:^(GeneralAction *result) {
                                                        if([result.data.is_success boolValue]){
-                                                           [[NSNotificationCenter defaultCenter] postNotificationName:@"applyOperation" object:nil];
+                                                           [[NSNotificationCenter defaultCenter] postNotificationName:@"applyRejectOperation" object:nil];
                                                            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                                                        }else{
                                                            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:result.message_error delegate:self];
