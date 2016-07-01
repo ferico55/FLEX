@@ -817,7 +817,6 @@ typedef enum
 -(void)successActionCalculate:(TransactionCalculatePriceResult*)data{
     _selectedProduct.product_price = data.product.price;
     [self setProduct:_selectedProduct];
-    _ATCForm.form.shipment = data.shipment;
     [self adjustViewIsLoading:NO];
     [_tableView reloadData];
 }
