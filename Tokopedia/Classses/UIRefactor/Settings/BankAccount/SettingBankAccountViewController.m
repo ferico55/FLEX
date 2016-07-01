@@ -500,17 +500,21 @@
                                                       }];
         trash.titleLabel.font = [UIFont fontWithName:trash.titleLabel.font.fontName size:12];
         
-        MGSwipeButton * flag = [MGSwipeButton buttonWithTitle:@"Jadikan\nUtama"
-                                              backgroundColor:[UIColor colorWithRed:0 green:122/255.0 blue:255.05 alpha:1.0]
-                                                      padding:padding
-                                                     callback:^BOOL(MGSwipeTableCell *sender) {
-                                                         //edit
-                                                         [weakSelf requestSetDefaultBankAccountAtIndexPath:indexPath];
-                                                         return YES;
-                                                     }];
-        flag.titleLabel.font = [UIFont fontWithName:flag.titleLabel.font.fontName size:12];
-        
-        return @[trash, flag];
+        if (indexPath.row > 0) {
+            MGSwipeButton * flag = [MGSwipeButton buttonWithTitle:@"Jadikan\nUtama"
+                                                  backgroundColor:[UIColor colorWithRed:0 green:122/255.0 blue:255.05 alpha:1.0]
+                                                          padding:padding
+                                                         callback:^BOOL(MGSwipeTableCell *sender) {
+                                                             //edit
+                                                             [weakSelf requestSetDefaultBankAccountAtIndexPath:indexPath];
+                                                             return YES;
+                                                         }];
+            flag.titleLabel.font = [UIFont fontWithName:flag.titleLabel.font.fontName size:12];
+            
+            return @[trash, flag];
+        } else {
+            return @[trash];
+        }
     }
     
     return nil;
