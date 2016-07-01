@@ -913,7 +913,7 @@ typedef enum
         [self requestAddAddress:address];
         return;
     }
-    _selectedAddress = address;
+    [self setAddress:address];
     [self requestRate];
 }
 
@@ -936,7 +936,7 @@ typedef enum
 
 -(void)successAddAddress:(AddressFormList*)address result:(ProfileSettingsResult *)result {
     [self adjustViewIsLoading:NO];
-    _selectedAddress = address;
+    [self setAddress:address];
     [self requestRate];
 }
 
