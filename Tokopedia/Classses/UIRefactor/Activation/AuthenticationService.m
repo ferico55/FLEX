@@ -220,14 +220,20 @@
                        mapping:[OAuthToken mapping]
                      onSuccess:^(RKMappingResult *result, RKObjectRequestOperation *operation) {
                          OAuthToken *oAuthToken = result.dictionary[@""];
-                         [self getUserInfoWithOAuthToken:oAuthToken
-                                         successCallback:^(AccountInfo *accountInfo) {
-                                             [self authenticateToMarketplaceWithAccountInfo:accountInfo
-                                                                                 oAuthToken:oAuthToken
-                                                                    onAuthenticationSuccess:successCallback
-                                                                            failureCallback:failureCallback];
-                                         }
-                                         failureCallback:failureCallback];
+                         if (oAuthToken.error) {
+                             // TODO proper error handling
+                             NSError *error = [NSError errorWithDomain:@"foo" code:112233 userInfo:@{NSLocalizedDescriptionKey:oAuthToken.errorDescription}];
+                             failureCallback(error);
+                         } else {
+                             [self getUserInfoWithOAuthToken:oAuthToken
+                                             successCallback:^(AccountInfo *accountInfo) {
+                                                 [self authenticateToMarketplaceWithAccountInfo:accountInfo
+                                                                                     oAuthToken:oAuthToken
+                                                                        onAuthenticationSuccess:successCallback
+                                                                                failureCallback:failureCallback];
+                                             }
+                                             failureCallback:failureCallback];
+                         }
                      }
                      onFailure:failureCallback];
 }

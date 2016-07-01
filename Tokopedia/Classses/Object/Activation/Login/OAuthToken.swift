@@ -11,6 +11,8 @@ class OAuthToken: NSObject {
     var expiry: String!
     var refreshToken: String!
     var tokenType: String!
+    var error: String?
+    var errorDescription: String?
 
     class func mapping() -> RKObjectMapping {
         let mapping = RKObjectMapping(forClass: self)
@@ -18,7 +20,9 @@ class OAuthToken: NSObject {
             "access_token": "accessToken",
             "token_type": "tokenType",
             "expires_in": "expiry",
-            "refresh_token": "refreshToken"
+            "refresh_token": "refreshToken",
+            "error": "error",
+            "error_description": "errorDescription"
         ])
 
         return mapping
