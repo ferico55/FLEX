@@ -37,7 +37,6 @@
     
     NSString *_urinext;
     
-    BOOL _isrefreshview;
     BOOL _ismanualsetdefault;
     
     LoadingView *loadingView;
@@ -71,7 +70,6 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         _isnodata = YES;
-        _isrefreshview = NO;
         _ismanualsetdefault = NO;
         self.title =TITLE_LIST_BANK;
     }
@@ -115,12 +113,16 @@
         [_list addObjectsFromArray:lists];
     }
     
+    _refreshControl = [UIRefreshControl new];
+    [_refreshControl addTarget:self
+                        action:@selector(refreshView:)
+              forControlEvents:UIControlEventValueChanged];
+    [_table addSubview:_refreshControl];
+    
     _request = [BankAccountRequest new];
     
-    if (!_isrefreshview) {
-        if (_isnodata || (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0)) {
-            [self getBankAccount];
-        }
+    if (_isnodata || (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0)) {
+        [self getBankAccount];
     }
 }
 
@@ -192,13 +194,6 @@
     }
     
     return cell;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
-    view.backgroundColor = [UIColor clearColor];
-    return view;
 }
 
 #pragma mark - Table View Delegate
@@ -333,7 +328,6 @@
     [_list removeAllObjects];
     _page = 1;
     _requestcount = 0;
-    //_isrefreshview = YES;
     
     [_table reloadData];
     /** request data **/
@@ -348,15 +342,12 @@
         [weakSelf loadBankAccountData:result];
         
         [_act stopAnimating];
-        _table.contentInset = UIEdgeInsetsMake(-15, 0, 0, 0);
         [_table reloadData];
-        _isrefreshview = NO;
         [_refreshControl endRefreshing];
     }
     onFailure:^(NSError *error) {
         [_act stopAnimating];
         _table.tableFooterView = [self getLoadView:CTagRequest].view;
-        _isrefreshview = NO;
         [_refreshControl endRefreshing];
         _table.tableFooterView = loadingView.view;
     }];
@@ -402,7 +393,6 @@
     [_request requestSetDefaultBankAccountWithAccountID:[_datainput objectForKey:API_BANK_ACCOUNT_ID_KEY]
                                               onSuccess:^(ProfileSettings *result) {
                                                   [weakSelf displayMessages:result];
-                                                  _isrefreshview = NO;
                                                   [_refreshControl endRefreshing];
                                                   
                                                   NSIndexPath *indexPath1 = [NSIndexPath indexPathForRow:0 inSection:indexPath.section];
@@ -450,12 +440,10 @@
                                           onSuccess:^(ProfileSettings *result) {
                                               [weakSelf deleteBankAccount:result];
                                               [_table reloadData];
-                                              _isrefreshview = NO;
                                               [_refreshControl endRefreshing];
                                           }
                                           onFailure:^(NSError *error) {
                                               [weakSelf cancelDeleteRow];
-                                              _isrefreshview = NO;
                                               [_refreshControl endRefreshing];
                                           }];
 }

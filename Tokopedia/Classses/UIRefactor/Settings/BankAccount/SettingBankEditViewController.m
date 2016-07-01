@@ -11,6 +11,9 @@
 #import "ProfileSettings.h"
 #import "SettingBankEditViewController.h"
 #import "SettingBankNameViewController.h"
+#import "DepositRequest.h"
+#import "GeneralAction.h"
+#import "BankAccountRequest.h"
 
 @interface SettingBankEditViewController ()<SettingBankNameViewControllerDelegate, UIScrollViewDelegate>
 {
@@ -40,6 +43,9 @@
     
     UIBarButtonItem *_barbuttonsave;
     BOOL _isBeingPresented;
+    
+    DepositRequest *_depositRequest;
+    BankAccountRequest *_bankAccountRequest;
 }
 @property (weak, nonatomic) IBOutlet UITextField *accountNameTextField;
 @property (weak, nonatomic) IBOutlet UITextField *accountNumberTextField;
@@ -140,6 +146,9 @@
     
     [self setDefaultData:_data];
     
+    _bankAccountRequest = [BankAccountRequest new];
+    _depositRequest = [DepositRequest new];
+    
     [self.container addSubview:_contentView];
     [self.container setContentSize:CGSizeMake(self.view.frame.size.width,
                                               self.contentView.frame.size.height)];
@@ -214,8 +223,23 @@
             case 11:
             {
                 //send OTP
-                [self configureRestKitActionSendOTP];
-                [self requestActionSendOTP:nil];
+                [_depositRequest requestSendOTPVerifyBankAccountOnSuccess:^(GeneralAction *action) {
+                    if(action.message_error) {
+                        NSArray *errorMessages = action.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
+                        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages
+                                                                                       delegate:self];
+                        [alert show];
+                    }
+                    if ([action.data.is_success isEqualToString:@"1"]) {
+                        NSArray *successMessages = action.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY];
+                        StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages
+                                                                                         delegate:self];
+                        [alert show];
+                    }
+                } onFailure:^(NSError *errorResult) {
+                    
+                    
+                }];
             }
             default:
                 break;
@@ -486,139 +510,6 @@
 {
     [self cancelActionAddBank];
 }
-
-#pragma mark - Request Action SendOTP
--(void)cancelActionSendOTP
-{
-    [_requestActionSendOTP cancel];
-    _requestActionSendOTP = nil;
-    [_objectmanagerActionSendOTP.operationQueue cancelAllOperations];
-    _objectmanagerActionSendOTP = nil;
-}
-
--(void)configureRestKitActionSendOTP
-{
-    _objectmanagerActionSendOTP = [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ProfileSettings class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ProfileSettingsResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{kTKPDPROFILE_APIISSUCCESSKEY:kTKPDPROFILE_APIISSUCCESSKEY}];
-    
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    
-    // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                            method:RKRequestMethodPOST
-                                                                                       pathPattern:kTKPD_DEPOSIT_API_PATH
-                                                                                           keyPath:@""
-                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectmanagerActionSendOTP addResponseDescriptor:responseDescriptor];
-    
-}
-
--(void)requestActionSendOTP:(id)object
-{
-    if (_requestActionSendOTP.isExecuting) return;
-    NSTimer *timer;
-    
-    NSDictionary *param = @{kTKPDPROFILE_APIACTIONKEY : kTKPD_DEPOSIT_VERIFY_BANK_ACCOUNT};
-    
-    _requestCountSendOTP++;
-    
-    _barbuttonsave.enabled = NO;
-    
-    _requestActionSendOTP = [_objectmanagerActionSendOTP appropriateObjectRequestOperationWithObject:self
-                                                                                              method:RKRequestMethodPOST
-                                                                                                path:kTKPD_DEPOSIT_API_PATH
-                                                                                          parameters:[param encrypt]];
-    
-    [_requestActionSendOTP setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestSuccessActionSendOTP:mappingResult withOperation:operation];
-        [timer invalidate];
-        _barbuttonsave.enabled = YES;
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [self requestFailureActionSendOTP:error];
-        [timer invalidate];
-        _barbuttonsave.enabled = YES;
-    }];
-    
-    [_operationQueue addOperation:_requestActionSendOTP];
-    
-    timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
-                                             target:self
-                                           selector:@selector(requestTimeoutActionSendOTP)
-                                           userInfo:nil
-                                            repeats:NO];
-    
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-}
-
--(void)requestSuccessActionSendOTP:(id)object withOperation:(RKObjectRequestOperation *)operation
-{
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    ProfileSettings *setting = [result objectForKey:@""];
-    BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if (status) {
-        [self requestProcessActionSendOTP:object];
-    }
-}
-
--(void)requestFailureActionSendOTP:(id)object
-{
-    [self requestProcessActionSendOTP:object];
-}
-
--(void)requestProcessActionSendOTP:(id)object
-{
-    if (object) {
-        if ([object isKindOfClass:[RKMappingResult class]]) {
-            NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            id stat = [result objectForKey:@""];
-            ProfileSettings *setting = stat;
-            BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-            
-            if (status) {
-                if(setting.message_error) {
-                    NSArray *errorMessages = setting.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
-                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages
-                                                                                   delegate:self];
-                    [alert show];
-                }
-                if (setting.result.is_success == 1) {
-                    NSArray *sucessMessages = setting.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY];
-                    StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:sucessMessages
-                                                                                     delegate:self];
-                    [alert show];
-                }
-            }
-        } else {
-            [self cancelActionSendOTP];
-            NSError *error = object;
-            NSString *errorDescription = error.localizedDescription;
-            UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE
-                                                                message:errorDescription
-                                                               delegate:self
-                                                      cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE
-                                                      otherButtonTitles:nil];
-            [errorAlert show];
-        }
-    }
-}
-
--(void)requestTimeoutActionSendOTP
-{
-    [self cancelActionSendOTP];
-}
-
 
 #pragma mark - Methods
 -(void)setDefaultData:(NSDictionary*)data
