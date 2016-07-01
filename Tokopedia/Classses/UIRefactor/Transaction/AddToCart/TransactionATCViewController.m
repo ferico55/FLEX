@@ -913,8 +913,8 @@ typedef enum
         [self requestAddAddress:address];
         return;
     }
-    NSString *addressID = [NSString stringWithFormat:@"%zd",address.address_id];
-    [self requestFormWithAddressID:addressID];
+    _selectedAddress = address;
+    [self requestRate];
 }
 
 -(void)requestAddAddress:(AddressFormList*)address{
@@ -936,8 +936,8 @@ typedef enum
 
 -(void)successAddAddress:(AddressFormList*)address result:(ProfileSettingsResult *)result {
     [self adjustViewIsLoading:NO];
-    NSString *addressID = [NSString stringWithFormat:@"%zd",address.address_id];
-    [self requestFormWithAddressID:addressID];
+    _selectedAddress = address;
+    [self requestRate];
 }
 
 -(void)failedAddAddress:(AddressFormList*)address error:(NSError*)error{
