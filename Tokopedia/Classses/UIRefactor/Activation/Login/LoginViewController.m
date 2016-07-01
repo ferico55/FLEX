@@ -177,7 +177,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [self cancelLogin];
+    [self showLoginUi];
 }
 
 - (void)navigateToRegister {
@@ -329,7 +329,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 
 #pragma mark - Request and Mapping
 
--(void)cancelLogin
+-(void)showLoginUi
 {
     _loadingView.hidden = YES;
     _emailTextField.hidden = NO;
@@ -557,7 +557,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                                  [self onLoginSuccess:login];
                              }
                                     onFailure:^(NSError *error) {
-                                        [StickyAlertView showErrorMessage:@[@"Sign in gagal silahkan coba lagi."]];
+                                        [self showLoginUi];
                                     }];
 
     _loadingView.hidden = NO;
@@ -572,7 +572,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
 }
 
 - (void)loginButtonDidLogOut:(FBSDKLoginButton *)loginButton {
-    [self cancelLogin];
+    [self showLoginUi];
 }
 
 #pragma mark - Login delegate
@@ -669,7 +669,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                                  [self onLoginSuccess:login];
                              }
                                     onFailure:^(NSError *error) {
-                                        [StickyAlertView showErrorMessage:@[@"Sign in gagal silahkan coba lagi."]];
+                                        [self showLoginUi];
                                     }];
 }
 
