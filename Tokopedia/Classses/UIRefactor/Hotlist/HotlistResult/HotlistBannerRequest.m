@@ -8,7 +8,7 @@
 
 #import "HotlistBannerRequest.h"
 #import "HotlistBanner.h"
-
+#import "StickyAlertView.h"
 
 @implementation HotlistBannerRequest
 
@@ -76,6 +76,37 @@
 
 - (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
     
+}
+
++(void)fetchHotlistBannerWithQuery:(NSString*)query
+                           onSuccess:(void(^)(HotlistBannerResult* data))success
+                            onFailure:(void(^)(NSError * error))failure{
+    
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    
+    NSDictionary *parameter = @{@"action" : @"get_hotlist_banner", @"key" : query?:@""};
+    
+    [networkManager requestWithBaseUrl:[NSString basicUrl]
+                                  path:@"hotlist.pl"
+                                method:RKRequestMethodGET
+                             parameter:parameter
+                               mapping:[HotlistBanner mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                 
+                                 HotlistBanner *banner = [successResult.dictionary objectForKey:@""];
+                                 
+                                 if ( banner!= nil && banner.message_error.count == 0) {
+                                     success(banner.result);
+                                 } else{
+                                     [StickyAlertView showErrorMessage:banner.message_error?:@[@"Gagal memuat hotlist"]];
+                                     failure(nil);
+                                 }
+                                 
+    } onFailure:^(NSError *errorResult) {
+        
+        failure(errorResult);
+        
+    }];
 }
 
 @end

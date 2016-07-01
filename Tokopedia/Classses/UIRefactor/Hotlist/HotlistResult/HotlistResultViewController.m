@@ -249,10 +249,7 @@ static NSString const *rows = @"12";
     
     _promoRequest = [PromoRequest new];
     
-    _bannerRequest = [[HotlistBannerRequest alloc] init];
-    [_bannerRequest setDelegate:self];
-    [_bannerRequest setBannerKey:[_data objectForKey:kTKPDHOME_DATAQUERYKEY]?:@""];
-    [_bannerRequest requestBanner];
+    [self fetchDataHotlistBanner];
     
     self.scrollDirection = ScrollDirectionDown;
     
@@ -269,6 +266,21 @@ static NSString const *rows = @"12";
         self.screenName = @"Hot List Detail";
         [TPAnalytics trackScreenName:@"Hot List Detail" gridType:self.cellType];
     }
+}
+
+-(NSString*)getQueryBanner{
+    return [_data objectForKey:kTKPDHOME_DATAQUERYKEY]?:@"";
+}
+
+-(void)fetchDataHotlistBanner{
+    [HotlistBannerRequest fetchHotlistBannerWithQuery:[self getQueryBanner]
+                                            onSuccess:^(HotlistBannerResult *data) {
+                                                
+                                                [self didReceiveBannerHotlist:data];
+                                                
+                                            } onFailure:^(NSError *error) {
+                                                
+                                            }];
 }
 
 -(void)setDefaultSort{
