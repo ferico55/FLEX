@@ -387,10 +387,12 @@
                 controller.selectedObject = _selectedProvince.name?:_shop.provinceName;
                 [self.navigationController pushViewController:controller animated:YES];
             } else if (indexPath.row == 1) {
-                controller.title = @"Pilih Kotamadya";
-                controller.objects = _selectedProvince.citiesName;
-                controller.selectedObject = _selectedCity.name?:_shop.cityName;
-                [self.navigationController pushViewController:controller animated:YES];
+                if ([[tableView cellForRowAtIndexPath:indexPath] isKindOfClass:[ShipmentLocationViewCell class]]){
+                    controller.title = @"Pilih Kotamadya";
+                    controller.objects = _selectedProvince.citiesName;
+                    controller.selectedObject = _selectedCity.name?:_shop.cityName;
+                    [self.navigationController pushViewController:controller animated:YES];
+                }
             } else if (indexPath.row == 2) {
                 controller.title = @"Pilih Kecamatan";
                 controller.objects = _selectedCity.districtsName;
