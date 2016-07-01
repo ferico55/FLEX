@@ -899,23 +899,10 @@ static NSString const *rows = @"12";
     _swipegestureleft.enabled = YES;
     _swipegestureright.enabled = YES;
     
-
-    HotlistBannerQuery *q = _bannerResult.query;
-    
     //set query
-    NSDictionary *query = @{
-        @"negative_keyword" : q.negative_keyword?:@"",
-        @"sc" : q.sc?:@"",
-        @"ob" : q.ob?:[self defaultSortID],
-        @"terms" : q.terms?:@"",
-        @"fshop" : q.fshop?:@"",
-        @"q" : q.q?:@"",
-        @"pmin" : q.pmin?:@"",
-        @"pmax" : q.pmax?:@"",
-        @"type" : q.type?:@""
-    };
+    NSDictionary *query = [self hotlistBannerDictionaryFromDataBanner:bannerResult.query];
     
-    _rootCategoryID = q.sc;
+    _rootCategoryID = bannerResult.query.sc;
     [_detailfilter addEntriesFromDictionary:query];
     _selectedFilterParam = query;
     [self setDefaultSort];
@@ -923,6 +910,21 @@ static NSString const *rows = @"12";
     _start = 0;
     [self requestHotlist];
 
+}
+
+-(NSDictionary*)hotlistBannerDictionaryFromDataBanner:(HotlistBannerQuery*)q{
+    NSDictionary *query = @{
+                            @"negative_keyword" : q.negative_keyword?:@"",
+                            @"sc" : q.sc?:@"",
+                            @"ob" : q.ob?:[self defaultSortID],
+                            @"terms" : q.terms?:@"",
+                            @"fshop" : q.fshop?:@"",
+                            @"q" : q.q?:@"",
+                            @"pmin" : q.pmin?:@"",
+                            @"pmax" : q.pmax?:@"",
+                            @"type" : q.type?:@""
+                            };
+    return query;
 }
 
 - (void)requestHotlist {
