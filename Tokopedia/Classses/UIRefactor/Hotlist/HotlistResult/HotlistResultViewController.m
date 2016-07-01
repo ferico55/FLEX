@@ -165,9 +165,7 @@ static NSString const *rows = @"12";
 - (void) viewDidLoad {
     [super viewDidLoad];
     _page = 0;
-    
-    [self setDefaultSort];
-    
+        
     if (![self isUseDynamicFilter]) {
         [self setRightButton];
     }
@@ -281,28 +279,6 @@ static NSString const *rows = @"12";
                                             } onFailure:^(NSError *error) {
                                                 
                                             }];
-}
-
--(void)setDefaultSort{
-    [_detailfilter setObject:[self defaultSortID] forKey:[self defaultSortKey]];
-    _selectedSort = [self defaultSortDynamicFilter];
-    _selectedSortParam = @{[self defaultSortKey]:[self defaultSortID]};
-    
-}
-
--(ListOption*)defaultSortDynamicFilter{
-    ListOption *sort = [ListOption new];
-    sort.value = [self defaultSortID];
-    sort.key = [self defaultSortKey];
-    return sort;
-}
-
--(NSString*)defaultSortKey{
-    return @"ob";
-}
-
--(NSString*)defaultSortID{
-    return @"1";
 }
 
 - (void)registerAllNib {
@@ -652,7 +628,7 @@ static NSString const *rows = @"12";
 #pragma mark - Sort Delegate
 - (void)didSelectSort:(NSString *)sort atIndexPath:(NSIndexPath *)indexPath {
     _sortIndexPath = indexPath;
-    [_detailfilter setObject:sort forKey:[self defaultSortKey]];
+    [_detailfilter setObject:sort forKey:sort];
     [self refreshView:nil];
 }
 
@@ -905,7 +881,6 @@ static NSString const *rows = @"12";
     _rootCategoryID = bannerResult.query.sc;
     [_detailfilter addEntriesFromDictionary:query];
     _selectedFilterParam = query;
-    [self setDefaultSort];
     
     _start = 0;
     [self requestHotlist];
@@ -916,7 +891,7 @@ static NSString const *rows = @"12";
     NSDictionary *query = @{
                             @"negative_keyword" : q.negative_keyword?:@"",
                             @"sc" : q.sc?:@"",
-                            @"ob" : q.ob?:[self defaultSortID],
+                            @"ob" : q.ob?:@"",
                             @"terms" : q.terms?:@"",
                             @"fshop" : q.fshop?:@"",
                             @"q" : q.q?:@"",
