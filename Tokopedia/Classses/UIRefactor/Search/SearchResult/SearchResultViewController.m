@@ -766,48 +766,60 @@ ImageSearchRequestDelegate
     [self.navigationController presentViewController:nav animated:YES completion:nil];
 }
 
--(void)pushDynamicSort{
-    FiltersController *controller = [[FiltersController alloc]initWithSource:[_data objectForKey:kTKPDSEARCH_DATATYPE]?:@""
+-(void)searchWithDynamicSort{
+    FiltersController *controller = [[FiltersController alloc]initWithSource:[self getSearchSource]
                                                                 sortResponse:_filterResponse?:[FilterData new]
                                                                 selectedSort:_selectedSort
                                                                  presentedVC:self
                                                                 onCompletion:^(ListOption * sort, NSDictionary*paramSort) {
-        
-        _selectedSortParam = paramSort;
-        _selectedSort = sort;
-        
-        for (UIImageView *image in _activeSortImageViews) {
-            image.hidden = (_selectedSort == nil);
-        }
-        
-        if([[_selectedSortParam objectForKey:@"ob"] isEqualToString:@"99"]){
-            [self restoreSimilarity];
-            //image search sort by similarity
-            NSArray* sortedProducts = [[_product firstObject] sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
-                CGFloat first = (CGFloat)[[(SearchAWSProduct*)a similarity_rank] floatValue];
-                CGFloat second = (CGFloat)[[(SearchAWSProduct*)b similarity_rank] floatValue];
-                return first > second;
-            }];
-            _product[0] = [NSMutableArray arrayWithArray:sortedProducts];
-            [_refreshControl beginRefreshing];
-            [_collectionView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-                [_refreshControl endRefreshing];
-                [_collectionView reloadData];
-            });
-        } else {
-            //normal sort
-            [self refreshView:nil];
-        }
+                                                                    
+                                                                    _selectedSortParam = paramSort;
+                                                                    _selectedSort = sort;
+                                                                    
+                                                                    [self showSortingIsActive:[self getSortingIsActive]];
+                                                                    
+                                                                    [self refreshSearchDataWithDynamicSort];
+                                                                    
+                                                                } onReceivedFilterDataOption:^(FilterData * filterResponse) {
+                                                                    _filterResponse = filterResponse;
+                                                                }];
+}
+
+-(void)refreshSearchDataWithDynamicSort{
+    if([[_selectedSortParam objectForKey:@"ob"] isEqualToString:@"99"]){
+        [self restoreSimilarity];
+        //image search sort by similarity
+        NSArray* sortedProducts = [[_product firstObject] sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
+            CGFloat first = (CGFloat)[[(SearchAWSProduct*)a similarity_rank] floatValue];
+            CGFloat second = (CGFloat)[[(SearchAWSProduct*)b similarity_rank] floatValue];
+            return first > second;
+        }];
+        _product[0] = [NSMutableArray arrayWithArray:sortedProducts];
+        [_refreshControl beginRefreshing];
+        [_collectionView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            [_refreshControl endRefreshing];
+            [_collectionView reloadData];
+        });
+    } else {
+        //normal sort
         [self refreshView:nil];
-    } response:^(FilterData * filterResponse) {
-        _filterResponse = filterResponse;
-    }];
+    }
+}
+
+-(BOOL)getSortingIsActive{
+    return (_selectedSort != nil);
+}
+
+-(void)showSortingIsActive:(BOOL)isActive{
+    for (UIImageView *image in _activeSortImageViews) {
+        image.hidden = !isActive;
+    }
 }
 
 - (IBAction)didTapSortButton:(UIButton*)sender {
     if ([self isUseDynamicFilter]) {
-        [self pushDynamicSort];
+        [self searchWithDynamicSort];
     } else{
         [self pushSort];
     }
@@ -847,23 +859,23 @@ ImageSearchRequestDelegate
                                                                        selectedFilters:_selectedFilters
                                                                            presentedVC:self onCompletion:^(NSArray<CategoryDetail *> * selectedCategories , NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
                                                                                
-                                                                               _selectedCategories = selectedCategories;
-                                                                               _selectedFilters = selectedFilters;
-                                                                               _selectedFilterParam = paramFilters;
-                                                                               [self showFilterIsActive:[self hasSelectedFilterOrCategory]];
-                                                                               
-                                                                               [_params setObject:[_data objectForKey:@"search"]?:@"" forKey:@"search"];
-                                                                               [self refreshView:nil];
-                                                                               
-                                                                           } response:^(FilterData * filterResponse){
-                                                                               
-                                                                               _filterResponse = filterResponse;
-                                                                               
-                                                                           }];
+           _selectedCategories = selectedCategories;
+           _selectedFilters = selectedFilters;
+           _selectedFilterParam = paramFilters;
+           [self showFilterIsActive:[self hasSelectedFilterOrCategory]];
+           
+           [_params setObject:[_data objectForKey:@"search"]?:@"" forKey:@"search"];
+           [self refreshView:nil];
+           
+       } onReceivedFilterDataOption:^(FilterData * filterDataOption){
+           
+           _filterResponse = filterDataOption;
+           
+       }];
 }
 
 -(BOOL)hasSelectedFilterOrCategory{
-    return (_selectedCategories.count + _selectedFilters.count == 0);
+    return (_selectedCategories.count + _selectedFilters.count > 0);
 }
 
 -(void)showFilterIsActive:(BOOL)isActive{

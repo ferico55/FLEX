@@ -10,7 +10,7 @@ import UIKit
 
 @objc enum Source :Int {
     case Hotlist, Product, Catalog, Shop, Directory, Default
-    func simpleDescription() -> String {
+    func description() -> String {
         switch self {
         case .Hotlist:
             return "hot_product"
@@ -48,7 +48,7 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
     
     private var rootCategoryID : String = ""
     
-    init(source: String, filterResponse:FilterData, rootCategoryID:String, categories: [CategoryDetail], selectedCategories:[CategoryDetail], selectedFilters:[ListOption], presentedVC:(UIViewController), onCompletion: ((selectedCategories:[CategoryDetail], selectedFilters:[ListOption], paramFilter:[String : String]) -> Void), response:((FilterData) -> Void)){
+    init(searchDataSource: Source, filterResponse:FilterData, rootCategoryID:String, categories: [CategoryDetail], selectedCategories:[CategoryDetail], selectedFilters:[ListOption], presentedVC:(UIViewController), onCompletion: ((selectedCategories:[CategoryDetail], selectedFilters:[ListOption], paramFilter:[String : String]) -> Void), onReceivedFilterDataOption:((FilterData) -> Void)){
         
         self.filterResponse = filterResponse
         self.categories = categories
@@ -56,41 +56,24 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
         self.selectedFilters = selectedFilters
         self.completionHandlerFilter = onCompletion
         self.presentedController = presentedVC
-        self.source = source
+        self.source = searchDataSource.description()
         self.rootCategoryID = rootCategoryID
-        completionHandlerResponse = response
+        completionHandlerResponse = onReceivedFilterDataOption
         
         super.init()
         
         self .presentControllerFilter()
     }
     
-    init(searchDataSource: Source, filterResponse:FilterData, rootCategoryID:String, categories: [CategoryDetail], selectedCategories:[CategoryDetail], selectedFilters:[ListOption], presentedVC:(UIViewController), onCompletion: ((selectedCategories:[CategoryDetail], selectedFilters:[ListOption], paramFilter:[String : String]) -> Void), response:((FilterData) -> Void)){
-        
-        self.filterResponse = filterResponse
-        self.categories = categories
-        self.selectedCategories = selectedCategories
-        self.selectedFilters = selectedFilters
-        self.completionHandlerFilter = onCompletion
-        self.presentedController = presentedVC
-        self.source = searchDataSource.simpleDescription()
-        self.rootCategoryID = rootCategoryID
-        completionHandlerResponse = response
-        
-        super.init()
-        
-        self .presentControllerFilter()
-    }
-    
-    init(source:String, sortResponse:FilterData, selectedSort: ListOption, presentedVC:(UIViewController), onCompletion: ((selectedSort:ListOption, paramSort:[String:String]) -> Void), response:((FilterData) -> Void)){
+    init(source:Source, sortResponse:FilterData, selectedSort: ListOption, presentedVC:(UIViewController), onCompletion: ((selectedSort:ListOption, paramSort:[String:String]) -> Void), onReceivedFilterDataOption:((FilterData) -> Void)){
         
         self.selectedSort = selectedSort
         self.completionHandlerSort = onCompletion
         self.presentedController = presentedVC
-        self.source = source
+        self.source = source.description()
         
         self.filterResponse = sortResponse
-        completionHandlerResponse = response
+        completionHandlerResponse = onReceivedFilterDataOption
         
         super.init()
         

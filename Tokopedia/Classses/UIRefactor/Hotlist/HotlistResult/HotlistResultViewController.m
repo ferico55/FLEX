@@ -332,7 +332,7 @@ static NSString const *rows = @"12";
 
 - (IBAction)didTapSortButton:(id)sender {
     if ([self isUseDynamicFilter]){
-        [self pushDynamicSort];
+        [self searchWithDynamicSort];
     } else{
         [self pushSort];
     }
@@ -342,15 +342,29 @@ static NSString const *rows = @"12";
     return @"hot_product";
 }
 
--(void)pushDynamicSort{
-    FiltersController *controller = [[FiltersController alloc]initWithSource:[self hotlistFilterSource] sortResponse:_filterResponse?:[FilterData new] selectedSort:_selectedSort presentedVC:self onCompletion:^(ListOption * sort, NSDictionary*paramSort) {
+-(void)searchWithDynamicSort{
+    FiltersController *controller = [[FiltersController alloc]initWithSource:SourceHotlist
+                                                                sortResponse:_filterResponse?:[FilterData new]
+                                                                selectedSort:_selectedSort
+                                                                 presentedVC:self
+                                                                onCompletion:^(ListOption * sort, NSDictionary*paramSort) {
+                                                                    
         _selectedSortParam = paramSort;
         _selectedSort = sort;
-        _activeSortImageView.hidden = (_selectedSort == nil);
+        [self showSortingIsActive:[self getSortingIsActive]];
         [self refreshView:nil];
-    } response:^(FilterData * filterResponse) {
+        
+    } onReceivedFilterDataOption:^(FilterData * filterResponse) {
         _filterResponse = filterResponse;
     }];
+}
+
+-(BOOL)getSortingIsActive{
+    return (_selectedSort != nil);
+}
+
+-(void)showSortingIsActive:(BOOL)isActive{
+    _activeFilterImageView.hidden = !isActive;
 }
 
 -(void)pushSort{
@@ -364,33 +378,41 @@ static NSString const *rows = @"12";
 
 - (IBAction)didTapFilterButton:(id)sender {
     if ([self isUseDynamicFilter]){
-        [self pushDynamicFilter];
+        [self searchWithDynamicFilter];
     } else{
         [self pushFilter];
     }
 }
 
--(void)pushDynamicFilter{
-    FiltersController *controller = [[FiltersController alloc]initWithSource:[self hotlistFilterSource]
-                                                              filterResponse:_filterResponse?:[FilterData new]
-                                                             rootCategoryID:@""
-                                                                  categories:[_initialCategories copy]
-                                                          selectedCategories:_selectedCategories
-                                                             selectedFilters:_selectedFilters
-                                                                 presentedVC:self
-                                                                onCompletion:^(NSArray<CategoryDetail *> * selectedCategories , NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
+-(void)searchWithDynamicFilter{
+    FiltersController *controller = [[FiltersController alloc]initWithSearchDataSource:SourceHotlist
+                                                                        filterResponse:_filterResponse?:[FilterData new]
+                                                                        rootCategoryID:@""
+                                                                            categories:[_initialCategories copy]
+                                                                    selectedCategories:_selectedCategories
+                                                                       selectedFilters:_selectedFilters
+                                                                           presentedVC:self
+                                                                          onCompletion:^(NSArray<CategoryDetail *> * selectedCategories , NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
         
         _selectedCategories = selectedCategories;
         _selectedFilters = selectedFilters;
         _selectedFilterParam = paramFilters;
         
-        _activeFilterImageView.hidden = (selectedCategories.count + selectedFilters.count == 0);
+        [self isShowFilterIsActive:[self filterIsActive]];
         
         [self refreshView:nil];
         
-    } response:^(FilterData * filterResponse){
+    } onReceivedFilterDataOption:^(FilterData * filterResponse){
         _filterResponse = filterResponse;
     }];
+}
+
+-(BOOL)filterIsActive{
+    return (_selectedCategories.count + _selectedFilters.count > 0);
+}
+
+-(void)isShowFilterIsActive:(BOOL)isActive{
+    _activeFilterImageView.hidden = !isActive;
 }
 
 -(void)pushFilter{

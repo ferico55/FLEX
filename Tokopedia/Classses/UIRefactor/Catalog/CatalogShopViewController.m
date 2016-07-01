@@ -343,14 +343,14 @@
 
 - (IBAction)didTapSortButton:(id)sender {
     if ([self isUseDynamicFilter]) {
-        [self pushDynamicSort];
+        [self isSearchWithDynamicSort];
     } else{
         [self pushSort];
     }
 }
 
--(void)pushDynamicSort{
-    FiltersController *controller = [[FiltersController alloc]initWithSource:[self sourceFilter] sortResponse:_filterResponse?:[FilterData new] selectedSort:_selectedSort presentedVC:self onCompletion:^(ListOption * sort, NSDictionary*paramSort) {
+-(void)isSearchWithDynamicSort{
+    FiltersController *controller = [[FiltersController alloc]initWithSource:SourceCatalog sortResponse:_filterResponse?:[FilterData new] selectedSort:_selectedSort presentedVC:self onCompletion:^(ListOption * sort, NSDictionary*paramSort) {
         _selectedSortParam = paramSort;
         _selectedSort = sort;
         
@@ -367,7 +367,7 @@
         
         [_networkManager doRequest];
         
-    } response:^(FilterData * filterResponse) {
+    } onReceivedFilterDataOption:^(FilterData * filterResponse) {
         _filterResponse = filterResponse;
     }];
 }
@@ -386,7 +386,7 @@
 
 -(IBAction)didTapFilterButton:(id)sender{
     if ([self isUseDynamicFilter]) {
-        [self pushDynamicFilter];
+        [self searchWithDynamicFilter];
     } else {
         [self pushFilter];
     }
@@ -398,8 +398,8 @@
     [self.navigationController presentViewController:navigationController animated:YES completion:nil];
 }
 
--(void)pushDynamicFilter{
-    FiltersController *controller = [[FiltersController alloc]initWithSource:[self sourceFilter] filterResponse:_filterResponse?:[FilterData new] rootCategoryID:@"" categories:nil selectedCategories:_selectedCategories selectedFilters:_selectedFilters presentedVC:self onCompletion:^(NSArray<CategoryDetail *> * selectedCategories , NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
+-(void)searchWithDynamicFilter{
+    FiltersController *controller = [[FiltersController alloc]initWithSearchDataSource:[self sourceFilter] filterResponse:_filterResponse?:[FilterData new] rootCategoryID:@"" categories:nil selectedCategories:_selectedCategories selectedFilters:_selectedFilters presentedVC:self onCompletion:^(NSArray<CategoryDetail *> * selectedCategories , NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
         
         _selectedCategories = selectedCategories;
         _selectedFilters = selectedFilters;
@@ -413,7 +413,7 @@
         
         [_networkManager doRequest];
         
-    } response:^(FilterData * filterResponse){
+    } onReceivedFilterDataOption:^(FilterData * filterResponse){
         _filterResponse = filterResponse;
     }];
 }

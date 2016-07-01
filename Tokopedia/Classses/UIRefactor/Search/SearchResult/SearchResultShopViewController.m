@@ -222,7 +222,7 @@ static NSString const *rows = @"12";
 
 - (IBAction)tapFilterButton:(id)sender {
 	if ([self isUseDynamicFilter]) {
-        [self pushDynamicFilter];
+        [self searchWithDynamicFilter];
     } else {
         [self pushFilter];
     }
@@ -259,7 +259,7 @@ static NSString const *rows = @"12";
 
 -(IBAction)didTapFilterButton:(UIButton*)button{
     if ([self isUseDynamicFilter]) {
-        [self pushDynamicFilter];
+        [self searchWithDynamicFilter];
     } else {
         [self pushFilter];
     }
@@ -278,8 +278,8 @@ static NSString const *rows = @"12";
     return @"search_shop";
 }
 
--(void)pushDynamicFilter{
-    FiltersController *controller = [[FiltersController alloc]initWithSource:[self searchShopType]
+-(void)searchWithDynamicFilter{
+    FiltersController *controller = [[FiltersController alloc]initWithSearchDataSource:SourceShop
                                                               filterResponse:_filterResponse?:[FilterData new]
                                                               rootCategoryID:@""
                                                                   categories:nil
@@ -290,12 +290,20 @@ static NSString const *rows = @"12";
         
         _selectedFilters = selectedFilters;
         _selectedFilterParam = paramFilters;
-        _activeFilterImageView.hidden = (_selectedFilters.count == 0);
+        [self getFilterIsActive];
         [self refreshView:nil];
         
-    } response:^(FilterData * filterResponse){
+    } onReceivedFilterDataOption:^(FilterData * filterResponse){
         _filterResponse = filterResponse;
     }];
+}
+
+-(BOOL)getFilterIsActive{
+    return _selectedFilters.count > 0;
+}
+
+-(void)showFilterIsActive:(BOOL)isActive{
+    _activeFilterImageView.hidden = !isActive;
 }
 
 -(BOOL)isUseDynamicFilter{
