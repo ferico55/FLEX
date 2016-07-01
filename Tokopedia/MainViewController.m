@@ -727,6 +727,7 @@ typedef enum TagRequest {
     
     [Localytics setValue:@"No" forProfileAttribute:@"Is Login"];
     
+    [self refreshCartTabBar];
 }
 
 - (void)removeCacheUser {
@@ -1002,6 +1003,18 @@ typedef enum TagRequest {
         _storeManager = [[TKPStoreManager alloc] init];
     }
     return _storeManager;
+}
+
+// MARK: Refresh Cart TabBar
+
+- (void) refreshCartTabBar {
+    for (UINavigationController *navController in _tabBarController.viewControllers) {
+        if ([[navController.viewControllers objectAtIndex:0] isKindOfClass:[TransactionCartRootViewController class]]) {
+            [navController setViewControllers:[NSArray arrayWithObject: [TransactionCartRootViewController new]]];
+            break;
+        }
+    }
+    
 }
 
 
