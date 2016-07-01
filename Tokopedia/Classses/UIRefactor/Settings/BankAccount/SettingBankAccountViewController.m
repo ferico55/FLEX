@@ -324,13 +324,6 @@
 
 -(void)refreshView:(UIRefreshControl*)refresh
 {
-    /** clear object **/
-    [_list removeAllObjects];
-    _page = 1;
-    _requestcount = 0;
-    
-    [_table reloadData];
-    /** request data **/
     [self getBankAccount];
 }
 
@@ -354,6 +347,7 @@
 }
 
 - (void)loadBankAccountData:(BankAccountFormResult *)account {
+    [_list removeAllObjects];
     [_list addObjectsFromArray:account.list];
     
     if (_list.count > 0) {
@@ -400,11 +394,10 @@
                                                   
                                                   [_datainput setObject:indexPath forKey:kTKPDPROFILE_DATAINDEXPATHDEFAULTKEY];
                                                   
-                                                  [_table reloadData];
+                                                  [weakSelf getBankAccount];
                                               }
                                               onFailure:^(NSError *error) {
                                                   [weakSelf cancelSetAsDefault];
-                                                  
                                               }];
 }
 
