@@ -134,11 +134,41 @@
 - (void)loginWithUserProfile:(CreatePasswordUserProfile *)userProfile
              successCallback:(void (^)(Login *))successCallback
              failureCallback:(void (^)(NSError *))failureCallback {
+    [self getOAuthTokenWithUserProfile:userProfile
+                 onRequestTokenSuccess:^(OAuthToken *oAuthToken) {
+                     [self getUserInfoWithOAuthToken:oAuthToken
+                                     successCallback:^(AccountInfo *accountInfo) {
+                                         if (accountInfo.createdPassword) {
+                                             [self authenticateToMarketplaceWithAccountInfo:accountInfo
+                                                                                 oAuthToken:oAuthToken
+                                                                    onAuthenticationSuccess:successCallback
+                                                                            failureCallback:failureCallback];
+                                         } else {
+                                             [self createPasswordWithUserProfile:userProfile
+                                                                      oAuthToken:oAuthToken
+                                                                     accountInfo:accountInfo
+                                                               onPasswordCreated:^{
+                                                                   [self authenticateToMarketplaceWithAccountInfo:accountInfo
+                                                                                                       oAuthToken:oAuthToken
+                                                                                          onAuthenticationSuccess:successCallback
+                                                                                                  failureCallback:failureCallback];
+                                                               }];
+                                         }
+                                     }
+                                     failureCallback:failureCallback];
+                 }
+                       failureCallback:failureCallback];
+
+}
+
+- (void)getOAuthTokenWithUserProfile:(CreatePasswordUserProfile *)userProfile
+               onRequestTokenSuccess:(void (^)(OAuthToken *))onRequestTokenSuccess
+                     failureCallback:(void (^)(NSError *))failureCallback {
     NSDictionary *parameter = @{
-            @"grant_type": @"extension",
-            @"social_id": userProfile.userId,
-            @"social_type": userProfile.provider,
-            @"email": userProfile.email
+            @"grant_type" : @"extension",
+            @"social_id" : userProfile.userId,
+            @"social_type" : userProfile.provider,
+            @"email" : userProfile.email
     };
 
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
@@ -151,29 +181,8 @@
                         header:[self basicAuthorizationHeader]
                      parameter:parameter
                        mapping:[OAuthToken mapping]
-                     onSuccess:^(RKMappingResult *mappingResult, RKObjectRequestOperation *operation) {
-                         OAuthToken *oAuthToken = mappingResult.dictionary[@""];
-
-                         [self getUserInfoWithOAuthToken:mappingResult.dictionary[@""]
-                                         successCallback:^(AccountInfo *accountInfo) {
-                                             if (accountInfo.createdPassword) {
-                                                 [self authenticateToMarketplaceWithAccountInfo:accountInfo
-                                                                                     oAuthToken:oAuthToken
-                                                                        onAuthenticationSuccess:successCallback
-                                                                                failureCallback:failureCallback];
-                                             } else {
-                                                 [self createPasswordWithUserProfile:userProfile
-                                                                          oAuthToken:oAuthToken
-                                                                         accountInfo:accountInfo
-                                                                   onPasswordCreated:^{
-                                                                       [self authenticateToMarketplaceWithAccountInfo:accountInfo
-                                                                                                           oAuthToken:oAuthToken
-                                                                                              onAuthenticationSuccess:successCallback
-                                                                                                      failureCallback:failureCallback];
-                                                                   }];
-                                             }
-                                         }
-                                         failureCallback:failureCallback];
+                     onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                         onRequestTokenSuccess(successResult.dictionary[@""]);
                      }
                      onFailure:failureCallback];
 }
@@ -190,7 +199,7 @@
 
                    onSignInComplete(login);
                }
-            failureCallback:onFailure];
+               failureCallback:onFailure];
 }
 
 - (void)loginWithEmail:(NSString *)email
@@ -201,9 +210,9 @@
     _viewController = viewController;
 
     NSDictionary *parameters = @{
-            @"grant_type": @"password",
-            @"username": email,
-            @"password": pass
+            @"grant_type" : @"password",
+            @"username" : email,
+            @"password" : pass
     };
 
     NSDictionary *header = [self basicAuthorizationHeader];
@@ -222,7 +231,7 @@
                          OAuthToken *oAuthToken = result.dictionary[@""];
                          if (oAuthToken.error) {
                              // TODO proper error handling
-                             NSError *error = [NSError errorWithDomain:@"foo" code:112233 userInfo:@{NSLocalizedDescriptionKey:oAuthToken.errorDescription}];
+                             NSError *error = [NSError errorWithDomain:@"foo" code:112233 userInfo:@{NSLocalizedDescriptionKey : oAuthToken.errorDescription}];
                              failureCallback(error);
                          } else {
                              [self getUserInfoWithOAuthToken:oAuthToken
@@ -245,9 +254,9 @@
     _viewController = viewController;
 
     NSDictionary *parameter = @{
-            @"grant_type":@"authorization_code",
-            @"code":token,
-            @"redirect_uri": [NSString stringWithFormat:@"%@/mappauth/code", [NSString accountsUrl]]
+            @"grant_type" : @"authorization_code",
+            @"code" : token,
+            @"redirect_uri" : [NSString stringWithFormat:@"%@/mappauth/code", [NSString accountsUrl]]
     };
 
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
