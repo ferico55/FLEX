@@ -126,7 +126,7 @@ typedef enum
     _tableViewShipmentCell = [NSArray sortViewsWithTagInArray:_tableViewShipmentCell];
     _isnodata = YES;
     
-    [self setPlaceholder:@"Contoh : Warna hitam" textView:_remarkTextView];
+    [self setPlaceholder:@"Contoh: Warna Putih/Ukuran XL/Edisi ke-2" textView:_remarkTextView];
     _remarkTextView.delegate = self;
     
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:nil];
