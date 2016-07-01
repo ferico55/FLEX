@@ -991,7 +991,9 @@ static NSString const *rows = @"12";
                             @"rows" : rows,
                             @"hashtag" : [self isInitialRequest] ? @"true" : @"",
                             @"breadcrumb" :  [self isInitialRequest] ? @"true" : @"",
-							@"source" : source
+							@"source" : source,
+                            @"type" : _detailfilter[@"type"]?:@"",
+                            @"negative_keyword": _detailfilter[@"negative_keyword"]?:@""
                             };
     
     [params addEntriesFromDictionary:param];
@@ -1023,7 +1025,9 @@ static NSString const *rows = @"12";
                             @"pmax" :[_detailfilter objectForKey:@"pmax"]?:@"",
                             @"hashtag" : [self isInitialRequest] ? @"true" : @"",
                             @"breadcrumb" :  [self isInitialRequest] ? @"true" : @"",
-							@"source" : source
+							@"source" : source,
+                            @"type" : _detailfilter[@"type"]?:@"",
+                            @"negative_keyword": _detailfilter[@"negative_keyword"]?:@""
                             };
     
     return param;
