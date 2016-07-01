@@ -58,7 +58,7 @@
     
     _remarkTextView.delegate = self;
     [self setDefaultData:_data];
-    [self setTextViewPlaceholder:@"Tulis Keterangan"];
+    [self setTextViewPlaceholder:@"Contoh: Warna Putih/Ukuran XL/Edisi ke-2"];
     
     [_remarkTextView becomeFirstResponder];
     
