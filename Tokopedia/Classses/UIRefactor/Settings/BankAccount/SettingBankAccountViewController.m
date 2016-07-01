@@ -15,7 +15,7 @@
 #import "SettingBankDetailViewController.h"
 #import "SettingBankEditViewController.h"
 #import "SettingBankAccountViewController.h"
-#import "TokopediaNetworkManager.h"
+#import "BankAccountRequest.h"
 
 #import "MGSwipeButton.h"
 #define CTagRequest 2
@@ -23,11 +23,11 @@
 #pragma mark - Setting Bank Account View Controller
 @interface SettingBankAccountViewController ()
 <
-UITableViewDataSource,
-UITableViewDelegate,
-SettingBankDetailViewControllerDelegate,
-MGSwipeTableCellDelegate,
-LoadingViewDelegate
+    UITableViewDataSource,
+    UITableViewDelegate,
+    SettingBankDetailViewControllerDelegate,
+    MGSwipeTableCellDelegate,
+    LoadingViewDelegate
 >
 {
     BOOL _isnodata;
@@ -64,6 +64,8 @@ LoadingViewDelegate
     __weak RKManagedObjectRequestOperation *_requestActionDelete;
     
     NSOperationQueue *_operationQueue;
+    
+    BankAccountRequest *_request;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
@@ -161,11 +163,8 @@ LoadingViewDelegate
         _isnodata = NO;
         [_list addObjectsFromArray:lists];
     }
-}
-
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
+    
+    _request = [BankAccountRequest new];
     
     if (!_isrefreshview) {
         if (_isnodata || (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0)) {
@@ -954,42 +953,34 @@ LoadingViewDelegate
     [self getBankAccount];
 }
 
+#pragma mark - Requests
+
 - (void)getBankAccount {
-    _networkManager = [TokopediaNetworkManager new];
-    _networkManager.isUsingHmac = YES;
-    _networkManager.isParameterNotEncrypted = NO;
-    
-    [_networkManager requestWithBaseUrl:[NSString v4Url]
-                                   path:@"/v4/people/get_bank_account.pl"
-                                 method:RKRequestMethodGET
-                              parameter:@{}
-                                mapping:[BankAccountForm mapping]
-                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                  BankAccountForm *bankAccount = [successResult.dictionary objectForKey:@""];
-                                  
-                                  [self loadBankAccountData:bankAccount];
-                                  
-                                  [_act stopAnimating];
-                                  _table.contentInset = UIEdgeInsetsMake(-15, 0, 0, 0);
-                                  [_table reloadData];
-                                  _isrefreshview = NO;
-                                  [_refreshControl endRefreshing];
-                              }
-                              onFailure:^(NSError *errorResult) {
-                                  [_act stopAnimating];
-                                  _table.tableFooterView = [self getLoadView:CTagRequest].view;
-                                  _isrefreshview = NO;
-                                  [_refreshControl endRefreshing];
-                                  _table.tableFooterView = loadingView.view;
-                              }];
+    __weak typeof(self) weakSelf = self;
+    [_request requestGetBankAccountOnSuccess:^(BankAccountFormResult *result) {
+        [weakSelf loadBankAccountData:result];
+        
+        [_act stopAnimating];
+        _table.contentInset = UIEdgeInsetsMake(-15, 0, 0, 0);
+        [_table reloadData];
+        _isrefreshview = NO;
+        [_refreshControl endRefreshing];
+    }
+    onFailure:^(NSError *error) {
+        [_act stopAnimating];
+        _table.tableFooterView = [self getLoadView:CTagRequest].view;
+        _isrefreshview = NO;
+        [_refreshControl endRefreshing];
+        _table.tableFooterView = loadingView.view;
+    }];
 }
 
-- (void)loadBankAccountData:(BankAccountForm *)account {
-    [_list addObjectsFromArray:account.result.list];
+- (void)loadBankAccountData:(BankAccountFormResult *)account {
+    [_list addObjectsFromArray:account.list];
     
     if (_list.count > 0) {
         _isnodata = NO;
-        _urinext =  account.result.paging.uri_next;
+        _urinext =  account.paging.uri_next;
         NSURL *url = [NSURL URLWithString:_urinext];
         NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
         
@@ -1015,6 +1006,48 @@ LoadingViewDelegate
     }
 }
 
+- (void)requestSetDefaultBankAccountAtIndexPath:(NSIndexPath *)indexPath {
+    __weak typeof(self) weakSelf = self;
+    
+    BankAccountFormList *bankAccount = _list[indexPath.row];
+    [_datainput setObject:bankAccount.bank_account_id forKey:API_BANK_ACCOUNT_ID_KEY];
+    
+    [_request requestSetDefaultBankAccountWithAccountID:[_datainput objectForKey:API_BANK_ACCOUNT_ID_KEY]
+                                              onSuccess:^(ProfileSettings *result) {
+                                                  [weakSelf displayMessages:result];
+                                                  _isrefreshview = NO;
+                                                  [_refreshControl endRefreshing];
+                                                  
+                                                  NSIndexPath *indexPath1 = [NSIndexPath indexPathForRow:0 inSection:indexPath.section];
+                                                  [self tableView:_table moveRowAtIndexPath:indexPath toIndexPath:indexPath1];
+                                                  
+                                                  [_datainput setObject:indexPath forKey:kTKPDPROFILE_DATAINDEXPATHDEFAULTKEY];
+                                                  
+                                                  [_table reloadData];
+                                              }
+                                              onFailure:^(NSError *error) {
+                                                  
+                                                  
+                                              }];
+}
+
+- (void)displayMessages:(ProfileSettings *)settings {
+    if ([settings.status isEqualToString:@"OK"]) {
+        if(settings.message_error) {
+            NSArray *errorMessages = settings.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
+            [alert show];
+        }
+        
+        if (settings.data.is_success == 1) {
+            NSArray *successMessages = settings.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY];
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:self];
+            [alert show];
+            _ismanualsetdefault = NO;
+        }
+    }
+}
+
 #pragma mark - Notification
 - (void)didEditBankAccount:(NSNotification*)notification
 {
@@ -1036,7 +1069,6 @@ LoadingViewDelegate
     swipeSettings.transition = MGSwipeTransitionStatic;
     expansionSettings.buttonIndex = -1; //-1 not expand, 0 expand
     
-    
     if (direction == MGSwipeDirectionRightToLeft) {
         expansionSettings.fillOnTrigger = YES;
         expansionSettings.threshold = 1.1;
@@ -1044,12 +1076,14 @@ LoadingViewDelegate
         CGFloat padding = 15;
         NSIndexPath *indexPath = ((GeneralList1GestureCell*) cell).indexpath;
         
+        __weak typeof(self) weakSelf = self;
+        
         UIColor *redColor = [UIColor colorWithRed:255/255 green:59/255.0 blue:48/255.0 alpha:1.0];
         MGSwipeButton * trash = [MGSwipeButton buttonWithTitle:@"Hapus"
                                                backgroundColor:redColor
                                                        padding:padding
                                                       callback:^BOOL(MGSwipeTableCell *sender) {
-                                                          [self deleteListAtIndexPath:indexPath];
+                                                          [weakSelf deleteListAtIndexPath:indexPath];
                                                           return YES;
                                                       }];
         trash.titleLabel.font = [UIFont fontWithName:trash.titleLabel.font.fontName size:12];
@@ -1059,7 +1093,7 @@ LoadingViewDelegate
                                                       padding:padding
                                                      callback:^BOOL(MGSwipeTableCell *sender) {
                                                          //edit
-                                                         [self setAsDefaultAtIndexPath:indexPath];
+                                                         [weakSelf requestSetDefaultBankAccountAtIndexPath:indexPath];
                                                          return YES;
                                                      }];
         flag.titleLabel.font = [UIFont fontWithName:flag.titleLabel.font.fontName size:12];

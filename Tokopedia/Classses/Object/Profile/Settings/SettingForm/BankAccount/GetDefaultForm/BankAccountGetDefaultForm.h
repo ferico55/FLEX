@@ -17,4 +17,6 @@
 @property (nonatomic, strong) NSString *server_process_time;
 @property (nonatomic, strong) BankAccountGetDefaultFormResult *result;
 
++ (RKObjectMapping *)mapping;
+
 @end

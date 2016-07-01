@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2D50139230438B54812D14B9 /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */; };
+		62793A3F1D261C480098878A /* BankAccountRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 62793A3E1D261C480098878A /* BankAccountRequest.m */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
 		7ACE9C541BB00956006C4BB7 /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */; };
@@ -2421,6 +2422,8 @@
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
 		2D733D9158C7BF957D514506 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
 		4868E459AB2A65D133732296 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tokopedia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		62793A3D1D261C480098878A /* BankAccountRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankAccountRequest.h; sourceTree = "<group>"; };
+		62793A3E1D261C480098878A /* BankAccountRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankAccountRequest.m; sourceTree = "<group>"; };
 		7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
@@ -10056,6 +10059,8 @@
 				8548A8E51D1A58E800D11E22 /* SettingBankEditViewController.h */,
 				8548A8E61D1A58E800D11E22 /* SettingBankEditViewController.m */,
 				8548A8E71D1A58E800D11E22 /* SettingBankEditViewController.xib */,
+				62793A3D1D261C480098878A /* BankAccountRequest.h */,
+				62793A3E1D261C480098878A /* BankAccountRequest.m */,
 			);
 			path = BankAccount;
 			sourceTree = "<group>";
@@ -14239,6 +14244,7 @@
 				8548B3D11D1A58F200D11E22 /* TransactionCartRootViewController.m in Sources */,
 				8548B4111D1A58F200D11E22 /* PenilaianUserCell.m in Sources */,
 				8548AF5E1D1A58F100D11E22 /* LoyaltyPointResult.m in Sources */,
+				62793A3F1D261C480098878A /* BankAccountRequest.m in Sources */,
 				8548AFD91D1A58F100D11E22 /* SearchAutoCompleteObject.m in Sources */,
 				8548B1291D1A58F100D11E22 /* ContactUsTypeCell.m in Sources */,
 				8548B1281D1A58F100D11E22 /* ContactUsPresenter.m in Sources */,
