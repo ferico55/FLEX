@@ -46,7 +46,6 @@ typedef enum TagRequest {
     UITableViewDelegate,
     ProductQuantityDelegate,
     ChooseProductDelegate,
-    RejectExplanationDelegate,
     SubmitShipmentConfirmationDelegate,
     CancelShipmentConfirmationDelegate,
     TokopediaNetworkManagerDelegate,
@@ -849,7 +848,6 @@ typedef enum TagRequest {
             UINavigationController *navigationController = [[UINavigationController alloc] init];
             navigationController.navigationBar.translucent = NO;
             OrderRejectExplanationViewController *controller = [[OrderRejectExplanationViewController alloc] init];
-            controller.delegate = self;
             navigationController.viewControllers = @[controller];
             [self.navigationController presentViewController:navigationController
                                                     animated:YES

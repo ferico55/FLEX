@@ -43,11 +43,9 @@
     UIAlertViewDelegate,
     SalesOrderCellDelegate,
     ChooseProductDelegate,
-    RejectExplanationDelegate,
     FilterDelegate,
     ProductQuantityDelegate,
-    OrderDetailDelegate,
-RejectReasonDelegate
+    OrderDetailDelegate
 >
 {
     RKObjectManager *_actionObjectManager;
@@ -538,7 +536,6 @@ RejectReasonDelegate
 
 - (void)showRejectOrderPage {
     OrderRejectExplanationViewController *controller = [[OrderRejectExplanationViewController alloc] init];
-    controller.delegate = self;
     
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
     navigationController.navigationBar.translucent = NO;

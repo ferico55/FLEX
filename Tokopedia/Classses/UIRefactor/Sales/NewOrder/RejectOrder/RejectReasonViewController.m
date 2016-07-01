@@ -14,7 +14,7 @@
 #import "RejectReasonWrongPriceViewController.h"
 #import "RejectOrderRequest.h"
 
-@interface RejectReasonViewController ()<UITableViewDelegate, UIScrollViewDelegate, UITableViewDataSource, RejectExplanationDelegate>
+@interface RejectReasonViewController ()<UITableViewDelegate, UIScrollViewDelegate, UITableViewDataSource>
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) NSArray* rejectReasons;
 @property (strong, nonatomic) RejectReason* selectedReason;
@@ -111,9 +111,9 @@
         
     }else{
         OrderRejectExplanationViewController *controller = [[OrderRejectExplanationViewController alloc] init];
-        controller.delegate = self;
         controller.title = _selectedReason.reason_text;
         controller.reasonCode = _selectedReason.reason_code;
+        controller.order = self.order;
         [self.navigationController pushViewController:controller animated:YES];
     }
 }
@@ -127,11 +127,6 @@
         StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Kendala koneksi internet"] delegate:self];
         [alert show];
     }];
-}
-
--(void)didFinishWritingExplanation:(NSString *)explanation{
-    [_delegate didChooseRejectReason:_selectedReason withExplanation:explanation];
-    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 -(void)didTapBackButton{

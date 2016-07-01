@@ -7,16 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@protocol RejectExplanationDelegate <NSObject>
-
-- (void)didFinishWritingExplanation:(NSString *)explanation;
-
-@end
+#import "OrderTransaction.h"
 
 @interface OrderRejectExplanationViewController : UIViewController
-
-@property (weak, nonatomic) id<RejectExplanationDelegate> delegate;
 @property (strong, nonatomic) NSString* reasonCode;
+@property (strong, nonatomic) OrderTransaction* order;
 
 @end
