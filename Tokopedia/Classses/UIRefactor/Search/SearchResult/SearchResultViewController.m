@@ -358,7 +358,7 @@ ImageSearchRequestDelegate
 }
 
 -(NSString*)defaultSortDirectoryID{
-    return @"1";
+    return @"23";
 }
 
 -(void)setDefaultSortCatalog{
