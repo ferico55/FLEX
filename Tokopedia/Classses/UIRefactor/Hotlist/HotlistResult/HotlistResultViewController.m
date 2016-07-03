@@ -616,7 +616,7 @@ static NSString const *rows = @"12";
 #pragma mark - Sort Delegate
 - (void)didSelectSort:(NSString *)sort atIndexPath:(NSIndexPath *)indexPath {
     _sortIndexPath = indexPath;
-    [_detailfilter setObject:sort forKey:sort];
+    [_detailfilter setObject:sort forKey:@"ob"];
     [self refreshView:nil];
 }
 
