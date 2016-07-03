@@ -135,7 +135,7 @@
     
     _detailfilter = [NSMutableDictionary new];
     NSDictionary *datafilter = [_data objectForKey:kTKPDFILTER_DATAFILTERKEY]?:@{};
-    [_detailfilter setObject:[datafilter objectForKey:kTKPDFILTER_APILOCATIONKEY]?:@"" forKey:kTKPDFILTER_APILOCATIONKEY];
+    [_detailfilter setObject:[datafilter objectForKey:@"floc"]?:@"" forKey:@"floc"];
     [_detailfilter setObject:[datafilter objectForKey:kTKPDFILTER_DATASORTVALUEKEY]?:@"" forKey:kTKPDFILTER_APICONDITIONKEY];
     
     NSInteger pricemin = [[datafilter objectForKey:@"pmin"] integerValue];
@@ -160,17 +160,17 @@
     [_detailfilter setObject:condition forKey:kTKPDFILTER_APICONDITIONKEY];
     [_detailfilter setObject:[datafilter objectForKey:kTKPDFILTERCONDITION_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0] forKey:kTKPDFILTERCONDITION_DATAINDEXPATHKEY];
     
-    NSInteger goldshopvalue = [[datafilter objectForKey:kTKPDFILTER_APISHOPTYPEKEY] integerValue];
+    NSInteger goldshopvalue = [[datafilter objectForKey:@"fshop"] integerValue];
     switch (goldshopvalue) {
         case 0:
-            [_detailfilter setObject:@(goldshopvalue) forKey:kTKPDFILTER_APISHOPTYPEKEY];
+            [_detailfilter setObject:@(goldshopvalue) forKey:@"fshop"];
             break;
         case 2:
         {
             switch (_type) {
                 case kTKPDFILTER_DATATYPESHOPVIEWKEY:
                 {
-                    [_detailfilter setObject:@(goldshopvalue) forKey:kTKPDFILTER_APISHOPTYPEKEY];
+                    [_detailfilter setObject:@(goldshopvalue) forKey:@"fshop"];
                     _shopsegmentcontrol.selectedSegmentIndex=1;
                     break;
                 }
@@ -185,13 +185,13 @@
                 case kTKPDFILTER_DATATYPEHOTLISTVIEWKEY:
                 case kTKPDFILTER_DATATYPEPRODUCTVIEWKEY:
                 { 
-                    [_detailfilter setObject:@(goldshopvalue) forKey:kTKPDFILTER_APISHOPTYPEKEY];
+                    [_detailfilter setObject:@(goldshopvalue) forKey:@"fshop"];
                     _productsegmentcontrol.selectedSegmentIndex = 1;
                     break;
                 }
                 case kTKPDFILTER_DATATYPECATALOGVIEWKEY:
                 {
-                    [_detailfilter setObject:@(goldshopvalue) forKey:kTKPDFILTER_APISHOPTYPEKEY];
+                    [_detailfilter setObject:@(goldshopvalue) forKey:@"fshop"];
                     _productsegmentcontrol.selectedSegmentIndex = 1;
                     break;
                 }
@@ -319,7 +319,7 @@
         UISegmentedControl *button = (UISegmentedControl*)sender;
         switch (button.selectedSegmentIndex) {
             case 0:
-                [_detailfilter setObject:@(0) forKey:kTKPDFILTER_APISHOPTYPEKEY];
+                [_detailfilter setObject:@(0) forKey:@"fshop"];
                 break;
             case 1:
             {
@@ -328,12 +328,12 @@
                     case kTKPDFILTER_DATATYPEPRODUCTVIEWKEY:
                     case kTKPDFILTER_DATATYPECATALOGVIEWKEY:
                     {
-                        [_detailfilter setObject:@(3) forKey:kTKPDFILTER_APISHOPTYPEKEY];
+                        [_detailfilter setObject:@(3) forKey:@"fshop"];
                         break;
                     }
                     case kTKPDFILTER_DATATYPESHOPVIEWKEY:
                     {
-                        [_detailfilter setObject:@(2) forKey:kTKPDFILTER_APISHOPTYPEKEY];
+                        [_detailfilter setObject:@(2) forKey:@"fshop"];
                         break;
                     }
                     case kTKPDFILTER_DATATYPESHOPPRODUCTVIEWKEY:
@@ -396,7 +396,7 @@
     [_shoplocationbutton setTitle:[data objectForKey:kTKPDFILTER_APILOCATIONNAMEKEY] forState:UIControlStateNormal];
     [_productlocationbutton setTitle:[data objectForKey:kTKPDFILTER_APILOCATIONNAMEKEY] forState:UIControlStateNormal];
     [_detailcataloglocationbutton setTitle:[data objectForKey:kTKPDFILTER_APILOCATIONNAMEKEY] forState:UIControlStateNormal];
-    [_detailfilter setObject:[data objectForKey:kTKPDFILTER_APILOCATIONKEY] forKey:kTKPDFILTER_APILOCATIONKEY];
+    [_detailfilter setObject:[data objectForKey:@"floc"] forKey:@"floc"];
     [_detailfilter setObject:[data objectForKey:kTKPDFILTER_APILOCATIONNAMEKEY] forKey:kTKPDFILTER_APILOCATIONNAMEKEY];
     [_detailfilter setObject:[data objectForKey:kTKPDFILTERLOCATION_DATAINDEXPATHKEY] forKey:kTKPDFILTERLOCATION_DATAINDEXPATHKEY];
 }
