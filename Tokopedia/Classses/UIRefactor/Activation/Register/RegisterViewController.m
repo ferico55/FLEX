@@ -206,6 +206,11 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     self.textfieldpassword.isTopRoundCorner = YES;
     self.textfieldconfirmpass.isBottomRoundCorner = YES;
     
+    if (_emailFromForgotPassword != (id)[NSNull null] && _emailFromForgotPassword.length != 0) {
+        self.textfieldemail.text = _emailFromForgotPassword;
+        [_datainput setObject:self.textfieldemail.text forKey:kTKPDREGISTER_APIEMAILKEY];
+    }
+    
     self.signUpButton.layer.cornerRadius = 2;
 
     _act.hidden = YES;
@@ -689,7 +694,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
         }
         case 13:
         {
-            [self.navigationController popViewControllerAnimated:YES];
+            [self.navigationController popToRootViewControllerAnimated:YES];
             break;
         }
         default:

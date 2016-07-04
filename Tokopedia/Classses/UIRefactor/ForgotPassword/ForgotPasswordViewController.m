@@ -11,6 +11,7 @@
 #import "StickyAlertView.h"
 #import "GeneralAction.h"
 #import "string_settings.h"
+#import "RegisterViewController.h"
 
 @interface ForgotPasswordViewController () <TokopediaNetworkManagerDelegate> {
     TokopediaNetworkManager *_networkManager;
@@ -40,6 +41,7 @@
     _emailText.layer.cornerRadius = 2;
     _emailText.layer.borderWidth = 1;
     _emailText.layer.borderColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.5].CGColor;
+    [_emailText setKeyboardType:UIKeyboardTypeEmailAddress];
     
     UIView *leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 12, 40)];
     _emailText.leftView = leftView;
@@ -111,9 +113,7 @@
                 [alert show];
                 self.emailText.text = @"";
             } else {
-                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Gagal mengirimkan kata sandi ke email Anda."]
-                                                                               delegate:self];
-                [alert show];
+                [self showAlertToRegisterView];
             }
         }
     }
@@ -142,6 +142,23 @@
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     [_emailText resignFirstResponder];
+}
+
+#pragma mark - Alert Controller
+
+- (void) showAlertToRegisterView {
+    NSString *alertControllerTitle = [NSString stringWithFormat:@"Email %@ belum terdaftar sebagai member Tokopedia", _emailText.text];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:alertControllerTitle message:@"Anda akan kami arahkan ke halaman registrasi" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *yesAlertAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        RegisterViewController *registerViewController = [RegisterViewController new];
+        registerViewController.emailFromForgotPassword = _emailText.text;
+        [self.navigationController pushViewController:registerViewController animated:YES];
+    }];
+    UIAlertAction *noAlertAction = [UIAlertAction actionWithTitle:@"Tidak" style:UIAlertActionStyleCancel handler:nil];
+    
+    [alertController addAction:yesAlertAction];
+    [alertController addAction:noAlertAction];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 @end
