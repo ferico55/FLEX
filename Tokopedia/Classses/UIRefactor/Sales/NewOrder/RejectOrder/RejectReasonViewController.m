@@ -111,6 +111,7 @@
     }else if([_selectedReason.reason_code isEqualToString:SHOP_IS_CLOSED]){
         RejectReasonCloseShopViewController *vc = [[RejectReasonCloseShopViewController alloc] init];
         vc.order = self.order;
+        vc.reasonCode = _selectedReason.reason_code;
         vc.title = _selectedReason.reason_text;
         [self.navigationController pushViewController:vc animated:YES];
     }else{

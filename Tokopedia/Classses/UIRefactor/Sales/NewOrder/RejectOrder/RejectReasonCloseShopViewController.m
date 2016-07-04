@@ -12,6 +12,7 @@
 #import "RejectReasonEmptyStockCell.h"
 #import <BlocksKit/BlocksKit.h>
 #import "NSArray+BlocksKit.h"
+#import "RejectOrderRequest.h"
 
 @interface RejectReasonCloseShopViewController ()<TKPDAlertViewDelegate, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate>
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
@@ -23,6 +24,7 @@
 @property (strong, nonatomic) IBOutlet UITableViewCell *closeShopFormCell;
 @property (strong, nonatomic) IBOutlet UITableViewCell *showEmptyStockToggleCell;
 @property (strong, nonatomic) IBOutlet UISwitch *emptyStockSwitch;
+@property (strong, nonatomic) RejectOrderRequest *rejectOrderRequest;
 
 @end
 
@@ -35,6 +37,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     _startDate = [NSDate date];
+    _rejectOrderRequest = [RejectOrderRequest new];
     
     [_emptyStockSwitch setOn:NO];
     
@@ -161,7 +164,45 @@
 }
 
 - (IBAction)confirmButtonTapped:(id)sender {
-    
+    if([self validateForm]){
+        [_rejectOrderRequest requestActionRejectOrderWithOrderId:_order.order_detail.detail_order_id
+                                                   emptyProducts:_order.order_products
+                                                      reasonCode:_reasonCode
+                                                        closeEnd:[self stringFromNSDate:_endDate]
+                                                       closeNote:_textView.text
+                                                       onSuccess:^(GeneralAction *result) {
+                                                           if([result.data.is_success boolValue]){
+                                                               [[NSNotificationCenter defaultCenter] postNotificationName:@"applyRejectOperation" object:nil];
+                                                               [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                                                           }else{
+                                                               StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:result.message_error delegate:self];
+                                                               [alert show];
+                                                           }
+                                                       } onFailure:^(NSError *error) {
+                                                           StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Kendala koneksi internet"] delegate:self];
+                                                           [alert show];
+                                                       }];
+    }
+}
+
+-(BOOL)validateForm{
+    BOOL isOkay = YES;
+    NSMutableArray* errors = [NSMutableArray new];
+    if(_endDate == nil){
+        isOkay = NO;
+        [errors addObject:@"Tanggal buka kembali belum dipilih."];
+    }
+    if(_textView.text== nil || [_textView.text isEqualToString:@""]){
+        isOkay = NO;
+        [errors addObject:@"Alasan tutup toko belum diisi"];
+    }
+    if(isOkay){
+        return YES;
+    }else{
+        StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errors delegate:self];
+        [alert show];
+        return NO;
+    }
 }
 
 -(void)setDateButton{

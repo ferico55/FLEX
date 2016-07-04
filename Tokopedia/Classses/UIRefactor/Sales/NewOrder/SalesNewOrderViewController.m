@@ -146,7 +146,11 @@
 }
 
 -(void)applyRejectOperation{
-    _needToDoLazyCellRemoval = YES;
+    if(UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad){
+        _needToDoLazyCellRemoval = YES;
+    }else{        
+        [self performSelector:@selector(removeFinishedCell) withObject:nil afterDelay:0.5];
+    }
 }
 
 -(void)removeFinishedCell{
