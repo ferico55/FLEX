@@ -27,9 +27,11 @@
     
     _rejectOrderRequest = [RejectOrderRequest new];
     
+    /*
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] bk_initWithTitle:@"Batal" style:UIBarButtonItemStyleBordered handler:^(id sender) {
         [self.navigationController popViewControllerAnimated:YES];
     }];;
+     */
     
     __weak typeof(self) welf = self;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] bk_initWithTitle:@"Selesai" style:UIBarButtonItemStyleDone handler:^(id sender) {
