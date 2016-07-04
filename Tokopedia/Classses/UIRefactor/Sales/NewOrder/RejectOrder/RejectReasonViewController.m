@@ -13,6 +13,7 @@
 #import "RejectReasonEmptyVariantViewController.h"
 #import "RejectReasonWrongPriceViewController.h"
 #import "RejectOrderRequest.h"
+#import "RejectReasonCloseShopViewController.h"
 
 @interface RejectReasonViewController ()<UITableViewDelegate, UIScrollViewDelegate, UITableViewDataSource>
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
@@ -108,7 +109,10 @@
         vc.title = _selectedReason.reason_text;
         [self.navigationController pushViewController:vc animated:YES];
     }else if([_selectedReason.reason_code isEqualToString:SHOP_IS_CLOSED]){
-        
+        RejectReasonCloseShopViewController *vc = [[RejectReasonCloseShopViewController alloc] init];
+        vc.order = self.order;
+        vc.title = _selectedReason.reason_text;
+        [self.navigationController pushViewController:vc animated:YES];
     }else{
         OrderRejectExplanationViewController *controller = [[OrderRejectExplanationViewController alloc] init];
         controller.title = _selectedReason.reason_text;

@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "OrderTransaction.h"
 
 @interface RejectReasonCloseShopViewController : UIViewController
-
+@property (strong, nonatomic) OrderTransaction* order;
 @end
