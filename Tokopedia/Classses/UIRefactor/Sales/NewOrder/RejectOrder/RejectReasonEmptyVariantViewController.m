@@ -9,6 +9,8 @@
 #import "RejectReasonEmptyVariantViewController.h"
 #import "RejectReasonEmptyVariantCell.h"
 #import "RejectReasonProductDescriptionViewController.h"
+#import <BlocksKit/BlocksKit.h>
+#import "NSArray+BlocksKit.h"
 
 @interface RejectReasonEmptyVariantViewController ()<UITableViewDelegate, UITableViewDataSource, RejectReasonEmptyVariantDelegate, RejectReasonProductDescriptionDelegate>
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
@@ -107,10 +109,15 @@
 
 #pragma mark - Product Description Delegate
 
-- (void)didChangeProductDescription:(NSString *)description withEmptyStock:(BOOL)emptyStock {
-    OrderProduct *product = [self.order.order_products objectAtIndex:selectedIndexPath.row];
-    product.product_description = description;
-    product.emptyStock = emptyStock;
+- (void)didChangeProductDescription:(OrderProduct *)orderProduct {
+    [_order.order_products bk_each:^(id obj) {
+        OrderProduct* selected = obj;
+        if([selected.product_id isEqualToString:orderProduct.product_id]){
+            selected.product_description = orderProduct.product_description;
+            selected.emptyStock = orderProduct.emptyStock;
+        }
+    }];
+    [_tableView reloadData];
 }
 
 @end

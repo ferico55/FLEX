@@ -74,7 +74,7 @@
                                                             description:_orderProduct.product_description
                                                               onSuccess:^(NSString *isSuccess) {
                                                                   if([isSuccess boolValue]){
-                                                                      [self.delegate didChangeProductDescription:_orderProduct.product_description withEmptyStock:_orderProduct.emptyStock];
+                                                                      [self.delegate didChangeProductDescription:_orderProduct];
                                                                       [self.navigationController popViewControllerAnimated:YES];
                                                                   }
                                                               } onFailure:^(NSError *error) {
