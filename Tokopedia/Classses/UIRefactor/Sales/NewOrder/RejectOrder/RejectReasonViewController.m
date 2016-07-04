@@ -95,7 +95,7 @@
     if([_selectedReason.reason_code isEqualToString:EMPTY_STOCK]){
         RejectReasonEmptyStockViewController *vc = [[RejectReasonEmptyStockViewController alloc]init];
         vc.order = self.order;
-        vc.reasonCode = EMPTY_STOCK;
+        vc.reasonCode = _selectedReason.reason_code;
         vc.title = _selectedReason.reason_text;
         [self.navigationController pushViewController:vc animated:YES];
     }else if([_selectedReason.reason_code isEqualToString:EMPTY_VARIANT]){
@@ -106,6 +106,7 @@
     }else if([_selectedReason.reason_code isEqualToString:WRONG_PRICE_WEIGHT]){
         RejectReasonWrongPriceViewController *vc = [[RejectReasonWrongPriceViewController alloc] init];
         vc.order = self.order;
+        vc.reasonCode = _selectedReason.reason_code;
         vc.title = _selectedReason.reason_text;
         [self.navigationController pushViewController:vc animated:YES];
     }else if([_selectedReason.reason_code isEqualToString:SHOP_IS_CLOSED]){

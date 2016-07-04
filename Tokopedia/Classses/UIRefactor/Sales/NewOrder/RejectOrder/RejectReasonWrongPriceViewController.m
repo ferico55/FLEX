@@ -12,6 +12,8 @@
 #import "RejectReasonWrongPriceCell.h"
 #import "RejectReasonEditPriceViewController.h"
 #import "RejectOrderRequest.h"
+#import "string_product.h"
+#import "NSNumberFormatter+IDRFormater.h"
 
 @interface RejectReasonWrongPriceViewController ()<UITableViewDelegate, UITableViewDataSource, RejectReasonWrongPriceDelegate, RejectReasonEditPriceDelegate>
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
@@ -62,6 +64,10 @@
     cell.delegate = self;
     cell.indexPath = indexPath;
     OrderProduct *currentProduct = [_order.order_products objectAtIndex:indexPath.row];
+    NSInteger weightIndex = [currentProduct.product_weight_unit integerValue];
+    NSString *weightName = [ARRAY_WEIGHT_UNIT[weightIndex-1] objectForKey:DATA_NAME_KEY];
+    currentProduct.product_weight = [currentProduct.product_current_weight stringByAppendingString:[@" " stringByAppendingString:weightName]];   
+    
     [cell setViewModel:currentProduct.viewModel];
     return cell;
 }
@@ -95,6 +101,21 @@
     
 }
 - (IBAction)confirmButtonTapped:(id)sender {
+    [_rejectOrderRequest requestActionRejectOrderWithOrderId:_order.order_detail.detail_order_id
+                                               emptyProducts:_order.order_products
+                                                  reasonCode:_reasonCode
+                                                   onSuccess:^(GeneralAction *result) {
+                                                       if([result.data.is_success boolValue]){
+                                                           [[NSNotificationCenter defaultCenter] postNotificationName:@"applyRejectOperation" object:nil];
+                                                           [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                                                       }else{
+                                                           StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:result.message_error delegate:self];
+                                                           [alert show];
+                                                       }
+                                                   } onFailure:^(NSError *error) {
+                                                       StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Kendala koneksi internet"] delegate:self];
+                                                       [alert show];
+                                                   }];
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 

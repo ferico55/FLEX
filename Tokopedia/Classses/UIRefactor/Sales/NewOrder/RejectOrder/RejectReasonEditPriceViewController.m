@@ -10,9 +10,13 @@
 #import "AlertPickerView.h"
 #import "string_product.h"
 #import "RejectOrderRequest.h"
+#import "NSNumberFormatter+IDRFormater.h"
 
 #define CURRENCY_PICKER 11
 #define WEIGHT_PICKER 12
+
+#define IDR 1
+#define USD 2
 
 @interface RejectReasonEditPriceViewController ()<UITableViewDelegate, UITableViewDataSource, TKPDAlertViewDelegate, UIScrollViewDelegate>
 
@@ -180,14 +184,18 @@
                                                    onSuccess:^(GeneralAction *result) {
                                                        if([result.data.is_success boolValue]){
                                                            NSInteger currencyIndex = [_orderProduct.product_price_currency integerValue];
-                                                           NSString *currencyName = [ARRAY_PRICE_CURRENCY[currencyIndex-1] objectForKey:DATA_NAME_KEY];
                                                            
                                                            NSInteger weightIndex = [_orderProduct.product_weight_unit integerValue];
                                                            NSString *weightName = [ARRAY_WEIGHT_UNIT[weightIndex-1] objectForKey:DATA_NAME_KEY];
                                                            
-                                                           
-                                                           _orderProduct.product_price = [currencyName stringByAppendingString:[@" " stringByAppendingString:_priceTextField.text]];
+                                                           NSString *formattedPrice;
+                                                           if(currencyIndex == IDR){
+                                                               formattedPrice = [[NSNumberFormatter IDRFormarter] stringFromNumber:[self numberWithString:_priceTextField.text]];
+                                                           }else{
+                                                               formattedPrice = [[NSNumberFormatter USDFormatter] stringFromNumber:[self numberWithString:_priceTextField.text]];
+                                                           }
                                                            _orderProduct.product_normal_price = _priceTextField.text;
+                                                           _orderProduct.product_price = formattedPrice;
                                                            _orderProduct.product_weight = [_weightTextField.text stringByAppendingString:[@" " stringByAppendingString:weightName]];
                                                            _orderProduct.product_current_weight = _weightTextField.text;
                                                            
@@ -201,6 +209,9 @@
                                                        StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Kendala koneksi internet"] delegate:self];
                                                        [alert show];
                                                    }];
+    }else{
+        StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Harga dan berat produk harus berupa angka"] delegate:self];
+        [alert show];
     }
 }
 
@@ -213,6 +224,11 @@
         isValidateSuccess = NO;
     }
     return isValidateSuccess;
+}
+
+-(NSNumber*)numberWithString:(NSString*)str{
+    NSInteger strInt = [str integerValue];
+    return [NSNumber numberWithInteger:strInt];
 }
 
 #pragma mark - UITextField Delegate
