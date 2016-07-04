@@ -168,7 +168,7 @@
             case 11:
             {
                 NSIndexPath *indexpath = [_selectedlocation objectForKey:kTKPDFILTER_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-                NSDictionary *data = @{kTKPDFILTER_APILOCATIONKEY : _locationvalues[indexpath.row]?:@(0),
+                NSDictionary *data = @{@"floc" : _locationvalues[indexpath.row]?:@(0),
                                        kTKPDFILTER_APILOCATIONNAMEKEY :  _locationnames[indexpath.row]?:@"none",
                                        kTKPDFILTERLOCATION_DATAINDEXPATHKEY:indexpath
                                        };
