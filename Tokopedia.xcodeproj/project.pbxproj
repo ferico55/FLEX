@@ -2390,6 +2390,10 @@
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
 		85C494BF1AD790DD008A314A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BE1AD790DD008A314A /* libz.dylib */; };
 		85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494C01AD790E4008A314A /* CoreData.framework */; };
+		D6A341641D2A6F56009F512C /* MyShopNoteRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A341631D2A6F56009F512C /* MyShopNoteRequest.swift */; };
+		D6A341681D2A6F91009F512C /* Notes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A341651D2A6F91009F512C /* Notes.swift */; };
+		D6A341691D2A6F91009F512C /* NotesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A341661D2A6F91009F512C /* NotesList.swift */; };
+		D6A3416A1D2A6F91009F512C /* NotesResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A341671D2A6F91009F512C /* NotesResult.swift */; };
 		F25F6F270D531ED13A92CDB9 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4868E459AB2A65D133732296 /* libPods-Tokopedia.a */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
 		FC23B85A1ACD659900879D75 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8581ACD659900879D75 /* Fabric.framework */; };
@@ -5959,6 +5963,10 @@
 		85C494C01AD790E4008A314A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		AAA12C6A69BF6CB5F8EE3287 /* Pods-Tokopedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug.xcconfig"; sourceTree = "<group>"; };
 		C8A1445074FECD393EA18C17 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
+		D6A341631D2A6F56009F512C /* MyShopNoteRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyShopNoteRequest.swift; sourceTree = "<group>"; };
+		D6A341651D2A6F91009F512C /* Notes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notes.swift; sourceTree = "<group>"; };
+		D6A341661D2A6F91009F512C /* NotesList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotesList.swift; sourceTree = "<group>"; };
+		D6A341671D2A6F91009F512C /* NotesResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotesResult.swift; sourceTree = "<group>"; };
 		FC23B8571ACD659900879D75 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		FC23B8581ACD659900879D75 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		FC36DF8319B0656400AF74C1 /* Tokopedia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tokopedia.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -7576,6 +7584,9 @@
 		8548A2F61D1A58E600D11E22 /* Notes */ = {
 			isa = PBXGroup;
 			children = (
+				D6A341651D2A6F91009F512C /* Notes.swift */,
+				D6A341661D2A6F91009F512C /* NotesList.swift */,
+				D6A341671D2A6F91009F512C /* NotesResult.swift */,
 				8548A2F71D1A58E600D11E22 /* NoteDetail */,
 				8548A2FE1D1A58E600D11E22 /* Notes.h */,
 				8548A2FF1D1A58E600D11E22 /* Notes.m */,
@@ -9325,6 +9336,7 @@
 		8548A7071D1A58E700D11E22 /* MyShopNote */ = {
 			isa = PBXGroup;
 			children = (
+				D6A341631D2A6F56009F512C /* MyShopNoteRequest.swift */,
 				8548A7081D1A58E700D11E22 /* MyShopNoteDetailViewController.h */,
 				8548A7091D1A58E700D11E22 /* MyShopNoteDetailViewController.m */,
 				8548A70A1D1A58E700D11E22 /* MyShopNoteDetailViewController.xib */,
@@ -13958,6 +13970,7 @@
 				8548B4331D1A58F200D11E22 /* VTTransactionDetails.m in Sources */,
 				8548B3A51D1A58F100D11E22 /* RequestAddAddress.m in Sources */,
 				8548B1731D1A58F100D11E22 /* FiltersTableViewController.swift in Sources */,
+				D6A341681D2A6F91009F512C /* Notes.swift in Sources */,
 				8548AFCD1D1A58F100D11E22 /* SearchAWSResult.m in Sources */,
 				8548AE851D1A58F100D11E22 /* NSNumberFormatter+IDRFormater.m in Sources */,
 				8548B01B1D1A58F100D11E22 /* JNE.m in Sources */,
@@ -14195,6 +14208,7 @@
 				8548B1601D1A58F100D11E22 /* DepositFormViewController.m in Sources */,
 				8548B0111D1A58F100D11E22 /* AddProductValidationResult.m in Sources */,
 				8548B1621D1A58F100D11E22 /* DepositListBankCell.m in Sources */,
+				D6A341641D2A6F56009F512C /* MyShopNoteRequest.swift in Sources */,
 				8548AF851D1A58F100D11E22 /* ProductTalkFormResult.m in Sources */,
 				8548B27D1D1A58F100D11E22 /* GiveReviewResponseViewController.m in Sources */,
 				8548B2841D1A58F100D11E22 /* ImageStorage.m in Sources */,
@@ -14293,6 +14307,7 @@
 				8548B3861D1A58F100D11E22 /* FilterLocationViewCell.m in Sources */,
 				8548B2051D1A58F100D11E22 /* SalesViewController.m in Sources */,
 				8548AF201D1A58F100D11E22 /* InboxMessageDetail.m in Sources */,
+				D6A3416A1D2A6F91009F512C /* NotesResult.swift in Sources */,
 				8548B1871D1A58F100D11E22 /* GeneralProductCollectionViewCell.m in Sources */,
 				8548AFA71D1A58F100D11E22 /* PromoResponse.m in Sources */,
 				8548AED51D1A58F100D11E22 /* DetailCatalogResult.m in Sources */,
@@ -14583,6 +14598,7 @@
 				8548B0A61D1A58F100D11E22 /* README.md in Sources */,
 				8548B3BD1D1A58F100D11E22 /* TransactionCartHeaderView.m in Sources */,
 				8548AED61D1A58F100D11E22 /* ProductList.m in Sources */,
+				D6A341691D2A6F91009F512C /* NotesList.swift in Sources */,
 				8548AEA51D1A58F100D11E22 /* SecurityAnswerResult.m in Sources */,
 				8548B0751D1A58F100D11E22 /* TxOrderConfirmPaymentFormForm.m in Sources */,
 				8548B01F1D1A58F100D11E22 /* RPX.m in Sources */,
