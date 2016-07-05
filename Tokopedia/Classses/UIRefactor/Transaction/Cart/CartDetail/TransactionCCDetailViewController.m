@@ -578,7 +578,7 @@
     return isValid;
 }
 
-#pragma mark - Credit Card Scanner Button
+#pragma mark - Credit Card Scanner
 
 - (IBAction)didPressScanButton:(UIButton *)sender {
     if ([AVCaptureDevice respondsToSelector:@selector(requestAccessForMediaType: completionHandler:)]) {
@@ -608,12 +608,29 @@
     [self.navigationController presentViewController:ccReaderVC animated:YES completion:nil];
 }
 
+-(NSString *) generateSpaceOnCCTextFieldWithString:(NSString *)originalString {
+    NSMutableString *resultString = [NSMutableString string];
+    
+    for(int i = 0; i<[originalString length]/4; i++)
+    {
+        NSUInteger fromIndex = i * 4;
+        NSUInteger len = [originalString length] - fromIndex;
+        if (len > 4) {
+            len = 4;
+        }
+        
+        [resultString appendFormat:@"%@ ",[originalString substringWithRange:NSMakeRange(fromIndex, len)]];
+    }
+    return resultString;
+}
+
 
 #pragma mark - CCView Delegate
 
 - (void)didScanCard:(CardIOCreditCardInfo *)cardInfo {
     if (cardInfo) {
-        _CCNumberTextField.text = cardInfo.redactedCardNumber;
+        NSString *cardNumberWithSeparatedSpace = [self generateSpaceOnCCTextFieldWithString:cardInfo.cardNumber];
+        _CCNumberTextField.text = cardNumberWithSeparatedSpace;
         _CVVTextField.text = cardInfo.cvv;
         _expDateLabel.text = [NSString stringWithFormat:@"%02i/%i", cardInfo.expiryMonth, cardInfo.expiryYear];
     }
