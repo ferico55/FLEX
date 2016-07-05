@@ -57,3 +57,4 @@
 #import "AddressObj.h"
 #import "FilterCategoryViewCell.h"
 #import "TKPObjectMapping.h"
+#import "CardIO.h"
