@@ -241,16 +241,16 @@
 {
     MyShopNoteRequest *requestNetwork = [MyShopNoteRequest new];
     [requestNetwork requestNoteList:^(NotesSwift * notes) {
-        [self actionUponSuccessfulNotesListRequest:notes];
+        [self actionUponSuccessfulRequestNotesList:notes];
     } onFailure:^(NSError * errorResult) {
-        [self actionUponFailNotesListRequest:errorResult];
+        [self actionUponFailRequestNotesList:errorResult];
     }];
     
     [_refreshControl endRefreshing];
     [_act stopAnimating];
 }
 
--(void)actionUponSuccessfulNotesListRequest:(NotesSwift *)notes
+-(void)actionUponSuccessfulRequestNotesList:(NotesSwift *)notes
 {
     _list = [NSMutableArray arrayWithArray:notes.result.list];
     
@@ -267,7 +267,7 @@
     [_table reloadData];
 }
 
--(void)actionUponFailNotesListRequest:(NSError *)error
+-(void)actionUponFailRequestNotesList:(NSError *)error
 {
     [self cancel];
     if (!([error code] == NSURLErrorCancelled)){

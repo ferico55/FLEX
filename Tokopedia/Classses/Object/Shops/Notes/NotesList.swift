@@ -11,7 +11,7 @@ import Foundation
 class NotesListSwift : NSObject{
     
     var note_id : NSString = ""
-    var note_status : NSNumber = 0
+    var note_status : NSString = ""
     var note_title : NSString = ""
     
     class private func attributeMappingDictionary() -> [NSObject : AnyObject]! {

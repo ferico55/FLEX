@@ -10,9 +10,9 @@ import Foundation
 
 class NotesResultSwift : NSObject{
     
-    var is_allow : NSNumber = 0
-    var allow_add : NSNumber = 0
-    var has_terms : NSNumber = 0
+    var is_allow : NSString = ""
+    var allow_add : NSString = ""
+    var has_terms : NSString = ""
     var list : Array<NotesListSwift> = Array<NotesListSwift>()
     var detail : NoteDetails = NoteDetails()
     
