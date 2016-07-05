@@ -8,7 +8,7 @@
 
 import Foundation
 
-class NotesListSwift : NSObject{
+class NotesList : NSObject{
     
     var note_id : NSString = ""
     var note_status : NSString = ""

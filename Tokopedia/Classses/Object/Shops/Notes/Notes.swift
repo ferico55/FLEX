@@ -8,11 +8,11 @@
 
 import Foundation
 
-class NotesSwift: NSObject {
+class Notes: NSObject {
     
     var status : NSString = ""
     var server_process_time : NSString = ""
-    var result : NotesResultSwift = NotesResultSwift()
+    var result : NotesResult = NotesResult()
     
     
     class private func attributeMappingDictionary() -> [NSObject : AnyObject]! {
@@ -24,7 +24,7 @@ class NotesSwift: NSObject {
         let mapping : RKObjectMapping = RKObjectMapping.init(forClass: self)
         
         mapping.addAttributeMappingsFromDictionary(self.attributeMappingDictionary())
-        mapping.addPropertyMapping(RKRelationshipMapping.init(fromKeyPath: "data", toKeyPath: "result", withMapping: NotesResultSwift.mapping()))
+        mapping.addPropertyMapping(RKRelationshipMapping.init(fromKeyPath: "data", toKeyPath: "result", withMapping: NotesResult.mapping()))
         
         return mapping
     }

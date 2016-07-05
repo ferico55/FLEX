@@ -44,7 +44,7 @@
 
 -(void)requestForShopNotesPageListingWithShopId:(NSString*)shopId
                                    shop_domain:(NSString*)shopDomain
-                                     onSuccess:(void (^)(NotesSwift*))successCallback
+                                     onSuccess:(void (^)(Notes*))successCallback
                                      onFailure:(void (^)(NSError *))errorCallback;
 
 

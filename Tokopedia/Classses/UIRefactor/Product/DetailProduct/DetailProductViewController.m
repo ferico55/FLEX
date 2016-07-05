@@ -1572,13 +1572,13 @@ OtherProductDelegate
     else if(tag == CTagNoteCanReture) {
         _objectNoteCanReture = [RKObjectManager sharedClient];
         // setup object mappings
-        RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[NotesSwift class]];
+        RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Notes class]];
         [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
                                                             kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
                                                             kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
                                                             kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
         
-        RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[NotesResultSwift class]];
+        RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[NotesResult class]];
         RKObjectMapping *noteDetailMapping = [RKObjectMapping mappingForClass:[NoteDetails class]];
         [noteDetailMapping addAttributeMappingsFromDictionary:@{
                                                                 CNotesPosition:CNotesPosition,
@@ -1667,7 +1667,7 @@ OtherProductDelegate
         return wishlistAction.status;
     }
     else if(tag == CTagNoteCanReture) {
-        NotesSwift *notes = stat;
+        Notes *notes = stat;
         return notes.status;
     }
     else if(tag == CTagPriceAlert) {
@@ -1807,7 +1807,7 @@ OtherProductDelegate
     }
     else if(tag == CTagNoteCanReture) {
         NSDictionary *result = ((RKMappingResult *) successResult).dictionary;
-        NotesSwift *tempNotes = [result objectForKey:@""];
+        Notes *tempNotes = [result objectForKey:@""];
         notesDetail = tempNotes.result.detail;
     }
     else if(tag == CTagPriceAlert) {

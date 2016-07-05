@@ -13,7 +13,7 @@
 @protocol MyShopNoteDetailDelegate <NSObject>
 
 - (void)successCreateNewNote;
-- (void)successEditNote:(NotesListSwift *)noteList;
+- (void)successEditNote:(NotesList *)noteList;
 
 @end
 
@@ -21,6 +21,6 @@
 
 @property (nonatomic,strong) NSDictionary *data;
 @property (nonatomic, weak) id<MyShopNoteDetailDelegate> delegate;
-@property (nonatomic, strong) NotesListSwift *noteList;
+@property (nonatomic, strong) NotesList *noteList;
 
 @end

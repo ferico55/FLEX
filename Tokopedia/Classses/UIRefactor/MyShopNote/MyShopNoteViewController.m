@@ -145,7 +145,7 @@
 		}
         
         if (_list.count > indexPath.row) {
-            NotesListSwift *list = _list[indexPath.row];
+            NotesList *list = _list[indexPath.row];
             ((GeneralList1GestureCell*)cell).textLabel.text = [NSString convertHTML:list.note_title];
             ((GeneralList1GestureCell*)cell).detailTextLabel.hidden = YES;
             ((GeneralList1GestureCell*)cell).indexpath = indexPath;            
@@ -172,7 +172,7 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    NotesListSwift *list = _list[indexPath.row];
+    NotesList *list = _list[indexPath.row];
     MyShopNoteDetailViewController *vc = [MyShopNoteDetailViewController new];
     vc.delegate = self;
     vc.noteList = list;
@@ -240,7 +240,7 @@
 -(void)showNotesList
 {
     MyShopNoteRequest *requestNetwork = [MyShopNoteRequest new];
-    [requestNetwork requestNoteList:^(NotesSwift * notes) {
+    [requestNetwork requestNoteList:^(Notes * notes) {
         [self actionUponSuccessfulRequestNotesList:notes];
     } onFailure:^(NSError * errorResult) {
         [self actionUponFailRequestNotesList:errorResult];
@@ -250,7 +250,7 @@
     [_act stopAnimating];
 }
 
--(void)actionUponSuccessfulRequestNotesList:(NotesSwift *)notes
+-(void)actionUponSuccessfulRequestNotesList:(Notes *)notes
 {
     _list = [NSMutableArray arrayWithArray:notes.result.list];
     
@@ -351,7 +351,7 @@
 
 -(void)deleteListAtIndexPath:(NSIndexPath*)indexpath
 {
-    NotesListSwift *list = _list[indexpath.row];
+    NotesList *list = _list[indexpath.row];
     [_list removeObjectAtIndex:indexpath.row];
     [_table beginUpdates];
     [_table deleteRowsAtIndexPaths:@[indexpath] withRowAnimation:UITableViewRowAnimationFade];
@@ -412,7 +412,7 @@
         
         CGFloat padding = 15;
         NSIndexPath *indexpath = ((GeneralList1GestureCell*) cell).indexpath;
-        NotesListSwift *list = _list[indexpath.row];
+        NotesList *list = _list[indexpath.row];
         [_datainput setObject:list.note_id forKey:kTKPDNOTES_APINOTEIDKEY];
         
         UIColor *colorDelete = [UIColor colorWithRed:255/255 green:59/255.0 blue:48/255.0 alpha:1.0];
@@ -461,7 +461,7 @@
 
 #pragma mark - Note edit delegate
 
-- (void)successEditNote:(NotesListSwift *)noteList {
+- (void)successEditNote:(NotesList *)noteList {
     NSInteger index = [_list indexOfObject:noteList];
     [_list replaceObjectAtIndex:index withObject:noteList];
     [self.table reloadData];

@@ -8,12 +8,12 @@
 
 import Foundation
 
-class NotesResultSwift : NSObject{
+class NotesResult : NSObject{
     
     var is_allow : NSString = ""
     var allow_add : NSString = ""
     var has_terms : NSString = ""
-    var list : Array<NotesListSwift> = Array<NotesListSwift>()
+    var list : Array<NotesList> = Array<NotesList>()
     var detail : NoteDetails = NoteDetails()
     
     class private func attributeMappingDictionary() -> [NSObject : AnyObject]! {
@@ -27,7 +27,7 @@ class NotesResultSwift : NSObject{
         
         mapping.addAttributeMappingsFromDictionary(self.attributeMappingDictionary())
         
-        let listMapping = RKRelationshipMapping.init(fromKeyPath: "list", toKeyPath: "list", withMapping: NotesListSwift.mapping())
+        let listMapping = RKRelationshipMapping.init(fromKeyPath: "list", toKeyPath: "list", withMapping: NotesList.mapping())
         mapping.addPropertyMapping(listMapping)
         
         return mapping
