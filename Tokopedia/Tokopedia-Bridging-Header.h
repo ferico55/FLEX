@@ -58,4 +58,6 @@
 #import "FilterCategoryViewCell.h"
 #import "TKPObjectMapping.h"
 
+//by Tedo Pranowo:
 #import "ShopSettings.h"
+#import "NoteDetails.h"

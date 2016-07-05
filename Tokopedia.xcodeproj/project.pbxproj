@@ -425,9 +425,6 @@
 		8548AFF51D1A58F100D11E22 /* NoteDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 8548A2F91D1A58E600D11E22 /* NoteDetail.m */; };
 		8548AFF61D1A58F100D11E22 /* NoteDetailResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 8548A2FB1D1A58E600D11E22 /* NoteDetailResult.m */; };
 		8548AFF71D1A58F100D11E22 /* NoteDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 8548A2FD1D1A58E600D11E22 /* NoteDetails.m */; };
-		8548AFF81D1A58F100D11E22 /* Notes.m in Sources */ = {isa = PBXBuildFile; fileRef = 8548A2FF1D1A58E600D11E22 /* Notes.m */; };
-		8548AFF91D1A58F100D11E22 /* NotesList.m in Sources */ = {isa = PBXBuildFile; fileRef = 8548A3011D1A58E600D11E22 /* NotesList.m */; };
-		8548AFFA1D1A58F100D11E22 /* NotesResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 8548A3031D1A58E600D11E22 /* NotesResult.m */; };
 		8548AFFB1D1A58F100D11E22 /* Address.m in Sources */ = {isa = PBXBuildFile; fileRef = 8548A3061D1A58E600D11E22 /* Address.m */; };
 		8548AFFC1D1A58F100D11E22 /* ClosedInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 8548A3081D1A58E600D11E22 /* ClosedInfo.m */; };
 		8548AFFD1D1A58F100D11E22 /* DetailShopResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 8548A30A1D1A58E600D11E22 /* DetailShopResult.m */; };
@@ -3243,12 +3240,6 @@
 		8548A2FB1D1A58E600D11E22 /* NoteDetailResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteDetailResult.m; sourceTree = "<group>"; };
 		8548A2FC1D1A58E600D11E22 /* NoteDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteDetails.h; sourceTree = "<group>"; };
 		8548A2FD1D1A58E600D11E22 /* NoteDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteDetails.m; sourceTree = "<group>"; };
-		8548A2FE1D1A58E600D11E22 /* Notes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Notes.h; sourceTree = "<group>"; };
-		8548A2FF1D1A58E600D11E22 /* Notes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Notes.m; sourceTree = "<group>"; };
-		8548A3001D1A58E600D11E22 /* NotesList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotesList.h; sourceTree = "<group>"; };
-		8548A3011D1A58E600D11E22 /* NotesList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotesList.m; sourceTree = "<group>"; };
-		8548A3021D1A58E600D11E22 /* NotesResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotesResult.h; sourceTree = "<group>"; };
-		8548A3031D1A58E600D11E22 /* NotesResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotesResult.m; sourceTree = "<group>"; };
 		8548A3051D1A58E600D11E22 /* Address.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Address.h; sourceTree = "<group>"; };
 		8548A3061D1A58E600D11E22 /* Address.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Address.m; sourceTree = "<group>"; };
 		8548A3071D1A58E600D11E22 /* ClosedInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClosedInfo.h; sourceTree = "<group>"; };
@@ -7588,12 +7579,6 @@
 				D6A341661D2A6F91009F512C /* NotesList.swift */,
 				D6A341671D2A6F91009F512C /* NotesResult.swift */,
 				8548A2F71D1A58E600D11E22 /* NoteDetail */,
-				8548A2FE1D1A58E600D11E22 /* Notes.h */,
-				8548A2FF1D1A58E600D11E22 /* Notes.m */,
-				8548A3001D1A58E600D11E22 /* NotesList.h */,
-				8548A3011D1A58E600D11E22 /* NotesList.m */,
-				8548A3021D1A58E600D11E22 /* NotesResult.h */,
-				8548A3031D1A58E600D11E22 /* NotesResult.m */,
 			);
 			path = Notes;
 			sourceTree = "<group>";
@@ -13716,7 +13701,6 @@
 				8548B3171D1A58F100D11E22 /* SettingAddressViewController.m in Sources */,
 				8548B1C81D1A58F100D11E22 /* InboxRootViewController.m in Sources */,
 				8548AFE01D1A58F100D11E22 /* SendMessageResult.m in Sources */,
-				8548AFF81D1A58F100D11E22 /* Notes.m in Sources */,
 				8548B0861D1A58F100D11E22 /* Upload.m in Sources */,
 				8548B39F1D1A58F100D11E22 /* TokopediaNetworkManager.m in Sources */,
 				8548AF331D1A58F100D11E22 /* ResolutionCustomer.m in Sources */,
@@ -13804,7 +13788,6 @@
 				8548B2C01D1A58F100D11E22 /* FooterCollectionReusableView.m in Sources */,
 				8548B0071D1A58F100D11E22 /* ShopInfoResult.m in Sources */,
 				8548B1FD1D1A58F100D11E22 /* MiniSlideObject.m in Sources */,
-				8548AFF91D1A58F100D11E22 /* NotesList.m in Sources */,
 				8548B3511D1A58F100D11E22 /* EditShopViewController.m in Sources */,
 				8548AF6C1D1A58F100D11E22 /* ResponseCommentResult.m in Sources */,
 				8548B19E1D1A58F100D11E22 /* FavoritedShopViewController.m in Sources */,
@@ -14097,7 +14080,6 @@
 				8548B3C71D1A58F200D11E22 /* TransactionCCViewController.m in Sources */,
 				8548B1451D1A58F100D11E22 /* TKPDTabInboxTalkNavigationController.m in Sources */,
 				8548B29D1D1A58F100D11E22 /* RatingComponent.mm in Sources */,
-				8548AFFA1D1A58F100D11E22 /* NotesResult.m in Sources */,
 				8548AF7D1D1A58F100D11E22 /* PriceAlert.m in Sources */,
 				8548B43D1D1A58F200D11E22 /* MoreWrapperViewController.m in Sources */,
 				8548B2871D1A58F100D11E22 /* MedalComponent.mm in Sources */,

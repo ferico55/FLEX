@@ -20,9 +20,7 @@
 #import "LabelMenu.h"
 #import "AlertPriceNotificationViewController.h"
 #import "PriceAlertViewController.h"
-#import "Notes.h"
 #import "NoteDetails.h"
-#import "NotesResult.h"
 #import "GalleryViewController.h"
 #import "detail.h"
 #import "search.h"
@@ -94,6 +92,8 @@
 #import "PriceAlertRequest.h"
 
 #import "TPLocalytics.h"
+
+#import "Tokopedia-Swift.h"
 
 #pragma mark - CustomButton Expand Desc
 @interface CustomButtonExpandDesc : UIButton
@@ -1572,13 +1572,13 @@ OtherProductDelegate
     else if(tag == CTagNoteCanReture) {
         _objectNoteCanReture = [RKObjectManager sharedClient];
         // setup object mappings
-        RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Notes class]];
+        RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[NotesSwift class]];
         [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
                                                             kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
                                                             kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
                                                             kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
         
-        RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[NotesResult class]];
+        RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[NotesResultSwift class]];
         RKObjectMapping *noteDetailMapping = [RKObjectMapping mappingForClass:[NoteDetails class]];
         [noteDetailMapping addAttributeMappingsFromDictionary:@{
                                                                 CNotesPosition:CNotesPosition,
@@ -1595,7 +1595,7 @@ OtherProductDelegate
         RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
         [statusMapping addPropertyMapping:resulRel];
         
-        RKRelationshipMapping *detailRel = [RKRelationshipMapping relationshipMappingFromKeyPath:CDetail toKeyPath:CDetail withMapping:noteDetailMapping];
+        RKRelationshipMapping *detailRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"detail" toKeyPath:@"detail" withMapping:noteDetailMapping];
         [resultMapping addPropertyMapping:detailRel];
         
         RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:[self getPath:tag] keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
@@ -1667,7 +1667,7 @@ OtherProductDelegate
         return wishlistAction.status;
     }
     else if(tag == CTagNoteCanReture) {
-        Notes *notes = stat;
+        NotesSwift *notes = stat;
         return notes.status;
     }
     else if(tag == CTagPriceAlert) {
@@ -1807,7 +1807,7 @@ OtherProductDelegate
     }
     else if(tag == CTagNoteCanReture) {
         NSDictionary *result = ((RKMappingResult *) successResult).dictionary;
-        Notes *tempNotes = [result objectForKey:@""];
+        NotesSwift *tempNotes = [result objectForKey:@""];
         notesDetail = tempNotes.result.detail;
     }
     else if(tag == CTagPriceAlert) {

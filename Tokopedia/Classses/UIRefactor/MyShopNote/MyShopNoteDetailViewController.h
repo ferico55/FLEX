@@ -7,12 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "NotesList.h"
+
+#import "Tokopedia-Swift.h"
 
 @protocol MyShopNoteDetailDelegate <NSObject>
 
 - (void)successCreateNewNote;
-- (void)successEditNote:(NotesList *)noteList;
+- (void)successEditNote:(NotesListSwift *)noteList;
 
 @end
 
@@ -20,6 +21,6 @@
 
 @property (nonatomic,strong) NSDictionary *data;
 @property (nonatomic, weak) id<MyShopNoteDetailDelegate> delegate;
-@property (nonatomic, strong) NotesList *noteList;
+@property (nonatomic, strong) NotesListSwift *noteList;
 
 @end

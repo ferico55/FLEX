@@ -11,7 +11,6 @@
 #import "MyShopNoteDetailViewController.h"
 #import "GeneralList1GestureCell.h"
 
-#import "Notes.h"
 #import "GeneralAction.h"
 #import "InboxTalk.h"
 
@@ -27,6 +26,8 @@
 #import "ShopPageRequest.h"
 
 #import "NoResultReusableView.h"
+
+#import "Tokopedia-Swift.h"
 
 @interface ShopNotesPageViewController ()
 <
@@ -77,7 +78,7 @@
     
     ShopPageRequest *_shopPageRequest;
     
-    Notes *_notes;
+    NotesSwift *_notes;
     Shop *_shop;
     NoResultReusableView *_noResultView;
 }
@@ -204,7 +205,7 @@
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NotesList *list = _list[indexPath.row];
+    NotesListSwift *list = _list[indexPath.row];
     MyShopNoteDetailViewController *vc = [MyShopNoteDetailViewController new];
     vc.delegate = self;
     vc.noteList = list;
@@ -256,7 +257,7 @@
         }
         
         if (_list.count > indexPath.row) {
-            NotesList *list = _list[indexPath.row];
+            NotesListSwift *list = _list[indexPath.row];
             ((GeneralList1GestureCell*)cell).textLabel.text = list.note_title;
             ((GeneralList1GestureCell*)cell).detailTextLabel.hidden = YES;
             ((GeneralList1GestureCell*)cell).indexpath = indexPath;
@@ -284,7 +285,7 @@
     [_noResultView removeFromSuperview];
     [_shopPageRequest requestForShopNotesPageListingWithShopId:[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]?:@(0)
                                                    shop_domain:[_data objectForKey:@"shop_domain"]?:@""
-                                                     onSuccess:^(Notes *notes) {
+                                                     onSuccess:^(NotesSwift *notes) {
                                                          _notes = notes;
                                                          NSArray *list = _notes.result.list;
                                                          _isNoData = NO;
@@ -351,7 +352,7 @@
 
 #pragma mark - Note detail delegate
 
-- (void)successEditNote:(NotesList *)noteList {
+- (void)successEditNote:(NotesListSwift *)noteList {
     NSInteger index = [_list indexOfObject:noteList];
     [_list replaceObjectAtIndex:index withObject:noteList];
     [self.table reloadData];

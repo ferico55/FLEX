@@ -10,9 +10,9 @@
 #import "ShopProductPageResponse.h"
 #import "ShopProductPageResult.h"
 #import "Talk.h"
-#import "Notes.h"
 #import "Review.h"
 #import "Shop.h"
+#import "Tokopedia-Swift.h"
 
 @interface ShopPageRequest : NSObject
 
@@ -44,7 +44,7 @@
 
 -(void)requestForShopNotesPageListingWithShopId:(NSString*)shopId
                                    shop_domain:(NSString*)shopDomain
-                                     onSuccess:(void (^)(Notes*))successCallback
+                                     onSuccess:(void (^)(NotesSwift*))successCallback
                                      onFailure:(void (^)(NSError *))errorCallback;
 
 

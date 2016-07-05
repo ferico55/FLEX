@@ -108,7 +108,7 @@
                                   }];
 }
 
--(void)requestForShopNotesPageListingWithShopId:(NSString *)shopId shop_domain:(NSString *)shopDomain onSuccess:(void (^)(Notes *))successCallback onFailure:(void (^)(NSError *))errorCallback{
+-(void)requestForShopNotesPageListingWithShopId:(NSString *)shopId shop_domain:(NSString *)shopDomain onSuccess:(void (^)(NotesSwift *))successCallback onFailure:(void (^)(NSError *))errorCallback{
     _notesNetworkManager = [TokopediaNetworkManager new];
     _notesNetworkManager.isUsingHmac = YES;
     [_notesNetworkManager requestWithBaseUrl:[NSString v4Url]
@@ -117,9 +117,9 @@
                                    parameter:@{@"shop_id":shopId,
                                                @"shop_domain":shopDomain
                                                }
-                                     mapping:[Notes mapping_v4]
+                                     mapping:[NotesSwift mapping]
                                    onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                       Notes *notes = [successResult.dictionary objectForKey:@""];
+                                       NotesSwift *notes = [successResult.dictionary objectForKey:@""];
                                        successCallback(notes);
                                    } onFailure:^(NSError *errorResult) {
                                        errorCallback(errorResult);

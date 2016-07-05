@@ -14,6 +14,7 @@ class NotesResultSwift : NSObject{
     var allow_add : NSNumber = 0
     var has_terms : NSNumber = 0
     var list : Array<NotesListSwift> = Array<NotesListSwift>()
+    var detail : NoteDetails = NoteDetails()
     
     class private func attributeMappingDictionary() -> [NSObject : AnyObject]! {
         return ["is_allow" : "is_allow",

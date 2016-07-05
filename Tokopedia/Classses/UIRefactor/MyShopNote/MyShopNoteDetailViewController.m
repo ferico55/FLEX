@@ -978,7 +978,7 @@
 
 #pragma mark - My shop note delegate
 
-- (void)successEditNote:(NotesList *)noteList
+- (void)successEditNote:(NotesListSwift *)noteList
 {
     _noteList = noteList;
     _note.result.detail.notes_title = noteList.note_title;
