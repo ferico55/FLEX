@@ -94,6 +94,7 @@ PODS:
   - Reveal-iOS-SDK (1.6.2)
   - Rollout.io (1.0.0)
   - SOCKit (1.1)
+  - SPTPersistentCache (1.0.0)
   - TransitionKit (1.1.1)
   - TTTAttributedLabel (1.13.4)
   - Tweaks (2.0.0)
@@ -117,6 +118,7 @@ DEPENDENCIES:
   - RestKit (~> 0.20.0)
   - Reveal-iOS-SDK
   - Rollout.io (~> 1.0.0)
+  - SPTPersistentCache (~> 1.0)
   - TTTAttributedLabel
   - Tweaks (~> 2.0.0)
   - UITableView+FDTemplateLayoutCell (~> 1.4)
@@ -152,6 +154,7 @@ SPEC CHECKSUMS:
   Reveal-iOS-SDK: e2250b3c155bcfac53ae223ddc1f76d08f206c33
   Rollout.io: 149a0164264c8960b0e963ddd28232aefdc12c46
   SOCKit: c7376ac262bea9115b8f749358f762522a47d392
+  SPTPersistentCache: c2ab4542796647387441169e352ba5f812128153
   TransitionKit: aec4d65b2be460fec0db04f905e8bedca601d669
   TTTAttributedLabel: 0a2ac7b2dd726d32a070dafb01446026b11e624f
   Tweaks: 524fa47636cce3bf3a4d9156e980f10ae9480e81
