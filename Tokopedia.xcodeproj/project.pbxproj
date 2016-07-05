@@ -10,6 +10,12 @@
 		2D50139230438B54812D14B9 /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
+		7A9524671D2A55C40001C87E /* PulsaCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9524641D2A55C40001C87E /* PulsaCategory.swift */; };
+		7A9524681D2A55C40001C87E /* PulsaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9524651D2A55C40001C87E /* PulsaViewController.swift */; };
+		7A9524691D2A55C40001C87E /* PulsaViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A9524661D2A55C40001C87E /* PulsaViewController.xib */; };
+		7A95246B1D2A55D80001C87E /* PulsaCategoryAttribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A95246A1D2A55D80001C87E /* PulsaCategoryAttribute.swift */; };
+		7A95246D1D2A5B250001C87E /* PulsaCategoryRoot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A95246C1D2A5B250001C87E /* PulsaCategoryRoot.swift */; };
+		7A95246F1D2A707E0001C87E /* PulsaCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A95246E1D2A707E0001C87E /* PulsaCategoryView.swift */; };
 		7ACE9C541BB00956006C4BB7 /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */; };
 		7ACE9C551BB00956006C4BB7 /* FBAudienceNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C4F1BB00956006C4BB7 /* FBAudienceNetwork.framework */; };
 		7ACE9C581BB00956006C4BB7 /* FBSDKMessengerShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */; };
@@ -2424,6 +2430,12 @@
 		7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
+		7A9524641D2A55C40001C87E /* PulsaCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulsaCategory.swift; sourceTree = "<group>"; };
+		7A9524651D2A55C40001C87E /* PulsaViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulsaViewController.swift; sourceTree = "<group>"; };
+		7A9524661D2A55C40001C87E /* PulsaViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PulsaViewController.xib; sourceTree = "<group>"; };
+		7A95246A1D2A55D80001C87E /* PulsaCategoryAttribute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulsaCategoryAttribute.swift; sourceTree = "<group>"; };
+		7A95246C1D2A5B250001C87E /* PulsaCategoryRoot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulsaCategoryRoot.swift; sourceTree = "<group>"; };
+		7A95246E1D2A707E0001C87E /* PulsaCategoryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulsaCategoryView.swift; sourceTree = "<group>"; };
 		7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FacebookSDKStrings.bundle; sourceTree = "<group>"; };
 		7ACE9C4F1BB00956006C4BB7 /* FBAudienceNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBAudienceNetwork.framework; sourceTree = "<group>"; };
 		7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKMessengerShareKit.framework; sourceTree = "<group>"; };
@@ -6074,6 +6086,9 @@
 		85489F831D1A58E400D11E22 /* Classses */ = {
 			isa = PBXGroup;
 			children = (
+				7A9524641D2A55C40001C87E /* PulsaCategory.swift */,
+				7A9524651D2A55C40001C87E /* PulsaViewController.swift */,
+				7A9524661D2A55C40001C87E /* PulsaViewController.xib */,
 				85489F841D1A58E400D11E22 /* Analytics */,
 				85489F871D1A58E400D11E22 /* CacheController */,
 				85489F8E1D1A58E400D11E22 /* Category */,
@@ -6085,6 +6100,9 @@
 				8548A47D1D1A58E600D11E22 /* TKPStoreManager */,
 				8548A48E1D1A58E600D11E22 /* UIRefactor */,
 				8548AAB31D1A58EA00D11E22 /* Veritrans */,
+				7A95246A1D2A55D80001C87E /* PulsaCategoryAttribute.swift */,
+				7A95246C1D2A5B250001C87E /* PulsaCategoryRoot.swift */,
+				7A95246E1D2A707E0001C87E /* PulsaCategoryView.swift */,
 			);
 			path = Classses;
 			sourceTree = "<group>";
@@ -12475,6 +12493,7 @@
 				8548B66A1D1A58F200D11E22 /* icon_speed_grey.png in Resources */,
 				8548B6A21D1A58F200D11E22 /* icon_uncheck_red@2x.png in Resources */,
 				8548B6111D1A58F200D11E22 /* icon_retur@2x.png in Resources */,
+				7A9524691D2A55C40001C87E /* PulsaViewController.xib in Resources */,
 				8548B5561D1A58F200D11E22 /* icon_google_new@3x.png in Resources */,
 				8548B6F61D1A58F200D11E22 /* no-result@3x.png in Resources */,
 				8548B4661D1A58F200D11E22 /* icon_12.png in Resources */,
@@ -13633,6 +13652,7 @@
 				8548B2851D1A58F100D11E22 /* InboxReviewCell.m in Sources */,
 				8548B12E1D1A58F100D11E22 /* ContactUsWireframe.m in Sources */,
 				8548B06C1D1A58F100D11E22 /* TxOrderConfirmedDetail.m in Sources */,
+				7A95246F1D2A707E0001C87E /* PulsaCategoryView.swift in Sources */,
 				8548AFAB1D1A58F100D11E22 /* Promote.m in Sources */,
 				8548B3FF1D1A58F200D11E22 /* TxOrderPaymentViewController.m in Sources */,
 				8548B2191D1A58F100D11E22 /* CourierAvailabilityViewCell.m in Sources */,
@@ -13799,6 +13819,7 @@
 				8548B32B1D1A58F100D11E22 /* SettingPrivacyViewController.m in Sources */,
 				8548B0431D1A58F100D11E22 /* TransactionSystemBank.m in Sources */,
 				8548B3311D1A58F100D11E22 /* SettingUserProfileViewController.m in Sources */,
+				7A9524671D2A55C40001C87E /* PulsaCategory.swift in Sources */,
 				8548B0021D1A58F100D11E22 /* Shop.m in Sources */,
 				8548B1F51D1A58F100D11E22 /* InboxTicketReplyViewController.m in Sources */,
 				8548AF751D1A58F100D11E22 /* NotificationPurchase.m in Sources */,
@@ -13947,6 +13968,7 @@
 				8548B0901D1A58F100D11E22 /* UploadImageValidation.m in Sources */,
 				8548AF721D1A58F100D11E22 /* Note.m in Sources */,
 				8548AF801D1A58F100D11E22 /* ProductFeedList.m in Sources */,
+				7A95246D1D2A5B250001C87E /* PulsaCategoryRoot.swift in Sources */,
 				8548B0181D1A58F100D11E22 /* City.m in Sources */,
 				8548B2241D1A58F100D11E22 /* CourierViewCell.m in Sources */,
 				8548B2FD1D1A58F100D11E22 /* SearchAutoCompleteHeaderView.m in Sources */,
@@ -14110,6 +14132,7 @@
 				8548B1221D1A58F100D11E22 /* RequestCategory.m in Sources */,
 				8548B29F1D1A58F100D11E22 /* ReviewRequest.m in Sources */,
 				8548B0A81D1A58F100D11E22 /* RSKPlaceholderTextView.swift in Sources */,
+				7A9524681D2A55C40001C87E /* PulsaViewController.swift in Sources */,
 				8548B1021D1A58F100D11E22 /* CatalogProductCell.m in Sources */,
 				8548B2181D1A58F100D11E22 /* ShopPaymentViewController.m in Sources */,
 				8548B2691D1A58F100D11E22 /* ProductListMyShopCell.m in Sources */,
@@ -14371,6 +14394,7 @@
 				8548B0721D1A58F100D11E22 /* OrderDetailForm.m in Sources */,
 				8548AE6C1D1A58F100D11E22 /* NSDictionaryCategory.m in Sources */,
 				8548AF291D1A58F100D11E22 /* InboxResolutionCenterList.m in Sources */,
+				7A95246B1D2A55D80001C87E /* PulsaCategoryAttribute.swift in Sources */,
 				8548B0201D1A58F100D11E22 /* ShippingContact.m in Sources */,
 				8548B1A91D1A58F100D11E22 /* ProductFeedViewController.m in Sources */,
 				8548AF2D1D1A58F100D11E22 /* ResolutionButton.m in Sources */,

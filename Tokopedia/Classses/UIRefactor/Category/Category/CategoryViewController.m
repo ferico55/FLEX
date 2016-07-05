@@ -192,12 +192,14 @@ NSInteger const bannerHeight = 115;
 }
 
 - (void)swipeView:(SwipeView *)swipeView didSelectItemAtIndex:(NSInteger)index {
-    MiniSlide *good = [_digitalGoodsDataSource goodsAtIndex:index];
-    WebViewController *webview = [[WebViewController alloc] init];
-    webview.strTitle = @"Tokopedia";
-    webview.strURL = good.redirect_url;
+//    MiniSlide *good = [_digitalGoodsDataSource goodsAtIndex:index];
+//    WebViewController *webview = [[WebViewController alloc] init];
+//    webview.strTitle = @"Tokopedia";
+//    webview.strURL = good.redirect_url;
     
-    [self.navigationController pushViewController:webview animated:YES];
+//    [self.navigationController pushViewController:webview animated:YES];
+    PulsaViewController *controller = [[PulsaViewController alloc] init];
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)moveToNextSlider {
