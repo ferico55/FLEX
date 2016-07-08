@@ -15,6 +15,7 @@ class PulsaCategoryAttribute: NSObject, NSCoding {
     var is_new : Bool = false
     var status : Int = 1
     var use_phonebook : Bool = false
+    var client_number : PulsaCategoryClientNumber = PulsaCategoryClientNumber()
 
     
     static func attributeMappingDictionary() -> [NSObject : AnyObject]! {
@@ -31,6 +32,10 @@ class PulsaCategoryAttribute: NSObject, NSCoding {
     static func mapping() -> RKObjectMapping! {
         let mapping : RKObjectMapping = RKObjectMapping.init(forClass: self)
         mapping.addAttributeMappingsFromDictionary(self.attributeMappingDictionary())
+        
+        let relMapping : RKRelationshipMapping = RKRelationshipMapping.init(fromKeyPath: "client_number", toKeyPath: "client_number", withMapping: PulsaCategoryClientNumber.mapping())
+        mapping.addPropertyMapping(relMapping)
+        
         
         return mapping
     }
@@ -64,6 +69,10 @@ class PulsaCategoryAttribute: NSObject, NSCoding {
         if let use_phonebook = aDecoder.decodeObjectForKey("use_phonebook") as? Bool {
             self.use_phonebook = use_phonebook
         }
+        
+        if let client_number = aDecoder.decodeObjectForKey("client_number") as? PulsaCategoryClientNumber {
+            self.client_number = client_number
+        }
     }
     
     func encodeWithCoder(aCoder: NSCoder) {
@@ -73,5 +82,6 @@ class PulsaCategoryAttribute: NSObject, NSCoding {
         aCoder.encodeObject(is_new, forKey: "is_new")
         aCoder.encodeObject(status, forKey: "status")
         aCoder.encodeObject(use_phonebook, forKey: "use_phonebook")
+        aCoder.encodeObject(client_number, forKey: "client_number")
     }
 }
