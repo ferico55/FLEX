@@ -48,6 +48,7 @@
 #import <GoogleMaps/GoogleMaps.h>
 
 #import "TPAnalytics.h"
+#import <SPTPersistentCache/SPTPersistentCache.h>
 #import "EtalaseList.h"
 #import "MHVerticalTabBarController.h"
 #import "EtalaseViewController.h"

@@ -11,7 +11,8 @@ import Foundation
 
 class PulsaViewController: UIViewController {
     var _networkManager : TokopediaNetworkManager!
-    var _viewsCollection = [PulsaCategoryView]()
+    var cache: PulsaCache = PulsaCache()
+    
 
     @IBOutlet weak var pulsaCategoryControl: UISegmentedControl!
     
@@ -22,6 +23,16 @@ class PulsaViewController: UIViewController {
         self.pulsaCategoryControl.hidden = true
         self.pulsaCategoryControl .addTarget(self, action: #selector(didSelectSegmentControl), forControlEvents: .ValueChanged)
         
+        self.cache.loadCategories { (cachedCategory) in
+            if(cachedCategory == nil) {
+                self.loadCategoryFromNetwork()
+            } else {
+                self.didReceiveCategory(cachedCategory!)
+            }
+        }
+    }
+    
+    func loadCategoryFromNetwork() {
         _networkManager .
             requestWithBaseUrl("http://private-c3816-digitalcategory.apiary-mock.com",
                                path: "/categories",
@@ -30,12 +41,14 @@ class PulsaViewController: UIViewController {
                                mapping: PulsaCategoryRoot.mapping(),
                                onSuccess: { (mappingResult, operation) -> Void in
                                 let category = mappingResult.dictionary()[""] as! PulsaCategoryRoot
+                                self.cache .storeCategories(category)
                                 self .didReceiveCategory(category)
                 },
                                onFailure: { (errors) -> Void in
                                 
             });
     }
+    
 
     func didSelectSegmentControl(sender : UISegmentedControl) {
         

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PulsaCategoryRoot: NSObject {
+class PulsaCategoryRoot: NSObject, NSCoding {
     var data : [PulsaCategory] = []
     
     static func mapping() -> RKObjectMapping! {
@@ -18,5 +18,19 @@ class PulsaCategoryRoot: NSObject {
         mapping.addPropertyMapping(relMapping)
         
         return mapping
+    }
+    
+    // MARK: NSCoding
+    override init() {
+        super.init()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        if let data = aDecoder.decodeObjectForKey("data") as? [PulsaCategory] {
+            self.data = data
+        }
+    }
+    func encodeWithCoder(aCoder: NSCoder) {
+        aCoder.encodeObject(data, forKey: "data")
     }
 }

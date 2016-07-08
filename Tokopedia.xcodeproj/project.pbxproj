@@ -16,6 +16,7 @@
 		7A95246B1D2A55D80001C87E /* PulsaCategoryAttribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A95246A1D2A55D80001C87E /* PulsaCategoryAttribute.swift */; };
 		7A95246D1D2A5B250001C87E /* PulsaCategoryRoot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A95246C1D2A5B250001C87E /* PulsaCategoryRoot.swift */; };
 		7A95246F1D2A707E0001C87E /* PulsaCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A95246E1D2A707E0001C87E /* PulsaCategoryView.swift */; };
+		7A9524711D2B5D2C0001C87E /* PulsaCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9524701D2B5D2C0001C87E /* PulsaCache.swift */; };
 		7ACE9C541BB00956006C4BB7 /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */; };
 		7ACE9C551BB00956006C4BB7 /* FBAudienceNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C4F1BB00956006C4BB7 /* FBAudienceNetwork.framework */; };
 		7ACE9C581BB00956006C4BB7 /* FBSDKMessengerShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */; };
@@ -2436,6 +2437,7 @@
 		7A95246A1D2A55D80001C87E /* PulsaCategoryAttribute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulsaCategoryAttribute.swift; sourceTree = "<group>"; };
 		7A95246C1D2A5B250001C87E /* PulsaCategoryRoot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulsaCategoryRoot.swift; sourceTree = "<group>"; };
 		7A95246E1D2A707E0001C87E /* PulsaCategoryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulsaCategoryView.swift; sourceTree = "<group>"; };
+		7A9524701D2B5D2C0001C87E /* PulsaCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulsaCache.swift; sourceTree = "<group>"; };
 		7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FacebookSDKStrings.bundle; sourceTree = "<group>"; };
 		7ACE9C4F1BB00956006C4BB7 /* FBAudienceNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBAudienceNetwork.framework; sourceTree = "<group>"; };
 		7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKMessengerShareKit.framework; sourceTree = "<group>"; };
@@ -6103,6 +6105,7 @@
 				7A95246A1D2A55D80001C87E /* PulsaCategoryAttribute.swift */,
 				7A95246C1D2A5B250001C87E /* PulsaCategoryRoot.swift */,
 				7A95246E1D2A707E0001C87E /* PulsaCategoryView.swift */,
+				7A9524701D2B5D2C0001C87E /* PulsaCache.swift */,
 			);
 			path = Classses;
 			sourceTree = "<group>";
@@ -13604,6 +13607,7 @@
 				8548B0051D1A58F100D11E22 /* ShopInfoImage.m in Sources */,
 				8548B1BF1D1A58F100D11E22 /* UIView+HVDLayout.m in Sources */,
 				8548AEEB1D1A58F100D11E22 /* Talk.m in Sources */,
+				7A9524711D2B5D2C0001C87E /* PulsaCache.swift in Sources */,
 				8548B3781D1A58F100D11E22 /* ShopPageRequest.m in Sources */,
 				8548AE911D1A58F100D11E22 /* EncodeDecoderManager.m in Sources */,
 				8548AFA41D1A58F100D11E22 /* PromoCategory.m in Sources */,
