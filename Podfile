@@ -23,6 +23,7 @@ target "Tokopedia" do
     pod 'Google/SignIn'
     pod 'SPTPersistentCache', '~> 1.0'
     pod 'FBSDKLoginKit'
+    pod 'Masonry'
 end
 
 target "TokopediaTests" do
