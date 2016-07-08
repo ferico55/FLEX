@@ -88,7 +88,7 @@ EtalaseViewControllerDelegate,
 
     if (indexPath.row == 0) {
         cell.textLabel.text = @"Etalase";
-        cell.detailTextLabel.text = _etalase.etalase_name?:@"Semua Produk";
+        cell.detailTextLabel.text = _etalase.etalase_name?:@"Semua Etalase";
     } else if (indexPath.row == 1) {
         cell.textLabel.text = @"Kategori";
         cell.detailTextLabel.text = _breadcrumb.department_name?:@"Semua Kategori";
