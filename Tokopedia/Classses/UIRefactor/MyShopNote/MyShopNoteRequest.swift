@@ -30,6 +30,55 @@ class MyShopNoteRequest: NSObject {
         
     }
     
+    func requestAddNoteWithTitle(noteTitle:String,
+                                 noteContent:String,
+                                 terms:String,
+                                 onSuccess:(NoteAction -> Void),
+                                 onFailure:(NSError -> Void))
+    {
+        let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
+        networkManager.isUsingHmac = true
+        
+        networkManager.requestWithBaseUrl(NSString.v4Url(),
+                                          path: "/v4/action/myshop-note/add_shop_note.pl",
+                                          method: .POST,
+                                          parameter: ["note_content":noteContent, "note_title":noteTitle, "terms":terms],
+                                          mapping: NoteAction.mapping(),
+                                          onSuccess: { (successResult, _) in
+                                            let result : Dictionary = successResult.dictionary() as Dictionary
+                                            let response : NoteAction = result[""] as! NoteAction
+                                            onSuccess(response)
+                                            },
+                                          onFailure: { (errorResult) in
+                                            onFailure(errorResult)
+                                            })
+    }
+    
+    func requestEditNote(noteId:String,
+                         noteTitle:String,
+                         noteContent:String,
+                         terms:String,
+                         onSuccess:(NoteAction -> Void),
+                         onFailure:(NSError -> Void))
+    {
+        let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
+        networkManager.isUsingHmac = true
+        
+        networkManager.requestWithBaseUrl(NSString.v4Url(),
+                                          path: "/v4/action/myshop-note/edit_shop_note.pl",
+                                          method: .POST,
+                                          parameter: ["note_content":noteContent, "note_id":noteId, "note_title":noteTitle, "terms":terms],
+                                          mapping: NoteAction.mapping(),
+                                          onSuccess: { (successResult, _) in
+                                            let result : Dictionary = successResult.dictionary() as Dictionary
+                                            let response : NoteAction = result[""] as! NoteAction
+                                            onSuccess(response)
+                                          },
+                                          onFailure: { (errorResult) in
+                                            onFailure(errorResult)
+                                          })
+    }
+    
     func requestDeleteNote(noteId:String, onSuccess:(ShopSettings -> Void), onFailure:(NSError -> Void))
     {
         let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()

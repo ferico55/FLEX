@@ -60,14 +60,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *timeNoteLabel;
 @property (weak, nonatomic) IBOutlet UITextView *contentNoteTextView;
 
--(void)cancelActionNote;
--(void)configureRestKitActionNote;
--(void)requestActionNote:(id)object;
--(void)requestSuccessActionNote:(id)object withOperation:(RKObjectRequestOperation*)operation;
--(void)requestFailureActionNote:(id)object;
--(void)requestProcessActionNote:(id)object;
--(void)requestTimeoutActionNote;
-
 @end
 
 @implementation MyShopNoteDetailViewController
@@ -251,14 +243,12 @@
                 
                 if (_type == NOTES_RETURNABLE_PRODUCT &&
                     content && ![content isEqualToString:@""]) {
-                    [self configureRestKitActionNote];
-                    [self requestActionNote:_datainput];
+                    [self UpdateNote];
                 }
                 else if (notetitle && ![notetitle isEqualToString:@""] &&
                     content && ![content isEqualToString:@""])
                 {
-                    [self configureRestKitActionNote];
-                    [self requestActionNote:_datainput];
+                    [self UpdateNote];
                 }
                 else
                 {
@@ -411,198 +401,103 @@
 }
 
 #pragma mark - Request Action Note
--(void)cancelActionNote
+-(void)UpdateNote
 {
-    [_requestActionNote cancel];
-    _requestActionNote = nil;
-    [_objectmanagerActionNote.operationQueue cancelAllOperations];
-    _objectmanagerActionNote = nil;
-}
-
--(void)configureRestKitActionNote
-{
-    _objectmanagerActionNote = [RKObjectManager sharedClient];
+    MyShopNoteRequest *requestManager = [MyShopNoteRequest new];
     
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ShopSettings class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ShopSettingsResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{kTKPDDETAIL_APIISSUCCESSKEY:kTKPDDETAIL_APIISSUCCESSKEY}];
-    
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                  toKeyPath:kTKPD_APIRESULTKEY
-                                                                                withMapping:resultMapping]];
-    
-    // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                            method:RKRequestMethodPOST
-                                                                                       pathPattern:kTKPDDETAILSHOPNOTEACTION_APIPATH
-                                                                                           keyPath:@""
-                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectmanagerActionNote addResponseDescriptor:responseDescriptor];
-    
-}
-
--(void)requestActionNote:(id)object
-{
-    if (_requestActionNote.isExecuting) return;
-    
-    NSTimer *timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
-                                                              target:self
-                                                            selector:@selector(requestTimeoutActionNote)
-                                                            userInfo:nil
-                                                             repeats:NO];
-    
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-    
-    NSDictionary *userinfo = (NSDictionary*)object;
-    
-    NSString *action;
-    if (_type == kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY || _isNewNoteReturnableProduct) {
-        action = kTKPDDETAIL_APIADDNOTESDETAILKEY;
-    }
-    else
-    {
-        action =kTKPDDETAIL_APIEDITNOTESDETAILKEY;
-    }
-    
-    NSString *noteID = [_data objectForKey:kTKPDNOTES_APINOTEIDKEY];
-    NSString *noteTitle = [userinfo objectForKey:kTKPDNOTE_APINOTESTITLEKEY]?:_note.result.detail.notes_title?:@"";
+    NSString *noteTitle = [_datainput objectForKey:kTKPDNOTE_APINOTESTITLEKEY]?:_note.result.detail.notes_title?:@"";
     if (_type == NOTES_RETURNABLE_PRODUCT) {
         noteTitle = @"Kebijakan Pengembalian Produk";
     }
+    NSString *noteContent = [_datainput objectForKey:kTKPDNOTE_APINOTESCONTENTKEY]?:[NSString convertHTML:_note.result.detail.notes_content]?:@"";
+    NSString *terms = (_type == NOTES_RETURNABLE_PRODUCT)?@"1":@"0";
     
-    
-    NSString *noteContent = [userinfo objectForKey:kTKPDNOTE_APINOTESCONTENTKEY]?:[NSString convertHTML:_note.result.detail.notes_content]?:@"";
-     NSInteger terms = (_type == NOTES_RETURNABLE_PRODUCT)?1:0;
-    
-    NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY:action,
-                            kTKPDNOTES_APINOTEIDKEY : noteID?:@"",
-                            kTKPDNOTES_APINOTETITLEKEY : noteTitle,
-                            kTKPDNOTES_APINOTECONTENTKEY : noteContent,
-                            NOTES_TERMS_FLAG_KEY : @(terms),
-                            };
-    _requestcount ++;
-    
-    _barbuttonedit.enabled = NO;
-    
-    _requestActionNote = [_objectmanagerActionNote appropriateObjectRequestOperationWithObject:self
-                                                                                        method:RKRequestMethodPOST
-                                                                                          path:kTKPDDETAILSHOPNOTEACTION_APIPATH
-                                                                                    parameters:[param encrypt]];
-    
-    [_requestActionNote setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestSuccessActionNote:mappingResult withOperation:operation];
-        [timer invalidate];
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [self requestFailureActionNote:error];
-        [timer invalidate];
-    }];
-    
-    [_operationQueue addOperation:_requestActionNote];
-    
-}
-
--(void)requestSuccessActionNote:(id)object withOperation:(RKObjectRequestOperation *)operation
-{
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id stat = [result objectForKey:@""];
-    ShopSettings *setting = stat;
-    BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if (status) {
-        [self requestProcessActionNote:object];
+    if (_type == kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY || _isNewNoteReturnableProduct) {
+        //add
+        [requestManager requestAddNoteWithTitle:noteTitle
+                                    noteContent:noteContent
+                                          terms:terms
+                                      onSuccess:^(NoteAction * noteAction) {
+                                          [self actionUponSuccessfulUpdateNote: noteAction];
+                                      }
+                                      onFailure:^(NSError * error) {
+                                          [self actionUponFailUpdateNote:error];
+                                      }];
+    }
+    else
+    {
+        //edit
+        NSString *noteId = [_data objectForKey:kTKPDNOTES_APINOTEIDKEY];
+        
+        [requestManager requestEditNote:noteId
+                              noteTitle:noteTitle
+                            noteContent:noteContent
+                                  terms:terms
+                              onSuccess:^(NoteAction * noteAction) {
+                                    [self actionUponSuccessfulUpdateNote: noteAction];
+                              }
+                              onFailure:^(NSError * error) {
+                                    [self actionUponFailUpdateNote:error];
+                              }];
     }
 }
 
--(void)requestFailureActionNote:(id)object
+-(void)actionUponSuccessfulUpdateNote: (NoteAction *)noteAction
 {
-    [self requestProcessActionNote:object];
-}
-
--(void)requestProcessActionNote:(id)object
-{
-    if (object) {
-        if ([object isKindOfClass:[RKMappingResult class]]) {
-            NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            id stat = [result objectForKey:@""];
-            ShopSettings *setting = stat;
-            BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-            
-            if (status) {
-                if (setting.result.is_success == 1) {
-                    
-                    NSArray *defaultMessage;
-                    switch (_type) {
-                        case kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY:
-                            defaultMessage = @[kTKPDNOTE_ADD_NOTE_SUCCESS];
-                            break;
-                        case kTKPDSETTINGEDIT_DATATYPEEDITVIEWKEY:
-                            defaultMessage = @[kTKPDNOTE_EDIT_NOTE_SUCCESS];
-                            break;
-                        case kTKPDSETTINGEDIT_DATATYPEEDITWITHREQUESTVIEWKEY:
-                            defaultMessage = @[kTKPDNOTE_EDIT_NOTE_SUCCESS];
-                            break;
-                        case NOTES_RETURNABLE_PRODUCT:
-                        {
-                            TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
-                            [secureStorage setKeychainWithValue:@"100" withKey:@"shop_has_terms"];
-                            [[NSNotificationCenter defaultCenter] postNotificationName:DID_UPDATE_SHOP_HAS_TERM_NOTIFICATION_NAME object:nil userInfo:nil];
-                        }
-                            break;
-                        default:
-                            defaultMessage = @[@"Sukses"];
-                            break;
-                    }
-
-                    NSArray *successMessages = setting.message_status?:defaultMessage;
-                    StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:self];
-                    [alert show];
-                
-                    if (_type == kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY) {
-                        if ([_delegate respondsToSelector:@selector(successCreateNewNote)]) {
-                            [_delegate successCreateNewNote];
-                        }
-                    } else {
-                        if ([_delegate respondsToSelector:@selector(successEditNote:)]) {
-                            _noteList.note_title = _titleNoteTextField.text;
-                            _noteList.note_status = _contentNoteTextView.text;
-                            [_delegate successEditNote:_noteList];
-                        }
-                    }
-                    
-                    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-                }
+    if ([noteAction.result.is_success isEqual: @"1"]) {
+        
+        NSArray *defaultMessage;
+        switch (_type) {
+            case kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY:
+                defaultMessage = @[kTKPDNOTE_ADD_NOTE_SUCCESS];
+                break;
+            case kTKPDSETTINGEDIT_DATATYPEEDITVIEWKEY:
+                defaultMessage = @[kTKPDNOTE_EDIT_NOTE_SUCCESS];
+                break;
+            case kTKPDSETTINGEDIT_DATATYPEEDITWITHREQUESTVIEWKEY:
+                defaultMessage = @[kTKPDNOTE_EDIT_NOTE_SUCCESS];
+                break;
+            case NOTES_RETURNABLE_PRODUCT:
+            {
+                TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+                [secureStorage setKeychainWithValue:@"100" withKey:@"shop_has_terms"];
+                [[NSNotificationCenter defaultCenter] postNotificationName:DID_UPDATE_SHOP_HAS_TERM_NOTIFICATION_NAME object:nil userInfo:nil];
             }
-            if(setting.message_error) {
-                NSArray *errorMessages = setting.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
-                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
-                [alert show];
+                break;
+            default:
+                defaultMessage = @[@"Sukses"];
+                break;
+        }
+        
+        NSArray *successMessages = noteAction.message_status?:defaultMessage;
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:self];
+        [alert show];
+        
+        if (_type == kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY) {
+            if ([_delegate respondsToSelector:@selector(successCreateNewNote)]) {
+                [_delegate successCreateNewNote];
+            }
+        } else {
+            if ([_delegate respondsToSelector:@selector(successEditNote:)]) {
+                _noteList.note_title = _titleNoteTextField.text;
+                _noteList.note_status = _contentNoteTextView.text;
+                [_delegate successEditNote:_noteList];
             }
         }
-        else{
-            
-            [self cancelActionNote];
-            NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
-            if ([(NSError*)object code] == NSURLErrorCancelled) {
-                if (_requestcount<kTKPDREQUESTCOUNTMAX) {
-                    NSLog(@" ==== REQUESTCOUNT %zd =====",_requestcount);
-                    //TODO:: Reload handler
-                }
-            }
-        }
+        
+        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
     }
 }
 
--(void)requestTimeoutActionNote
+-(void)actionUponFailUpdateNote: (NSError *)error
 {
-    [self cancelActionNote];
+    NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)error description]);
+    if ([(NSError*)error code] == NSURLErrorCancelled) {
+        if (_requestcount<kTKPDREQUESTCOUNTMAX) {
+            NSLog(@" ==== REQUESTCOUNT %zd =====",_requestcount);
+            //TODO:: Reload handler
+        }
+    }
 }
 
 #pragma mark - Text Field delegate

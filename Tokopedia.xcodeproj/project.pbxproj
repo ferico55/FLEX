@@ -2386,6 +2386,8 @@
 		D6A341681D2A6F91009F512C /* Notes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A341651D2A6F91009F512C /* Notes.swift */; };
 		D6A341691D2A6F91009F512C /* NotesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A341661D2A6F91009F512C /* NotesList.swift */; };
 		D6A3416A1D2A6F91009F512C /* NotesResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A341671D2A6F91009F512C /* NotesResult.swift */; };
+		D6A373741D33979C002B9225 /* NoteAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A373731D33979C002B9225 /* NoteAction.swift */; };
+		D6A373761D339B83002B9225 /* NoteActionResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A373751D339B83002B9225 /* NoteActionResult.swift */; };
 		D6C6DC0D1D2B5B77006388AA /* NoteDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C6DC0C1D2B5B77006388AA /* NoteDetail.swift */; };
 		D6C6DC0F1D2B5E5A006388AA /* NoteDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C6DC0E1D2B5E5A006388AA /* NoteDetails.swift */; };
 		D6C6DC131D2B62A2006388AA /* NoteDetailResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C6DC121D2B62A2006388AA /* NoteDetailResult.swift */; };
@@ -5947,6 +5949,8 @@
 		D6A341651D2A6F91009F512C /* Notes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notes.swift; sourceTree = "<group>"; };
 		D6A341661D2A6F91009F512C /* NotesList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotesList.swift; sourceTree = "<group>"; };
 		D6A341671D2A6F91009F512C /* NotesResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotesResult.swift; sourceTree = "<group>"; };
+		D6A373731D33979C002B9225 /* NoteAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteAction.swift; sourceTree = "<group>"; };
+		D6A373751D339B83002B9225 /* NoteActionResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteActionResult.swift; sourceTree = "<group>"; };
 		D6C6DC0C1D2B5B77006388AA /* NoteDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteDetail.swift; sourceTree = "<group>"; };
 		D6C6DC0E1D2B5E5A006388AA /* NoteDetails.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteDetails.swift; sourceTree = "<group>"; };
 		D6C6DC121D2B62A2006388AA /* NoteDetailResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteDetailResult.swift; sourceTree = "<group>"; };
@@ -7567,6 +7571,7 @@
 		8548A2F61D1A58E600D11E22 /* Notes */ = {
 			isa = PBXGroup;
 			children = (
+				D6A373721D3395B3002B9225 /* NoteAction */,
 				D6A341651D2A6F91009F512C /* Notes.swift */,
 				D6A341661D2A6F91009F512C /* NotesList.swift */,
 				D6A341671D2A6F91009F512C /* NotesResult.swift */,
@@ -11954,6 +11959,15 @@
 			path = "Third Party";
 			sourceTree = "<group>";
 		};
+		D6A373721D3395B3002B9225 /* NoteAction */ = {
+			isa = PBXGroup;
+			children = (
+				D6A373731D33979C002B9225 /* NoteAction.swift */,
+				D6A373751D339B83002B9225 /* NoteActionResult.swift */,
+			);
+			name = NoteAction;
+			sourceTree = "<group>";
+		};
 		E1A48FC656B05056B45251AD /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -13907,6 +13921,7 @@
 				8548AEAB1D1A58F100D11E22 /* AddressDistrict.m in Sources */,
 				8548AF541D1A58F100D11E22 /* LikeDislike.m in Sources */,
 				8548B01A1D1A58F100D11E22 /* Gojek.m in Sources */,
+				D6A373761D339B83002B9225 /* NoteActionResult.swift in Sources */,
 				8548AECC1D1A58F100D11E22 /* Catalog.m in Sources */,
 				8548B3451D1A58F100D11E22 /* CloseShopViewController.m in Sources */,
 				8548B2401D1A58F100D11E22 /* PriceAlertViewController.m in Sources */,
@@ -14246,6 +14261,7 @@
 				8548AF631D1A58F100D11E22 /* DetailReputationReview.m in Sources */,
 				8548B0DD1D1A58F100D11E22 /* AlertRateView.m in Sources */,
 				8548B3D81D1A58F200D11E22 /* MappingLDExtension.m in Sources */,
+				D6A373741D33979C002B9225 /* NoteAction.swift in Sources */,
 				8548B13C1D1A58F100D11E22 /* ContactUsFormWireframe.m in Sources */,
 				8548B2FE1D1A58F100D11E22 /* SearchAutoCompleteViewController.m in Sources */,
 				8548AF7F1D1A58F100D11E22 /* ProductFeed.m in Sources */,
