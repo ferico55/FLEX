@@ -2390,6 +2390,7 @@
         [TPLocalytics trackCartView:_cart];
         
     } error:^(NSError *error) {
+        [_noResultView removeFromSuperview];
         [_noInternetConnectionView generateRequestErrorViewWithError:error];
         [_tableView addSubview:_noInternetConnectionView];
         _paymentMethodView.hidden = YES;
