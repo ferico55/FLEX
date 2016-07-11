@@ -308,18 +308,17 @@
     } else if(page == 2) {
         CGRect frame = _wishListViewController.view.frame;
         frame.origin.x = _scrollView.frame.size.width*page;
-        frame.size.height = _scrollView.frame.size.height;
+        frame.size.height = _scrollView.frame.size.height - 157;
         _wishListViewController.view.frame = frame;
-        
+        _wishListViewController.view.autoresizingMask = YES;
         [self addChildViewController:_wishListViewController];
         [self.scrollView addSubview:_wishListViewController.view];
-        [_wishListViewController didMoveToParentViewController:self];
     } else if(page == 3) {
         CGRect frame = _historyController.view.frame;
         frame.origin.x = _scrollView.frame.size.width*page;
-        frame.size.height = _scrollView.frame.size.height;
+        frame.size.height = _scrollView.frame.size.height - 157;
         _historyController.view.frame = frame;
-        
+        _historyController.view.autoresizingMask = YES;
         [self addChildViewController:_historyController];
         [self.scrollView addSubview:_historyController.view];
         [_historyController didMoveToParentViewController:self];
@@ -327,8 +326,8 @@
         CGRect frame = _shopViewController.view.frame;
         frame.origin.x = _scrollView.frame.size.width*page;
         frame.size.height = _scrollView.frame.size.height;
+        frame.size.height = _scrollView.frame.size.height;
         _shopViewController.view.frame = frame;
-        
         [self addChildViewController:_shopViewController];
         [self.scrollView addSubview:_shopViewController.view];
         [_shopViewController didMoveToParentViewController:self];
