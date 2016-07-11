@@ -17,12 +17,14 @@
 
 @interface RejectReasonViewController ()<UITableViewDelegate, UIScrollViewDelegate, UITableViewDataSource>
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
+@property (strong, nonatomic) IBOutlet UIView *footerView;
 @property (strong, nonatomic) NSArray* rejectReasons;
 @property (strong, nonatomic) RejectReason* selectedReason;
 @end
 
 @implementation RejectReasonViewController{
     RejectOrderRequest *rejectOrderRequest;
+    UIRefreshControl *_refreshControl;
 }
 
 - (void)viewDidLoad {
@@ -39,6 +41,12 @@
     
     _tableView.delegate = self;
     _tableView.dataSource = self;
+    _tableView.tableFooterView = _footerView;
+    
+    _refreshControl = [[UIRefreshControl alloc] init];
+    _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
+    [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
+    [_tableView addSubview:_refreshControl];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -128,6 +136,8 @@
 -(void)requestRejectReasons{
     [rejectOrderRequest requestForOrderRejectionReasonOnSuccess:^(NSArray *result) {
         _rejectReasons = result;
+        _tableView.tableFooterView = nil;
+        [_refreshControl setHidden:YES];
         [_tableView reloadData];
     } onFailure:^(NSError *error) {
         StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Kendala koneksi internet"] delegate:self];
@@ -137,6 +147,13 @@
 
 -(void)didTapBackButton{
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+}
+
+-(void)refreshView:(UIRefreshControl*)refresh
+{
+    [_refreshControl endRefreshing];
+    _tableView.tableFooterView = _footerView;
+    [self requestRejectReasons];
 }
 
 @end
