@@ -9,17 +9,16 @@
 import UIKit
 import Foundation
 
-class PulsaViewController: UIViewController {
-    var _networkManager : TokopediaNetworkManager!
+@objc
+class PulsaViewController: UIViewController, UITextFieldDelegate {
     var cache: PulsaCache = PulsaCache()
-    
+    var prefixes = Dictionary<String, Dictionary<String, String>>()
 
     @IBOutlet weak var pulsaCategoryControl: UISegmentedControl!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        _networkManager = TokopediaNetworkManager()
         self.pulsaCategoryControl.hidden = true
         self.pulsaCategoryControl .addTarget(self, action: #selector(didSelectSegmentControl), forControlEvents: .ValueChanged)
         
@@ -30,10 +29,13 @@ class PulsaViewController: UIViewController {
                 self.didReceiveCategory(cachedCategory!)
             }
         }
+        
+        self.loadOperatorFromNetwork()
     }
     
     func loadCategoryFromNetwork() {
-        _networkManager .
+        let networkManager = TokopediaNetworkManager()
+        networkManager .
             requestWithBaseUrl("http://private-c3816-digitalcategory.apiary-mock.com",
                                path: "/categories",
                                method: .GET,
@@ -51,7 +53,36 @@ class PulsaViewController: UIViewController {
     
 
     func didSelectSegmentControl(sender : UISegmentedControl) {
+        self.cache.loadCategories { (cachedCategory) in
+            if(cachedCategory != nil) {
+                let category = cachedCategory?.data[sender.selectedSegmentIndex]
+                let shouldShowNumberField = category?.attributes.client_number.is_shown
+                if((shouldShowNumberField) != nil) {
+                    self.buildNumberField(category!)
+                }
+            }
+        }
+    }
+    
+    func buildNumberField(category: PulsaCategory) {
+        let numberField = UITextField.init()
+        numberField.placeholder = category.attributes.client_number.help
+        numberField.borderStyle = .RoundedRect
+        numberField.rightViewMode = .WhileEditing
         
+        numberField.delegate = self
+        
+        let phoneText = UILabel.init(frame: CGRectMake(10, 44, self.view.frame.width - 10, 44))
+        phoneText.text = category.attributes.client_number.text
+        
+        self.view .addSubview(numberField)
+        self.view.addSubview(phoneText)
+        
+        numberField .mas_makeConstraints{ make in
+            make.height.equalTo()(44)
+            make.width.equalTo()(self.view)
+            make.top.equalTo()(phoneText.mas_bottom)
+        }
     }
     
     func didReceiveCategory(category : PulsaCategoryRoot) {
@@ -69,6 +100,72 @@ class PulsaViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    //MARK - UITextFieldDelegate
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+        let inputtedPrefix = textField.text! + string as String
+        let characterCount = inputtedPrefix.characters.count - range.length
+        
+        if(characterCount == 4) {
+            let prefix = self.prefixes[inputtedPrefix]
+            if(prefix != nil) {
+                let prefixImage = UIImageView.init(frame: CGRectMake(0, 0, 100, 50))
+                prefixImage.setImageWithURL((NSURL.init(string: prefix!["image"]!)))
+                textField.rightView = prefixImage
+                
+//                self.fetchProductsById(prefix["id"])
+            } else {
+                textField.rightView = nil
+            }
+        }
+        
+        if(characterCount < 4) {
+            textField.rightView = nil
+        }
+        
+        return true
+    }
+    
+//    func fetchProductsById(id: String) -> PulsaProductRoot{
+//        
+//    }
+    
+    func loadProductFromNetwork() {
+        let networkManager = TokopediaNetworkManager()
+        
+    }
+    
+    
+    func loadOperatorFromNetwork() {
+        let networkManager = TokopediaNetworkManager()
+        networkManager .
+            requestWithBaseUrl("http://private-c3816-digitalcategory.apiary-mock.com",
+                               path: "/operators",
+                               method: .GET,
+                               parameter: nil,
+                               mapping: PulsaOperatorRoot.mapping(),
+                               onSuccess: { (mappingResult, operation) -> Void in
+                                let operatorRoot = mappingResult.dictionary()[""] as! PulsaOperatorRoot
+                                self.didReceiveOperator(operatorRoot)
+                                
+                },
+                               onFailure: { (errors) -> Void in
+                                
+            });
+    }
+    
+    func didReceiveOperator(operatorRoot: PulsaOperatorRoot) {
+        for op in operatorRoot.data {
+            for prefix in op.attributes.prefix {
+                var prefixDictionary = Dictionary<String, String>()
+                prefixDictionary["image"] = op.attributes.image
+                prefixDictionary["id"] = op.id
+                
+                prefixes[prefix] = prefixDictionary
+            }
+            
+        }
     }
     
 

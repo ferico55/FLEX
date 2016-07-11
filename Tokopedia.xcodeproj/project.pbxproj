@@ -23,6 +23,9 @@
 		7ACE9C591BB00956006C4BB7 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C531BB00956006C4BB7 /* FBSDKShareKit.framework */; };
 		7AEFCCF61D2F848D00A7D111 /* PulsaCategoryClientNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AEFCCF51D2F848D00A7D111 /* PulsaCategoryClientNumber.swift */; };
 		7AEFCCF81D2FA82300A7D111 /* simpati_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AEFCCF71D2FA82300A7D111 /* simpati_1.png */; };
+		7AEFCCFA1D2FADB600A7D111 /* PulsaOperatorRoot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AEFCCF91D2FADB600A7D111 /* PulsaOperatorRoot.swift */; };
+		7AEFCCFC1D2FADC600A7D111 /* PulsaOperator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AEFCCFB1D2FADC600A7D111 /* PulsaOperator.swift */; };
+		7AEFCCFE1D2FAE0D00A7D111 /* PulsaOperatorAttribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AEFCCFD1D2FAE0D00A7D111 /* PulsaOperatorAttribute.swift */; };
 		853A222C1ADD0AB600DD1508 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222B1ADD0AB600DD1508 /* CoreVideo.framework */; };
 		853A222E1ADD0ABC00DD1508 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */; };
 		853A22301ADD0AC800DD1508 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222F1ADD0AC800DD1508 /* CoreMedia.framework */; };
@@ -2446,6 +2449,9 @@
 		7ACE9C531BB00956006C4BB7 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
 		7AEFCCF51D2F848D00A7D111 /* PulsaCategoryClientNumber.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulsaCategoryClientNumber.swift; sourceTree = "<group>"; };
 		7AEFCCF71D2FA82300A7D111 /* simpati_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = simpati_1.png; sourceTree = "<group>"; };
+		7AEFCCF91D2FADB600A7D111 /* PulsaOperatorRoot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulsaOperatorRoot.swift; sourceTree = "<group>"; };
+		7AEFCCFB1D2FADC600A7D111 /* PulsaOperator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulsaOperator.swift; sourceTree = "<group>"; };
+		7AEFCCFD1D2FAE0D00A7D111 /* PulsaOperatorAttribute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulsaOperatorAttribute.swift; sourceTree = "<group>"; };
 		7F9B6E71F79FE95868A4BBAE /* Pods-Tokopedia.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.release.xcconfig"; sourceTree = "<group>"; };
 		853A222B1ADD0AB600DD1508 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
@@ -6111,6 +6117,9 @@
 				7A95246E1D2A707E0001C87E /* PulsaCategoryView.swift */,
 				7A9524701D2B5D2C0001C87E /* PulsaCache.swift */,
 				7AEFCCF51D2F848D00A7D111 /* PulsaCategoryClientNumber.swift */,
+				7AEFCCF91D2FADB600A7D111 /* PulsaOperatorRoot.swift */,
+				7AEFCCFB1D2FADC600A7D111 /* PulsaOperator.swift */,
+				7AEFCCFD1D2FAE0D00A7D111 /* PulsaOperatorAttribute.swift */,
 			);
 			path = Classses;
 			sourceTree = "<group>";
@@ -13555,6 +13564,7 @@
 				8548B3051D1A58F100D11E22 /* SearchResultCell.m in Sources */,
 				8548B2BA1D1A58F100D11E22 /* ReputationMyProductViewController.m in Sources */,
 				8548B0241D1A58F100D11E22 /* ShippingInfoShipments.m in Sources */,
+				7AEFCCFC1D2FADC600A7D111 /* PulsaOperator.swift in Sources */,
 				8548B09B1D1A58F100D11E22 /* DKImagePickerController.swift in Sources */,
 				8548B2461D1A58F100D11E22 /* DetailProductOtherView.m in Sources */,
 				8548B0291D1A58F100D11E22 /* TrackOrder.m in Sources */,
@@ -13767,6 +13777,7 @@
 				8548AE941D1A58F100D11E22 /* RSA.m in Sources */,
 				8548AE711D1A58F100D11E22 /* NSStringCategory.m in Sources */,
 				8548B36F1D1A58F100D11E22 /* EtalaseRequest.m in Sources */,
+				7AEFCCFE1D2FAE0D00A7D111 /* PulsaOperatorAttribute.swift in Sources */,
 				8548B1C01D1A58F100D11E22 /* InboxMessageCell.m in Sources */,
 				8548B0F11D1A58F100D11E22 /* CameraCollectionCell.m in Sources */,
 				8548AF071D1A58F100D11E22 /* GoogleDistanceMatrixRows.m in Sources */,
@@ -13919,6 +13930,7 @@
 				8548B0301D1A58F100D11E22 /* RateProduct.m in Sources */,
 				8548B2E91D1A58F100D11E22 /* ShipmentConfirmationViewController.m in Sources */,
 				8548B1571D1A58F100D11E22 /* ScrollViewSimultaneousGesture.m in Sources */,
+				7AEFCCFA1D2FADB600A7D111 /* PulsaOperatorRoot.swift in Sources */,
 				8548B37B1D1A58F100D11E22 /* ShopReviewPageViewController.m in Sources */,
 				8548AEA81D1A58F100D11E22 /* SecurityRequestOTP.m in Sources */,
 				8548AE6D1D1A58F100D11E22 /* NSNumberFormatter+IDRFormater.m in Sources */,
