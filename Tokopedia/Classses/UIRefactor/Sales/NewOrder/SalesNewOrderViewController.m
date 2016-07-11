@@ -36,6 +36,9 @@
 #import "ProductRequest.h"
 #import "RejectReasonViewController.h"
 
+#import <BlocksKit/BlocksKit.h>
+#import "UIAlertView+BlocksKit.h"
+
 @interface SalesNewOrderViewController ()
 <
     UITableViewDataSource,
@@ -366,7 +369,7 @@
 - (void)tableViewCell:(UITableViewCell *)cell rejectOrderAtIndexPath:(NSIndexPath *)indexPath {
     self.selectedOrder = [self.orders objectAtIndex:indexPath.row];
     self.selectedIndexPath = indexPath;
-    /*
+    
     if (self.selectedOrder.order_detail.detail_partial_order == 1) {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Tolak Pesanan"
                                                             message:@"Pembeli menyetujui apabila stok barang yang tersedia hanya sebagian"
@@ -376,22 +379,8 @@
         alertView.tag = 1;
         [alertView show];
     } else {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Pilih Alasan Penolakan"
-                                                            message:nil
-                                                           delegate:self
-                                                  cancelButtonTitle:@"Batal"
-                                                  otherButtonTitles:@"Persediaan barang habis", @"Varian tidak tersedia", @"Salah harga/berat", @"Toko sedang tutup", @"Lainnya", nil];
-        alertView.tag = 3;
-        [alertView show];
-    }*/
-    
-    RejectReasonViewController *vc = [RejectReasonViewController new];
-    vc.order = _selectedOrder;
-    
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
-    [navigationController.navigationBar setTranslucent:NO];
-    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
-    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+        [self showRejectReason];
+    }
 }
 
 - (void)tableViewCell:(UITableViewCell *)cell didSelectPriceAtIndexPath:(NSIndexPath *)indexPath {
@@ -411,6 +400,16 @@
 
     NavigateViewController *controller = [NavigateViewController new];
     [controller navigateToProfileFromViewController:self withUserID:_selectedOrder.order_customer.customer_id];
+}
+
+-(void)showRejectReason{
+    RejectReasonViewController *vc = [RejectReasonViewController new];
+    vc.order = _selectedOrder;
+    
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
+    [navigationController.navigationBar setTranslucent:NO];
+    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
 }
 
 #pragma mark - Choose product delegate
@@ -471,13 +470,7 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (alertView.tag == 1) {
         if (buttonIndex == 1) {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Pilih Alasan Penolakan"
-                                                                message:nil
-                                                               delegate:self
-                                                      cancelButtonTitle:@"Batal"
-                                                      otherButtonTitles:@"Persediaan barang habis", @"Varian tidak tersedia", @"Salah harga/berat", @"Toko sedang tutup", @"Lainnya", nil];
-            alertView.tag = 3;
-            [alertView show];
+            [self showRejectReason];
         } else if (buttonIndex == 2) {
             [self showManageProductQuantityPage];
         }
