@@ -7,6 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RejectReasonViewController">
             <connections>
+                <outlet property="footerView" destination="Q7A-an-qJB" id="Ozk-DM-8Es"/>
                 <outlet property="tableView" destination="2C0-5g-FAz" id="J76-Sn-Yfi"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -30,6 +31,21 @@
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="494" y="298"/>
+        </view>
+        <view contentMode="scaleToFill" id="Q7A-an-qJB">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="33"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="1Sh-4w-ta7">
+                    <rect key="frame" x="150" y="7" width="20" height="20"/>
+                </activityIndicatorView>
+            </subviews>
+            <constraints>
+                <constraint firstItem="1Sh-4w-ta7" firstAttribute="centerY" secondItem="Q7A-an-qJB" secondAttribute="centerY" id="8Bk-KK-0pr"/>
+                <constraint firstItem="1Sh-4w-ta7" firstAttribute="centerX" secondItem="Q7A-an-qJB" secondAttribute="centerX" id="WTf-DM-8qy"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="897" y="307.5"/>
         </view>
     </objects>
 </document>
