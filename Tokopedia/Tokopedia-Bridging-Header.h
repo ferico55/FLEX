@@ -60,4 +60,3 @@
 
 //by Tedo Pranowo:
 #import "ShopSettings.h"
-#import "NoteDetails.h"

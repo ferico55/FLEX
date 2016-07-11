@@ -20,7 +20,6 @@
 #import "LabelMenu.h"
 #import "AlertPriceNotificationViewController.h"
 #import "PriceAlertViewController.h"
-#import "NoteDetails.h"
 #import "GalleryViewController.h"
 #import "detail.h"
 #import "search.h"
@@ -1581,14 +1580,14 @@ OtherProductDelegate
         RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[NotesResult class]];
         RKObjectMapping *noteDetailMapping = [RKObjectMapping mappingForClass:[NoteDetails class]];
         [noteDetailMapping addAttributeMappingsFromDictionary:@{
-                                                                CNotesPosition:CNotesPosition,
-                                                                CNotesStatus:CNotesStatus,
-                                                                CNotesCreateTime:CNotesCreateTime,
-                                                                CNotesID:CNotesID,
-                                                                CNotesTitle:CNotesTitle,
-                                                                CNotesActive:CNotesActive,
-                                                                CNotesUpdateTime:CNotesUpdateTime,
-                                                                CNotesContent:CNotesContent
+                                                                @"notes_position" : @"notes_position",
+                                                                @"notes_status" : @"notes_status",
+                                                                @"notes_create_time" : @"notes_create_time",
+                                                                @"notes_id" : @"notes_id",
+                                                                @"notes_title" : @"notes_title",
+                                                                @"notes_active" : @"notes_active",
+                                                                @"notes_update_time" : @"notes_update_time",
+                                                                @"notes_content" : @"notes_content"
                                                                 }];
         
         //Relation
