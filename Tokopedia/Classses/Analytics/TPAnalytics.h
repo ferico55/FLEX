@@ -53,4 +53,8 @@
 + (void)trackPushNotificationAccepted:(BOOL)accepted;
 + (void)trackOpenPushNotificationSetting;
 
++ (void)trackCampaign:(NSURL *)url;
+
++ (void)trackClickEvent:(NSString *)event category:(NSString *)category label:(NSString *)label;
+
 @end

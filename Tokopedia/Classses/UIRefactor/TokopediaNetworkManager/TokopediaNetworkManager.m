@@ -178,7 +178,7 @@
         if([status isEqualToString:@"OK"]) {
             [self requestProcess:successResult withOperation:operation];
         } else if ([status isEqualToString:@"INVALID_REQUEST"]) {
-            
+            //TODO :: Need to handle this status.
         } else if ([status isEqualToString:@"UNDER_MAINTENANCE"]) {
             [self requestMaintenance];
         } else if ([status isEqualToString:@"REQUEST_DENIED"]) {
@@ -419,7 +419,7 @@
             if([status isEqualToString:@"OK"]) {
                 successCallback(mappingResult, operation);
             } else if ([status isEqualToString:@"INVALID_REQUEST"]) {
-                
+                //TODO :: Need to handle this status.
             } else if ([status isEqualToString:@"UNDER_MAINTENANCE"]) {
                 [self requestMaintenance];
             } else if ([status isEqualToString:@"REQUEST_DENIED"]) {

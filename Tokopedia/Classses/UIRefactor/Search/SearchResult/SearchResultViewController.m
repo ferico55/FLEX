@@ -358,7 +358,7 @@ ImageSearchRequestDelegate
 }
 
 -(NSString*)defaultSortDirectoryID{
-    return @"1";
+    return @"23";
 }
 
 -(void)setDefaultSortCatalog{
@@ -420,6 +420,7 @@ ImageSearchRequestDelegate
     
     if (_data) {
         [_params setObject:data[@"sc"] forKey:@"sc"];
+        [_params setObject:data[@"department_name"]?:@"" forKey:@"department_name"];
         _rootCategoryID = data[@"sc"]?:@"";
     }
 }
@@ -733,7 +734,8 @@ ImageSearchRequestDelegate
 
 #pragma mark - Category notification
 - (void)changeCategory:(NSNotification *)notification {
-    [_params setObject:[notification.userInfo objectForKey:@"department_id"] forKey:@"sc"];
+    [_params setObject:[notification.userInfo objectForKey:@"department_id"]?:@"" forKey:@"sc"];
+    [_params setObject:[notification.userInfo objectForKey:@"department_name"]?:@"" forKey:@"department_name"];
     [_params setObject:[_data objectForKey:@"search"]?:@"" forKey:@"search"];
     
     [self refreshView:nil];
@@ -872,11 +874,11 @@ ImageSearchRequestDelegate
     NSMutableDictionary *parameter = [[NSMutableDictionary alloc]init];
     [parameter setObject:@"ios" forKey:@"device"];
     [parameter setObject:[_params objectForKey:@"sc"]?:@"" forKey:@"sc"];
-    [parameter setObject:[_params objectForKey:@"location"]?:@"" forKey:@"floc"];
+    [parameter setObject:[_params objectForKey:@"floc"]?:@"" forKey:@"floc"];
     [parameter setObject:[_params objectForKey:@"ob"]?:@"" forKey:@"ob"];
     [parameter setObject:[_params objectForKey:@"pmin"]?:@"" forKey:@"pmin"];
     [parameter setObject:[_params objectForKey:@"pmax"]?:@"" forKey:@"pmax"];
-    [parameter setObject:[_params objectForKey:@"shop_type"]?:@"" forKey:@"fshop"];
+    [parameter setObject:[_params objectForKey:@"fshop"]?:@"" forKey:@"fshop"];
     [parameter setObject:[_params objectForKey:@"sc_identifier"]?:@"" forKey:@"sc_identifier"];
     if(_isFromImageSearch){
         [parameter setObject:_image_url forKey:@"image_url"];
@@ -1080,9 +1082,11 @@ ImageSearchRequestDelegate
     if(search.data.department_id && ![search.data.department_id isEqualToString:@"0"]) {
         NSString *departementID = search.data.department_id?:@"";
         [_params setObject:departementID forKey:@"sc"];
+        NSString *departementName = [_params objectForKey:@"department_name"]?:@"";
         if ([_delegate respondsToSelector:@selector(updateTabCategory:)]) {
             CategoryDetail *category = [CategoryDetail new];
             category.categoryId = departementID;
+            category.name = departementName;
             [_delegate updateTabCategory:category];
         }
     }
@@ -1186,6 +1190,7 @@ ImageSearchRequestDelegate
         // redirect uri to search category
         else if ([query[1] isEqualToString:kTKPDSEARCH_DATAURLREDIRECTCATEGORY]) {
             NSString *departementID = search.data.department_id?:@"";
+            NSString *departementName = [_params objectForKey:@"department_name"]?:@"";
             [_params setObject:departementID forKey:@"sc"];
             [_params removeObjectForKey:@"search"];
             [_networkManager requestCancel];
@@ -1193,6 +1198,7 @@ ImageSearchRequestDelegate
             if ([self.delegate respondsToSelector:@selector(updateTabCategory:)]) {
                 CategoryDetail *category = [CategoryDetail new];
                 category.categoryId = departementID;
+                category.name = departementName;
                 [self.delegate updateTabCategory:category];
             }
             
@@ -1327,8 +1333,8 @@ ImageSearchRequestDelegate
     NSInteger page = _start/[startPerPage integerValue];
     
     if(page % 2 == 0){
-        NSString *searchQuery =[_params objectForKey:kTKPDSEARCH_DATASEARCHKEY]?:@"";
-        NSString *departmentId =[_params objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY]?:@"";
+        NSString *searchQuery =[_params objectForKey:@"search"]?:@"";
+        NSString *departmentId =[_params objectForKey:@"sc"]?:@"";
         NSString *source = [searchQuery isEqualToString:@""]?@"directory":@"search";
         
         [_promoRequest requestForProductQuery:searchQuery
@@ -1380,7 +1386,7 @@ ImageSearchRequestDelegate
         };
 
         PromoRequestSourceType source;
-        if ([_params objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY]) {
+        if ([_params objectForKey:@"sc"]) {
             source = PromoRequestSourceCategory;
         } else if ([_params objectForKey:kTKPDSEARCH_DATASEARCHKEY]) {
             source = PromoRequestSourceSearch;
