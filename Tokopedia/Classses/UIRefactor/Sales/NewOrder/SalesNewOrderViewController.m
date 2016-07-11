@@ -371,13 +371,17 @@
     self.selectedIndexPath = indexPath;
     
     if (self.selectedOrder.order_detail.detail_partial_order == 1) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Tolak Pesanan"
-                                                            message:@"Pembeli menyetujui apabila stok barang yang tersedia hanya sebagian"
-                                                           delegate:self
-                                                  cancelButtonTitle:@"Batal"
-                                                  otherButtonTitles:@"Tolak Pesanan", @"Terima Sebagian", nil];
-        alertView.tag = 1;
-        [alertView show];
+        UIAlertView *alert = [[UIAlertView alloc] bk_initWithTitle:@"Tolak Pesanan" message:@"Pembeli menyetujui apabila stok barang yang tersedia hanya sebagian"];
+        [alert bk_setCancelButtonWithTitle:@"Batal" handler:^{
+            //nope
+        }];
+        [alert bk_addButtonWithTitle:@"Tolak Pesanan" handler:^{
+            [self showRejectReason];
+        }];
+        [alert bk_addButtonWithTitle:@"Terima Sebagian" handler:^{
+            [self showManageProductQuantityPage];
+        }];
+        [alert show];
     } else {
         [self showRejectReason];
     }
@@ -468,14 +472,7 @@
 #pragma mark - Alert view delegate
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (alertView.tag == 1) {
-        if (buttonIndex == 1) {
-            [self showRejectReason];
-        } else if (buttonIndex == 2) {
-            [self showManageProductQuantityPage];
-        }
-    }
-    else if (alertView.tag == 2) {
+    if (alertView.tag == 2) {
         if (buttonIndex == 1) {
             [self requestActionType:@"accept" reason:nil products:nil productQuantity:nil];
         } else if (buttonIndex == 2) {
