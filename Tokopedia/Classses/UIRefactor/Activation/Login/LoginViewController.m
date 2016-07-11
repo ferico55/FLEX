@@ -109,9 +109,8 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     
     UIBarButtonItem *signUpButton = [[UIBarButtonItem alloc] initWithTitle:kTKPDREGISTER_TITLE
                                                                      style:UIBarButtonItemStylePlain
-                                                                    target:(self)
-                                                                    action:@selector(tap:)];
-    signUpButton.tag = 11;
+                                                                    target:self
+                                                                    action:@selector(didTapRegisterButton)];
     signUpButton.tintColor = [UIColor whiteColor];
     self.navigationItem.rightBarButtonItem = signUpButton;
 
@@ -119,8 +118,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
         UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
                                                                          style:UIBarButtonItemStylePlain
                                                                         target:self
-                                                                        action:@selector(tap:)];
-        cancelButton.tag = 13;
+                                                                        action:@selector(didTapCancelButton)];
         cancelButton.tintColor = [UIColor whiteColor];
         self.navigationItem.leftBarButtonItem = cancelButton;
     }
@@ -185,91 +183,66 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-#pragma mark - View Actipn
--(IBAction)tap:(id)sender
-{
+- (IBAction)didTapGoogleSignInButton {
+    _signInLabel.highlighted = YES;
+    [[GIDSignIn sharedInstance] signIn];
+}
+
+- (IBAction)didTapLoginButton {
     [self.view endEditing:YES];
 
-    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
-        UIBarButtonItem *btn = (UIBarButtonItem*)sender;
-        switch (btn.tag) {
-            case 11:
-            {
-                RegisterViewController *controller = [RegisterViewController new];
-                [self.navigationController pushViewController:controller animated:YES];
-                break;
-            }
-            case 13:
-            {
-                if(_delegate!=nil && [_delegate respondsToSelector:@selector(cancelLoginView)]) {
+    NSString *email = [_activation objectForKey:kTKPDACTIVATION_DATAEMAILKEY];
+    NSString *pass = [_activation objectForKey:kTKPDACTIVATION_DATAPASSKEY];
+    NSMutableArray *messages = [NSMutableArray new];
+    BOOL valid = NO;
+    NSString *message;
+    if (email && pass && ![email isEqualToString:@""] && ![pass isEqualToString:@""] && [email isEmail]) {
+        valid = YES;
+    }
+    if (!email||[email isEqualToString:@""]) {
+        message = @"Email harus diisi.";
+        [messages addObject:message];
+        valid = NO;
+    }
+    if (email) {
+        if (![email isEmail]) {
+            message = @"Format email salah.";
+            [messages addObject:message];
+            valid = NO;
+        }
+    }
+    if (!pass || [pass isEqualToString:@""]) {
+        message = @"Password harus diisi";
+        [messages addObject:message];
+        valid = NO;
+    }
+
+    if (valid) {
+        [self doLoginWithEmail:email password:pass];
+    }
+    else{
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messages delegate:self];
+        [alert show];
+    }
+
+    NSLog(@"message : %@", messages);
+}
+
+- (IBAction)didTapForgotPasswordButton {
+    ForgotPasswordViewController *controller = [ForgotPasswordViewController new];
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)didTapCancelButton {
+    if(_delegate !=nil && [_delegate respondsToSelector:@selector(cancelLoginView)]) {
                     [_delegate cancelLoginView];
                 }
-                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-                break;
-            }
-            default:
-                break;
-        }
-    } else if ([sender isKindOfClass:[UIButton class]]) {
-        UIButton *btn = (UIButton*)sender;
-        switch (btn.tag) {
-            case 10: {
-                /** SIGN IN **/
-                NSString *email = [_activation objectForKey:kTKPDACTIVATION_DATAEMAILKEY];
-                NSString *pass = [_activation objectForKey:kTKPDACTIVATION_DATAPASSKEY];
-                NSMutableArray *messages = [NSMutableArray new];
-                BOOL valid = NO;
-                NSString *message;
-                if (email && pass && ![email isEqualToString:@""] && ![pass isEqualToString:@""] && [email isEmail]) {
-                    valid = YES;
-                }
-                if (!email||[email isEqualToString:@""]) {
-                    message = @"Email harus diisi.";
-                    [messages addObject:message];
-                    valid = NO;
-                }
-                if (email) {
-                    if (![email isEmail]) {
-                        message = @"Format email salah.";
-                        [messages addObject:message];
-                        valid = NO;
-                    }
-                }
-                if (!pass || [pass isEqualToString:@""]) {
-                    message = @"Password harus diisi";
-                    [messages addObject:message];
-                    valid = NO;
-                }
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+}
 
-                if (valid) {
-                    [self doLoginWithEmail:email password:pass];
-                }
-                else{
-                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messages delegate:self];
-                    [alert show];
-                }
-
-                NSLog(@"message : %@", messages);
-
-                break;
-            }
-                
-            case 11 : {
-                ForgotPasswordViewController *controller = [ForgotPasswordViewController new];
-                [self.navigationController pushViewController:controller animated:YES];
-                break;
-            }
-            default:
-                break;
-        }
-        
-    } else if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
-        UITapGestureRecognizer *gesture = (UITapGestureRecognizer *)sender;
-        if (gesture.view.tag == 12) {
-            _signInLabel.highlighted = YES;
-            [[GIDSignIn sharedInstance] signIn];
-        }        
-    }
+- (void)didTapRegisterButton {
+    RegisterViewController *controller = [RegisterViewController new];
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)loginWithYahoo {
@@ -658,7 +631,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
     
 }
 
-- (IBAction)onYahooButtonTap:(id)sender {
+- (IBAction)didTapYahooButton:(id)sender {
     [self loginWithYahoo];
 }
 

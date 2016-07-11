@@ -37,11 +37,7 @@
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tapGestureRecognizer id="MgA-86-nNw">
-            <connections>
-                <action selector="tap:" destination="-1" id="H2M-00-kIT"/>
-            </connections>
-        </tapGestureRecognizer>
+        <tapGestureRecognizer id="MgA-86-nNw"/>
         <view contentMode="redraw" id="lpZ-Wc-EfF">
             <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -88,6 +84,7 @@
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
+                                <action selector="didTapLoginButton" destination="-1" eventType="touchUpInside" id="jW7-PP-U0l"/>
                                 <action selector="tap:" destination="-1" eventType="touchUpInside" id="qhs-2n-8Kv"/>
                             </connections>
                         </button>
@@ -103,7 +100,7 @@
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="sQS-cs-zQR"/>
+                                <action selector="didTapForgotPasswordButton" destination="-1" eventType="touchUpInside" id="vRA-Vw-eOJ"/>
                             </connections>
                         </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gxv-a7-Kso" userLabel="Facebook View">
@@ -205,6 +202,13 @@
                         <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="OfY-Za-Mqc">
                             <rect key="frame" x="150" y="230" width="20" height="20"/>
                         </activityIndicatorView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x6m-Uq-x7Q">
+                            <rect key="frame" x="137" y="267" width="46" height="30"/>
+                            <state key="normal" title="Button"/>
+                            <connections>
+                                <action selector="didTapYahooButton:" destination="-1" eventType="touchUpInside" id="dfk-kR-ftm"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
@@ -212,13 +216,6 @@
                         <constraint firstAttribute="centerX" secondItem="OfY-Za-Mqc" secondAttribute="centerX" id="obx-fx-LSj"/>
                     </constraints>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x6m-Uq-x7Q">
-                    <rect key="frame" x="137" y="267" width="46" height="30"/>
-                    <state key="normal" title="Button"/>
-                    <connections>
-                        <action selector="onYahooButtonTap:" destination="-1" eventType="touchUpInside" id="h31-oc-BpW"/>
-                    </connections>
-                </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
@@ -244,7 +241,7 @@
         </view>
         <tapGestureRecognizer id="pZv-5d-akP">
             <connections>
-                <action selector="tap:" destination="-1" id="gNY-MU-MU6"/>
+                <action selector="didTapGoogleSignInButton" destination="-1" id="HkS-Dh-XMI"/>
             </connections>
         </tapGestureRecognizer>
     </objects>
