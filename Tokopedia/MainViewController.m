@@ -220,8 +220,12 @@ typedef enum TagRequest {
     _data = nil;
     [self presentcontrollers];
     
-    [Localytics setCustomerId:[_userManager getUserId]];
-    [Localytics setValue:[_userManager getUserId] forProfileAttribute:@"user_id"];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [Localytics setCustomerId:[_userManager getUserId]];
+        [Localytics setValue:[_userManager getUserId] forProfileAttribute:@"user_id"];
+    });
+    
 }
 
 -(void)presentcontrollers

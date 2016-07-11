@@ -186,7 +186,6 @@ typedef enum
 #define kTKPDDETAIL_APIPAGEKEY @"page"
 #define kTKPDDETAIL_APITOTALPAGEKEY @"total_page"
 #define kTKPDDETAIL_APILIMITKEY @"per_page"
-#define kTKPDDETAIL_APILOCATIONKEY @"location"
 #define kTKPDDETAIL_APIADDRESSKEY @"address"
 #define kTKPDDETAIL_APICONDITIONKEY @"condition"
 #define CStringPictureStatus @"picture_status"

@@ -4,9 +4,11 @@ default_platform :ios
 
 def build_app
   project_file = 'Tokopedia.xcodeproj'
-  increment_build_number(xcodeproj: project_file)
+  #increment_build_number(xcodeproj: project_file)
+  build_number = Time.new.strftime("%Y%m%d%H%M")
+  increment_build_number build_number: build_number
 
-  gym(scheme: "Tokopedia")  
+  gym(scheme: "Tokopedia", clean: true)  
 
   commit_version_bump(
     message: 'Version Bump by fastlane',

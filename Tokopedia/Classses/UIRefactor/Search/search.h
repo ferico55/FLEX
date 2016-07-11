@@ -37,11 +37,6 @@
 
 #define kTKPDSEARCH_APIQUERYKEY @"query"
 #define kTKPDSEARCH_APIACTIONTYPEKEY @"action"
-#define kTKPDSEARCH_APIORDERBYKEY @"order_by"
-#define kTKPDSEARCH_APILOCATIONKEY @"location"
-#define kTKPDSEARCH_APISHOPTYPEKEY @"shop_type"
-#define kTKPDSEARCH_APIPRICEMINKEY @"price_min"
-#define kTKPDSEARCH_APIPRICEMAXKEY @"price_max"
 
 #define kTKPDSEARCH_APIPAGEKEY @"page"
 #define kTKPDSEARCH_APILIMITKEY @"per_page"
@@ -74,7 +69,6 @@
 /** redirect url **/
 #define kTKPDSEARCH_APIREDIRECTURLKEY @"redirect_url"
 #define kTKPDSEARCH_APIDEPARTMENTIDKEY @"department_id"
-#define kTKPDSEARCH_APIDEPARTEMENTIDKEY @"department_id"
 #define kTKPDSEARCH_APIDEPARTEMENTTITLEKEY @"department_title"
 #define kTKPDSEARCH_APIDEPARTMENTNAMEKEY @"department_name"
 

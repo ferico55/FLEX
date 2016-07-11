@@ -36,11 +36,9 @@ typedef enum
 
 #define kTKPDFILTER_APIDEPARTMENTIDKEY @"department_id"
 #define kTKPDFILTER_APIORDERBYKEY @"order_by"
-#define kTKPDFILTER_APILOCATIONKEY @"location"
 #define kTKPDFILTER_APICONDITIONKEY @"condition"
 #define kTKPDFILTER_APILOCATIONNAMEKEY @"locationname"
 #define kTKPDFILTER_APICONDITIONNAMEKEY @"conditionname"
-#define kTKPDFILTER_APISHOPTYPEKEY @"shop_type"
 #define kTKPDFILTER_APISELECTEDDISTRICTIDKEY @"districtid"
 
 #define kTKPDFILTER_DATACOLUMNKEY @"column"
