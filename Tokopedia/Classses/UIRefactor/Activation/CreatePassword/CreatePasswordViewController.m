@@ -391,10 +391,7 @@
                                                         if (_onPasswordCreated) {
                                                             [self dismissViewControllerAnimated:YES completion:nil];
                                                             _onPasswordCreated();
-                                                        } else {
-                                                            [self requestLogin];
                                                         }
-                                                        
                                                     } else if (result.message_error) {
                                                         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:result.message_error
                                                                                                                        delegate:self];
@@ -413,69 +410,6 @@
                                                 onFailure:^(NSError *errorResult) {
                                                     [self enableTextFields];
                                                 }];
-}
-
-- (void)requestLogin {
-    [_activationRequest requestLoginWithUserEmail:_emailTextField.text?:@"0"
-                                     userPassword:_passwordTextField.text?:@"0"
-                                             uuid:@""
-                                        onSuccess:^(Login *result) {
-                                            BOOL status = [result.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-                                            if (status) {
-                                                if (result.result.is_login) {
-                                                    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-                                                    [secureStorage setKeychainWithValue:@(result.result.is_login) withKey:kTKPD_ISLOGINKEY];
-                                                    [secureStorage setKeychainWithValue:result.result.user_id withKey:kTKPD_USERIDKEY];
-                                                    [secureStorage setKeychainWithValue:result.result.full_name withKey:kTKPD_FULLNAMEKEY];
-                                                    
-                                                    if(result.result.user_image != nil) {
-                                                        [secureStorage setKeychainWithValue:result.result.user_image withKey:kTKPD_USERIMAGEKEY];
-                                                    }
-                                                    
-                                                    [secureStorage setKeychainWithValue:result.result.shop_id withKey:kTKPD_SHOPIDKEY];
-                                                    [secureStorage setKeychainWithValue:result.result.shop_name withKey:kTKPD_SHOPNAMEKEY];
-                                                    
-                                                    if(result.result.shop_avatar != nil) {
-                                                        [secureStorage setKeychainWithValue:result.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
-                                                    }
-                                                    
-                                                    [secureStorage setKeychainWithValue:@(result.result.shop_is_gold) withKey:kTKPD_SHOPISGOLD];
-                                                    [secureStorage setKeychainWithValue:result.result.msisdn_is_verified withKey:kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY];
-                                                    [secureStorage setKeychainWithValue:result.result.msisdn_show_dialog withKey:kTKPDLOGIN_API_MSISDN_SHOW_DIALOG_KEY];
-                                                    [secureStorage setKeychainWithValue:result.result.device_token_id?:@"" withKey:kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY];
-                                                    [secureStorage setKeychainWithValue:result.result.shop_has_terms withKey:kTKPDLOGIN_API_HAS_TERM_KEY];
-                                                    
-                                                    [self.tabBarController setSelectedIndex:0];
-                                                    
-                                                    [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
-                                                                                                        object:nil
-                                                                                                      userInfo:nil];
-                                                    
-                                                    [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification
-                                                                                                        object:nil];
-                                                    
-                                                    [Localytics setValue:@"Yes" forProfileAttribute:@"Is Login"];
-
-                                                    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-                                                    
-                                                } else {
-                                                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:result.message_error
-                                                                                                                   delegate:self];
-                                                    [alert show];
-                                                }
-                                            }
-                                            else
-                                            {
-                                                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Sign in gagal silahkan coba lagi."]
-                                                                                                               delegate:self];
-                                                [alert show];
-                                            }
-                                        }
-                                        onFailure:^(NSError *error) {
-                                            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Sign in gagal silahkan coba lagi."]
-                                                                                                           delegate:self];
-                                            [alert show];
-                                        }];
 }
 
 - (void)trackRegistration {
