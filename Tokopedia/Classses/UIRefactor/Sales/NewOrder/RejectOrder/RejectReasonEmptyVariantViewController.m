@@ -11,10 +11,12 @@
 #import "RejectReasonProductDescriptionViewController.h"
 #import <BlocksKit/BlocksKit.h>
 #import "NSArray+BlocksKit.h"
+#import "RejectOrderRequest.h"
 
 @interface RejectReasonEmptyVariantViewController ()<UITableViewDelegate, UITableViewDataSource, RejectReasonEmptyVariantDelegate, RejectReasonProductDescriptionDelegate>
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UIButton *confirmButton;
+@property (strong, nonatomic) RejectOrderRequest* rejectOrderRequest;
 
 @end
 
@@ -28,7 +30,9 @@
     _tableView.dataSource = self;
     _tableView.delegate = self;
     _tableView.allowsMultipleSelection = YES;
+    [_tableView reloadData];
     
+    _rejectOrderRequest = [RejectOrderRequest new];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -94,7 +98,23 @@
     
 }
 - (IBAction)confirmButtonTapped:(id)sender {
-    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    [_rejectOrderRequest requestActionRejectOrderWithOrderId:_order.order_detail.detail_order_id
+                                               emptyProducts:_order.order_products
+                                                  reasonCode:EMPTY_VARIANT
+                                                    closeEnd:@""
+                                                   closeNote:@""
+                                                   onSuccess:^(GeneralAction *result) {
+                                                       if([result.data.is_success boolValue]){
+                                                           [[NSNotificationCenter defaultCenter] postNotificationName:@"applyRejectOperation" object:nil];
+                                                           [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                                                       }else{
+                                                           StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:result.message_error delegate:self];
+                                                           [alert show];
+                                                       }
+                                                   } onFailure:^(NSError *error) {
+                                                       StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Kendala koneksi internet"] delegate:self];
+                                                       [alert show];
+                                                   }];
 }
 
 #pragma mark - Cell Delegate
