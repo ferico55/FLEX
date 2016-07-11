@@ -30,6 +30,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"Tolak Pesanan";
+    
     UIBarButtonItem *back = [[UIBarButtonItem alloc] initWithTitle : @"Batal"
                                                              style : UIBarButtonItemStyleDone
                                                             target : self

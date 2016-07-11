@@ -40,11 +40,11 @@
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="0nV-qI-Zgb">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="436"/>
-                    <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                    <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                 </tableView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uYT-RC-gG0">
                     <rect key="frame" x="0.0" y="436" width="320" height="44"/>
-                    <color key="backgroundColor" red="0.074509803920000006" green="0.56862745100000001" blue="0.054901960780000002" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.98431372549019602" green="0.29019607843137257" blue="0.11764705882352941" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="w6C-at-oUZ"/>
                     </constraints>
@@ -57,7 +57,7 @@
                     </connections>
                 </button>
             </subviews>
-            <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+            <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="uYT-RC-gG0" secondAttribute="trailing" id="3KK-HP-nxE"/>
                 <constraint firstItem="0nV-qI-Zgb" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="7w2-Dl-a9Y"/>
@@ -87,7 +87,7 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9uq-ud-r9N" userLabel="Start Date">
                         <rect key="frame" x="0.0" y="0.0" width="160" height="60"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YL8-xX-ihF">
+                            <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YL8-xX-ihF">
                                 <rect key="frame" x="8" y="23" width="136" height="33"/>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                                 <state key="normal" title="Pilih Tanggal">
@@ -97,7 +97,7 @@
                                     <action selector="startDateButtonTapped:" destination="-1" eventType="touchUpInside" id="Lrj-sw-5MS"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mulai dari" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uVU-1O-mmG">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Mulai dari" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uVU-1O-mmG">
                                 <rect key="frame" x="8" y="8" width="136" height="11"/>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -111,7 +111,7 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kN3-7t-eAd" userLabel="End Date">
                         <rect key="frame" x="160" y="0.0" width="160" height="60"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AaA-vG-hMr">
+                            <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AaA-vG-hMr">
                                 <rect key="frame" x="8" y="23" width="136" height="33"/>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                                 <state key="normal" title="Pilih Tanggal">
@@ -121,7 +121,7 @@
                                     <action selector="endDateButtonTapped:" destination="-1" eventType="touchUpInside" id="9lD-Wq-BXx"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sampai dengan" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yd7-qw-ohR">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Sampai dengan" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yd7-qw-ohR">
                                 <rect key="frame" x="8" y="8" width="136" height="11"/>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -222,7 +222,7 @@
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Atur Stok Kosong" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b3T-qI-7PV">
                         <rect key="frame" x="8" y="15" width="247" height="13"/>
                         <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ajD-F7-XZv">
