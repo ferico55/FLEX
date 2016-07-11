@@ -127,4 +127,68 @@
     
 }
 
+- (void)requestAddBankAccountWithAccountName:(NSString *)name
+                                   accountNo:(NSString *)number
+                                  bankBranch:(NSString *)branch
+                                      bankID:(NSInteger)bankID
+                                    bankName:(NSString *)bankName
+                                     otpCode:(NSString *)otp
+                                userPassword:(NSString *)password
+                                   onSuccess:(void (^)(ProfileSettings *))successCallback
+                                   onFailure:(void (^)(NSError *))errorCallback {
+    _networkManager.isUsingHmac = YES;
+    
+    [_networkManager requestWithBaseUrl:[NSString v4Url]
+                                   path:@"/v4/action/people/add_bank_account.pl"
+                                 method:RKRequestMethodPOST
+                              parameter:@{@"account_name" : name,
+                                          @"account_no" : number,
+                                          @"bank_branch" : branch,
+                                          @"bank_id" : @(bankID),
+                                          @"bank_name" : bankName,
+                                          @"otp_code" : otp,
+                                          @"user_password" : password}
+                                mapping:[ProfileSettings mapping]
+                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                  ProfileSettings *obj = [successResult.dictionary objectForKey:@""];
+                                  successCallback(obj);
+                              }
+                              onFailure:^(NSError *errorResult) {
+                                  errorCallback(errorResult);
+                              }];
+}
+
+- (void)requestEditBankAccountWithAccountName:(NSString *)name
+                                    accountID:(NSString *)accountID
+                                    accountNo:(NSString *)number
+                                   bankBranch:(NSString *)branch
+                                       bankID:(NSInteger)bankID
+                                     bankName:(NSString *)bankName
+                                      otpCode:(NSString *)otp
+                                 userPassword:(NSString *)password
+                                    onSuccess:(void (^)(ProfileSettings *))successCallback
+                                    onFailure:(void (^)(NSError *))errorCallback {
+    _networkManager.isUsingHmac = YES;
+    
+    [_networkManager requestWithBaseUrl:[NSString v4Url]
+                                   path:@"/v4/action/people/edit_bank_account.pl"
+                                 method:RKRequestMethodPOST
+                              parameter:@{@"account_name" : name,
+                                          @"account_id" : accountID,
+                                          @"account_no" : number,
+                                          @"bank_branch" : branch,
+                                          @"bank_id" : @(bankID),
+                                          @"bank_name" : bankName,
+                                          @"otp_code" : otp,
+                                          @"user_password" : password}
+                                mapping:[ProfileSettings mapping]
+                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                  ProfileSettings *obj = [successResult.dictionary objectForKey:@""];
+                                  successCallback(obj);
+                              }
+                              onFailure:^(NSError *errorResult) {
+                                  errorCallback(errorResult);
+                              }];
+}
+
 @end

@@ -19,17 +19,6 @@
 {
     NSInteger _type;
     
-    NSInteger _requestCountAddBank;
-    NSInteger _requestCountSendOTP;
-    
-    __weak RKObjectManager *_objectmanagerActionAddBank;
-    __weak RKManagedObjectRequestOperation *_requestActionAddBank;
-    
-    __weak RKObjectManager *_objectmanagerActionSendOTP;
-    __weak RKManagedObjectRequestOperation *_requestActionSendOTP;
-    
-    NSOperationQueue *_operationQueue;
-    
     NSMutableDictionary *_datainput;
     
     UITextField *_activetextfield;
@@ -59,23 +48,6 @@
 @property (weak, nonatomic) IBOutlet UIView *contentView;
 @property (weak, nonatomic) IBOutlet UILabel *bankInformationLabel;
 @property (weak, nonatomic) IBOutlet UILabel *otpInformationLabel;
-
--(void)cancelActionSendOTP;
--(void)configureRestKitActionSendOTP;
--(void)requestActionSendOTP:(id)object;
--(void)requestSuccessActionSendOTP:(id)object withOperation:(RKObjectRequestOperation*)operation;
--(void)requestFailureActionSendOTP:(id)object;
--(void)requestProcessActionSendOTP:(id)object;
--(void)requestTimeoutActionSendOTP;
-
--(void)cancelActionAddBank;
--(void)configureRestKitActionAddBank;
--(void)requestActionAddBank:(id)object;
--(void)requestSuccessActionAddBank:(id)object withOperation:(RKObjectRequestOperation*)operation;
--(void)requestFailureActionAddBank:(id)object;
--(void)requestProcessActionAddBank:(id)object;
--(void)requestTimeoutActionAddBank;
-
 @end
 
 @implementation SettingBankEditViewController
@@ -105,7 +77,6 @@
     _sendOTPButton.layer.cornerRadius = 2;
     
     _datainput = [NSMutableDictionary new];
-    _operationQueue = [NSOperationQueue new];
 
     UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
                                                                       style:UIBarButtonItemStyleBordered
@@ -271,8 +242,11 @@
                     accountnumber  && ![accountnumber isEqualToString:@""] &&
                     pass && passCharCount>=MINIMUM_PHONE_CHARACTER_COUNT &&
                     bankBranch && ![bankBranch isEqualToString:@""]) {
-                    [self configureRestKitActionAddBank];
-                    [self requestActionAddBank:_datainput];
+                    if (_type == 1) {
+                        [self requestEditBank];
+                    } else {
+                        [self requestAddBank];
+                    }
                 }
                 else
                 {
@@ -320,197 +294,6 @@
     [_activetextfield resignFirstResponder];
 }
 
-#pragma mark - Request Action Add and Edit Bank
--(void)cancelActionAddBank
-{
-    [_requestActionAddBank cancel];
-    _requestActionAddBank = nil;
-    [_objectmanagerActionAddBank.operationQueue cancelAllOperations];
-    _objectmanagerActionAddBank = nil;
-}
-
--(void)configureRestKitActionAddBank
-{
-    _objectmanagerActionAddBank = [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ProfileSettings class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ProfileSettingsResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{kTKPDPROFILE_APIISSUCCESSKEY:kTKPDPROFILE_APIISSUCCESSKEY}];
-    
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                  toKeyPath:kTKPD_APIRESULTKEY
-                                                                                withMapping:resultMapping]];
-    
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                            method:RKRequestMethodPOST
-                                                                                       pathPattern:kTKPDPROFILE_PROFILESETTINGAPIPATH
-                                                                                           keyPath:@""
-                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectmanagerActionAddBank addResponseDescriptor:responseDescriptor];
-}
-
--(void)requestActionAddBank:(NSDictionary *)userInfo
-{
-    if (_requestActionAddBank.isExecuting) return;
-    
-    BankAccountFormList *list = [_data objectForKey:kTKPDPROFILE_DATABANKKEY];
-    
-    NSString *action = (_type==1)?kTKPDPROFILE_APIEDITBANKKEY:kTKPDPROFILE_APIADDBANKKEY;
-    
-    NSInteger bankID = [[userInfo objectForKey:kTKPDPROFILESETTING_APIBANKIDKEY]integerValue]?:list.bank_id;
-    NSString *bankname = [userInfo objectForKey:API_BANK_NAME_KEY]?:list.bank_name?:@(0);
-    NSString *bankAccountID = list.bank_account_id?:@"";
-    NSString *accountname = [userInfo objectForKey:kTKPDPROFILESETTING_APIACCOUNTNAMEKEY]?:list.bank_account_name?:@(0);
-    NSNumber *accountnumber = [userInfo objectForKey:kTKPDPROFILESETTING_APIACCOUNTNUMBERKEY]?:list.bank_account_number?:@(0);
-    NSString *branchname = [userInfo objectForKey:kTKPDPROFILESETTING_APIBANKBRANCHKEY]?:list.bank_branch?:@(0);
-    NSString *pass = [userInfo objectForKey:kTKPDPROFILESETTING_APIUSERPASSWORDKEY];
-    NSString *OTP = [userInfo objectForKey:kTKPDPROFILESETTING_APIOTPCODEKEY]?:@"0";
-    
-    NSDictionary* param = @{kTKPDPROFILE_APIACTIONKEY:action,
-                            kTKPDPROFILESETTING_APIBANKIDKEY : @(bankID),
-                            API_BANK_NAME_KEY : bankname,
-                            kTKPDPROFILESETTING_APIACCOUNTIDKEY : bankAccountID,
-                            kTKPDPROFILESETTING_APIACCOUNTNAMEKEY : accountname,
-                            kTKPDPROFILESETTING_APIACCOUNTNUMBERKEY : accountnumber,
-                            kTKPDPROFILESETTING_APIBANKBRANCHKEY : branchname,
-                            kTKPDPROFILESETTING_APIOTPCODEKEY : OTP,
-                            kTKPDPROFILESETTING_APIUSERPASSWORDKEY : pass?:@""
-                            };
-    _requestCountAddBank++;
-    
-    _barbuttonsave.enabled = NO;
-    
-    _requestActionAddBank = [_objectmanagerActionAddBank appropriateObjectRequestOperationWithObject:self
-                                                                                              method:RKRequestMethodPOST
-                                                                                                path:kTKPDPROFILE_PROFILESETTINGAPIPATH
-                                                                                          parameters:[param encrypt]];
-    
-    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
-                                                      target:self
-                                                    selector:@selector(requestTimeoutActionAddBank)
-                                                    userInfo:nil
-                                                     repeats:NO];
-    
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-    
-    [_requestActionAddBank setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestSuccessActionAddBank:mappingResult withOperation:operation];
-        [timer invalidate];
-        _barbuttonsave.enabled = YES;
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [self requestFailureActionAddBank:error];
-        [timer invalidate];
-        _barbuttonsave.enabled = YES;
-    }];
-    
-    [_operationQueue addOperation:_requestActionAddBank];
-}
-
--(void)requestSuccessActionAddBank:(id)object withOperation:(RKObjectRequestOperation *)operation
-{
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    ProfileSettings *setting = [result objectForKey:@""];
-    BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if (status) {
-        [self requestProcessActionAddBank:object];
-    }
-}
-
--(void)requestFailureActionAddBank:(id)object
-{
-    [self requestProcessActionAddBank:object];
-}
-
--(void)requestProcessActionAddBank:(id)object
-{
-    if (object) {
-        if ([object isKindOfClass:[RKMappingResult class]]) {
-            NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            ProfileSettings *setting = [result objectForKey:@""];
-            BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-            
-            if (status) {
-                if(setting.message_error) {
-                    NSArray *errorMessages = setting.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
-                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages
-                                                                                   delegate:self];
-                    [alert show];
-                } else if (setting.result.is_success == 1) {
-                    //TODO:: add alert
-                    NSMutableDictionary *userinfo;
-                    if (_type == TYPE_ADD_EDIT_PROFILE_EDIT){
-
-                        if (_isBeingPresented) {
-                            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-                        } else {
-                            NSArray *viewcontrollers = self.navigationController.viewControllers;
-                            NSInteger index = viewcontrollers.count-3;
-                            [self.navigationController popToViewController:[viewcontrollers objectAtIndex:index]
-                                                                  animated:NO];
-                        }
-                        
-                        BankAccountFormList *bankAccount = [BankAccountFormList new];
-                        bankAccount.bank_id = [[_datainput objectForKey:kTKPDPROFILESETTING_APIBANKIDKEY] integerValue];
-                        bankAccount.bank_account_name = _accountNameTextField.text;
-                        bankAccount.bank_account_number = _accountNumberTextField.text;
-                        bankAccount.bank_name = _bankNameButton.titleLabel.text;
-                        bankAccount.bank_branch = _bankBranchTextField.text;
-                        
-                        userinfo = [NSMutableDictionary dictionaryWithDictionary:@{
-                                                                                   kTKPDPROFILE_DATAEDITTYPEKEY   : [_data objectForKey:kTKPDPROFILE_DATAEDITTYPEKEY]?:@"",
-                                                                                   kTKPDPROFILE_DATAINDEXPATHKEY  : [_data objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY]?:@"",
-                                                                                   kTKPDPROFILE_DATABANKKEY   : bankAccount,
-                                                                                   }];
-                    } else {
-                        if (_isBeingPresented) {
-                            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-                        } else {
-                            [self.navigationController popViewControllerAnimated:YES];
-                        }
-                    }
-
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_ADDACCOUNTBANKNOTIFICATIONNAMEKEY
-                                                                        object:nil
-                                                                      userInfo:userinfo];
-
-                    NSArray *successMessages = setting.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY];
-                    StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages
-                                                                                     delegate:self];
-                    [alert show];
-                } else {
-                    NSArray *errorMessage = @[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
-                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessage delegate:self];
-                    [alert show];
-                }
-            }
-        } else {
-            [self cancelActionAddBank];
-            NSError *error = object;
-            NSString *errorDescription = error.localizedDescription;
-            UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE
-                                                                message:errorDescription
-                                                               delegate:self
-                                                      cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE
-                                                      otherButtonTitles:nil];
-            [errorAlert show];
-        }
-    }
-}
-
--(void)requestTimeoutActionAddBank
-{
-    [self cancelActionAddBank];
-}
-
 #pragma mark - Methods
 -(void)setDefaultData:(NSDictionary*)data
 {
@@ -526,7 +309,115 @@
     }
 }
 
+- (void)requestAddBank {
+    BankAccountFormList *list = [_data objectForKey:kTKPDPROFILE_DATABANKKEY];
+    
+    NSString *accountName = [_datainput objectForKey:kTKPDPROFILESETTING_APIACCOUNTNAMEKEY]?:list.bank_account_name?:@"0";
+    NSString *accountNumber = [_datainput objectForKey:kTKPDPROFILESETTING_APIACCOUNTNUMBERKEY]?:list.bank_account_number?:@"0";
+    NSString *bankBranch = [_datainput objectForKey:kTKPDPROFILESETTING_APIBANKBRANCHKEY]?:list.bank_branch?:@"0";
+    NSInteger bankID = [[_datainput objectForKey:kTKPDPROFILESETTING_APIBANKIDKEY]integerValue]?:list.bank_id;
+    NSString *bankName = [_datainput objectForKey:API_BANK_NAME_KEY]?:list.bank_name?:@"0";
+    NSString *otp = [_datainput objectForKey:kTKPDPROFILESETTING_APIOTPCODEKEY]?:@"0";
+    NSString *pass = [_datainput objectForKey:kTKPDPROFILESETTING_APIUSERPASSWORDKEY];
+    
+    __weak typeof(self) weakSelf = self;
+    
+    [_bankAccountRequest requestAddBankAccountWithAccountName:accountName
+                                                    accountNo:accountNumber
+                                                   bankBranch:bankBranch
+                                                       bankID:bankID
+                                                     bankName:bankName
+                                                      otpCode:otp
+                                                 userPassword:pass
+                                                    onSuccess:^(ProfileSettings *result) {
+                                                        [weakSelf successAddBankWithResult:result];
+                                                    }
+                                                    onFailure:^(NSError *error) {
+                                                        _barbuttonsave.enabled = YES;
+                                                    }];
+}
 
+- (void)successAddBankWithResult:(ProfileSettings *)result {
+    _barbuttonsave.enabled = YES;
+    
+    if (result.message_error) {
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:result.message_error
+                                                                       delegate:self];
+        [alert show];
+    } else {
+        NSMutableDictionary *userinfo;
+        
+        if (_isBeingPresented) {
+            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+        } else {
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_ADDACCOUNTBANKNOTIFICATIONNAMEKEY
+                                                            object:nil
+                                                          userInfo:userinfo];
+        
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:result.message_status
+                                                                         delegate:self];
+        [alert show];
+    }
+}
+
+- (void)requestEditBank {
+    BankAccountFormList *list = [_data objectForKey:kTKPDPROFILE_DATABANKKEY];
+    
+    NSString *accountName = [_datainput objectForKey:kTKPDPROFILESETTING_APIACCOUNTNAMEKEY]?:list.bank_account_name?:@"0";
+    NSString *accountID = list.bank_account_id?:@"";
+    NSString *accountNumber = [_datainput objectForKey:kTKPDPROFILESETTING_APIACCOUNTNUMBERKEY]?:list.bank_account_number?:@"0";
+    NSString *bankBranch = [_datainput objectForKey:kTKPDPROFILESETTING_APIBANKBRANCHKEY]?:list.bank_branch?:@"0";
+    NSInteger bankID = [[_datainput objectForKey:kTKPDPROFILESETTING_APIBANKIDKEY]integerValue]?:list.bank_id;
+    NSString *bankName = [_datainput objectForKey:API_BANK_NAME_KEY]?:list.bank_name?:@"0";
+    NSString *otp = [_datainput objectForKey:kTKPDPROFILESETTING_APIOTPCODEKEY]?:@"0";
+    NSString *pass = [_datainput objectForKey:kTKPDPROFILESETTING_APIUSERPASSWORDKEY];
+    
+    __weak typeof(self) weakSelf = self;
+    
+    [_bankAccountRequest requestEditBankAccountWithAccountName:accountName
+                                                     accountID:accountID
+                                                     accountNo:accountNumber
+                                                    bankBranch:bankBranch
+                                                        bankID:bankID
+                                                      bankName:bankName
+                                                       otpCode:otp
+                                                  userPassword:pass
+                                                     onSuccess:^(ProfileSettings *result) {
+                                                         [weakSelf successEditBankWithResult:result];
+                                                     }
+                                                     onFailure:^(NSError *error) {
+                                                         _barbuttonsave.enabled = YES;
+                                                     }];
+}
+
+- (void)successEditBankWithResult:(ProfileSettings *)result {
+    _barbuttonsave.enabled = YES;
+    
+    if (result.message_error) {
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:result.message_error
+                                                                       delegate:self];
+        [alert show];
+    } else {
+        NSMutableDictionary *userinfo;
+        
+        if (_isBeingPresented) {
+            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+        } else {
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_ADDACCOUNTBANKNOTIFICATIONNAMEKEY
+                                                            object:nil
+                                                          userInfo:userinfo];
+        
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:result.message_status
+                                                                         delegate:self];
+        [alert show];
+    }
+}
 
 #pragma mark - Setting Bank Name Delegate
 -(void)SettingBankNameViewController:(UIViewController *)vc withData:(NSDictionary *)data
