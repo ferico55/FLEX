@@ -371,15 +371,16 @@
     self.selectedIndexPath = indexPath;
     
     if (self.selectedOrder.order_detail.detail_partial_order == 1) {
+        __weak typeof(self) welf = self;
         UIAlertView *alert = [[UIAlertView alloc] bk_initWithTitle:@"Tolak Pesanan" message:@"Pembeli menyetujui apabila stok barang yang tersedia hanya sebagian"];
         [alert bk_setCancelButtonWithTitle:@"Batal" handler:^{
             //nope
         }];
         [alert bk_addButtonWithTitle:@"Tolak Pesanan" handler:^{
-            [self showRejectReason];
+            [welf showRejectReason];
         }];
         [alert bk_addButtonWithTitle:@"Terima Sebagian" handler:^{
-            [self showManageProductQuantityPage];
+            [welf showManageProductQuantityPage];
         }];
         [alert show];
     } else {
