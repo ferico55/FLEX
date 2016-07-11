@@ -126,7 +126,7 @@ typedef enum
     _tableViewShipmentCell = [NSArray sortViewsWithTagInArray:_tableViewShipmentCell];
     _isnodata = YES;
     
-    [self setPlaceholder:@"Contoh : Warna hitam" textView:_remarkTextView];
+    [self setPlaceholder:@"Contoh: Warna Putih/Ukuran XL/Edisi ke-2" textView:_remarkTextView];
     _remarkTextView.delegate = self;
     
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:nil];
@@ -158,8 +158,6 @@ typedef enum
     
     _tableView.estimatedRowHeight = 100.0;
     _tableView.rowHeight = UITableViewAutomaticDimension;
-    
-    [_messageZeroShipmentLabel setCustomAttributedText:_messageZeroShipmentLabel.text];
 }
 
 -(void)refreshView{
@@ -213,19 +211,32 @@ typedef enum
                               isFromCart:@"1"
                                  success:^(ProfileSettingsResult *data) {
                                      
-                                     TKPAddressStreet *tkpAddressStreet = [TKPAddressStreet new];
-                                     NSString *addressStreet = [tkpAddressStreet getStreetAddress:address.thoroughfare];
-                                     
-                                     _pinLocationNameButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-                                     [_pinLocationNameButton setCustomAttributedText:[addressStreet isEqualToString:@""]?@"Tandai lokasi Anda":addressStreet];
-                                     _selectedAddress.longitude = [[NSNumber numberWithDouble:longitude] stringValue];
-                                     _selectedAddress.latitude = [[NSNumber numberWithDouble:latitude]stringValue];
-                                     
-                                     [self adjustViewIsLoading:NO];
+                                     [self successEditAddress:address longitude:longitude latitude:latitude result:data];
                                      
                                  } failure:^(NSError *error) {
-                                     [self adjustViewIsLoading:NO];
+                                     
+                                     [self failedEditAddress:error];
+                                 
                                  }];
+}
+
+-(void)successEditAddress:(GMSAddress *)address longitude:(double)longitude latitude:(double)latitude result:(ProfileSettingsResult*)data{
+    
+    TKPAddressStreet *tkpAddressStreet = [TKPAddressStreet new];
+    NSString *addressStreet = [tkpAddressStreet getStreetAddress:address.thoroughfare];
+    
+    _pinLocationNameButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    [_pinLocationNameButton setCustomAttributedText:[addressStreet isEqualToString:@""]?@"Tandai lokasi Anda":addressStreet];
+    _selectedAddress.longitude = [[NSNumber numberWithDouble:longitude] stringValue];
+    _selectedAddress.latitude = [[NSNumber numberWithDouble:latitude]stringValue];
+    
+    [self requestRate];
+    
+    [self adjustViewIsLoading:NO];
+}
+
+-(void)failedEditAddress:(NSError*)error{
+    [self adjustViewIsLoading:NO];
 }
 
 #pragma mark - View Action
@@ -243,26 +254,36 @@ typedef enum
                          addressID:addressID
                            success:^(TransactionATCFormResult *data) {
                                
-                               _ATCForm = data;
-                               _isnodata = NO;
-                               
-                               _shopNameLabel.text = _ATCForm.shop.name?:@"";
-                               
-                               [self setProduct:_ATCForm.form.product_detail];
-                               [self setAddress:_ATCForm.form.destination];
-                               [self setPlacePicker];
-                               
-                               if (_ATCForm.form.destination.address_id != 0) {
-                                   [self requestRate];
-                               }
-                            
-                               [self adjustViewIsLoading:NO];
-                               
-                               [_tableView reloadData];
+                               [self successFetchForm:data];
                                
                            } failed:^(NSError *error) {
-                               [self adjustViewIsLoading:NO];
+                               
+                               [self failedFetchForm:error];
+                               
                            }];
+}
+
+-(void)successFetchForm:(TransactionATCFormResult*)data{
+    _ATCForm = data;
+    _isnodata = NO;
+    
+    _shopNameLabel.text = _ATCForm.shop.name?:@"";
+    
+    [self setProduct:_ATCForm.form.product_detail];
+    [self setAddress:_ATCForm.form.destination];
+    [self setPlacePicker];
+    
+    if (_ATCForm.form.destination.address_id != 0) {
+        [self requestRate];
+    }
+    
+    [self adjustViewIsLoading:NO];
+    
+    [_tableView reloadData];
+}
+
+-(void)failedFetchForm:(NSError*)error{
+    [self adjustViewIsLoading:NO];
 }
 
 -(void)adjustViewIsLoading:(BOOL)isLoading{
@@ -288,7 +309,7 @@ typedef enum
             [_pinLocationNameButton setCustomAttributedText:@"Tandai lokasi Anda"];
             
         } else{
-            GMSAddress *placemark = [response results][0];
+            GMSAddress *placemark = [response results].firstObject;
             _pinLocationNameButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
             [_pinLocationNameButton setCustomAttributedText:[self addressString:placemark]];
         }
@@ -320,18 +341,29 @@ typedef enum
                           isShowOKE:_ATCForm.shop.show_oke
                           onSuccess:^(RateData *rateData) {
                               
-                              [self setShipments:rateData.attributes];
-                              [self adjustViewIsLoading:NO];
-                              [_tableView reloadData];
+                              [self successFetchShipmentFee:rateData];
                               
                           } onFailure:^(NSError *errorResult) {
-                              if (_selectedAddress.address_id != 0) {
-                                  _tableView.tableHeaderView = _messageZeroShipmentView;
-                              } else{
-                                      _tableView.tableHeaderView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 1, 1)];
-                              }
-                              [self adjustViewIsLoading:NO];
+                              
+                              [self failedFetchShipmentFee:errorResult];
+                          
                           }];
+}
+
+-(void)successFetchShipmentFee:(RateData*)data{
+    [self setShipments:data.attributes];
+    [self adjustViewIsLoading:NO];
+    [_tableView reloadData];
+}
+
+-(void)failedFetchShipmentFee:(NSError*)error{
+    if (_selectedAddress.address_id != 0) {
+        [_messageZeroShipmentLabel setCustomAttributedText:[self messageZeroShipmentDefault]];
+        _tableView.tableHeaderView = _messageZeroShipmentView;
+    } else{
+        _tableView.tableHeaderView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 1, 1)];
+    }
+    [self adjustViewIsLoading:NO];
 }
 
 -(void)setShipments:(NSArray<RateAttributes*> *)shipments{
@@ -344,8 +376,53 @@ typedef enum
             shipment.auto_resi_image = @"";
         }
     }
-    _selectedShipment = shipments[0];
-    _selectedShipmentPackage = shipments[0].products[0];
+    _selectedShipment = [self getSelectedShipmentFromShipments:shipments];
+    _selectedShipmentPackage = _selectedShipment.products.firstObject;
+    
+    [self isShowZeroShipmentErrorMessage:(shipments.count == 0) messageError:[self messageZeroShipmentAvailable]];
+}
+
+-(void)isShowZeroShipmentErrorMessage:(BOOL)isShow messageError:(NSString*)messageError{
+    if (isShow) {
+        [_messageZeroShipmentLabel setCustomAttributedText:messageError];
+        _tableView.tableHeaderView = _messageZeroShipmentView;
+    } else {
+        _tableView.tableHeaderView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 1, 1)];
+    }
+}
+
+-(RateAttributes*)getSelectedShipmentFromShipments:(NSArray<RateAttributes*> *)shipments{
+    if ([self shipments:shipments containsShipment:_selectedShipment]) {
+        [self updateSelectedShipmentPriceFromShipments:shipments];
+        return _selectedShipment;
+    } else {
+        return shipments.firstObject;
+    }
+}
+
+-(void)updateSelectedShipmentPriceFromShipments:(NSArray<RateAttributes*> *)shipments{
+    for (RateAttributes* shipmentObject in shipments) {
+        if ([shipmentObject.shipper_id integerValue] == [_selectedShipment.shipper_id integerValue]) {
+            _selectedShipment = shipmentObject;
+        }
+    }
+}
+
+-(BOOL)shipments:(NSArray<RateAttributes*> *)shipments containsShipment:(RateAttributes*)shipment{
+    for (RateAttributes* shipmentObject in shipments) {
+        if ([shipmentObject.shipper_id integerValue] == [shipment.shipper_id integerValue]) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
+-(NSString *)messageZeroShipmentAvailable{
+    return @"Mohon maaf alamat tujuan tidak didukung kurir.\nSilahkan perbarui alamat anda.";
+}
+
+-(NSString *)messageZeroShipmentDefault{
+    return @"Maaf, kami belum dapat melakukan kalkulasi ongkos kirim menuju alamat Anda. Tim kami akan segera melakukan pemeriksaan.";
 }
 
 #pragma mark - Table View Data Source
@@ -685,27 +762,35 @@ typedef enum
                          remark:remark
                         success:^(TransactionAction *data) {
                             
-                            [self adjustViewIsLoading:NO];
-                            
-                            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                                                message:[data.message_status firstObject]
-                                                                               delegate:self
-                                                                      cancelButtonTitle:@"Kembali Belanja"
-                                                                      otherButtonTitles:@"Ke Keranjang Belanja",nil];
-                            alertView.tag=TAG_BUTTON_TRANSACTION_BUY;
-                            [alertView show];
-                            
-                            [self pushLocalyticsData];
-                            
-                            [TPAnalytics trackAddToCart:_selectedProduct];
-                            
-                            if (self.isSnapSearchProduct) {
-                                [TPAnalytics trackSnapSearchAddToCart:_selectedProduct];
-                            }
+                            [self successActionATC:data];
                             
                         } failed:^(NSError *error) {
-                            [self adjustViewIsLoading:NO];
+                            [self failedActionATC:error];
                         }];
+}
+
+-(void)successActionATC:(TransactionAction*)data{
+    [self adjustViewIsLoading:NO];
+    
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+                                                        message:[data.message_status firstObject]
+                                                       delegate:self
+                                              cancelButtonTitle:@"Kembali Belanja"
+                                              otherButtonTitles:@"Ke Keranjang Belanja",nil];
+    alertView.tag=TAG_BUTTON_TRANSACTION_BUY;
+    [alertView show];
+    
+    [self pushLocalyticsData];
+    
+    [TPAnalytics trackAddToCart:_selectedProduct];
+    
+    if (self.isSnapSearchProduct) {
+        [TPAnalytics trackSnapSearchAddToCart:_selectedProduct];
+    }
+}
+
+-(void)failedActionATC:(NSError*)error{
+    [self adjustViewIsLoading:NO];
 }
 
 -(void)doCalculate{
@@ -722,18 +807,22 @@ typedef enum
                               address:_selectedAddress
                               success:^(TransactionCalculatePriceResult *data) {
                                   
-                                  _selectedProduct.product_price = data.product.price;
-                                  [self setProduct:_selectedProduct];
-                                  
-                                  _ATCForm.form.shipment = data.shipment;
-                                  
-                                  [self adjustViewIsLoading:NO];
-
-                                  [_tableView reloadData];
+                                  [self successActionCalculate:data];
                                   
                               } failed:^(NSError *error) {
-                                  [self adjustViewIsLoading:NO];
+                                  [self failedActionCalculate:error];
                               }];
+}
+
+-(void)successActionCalculate:(TransactionCalculatePriceResult*)data{
+    _selectedProduct.product_price = data.product.price;
+    [self setProduct:_selectedProduct];
+    [self adjustViewIsLoading:NO];
+    [_tableView reloadData];
+}
+
+-(void)failedActionCalculate:(NSError*)error{
+    [self adjustViewIsLoading:NO];
 }
 
 -(NSString*)addressString:(GMSAddress*)address
@@ -758,7 +847,7 @@ typedef enum
             }
         }
         _selectedShipment = shipmentObject;
-        _selectedShipmentPackage = _selectedShipment.products[0];
+        _selectedShipmentPackage = _selectedShipment.products.firstObject;
     }
     else if (indexPath.row == TAG_BUTTON_TRANSACTION_SERVICE_TYPE)
     {
@@ -823,8 +912,8 @@ typedef enum
         [self requestAddAddress:address];
         return;
     }
-    NSString *addressID = [NSString stringWithFormat:@"%zd",address.address_id];
-    [self requestFormWithAddressID:addressID];
+    [self setAddress:address];
+    [self requestRate];
 }
 
 -(void)requestAddAddress:(AddressFormList*)address{
@@ -835,15 +924,23 @@ typedef enum
                             isFromCart:@"1"
                                success:^(ProfileSettingsResult *data, AddressFormList *address) {
                                    
-                                   [self adjustViewIsLoading:NO];
-                                   NSString *addressID = [NSString stringWithFormat:@"%zd",address.address_id];
-                                   [self requestFormWithAddressID:addressID];
+                                   [self successAddAddress:address result:data];
                                    
                                } failure:^(NSError *error) {
                                    
-                                   [self adjustViewIsLoading:NO];
+                                   [self failedAddAddress:address error:error];
                                    
                                }];
+}
+
+-(void)successAddAddress:(AddressFormList*)address result:(ProfileSettingsResult *)result {
+    [self adjustViewIsLoading:NO];
+    [self setAddress:address];
+    [self requestRate];
+}
+
+-(void)failedAddAddress:(AddressFormList*)address error:(NSError*)error{
+    [self adjustViewIsLoading:NO];
 }
 
 #pragma mark - Textfield Delegate

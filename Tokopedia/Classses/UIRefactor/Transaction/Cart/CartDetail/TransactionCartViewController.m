@@ -53,6 +53,7 @@
 
 #import "UITableView+FDTemplateLayoutCell.h"
 
+#import "TPAnalytics.h"
 #import "TPLocalytics.h"
 
 #define DurationInstallmentFormat @"%@ bulan (%@)"
@@ -806,8 +807,13 @@
     }
     [_tableView reloadData];
 
+    if (switchSaldo.isOn) {
+        [TPAnalytics trackClickEvent:@"clickCheckout" category:@"Checkout" label:@"Use Deposit"];
+    }
 }
 - (IBAction)tapChoosePayment:(id)sender {
+    [TPAnalytics trackClickEvent:@"clickCheckout" category:@"Checkout" label:@"Payment Method"];
+    
     TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY]?:[TransactionCartGateway new];
     
     NSMutableArray *gatewayListWithoutHiddenPayment= [NSMutableArray new];
@@ -1182,6 +1188,9 @@
 
 -(void)GeneralSwitchCell:(GeneralSwitchCell *)cell withIndexPath:(NSIndexPath *)indexPath
 {
+    if (cell.settingSwitch.isOn) {
+        [TPAnalytics trackClickEvent:@"clickCheckout" category:@"Checkout" label:@"Dropshipper"];
+    }
     _list[indexPath.section].cart_is_dropshipper = [NSString stringWithFormat:@"%zd",cell.settingSwitch.on];
     [_tableView reloadData];
 }

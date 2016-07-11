@@ -11,7 +11,6 @@
 #define API_ACTION_KEY                  @"action"
 #define API_CATALOG_ID_KEY              @"catalog_id"
 
-#define API_FILTER_LOCATION_KEY         @"location"
 #define API_FILTER_CONDITION_KEY        @"condition"
 #define API_FILTER_ORDER_BY_KEY         @"order_by"
 #define API_FILTER_PAGE_KEY             @"page"

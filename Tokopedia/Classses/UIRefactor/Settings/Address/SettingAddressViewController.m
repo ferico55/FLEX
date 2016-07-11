@@ -18,6 +18,7 @@
 #import "SettingAddressEditViewController.h"
 #import "SettingAddressExpandedCell.h"
 #import "TokopediaNetworkManager.h"
+#import "TPAnalytics.h"
 
 #import "MGSwipeButton.h"
 
@@ -892,6 +893,11 @@
             {
                 //add new address
                 NSInteger type = [[_data objectForKey:DATA_TYPE_KEY]integerValue];
+                
+                if (type == TYPE_ADD_EDIT_PROFILE_ATC) {
+                    [TPAnalytics trackClickEvent:@"clickATC" category:@"Add to Cart" label:@"Add Address"];
+                }
+                
                 NSInteger typeAddAddress = (type == TYPE_ADD_EDIT_PROFILE_ATC || type == TYPE_ADD_EDIT_PROFILE_ADD_RESO || type == TYPE_ADD_EDIT_PROFILE_EDIT_RESO)?type:TYPE_ADD_EDIT_PROFILE_ADD_NEW;
                 SettingAddressEditViewController *vc = [SettingAddressEditViewController new];
                 vc.data = @{kTKPD_AUTHKEY: _auth,

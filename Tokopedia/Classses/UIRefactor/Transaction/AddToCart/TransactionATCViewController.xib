@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -94,7 +94,6 @@
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" keyboardDismissMode="onDrag" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="1" sectionFooterHeight="1" translatesAutoresizingMaskIntoConstraints="NO" id="RoT-Rb-4aA">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="552"/>
-                    <animations/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                     <connections>
@@ -104,7 +103,6 @@
                 </tableView>
                 <button opaque="NO" tag="14" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZND-e2-NEY">
                     <rect key="frame" x="0.0" y="552" width="600" height="48"/>
-                    <animations/>
                     <color key="backgroundColor" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="48" id="tgk-DU-hJE"/>
@@ -120,14 +118,12 @@
                 </button>
                 <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="guT-MQ-tD1">
                     <rect key="frame" x="74" y="566" width="20" height="20"/>
-                    <animations/>
                     <constraints>
                         <constraint firstAttribute="width" constant="20" id="Ppy-J1-DFq"/>
                         <constraint firstAttribute="height" constant="20" id="xXf-tK-Ycc"/>
                     </constraints>
                 </activityIndicatorView>
             </subviews>
-            <animations/>
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="RoT-Rb-4aA" secondAttribute="trailing" id="LN4-pw-WPx">
@@ -159,7 +155,6 @@
                 <subviews>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Toko   :" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xNz-eh-pNX">
                         <rect key="frame" x="15" y="0.0" width="52" height="43"/>
-                        <animations/>
                         <constraints>
                             <constraint firstAttribute="width" constant="52" id="GAn-dL-hfh"/>
                             <constraint firstAttribute="height" constant="43" id="uy7-vj-quX"/>
@@ -169,7 +164,6 @@
                     </label>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Value" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N79-am-geO">
                         <rect key="frame" x="80" y="0.0" width="233" height="43"/>
-                        <animations/>
                         <constraints>
                             <constraint firstAttribute="height" constant="43" id="5sx-UC-SdK"/>
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="230" id="omu-VF-giP"/>
@@ -180,7 +174,6 @@
                     </label>
                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bQE-N8-nQc" userLabel="Border">
                         <rect key="frame" x="0.0" y="41" width="320" height="1"/>
-                        <animations/>
                         <color key="backgroundColor" red="0.78431372549019607" green="0.7803921568627451" blue="0.80000000000000004" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="1" id="8xM-sd-agN"/>
@@ -188,7 +181,6 @@
                     </view>
                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DzO-6y-WwG" userLabel="Border">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
-                        <animations/>
                         <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="1" id="2wX-BF-XVy"/>
@@ -196,7 +188,6 @@
                         </constraints>
                     </view>
                 </subviews>
-                <animations/>
                 <constraints>
                     <constraint firstItem="DzO-6y-WwG" firstAttribute="leading" secondItem="nTb-yW-Stc" secondAttribute="leading" id="7P6-hY-W9S"/>
                     <constraint firstAttribute="trailing" secondItem="N79-am-geO" secondAttribute="trailing" constant="7" id="EhD-bl-XOS"/>
@@ -213,7 +204,6 @@
                     <constraint firstAttribute="bottom" secondItem="xNz-eh-pNX" secondAttribute="bottom" id="z94-U1-lPn"/>
                 </constraints>
             </tableViewCellContentView>
-            <animations/>
             <point key="canvasLocation" x="500" y="-669"/>
         </tableViewCell>
         <tableViewCell tag="11" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="73" id="7D2-jV-vkl">
@@ -225,7 +215,6 @@
                 <subviews>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Value" lineBreakMode="middleTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jsc-eB-Aif">
                         <rect key="frame" x="75" y="8" width="237" height="25"/>
-                        <animations/>
                         <constraints>
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="237" id="bE5-qx-75w"/>
                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="25" id="thH-aJ-DhJ"/>
@@ -236,7 +225,6 @@
                     </label>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="NY0-Dh-jHZ">
                         <rect key="frame" x="15" y="10" width="49" height="49"/>
-                        <animations/>
                         <constraints>
                             <constraint firstAttribute="height" constant="49" id="irr-cb-HM1"/>
                             <constraint firstAttribute="width" constant="49" id="noP-ag-Bnm"/>
@@ -244,14 +232,12 @@
                     </imageView>
                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VYx-CQ-HY6" userLabel="Border">
                         <rect key="frame" x="0.0" y="68" width="320" height="1"/>
-                        <animations/>
                         <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="1" id="pd5-P8-wB9"/>
                         </constraints>
                     </view>
                 </subviews>
-                <animations/>
                 <constraints>
                     <constraint firstAttribute="bottom" secondItem="VYx-CQ-HY6" secondAttribute="bottom" id="5pd-0c-kK2"/>
                     <constraint firstItem="jsc-eB-Aif" firstAttribute="leading" secondItem="NY0-Dh-jHZ" secondAttribute="trailing" constant="11" id="Syh-kW-GNE"/>
@@ -264,7 +250,6 @@
                     <constraint firstItem="jsc-eB-Aif" firstAttribute="top" secondItem="duv-Io-FEX" secondAttribute="topMargin" id="v3L-Cd-ct3"/>
                 </constraints>
             </tableViewCellContentView>
-            <animations/>
             <point key="canvasLocation" x="498" y="-564"/>
         </tableViewCell>
         <tableViewCell tag="12" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="Vwc-LH-Sc2">
@@ -276,7 +261,6 @@
                 <subviews>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Total Barang" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5E9-EX-haC">
                         <rect key="frame" x="15" y="0.0" width="95" height="44"/>
-                        <animations/>
                         <constraints>
                             <constraint firstAttribute="width" constant="95" id="VGR-Wq-FmK"/>
                         </constraints>
@@ -285,7 +269,6 @@
                     </label>
                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b6x-JR-f9O" userLabel="Border">
                         <rect key="frame" x="0.0" y="42" width="320" height="1"/>
-                        <animations/>
                         <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="1" id="TB3-7a-ZVt"/>
@@ -293,7 +276,6 @@
                     </view>
                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="0" placeholder="0" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="YBU-6k-Lh7">
                         <rect key="frame" x="0.0" y="0.0" width="305" height="44"/>
-                        <animations/>
                         <color key="textColor" red="0.3803921569" green="0.3803921569" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
@@ -302,7 +284,6 @@
                         </connections>
                     </textField>
                 </subviews>
-                <animations/>
                 <constraints>
                     <constraint firstItem="YBU-6k-Lh7" firstAttribute="top" secondItem="xRH-wE-zn0" secondAttribute="top" id="05n-26-rYY"/>
                     <constraint firstAttribute="bottom" secondItem="5E9-EX-haC" secondAttribute="bottom" constant="-1" id="6V1-Ma-sl7"/>
@@ -316,7 +297,6 @@
                     <constraint firstAttribute="trailing" secondItem="b6x-JR-f9O" secondAttribute="trailing" id="xoQ-YF-z3h"/>
                 </constraints>
             </tableViewCellContentView>
-            <animations/>
             <point key="canvasLocation" x="498" y="-455"/>
         </tableViewCell>
         <tableViewCell tag="15" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="zrh-Ec-ndt" userLabel="Asuransi Table View Cell">
@@ -328,14 +308,12 @@
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tidak" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5xO-lJ-MT7">
                         <rect key="frame" x="126" y="0.0" width="184" height="44"/>
-                        <animations/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                         <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Biaya Asuransi" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C4b-9I-zb4">
                         <rect key="frame" x="15" y="1" width="103" height="43"/>
-                        <animations/>
                         <constraints>
                             <constraint firstAttribute="width" constant="103" id="gEv-uz-Uyi"/>
                         </constraints>
@@ -345,14 +323,12 @@
                     </label>
                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tzt-1Q-FmJ" userLabel="Border">
                         <rect key="frame" x="0.0" y="42" width="320" height="1"/>
-                        <animations/>
                         <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="1" id="iKk-ch-SUv"/>
                         </constraints>
                     </view>
                 </subviews>
-                <animations/>
                 <constraints>
                     <constraint firstAttribute="bottom" secondItem="C4b-9I-zb4" secondAttribute="bottom" constant="-1" id="2uf-RQ-v6q"/>
                     <constraint firstItem="tzt-1Q-FmJ" firstAttribute="leading" secondItem="Q5F-wB-JYE" secondAttribute="leading" id="AJq-jc-hrj"/>
@@ -366,7 +342,6 @@
                     <constraint firstAttribute="trailing" secondItem="5xO-lJ-MT7" secondAttribute="trailing" constant="10" id="pSZ-1P-ZZu"/>
                 </constraints>
             </tableViewCellContentView>
-            <animations/>
             <point key="canvasLocation" x="498" y="-279"/>
         </tableViewCell>
         <tableViewCell tag="14" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="163" id="BfC-AW-McL">
@@ -378,7 +353,6 @@
                 <subviews>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Keterangan (Optional)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6qA-Um-DB1">
                         <rect key="frame" x="15" y="12" width="170" height="21"/>
-                        <animations/>
                         <constraints>
                             <constraint firstAttribute="width" constant="170" id="NmE-jp-jDe"/>
                             <constraint firstAttribute="height" constant="21" id="xDy-rB-ChY"/>
@@ -388,7 +362,6 @@
                     </label>
                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yu3-sb-cQ1">
                         <rect key="frame" x="10" y="33" width="302" height="122"/>
-                        <animations/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="302" id="6dd-0R-Z4j"/>
@@ -402,7 +375,6 @@
                     </textView>
                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I21-g8-bwl" userLabel="Border">
                         <rect key="frame" x="0.0" y="161" width="320" height="1"/>
-                        <animations/>
                         <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="1" id="BhU-FV-xQM"/>
@@ -410,7 +382,6 @@
                         </constraints>
                     </view>
                 </subviews>
-                <animations/>
                 <constraints>
                     <constraint firstItem="6qA-Um-DB1" firstAttribute="top" secondItem="DO3-T4-jKk" secondAttribute="top" constant="12" id="1TR-vK-AfS"/>
                     <constraint firstAttribute="trailing" secondItem="I21-g8-bwl" secondAttribute="trailing" id="1hS-32-55M"/>
@@ -423,7 +394,6 @@
                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="6qA-Um-DB1" secondAttribute="trailing" constant="135" id="twk-b1-vk3"/>
                 </constraints>
             </tableViewCellContentView>
-            <animations/>
             <point key="canvasLocation" x="886" y="-296.5"/>
         </tableViewCell>
         <tableViewCell clipsSubviews="YES" tag="11" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="243" id="kZo-51-DAB">
@@ -438,7 +408,6 @@
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nama Penerima :" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c8T-03-Sxc">
                                 <rect key="frame" x="15" y="14" width="118" height="21"/>
-                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="118" id="9YH-M7-1ge"/>
                                     <constraint firstAttribute="height" constant="21" id="SU9-Zb-v6F"/>
@@ -449,7 +418,6 @@
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="we2-U5-gqu">
                                 <rect key="frame" x="15" y="37" width="285" height="21"/>
-                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="285" id="UWt-Yw-iap"/>
                                     <constraint firstAttribute="height" constant="21" id="piF-p7-tCt"/>
@@ -459,7 +427,6 @@
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Alamat :" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uL9-8d-DxG">
                                 <rect key="frame" x="15" y="72" width="107" height="21"/>
-                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="8S8-hI-cJg"/>
                                     <constraint firstAttribute="width" constant="107" id="jdU-34-i3N"/>
@@ -470,7 +437,6 @@
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="middleTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="291" translatesAutoresizingMaskIntoConstraints="NO" id="bk2-Tr-a8Z">
                                 <rect key="frame" x="15" y="95" width="291" height="76"/>
-                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="76" id="YBV-Y0-284"/>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="291" id="yTN-kQ-CIm"/>
@@ -480,7 +446,6 @@
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Telepon Penerima:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FAi-Jr-xiI">
                                 <rect key="frame" x="15" y="185" width="130" height="21"/>
-                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="PwC-ML-jkD"/>
                                     <constraint firstAttribute="width" constant="130" id="hzd-It-2Je"/>
@@ -491,7 +456,6 @@
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cqz-ce-FDb">
                                 <rect key="frame" x="15" y="208" width="285" height="21"/>
-                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="285" id="4ek-Fb-EVb"/>
                                     <constraint firstAttribute="height" constant="21" id="uBH-VA-VI9"/>
@@ -500,7 +464,6 @@
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <animations/>
                         <color key="backgroundColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="cqz-ce-FDb" secondAttribute="trailing" constant="20" id="3vp-xg-NsQ"/>
@@ -524,7 +487,6 @@
                         </constraints>
                     </view>
                 </subviews>
-                <animations/>
                 <color key="backgroundColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 <constraints>
                     <constraint firstItem="SOC-0h-OMn" firstAttribute="leading" secondItem="IBW-eY-bgm" secondAttribute="leading" id="IXY-Hh-VuX"/>
@@ -533,7 +495,6 @@
                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="SOC-0h-OMn" secondAttribute="trailing" id="qjJ-eY-ZNI"/>
                 </constraints>
             </tableViewCellContentView>
-            <animations/>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <point key="canvasLocation" x="746" y="-38.5"/>
         </tableViewCell>
@@ -543,13 +504,11 @@
             <subviews>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="DETAIL PEMESANAN" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n80-FM-OY3">
                     <rect key="frame" x="15" y="16" width="166" height="21"/>
-                    <animations/>
                     <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="12"/>
                     <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="deviceRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
-            <animations/>
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="10" y="6"/>
@@ -560,13 +519,11 @@
             <subviews>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="DETAIL PENGIRIMAN" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Ec-ZP-MhE">
                     <rect key="frame" x="15" y="16" width="161" height="21"/>
-                    <animations/>
                     <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="12"/>
                     <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="deviceRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
-            <animations/>
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="10" y="93"/>
@@ -577,13 +534,11 @@
             <subviews>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="RINGKASAN PEMESANAN" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I00-mL-NrS">
                     <rect key="frame" x="15" y="16" width="188" height="21"/>
-                    <animations/>
                     <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="12"/>
                     <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="deviceRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
-            <animations/>
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="10" y="184"/>
@@ -597,14 +552,12 @@
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pilih Alamat" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B9m-Qg-Gm4">
                         <rect key="frame" x="126" y="1" width="184" height="43"/>
-                        <animations/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                         <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Alamat Tujuan" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A1y-1I-EKG">
                         <rect key="frame" x="15" y="1" width="103" height="43"/>
-                        <animations/>
                         <constraints>
                             <constraint firstAttribute="width" constant="103" id="okQ-ps-8Cv"/>
                         </constraints>
@@ -614,7 +567,6 @@
                     </label>
                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ea7-XM-T7k" userLabel="Border">
                         <rect key="frame" x="15" y="42" width="305" height="1"/>
-                        <animations/>
                         <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="1" id="CVs-8t-hNJ"/>
@@ -622,7 +574,6 @@
                     </view>
                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IfS-dh-V7H" userLabel="Border">
                         <rect key="frame" x="0.0" y="42" width="320" height="1"/>
-                        <animations/>
                         <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="1" id="F6k-og-3y8"/>
@@ -631,7 +582,6 @@
                     </view>
                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="u9n-c7-adl" userLabel="Border">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
-                        <animations/>
                         <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="1" id="TRa-jA-gsV"/>
@@ -639,7 +589,6 @@
                         </constraints>
                     </view>
                 </subviews>
-                <animations/>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="u9n-c7-adl" secondAttribute="trailing" id="C60-d5-kSy"/>
                     <constraint firstItem="IfS-dh-V7H" firstAttribute="leading" secondItem="nNe-YO-rJR" secondAttribute="leading" id="Cez-g3-r8k"/>
@@ -659,7 +608,6 @@
                     <constraint firstItem="Ea7-XM-T7k" firstAttribute="leading" secondItem="nNe-YO-rJR" secondAttribute="leading" constant="15" id="qRv-FN-HbF"/>
                 </constraints>
             </tableViewCellContentView>
-            <animations/>
             <point key="canvasLocation" x="498" y="-226"/>
         </tableViewCell>
         <tableViewCell tag="13" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="Qzg-cW-dgD">
@@ -671,14 +619,12 @@
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pilih Kurir" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jg1-q7-NDy">
                         <rect key="frame" x="146" y="1" width="164" height="43"/>
-                        <animations/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                         <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kurir Pengiriman" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C11-ye-aM2">
                         <rect key="frame" x="15" y="1" width="123" height="43"/>
-                        <animations/>
                         <constraints>
                             <constraint firstAttribute="width" constant="123" id="2Dd-BV-14n"/>
                         </constraints>
@@ -688,7 +634,6 @@
                     </label>
                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qp9-t3-ouM" userLabel="Border">
                         <rect key="frame" x="0.0" y="42" width="320" height="1"/>
-                        <animations/>
                         <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="1" id="pFA-0R-QQh"/>
@@ -696,14 +641,12 @@
                     </view>
                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8lg-UN-UWR" userLabel="Border">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
-                        <animations/>
                         <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="1" id="Quz-f9-mC9"/>
                         </constraints>
                     </view>
                 </subviews>
-                <animations/>
                 <constraints>
                     <constraint firstItem="C11-ye-aM2" firstAttribute="top" secondItem="88n-dq-h9D" secondAttribute="top" constant="1" id="1EE-dP-JLW"/>
                     <constraint firstAttribute="bottom" secondItem="qp9-t3-ouM" secondAttribute="bottom" id="6Bg-J8-Z4g"/>
@@ -720,7 +663,6 @@
                     <constraint firstAttribute="trailing" secondItem="qp9-t3-ouM" secondAttribute="trailing" id="shP-v8-6Z9"/>
                 </constraints>
             </tableViewCellContentView>
-            <animations/>
             <point key="canvasLocation" x="498" y="-131"/>
         </tableViewCell>
         <tableViewCell tag="14" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="aPJ-FY-wpC">
@@ -732,14 +674,12 @@
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pilih Paket" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IbO-Bz-Mae">
                         <rect key="frame" x="146" y="0.0" width="164" height="44"/>
-                        <animations/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                         <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Paket Pengiriman" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1UG-VN-780">
                         <rect key="frame" x="15" y="1" width="123" height="43"/>
-                        <animations/>
                         <constraints>
                             <constraint firstAttribute="width" constant="123" id="XWL-r3-Fuc"/>
                         </constraints>
@@ -749,14 +689,12 @@
                     </label>
                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UeS-4C-vJi" userLabel="Border">
                         <rect key="frame" x="0.0" y="42" width="320" height="1"/>
-                        <animations/>
                         <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="1" id="czn-T4-Xf4"/>
                         </constraints>
                     </view>
                 </subviews>
-                <animations/>
                 <constraints>
                     <constraint firstItem="IbO-Bz-Mae" firstAttribute="leading" secondItem="1UG-VN-780" secondAttribute="trailing" constant="8" id="6Fq-sa-bDl"/>
                     <constraint firstAttribute="trailing" secondItem="UeS-4C-vJi" secondAttribute="trailing" id="8tL-K8-2Zq"/>
@@ -770,7 +708,6 @@
                     <constraint firstItem="1UG-VN-780" firstAttribute="leading" secondItem="yPk-3S-rgn" secondAttribute="leading" constant="15" id="toe-9C-VIE"/>
                 </constraints>
             </tableViewCellContentView>
-            <animations/>
             <point key="canvasLocation" x="500" y="-48"/>
         </tableViewCell>
         <tableViewCell tag="11" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="0SA-3F-dOB">
@@ -782,13 +719,11 @@
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BLx-Tn-gT5">
                         <rect key="frame" x="126" y="1" width="179" height="41"/>
-                        <animations/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Harga Barang" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QrC-oJ-kYK">
                         <rect key="frame" x="15" y="1" width="103" height="41"/>
-                        <animations/>
                         <constraints>
                             <constraint firstAttribute="width" constant="103" id="dCc-si-Ngo"/>
                         </constraints>
@@ -798,7 +733,6 @@
                     </label>
                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SOh-JZ-GQ1" userLabel="Border">
                         <rect key="frame" x="0.0" y="42" width="320" height="1"/>
-                        <animations/>
                         <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="1" id="Ozx-14-8gH"/>
@@ -806,7 +740,6 @@
                     </view>
                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gSi-x5-OSp" userLabel="Border">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
-                        <animations/>
                         <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="1" id="SH9-wR-REZ"/>
@@ -814,7 +747,6 @@
                         </constraints>
                     </view>
                 </subviews>
-                <animations/>
                 <constraints>
                     <constraint firstAttribute="bottom" secondItem="SOh-JZ-GQ1" secondAttribute="bottom" id="7cK-Bn-258"/>
                     <constraint firstItem="QrC-oJ-kYK" firstAttribute="top" secondItem="gSi-x5-OSp" secondAttribute="bottom" id="Cj4-5s-el0"/>
@@ -831,7 +763,6 @@
                     <constraint firstAttribute="bottom" secondItem="BLx-Tn-gT5" secondAttribute="bottom" constant="1" id="iFh-Iw-X06"/>
                 </constraints>
             </tableViewCellContentView>
-            <animations/>
             <point key="canvasLocation" x="499" y="95"/>
         </tableViewCell>
         <tableViewCell clipsSubviews="YES" tag="10" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="BSY-vM-0Kc">
@@ -843,13 +774,11 @@
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OrT-83-Tum">
                         <rect key="frame" x="126" y="1" width="179" height="41"/>
-                        <animations/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Harga Satuan" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="foA-zQ-f2P">
                         <rect key="frame" x="15" y="1" width="103" height="41"/>
-                        <animations/>
                         <constraints>
                             <constraint firstAttribute="width" constant="103" id="8Z5-4H-gK0"/>
                         </constraints>
@@ -859,7 +788,6 @@
                     </label>
                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xv0-Wc-1kC" userLabel="Border">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
-                        <animations/>
                         <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="1" id="PAx-JC-5tC"/>
@@ -867,7 +795,6 @@
                         </constraints>
                     </view>
                 </subviews>
-                <animations/>
                 <constraints>
                     <constraint firstAttribute="bottom" secondItem="OrT-83-Tum" secondAttribute="bottom" constant="1" id="6Sc-Lj-hFP"/>
                     <constraint firstItem="OrT-83-Tum" firstAttribute="leading" secondItem="foA-zQ-f2P" secondAttribute="trailing" constant="8" id="JaZ-DN-aCy"/>
@@ -881,7 +808,6 @@
                     <constraint firstItem="Xv0-Wc-1kC" firstAttribute="leading" secondItem="YKW-eY-YoT" secondAttribute="leading" id="sS1-Bl-hio"/>
                 </constraints>
             </tableViewCellContentView>
-            <animations/>
             <point key="canvasLocation" x="499" y="24"/>
         </tableViewCell>
         <tableViewCell tag="12" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="cLJ-bo-2Qu">
@@ -891,29 +817,25 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" verticalHuggingPriority="251" misplaced="YES" text="-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6kE-8N-w16">
+                    <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" verticalHuggingPriority="251" text="-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6kE-8N-w16">
                         <rect key="frame" x="126" y="1" width="179" height="41"/>
-                        <animations/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Ongkos Kirim" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v0M-8H-2VQ">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ongkos Kirim" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v0M-8H-2VQ">
                         <rect key="frame" x="15" y="1" width="95" height="41"/>
-                        <animations/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lYp-3X-fRw" userLabel="Border">
                         <rect key="frame" x="0.0" y="42" width="320" height="1"/>
-                        <animations/>
                         <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="1" id="KtH-mb-n4s"/>
                         </constraints>
                     </view>
                 </subviews>
-                <animations/>
                 <constraints>
                     <constraint firstAttribute="bottom" secondItem="lYp-3X-fRw" secondAttribute="bottom" id="4J0-k4-HrI"/>
                     <constraint firstItem="6kE-8N-w16" firstAttribute="leading" secondItem="v0M-8H-2VQ" secondAttribute="trailing" constant="16" id="Wk9-Sq-gtV"/>
@@ -927,7 +849,6 @@
                     <constraint firstItem="v0M-8H-2VQ" firstAttribute="top" secondItem="NLC-vV-RPc" secondAttribute="top" constant="1" id="tmY-DK-Mir"/>
                 </constraints>
             </tableViewCellContentView>
-            <animations/>
             <point key="canvasLocation" x="501" y="190"/>
         </tableViewCell>
         <tableViewCell tag="13" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="56" id="T1e-I5-MeF">
@@ -939,7 +860,6 @@
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Total" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KV1-fD-4OW">
                         <rect key="frame" x="15" y="1" width="50" height="54"/>
-                        <animations/>
                         <constraints>
                             <constraint firstAttribute="width" constant="50" id="o59-S5-h23"/>
                         </constraints>
@@ -949,20 +869,17 @@
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ndO-em-hSl">
                         <rect key="frame" x="73" y="1" width="232" height="54"/>
-                        <animations/>
                         <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="93v-EH-POC" userLabel="Border">
                         <rect key="frame" x="0.0" y="54" width="320" height="1"/>
-                        <animations/>
                         <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="1" id="59I-en-2Od"/>
                         </constraints>
                     </view>
                 </subviews>
-                <animations/>
                 <constraints>
                     <constraint firstItem="KV1-fD-4OW" firstAttribute="top" secondItem="HKN-ha-hfx" secondAttribute="top" constant="1" id="0K8-PC-wmR"/>
                     <constraint firstItem="93v-EH-POC" firstAttribute="leading" secondItem="HKN-ha-hfx" secondAttribute="leading" id="2KY-lu-vOU"/>
@@ -976,7 +893,6 @@
                     <constraint firstAttribute="bottom" secondItem="93v-EH-POC" secondAttribute="bottom" id="gxP-5h-7gf"/>
                 </constraints>
             </tableViewCellContentView>
-            <animations/>
             <point key="canvasLocation" x="499" y="291"/>
         </tableViewCell>
         <view contentMode="scaleToFill" id="tVL-of-Hh8">
@@ -985,15 +901,13 @@
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Maaf, kami belum dapat melakukan kalkulasi ongkos kirim menuju alamat Anda. Tim kami akan segera melakukan pemeriksaan." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZrZ-ED-WHQ">
                     <rect key="frame" x="15" y="0.0" width="290" height="70"/>
-                    <animations/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
-                    <color key="textColor" red="0.7843137255" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
-            <animations/>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstItem="ZrZ-ED-WHQ" firstAttribute="leading" secondItem="tVL-of-Hh8" secondAttribute="leading" constant="15" id="Cbo-4t-Ztf"/>
                 <constraint firstAttribute="bottom" secondItem="ZrZ-ED-WHQ" secondAttribute="bottom" id="iEs-Gq-lDJ"/>
@@ -1012,7 +926,6 @@
                 <subviews>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="map_gokil.png" translatesAutoresizingMaskIntoConstraints="NO" id="mVJ-c3-iyT">
                         <rect key="frame" x="10" y="0.0" width="70" height="70"/>
-                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="70" id="8kV-W7-DnP"/>
@@ -1021,7 +934,6 @@
                     </imageView>
                     <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_pinpoin_toped.png" translatesAutoresizingMaskIntoConstraints="NO" id="DBf-5C-VX1">
                         <rect key="frame" x="25" y="4" width="40" height="40"/>
-                        <animations/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="40" id="JNz-td-gkz"/>
@@ -1030,7 +942,6 @@
                     </imageView>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1qJ-L8-fU5">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="70"/>
-                        <animations/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <inset key="contentEdgeInsets" minX="93" minY="0.0" maxX="10" maxY="0.0"/>
                         <state key="normal" title="Tentukan Peta Lokasi">
@@ -1042,14 +953,12 @@
                     </button>
                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e0A-5K-5l1" userLabel="Border">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
-                        <animations/>
                         <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="1" id="JQa-wY-EGV"/>
                         </constraints>
                     </view>
                 </subviews>
-                <animations/>
                 <constraints>
                     <constraint firstItem="DBf-5C-VX1" firstAttribute="centerX" secondItem="mVJ-c3-iyT" secondAttribute="centerX" id="1i2-Im-ba0"/>
                     <constraint firstItem="1qJ-L8-fU5" firstAttribute="leading" secondItem="t7H-aY-2lg" secondAttribute="leading" id="80I-Q7-TIr"/>
@@ -1064,7 +973,6 @@
                     <constraint firstAttribute="trailing" secondItem="1qJ-L8-fU5" secondAttribute="trailing" id="yd0-PA-jkN"/>
                 </constraints>
             </tableViewCellContentView>
-            <animations/>
             <point key="canvasLocation" x="-140" y="801"/>
         </tableViewCell>
     </objects>
