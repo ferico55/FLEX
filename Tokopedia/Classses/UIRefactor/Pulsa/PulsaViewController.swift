@@ -75,7 +75,7 @@ class PulsaViewController: UIViewController, UITextFieldDelegate {
         let phoneText = UILabel.init(frame: CGRectMake(10, 44, self.view.frame.width - 10, 44))
         phoneText.text = category.attributes.client_number.text
         
-        self.view .addSubview(numberField)
+        self.view.addSubview(numberField)
         self.view.addSubview(phoneText)
         
         numberField .mas_makeConstraints{ make in
@@ -108,6 +108,7 @@ class PulsaViewController: UIViewController, UITextFieldDelegate {
         let characterCount = inputtedPrefix.characters.count - range.length
         
         if(characterCount == 4) {
+            let button = UIButton.init(frame: CGRectMake(<#T##x: CGFloat##CGFloat#>, <#T##y: CGFloat##CGFloat#>, <#T##width: CGFloat##CGFloat#>, <#T##height: CGFloat##CGFloat#>))
             let prefix = self.prefixes[inputtedPrefix]
             if(prefix != nil) {
                 let prefixImage = UIImageView.init(frame: CGRectMake(0, 0, 100, 50))
@@ -133,7 +134,20 @@ class PulsaViewController: UIViewController, UITextFieldDelegate {
     
     func loadProductFromNetwork() {
         let networkManager = TokopediaNetworkManager()
-        
+        networkManager .
+            requestWithBaseUrl("http://private-c3816-digitalcategory.apiary-mock.com",
+                               path: "/products",
+                               method: .GET,
+                               parameter: nil,
+                               mapping: PulsaProductRoot.mapping(),
+                               onSuccess: { (mappingResult, operation) -> Void in
+                                let productRoot = mappingResult.dictionary()[""] as! PulsaProductRoot
+                                self.didReceiveProduct(productRoot)
+                                
+                },
+                               onFailure: { (errors) -> Void in
+                                
+            });
     }
     
     
@@ -153,6 +167,10 @@ class PulsaViewController: UIViewController, UITextFieldDelegate {
                                onFailure: { (errors) -> Void in
                                 
             });
+    }
+    
+    func didReceiveProduct(productRoot: PulsaProductRoot) {
+        
     }
     
     func didReceiveOperator(operatorRoot: PulsaOperatorRoot) {

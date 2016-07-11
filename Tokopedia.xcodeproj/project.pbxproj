@@ -26,6 +26,10 @@
 		7AFC55D61D339F63000F6C88 /* PulsaOperatorRoot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFC55CB1D339F63000F6C88 /* PulsaOperatorRoot.swift */; };
 		7AFC55D71D339F63000F6C88 /* PulsaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFC55CC1D339F63000F6C88 /* PulsaViewController.swift */; };
 		7AFC55D81D339F63000F6C88 /* PulsaViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AFC55CD1D339F63000F6C88 /* PulsaViewController.xib */; };
+		7AFC55DA1D339FFF000F6C88 /* PulsaProductRoot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFC55D91D339FFF000F6C88 /* PulsaProductRoot.swift */; };
+		7AFC55DC1D33A00C000F6C88 /* PulsaProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFC55DB1D33A00C000F6C88 /* PulsaProduct.swift */; };
+		7AFC55DE1D33A018000F6C88 /* PulsaProductAttribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFC55DD1D33A018000F6C88 /* PulsaProductAttribute.swift */; };
+		7AFC55E01D33A034000F6C88 /* PulsaProductPromo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFC55DF1D33A034000F6C88 /* PulsaProductPromo.swift */; };
 		853A222C1ADD0AB600DD1508 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222B1ADD0AB600DD1508 /* CoreVideo.framework */; };
 		853A222E1ADD0ABC00DD1508 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */; };
 		853A22301ADD0AC800DD1508 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222F1ADD0AC800DD1508 /* CoreMedia.framework */; };
@@ -2452,6 +2456,10 @@
 		7AFC55CB1D339F63000F6C88 /* PulsaOperatorRoot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulsaOperatorRoot.swift; sourceTree = "<group>"; };
 		7AFC55CC1D339F63000F6C88 /* PulsaViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulsaViewController.swift; sourceTree = "<group>"; };
 		7AFC55CD1D339F63000F6C88 /* PulsaViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PulsaViewController.xib; sourceTree = "<group>"; };
+		7AFC55D91D339FFF000F6C88 /* PulsaProductRoot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulsaProductRoot.swift; sourceTree = "<group>"; };
+		7AFC55DB1D33A00C000F6C88 /* PulsaProduct.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulsaProduct.swift; sourceTree = "<group>"; };
+		7AFC55DD1D33A018000F6C88 /* PulsaProductAttribute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulsaProductAttribute.swift; sourceTree = "<group>"; };
+		7AFC55DF1D33A034000F6C88 /* PulsaProductPromo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulsaProductPromo.swift; sourceTree = "<group>"; };
 		7F9B6E71F79FE95868A4BBAE /* Pods-Tokopedia.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.release.xcconfig"; sourceTree = "<group>"; };
 		853A222B1ADD0AB600DD1508 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
@@ -6074,6 +6082,10 @@
 				7AFC55CB1D339F63000F6C88 /* PulsaOperatorRoot.swift */,
 				7AFC55CC1D339F63000F6C88 /* PulsaViewController.swift */,
 				7AFC55CD1D339F63000F6C88 /* PulsaViewController.xib */,
+				7AFC55D91D339FFF000F6C88 /* PulsaProductRoot.swift */,
+				7AFC55DB1D33A00C000F6C88 /* PulsaProduct.swift */,
+				7AFC55DD1D33A018000F6C88 /* PulsaProductAttribute.swift */,
+				7AFC55DF1D33A034000F6C88 /* PulsaProductPromo.swift */,
 			);
 			path = Pulsa;
 			sourceTree = "<group>";
@@ -13828,6 +13840,7 @@
 				8548AF431D1A58F100D11E22 /* ConversationViewModel.m in Sources */,
 				8548B2161D1A58F100D11E22 /* MyShopPaymentCell.m in Sources */,
 				8548AEA21D1A58F100D11E22 /* Register.m in Sources */,
+				7AFC55DC1D33A00C000F6C88 /* PulsaProduct.swift in Sources */,
 				8548AEDE1D1A58F100D11E22 /* ProductDetail.m in Sources */,
 				8548B0781D1A58F100D11E22 /* TxOrderPaymentEditBankAccount.m in Sources */,
 				8548AEB31D1A58F100D11E22 /* CatalogShopAWSProductResult.m in Sources */,
@@ -13972,6 +13985,7 @@
 				8548AF731D1A58F100D11E22 /* Notification.m in Sources */,
 				8548B12D1D1A58F100D11E22 /* ContactUsWebViewController.m in Sources */,
 				8548B38F1D1A58F100D11E22 /* ProductTalkFormViewController.m in Sources */,
+				7AFC55DE1D33A018000F6C88 /* PulsaProductAttribute.swift in Sources */,
 				8548B1691D1A58F100D11E22 /* DepositSummaryViewController.m in Sources */,
 				8548B0E41D1A58F100D11E22 /* StickyAlertView.m in Sources */,
 				8548B2D21D1A58F100D11E22 /* ProductQuantityViewController.m in Sources */,
@@ -14390,6 +14404,7 @@
 				8548B1D21D1A58F100D11E22 /* InboxResolutionCenterObjectMapping.m in Sources */,
 				8548B03B1D1A58F100D11E22 /* TransactionAddressShippingResult.m in Sources */,
 				8548B3DF1D1A58F200D11E22 /* TxOrderTransactionDetailViewController.m in Sources */,
+				7AFC55E01D33A034000F6C88 /* PulsaProductPromo.swift in Sources */,
 				8548B1D31D1A58F100D11E22 /* InboxResolutionCenterTabViewController.m in Sources */,
 				8548B1191D1A58F100D11E22 /* FilterCategoryViewCell.m in Sources */,
 				8548B2D41D1A58F100D11E22 /* SalesNewOrderViewController.m in Sources */,
@@ -14592,6 +14607,7 @@
 				8548B3331D1A58F100D11E22 /* BerhasilBukaTokoViewController.m in Sources */,
 				8548B23C1D1A58F100D11E22 /* InboxPriceAlertSplitViewController.m in Sources */,
 				8548B1DE1D1A58F100D11E22 /* ResolutionCenterInputViewController.m in Sources */,
+				7AFC55DA1D339FFF000F6C88 /* PulsaProductRoot.swift in Sources */,
 				8548B0331D1A58F100D11E22 /* LuckyDeal.m in Sources */,
 				8548B3D71D1A58F200D11E22 /* TransactionObjectMapping.m in Sources */,
 				8548AE701D1A58F100D11E22 /* NSString+URLEncoding.m in Sources */,
