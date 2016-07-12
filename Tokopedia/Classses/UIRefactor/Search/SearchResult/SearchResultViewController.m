@@ -1330,7 +1330,6 @@ ImageSearchRequestDelegate
     [_noResultView removeFromSuperview];
     
     NSDictionary *newData = @{
-                            @"auth" : [_data objectForKey:@"auth"],
                             @"type" : [_data objectForKey:@"type"],
                             @"search": _suggestion
                             };
