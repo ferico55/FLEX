@@ -163,7 +163,7 @@ ImageSearchRequestDelegate
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-
+        _params = [NSMutableDictionary new];
     }
     return self;
 }
@@ -189,7 +189,6 @@ ImageSearchRequestDelegate
     _promoScrollPosition = [NSMutableArray new];
     _similarityDictionary = [NSMutableDictionary new];
     
-    _params = [NSMutableDictionary new];
     _start = 0;
     
     [self initNoResultView];
@@ -213,10 +212,6 @@ ImageSearchRequestDelegate
     
 //    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:[UIDevice currentDevice]];
-    
-    
-    [_params setDictionary:_data];
-    [self setDefaultSort];
     
     if ([[_data objectForKey:@"type"] isEqualToString:@"search_product"]||[[_data objectForKey:@"type"] isEqualToString:[self directoryType]]) {
         if(self.isFromAutoComplete) {
@@ -329,14 +324,17 @@ ImageSearchRequestDelegate
 }
 
 -(void)setDefaultSort{
-    if ([[self getSearchSource] isEqualToString:[self searchProductSource]]) {
-        [self setDefaultSortProduct];
-    }
-    if ([[self getSearchSource] isEqualToString:[self searchCatalogSource]]) {
-        [self setDefaultSortCatalog];
-    }
-    if ([[self getSearchSource] isEqualToString:[self directoryType]]) {
-        [self setDefaultSortDirectory];
+    if ([_params objectForKey:@"search"] != nil) {
+
+        if ([[self getSearchSource] isEqualToString:[self searchProductSource]]) {
+            [self setDefaultSortProduct];
+        }
+        if ([[self getSearchSource] isEqualToString:[self searchCatalogSource]]) {
+            [self setDefaultSortCatalog];
+        }
+        if ([[self getSearchSource] isEqualToString:[self directoryType]]) {
+            [self setDefaultSortDirectory];
+        }
     }
 }
 
@@ -419,10 +417,42 @@ ImageSearchRequestDelegate
     _data = data;
     
     if (_data) {
-        [_params setObject:data[@"sc"] forKey:@"sc"];
-        [_params setObject:data[@"department_name"]?:@"" forKey:@"department_name"];
+        [_params addEntriesFromDictionary:_data];
+        if (data[@"search"] != nil)
+            [_params setObject:data[@"search"] forKey:@"q"];
         _rootCategoryID = data[@"sc"]?:@"";
+        [self adjustSelectedFilterFromData:_params];
+        [self adjustSelectedSortFromData:_params];
+        [self setDefaultSort];
     }
+}
+
+-(void)adjustSelectedFilterFromData:(NSDictionary*)data{
+    NSMutableArray *selectedFilters = [NSMutableArray new];
+    for (NSString *key in [data allKeys]) {
+        ListOption *filter = [ListOption new];
+        filter.key = key;
+        filter.value = [data objectForKey:key]?:@"";
+        if ([key isEqualToString:@"pmax"] || [key isEqualToString:@"pmin"]) {
+            filter.input_type = [self filterTextInputType];
+        }
+        [selectedFilters addObject:filter];
+    }
+    _selectedFilters = [selectedFilters copy];
+    _selectedFilterParam = data;
+}
+
+-(NSString *)filterTextInputType{
+    return @"textbox";
+}
+
+-(void)adjustSelectedSortFromData:(NSDictionary*)data{
+    ListOption *sort = [ListOption new];
+    sort.key = [self defaultSortProductKey];
+    sort.value = [_params objectForKey:@"ob"]?:@"";
+    _selectedSort = sort;
+    _selectedSortParam = @{[self defaultSortProductKey]:[_params objectForKey:@"ob"]?:@""};
+    
 }
 
 #pragma mark - Memory Management
@@ -864,7 +894,6 @@ ImageSearchRequestDelegate
            _selectedFilterParam = paramFilters;
            [self showFilterIsActive:[self hasSelectedFilterOrCategory]];
            
-           [_params setObject:[_data objectForKey:@"search"]?:@"" forKey:@"search"];
            [self refreshView:nil];
            
        } onReceivedFilterDataOption:^(FilterData * filterDataOption){
@@ -956,7 +985,6 @@ ImageSearchRequestDelegate
 
     NSMutableDictionary *parameter = [[NSMutableDictionary alloc]init];
     [parameter setObject:@"ios" forKey:@"device"];
-    [parameter setObject:[_params objectForKey:@"sc_identifier"]?:@"" forKey:@"sc_identifier"];
     [parameter setObject:categories?:@"" forKey:@"sc"];
     if(_isFromImageSearch){
         [parameter setObject:_image_url forKey:@"image_url"];
