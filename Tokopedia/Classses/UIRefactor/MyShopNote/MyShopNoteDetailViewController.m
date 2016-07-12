@@ -266,7 +266,7 @@
                 }
                 break;
             }
-            case 12: {
+            case 12: {  
                 //edit
                 MyShopNoteDetailViewController *vc = [MyShopNoteDetailViewController new];
                 vc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
@@ -724,9 +724,12 @@
     _note.result.detail.notes_content = noteList.note_status;
     
     self.title = _noteList.note_title;
-
+    
+    //set the UI
     _titleNoteTextField.text = _noteList.note_title;
     [_titleNoteTextField sizeToFit];
+    
+    [self setTimeLabelBecomeCurrentDate];
     
     _contentNoteTextView.text = _noteList.note_status;
     
