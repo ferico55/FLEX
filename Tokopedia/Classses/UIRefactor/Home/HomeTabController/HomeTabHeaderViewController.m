@@ -9,6 +9,7 @@
 #import "HomeTabHeaderViewController.h"
 #import "UserAuthentificationManager.h"
 #import <QuartzCore/QuartzCore.h>
+#import "TPAnalytics.h"
 
 @interface HomeTabHeaderViewController () <UIScrollViewDelegate> {
     CGFloat _totalOffset;
@@ -127,7 +128,7 @@
             _scrollView.contentOffset = CGPointMake(totalOffset, 0);
         }];
     }
-
+    
 }
 
 - (void)tapButton:(UIButton*)button {
@@ -154,6 +155,7 @@
             _totalOffset = ([[UIScreen mainScreen]bounds].size.width/divider)*0;
             [self tapButtonAnimate:_totalOffset];
             _viewControllerIndex = 1;
+            [TPAnalytics trackClickEvent:@"clickHomepage" category:@"Homepage" label:@"Home"];
             break;
         }
             
@@ -161,6 +163,7 @@
             _totalOffset = ([[UIScreen mainScreen]bounds].size.width/divider)*1;
             [self tapButtonAnimate:_totalOffset];
             _viewControllerIndex = 2;
+            [TPAnalytics trackClickEvent:@"clickHomepage" category:@"Homepage" label:@"Product Feed"];
             break;
         }
             
@@ -168,6 +171,7 @@
             _totalOffset = ([[UIScreen mainScreen]bounds].size.width/divider)*2;
             [self tapButtonAnimate:_totalOffset];
             _viewControllerIndex = 3;
+            [TPAnalytics trackClickEvent:@"clickHomepage" category:@"Homepage" label:@"Wishlist"];
             break;
         }
             
@@ -175,6 +179,7 @@
             _totalOffset = ([[UIScreen mainScreen]bounds].size.width/divider)*3;
             [self tapButtonAnimate:_totalOffset];
             _viewControllerIndex = 4;
+            [TPAnalytics trackClickEvent:@"clickHomepage" category:@"Homepage" label:@"Product History"];
             break;
         }
             
@@ -182,6 +187,7 @@
             _totalOffset = ([[UIScreen mainScreen]bounds].size.width/divider)*4;
             [self tapButtonAnimate:_totalOffset];
             _viewControllerIndex = 5;
+            [TPAnalytics trackClickEvent:@"clickHomepage" category:@"Homepage" label:@"Favorite Shop"];
             break;
         }
             

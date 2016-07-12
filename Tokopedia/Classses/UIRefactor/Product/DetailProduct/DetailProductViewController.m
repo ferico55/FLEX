@@ -93,6 +93,8 @@
 
 #import "PriceAlertRequest.h"
 
+#import "TPLocalytics.h"
+
 #pragma mark - CustomButton Expand Desc
 @interface CustomButtonExpandDesc : UIButton
 @property (nonatomic) int objSection;
@@ -614,6 +616,9 @@ OtherProductDelegate
                             kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]
                             };
                 [self.navigationController pushViewController:vc animated:YES];
+                
+                [TPAnalytics trackClickEvent:@"clickPDP" category:@"Product Detail Page" label:@"Review"];
+                
                 break;
             }
             case 13:
@@ -637,7 +642,11 @@ OtherProductDelegate
                 [data setObject:image.image_src==nil?@"":image.image_src forKey:@"talk_product_image"];
                 
                 vc.data = data;
+
                 [self.navigationController pushViewController:vc animated:YES];
+                
+                [TPAnalytics trackClickEvent:@"clickPDP" category:@"Product Detail Page" label:@"Review"];
+
                 break;
             }
             case 15:
@@ -1286,7 +1295,7 @@ OtherProductDelegate
         return [_detailProductPostUrl isEqualToString:@""] ? kTKPDDETAILPRODUCT_APIPATH : _detailProductPostUrl;
     else if(tag == CTagOtherProduct)
         //return [_detailProductPostUrl isEqualToString:@""] ? kTKPDDETAILPRODUCT_APIPATH : _detailProductPostUrl;
-        return @"search/v2.1/product";
+        return @"/search/v2.1/product";
     else if(tag == CTagFavorite)
         return @"action/favorite-shop.pl";
     else if(tag == CTagUnWishList)
@@ -2254,7 +2263,8 @@ OtherProductDelegate
             
             //Track in GA
             [TPAnalytics trackProductView:_product.result.product];
-            
+            [TPLocalytics trackProductView:_product];
+
             _isnodata = NO;
             [_table reloadData];
             
@@ -2296,7 +2306,6 @@ OtherProductDelegate
             UIView *backgroundGreyView = [[UIView alloc] initWithFrame:frame];
             backgroundGreyView.backgroundColor = [UIColor clearColor];
             [self.view insertSubview:backgroundGreyView belowSubview:self.table];
-            
         }
     }
 }
@@ -2543,7 +2552,9 @@ OtherProductDelegate
                                                                                           url:url
                                                                                        anchor:sender];
         
-        [self presentViewController:controller animated:YES completion:nil];
+        [self presentViewController:controller animated:YES completion:^{
+            [TPAnalytics trackClickEvent:@"clickPDP" category:@"Product Detail Page" label:@"Share"];
+        }];
         
     }
 }

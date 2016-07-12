@@ -114,7 +114,7 @@
 }
 
 - (void)loadData {
-    [RequestFilterCategory fetchListFilterCategory:^(NSArray<CategoryDetail *> * categories) {
+    [RequestFilterCategory fetchListFilterCategory:_rootCategoryID?:@"" success:^(NSArray<CategoryDetail *> * categories) {
         self.initialCategories = [NSMutableArray arrayWithArray:categories];
         if (self.filterType == FilterCategoryTypeSearchProduct) {
             CategoryDetail *category = [CategoryDetail new];
@@ -344,7 +344,7 @@
     if (self.filterType == FilterCategoryTypeCategory) {
         NSMutableArray *deletedCategories = [NSMutableArray new];
         for (CategoryDetail *category in self.initialCategories) {
-            if (![category.tree isEqualToString:@"1"] && category.isExpanded == NO) {
+            if ([category.tree isEqualToString:@"1"] && category.isExpanded == NO) {
                 [deletedCategories addObject:category];
             }
         }

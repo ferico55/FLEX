@@ -109,7 +109,7 @@ import UIKit
     }
 
     override func isEqual(object: AnyObject?) -> Bool {
-        if (object?.categoryId == categoryId) {
+        if (object?.name == name && object?.categoryId == categoryId) {
             return true
         } else {
             return false

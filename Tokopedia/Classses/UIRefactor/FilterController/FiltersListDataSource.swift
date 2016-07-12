@@ -85,25 +85,15 @@ class FiltersListDataSource:  NSObject, UITableViewDelegate, UITableViewDataSour
         
         var cell:UITableViewCell = UITableViewCell()
         
-        var item : ListOption?
+        let item : ListOption = self.item(indexPath.row)
         
-        if(searchActive){
-            if searchBar.text == "" {
-                item = items[indexPath.row];
-            } else {
-                item = filteredItem[indexPath.row]
-            }
-        } else {
-            item = items[indexPath.row];
-        }
-        
-        if item!.input_type == self.checkmarType() {
+        if item.input_type == self.checkmarType() {
             cell = FilterTableViewCell.init(style: .Default, reuseIdentifier: "cellCheckmark")
-            (cell as! FilterTableViewCell).label.text =  item!.name
+            (cell as! FilterTableViewCell).label.text =  item.name
             (cell as! FilterTableViewCell).disableSelected = false
             (cell as! FilterTableViewCell).setPading(10)
             for (index, selected) in selectedObjects.enumerate() {
-                if selected == items[indexPath.row]{
+                if selected == item {
                     tableView .selectRowAtIndexPath(indexPath, animated: true, scrollPosition: .Bottom)
                 }
             }
@@ -112,12 +102,12 @@ class FiltersListDataSource:  NSObject, UITableViewDelegate, UITableViewDataSour
             customColorView.backgroundColor = UIColor.whiteColor()
             cell.selectedBackgroundView =  customColorView;
         }
-        if item!.input_type == self.textInputType() {
+        if item.input_type == self.textInputType() {
             cell = TextFieldCell.init(style: .Default, reuseIdentifier: "cellTextField")
-            (cell as! TextFieldCell).titleLabel.text = item!.name
+            (cell as! TextFieldCell).titleLabel.text = item.name
             
             for (index, selected) in selectedObjects.enumerate() {
-                if selected.key == items[indexPath.row].key {
+                if selected.key == item.key {
                     
                     if Int(selected.value) == 0 {
                         selected.value = ""
@@ -148,17 +138,19 @@ class FiltersListDataSource:  NSObject, UITableViewDelegate, UITableViewDataSour
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
-        if items[indexPath.row].isSelected {
-            items[indexPath.row].isSelected = false
+        let item : ListOption = self.item(indexPath.row)
+        
+        if item.isSelected {
+            item.isSelected = false
             self.tableView!.deselectRowAtIndexPath(indexPath, animated: false)
             for (index, selected) in selectedObjects.enumerate() {
-                if selected == items[indexPath.row]{
+                if selected == item{
                     selectedObjects.removeAtIndex(index)
                 }
             }
         } else{
-            items[indexPath.row].isSelected = true
-            selectedObjects.append(items[indexPath.row])
+            item.isSelected = true
+            selectedObjects.append(item)
         }
         completionHandler(selectedObjects)
     }
@@ -174,20 +166,25 @@ class FiltersListDataSource:  NSObject, UITableViewDelegate, UITableViewDataSour
         return self.searchBar;
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        var item : ListOption?
+    private func item(index:Int) -> ListOption {
+        var item : ListOption = items[index]
         
         if(searchActive){
             if searchBar.text == "" {
-                item = items[indexPath.row];
+                item = items[index];
             } else {
-                item = filteredItem[indexPath.row]
+                item = filteredItem[index]
             }
         } else {
-            item = items[indexPath.row];
+            item = items[index];
         }
+        return item
+    }
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        let item : ListOption = self.item(indexPath.row)
         
-        if item!.input_type == self.textInputType() {
+        if item.input_type == self.textInputType() {
             return 55
         } else {
             return 44
@@ -250,19 +247,9 @@ class FiltersListDataSource:  NSObject, UITableViewDelegate, UITableViewDataSour
         
         let newString = (textField.text! as NSString).stringByReplacingCharactersInRange(range, withString: string)
         
-        var item : ListOption?
+        var item : ListOption = self.item(textField.tag)
         
-        if(searchActive){
-            if searchBar.text == "" {
-                item = items[textField.tag];
-            } else {
-                item = filteredItem[textField.tag]
-            }
-        } else {
-            item = items[textField.tag];
-        }
-        
-        let selectedObject = item?.copy() as! ListOption
+        let selectedObject = item.copy() as! ListOption
         selectedObject.value = "\(newString)"
         
         for (index, selected) in selectedObjects.enumerate() {

@@ -352,7 +352,7 @@ typedef enum
 #define TRANSACTION_NODATACELLTITLE @"no data"
 #define TRANSACTION_NODATACELLDESCS @"no data description"
 
-#define PLACEHOLDER_NOTE_ATC @"Contoh : Warna hitam"
+#define PLACEHOLDER_NOTE_ATC @"Contoh: Warna Putih/Ukuran XL/Edisi ke-2"
 
 #define TITLE_ALERT_CANCEL_CART @"Konfirmasi Pembatalan Transaksi"
 #define DESCRIPTION_ALERT_CANCEL_CART_PRODUCT FORMAT_CANCEL_CART_PRODUCT

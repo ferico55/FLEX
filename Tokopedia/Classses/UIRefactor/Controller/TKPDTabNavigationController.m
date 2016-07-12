@@ -367,7 +367,7 @@
 }
 
 -(BOOL)isUseDynamicFilter{
-    if(FBTweakValue(@"Dynamic", @"Filter", @"Enabled", YES)) {
+    if(FBTweakValue(@"Dynamic", @"Filter", @"Enabled", NO)) {
         return YES;
     } else {
         return NO;
@@ -486,6 +486,7 @@
                 controller.categories = [_initialCategories mutableCopy];
                 controller.selectedCategory = _selectedCategory;
                 if ([_data objectForKey:@"department_id"]) {
+                    controller.rootCategoryID = [_data objectForKey:@"department_id"]?:@"";
                     controller.filterType = FilterCategoryTypeCategory;
                 } else {
                     controller.filterType = FilterCategoryTypeSearchProduct;
@@ -564,7 +565,7 @@
 
 #pragma mark - Category delegate
 - (void)didSelectCategory:(CategoryDetail *)category {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_DEPARTMENTIDPOSTNOTIFICATIONNAMEKEY object:self userInfo:@{@"department_id" : category.categoryId}];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_DEPARTMENTIDPOSTNOTIFICATIONNAMEKEY object:self userInfo:@{@"department_id" : category.categoryId, @"department_name" : category.name?:@""}];
     [_data setObject:category.categoryId forKey:@"selected_id"];
 }
 

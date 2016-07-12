@@ -30,6 +30,7 @@ typedef NS_ENUM(NSInteger, FilterCategoryType) {
 @property (weak, nonatomic) CategoryDetail *selectedCategory;
 @property (weak, nonatomic) id<FilterCategoryViewDelegate> delegate;
 @property FilterCategoryType filterType;
+@property (strong, nonatomic) NSString *rootCategoryID;
 
 -(void)resetSelectedFilter;
 

@@ -279,7 +279,14 @@ static NSString const *rows = @"12";
 }
 
 -(void)pushDynamicFilter{
-    FiltersController *controller = [[FiltersController alloc]initWithSource:[self searchShopType] filterResponse:_filterResponse?:[FilterData new] categories:nil selectedCategories:nil selectedFilters:_selectedFilters presentedVC:self onCompletion:^(NSArray<CategoryDetail *> * selectedCategories , NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
+    FiltersController *controller = [[FiltersController alloc]initWithSource:[self searchShopType]
+                                                              filterResponse:_filterResponse?:[FilterData new]
+                                                              rootCategoryID:@""
+                                                                  categories:nil
+                                                          selectedCategories:nil
+                                                             selectedFilters:_selectedFilters
+                                                                 presentedVC:self
+                                                                onCompletion:^(NSArray<CategoryDetail *> * selectedCategories , NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
         
         _selectedFilters = selectedFilters;
         _selectedFilterParam = paramFilters;
@@ -292,7 +299,7 @@ static NSString const *rows = @"12";
 }
 
 -(BOOL)isUseDynamicFilter{
-    if(FBTweakValue(@"Dynamic", @"Filter", @"Enabled", YES)) {
+    if(FBTweakValue(@"Dynamic", @"Filter", @"Enabled", NO)) {
         return YES;
     } else {
         return NO;
@@ -339,7 +346,7 @@ static NSString const *rows = @"12";
 
 - (void)changeCategory:(NSNotification *)notification {
     [_shops removeAllObjects];
-    [_params setObject:[notification.userInfo objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY] forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
+    [_params setObject:[notification.userInfo objectForKey:@"sc"] forKey:@"sc"];
     [self refreshView:nil];
     _table.tableFooterView = _footer;
     [_act startAnimating];
@@ -362,7 +369,7 @@ static NSString const *rows = @"12";
 
 -(NSDictionary*)parameterFilter{
     NSString *querry = [_params objectForKey:kTKPDSEARCH_DATASEARCHKEY];
-    NSString *categoryID = [_params objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
+    NSString *categoryID = [_params objectForKey:@"sc"];
     
     NSDictionary* param = @{
                             @"sc" : categoryID?: @"",
@@ -370,11 +377,11 @@ static NSString const *rows = @"12";
                             @"start" : @(_start),
                             @"rows" : rows,
                             @"device" : @"ios",
-                            @"ob" : [_params objectForKey:kTKPDSEARCH_APIORDERBYKEY]?:@"",
-                            @"floc" : [_params objectForKey:kTKPDSEARCH_APILOCATIONKEY]?:@"",
-                            @"fshop" : [_params objectForKey:kTKPDSEARCH_APISHOPTYPEKEY]?:@"",
-                            @"pmin" : [_params objectForKey:kTKPDSEARCH_APIPRICEMINKEY]?:@"",
-                            @"pmax" : [_params objectForKey:kTKPDSEARCH_APIPRICEMAXKEY]?:@"",
+                            @"ob" : [_params objectForKey:@"ob"]?:@"",
+                            @"floc" : [_params objectForKey:@"floc"]?:@"",
+                            @"fshop" : [_params objectForKey:@"fshop"]?:@"",
+                            @"pmin" : [_params objectForKey:@"pmin"]?:@"",
+                            @"pmax" : [_params objectForKey:@"pmax"]?:@"",
                             @"source" : @"search"
                             };
      return param;
@@ -383,7 +390,7 @@ static NSString const *rows = @"12";
 -(NSDictionary*)parameterDynamicFilter{
     NSString *querry = [_params objectForKey:kTKPDSEARCH_DATASEARCHKEY];
     NSString *type = kTKPDSEARCH_DATASEARCHSHOPKEY;
-    NSString *deptid = [_params objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
+    NSString *deptid = [_params objectForKey:@"sc"];
     
     NSDictionary* param;
     

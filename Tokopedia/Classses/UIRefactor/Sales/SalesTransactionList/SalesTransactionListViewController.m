@@ -91,6 +91,9 @@
     
     self.tableView.tableFooterView = _footerView;
     self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 10, 0);
+    
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.refreshControl addTarget:self action:@selector(refreshData) forControlEvents:UIControlEventValueChanged];
     [self.tableView addSubview:_refreshControl];
 
     self.page = @"1";
@@ -108,12 +111,6 @@
     
     self.filterViewController = [FilterSalesTransactionListViewController new];
     self.filterViewController.delegate = self;
-}
-
-- (UIRefreshControl *)refreshControl {
-    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
-    [refreshControl addTarget:self action:@selector(refreshData) forControlEvents:UIControlEventValueChanged];
-    return refreshControl;
 }
 
 - (UIBarButtonItem *)backBarButton {
@@ -228,14 +225,12 @@
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if ([tableView isLastIndexPath:indexPath]) {
-        if (self.nextURL) {
-            self.tableView.tableFooterView = _footerView;
-            [self.activityIndicatorView startAnimating];
-            [self request];
-        } else {
-            self.tableView.tableFooterView = nil;
-        }
+    if ([tableView isLastIndexPath:indexPath] && self.nextURL) {
+        self.tableView.tableFooterView = _footerView;
+        [self.activityIndicatorView startAnimating];
+        [self request];
+    } else {
+        self.tableView.tableFooterView = nil;
     }
 }
 

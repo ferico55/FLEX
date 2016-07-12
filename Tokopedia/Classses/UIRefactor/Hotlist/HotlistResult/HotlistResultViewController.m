@@ -120,6 +120,8 @@ static NSString const *rows = @"12";
     ListOption *_selectedSort;
     NSDictionary *_selectedSortParam;
     NSArray<CategoryDetail*> *_selectedCategories;
+    
+    NSString *_rootCategoryID;
 }
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageview;
@@ -164,8 +166,6 @@ static NSString const *rows = @"12";
     [super viewDidLoad];
     _page = 0;
     
-    [self setDefaultSort];
-    
     if (![self isUseDynamicFilter]) {
         [self setRightButton];
     }
@@ -191,6 +191,10 @@ static NSString const *rows = @"12";
     _promo = [NSMutableArray new];
     _promoScrollPosition = [NSMutableArray new];
 
+    CGRect newFrame = _iPadView.frame;
+    newFrame.size.width = [UIScreen mainScreen].bounds.size.width;
+    _iPadView.frame = newFrame;
+    
     if(IS_IPAD) {
         [_header removeFromSuperview];
     } else {
@@ -206,9 +210,7 @@ static NSString const *rows = @"12";
         [_descriptionview setFrame:CGRectMake(350, _imageview.frame.origin.y, _imageview.frame.size.width, _imageview.frame.size.height)];
         [_pagecontrol bringSubviewToFront:_descriptionview];
         
-        CGRect newFrame = _iPadView.frame;
-        newFrame.size.width = [UIScreen mainScreen].bounds.size.width;
-        _iPadView.frame = newFrame;
+        
     }
     
     NSDictionary *data = [[TKPDSecureStorage standardKeyChains] keychainDictionary];
@@ -267,27 +269,6 @@ static NSString const *rows = @"12";
     }
 }
 
--(void)setDefaultSort{
-    [_detailfilter setObject:[self defaultSortID] forKey:@"ob"];
-    _selectedSort = [self defaultSortDynamicFilter];
-    _selectedSortParam = @{@"ob":[self defaultSortID]};
-    
-}
-
--(ListOption*)defaultSortDynamicFilter{
-    ListOption *sort = [ListOption new];
-    sort.name = @"Paling Sesuai";
-    sort.value = @"23";
-    sort.key = @"ob";
-    sort.input_type = @"checkbox";
-    return sort;
-}
-
-
--(NSString*)defaultSortID{
-    return @"23";
-}
-
 - (void)registerAllNib {
     [self registerNibCell:CTagGeneralProductCollectionView withIdentifier:CTagGeneralProductIdentifier isFooterView:NO isHeader:NO];
     [self registerNibCell:CTagFooterCollectionView withIdentifier:CTagFooterCollectionIdentifier isFooterView:YES isHeader:NO];
@@ -317,7 +298,7 @@ static NSString const *rows = @"12";
 }
 
 -(BOOL)isUseDynamicFilter{
-    if(FBTweakValue(@"Dynamic", @"Filter", @"Enabled", YES)) {
+    if(FBTweakValue(@"Dynamic", @"Filter", @"Enabled", NO)) {
         return YES;
     } else {
         return NO;
@@ -345,12 +326,12 @@ static NSString const *rows = @"12";
     }
 }
 
--(NSString*)hotlistSearchType{
-    return @"hotlist";
+-(NSString*)hotlistFilterSource{
+    return @"hot_product";
 }
 
 -(void)pushDynamicSort{
-    FiltersController *controller = [[FiltersController alloc]initWithSource:[self hotlistSearchType] sortResponse:_filterResponse?:[FilterData new] selectedSort:_selectedSort presentedVC:self onCompletion:^(ListOption * sort, NSDictionary*paramSort) {
+    FiltersController *controller = [[FiltersController alloc]initWithSource:[self hotlistFilterSource] sortResponse:_filterResponse?:[FilterData new] selectedSort:_selectedSort presentedVC:self onCompletion:^(ListOption * sort, NSDictionary*paramSort) {
         _selectedSortParam = paramSort;
         _selectedSort = sort;
         _activeSortImageView.hidden = (_selectedSort == nil);
@@ -378,7 +359,14 @@ static NSString const *rows = @"12";
 }
 
 -(void)pushDynamicFilter{
-    FiltersController *controller = [[FiltersController alloc]initWithSource:[self hotlistSearchType] filterResponse:_filterResponse?:[FilterData new] categories:[_initialCategories copy] selectedCategories:_selectedCategories selectedFilters:_selectedFilters presentedVC:self onCompletion:^(NSArray<CategoryDetail *> * selectedCategories , NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
+    FiltersController *controller = [[FiltersController alloc]initWithSource:[self hotlistFilterSource]
+                                                              filterResponse:_filterResponse?:[FilterData new]
+                                                             rootCategoryID:@""
+                                                                  categories:[_initialCategories copy]
+                                                          selectedCategories:_selectedCategories
+                                                             selectedFilters:_selectedFilters
+                                                                 presentedVC:self
+                                                                onCompletion:^(NSArray<CategoryDetail *> * selectedCategories , NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
         
         _selectedCategories = selectedCategories;
         _selectedFilters = selectedFilters;
@@ -882,7 +870,7 @@ static NSString const *rows = @"12";
     NSDictionary *query = @{
         @"negative_keyword" : q.negative_keyword?:@"",
         @"sc" : q.sc?:@"",
-        @"ob" : q.ob?:[self defaultSortID],
+        @"ob" : q.ob?:@"",
         @"terms" : q.terms?:@"",
         @"fshop" : q.fshop?:@"",
         @"q" : q.q?:@"",
@@ -891,9 +879,9 @@ static NSString const *rows = @"12";
         @"type" : q.type?:@""
     };
     
+    _rootCategoryID = q.sc;
     [_detailfilter addEntriesFromDictionary:query];
     _selectedFilterParam = query;
-    [self setDefaultSort];
     
     _start = 0;
     [self requestHotlist];
@@ -974,9 +962,9 @@ static NSString const *rows = @"12";
     
     NSString *selectedCategory = [[_selectedCategories valueForKey:@"categoryId"] componentsJoinedByString:@","];
     NSString *categories;
-    if (![[_detailfilter objectForKey:@"sc"] isEqualToString:@""] && _selectedCategories.count > 0) {
+    if (![[_detailfilter objectForKey:@"sc"] isEqualToString:@""] && _selectedCategories.count > 0 && [_rootCategoryID isEqualToString:@""]) {
         categories = [NSString stringWithFormat:@"%@,%@",selectedCategory,[_detailfilter objectForKey:@"sc"]?:@""];
-    } else if (![[_detailfilter objectForKey:@"sc"] isEqualToString:@""]){
+    } else if (![[_detailfilter objectForKey:@"sc"] isEqualToString:@""] && _selectedCategories.count == 0){
         categories = [_detailfilter objectForKey:@"sc"]?:@"";
     } else {
         categories = selectedCategory;
@@ -984,7 +972,7 @@ static NSString const *rows = @"12";
     
     NSDictionary* param = @{
                             @"device":@"ios",
-                            @"q" : [_detailfilter objectForKey:kTKPDHOME_DATAQUERYKEY]?:[_data objectForKey:kTKPDHOME_DATAQUERYKEY],
+                            @"q" : [_detailfilter objectForKey:@"q"]?:[_data objectForKey:@"q"],
                             @"start" : @(_start),
                             @"rows" : rows,
                             @"hashtag" : [self isInitialRequest] ? @"true" : @"",
@@ -1010,13 +998,13 @@ static NSString const *rows = @"12";
 
     NSDictionary* param = @{
                             @"device":@"ios",
-                            @"q" : [_detailfilter objectForKey:kTKPDHOME_DATAQUERYKEY]?:[_data objectForKey:kTKPDHOME_DATAQUERYKEY],
+                            @"q" : [_detailfilter objectForKey:@"q"]?:[_data objectForKey:@"q"],
                             @"start" : @(_start),
                             @"rows" : rows,
                             @"ob" : [_detailfilter objectForKey:@"ob"]?:@"",
                             @"sc" : [_detailfilter objectForKey:@"sc"]?:@"",
-                            @"floc" :[_detailfilter objectForKey:@"location"]?:@"",
-                            @"fshop" :[_detailfilter objectForKey:@"shop_type"]?:@"",
+                            @"floc" :[_detailfilter objectForKey:@"floc"]?:@"",
+                            @"fshop" :[_detailfilter objectForKey:@"fshop"]?:@"",
                             @"pmin" :[_detailfilter objectForKey:@"pmin"]?:@"",
                             @"pmax" :[_detailfilter objectForKey:@"pmax"]?:@"",
                             @"hashtag" : [self isInitialRequest] ? @"true" : @"",

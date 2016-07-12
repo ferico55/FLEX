@@ -99,10 +99,14 @@
 
 -(CategoryDetail *)getLastProductAddCategory
 {
-    CategoryDetail *category = [[CategoryDetail alloc] init];
-    category.categoryId = [NSString stringWithFormat:@"%@", [_auth objectForKey:LAST_CATEGORY_VALUE]];
-    category.name = [NSString stringWithFormat:@"%@", [_auth objectForKey:LAST_CATEGORY_NAME]];
-    return category;
+    if ([_auth objectForKey:LAST_CATEGORY_VALUE]) {
+        CategoryDetail *category = [[CategoryDetail alloc] init];
+        category.categoryId = [NSString stringWithFormat:@"%@", [_auth objectForKey:LAST_CATEGORY_VALUE]];
+        category.name = [NSString stringWithFormat:@"%@", [_auth objectForKey:LAST_CATEGORY_NAME]];
+        return category;
+    } else {
+        return nil;
+    }
 }
 
 - (NSDictionary *)autoAddParameter:(id)params
@@ -232,11 +236,11 @@
     UserAuthentificationManager* authManager = [UserAuthentificationManager new];
     NSString* deviceId = [authManager getMyDeviceToken];
     
-    if ([@"0" isEqualToString:deviceId]) {
+    if ([@"0" isEqualToString:deviceId] || [deviceId isEqualToString:@"SIMULATORDUMMY"]) {
         deviceId = [[NSUUID UUID] UUIDString];
+        
+        [[TKPDSecureStorage standardKeyChains] setKeychainWithValue:deviceId withKey:kTKPD_DEVICETOKENKEY];
     }
-    
-    [[TKPDSecureStorage standardKeyChains] setKeychainWithValue:deviceId withKey:kTKPD_DEVICETOKENKEY];
 }
 
 @end

@@ -8,13 +8,6 @@
 
 import UIKit
 
-@objc enum CategoryFilterType : Int {
-    case Hotlist
-    case Category
-    case SearchProduct
-    case AddProduct
-}
-
 @objc enum DirectionArrow : Int {
     case Up
     case Down
@@ -25,13 +18,14 @@ import UIKit
     private var initialCategories: [CategoryDetail] = []
     private var categories : [CategoryDetail] = []
     private var selectedCategories : [CategoryDetail] = []
-    private var filterType : CategoryFilterType?
     private var tableView : UITableView = UITableView()
     private var lastSelectedIndexPath : NSIndexPath?
     private var completionHandler:([CategoryDetail])->Void = {(arg:[CategoryDetail]) -> Void in}
     private var refreshControl : UIRefreshControl = UIRefreshControl()
+    private var rootCategoryID :String = ""
     
-    init(selectedCategories:[CategoryDetail], initialCategories:[CategoryDetail], onCompletion: (([CategoryDetail]) -> Void)){
+    init(rootCategoryID:String, selectedCategories:[CategoryDetail], initialCategories:[CategoryDetail], onCompletion: (([CategoryDetail]) -> Void)){
+        self.rootCategoryID = rootCategoryID;
         completionHandler = onCompletion
         self.selectedCategories =  selectedCategories.map { ($0.copy() as! CategoryDetail) }
         self.initialCategories = initialCategories.map { ($0.copy() as! CategoryDetail) }
@@ -50,8 +44,6 @@ import UIKit
         tableView.allowsMultipleSelection = true
         tableView.allowsMultipleSelectionDuringEditing = true
         tableView.allowsSelection = true
-        refreshControl.addTarget(self, action: #selector(CategoryFilterViewController.refresh(_:)), forControlEvents: UIControlEvents.ValueChanged)
-        tableView.addSubview(refreshControl)
         tableView.delegate = self
         tableView.dataSource = self
         tableView.tableFooterView = UIView.init(frame: CGRectMake(0, 0, 1, 1))
@@ -60,6 +52,9 @@ import UIKit
         self.view.addSubview(tableView)
         
         if (self.initialCategories.count == 0) {
+            refreshControl.addTarget(self, action: #selector(CategoryFilterViewController.refresh(_:)), forControlEvents: UIControlEvents.ValueChanged)
+            tableView.addSubview(refreshControl)
+            
             tableView.setContentOffset(CGPointMake(0, -refreshControl.frame.size.height), animated:true)
             refreshControl.beginRefreshing()
 
@@ -86,13 +81,10 @@ import UIKit
     
     func showPresetCategories() {
         for category in self.initialCategories {
-            category.isSelected = false
             for childCategory in category.child {
-                childCategory.isSelected = false
                 childCategory.parent = category.categoryId;
                 for lastCategory in childCategory.child {
                     lastCategory.parent = childCategory.categoryId;
-                    lastCategory.isSelected = false
                 }
             }
         }
@@ -103,7 +95,11 @@ import UIKit
     }
     
     func requestCategory() {
-        RequestFilterCategory.fetchListFilterCategory({ (categories) in
+        RequestFilterCategory.fetchListFilterCategory(rootCategoryID, success: { (categories) in
+            
+            self.categories.removeAll()
+            self.tableView.reloadData()
+            
             self.tableView.setContentOffset(CGPointZero, animated:true)
             self.refreshControl.endRefreshing()
             
@@ -147,7 +143,7 @@ import UIKit
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
         
         let category : CategoryDetail = categories[indexPath.row]
-        if category.isSelected {
+        if self.selectedCategories .contains(category) {
             cell.setSelected(true, animated: false)
         }
     }
@@ -254,31 +250,16 @@ import UIKit
     
     func doCollapseCategory(selectedCategory:(CategoryDetail)) {
         selectedCategory.isExpanded = false
-        for (_,category) in self.categories.enumerate() {
-            if category.parent == selectedCategory.categoryId {
-                category.isExpanded = false
-
-                self.tableView.beginUpdates()
-                let location : Int  = categories.indexOf(category)!
-                categories.removeAtIndex(location)
-                self.tableView.deleteRowsAtIndexPaths([NSIndexPath.init(forRow:location , inSection: 0)], withRowAnimation: .Automatic)
-                self.tableView.endUpdates()
-                
-                
-                for (_,categoryChild) in category.child.enumerate() {
-                    categoryChild.isExpanded = false
-                    if categoryChild.parent == category.categoryId {
-                        let result = categories.filter { $0==categoryChild }
-                        if result.isEmpty == false {
-                            self.tableView.beginUpdates()
-                            let location : Int  = categories.indexOf(categoryChild)!
-                            categories.removeAtIndex(location)
-                            self.tableView.deleteRowsAtIndexPaths([NSIndexPath.init(forRow:location , inSection: 0)], withRowAnimation: .Automatic)
-                            self.tableView.endUpdates()
-                        }
-                    }
-                }
-            }
+        for (index,category) in self.categories.enumerate() where category.parent == selectedCategory.categoryId {
+            
+            self.tableView.beginUpdates()
+            categories.removeAtIndex(index)
+            self.tableView.deleteRowsAtIndexPaths([NSIndexPath.init(forRow:index , inSection: 0)], withRowAnimation: .Automatic)
+            self.tableView.endUpdates()
+            self.doCollapseCategory(category)
+            self.doCollapseCategory(selectedCategory)
+            break
+            
         }
     }
     

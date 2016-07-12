@@ -10,12 +10,18 @@ import UIKit
 
 class RequestFilterCategory: NSObject {
     
-    class func fetchListFilterCategory(success: (([CategoryDetail]) -> Void), failed:((NSError)->Void)) {
+    class func fetchListFilterCategory(ID:String, success: (([CategoryDetail]) -> Void), failed:((NSError)->Void)) {
         let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
         
+        var path : String = "/v1/categories"
+        
+        if Int(ID) != 0  && Int(ID) != nil {
+            path = "/v1/categories/\(ID)"
+        }
+        
         networkManager.requestWithBaseUrl(NSString .hadesUrl(),
-                                          path:"/v1/categories",
+                                          path: path,
                                           method: .GET,
                                           parameter: ["filter":"type==tree"],
                                           mapping: CategoryResponse.mapping(),

@@ -31,7 +31,7 @@
 
 #import <GoogleOpenSource/GoogleOpenSource.h>
 
-#import "Localytics.h"
+#import "TPLocalytics.h"
 #import "Tokopedia-Swift.h"
 
 #import <GoogleSignIn/GoogleSignIn.h>
@@ -88,8 +88,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 @property (weak, nonatomic) IBOutlet UIImageView *screenLogin;
 @property (weak, nonatomic) IBOutlet UIButton *forgetPasswordButton;
 
-//@property (retain, nonatomic) IBOutlet GPPSignInButton *googleSignInButton;
-//@property (strong, nonatomic) IBOutlet GIDSignInButton *googleSignInButton;
 @property (strong, nonatomic) IBOutlet UIView *googleSignInButton;
 @property (strong, nonatomic) IBOutlet UILabel *signInLabel;
 
@@ -134,29 +132,9 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     UIImageView *topedImageView = [[UIImageView alloc] initWithImage:iconToped];
     self.navigationItem.titleView = topedImageView;
     
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" "
-                                                                   style:UIBarButtonItemStyleBordered
-                                                                  target:self
-                                                                  action:@selector(tap:)];
-    self.navigationItem.backBarButtonItem = backButton;
-    
-    UIBarButtonItem *signUpButton = [[UIBarButtonItem alloc] initWithTitle:kTKPDREGISTER_TITLE
-                                                                     style:UIBarButtonItemStylePlain
-                                                                    target:(self)
-                                                                    action:@selector(tap:)];
-    signUpButton.tag = 11;
-    signUpButton.tintColor = [UIColor whiteColor];
-    self.navigationItem.rightBarButtonItem = signUpButton;
-
-    if (_isPresentedViewController) {
-        UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
-                                                                         style:UIBarButtonItemStylePlain
-                                                                        target:self
-                                                                        action:@selector(tap:)];
-        cancelButton.tag = 13;
-        cancelButton.tintColor = [UIColor whiteColor];
-        self.navigationItem.leftBarButtonItem = cancelButton;
-    }
+    self.navigationItem.backBarButtonItem = self.backBarButton;
+    self.navigationItem.leftBarButtonItem = self.isPresentedViewController? self.cancelBarButton: nil;
+    self.navigationItem.rightBarButtonItem = self.signUpBarButton;
     
     _activation = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
@@ -173,8 +151,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     _activationRequest = [ActivationRequest new];
     
     googleSignInButton.layer.shadowOffset = CGSizeMake(1, 1);
-    
-//    [self.googleSignInButton setStyle:kGIDSignInButtonStyleStandard];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -232,32 +208,49 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-#pragma mark - View Actipn
--(IBAction)tap:(id)sender
-{
+#pragma mark - Bar button 
+
+- (UIBarButtonItem *)backBarButton {
+    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                               style:UIBarButtonItemStyleBordered
+                                                              target:self
+                                                              action:nil];
+    return button;
+}
+
+- (UIBarButtonItem *)cancelBarButton {
+    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
+                                                               style:UIBarButtonItemStyleBordered
+                                                              target:self
+                                                              action:@selector(didTapCancelButton:)];
+    return button;
+}
+
+- (UIBarButtonItem *)signUpBarButton {
+    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@"Daftar"
+                                                               style:UIBarButtonItemStylePlain
+                                                              target:(self)
+                                                              action:@selector(didTapSignUpButton:)];
+    return button;
+}
+
+#pragma mark - View Action
+
+- (void)didTapCancelButton:(UIBarButtonItem *)button {
+    if(self.delegate && [_delegate respondsToSelector:@selector(cancelLoginView)]) {
+        [self.delegate cancelLoginView];
+    }
+    [self.navigationController dismissViewControllerAnimated:YES completion:NULL];
+}
+
+- (void)didTapSignUpButton:(UIBarButtonItem *)button {
+    RegisterViewController *controller = [RegisterViewController new];
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+-(IBAction)tap:(id)sender {
     [_activetextfield resignFirstResponder];
-    
-    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
-        UIBarButtonItem *btn = (UIBarButtonItem*)sender;
-        switch (btn.tag) {
-            case 11:
-            {
-                RegisterViewController *controller = [RegisterViewController new];
-                [self.navigationController pushViewController:controller animated:YES];
-                break;
-            }
-            case 13:
-            {
-                if(_delegate!=nil && [_delegate respondsToSelector:@selector(cancelLoginView)]) {
-                    [_delegate cancelLoginView];
-                }
-                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-                break;
-            }
-            default:
-                break;
-        }
-    } else if ([sender isKindOfClass:[UIButton class]]) {
+    if ([sender isKindOfClass:[UIButton class]]) {
         UIButton *btn = (UIButton*)sender;
         switch (btn.tag) {
             case 10: {
@@ -363,6 +356,8 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     FBSDKLoginManager *loginManager = [[FBSDKLoginManager alloc] init];
     [loginManager logOut];
     [FBSDKAccessToken setCurrentAccessToken:nil];
+    
+    [TPLocalytics trackLoginStatus:NO];
 }
 
 - (void)setLoggingInState {
@@ -797,7 +792,11 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
             @"shopID": _login.result.shop_id
         },
     };
+    
     [TPAnalytics trackAuthenticated:authenticatedData];
+    [TPLocalytics trackLoginStatus:YES];
+    [Localytics setValue:_login.result.user_id forProfileAttribute:@"user_id"];
+    [Localytics setValue:[_activation objectForKey:kTKPDACTIVATION_DATAEMAILKEY] forProfileAttribute:@"user_email"];
     
     //add user login to GA
     id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
@@ -845,14 +844,12 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
                                                         object:nil
                                                       userInfo:nil];
-    
-    [Localytics setValue:@"Yes" forProfileAttribute:@"Is Login"];
 }
 
 - (void)checkSecurityQuestion {
     if(FBTweakValue(@"Security", @"Question", @"Enabled", YES)) {
         TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-        [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_USERIDKEY];
+//        [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_USERIDKEY];
         
         //    SecurityQuestionViewController *controller = [[SecurityQuestionViewController alloc] initWithNibName:@"SecurityQuestionViewController" bundle:nil];
         SecurityQuestionViewController* controller = [SecurityQuestionViewController new];

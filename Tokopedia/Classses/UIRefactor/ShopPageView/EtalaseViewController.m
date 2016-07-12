@@ -383,7 +383,7 @@
         _isLoading = YES;
         UserAuthentificationManager *auth = [UserAuthentificationManager new];
         NSDictionary *loginData = [auth getUserLoginData];
-        NSString *userId = [loginData objectForKey:@"user_id"]?:@"";
+        NSString *userId = [auth getUserId]?:@"";
         [etalaseRequest requestActionAddEtalaseWithName:[_tambahEtalaseTextField text]
                                                  userId:userId
                                               onSuccess:^(ShopSettings *shopSettings) {
@@ -424,7 +424,7 @@
             _isLoading = YES;
             UserAuthentificationManager *auth = [UserAuthentificationManager new];
             NSDictionary *loginData = [auth getUserLoginData];
-            NSString *userId = [loginData objectForKey:@"user_id"]?:@"";
+            NSString *userId = [auth getUserId]?:@"";
             EtalaseList *selectedEtalase = [etalaseList objectAtIndex:selectedIndexPath.row];
             [etalaseRequest requestActionEditEtalaseWithId:selectedEtalase.etalase_id
                                                       name:name
@@ -470,7 +470,7 @@
         EtalaseList *selectedEtalase = [etalaseList objectAtIndex:indexPath.row];
         UserAuthentificationManager *auth = [UserAuthentificationManager new];
         NSDictionary *loginData = [auth getUserLoginData];
-        NSString *userId = [loginData objectForKey:@"user_id"]?:@"";
+        NSString *userId = [auth getUserId]?:@"";
         [etalaseRequest requestActionDeleteEtalaseWithId:selectedEtalase.etalase_id
                                                   userId:userId
                                                onSuccess:^(ShopSettings *shopSettings) {
