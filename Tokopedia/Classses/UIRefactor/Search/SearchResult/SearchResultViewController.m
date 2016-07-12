@@ -418,8 +418,7 @@ ImageSearchRequestDelegate
     
     if (_data) {
         [_params addEntriesFromDictionary:_data];
-        if (data[@"search"] != nil)
-            [_params setObject:data[@"search"] forKey:@"q"];
+        [_params setObject:data[@"search"]?:@"" forKey:@"q"];
         _rootCategoryID = data[@"sc"]?:@"";
         [self adjustSelectedFilterFromData:_params];
         [self adjustSelectedSortFromData:_params];
@@ -449,9 +448,9 @@ ImageSearchRequestDelegate
 -(void)adjustSelectedSortFromData:(NSDictionary*)data{
     ListOption *sort = [ListOption new];
     sort.key = [self defaultSortProductKey];
-    sort.value = [_params objectForKey:@"ob"]?:@"";
+    sort.value = [data objectForKey:@"ob"]?:@"";
     _selectedSort = sort;
-    _selectedSortParam = @{[self defaultSortProductKey]:[_params objectForKey:@"ob"]?:@""};
+    _selectedSortParam = @{[self defaultSortProductKey]:[data objectForKey:@"ob"]?:@""};
     
 }
 
