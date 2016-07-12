@@ -94,7 +94,12 @@
                                  NSDictionary *result = successResult.dictionary;
                                  TransactionSummary *cart = [result objectForKey:@""];
                                  if (cart.message_error.count>0) {
-                                     [StickyAlertView showErrorMessage:cart.message_error];
+                                     [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:cart.message_error]
+                                                                              type:NotificationTypeError
+                                                                          duration:4.0
+                                                                       buttonTitle:nil
+                                                                       dismissable:YES
+                                                                            action:nil];
                                      error(nil);
                                  } else
                                      success(cart.result);
@@ -165,10 +170,21 @@
              NSArray *successMessages = cart.message_status;
              if (successMessages.count > 0) {
                  [StickyAlertView showSuccessMessage:successMessages];
+                 [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:cart.message_status]
+                                                          type:NotificationTypeSuccess
+                                                      duration:4.0
+                                                   buttonTitle:nil
+                                                   dismissable:YES
+                                                        action:nil];
              }
              success(cart.data);
          } else {
-             [StickyAlertView showErrorMessage:cart.message_error?:@[@"Error"]];
+             [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:cart.message_error?:@[@"Error"]]
+                                                      type:NotificationTypeError
+                                                  duration:4.0
+                                               buttonTitle:nil
+                                               dismissable:YES
+                                                    action:nil];
              error(nil);
          }
          
@@ -194,7 +210,7 @@
                                  NSDictionary *result = successResult.dictionary;
                                  TransactionVoucher *cart = [result objectForKey:@""];
                                  [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:cart.message_error]
-                                                                          type:0
+                                                                          type:NotificationTypeError
                                                                       duration:4.0
                                                                    buttonTitle:nil
                                                                    dismissable:YES
@@ -235,12 +251,22 @@
                                  
                                  TransactionAction *action = stat;
                                  if (action.result.is_success == 1) {
-                                     [StickyAlertView showSuccessMessage:action.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY]];
+                                     [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:action.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY]]
+                                                                              type:NotificationTypeSuccess
+                                                                          duration:4.0
+                                                                       buttonTitle:nil
+                                                                       dismissable:YES
+                                                                            action:nil];
                                      success(action, product, cart, type);
                                  }
                                  else
                                  {
-                                     [StickyAlertView showErrorMessage:action.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY]];
+                                     [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:action.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY]]
+                                                                              type:NotificationTypeError
+                                                                          duration:4.0
+                                                                       buttonTitle:nil
+                                                                       dismissable:YES
+                                                                            action:nil];
                                      error(nil);
                                  }
                                  
@@ -302,8 +328,14 @@
                                  TransactionBuy *cart = stat;
                                  
                                  if (cart.result.is_success == 1) {
-                                     if (cart.message_status && cart.message_status.count > 0)
-                                         [StickyAlertView showSuccessMessage:cart.message_status];
+                                     if (cart.message_status && cart.message_status.count > 0) {
+                                         [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:cart.message_status]
+                                                                                  type:NotificationTypeSuccess
+                                                                              duration:4.0
+                                                                           buttonTitle:nil
+                                                                           dismissable:YES
+                                                                                action:nil];
+                                     }
                                      success(cart.result);
                                      [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil userInfo:nil];
                                      if ([transaction.gateway integerValue] == TYPE_GATEWAY_TRANSFER_BANK) {
@@ -322,7 +354,12 @@
                                          [operation.HTTPRequestOperation.responseData writeToFile:cachepath atomically:YES];
                                      }
                                  } else {
-                                     [StickyAlertView showErrorMessage:cart.message_error?:@[@"Error"]];
+                                     [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:cart.message_error?:@[@"Error"]]
+                                                                              type:NotificationTypeError
+                                                                          duration:4.0
+                                                                       buttonTitle:nil
+                                                                       dismissable:YES
+                                                                            action:nil];
                                      error(nil);
                                  }
                              } onFailure:^(NSError *errorResult) {
@@ -356,12 +393,22 @@
                                  
                                  if (action.result.is_success == 1) {
                                      NSArray *successMessages = action.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY];
-                                     [StickyAlertView showSuccessMessage:successMessages];
+                                     [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:successMessages]
+                                                                              type:NotificationTypeSuccess
+                                                                          duration:4.0
+                                                                       buttonTitle:nil
+                                                                       dismissable:YES
+                                                                            action:nil];
                                      success(action);
                                  }
                                  else
                                  {
-                                     [StickyAlertView showErrorMessage:action.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY]];
+                                     [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:action.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY]]
+                                                                              type:NotificationTypeError
+                                                                          duration:4.0
+                                                                       buttonTitle:nil
+                                                                       dismissable:YES
+                                                                            action:nil];
                                      error(nil);
                                  }
                                  
@@ -386,13 +433,24 @@
                                  id stat = [result objectForKey:@""];
                                  TransactionAction *emoney = stat;
                                  if (emoney.result.is_success == 1) {
-                                     if (emoney.message_status && emoney.message_status.count > 0)
-                                         [StickyAlertView showSuccessMessage:emoney.message_status];
+                                     if (emoney.message_status && emoney.message_status.count > 0) {
+                                         [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:emoney.message_status]
+                                                                                  type:NotificationTypeSuccess
+                                                                              duration:4.0
+                                                                           buttonTitle:nil
+                                                                           dismissable:YES
+                                                                                action:nil];
+                                     }
                                      success(emoney.result.emoney_data);
                                  }
                                  else
                                  {
-                                     [StickyAlertView showErrorMessage:emoney.message_error?:@[@"Pembayaran Anda gagal"]];
+                                     [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:emoney.message_error?:@[@"Pembayaran Anda gagal"]]
+                                                                              type:NotificationTypeError
+                                                                          duration:4.0
+                                                                       buttonTitle:nil
+                                                                       dismissable:YES
+                                                                            action:nil];
                                      error(nil);
                                  }
                                  
@@ -416,13 +474,24 @@
                                  TransactionBuy *BCAClickPay = stat;
                                  
                                  if (BCAClickPay.result.is_success == 1) {
-                                     if (BCAClickPay.message_status && BCAClickPay.message_status.count > 0)
-                                         [StickyAlertView showSuccessMessage:BCAClickPay.message_status];
+                                     if (BCAClickPay.message_status && BCAClickPay.message_status.count > 0) {
+                                         [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:BCAClickPay.message_status]
+                                                                                  type:NotificationTypeSuccess
+                                                                              duration:4.0
+                                                                           buttonTitle:nil
+                                                                           dismissable:YES
+                                                                                action:nil];
+                                     }
                                      success(BCAClickPay.result);
                                  }
                                  else
                                  {
-                                     [StickyAlertView showErrorMessage:BCAClickPay.message_error?:@[@"Pembayaran Anda gagal"]];
+                                     [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:BCAClickPay.message_error?:@[@"Pembayaran Anda gagal"]]
+                                                                              type:NotificationTypeError
+                                                                          duration:4.0
+                                                                       buttonTitle:nil
+                                                                       dismissable:YES
+                                                                            action:nil];
                                      error(nil);
                                  }
                              } onFailure:^(NSError *errorResult) {
@@ -461,7 +530,12 @@
                                  }
                                  else
                                  {
-                                     [StickyAlertView showErrorMessage:actionCC.message_error?:@[@"Pembayaran Anda gagal"]];
+                                     [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:actionCC.message_error?:@[@"Pembayaran Anda gagal"]]
+                                                                              type:NotificationTypeError
+                                                                          duration:4.0
+                                                                       buttonTitle:nil
+                                                                       dismissable:YES
+                                                                            action:nil];
                                      error(nil);
                                  }
                                  
@@ -490,11 +564,22 @@
                                  if (action.result.is_success == 1) {
                                      NSArray *successMessages = action.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY];
                                      [StickyAlertView showSuccessMessage:successMessages];
+                                     [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:successMessages]
+                                                                              type:NotificationTypeSuccess
+                                                                          duration:4.0
+                                                                       buttonTitle:nil
+                                                                       dismissable:YES
+                                                                            action:nil];
                                      success(action.result);
                                  }
                                  else
                                  {
-                                     [StickyAlertView showErrorMessage:action.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY]];
+                                     [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:action.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY]]
+                                                                              type:NotificationTypeError
+                                                                          duration:4.0
+                                                                       buttonTitle:nil
+                                                                       dismissable:YES
+                                                                            action:nil];
                                      error(nil);
                                  }
                                  
@@ -523,7 +608,12 @@
                                  if (action.data.is_success == 1){
                                      success(action.data);
                                  } else {
-                                     [StickyAlertView showErrorMessage:action.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY]];
+                                     [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:action.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY]]
+                                                                              type:NotificationTypeError
+                                                                          duration:4.0
+                                                                       buttonTitle:nil
+                                                                       dismissable:YES
+                                                                            action:nil];
                                      error(nil);
                                  }
                              } onFailure:^(NSError *errorResult) {

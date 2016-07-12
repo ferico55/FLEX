@@ -27,7 +27,7 @@ extension UIViewController {
         view.actionButton.layer.borderColor = UIColor.whiteColor().CGColor
         view.actionButton.layer.borderWidth = 1.0
         view.actionButton.clipsToBounds = true
-        view.setMessageLabelWithText(message as String)
+        view.setMessageLabelWithText(message)
         
         if type == NotificationType.Error.rawValue {
             view.backgroundColor = UIColor(red: 255/255.0,
@@ -56,16 +56,13 @@ extension UIViewController {
             view.hideCloseButton()
         }
         
-        var notificationViewFrame = view.frame
-        notificationViewFrame.size.width = UIScreen.mainScreen().bounds.size.width
-        
+        view.frame.size.width = UIScreen.mainScreen().bounds.size.width
         view.setNeedsLayout()
         view.layoutIfNeeded()
+        view.messageLabel.preferredMaxLayoutWidth = view.messageLabel.frame.size.width
         
         let preferredHeight = view.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize).height
-        notificationViewFrame.size.height = preferredHeight
-        
-        view.frame = notificationViewFrame
+        view.frame.size.height = preferredHeight
         
         
         view.closeButton.bk_whenTapped {
