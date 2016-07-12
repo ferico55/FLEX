@@ -797,12 +797,13 @@ ImageSearchRequestDelegate
 }
 
 -(void)searchWithDynamicSort{
-    FiltersController *controller = [[FiltersController alloc]initWithSource:[self getSearchSource]
+    FiltersController *controller = [[FiltersController alloc]initWithSource:[self getSourceSearchData]
                                                                 sortResponse:_filterResponse?:[FilterData new]
                                                                 selectedSort:_selectedSort
                                                                  presentedVC:self
                                                                 onCompletion:^(ListOption * sort, NSDictionary*paramSort) {
                                                                     
+                                                                    [_params removeObjectForKey:@"ob"];
                                                                     _selectedSortParam = paramSort;
                                                                     _selectedSort = sort;
                                                                     
