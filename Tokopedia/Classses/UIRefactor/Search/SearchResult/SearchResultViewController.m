@@ -429,13 +429,15 @@ ImageSearchRequestDelegate
 -(void)adjustSelectedFilterFromData:(NSDictionary*)data{
     NSMutableArray *selectedFilters = [NSMutableArray new];
     for (NSString *key in [data allKeys]) {
-        ListOption *filter = [ListOption new];
-        filter.key = key;
-        filter.value = [data objectForKey:key]?:@"";
-        if ([key isEqualToString:@"pmax"] || [key isEqualToString:@"pmin"]) {
-            filter.input_type = [self filterTextInputType];
+        if (![key isEqualToString:@"sc"]) {
+            ListOption *filter = [ListOption new];
+            filter.key = key;
+            filter.value = [data objectForKey:key]?:@"";
+            if ([key isEqualToString:@"pmax"] || [key isEqualToString:@"pmin"]) {
+                filter.input_type = [self filterTextInputType];
+            }
+            [selectedFilters addObject:filter];
         }
-        [selectedFilters addObject:filter];
     }
     _selectedFilters = [selectedFilters copy];
     _selectedFilterParam = data;
@@ -893,7 +895,8 @@ ImageSearchRequestDelegate
            _selectedFilters = selectedFilters;
            _selectedFilterParam = paramFilters;
            [self showFilterIsActive:[self hasSelectedFilterOrCategory]];
-           
+           [_params removeObjectForKey:@"sc"];
+
            [self refreshView:nil];
            
        } onReceivedFilterDataOption:^(FilterData * filterDataOption){
