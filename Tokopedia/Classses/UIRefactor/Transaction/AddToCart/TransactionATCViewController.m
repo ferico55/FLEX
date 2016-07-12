@@ -110,10 +110,13 @@ typedef enum
 - (IBAction)productQuantityStepperValueChanged:(UIStepper *)sender {
     NSInteger qty = [_productQuantityTextField.text integerValue];
     qty += (int)sender.value;
-    qty = fmax(0, qty);
+    
+    //set min and max value
+    qty = fmin(999, qty);
+    qty = fmax([_selectedProduct.product_min_order integerValue], qty);
     
     _productQuantityTextField.text = [NSString stringWithFormat: @"%d", (int)qty];
-    
+        
     sender.value = 0;
 }
 
@@ -264,7 +267,7 @@ typedef enum
                                if (_ATCForm.form.destination.address_id != 0) {
                                    [self requestRate];
                                }
-                            
+                               
                                [self adjustViewIsLoading:NO];
                                
                                [_tableView reloadData];
@@ -484,19 +487,22 @@ typedef enum
                     {
                         [self cell:cell setAccesoryType:UITableViewCellAccessoryNone isLoading:!_isFinishRequesting];
                         
-                        NSInteger productPrice = [[[NSNumberFormatter IDRFormarter] numberFromString:product.product_price] integerValue];
-                        NSInteger qty = [_productQuantityTextField.text integerValue];
+                        label.text = product.product_price;
                         
-                        NSNumber *price = [NSNumber numberWithInteger:(productPrice/qty)];
-                        NSString *priceString = [[NSNumberFormatter IDRFormarter] stringFromNumber:price];
-                        label.text = priceString;
                         break;
                     }
                     case TAG_BUTTON_TRANSACTION_PRODUCT_PRICE:
                     {
 
                         [self cell:cell setAccesoryType:UITableViewCellAccessoryNone isLoading:!_isFinishRequesting];
-                        label.text = product.product_price;
+
+                        NSInteger productPrice = [[[NSNumberFormatter IDRFormarter] numberFromString:product.product_price] integerValue];
+                        NSInteger qty = [_productQuantityTextField.text integerValue];
+                        
+                        NSNumber *price = [NSNumber numberWithInteger:(productPrice * qty)];
+                        NSString *priceString = [[NSNumberFormatter IDRFormarter] stringFromNumber:price];
+                        label.text = priceString;
+                        
                         break;
                     }
                     case TAG_BUTTON_TRANSACTION_SHIPMENT_COST:
