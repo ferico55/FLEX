@@ -95,6 +95,8 @@
 
 #import "TPLocalytics.h"
 
+#import "Tokopedia-Swift.h"
+
 #pragma mark - CustomButton Expand Desc
 @interface CustomButtonExpandDesc : UIButton
 @property (nonatomic) int objSection;
@@ -953,7 +955,16 @@ OtherProductDelegate
                     [mView addSubview:btnExpand];
                 }
                 
+                UIButton *laporkanButton = [UIButton buttonWithType:UIButtonTypeCustom];
+                laporkanButton.titleLabel.font = [UIFont fontWithName:@"Gotham Book" size:13.0];
+                [laporkanButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+                [laporkanButton addTarget:self action:@selector(goToReportProductController) forControlEvents:UIControlEventTouchUpInside];
+                [laporkanButton setTitle:@"Laporkan" forState:UIControlStateNormal];
+                laporkanButton.frame = CGRectMake((self.view.bounds.size.width-40)/2.0f, rectLblDesc.origin.y+rectLblDesc.size.height + 25, 150, 40);
+                [laporkanButton sizeToFit];
+                
                 [mView addSubview:bt];
+                [mView addSubview:laporkanButton];
                 return mView;
             }
             break;
@@ -1173,6 +1184,7 @@ OtherProductDelegate
                     _descriptionHeight = descriptionCell.descriptionlabel.frame.size.height;
                 }
             }
+            
             cell = descriptionCell;
             return cell;
         }
@@ -2387,6 +2399,11 @@ OtherProductDelegate
             break;
     }
     
+}
+
+- (void) goToReportProductController {
+    ReportProductViewController *reportProductVC = [ReportProductViewController new];
+    [self.navigationController pushViewController:reportProductVC animated:YES];
 }
 
 #pragma mark - View Delegate
