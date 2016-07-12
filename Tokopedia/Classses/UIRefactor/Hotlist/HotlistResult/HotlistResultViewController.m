@@ -905,8 +905,40 @@ static NSString const *rows = @"12";
     _selectedFilterParam = query;
     
     _start = 0;
+    [self adjustSelectedSortFromData:query];
+    [self adjustSelectedFilterFromData:query];
+    
     [self requestHotlist];
+}
 
+-(void)adjustSelectedFilterFromData:(NSDictionary*)data{
+    NSMutableArray *selectedFilters = [NSMutableArray new];
+    for (NSString *key in [data allKeys]) {
+        if (![key isEqualToString:@"sc"]) {
+            ListOption *filter = [ListOption new];
+            filter.key = key;
+            filter.value = [data objectForKey:key]?:@"";
+            if ([key isEqualToString:@"pmax"] || [key isEqualToString:@"pmin"]) {
+                filter.input_type = [self filterTextInputType];
+            }
+            [selectedFilters addObject:filter];
+        }
+    }
+    _selectedFilters = [selectedFilters copy];
+    _selectedFilterParam = data;
+}
+
+-(NSString *)filterTextInputType{
+    return @"textbox";
+}
+
+-(void)adjustSelectedSortFromData:(NSDictionary*)data{
+    ListOption *sort = [ListOption new];
+    sort.key = @"ob";
+    sort.value = [data objectForKey:@"ob"]?:@"";
+    _selectedSort = sort;
+    _selectedSortParam = @{@"ob":[data objectForKey:@"ob"]?:@""};
+    
 }
 
 -(NSDictionary*)hotlistBannerDictionaryFromDataBanner:(HotlistBannerQuery*)q{
@@ -915,7 +947,7 @@ static NSString const *rows = @"12";
                             @"sc" : q.sc?:@"",
                             @"ob" : q.ob?:@"",
                             @"terms" : q.terms?:@"",
-                            @"fshop" : q.fshop?:@"",
+                            @"fshop" : ([q.fshop integerValue]==1 || q.fshop == nil)?@"":q.fshop,
                             @"q" : q.q?:@"",
                             @"pmin" : q.pmin?:@"",
                             @"pmax" : q.pmax?:@"",
