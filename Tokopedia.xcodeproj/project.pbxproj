@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		2D50139230438B54812D14B9 /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */; };
+		3471F6B61D34C7500077D22F /* ReportProductViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3471F6B41D34C7500077D22F /* ReportProductViewController.swift */; };
+		3471F6B71D34C7500077D22F /* ReportProductViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3471F6B51D34C7500077D22F /* ReportProductViewController.xib */; };
 		34D587911D2B522100605EDA /* CCReaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D5878F1D2B522100605EDA /* CCReaderViewController.swift */; };
 		34D587921D2B522100605EDA /* CCReaderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34D587901D2B522100605EDA /* CCReaderViewController.xib */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -2422,6 +2424,8 @@
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
 		2D733D9158C7BF957D514506 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
+		3471F6B41D34C7500077D22F /* ReportProductViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportProductViewController.swift; sourceTree = "<group>"; };
+		3471F6B51D34C7500077D22F /* ReportProductViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReportProductViewController.xib; sourceTree = "<group>"; };
 		34D5878F1D2B522100605EDA /* CCReaderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CCReaderViewController.swift; sourceTree = "<group>"; };
 		34D587901D2B522100605EDA /* CCReaderViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CCReaderViewController.xib; sourceTree = "<group>"; };
 		4868E459AB2A65D133732296 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tokopedia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -6040,6 +6044,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3471F6B31D34C7370077D22F /* ReportProduct */ = {
+			isa = PBXGroup;
+			children = (
+				3471F6B41D34C7500077D22F /* ReportProductViewController.swift */,
+				3471F6B51D34C7500077D22F /* ReportProductViewController.xib */,
+			);
+			name = ReportProduct;
+			sourceTree = "<group>";
+		};
 		85489F801D1A58E400D11E22 /* Tokopedia */ = {
 			isa = PBXGroup;
 			children = (
@@ -9458,6 +9471,7 @@
 		8548A75E1D1A58E800D11E22 /* Product */ = {
 			isa = PBXGroup;
 			children = (
+				3471F6B31D34C7370077D22F /* ReportProduct */,
 				8548A75F1D1A58E800D11E22 /* DetailProduct */,
 				8548A78D1D1A58E800D11E22 /* ProductAddCaptionViewController.h */,
 				8548A78E1D1A58E800D11E22 /* ProductAddCaptionViewController.m */,
@@ -12965,6 +12979,7 @@
 				8548B5621D1A58F200D11E22 /* icon_home_active@2x.png in Resources */,
 				8548B4721D1A58F200D11E22 /* icon_18.png in Resources */,
 				8548B5731D1A58F200D11E22 /* icon_lock_grey.png in Resources */,
+				3471F6B71D34C7500077D22F /* ReportProductViewController.xib in Resources */,
 				8548B4341D1A58F200D11E22 /* InfoPlist.strings in Resources */,
 				8548B26C1D1A58F100D11E22 /* ProductListMyShopFilterViewController.xib in Resources */,
 				8548B70D1D1A58F200D11E22 /* slide2f.png in Resources */,
@@ -14266,6 +14281,7 @@
 				8548AF651D1A58F100D11E22 /* InboxReputation.m in Sources */,
 				8548AF3A1D1A58F100D11E22 /* InboxReviewAction.m in Sources */,
 				8548AFF41D1A58F100D11E22 /* EtalaseResult.m in Sources */,
+				3471F6B61D34C7500077D22F /* ReportProductViewController.swift in Sources */,
 				8548AEE51D1A58F100D11E22 /* ReviewProductOwner.m in Sources */,
 				8548B7911D1A58F200D11E22 /* XYPieChart.m in Sources */,
 				8548B05C1D1A58F100D11E22 /* TransactionSummaryBCAParam.m in Sources */,
