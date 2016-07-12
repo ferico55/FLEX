@@ -332,6 +332,8 @@
                  onSuccess:(void(^)(RKMappingResult* successResult, RKObjectRequestOperation* operation))successCallback
                  onFailure:(void(^)(NSError* errorResult)) errorCallback {
     if(_objectRequest.isExecuting) return;
+
+    [RKMIMETypeSerialization registerClass:[RKNSJSONSerialization class] forMIMEType:@"application/vnd.api+json"];
     
     _requestCount ++;
     

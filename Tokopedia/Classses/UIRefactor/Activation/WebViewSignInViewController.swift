@@ -9,10 +9,25 @@
 import UIKit
 
 @objc(WebViewSignInViewController)
-class WebViewSignInViewController: UIViewController {
-    @IBOutlet private var webView: UIWebView!
+class WebViewSignInViewController: UIViewController, UIWebViewDelegate, NJKWebViewProgressDelegate {
 
     var onReceiveToken: (String -> Void)?
+
+    @IBOutlet var progressView: NJKWebViewProgressView!
+
+    @IBOutlet private var webView: UIWebView! {
+        didSet {
+            webView.delegate = progress
+        }
+    }
+
+    lazy var progress: NJKWebViewProgress! = {
+        let progress = NJKWebViewProgress()
+        progress.webViewProxyDelegate = self
+        progress.progressDelegate = self
+        return progress
+    }()
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,19 +37,24 @@ class WebViewSignInViewController: UIViewController {
         request.URL = NSURL(string: "\(NSString.accountsUrl())/wv/yahoo-login")
 
         webView.loadRequest(request)
-        webView.bk_shouldStartLoadBlock = {(webView, request, navigationType) in
-            let path = request.mainDocumentURL!.path
-            let url = request.mainDocumentURL!
-            self.navigationItem.title = path
+    }
 
-            if (path == "/mappauth/code") {
-                let code = url.parameters()["code"] as! String
-                self.onReceiveToken?(code)
-                return false
-            }
+    func webViewProgress(webViewProgress: NJKWebViewProgress, updateProgress progress: Float) {
+        progressView.setProgress(progress, animated: true)
+    }
 
-            return true
+    func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+        let path = request.mainDocumentURL!.path
+        let url = request.mainDocumentURL!
+        self.navigationItem.title = path
+
+        if (path == "/mappauth/code") {
+            let code = url.parameters()["code"] as! String
+            self.onReceiveToken?(code)
+            return false
         }
+
+        return true
     }
 
     override func didReceiveMemoryWarning() {

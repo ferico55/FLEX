@@ -61,4 +61,7 @@
 #import <GoogleSignIn/GoogleSignIn.h>
 #import <BlocksKit/BlocksKit.h>
 #import <BlocksKit/BlocksKit+UIKit.h>
+#import <BlocksKit/NSObject+A2DynamicDelegate.h>
 #import "NSURL+Dictionary.h"
+#import <NJKWebViewProgress/NJKWebViewProgress.h>
+#import <NJKWebViewProgress/NJKWebViewProgressView.h>
