@@ -12,8 +12,10 @@
 
 @protocol MyShopNoteDetailDelegate <NSObject>
 
-- (void)successCreateNewNote;
 - (void)successEditNote:(NotesList *)noteList;
+
+@optional
+- (void)successCreateNewNote;
 
 @end
 

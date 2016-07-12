@@ -292,6 +292,7 @@
         }
     }
 }
+
 - (IBAction)gesture:(id)sender {
     [_activetextview resignFirstResponder];
 }
@@ -733,6 +734,7 @@
     
     _contentNoteTextView.text = _noteList.note_status;
     
+    //set delegate
     if ([_delegate respondsToSelector:@selector(successEditNote:)]) {
         [_delegate successEditNote:_noteList];
     }
