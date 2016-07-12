@@ -85,7 +85,6 @@
                             </state>
                             <connections>
                                 <action selector="didTapLoginButton" destination="-1" eventType="touchUpInside" id="jW7-PP-U0l"/>
-                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="qhs-2n-8Kv"/>
                             </connections>
                         </button>
                         <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Meb-uf-Mbe">
@@ -174,6 +173,13 @@
                                 <outletCollection property="gestureRecognizers" destination="pZv-5d-akP" appends="YES" id="9ja-m6-mGv"/>
                             </connections>
                         </view>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x6m-Uq-x7Q">
+                            <rect key="frame" x="122" y="235" width="46" height="30"/>
+                            <state key="normal" title="Button"/>
+                            <connections>
+                                <action selector="didTapYahooButton:" destination="-1" eventType="touchUpInside" id="dfk-kR-ftm"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="rJv-0e-sEO" secondAttribute="trailing" id="0NJ-MR-s9k"/>
@@ -202,13 +208,6 @@
                         <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="OfY-Za-Mqc">
                             <rect key="frame" x="150" y="230" width="20" height="20"/>
                         </activityIndicatorView>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x6m-Uq-x7Q">
-                            <rect key="frame" x="137" y="267" width="46" height="30"/>
-                            <state key="normal" title="Button"/>
-                            <connections>
-                                <action selector="didTapYahooButton:" destination="-1" eventType="touchUpInside" id="dfk-kR-ftm"/>
-                            </connections>
-                        </button>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
