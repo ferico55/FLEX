@@ -12,7 +12,7 @@
 #import "GeneralAction.h"
 #import "string_settings.h"
 
-@interface ForgotPasswordViewController () <TokopediaNetworkManagerDelegate> {
+@interface ForgotPasswordViewController () {
     TokopediaNetworkManager *_networkManager;
     __weak RKObjectManager *_objectManager;
 }
@@ -59,53 +59,14 @@
     [TPAnalytics trackScreenName:@"Forgot Password Page"];
 }
 
-#pragma mark - Tokopedia Network Delegate
-
-- (NSString *)getPath:(int)tag {
-    return TKPD_FORGETPASS_PATH;
-}
-
-- (NSDictionary *)getParameter:(int)tag {
-    return @{
-             @"action" : TKPD_FORGETPASS_ACTION,
-             @"email" : [_emailText text]
-             };
-}
-
-- (id)getObjectManager:(int)tag {
-    _objectManager =  [RKObjectManager sharedClient];
-    
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[GeneralAction class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[GeneralActionResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{kTKPD_APIISSUCCESSKEY:kTKPD_APIISSUCCESSKEY}];
-    
-    RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
-    [statusMapping addPropertyMapping:resulRel];
-    
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:TKPD_FORGETPASS_PATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectManager addResponseDescriptor:responseDescriptorStatus];
-    
-    return _objectManager;
-}
-
-- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
-    NSDictionary *resultDict = ((RKMappingResult*)successResult).dictionary;
-    id stat = [resultDict objectForKey:@""];
-    GeneralAction *action = stat;
-    
+- (void)actionAfterRequest:(GeneralAction *)action {
     if([action.status isEqualToString:kTKPDREQUEST_OKSTATUS]) {
         if(action.message_error) {
             StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:action.message_error
                                                                            delegate:self];
             [alert show];
         } else {
-            if([action.result.is_success isEqualToString:TKPD_SUCCESS_VALUE]) {
+            if([action.data.is_success isEqualToString:@"1"]) {
                 NSString *errorMessage = [NSString stringWithFormat:@"Sebuah email telah dikirim ke alamat email yang terasosiasi dengan akun Anda, \n \n%@. \n \nEmail ini berisikan cara untuk mendapatkan kata sandi baru. \nDiharapkan menunggu beberapa saat, selama pengiriman email dalam proses.\nMohon diperhatikan bahwa alamat email di atas adalah benar,\ndan periksalah folder junk dan spam atau filter jika anda tidak menerima email tersebut.", _emailText.text];
                 StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[errorMessage] delegate:self];
                 [alert show];
@@ -119,23 +80,24 @@
     }
 }
 
-- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
-    
-}
-
-- (NSString *)getRequestStatus:(id)result withTag:(int)tag {
-    NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
-    id stat = [resultDict objectForKey:@""];
-    GeneralAction *action = stat;
-    
-    return action.status;
-}
-
 
 #pragma mark - Tap on Button
 
 - (IBAction)tap:(id)sender {
-    [_networkManager doRequest];
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    networkManager.isUsingHmac = YES;
+
+    [networkManager requestWithBaseUrl:[NSString accountsUrl]
+                                  path:@"/api/reset"
+                                method:RKRequestMethodPOST
+                             parameter:@{@"email": _emailText.text}
+                               mapping:[GeneralAction mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                 [self actionAfterRequest:successResult.dictionary[@""]];
+                             }
+                             onFailure:^(NSError *errorResult) {
+
+                             }];
 }
 
 #pragma mark - Keyboard
