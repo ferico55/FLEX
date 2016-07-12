@@ -1268,6 +1268,7 @@ ImageSearchRequestDelegate
             [_params setObject:departementID forKey:@"sc"];
             [_params removeObjectForKey:@"search"];
             [_params removeObjectForKey:@"ob"];
+            [_params setObject:@"directory" forKey:@"type"];
             [self setData:_params];
             [_networkManager requestCancel];
             
