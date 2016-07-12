@@ -239,20 +239,20 @@
         
         for (NSString *parameter in [url.query componentsSeparatedByString:@"&"]) {
             NSString *key = [[parameter componentsSeparatedByString:@"="] objectAtIndex:0];
-            if ([key isEqualToString:kTKPDSEARCH_APIMINPRICEKEY]) {
-                [parameters setValue:[[parameter componentsSeparatedByString:@"="] objectAtIndex:1] forKey:kTKPDSEARCH_APIPRICEMINKEY];
-            } else if ([key isEqualToString:kTKPDSEARCH_APIMAXPRICEKEY]) {
-                [parameters setValue:[[parameter componentsSeparatedByString:@"="] objectAtIndex:1] forKey:kTKPDSEARCH_APIPRICEMAXKEY];
-            } else if ([key isEqualToString:kTKPDSEARCH_APIOBKEY]) {
-                [parameters setValue:[[parameter componentsSeparatedByString:@"="] objectAtIndex:1] forKey:kTKPDSEARCH_APIOBKEY];
-            } else if ([key isEqualToString:kTKPDSEARCH_APILOCATIONIDKEY]) {
-                [parameters setValue:[[parameter componentsSeparatedByString:@"="] objectAtIndex:1] forKey:kTKPDSEARCH_APILOCATIONIDKEY];
-            } else if ([key isEqualToString:kTKPDSEARCH_APIGOLDMERCHANTKEY]) {
-                [parameters setValue:[[parameter componentsSeparatedByString:@"="] objectAtIndex:1] forKey:kTKPDSEARCH_APIGOLDMERCHANTKEY];
+            if ([key isEqualToString:@"pmin"]) {
+                [parameters setValue:[[parameter componentsSeparatedByString:@"="] objectAtIndex:1] forKey:@"pmin"];
+            } else if ([key isEqualToString:@"pmax"]) {
+                [parameters setValue:[[parameter componentsSeparatedByString:@"="] objectAtIndex:1] forKey:@"pmax"];
+            } else if ([key isEqualToString:@"ob"]) {
+                [parameters setValue:[[parameter componentsSeparatedByString:@"="] objectAtIndex:1] forKey:@"ob"];
+            } else if ([key isEqualToString:@"floc"]) {
+                [parameters setValue:[[parameter componentsSeparatedByString:@"="] objectAtIndex:1] forKey:@"floc"];
+            } else if ([key isEqualToString:@"fshop"]) {
+                [parameters setValue:[[parameter componentsSeparatedByString:@"="] objectAtIndex:1] forKey:@"fshop"];
             }
         }
         
-        [parameters setValue:@"directory" forKey:kTKPDSEARCH_DATATYPE];
+        [parameters setValue:@"directory" forKey:@"type"];
         
         SearchResultViewController *controller = [SearchResultViewController new];
         controller.data = parameters;

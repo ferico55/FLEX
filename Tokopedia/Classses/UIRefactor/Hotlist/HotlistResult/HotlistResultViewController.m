@@ -650,7 +650,7 @@ static NSString const *rows = @"12";
 #pragma mark - Sort Delegate
 - (void)didSelectSort:(NSString *)sort atIndexPath:(NSIndexPath *)indexPath {
     _sortIndexPath = indexPath;
-    [_detailfilter setObject:sort forKey:sort];
+    [_detailfilter setObject:sort forKey:@"ob"];
     [self refreshView:nil];
 }
 
@@ -1041,8 +1041,8 @@ static NSString const *rows = @"12";
                             @"rows" : rows,
                             @"ob" : [_detailfilter objectForKey:@"ob"]?:@"",
                             @"sc" : [_detailfilter objectForKey:@"sc"]?:@"",
-                            @"floc" :[_detailfilter objectForKey:@"location"]?:@"",
-                            @"fshop" :[_detailfilter objectForKey:@"shop_type"]?:@"",
+                            @"floc" :[_detailfilter objectForKey:@"floc"]?:@"",
+                            @"fshop" :[_detailfilter objectForKey:@"fshop"]?:@"",
                             @"pmin" :[_detailfilter objectForKey:@"pmin"]?:@"",
                             @"pmax" :[_detailfilter objectForKey:@"pmax"]?:@"",
                             @"hashtag" : [self isInitialRequest] ? @"true" : @"",
