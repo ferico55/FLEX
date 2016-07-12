@@ -15,6 +15,8 @@
 }
 
 - (void)setViewModel:(ProductModelView *)viewModel {
+    _emptyStockLabel.layer.cornerRadius = 4;
+    
     [_productName setText:viewModel.productName];
     [_productPrice setText:viewModel.productPriceIDR];
     

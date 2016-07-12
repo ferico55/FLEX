@@ -53,7 +53,6 @@
         cell = [topLevelObjects objectAtIndex:0];
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    [cell setSelected:NO animated:NO];
     OrderProduct *currentProduct = [_order.order_products objectAtIndex:indexPath.row];
     [cell setViewModel:currentProduct.viewModel];
     return cell;

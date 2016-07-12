@@ -14,6 +14,9 @@
 }
 
 - (void)setViewModel:(ProductModelView *)viewModel {
+    _stokKosongLabel.layer.cornerRadius = 4;
+    _stokKosongLabel.clipsToBounds = YES;
+    
     [_productName setText:viewModel.productName];
     [_productPrice setText:viewModel.productPriceIDR];
     
@@ -21,6 +24,8 @@
     [_productPrice sizeToFit];
     
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:viewModel.productThumbUrl] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    
+    [_stokKosongLabel setHidden:viewModel.isProductBuyAble];
     
     [_productImage setContentMode:UIViewContentModeScaleAspectFill];
     [_productImage setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
