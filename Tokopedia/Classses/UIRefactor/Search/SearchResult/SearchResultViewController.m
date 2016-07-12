@@ -1238,6 +1238,8 @@ ImageSearchRequestDelegate
             NSString *departementName = [_params objectForKey:@"department_name"]?:@"";
             [_params setObject:departementID forKey:@"sc"];
             [_params removeObjectForKey:@"search"];
+            [_params removeObjectForKey:@"ob"];
+            [self setData:_params];
             [_networkManager requestCancel];
             
             if ([self.delegate respondsToSelector:@selector(updateTabCategory:)]) {
