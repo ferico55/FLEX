@@ -11,6 +11,7 @@
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
+            <string>GothamBook</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -20,6 +21,8 @@
                 <outlet property="deskripsiLabel" destination="MTQ-oG-40C" id="gil-v5-B4L"/>
                 <outlet property="deskripsiTextView" destination="Es4-wg-7Nw" id="5Pg-Kc-1CS"/>
                 <outlet property="jenisLaporanLabel" destination="H2f-92-N9B" id="IaI-2q-pcI"/>
+                <outlet property="kirimButton" destination="6fi-q2-zbe" id="TZh-52-ME7"/>
+                <outlet property="linkInstructionLabel" destination="Goq-Wj-17R" id="Hur-Zv-nfs"/>
                 <outlet property="scrollView" destination="Rjl-ai-JtF" id="EOl-uM-t8U"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -41,13 +44,13 @@
                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Deskripsi" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MTQ-oG-40C">
+                                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Deskripsi" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MTQ-oG-40C">
                                     <rect key="frame" x="20" y="51" width="59" height="12"/>
                                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Es4-wg-7Nw">
+                                <textView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Es4-wg-7Nw">
                                     <rect key="frame" x="20" y="71" width="560" height="329"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
@@ -67,7 +70,7 @@
                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6fi-q2-zbe">
+                                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6fi-q2-zbe">
                                     <rect key="frame" x="20" y="440" width="560" height="60"/>
                                     <color key="backgroundColor" red="0.98823529409999999" green="0.30980392159999998" blue="0.031372549020000001" alpha="1" colorSpace="calibratedRGB"/>
                                     <constraints>
@@ -77,11 +80,18 @@
                                     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <state key="normal" title="Kirim"/>
                                 </button>
+                                <label hidden="YES" opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Anda dapat melaporkan transaksi dari produk ini ke Customer Care Tokopedia melalui link ini" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Goq-Wj-17R">
+                                    <rect key="frame" x="20" y="45.5" width="560" height="23.5"/>
+                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstItem="Es4-wg-7Nw" firstAttribute="leading" secondItem="NnN-4I-lh8" secondAttribute="leading" constant="20" id="4gK-QA-y4A"/>
                                 <constraint firstItem="Es4-wg-7Nw" firstAttribute="leading" secondItem="MTQ-oG-40C" secondAttribute="leading" id="51B-Ia-x9H"/>
+                                <constraint firstItem="Goq-Wj-17R" firstAttribute="leading" secondItem="H2f-92-N9B" secondAttribute="leading" id="ESo-5e-pL1"/>
                                 <constraint firstItem="MTQ-oG-40C" firstAttribute="top" secondItem="H2f-92-N9B" secondAttribute="bottom" constant="19.5" id="IHz-qX-UVu"/>
                                 <constraint firstAttribute="bottom" secondItem="Es4-wg-7Nw" secondAttribute="bottom" constant="200" id="MWw-SG-stM"/>
                                 <constraint firstItem="14U-8h-ofl" firstAttribute="centerY" secondItem="H2f-92-N9B" secondAttribute="centerY" id="PKV-j5-YCR"/>
@@ -92,9 +102,11 @@
                                 <constraint firstAttribute="trailing" secondItem="14U-8h-ofl" secondAttribute="trailing" constant="20" id="YHG-Hd-f5d"/>
                                 <constraint firstItem="MTQ-oG-40C" firstAttribute="leading" secondItem="H2f-92-N9B" secondAttribute="leading" id="YMh-6u-COG"/>
                                 <constraint firstItem="Es4-wg-7Nw" firstAttribute="top" secondItem="MTQ-oG-40C" secondAttribute="bottom" constant="8" id="cFs-iA-egh"/>
+                                <constraint firstItem="Goq-Wj-17R" firstAttribute="centerY" secondItem="MTQ-oG-40C" secondAttribute="centerY" id="hRl-Gt-xlw"/>
                                 <constraint firstAttribute="trailing" secondItem="Es4-wg-7Nw" secondAttribute="trailing" constant="20" id="qY7-Uz-pUV"/>
                                 <constraint firstItem="6fi-q2-zbe" firstAttribute="trailing" secondItem="Es4-wg-7Nw" secondAttribute="trailing" id="rvS-az-j4H"/>
                                 <constraint firstItem="H2f-92-N9B" firstAttribute="leading" secondItem="NnN-4I-lh8" secondAttribute="leading" constant="20" id="wWM-R5-ylH"/>
+                                <constraint firstItem="Goq-Wj-17R" firstAttribute="trailing" secondItem="14U-8h-ofl" secondAttribute="trailing" id="zTL-tp-xaZ"/>
                             </constraints>
                         </view>
                     </subviews>
