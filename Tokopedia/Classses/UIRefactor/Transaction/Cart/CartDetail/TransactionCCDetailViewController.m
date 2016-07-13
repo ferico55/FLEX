@@ -37,6 +37,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *CCNumberTextField;
 @property (weak, nonatomic) IBOutlet UILabel *expDateLabel;
 @property (weak, nonatomic) IBOutlet UITextField *CVVTextField;
+@property (weak, nonatomic) IBOutlet UIButton *scanCCButton;
 
 @end
 
@@ -141,6 +142,8 @@
 
 -(void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
+    _scanCCButton.contentMode = UIViewContentModeScaleToFill;
 }
 
 -(void)viewWillDisappear:(BOOL)animated
