@@ -302,5 +302,23 @@
                      onFailure:failureCallback];
 }
 
+- (void)getThirdPartySignInOptionsOnSuccess:(void (^)(NSArray <SignInProvider*> *))successCallback {
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    networkManager.isUsingHmac = YES;
+
+    [networkManager requestWithBaseUrl:[NSString accountsUrl]
+                                  path:@"/api/discover"
+                                method:RKRequestMethodGET
+                             parameter:@{}
+                               mapping:[DiscoverResponse mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                 DiscoverResponse *response = successResult.dictionary[@""];
+                                 successCallback(response.data.providers);
+                             }
+                             onFailure:^(NSError *errorResult) {
+
+                             }];
+}
+
 
 @end

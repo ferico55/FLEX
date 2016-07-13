@@ -12,6 +12,7 @@
 @class AccountInfo;
 @class OAuthToken;
 @class CreatePasswordUserProfile;
+@class SignInProvider;
 
 @interface AuthenticationService : NSObject
 
@@ -53,4 +54,7 @@
           fromViewController:(UIViewController *)viewController
              successCallback:(void (^)(Login *))successCallback
              failureCallback:(void (^)(NSError *))failureCallback;
+
+- (void)getThirdPartySignInOptionsOnSuccess:(void (^)(NSArray <SignInProvider*> *))successCallback;
+
 @end

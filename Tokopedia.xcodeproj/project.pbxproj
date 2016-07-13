@@ -2391,6 +2391,9 @@
 		92350CD81D334CA800AF35ED /* VTItemDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 923507001D334CA600AF35ED /* VTItemDetails.m */; };
 		92350CD91D334CA800AF35ED /* VTToken.m in Sources */ = {isa = PBXBuildFile; fileRef = 923507021D334CA600AF35ED /* VTToken.m */; };
 		92350CDA1D334CA800AF35ED /* VTTransactionDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 923507041D334CA600AF35ED /* VTTransactionDetails.m */; };
+		92A2B3DB1D36266D00BAB2C8 /* DiscoverResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A2B3DA1D36266D00BAB2C8 /* DiscoverResponse.swift */; };
+		92A2B3DD1D36286B00BAB2C8 /* DiscoverResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A2B3DC1D36286B00BAB2C8 /* DiscoverResult.swift */; };
+		92A2B3DF1D363D9C00BAB2C8 /* SignInProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A2B3DE1D363D9C00BAB2C8 /* SignInProvider.swift */; };
 		F25F6F270D531ED13A92CDB9 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4868E459AB2A65D133732296 /* libPods-Tokopedia.a */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
 		FC23B85A1ACD659900879D75 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8581ACD659900879D75 /* Fabric.framework */; };
@@ -5961,6 +5964,9 @@
 		9235FFFD1D334CA500AF35ED /* TxOrderConfirmation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxOrderConfirmation.m; sourceTree = "<group>"; };
 		9235FFFE1D334CA500AF35ED /* TxOrderConfirmationList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxOrderConfirmationList.h; sourceTree = "<group>"; };
 		9235FFFF1D334CA500AF35ED /* TxOrderConfirmationList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxOrderConfirmationList.m; sourceTree = "<group>"; };
+		92A2B3DA1D36266D00BAB2C8 /* DiscoverResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoverResponse.swift; sourceTree = "<group>"; };
+		92A2B3DC1D36286B00BAB2C8 /* DiscoverResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoverResult.swift; sourceTree = "<group>"; };
+		92A2B3DE1D363D9C00BAB2C8 /* SignInProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInProvider.swift; sourceTree = "<group>"; };
 		AAA12C6A69BF6CB5F8EE3287 /* Pods-Tokopedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug.xcconfig"; sourceTree = "<group>"; };
 		C8A1445074FECD393EA18C17 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		FC23B8571ACD659900879D75 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
@@ -10354,6 +10360,9 @@
 				9235FC361D334CA400AF35ED /* PhoneVerification */,
 				9235FC3F1D334CA400AF35ED /* Register */,
 				9235FC441D334CA400AF35ED /* SecurityQuestion */,
+				92A2B3DA1D36266D00BAB2C8 /* DiscoverResponse.swift */,
+				92A2B3DC1D36286B00BAB2C8 /* DiscoverResult.swift */,
+				92A2B3DE1D363D9C00BAB2C8 /* SignInProvider.swift */,
 			);
 			path = Activation;
 			sourceTree = "<group>";
@@ -14104,6 +14113,7 @@
 				9235093B1D334CA700AF35ED /* DKCamera.swift in Sources */,
 				92350BB21D334CA700AF35ED /* SearchResultViewController.m in Sources */,
 				92350A161D334CA700AF35ED /* FilterData.swift in Sources */,
+				92A2B3DF1D363D9C00BAB2C8 /* SignInProvider.swift in Sources */,
 				92350ABA1D334CA700AF35ED /* MyShopNoteDetailViewController.m in Sources */,
 				923507081D334CA600AF35ED /* URLCacheConnection.m in Sources */,
 				92350B681D334CA700AF35ED /* FooterCollectionReusableView.m in Sources */,
@@ -14479,6 +14489,7 @@
 				92350C861D334CA800AF35ED /* TxOrderTransactionDetailViewController.m in Sources */,
 				923507321D334CA600AF35ED /* ViewLabelUser.m in Sources */,
 				92350CCA1D334CA800AF35ED /* ProductThumbCell.m in Sources */,
+				92A2B3DB1D36266D00BAB2C8 /* DiscoverResponse.swift in Sources */,
 				923509CA1D334CA700AF35ED /* RequestCategory.m in Sources */,
 				92350C881D334CA800AF35ED /* TxOrderConfirmationCell.m in Sources */,
 				923507701D334CA700AF35ED /* DepositSummaryResult.m in Sources */,
@@ -14643,6 +14654,7 @@
 				92350AAA1D334CA700AF35ED /* MoreNavigationViewController.m in Sources */,
 				923509181D334CA700AF35ED /* SystemBankAcount.m in Sources */,
 				92350A031D334CA700AF35ED /* TextField.m in Sources */,
+				92A2B3DD1D36286B00BAB2C8 /* DiscoverResult.swift in Sources */,
 				9235094D1D334CA700AF35ED /* RSKPlaceholderTextView.swift in Sources */,
 				92350CC31D334CA800AF35ED /* ProductCell.m in Sources */,
 				923507E51D334CA700AF35ED /* InboxTalk.m in Sources */,

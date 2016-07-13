@@ -126,6 +126,12 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     _activation = [NSMutableDictionary new];
 
     googleSignInButton.layer.shadowOffset = CGSizeMake(1, 1);
+
+    [[AuthenticationService sharedService]
+            getThirdPartySignInOptionsOnSuccess:^(NSArray<SignInProvider *> *providers) {
+                
+            }
+    ];
 }
 
 -(void)viewWillAppear:(BOOL)animated
