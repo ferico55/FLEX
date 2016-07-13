@@ -57,3 +57,5 @@
 #import "AddressObj.h"
 #import "FilterCategoryViewCell.h"
 #import "TKPObjectMapping.h"
+#import "Product.h"
+#import "StickyAlertView+NetworkErrorHandler.h"

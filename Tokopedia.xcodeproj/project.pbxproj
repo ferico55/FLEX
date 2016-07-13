@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2D50139230438B54812D14B9 /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */; };
+		45878E711D35E2D7006609A8 /* RequestAddEditProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45878E701D35E2D7006609A8 /* RequestAddEditProduct.swift */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
 		7ACE9C541BB00956006C4BB7 /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */; };
@@ -2420,6 +2421,7 @@
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
 		2D733D9158C7BF957D514506 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
+		45878E701D35E2D7006609A8 /* RequestAddEditProduct.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestAddEditProduct.swift; sourceTree = "<group>"; };
 		4868E459AB2A65D133732296 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tokopedia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
@@ -9492,6 +9494,7 @@
 				8548A80B1D1A58E800D11E22 /* RequestMoveTo.m */,
 				8548A80C1D1A58E800D11E22 /* SimpleReputation */,
 				8548A8121D1A58E800D11E22 /* string_product.h */,
+				45878E701D35E2D7006609A8 /* RequestAddEditProduct.swift */,
 			);
 			path = Product;
 			sourceTree = "<group>";
@@ -14592,6 +14595,7 @@
 				8548B2311D1A58F100D11E22 /* NotificationRequest.m in Sources */,
 				8548AF521D1A58F100D11E22 /* ReplyInboxTicketResult.m in Sources */,
 				8548B3E11D1A58F200D11E22 /* TxOrderConfirmationCell.m in Sources */,
+				45878E711D35E2D7006609A8 /* RequestAddEditProduct.swift in Sources */,
 				8548AEED1D1A58F100D11E22 /* TalkCommentList.m in Sources */,
 				8548AF221D1A58F100D11E22 /* InboxMessageDetailList.m in Sources */,
 				8548B0091D1A58F100D11E22 /* ShopProductPageList.m in Sources */,

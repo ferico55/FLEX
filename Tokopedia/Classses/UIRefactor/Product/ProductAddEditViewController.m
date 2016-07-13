@@ -33,6 +33,7 @@
 #import "UserAuthentificationManager.h"
 #import "TKPDPhotoPicker.h"
 #import "FilterCategoryViewController.h"
+#import "Tokopedia-Swift.h"
 
 #define DATA_SELECTED_BUTTON_KEY @"data_selected_button"
 
@@ -72,7 +73,7 @@ FilterCategoryViewDelegate
     NSInteger *_requestcountGenerateHost;
     GenerateHost *_generateHost;
     UploadImage *_images;
-    Product *_product;
+    DetailProductResult *_editProductForm;
     ShopSettings *_setting;
     CatalogAddProduct *_catalog;
     
@@ -102,7 +103,6 @@ FilterCategoryViewDelegate
     NSMutableArray *_selectedImagesCameraController;
     NSMutableArray *_selectedIndexPathCameraController;
     
-    TokopediaNetworkManager *_networkManager;
     TokopediaNetworkManager *_networkManagerDeleteImage;
     TokopediaNetworkManager *_networkManagerCatalog;
     
@@ -187,8 +187,6 @@ FilterCategoryViewDelegate
     
     _tableView.delegate = self;
     _tableView.dataSource = self;
-    _networkManager.tagRequest = TAG_REQUEST_DETAIL;
-    _networkManager.delegate = self;
     
     _networkManagerDeleteImage = [TokopediaNetworkManager new];
     _networkManagerDeleteImage.tagRequest = TAG_REQUEST_DELETE_IMAGE;
@@ -243,10 +241,7 @@ FilterCategoryViewDelegate
     NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
     if (type == TYPE_ADD_EDIT_PRODUCT_EDIT || type == TYPE_ADD_EDIT_PRODUCT_COPY)
     {
-        _networkManager = [TokopediaNetworkManager new];
-        _networkManager.delegate = self;
-        _networkManager .tagRequest = TAG_REQUEST_DETAIL;
-        [_networkManager doRequest];
+        [self fetchFormEditProductID:[self getProductID]];
     }
     else if(type == TYPE_ADD_EDIT_PRODUCT_ADD)
     {
@@ -267,6 +262,11 @@ FilterCategoryViewDelegate
     }
     
     [_productImageScrollView addSubview:_productImagesContentView];
+}
+
+-(NSString *)getProductID{
+    NSString *productID = [_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@"";
+    return productID;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -327,9 +327,6 @@ FilterCategoryViewDelegate
     
     _tableView.delegate = nil;
     _tableView.dataSource = nil;
-    [_networkManager requestCancel];
-    _networkManager.delegate = nil;
-    _networkManager = nil;
     
     _detailVC = nil;
 }
@@ -369,7 +366,7 @@ FilterCategoryViewDelegate
                         }
                         UserAuthentificationManager *authManager = [UserAuthentificationManager new];
                         NSString *shopHasTerm = [authManager getShopHasTerm];
-                        _product.result.info.shop_has_terms = shopHasTerm;
+                        _editProductForm.info.shop_has_terms = shopHasTerm;
                         
                         if (!_detailVC)_detailVC = [ProductAddEditDetailViewController new];
                         _detailVC.title = self.title;
@@ -377,13 +374,13 @@ FilterCategoryViewDelegate
                                            DATA_INPUT_KEY : _dataInput?:@{},
                                            DATA_TYPE_ADD_EDIT_PRODUCT_KEY : @(type),
                                            DATA_PRODUCT_DETAIL_KEY: productDetail,
-                                           DATA_SHOP_HAS_TERM_KEY:_product.result.info.shop_has_terms?:@"0",
+                                           DATA_SHOP_HAS_TERM_KEY:_editProductForm.info.shop_has_terms?:@"0",
                                            @"Image_desc_array":_productImageDesc?:@[]
                                            };
-                        _detailVC.shopHasTerm = _product.result.info.shop_has_terms?:@"";
+                        _detailVC.shopHasTerm = _editProductForm.info.shop_has_terms?:@"";
                         _detailVC.generateHost = _generateHost;
                         _detailVC.delegate = self;
-                        BOOL isShopHasTerm = ([_product.result.info.shop_has_terms isEqualToString:@""]||[_product.result.info.shop_has_terms isEqualToString:@"0"])?NO:YES;
+                        BOOL isShopHasTerm = ([_editProductForm.info.shop_has_terms isEqualToString:@""]||[_editProductForm.info.shop_has_terms isEqualToString:@"0"])?NO:YES;
                         _detailVC.isShopHasTerm = isShopHasTerm;
                         //_detailVC.isNeedRequestAddProductPicture = YES;
                         [self.navigationController pushViewController:_detailVC animated:YES];
@@ -818,18 +815,6 @@ FilterCategoryViewDelegate
 
 -(NSDictionary *)getParameter:(int)tag
 {
-    if (tag == TAG_REQUEST_DETAIL) {
-        NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
-        NSInteger productID = [[_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]integerValue];
-        NSInteger myshopID = [[auth objectForKey:kTKPD_SHOPIDKEY]integerValue];
-        
-        NSDictionary* param = @{
-                                kTKPDDETAIL_APIACTIONKEY : ACTION_GET_PRODUCT_FORM,
-                                kTKPDDETAIL_APIPRODUCTIDKEY : @(productID),
-                                kTKPDDETAIL_APISHOPIDKEY : @(myshopID),
-                                };
-        return param;
-    }
     if (tag == TAG_REQUEST_DELETE_IMAGE) {
         NSInteger productID = [[_dataInput objectForKey:API_PRODUCT_ID_KEY]integerValue];
         NSInteger myshopID = [[_dataInput objectForKey:kTKPD_SHOPIDKEY]integerValue];
@@ -872,11 +857,6 @@ FilterCategoryViewDelegate
     NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
     id stats = [resultDict objectForKey:@""];
     
-    if (tag == TAG_REQUEST_DETAIL) {
-        _product = stats;
-        return _product.status;
-    }
-    
     if (tag == TAG_REQUEST_DELETE_IMAGE) {
         _setting = stats;
         return _setting.status;
@@ -891,10 +871,6 @@ FilterCategoryViewDelegate
 
 -(void)actionBeforeRequest:(int)tag
 {
-    if (tag == TAG_REQUEST_DETAIL) {
-        [self enableButtonBeforeSuccessRequest:NO];
-        [_alertProcessing show];
-    }
     if (tag == TAG_REQUEST_DELETE_IMAGE) {
         
     }
@@ -906,12 +882,6 @@ FilterCategoryViewDelegate
 
 -(void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag
 {
-    if (tag == TAG_REQUEST_DETAIL) {
-        [self enableButtonBeforeSuccessRequest:YES];
-        [self requestsuccess:successResult withOperation:operation];
-        
-        [_alertProcessing dismissWithClickedButtonIndex:0 animated:YES];
-    }
     if (tag == TAG_REQUEST_DELETE_IMAGE) {
         [self requestSuccessDeleteImage:successResult withOperation:operation];
     }
@@ -936,54 +906,75 @@ FilterCategoryViewDelegate
         [_networkManagerDeleteImage doRequest];
         [self cancelDeletedImage];
     }
-    if (tag == TAG_REQUEST_DETAIL)
-    {
-        [_alertProcessing dismissWithClickedButtonIndex:0 animated:NO];
-        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-        [self enableButtonBeforeSuccessRequest:YES];
-    }
 }
 
--(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation *)operation
-{
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id stats = [result objectForKey:@""];
-    _product = stats;
-    BOOL status = [_product.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+-(void)fetchFormEditProductID:(NSString*)productID{
     
-    if (status) {
-        NSMutableDictionary *data = [NSMutableDictionary new];
-        [data addEntriesFromDictionary:_data];
-        [self setDefaultData:data];
-        
-        [_networkManagerCatalog doRequest];
-        
-        if(_detailVC)
-        {
-            NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
-            NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
-            id productDetail = [_data objectForKey:DATA_PRODUCT_DETAIL_KEY]?:@"";
-            NSString *defaultImagePath = [_dataInput objectForKey:API_PRODUCT_IMAGE_DEFAULT_KEY];
-            if (!defaultImagePath) {
-                defaultImagePath = (type == TYPE_ADD_EDIT_PRODUCT_ADD || type == TYPE_ADD_EDIT_PRODUCT_COPY)? [_productImageURLs firstObject]:[_productImageIDs firstObject];
-                [_dataInput setObject:defaultImagePath forKey:API_PRODUCT_IMAGE_DEFAULT_KEY];
-            }
-            _detailVC.data = @{kTKPD_AUTHKEY : auth?:@{},
-                               DATA_INPUT_KEY : _dataInput,
-                               DATA_TYPE_ADD_EDIT_PRODUCT_KEY : @(type),
-                               DATA_PRODUCT_DETAIL_KEY: productDetail,
-                               DATA_SHOP_HAS_TERM_KEY:_product.result.info.shop_has_terms?:@""
-                               };
-            _detailVC.shopHasTerm = _product.result.info.shop_has_terms;
-            _detailVC.generateHost = _generateHost;
-            _detailVC.delegate = self;
-            
-            //_detailVC.isNeedRequestAddProductPicture = YES;
+    [self enableButtonBeforeSuccessRequest:NO];
+    [_alertProcessing show];
+
+    [RequestAddEditProduct fetchFormEditProductID:productID
+                                           shopID:[self getShopID]
+                                        onSuccess:^(DetailProductResult * form) {
+                                            
+                                            [self setEditProductForm:form];
+                                            
+                                            [self enableButtonBeforeSuccessRequest:YES];
+                                            [_alertProcessing dismissWithClickedButtonIndex:0 animated:YES];
+                                            
+                                        } onFailure:^(NSError *error) {
+                                            
+                                            [self enableButtonBeforeSuccessRequest:YES];
+                                            [_alertProcessing dismissWithClickedButtonIndex:0 animated:YES];
+                                            
+                                        }];
+}
+
+-(void)setEditProductForm:(DetailProductResult*)form{
+    _editProductForm = form;
+    
+    NSMutableDictionary *data = [NSMutableDictionary new];
+    [data addEntriesFromDictionary:_data];
+    [self setDefaultData:data];
+    
+    [_networkManagerCatalog doRequest];
+    
+    if(_detailVC)
+    {
+        NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
+        NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
+        id productDetail = [_data objectForKey:DATA_PRODUCT_DETAIL_KEY]?:@"";
+        NSString *defaultImagePath = [_dataInput objectForKey:API_PRODUCT_IMAGE_DEFAULT_KEY];
+        if (!defaultImagePath) {
+            defaultImagePath = (type == TYPE_ADD_EDIT_PRODUCT_ADD || type == TYPE_ADD_EDIT_PRODUCT_COPY)? [_productImageURLs firstObject]:[_productImageIDs firstObject];
+            [_dataInput setObject:defaultImagePath forKey:API_PRODUCT_IMAGE_DEFAULT_KEY];
         }
+        _detailVC.data = @{kTKPD_AUTHKEY : auth?:@{},
+                           DATA_INPUT_KEY : _dataInput,
+                           DATA_TYPE_ADD_EDIT_PRODUCT_KEY : @(type),
+                           DATA_PRODUCT_DETAIL_KEY: productDetail,
+                           DATA_SHOP_HAS_TERM_KEY:_editProductForm.info.shop_has_terms?:@""
+                           };
+        _detailVC.shopHasTerm = _editProductForm.info.shop_has_terms;
+        _detailVC.generateHost = _generateHost;
+        _detailVC.delegate = self;
         
-        
-        [_tableView reloadData];
+        //_detailVC.isNeedRequestAddProductPicture = YES;
     }
+    
+    
+    [_tableView reloadData];
+}
+
+-(UserAuthentificationManager *)authManager{
+    if (!_authManager) {
+        _authManager = [UserAuthentificationManager new];
+    }
+    return _authManager;
+}
+
+-(NSString *)getShopID{
+    return [[self authManager] getShopId];
 }
 
 #pragma mark Request Generate Host
@@ -1412,7 +1403,7 @@ FilterCategoryViewDelegate
     NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
     NSString *productID = @"";
     if (type != TYPE_ADD_EDIT_PRODUCT_COPY) {
-        productID = _product.result.product.product_id;
+        productID = _editProductForm.product.product_id;
     }
     [uploadImage requestActionUploadObject:object?:@{}
                              generatedHost:_generateHost.result.generated_host?:[GeneratedHost new]
@@ -1464,7 +1455,7 @@ FilterCategoryViewDelegate
         TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
         NSDictionary* auth = [secureStorage keychainDictionary];
         
-        DetailProductResult *detailProduct = _product.result;
+        DetailProductResult *detailProduct = _editProductForm;
         NSInteger productID = [detailProduct.product.product_id integerValue];
         NSInteger myshopID = [[auth objectForKey:kTKPD_SHOPIDKEY]integerValue];
         NSInteger pictureID = [_productImageIDs[index] integerValue];
@@ -1804,7 +1795,7 @@ FilterCategoryViewDelegate
             default:
                 break;
         }
-        DetailProductResult *result = _product.result;
+        DetailProductResult *result = _editProductForm;
         ProductDetail *product = result.product;
         if (!product) {
             product = [ProductDetail new];
@@ -1839,8 +1830,8 @@ FilterCategoryViewDelegate
             product.product_etalase_id = product.product_etalase_id?:@(0);
             product.product_short_desc = [product.product_short_desc stringByReplacingOccurrencesOfString:@"[nl]" withString:@"\n"];
             product.product_description = product.product_short_desc?:@"";
-            product.product_returnable = _product.result.info.product_returnable?:@"";
-            product.product_min_order = _product.result.product.product_min_order?:@"1";
+            product.product_returnable = _editProductForm.info.product_returnable?:@"";
+            product.product_min_order = _editProductForm.product.product_min_order?:@"1";
         }
         _minimumOrderTextField.text = product.product_min_order;
         [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
