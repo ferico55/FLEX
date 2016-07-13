@@ -72,19 +72,29 @@ typedef NS_ENUM(NSInteger, PromoRequestType) {
                               }];
 }
 
--(void)requestForProductQuery:(NSString *)query department:(NSString *)department page:(NSInteger)page source:(NSString*)source onSuccess:(void (^)(NSArray<PromoResult*> *))successCallback onFailure:(void (^)(NSError *))errorCallback{
+-(void)requestForProductQuery:(NSString *)query
+                   department:(NSString *)department
+                         page:(NSInteger)page
+                       source:(NSString*)source
+              filterParameter:(NSDictionary *)filterParameter
+                    onSuccess:(void (^)(NSArray<PromoResult*> *))successCallback
+                    onFailure:(void (^)(NSError *))errorCallback
+{
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.isUsingHmac = YES;
+    
+    NSMutableDictionary *parameter = [[NSMutableDictionary alloc]init];
+    [parameter setObject: @"4" forKey:@"item"];
+    [parameter setObject: source forKey: @"src"];
+    [parameter setObject: @(page) forKey:@"page"];
+    [parameter setObject: department forKey: @"dep_id"];
+    [parameter setObject: query forKey: @"q"];
+    [parameter addEntriesFromDictionary:filterParameter];
     
     [_networkManager requestWithBaseUrl:[NSString topAdsUrl]
                                    path:@"/promo/v1/display/products"
                                  method:RKRequestMethodGET
-                              parameter:@{@"item":@"4",
-                                          @"src":source,
-                                          @"page":@(page),
-                                          @"dep_id":department,
-                                          @"q":query
-                                          }
+                              parameter:parameter
                                 mapping:[PromoResponse mapping]
                               onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                   PromoResponse *response = [[successResult dictionary] objectForKey:@""];
@@ -93,6 +103,45 @@ typedef NS_ENUM(NSInteger, PromoRequestType) {
                                   errorCallback(errorResult);
                               }];
 }
+//
+//}];
+//}
+//
+//--(void)requestForProductQuery:(NSString *)query department:(NSString *)department page:(NSInteger)page source:(NSString*)source onSuccess:(void (^)(NSArray<PromoResult*> *))successCallback onFailure:(void (^)(NSError *))errorCallback{
+//    +-(void)requestForProductQuery:(NSString *)query
+//    +                   department:(NSString *)department
+//    +                         page:(NSInteger)page
+//    +                       source:(NSString *)source
+//    +              filterParameter:(NSDictionary *)filterParameter
+//    +                    onSuccess:(void (^)(NSArray<PromoResult*> *))successCallback
+//    +                    onFailure:(void (^)(NSError *))errorCallback
+//    +{
+//        _networkManager = [TokopediaNetworkManager new];
+//        _networkManager.isUsingHmac = YES;
+//        
+//        +    NSMutableDictionary *parameter = [[NSMutableDictionary alloc]init];
+//        +    [parameter setObject: @"4" forKey:@"item"];
+//        +    [parameter setObject: source forKey: @"src"];
+//        +    [parameter setObject: @(page) forKey:@"page"];
+//        +    [parameter setObject: department forKey: @"dep_id"];
+//        +    [parameter setObject: query forKey: @"q"];
+//        +    [parameter addEntriesFromDictionary:filterParameter];
+//        +
+//        +
+//        [_networkManager requestWithBaseUrl:[NSString topAdsUrl]
+//                                       path:@"/promo/v1/display/products"
+//                                     method:RKRequestMethodGET
+//         -                              parameter:@{@"item":@"4",
+//                                                    -                                          @"src":source,
+//                                                    -                                          @"page":@(page),
+//                                                    -                                          @"dep_id":department,
+//                                                    -                                          @"q":query
+//                                                    -                                          }
+//         +                              parameter:parameter
+//                                    mapping:[PromoResponse mapping]
+//                                  onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+//                                      PromoResponse *response = [[successResult dictionary] objectForKey:@""];
+
 
 - (void)requestForProductHotlist:(NSString *)hotlistId department:(NSString *)department page:(NSInteger)page onSuccess:(void (^)(NSArray<PromoResult *> *))successCallback onFailure:(void (^)(NSError *))errorCallback{
     
