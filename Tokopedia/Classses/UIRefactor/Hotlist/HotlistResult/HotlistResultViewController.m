@@ -1020,43 +1020,63 @@ static NSString const *rows = @"12";
 }
 
 - (NSDictionary*)parametersDynamicFilter {
+    
+    NSMutableDictionary *params = [NSMutableDictionary new];
+    NSDictionary* param = @{
+                            @"device":@"ios",
+                            @"start" : @(_start),
+                            @"rows" : rows,
+                            @"hashtag" : [self isInitialRequest] ? @"true" : @"",
+                            @"breadcrumb" :  [self isInitialRequest] ? @"true" : @"",
+							@"source" : [self getSourceString],
+                            };
+    
+    [params addEntriesFromDictionary:param];
+    [params addEntriesFromDictionary:_selectedFilterParam?:@{}];
+    [params setObject:[self getSelectedCategoryIDsString]?:@"" forKey:@"sc"];
+    [params addEntriesFromDictionary:_selectedSortParam?:@{}];
+    
+    return [params copy];
+}
+
+-(NSString*)getSelectedCategoryIDsString{
+    
+    NSString *categories = @"";
+    if ( [self hasDefaultCategory] &&  [self hasSelectedCategories] && ![self hasRootCategory]) {
+        categories = [NSString stringWithFormat:@"%@,%@",[self getFilterCategoryIDs],[_detailfilter objectForKey:@"sc"]?:@""];
+    } else if (![self hasDefaultCategory] && ![self hasSelectedCategories]){
+        categories = _rootCategoryID?:@"";
+    } else {
+        categories = [self getFilterCategoryIDs];
+    }
+    
+    return categories;
+}
+
+-(BOOL)hasRootCategory{
+    return ![_rootCategoryID isEqualToString:@""];
+}
+
+-(BOOL)hasSelectedCategories{
+    return (_selectedCategories.count > 0);
+}
+
+-(BOOL)hasDefaultCategory{
+    return ([[_detailfilter objectForKey:@"sc"] integerValue] != 0);
+}
+
+-(NSString *)getFilterCategoryIDs{
+    return [[_selectedCategories valueForKey:@"categoryId"] componentsJoinedByString:@","];
+}
+
+-(NSString *)getSourceString{
     NSString *source = @"";
     if(_isFromAutoComplete){
         source = @"jahe";
     }else{
         source = @"hot_product";
     }
-
-    NSMutableDictionary *params = [NSMutableDictionary new];
-    
-    NSString *selectedCategory = [[_selectedCategories valueForKey:@"categoryId"] componentsJoinedByString:@","];
-    NSString *categories;
-    if ([[_detailfilter objectForKey:@"sc"] integerValue] != 0 && _selectedCategories.count > 0 && [_rootCategoryID isEqualToString:@""]) {
-        categories = [NSString stringWithFormat:@"%@,%@",selectedCategory,[_detailfilter objectForKey:@"sc"]?:@""];
-    } else if (![[_detailfilter objectForKey:@"sc"] isEqualToString:@""] && _selectedCategories.count == 0){
-        categories = [_detailfilter objectForKey:@"sc"]?:@"";
-    } else {
-        categories = selectedCategory;
-    }
-    
-    NSDictionary* param = @{
-                            @"device":@"ios",
-                            @"q" : [_detailfilter objectForKey:@"q"]?:[_data objectForKey:@"q"],
-                            @"start" : @(_start),
-                            @"rows" : rows,
-                            @"hashtag" : [self isInitialRequest] ? @"true" : @"",
-                            @"breadcrumb" :  [self isInitialRequest] ? @"true" : @"",
-							@"source" : source,
-                            @"type" : _detailfilter[@"type"]?:@"",
-                            @"negative_keyword": _detailfilter[@"negative_keyword"]?:@""
-                            };
-    
-    [params addEntriesFromDictionary:param];
-    [params addEntriesFromDictionary:_selectedFilterParam];
-    [params setObject:categories?:@"" forKey:@"sc"];
-    [params addEntriesFromDictionary:_selectedSortParam];
-    
-    return [params copy];
+    return source;
 }
 
 -(NSDictionary*)parameterFilter{
