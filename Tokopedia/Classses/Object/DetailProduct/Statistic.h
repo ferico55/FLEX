@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface Statistic : NSObject
+@interface Statistic : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *product_sold_count;
 @property (nonatomic, strong) NSString *product_transaction_count;

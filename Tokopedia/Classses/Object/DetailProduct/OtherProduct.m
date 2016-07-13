@@ -10,13 +10,24 @@
 
 @implementation OtherProduct
 
-@synthesize product_price = _product_price;
-@synthesize product_id = _product_id;
-@synthesize product_image = _product_image;
-@synthesize product_name = _product_name;
-
 - (NSString*)product_name {
     return  [_product_name kv_decodeHTMLCharacterEntities];
+}
+
++(NSDictionary *)attributeMappingDictionary
+{
+    NSArray *keys = @[@"product_price",
+                      @"product_id",
+                      @"product_image",
+                      @"product_name",];
+    return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
+}
+
++(RKObjectMapping*)mapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+    return mapping;
 }
 
 @end

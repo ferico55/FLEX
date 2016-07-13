@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface WholesalePrice : NSObject
+@interface WholesalePrice : NSObject <TKPObjectMapping>
 
 @property (strong, nonatomic) NSString *wholesale_min;
 @property (strong, nonatomic) NSString *wholesale_max;

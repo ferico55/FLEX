@@ -18,7 +18,7 @@
 #import "Rating.h"
 #import "Info.h"
 
-@interface DetailProductResult : NSObject
+@interface DetailProductResult : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) ProductDetail *product;
 @property (nonatomic, strong) NSString *server_id;

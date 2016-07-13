@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface OtherProduct : NSObject
+@interface OtherProduct : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *product_price;
 @property (nonatomic) NSNumber *product_id;

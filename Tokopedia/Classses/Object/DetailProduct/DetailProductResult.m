@@ -8,6 +8,7 @@
 
 #import "DetailProductResult.h"
 #import "NSString+URLEncoding.h"
+#import "Tokopedia-Swift.h"
 
 @implementation DetailProductResult
 
@@ -43,5 +44,36 @@
     return productFieldObjects;
 }
 
++(NSDictionary *)attributeMappingDictionary
+{
+    NSArray *keys = @[
+                      @"server_id",
+                      @"shop_is_gold"];
+    return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
+}
+
++(RKObjectMapping*)mapping
+{
+    
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"product" toKeyPath:@"product" withMapping:[ProductDetail mapping]]];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"statistic" toKeyPath:@"statistic" withMapping:[Statistic mapping]]];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"shop_info" toKeyPath:@"shop_info" withMapping:[ShopInfo mapping]]];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"rating" toKeyPath:@"rating" withMapping:[Rating mapping]]];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"info" toKeyPath:@"info" withMapping:[Info mapping]]];
+
+
+    RKRelationshipMapping *relMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"wholesale_price" toKeyPath:@"wholesale_price" withMapping:[WholesalePrice mapping]];
+    [mapping addPropertyMapping:relMapping];
+    RKRelationshipMapping *relMapping1 = [RKRelationshipMapping relationshipMappingFromKeyPath:@"breadcrumb" toKeyPath:@"breadcrumb" withMapping:[CategoryDetail mapping]];
+    [mapping addPropertyMapping:relMapping1];
+    RKRelationshipMapping *relMapping2 = [RKRelationshipMapping relationshipMappingFromKeyPath:@"other_product" toKeyPath:@"other_product" withMapping:[OtherProduct mapping]];
+    [mapping addPropertyMapping:relMapping2];
+    RKRelationshipMapping *relMapping3 = [RKRelationshipMapping relationshipMappingFromKeyPath:@"product_images" toKeyPath:@"product_images" withMapping:[ProductImages mapping]];
+    [mapping addPropertyMapping:relMapping3];
+    
+    return mapping;
+}
 
 @end
