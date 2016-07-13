@@ -2390,6 +2390,9 @@
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
 		85C494BF1AD790DD008A314A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BE1AD790DD008A314A /* libz.dylib */; };
 		85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494C01AD790E4008A314A /* CoreData.framework */; };
+		BB3503351D34DCA600BCFEE2 /* PhoneVerifViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB3503331D34DCA600BCFEE2 /* PhoneVerifViewController.m */; };
+		BB3503361D34DCA600BCFEE2 /* PhoneVerifViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB3503341D34DCA600BCFEE2 /* PhoneVerifViewController.xib */; };
+		BB3503391D35EA2C00BCFEE2 /* PhoneVerifRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = BB3503381D35EA2C00BCFEE2 /* PhoneVerifRequest.m */; };
 		F25F6F270D531ED13A92CDB9 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4868E459AB2A65D133732296 /* libPods-Tokopedia.a */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
 		FC23B85A1ACD659900879D75 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8581ACD659900879D75 /* Fabric.framework */; };
@@ -5052,7 +5055,7 @@
 		8548AACA1D1A58EA00D11E22 /* VTTransactionDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTTransactionDetails.m; sourceTree = "<group>"; };
 		8548AACC1D1A58EA00D11E22 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8548AACD1D1A58EA00D11E22 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		8548AACE1D1A58EA00D11E22 /* GTM-NCTWRP */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GTM-NCTWRP"; sourceTree = "<group>"; };
+		8548AACE1D1A58EA00D11E22 /* GTM-NCTWRP */ = {isa = PBXFileReference; lastKnownFileType = text; path = "GTM-NCTWRP"; sourceTree = "<group>"; };
 		8548AACF1D1A58EA00D11E22 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		8548AAD01D1A58EA00D11E22 /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
 		8548AAD11D1A58EA00D11E22 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -5958,6 +5961,11 @@
 		85C494BE1AD790DD008A314A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		85C494C01AD790E4008A314A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		AAA12C6A69BF6CB5F8EE3287 /* Pods-Tokopedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug.xcconfig"; sourceTree = "<group>"; };
+		BB3503321D34DCA600BCFEE2 /* PhoneVerifViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhoneVerifViewController.h; sourceTree = "<group>"; };
+		BB3503331D34DCA600BCFEE2 /* PhoneVerifViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhoneVerifViewController.m; sourceTree = "<group>"; };
+		BB3503341D34DCA600BCFEE2 /* PhoneVerifViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhoneVerifViewController.xib; sourceTree = "<group>"; };
+		BB3503371D35EA2C00BCFEE2 /* PhoneVerifRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhoneVerifRequest.h; sourceTree = "<group>"; };
+		BB3503381D35EA2C00BCFEE2 /* PhoneVerifRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhoneVerifRequest.m; sourceTree = "<group>"; };
 		C8A1445074FECD393EA18C17 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		FC23B8571ACD659900879D75 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		FC23B8581ACD659900879D75 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
@@ -8398,6 +8406,11 @@
 				8548A4A21D1A58E600D11E22 /* PhoneVerificationViewController.h */,
 				8548A4A31D1A58E600D11E22 /* PhoneVerificationViewController.m */,
 				8548A4A41D1A58E600D11E22 /* PhoneVerificationViewController.xib */,
+				BB3503321D34DCA600BCFEE2 /* PhoneVerifViewController.h */,
+				BB3503331D34DCA600BCFEE2 /* PhoneVerifViewController.m */,
+				BB3503341D34DCA600BCFEE2 /* PhoneVerifViewController.xib */,
+				BB3503371D35EA2C00BCFEE2 /* PhoneVerifRequest.h */,
+				BB3503381D35EA2C00BCFEE2 /* PhoneVerifRequest.m */,
 			);
 			path = PhoneVerification;
 			sourceTree = "<group>";
@@ -13113,6 +13126,7 @@
 				8548B4D01D1A58F200D11E22 /* icon_button_share@2x.png in Resources */,
 				8548B6A41D1A58F200D11E22 /* icon_unread.png in Resources */,
 				8548B4571D1A58F200D11E22 /* button_white.png in Resources */,
+				BB3503361D34DCA600BCFEE2 /* PhoneVerifViewController.xib in Resources */,
 				8548B6911D1A58F200D11E22 /* icon_toped_loading_grey@2x.png in Resources */,
 				8548B56E1D1A58F200D11E22 /* icon_like_active.png in Resources */,
 				8548B64D1D1A58F200D11E22 /* icon_smile25.png in Resources */,
@@ -13558,6 +13572,7 @@
 				8548B0AF1D1A58F100D11E22 /* TKPMappingManager.m in Sources */,
 				8548B3A71D1A58F100D11E22 /* RequestEditAddress.m in Sources */,
 				8548AFEB1D1A58F100D11E22 /* ShipmentServiceData.m in Sources */,
+				BB3503391D35EA2C00BCFEE2 /* PhoneVerifRequest.m in Sources */,
 				8548B14B1D1A58F100D11E22 /* BackgroundLayer.m in Sources */,
 				8548AF9F1D1A58F100D11E22 /* NotificationFormNotif.m in Sources */,
 				8548B1491D1A58F100D11E22 /* TKPDTabViewController.m in Sources */,
@@ -14539,6 +14554,7 @@
 				8548B1DE1D1A58F100D11E22 /* ResolutionCenterInputViewController.m in Sources */,
 				8548B0331D1A58F100D11E22 /* LuckyDeal.m in Sources */,
 				8548B3D71D1A58F200D11E22 /* TransactionObjectMapping.m in Sources */,
+				BB3503351D34DCA600BCFEE2 /* PhoneVerifViewController.m in Sources */,
 				8548AE701D1A58F100D11E22 /* NSString+URLEncoding.m in Sources */,
 				8548B2321D1A58F100D11E22 /* NotificationViewController.m in Sources */,
 				8548AEF41D1A58F100D11E22 /* WholesalePrice.m in Sources */,
