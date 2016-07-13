@@ -20,6 +20,8 @@ class ReportProductViewController: UIViewController, GeneralTableViewControllerD
     @IBOutlet weak var linkInstructionLabel: UILabel!
     @IBOutlet weak var kirimButton: UIButton!
     
+    var networkManager = TokopediaNetworkManager()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         let goToGeneralTabVCTapGestureRecognizer = UITapGestureRecognizer(target: self, action:#selector(didTapAlasanLabel))
@@ -30,6 +32,7 @@ class ReportProductViewController: UIViewController, GeneralTableViewControllerD
         setupHiddenObject()
         generateKeyboardNotification()
         addDoneButtonOnKeyboard()
+        getReportTypeFromAPI()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -48,6 +51,7 @@ class ReportProductViewController: UIViewController, GeneralTableViewControllerD
             generalTableViewController.selectedObject = alasanLabel.text
         }
         generalTableViewController.delegate = self
+         self.deskripsiTextView.resignFirstResponder()
         
         self.navigationController?.pushViewController(generalTableViewController, animated: true)
     }
@@ -120,15 +124,9 @@ class ReportProductViewController: UIViewController, GeneralTableViewControllerD
             hideLinkInstructionLabel()
             self.deskripsiTextView.becomeFirstResponder()
         } else if alasanLabel.text == "Transaksi"
-            || alasanLabel.text == "Pelanggaran merk dagang & MLM"{
-            //pakai dispatch async supaya end editing di deskripsitextview nya jalan
-            dispatch_async(dispatch_get_main_queue()) { [weak self] in
-                if let weakSelf = self {
-                    weakSelf.deskripsiTextView.endEditing(true)
-                    weakSelf.hideDeskripsiForm()
-                    weakSelf.showLinkInstructionLabel()
-                }
-            }
+            || alasanLabel.text == "Pelanggaran merk dagang & MLM" {
+                self.hideDeskripsiForm()
+                self.showLinkInstructionLabel()
         }
     }
     
@@ -157,5 +155,15 @@ class ReportProductViewController: UIViewController, GeneralTableViewControllerD
     
     func showLinkInstructionLabel() {
         self.linkInstructionLabel.hidden = false
+    }
+    
+    // MARK: API
+    
+    func getReportTypeFromAPI() {
+        networkManager.requestWithBaseUrl("", path: "", method: .GET, parameter: ["":""], mapping: RKObjectMapping!, onSuccess: { (result, operation) in
+            
+            }) { (error) in
+                
+        }
     }
 }
