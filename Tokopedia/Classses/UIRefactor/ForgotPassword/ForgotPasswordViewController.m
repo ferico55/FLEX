@@ -45,6 +45,7 @@
     
     UIView *leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 12, 40)];
     _emailText.leftView = leftView;
+    _emailText.keyboardType = UIKeyboardTypeEmailAddress;
     _emailText.leftViewMode = UITextFieldViewModeAlways;
     
     _buttonForgot.layer.cornerRadius = 2;
@@ -103,9 +104,7 @@
     
     if([action.status isEqualToString:kTKPDREQUEST_OKSTATUS]) {
         if(action.message_error) {
-            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:action.message_error
-                                                                           delegate:self];
-            [alert show];
+             [self showAlertToRegisterView];
         } else {
             if([action.result.is_success isEqualToString:TKPD_SUCCESS_VALUE]) {
                 NSString *errorMessage = [NSString stringWithFormat:@"Sebuah email telah dikirim ke alamat email yang terasosiasi dengan akun Anda, \n \n%@. \n \nEmail ini berisikan cara untuk mendapatkan kata sandi baru. \nDiharapkan menunggu beberapa saat, selama pengiriman email dalam proses.\nMohon diperhatikan bahwa alamat email di atas adalah benar,\ndan periksalah folder junk dan spam atau filter jika anda tidak menerima email tersebut.", _emailText.text];
@@ -148,18 +147,6 @@
 
 - (void) showAlertToRegisterView {
     NSString *alertViewTitle = [NSString stringWithFormat:@"Email %@ belum terdaftar sebagai member Tokopedia", _emailText.text];
-//    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:alertControllerTitle message:@"Anda akan kami arahkan ke halaman registrasi" preferredStyle:UIAlertControllerStyleAlert];
-//    UIAlertAction *yesAlertAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-//        RegisterViewController *registerViewController = [RegisterViewController new];
-//        registerViewController.emailFromForgotPassword = _emailText.text;
-//        [self.navigationController pushViewController:registerViewController animated:YES];
-//    }];
-//    UIAlertAction *noAlertAction = [UIAlertAction actionWithTitle:@"Tidak" style:UIAlertActionStyleCancel handler:nil];
-//    
-//    [alertController addAction:yesAlertAction];
-//    [alertController addAction:noAlertAction];
-//    [self presentViewController:alertController animated:YES completion:nil];
-    
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:alertViewTitle message:@"Anda akan kami arahkan ke halaman registrasi" delegate:self cancelButtonTitle:@"Tidak" otherButtonTitles:nil, nil];
     [alertView addButtonWithTitle:@"OK"];
     [alertView show];
