@@ -980,8 +980,8 @@ ImageSearchRequestDelegate
     NSString *categories;
     if ([[_params objectForKey:@"sc"] integerValue] != 0 && _selectedCategories.count > 0 && [_rootCategoryID isEqualToString:@""]) {
         categories = [NSString stringWithFormat:@"%@,%@",selectedCategory,[_params objectForKey:@"sc"]?:@""];
-    } else if (![[_params objectForKey:@"sc"] isEqualToString:@""] && _selectedCategories.count == 0){
-        categories = [_params objectForKey:@"sc"]?:@"";
+    } else if (_selectedCategories.count == 0){
+        categories = _rootCategoryID?:@"";
     } else {
         categories = selectedCategory;
     }
