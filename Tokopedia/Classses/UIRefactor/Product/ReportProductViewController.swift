@@ -17,11 +17,15 @@ class ReportProductViewController: UIViewController, GeneralTableViewControllerD
     @IBOutlet weak var jenisLaporanLabel: UILabel!
     @IBOutlet weak var deskripsiTextView: UITextView!
     @IBOutlet weak var deskripsiLabel: UILabel!
+    @IBOutlet weak var linkInstructionLabel: UILabel!
+    @IBOutlet weak var kirimButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         let goToGeneralTabVCTapGestureRecognizer = UITapGestureRecognizer(target: self, action:#selector(didTapAlasanLabel))
+        let goToWebVCTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapUrlLink))
         self.alasanLabel.addGestureRecognizer(goToGeneralTabVCTapGestureRecognizer)
+        self.linkInstructionLabel.addGestureRecognizer(goToWebVCTapGestureRecognizer)
         
         setupHiddenObject()
         generateKeyboardNotification()
@@ -46,6 +50,18 @@ class ReportProductViewController: UIViewController, GeneralTableViewControllerD
         generalTableViewController.delegate = self
         
         self.navigationController?.pushViewController(generalTableViewController, animated: true)
+    }
+    
+    func didTapUrlLink() {
+        let webViewVC = WebViewController()
+        webViewVC.strURL = "http://www.tokopedia.com"
+        webViewVC.strTitle = "Mengarahkan"
+        webViewVC.onTapLinkWithUrl = { (url) in
+            if (url.absoluteString == "https://www.tokopedia.com/") {
+                self.navigationController?.popViewControllerAnimated(true)
+            }
+        }
+        self.navigationController?.pushViewController(webViewVC, animated: true)
     }
     
     // MARK: KeyboardNotification 
@@ -98,15 +114,19 @@ class ReportProductViewController: UIViewController, GeneralTableViewControllerD
         self.alasanLabel.text = String(object)
         if alasanLabel.text == "Salah kategori"
             || alasanLabel.text == "Iklan situs luar"
-            || alasanLabel.text == "Pornografi"{
+            || alasanLabel.text == "Pornografi"
+            || alasanLabel.text == "Lain-lain" {
             showDeskripsiForm()
+            hideLinkInstructionLabel()
             self.deskripsiTextView.becomeFirstResponder()
-        } else {
+        } else if alasanLabel.text == "Transaksi"
+            || alasanLabel.text == "Pelanggaran merk dagang & MLM"{
             //pakai dispatch async supaya end editing di deskripsitextview nya jalan
             dispatch_async(dispatch_get_main_queue()) { [weak self] in
                 if let weakSelf = self {
                     weakSelf.deskripsiTextView.endEditing(true)
                     weakSelf.hideDeskripsiForm()
+                    weakSelf.showLinkInstructionLabel()
                 }
             }
         }
@@ -116,15 +136,26 @@ class ReportProductViewController: UIViewController, GeneralTableViewControllerD
     
     func setupHiddenObject() {
         hideDeskripsiForm()
+        hideLinkInstructionLabel()
     }
     
     func showDeskripsiForm() {
         self.deskripsiLabel.hidden = false
         self.deskripsiTextView.hidden = false
+        self.kirimButton.hidden = false
     }
     
     func hideDeskripsiForm() {
         self.deskripsiTextView.hidden = true
         self.deskripsiLabel.hidden = true
+        self.kirimButton.hidden = true
+    }
+    
+    func hideLinkInstructionLabel() {
+        self.linkInstructionLabel.hidden = true
+    }
+    
+    func showLinkInstructionLabel() {
+        self.linkInstructionLabel.hidden = false
     }
 }
