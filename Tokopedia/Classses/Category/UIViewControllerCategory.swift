@@ -64,7 +64,6 @@ extension UIViewController {
         let preferredHeight = view.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize).height
         view.frame.size.height = preferredHeight
         
-        
         view.closeButton.bk_whenTapped {
             SwiftOverlays.closeAnnoyingNotificationOnTopOfStatusBar(view)
         }

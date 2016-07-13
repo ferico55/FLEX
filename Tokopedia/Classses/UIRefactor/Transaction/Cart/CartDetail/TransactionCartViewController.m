@@ -999,13 +999,13 @@
             [self tapChoosePayment:self];
         }
         if (gateway == TYPE_GATEWAY_CC) {
-            return [CartValidation isValidInputCCCart:_cart];
+            isValid = [CartValidation isValidInputCCCart:_cart];
         }
         if (gateway == TYPE_GATEWAY_BCA_KLIK_BCA) {
-            return [CartValidation isValidInputKlikBCACart:_cart];
+            isValid = [CartValidation isValidInputKlikBCACart:_cart];
         }
         if (gateway == TYPE_GATEWAY_INDOMARET) {
-            return [CartValidation isValidInputIndomaretCart:_cart];
+            isValid = [CartValidation isValidInputIndomaretCart:_cart];
         }
         if (_isUsingSaldoTokopedia)
         {
