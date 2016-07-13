@@ -13,7 +13,7 @@
 #import "string_settings.h"
 #import "RegisterViewController.h"
 
-@interface ForgotPasswordViewController () <TokopediaNetworkManagerDelegate> {
+@interface ForgotPasswordViewController () <TokopediaNetworkManagerDelegate, UIAlertViewDelegate> {
     TokopediaNetworkManager *_networkManager;
     __weak RKObjectManager *_objectManager;
 }
@@ -147,18 +147,30 @@
 #pragma mark - Alert Controller
 
 - (void) showAlertToRegisterView {
-    NSString *alertControllerTitle = [NSString stringWithFormat:@"Email %@ belum terdaftar sebagai member Tokopedia", _emailText.text];
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:alertControllerTitle message:@"Anda akan kami arahkan ke halaman registrasi" preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *yesAlertAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    NSString *alertViewTitle = [NSString stringWithFormat:@"Email %@ belum terdaftar sebagai member Tokopedia", _emailText.text];
+//    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:alertControllerTitle message:@"Anda akan kami arahkan ke halaman registrasi" preferredStyle:UIAlertControllerStyleAlert];
+//    UIAlertAction *yesAlertAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//        RegisterViewController *registerViewController = [RegisterViewController new];
+//        registerViewController.emailFromForgotPassword = _emailText.text;
+//        [self.navigationController pushViewController:registerViewController animated:YES];
+//    }];
+//    UIAlertAction *noAlertAction = [UIAlertAction actionWithTitle:@"Tidak" style:UIAlertActionStyleCancel handler:nil];
+//    
+//    [alertController addAction:yesAlertAction];
+//    [alertController addAction:noAlertAction];
+//    [self presentViewController:alertController animated:YES completion:nil];
+    
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:alertViewTitle message:@"Anda akan kami arahkan ke halaman registrasi" delegate:self cancelButtonTitle:@"Tidak" otherButtonTitles:nil, nil];
+    [alertView show];
+}
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 0) {
         RegisterViewController *registerViewController = [RegisterViewController new];
         registerViewController.emailFromForgotPassword = _emailText.text;
         [self.navigationController pushViewController:registerViewController animated:YES];
-    }];
-    UIAlertAction *noAlertAction = [UIAlertAction actionWithTitle:@"Tidak" style:UIAlertActionStyleCancel handler:nil];
-    
-    [alertController addAction:yesAlertAction];
-    [alertController addAction:noAlertAction];
-    [self presentViewController:alertController animated:YES completion:nil];
+    }
+
 }
 
 @end
