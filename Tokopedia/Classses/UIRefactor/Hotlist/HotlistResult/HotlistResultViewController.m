@@ -943,7 +943,7 @@ static NSString const *rows = @"12";
 
 -(NSDictionary*)hotlistBannerDictionaryFromDataBanner:(HotlistBannerQuery*)q{
     NSDictionary *query = @{
-                            @"negative_keyword" : q.negative_keyword?:@"",
+                            @"negative" : q.negative_keyword?:@"",
                             @"sc" : q.sc?:@"",
                             @"ob" : q.ob?:@"",
                             @"terms" : q.terms?:@"",
