@@ -112,7 +112,7 @@
 }
 
 - (Boolean) isTalkFieldTextLengthBelowFive  {
-    if (_talkfield.text.length < 5) {
+    if ([_talkfield.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]].length < 5) {
         return YES;
     }
     
@@ -152,7 +152,7 @@
     _sendButton.enabled = NO;
 
     NSDictionary* param = @{
-                            kTKPDTALK_TALKMESSAGE:_talkfield.text,
+                            kTKPDTALK_TALKMESSAGE:[_talkfield.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]],
                             kTKPDMESSAGE_PRODUCTIDKEY:[_data objectForKey:kTKPDMESSAGE_PRODUCTIDKEY]
                             };
 
