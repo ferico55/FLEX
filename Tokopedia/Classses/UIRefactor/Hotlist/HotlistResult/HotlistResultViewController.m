@@ -951,7 +951,8 @@ static NSString const *rows = @"12";
                             @"q" : q.q?:@"",
                             @"pmin" : q.pmin?:@"",
                             @"pmax" : q.pmax?:@"",
-                            @"type" : q.type?:@""
+                            @"type" : q.type?:@"",
+                            @"default_sc": q.sc?:@""
                             };
     return query;
 }
