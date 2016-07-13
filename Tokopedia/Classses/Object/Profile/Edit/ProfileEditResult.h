@@ -14,4 +14,5 @@
 
 @property (nonatomic, strong) DataUser *data_user;
 
++(RKObjectMapping*)mapping;
 @end

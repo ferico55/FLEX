@@ -10,6 +10,23 @@
 
 @implementation DataUser
 
++(RKObjectMapping *)mapping{
+    RKObjectMapping *dataMapping = [RKObjectMapping mappingForClass:[DataUser class]];    
+    [dataMapping addAttributeMappingsFromArray:@[@"hobby",
+                                                 @"birth_day",
+                                                 @"user_messenger",
+                                                 @"full_name",
+                                                 @"birth_month",
+                                                 @"user_email",
+                                                 @"birth_year",
+                                                 @"user_phone",
+                                                 @"gender",
+                                                 @"user_image"
+                                                 ]];
+    return dataMapping;
+    
+}
+
 - (NSString *)hobby {
     if ([_hobby isEqualToString:@"0"]) {
         return @"";
