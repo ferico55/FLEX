@@ -161,11 +161,12 @@
 //    [self presentViewController:alertController animated:YES completion:nil];
     
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:alertViewTitle message:@"Anda akan kami arahkan ke halaman registrasi" delegate:self cancelButtonTitle:@"Tidak" otherButtonTitles:nil, nil];
+    [alertView addButtonWithTitle:@"OK"];
     [alertView show];
 }
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 0) {
+    if (buttonIndex == 1) {
         RegisterViewController *registerViewController = [RegisterViewController new];
         registerViewController.emailFromForgotPassword = _emailText.text;
         [self.navigationController pushViewController:registerViewController animated:YES];
