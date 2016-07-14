@@ -172,7 +172,14 @@ static CGFloat messageTextSize = 17.0;
         
         ballonViewFrame = CGRectMake(55.0f, timeLabelFrame.size.height, textSize.width + 2*textMarginHorizontal, textSize.height + 2*textMarginVertical + 5.0f + CHeightUserLabel);
         
-        if(ballonViewFrame.size.width < (_viewLabelUser.getLblText.frame.origin.x+widthUserLabel+(2*textMarginHorizontal))) {
+        // fixing bug ukuran balloon tidak pas, hanya terjadi di iOS 7
+        if ([[[UIDevice currentDevice] systemVersion] floatValue] < 8) {
+            CGRect ballonViewFrameTemp = _viewLabelUser.getLblText.frame;
+            ballonViewFrameTemp.origin.x = 71;
+            _viewLabelUser.getLblText.frame = ballonViewFrameTemp;
+        }
+        
+        if(ballonViewFrame.size.width < (_viewLabelUser.getLblText.frame.origin.x + widthUserLabel + (2 * textMarginHorizontal))) {
             ballonViewFrame.size.width = (_viewLabelUser.getLblText.frame.origin.x+widthUserLabel+(2*textMarginHorizontal));
         }
         
