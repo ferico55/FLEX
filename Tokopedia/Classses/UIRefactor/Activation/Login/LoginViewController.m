@@ -142,6 +142,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     NSArray<UIButton *> *buttons = [providers bk_map:^UIButton *(SignInProvider *provider) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
         [button setTitle:[NSString stringWithFormat:@"Login dengan %@", provider.name] forState:UIControlStateNormal];
+        button.backgroundColor = [UIColor fromHexString:provider.color];
         
         return button;
     }];
@@ -166,7 +167,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     frame.size = preferredSize;
     
     providerContainer.frame = frame;
-    
     
     [providerContainer mas_makeConstraints:^(MASConstraintMaker *make){
         make.left.equalTo(_emailTextField.mas_left);

@@ -13,6 +13,7 @@ class SignInProvider: NSObject {
     var name: String!
     var signInUrl: String!
     var imageUrl: String!
+    var color: String!
     
     class func mapping() -> RKObjectMapping {
         let mapping = RKObjectMapping(forClass: self)
@@ -20,7 +21,8 @@ class SignInProvider: NSObject {
             "id": "id",
             "name": "name",
             "url": "signInUrl",
-            "image": "imageUrl"
+            "image": "imageUrl",
+            "color": "color"
         ])
         return mapping
     }
