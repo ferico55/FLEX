@@ -727,7 +727,7 @@ typedef enum TagRequest {
     
     [Localytics setValue:@"No" forProfileAttribute:@"Is Login"];
     
-    [self refreshCartTabBar];
+    [self reinitCartTabBar];
 }
 
 - (void)removeCacheUser {
@@ -1005,11 +1005,13 @@ typedef enum TagRequest {
     return _storeManager;
 }
 
-// MARK: Refresh Cart TabBar
+// MARK: Reinit Cart TabBar
 
-- (void) refreshCartTabBar {
+- (void) reinitCartTabBar {
     for (UINavigationController *navController in _tabBarController.viewControllers) {
         if ([[navController.viewControllers objectAtIndex:0] isKindOfClass:[TransactionCartRootViewController class]]) {
+            TransactionCartRootViewController *transactionCartRootVC = (TransactionCartRootViewController *)[navController.viewControllers objectAtIndex:0];
+            [[NSNotificationCenter defaultCenter]removeObserver:transactionCartRootVC];
             [navController setViewControllers:[NSArray arrayWithObject: [TransactionCartRootViewController new]]];
             break;
         }
