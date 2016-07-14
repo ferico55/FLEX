@@ -149,22 +149,40 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     [self.view addSubview:providerContainer];
 
     NSArray<UIButton *> *buttons = [providers bk_map:^UIButton *(SignInProvider *provider) {
-        UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
         [button setTitle:[NSString stringWithFormat:@"Login dengan %@", provider.name] forState:UIControlStateNormal];
         button.backgroundColor = [UIColor fromHexString:provider.color];
         [button setTitleColor:[self textColorForBackground:button.backgroundColor] forState:UIControlStateNormal];
+        
+        NSURL *url = [NSURL URLWithString:provider.imageUrl];
+        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+        
+        UIImageView *imageView = [[UIImageView alloc] init];
+        [imageView setImageWithURLRequest:request
+                         placeholderImage:nil
+                                  success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                                      CGRect rect = CGRectMake(0, 0, 25, 25);
+                                      UIGraphicsBeginImageContext(rect.size);
+                                      [image drawInRect:rect];
+                                      image = UIGraphicsGetImageFromCurrentImageContext();
+                                      UIGraphicsEndImageContext();
+                                      
+                                      [button setImage:image forState:UIControlStateNormal];
+                                  }
+                                  failure:nil];
         
         return button;
     }];
     
     [buttons enumerateObjectsUsingBlock:^(UIButton *button, NSUInteger index, BOOL *stop) {
         [providerContainer addSubview:button];
+        NSInteger height = 40;
         
         [button mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(_emailTextField.mas_left);
             make.right.equalTo(_emailTextField.mas_right);
-            make.height.mas_equalTo(25);
-            make.top.equalTo(providerContainer).with.mas_offset(30 * index);
+            make.height.mas_equalTo(height);
+            make.top.equalTo(providerContainer).with.mas_offset((height + 5) * index);
         }];
     }];
     
