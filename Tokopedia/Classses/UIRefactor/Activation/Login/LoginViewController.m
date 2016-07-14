@@ -38,6 +38,7 @@
 #import "NSString+TPBaseUrl.h"
 #import "SecurityAnswer.h"
 #import "AuthenticationService.h"
+#import <Masonry/Masonry.h>
 
 static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jdpts.apps.googleusercontent.com";
 
@@ -136,33 +137,42 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 
 - (void)onReceiveSignInProviders:(NSArray<SignInProvider *> *)providers {
     UIView *providerContainer = [[UIView alloc] init];
-    providerContainer.backgroundColor = [UIColor redColor];
-    providerContainer.frame = CGRectMake(0, 300, 200, 150);
+    [self.view addSubview:providerContainer];
 
-    [providers enumerateObjectsUsingBlock:^(SignInProvider *provider, NSUInteger index, BOOL *stop) {
+    NSArray<UIButton *> *buttons = [providers bk_map:^UIButton *(SignInProvider *provider) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
-
         [button setTitle:[NSString stringWithFormat:@"Login dengan %@", provider.name] forState:UIControlStateNormal];
+        
+        return button;
+    }];
+    
+    [buttons enumerateObjectsUsingBlock:^(UIButton *button, NSUInteger index, BOOL *stop) {
         [providerContainer addSubview:button];
         
-        [button HVD_pinToLeftOfSuperviewWithMargin:0];
-        [button HVD_pinToRightOfSuperviewWithMargin:0];
-        [button HVD_setHeight:25];
-        [button HVD_pinToTopOfSuperviewWithMargin:30 * index];
-        
-        if (provider == providers.lastObject) {
-            [button HVD_pinToBottomOfSuperviewWithMargin:0];
-        }
+        [button mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(_emailTextField.mas_left);
+            make.right.equalTo(_emailTextField.mas_right);
+            make.height.mas_equalTo(25);
+            make.top.equalTo(providerContainer).with.mas_offset(30 * index);
+        }];
     }];
-
     
-    [self.view addSubview:providerContainer];
+    [buttons.lastObject mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(providerContainer.mas_bottom);
+    }];
     
     CGSize preferredSize = [providerContainer systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
     CGRect frame = providerContainer.frame;
     frame.size = preferredSize;
     
     providerContainer.frame = frame;
+    
+    
+    [providerContainer mas_makeConstraints:^(MASConstraintMaker *make){
+        make.left.equalTo(_emailTextField.mas_left);
+        make.right.equalTo(_emailTextField.mas_right);
+        make.top.equalTo(_forgetPasswordButton.mas_bottom);
+    }];
 }
 
 -(void)viewWillAppear:(BOOL)animated
