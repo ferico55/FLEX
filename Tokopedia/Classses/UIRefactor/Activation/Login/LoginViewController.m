@@ -66,7 +66,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 @property (weak, nonatomic) IBOutlet UIImageView *screenLogin;
 @property (weak, nonatomic) IBOutlet UIButton *forgetPasswordButton;
 
-@property (strong, nonatomic) IBOutlet UIView *googleSignInButton;
 @property (strong, nonatomic) IBOutlet UILabel *signInLabel;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *formViewMarginTopConstraint;
@@ -84,7 +83,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 @synthesize data = _data;
 @synthesize emailTextField = _emailTextField;
 @synthesize passwordTextField = _passwordTextField;
-@synthesize googleSignInButton;
 
 
 #pragma mark - Life Cycle
@@ -121,8 +119,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     }
     
     _activation = [NSMutableDictionary new];
-
-    googleSignInButton.layer.shadowOffset = CGSizeMake(1, 1);
 
     [[AuthenticationService sharedService]
             getThirdPartySignInOptionsOnSuccess:^(NSArray<SignInProvider *> *providers) {
@@ -270,11 +266,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (IBAction)didTapGoogleSignInButton {
-    _signInLabel.highlighted = YES;
-    [[GIDSignIn sharedInstance] signIn];
-}
-
 - (IBAction)didTapLoginButton {
     [self.view endEditing:YES];
 
@@ -398,7 +389,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     _passwordTextField.hidden = NO;
     _loginButton.hidden = NO;
     _forgetPasswordButton.hidden = NO;
-    self.googleSignInButton.hidden = NO;
 
     [_activityIndicator stopAnimating];
     
@@ -626,7 +616,6 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
     _passwordTextField.hidden = YES;
     _loginButton.hidden = YES;
     _forgetPasswordButton.hidden = YES;
-    self.googleSignInButton.hidden = YES;
     
     [_activityIndicator startAnimating];
 }
@@ -671,7 +660,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
         self.formViewMarginTopConstraint.constant = 280;
         self.formViewWidthConstraint.constant = 500;
         constant =  (self.formViewWidthConstraint.constant / 2) - 10;
-//        [self.googleSignInButton setStyle:kGIDSignInButtonStyleStandard];
+
         facebookButtonTitle = @"Sign in with Facebook";
         _signInLabel.text = @"Sign in with Google";
         self.facebookButtonTopConstraint.constant = 30;
@@ -680,8 +669,6 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
     
     self.facebookButtonWidthConstraint.constant = constant;
     self.googleButtonWidthConstraint.constant = constant;
-
-    [self.googleSignInButton layoutIfNeeded];
     
     [self.view layoutSubviews];
 }
@@ -694,7 +681,6 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
         _passwordTextField.hidden = YES;
         _loginButton.hidden = YES;
         _forgetPasswordButton.hidden = YES;
-        self.googleSignInButton.hidden = YES;
         [_activityIndicator startAnimating];
 
         [self requestLoginGoogleWithUser:user];
