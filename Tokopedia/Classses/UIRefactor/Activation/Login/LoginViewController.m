@@ -144,6 +144,8 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
         button.titleLabel.font = [UIFont systemFontOfSize:14];
         button.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 10);
+        button.layer.cornerRadius = 3;
+        button.adjustsImageWhenHighlighted = NO;
         
         [button setTitle:[NSString stringWithFormat:@"Login dengan %@", provider.name] forState:UIControlStateNormal];
         
@@ -188,13 +190,13 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     
     [buttons enumerateObjectsUsingBlock:^(UIButton *button, NSUInteger index, BOOL *stop) {
         [providerContainer addSubview:button];
-        NSInteger height = 40;
+        NSInteger height = 44;
         
         [button mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(_emailTextField.mas_left);
             make.right.equalTo(_emailTextField.mas_right);
             make.height.mas_equalTo(height);
-            make.top.equalTo(providerContainer).with.mas_offset((height + 5) * index);
+            make.top.equalTo(providerContainer).with.mas_offset((height + 10) * index);
         }];
     }];
     
