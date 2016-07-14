@@ -413,6 +413,12 @@ OtherProductDelegate
     btnShare.layer.borderColor = [[UIColor colorWithRed:219/255.0f green:219/255.0f blue:219/255.0f alpha:1.0f] CGColor];
     btnShare.layer.masksToBounds = YES;
     
+    //Set corner report button
+    btnReport.layer.cornerRadius = 5.0f;
+    btnReport.layer.borderWidth = 1;
+    btnReport.layer.borderColor = [[UIColor colorWithRed:219/255.0f green:219/255.0f blue:219/255.0f alpha:1.0f] CGColor];
+    btnReport.layer.masksToBounds = YES;
+    
     UITapGestureRecognizer *tapShopGes = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapShop)];
     [_shopClickView addGestureRecognizer:tapShopGes];
     [_shopClickView setUserInteractionEnabled:YES];
@@ -954,17 +960,7 @@ OtherProductDelegate
                     
                     [mView addSubview:btnExpand];
                 }
-                
-                UIButton *laporkanButton = [UIButton buttonWithType:UIButtonTypeCustom];
-                laporkanButton.titleLabel.font = [UIFont fontWithName:@"Gotham Book" size:13.0];
-                [laporkanButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-                [laporkanButton addTarget:self action:@selector(goToReportProductController) forControlEvents:UIControlEventTouchUpInside];
-                [laporkanButton setTitle:@"Laporkan" forState:UIControlStateNormal];
-                laporkanButton.frame = CGRectMake((self.view.bounds.size.width-40)/2.0f, rectLblDesc.origin.y+rectLblDesc.size.height + 25, 150, 40);
-                [laporkanButton sizeToFit];
-                
                 [mView addSubview:bt];
-                [mView addSubview:laporkanButton];
                 return mView;
             }
             break;
@@ -2401,11 +2397,6 @@ OtherProductDelegate
     
 }
 
-- (void) goToReportProductController {
-    ReportProductViewController *reportProductVC = [ReportProductViewController new];
-    [self.navigationController pushViewController:reportProductVC animated:YES];
-}
-
 #pragma mark - View Delegate
 - (void)DetailProductOtherView:(UIView *)view withindex:(NSInteger)index
 {
@@ -2627,6 +2618,10 @@ OtherProductDelegate
         redirectToPriceAlert = YES;
         [self.navigationController presentViewController:navigationController animated:YES completion:nil];
     }
+}
+- (IBAction)actionReport:(UIButton *)sender {
+    ReportProductViewController *reportProductVC = [ReportProductViewController new];
+    [self.navigationController pushViewController:reportProductVC animated:YES];
 }
 
 - (UIBarButtonItem *)createBarButton:(CGRect)frame withImage:(UIImage*)image withAction:(SEL)action

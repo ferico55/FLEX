@@ -160,7 +160,7 @@ class ReportProductViewController: UIViewController, GeneralTableViewControllerD
     // MARK: API
     
     func getReportTypeFromAPI() {
-        networkManager.requestWithBaseUrl("", path: "", method: .GET, parameter: ["":""], mapping: RKObjectMapping!, onSuccess: { (result, operation) in
+        networkManager.requestWithBaseUrl("", path: "", method: .GET, parameter: ["":""], mapping: ReportProductResponse.mapping(), onSuccess: { (result, operation) in
             
             }) { (error) in
                 
