@@ -184,6 +184,8 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
                                                handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
                                                    [self loginButton:nil didCompleteWithResult:result error:error];
                                                }];
+            } else if ([provider.id isEqualToString:@"gplus"]) {
+                [[GIDSignIn sharedInstance] signIn];
             }
         } forControlEvents:UIControlEventTouchUpInside];
         
