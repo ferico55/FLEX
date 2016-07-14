@@ -59,7 +59,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 
 @property (strong, nonatomic) IBOutlet TextField *emailTextField;
 @property (strong, nonatomic) IBOutlet TextField *passwordTextField;
-@property (weak, nonatomic) IBOutlet UIView *facebookLoginButton;
 @property (weak, nonatomic) IBOutlet UIButton *loginButton;
 @property (weak, nonatomic) IBOutlet UIView *loadingView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
@@ -77,9 +76,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *googleButtonTopConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *facebookButtonTopConstraint;
-
-@property (strong, nonatomic) FBSDKLoginButton *loginView;
-
 
 @end
 
@@ -186,6 +182,8 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
                                                }];
             } else if ([provider.id isEqualToString:@"gplus"]) {
                 [[GIDSignIn sharedInstance] signIn];
+            } else {
+                [self loginWithYahoo];
             }
         } forControlEvents:UIControlEventTouchUpInside];
         
@@ -240,10 +238,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     loginManager.loginBehavior = FBSDKLoginBehaviorNative;
     [loginManager logOut];
     [FBSDKAccessToken setCurrentAccessToken:nil];
-    
-    _loginView = [[FBSDKLoginButton alloc] init];
-    _loginView.delegate = self;
-    _loginView.readPermissions = @[@"public_profile", @"email", @"user_birthday"];
 
     [self updateFormViewAppearance];
     
@@ -404,7 +398,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     _passwordTextField.hidden = NO;
     _loginButton.hidden = NO;
     _forgetPasswordButton.hidden = NO;
-    _facebookLoginButton.hidden = NO;
     self.googleSignInButton.hidden = NO;
 
     [_activityIndicator stopAnimating];
@@ -633,7 +626,6 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
     _passwordTextField.hidden = YES;
     _loginButton.hidden = YES;
     _forgetPasswordButton.hidden = YES;
-    _facebookLoginButton.hidden = YES;
     self.googleSignInButton.hidden = YES;
     
     [_activityIndicator startAnimating];
@@ -688,16 +680,6 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
     
     self.facebookButtonWidthConstraint.constant = constant;
     self.googleButtonWidthConstraint.constant = constant;
-    
-    _loginView.frame = CGRectMake(0, 0, constant, 40);
-    _loginView.layer.shadowOpacity = 0;
-    
-    [_loginView removeFromSuperview];
-    
-    [_facebookLoginButton layoutIfNeeded];
-    [_loginView layoutIfNeeded];
-    
-    [_facebookLoginButton addSubview:_loginView];
 
     [self.googleSignInButton layoutIfNeeded];
     
@@ -712,7 +694,6 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
         _passwordTextField.hidden = YES;
         _loginButton.hidden = YES;
         _forgetPasswordButton.hidden = YES;
-        _facebookLoginButton.hidden = YES;
         self.googleSignInButton.hidden = YES;
         [_activityIndicator startAnimating];
 
