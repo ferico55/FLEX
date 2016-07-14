@@ -22,6 +22,7 @@ target "Tokopedia" do
     pod 'JLPermissions/Notification'
     pod 'Google/SignIn'
     pod 'FBSDKLoginKit'
+    pod 'Masonry', '~> 1.0.1'
 end
 
 target "TokopediaTests" do
