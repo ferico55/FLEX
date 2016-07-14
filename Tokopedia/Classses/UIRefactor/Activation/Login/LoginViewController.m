@@ -129,9 +129,26 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 
     [[AuthenticationService sharedService]
             getThirdPartySignInOptionsOnSuccess:^(NSArray<SignInProvider *> *providers) {
-                
+                [self onReceiveSignInProviders:providers];
             }
     ];
+}
+
+- (void)onReceiveSignInProviders:(NSArray<SignInProvider *> *)providers {
+    UIView *providerContainer = [[UIView alloc] init];
+    providerContainer.backgroundColor = [UIColor redColor];
+    providerContainer.frame = CGRectMake(0, 300, 200, 150);
+
+    [providers enumerateObjectsUsingBlock:^(SignInProvider *provider, NSUInteger index, BOOL *stop) {
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
+        button.frame = CGRectMake(0, 30 * index, 100, 25);
+
+        [button setTitle:[NSString stringWithFormat:@"Login dengan %@", provider.name] forState:UIControlStateNormal];
+        [providerContainer addSubview:button];
+    }];
+
+    
+    [self.view addSubview:providerContainer];
 }
 
 -(void)viewWillAppear:(BOOL)animated
