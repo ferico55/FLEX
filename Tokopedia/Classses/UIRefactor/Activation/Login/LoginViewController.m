@@ -150,8 +150,13 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 
     NSArray<UIButton *> *buttons = [providers bk_map:^UIButton *(SignInProvider *provider) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+        button.titleLabel.font = [UIFont systemFontOfSize:14];
+        button.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 10);
+        
         [button setTitle:[NSString stringWithFormat:@"Login dengan %@", provider.name] forState:UIControlStateNormal];
+        
         button.backgroundColor = [UIColor fromHexString:provider.color];
+        
         [button setTitleColor:[self textColorForBackground:button.backgroundColor] forState:UIControlStateNormal];
         
         NSURL *url = [NSURL URLWithString:provider.imageUrl];
@@ -161,7 +166,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
         [imageView setImageWithURLRequest:request
                          placeholderImage:nil
                                   success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                                      CGRect rect = CGRectMake(0, 0, 25, 25);
+                                      CGRect rect = CGRectMake(0, 0, 20, 20);
                                       UIGraphicsBeginImageContext(rect.size);
                                       [image drawInRect:rect];
                                       image = UIGraphicsGetImageFromCurrentImageContext();
