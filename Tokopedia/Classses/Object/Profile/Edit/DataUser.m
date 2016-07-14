@@ -11,7 +11,7 @@
 @implementation DataUser
 
 +(RKObjectMapping *)mapping{
-    RKObjectMapping *dataMapping = [RKObjectMapping mappingForClass:[DataUser class]];    
+    RKObjectMapping *dataMapping = [RKObjectMapping mappingForClass:[DataUser class]];
     [dataMapping addAttributeMappingsFromArray:@[@"hobby",
                                                  @"birth_day",
                                                  @"user_messenger",
