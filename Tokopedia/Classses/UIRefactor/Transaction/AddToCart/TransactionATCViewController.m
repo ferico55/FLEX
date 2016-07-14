@@ -487,7 +487,12 @@ typedef enum
                     {
                         [self cell:cell setAccesoryType:UITableViewCellAccessoryNone isLoading:!_isFinishRequesting];
                         
-                        label.text = product.product_price;
+                        NSInteger productPrice = [[[NSNumberFormatter IDRFormarter] numberFromString:product.product_price] integerValue];
+                        NSInteger qty = [_productQuantityTextField.text integerValue];
+                        
+                        NSNumber *price = [NSNumber numberWithInteger:(productPrice / qty)];
+                        NSString *priceString = [[NSNumberFormatter IDRFormarter] stringFromNumber:price];
+                        label.text = priceString;
                         
                         break;
                     }
@@ -496,12 +501,7 @@ typedef enum
 
                         [self cell:cell setAccesoryType:UITableViewCellAccessoryNone isLoading:!_isFinishRequesting];
 
-                        NSInteger productPrice = [[[NSNumberFormatter IDRFormarter] numberFromString:product.product_price] integerValue];
-                        NSInteger qty = [_productQuantityTextField.text integerValue];
-                        
-                        NSNumber *price = [NSNumber numberWithInteger:(productPrice * qty)];
-                        NSString *priceString = [[NSNumberFormatter IDRFormarter] stringFromNumber:price];
-                        label.text = priceString;
+                        label.text = product.product_price;
                         
                         break;
                     }
@@ -883,11 +883,15 @@ typedef enum
     
     ProductDetail *product = _selectedProduct;
 
-    if ([textField.text integerValue] <1) {
+    if ([textField.text integerValue] <[product.product_min_order integerValue]) {
         textField.text = product.product_min_order;
+        
+        NSArray *errorMessages = @[[NSString stringWithFormat: @"%@%@%@", @"Minimum pembelian adalah ", product.product_min_order, @" barang"]];
+        StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessages delegate:self];
+        [alert show];
     }
     
-    [self doCalculate];    
+    [self doCalculate];
     [self requestRate];
 }
 
