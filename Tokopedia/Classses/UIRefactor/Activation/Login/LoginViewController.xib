@@ -93,13 +93,6 @@
                                 <action selector="didTapForgotPasswordButton" destination="-1" eventType="touchUpInside" id="vRA-Vw-eOJ"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x6m-Uq-x7Q">
-                            <rect key="frame" x="122" y="235" width="46" height="30"/>
-                            <state key="normal" title="Button"/>
-                            <connections>
-                                <action selector="didTapYahooButton:" destination="-1" eventType="touchUpInside" id="dfk-kR-ftm"/>
-                            </connections>
-                        </button>
                     </subviews>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="rJv-0e-sEO" secondAttribute="trailing" id="0NJ-MR-s9k"/>

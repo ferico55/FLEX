@@ -179,7 +179,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
             } else if ([provider.id isEqualToString:@"gplus"]) {
                 [[GIDSignIn sharedInstance] signIn];
             } else {
-                [self loginWithYahoo];
+                [self webViewLoginWithUrl:provider.signInUrl];
             }
         } forControlEvents:UIControlEventTouchUpInside];
         
@@ -323,8 +323,8 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void)loginWithYahoo {
-    WebViewSignInViewController *controller = [WebViewSignInViewController new];
+- (void)webViewLoginWithUrl:(NSString *)url {
+    WebViewSignInViewController *controller = [[WebViewSignInViewController alloc] initWithUrl:url];
     controller.onReceiveToken = ^(NSString *token) {
         [controller.navigationController popViewControllerAnimated:YES];
 
@@ -689,10 +689,6 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
 
 - (void)signIn:(GIDSignIn *)signIn didDisconnectWithUser:(GIDGoogleUser *)user withError:(NSError *)error {
     
-}
-
-- (IBAction)didTapYahooButton:(id)sender {
-    [self loginWithYahoo];
 }
 
 #pragma mark - Activation Request

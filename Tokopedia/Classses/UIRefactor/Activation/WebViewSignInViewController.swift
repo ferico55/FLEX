@@ -28,13 +28,24 @@ class WebViewSignInViewController: UIViewController, UIWebViewDelegate, NJKWebVi
         return progress
     }()
 
+    private let url: String
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("use init(url) instead")
+    }
+
+    required init(url: String) {
+        self.url = url
+        super.init(nibName: nil, bundle: nil)
+        
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         let request = NSMutableURLRequest()
         request.setValue("Mozilla/5.0 (iPod; U; CPU iPhone OS 4_3_3 like Mac OS X; ja-jp) AppleWebKit/533.17.9 (KHTML, like Gecko) Version/5.0.2 Mobile/8J2 Safari/6533.18.5", forHTTPHeaderField: "User-Agent")
-        request.URL = NSURL(string: "\(NSString.accountsUrl())/wv/yahoo-login")
+        request.URL = NSURL(string: url)
 
         webView.loadRequest(request)
     }
