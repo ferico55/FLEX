@@ -176,6 +176,17 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
                                   }
                                   failure:nil];
         
+        [button bk_addEventHandler:^(UIButton *button) {
+            if ([provider.id isEqualToString:@"facebook"]) {
+                FBSDKLoginManager *loginManager = [[FBSDKLoginManager alloc] init];
+                [loginManager logInWithReadPermissions:@[@"public_profile", @"email", @"user_birthday"]
+                                    fromViewController:self
+                                               handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
+                                                   [self loginButton:nil didCompleteWithResult:result error:error];
+                                               }];
+            }
+        } forControlEvents:UIControlEventTouchUpInside];
+        
         return button;
     }];
     
