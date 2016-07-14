@@ -149,10 +149,20 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
         [button HVD_pinToRightOfSuperviewWithMargin:0];
         [button HVD_setHeight:25];
         [button HVD_pinToTopOfSuperviewWithMargin:30 * index];
+        
+        if (provider == providers.lastObject) {
+            [button HVD_pinToBottomOfSuperviewWithMargin:0];
+        }
     }];
 
     
     [self.view addSubview:providerContainer];
+    
+    CGSize preferredSize = [providerContainer systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+    CGRect frame = providerContainer.frame;
+    frame.size = preferredSize;
+    
+    providerContainer.frame = frame;
 }
 
 -(void)viewWillAppear:(BOOL)animated
