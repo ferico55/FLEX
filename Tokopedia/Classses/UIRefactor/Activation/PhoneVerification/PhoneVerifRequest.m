@@ -10,11 +10,13 @@
 #import "TokopediaNetworkManager.h"
 #import "ProfileEdit.h"
 #import "UserAuthentificationManager.h"
+#import "VerifiedStatus.h"
 
 @interface PhoneVerifRequest()
 @property (strong, nonatomic) TokopediaNetworkManager* phoneNumberNetworkManager;
 @property (strong, nonatomic) TokopediaNetworkManager* requestOTPNetworkManager;
 @property (strong, nonatomic) TokopediaNetworkManager* verifyOTPNetworkManager;
+@property (strong, nonatomic) TokopediaNetworkManager* verifiedStatusNetworkManager;
 @end
 
 @implementation PhoneVerifRequest
@@ -70,5 +72,22 @@
                                        } onFailure:^(NSError *errorResult) {
                                            errorCallback(errorResult);
                                        }];
+}
+
+-(void)requestVerifiedStatusOnSuccess:(void (^)(NSString *))successCallback onFailure:(void (^)(NSError *))errorCallback{
+    _verifiedStatusNetworkManager = [TokopediaNetworkManager new];
+    _verifiedStatusNetworkManager.isUsingHmac = YES;
+    _verifiedStatusNetworkManager.isUsingDefaultError = NO;
+    [_verifiedStatusNetworkManager requestWithBaseUrl:[NSString v4Url]
+                                                 path:@"/v4/msisdn/get_verification_number_form.pl"
+                                               method:RKRequestMethodGET
+                                            parameter:@{}
+                                              mapping:[VerifiedStatus mapping]
+                                            onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                                VerifiedStatus *result = [successResult.dictionary objectForKey:@""];
+                                                successCallback(result.result.msisdn.is_verified);
+                                            } onFailure:^(NSError *errorResult) {
+                                                errorCallback(errorResult);
+                                            }];
 }
 @end

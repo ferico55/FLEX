@@ -19,5 +19,7 @@
         withPhoneNumber:(NSString*)phoneNumber
               onSuccess:(void (^)(GeneralAction*))successCallback
               onFailure:(void (^)(NSError *))errorCallback;
+-(void)requestVerifiedStatusOnSuccess:(void (^)(NSString*))successCallback
+                            onFailure:(void (^)(NSError *))errorCallback;
 
 @end

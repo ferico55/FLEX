@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#define PHONE_VERIF_LAST_APPEAR @"phone_verif_last_appear"
 
 @interface PhoneVerifViewController : UIViewController
 

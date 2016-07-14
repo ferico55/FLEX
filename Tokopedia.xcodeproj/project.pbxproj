@@ -2390,6 +2390,9 @@
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
 		85C494BF1AD790DD008A314A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BE1AD790DD008A314A /* libz.dylib */; };
 		85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494C01AD790E4008A314A /* CoreData.framework */; };
+		BB00F0961D3748EC00EBADDC /* VerifiedStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = BB00F0951D3748EC00EBADDC /* VerifiedStatus.m */; };
+		BB00F0991D37490100EBADDC /* VerifiedStatusResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BB00F0981D37490100EBADDC /* VerifiedStatusResult.m */; };
+		BB00F09C1D37490F00EBADDC /* VerifiedStatusMSISDN.m in Sources */ = {isa = PBXBuildFile; fileRef = BB00F09B1D37490F00EBADDC /* VerifiedStatusMSISDN.m */; };
 		BB3503351D34DCA600BCFEE2 /* PhoneVerifViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB3503331D34DCA600BCFEE2 /* PhoneVerifViewController.m */; };
 		BB3503361D34DCA600BCFEE2 /* PhoneVerifViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB3503341D34DCA600BCFEE2 /* PhoneVerifViewController.xib */; };
 		BB3503391D35EA2C00BCFEE2 /* PhoneVerifRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = BB3503381D35EA2C00BCFEE2 /* PhoneVerifRequest.m */; };
@@ -5961,6 +5964,12 @@
 		85C494BE1AD790DD008A314A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		85C494C01AD790E4008A314A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		AAA12C6A69BF6CB5F8EE3287 /* Pods-Tokopedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug.xcconfig"; sourceTree = "<group>"; };
+		BB00F0941D3748EC00EBADDC /* VerifiedStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VerifiedStatus.h; sourceTree = "<group>"; };
+		BB00F0951D3748EC00EBADDC /* VerifiedStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VerifiedStatus.m; sourceTree = "<group>"; };
+		BB00F0971D37490100EBADDC /* VerifiedStatusResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VerifiedStatusResult.h; sourceTree = "<group>"; };
+		BB00F0981D37490100EBADDC /* VerifiedStatusResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VerifiedStatusResult.m; sourceTree = "<group>"; };
+		BB00F09A1D37490F00EBADDC /* VerifiedStatusMSISDN.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VerifiedStatusMSISDN.h; sourceTree = "<group>"; };
+		BB00F09B1D37490F00EBADDC /* VerifiedStatusMSISDN.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VerifiedStatusMSISDN.m; sourceTree = "<group>"; };
 		BB3503321D34DCA600BCFEE2 /* PhoneVerifViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhoneVerifViewController.h; sourceTree = "<group>"; };
 		BB3503331D34DCA600BCFEE2 /* PhoneVerifViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhoneVerifViewController.m; sourceTree = "<group>"; };
 		BB3503341D34DCA600BCFEE2 /* PhoneVerifViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhoneVerifViewController.xib; sourceTree = "<group>"; };
@@ -8411,6 +8420,12 @@
 				BB3503341D34DCA600BCFEE2 /* PhoneVerifViewController.xib */,
 				BB3503371D35EA2C00BCFEE2 /* PhoneVerifRequest.h */,
 				BB3503381D35EA2C00BCFEE2 /* PhoneVerifRequest.m */,
+				BB00F0941D3748EC00EBADDC /* VerifiedStatus.h */,
+				BB00F0951D3748EC00EBADDC /* VerifiedStatus.m */,
+				BB00F0971D37490100EBADDC /* VerifiedStatusResult.h */,
+				BB00F0981D37490100EBADDC /* VerifiedStatusResult.m */,
+				BB00F09A1D37490F00EBADDC /* VerifiedStatusMSISDN.h */,
+				BB00F09B1D37490F00EBADDC /* VerifiedStatusMSISDN.m */,
 			);
 			path = PhoneVerification;
 			sourceTree = "<group>";
@@ -13808,6 +13823,7 @@
 				8548B0071D1A58F100D11E22 /* ShopInfoResult.m in Sources */,
 				8548B1FD1D1A58F100D11E22 /* MiniSlideObject.m in Sources */,
 				8548AFF91D1A58F100D11E22 /* NotesList.m in Sources */,
+				BB00F09C1D37490F00EBADDC /* VerifiedStatusMSISDN.m in Sources */,
 				8548B3511D1A58F100D11E22 /* EditShopViewController.m in Sources */,
 				8548AF6C1D1A58F100D11E22 /* ResponseCommentResult.m in Sources */,
 				8548B19E1D1A58F100D11E22 /* FavoritedShopViewController.m in Sources */,
@@ -14128,6 +14144,7 @@
 				8548B1021D1A58F100D11E22 /* CatalogProductCell.m in Sources */,
 				8548B2181D1A58F100D11E22 /* ShopPaymentViewController.m in Sources */,
 				8548B2691D1A58F100D11E22 /* ProductListMyShopCell.m in Sources */,
+				BB00F0961D3748EC00EBADDC /* VerifiedStatus.m in Sources */,
 				8548B25C1D1A58F100D11E22 /* ProductAddCaptionViewController.m in Sources */,
 				8548B1A01D1A58F100D11E22 /* FavoriteShopRequest.m in Sources */,
 				8548B0B11D1A58F100D11E22 /* UIViewController+TKPAdditions.m in Sources */,
@@ -14586,6 +14603,7 @@
 				8548B41F1D1A58F200D11E22 /* ProductSingleViewCell.m in Sources */,
 				8548B0941D1A58F100D11E22 /* WishListObjectResult.m in Sources */,
 				8548AF641D1A58F100D11E22 /* DetailReviewReputationViewModel.m in Sources */,
+				BB00F0991D37490100EBADDC /* VerifiedStatusResult.m in Sources */,
 				8548B0601D1A58F100D11E22 /* TransactionVoucher.m in Sources */,
 				8548B38C1D1A58F100D11E22 /* SortViewController.m in Sources */,
 				8548AF821D1A58F100D11E22 /* ProductTalkCommentAction.m in Sources */,

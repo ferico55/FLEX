@@ -19,6 +19,8 @@
 #import "WebViewController.h"
 #import "CategoryDataSource.h"
 #import "Tokopedia-Swift.h"
+#import "PhoneVerifRequest.h"
+#import "PhoneVerifViewController.h"
 
 NSInteger const bannerHeight = 115;
 
@@ -39,7 +41,7 @@ NSInteger const bannerHeight = 115;
 @property (nonatomic, strong) CarouselDataSource *carouselDataSource;
 @property (nonatomic, strong) DigitalGoodsDataSource *digitalGoodsDataSource;
 @property (nonatomic, strong) CategoryDataSource *categoryDataSource;
-
+@property (nonatomic, strong) PhoneVerifRequest *phoneVerifRequest;
 
 @end
 
@@ -91,6 +93,7 @@ NSInteger const bannerHeight = 115;
     NSTimer* timer = [NSTimer timerWithTimeInterval:5.0f target:self selector:@selector(moveToNextSlider) userInfo:nil repeats:YES];
     [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
     
+    _phoneVerifRequest  = [PhoneVerifRequest new];
 }
 
 - (void)orientationChanged:(NSNotification *)note {
@@ -110,8 +113,49 @@ NSInteger const bannerHeight = 115;
     
     self.screenName = @"Top Category";
     [TPAnalytics trackScreenName:@"Top Category"];
+    
+    if([self shouldShowPhoneVerif]){
+        [_phoneVerifRequest requestVerifiedStatusOnSuccess:^(NSString *isVerified) {
+            if(![isVerified boolValue]){
+                PhoneVerifViewController *controller = [PhoneVerifViewController new];
+                controller.title = @"Verifikasi No. HP";
+                UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
+                navigationController.navigationBar.translucent = NO;
+                navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+                [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+            }else{
+                
+            }
+        } onFailure:^(NSError *error) {
+            
+        }];
+    }
 }
 
+- (BOOL)shouldShowPhoneVerif{
+    NSString *phoneVerifLastAppear = [[NSUserDefaults standardUserDefaults] stringForKey:PHONE_VERIF_LAST_APPEAR];
+    NSDate* lastAppearDate = [self NSDatefromString:phoneVerifLastAppear];
+    NSTimeInterval timeIntervalSinceLastAppear = [[NSDate date]timeIntervalSinceDate:lastAppearDate];
+    NSTimeInterval allowedTimeInterval = [self allowedTimeInterval];
+    
+    return timeIntervalSinceLastAppear > allowedTimeInterval;
+}
+
+-(NSTimeInterval)allowedTimeInterval{
+    //return 60*60*24*1;
+    return 10;
+}
+
+-(NSDate*)NSDatefromString:(NSString*)date{
+    static NSDateFormatter *dateFormatter;
+    if (!dateFormatter)
+    {
+        dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"WIB"]];
+        [dateFormatter setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
+    }
+    return [dateFormatter dateFromString:date];
+}
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];

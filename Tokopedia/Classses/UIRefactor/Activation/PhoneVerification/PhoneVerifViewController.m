@@ -6,6 +6,7 @@
 //  Copyright © 2016 TOKOPEDIA. All rights reserved.
 //
 
+
 #import "PhoneVerifViewController.h"
 #import "PhoneVerifRequest.h"
 #import <BLocksKit/BlocksKit.h>
@@ -60,6 +61,27 @@
     
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(backgroundViewTapped:)];
     [_backgroundView addGestureRecognizer:tapGesture];
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [self saveLastAppearInfoToCache];
+}
+
+-(void)saveLastAppearInfoToCache{
+    NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
+    
+    if (standardUserDefaults) {
+        [standardUserDefaults setObject:[self stringFromNSDate:[NSDate date]] forKey:PHONE_VERIF_LAST_APPEAR];
+        [standardUserDefaults synchronize];
+    }
+}
+
+-(NSString*)stringFromNSDate:(NSDate*)date{
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter stringFromDate:@"WIB"];
+    [formatter setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
+    return [formatter stringFromDate:date];
 }
 
 - (void)didReceiveMemoryWarning {
