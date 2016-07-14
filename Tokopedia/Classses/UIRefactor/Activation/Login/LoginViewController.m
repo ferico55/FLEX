@@ -135,6 +135,15 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     ];
 }
 
+- (UIColor *)textColorForBackground:(UIColor *)color {
+    CGFloat red, green, blue, alpha;
+    [color getRed:&red green:&green blue:&blue alpha:&alpha];
+    
+    CGFloat value = (299 * red * 255+ 587 * green * 255 + 114 * blue * 255)/1000;
+    CGFloat textColorFloat = value >= 128? 0: 1;
+    return [UIColor colorWithWhite:textColorFloat alpha:1];
+}
+
 - (void)onReceiveSignInProviders:(NSArray<SignInProvider *> *)providers {
     UIView *providerContainer = [[UIView alloc] init];
     [self.view addSubview:providerContainer];
@@ -143,6 +152,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
         UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
         [button setTitle:[NSString stringWithFormat:@"Login dengan %@", provider.name] forState:UIControlStateNormal];
         button.backgroundColor = [UIColor fromHexString:provider.color];
+        [button setTitleColor:[self textColorForBackground:button.backgroundColor] forState:UIControlStateNormal];
         
         return button;
     }];
