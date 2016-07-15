@@ -27,7 +27,6 @@
 @property BOOL isPresentedViewController;
 @property (weak, nonatomic) id<LoginViewDelegate> delegate;
 @property (weak, nonatomic) id redirectViewController;
-@property BOOL isFromTabBar;
 
 @property (retain, nonatomic) IBOutlet GPPSignInButton *signInButton;
 

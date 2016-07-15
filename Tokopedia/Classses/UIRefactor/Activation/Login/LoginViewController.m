@@ -813,7 +813,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification object:nil];
     
     
-    
+    /*
     if([_login.result.msisdn_is_verified isEqualToString:@"0"]){
         HelloPhoneVerificationViewController *controller = [HelloPhoneVerificationViewController new];
         controller.delegate = self.delegate;
@@ -829,6 +829,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
             [self.navigationController presentViewController:navigationController animated:YES completion:nil];
         }
     }else{
+     */
         if (_isPresentedViewController && [self.delegate respondsToSelector:@selector(redirectViewController:)]) {
             [self.delegate redirectViewController:_redirectViewController];
             [self.navigationController dismissViewControllerAnimated:YES completion:nil];
@@ -838,7 +839,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
             [self.tabBarController setSelectedIndex:0];
             [((HomeTabViewController *)[tempNavController.viewControllers firstObject]) redirectToProductFeed];
         }
-    }
+    //}
     
     
     [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
@@ -1028,6 +1029,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
 
 - (void)createPasswordSuccess
 {
+    /*
     if([_login.result.msisdn_is_verified isEqualToString:@"0"]){
         HelloPhoneVerificationViewController *controller = [HelloPhoneVerificationViewController new];
         controller.delegate = self.delegate;
@@ -1043,6 +1045,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
             [self.navigationController presentViewController:navigationController animated:YES completion:nil];
         }
     }else{
+     */
         if (_isPresentedViewController && [self.delegate respondsToSelector:@selector(redirectViewController:)]) {
             [self.delegate redirectViewController:_redirectViewController];
             [self.navigationController dismissViewControllerAnimated:YES completion:nil];
@@ -1052,7 +1055,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
             [self.tabBarController setSelectedIndex:0];
             [((HomeTabViewController *)[tempNavController.viewControllers firstObject]) redirectToProductFeed];
         }
-    }
+    //}
 }
 
 #pragma mark - Google sign in delegate

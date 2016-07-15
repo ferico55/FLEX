@@ -319,7 +319,6 @@ typedef enum TagRequest {
     UINavigationController *moreNavBar;
     if (!isauth) {
         LoginViewController *more = [LoginViewController new];
-        more.isFromTabBar = YES;
         moreNavBar = [[UINavigationController alloc]initWithRootViewController:more];
         
         if (_page == MainViewControllerPageRegister) {
@@ -595,7 +594,6 @@ typedef enum TagRequest {
     UINavigationController *moreNavBar = nil;
     if (!isauth) {
         LoginViewController *more = [LoginViewController new];
-        more.isFromTabBar = YES;
         moreNavBar = [[UINavigationController alloc]initWithRootViewController:more];
         [[_tabBarController.viewControllers objectAtIndex:3] tabBarItem].badgeValue = nil;
     }
