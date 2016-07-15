@@ -2392,6 +2392,7 @@
 		92350CD91D334CA800AF35ED /* VTToken.m in Sources */ = {isa = PBXBuildFile; fileRef = 923507021D334CA600AF35ED /* VTToken.m */; };
 		92350CDA1D334CA800AF35ED /* VTTransactionDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 923507041D334CA600AF35ED /* VTTransactionDetails.m */; };
 		9247619F1D374C020031DC1E /* UIColorCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9247619E1D374C020031DC1E /* UIColorCategory.swift */; };
+		9268BB6E1D389B4600D11333 /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = 9268BB6D1D389B4600D11333 /* UIImage+Resize.m */; };
 		92A2B3DB1D36266D00BAB2C8 /* DiscoverResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A2B3DA1D36266D00BAB2C8 /* DiscoverResponse.swift */; };
 		92A2B3DD1D36286B00BAB2C8 /* DiscoverResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A2B3DC1D36286B00BAB2C8 /* DiscoverResult.swift */; };
 		92A2B3DF1D363D9C00BAB2C8 /* SignInProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A2B3DE1D363D9C00BAB2C8 /* SignInProvider.swift */; };
@@ -5966,6 +5967,8 @@
 		9235FFFE1D334CA500AF35ED /* TxOrderConfirmationList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxOrderConfirmationList.h; sourceTree = "<group>"; };
 		9235FFFF1D334CA500AF35ED /* TxOrderConfirmationList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxOrderConfirmationList.m; sourceTree = "<group>"; };
 		9247619E1D374C020031DC1E /* UIColorCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorCategory.swift; sourceTree = "<group>"; };
+		9268BB6C1D389B4600D11333 /* UIImage+Resize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Resize.h"; sourceTree = "<group>"; };
+		9268BB6D1D389B4600D11333 /* UIImage+Resize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Resize.m"; sourceTree = "<group>"; };
 		92A2B3DA1D36266D00BAB2C8 /* DiscoverResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoverResponse.swift; sourceTree = "<group>"; };
 		92A2B3DC1D36286B00BAB2C8 /* DiscoverResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscoverResult.swift; sourceTree = "<group>"; };
 		92A2B3DE1D363D9C00BAB2C8 /* SignInProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInProvider.swift; sourceTree = "<group>"; };
@@ -10221,6 +10224,8 @@
 		9235FBEC1D334CA400AF35ED /* Cocoa */ = {
 			isa = PBXGroup;
 			children = (
+				9268BB6C1D389B4600D11333 /* UIImage+Resize.h */,
+				9268BB6D1D389B4600D11333 /* UIImage+Resize.m */,
 				9235FBED1D334CA400AF35ED /* AFNetworkingImageDownloader.h */,
 				9235FBEE1D334CA400AF35ED /* AFNetworkingImageDownloader.mm */,
 				9235FBEF1D334CA400AF35ED /* CMPopTipView.h */,
@@ -14093,6 +14098,7 @@
 				923507541D334CA700AF35ED /* CatalogAddProduct.m in Sources */,
 				9235075C1D334CA700AF35ED /* CategoryList.m in Sources */,
 				923507951D334CA700AF35ED /* TalkResult.m in Sources */,
+				9268BB6E1D389B4600D11333 /* UIImage+Resize.m in Sources */,
 				923507251D334CA600AF35ED /* NSMutableAttributedString+TKPCategory.m in Sources */,
 				92350AA11D334CA700AF35ED /* InboxTicketViewController.m in Sources */,
 				923509361D334CA700AF35ED /* UploadImageValidationResult.m in Sources */,

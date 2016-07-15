@@ -40,6 +40,7 @@
 #import "AuthenticationService.h"
 #import <Masonry/Masonry.h>
 #import <BlocksKit/UIControl+BlocksKit.h>
+#import "UIImage+Resize.h"
 
 static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jdpts.apps.googleusercontent.com";
 
@@ -167,12 +168,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
         [imageView setImageWithURLRequest:request
                          placeholderImage:nil
                                   success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                                      CGRect rect = CGRectMake(0, 0, 20, 20);
-                                      UIGraphicsBeginImageContext(rect.size);
-                                      [image drawInRect:rect];
-                                      image = UIGraphicsGetImageFromCurrentImageContext();
-                                      UIGraphicsEndImageContext();
-
+                                      image = [image resizedImageToSize:CGSizeMake(20, 20)];
                                       [button setImage:image forState:UIControlStateNormal];
                                   }
                                   failure:nil];
