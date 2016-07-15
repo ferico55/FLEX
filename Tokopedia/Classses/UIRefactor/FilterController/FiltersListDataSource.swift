@@ -265,7 +265,7 @@ class FiltersListDataSource:  NSObject, UITableViewDelegate, UITableViewDataSour
         selectedObject.value = "\(newString)"
         
         for (index, selected) in selectedObjects.enumerate() {
-            if selected.key == selectedObject.key || selected.value == ""{
+            if selected.key == selectedObject.key {
                 selectedObjects.removeAtIndex(index)
             }
         }
