@@ -32,6 +32,8 @@ class ReportProductViewController: UIViewController, UITextViewDelegate{
         self.linkInstructionLabel.addGestureRecognizer(goToWebVCTapGestureRecognizer)
         downPickerTextField.enabled = false
         deskripsiTextView.delegate = self
+        //self.downPicker = DownPicker(textField: downPickerTextField, withData: [])
+        
         generateKeyboardNotification()
         getReportTypeFromAPI()
         setupHiddenObject()
@@ -198,6 +200,12 @@ class ReportProductViewController: UIViewController, UITextViewDelegate{
         var reportTitleArrayWithHardcodedAtIndex0 :[String] = reportTitleArray
         reportTitleArrayWithHardcodedAtIndex0.insert("Pilih Jenis Laporan", atIndex: 0)
         self.downPicker = DownPicker(textField: downPickerTextField, withData: reportTitleArrayWithHardcodedAtIndex0)
+        var frame = self.downPicker.getTextField().rightView?.frame
+        frame?.size.height = (frame?.size.height)! / 1.5
+        frame?.size.width = (frame?.size.width)! / 2
+        self.downPicker.getTextField().rightView?.contentMode = .Left
+        self.downPicker.getTextField().rightView?.frame = frame!
+        self.downPicker.setArrowImage(UIImage(named: "icon_up_down_arrow_green"))
         self.downPicker.selectedIndex = 0
         self.downPicker.addTarget(self, action: #selector(ReportProductViewController.didChangeDownPickerValue(_:)), forControlEvents: .ValueChanged)
     }
