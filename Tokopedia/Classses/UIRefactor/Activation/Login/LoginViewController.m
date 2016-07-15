@@ -69,6 +69,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 @property (weak, nonatomic) IBOutlet UIButton *forgetPasswordButton;
 
 @property (strong, nonatomic) IBOutlet UILabel *signInLabel;
+@property (strong, nonatomic) IBOutlet UILabel *orLabel;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *formViewMarginTopConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *formViewWidthConstraint;
@@ -216,7 +217,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     [self.signInProviderView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(_emailTextField.mas_left);
         make.right.equalTo(_emailTextField.mas_right);
-        make.top.equalTo(_forgetPasswordButton.mas_bottom);
+        make.top.equalTo(_orLabel.mas_bottom).with.offset(10);
     }];
 }
 
