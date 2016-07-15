@@ -113,6 +113,7 @@ static NSString const *rows = @"12";
     NSArray *_initialCategories;
     CategoryDetail *_selectedCategory;
     TokopediaNetworkManager *_requestHotlistManager;
+    HotlistBannerResult *_hotlistBannerResult;
     
     FilterData *_filterResponse;
     NSArray<ListOption*> *_selectedFilters;
@@ -399,8 +400,11 @@ static NSString const *rows = @"12";
         _selectedFilterParam = paramFilters;
         
         [self isShowFilterIsActive:[self filterIsActive]];
-        
-        [self refreshView:nil];
+          if (![self filterIsActive]) {
+              [self didReceiveBannerHotlist:_hotlistBannerResult];
+          } else {
+              [self refreshView:nil];
+          }
         
     } onReceivedFilterDataOption:^(FilterData * filterResponse){
         _filterResponse = filterResponse;
@@ -889,6 +893,7 @@ static NSString const *rows = @"12";
 
 #pragma mark - Banner Request Delegate 
 - (void)didReceiveBannerHotlist:(HotlistBannerResult *)bannerResult {
+    _hotlistBannerResult = bannerResult;
     _bannerResult = bannerResult;
     [self setHeaderData];
     
