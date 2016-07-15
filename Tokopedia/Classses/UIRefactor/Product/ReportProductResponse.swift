@@ -9,18 +9,15 @@
 import UIKit
 
 class ReportProductResponse: NSObject {
-
-    var message_error: String!
+    
     var status: String!
     var server_process_time: String!
     var data: ReportProductResult!
     
     class func mapping() -> RKObjectMapping {
         let mapping: RKObjectMapping = RKObjectMapping(forClass: ReportProductResponse.self)
-        mapping.addAttributeMappingsFromArray(["message_error", "status", "server_process_time"])
+        mapping.addAttributeMappingsFromArray(["status", "server_process_time"])
         mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "data", toKeyPath: "data", withMapping: ReportProductResult.mapping()))
         return mapping;
     }
-    
-    
 }
