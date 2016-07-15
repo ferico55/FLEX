@@ -164,17 +164,36 @@
         }];
     }
 }
+/*
 
+ apps should ask for phone verif if:
+ 1. is login
+ 2. msisdn_is_verified in secure storage is 0 ("msisdn_is_verified" is updated when: login or verifying phone number profile setting)
+ 3. if last appear timestamp in cache is nil, go to step 6(first login)
+ 4. check if phone verif last appear timestamp is already past time interval tolerance
+ 5. check WS, maybe user is already do phone verif in another media(other apps, website, etc)
+ 6. if not, do ask for verif
+ 
+*/
 - (BOOL)shouldShowPhoneVerif{
     NSString *phoneVerifLastAppear = [[NSUserDefaults standardUserDefaults] stringForKey:PHONE_VERIF_LAST_APPEAR];
+    UserAuthentificationManager *userAuth = [UserAuthentificationManager new];
     TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
     NSDictionary *auth = [secureStorage keychainDictionary];
-    if(![[auth objectForKey:@"msisdn_is_verified"] boolValue]){
-        NSDate* lastAppearDate = [self NSDatefromString:phoneVerifLastAppear];
-        NSTimeInterval timeIntervalSinceLastAppear = [[NSDate date]timeIntervalSinceDate:lastAppearDate];
-        NSTimeInterval allowedTimeInterval = [self allowedTimeInterval];
-        
-        return timeIntervalSinceLastAppear > allowedTimeInterval;
+    
+    if([userAuth isLogin]){
+        if(![[auth objectForKey:@"msisdn_is_verified"] boolValue]){
+            NSDate* lastAppearDate = [self NSDatefromString:phoneVerifLastAppear];
+            if(lastAppearDate){
+                NSTimeInterval timeIntervalSinceLastAppear = [[NSDate date]timeIntervalSinceDate:lastAppearDate];
+                NSTimeInterval allowedTimeInterval = [self allowedTimeInterval];
+                return timeIntervalSinceLastAppear > allowedTimeInterval;
+            }else{
+                return YES;
+            }
+        }else{
+            return NO;
+        }
     }else{
         return NO;
     }
@@ -182,7 +201,7 @@
 
 -(NSTimeInterval)allowedTimeInterval{
     //return 60*60*24*1;
-    return 20;
+    return 60;
 }
 
 -(NSDate*)NSDatefromString:(NSString*)date{
