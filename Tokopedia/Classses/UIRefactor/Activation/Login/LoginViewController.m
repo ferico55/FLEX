@@ -143,7 +143,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 }
 
 - (void)onReceiveSignInProviders:(NSArray<SignInProvider *> *)providers {
-    [_signInProviderLoadingIndicator stopAnimating];
+    _signInProviderLoadingIndicator.hidden = YES;
     
     self.signInProviderView = [[UIView alloc] init];
     [self.view addSubview:self.signInProviderView];
