@@ -89,8 +89,8 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
                 vc.view.backgroundColor = UIColor.whiteColor()
                 self.setTabbarViewController([vc])
             } else {
-                self.filterResponse = response
-                self.completionHandlerResponse(response)
+                self.filterResponse = self.addFilterCategory(response)
+                self.completionHandlerResponse(self.filterResponse)
                 self.adjustControllers()
                 self.setTabbarViewController(self.listControllers)
             }
@@ -152,10 +152,22 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
         presentedController.navigationController!.presentViewController(navigation, animated: true, completion: nil)
     }
     
+    private func addFilterCategory(response:FilterData) -> FilterData{
+        if self.source == Source.Directory.description() {
+            let filter : ListFilter = ListFilter()
+            filter.title = self.categoryTitle()
+            filter.isMultipleSelect = false
+            response.filter.insert(filter, atIndex: 0)
+            return response
+            
+        }
+        return response
+    }
+    
     private func adjustControllers(){
         for filter in filterResponse.filter {
             if filter.title == categoryTitle() {
-                let controller : CategoryFilterViewController = CategoryFilterViewController.init(rootCategoryID:rootCategoryID, selectedCategories: selectedCategories, initialCategories:categories) { (selectedCategory) in
+                let controller : CategoryFilterViewController = CategoryFilterViewController.init(rootCategoryID:rootCategoryID, selectedCategories: selectedCategories, initialCategories:categories, isMultipleSelect: filter.isMultipleSelect) { (selectedCategory) in
                     self.selectedCategories = selectedCategory
                     self .adjustImageTabBarButton((self.selectedCategories.count>0))
                 }
@@ -213,11 +225,11 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
         return ((allElemsContained.count>0) || textFieldIsActive)
     }
     
-    private func textInputType()-> NSString{
+    private func textInputType()-> String{
         return "textbox"
     }
     
-    private func categoryTitle() -> NSString{
+    private func categoryTitle() -> String{
         return "Kategori"
     }
     

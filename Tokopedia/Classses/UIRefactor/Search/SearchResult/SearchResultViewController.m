@@ -866,6 +866,10 @@ ImageSearchRequestDelegate
 }
 
 -(Source)getSourceSearchData{
+    if (_isFromDirectory) {
+        return SourceDirectory;
+    }
+    
     NSString * type = [_data objectForKey:kTKPDSEARCH_DATATYPE]?:@"";
     if ([type isEqualToString:@"hot_product"]) {
         return SourceHotlist;

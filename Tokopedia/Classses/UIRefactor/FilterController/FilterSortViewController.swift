@@ -151,12 +151,23 @@ class FilterSortViewController: UIViewController, UITableViewDelegate, UITableVi
             self.tableView.setContentOffset(CGPointZero, animated:true)
             self.refreshControl.endRefreshing()
             
-            self.completionHandlerResponse(response)
+            self.completionHandlerResponse(self.addFilterCategory(response))
             self.tableView.reloadData()
             
         }) { (error) in
             self.tableView.setContentOffset(CGPointZero, animated:true)
             self.refreshControl.endRefreshing()
         }
+    }
+    
+    private func addFilterCategory(response:FilterData) -> FilterData{
+        if self.source == Source.Directory.description() {
+            let filter : ListFilter = ListFilter()
+            filter.title = "Kategori"
+            filter.isMultipleSelect = false
+            response.filter.insert(filter, atIndex: 0)
+            return response
+        }
+        return response
     }
 }

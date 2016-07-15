@@ -23,12 +23,14 @@ import UIKit
     private var completionHandler:([CategoryDetail])->Void = {(arg:[CategoryDetail]) -> Void in}
     private var refreshControl : UIRefreshControl = UIRefreshControl()
     private var rootCategoryID :String = ""
+    private var isMultipleSelect : Bool = true
     
-    init(rootCategoryID:String, selectedCategories:[CategoryDetail], initialCategories:[CategoryDetail], onCompletion: (([CategoryDetail]) -> Void)){
+    init(rootCategoryID:String, selectedCategories:[CategoryDetail], initialCategories:[CategoryDetail], isMultipleSelect:Bool, onCompletion: (([CategoryDetail]) -> Void)){
         self.rootCategoryID = rootCategoryID;
         completionHandler = onCompletion
         self.selectedCategories =  selectedCategories.map { ($0.copy() as! CategoryDetail) }
         self.initialCategories = initialCategories.map { ($0.copy() as! CategoryDetail) }
+        self.isMultipleSelect = isMultipleSelect
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -193,15 +195,31 @@ import UIKit
                 self.doExpandCategory(category)
             }
         } else {
-            category.isSelected = !category.isSelected
-            if category.isSelected == false {
-                self.tableView.deselectRowAtIndexPath(indexPath, animated: false)
-                for (index, selected) in selectedCategories.enumerate() {
-                    if selected.categoryId == category.categoryId && category.tree == selected.tree{
-                        selectedCategories .removeAtIndex(index)
+            
+            if self.isMultipleSelect{
+                category.isSelected = !category.isSelected
+                if category.isSelected == false {
+                    self.tableView.deselectRowAtIndexPath(indexPath, animated: false)
+                    for (index, selected) in selectedCategories.enumerate() {
+                        if selected.categoryId == category.categoryId && category.tree == selected.tree{
+                            selectedCategories .removeAtIndex(index)
+                        }
+                    }
+                } else {
+                    selectedCategories.append(category)
+                }
+            } else{
+                if selectedCategories.count > 0 {
+                    let selectedCategory :CategoryDetail = self.selectedCategories.first!
+                    for (index, categoryShow) in self.categories.enumerate() {
+                        if selectedCategory.categoryId == categoryShow.categoryId && categoryShow.tree == selectedCategory.tree{
+                            selectedCategories.removeAll()
+                            self.tableView.beginUpdates()
+                            self.tableView.reloadRowsAtIndexPaths([NSIndexPath.init(forRow: index, inSection: 0)], withRowAnimation: .None)
+                            self.tableView.endUpdates()
+                        }
                     }
                 }
-            } else {
                 selectedCategories.append(category)
             }
             
