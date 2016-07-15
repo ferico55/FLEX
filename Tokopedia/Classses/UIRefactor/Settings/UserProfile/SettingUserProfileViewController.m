@@ -28,7 +28,6 @@
 #import "TKPDPhotoPicker.h"
 
 #import "UIImage+ImageEffects.h"
-#import "HelloPhoneVerificationViewController.h"
 #import "UIView+HVDLayout.h"
 
 #import "PhoneVerifViewController.h"
@@ -590,22 +589,12 @@ typedef NS_ENUM(NSInteger, PickerView) {
 }
 
 - (IBAction)didTapVerificationPhoneButton:(UIButton *)sender {
-    //HelloPhoneVerificationViewController *controller = [HelloPhoneVerificationViewController new];
-    //controller.isSkipButtonHidden = NO;
-    
     PhoneVerifViewController *controller = [PhoneVerifViewController new];
     controller.title = @"Verifikasi No. HP";
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
     navigationController.navigationBar.translucent = NO;
     navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
     [self.navigationController presentViewController:navigationController animated:YES completion:nil];
-    
-    /*
-    UINavigationController *navigationController = [[UINavigationController alloc] init];
-    navigationController.navigationBarHidden = YES;
-    navigationController.viewControllers = @[controller];
-    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
-     */
 }
 
 - (void)didTapSaveButton:(UIBarButtonItem *)saveButton {

@@ -592,10 +592,6 @@
 		BB0002271D3885B200EBADDC /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB00F5BE1D3885A900EBADDC /* LoginViewController.m */; };
 		BB0002281D3885B200EBADDC /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB00F5BF1D3885A900EBADDC /* LoginViewController.xib */; };
 		BB0002291D3885B200EBADDC /* LogoutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB00F5C21D3885A900EBADDC /* LogoutViewController.m */; };
-		BB00022A1D3885B200EBADDC /* HelloPhoneVerificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB00F5C51D3885A900EBADDC /* HelloPhoneVerificationViewController.m */; };
-		BB00022B1D3885B200EBADDC /* HelloPhoneVerificationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB00F5C61D3885A900EBADDC /* HelloPhoneVerificationViewController.xib */; };
-		BB00022C1D3885B200EBADDC /* PhoneVerificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB00F5C81D3885A900EBADDC /* PhoneVerificationViewController.m */; };
-		BB00022D1D3885B200EBADDC /* PhoneVerificationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB00F5C91D3885A900EBADDC /* PhoneVerificationViewController.xib */; };
 		BB00022E1D3885B200EBADDC /* PhoneVerifRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = BB00F5CB1D3885A900EBADDC /* PhoneVerifRequest.m */; };
 		BB00022F1D3885B200EBADDC /* PhoneVerifViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB00F5CD1D3885A900EBADDC /* PhoneVerifViewController.m */; };
 		BB0002301D3885B200EBADDC /* PhoneVerifViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB00F5CE1D3885A900EBADDC /* PhoneVerifViewController.xib */; };
@@ -3638,12 +3634,6 @@
 		BB00F5BF1D3885A900EBADDC /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
 		BB00F5C11D3885A900EBADDC /* LogoutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogoutViewController.h; sourceTree = "<group>"; };
 		BB00F5C21D3885A900EBADDC /* LogoutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogoutViewController.m; sourceTree = "<group>"; };
-		BB00F5C41D3885A900EBADDC /* HelloPhoneVerificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelloPhoneVerificationViewController.h; sourceTree = "<group>"; };
-		BB00F5C51D3885A900EBADDC /* HelloPhoneVerificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelloPhoneVerificationViewController.m; sourceTree = "<group>"; };
-		BB00F5C61D3885A900EBADDC /* HelloPhoneVerificationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HelloPhoneVerificationViewController.xib; sourceTree = "<group>"; };
-		BB00F5C71D3885A900EBADDC /* PhoneVerificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhoneVerificationViewController.h; sourceTree = "<group>"; };
-		BB00F5C81D3885A900EBADDC /* PhoneVerificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhoneVerificationViewController.m; sourceTree = "<group>"; };
-		BB00F5C91D3885A900EBADDC /* PhoneVerificationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhoneVerificationViewController.xib; sourceTree = "<group>"; };
 		BB00F5CA1D3885A900EBADDC /* PhoneVerifRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhoneVerifRequest.h; sourceTree = "<group>"; };
 		BB00F5CB1D3885A900EBADDC /* PhoneVerifRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhoneVerifRequest.m; sourceTree = "<group>"; };
 		BB00F5CC1D3885A900EBADDC /* PhoneVerifViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhoneVerifViewController.h; sourceTree = "<group>"; };
@@ -8410,12 +8400,6 @@
 		BB00F5C31D3885A900EBADDC /* PhoneVerification */ = {
 			isa = PBXGroup;
 			children = (
-				BB00F5C41D3885A900EBADDC /* HelloPhoneVerificationViewController.h */,
-				BB00F5C51D3885A900EBADDC /* HelloPhoneVerificationViewController.m */,
-				BB00F5C61D3885A900EBADDC /* HelloPhoneVerificationViewController.xib */,
-				BB00F5C71D3885A900EBADDC /* PhoneVerificationViewController.h */,
-				BB00F5C81D3885A900EBADDC /* PhoneVerificationViewController.m */,
-				BB00F5C91D3885A900EBADDC /* PhoneVerificationViewController.xib */,
 				BB00F5CA1D3885A900EBADDC /* PhoneVerifRequest.h */,
 				BB00F5CB1D3885A900EBADDC /* PhoneVerifRequest.m */,
 				BB00F5CC1D3885A900EBADDC /* PhoneVerifViewController.h */,
@@ -12872,7 +12856,6 @@
 				BB0008081D3885B200EBADDC /* icon_toped_loading_grey-02@2x.png in Resources */,
 				BB0008741D3885B200EBADDC /* onboarding5_bling.png in Resources */,
 				BB00063F1D3885B200EBADDC /* icon_button_favorite_nonactive@3x.png in Resources */,
-				BB00022D1D3885B200EBADDC /* PhoneVerificationViewController.xib in Resources */,
 				BB0007151D3885B200EBADDC /* icon_medal_gold@3x.png in Resources */,
 				BB0008261D3885B200EBADDC /* icon_view@2x.png in Resources */,
 				BB00073C1D3885B200EBADDC /* icon_neutral25@3x.png in Resources */,
@@ -13736,7 +13719,6 @@
 				BB0005F01D3885B200EBADDC /* icon_20@2x.png in Resources */,
 				BB0008191D3885B200EBADDC /* icon_uncheck_gray@3x.png in Resources */,
 				BB00077F1D3885B200EBADDC /* icon_questionmark_blue.png in Resources */,
-				BB00022B1D3885B200EBADDC /* HelloPhoneVerificationViewController.xib in Resources */,
 				BB0008251D3885B200EBADDC /* icon_view.png in Resources */,
 				BB0006E31D3885B200EBADDC /* icon_info_grey@2x.png in Resources */,
 				BB00073D1D3885B200EBADDC /* icon_neutral50.png in Resources */,
@@ -14365,7 +14347,6 @@
 				BB0001061D3885B200EBADDC /* ProfileSettingsResult.m in Sources */,
 				BB0001211D3885B200EBADDC /* ReputationList.m in Sources */,
 				BB00053C1D3885B200EBADDC /* TransactionCCDetailViewController.m in Sources */,
-				BB00022A1D3885B200EBADDC /* HelloPhoneVerificationViewController.m in Sources */,
 				BB0005291D3885B200EBADDC /* CartCell.m in Sources */,
 				BB0000851D3885B200EBADDC /* HotlistBannerResult.m in Sources */,
 				BB0004BF1D3885B200EBADDC /* EditShopDataSource.m in Sources */,
@@ -14546,7 +14527,6 @@
 				BB0003351D3885B200EBADDC /* TKPDTabHomeViewController.m in Sources */,
 				BB0004361D3885B200EBADDC /* ReputationPageViewController.m in Sources */,
 				BB0001B91D3885B200EBADDC /* TransactionCartGateway.m in Sources */,
-				BB00022C1D3885B200EBADDC /* PhoneVerificationViewController.m in Sources */,
 				BB0003C71D3885B200EBADDC /* GalleryPhoto.m in Sources */,
 				BB0000C21D3885B200EBADDC /* RatingResult.m in Sources */,
 				BB0003AA1D3885B200EBADDC /* NotificationViewController.m in Sources */,

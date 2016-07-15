@@ -19,8 +19,8 @@
 #import "TransactionCartRootViewController.h"
 #import "ContactUsWireframe.h"
 #import "TPContactUsDependencies.h"
-#import "HelloPhoneVerificationViewController.h"
 #import "LoginViewController.h"
+#import "PhoneVerifViewController.h"
 
 #import "string_product.h"
 
@@ -351,11 +351,12 @@
 - (void)redirectToPhoneVerification {
     UserAuthentificationManager *auth = [UserAuthentificationManager new];
     if (auth.isLogin) {
-        HelloPhoneVerificationViewController *controller = [HelloPhoneVerificationViewController new];
-        controller.redirectViewController = self.activeController;
-        UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:controller];
-        navigation.navigationBarHidden = YES;
-        [self.activeController.navigationController presentViewController:navigation animated:YES completion:NULL];
+        PhoneVerifViewController *controller = [PhoneVerifViewController new];
+        controller.title = @"Verifikasi No. HP";
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
+        navigationController.navigationBar.translucent = NO;
+        navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+        [self.activeController.navigationController presentViewController:navigationController animated:YES completion:NULL];
     } else {
         [self redirectToLogin];
     }
@@ -363,6 +364,7 @@
 
 - (void)redirectToLogin {
     LoginViewController *controller = [LoginViewController new];
+    controller.triggerPhoneVerification = YES;
     controller.isPresentedViewController = YES;
     UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:controller];
     navigation.navigationBar.translucent = NO;
