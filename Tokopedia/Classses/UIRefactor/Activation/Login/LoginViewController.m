@@ -77,6 +77,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *googleButtonTopConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *facebookButtonTopConstraint;
 
+@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *signInProviderLoadingIndicator;
 @property(nonatomic, strong) UIView *signInProviderView;
 @end
 
@@ -94,6 +95,8 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     [super viewDidLoad];
     _userManager = [[UserAuthentificationManager alloc]init];
 
+    [_signInProviderLoadingIndicator startAnimating];
+    
     UIImage *iconToped = [UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE];
     UIImageView *topedImageView = [[UIImageView alloc] initWithImage:iconToped];
     self.navigationItem.titleView = topedImageView;
@@ -139,6 +142,8 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 }
 
 - (void)onReceiveSignInProviders:(NSArray<SignInProvider *> *)providers {
+    [_signInProviderLoadingIndicator stopAnimating];
+    
     self.signInProviderView = [[UIView alloc] init];
     [self.view addSubview:self.signInProviderView];
 

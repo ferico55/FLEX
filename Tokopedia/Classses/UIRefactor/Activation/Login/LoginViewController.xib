@@ -24,6 +24,7 @@
                 <outlet property="loginButton" destination="BjJ-ah-R04" id="dvv-2B-Ufl"/>
                 <outlet property="passwordTextField" destination="rJv-0e-sEO" id="wTA-pJ-GR0"/>
                 <outlet property="screenLogin" destination="tu9-kn-elL" id="oKK-HZ-puV"/>
+                <outlet property="signInProviderLoadingIndicator" destination="o6d-dc-EI3" id="RQm-hK-6pB"/>
                 <outlet property="view" destination="lpZ-Wc-EfF" id="4lY-8H-fs8"/>
             </connections>
         </placeholder>
@@ -93,6 +94,9 @@
                                 <action selector="didTapForgotPasswordButton" destination="-1" eventType="touchUpInside" id="vRA-Vw-eOJ"/>
                             </connections>
                         </button>
+                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="o6d-dc-EI3">
+                            <rect key="frame" x="135" y="180" width="20" height="20"/>
+                        </activityIndicatorView>
                     </subviews>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="rJv-0e-sEO" secondAttribute="trailing" id="0NJ-MR-s9k"/>
