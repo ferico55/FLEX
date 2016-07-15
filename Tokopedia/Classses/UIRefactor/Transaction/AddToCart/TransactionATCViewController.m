@@ -23,6 +23,8 @@
 
 #import "NSNumberFormatter+IDRFormater.h"
 
+#import "Tokopedia-Swift.h"
+
 @import GoogleMaps;
 
 typedef enum
@@ -76,6 +78,8 @@ typedef enum
     TransactionATCFormResult *_ATCForm;
     
     NSArray<RateAttributes*> *_shipments;
+    
+    DelayedActionManager *requestPriceDelayedActionManager;
 }
 
 @property (weak, nonatomic) IBOutlet UIButton *pinLocationNameButton;
@@ -107,20 +111,6 @@ typedef enum
 
 @implementation TransactionATCViewController
 
-- (IBAction)productQuantityStepperValueChanged:(UIStepper *)sender {
-    NSInteger qty = [_productQuantityTextField.text integerValue];
-    qty += (int)sender.value;
-    
-    //set min and max value
-    qty = fmin(999, qty);
-    qty = fmax([_selectedProduct.product_min_order integerValue], qty);
-    
-    _productQuantityTextField.text = [NSString stringWithFormat: @"%d", (int)qty];
-        
-    sender.value = 0;
-}
-
-
 #pragma mark - Initialization
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -135,6 +125,7 @@ typedef enum
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    requestPriceDelayedActionManager = [DelayedActionManager new];
     _tableViewPaymentDetailCell = [NSArray sortViewsWithTagInArray:_tableViewPaymentDetailCell];
     _tableViewProductCell = [NSArray sortViewsWithTagInArray:_tableViewProductCell];
     _tableViewShipmentCell = [NSArray sortViewsWithTagInArray:_tableViewShipmentCell];
@@ -372,6 +363,24 @@ typedef enum
 
 -(NSString *)messageZeroShipmentDefault{
     return @"Maaf, kami belum dapat melakukan kalkulasi ongkos kirim menuju alamat Anda. Tim kami akan segera melakukan pemeriksaan.";
+}
+
+- (IBAction)productQuantityStepperValueChanged:(UIStepper *)sender {
+    NSInteger qty = [_productQuantityTextField.text integerValue];
+    qty += (int)sender.value;
+    
+    //set min and max value
+    qty = fmin(999, qty);
+    qty = fmax([_selectedProduct.product_min_order integerValue], qty);
+    
+    _productQuantityTextField.text = [NSString stringWithFormat: @"%d", (int)qty];
+    
+    sender.value = 0;
+    
+    [requestPriceDelayedActionManager whenNotCalledFor:1 doAction:^{
+        [self textFieldDidEndEditing:_productQuantityTextField];
+    }];
+    
 }
 
 #pragma mark - Table View Data Source

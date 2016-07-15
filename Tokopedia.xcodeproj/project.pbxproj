@@ -2382,6 +2382,7 @@
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
 		85C494BF1AD790DD008A314A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BE1AD790DD008A314A /* libz.dylib */; };
 		85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494C01AD790E4008A314A /* CoreData.framework */; };
+		D69CE2471D37A8D300A4E519 /* DelayedActionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69CE2461D37A8D300A4E519 /* DelayedActionManager.swift */; };
 		D6A341641D2A6F56009F512C /* MyShopNoteRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A341631D2A6F56009F512C /* MyShopNoteRequest.swift */; };
 		D6A341681D2A6F91009F512C /* Notes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A341651D2A6F91009F512C /* Notes.swift */; };
 		D6A341691D2A6F91009F512C /* NotesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A341661D2A6F91009F512C /* NotesList.swift */; };
@@ -5945,6 +5946,7 @@
 		85C494C01AD790E4008A314A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		AAA12C6A69BF6CB5F8EE3287 /* Pods-Tokopedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug.xcconfig"; sourceTree = "<group>"; };
 		C8A1445074FECD393EA18C17 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
+		D69CE2461D37A8D300A4E519 /* DelayedActionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DelayedActionManager.swift; sourceTree = "<group>"; };
 		D6A341631D2A6F56009F512C /* MyShopNoteRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyShopNoteRequest.swift; sourceTree = "<group>"; };
 		D6A341651D2A6F91009F512C /* Notes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notes.swift; sourceTree = "<group>"; };
 		D6A341661D2A6F91009F512C /* NotesList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotesList.swift; sourceTree = "<group>"; };
@@ -6204,6 +6206,7 @@
 			children = (
 				85489FDB1D1A58E400D11E22 /* NavigationHelper.h */,
 				85489FDC1D1A58E400D11E22 /* NavigationHelper.m */,
+				D69CE2461D37A8D300A4E519 /* DelayedActionManager.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -13685,6 +13688,7 @@
 				8548B07B1D1A58F100D11E22 /* TxOrderPaymentEditOrder.m in Sources */,
 				8548B2E71D1A58F100D11E22 /* FilterShipmentConfirmationViewController.m in Sources */,
 				8548B06E1D1A58F100D11E22 /* TxOrderConfirmedDetailOrder.m in Sources */,
+				D69CE2471D37A8D300A4E519 /* DelayedActionManager.swift in Sources */,
 				8548AEFC1D1A58F100D11E22 /* SimpleFavoritedShopResult.m in Sources */,
 				8548B41E1D1A58F200D11E22 /* ProductModelView.m in Sources */,
 				8548B3171D1A58F100D11E22 /* SettingAddressViewController.m in Sources */,
