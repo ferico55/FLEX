@@ -39,6 +39,7 @@
 #import "SecurityAnswer.h"
 #import "AuthenticationService.h"
 #import <Masonry/Masonry.h>
+#import <BlocksKit/UIControl+BlocksKit.h>
 
 static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jdpts.apps.googleusercontent.com";
 
