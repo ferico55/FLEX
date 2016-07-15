@@ -28,6 +28,7 @@ class FiltersListDataSource:  NSObject, UITableViewDelegate, UITableViewDataSour
     private var searchBarPlaceholder = ""
     
     private var completionHandler:([ListOption])->Void = {(arg:[ListOption]) -> Void in}
+    private var timer : NSTimer?
     
     override init() {
         super.init()
@@ -66,17 +67,17 @@ class FiltersListDataSource:  NSObject, UITableViewDelegate, UITableViewDataSour
         self.tableView!.reloadData()
     }
     
+    func reloadDataAfterFilter() {
+        self.tableView!.reloadData()
+        searchBar.becomeFirstResponder()
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        if searchActive && searchBar.text == "" {
-            return 0
-        }
-        
         if(searchActive){
             if searchBar.text == "" {
                 return self.items.count
@@ -209,15 +210,16 @@ class FiltersListDataSource:  NSObject, UITableViewDelegate, UITableViewDataSour
         
     }
     
-    func searchBarTextDidEndEditing(searchBar: UISearchBar) {
-        
-    }
-    
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        timer?.invalidate()
+        timer = nil
+        searchActive = (searchBar.text != "");
         searchBar.resignFirstResponder()
+        tableView?.reloadData()
     }
     
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+        
         filteredItem = items.filter({ (object) -> Bool in
             let tmp: ListOption = object
             
@@ -230,9 +232,11 @@ class FiltersListDataSource:  NSObject, UITableViewDelegate, UITableViewDataSour
             searchActive = true;
             
         }
-        self.tableView!.reloadData()
-        searchBar.becomeFirstResponder()
         
+        timer?.invalidate()
+        timer = nil
+        timer = NSTimer.scheduledTimerWithTimeInterval(0.3, target: self, selector: #selector(FiltersListDataSource.reloadDataAfterFilter), userInfo: nil, repeats: false)
+
     }
     
     func addItems(items:[ListOption]){
