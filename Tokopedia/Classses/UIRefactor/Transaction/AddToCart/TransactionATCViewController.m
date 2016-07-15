@@ -267,7 +267,7 @@ typedef enum
                            } failed:^(NSError *error) {
                                
                                [self failedFetchForm:error];
-                               
+
                            }];
 }
 
@@ -945,6 +945,7 @@ typedef enum
         return;
     }
     [self setAddress:address];
+    [self setPlacePicker];
     [self requestRate];
 }
 
