@@ -79,7 +79,6 @@
 
 -(NSString*)stringFromNSDate:(NSDate*)date{
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter stringFromDate:@"WIB"];
     [formatter setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
     return [formatter stringFromDate:date];
 }
@@ -89,12 +88,13 @@
 }
 
 - (IBAction)sendOTPButtonTapped:(id)sender {
-    
     [_phoneVerifRequest requestOTPWithPhoneNumber:_phoneNumberTextField.text onSuccess:^(GeneralAction *result) {
         if([result.data.is_success boolValue]){
-            StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:@[@"Sukses mengirimkan kode verifikasi, mohon cek inbox SMS Anda."] delegate:self];
+            NSString* successMessages = @"Sukses mengirimkan kode verifikasi, mohon cek inbox SMS Anda.";
+            StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:@[successMessages] delegate:self];
             [alert show];
             
+            [_titleMessage setText:successMessages];
             [self disablePhoneNumberTextField];
             [self showVerifyButton];
             [self animateSendOTPButton];
