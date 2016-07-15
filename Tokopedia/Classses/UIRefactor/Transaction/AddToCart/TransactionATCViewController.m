@@ -369,16 +369,19 @@ typedef enum
     NSInteger qty = [_productQuantityTextField.text integerValue];
     qty += (int)sender.value;
     
-    //set min and max value
+    //limit quantity min and max value
     qty = fmin(999, qty);
-    qty = fmax([_selectedProduct.product_min_order integerValue], qty);
-    
     _productQuantityTextField.text = [NSString stringWithFormat: @"%d", (int)qty];
     
+    [self alertAndResetIfQtyTextFieldBelowMin];
+    
+    //reset stepper
     sender.value = 0;
     
+    //request when stepper is not clicked for 1 sec
     [requestPriceDelayedActionManager whenNotCalledFor:1 doAction:^{
-        [self textFieldDidEndEditing:_productQuantityTextField];
+        [self doCalculate];
+        [self requestRate];
     }];
     
 }
@@ -890,15 +893,8 @@ typedef enum
 {
     _isFinishRequesting = NO;
     
-    ProductDetail *product = _selectedProduct;
-
-    if ([textField.text integerValue] <[product.product_min_order integerValue]) {
-        textField.text = product.product_min_order;
-        
-        NSArray *errorMessages = @[[NSString stringWithFormat: @"%@%@%@", @"Minimum pembelian adalah ", product.product_min_order, @" barang"]];
-        StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessages delegate:self];
-        [alert show];
-    }
+    if ([textField isEqual:_productQuantityTextField])
+        [self alertAndResetIfQtyTextFieldBelowMin];
     
     [self doCalculate];
     [self requestRate];
@@ -1075,6 +1071,19 @@ replacementString:(NSString*)string
     product.product_quantity =_productQuantityTextField.text;
 
     [TPAnalytics trackAddToCart:product];
+}
+
+-(void)alertAndResetIfQtyTextFieldBelowMin
+{
+    ProductDetail *product = _selectedProduct;
+    
+    if ([_productQuantityTextField.text integerValue] <[product.product_min_order integerValue]) {
+        _productQuantityTextField.text = product.product_min_order;
+        
+        NSArray *errorMessages = @[[NSString stringWithFormat: @"%@%@%@", @"Minimum pembelian adalah ", product.product_min_order, @" barang"]];
+        StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessages delegate:self];
+        [alert show];
+    }
 }
 
 @end
