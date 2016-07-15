@@ -370,7 +370,7 @@
                ) {
                 [_talkInputView setHidden:NO];
             }
-            [_sendButton setEnabled:NO];
+            [self adjustSendButtonAvailability];
         } else {
             [_talkInputView setHidden:YES];
         }
@@ -620,7 +620,7 @@
 
 - (void)putSendCommentBack {
     _growingtextview.text = _savedComment;
-
+    [self adjustSendButtonAvailability];
     [_table beginUpdates];
     [_table deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:_list.count - 1 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
     [_list removeLastObject];
