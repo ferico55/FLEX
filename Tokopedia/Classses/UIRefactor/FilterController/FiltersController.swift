@@ -9,7 +9,7 @@
 import UIKit
 
 @objc enum Source :Int {
-    case Hotlist, Product, Catalog, Shop, Directory, Default
+    case Hotlist, Product, Catalog, CatalogProduct, Shop, Directory, Default
     func description() -> String {
         switch self {
         case .Hotlist:
@@ -18,6 +18,8 @@ import UIKit
             return "search_product"
         case .Catalog:
             return "search_catalog"
+        case .CatalogProduct:
+            return "catalog_product"
         case .Shop:
             return "search_shop"
         case .Directory:
