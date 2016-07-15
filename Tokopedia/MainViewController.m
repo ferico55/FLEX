@@ -46,6 +46,7 @@
 #import "TKPAppFlow.h"
 #import "TKPStoreManager.h"
 #import "MoreWrapperViewController.h"
+#import "PhoneVerifViewController.h"
 
 #define TkpdNotificationForcedLogout @"NOTIFICATION_FORCE_LOGOUT"
 
@@ -722,6 +723,9 @@ typedef enum TagRequest {
         [_logingOutAlertView dismissWithClickedButtonIndex:0 animated:YES];
         _logingOutAlertView = nil;
     }
+    
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:PHONE_VERIF_LAST_APPEAR];
+    [[NSUserDefaults standardUserDefaults] synchronize];
     
     [self performSelector:@selector(applicationLogin:) withObject:nil afterDelay:kTKPDMAIN_PRESENTATIONDELAY];
     

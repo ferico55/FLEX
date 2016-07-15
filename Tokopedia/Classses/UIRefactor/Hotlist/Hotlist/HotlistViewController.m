@@ -27,6 +27,8 @@
 
 #import "RequestNotifyLBLM.h"
 #import "NotificationManager.h"
+#import "PhoneVerifRequest.h"
+#import "PhoneVerifViewController.h"
 
 #pragma mark - HotlistView
 
@@ -50,6 +52,7 @@
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (strong, nonatomic, readonly) UICollectionViewFlowLayout *flowLayout;
+@property (nonatomic, strong) PhoneVerifRequest *phoneVerifRequest;
 
 @end
 
@@ -88,6 +91,7 @@
     _requestHotlistManager.isUsingHmac = YES;
     
     [self requestHotlist];
+    _phoneVerifRequest  = [PhoneVerifRequest new];
     
     UINib *cellNib = [UINib nibWithNibName:@"HotlistCollectionCell" bundle:nil];
     [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"HotlistCollectionCellIdentifier"];
@@ -138,7 +142,60 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(initNotificationManager) name:@"reloadNotification" object:nil];
     
     [self doRequestNotify];
+    [self checkForPhoneVerification];
 }
+
+
+-(void)checkForPhoneVerification{
+    if([self shouldShowPhoneVerif]){
+        [_phoneVerifRequest requestVerifiedStatusOnSuccess:^(NSString *isVerified) {
+            if(![isVerified boolValue]){
+                PhoneVerifViewController *controller = [PhoneVerifViewController new];
+                controller.title = @"Verifikasi No. HP";
+                UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
+                navigationController.navigationBar.translucent = NO;
+                navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+                [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+            }else{
+                
+            }
+        } onFailure:^(NSError *error) {
+            
+        }];
+    }
+}
+
+- (BOOL)shouldShowPhoneVerif{
+    NSString *phoneVerifLastAppear = [[NSUserDefaults standardUserDefaults] stringForKey:PHONE_VERIF_LAST_APPEAR];
+    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+    NSDictionary *auth = [secureStorage keychainDictionary];
+    if(![[auth objectForKey:@"msisdn_is_verified"] boolValue]){
+        NSDate* lastAppearDate = [self NSDatefromString:phoneVerifLastAppear];
+        NSTimeInterval timeIntervalSinceLastAppear = [[NSDate date]timeIntervalSinceDate:lastAppearDate];
+        NSTimeInterval allowedTimeInterval = [self allowedTimeInterval];
+        
+        return timeIntervalSinceLastAppear > allowedTimeInterval;
+    }else{
+        return NO;
+    }
+}
+
+-(NSTimeInterval)allowedTimeInterval{
+    //return 60*60*24*1;
+    return 20;
+}
+
+-(NSDate*)NSDatefromString:(NSString*)date{
+    static NSDateFormatter *dateFormatter;
+    if (!dateFormatter)
+    {
+        dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"WIB"]];
+        [dateFormatter setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
+    }
+    return [dateFormatter dateFromString:date];
+}
+
 
 #pragma mark - Memory Management
 - (void)dealloc {

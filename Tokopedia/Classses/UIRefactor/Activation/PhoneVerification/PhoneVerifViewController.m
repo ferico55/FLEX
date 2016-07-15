@@ -168,6 +168,7 @@
                                                         }];
                                        TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
                                        [secureStorage setKeychainWithValue:@"1" withKey:@"msisdn_is_verified"];
+                                       
                                        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                                        
                                    }else{
@@ -190,6 +191,6 @@
     [self.view endEditing:YES];
 }
 -(NSInteger)timeBeforeAskingAnotherOTP{
-    return 15;
+    return 31;
 }
 @end
