@@ -77,6 +77,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *googleButtonTopConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *facebookButtonTopConstraint;
 
+@property(nonatomic, strong) UIView *signInProviderView;
 @end
 
 @implementation LoginViewController
@@ -89,20 +90,20 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 #pragma mark - Life Cycle
 
 - (void)viewDidLoad
-{    
+{
     [super viewDidLoad];
     _userManager = [[UserAuthentificationManager alloc]init];
 
     UIImage *iconToped = [UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE];
     UIImageView *topedImageView = [[UIImageView alloc] initWithImage:iconToped];
     self.navigationItem.titleView = topedImageView;
-    
+
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                    style:UIBarButtonItemStyleBordered
                                                                   target:self
                                                                   action:@selector(tap:)];
     self.navigationItem.backBarButtonItem = backButton;
-    
+
     UIBarButtonItem *signUpButton = [[UIBarButtonItem alloc] initWithTitle:kTKPDREGISTER_TITLE
                                                                      style:UIBarButtonItemStylePlain
                                                                     target:self
@@ -118,7 +119,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
         cancelButton.tintColor = [UIColor whiteColor];
         self.navigationItem.leftBarButtonItem = cancelButton;
     }
-    
+
     _activation = [NSMutableDictionary new];
 
     [[AuthenticationService sharedService]
@@ -131,15 +132,15 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 - (UIColor *)textColorForBackground:(UIColor *)color {
     CGFloat red, green, blue, alpha;
     [color getRed:&red green:&green blue:&blue alpha:&alpha];
-    
+
     CGFloat value = (299 * red * 255+ 587 * green * 255 + 114 * blue * 255)/1000;
     CGFloat textColorFloat = value >= 128? 0: 1;
     return [UIColor colorWithWhite:textColorFloat alpha:1];
 }
 
 - (void)onReceiveSignInProviders:(NSArray<SignInProvider *> *)providers {
-    UIView *providerContainer = [[UIView alloc] init];
-    [self.view addSubview:providerContainer];
+    self.signInProviderView = [[UIView alloc] init];
+    [self.view addSubview:self.signInProviderView];
 
     NSArray<UIButton *> *buttons = [providers bk_map:^UIButton *(SignInProvider *provider) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -147,16 +148,16 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
         button.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 10);
         button.layer.cornerRadius = 3;
         button.adjustsImageWhenHighlighted = NO;
-        
+
         [button setTitle:[NSString stringWithFormat:@"Login dengan %@", provider.name] forState:UIControlStateNormal];
-        
+
         button.backgroundColor = [UIColor fromHexString:provider.color];
-        
+
         [button setTitleColor:[self textColorForBackground:button.backgroundColor] forState:UIControlStateNormal];
-        
+
         NSURL *url = [NSURL URLWithString:provider.imageUrl];
         NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-        
+
         UIImageView *imageView = [[UIImageView alloc] init];
         [imageView setImageWithURLRequest:request
                          placeholderImage:nil
@@ -166,11 +167,11 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
                                       [image drawInRect:rect];
                                       image = UIGraphicsGetImageFromCurrentImageContext();
                                       UIGraphicsEndImageContext();
-                                      
+
                                       [button setImage:image forState:UIControlStateNormal];
                                   }
                                   failure:nil];
-        
+
         [button bk_addEventHandler:^(UIButton *button) {
             if ([provider.id isEqualToString:@"facebook"]) {
                 FBSDKLoginManager *loginManager = [[FBSDKLoginManager alloc] init];
@@ -185,33 +186,33 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
                 [self webViewLoginWithUrl:provider.signInUrl];
             }
         } forControlEvents:UIControlEventTouchUpInside];
-        
+
         return button;
     }];
-    
+
     [buttons enumerateObjectsUsingBlock:^(UIButton *button, NSUInteger index, BOOL *stop) {
-        [providerContainer addSubview:button];
+        [self.signInProviderView addSubview:button];
         NSInteger height = 44;
-        
+
         [button mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(_emailTextField.mas_left);
             make.right.equalTo(_emailTextField.mas_right);
             make.height.mas_equalTo(height);
-            make.top.equalTo(providerContainer).with.mas_offset((height + 10) * index);
+            make.top.equalTo(self.signInProviderView).with.mas_offset((height + 10) * index);
         }];
     }];
-    
+
     [buttons.lastObject mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(providerContainer.mas_bottom);
+        make.bottom.equalTo(self.signInProviderView.mas_bottom);
     }];
-    
-    CGSize preferredSize = [providerContainer systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
-    CGRect frame = providerContainer.frame;
+
+    CGSize preferredSize = [self.signInProviderView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+    CGRect frame = self.signInProviderView.frame;
     frame.size = preferredSize;
-    
-    providerContainer.frame = frame;
-    
-    [providerContainer mas_makeConstraints:^(MASConstraintMaker *make){
+
+    self.signInProviderView.frame = frame;
+
+    [self.signInProviderView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(_emailTextField.mas_left);
         make.right.equalTo(_emailTextField.mas_right);
         make.top.equalTo(_forgetPasswordButton.mas_bottom);
@@ -392,6 +393,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     _passwordTextField.hidden = NO;
     _loginButton.hidden = NO;
     _forgetPasswordButton.hidden = NO;
+    _signInProviderView.hidden = NO;
 
     [_activityIndicator stopAnimating];
     
@@ -619,7 +621,8 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
     _passwordTextField.hidden = YES;
     _loginButton.hidden = YES;
     _forgetPasswordButton.hidden = YES;
-    
+    _signInProviderView.hidden = YES;
+
     [_activityIndicator startAnimating];
 }
 
@@ -684,6 +687,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
         _passwordTextField.hidden = YES;
         _loginButton.hidden = YES;
         _forgetPasswordButton.hidden = YES;
+        _signInProviderView.hidden = YES;
         [_activityIndicator startAnimating];
 
         [self requestLoginGoogleWithUser:user];
