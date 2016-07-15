@@ -552,7 +552,7 @@
                                     <constraints>
                                         <constraint firstAttribute="width" secondItem="HFZ-gV-WHe" secondAttribute="height" multiplier="1:1" id="iD5-DH-6HW"/>
                                     </constraints>
-                                    <state key="normal" image="icon_button_share.png"/>
+                                    <state key="normal" image="icon_laporkan"/>
                                     <connections>
                                         <action selector="actionReport:" destination="-1" eventType="touchUpInside" id="gwc-Ym-co4"/>
                                     </connections>
@@ -911,6 +911,7 @@
         <image name="icon_button_share.png" width="20" height="20"/>
         <image name="icon_button_wishlist_nonactive.png" width="20" height="20"/>
         <image name="icon_default_shop.jpg" width="80" height="80"/>
+        <image name="icon_laporkan" width="20" height="19"/>
         <image name="icon_sold.png" width="14" height="14"/>
         <image name="icon_star.png" width="20" height="20"/>
         <image name="icon_view.png" width="14" height="14"/>
