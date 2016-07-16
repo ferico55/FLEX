@@ -55,7 +55,7 @@ static CGFloat messageTextSize = 17.0;
 }
 
 +(CGSize)messageSize:(NSString*)message {
-    return [message sizeWithFont:[UIFont fontWithName:@"GothamBook" size:messageTextSize] constrainedToSize:CGSizeMake([InboxMessageDetailCell maxTextWidth], CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
+    return [message sizeWithFont:[UIFont fontWithName:@"GothamBook" size:20.0] constrainedToSize:CGSizeMake([InboxMessageDetailCell maxTextWidth], CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
 }
 
 +(UIImage*)balloonImage:(BOOL)sent isSelected:(BOOL)selected {
