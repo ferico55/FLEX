@@ -124,6 +124,7 @@ typedef NS_ENUM(NSInteger, PickerView) {
                                              selector:@selector(keyboardWillHide:)
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
+    [self setPhoneVerificationStatus];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -443,7 +444,10 @@ typedef NS_ENUM(NSInteger, PickerView) {
     
     // Set user profile picture
     [self setUserProfilePicture];
-    
+    [self setPhoneVerificationStatus];
+}
+
+-(void)setPhoneVerificationStatus{
     // Show verification view if user phone number not verified
     TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
     NSDictionary *auth = [secureStorage keychainDictionary];
