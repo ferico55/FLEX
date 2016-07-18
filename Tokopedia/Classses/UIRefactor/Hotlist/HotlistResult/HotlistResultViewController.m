@@ -995,6 +995,7 @@ static NSString const *rows = @"12";
         if(searchResult.data.products.count == 0) {
             [_collectionView addSubview:_noResultView];
         }
+        [self.collectionView setContentOffset:CGPointZero];
     }
     
     //set initial category
