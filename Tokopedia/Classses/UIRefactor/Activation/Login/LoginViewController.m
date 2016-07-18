@@ -80,7 +80,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *googleButtonTopConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *facebookButtonTopConstraint;
 
-@property(nonatomic, strong) UIView *signInProviderView;
 @property (strong, nonatomic) IBOutlet UIView *formContainer;
 @property (strong, nonatomic) IBOutlet UIView *signInProviderContainer;
 @end
@@ -149,10 +148,10 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 }
 
 - (void)setSignInProviders:(NSArray<SignInProvider *> *)providers {
-    self.signInProviderView = [[UIView alloc] init];
+    UIView *signInProviderView = [[UIView alloc] init];
     
     [self.signInProviderContainer removeAllSubviews];
-    [self.signInProviderContainer addSubview:self.signInProviderView];
+    [self.signInProviderContainer addSubview:signInProviderView];
 
     NSArray<UIButton *> *buttons = [providers bk_map:^UIButton *(SignInProvider *provider) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -198,36 +197,27 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     }];
 
     [buttons enumerateObjectsUsingBlock:^(UIButton *button, NSUInteger index, BOOL *stop) {
-        [self.signInProviderView addSubview:button];
+        [signInProviderView addSubview:button];
         NSInteger height = 44;
 
         [button mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(_emailTextField.mas_left);
-            make.right.equalTo(_emailTextField.mas_right);
+            make.left.equalTo(button.superview.mas_left);
+            make.right.equalTo(button.superview.mas_right);
             make.height.mas_equalTo(height);
-            make.top.equalTo(self.signInProviderView).with.mas_offset((height + 10) * index);
+            make.top.equalTo(button.superview).with.mas_offset((height + 10) * index);
         }];
     }];
 
     [buttons.lastObject mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.signInProviderView.mas_bottom);
+        make.bottom.equalTo(signInProviderView.mas_bottom);
     }];
 
-//    CGSize preferredSize = [self.signInProviderView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
-//    CGRect frame = self.signInProviderView.frame;
-//    frame.size = preferredSize;
-//
-//    self.signInProviderView.frame = frame;
-
-    [self.signInProviderView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(_signInProviderView.superview.mas_left);
-        make.right.equalTo(_signInProviderView.superview.mas_right);
-        make.top.equalTo(_signInProviderView.superview.mas_top);
-        make.bottom.equalTo(_signInProviderView.superview.mas_bottom);
+    [signInProviderView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(signInProviderView.superview.mas_left);
+        make.right.equalTo(signInProviderView.superview.mas_right);
+        make.top.equalTo(signInProviderView.superview.mas_top);
+        make.bottom.equalTo(signInProviderView.superview.mas_bottom);
     }];
-    
-    [self.formContainer setNeedsLayout];
-    [self.formContainer layoutIfNeeded];
 }
 
 -(void)viewWillAppear:(BOOL)animated
