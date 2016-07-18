@@ -897,6 +897,7 @@
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
 		85C494BF1AD790DD008A314A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BE1AD790DD008A314A /* libz.dylib */; };
 		85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494C01AD790E4008A314A /* CoreData.framework */; };
+		92007CBD1D3C94610078CB56 /* SignInProviderListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92007CBC1D3C94610078CB56 /* SignInProviderListView.swift */; };
 		923507051D334CA600AF35ED /* TPAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 9235FBB91D334CA400AF35ED /* TPAnalytics.m */; };
 		923507061D334CA600AF35ED /* TPLocalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 9235FBBB1D334CA400AF35ED /* TPLocalytics.m */; };
 		923507071D334CA600AF35ED /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 9235FBBE1D334CA400AF35ED /* URLCacheAlert.m */; };
@@ -3344,6 +3345,7 @@
 		85C494BC1AD790C2008A314A /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
 		85C494BE1AD790DD008A314A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		85C494C01AD790E4008A314A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		92007CBC1D3C94610078CB56 /* SignInProviderListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInProviderListView.swift; sourceTree = "<group>"; };
 		923500001D334CA500AF35ED /* TxOrderConfirmationListOrder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxOrderConfirmationListOrder.h; sourceTree = "<group>"; };
 		923500011D334CA500AF35ED /* TxOrderConfirmationListOrder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxOrderConfirmationListOrder.m; sourceTree = "<group>"; };
 		923500021D334CA500AF35ED /* TxOrderConfirmationResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxOrderConfirmationResult.h; sourceTree = "<group>"; };
@@ -7627,6 +7629,7 @@
 				923500DF1D334CA500AF35ED /* Register */,
 				923500E41D334CA500AF35ED /* WebViewSignInViewController.swift */,
 				923500E51D334CA500AF35ED /* WebViewSignInViewController.xib */,
+				92007CBC1D3C94610078CB56 /* SignInProviderListView.swift */,
 			);
 			path = Activation;
 			sourceTree = "<group>";
@@ -14271,6 +14274,7 @@
 				923507681D334CA700AF35ED /* Deposit.m in Sources */,
 				923509751D334CA700AF35ED /* AlertListBankCell.m in Sources */,
 				923508D81D334CA700AF35ED /* LuckyDeal.m in Sources */,
+				92007CBD1D3C94610078CB56 /* SignInProviderListView.swift in Sources */,
 				923507531D334CA700AF35ED /* AddressResult.m in Sources */,
 				923509F61D334CA700AF35ED /* LoadingView.m in Sources */,
 				923509F31D334CA700AF35ED /* BackgroundLayer.m in Sources */,
