@@ -222,6 +222,6 @@
     [self.view endEditing:YES];
 }
 -(NSInteger)timeBeforeAskingAnotherOTP{
-    return 31;
+    return 30;
 }
 @end
