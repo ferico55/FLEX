@@ -33,6 +33,7 @@
 #import "Tokopedia-Swift.h"
 
 #import <GoogleSignIn/GoogleSignIn.h>
+#import "TAGManager.h"
 
 #import "ActivationRequest.h"
 #import "NSString+TPBaseUrl.h"
@@ -95,6 +96,9 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    TAGContainer *container;
+    
     _userManager = [[UserAuthentificationManager alloc]init];
 
     [_signInProviderLoadingIndicator startAnimating];
@@ -127,9 +131,11 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 
     _activation = [NSMutableDictionary new];
 
+    [self setSignInProviders:[SignInProvider defaultProviders]];
+
     [[AuthenticationService sharedService]
             getThirdPartySignInOptionsOnSuccess:^(NSArray<SignInProvider *> *providers) {
-                [self onReceiveSignInProviders:providers];
+                [self setSignInProviders:providers];
             }
     ];
 }
@@ -143,7 +149,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     return [UIColor colorWithWhite:textColorFloat alpha:1];
 }
 
-- (void)onReceiveSignInProviders:(NSArray<SignInProvider *> *)providers {
+- (void)setSignInProviders:(NSArray<SignInProvider *> *)providers {
     _signInProviderLoadingIndicator.hidden = YES;
     
     self.signInProviderView = [[UIView alloc] init];
