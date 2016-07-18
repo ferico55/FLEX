@@ -104,18 +104,6 @@ static failedCompletionBlock failedUploadProof;
         }
         else
         {
-//            NSArray *errorMessage = @[];
-//            if(response.message_error)
-//            {
-//                NSMutableArray *errors = [response.message_error mutableCopy];
-//                for (int i = 0; i<errors.count; i++) {
-//                    if ([response.message_error[i] rangeOfString:@"Alamat"].location == NSNotFound) {
-//                        [errors replaceObjectAtIndex:i withObject:@"Pesan ulang tidak dapat dilakukan karena alamat tidak valid."];
-//                    }
-//                }
-//                errorMessage = errors?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-//            }
-//            [StickyAlertView showErrorMessage:errorMessage?:@[@"Pesan ulang tidak dapat dilakukan"]];
             [StickyAlertView showErrorMessage:response.message_error?:@[@"Pesan ulang tidak dapat dilakukan"]];
             failure(nil,order);
         }
