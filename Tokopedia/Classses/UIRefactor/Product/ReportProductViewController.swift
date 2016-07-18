@@ -176,8 +176,8 @@ class ReportProductViewController: UIViewController, UITextViewDelegate, UIAlert
         }
     }
     
-    func showErrorAlertViewWithIsNeedPopViewController(need: Bool) {
-        errorAlertView = UIAlertView(title: "Terjadi Kesalahan", message: "", delegate: self, cancelButtonTitle: "Kembali")
+    func showErrorAlertViewWithIsNeedPopViewController(need: Bool, error: String) {
+        errorAlertView = UIAlertView(title: "Terjadi Kesalahan", message: error, delegate: self, cancelButtonTitle: "Kembali")
         self.needToPopWhenErrorHappened = need
         errorAlertView!.show()
     }
@@ -210,7 +210,7 @@ class ReportProductViewController: UIViewController, UITextViewDelegate, UIAlert
             }) { (error) in
                 dispatch_async(dispatch_get_main_queue(), { [weak self] in
                     if let weakSelf = self {
-                        weakSelf.showErrorAlertViewWithIsNeedPopViewController(true)
+                        weakSelf.showErrorAlertViewWithIsNeedPopViewController(true, error: error.localizedDescription)
                     }
                 })
         }
@@ -231,14 +231,14 @@ class ReportProductViewController: UIViewController, UITextViewDelegate, UIAlert
                         if reportProductResponse.data.is_success == "1" {
                             weakSelf.showSuccessAlertViewWithIsNeedPopViewController()
                         } else {
-                            weakSelf.showErrorAlertViewWithIsNeedPopViewController(false)
+                            weakSelf.showErrorAlertViewWithIsNeedPopViewController(false, error: reportProductResponse.message_error[0])
                         }
                     }
                 })
             }) { (error) in
                 dispatch_async(dispatch_get_main_queue(), { [weak self] in
                     if let weakSelf = self {
-                        weakSelf.showErrorAlertViewWithIsNeedPopViewController(true)
+                        weakSelf.showErrorAlertViewWithIsNeedPopViewController(true, error: error.localizedDescription)
                     }
                 })
         }
