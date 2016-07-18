@@ -169,39 +169,47 @@
 }
 
 - (IBAction)verifyButtonTapped:(id)sender {
-    [_phoneVerifRequest requestVerifyOTP:_OTPTextField.text
-                         withPhoneNumber:_phoneNumberTextField.text
-                               onSuccess:^(GeneralAction *result) {
-                                   if([result.data.is_success boolValue]){
-                                       [_imageView setImage:[UIImage imageNamed:@"icon_success.png"]];
-                                       [self animateImageView];
-                                       [_titleMessage setText:@"Verifikasi berhasil! terima kasih lalala"];
-                                       
-                                       [UIView animateWithDuration:0.6f
-                                                        animations:^{
-                                                            _phoneNumberView.alpha = 0;
-                                                            _verifyView.alpha = 0;
-                                                            _finishButton.alpha = 1;
-                                                        } completion:^(BOOL finished) {
-                                                            if(finished){
-                                                                _phoneNumberViewHeight.constant = 0;
-                                                                _verifyViewHeight.constant = 0;
-                                                                [_finishButton setEnabled:YES];
-                                                            }
-                                                        }];
-                                       TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-                                       [secureStorage setKeychainWithValue:@"1" withKey:@"msisdn_is_verified"];
-                                       
-                                       //[self.navigationController dismissViewControllerAnimated:YES completion:nil];
-                                       
-                                   }else{
-                                       StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:result.message_error delegate:self];
+    if([_OTPTextField.text length] >= [self OTPCodeLength]){
+        [_phoneVerifRequest requestVerifyOTP:_OTPTextField.text
+                             withPhoneNumber:_phoneNumberTextField.text
+                                   onSuccess:^(GeneralAction *result) {
+                                       if([result.data.is_success boolValue]){
+                                           [_imageView setImage:[UIImage imageNamed:@"icon_success.png"]];
+                                           [self animateImageView];
+                                           [_titleMessage setText:@"Selamat! Nomor HP Anda sudah berhasil diverifikasi. Nomor yang terverifikasi akan memudahkan kami jika ada kendala dalam proses jual beli Anda."];
+                                           
+                                           [UIView animateWithDuration:0.6f
+                                                            animations:^{
+                                                                _phoneNumberView.alpha = 0;
+                                                                _verifyView.alpha = 0;
+                                                                _finishButton.alpha = 1;
+                                                            } completion:^(BOOL finished) {
+                                                                if(finished){
+                                                                    _phoneNumberViewHeight.constant = 0;
+                                                                    _verifyViewHeight.constant = 0;
+                                                                    [_finishButton setEnabled:YES];
+                                                                }
+                                                            }];
+                                           TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+                                           [secureStorage setKeychainWithValue:@"1" withKey:@"msisdn_is_verified"];
+                                           
+                                           [self.view endEditing:YES];
+                                       }else{
+                                           StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:result.message_error delegate:self];
+                                           [alert show];
+                                       }
+                                   } onFailure:^(NSError *error) {
+                                       StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Kendala koneksi internet"] delegate:self];
                                        [alert show];
-                                   }
-                               } onFailure:^(NSError *error) {
-                                   StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Kendala koneksi internet"] delegate:self];
-                                   [alert show];
-                               }];
+                                   }];
+    }else{
+        StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Anda belum mengisi kode OTP atau kode OTP yang Anda masukkan salah."] delegate:self];
+        [alert show];
+    }
+}
+
+-(NSInteger)OTPCodeLength{
+    return 6;
 }
 
 - (IBAction)didTapBackButton{
