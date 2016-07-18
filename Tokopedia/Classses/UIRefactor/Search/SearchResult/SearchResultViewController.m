@@ -1172,7 +1172,8 @@ ImageSearchRequestDelegate
     }
     if([redirect_url isEqualToString:@""] || redirect_url == nil || [redirect_url isEqualToString:@"0"]) {
         NSString *hascatalog = search.data.has_catalog;
-        
+        _rootCategoryID = ([_rootCategoryID integerValue] == 0)?search.data.department_id:_rootCategoryID;
+
         if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
             hascatalog = @"1";
         }
