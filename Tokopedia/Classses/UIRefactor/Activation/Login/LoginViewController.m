@@ -138,15 +138,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     ];
 }
 
-- (UIColor *)textColorForBackground:(UIColor *)color {
-    CGFloat red, green, blue, alpha;
-    [color getRed:&red green:&green blue:&blue alpha:&alpha];
-
-    CGFloat value = (299 * red * 255+ 587 * green * 255 + 114 * blue * 255)/1000;
-    CGFloat textColorFloat = value >= 128? 0: 1;
-    return [UIColor colorWithWhite:textColorFloat alpha:1];
-}
-
 - (void)setSignInProviders:(NSArray<SignInProvider *> *)providers {
     __weak typeof(self) weakSelf = self;
     
@@ -169,14 +160,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
         [[GIDSignIn sharedInstance] signIn];
     };
     
-    [self.signInProviderContainer addSubview:signInProviderView];
-
-    [signInProviderView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(signInProviderView.superview.mas_left);
-        make.right.equalTo(signInProviderView.superview.mas_right);
-        make.top.equalTo(signInProviderView.superview.mas_top);
-        make.bottom.equalTo(signInProviderView.superview.mas_bottom);
-    }];
+    [signInProviderView attachToView: _signInProviderContainer];
 }
 
 -(void)viewWillAppear:(BOOL)animated

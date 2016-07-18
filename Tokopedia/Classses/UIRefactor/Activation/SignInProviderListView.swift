@@ -70,6 +70,17 @@ class SignInProviderListView: UIView {
         }
     }
     
+    func attachToView(container: UIView) {
+        container.addSubview(self)
+        
+        self.mas_makeConstraints {make in
+            make.left.equalTo()(container.mas_left)
+            make.top.equalTo()(container.mas_top)
+            make.right.equalTo()(container.mas_right)
+            make.bottom.equalTo()(container.mas_bottom)
+        }
+    }
+    
     private func textColorForBackground(color: UIColor) -> UIColor {
         var red: CGFloat = 0
         var green: CGFloat = 0
