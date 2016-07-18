@@ -68,10 +68,8 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 @property (weak, nonatomic) IBOutlet UIButton *buttonagreement;
 @property (weak, nonatomic) IBOutlet UILabel *agreementLabel;
-@property (weak, nonatomic) IBOutlet UIView *facebookLoginView;
 @property (strong, nonatomic) IBOutlet UIView *contentView;
 @property (weak, nonatomic) IBOutlet UIButton *signUpButton;
-@property (strong, nonatomic) IBOutlet UIView *signInButton;
 
 @property (weak, nonatomic) IBOutlet UIView *loadingView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *facebookLoginActivityIndicator;
@@ -81,7 +79,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *googleButtonWidthConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *googleButtonTopConstraint;
 @property (strong, nonatomic) IBOutlet UILabel *googleSignInLabel;
-@property (strong, nonatomic) FBSDKLoginButton *loginView;
 @property (strong, nonatomic) IBOutlet UIView *signInProviderContainer;
 
 @end
@@ -121,12 +118,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     [_datainput setObject:@(3) forKey:kTKPDREGISTER_APIGENDERKEY];
         
     _agreementLabel.userInteractionEnabled = YES;
-
-    _loginView = [[FBSDKLoginButton alloc] init];
-    _loginView.delegate = self;
-    _loginView.readPermissions = @[@"public_profile", @"email", @"user_birthday"];
-    
-    _signInButton.layer.shadowOffset = CGSizeMake(1, 1);
 
     [_container addSubview:_contentView];
     
@@ -747,15 +738,6 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
     
     self.googleButtonWidthConstraint.constant = constant;
     self.facebookButtonWidthConstraint.constant = constant;
-    
-    _loginView.frame = CGRectMake(0, 0, constant, 40);
-    _loginView.layer.shadowOpacity = 0;
-    [_loginView removeFromSuperview];
-    
-    [_facebookLoginView layoutIfNeeded];
-    [_facebookLoginView addSubview:_loginView];
-
-    [_loginView layoutIfNeeded];
 }
 
 #pragma mark - Google Sign In Delegate

@@ -14,9 +14,6 @@
             <string>GothamMedium</string>
             <string>GothamMedium</string>
         </mutableArray>
-        <mutableArray key="Roboto-Medium.ttf">
-            <string>Roboto-Medium</string>
-        </mutableArray>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RegisterViewController">
@@ -26,14 +23,8 @@
                 <outlet property="buttonagreement" destination="Om5-rq-kus" id="6b9-qz-xwM"/>
                 <outlet property="container" destination="5rq-kc-cRU" id="d7w-ld-Qry"/>
                 <outlet property="contentView" destination="i5M-Pr-FkT" id="iMc-WM-HUS"/>
-                <outlet property="facebookButtonTopConstraint" destination="5hl-mW-Jmj" id="Czb-dc-jlR"/>
-                <outlet property="facebookButtonWidthConstraint" destination="xfb-jo-Dg6" id="EVd-Nu-LDl"/>
                 <outlet property="facebookLoginActivityIndicator" destination="qR5-xw-F6Q" id="gDd-sd-YV6"/>
-                <outlet property="facebookLoginView" destination="Vwu-wq-o6E" id="kG4-CL-OcM"/>
-                <outlet property="googleButtonWidthConstraint" destination="NkN-Xb-QUf" id="x9M-Ek-hjI"/>
-                <outlet property="googleSignInLabel" destination="1eB-PE-g0r" id="NGf-H1-QH8"/>
                 <outlet property="loadingView" destination="XHS-ID-Xcp" id="R2A-f8-cDg"/>
-                <outlet property="signInButton" destination="fho-Hq-qD3" id="rvF-U8-gvO"/>
                 <outlet property="signInProviderContainer" destination="ANR-Ao-ZK5" id="8iu-9W-qu0"/>
                 <outlet property="signUpButton" destination="y3x-eA-9Vz" id="4PS-nz-c44"/>
                 <outlet property="texfieldfullname" destination="W9c-XX-w7W" id="Kae-l7-km9"/>
@@ -229,83 +220,6 @@
                         <constraint firstAttribute="height" constant="20" id="bLc-pQ-7bO"/>
                     </constraints>
                 </activityIndicatorView>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vwu-wq-o6E" userLabel="Facebook Login View">
-                    <rect key="frame" x="15" y="478" width="138" height="40"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="44" id="VkF-3V-DZa"/>
-                        <constraint firstAttribute="width" constant="137.5" id="xfb-jo-Dg6"/>
-                    </constraints>
-                    <variation key="default">
-                        <mask key="constraints">
-                            <exclude reference="VkF-3V-DZa"/>
-                        </mask>
-                    </variation>
-                </view>
-                <view tag="12" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fho-Hq-qD3" userLabel="Google View">
-                    <rect key="frame" x="167" y="478" width="138" height="40"/>
-                    <subviews>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8Eg-hs-Z5D">
-                            <rect key="frame" x="10" y="10" width="20" height="20"/>
-                            <subviews>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_google_new.png" translatesAutoresizingMaskIntoConstraints="NO" id="QHL-a8-Iq8">
-                                    <rect key="frame" x="1" y="1" width="18" height="18"/>
-                                    <userDefinedRuntimeAttributes>
-                                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                            <real key="value" value="1"/>
-                                        </userDefinedRuntimeAttribute>
-                                    </userDefinedRuntimeAttributes>
-                                </imageView>
-                            </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="20" id="223-XM-Ei7"/>
-                                <constraint firstAttribute="height" constant="20" id="EYf-qg-Re4"/>
-                                <constraint firstAttribute="trailing" secondItem="QHL-a8-Iq8" secondAttribute="trailing" constant="1" id="TUG-Y9-QEe"/>
-                                <constraint firstItem="QHL-a8-Iq8" firstAttribute="leading" secondItem="8Eg-hs-Z5D" secondAttribute="leading" constant="1" id="UxX-c0-KdB"/>
-                                <constraint firstItem="QHL-a8-Iq8" firstAttribute="top" secondItem="8Eg-hs-Z5D" secondAttribute="top" constant="1" id="kql-AS-4ns"/>
-                                <constraint firstAttribute="bottom" secondItem="QHL-a8-Iq8" secondAttribute="bottom" constant="1" id="rpu-HV-bzH"/>
-                            </constraints>
-                            <userDefinedRuntimeAttributes>
-                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                    <real key="value" value="1"/>
-                                </userDefinedRuntimeAttribute>
-                            </userDefinedRuntimeAttributes>
-                        </view>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sign in" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1eB-PE-g0r">
-                            <rect key="frame" x="50" y="12" width="43" height="17"/>
-                            <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="14"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                    </subviews>
-                    <color key="backgroundColor" red="0.86666666670000003" green="0.29411764709999999" blue="0.22352941179999999" alpha="1" colorSpace="calibratedRGB"/>
-                    <constraints>
-                        <constraint firstAttribute="bottom" secondItem="8Eg-hs-Z5D" secondAttribute="bottom" constant="10" id="0Gg-HT-jGc"/>
-                        <constraint firstItem="1eB-PE-g0r" firstAttribute="centerY" secondItem="fho-Hq-qD3" secondAttribute="centerY" id="1Xc-j2-pS6"/>
-                        <constraint firstItem="8Eg-hs-Z5D" firstAttribute="top" secondItem="fho-Hq-qD3" secondAttribute="top" constant="10" id="9Fv-yN-zTP"/>
-                        <constraint firstAttribute="height" constant="40" id="FfI-2d-0BR"/>
-                        <constraint firstAttribute="width" constant="137.5" id="NkN-Xb-QUf"/>
-                        <constraint firstItem="8Eg-hs-Z5D" firstAttribute="leading" secondItem="fho-Hq-qD3" secondAttribute="leading" constant="10" id="WnR-pu-6EQ"/>
-                        <constraint firstItem="1eB-PE-g0r" firstAttribute="centerX" secondItem="fho-Hq-qD3" secondAttribute="centerX" constant="2.5" id="j6Z-s6-ddP"/>
-                    </constraints>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                            <real key="value" value="3"/>
-                        </userDefinedRuntimeAttribute>
-                        <userDefinedRuntimeAttribute type="color" keyPath="shadowColor">
-                            <color key="value" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
-                        </userDefinedRuntimeAttribute>
-                        <userDefinedRuntimeAttribute type="number" keyPath="shadowOpacity">
-                            <real key="value" value="1"/>
-                        </userDefinedRuntimeAttribute>
-                        <userDefinedRuntimeAttribute type="number" keyPath="shadowRadius">
-                            <real key="value" value="1"/>
-                        </userDefinedRuntimeAttribute>
-                    </userDefinedRuntimeAttributes>
-                    <connections>
-                        <outletCollection property="gestureRecognizers" destination="G8m-jA-Obf" appends="YES" id="1yQ-FZ-Grz"/>
-                    </connections>
-                </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oqv-1f-U1p">
                     <rect key="frame" x="42" y="364" width="128" height="12"/>
                     <constraints>
@@ -354,7 +268,6 @@
             <constraints>
                 <constraint firstItem="4q8-DK-AgL" firstAttribute="top" secondItem="Kz1-ge-iSa" secondAttribute="bottom" constant="42" id="06o-dB-qHs"/>
                 <constraint firstAttribute="trailing" secondItem="4q8-DK-AgL" secondAttribute="trailing" constant="15" id="4IV-NE-dBt"/>
-                <constraint firstItem="Vwu-wq-o6E" firstAttribute="top" secondItem="y3x-eA-9Vz" secondAttribute="bottom" constant="36" id="5hl-mW-Jmj"/>
                 <constraint firstItem="ZWH-II-caf" firstAttribute="top" secondItem="Fzr-EG-EzD" secondAttribute="bottom" constant="34" id="7Cd-vy-rEY">
                     <variation key="heightClass=regular-widthClass=regular" constant="38"/>
                 </constraint>
@@ -367,7 +280,6 @@
                 <constraint firstItem="1GC-F6-b5V" firstAttribute="top" secondItem="dh2-Tl-g6u" secondAttribute="bottom" constant="55" id="Fju-VT-NhV"/>
                 <constraint firstItem="4q8-DK-AgL" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="15" id="Hdg-8W-uT4"/>
                 <constraint firstItem="ekn-6v-JpQ" firstAttribute="top" secondItem="dh2-Tl-g6u" secondAttribute="bottom" constant="12" id="IB2-Ij-ZWP"/>
-                <constraint firstItem="Vwu-wq-o6E" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="15" id="J8o-4G-dpM"/>
                 <constraint firstItem="Kz1-ge-iSa" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="15" id="JaU-BV-0ES"/>
                 <constraint firstItem="ry4-mz-X5c" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="15" id="QhF-Cb-u9s"/>
                 <constraint firstAttribute="bottom" secondItem="ANR-Ao-ZK5" secondAttribute="bottom" constant="8" id="RtS-vS-6M5"/>
@@ -397,8 +309,6 @@
                 <constraint firstAttribute="trailing" secondItem="1GC-F6-b5V" secondAttribute="trailing" constant="15" id="iG8-8y-Z4y"/>
                 <constraint firstItem="W9c-XX-w7W" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="15" id="iRY-Dv-erG"/>
                 <constraint firstAttribute="trailing" secondItem="dh2-Tl-g6u" secondAttribute="trailing" constant="15" id="iVO-KY-jkg"/>
-                <constraint firstAttribute="trailing" secondItem="fho-Hq-qD3" secondAttribute="trailing" constant="15" id="jA2-jN-FaR"/>
-                <constraint firstItem="fho-Hq-qD3" firstAttribute="bottom" secondItem="Vwu-wq-o6E" secondAttribute="bottom" id="jwZ-pN-fpl"/>
                 <constraint firstItem="95o-gu-FPH" firstAttribute="top" secondItem="1GC-F6-b5V" secondAttribute="bottom" constant="22" id="pzG-uR-FJE"/>
                 <constraint firstItem="W9c-XX-w7W" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="15" id="qYZ-dU-Bq1"/>
                 <constraint firstAttribute="trailing" secondItem="ekn-6v-JpQ" secondAttribute="trailing" constant="15" id="sV4-9X-vWj"/>
@@ -407,7 +317,6 @@
                     <variation key="heightClass=regular-widthClass=regular" constant="3"/>
                 </constraint>
                 <constraint firstItem="ANR-Ao-ZK5" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="15" id="uPl-5c-ol9"/>
-                <constraint firstItem="fho-Hq-qD3" firstAttribute="top" secondItem="Vwu-wq-o6E" secondAttribute="top" id="vCX-pr-mxD"/>
                 <constraint firstItem="y3x-eA-9Vz" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="15" id="w88-Ql-stW"/>
                 <constraint firstItem="dh2-Tl-g6u" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="15" id="wiP-qp-sZ3"/>
                 <constraint firstItem="7Jh-lC-alZ" firstAttribute="leading" secondItem="oqv-1f-U1p" secondAttribute="trailing" constant="3" id="xys-Md-Hbz">
@@ -433,6 +342,5 @@
     <resources>
         <image name="icon_checkmark_green-01.png" width="20" height="20"/>
         <image name="icon_circle.png" width="20" height="20"/>
-        <image name="icon_google_new.png" width="30" height="30"/>
     </resources>
 </document>
