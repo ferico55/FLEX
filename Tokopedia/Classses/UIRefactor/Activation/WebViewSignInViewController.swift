@@ -62,6 +62,7 @@ class WebViewSignInViewController: UIViewController, UIWebViewDelegate, NJKWebVi
         if (path == "/mappauth/code") {
             let code = url.parameters()["code"] as! String
             self.onReceiveToken?(code)
+            navigationController?.popViewControllerAnimated(true)
             return false
         }
 

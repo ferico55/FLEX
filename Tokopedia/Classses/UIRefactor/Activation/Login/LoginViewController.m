@@ -333,8 +333,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     controller.onReceiveToken = ^(NSString *token) {
         _loadingView.hidden = NO;
         _formContainer.hidden = YES;
-        
-        [controller.navigationController popViewControllerAnimated:YES];
 
         [[AuthenticationService sharedService]
                 loginWithTokenString:token
