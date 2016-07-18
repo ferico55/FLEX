@@ -49,7 +49,7 @@ class SignInProvider: NSObject {
                 let provider = SignInProvider()
                 provider.name = "Yahoo"
                 provider.id = "yahoo"
-                provider.signInUrl = "https://accounts-staging.tokopedia.com/wv/yahoo-login"
+                provider.signInUrl = "https://\(NSString.accountsUrl())/wv/yahoo-login"
                 provider.imageUrl = "https://ecs1.tokopedia.net/img/icon/yahoo_icon.png"
                 provider.color = "#8B2491"
                 return provider
