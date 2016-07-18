@@ -61,6 +61,8 @@
     
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(backgroundViewTapped:)];
     [_backgroundView addGestureRecognizer:tapGesture];
+    
+    [self animateImageView];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -91,10 +93,9 @@
     [_phoneVerifRequest requestOTPWithPhoneNumber:_phoneNumberTextField.text onSuccess:^(GeneralAction *result) {
         if([result.data.is_success boolValue]){
             NSString* successMessages = @"Sukses mengirimkan kode verifikasi, mohon cek inbox SMS Anda.";
-            StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:@[successMessages] delegate:self];
-            [alert show];
-            
             [_titleMessage setText:successMessages];
+            
+            [self animateImageView];            
             [self disablePhoneNumberTextField];
             [self showVerifyButton];
             [self animateSendOTPButton];
@@ -107,6 +108,22 @@
         [alert show];
     }];
     
+}
+
+-(void)animateImageView{
+    _imageView.transform = CGAffineTransformScale(CGAffineTransformIdentity, 0.001, 0.001);
+    
+    [UIView animateWithDuration:0.3/1.5 animations:^{
+        _imageView.transform = CGAffineTransformScale(CGAffineTransformIdentity, 1.1, 1.1);
+    } completion:^(BOOL finished) {
+        [UIView animateWithDuration:0.3/2 animations:^{
+            _imageView.transform = CGAffineTransformScale(CGAffineTransformIdentity, 0.9, 0.9);
+        } completion:^(BOOL finished) {
+            [UIView animateWithDuration:0.3/2 animations:^{
+                _imageView.transform = CGAffineTransformIdentity;
+            }];
+        }];
+    }];
 }
 
 -(void)disablePhoneNumberTextField{
@@ -152,6 +169,7 @@
                                onSuccess:^(GeneralAction *result) {
                                    if([result.data.is_success boolValue]){
                                        [_imageView setImage:[UIImage imageNamed:@"icon_success.png"]];
+                                       [self animateImageView];
                                        [_titleMessage setText:@"Verifikasi berhasil! terima kasih lalala"];
                                        
                                        [UIView animateWithDuration:0.6f
@@ -169,7 +187,7 @@
                                        TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
                                        [secureStorage setKeychainWithValue:@"1" withKey:@"msisdn_is_verified"];
                                        
-                                       [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                                       //[self.navigationController dismissViewControllerAnimated:YES completion:nil];
                                        
                                    }else{
                                        StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:result.message_error delegate:self];
