@@ -278,6 +278,8 @@ OtherProductDelegate
     EtalaseList *selectedEtalase;
     
     PriceAlertRequest *_request;
+    
+    NSString *afterLoginRedirectTo;
 }
 
 @synthesize data = _data;
@@ -432,6 +434,8 @@ OtherProductDelegate
     self.infoShopView.layer.masksToBounds = YES;
     _constraintHeightBuyButton.constant = 0;
     _constraintHeightDinkButton.constant = 0;
+    
+    afterLoginRedirectTo = @"";
 }
 
 - (void)initNotification {
@@ -2620,6 +2624,20 @@ OtherProductDelegate
     }
 }
 - (IBAction)actionReport:(UIButton *)sender {
+    if ([_userManager isLogin]) {
+        [self goToReportProductViewController];
+    } else {
+        LoginViewController *loginVC = [LoginViewController new];
+        loginVC.delegate = self;
+        loginVC.redirectViewController = self;
+        loginVC.isPresentedViewController = YES;
+        afterLoginRedirectTo = @"ReportProductViewController";
+        UINavigationController *loginNavController = [[UINavigationController alloc] initWithRootViewController:loginVC];
+        [self.navigationController presentViewController:loginNavController animated:YES completion:nil];
+    }
+}
+
+- (void) goToReportProductViewController {
     ReportProductViewController *reportProductVC = [ReportProductViewController new];
     reportProductVC.productId = [_loadedData objectForKey:@"product_id"];
     [self.navigationController pushViewController:reportProductVC animated:YES];
@@ -3065,7 +3083,9 @@ OtherProductDelegate
 
 #pragma mark - LoginView Delegate
 - (void)redirectViewController:(id)viewController{
-    
+    if ([afterLoginRedirectTo isEqualToString:@"ReportProductViewController"]) {
+        [self goToReportProductViewController];
+    }
 }
 
 - (void)cancelLoginView {

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ReportProductViewController: UIViewController, UITextViewDelegate, UIAlertViewDelegate{
+class ReportProductViewController: UIViewController, UITextViewDelegate, UIAlertViewDelegate, LoginViewDelegate{
     
     let UNSELECTED_ALASAN: String! = "Pilih jenis laporan"
     var productId: String!
@@ -37,13 +37,16 @@ class ReportProductViewController: UIViewController, UITextViewDelegate, UIAlert
         downPickerTextField.enabled = false
         deskripsiTextView.delegate = self
         generateKeyboardNotification()
-        getReportTypeFromAPI()
         setupHiddenObject()
         generateSubmitBarButtonItem()
         setupDownPickerLayout()
+        if userManager.isLogin {
+            getReportTypeFromAPI()
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         self.navigationItem.title = "Laporkan Produk"
     }
 
@@ -301,5 +304,11 @@ class ReportProductViewController: UIViewController, UITextViewDelegate, UIAlert
         if (needToPopWhenErrorHappened == true || alertView == successAlertView) {
             self.navigationController?.popViewControllerAnimated(true)
         }
+    }
+    
+    // MARK: Login View delegate 
+    
+    func redirectViewController(viewController: AnyObject!) {
+        
     }
 }
