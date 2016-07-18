@@ -81,6 +81,8 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *facebookButtonTopConstraint;
 
 @property(nonatomic, strong) UIView *signInProviderView;
+@property (strong, nonatomic) IBOutlet UIView *formContainer;
+@property (strong, nonatomic) IBOutlet UIView *signInProviderContainer;
 @end
 
 @implementation LoginViewController
@@ -148,7 +150,9 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 
 - (void)setSignInProviders:(NSArray<SignInProvider *> *)providers {
     self.signInProviderView = [[UIView alloc] init];
-    [self.view addSubview:self.signInProviderView];
+    
+    [self.signInProviderContainer removeAllSubviews];
+    [self.signInProviderContainer addSubview:self.signInProviderView];
 
     NSArray<UIButton *> *buttons = [providers bk_map:^UIButton *(SignInProvider *provider) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -209,17 +213,21 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
         make.bottom.equalTo(self.signInProviderView.mas_bottom);
     }];
 
-    CGSize preferredSize = [self.signInProviderView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
-    CGRect frame = self.signInProviderView.frame;
-    frame.size = preferredSize;
-
-    self.signInProviderView.frame = frame;
+//    CGSize preferredSize = [self.signInProviderView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+//    CGRect frame = self.signInProviderView.frame;
+//    frame.size = preferredSize;
+//
+//    self.signInProviderView.frame = frame;
 
     [self.signInProviderView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(_emailTextField.mas_left);
-        make.right.equalTo(_emailTextField.mas_right);
-        make.top.equalTo(_orLabel.mas_bottom).with.offset(10);
+        make.left.equalTo(_signInProviderView.superview.mas_left);
+        make.right.equalTo(_signInProviderView.superview.mas_right);
+        make.top.equalTo(_signInProviderView.superview.mas_top);
+        make.bottom.equalTo(_signInProviderView.superview.mas_bottom);
     }];
+    
+    [self.formContainer setNeedsLayout];
+    [self.formContainer layoutIfNeeded];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -333,6 +341,9 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 - (void)webViewLoginWithUrl:(NSString *)url {
     WebViewSignInViewController *controller = [[WebViewSignInViewController alloc] initWithUrl:url];
     controller.onReceiveToken = ^(NSString *token) {
+        _loadingView.hidden = NO;
+        _formContainer.hidden = YES;
+        
         [controller.navigationController popViewControllerAnimated:YES];
 
         [[AuthenticationService sharedService]
@@ -392,11 +403,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 -(void)showLoginUi
 {
     _loadingView.hidden = YES;
-    _emailTextField.hidden = NO;
-    _passwordTextField.hidden = NO;
-    _loginButton.hidden = NO;
-    _forgetPasswordButton.hidden = NO;
-    _signInProviderView.hidden = NO;
+    _formContainer.hidden = NO;
 
     [_activityIndicator stopAnimating];
     
@@ -620,11 +627,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                                     }];
 
     _loadingView.hidden = NO;
-    _emailTextField.hidden = YES;
-    _passwordTextField.hidden = YES;
-    _loginButton.hidden = YES;
-    _forgetPasswordButton.hidden = YES;
-    _signInProviderView.hidden = YES;
+    _formContainer.hidden = YES;
 
     [_activityIndicator startAnimating];
 }
@@ -686,11 +689,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
 - (void)signIn:(GIDSignIn *)signIn didSignInForUser:(GIDGoogleUser *)user withError:(NSError *)error {
     if (user) {
         _loadingView.hidden = NO;
-        _emailTextField.hidden = YES;
-        _passwordTextField.hidden = YES;
-        _loginButton.hidden = YES;
-        _forgetPasswordButton.hidden = YES;
-        _signInProviderView.hidden = YES;
+        _formContainer.hidden = YES;
         [_activityIndicator startAnimating];
 
         [self requestLoginGoogleWithUser:user];

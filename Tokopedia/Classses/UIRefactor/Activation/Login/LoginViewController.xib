@@ -19,6 +19,7 @@
                 <outlet property="activityIndicator" destination="OfY-Za-Mqc" id="dml-LN-7Hq"/>
                 <outlet property="emailTextField" destination="TaY-hL-DlK" id="0pG-0z-24H"/>
                 <outlet property="forgetPasswordButton" destination="Meb-uf-Mbe" id="J7C-d1-Lcy"/>
+                <outlet property="formContainer" destination="VIo-ub-GYT" id="Gh7-Hf-n0s"/>
                 <outlet property="formViewMarginTopConstraint" destination="2Y4-0z-hWd" id="QRx-QQ-FNq"/>
                 <outlet property="formViewWidthConstraint" destination="BP0-Wz-plQ" id="4qi-Ca-lPf"/>
                 <outlet property="loadingView" destination="QfQ-ON-DwI" id="aQb-OX-Tg9"/>
@@ -26,6 +27,7 @@
                 <outlet property="orLabel" destination="3T9-rP-bSY" id="8hU-bC-bhi"/>
                 <outlet property="passwordTextField" destination="rJv-0e-sEO" id="wTA-pJ-GR0"/>
                 <outlet property="screenLogin" destination="tu9-kn-elL" id="oKK-HZ-puV"/>
+                <outlet property="signInProviderContainer" destination="g0F-wj-qxp" id="uKA-3g-pJa"/>
                 <outlet property="view" destination="lpZ-Wc-EfF" id="4lY-8H-fs8"/>
             </connections>
         </placeholder>
@@ -115,18 +117,8 @@
                                 <action selector="didTapForgotPasswordButton" destination="-1" eventType="touchUpInside" id="vRA-Vw-eOJ"/>
                             </connections>
                         </button>
-                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QfQ-ON-DwI" userLabel="LoadingView">
-                            <rect key="frame" x="-15" y="-5" width="0.0" height="0.0"/>
-                            <subviews>
-                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="OfY-Za-Mqc">
-                                    <rect key="frame" x="-10" y="-10" width="20" height="20"/>
-                                </activityIndicatorView>
-                            </subviews>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            <constraints>
-                                <constraint firstAttribute="centerY" secondItem="OfY-Za-Mqc" secondAttribute="centerY" id="jUB-F0-f5e"/>
-                                <constraint firstAttribute="centerX" secondItem="OfY-Za-Mqc" secondAttribute="centerX" id="obx-fx-LSj"/>
-                            </constraints>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g0F-wj-qxp">
+                            <rect key="frame" x="0.0" y="201" width="290" height="99"/>
                         </view>
                     </subviews>
                     <constraints>
@@ -138,19 +130,35 @@
                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="290" id="BP0-Wz-plQ"/>
                         <constraint firstAttribute="centerX" secondItem="Meb-uf-Mbe" secondAttribute="centerX" id="Fr5-Cv-eTh"/>
                         <constraint firstItem="TaY-hL-DlK" firstAttribute="top" secondItem="VIo-ub-GYT" secondAttribute="top" id="HBI-JD-Q00"/>
+                        <constraint firstAttribute="bottom" secondItem="g0F-wj-qxp" secondAttribute="bottom" id="KHG-bW-tmM"/>
+                        <constraint firstItem="g0F-wj-qxp" firstAttribute="top" secondItem="3T9-rP-bSY" secondAttribute="bottom" constant="2" id="O6W-2S-Mme"/>
                         <constraint firstItem="R1P-bi-QzD" firstAttribute="trailing" secondItem="3T9-rP-bSY" secondAttribute="leading" constant="-10" id="OYm-qQ-dBz"/>
                         <constraint firstItem="rJv-0e-sEO" firstAttribute="leading" secondItem="VIo-ub-GYT" secondAttribute="leading" id="RG5-4U-SVW"/>
                         <constraint firstItem="TaY-hL-DlK" firstAttribute="leading" secondItem="VIo-ub-GYT" secondAttribute="leading" id="T3H-cs-s3Y"/>
                         <constraint firstItem="3T9-rP-bSY" firstAttribute="top" secondItem="Meb-uf-Mbe" secondAttribute="bottom" constant="10" id="VBj-gp-osB"/>
+                        <constraint firstItem="g0F-wj-qxp" firstAttribute="leading" secondItem="VIo-ub-GYT" secondAttribute="leading" id="YUF-2i-kGy"/>
                         <constraint firstItem="uc1-jd-XgD" firstAttribute="leading" secondItem="3T9-rP-bSY" secondAttribute="trailing" constant="10" id="c58-vB-EW7"/>
                         <constraint firstAttribute="trailing" secondItem="BjJ-ah-R04" secondAttribute="trailing" id="dUp-pA-afS"/>
-                        <constraint firstAttribute="height" constant="300" id="dUq-gn-C1m"/>
                         <constraint firstItem="uc1-jd-XgD" firstAttribute="centerY" secondItem="3T9-rP-bSY" secondAttribute="centerY" id="fE8-Nx-XTc"/>
                         <constraint firstItem="3T9-rP-bSY" firstAttribute="centerX" secondItem="VIo-ub-GYT" secondAttribute="centerX" id="h7d-4Y-LGX"/>
                         <constraint firstItem="BjJ-ah-R04" firstAttribute="leading" secondItem="VIo-ub-GYT" secondAttribute="leading" id="oaD-yo-qHy"/>
                         <constraint firstItem="uc1-jd-XgD" firstAttribute="trailing" secondItem="TaY-hL-DlK" secondAttribute="trailing" id="oqj-cV-Rb8"/>
                         <constraint firstItem="BjJ-ah-R04" firstAttribute="top" secondItem="rJv-0e-sEO" secondAttribute="bottom" constant="12" id="sFY-Bs-AH9"/>
+                        <constraint firstAttribute="trailing" secondItem="g0F-wj-qxp" secondAttribute="trailing" id="u5Q-zm-uFg"/>
                         <constraint firstItem="R1P-bi-QzD" firstAttribute="leading" secondItem="TaY-hL-DlK" secondAttribute="leading" id="z1p-hf-gJr"/>
+                    </constraints>
+                </view>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QfQ-ON-DwI" userLabel="LoadingView">
+                    <rect key="frame" x="160" y="240" width="0.0" height="0.0"/>
+                    <subviews>
+                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="OfY-Za-Mqc">
+                            <rect key="frame" x="-10" y="-10" width="20" height="20"/>
+                        </activityIndicatorView>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="centerY" secondItem="OfY-Za-Mqc" secondAttribute="centerY" id="jUB-F0-f5e"/>
+                        <constraint firstAttribute="centerX" secondItem="OfY-Za-Mqc" secondAttribute="centerX" id="obx-fx-LSj"/>
                     </constraints>
                 </view>
             </subviews>
