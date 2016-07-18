@@ -324,7 +324,6 @@
         CGRect frame = _shopViewController.view.frame;
         frame.origin.x = _scrollView.frame.size.width*page;
         frame.size.height = _scrollView.frame.size.height;
-        frame.size.height = _scrollView.frame.size.height;
         _shopViewController.view.frame = frame;
         [self addChildViewController:_shopViewController];
         [self.scrollView addSubview:_shopViewController.view];

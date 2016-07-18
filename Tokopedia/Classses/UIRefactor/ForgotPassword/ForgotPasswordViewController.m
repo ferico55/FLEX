@@ -12,8 +12,9 @@
 #import "GeneralAction.h"
 #import "string_settings.h"
 #import "RegisterViewController.h"
+#import <BlocksKit+UIKit.h>
 
-@interface ForgotPasswordViewController () <TokopediaNetworkManagerDelegate, UIAlertViewDelegate> {
+@interface ForgotPasswordViewController () <TokopediaNetworkManagerDelegate> {
     TokopediaNetworkManager *_networkManager;
     __weak RKObjectManager *_objectManager;
 }
@@ -151,18 +152,17 @@
 
 - (void) showAlertToRegisterView {
     NSString *alertViewTitle = [NSString stringWithFormat:@"Email %@ belum terdaftar sebagai member Tokopedia", _emailText.text];
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:alertViewTitle message:@"Anda akan kami arahkan ke halaman registrasi" delegate:self cancelButtonTitle:@"Tidak" otherButtonTitles:nil, nil];
-    [alertView addButtonWithTitle:@"OK"];
-    [alertView show];
-}
-
-- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 1) {
-        RegisterViewController *registerViewController = [RegisterViewController new];
-        registerViewController.emailFromForgotPassword = _emailText.text;
-        [self.navigationController pushViewController:registerViewController animated:YES];
-    }
-
+    [UIAlertView bk_showAlertViewWithTitle:alertViewTitle
+                                   message:@"Anda akan kami arahkan ke halaman registrasi"
+                         cancelButtonTitle:@"Tidak"
+                         otherButtonTitles:@[@"OK"]
+                                   handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
+                                       if(buttonIndex == 1) {
+                                           RegisterViewController *registerViewController = [RegisterViewController new];
+                                                   registerViewController.emailFromForgotPassword = _emailText.text;
+                                                   [self.navigationController pushViewController:registerViewController animated:YES];
+                                       }
+                                   }];
 }
 
 @end
