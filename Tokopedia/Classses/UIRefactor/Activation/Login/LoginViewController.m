@@ -148,69 +148,28 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 }
 
 - (void)setSignInProviders:(NSArray<SignInProvider *> *)providers {
-    UIView *signInProviderView = [[UIView alloc] init];
+    __weak typeof(self) weakSelf = self;
     
     [self.signInProviderContainer removeAllSubviews];
+    SignInProviderListView *signInProviderView = [[SignInProviderListView alloc] initWithProviders:providers];
+    signInProviderView.onWebViewProviderSelected = ^(SignInProvider *provider){
+        [weakSelf webViewLoginWithUrl:provider.signInUrl];
+    };
+    
+    signInProviderView.onFacebookSelected = ^{
+        FBSDKLoginManager *loginManager = [[FBSDKLoginManager alloc] init];
+        [loginManager logInWithReadPermissions:@[@"public_profile", @"email", @"user_birthday"]
+                            fromViewController:weakSelf
+                                       handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
+                                           [weakSelf loginButton:nil didCompleteWithResult:result error:error];
+                                       }];
+    };
+    
+    signInProviderView.onGoogleSelected = ^{
+        [[GIDSignIn sharedInstance] signIn];
+    };
+    
     [self.signInProviderContainer addSubview:signInProviderView];
-
-    NSArray<UIButton *> *buttons = [providers bk_map:^UIButton *(SignInProvider *provider) {
-        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-        button.titleLabel.font = [UIFont systemFontOfSize:14];
-        button.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 10);
-        button.layer.cornerRadius = 3;
-        button.adjustsImageWhenHighlighted = NO;
-
-        [button setTitle:[NSString stringWithFormat:@"Login dengan %@", provider.name] forState:UIControlStateNormal];
-
-        button.backgroundColor = [UIColor fromHexString:provider.color];
-
-        [button setTitleColor:[self textColorForBackground:button.backgroundColor] forState:UIControlStateNormal];
-
-        NSURL *url = [NSURL URLWithString:provider.imageUrl];
-        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-
-        UIImageView *imageView = [[UIImageView alloc] init];
-        [imageView setImageWithURLRequest:request
-                         placeholderImage:nil
-                                  success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                                      image = [image resizedImageToSize:CGSizeMake(20, 20)];
-                                      [button setImage:image forState:UIControlStateNormal];
-                                  }
-                                  failure:nil];
-
-        [button bk_addEventHandler:^(UIButton *button) {
-            if ([provider.id isEqualToString:@"facebook"]) {
-                FBSDKLoginManager *loginManager = [[FBSDKLoginManager alloc] init];
-                [loginManager logInWithReadPermissions:@[@"public_profile", @"email", @"user_birthday"]
-                                    fromViewController:self
-                                               handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
-                                                   [self loginButton:nil didCompleteWithResult:result error:error];
-                                               }];
-            } else if ([provider.id isEqualToString:@"gplus"]) {
-                [[GIDSignIn sharedInstance] signIn];
-            } else {
-                [self webViewLoginWithUrl:provider.signInUrl];
-            }
-        } forControlEvents:UIControlEventTouchUpInside];
-
-        return button;
-    }];
-
-    [buttons enumerateObjectsUsingBlock:^(UIButton *button, NSUInteger index, BOOL *stop) {
-        [signInProviderView addSubview:button];
-        NSInteger height = 44;
-
-        [button mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(button.superview.mas_left);
-            make.right.equalTo(button.superview.mas_right);
-            make.height.mas_equalTo(height);
-            make.top.equalTo(button.superview).with.mas_offset((height + 10) * index);
-        }];
-    }];
-
-    [buttons.lastObject mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(signInProviderView.mas_bottom);
-    }];
 
     [signInProviderView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(signInProviderView.superview.mas_left);
