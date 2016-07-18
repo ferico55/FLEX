@@ -80,6 +80,7 @@ typedef enum
     NSArray<RateAttributes*> *_shipments;
     
     DelayedActionManager *requestPriceDelayedActionManager;
+    DelayedActionManager *quantityDelayedActionManager;
 }
 
 @property (weak, nonatomic) IBOutlet UIButton *pinLocationNameButton;
@@ -125,7 +126,6 @@ typedef enum
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    requestPriceDelayedActionManager = [DelayedActionManager new];
     _tableViewPaymentDetailCell = [NSArray sortViewsWithTagInArray:_tableViewPaymentDetailCell];
     _tableViewProductCell = [NSArray sortViewsWithTagInArray:_tableViewProductCell];
     _tableViewShipmentCell = [NSArray sortViewsWithTagInArray:_tableViewShipmentCell];
@@ -133,6 +133,9 @@ typedef enum
     
     [self setPlaceholder:@"Contoh: Warna Putih/Ukuran XL/Edisi ke-2" textView:_remarkTextView];
     _remarkTextView.delegate = self;
+    
+    requestPriceDelayedActionManager = [DelayedActionManager new];
+    quantityDelayedActionManager = [DelayedActionManager new];
     
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:nil];
     [self.navigationItem setBackBarButtonItem:barButtonItem];
@@ -976,13 +979,6 @@ typedef enum
 
 -(void)textFieldDidEndEditing:(UITextField *)textField
 {
-    _isFinishRequesting = NO;
-    
-    if ([textField isEqual:_productQuantityTextField])
-        [self alertAndResetIfQtyTextFieldBelowMin];
-    
-    [self doCalculate];
-    [self requestRate];
 }
 
 - (BOOL)textField:(UITextField*)textField shouldChangeCharactersInRange:(NSRange)range
@@ -991,6 +987,13 @@ replacementString:(NSString*)string
     NSString* newText;
 
     newText = [textField.text stringByReplacingCharactersInRange:range withString:string];
+
+    [quantityDelayedActionManager whenNotCalledFor:2 doAction:^{
+        _isFinishRequesting = NO;
+        [self alertAndResetIfQtyTextFieldBelowMin];
+        [self doCalculate];
+        [self requestRate];
+    }];
     
     return [newText isNumber] && [newText integerValue] < 1000;
 }
