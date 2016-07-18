@@ -43,8 +43,8 @@ import UIKit
         
         tableView = UITableView.init(frame: CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height), style: .Plain)
 
-        tableView.allowsMultipleSelection = true
-        tableView.allowsMultipleSelectionDuringEditing = true
+        tableView.allowsMultipleSelection = isMultipleSelect
+        tableView.allowsMultipleSelectionDuringEditing = isMultipleSelect
         tableView.allowsSelection = true
         tableView.delegate = self
         tableView.dataSource = self
@@ -195,9 +195,9 @@ import UIKit
                 self.doExpandCategory(category)
             }
         } else {
-            
+            category.isSelected = self.isSelectedCategory(category)
+            category.isSelected = !category.isSelected
             if self.isMultipleSelect{
-                category.isSelected = !category.isSelected
                 if category.isSelected == false {
                     self.tableView.deselectRowAtIndexPath(indexPath, animated: false)
                     for (index, selected) in selectedCategories.enumerate() {
@@ -220,7 +220,10 @@ import UIKit
                         }
                     }
                 }
-                selectedCategories.append(category)
+                if category.isSelected == true {
+                    selectedCategories.append(category)
+                    cell.setSelected(true, animated: false)
+                }
             }
             
             completionHandler(selectedCategories)
@@ -230,6 +233,14 @@ import UIKit
             cell.setArrowDirection(.Up)
         } else {
             cell.setArrowDirection(.Down)
+        }
+    }
+    
+    func isSelectedCategory(category:CategoryDetail) -> Bool {
+        if self.selectedCategories .contains(category) {
+            return true
+        } else  {
+            return false
         }
     }
     
