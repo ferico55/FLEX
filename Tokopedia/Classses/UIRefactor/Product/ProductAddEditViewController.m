@@ -369,7 +369,7 @@ FilterCategoryViewDelegate
                         }
                         UserAuthentificationManager *authManager = [UserAuthentificationManager new];
                         NSString *shopHasTerm = [authManager getShopHasTerm];
-                        _product.result.info.shop_has_terms = shopHasTerm;
+                        _product.result.shop_info.shop_has_terms = shopHasTerm;
                         
                         if (!_detailVC)_detailVC = [ProductAddEditDetailViewController new];
                         _detailVC.title = self.title;
@@ -377,13 +377,13 @@ FilterCategoryViewDelegate
                                            DATA_INPUT_KEY : _dataInput?:@{},
                                            DATA_TYPE_ADD_EDIT_PRODUCT_KEY : @(type),
                                            DATA_PRODUCT_DETAIL_KEY: productDetail,
-                                           DATA_SHOP_HAS_TERM_KEY:_product.result.info.shop_has_terms?:@"0",
+                                           DATA_SHOP_HAS_TERM_KEY:_product.result.shop_info.shop_has_terms?:@"0",
                                            @"Image_desc_array":_productImageDesc?:@[]
                                            };
-                        _detailVC.shopHasTerm = _product.result.info.shop_has_terms?:@"";
+                        _detailVC.shopHasTerm = _product.result.shop_info.shop_has_terms?:@"";
                         _detailVC.generateHost = _generateHost;
                         _detailVC.delegate = self;
-                        BOOL isShopHasTerm = ([_product.result.info.shop_has_terms isEqualToString:@""]||[_product.result.info.shop_has_terms isEqualToString:@"0"])?NO:YES;
+                        BOOL isShopHasTerm = ([_product.result.shop_info.shop_has_terms isEqualToString:@""]||[_product.result.shop_info.shop_has_terms isEqualToString:@"0"])?NO:YES;
                         _detailVC.isShopHasTerm = isShopHasTerm;
                         //_detailVC.isNeedRequestAddProductPicture = YES;
                         [self.navigationController pushViewController:_detailVC animated:YES];
@@ -972,9 +972,9 @@ FilterCategoryViewDelegate
                                DATA_INPUT_KEY : _dataInput,
                                DATA_TYPE_ADD_EDIT_PRODUCT_KEY : @(type),
                                DATA_PRODUCT_DETAIL_KEY: productDetail,
-                               DATA_SHOP_HAS_TERM_KEY:_product.result.info.shop_has_terms?:@""
+                               DATA_SHOP_HAS_TERM_KEY:_product.result.shop_info.shop_has_terms?:@""
                                };
-            _detailVC.shopHasTerm = _product.result.info.shop_has_terms;
+            _detailVC.shopHasTerm = _product.result.shop_info.shop_has_terms;
             _detailVC.generateHost = _generateHost;
             _detailVC.delegate = self;
             
@@ -1839,7 +1839,7 @@ FilterCategoryViewDelegate
             product.product_etalase_id = product.product_etalase_id?:@(0);
             product.product_short_desc = [product.product_short_desc stringByReplacingOccurrencesOfString:@"[nl]" withString:@"\n"];
             product.product_description = product.product_short_desc?:@"";
-            product.product_returnable = _product.result.info.product_returnable?:@"";
+            product.product_returnable = _product.result.product.product_returnable?:@"";
             product.product_min_order = _product.result.product.product_min_order?:@"1";
         }
         _minimumOrderTextField.text = product.product_min_order;
@@ -2234,8 +2234,8 @@ FilterCategoryViewDelegate
     // Relationship Mapping
     [productMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIRESULTKEY toKeyPath:kTKPDDETAIL_APIRESULTKEY withMapping:resultMapping]];
     
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILPRODUCT_APIINFOKEY toKeyPath:kTKPDDETAILPRODUCT_APIINFOKEY withMapping:OtherInfoMapping]];
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_PRODUCT_INFO_KEY toKeyPath:API_PRODUCT_INFO_KEY withMapping:infoMapping]];
+//    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILPRODUCT_APIINFOKEY toKeyPath:kTKPDDETAILPRODUCT_APIINFOKEY withMapping:OtherInfoMapping]];
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"product" toKeyPath:@"product" withMapping:infoMapping]];
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILPRODUCT_APISTATISTICKEY toKeyPath:kTKPDDETAILPRODUCT_APISTATISTICKEY withMapping:statisticMapping]];
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILPRODUCT_APISHOPINFOKEY toKeyPath:kTKPDDETAILPRODUCT_APISHOPINFOKEY withMapping:shopinfoMapping]];
     [shopinfoMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILPRODUCT_APISHOPSTATKEY toKeyPath:kTKPDDETAILPRODUCT_APISHOPSTATKEY withMapping:shopstatsMapping]];

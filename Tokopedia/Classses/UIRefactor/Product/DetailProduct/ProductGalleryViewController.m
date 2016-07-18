@@ -8,7 +8,7 @@
 
 #import "ProductGalleryViewController.h"
 
-#import "Product.h"
+#import "ProductImages.h"
 
 @interface ProductGalleryViewController () {
     ProductImages *_image;

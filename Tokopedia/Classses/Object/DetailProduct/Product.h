@@ -19,5 +19,8 @@
 @property BOOL isDummyProduct;
 
 @property (nonatomic, strong) DetailProductResult *result;
+@property (nonatomic, strong) DetailProductResult *data;
+
++ (RKObjectMapping*)mapping;
 
 @end
