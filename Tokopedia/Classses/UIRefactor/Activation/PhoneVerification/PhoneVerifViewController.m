@@ -90,23 +90,28 @@
 }
 
 - (IBAction)sendOTPButtonTapped:(id)sender {
-    [_phoneVerifRequest requestOTPWithPhoneNumber:_phoneNumberTextField.text onSuccess:^(GeneralAction *result) {
-        if([result.data.is_success boolValue]){
-            NSString* successMessages = @"Sukses mengirimkan kode verifikasi, mohon cek inbox SMS Anda.";
-            [_titleMessage setText:successMessages];
-            
-            [self animateImageView];            
-            [self disablePhoneNumberTextField];
-            [self showVerifyButton];
-            [self animateSendOTPButton];
-        }else{
-            StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:result.message_error delegate:self];
+    if(![_phoneNumberTextField.text isEqualToString:@""]){
+        [_phoneVerifRequest requestOTPWithPhoneNumber:_phoneNumberTextField.text onSuccess:^(GeneralAction *result) {
+            if([result.data.is_success boolValue]){
+                NSString* successMessages = @"Sukses mengirimkan kode OTP(One Time Password), mohon cek inbox SMS Anda.";
+                [_titleMessage setText:successMessages];
+                
+                [self animateImageView];
+                [self disablePhoneNumberTextField];
+                [self showVerifyButton];
+                [self animateSendOTPButton];
+            }else{
+                StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:result.message_error delegate:self];
+                [alert show];
+            }
+        } onFailure:^(NSError *error) {
+            StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Kendala koneksi internet."] delegate:self];
             [alert show];
-        }
-    } onFailure:^(NSError *error) {
-        StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Kendala koneksi internet."] delegate:self];
+        }];
+    }else{
+        StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Anda belum mengisi nomor HP anda."] delegate:self];
         [alert show];
-    }];
+    }
     
 }
 
