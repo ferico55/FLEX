@@ -8,10 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		2D50139230438B54812D14B9 /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */; };
+		343339841D3CA96B00869E64 /* ReportProductSubmitResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 343339831D3CA96B00869E64 /* ReportProductSubmitResponse.swift */; };
 		3471F6B61D34C7500077D22F /* ReportProductViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3471F6B41D34C7500077D22F /* ReportProductViewController.swift */; };
 		3471F6B71D34C7500077D22F /* ReportProductViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3471F6B51D34C7500077D22F /* ReportProductViewController.xib */; };
-		34C7C82F1D35EA1500372F37 /* ReportProductResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C7C82E1D35EA1500372F37 /* ReportProductResponse.swift */; };
-		34C7C8311D35F07800372F37 /* ReportProductResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C7C8301D35F07800372F37 /* ReportProductResult.swift */; };
+		348E76F41D3CB18400189082 /* ReportProductSubmitResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 348E76F31D3CB18400189082 /* ReportProductSubmitResult.swift */; };
+		34C7C82F1D35EA1500372F37 /* ReportProductGetTypeResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C7C82E1D35EA1500372F37 /* ReportProductGetTypeResponse.swift */; };
+		34C7C8311D35F07800372F37 /* ReportProductGetTypeResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34C7C8301D35F07800372F37 /* ReportProductGetTypeResult.swift */; };
 		34D587911D2B522100605EDA /* CCReaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D5878F1D2B522100605EDA /* CCReaderViewController.swift */; };
 		34D587921D2B522100605EDA /* CCReaderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34D587901D2B522100605EDA /* CCReaderViewController.xib */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -2426,10 +2428,12 @@
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
 		2D733D9158C7BF957D514506 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
+		343339831D3CA96B00869E64 /* ReportProductSubmitResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportProductSubmitResponse.swift; sourceTree = "<group>"; };
 		3471F6B41D34C7500077D22F /* ReportProductViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportProductViewController.swift; sourceTree = "<group>"; };
 		3471F6B51D34C7500077D22F /* ReportProductViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReportProductViewController.xib; sourceTree = "<group>"; };
-		34C7C82E1D35EA1500372F37 /* ReportProductResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportProductResponse.swift; sourceTree = "<group>"; };
-		34C7C8301D35F07800372F37 /* ReportProductResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportProductResult.swift; sourceTree = "<group>"; };
+		348E76F31D3CB18400189082 /* ReportProductSubmitResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportProductSubmitResult.swift; sourceTree = "<group>"; };
+		34C7C82E1D35EA1500372F37 /* ReportProductGetTypeResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportProductGetTypeResponse.swift; sourceTree = "<group>"; };
+		34C7C8301D35F07800372F37 /* ReportProductGetTypeResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportProductGetTypeResult.swift; sourceTree = "<group>"; };
 		34D5878F1D2B522100605EDA /* CCReaderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CCReaderViewController.swift; sourceTree = "<group>"; };
 		34D587901D2B522100605EDA /* CCReaderViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CCReaderViewController.xib; sourceTree = "<group>"; };
 		4868E459AB2A65D133732296 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tokopedia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -6053,8 +6057,10 @@
 			children = (
 				3471F6B41D34C7500077D22F /* ReportProductViewController.swift */,
 				3471F6B51D34C7500077D22F /* ReportProductViewController.xib */,
-				34C7C82E1D35EA1500372F37 /* ReportProductResponse.swift */,
-				34C7C8301D35F07800372F37 /* ReportProductResult.swift */,
+				34C7C82E1D35EA1500372F37 /* ReportProductGetTypeResponse.swift */,
+				34C7C8301D35F07800372F37 /* ReportProductGetTypeResult.swift */,
+				343339831D3CA96B00869E64 /* ReportProductSubmitResponse.swift */,
+				348E76F31D3CB18400189082 /* ReportProductSubmitResult.swift */,
 			);
 			name = ReportProduct;
 			sourceTree = "<group>";
@@ -13919,7 +13925,7 @@
 				8548B37B1D1A58F100D11E22 /* ShopReviewPageViewController.m in Sources */,
 				8548AEA81D1A58F100D11E22 /* SecurityRequestOTP.m in Sources */,
 				8548AE6D1D1A58F100D11E22 /* NSNumberFormatter+IDRFormater.m in Sources */,
-				34C7C82F1D35EA1500372F37 /* ReportProductResponse.swift in Sources */,
+				34C7C82F1D35EA1500372F37 /* ReportProductGetTypeResponse.swift in Sources */,
 				8548AF1D1D1A58F100D11E22 /* InboxMessage.m in Sources */,
 				8548B1C21D1A58F100D11E22 /* InboxMessageDetailCell.m in Sources */,
 				8548AEC01D1A58F100D11E22 /* ContactUsResponse.m in Sources */,
@@ -13991,7 +13997,7 @@
 				8548AFCD1D1A58F100D11E22 /* SearchAWSResult.m in Sources */,
 				8548AE851D1A58F100D11E22 /* NSNumberFormatter+IDRFormater.m in Sources */,
 				8548B01B1D1A58F100D11E22 /* JNE.m in Sources */,
-				34C7C8311D35F07800372F37 /* ReportProductResult.swift in Sources */,
+				34C7C8311D35F07800372F37 /* ReportProductGetTypeResult.swift in Sources */,
 				8548AF9A1D1A58F100D11E22 /* BankAccountFormResult.m in Sources */,
 				8548B35D1D1A58F100D11E22 /* ShopInfoAddressCell.m in Sources */,
 				8548B2F51D1A58F100D11E22 /* ShipmentStatusCell.m in Sources */,
@@ -14389,6 +14395,7 @@
 				8548B3D41D1A58F200D11E22 /* TransactionShipmentViewController.m in Sources */,
 				8548AF971D1A58F100D11E22 /* AddressFormResult.m in Sources */,
 				8548B3AE1D1A58F100D11E22 /* TransactionShipmentATCTableViewController.m in Sources */,
+				343339841D3CA96B00869E64 /* ReportProductSubmitResponse.swift in Sources */,
 				8548B0741D1A58F100D11E22 /* TxOrderConfirmPaymentForm.m in Sources */,
 				8548B1761D1A58F100D11E22 /* RequestFilter.swift in Sources */,
 				8548B3A01D1A58F100D11E22 /* TrackOrderHistoryCell.m in Sources */,
@@ -14484,6 +14491,7 @@
 				8548B1A31D1A58F100D11E22 /* HomeTabHeaderViewController.m in Sources */,
 				8548B0B71D1A58F100D11E22 /* LogoutViewController.m in Sources */,
 				8548B03A1D1A58F100D11E22 /* TransactionAddressShippingForm.m in Sources */,
+				348E76F41D3CB18400189082 /* ReportProductSubmitResult.swift in Sources */,
 				8548B1951D1A58F100D11E22 /* RequestNotifyLBLM.m in Sources */,
 				8548B2BC1D1A58F100D11E22 /* ReputationMyReviewViewController.m in Sources */,
 				8548B3D01D1A58F200D11E22 /* RequestCart.m in Sources */,

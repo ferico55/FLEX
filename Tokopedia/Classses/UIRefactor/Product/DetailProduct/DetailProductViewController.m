@@ -2621,6 +2621,7 @@ OtherProductDelegate
 }
 - (IBAction)actionReport:(UIButton *)sender {
     ReportProductViewController *reportProductVC = [ReportProductViewController new];
+    reportProductVC.productId = [_loadedData objectForKey:@"product_id"];
     [self.navigationController pushViewController:reportProductVC animated:YES];
 }
 
