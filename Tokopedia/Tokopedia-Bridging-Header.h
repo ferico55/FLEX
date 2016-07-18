@@ -60,3 +60,5 @@
 #import "CardIO.h"
 #import "WebViewController.h"
 #import "Downpicker.h"
+#import "GAITrackedViewController.h"
+#import "LoginViewController.h"
