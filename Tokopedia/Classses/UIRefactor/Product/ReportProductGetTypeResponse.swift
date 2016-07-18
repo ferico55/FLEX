@@ -8,16 +8,16 @@
 
 import UIKit
 
-class ReportProductResponse: NSObject {
+class ReportProductGetTypeResponse: NSObject {
     
     var status: String!
     var server_process_time: String!
-    var data: ReportProductResult!
+    var data: ReportProductGetTypeResult!
     
     class func mapping() -> RKObjectMapping {
-        let mapping: RKObjectMapping = RKObjectMapping(forClass: ReportProductResponse.self)
+        let mapping: RKObjectMapping = RKObjectMapping(forClass: ReportProductGetTypeResponse.self)
         mapping.addAttributeMappingsFromArray(["status", "server_process_time"])
-        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "data", toKeyPath: "data", withMapping: ReportProductResult.mapping()))
+        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "data", toKeyPath: "data", withMapping: ReportProductGetTypeResult.mapping()))
         return mapping;
     }
 }

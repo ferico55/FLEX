@@ -8,13 +8,13 @@
 
 import UIKit
 
-class ReportProductResult: NSObject {
+class ReportProductGetTypeResult: NSObject {
     var is_success: String!
     var product_id: String!
     var list: [[String:NSObject]]!
     
     class func mapping() -> RKObjectMapping{
-        let mapping = RKObjectMapping(forClass: ReportProductResult.self)
+        let mapping = RKObjectMapping(forClass: ReportProductGetTypeResult.self)
         mapping.addAttributeMappingsFromArray(["is_success", "product_id", "list"])
         return mapping
     }

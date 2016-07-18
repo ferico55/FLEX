@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ReportProductViewController: UIViewController, UITextViewDelegate{
+class ReportProductViewController: UIViewController, UITextViewDelegate, UIAlertViewDelegate{
     
     let UNSELECTED_ALASAN: String! = "Pilih jenis laporan"
     var productId: String!
@@ -25,15 +25,17 @@ class ReportProductViewController: UIViewController, UITextViewDelegate{
     var submitBarButtonItem: UIBarButtonItem!
     var networkManager = TokopediaNetworkManager()
     var reportDataArray : [[String: NSObject]] = []
+    var reportLinkUrl: String?
+    var userManager = UserAuthentificationManager()
+    var selectedReportId: Int!
+    var needToPopWhenErrorHappened: Bool?
+    var errorAlertView: UIAlertView?
+    var successAlertView: UIAlertView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let goToWebVCTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapUrlLink))
-        self.linkInstructionLabel.addGestureRecognizer(goToWebVCTapGestureRecognizer)
         downPickerTextField.enabled = false
         deskripsiTextView.delegate = self
-        //self.downPicker = DownPicker(textField: downPickerTextField, withData: [])
-        
         generateKeyboardNotification()
         getReportTypeFromAPI()
         setupHiddenObject()
@@ -43,17 +45,16 @@ class ReportProductViewController: UIViewController, UITextViewDelegate{
     
     override func viewWillAppear(animated: Bool) {
         self.navigationItem.title = "Laporkan Produk"
-        //addDoneButtonOnKeyboard()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
-    func didTapUrlLink() {
+    @IBAction func didTapLaporkanButton(sender: UIButton) {
         let webViewVC = WebViewController()
-        webViewVC.strURL = "http://www.tokopedia.com"
-        webViewVC.strTitle = "Mengarahkan"
+        webViewVC.strURL = reportLinkUrl
+        webViewVC.strTitle = "Laporkan Produk"
         webViewVC.onTapLinkWithUrl = { (url) in
             if (url.absoluteString == "https://www.tokopedia.com/") {
                 self.navigationController?.popViewControllerAnimated(true)
@@ -61,8 +62,7 @@ class ReportProductViewController: UIViewController, UITextViewDelegate{
         }
         self.navigationController?.pushViewController(webViewVC, animated: true)
     }
-    
-    // MARK: KeyboardNotification 
+    // MARK: KeyboardNotification
     
     func generateKeyboardNotification() {
         let notificationCenter = NSNotificationCenter.defaultCenter()
@@ -112,7 +112,7 @@ class ReportProductViewController: UIViewController, UITextViewDelegate{
     }
     
     func disableSubmitBarButtonItem() {
-        self.submitBarButtonItem.tintColor = UIColor(colorLiteralRed: 127/255, green: 127/255, blue: 127/255, alpha: 1.0)
+        self.submitBarButtonItem.tintColor = UIColor(colorLiteralRed: 228/255, green: 228/255, blue: 228/255, alpha: 1.0)
         self.submitBarButtonItem.enabled = false
     }
     
@@ -124,11 +124,21 @@ class ReportProductViewController: UIViewController, UITextViewDelegate{
     func setupHiddenObject() {
         self.tulisDeskripsiPlaceholderLabel.hidden = true
         self.laporkanButton.hidden = true
-        self.laporkanButton.cornerRadius = 3
+        self.laporkanButton.cornerRadius = 5
         self.laporkanButton.borderWidth = 1
         self.laporkanButton.borderColor = UIColor(red: 255/255, green: 87/255, blue: 34/255, alpha: 1.0)
+        setLinkDescriptionLineSpacing()
         hideDeskripsiForm()
         hideLinkInstruction()
+    }
+    
+    func setLinkDescriptionLineSpacing() {
+        let attrString = NSMutableAttributedString(attributedString: linkInstructionLabel.attributedText!)
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = 2
+        attrString.addAttribute(NSParagraphStyleAttributeName, value: paragraphStyle, range: NSMakeRange(0, (linkInstructionLabel.text?.characters.count)!))
+        self.linkInstructionLabel.attributedText = attrString
+
     }
     
     func showDeskripsiForm() {
@@ -166,14 +176,26 @@ class ReportProductViewController: UIViewController, UITextViewDelegate{
         }
     }
     
+    func showErrorAlertViewWithIsNeedPopViewController(need: Bool) {
+        errorAlertView = UIAlertView(title: "Terjadi Kesalahan", message: "", delegate: self, cancelButtonTitle: "Kembali")
+        self.needToPopWhenErrorHappened = need
+        errorAlertView!.show()
+    }
+    
+    func showSuccessAlertViewWithIsNeedPopViewController() {
+        successAlertView = UIAlertView(title: "Sukses Laporkan Produk", message: "", delegate: self, cancelButtonTitle: "OK")
+        successAlertView!.show()
+    }
+    
     // MARK: API
     
     func getReportTypeFromAPI() {
-        networkManager.requestWithBaseUrl("http://private-1a1cd-digitaloperator.apiary-mock.com", path: "/operators", method: .GET, parameter: ["":""], mapping: ReportProductResponse.mapping(), onSuccess: {(mappingResult, operation) in
+        networkManager.isUsingHmac = true
+        networkManager.requestWithBaseUrl(NSString.v4Url(), path: "/v4/product/get_product_report_type.pl", method: .GET, parameter: ["product_id":productId], mapping: ReportProductGetTypeResponse.mapping(), onSuccess: {(mappingResult, operation) in
                 dispatch_async(dispatch_get_main_queue(), { [weak self] in
                     if let weakSelf = self {
                         let result: NSDictionary = (mappingResult as RKMappingResult).dictionary()
-                        let reportProductResponse: ReportProductResponse = result[""] as! ReportProductResponse
+                        let reportProductResponse: ReportProductGetTypeResponse = result[""] as! ReportProductGetTypeResponse
                         
                         var reportTitleArray: [String] = []
                         weakSelf.reportDataArray = reportProductResponse.data.list
@@ -186,12 +208,40 @@ class ReportProductViewController: UIViewController, UITextViewDelegate{
                     }
                 })
             }) { (error) in
-                
+                dispatch_async(dispatch_get_main_queue(), { [weak self] in
+                    if let weakSelf = self {
+                        weakSelf.showErrorAlertViewWithIsNeedPopViewController(true)
+                    }
+                })
         }
     }
     
     func sendReportToServer() {
-        print("sukses kirim")
+        let param : [String:String]! = ["product_id" : self.productId,
+                    "report_type" : String(self.selectedReportId),
+                    "text_message": self.deskripsiTextView.text,
+                    "user_id"     : self.userManager.getUserId()]
+        networkManager.isUsingHmac = true
+        networkManager.requestWithBaseUrl(NSString.v4Url(), path: "/v4/action/product/report_product.pl", method: .POST, parameter: param, mapping: ReportProductSubmitResponse.mapping(), onSuccess: { (mappingResult, operation) in
+                dispatch_async(dispatch_get_main_queue(), { 
+                    [weak self] in
+                    if let weakSelf = self {
+                        let result: NSDictionary = (mappingResult as RKMappingResult).dictionary()
+                        let reportProductResponse: ReportProductSubmitResponse = result[""] as! ReportProductSubmitResponse
+                        if reportProductResponse.data.is_success == "1" {
+                            weakSelf.showSuccessAlertViewWithIsNeedPopViewController()
+                        } else {
+                            weakSelf.showErrorAlertViewWithIsNeedPopViewController(false)
+                        }
+                    }
+                })
+            }) { (error) in
+                dispatch_async(dispatch_get_main_queue(), { [weak self] in
+                    if let weakSelf = self {
+                        weakSelf.showErrorAlertViewWithIsNeedPopViewController(true)
+                    }
+                })
+        }
     }
     
     // MARK: DownPicker Functionality
@@ -207,6 +257,7 @@ class ReportProductViewController: UIViewController, UITextViewDelegate{
         self.downPicker.getTextField().rightView?.frame = frame!
         self.downPicker.setArrowImage(UIImage(named: "icon_up_down_arrow_green"))
         self.downPicker.selectedIndex = 0
+        self.downPicker.shouldDisplayCancelButton = false
         self.downPicker.addTarget(self, action: #selector(ReportProductViewController.didChangeDownPickerValue(_:)), forControlEvents: .ValueChanged)
     }
     
@@ -215,6 +266,8 @@ class ReportProductViewController: UIViewController, UITextViewDelegate{
         let downPickerSelectedIndex = downPicker.selectedIndex
         if downPickerSelectedIndex > 0 {
             var selectedReportData = reportDataArray[downPickerSelectedIndex-1]
+            reportLinkUrl = selectedReportData["report_url"] as? String
+            selectedReportId = selectedReportData["report_id"] as? Int
             if selectedReportData["report_response"] == 1 {
                 showDeskripsiForm()
                 hideLinkInstruction()
@@ -240,5 +293,13 @@ class ReportProductViewController: UIViewController, UITextViewDelegate{
     
     func textViewDidEndEditing(textView: UITextView) {
         showOrHidePlaceholder()
+    }
+    
+    // MARK: Alert View delegate
+    
+    func alertView(alertView: UIAlertView, didDismissWithButtonIndex buttonIndex: Int) {
+        if (needToPopWhenErrorHappened == true || alertView == successAlertView) {
+            self.navigationController?.popViewControllerAnimated(true)
+        }
     }
 }
