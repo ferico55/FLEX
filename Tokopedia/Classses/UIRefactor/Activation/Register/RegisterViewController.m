@@ -82,6 +82,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *googleButtonTopConstraint;
 @property (strong, nonatomic) IBOutlet UILabel *googleSignInLabel;
 @property (strong, nonatomic) FBSDKLoginButton *loginView;
+@property (strong, nonatomic) IBOutlet UIView *signInProviderContainer;
 
 @end
 
@@ -129,10 +130,22 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 
     [_container addSubview:_contentView];
     
+    [self setSignInProviders: [SignInProvider defaultProviders]];
+    
+    [self updateFormViewAppearance];
+    
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(updateFormViewAppearance)
                                                  name:kTKPDForceUpdateFacebookButton
                                                object:nil];
+}
+
+- (void)setSignInProviders:(NSArray <SignInProvider *> *) providers {
+    [_signInProviderContainer removeAllSubviews];
+    
+    SignInProviderListView *providerListView = [[SignInProviderListView alloc] initWithProviders:providers];
+    [providerListView attachToView:_signInProviderContainer];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -721,8 +734,15 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
     contentViewFrame.size.width = contentViewWidth;
     contentViewFrame.origin.x = contentViewMarginLeft;
     contentViewFrame.origin.y = contentViewMarginTop;
+    
+    [_contentView setNeedsLayout];
+    [_contentView layoutIfNeeded];
+    
     _contentView.frame = contentViewFrame;
 
+    contentViewFrame.size.height = [_contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
+    _contentView.frame = contentViewFrame;
+    
     _container.contentSize = CGSizeMake(width, _contentView.frame.size.height);
     
     self.googleButtonWidthConstraint.constant = constant;
