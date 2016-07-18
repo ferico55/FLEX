@@ -65,3 +65,5 @@
 #import "NSURL+Dictionary.h"
 #import <NJKWebViewProgress/NJKWebViewProgress.h>
 #import <NJKWebViewProgress/NJKWebViewProgressView.h>
+#import "UIImage+Resize.h"
+#import <Masonry/Masonry.h>
