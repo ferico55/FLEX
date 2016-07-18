@@ -31,6 +31,7 @@
 #import "UIView+HVDLayout.h"
 
 #import "PhoneVerifViewController.h"
+#import "PhoneVerifRequest.h"
 
 #pragma mark - Profile Edit View Controller
 
@@ -92,6 +93,8 @@ typedef NS_ENUM(NSInteger, PickerView) {
 @property (strong, nonatomic) TKPDPhotoPicker *photoPicker;
 @property (strong, nonatomic) IBOutlet UIButton *verifyButton;
 
+
+@property (strong, nonatomic) PhoneVerifRequest* phoneVerifRequest;
 @end
 
 @implementation SettingUserProfileViewController
@@ -102,6 +105,7 @@ typedef NS_ENUM(NSInteger, PickerView) {
     [super viewDidLoad];
     self.title = @"Biodata Diri";
     [self requestGetData];
+    _phoneVerifRequest = [PhoneVerifRequest new];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -125,6 +129,7 @@ typedef NS_ENUM(NSInteger, PickerView) {
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
     [self setPhoneVerificationStatus];
+    [self requestGetData];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -449,15 +454,29 @@ typedef NS_ENUM(NSInteger, PickerView) {
 
 -(void)setPhoneVerificationStatus{
     // Show verification view if user phone number not verified
+    
     TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
     NSDictionary *auth = [secureStorage keychainDictionary];
+    
     if([[auth objectForKey:@"msisdn_is_verified"] boolValue]){
+        [self populateViewIfVerifiedStatusIs:YES];
+    }else{
+        [_phoneVerifRequest requestVerifiedStatusOnSuccess:^(NSString *result) {
+            [self populateViewIfVerifiedStatusIs:[result boolValue]];
+        } onFailure:^(NSError *error) {
+            [self populateViewIfVerifiedStatusIs:NO];
+        }];
+    }
+}
+
+-(void)populateViewIfVerifiedStatusIs:(BOOL)verifiedStatus{
+    if(verifiedStatus){
         self.phoneNumberStatusLabel.hidden = NO;
         self.phoneNumberStatusLabel.text = @"Terverifikasi";
         self.phoneNumberStatusLabel.textColor = [UIColor colorWithRed:0.061 green:0.648 blue:0.275 alpha:1];
         self.verificationPhoneView.hidden = YES;
         self.verificationPhoneViewHeight.constant = 20;
-    } else{
+    }else{
         self.phoneNumberStatusLabel.hidden = NO;
         self.phoneNumberStatusLabel.text = @"Belum Terverifikasi";
         self.phoneNumberStatusLabel.textColor = [UIColor colorWithRed:0.882 green:0.296 blue:0.209 alpha:1];
