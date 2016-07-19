@@ -74,7 +74,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 @property (weak, nonatomic) IBOutlet UIView *loadingView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *facebookLoginActivityIndicator;
 
-@property (strong, nonatomic) IBOutlet UILabel *googleSignInLabel;
 @property (strong, nonatomic) IBOutlet UIView *signInProviderContainer;
 
 @end
@@ -684,7 +683,6 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
     CGFloat contentViewWidth = 0;
     CGFloat contentViewMarginLeft = 0;
     CGFloat contentViewMarginTop = 0;
-    NSString *facebookButtonTitle = @"Sign in";
     
     if (IS_IPHONE_5 || IS_IPHONE_4_OR_LESS) {
         contentViewWidth = width;
@@ -701,8 +699,6 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
         contentViewWidth = 500;
         contentViewMarginLeft = 134;
         contentViewMarginTop = 134;
-        facebookButtonTitle = @"Sign in with Facebook";
-        _googleSignInLabel.text = @"Sign in with Google";
     }
     
     contentViewFrame.size.width = contentViewWidth;
@@ -717,7 +713,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
     contentViewFrame.size.height = [_contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
     _contentView.frame = contentViewFrame;
     
-    _container.contentSize = CGSizeMake(width, _contentView.frame.size.height);
+    _container.contentSize = CGSizeMake(width, _contentView.frame.size.height + contentViewMarginTop);
 }
 
 #pragma mark - Google Sign In Delegate
