@@ -149,12 +149,15 @@
     [_sendOTPButton setEnabled:NO];
     [_sendOTPButton setBackgroundColor:[UIColor colorWithRed:0.759 green:0.752 blue:0.759 alpha:1]];
     
-    _timer = [NSTimer scheduledTimerWithTimeInterval:1.0f
-                                                      target:self
-                                                    selector:@selector(updateCountdown)
-                                                    userInfo:nil
-                                                     repeats:YES];
-    [_timer fire];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        _timer = [NSTimer scheduledTimerWithTimeInterval:1.0f
+                                                  target:self
+                                                selector:@selector(updateCountdown)
+                                                userInfo:nil
+                                                 repeats:YES];
+        [_timer fire];
+    });
+    
 }
 
 -(void)updateCountdown{
