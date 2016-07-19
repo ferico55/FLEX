@@ -110,7 +110,7 @@
 @interface DetailProductViewController ()
 <
 LabelMenuDelegate,
-TTTAttributedLabelDelegate,
+//TTTAttributedLabelDelegate,
 GalleryViewControllerDelegate,
 UITableViewDelegate,
 UITableViewDataSource,
@@ -1060,6 +1060,7 @@ OtherProductDelegate
     return 1;
 }
 
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell* cell = nil;
@@ -1076,28 +1077,19 @@ OtherProductDelegate
         [self productinfocell:productInfoCell withtableview:tableView];
         
         //Check product returnable
-        if(_product.data.info.product_returnable!=nil && [_product.data.info.product_returnable isEqualToString:@"1"]) {
-            if([_product.data.shop_info.shop_has_terms isEqualToString:@"0"]) {
-                NSString *strCanReture = [CStringCanReture stringByReplacingOccurrencesOfString:CStringCanRetureReplace withString:@""];
-                [productInfoCell setLblDescriptionToko:strCanReture];
-            }
-            else {
-                [productInfoCell setLblDescriptionToko:CStringCanReture];
-                NSRange range = [CStringCanReture rangeOfString:CStringCanRetureLinkDetection];
-                [productInfoCell getLblRetur].delegate = self;
-                
-                [[productInfoCell getLblRetur] addLinkToURL:[NSURL URLWithString:@""] withRange:range];
-                
-                tokopediaNoteCanReture = [TokopediaNetworkManager new];
-                tokopediaNoteCanReture.delegate = self;
-                tokopediaNoteCanReture.tagRequest = CTagNoteCanReture;
-                [tokopediaNoteCanReture doRequest];
-            }
-        }
-        else if(_product.data.info.product_returnable!=nil && [_product.data.info.product_returnable isEqualToString:@"2"]) {
-            [productInfoCell setLblDescriptionToko:CStringCannotReture];
-        }
-        else {
+        BOOL isProductReturnAble = ![_product.data.info.return_info.content isEqualToString:@""];
+        if(isProductReturnAble) {
+            NSArray* rgbArray = [_product.data.info.return_info.color_rgb componentsSeparatedByString:@","];
+            UIColor* color = [UIColor colorWithRed:([rgbArray[0] integerValue]/255.0) green:([rgbArray[1] integerValue]/255.0) blue:([rgbArray[2] integerValue]/255.0) alpha:0.2];
+            [productInfoCell setLblDescriptionToko:_product.data.info.return_info.content withImageURL:_product.data.info.return_info.icon withBGColor:color]
+            ;
+            productInfoCell.didTapReturnableInfo = ^(NSURL* url) {
+                WebViewController* web = [[WebViewController alloc] init];
+                web.strTitle = @"Keterangan Pengembalian Barang";
+                web.strURL = [url absoluteString];
+                [self.navigationController pushViewController:web animated:YES];
+            };
+        } else {
             [productInfoCell hiddenViewRetur];
         }
         
@@ -2961,21 +2953,6 @@ OtherProductDelegate
     _auth = [_userManager getUserLoginData];
 }
 
-#pragma mark - TTTAttributeLabel Delegate
-- (void)attributedLabel:(TTTAttributedLabel *)label didLongPressLinkWithURL:(NSURL *)url atPoint:(CGPoint)point
-{
-    
-}
-
-- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url
-{
-    if(notesDetail!=nil && notesDetail.notes_content!=nil) {
-        WebViewController *webViewController = [WebViewController new];
-        webViewController.strTitle = CStringSyaratDanKetentuan;
-        webViewController.strContentHTML = [NSString stringWithFormat:@"<font face='Gotham Book' size='2'>%@</font>", notesDetail.notes_content];
-        [self.navigationController pushViewController:webViewController animated:YES];
-    }
-}
 
 
 #pragma mark - PopUp

@@ -9,5 +9,15 @@
 import UIKit
 
 class ProductReturnInfo: NSObject {
+    var icon: String = ""
+    var color_rgb: String = ""
+    var content: String = ""
+    
+    static func mapping() -> RKObjectMapping! {
+        let mapping : RKObjectMapping = RKObjectMapping.init(forClass: self)
+        mapping.addAttributeMappingsFromDictionary(["icon" : "icon", "color_rgb" : "color_rgb", "content" : "content"])
+        
+        return mapping
+    }
 
 }
