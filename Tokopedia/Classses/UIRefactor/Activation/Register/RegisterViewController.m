@@ -124,6 +124,11 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     [self setSignInProviders: [SignInProvider defaultProviders]];
     
     [self updateFormViewAppearance];
+    
+    [[AuthenticationService sharedService]
+     getThirdPartySignInOptionsOnSuccess:^(NSArray<SignInProvider *> *providers) {
+         [self setSignInProviders:providers];
+     }];
 }
 
 - (void)setSignInProviders:(NSArray <SignInProvider *> *) providers {
