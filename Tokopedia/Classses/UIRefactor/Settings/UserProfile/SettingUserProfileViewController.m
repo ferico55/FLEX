@@ -28,8 +28,10 @@
 #import "TKPDPhotoPicker.h"
 
 #import "UIImage+ImageEffects.h"
-#import "HelloPhoneVerificationViewController.h"
 #import "UIView+HVDLayout.h"
+
+#import "PhoneVerifViewController.h"
+#import "PhoneVerifRequest.h"
 
 #pragma mark - Profile Edit View Controller
 
@@ -91,6 +93,8 @@ typedef NS_ENUM(NSInteger, PickerView) {
 @property (strong, nonatomic) TKPDPhotoPicker *photoPicker;
 @property (strong, nonatomic) IBOutlet UIButton *verifyButton;
 
+
+@property (strong, nonatomic) PhoneVerifRequest* phoneVerifRequest;
 @end
 
 @implementation SettingUserProfileViewController
@@ -101,6 +105,7 @@ typedef NS_ENUM(NSInteger, PickerView) {
     [super viewDidLoad];
     self.title = @"Biodata Diri";
     [self requestGetData];
+    _phoneVerifRequest = [PhoneVerifRequest new];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -123,6 +128,8 @@ typedef NS_ENUM(NSInteger, PickerView) {
                                              selector:@selector(keyboardWillHide:)
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
+    [self setPhoneVerificationStatus];
+    [self requestGetData];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -442,17 +449,32 @@ typedef NS_ENUM(NSInteger, PickerView) {
     
     // Set user profile picture
     [self setUserProfilePicture];
-    
+    [self setPhoneVerificationStatus];
+}
+
+-(void)setPhoneVerificationStatus{
     // Show verification view if user phone number not verified
-    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
-    NSDictionary *auth = [secureStorage keychainDictionary];
-    if([[auth objectForKey:@"msisdn_is_verified"] boolValue]){
+    UserAuthentificationManager *auth = [[UserAuthentificationManager alloc]init];
+    
+    if([auth isUserPhoneVerified]){
+        [self populateViewIfVerifiedStatusIs:YES];
+    }else{
+        [_phoneVerifRequest requestVerifiedStatusOnSuccess:^(NSString *result) {
+            [self populateViewIfVerifiedStatusIs:[result boolValue]];
+        } onFailure:^(NSError *error) {
+            [self populateViewIfVerifiedStatusIs:NO];
+        }];
+    }
+}
+
+-(void)populateViewIfVerifiedStatusIs:(BOOL)verifiedStatus{
+    if(verifiedStatus){
         self.phoneNumberStatusLabel.hidden = NO;
         self.phoneNumberStatusLabel.text = @"Terverifikasi";
         self.phoneNumberStatusLabel.textColor = [UIColor colorWithRed:0.061 green:0.648 blue:0.275 alpha:1];
         self.verificationPhoneView.hidden = YES;
         self.verificationPhoneViewHeight.constant = 20;
-    } else{
+    }else{
         self.phoneNumberStatusLabel.hidden = NO;
         self.phoneNumberStatusLabel.text = @"Belum Terverifikasi";
         self.phoneNumberStatusLabel.textColor = [UIColor colorWithRed:0.882 green:0.296 blue:0.209 alpha:1];
@@ -588,12 +610,10 @@ typedef NS_ENUM(NSInteger, PickerView) {
 }
 
 - (IBAction)didTapVerificationPhoneButton:(UIButton *)sender {
-    HelloPhoneVerificationViewController *controller = [HelloPhoneVerificationViewController new];
-    controller.isSkipButtonHidden = NO;
-    
-    UINavigationController *navigationController = [[UINavigationController alloc] init];
-    navigationController.navigationBarHidden = YES;
-    navigationController.viewControllers = @[controller];
+    PhoneVerifViewController *controller = [PhoneVerifViewController new];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
+    navigationController.navigationBar.translucent = NO;
+    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
     [self.navigationController presentViewController:navigationController animated:YES completion:nil];
 }
 

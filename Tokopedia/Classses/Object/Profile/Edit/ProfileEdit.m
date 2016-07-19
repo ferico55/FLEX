@@ -9,5 +9,15 @@
 #import "ProfileEdit.h"
 
 @implementation ProfileEdit
++(RKObjectMapping *)mapping{
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ProfileEdit class]];
+    [statusMapping addAttributeMappingsFromDictionary:@{@"status":@"status",
+                                                        @"server_process_time":@"server_process_time"
+                                                        }];
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data"
+                                                                                  toKeyPath:@"result"
+                                                                                withMapping:[ProfileEditResult mapping]]];
+    return statusMapping;
 
+}
 @end
