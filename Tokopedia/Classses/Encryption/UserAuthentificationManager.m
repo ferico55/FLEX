@@ -230,7 +230,8 @@
 }
 
 - (BOOL)isUserPhoneVerified{
-    return [[_auth objectForKey:@"msisdn_is_verified"] boolValue];
+    NSString* msisdn_is_verified = [NSString stringWithFormat:@"%@", [_auth objectForKey:@"msisdn_is_verified"]];
+    return [msisdn_is_verified isEqualToString:@"1"];
 }
 
 + (void)ensureDeviceIdExistence {

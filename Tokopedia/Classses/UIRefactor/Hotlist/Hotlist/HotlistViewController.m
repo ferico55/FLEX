@@ -149,7 +149,7 @@
 -(void)checkForPhoneVerification{
     if([self shouldShowPhoneVerif]){
         [_phoneVerifRequest requestVerifiedStatusOnSuccess:^(NSString *isVerified) {
-            if(![isVerified boolValue]){
+            if(![isVerified isEqualToString:@"1"]){
                 PhoneVerifViewController *controller = [PhoneVerifViewController new];
                 UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
                 navigationController.navigationBar.translucent = NO;

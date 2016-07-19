@@ -93,7 +93,7 @@
 - (IBAction)sendOTPButtonTapped:(id)sender {
     if(![_phoneNumberTextField.text isEqualToString:@""]){
         [_phoneVerifRequest requestOTPWithPhoneNumber:_phoneNumberTextField.text onSuccess:^(GeneralAction *result) {
-            if([result.data.is_success boolValue]){
+            if([result.data.is_success isEqualToString:@"1"]){
                 NSString* successMessages = @"Sukses mengirimkan kode OTP(One Time Password), mohon cek inbox SMS Anda.";
                 [_titleMessage setText:successMessages];
                 
@@ -174,7 +174,7 @@
         [_phoneVerifRequest requestVerifyOTP:_OTPTextField.text
                              withPhoneNumber:_phoneNumberTextField.text
                                    onSuccess:^(GeneralAction *result) {
-                                       if([result.data.is_success boolValue]){
+                                       if([result.data.is_success isEqualToString:@"1"]){
                                            [_imageView setImage:[UIImage imageNamed:@"icon_success.png"]];
                                            [self animateImageView];
                                            [_titleMessage setText:@"Selamat! Nomor HP Anda sudah berhasil diverifikasi. Nomor yang terverifikasi akan memudahkan kami jika ada kendala dalam proses jual beli Anda."];
