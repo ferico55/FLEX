@@ -46,8 +46,10 @@
                 <outlet property="act" destination="aLU-la-IJ3" id="pzS-Or-M08"/>
                 <outlet property="btnPriceAlert" destination="m0j-oE-jzy" id="BKg-0K-5vP"/>
                 <outlet property="btnReport" destination="HFZ-gV-WHe" id="hvM-YJ-Izl"/>
+                <outlet property="btnReportLeadingConstraint" destination="38k-8Q-r5t" id="GoO-Qo-4UK"/>
                 <outlet property="btnReputasi" destination="fGg-D4-sKa" id="cfS-1X-dlG"/>
                 <outlet property="btnShare" destination="Qan-1S-e2b" id="d6q-QY-yhy"/>
+                <outlet property="btnShareHeight" destination="ear-fi-MQf" id="tRJ-9r-ZSL"/>
                 <outlet property="btnWishList" destination="NZQ-y3-gDO" id="lIG-m7-2oD"/>
                 <outlet property="buyButton" destination="WIw-3J-tyi" id="TUX-zM-sxE"/>
                 <outlet property="constraintBadgeGoldWidth" destination="zq6-ok-slU" id="oFS-yx-EcC"/>

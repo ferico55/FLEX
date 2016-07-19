@@ -259,6 +259,8 @@ OtherProductDelegate
 @property (weak, nonatomic) IBOutlet UILabel *otherProductNoDataLabel;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *otherProductsConstraintHeight;
 
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *btnReportLeadingConstraint;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *btnShareHeight;
 -(void)cancel;
 -(void)configureRestKit;
 -(void)loadData;
@@ -2102,6 +2104,7 @@ OtherProductDelegate
                 _header.frame = CGRectMake(0, 0, _table.bounds.size.width, 520);
             }
             [viewContentWarehouse setHidden:NO];
+            [self hideReportButton];
             _table.tableHeaderView = _header;
         }
         else {
@@ -2116,6 +2119,10 @@ OtherProductDelegate
         
         [self requestprocess:object];
     }
+}
+
+- (void) hideReportButton{
+    _btnReportLeadingConstraint.constant = -(_btnShareHeight.constant) - 2 ;
 }
 
 - (void)unsetWarehouse {
