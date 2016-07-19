@@ -153,8 +153,12 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 }
 
 - (void)webViewLoginWithUrl:(NSString *)url {
+    __weak typeof(self) weakSelf = self;
+    
     WebViewSignInViewController *controller = [[WebViewSignInViewController alloc] initWithUrl:url];
     controller.onReceiveToken = ^(NSString *token) {
+        [weakSelf showLoadingMode];
+        
         [[AuthenticationService sharedService]
          loginWithTokenString:token
          fromViewController:self
@@ -197,7 +201,8 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 
     _act.hidden = YES;
     
-    [self cancel];
+    _loadingView.hidden = YES;
+    _contentView.hidden = NO;
     
     FBSDKLoginManager *loginManager = [[FBSDKLoginManager alloc] init];
     [loginManager logOut];
@@ -214,6 +219,11 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:UIKeyboardWillHideNotification
                                                   object:nil];
+}
+
+- (void)showLoadingMode {
+    _contentView.hidden = YES;
+    _loadingView.hidden = NO;
 }
 
 #pragma mark - View Action
@@ -649,6 +659,8 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
                                  kTKPDLOGIN_API_FB_TOKEN_KEY     : accessToken.tokenString?:@"",
                                  };
 
+    [self showLoadingMode];
+    
     [[AuthenticationService sharedService]
             doThirdPartySignInWithUserProfile:[CreatePasswordUserProfile fromFacebook:data]
                            fromViewController:self
@@ -734,7 +746,7 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
 #pragma mark - Google Sign In Delegate
 - (void)signIn:(GIDSignIn *)signIn didSignInForUser:(GIDGoogleUser *)user withError:(NSError *)error {
     if (user) {
-
+        [self showLoadingMode];
         [self requestLoginGoogleWithUser:user];
     }
 }
