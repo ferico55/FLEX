@@ -151,13 +151,15 @@
 #pragma mark - Alert Controller
 
 - (void) showAlertToRegisterView {
+    __weak typeof(self) weakSelf = self;
+    
     NSString *alertViewTitle = [NSString stringWithFormat:@"Email %@ belum terdaftar sebagai member Tokopedia", _emailText.text];
     UIAlertView *alertView = [UIAlertView bk_alertViewWithTitle:alertViewTitle message:@"Anda akan kami arahkan ke halaman registrasi"];
     [alertView bk_addButtonWithTitle:@"Tidak" handler:nil];
     [alertView bk_addButtonWithTitle:@"OK" handler:^{
         RegisterViewController *registerViewController = [RegisterViewController new];
         registerViewController.emailFromForgotPassword = _emailText.text;
-        [self.navigationController pushViewController:registerViewController animated:YES];
+        [weakSelf.navigationController pushViewController:registerViewController animated:YES];
     }];
     [alertView show];
 }
