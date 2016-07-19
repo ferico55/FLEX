@@ -127,10 +127,45 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 }
 
 - (void)setSignInProviders:(NSArray <SignInProvider *> *) providers {
+    __weak typeof(self) weakSelf = self;
+    
     [_signInProviderContainer removeAllSubviews];
     
     SignInProviderListView *providerListView = [[SignInProviderListView alloc] initWithProviders:providers];
     [providerListView attachToView:_signInProviderContainer];
+    
+    providerListView.onWebViewProviderSelected = ^(SignInProvider *provider) {
+        [self webViewLoginWithUrl:provider.signInUrl];
+    };
+    
+    providerListView.onFacebookSelected = ^{
+        FBSDKLoginManager *loginManager = [[FBSDKLoginManager alloc] init];
+        [loginManager logInWithReadPermissions:@[@"public_profile", @"email", @"user_birthday"]
+                            fromViewController:weakSelf
+                                       handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
+                                           [weakSelf loginButton:nil didCompleteWithResult:result error:error];
+                                       }];
+    };
+    
+    providerListView.onGoogleSelected = ^{
+        [[GIDSignIn sharedInstance] signIn];
+    };
+}
+
+- (void)webViewLoginWithUrl:(NSString *)url {
+    WebViewSignInViewController *controller = [[WebViewSignInViewController alloc] initWithUrl:url];
+    controller.onReceiveToken = ^(NSString *token) {
+        [[AuthenticationService sharedService]
+         loginWithTokenString:token
+         fromViewController:self
+         successCallback:^(Login *login) {
+             [self onLoginSuccess:login];
+         }
+         failureCallback:^(NSError *error) {
+             
+         }];
+    };
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
