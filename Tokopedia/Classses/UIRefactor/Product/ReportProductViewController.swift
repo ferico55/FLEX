@@ -9,7 +9,7 @@
 import UIKit
 
 @objc(ReportProductViewController)
-class ReportProductViewController: UIViewController, UITextViewDelegate, UIAlertViewDelegate, LoginViewDelegate{
+class ReportProductViewController: UIViewController, UITextViewDelegate, LoginViewDelegate{
     
     var productId: String!
 
@@ -28,7 +28,6 @@ class ReportProductViewController: UIViewController, UITextViewDelegate, UIAlert
     var reportLinkUrl: String?
     var userManager = UserAuthentificationManager()
     var selectedReportId: Int!
-    var needToPopWhenErrorHappened: Bool?
     var errorAlertView: UIAlertView?
     var successAlertView: UIAlertView?
     
@@ -182,13 +181,24 @@ class ReportProductViewController: UIViewController, UITextViewDelegate, UIAlert
     }
     
     func showErrorAlertViewWithIsNeedPopViewController(need: Bool, error: String) {
-        errorAlertView = UIAlertView(title: "Terjadi Kesalahan", message: error, delegate: self, cancelButtonTitle: "Kembali")
-        self.needToPopWhenErrorHappened = need
+        errorAlertView = UIAlertView()
+        errorAlertView?.bk_initWithTitle("Terjadi Kesalahan", message: error)
+        if need == true {
+            errorAlertView?.bk_addButtonWithTitle("Kembali", handler: {
+                self.navigationController?.popViewControllerAnimated(true)
+            })
+        } else {
+            errorAlertView?.bk_addButtonWithTitle("Kembali", handler: nil)
+        }
         errorAlertView!.show()
     }
     
     func showSuccessAlertViewWithIsNeedPopViewController() {
-        successAlertView = UIAlertView(title: "Sukses Laporkan Produk", message: "", delegate: self, cancelButtonTitle: "OK")
+        successAlertView = UIAlertView()
+        successAlertView?.bk_initWithTitle("Sukses Laporkan Produk", message: "")
+        successAlertView?.bk_addButtonWithTitle("OK", handler: { 
+            self.navigationController?.popViewControllerAnimated(true)
+        })
         successAlertView!.show()
     }
     
@@ -298,14 +308,6 @@ class ReportProductViewController: UIViewController, UITextViewDelegate, UIAlert
     
     func textViewDidEndEditing(textView: UITextView) {
         showOrHidePlaceholder()
-    }
-    
-    // MARK: Alert View delegate
-    
-    func alertView(alertView: UIAlertView, didDismissWithButtonIndex buttonIndex: Int) {
-        if (needToPopWhenErrorHappened == true || alertView == successAlertView) {
-            self.navigationController?.popViewControllerAnimated(true)
-        }
     }
     
     // MARK: Login View delegate 
