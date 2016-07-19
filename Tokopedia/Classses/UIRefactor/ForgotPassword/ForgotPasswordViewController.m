@@ -152,17 +152,14 @@
 
 - (void) showAlertToRegisterView {
     NSString *alertViewTitle = [NSString stringWithFormat:@"Email %@ belum terdaftar sebagai member Tokopedia", _emailText.text];
-    [UIAlertView bk_showAlertViewWithTitle:alertViewTitle
-                                   message:@"Anda akan kami arahkan ke halaman registrasi"
-                         cancelButtonTitle:@"Tidak"
-                         otherButtonTitles:@[@"OK"]
-                                   handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
-                                       if(buttonIndex == 1) {
-                                           RegisterViewController *registerViewController = [RegisterViewController new];
-                                                   registerViewController.emailFromForgotPassword = _emailText.text;
-                                                   [self.navigationController pushViewController:registerViewController animated:YES];
-                                       }
-                                   }];
+    UIAlertView *alertView = [UIAlertView bk_alertViewWithTitle:alertViewTitle message:@"Anda akan kami arahkan ke halaman registrasi"];
+    [alertView bk_addButtonWithTitle:@"Tidak" handler:nil];
+    [alertView bk_addButtonWithTitle:@"OK" handler:^{
+        RegisterViewController *registerViewController = [RegisterViewController new];
+        registerViewController.emailFromForgotPassword = _emailText.text;
+        [self.navigationController pushViewController:registerViewController animated:YES];
+    }];
+    [alertView show];
 }
 
 @end
