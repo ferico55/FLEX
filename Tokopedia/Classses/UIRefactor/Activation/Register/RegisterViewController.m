@@ -131,8 +131,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     
     SignInProviderListView *providerListView = [[SignInProviderListView alloc] initWithProviders:providers];
     [providerListView attachToView:_signInProviderContainer];
-    
-    [self updateFormViewAppearance];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -169,8 +167,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     FBSDKLoginManager *loginManager = [[FBSDKLoginManager alloc] init];
     [loginManager logOut];
     [FBSDKAccessToken setCurrentAccessToken:nil];
-    
-    [self updateFormViewAppearance];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -679,7 +675,6 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
 
 - (void)updateFormViewAppearance {
     CGFloat width = [[UIScreen mainScreen] bounds].size.width;
-    CGRect contentViewFrame = _contentView.frame;
     CGFloat contentViewWidth = 0;
     CGFloat contentViewMarginLeft = 0;
     CGFloat contentViewMarginTop = 0;
@@ -700,20 +695,14 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
         contentViewMarginLeft = 134;
         contentViewMarginTop = 134;
     }
-    
-    contentViewFrame.size.width = contentViewWidth;
-    contentViewFrame.origin.x = contentViewMarginLeft;
-    contentViewFrame.origin.y = contentViewMarginTop;
-    
-    [_contentView setNeedsLayout];
-    [_contentView layoutIfNeeded];
-    
-    _contentView.frame = contentViewFrame;
 
-    contentViewFrame.size.height = [_contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
-    _contentView.frame = contentViewFrame;
-    
-    _container.contentSize = CGSizeMake(width, _contentView.frame.size.height + contentViewMarginTop);
+    [_contentView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(@(contentViewWidth));
+        make.top.equalTo(_container.mas_top).with.offset(contentViewMarginTop);
+        make.right.equalTo(_container.mas_right).with.offset(-contentViewMarginLeft);
+        make.bottom.equalTo(_container.mas_bottom);
+        make.left.equalTo(_container.mas_left).with.offset(contentViewMarginLeft);
+    }];
 }
 
 #pragma mark - Google Sign In Delegate
