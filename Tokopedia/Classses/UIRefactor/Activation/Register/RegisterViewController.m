@@ -684,25 +684,20 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
     CGFloat contentViewWidth = 0;
     CGFloat contentViewMarginLeft = 0;
     CGFloat contentViewMarginTop = 0;
-    CGFloat constant;
     NSString *facebookButtonTitle = @"Sign in";
     
     if (IS_IPHONE_5 || IS_IPHONE_4_OR_LESS) {
-        constant =  (width / 2) - 30;
         contentViewWidth = width;
         contentViewMarginLeft = 0;
     } else if (IS_IPHONE_6) {
-        constant =  (335 / 2) - 30;
         contentViewWidth = 345;
         contentViewMarginLeft = 15;
         contentViewMarginTop = 20;
     } else if (IS_IPHONE_6P) {
-        constant =  (354 / 2) - 24;
         contentViewWidth = 354;
         contentViewMarginLeft = 30;
         contentViewMarginTop = 40;
     } else if (IS_IPAD) {
-        constant =  (500 / 2) - 24;
         contentViewWidth = 500;
         contentViewMarginLeft = 134;
         contentViewMarginTop = 134;
