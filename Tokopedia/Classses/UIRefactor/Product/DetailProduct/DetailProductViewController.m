@@ -2633,6 +2633,7 @@ OtherProductDelegate
         loginVC.isPresentedViewController = YES;
         afterLoginRedirectTo = @"ReportProductViewController";
         UINavigationController *loginNavController = [[UINavigationController alloc] initWithRootViewController:loginVC];
+        loginNavController.navigationBar.translucent = NO;
         [self.navigationController presentViewController:loginNavController animated:YES completion:nil];
     }
 }
