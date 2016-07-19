@@ -1019,7 +1019,7 @@
 - (void)adjustSendButtonAvailability {
     NSString *text = [_growingtextview.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 
-    _sendButton.enabled = text.length > 5;
+    _sendButton.enabled = text.length >= 5;
 }
 
 - (void)setTalk:(TalkList *)list {

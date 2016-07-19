@@ -22,6 +22,7 @@ PODS:
   - Bolts/AppLinks (1.7.0):
     - Bolts/Tasks
   - Bolts/Tasks (1.7.0)
+  - CardIO (5.3.2)
   - ComponentKit (0.14)
   - DBPrivacyHelper (0.6.3)
   - EAIntroView (2.8.3):
@@ -102,6 +103,7 @@ PODS:
 DEPENDENCIES:
   - AppsFlyer-SDK (= 4.3.7)
   - BlocksKit (~> 2.2.5)
+  - CardIO
   - ComponentKit (~> 0.14)
   - EAIntroView (~> 2.8.0)
   - FBSDKLoginKit
@@ -126,6 +128,7 @@ SPEC CHECKSUMS:
   AppsFlyer-SDK: 185c7d471ed919e9e9a3e370ae9042476f3d6472
   BlocksKit: 7f422b971407001178d181a43b99014ea2591fe6
   Bolts: a0058fa3b331c5a1e4402d534f2dae36dbff31e4
+  CardIO: 92c45caef0d986c4a303a7afba0c9b76ff2b1f6e
   ComponentKit: 11d9177b5e9940c456e7486d8f5a25c26d9ca5f2
   DBPrivacyHelper: c1e033776454dd3e16e8dcedf2e92d4d0a5e56df
   EAIntroView: e948c83e642f30010d427e643c18a6f2b529afed

@@ -262,7 +262,7 @@
                                              }
                                              [etalaseList addObjectsFromArray:etalase.result.list];
                                              [otherEtalaseList addObjectsFromArray:etalase.result.list_other];
-                                             
+                                             [self addHardcodedSemuaProdukFilter];
                                              [_tableView reloadData];
                                              if(page == 1){
                                                  [self selectInitialSelectedEtalase];
@@ -298,7 +298,7 @@
                               scrollPosition:UITableViewScrollPositionMiddle];
         }
     }else{
-        NSInteger semuaEtalasePosition = [self otherEtalaseListIndexWithId:@"etalase"];
+        NSInteger semuaEtalasePosition = [self otherEtalaseListIndexWithId:@""];
         if(semuaEtalasePosition != -1){
             selected =[NSIndexPath indexPathForRow:semuaEtalasePosition inSection:0];
             [_tableView selectRowAtIndexPath:selected
@@ -516,5 +516,12 @@
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView{
     [_tambahEtalaseTextField setText:@""];
     [_tambahEtalaseTextField resignFirstResponder];
+}
+
+-(void) addHardcodedSemuaProdukFilter {
+    EtalaseList *etalaseListSemuaProduk = [EtalaseList new];
+    etalaseListSemuaProduk.etalase_id = @"";
+    etalaseListSemuaProduk.etalase_name = @"Semua Produk";
+    [otherEtalaseList insertObject:etalaseListSemuaProduk atIndex:0];
 }
 @end

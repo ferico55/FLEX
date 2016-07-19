@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		2D50139230438B54812D14B9 /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */; };
+		34D587911D2B522100605EDA /* CCReaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D5878F1D2B522100605EDA /* CCReaderViewController.swift */; };
+		34D587921D2B522100605EDA /* CCReaderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34D587901D2B522100605EDA /* CCReaderViewController.xib */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
 		7ACE9C541BB00956006C4BB7 /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */; };
@@ -2420,6 +2422,8 @@
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
 		2D733D9158C7BF957D514506 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
+		34D5878F1D2B522100605EDA /* CCReaderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CCReaderViewController.swift; sourceTree = "<group>"; };
+		34D587901D2B522100605EDA /* CCReaderViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CCReaderViewController.xib; sourceTree = "<group>"; };
 		4868E459AB2A65D133732296 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tokopedia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
@@ -10557,6 +10561,8 @@
 				8548AA081D1A58E900D11E22 /* TransactionCCViewController.xib */,
 				8548AA091D1A58E900D11E22 /* TransactionPaymenViewController.h */,
 				8548AA0A1D1A58E900D11E22 /* TransactionPaymenViewController.m */,
+				34D5878F1D2B522100605EDA /* CCReaderViewController.swift */,
+				34D587901D2B522100605EDA /* CCReaderViewController.xib */,
 			);
 			path = CartDetail;
 			sourceTree = "<group>";
@@ -13266,6 +13272,7 @@
 				8548B2211D1A58F100D11E22 /* CourierOptionViewCell.xib in Resources */,
 				8548B5431D1A58F200D11E22 /* icon_diskusi_unfollow_grey@2x.png in Resources */,
 				8548B15F1D1A58F100D11E22 /* DepositFormAccountBankViewController.xib in Resources */,
+				34D587921D2B522100605EDA /* CCReaderViewController.xib in Resources */,
 				8548B5011D1A58F200D11E22 /* icon_category_list_white.png in Resources */,
 				8548B3E41D1A58F200D11E22 /* TxOrderConfirmationCostCell.xib in Resources */,
 				8548B70E1D1A58F200D11E22 /* slide2g.png in Resources */,
@@ -13647,6 +13654,7 @@
 				8548B0BE1D1A58F100D11E22 /* AddressCell.m in Sources */,
 				8548AFB71D1A58F100D11E22 /* ActionOrderResult.m in Sources */,
 				8548B14C1D1A58F100D11E22 /* CollectionScrollAndSwipe.m in Sources */,
+				34D587911D2B522100605EDA /* CCReaderViewController.swift in Sources */,
 				8548AFAD1D1A58F100D11E22 /* Reputation.m in Sources */,
 				8548B21E1D1A58F100D11E22 /* CourierNoteViewCell.m in Sources */,
 				8548AFC61D1A58F100D11E22 /* OrderSellerShop.m in Sources */,
