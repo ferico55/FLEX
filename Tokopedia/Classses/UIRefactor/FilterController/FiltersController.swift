@@ -67,12 +67,13 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
         self .presentControllerFilter()
     }
     
-    init(source:Source, sortResponse:FilterData, selectedSort: ListOption, presentedVC:(UIViewController), onCompletion: ((selectedSort:ListOption, paramSort:[String:String]) -> Void), onReceivedFilterDataOption:((FilterData) -> Void)){
+    init(source:Source, sortResponse:FilterData, selectedSort: ListOption, presentedVC:(UIViewController), rootCategoryID:String, onCompletion: ((selectedSort:ListOption, paramSort:[String:String]) -> Void), onReceivedFilterDataOption:((FilterData) -> Void)){
         
         self.selectedSort = selectedSort
         self.completionHandlerSort = onCompletion
         self.presentedController = presentedVC
         self.source = source.description()
+        self.rootCategoryID = rootCategoryID
         
         self.filterResponse = sortResponse
         completionHandlerResponse = onReceivedFilterDataOption
@@ -83,7 +84,9 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
     }
     
     private func requestFilter(){
-        RequestFilter.fetchFilter(source, success: { (response) in
+        RequestFilter.fetchFilter(source,
+                                  departmentID: self.rootCategoryID,
+                                  success: { (response) in
             if(response.filter.count == 0){
                 let vc : UIViewController = UIViewController()
                 vc.view.backgroundColor = UIColor.whiteColor()
@@ -139,7 +142,7 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
     }
     
     private func presentControllerSort(){
-        let controller : FilterSortViewController = FilterSortViewController.init(source:source, items: filterResponse.sort, selectedObject: selectedSort, onCompletion: { (selectedSort: ListOption, paramSort:[String:String]) in
+        let controller : FilterSortViewController = FilterSortViewController.init(source:source, items: filterResponse.sort, selectedObject: selectedSort, rootCategoryID: self.rootCategoryID, onCompletion: { (selectedSort: ListOption, paramSort:[String:String]) in
                 self.selectedSort = selectedSort
                 self.completionHandlerSort(self.selectedSort, paramSort)
             }) { (response) in

@@ -352,27 +352,32 @@
 }
 
 -(void)isSearchWithDynamicSort{
-    FiltersController *controller = [[FiltersController alloc]initWithSource:SourceCatalogProduct sortResponse:_filterResponse?:[FilterData new] selectedSort:_selectedSort presentedVC:self onCompletion:^(ListOption * sort, NSDictionary*paramSort) {
-        _selectedSortParam = paramSort;
-        _selectedSort = sort;
-        
-        [_catalog_shops removeAllObjects];
-        
-        [_tableView reloadData];
-        [_tableView setTableFooterView:_footerView];
-        
-        [_activityIndicatorView startAnimating];
-        
-        _catalogId = _catalog.result.catalog_info.catalog_id;
-        _orderBy = sort;
-        _page = 0;
-        
-        [self setActiveSort:[self isActiveSorting]];
-        [_networkManager doRequest];
-        
-    } onReceivedFilterDataOption:^(FilterData * filterResponse) {
-        _filterResponse = filterResponse;
-    }];
+    FiltersController *controller = [[FiltersController alloc]initWithSource:SourceCatalogProduct
+                                                                sortResponse:_filterResponse?:[FilterData new]
+                                                                selectedSort:_selectedSort
+                                                                 presentedVC:self
+                                                              rootCategoryID:@""
+                                                                onCompletion:^(ListOption * sort, NSDictionary*paramSort) {
+                                                                    _selectedSortParam = paramSort;
+                                                                    _selectedSort = sort;
+                                                                    
+                                                                    [_catalog_shops removeAllObjects];
+                                                                    
+                                                                    [_tableView reloadData];
+                                                                    [_tableView setTableFooterView:_footerView];
+                                                                    
+                                                                    [_activityIndicatorView startAnimating];
+                                                                    
+                                                                    _catalogId = _catalog.result.catalog_info.catalog_id;
+                                                                    _orderBy = sort;
+                                                                    _page = 0;
+                                                                    
+                                                                    [self setActiveSort:[self isActiveSorting]];
+                                                                    [_networkManager doRequest];
+                                                                    
+                                                                } onReceivedFilterDataOption:^(FilterData * filterResponse) {
+                                                                    _filterResponse = filterResponse;
+                                                                }];
 }
 
 -(BOOL)isActiveSorting{

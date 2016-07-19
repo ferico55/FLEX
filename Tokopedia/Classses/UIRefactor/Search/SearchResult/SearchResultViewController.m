@@ -802,6 +802,7 @@ ImageSearchRequestDelegate
                                                                 sortResponse:_filterResponse?:[FilterData new]
                                                                 selectedSort:_selectedSort
                                                                  presentedVC:self
+                                                              rootCategoryID:_rootCategoryID
                                                                 onCompletion:^(ListOption * sort, NSDictionary*paramSort) {
                                                                     
                                                                     [_params removeObjectForKey:@"ob"];

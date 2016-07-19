@@ -17,14 +17,16 @@ class FilterSortViewController: UIViewController, UITableViewDelegate, UITableVi
     private var tableView: UITableView = UITableView()
     private var source : String = ""
     private var refreshControl : UIRefreshControl = UIRefreshControl()
+    private var rootCategoryID : String = String()
     
-    init(source: String, items:[ListOption],selectedObject:ListOption, onCompletion: ((ListOption, [String:String]) -> Void), response:((FilterData) -> Void)){
+    init(source: String, items:[ListOption],selectedObject:ListOption, rootCategoryID:String, onCompletion: ((ListOption, [String:String]) -> Void), response:((FilterData) -> Void)){
         
         completionHandler = onCompletion
         completionHandlerResponse = response
         self.items = items
         self.selectedObject = selectedObject
         self.source = source
+        self.rootCategoryID = rootCategoryID
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -134,7 +136,9 @@ class FilterSortViewController: UIViewController, UITableViewDelegate, UITableVi
     }
 
     func requestFilter(){
-        RequestFilter.fetchFilter(source, success: { (response) in
+        RequestFilter.fetchFilter(source,
+                                  departmentID: self.rootCategoryID,
+                                  success: { (response) in
             self.items.removeAll()
             self.tableView.reloadData()
             

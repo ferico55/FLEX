@@ -348,6 +348,7 @@ static NSString const *rows = @"12";
                                                                 sortResponse:_filterResponse?:[FilterData new]
                                                                 selectedSort:_selectedSort
                                                                  presentedVC:self
+                                                              rootCategoryID:_rootCategoryID
                                                                 onCompletion:^(ListOption * sort, NSDictionary*paramSort) {
                                                                     
         _selectedSortParam = paramSort;
