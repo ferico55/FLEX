@@ -333,15 +333,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 -(void)cancel
 {
     _loadingView.hidden = YES;
-    [_container addSubview:_contentView];
-    _container.contentSize = CGSizeMake(self.view.frame.size.width,
-                                        _contentView.frame.size.height);
-    
-//    if ([[FBSession activeSession] state] != FBSessionStateCreated) {
-//        [[FBSession activeSession] closeAndClearTokenInformation];
-//        [[FBSession activeSession] close];
-//        [FBSession setActiveSession:nil];
-//    }
 }
 
 -(void)LoadDataAction:(NSDictionary *)data
