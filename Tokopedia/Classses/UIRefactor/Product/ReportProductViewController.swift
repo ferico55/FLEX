@@ -8,9 +8,9 @@
 
 import UIKit
 
+@objc(ReportProductViewController)
 class ReportProductViewController: UIViewController, UITextViewDelegate, UIAlertViewDelegate, LoginViewDelegate{
     
-    let UNSELECTED_ALASAN: String! = "Pilih jenis laporan"
     var productId: String!
 
     @IBOutlet weak var scrollView: UIScrollView!
@@ -18,8 +18,8 @@ class ReportProductViewController: UIViewController, UITextViewDelegate, UIAlert
     @IBOutlet weak var deskripsiTextView: UITextView!
     @IBOutlet weak var linkInstructionLabel: UILabel!
     @IBOutlet var downPickerTextField: UITextField!
-    @IBOutlet var tulisDeskripsiPlaceholderLabel: UILabel!
-    @IBOutlet var laporkanButton: UIButton!
+    @IBOutlet weak var tulisDeskripsiPlaceholderLabel: UILabel!
+    @IBOutlet weak var laporkanButton: UIButton!
     
     var downPicker: DownPicker!
     var submitBarButtonItem: UIBarButtonItem!
@@ -44,7 +44,7 @@ class ReportProductViewController: UIViewController, UITextViewDelegate, UIAlert
             getReportTypeFromAPI()
         }
     }
-    
+
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationItem.title = "Laporkan Produk"
@@ -55,8 +55,10 @@ class ReportProductViewController: UIViewController, UITextViewDelegate, UIAlert
     }
     
     @IBAction func didTapLaporkanButton(sender: UIButton) {
+        var appVersion = NSBundle.mainBundle().infoDictionary!["CFBundleShortVersionString"]
+        appVersion = appVersion?.stringByReplacingOccurrencesOfString(".", withString: "")
         let webViewVC = WebViewController()
-        webViewVC.strURL = reportLinkUrl
+        webViewVC.strURL = reportLinkUrl! + "?flag_app=3&device=ios&app_version=\(appVersion)"
         webViewVC.strTitle = "Laporkan Produk"
         webViewVC.onTapLinkWithUrl = { (url) in
             if (url.absoluteString == "https://www.tokopedia.com/") {
