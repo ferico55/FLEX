@@ -352,7 +352,6 @@
     UserAuthentificationManager *auth = [UserAuthentificationManager new];
     if (auth.isLogin) {
         PhoneVerifViewController *controller = [PhoneVerifViewController new];
-        controller.title = @"Verifikasi No. HP";
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
         navigationController.navigationBar.translucent = NO;
         navigationController.modalPresentationStyle = UIModalPresentationFormSheet;

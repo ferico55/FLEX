@@ -454,11 +454,9 @@ typedef NS_ENUM(NSInteger, PickerView) {
 
 -(void)setPhoneVerificationStatus{
     // Show verification view if user phone number not verified
+    UserAuthentificationManager *auth = [[UserAuthentificationManager alloc]init];
     
-    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
-    NSDictionary *auth = [secureStorage keychainDictionary];
-    
-    if([[auth objectForKey:@"msisdn_is_verified"] boolValue]){
+    if([auth isUserPhoneVerified]){
         [self populateViewIfVerifiedStatusIs:YES];
     }else{
         [_phoneVerifRequest requestVerifiedStatusOnSuccess:^(NSString *result) {
@@ -613,7 +611,6 @@ typedef NS_ENUM(NSInteger, PickerView) {
 
 - (IBAction)didTapVerificationPhoneButton:(UIButton *)sender {
     PhoneVerifViewController *controller = [PhoneVerifViewController new];
-    controller.title = @"Verifikasi No. HP";
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
     navigationController.navigationBar.translucent = NO;
     navigationController.modalPresentationStyle = UIModalPresentationFormSheet;

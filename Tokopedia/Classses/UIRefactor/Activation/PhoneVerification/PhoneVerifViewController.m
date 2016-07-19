@@ -49,6 +49,7 @@
     } onFailure:^(NSError *error) {
         
     }];
+    self.title = @"Verifikasi No. HP";
     
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Batal" style: UIBarButtonItemStylePlain target:self action:@selector(didTapBackButton)];
     self.navigationItem.leftBarButtonItem = backButton;

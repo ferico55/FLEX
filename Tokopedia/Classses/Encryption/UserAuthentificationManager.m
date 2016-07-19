@@ -229,6 +229,10 @@
     }
 }
 
+- (BOOL)isUserPhoneVerified{
+    return [[_auth objectForKey:@"msisdn_is_verified"] boolValue];
+}
+
 + (void)ensureDeviceIdExistence {
     // This is done to prevent users from getting kicked after login
     // that is caused by some devices that don't have device tokens.

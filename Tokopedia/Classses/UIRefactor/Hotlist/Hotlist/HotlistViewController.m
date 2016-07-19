@@ -151,7 +151,6 @@
         [_phoneVerifRequest requestVerifiedStatusOnSuccess:^(NSString *isVerified) {
             if(![isVerified boolValue]){
                 PhoneVerifViewController *controller = [PhoneVerifViewController new];
-                controller.title = @"Verifikasi No. HP";
                 UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
                 navigationController.navigationBar.translucent = NO;
                 navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
@@ -180,11 +179,10 @@
 - (BOOL)shouldShowPhoneVerif{
     NSString *phoneVerifLastAppear = [[NSUserDefaults standardUserDefaults] stringForKey:PHONE_VERIF_LAST_APPEAR];
     UserAuthentificationManager *userAuth = [UserAuthentificationManager new];
-    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
     NSDictionary *auth = [secureStorage keychainDictionary];
     
     if([userAuth isLogin]){
-        if(![[auth objectForKey:@"msisdn_is_verified"] boolValue]){
+        if(![userAuth isUserPhoneVerified]){
             NSDate* lastAppearDate = [self NSDatefromString:phoneVerifLastAppear];
             if(lastAppearDate){
                 NSTimeInterval timeIntervalSinceLastAppear = [[NSDate date]timeIntervalSinceDate:lastAppearDate];
