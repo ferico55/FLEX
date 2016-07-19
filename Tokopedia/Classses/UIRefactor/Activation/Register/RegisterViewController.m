@@ -136,6 +136,8 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     
     SignInProviderListView *providerListView = [[SignInProviderListView alloc] initWithProviders:providers];
     [providerListView attachToView:_signInProviderContainer];
+    
+    [self updateFormViewAppearance];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
