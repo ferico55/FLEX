@@ -16,5 +16,6 @@
 @interface RegisterViewController : GAITrackedViewController <GPPSignInDelegate, GIDSignInDelegate, GIDSignInUIDelegate>
 
 //@property (retain, nonatomic) IBOutlet GPPSignInButton *signInButton;
+@property (nonatomic) NSString *emailFromForgotPassword;
 
 @end

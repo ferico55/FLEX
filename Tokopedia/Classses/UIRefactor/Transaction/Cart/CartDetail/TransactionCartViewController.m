@@ -1000,7 +1000,7 @@
                 [messageError addObject:ERRORMESSAGE_NULL_CART_USERID];
             }
         }
-        if ([_cartSummary.deposit_amount integerValue]>0) {
+        if ([_cartSummary.deposit_amount integerValue]>0 && ![self isHalfDepositAndPaymentInstantWithPaymentGatewayIntegerValue:[_cartSummary.gateway integerValue]]) {
             NSString *password = _passwordTextField.text;
             if ([password isEqualToString:@""] || password == nil) {
                 isValid = NO;
@@ -2163,7 +2163,7 @@
             if (([_cartSummary.gateway integerValue] != TYPE_GATEWAY_TOKOPEDIA &&
                 [_cartSummary.deposit_amount integerValue] <= 0)||
                 [_cartSummary.gateway integerValue] == TYPE_GATEWAY_CC ||
-                [_cartSummary.gateway integerValue] == TYPE_GATEWAY_INSTALLMENT ) {
+                [_cartSummary.gateway integerValue] == TYPE_GATEWAY_INSTALLMENT || [self isHalfDepositAndPaymentInstantWithPaymentGatewayIntegerValue:[_cartSummary.gateway integerValue]] ) {
                 return 0;
             }
         }
@@ -2493,6 +2493,21 @@
 #pragma mark - NoResult Delegate
 - (void)buttonDidTapped:(id)sender{
     [[NSNotificationCenter defaultCenter] postNotificationName:@"navigateToPageInTabBar" object:@"1"];
+}
+
+#pragma mark - Conditional Status Helper
+
+- (Boolean) isHalfDepositAndPaymentInstantWithPaymentGatewayIntegerValue: (NSInteger) integerValue {
+    if (integerValue == TYPE_GATEWAY_BRI_EPAY
+        || integerValue == TYPE_GATEWAY_MANDIRI_E_CASH
+        || integerValue == TYPE_GATEWAY_BCA_CLICK_PAY
+        || integerValue == TYPE_GATEWAY_INSTALLMENT
+        || integerValue == TYPE_GATEWAY_CC
+        || integerValue == TYPE_GATEWAY_MANDIRI_CLICK_PAY) {
+        return YES;
+    }
+    
+    return NO;
 }
 
 @end

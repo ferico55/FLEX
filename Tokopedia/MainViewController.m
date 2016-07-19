@@ -729,6 +729,7 @@ typedef enum TagRequest {
     
     [Localytics setValue:@"No" forProfileAttribute:@"Is Login"];
     
+    [self reinitCartTabBar];
 }
 
 - (void)removeCacheUser {
@@ -1004,6 +1005,19 @@ typedef enum TagRequest {
         _storeManager = [[TKPStoreManager alloc] init];
     }
     return _storeManager;
+}
+
+// MARK: Reinit Cart TabBar
+
+- (void) reinitCartTabBar {
+    UINavigationController *transactionCartRootNavController = [_tabBarController.viewControllers objectAtIndex: 3];
+    if ([[transactionCartRootNavController.viewControllers objectAtIndex:0] isKindOfClass:[TransactionCartRootViewController class]]) {
+        TransactionCartRootViewController *transactionCartRootVC = (TransactionCartRootViewController *)[transactionCartRootNavController.viewControllers objectAtIndex:0];
+        
+        // Pakai remove observer karena iOS 7 tidak mau otomatis remove observer ketika TransactionCartRootVC dealloc
+        [[NSNotificationCenter defaultCenter]removeObserver:transactionCartRootVC];
+        [transactionCartRootNavController setViewControllers:[NSArray arrayWithObject: [TransactionCartRootViewController new]]];
+    }
 }
 
 
