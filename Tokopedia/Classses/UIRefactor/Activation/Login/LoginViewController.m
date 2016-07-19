@@ -128,6 +128,8 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     }
 
     _activation = [NSMutableDictionary new];
+    
+    [self updateFormViewAppearance];
 
     [self setSignInProviders:[SignInProvider defaultProviders]];
 
@@ -182,13 +184,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     loginManager.loginBehavior = FBSDKLoginBehaviorNative;
     [loginManager logOut];
     [FBSDKAccessToken setCurrentAccessToken:nil];
-
-    [self updateFormViewAppearance];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(updateFormViewAppearance)
-                                                 name:kTKPDForceUpdateFacebookButton
-                                               object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -576,44 +571,24 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
 }
 
 - (void)updateFormViewAppearance {
-    
-    CGFloat constant;
-    NSString *facebookButtonTitle = @"Sign in";
     if (IS_IPHONE_4_OR_LESS) {
         self.formViewMarginTopConstraint.constant = 40;
         self.facebookButtonTopConstraint.constant = 18;
-        constant =  (self.formViewWidthConstraint.constant / 2) - 10;
-        
     } else if (IS_IPHONE_5) {
         self.formViewMarginTopConstraint.constant = 30;
         self.facebookButtonTopConstraint.constant = 18;
-        constant =  (self.formViewWidthConstraint.constant / 2) - 10;
-    
     } else if (IS_IPHONE_6) {
         self.formViewMarginTopConstraint.constant = 100;
         self.formViewWidthConstraint.constant = 320;
-        constant =  (self.formViewWidthConstraint.constant / 2) - 10;
-    
     } else if (IS_IPHONE_6P) {
         self.formViewMarginTopConstraint.constant = 150;
         self.formViewWidthConstraint.constant = 340;
-        constant =  (self.formViewWidthConstraint.constant / 2) - 18;
-    
     } else if (IS_IPAD) {
         self.formViewMarginTopConstraint.constant = 280;
         self.formViewWidthConstraint.constant = 500;
-        constant =  (self.formViewWidthConstraint.constant / 2) - 10;
-
-        facebookButtonTitle = @"Sign in with Facebook";
-        _signInLabel.text = @"Sign in with Google";
-        self.facebookButtonTopConstraint.constant = 30;
-        self.googleButtonTopConstraint.constant = 29;
     }
     
-    self.facebookButtonWidthConstraint.constant = constant;
-    self.googleButtonWidthConstraint.constant = constant;
-    
-    [self.view layoutSubviews];
+//    [self.view layoutSubviews];
 }
 
 #pragma mark - Google Sign In Delegate
