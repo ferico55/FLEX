@@ -168,7 +168,8 @@
             @"grant_type" : @"extension",
             @"social_id" : userProfile.userId,
             @"social_type" : userProfile.provider,
-            @"email" : userProfile.email
+            @"email" : userProfile.email,
+            @"full_name": userProfile.name,
     };
 
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
