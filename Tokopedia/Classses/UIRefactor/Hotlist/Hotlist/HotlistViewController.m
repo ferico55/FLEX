@@ -179,7 +179,6 @@
 - (BOOL)shouldShowPhoneVerif{
     NSString *phoneVerifLastAppear = [[NSUserDefaults standardUserDefaults] stringForKey:PHONE_VERIF_LAST_APPEAR];
     UserAuthentificationManager *userAuth = [UserAuthentificationManager new];
-    NSDictionary *auth = [secureStorage keychainDictionary];
     
     if([userAuth isLogin]){
         if(![userAuth isUserPhoneVerified]){
