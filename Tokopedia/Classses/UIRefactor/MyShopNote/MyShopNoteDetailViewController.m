@@ -342,7 +342,7 @@
     [attributes setObject:font forKey:NSFontAttributeName];
     
     NSString *contentNote = [_note.result.detail.notes_content isEqualToString:@"0"]?@"":_note.result.detail.notes_content;
-    contentNote = [contentNote stringByReplacingOccurrencesOfString:@"\n" withString:@"<br/>"];
+    contentNote = [contentNote stringByReplacingOccurrencesOfString:@"\n" withString:@""];
     
     if ([contentNote isEqualToString:@""] && _type == NOTES_RETURNABLE_PRODUCT) {
         _isNewNoteReturnableProduct = YES;
