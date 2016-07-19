@@ -74,10 +74,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 @property (weak, nonatomic) IBOutlet UIView *loadingView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *facebookLoginActivityIndicator;
 
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *facebookButtonWidthConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *facebookButtonTopConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *googleButtonWidthConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *googleButtonTopConstraint;
 @property (strong, nonatomic) IBOutlet UILabel *googleSignInLabel;
 @property (strong, nonatomic) IBOutlet UIView *signInProviderContainer;
 
@@ -695,30 +691,21 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
         constant =  (width / 2) - 30;
         contentViewWidth = width;
         contentViewMarginLeft = 0;
-        self.facebookButtonTopConstraint.constant = 27;
-        self.googleButtonTopConstraint.constant = 25;
-        
     } else if (IS_IPHONE_6) {
         constant =  (335 / 2) - 30;
         contentViewWidth = 345;
         contentViewMarginLeft = 15;
         contentViewMarginTop = 20;
-        self.facebookButtonTopConstraint.constant = 26;
-        self.googleButtonTopConstraint.constant = 25;
-        
     } else if (IS_IPHONE_6P) {
         constant =  (354 / 2) - 24;
         contentViewWidth = 354;
         contentViewMarginLeft = 30;
         contentViewMarginTop = 40;
-        
     } else if (IS_IPAD) {
         constant =  (500 / 2) - 24;
         contentViewWidth = 500;
         contentViewMarginLeft = 134;
         contentViewMarginTop = 134;
-        self.facebookButtonTopConstraint.constant = 26;
-        self.googleButtonTopConstraint.constant = 25;
         facebookButtonTitle = @"Sign in with Facebook";
         _googleSignInLabel.text = @"Sign in with Google";
     }
@@ -736,9 +723,6 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
     _contentView.frame = contentViewFrame;
     
     _container.contentSize = CGSizeMake(width, _contentView.frame.size.height);
-    
-    self.googleButtonWidthConstraint.constant = constant;
-    self.facebookButtonWidthConstraint.constant = constant;
 }
 
 #pragma mark - Google Sign In Delegate
