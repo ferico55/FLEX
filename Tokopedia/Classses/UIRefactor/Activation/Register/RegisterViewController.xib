@@ -215,7 +215,7 @@
                     </connections>
                 </button>
                 <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="ZWH-II-caf">
-                    <rect key="frame" x="80" y="410" width="20" height="20"/>
+                    <rect key="frame" x="-58" y="410" width="20" height="20"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="20" id="0vU-lD-Zd6"/>
                         <constraint firstAttribute="height" constant="20" id="bLc-pQ-7bO"/>
@@ -268,7 +268,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ANR-Ao-ZK5">
-                    <rect key="frame" x="15" y="480" width="290" height="80"/>
+                    <rect key="frame" x="15" y="480" width="290" height="73"/>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ULY-RF-PU7" userLabel="left separator">
                     <rect key="frame" x="15" y="463" width="119" height="1"/>
@@ -307,7 +307,7 @@
                 <constraint firstItem="ry4-mz-X5c" firstAttribute="leading" secondItem="Kz1-ge-iSa" secondAttribute="leading" id="OjP-oN-4bl"/>
                 <constraint firstItem="ULY-RF-PU7" firstAttribute="leading" secondItem="y3x-eA-9Vz" secondAttribute="leading" id="P5O-Po-gxg"/>
                 <constraint firstItem="4q8-DK-AgL" firstAttribute="leading" secondItem="Kz1-ge-iSa" secondAttribute="leading" id="RDb-vm-Wxr"/>
-                <constraint firstAttribute="bottom" secondItem="ANR-Ao-ZK5" secondAttribute="bottom" constant="8" id="RtS-vS-6M5"/>
+                <constraint firstAttribute="bottom" secondItem="ANR-Ao-ZK5" secondAttribute="bottom" constant="15" id="RtS-vS-6M5"/>
                 <constraint firstItem="dh2-Tl-g6u" firstAttribute="leading" secondItem="4q8-DK-AgL" secondAttribute="leading" id="S3G-oY-yV4"/>
                 <constraint firstItem="Fzr-EG-EzD" firstAttribute="top" secondItem="95o-gu-FPH" secondAttribute="bottom" constant="3" id="TDJ-DS-hlr">
                     <variation key="heightClass=regular-widthClass=regular" constant="-1"/>
