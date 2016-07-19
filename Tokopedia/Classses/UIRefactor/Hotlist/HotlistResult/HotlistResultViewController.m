@@ -365,7 +365,7 @@ static NSString const *rows = @"12";
 }
 
 -(void)showSortingIsActive:(BOOL)isActive{
-    _activeFilterImageView.hidden = !isActive;
+    _activeSortImageView.hidden = !isActive;
 }
 
 -(void)pushSort{

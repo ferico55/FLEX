@@ -99,6 +99,8 @@
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UIView *footerView;
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicatorView;
+@property (strong, nonatomic) IBOutlet UIImageView *activeSortImageView;
+@property (strong, nonatomic) IBOutlet UIImageView *activeFilterImageView;
 
 @end
 
@@ -365,11 +367,20 @@
         _orderBy = sort;
         _page = 0;
         
+        [self setActiveSort:[self isActiveSorting]];
         [_networkManager doRequest];
         
     } onReceivedFilterDataOption:^(FilterData * filterResponse) {
         _filterResponse = filterResponse;
     }];
+}
+
+-(BOOL)isActiveSorting{
+    return _selectedSort != nil;
+}
+
+-(void)setActiveSort:(BOOL)isActive{
+    _activeSortImageView.hidden = !isActive;
 }
 
 -(void)pushSort{
@@ -405,6 +416,8 @@
         _selectedFilters = selectedFilters;
         _selectedFilterParam = paramFilters;
         
+        [self setActiveFilter:[self isActiveFilter]];
+        
         [_catalog_shops removeAllObjects];
         [_tableView reloadData];
         [_tableView setTableFooterView:_footerView];
@@ -416,6 +429,14 @@
     } onReceivedFilterDataOption:^(FilterData * filterResponse){
         _filterResponse = filterResponse;
     }];
+}
+
+-(BOOL)isActiveFilter{
+    return _selectedFilters.count != 0;
+}
+
+-(void)setActiveFilter:(BOOL)isActive{
+    _activeFilterImageView.hidden = !isActive;
 }
 
 #pragma mark - Network manager delegate
