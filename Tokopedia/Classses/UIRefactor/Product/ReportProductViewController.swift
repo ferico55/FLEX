@@ -137,12 +137,12 @@ class ReportProductViewController: UIViewController, UITextViewDelegate, LoginVi
     }
     
     func setLinkDescriptionLineSpacing() {
-        let attrString = NSMutableAttributedString(attributedString: linkInstructionLabel.attributedText!)
+        let attrString = NSMutableAttributedString(string: self.linkInstructionLabel.text!)
         let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineSpacing = 2
-        attrString.addAttribute(NSParagraphStyleAttributeName, value: paragraphStyle, range: NSMakeRange(0, (linkInstructionLabel.text?.characters.count)!))
+        paragraphStyle.lineSpacing = 5
+        paragraphStyle.alignment = .Center
+        attrString.addAttribute(NSParagraphStyleAttributeName, value: paragraphStyle, range: NSMakeRange(0, attrString.length))
         self.linkInstructionLabel.attributedText = attrString
-
     }
     
     func showDeskripsiForm() {
@@ -180,20 +180,10 @@ class ReportProductViewController: UIViewController, UITextViewDelegate, LoginVi
         }
     }
     
-    func showErrorAlertViewWithIsNeedPopViewController(need: Bool, error: String) {
-        errorAlertView = UIAlertView()
-        errorAlertView?.bk_initWithTitle("Terjadi Kesalahan", message: error)
-        if need == true {
-            errorAlertView?.bk_addButtonWithTitle("Kembali", handler: {
-                [weak self] in
-                if let weakSelf = self {
-                    weakSelf.navigationController?.popViewControllerAnimated(true)
-                }
-            })
-        } else {
-            errorAlertView?.bk_addButtonWithTitle("Kembali", handler: nil)
-        }
-        errorAlertView!.show()
+    func showErrorAlertViewWithIsNeedPopViewController(error: String) {
+        let stickyAlertView = StickyAlertView(errorMessages: [error], delegate: self)
+        stickyAlertView.show()
+        
     }
     
     func showSuccessAlertViewWithIsNeedPopViewController() {
@@ -228,7 +218,7 @@ class ReportProductViewController: UIViewController, UITextViewDelegate, LoginVi
             }) { (error) in
                 dispatch_async(dispatch_get_main_queue(), { [weak self] in
                     if let weakSelf = self {
-                        weakSelf.showErrorAlertViewWithIsNeedPopViewController(true, error: error.localizedDescription)
+                        weakSelf.showErrorAlertViewWithIsNeedPopViewController(error.localizedDescription)
                     }
                 })
         }
@@ -249,14 +239,14 @@ class ReportProductViewController: UIViewController, UITextViewDelegate, LoginVi
                         if reportProductResponse.data.is_success == "1" {
                             weakSelf.showSuccessAlertViewWithIsNeedPopViewController()
                         } else {
-                            weakSelf.showErrorAlertViewWithIsNeedPopViewController(false, error: reportProductResponse.message_error[0])
+                            weakSelf.showErrorAlertViewWithIsNeedPopViewController(reportProductResponse.message_error[0])
                         }
                     }
                 })
             }) { (error) in
                 dispatch_async(dispatch_get_main_queue(), { [weak self] in
                     if let weakSelf = self {
-                        weakSelf.showErrorAlertViewWithIsNeedPopViewController(true, error: error.localizedDescription)
+                        weakSelf.showErrorAlertViewWithIsNeedPopViewController(error.localizedDescription)
                     }
                 })
         }
@@ -293,6 +283,7 @@ class ReportProductViewController: UIViewController, UITextViewDelegate, LoginVi
             } else if selectedReportData["report_response"] == 0 {
                 hideDeskripsiForm()
                 linkInstructionLabel.text = selectedReportData["report_description"] as? String
+                setLinkDescriptionLineSpacing()
                 showLinkInstruction()
                 disableSubmitBarButtonItem()
             }
