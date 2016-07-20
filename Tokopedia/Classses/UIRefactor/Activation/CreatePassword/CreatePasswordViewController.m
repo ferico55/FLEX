@@ -96,6 +96,11 @@
         _fullNameTextField.text = _userProfile.name;
         _fullNameTextField.enabled = NO;
     }
+    
+    if (![_accountInfo.requiredFields containsObject:@"phone"]) {
+        _phoneNumberTextField.text = _accountInfo.phoneNumber;
+        _phoneNumberTextField.enabled = NO;
+    }
 
     _emailTextField.text = _userProfile.email;
     _emailTextField.enabled = NO;
