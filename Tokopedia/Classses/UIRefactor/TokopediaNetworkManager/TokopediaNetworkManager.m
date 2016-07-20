@@ -226,6 +226,10 @@
 }
 
 - (NSString*)splitUriToPage:(NSString*)uri {
+    return [TokopediaNetworkManager getPageFromUri:uri];
+}
+
++ (NSString *)getPageFromUri:(NSString *)uri {
     NSURL *url = [NSURL URLWithString:uri];
     NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
     

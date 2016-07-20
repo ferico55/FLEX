@@ -13,4 +13,6 @@
 
 @property (nonatomic, strong) BankAccountGetDefaultFormDefaultBank *default_bank;
 
++ (RKObjectMapping *)mapping;
+
 @end
