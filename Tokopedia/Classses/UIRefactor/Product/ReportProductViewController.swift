@@ -185,7 +185,10 @@ class ReportProductViewController: UIViewController, UITextViewDelegate, LoginVi
         errorAlertView?.bk_initWithTitle("Terjadi Kesalahan", message: error)
         if need == true {
             errorAlertView?.bk_addButtonWithTitle("Kembali", handler: {
-                self.navigationController?.popViewControllerAnimated(true)
+                [weak self] in
+                if let weakSelf = self {
+                    weakSelf.navigationController?.popViewControllerAnimated(true)
+                }
             })
         } else {
             errorAlertView?.bk_addButtonWithTitle("Kembali", handler: nil)
