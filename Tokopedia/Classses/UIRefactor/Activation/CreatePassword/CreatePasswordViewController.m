@@ -92,7 +92,10 @@
 
     _signupButton.layer.cornerRadius = 2;
 
-    _fullNameTextField.text = _userProfile.name;
+    if (![_accountInfo.requiredFields containsObject:@"name"]) {
+        _fullNameTextField.text = _userProfile.name;
+        _fullNameTextField.enabled = NO;
+    }
 
     _emailTextField.text = _userProfile.email;
     _emailTextField.enabled = NO;

@@ -14,6 +14,7 @@ class AccountInfo: NSObject {
     var createdPassword: Bool = false
     var email = ""
     var name = ""
+    var requiredFields = [String]()
 
 
     class func mapping() -> RKObjectMapping {
@@ -22,7 +23,8 @@ class AccountInfo: NSObject {
             "user_id": "userId",
             "created_password": "createdPassword",
             "email":"email",
-            "name":"name"
+            "name":"name",
+            "create_password_list": "requiredFields"
         ])
         
         return mapping
