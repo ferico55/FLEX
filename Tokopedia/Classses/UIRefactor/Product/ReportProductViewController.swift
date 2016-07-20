@@ -9,7 +9,7 @@
 import UIKit
 
 @objc(ReportProductViewController)
-class ReportProductViewController: UIViewController, UITextViewDelegate, LoginViewDelegate{
+class ReportProductViewController: UIViewController, UITextViewDelegate{
     
     var productId: String!
 
@@ -66,6 +66,7 @@ class ReportProductViewController: UIViewController, UITextViewDelegate, LoginVi
         }
         self.navigationController?.pushViewController(webViewVC, animated: true)
     }
+    
     // MARK: KeyboardNotification
     
     func generateKeyboardNotification() {
@@ -81,30 +82,6 @@ class ReportProductViewController: UIViewController, UITextViewDelegate, LoginVi
     
     func keyboardWillHide(notification: NSNotification) {
         scrollView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0)
-    }
-    
-    // MARK: Keyboard Functionality 
-    
-    func addDoneButtonOnKeyboard()
-    {
-        let doneToolbar: UIToolbar = UIToolbar(frame: CGRectMake(0, 0, 320, 50))
-        doneToolbar.barStyle = UIBarStyle.BlackTranslucent
-        
-        let flexSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
-        let done: UIBarButtonItem = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: #selector(doneButtonAction))
-        
-        var items: [UIBarButtonItem] = []
-        items.append(flexSpace)
-        items.append(done)
-        
-        doneToolbar.items = items
-        doneToolbar.sizeToFit()
-        
-        self.deskripsiTextView.inputAccessoryView = doneToolbar
-    }
-    
-    func doneButtonAction() {
-        self.deskripsiTextView.resignFirstResponder()
     }
     
     // MARK: Layout Setup
@@ -126,24 +103,18 @@ class ReportProductViewController: UIViewController, UITextViewDelegate, LoginVi
     }
     
     func setupHiddenObject() {
-        self.tulisDeskripsiPlaceholderLabel.hidden = true
-        self.laporkanButton.hidden = true
-        self.laporkanButton.cornerRadius = 5
-        self.laporkanButton.borderWidth = 1
-        self.laporkanButton.borderColor = UIColor(red: 255/255, green: 87/255, blue: 34/255, alpha: 1.0)
-        setLinkDescriptionLineSpacing()
         hideDeskripsiForm()
         hideLinkInstruction()
     }
     
-    func setLinkDescriptionLineSpacing() {
-        let attrString = NSMutableAttributedString(string: self.linkInstructionLabel.text!)
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineSpacing = 5
-        paragraphStyle.alignment = .Center
-        attrString.addAttribute(NSParagraphStyleAttributeName, value: paragraphStyle, range: NSMakeRange(0, attrString.length))
-        self.linkInstructionLabel.attributedText = attrString
-    }
+//    func setLinkDescriptionLineSpacing() {
+//        let attrString = NSMutableAttributedString(string: self.linkInstructionLabel.text!)
+//        let paragraphStyle = NSMutableParagraphStyle()
+//        paragraphStyle.lineSpacing = 5
+//        paragraphStyle.alignment = .Center
+//        attrString.addAttribute(NSParagraphStyleAttributeName, value: paragraphStyle, range: NSMakeRange(0, attrString.length))
+//        self.linkInstructionLabel.attributedText = attrString
+//    }
     
     func showDeskripsiForm() {
         self.deskripsiTextView.hidden = false
@@ -283,7 +254,6 @@ class ReportProductViewController: UIViewController, UITextViewDelegate, LoginVi
             } else if selectedReportData["report_response"] == 0 {
                 hideDeskripsiForm()
                 linkInstructionLabel.text = selectedReportData["report_description"] as? String
-                setLinkDescriptionLineSpacing()
                 showLinkInstruction()
                 disableSubmitBarButtonItem()
             }
@@ -302,11 +272,5 @@ class ReportProductViewController: UIViewController, UITextViewDelegate, LoginVi
     
     func textViewDidEndEditing(textView: UITextView) {
         showOrHidePlaceholder()
-    }
-    
-    // MARK: Login View delegate 
-    
-    func redirectViewController(viewController: AnyObject!) {
-        
     }
 }
