@@ -340,7 +340,7 @@
     }
     onFailure:^(NSError *error) {
         [_act stopAnimating];
-        _table.tableFooterView = [self getLoadView:CTagRequest].view;
+        _table.tableFooterView = [weakSelf getLoadView:CTagRequest].view;
         [_refreshControl endRefreshing];
         _table.tableFooterView = loadingView.view;
     }];
