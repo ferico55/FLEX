@@ -55,7 +55,7 @@ static CGFloat messageTextSize = 17.0;
 }
 
 +(CGSize)messageSize:(NSString*)message {
-    return [message sizeWithFont:[UIFont fontWithName:@"GothamBook" size:messageTextSize] constrainedToSize:CGSizeMake([InboxMessageDetailCell maxTextWidth], CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
+    return [message sizeWithFont:[UIFont fontWithName:@"GothamBook" size:20.0] constrainedToSize:CGSizeMake([InboxMessageDetailCell maxTextWidth], CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
 }
 
 +(UIImage*)balloonImage:(BOOL)sent isSelected:(BOOL)selected {
@@ -172,7 +172,18 @@ static CGFloat messageTextSize = 17.0;
         
         ballonViewFrame = CGRectMake(55.0f, timeLabelFrame.size.height, textSize.width + 2*textMarginHorizontal, textSize.height + 2*textMarginVertical + 5.0f + CHeightUserLabel);
         
-        if(ballonViewFrame.size.width < (_viewLabelUser.getLblText.frame.origin.x+widthUserLabel+(2*textMarginHorizontal))) {
+        // fixing bug ukuran balloon tidak pas, hanya terjadi di iOS 7
+        if ([[[UIDevice currentDevice] systemVersion] floatValue] < 8) {
+            CGRect ballonViewFrameTemp = _viewLabelUser.getLblText.frame;
+            if ([_message.user_label isEqualToString:@"Administrator"]) {
+                ballonViewFrameTemp.origin.x = 90;
+            } else {
+                ballonViewFrameTemp.origin.x = 71;
+            }
+            _viewLabelUser.getLblText.frame = ballonViewFrameTemp;
+        }
+        
+        if(ballonViewFrame.size.width < (_viewLabelUser.getLblText.frame.origin.x + widthUserLabel + (2 * textMarginHorizontal))) {
             ballonViewFrame.size.width = (_viewLabelUser.getLblText.frame.origin.x+widthUserLabel+(2*textMarginHorizontal));
         }
         
@@ -189,6 +200,7 @@ static CGFloat messageTextSize = 17.0;
     }
     
     self.viewLabelUser.frame = rectViewLabelUser;
+    self.viewLabelUser.text = _message.user_name;
     self.balloonView.image = [InboxMessageDetailCell balloonImage:self.sent isSelected:self.selected];
     
     /*Sets the pre-initialized frames  for the balloonView and messageView.*/

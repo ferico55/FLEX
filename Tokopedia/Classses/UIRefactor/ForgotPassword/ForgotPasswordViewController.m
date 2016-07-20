@@ -11,6 +11,8 @@
 #import "StickyAlertView.h"
 #import "GeneralAction.h"
 #import "string_settings.h"
+#import "RegisterViewController.h"
+#import <BlocksKit+UIKit.h>
 
 @interface ForgotPasswordViewController () <TokopediaNetworkManagerDelegate> {
     TokopediaNetworkManager *_networkManager;
@@ -40,9 +42,11 @@
     _emailText.layer.cornerRadius = 2;
     _emailText.layer.borderWidth = 1;
     _emailText.layer.borderColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.5].CGColor;
+    [_emailText setKeyboardType:UIKeyboardTypeEmailAddress];
     
     UIView *leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 12, 40)];
     _emailText.leftView = leftView;
+    _emailText.keyboardType = UIKeyboardTypeEmailAddress;
     _emailText.leftViewMode = UITextFieldViewModeAlways;
     
     _buttonForgot.layer.cornerRadius = 2;
@@ -101,9 +105,13 @@
     
     if([action.status isEqualToString:kTKPDREQUEST_OKSTATUS]) {
         if(action.message_error) {
-            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:action.message_error
-                                                                           delegate:self];
-            [alert show];
+            if ([[action.message_error objectAtIndex:0]isEqual:@"Email Anda belum terdaftar."]){
+                [self showAlertToRegisterView];
+            } else {
+                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:action.message_error
+                                                                               delegate:self];
+                [alert show];
+            }
         } else {
             if([action.result.is_success isEqualToString:TKPD_SUCCESS_VALUE]) {
                 NSString *errorMessage = [NSString stringWithFormat:@"Sebuah email telah dikirim ke alamat email yang terasosiasi dengan akun Anda, \n \n%@. \n \nEmail ini berisikan cara untuk mendapatkan kata sandi baru. \nDiharapkan menunggu beberapa saat, selama pengiriman email dalam proses.\nMohon diperhatikan bahwa alamat email di atas adalah benar,\ndan periksalah folder junk dan spam atau filter jika anda tidak menerima email tersebut.", _emailText.text];
@@ -111,9 +119,7 @@
                 [alert show];
                 self.emailText.text = @"";
             } else {
-                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Gagal mengirimkan kata sandi ke email Anda."]
-                                                                               delegate:self];
-                [alert show];
+                [self showAlertToRegisterView];
             }
         }
     }
@@ -142,6 +148,22 @@
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     [_emailText resignFirstResponder];
+}
+
+#pragma mark - Alert Controller
+
+- (void) showAlertToRegisterView {
+    __weak typeof(self) weakSelf = self;
+    
+    NSString *alertViewTitle = [NSString stringWithFormat:@"Email %@ belum terdaftar sebagai member Tokopedia", _emailText.text];
+    UIAlertView *alertView = [UIAlertView bk_alertViewWithTitle:alertViewTitle message:@"Anda akan kami arahkan ke halaman registrasi"];
+    [alertView bk_addButtonWithTitle:@"Tidak" handler:nil];
+    [alertView bk_addButtonWithTitle:@"OK" handler:^{
+        RegisterViewController *registerViewController = [RegisterViewController new];
+        registerViewController.emailFromForgotPassword = _emailText.text;
+        [weakSelf.navigationController pushViewController:registerViewController animated:YES];
+    }];
+    [alertView show];
 }
 
 @end

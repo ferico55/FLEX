@@ -46,6 +46,7 @@
 #import "TKPAppFlow.h"
 #import "TKPStoreManager.h"
 #import "MoreWrapperViewController.h"
+#import "PhoneVerifViewController.h"
 
 #define TkpdNotificationForcedLogout @"NOTIFICATION_FORCE_LOGOUT"
 
@@ -318,7 +319,6 @@ typedef enum TagRequest {
     UINavigationController *moreNavBar;
     if (!isauth) {
         LoginViewController *more = [LoginViewController new];
-        more.isFromTabBar = YES;
         moreNavBar = [[UINavigationController alloc]initWithRootViewController:more];
         
         if (_page == MainViewControllerPageRegister) {
@@ -594,7 +594,6 @@ typedef enum TagRequest {
     UINavigationController *moreNavBar = nil;
     if (!isauth) {
         LoginViewController *more = [LoginViewController new];
-        more.isFromTabBar = YES;
         moreNavBar = [[UINavigationController alloc]initWithRootViewController:more];
         [[_tabBarController.viewControllers objectAtIndex:3] tabBarItem].badgeValue = nil;
     }
@@ -723,10 +722,14 @@ typedef enum TagRequest {
         _logingOutAlertView = nil;
     }
     
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:PHONE_VERIF_LAST_APPEAR];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
     [self performSelector:@selector(applicationLogin:) withObject:nil afterDelay:kTKPDMAIN_PRESENTATIONDELAY];
     
     [Localytics setValue:@"No" forProfileAttribute:@"Is Login"];
     
+    [self reinitCartTabBar];
 }
 
 - (void)removeCacheUser {
@@ -1002,6 +1005,19 @@ typedef enum TagRequest {
         _storeManager = [[TKPStoreManager alloc] init];
     }
     return _storeManager;
+}
+
+// MARK: Reinit Cart TabBar
+
+- (void) reinitCartTabBar {
+    UINavigationController *transactionCartRootNavController = [_tabBarController.viewControllers objectAtIndex: 3];
+    if ([[transactionCartRootNavController.viewControllers objectAtIndex:0] isKindOfClass:[TransactionCartRootViewController class]]) {
+        TransactionCartRootViewController *transactionCartRootVC = (TransactionCartRootViewController *)[transactionCartRootNavController.viewControllers objectAtIndex:0];
+        
+        // Pakai remove observer karena iOS 7 tidak mau otomatis remove observer ketika TransactionCartRootVC dealloc
+        [[NSNotificationCenter defaultCenter]removeObserver:transactionCartRootVC];
+        [transactionCartRootNavController setViewControllers:[NSArray arrayWithObject: [TransactionCartRootViewController new]]];
+    }
 }
 
 

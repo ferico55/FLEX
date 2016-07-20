@@ -229,6 +229,11 @@
     }
 }
 
+- (BOOL)isUserPhoneVerified{
+    NSString* msisdn_is_verified = [NSString stringWithFormat:@"%@", [_auth objectForKey:@"msisdn_is_verified"]];
+    return [msisdn_is_verified isEqualToString:@"1"];
+}
+
 + (void)ensureDeviceIdExistence {
     // This is done to prevent users from getting kicked after login
     // that is caused by some devices that don't have device tokens.

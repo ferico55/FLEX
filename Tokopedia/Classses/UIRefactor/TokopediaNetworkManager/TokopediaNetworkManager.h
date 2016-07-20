@@ -73,7 +73,7 @@ DEPRECATED_ATTRIBUTE
 - (RKManagedObjectRequestOperation *)getObjectRequest;
 - (void)requestCancel;
 - (NSString*)explodeURL:(NSString*)URL withKey:(NSString*)key;
-
++ (NSString *)getPageFromUri:(NSString *)uri;
 
 - (void) requestWithBaseUrl:(NSString*)baseUrl
                        path:(NSString*)path

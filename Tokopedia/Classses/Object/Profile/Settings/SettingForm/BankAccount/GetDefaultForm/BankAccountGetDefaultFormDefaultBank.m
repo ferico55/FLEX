@@ -10,4 +10,17 @@
 
 @implementation BankAccountGetDefaultFormDefaultBank
 
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[BankAccountGetDefaultFormDefaultBank class]];
+    
+    [mapping addAttributeMappingsFromArray:@[@"bank_account_id",
+                                             @"bank_name",
+                                             @"bank_account_name",
+                                             @"bank_owner_id",
+                                             @"token"]];
+    
+    return mapping;
+    
+}
+
 @end

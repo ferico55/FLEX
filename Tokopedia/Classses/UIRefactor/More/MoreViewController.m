@@ -925,7 +925,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
     
     ContactUsWebViewController *controller = [ContactUsWebViewController new];
     controller.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:controller animated:YES];
+    [_wrapperViewController.navigationController pushViewController:controller animated:YES];
 }
 
 #pragma mark - Notification delegate

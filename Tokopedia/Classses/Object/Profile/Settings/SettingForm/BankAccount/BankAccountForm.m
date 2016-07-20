@@ -10,4 +10,18 @@
 
 @implementation BankAccountForm
 
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[BankAccountForm class]];
+    
+    [mapping addAttributeMappingsFromArray:@[@"status",
+                                             @"message_error",
+                                             @"server_process_time"]];
+    
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data"
+                                                                            toKeyPath:@"result"
+                                                                          withMapping:[BankAccountFormResult mapping]]];
+    
+    return mapping;
+}
+
 @end

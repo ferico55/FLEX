@@ -370,7 +370,7 @@
                ) {
                 [_talkInputView setHidden:NO];
             }
-            [_sendButton setEnabled:NO];
+            [self adjustSendButtonAvailability];
         } else {
             [_talkInputView setHidden:YES];
         }
@@ -620,7 +620,7 @@
 
 - (void)putSendCommentBack {
     _growingtextview.text = _savedComment;
-
+    [self adjustSendButtonAvailability];
     [_table beginUpdates];
     [_table deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:_list.count - 1 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
     [_list removeLastObject];
@@ -1019,7 +1019,7 @@
 - (void)adjustSendButtonAvailability {
     NSString *text = [_growingtextview.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 
-    _sendButton.enabled = text.length > 5;
+    _sendButton.enabled = text.length >= 5;
 }
 
 - (void)setTalk:(TalkList *)list {
