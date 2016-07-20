@@ -10,11 +10,14 @@
 
 #import "HistoryProductResult.h"
 
-@interface HistoryProduct : NSObject
+@interface HistoryProduct : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSArray *message_error;
 @property (nonatomic, strong) NSString *status;
 @property (nonatomic, strong) NSString *server_process_time;
 @property (nonatomic, strong) HistoryProductResult *data;
+
++(NSDictionary *)attributeMappingDictionary;
++(RKObjectMapping *)mapping;
 
 @end

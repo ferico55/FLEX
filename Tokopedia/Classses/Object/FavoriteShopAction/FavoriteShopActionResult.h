@@ -10,10 +10,12 @@
 
 
 
-@interface FavoriteShopActionResult : NSObject
+@interface FavoriteShopActionResult : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *content;
 @property (nonatomic, strong) NSString *is_success;
 
++ (NSDictionary *)attributeMappingDictionary;
++ (RKObjectMapping *)mapping;
 
 @end

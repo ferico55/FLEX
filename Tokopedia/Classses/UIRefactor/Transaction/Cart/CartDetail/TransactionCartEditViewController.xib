@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -121,7 +121,7 @@
                                     </constraints>
                                 </view>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="0" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="2Qw-ii-gm2">
-                                    <rect key="frame" x="149" y="0.0" width="156" height="43"/>
+                                    <rect key="frame" x="149" y="0.0" width="54" height="43"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
@@ -129,6 +129,12 @@
                                         <outlet property="delegate" destination="-1" id="Itc-wQ-qeY"/>
                                     </connections>
                                 </textField>
+                                <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" minimumValue="-1" maximumValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="bWN-Mg-UyK">
+                                    <rect key="frame" x="218" y="7" width="94" height="29"/>
+                                    <connections>
+                                        <action selector="quantityStepperValueChanged:" destination="-1" eventType="valueChanged" id="FfJ-Dj-0p6"/>
+                                    </connections>
+                                </stepper>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
@@ -138,11 +144,19 @@
                                 <constraint firstAttribute="trailing" secondItem="kpb-9h-Quy" secondAttribute="trailing" id="Epu-Md-fok"/>
                                 <constraint firstItem="ygY-pB-5rs" firstAttribute="centerY" secondItem="2Qw-ii-gm2" secondAttribute="centerY" id="UxE-Xj-dfX"/>
                                 <constraint firstItem="ygY-pB-5rs" firstAttribute="centerY" secondItem="Hr8-p3-TyN" secondAttribute="centerY" id="Vh6-MC-liE"/>
+                                <constraint firstAttribute="trailing" secondItem="bWN-Mg-UyK" secondAttribute="trailing" constant="8" id="gkI-Ht-Msw"/>
+                                <constraint firstItem="bWN-Mg-UyK" firstAttribute="centerY" secondItem="Hr8-p3-TyN" secondAttribute="centerY" id="in1-J1-gea"/>
                                 <constraint firstAttribute="bottom" secondItem="kpb-9h-Quy" secondAttribute="bottom" id="obd-0E-bfg"/>
                                 <constraint firstItem="2Qw-ii-gm2" firstAttribute="leading" secondItem="ygY-pB-5rs" secondAttribute="trailing" id="rMW-LO-rPj"/>
                                 <constraint firstItem="kpb-9h-Quy" firstAttribute="top" secondItem="2Qw-ii-gm2" secondAttribute="bottom" id="riK-Da-oYk"/>
+                                <constraint firstItem="bWN-Mg-UyK" firstAttribute="leading" secondItem="2Qw-ii-gm2" secondAttribute="trailing" constant="15" id="tdO-6c-J6h"/>
                                 <constraint firstAttribute="trailing" secondItem="2Qw-ii-gm2" secondAttribute="trailing" constant="15" id="wcm-lf-SFo"/>
                             </constraints>
+                            <variation key="default">
+                                <mask key="constraints">
+                                    <exclude reference="wcm-lf-SFo"/>
+                                </mask>
+                            </variation>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dPn-Vp-ivX" userLabel="View Name">
                             <rect key="frame" x="0.0" y="146" width="320" height="36"/>

@@ -14,9 +14,8 @@
 #import "RegisterViewController.h"
 #import <BlocksKit+UIKit.h>
 
-@interface ForgotPasswordViewController () <TokopediaNetworkManagerDelegate> {
+@interface ForgotPasswordViewController (){
     TokopediaNetworkManager *_networkManager;
-    __weak RKObjectManager *_objectManager;
 }
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
@@ -37,7 +36,6 @@
     self.scrollView.contentSize = _contentView.frame.size;
     
     _networkManager = [TokopediaNetworkManager new];
-    _networkManager.delegate = self;
     
     _emailText.layer.cornerRadius = 2;
     _emailText.layer.borderWidth = 1;
@@ -63,43 +61,10 @@
     [TPAnalytics trackScreenName:@"Forgot Password Page"];
 }
 
-#pragma mark - Tokopedia Network Delegate
+#pragma mark - requestWithBaseUrl Methods
 
-- (NSString *)getPath:(int)tag {
-    return TKPD_FORGETPASS_PATH;
-}
-
-- (NSDictionary *)getParameter:(int)tag {
-    return @{
-             @"action" : TKPD_FORGETPASS_ACTION,
-             @"email" : [_emailText text]
-             };
-}
-
-- (id)getObjectManager:(int)tag {
-    _objectManager =  [RKObjectManager sharedClient];
-    
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[GeneralAction class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[GeneralActionResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{kTKPD_APIISSUCCESSKEY:kTKPD_APIISSUCCESSKEY}];
-    
-    RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
-    [statusMapping addPropertyMapping:resulRel];
-    
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:TKPD_FORGETPASS_PATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectManager addResponseDescriptor:responseDescriptorStatus];
-    
-    return _objectManager;
-}
-
-- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
-    NSDictionary *resultDict = ((RKMappingResult*)successResult).dictionary;
+- (void)actionAfterSuccessfulRequestWithResult:(RKMappingResult*)successResult {
+    NSDictionary *resultDict = (successResult).dictionary;
     id stat = [resultDict objectForKey:@""];
     GeneralAction *action = stat;
     
@@ -123,23 +88,20 @@
     }
 }
 
-- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
-    
-}
-
-- (NSString *)getRequestStatus:(id)result withTag:(int)tag {
-    NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
-    id stat = [resultDict objectForKey:@""];
-    GeneralAction *action = stat;
-    
-    return action.status;
-}
-
-
 #pragma mark - Tap on Button
 
 - (IBAction)tap:(id)sender {
-    [_networkManager doRequest];
+    [_networkManager requestWithBaseUrl: [NSString basicUrl]
+                                   path:TKPD_FORGETPASS_PATH
+                                 method: RKRequestMethodPOST
+                              parameter:@{@"action" : TKPD_FORGETPASS_ACTION,
+                                          @"email" : [_emailText text]}
+                                mapping:[GeneralAction mapping]
+                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                  [self actionAfterSuccessfulRequestWithResult:successResult];
+                              }
+                              onFailure:^(NSError *errorResult) {
+                              }];
 }
 
 #pragma mark - Keyboard

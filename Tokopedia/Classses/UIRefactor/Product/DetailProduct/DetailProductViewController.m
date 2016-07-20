@@ -20,9 +20,6 @@
 #import "LabelMenu.h"
 #import "AlertPriceNotificationViewController.h"
 #import "PriceAlertViewController.h"
-#import "Notes.h"
-#import "NoteDetails.h"
-#import "NotesResult.h"
 #import "GalleryViewController.h"
 #import "detail.h"
 #import "search.h"
@@ -94,6 +91,8 @@
 #import "PriceAlertRequest.h"
 
 #import "TPLocalytics.h"
+
+#import "Tokopedia-Swift.h"
 
 #pragma mark - CustomButton Expand Desc
 @interface CustomButtonExpandDesc : UIButton
@@ -1581,21 +1580,21 @@ OtherProductDelegate
         RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[NotesResult class]];
         RKObjectMapping *noteDetailMapping = [RKObjectMapping mappingForClass:[NoteDetails class]];
         [noteDetailMapping addAttributeMappingsFromDictionary:@{
-                                                                CNotesPosition:CNotesPosition,
-                                                                CNotesStatus:CNotesStatus,
-                                                                CNotesCreateTime:CNotesCreateTime,
-                                                                CNotesID:CNotesID,
-                                                                CNotesTitle:CNotesTitle,
-                                                                CNotesActive:CNotesActive,
-                                                                CNotesUpdateTime:CNotesUpdateTime,
-                                                                CNotesContent:CNotesContent
+                                                                @"notes_position" : @"notes_position",
+                                                                @"notes_status" : @"notes_status",
+                                                                @"notes_create_time" : @"notes_create_time",
+                                                                @"notes_id" : @"notes_id",
+                                                                @"notes_title" : @"notes_title",
+                                                                @"notes_active" : @"notes_active",
+                                                                @"notes_update_time" : @"notes_update_time",
+                                                                @"notes_content" : @"notes_content"
                                                                 }];
         
         //Relation
         RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
         [statusMapping addPropertyMapping:resulRel];
         
-        RKRelationshipMapping *detailRel = [RKRelationshipMapping relationshipMappingFromKeyPath:CDetail toKeyPath:CDetail withMapping:noteDetailMapping];
+        RKRelationshipMapping *detailRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"detail" toKeyPath:@"detail" withMapping:noteDetailMapping];
         [resultMapping addPropertyMapping:detailRel];
         
         RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:[self getPath:tag] keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];

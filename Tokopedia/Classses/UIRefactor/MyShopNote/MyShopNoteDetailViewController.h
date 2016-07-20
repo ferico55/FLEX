@@ -7,12 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "NotesList.h"
+
+#import "Tokopedia-Swift.h"
 
 @protocol MyShopNoteDetailDelegate <NSObject>
 
-- (void)successCreateNewNote;
 - (void)successEditNote:(NotesList *)noteList;
+
+@optional
+- (void)successCreateNewNote;
 
 @end
 

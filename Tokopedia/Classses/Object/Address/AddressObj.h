@@ -18,4 +18,7 @@
 @property (nonatomic, strong) AddressResult *result;
 @property (nonatomic, strong) AddressResult *data;
 
++(NSDictionary *)attributeMappingDictionary;
++(RKObjectMapping *) mapping;
+
 @end

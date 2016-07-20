@@ -23,6 +23,8 @@
 
 #import "NSNumberFormatter+IDRFormater.h"
 
+#import "Tokopedia-Swift.h"
+
 @import GoogleMaps;
 
 typedef enum
@@ -76,6 +78,8 @@ typedef enum
     TransactionATCFormResult *_ATCForm;
     
     NSArray<RateAttributes*> *_shipments;
+    
+    DelayedActionManager *requestPriceDelayedActionManager;
 }
 
 @property (weak, nonatomic) IBOutlet UIButton *pinLocationNameButton;
@@ -121,6 +125,7 @@ typedef enum
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    requestPriceDelayedActionManager = [DelayedActionManager new];
     _tableViewPaymentDetailCell = [NSArray sortViewsWithTagInArray:_tableViewPaymentDetailCell];
     _tableViewProductCell = [NSArray sortViewsWithTagInArray:_tableViewProductCell];
     _tableViewShipmentCell = [NSArray sortViewsWithTagInArray:_tableViewShipmentCell];
@@ -425,6 +430,27 @@ typedef enum
     return @"Maaf, kami belum dapat melakukan kalkulasi ongkos kirim menuju alamat Anda. Tim kami akan segera melakukan pemeriksaan.";
 }
 
+- (IBAction)productQuantityStepperValueChanged:(UIStepper *)sender {
+    NSInteger qty = [_productQuantityTextField.text integerValue];
+    qty += (int)sender.value;
+    
+    //limit quantity min and max value
+    qty = fmin(999, qty);
+    _productQuantityTextField.text = [NSString stringWithFormat: @"%d", (int)qty];
+    
+    [self alertAndResetIfQtyTextFieldBelowMin];
+    
+    //reset stepper
+    sender.value = 0;
+    
+    //request when stepper is not clicked for 1 sec
+    [requestPriceDelayedActionManager whenNotCalledFor:1 doAction:^{
+        [self doCalculate];
+        [self requestRate];
+    }];
+    
+}
+
 #pragma mark - Table View Data Source
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -541,16 +567,19 @@ typedef enum
                         NSInteger productPrice = [[[NSNumberFormatter IDRFormarter] numberFromString:product.product_price] integerValue];
                         NSInteger qty = [_productQuantityTextField.text integerValue];
                         
-                        NSNumber *price = [NSNumber numberWithInteger:(productPrice/qty)];
+                        NSNumber *price = [NSNumber numberWithInteger:(productPrice / qty)];
                         NSString *priceString = [[NSNumberFormatter IDRFormarter] stringFromNumber:price];
                         label.text = priceString;
+                        
                         break;
                     }
                     case TAG_BUTTON_TRANSACTION_PRODUCT_PRICE:
                     {
 
                         [self cell:cell setAccesoryType:UITableViewCellAccessoryNone isLoading:!_isFinishRequesting];
+
                         label.text = product.product_price;
+                        
                         break;
                     }
                     case TAG_BUTTON_TRANSACTION_SHIPMENT_COST:
@@ -949,13 +978,10 @@ typedef enum
 {
     _isFinishRequesting = NO;
     
-    ProductDetail *product = _selectedProduct;
-
-    if ([textField.text integerValue] <1) {
-        textField.text = product.product_min_order;
-    }
+    if ([textField isEqual:_productQuantityTextField])
+        [self alertAndResetIfQtyTextFieldBelowMin];
     
-    [self doCalculate];    
+    [self doCalculate];
     [self requestRate];
 }
 
@@ -1130,6 +1156,19 @@ replacementString:(NSString*)string
     product.product_quantity =_productQuantityTextField.text;
 
     [TPAnalytics trackAddToCart:product];
+}
+
+-(void)alertAndResetIfQtyTextFieldBelowMin
+{
+    ProductDetail *product = _selectedProduct;
+    
+    if ([_productQuantityTextField.text integerValue] <[product.product_min_order integerValue]) {
+        _productQuantityTextField.text = product.product_min_order;
+        
+        NSArray *errorMessages = @[[NSString stringWithFormat: @"%@%@%@", @"Minimum pembelian adalah ", product.product_min_order, @" barang"]];
+        StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessages delegate:self];
+        [alert show];
+    }
 }
 
 @end
