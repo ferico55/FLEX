@@ -38,7 +38,6 @@ class ReportProductViewController: UIViewController, UITextViewDelegate{
         generateKeyboardNotification()
         setupHiddenObject()
         generateSubmitBarButtonItem()
-        setupDownPickerLayout()
         if userManager.isLogin {
             getReportTypeFromAPI()
         }
@@ -107,15 +106,6 @@ class ReportProductViewController: UIViewController, UITextViewDelegate{
         hideLinkInstruction()
     }
     
-//    func setLinkDescriptionLineSpacing() {
-//        let attrString = NSMutableAttributedString(string: self.linkInstructionLabel.text!)
-//        let paragraphStyle = NSMutableParagraphStyle()
-//        paragraphStyle.lineSpacing = 5
-//        paragraphStyle.alignment = .Center
-//        attrString.addAttribute(NSParagraphStyleAttributeName, value: paragraphStyle, range: NSMakeRange(0, attrString.length))
-//        self.linkInstructionLabel.attributedText = attrString
-//    }
-    
     func showDeskripsiForm() {
         self.deskripsiTextView.hidden = false
         showOrHidePlaceholder()
@@ -134,13 +124,6 @@ class ReportProductViewController: UIViewController, UITextViewDelegate{
     func showLinkInstruction() {
         self.linkInstructionLabel.hidden = false
         self.laporkanButton.hidden = false
-    }
-    
-    func setupDownPickerLayout() {
-        downPickerTextField.layer.borderWidth = 1
-        downPickerTextField.layer.cornerRadius = 3
-        downPickerTextField.layer.borderColor = UIColor(red: 66/225, green: 181/225, blue: 73/225, alpha: 1.0).CGColor
-        downPickerTextField.textColor = UIColor(red: 66/225, green: 181/225, blue: 73/225, alpha: 1.0)
     }
     
     func showOrHidePlaceholder() {
