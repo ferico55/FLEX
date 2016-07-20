@@ -375,7 +375,7 @@
                                                   [_refreshControl endRefreshing];
                                                   
                                                   NSIndexPath *indexPath1 = [NSIndexPath indexPathForRow:0 inSection:indexPath.section];
-                                                  [self tableView:_table moveRowAtIndexPath:indexPath toIndexPath:indexPath1];
+                                                  [weakSelf tableView:_table moveRowAtIndexPath:indexPath toIndexPath:indexPath1];
                                                   
                                                   [_datainput setObject:indexPath forKey:kTKPDPROFILE_DATAINDEXPATHDEFAULTKEY];
                                                   
