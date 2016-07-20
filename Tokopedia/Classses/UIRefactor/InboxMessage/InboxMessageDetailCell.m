@@ -175,7 +175,11 @@ static CGFloat messageTextSize = 17.0;
         // fixing bug ukuran balloon tidak pas, hanya terjadi di iOS 7
         if ([[[UIDevice currentDevice] systemVersion] floatValue] < 8) {
             CGRect ballonViewFrameTemp = _viewLabelUser.getLblText.frame;
-            ballonViewFrameTemp.origin.x = 71;
+            if ([_message.user_label isEqualToString:@"Administrator"]) {
+                ballonViewFrameTemp.origin.x = 90;
+            } else {
+                ballonViewFrameTemp.origin.x = 71;
+            }
             _viewLabelUser.getLblText.frame = ballonViewFrameTemp;
         }
         
