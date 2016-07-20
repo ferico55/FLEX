@@ -527,8 +527,6 @@
 		626802041D3F20B700F9D578 /* ShopInfoShipmentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6268F80E1D3F20B300F9D578 /* ShopInfoShipmentCell.xib */; };
 		626802051D3F20B700F9D578 /* ShopInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6268F8101D3F20B300F9D578 /* ShopInfoViewController.m */; };
 		626802061D3F20B700F9D578 /* ShopInfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6268F8111D3F20B300F9D578 /* ShopInfoViewController.xib */; };
-		626802071D3F20B700F9D578 /* ShopNotesDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6268F8141D3F20B300F9D578 /* ShopNotesDetailViewController.m */; };
-		626802081D3F20B700F9D578 /* ShopNotesDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6268F8151D3F20B300F9D578 /* ShopNotesDetailViewController.xib */; };
 		626802091D3F20B700F9D578 /* SendMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6268F8181D3F20B300F9D578 /* SendMessageViewController.m */; };
 		6268020A1D3F20B700F9D578 /* SendMessageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6268F8191D3F20B300F9D578 /* SendMessageViewController.xib */; };
 		6268020B1D3F20B700F9D578 /* ShopSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6268F81C1D3F20B300F9D578 /* ShopSettingViewController.m */; };
@@ -1987,12 +1985,6 @@
 		6268FE8F1D3F20B600F9D578 /* EtalaseList.m in Sources */ = {isa = PBXBuildFile; fileRef = 6268F1A01D3F20B200F9D578 /* EtalaseList.m */; };
 		6268FE901D3F20B600F9D578 /* EtalaseListOther.m in Sources */ = {isa = PBXBuildFile; fileRef = 6268F1A21D3F20B200F9D578 /* EtalaseListOther.m */; };
 		6268FE911D3F20B600F9D578 /* EtalaseResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 6268F1A41D3F20B200F9D578 /* EtalaseResult.m */; };
-		6268FE921D3F20B600F9D578 /* NoteDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 6268F1A81D3F20B200F9D578 /* NoteDetail.m */; };
-		6268FE931D3F20B600F9D578 /* NoteDetailResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 6268F1AA1D3F20B200F9D578 /* NoteDetailResult.m */; };
-		6268FE941D3F20B600F9D578 /* NoteDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 6268F1AC1D3F20B200F9D578 /* NoteDetails.m */; };
-		6268FE951D3F20B600F9D578 /* Notes.m in Sources */ = {isa = PBXBuildFile; fileRef = 6268F1AE1D3F20B200F9D578 /* Notes.m */; };
-		6268FE961D3F20B600F9D578 /* NotesList.m in Sources */ = {isa = PBXBuildFile; fileRef = 6268F1B01D3F20B200F9D578 /* NotesList.m */; };
-		6268FE971D3F20B600F9D578 /* NotesResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 6268F1B21D3F20B200F9D578 /* NotesResult.m */; };
 		6268FE981D3F20B600F9D578 /* Address.m in Sources */ = {isa = PBXBuildFile; fileRef = 6268F1B51D3F20B200F9D578 /* Address.m */; };
 		6268FE991D3F20B600F9D578 /* ClosedInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 6268F1B71D3F20B200F9D578 /* ClosedInfo.m */; };
 		6268FE9A1D3F20B600F9D578 /* DetailShopResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 6268F1B91D3F20B200F9D578 /* DetailShopResult.m */; };
@@ -2397,6 +2389,16 @@
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
 		85C494BF1AD790DD008A314A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BE1AD790DD008A314A /* libz.dylib */; };
 		85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494C01AD790E4008A314A /* CoreData.framework */; };
+		D6A4605D1D3F3B1900493D55 /* DelayedActionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A4605C1D3F3B1900493D55 /* DelayedActionManager.swift */; };
+		D6A460611D3F3B3700493D55 /* Notes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A4605E1D3F3B3700493D55 /* Notes.swift */; };
+		D6A460621D3F3B3700493D55 /* NotesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A4605F1D3F3B3700493D55 /* NotesList.swift */; };
+		D6A460631D3F3B3700493D55 /* NotesResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A460601D3F3B3700493D55 /* NotesResult.swift */; };
+		D6A460671D3F3B6800493D55 /* NoteAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A460651D3F3B6800493D55 /* NoteAction.swift */; };
+		D6A460681D3F3B6800493D55 /* NoteActionResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A460661D3F3B6800493D55 /* NoteActionResult.swift */; };
+		D6A4606C1D3F3B7200493D55 /* NoteDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A460691D3F3B7200493D55 /* NoteDetail.swift */; };
+		D6A4606D1D3F3B7200493D55 /* NoteDetailResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A4606A1D3F3B7200493D55 /* NoteDetailResult.swift */; };
+		D6A4606E1D3F3B7200493D55 /* NoteDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A4606B1D3F3B7200493D55 /* NoteDetails.swift */; };
+		D6A460701D3F3B8800493D55 /* MyShopNoteRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A4606F1D3F3B8800493D55 /* MyShopNoteRequest.swift */; };
 		F25F6F270D531ED13A92CDB9 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4868E459AB2A65D133732296 /* libPods-Tokopedia.a */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
 		FC23B85A1ACD659900879D75 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8581ACD659900879D75 /* Fabric.framework */; };
@@ -3226,18 +3228,6 @@
 		6268F1A21D3F20B200F9D578 /* EtalaseListOther.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EtalaseListOther.m; sourceTree = "<group>"; };
 		6268F1A31D3F20B200F9D578 /* EtalaseResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EtalaseResult.h; sourceTree = "<group>"; };
 		6268F1A41D3F20B200F9D578 /* EtalaseResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EtalaseResult.m; sourceTree = "<group>"; };
-		6268F1A71D3F20B200F9D578 /* NoteDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteDetail.h; sourceTree = "<group>"; };
-		6268F1A81D3F20B200F9D578 /* NoteDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteDetail.m; sourceTree = "<group>"; };
-		6268F1A91D3F20B200F9D578 /* NoteDetailResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteDetailResult.h; sourceTree = "<group>"; };
-		6268F1AA1D3F20B200F9D578 /* NoteDetailResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteDetailResult.m; sourceTree = "<group>"; };
-		6268F1AB1D3F20B200F9D578 /* NoteDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteDetails.h; sourceTree = "<group>"; };
-		6268F1AC1D3F20B200F9D578 /* NoteDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteDetails.m; sourceTree = "<group>"; };
-		6268F1AD1D3F20B200F9D578 /* Notes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Notes.h; sourceTree = "<group>"; };
-		6268F1AE1D3F20B200F9D578 /* Notes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Notes.m; sourceTree = "<group>"; };
-		6268F1AF1D3F20B200F9D578 /* NotesList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotesList.h; sourceTree = "<group>"; };
-		6268F1B01D3F20B200F9D578 /* NotesList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotesList.m; sourceTree = "<group>"; };
-		6268F1B11D3F20B200F9D578 /* NotesResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotesResult.h; sourceTree = "<group>"; };
-		6268F1B21D3F20B200F9D578 /* NotesResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotesResult.m; sourceTree = "<group>"; };
 		6268F1B41D3F20B200F9D578 /* Address.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Address.h; sourceTree = "<group>"; };
 		6268F1B51D3F20B200F9D578 /* Address.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Address.m; sourceTree = "<group>"; };
 		6268F1B61D3F20B200F9D578 /* ClosedInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClosedInfo.h; sourceTree = "<group>"; };
@@ -4722,9 +4712,6 @@
 		6268F80F1D3F20B300F9D578 /* ShopInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopInfoViewController.h; sourceTree = "<group>"; };
 		6268F8101D3F20B300F9D578 /* ShopInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopInfoViewController.m; sourceTree = "<group>"; };
 		6268F8111D3F20B300F9D578 /* ShopInfoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShopInfoViewController.xib; sourceTree = "<group>"; };
-		6268F8131D3F20B300F9D578 /* ShopNotesDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopNotesDetailViewController.h; sourceTree = "<group>"; };
-		6268F8141D3F20B300F9D578 /* ShopNotesDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopNotesDetailViewController.m; sourceTree = "<group>"; };
-		6268F8151D3F20B300F9D578 /* ShopNotesDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShopNotesDetailViewController.xib; sourceTree = "<group>"; };
 		6268F8171D3F20B300F9D578 /* SendMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SendMessageViewController.h; sourceTree = "<group>"; };
 		6268F8181D3F20B300F9D578 /* SendMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendMessageViewController.m; sourceTree = "<group>"; };
 		6268F8191D3F20B300F9D578 /* SendMessageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SendMessageViewController.xib; sourceTree = "<group>"; };
@@ -5975,6 +5962,16 @@
 		85C494C01AD790E4008A314A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		AAA12C6A69BF6CB5F8EE3287 /* Pods-Tokopedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug.xcconfig"; sourceTree = "<group>"; };
 		C8A1445074FECD393EA18C17 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
+		D6A4605C1D3F3B1900493D55 /* DelayedActionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DelayedActionManager.swift; sourceTree = "<group>"; };
+		D6A4605E1D3F3B3700493D55 /* Notes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notes.swift; sourceTree = "<group>"; };
+		D6A4605F1D3F3B3700493D55 /* NotesList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotesList.swift; sourceTree = "<group>"; };
+		D6A460601D3F3B3700493D55 /* NotesResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotesResult.swift; sourceTree = "<group>"; };
+		D6A460651D3F3B6800493D55 /* NoteAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NoteAction.swift; path = NoteAction/NoteAction.swift; sourceTree = "<group>"; };
+		D6A460661D3F3B6800493D55 /* NoteActionResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NoteActionResult.swift; path = NoteAction/NoteActionResult.swift; sourceTree = "<group>"; };
+		D6A460691D3F3B7200493D55 /* NoteDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteDetail.swift; sourceTree = "<group>"; };
+		D6A4606A1D3F3B7200493D55 /* NoteDetailResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteDetailResult.swift; sourceTree = "<group>"; };
+		D6A4606B1D3F3B7200493D55 /* NoteDetails.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteDetails.swift; sourceTree = "<group>"; };
+		D6A4606F1D3F3B8800493D55 /* MyShopNoteRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyShopNoteRequest.swift; sourceTree = "<group>"; };
 		FC23B8571ACD659900879D75 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		FC23B8581ACD659900879D75 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		FC36DF8319B0656400AF74C1 /* Tokopedia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tokopedia.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -6188,6 +6185,7 @@
 		6268EE891D3F20B100F9D578 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				D6A4605C1D3F3B1900493D55 /* DelayedActionManager.swift */,
 				6268EE8A1D3F20B100F9D578 /* NavigationHelper.h */,
 				6268EE8B1D3F20B100F9D578 /* NavigationHelper.m */,
 			);
@@ -7557,13 +7555,11 @@
 		6268F1A51D3F20B200F9D578 /* Notes */ = {
 			isa = PBXGroup;
 			children = (
+				D6A460641D3F3B3B00493D55 /* NoteAction */,
+				D6A4605E1D3F3B3700493D55 /* Notes.swift */,
+				D6A4605F1D3F3B3700493D55 /* NotesList.swift */,
+				D6A460601D3F3B3700493D55 /* NotesResult.swift */,
 				6268F1A61D3F20B200F9D578 /* NoteDetail */,
-				6268F1AD1D3F20B200F9D578 /* Notes.h */,
-				6268F1AE1D3F20B200F9D578 /* Notes.m */,
-				6268F1AF1D3F20B200F9D578 /* NotesList.h */,
-				6268F1B01D3F20B200F9D578 /* NotesList.m */,
-				6268F1B11D3F20B200F9D578 /* NotesResult.h */,
-				6268F1B21D3F20B200F9D578 /* NotesResult.m */,
 			);
 			path = Notes;
 			sourceTree = "<group>";
@@ -7571,12 +7567,9 @@
 		6268F1A61D3F20B200F9D578 /* NoteDetail */ = {
 			isa = PBXGroup;
 			children = (
-				6268F1A71D3F20B200F9D578 /* NoteDetail.h */,
-				6268F1A81D3F20B200F9D578 /* NoteDetail.m */,
-				6268F1A91D3F20B200F9D578 /* NoteDetailResult.h */,
-				6268F1AA1D3F20B200F9D578 /* NoteDetailResult.m */,
-				6268F1AB1D3F20B200F9D578 /* NoteDetails.h */,
-				6268F1AC1D3F20B200F9D578 /* NoteDetails.m */,
+				D6A460691D3F3B7200493D55 /* NoteDetail.swift */,
+				D6A4606A1D3F3B7200493D55 /* NoteDetailResult.swift */,
+				D6A4606B1D3F3B7200493D55 /* NoteDetails.swift */,
 			);
 			path = NoteDetail;
 			sourceTree = "<group>";
@@ -9311,6 +9304,7 @@
 		6268F5BB1D3F20B300F9D578 /* MyShopNote */ = {
 			isa = PBXGroup;
 			children = (
+				D6A4606F1D3F3B8800493D55 /* MyShopNoteRequest.swift */,
 				6268F5BC1D3F20B300F9D578 /* MyShopNoteDetailViewController.h */,
 				6268F5BD1D3F20B300F9D578 /* MyShopNoteDetailViewController.m */,
 				6268F5BE1D3F20B300F9D578 /* MyShopNoteDetailViewController.xib */,
@@ -10119,7 +10113,6 @@
 				6268F7EE1D3F20B300F9D578 /* Favorited */,
 				6268F7F51D3F20B300F9D578 /* Header */,
 				6268F7FF1D3F20B300F9D578 /* Info */,
-				6268F8121D3F20B300F9D578 /* Notes */,
 				6268F8161D3F20B300F9D578 /* SendMessage */,
 				6268F81A1D3F20B300F9D578 /* Settings */,
 				6268F81E1D3F20B300F9D578 /* string_shop.h */,
@@ -10240,16 +10233,6 @@
 				6268F8111D3F20B300F9D578 /* ShopInfoViewController.xib */,
 			);
 			path = Info;
-			sourceTree = "<group>";
-		};
-		6268F8121D3F20B300F9D578 /* Notes */ = {
-			isa = PBXGroup;
-			children = (
-				6268F8131D3F20B300F9D578 /* ShopNotesDetailViewController.h */,
-				6268F8141D3F20B300F9D578 /* ShopNotesDetailViewController.m */,
-				6268F8151D3F20B300F9D578 /* ShopNotesDetailViewController.xib */,
-			);
-			path = Notes;
 			sourceTree = "<group>";
 		};
 		6268F8161D3F20B300F9D578 /* SendMessage */ = {
@@ -12004,6 +11987,15 @@
 			path = "Third Party";
 			sourceTree = "<group>";
 		};
+		D6A460641D3F3B3B00493D55 /* NoteAction */ = {
+			isa = PBXGroup;
+			children = (
+				D6A460651D3F3B6800493D55 /* NoteAction.swift */,
+				D6A460661D3F3B6800493D55 /* NoteActionResult.swift */,
+			);
+			name = NoteAction;
+			sourceTree = "<group>";
+		};
 		E1A48FC656B05056B45251AD /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -12511,7 +12503,6 @@
 				6268FFE11D3F20B600F9D578 /* TKPDTabInboxMessageNavigationController.xib in Resources */,
 				626805F01D3F20B700F9D578 /* tabnav_bg@2x.png in Resources */,
 				626803F21D3F20B700F9D578 /* icon_grid_satu.png in Resources */,
-				626802081D3F20B700F9D578 /* ShopNotesDetailViewController.xib in Resources */,
 				626805731D3F20B700F9D578 /* loyalMerchant@3x.png in Resources */,
 				626805901D3F20B700F9D578 /* Notifications Settings Icon.png in Resources */,
 				6268054F1D3F20B700F9D578 /* icon_home_active@2x.png in Resources */,
@@ -13743,6 +13734,7 @@
 				6268FEF01D3F20B600F9D578 /* TxOrderConfirmationListOrder.m in Sources */,
 				6268FDE31D3F20B600F9D578 /* InboxTicketDetail.m in Sources */,
 				626806241D3F20B700F9D578 /* README.md in Sources */,
+				D6A4606D1D3F3B7200493D55 /* NoteDetailResult.swift in Sources */,
 				626801241D3F20B700F9D578 /* InboxReviewCell.m in Sources */,
 				6268FDC11D3F20B600F9D578 /* InboxMessageList.m in Sources */,
 				6268FFC41D3F20B600F9D578 /* ContactUsDataCollector.m in Sources */,
@@ -13792,6 +13784,7 @@
 				6268FE881D3F20B600F9D578 /* ShipmentServiceData.m in Sources */,
 				6268FFB81D3F20B600F9D578 /* FilterCategoryViewCell.m in Sources */,
 				6268FD1A1D3F20B600F9D578 /* AFNetworkingImageDownloader.mm in Sources */,
+				D6A460701D3F3B8800493D55 /* MyShopNoteRequest.swift in Sources */,
 				6268FD9C1D3F20B600F9D578 /* GeneralAction.m in Sources */,
 				6268004C1D3F20B700F9D578 /* SliderData.m in Sources */,
 				626800671D3F20B700F9D578 /* InboxRootViewController.m in Sources */,
@@ -13882,6 +13875,7 @@
 				626800141D3F20B600F9D578 /* ListOption.swift in Sources */,
 				626800E71D3F20B700F9D578 /* DetailProductViewController.m in Sources */,
 				6268FD211D3F20B600F9D578 /* NSMutableURLRequest+TKPDURLRequestUploadImage.m in Sources */,
+				D6A460671D3F3B6800493D55 /* NoteAction.swift in Sources */,
 				626801711D3F20B700F9D578 /* ProductQuantityViewController.m in Sources */,
 				6268FDEA1D3F20B600F9D578 /* InboxTicketTicket.m in Sources */,
 				6268FDFF1D3F20B600F9D578 /* DetailMyInboxReputation.m in Sources */,
@@ -13976,6 +13970,7 @@
 				6268FD3B1D3F20B600F9D578 /* SendOTP.m in Sources */,
 				6268FE3A1D3F20B600F9D578 /* BankAccountGetDefaultFormResult.m in Sources */,
 				6268FDE21D3F20B600F9D578 /* InboxTicket.m in Sources */,
+				D6A4605D1D3F3B1900493D55 /* DelayedActionManager.swift in Sources */,
 				626801B21D3F20B700F9D578 /* SettingAddressEditViewController.m in Sources */,
 				6268FDA21D3F20B600F9D578 /* GoogleDistanceMatrixElements.m in Sources */,
 				8548AE631D1A58F100D11E22 /* AppDelegate.m in Sources */,
@@ -13995,6 +13990,7 @@
 				6268FF0F1D3F20B600F9D578 /* OrderDetailForm.m in Sources */,
 				6268FF211D3F20B600F9D578 /* GenerateHostResult.m in Sources */,
 				6268FE491D3F20B600F9D578 /* PromoteResult.m in Sources */,
+				D6A4606E1D3F3B7200493D55 /* NoteDetails.swift in Sources */,
 				6268FFBA1D3F20B600F9D578 /* FilterCategoryViewController.m in Sources */,
 				6268FE381D3F20B600F9D578 /* BankAccountGetDefaultForm.m in Sources */,
 				6268FEC81D3F20B600F9D578 /* TrackOrderHistory.m in Sources */,
@@ -14032,6 +14028,7 @@
 				626800E91D3F20B700F9D578 /* DetailProductWholesaleCell.m in Sources */,
 				6268FD371D3F20B600F9D578 /* Login.m in Sources */,
 				6268FF051D3F20B600F9D578 /* TxOrderCancelPaymentResult.m in Sources */,
+				D6A460611D3F3B3700493D55 /* Notes.swift in Sources */,
 				6268FF721D3F20B600F9D578 /* AlertListView.m in Sources */,
 				6268FD501D3F20B600F9D578 /* CatalogShopAWSProductResult.m in Sources */,
 				626802C01D3F20B700F9D578 /* ProductSingleViewCell.m in Sources */,
@@ -14168,6 +14165,7 @@
 				6268FD5C1D3F20B600F9D578 /* ContactUsQuery.m in Sources */,
 				626801611D3F20B700F9D578 /* HeaderCollectionReusableView.m in Sources */,
 				6268FE1E1D3F20B600F9D578 /* ProductFeedResult.m in Sources */,
+				D6A4606C1D3F3B7200493D55 /* NoteDetail.swift in Sources */,
 				6268FD591D3F20B600F9D578 /* ContactUsActionResult.m in Sources */,
 				626800401D3F20B700F9D578 /* HistoryProductViewController.m in Sources */,
 				6268FF2B1D3F20B600F9D578 /* UploadImageSubmit.m in Sources */,
@@ -14178,7 +14176,6 @@
 				626802A21D3F20B700F9D578 /* WebViewInvoiceViewController.m in Sources */,
 				626800A71D3F20B700F9D578 /* MyShopAddressDetailViewController.m in Sources */,
 				626801301D3F20B700F9D578 /* MyReviewReputationCell.m in Sources */,
-				626802071D3F20B700F9D578 /* ShopNotesDetailViewController.m in Sources */,
 				6268061F1D3F20B700F9D578 /* MarqueeLabel.m in Sources */,
 				6268FD451D3F20B600F9D578 /* SecurityRequestOTP.m in Sources */,
 				626800F01D3F20B700F9D578 /* GalleryViewController.m in Sources */,
@@ -14192,6 +14189,7 @@
 				6268FEFE1D3F20B600F9D578 /* TransactionVoucherData.m in Sources */,
 				6268FD901D3F20B600F9D578 /* TheOtherProductResult.m in Sources */,
 				6268FDDE1D3F20B600F9D578 /* InboxTalkList.m in Sources */,
+				D6A460631D3F3B3700493D55 /* NotesResult.swift in Sources */,
 				6268000F1D3F20B600F9D578 /* FiltersController.swift in Sources */,
 				6268FF951D3F20B600F9D578 /* TPLiveCameraView.m in Sources */,
 				6268FE521D3F20B600F9D578 /* ResponseSpeed.m in Sources */,
@@ -14203,7 +14201,6 @@
 				6268FD811D3F20B600F9D578 /* ReviewList.m in Sources */,
 				6268FD471D3F20B600F9D578 /* AddressCity.m in Sources */,
 				6268FDDC1D3F20B600F9D578 /* InboxReviewResult.m in Sources */,
-				6268FE971D3F20B600F9D578 /* NotesResult.m in Sources */,
 				6268FD3F1D3F20B600F9D578 /* Register.m in Sources */,
 				6268FFD01D3F20B600F9D578 /* DataRequest.m in Sources */,
 				6268FE841D3F20B600F9D578 /* ShipmentOrder.m in Sources */,
@@ -14235,7 +14232,6 @@
 				6268008E1D3F20B700F9D578 /* InboxTalkViewController.m in Sources */,
 				626800F11D3F20B700F9D578 /* ProductGalleryViewController.m in Sources */,
 				626802901D3F20B700F9D578 /* TxOrderConfirmationViewController.m in Sources */,
-				6268FE931D3F20B600F9D578 /* NoteDetailResult.m in Sources */,
 				6268FF431D3F20B600F9D578 /* README.md in Sources */,
 				6268FDA81D3F20B600F9D578 /* GooglePlaceDetailResults.m in Sources */,
 				6268FD3C1D3F20B600F9D578 /* SendOTPResult.m in Sources */,
@@ -14364,7 +14360,6 @@
 				6268FF621D3F20B600F9D578 /* AlertBaseUrl.m in Sources */,
 				626802D41D3F20B700F9D578 /* VTTransactionDetails.m in Sources */,
 				6268FDB61D3F20B600F9D578 /* HotlistData.m in Sources */,
-				6268FE941D3F20B600F9D578 /* NoteDetails.m in Sources */,
 				6268FD701D3F20B600F9D578 /* CatalogShops.m in Sources */,
 				6268012B1D3F20B700F9D578 /* MyReviewDetailRequest.m in Sources */,
 				6268FFAF1D3F20B600F9D578 /* FilterCatalogViewController.m in Sources */,
@@ -14434,6 +14429,7 @@
 				6268013E1D3F20B700F9D578 /* ReviewRequest.m in Sources */,
 				6268FDF81D3F20B600F9D578 /* LoyaltyPointBuyer.m in Sources */,
 				6268FFAD1D3F20B600F9D578 /* CatalogViewController.m in Sources */,
+				D6A460621D3F3B3700493D55 /* NotesList.swift in Sources */,
 				6268FD2D1D3F20B600F9D578 /* ViewLabelUser.m in Sources */,
 				6268FE451D3F20B600F9D578 /* PromoResult.m in Sources */,
 				6268018C1D3F20B700F9D578 /* ChangeReceiptNumberViewController.m in Sources */,
@@ -14555,7 +14551,6 @@
 				626802511D3F20B700F9D578 /* CartCell.m in Sources */,
 				626800FD1D3F20B700F9D578 /* ProductAddEditDetailViewController.m in Sources */,
 				626801061D3F20B700F9D578 /* ProductEditWholesaleViewController.m in Sources */,
-				6268FE921D3F20B600F9D578 /* NoteDetail.m in Sources */,
 				6268021B1D3F20B700F9D578 /* ShopReviewPageViewController.m in Sources */,
 				6268FD191D3F20B600F9D578 /* UIViewCategory.swift in Sources */,
 				6268FD691D3F20B600F9D578 /* Catalog.m in Sources */,
@@ -14590,8 +14585,8 @@
 				6268FD741D3F20B600F9D578 /* SpecChilds.m in Sources */,
 				6268FE3B1D3F20B600F9D578 /* NotificationForm.m in Sources */,
 				6268FFD41D3F20B600F9D578 /* ContactUsFormDataManager.m in Sources */,
+				D6A460681D3F3B6800493D55 /* NoteActionResult.swift in Sources */,
 				6268FEFA1D3F20B600F9D578 /* TransactionSummaryDetail.m in Sources */,
-				6268FE951D3F20B600F9D578 /* Notes.m in Sources */,
 				6268FE601D3F20B600F9D578 /* OrderPayment.m in Sources */,
 				626800B81D3F20B700F9D578 /* CourierAvailabilityViewCell.m in Sources */,
 				6268FD9E1D3F20B600F9D578 /* GoogleDistanceMatrix.m in Sources */,
@@ -14665,7 +14660,6 @@
 				6268FFED1D3F20B600F9D578 /* LoadingView.m in Sources */,
 				6268FF921D3F20B600F9D578 /* CameraCollectionViewController.m in Sources */,
 				626801271D3F20B700F9D578 /* MyReviewDetailDataManager.mm in Sources */,
-				6268FE961D3F20B600F9D578 /* NotesList.m in Sources */,
 				6268FE281D3F20B600F9D578 /* ProfileEdit.m in Sources */,
 				626800F51D3F20B700F9D578 /* ProductReviewDetailViewController.m in Sources */,
 				626802791D3F20B700F9D578 /* MappingLDExtension.m in Sources */,
