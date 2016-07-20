@@ -44,6 +44,4 @@
                                     onSuccess:(void (^)(ProfileSettings *result))successCallback
                                     onFailure:(void (^)(NSError *error))errorCallback;
 
-- (NSString *)splitUriToPage:(NSString *)uri;
-
 @end

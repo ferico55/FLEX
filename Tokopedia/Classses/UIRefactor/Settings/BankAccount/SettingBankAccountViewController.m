@@ -353,7 +353,7 @@
     if (_list.count > 0) {
         _isnodata = NO;
         _urinext =  account.paging.uri_next;
-        _page = [[_request splitUriToPage:_urinext] integerValue];        
+        _page = [[TokopediaNetworkManager getPageFromUri:_urinext] integerValue];
         _table.tableFooterView = nil;
         
     } else {
