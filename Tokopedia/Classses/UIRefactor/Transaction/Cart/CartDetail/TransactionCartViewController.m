@@ -257,7 +257,6 @@
         
         if (_popFromToppay) {
             _popFromToppay = NO;
-            [self isLoading:YES];
             [self requestCartData];
         }
         if (_list.count>0) {
