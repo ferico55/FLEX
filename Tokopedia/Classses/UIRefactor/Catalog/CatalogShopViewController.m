@@ -158,8 +158,8 @@
     _noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
     _noResultView.delegate = self;
     [_noResultView generateAllElements:@"no-result.png"
-                                 title:@"Belum ada toko yang menjual produk ini"
-                                  desc:@""
+                                 title:@"Oops... hasil pencarian Anda tidak dapat ditemukan"
+                                  desc:@"Belum ada toko yang menjual produk ini"
                               btnTitle:nil];
 }
 
