@@ -130,21 +130,21 @@ import UIKit
             for category in categories {
                 if category.categoryId == rootCategoryID {
                     if selectedCategories.first?.categoryId == rootCategoryID || selectedCategories.count == 0 {
-                        self.selectedCategories = [category]
+                        self.setSelectedCategory([category])
                     }
                     category.isExpanded = true
                 }
                 for categoryChild in category.child {
                     if categoryChild.categoryId == rootCategoryID {
                         if selectedCategories.first?.categoryId == rootCategoryID || selectedCategories.count == 0 {
-                            self.selectedCategories = [categoryChild]
+                            self.setSelectedCategory([categoryChild])
                         }
                         category.isExpanded = true
                     }
                     for categoryLast in categoryChild.child {
                         if categoryLast.categoryId == rootCategoryID {
                             if selectedCategories.first?.categoryId == rootCategoryID || selectedCategories.count == 0 {
-                                self.selectedCategories = [categoryLast]
+                                self.setSelectedCategory([categoryLast])
                             }
                             category.isExpanded = true
                         }
@@ -162,6 +162,11 @@ import UIKit
             newCategories = categories
         }
         return newCategories
+    }
+    
+    func setSelectedCategory(categories:[CategoryDetail]) {
+        self.selectedCategories = categories
+        completionHandler(self.selectedCategories)
     }
     
     func categoryWithAddingAllTypeChildFromCategory(categories:[CategoryDetail]) -> [CategoryDetail]{
