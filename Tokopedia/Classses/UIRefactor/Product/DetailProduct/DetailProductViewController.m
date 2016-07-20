@@ -1077,7 +1077,7 @@ OtherProductDelegate
         [self productinfocell:productInfoCell withtableview:tableView];
         
         //Check product returnable
-        BOOL isProductReturnAble = ![_product.data.info.return_info.content isEqualToString:@""];
+        BOOL isProductReturnAble = _product.data.info.return_info && ![_product.data.info.return_info.content isEqualToString:@""];
         if(isProductReturnAble) {
             NSArray* rgbArray = [_product.data.info.return_info.color_rgb componentsSeparatedByString:@","];
             UIColor* color = [UIColor colorWithRed:([rgbArray[0] integerValue]/255.0) green:([rgbArray[1] integerValue]/255.0) blue:([rgbArray[2] integerValue]/255.0) alpha:0.2];

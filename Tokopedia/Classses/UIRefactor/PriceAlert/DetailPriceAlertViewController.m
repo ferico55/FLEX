@@ -970,7 +970,7 @@
         
         
         if ([self canRedirectView]) {
-            [self continueProcessBuy:product.result];
+            [self continueProcessBuy:product.data];
         }
     }
 }
