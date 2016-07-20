@@ -172,7 +172,7 @@ ImageSearchRequestDelegate
     _noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
     [_noResultView generateAllElements:@"no-result.png"
                                  title:@"Oops... hasil pencarian Anda tidak dapat ditemukan."
-                                  desc:@"Silahkan lakukan pencarian dengan kata kunci lain"
+                                  desc:@"Silahkan lakukan pencarian dengan kata kunci / filter lain"
                                btnTitle:@""];
     [_noResultView hideButton:YES];
     _noResultView.delegate = self;
@@ -1112,14 +1112,9 @@ ImageSearchRequestDelegate
         //no data at all
         [_flowLayout setFooterReferenceSize:CGSizeZero];
         
-        if([self isUsingAnyFilter]){
-            _suggestion = @"";
-            [_noResultView setNoResultDesc:@"Silakan lakukan pencarian dengan filter lain"];
-            [_noResultView hideButton:YES];
-        }else{
-            [_noResultView setNoResultDesc:@"Mohon maaf, gambar serupa tidak dapat ditemukan. Coba foto lagi dari sisi yang berbeda."];
-            [_noResultView hideButton:YES];
-        }
+        [_noResultView setNoResultDesc:@"Mohon maaf, gambar serupa tidak dapat ditemukan. Coba foto lagi dari sisi yang berbeda."];
+        [_noResultView hideButton:YES];
+
         [_collectionView addSubview:_noResultView];
     }
     
@@ -1234,19 +1229,14 @@ ImageSearchRequestDelegate
         } else {
             //no data at all
             [_flowLayout setFooterReferenceSize:CGSizeZero];
-            
-            if([self isUsingAnyFilter]){
-                _suggestion = @"";
-                [_noResultView setNoResultDesc:@"Silakan lakukan pencarian dengan filter lain"];
-                [_noResultView hideButton:YES];
+
+            if([_data objectForKey:@"search"] && ![[_data objectForKey:@"search"] isEqualToString:@""]){
+                [_spellCheckRequest getSpellingSuggestion:@"product" query:[_data objectForKey:@"search"] category:@"0"];
             }else{
-                if([_data objectForKey:@"search"] && ![[_data objectForKey:@"search"] isEqualToString:@""]){
-                    [_spellCheckRequest getSpellingSuggestion:@"product" query:[_data objectForKey:@"search"] category:@"0"];
-                }else{
-                    _suggestion = @"";
-                }
+                _suggestion = @"";
             }
             
+            [self adjustNoResultView];
             [_collectionView addSubview:_noResultView];
         }
         
@@ -1502,16 +1492,17 @@ ImageSearchRequestDelegate
 
 -(void)didReceiveSpellSuggestion:(NSString *)suggestion totalData:(NSString *)totalData{
     _suggestion = suggestion;
-    if([_suggestion isEqual:nil] || [_suggestion isEqual:@""]){
-        [_noResultView setNoResultDesc:@"Silakan lakukan pencarian dengan kata kunci lain"];
-        [_noResultView hideButton:YES];
-    }else if([_data count] > 3){
-        [_noResultView setNoResultDesc:@"Silakan lakukan pencarian dengan filter lain"];
-        [_noResultView hideButton:YES];
-    }else{
+    [self adjustNoResultView];
+}
+
+-(void)adjustNoResultView{
+    if(![_suggestion isEqual:nil] && ![_suggestion isEqual:@""]){
         [_noResultView setNoResultDesc:@"Silakan lakukan pencarian dengan kata kunci lain. Mungkin maksud Anda: "];
         [_noResultView setNoResultButtonTitle:_suggestion];
         [_noResultView hideButton:NO];
+    } else {
+        [_noResultView setNoResultDesc:@"Silahkan lakukan pencarian dengan kata kunci / filter lain"];
+        [_noResultView hideButton:YES];
     }
 }
 
