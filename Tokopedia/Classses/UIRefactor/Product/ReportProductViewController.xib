@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="GothamBook.ttf">
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+        </mutableArray>
+        <mutableArray key="GothamMedium.ttf">
+            <string>GothamMedium</string>
+            <string>GothamMedium</string>
+        </mutableArray>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ReportProductViewController" customModule="Tokopedia" customModuleProvider="target">
+            <connections>
+                <outlet property="deskripsiTextView" destination="Es4-wg-7Nw" id="5Pg-Kc-1CS"/>
+                <outlet property="downPickerTextField" destination="mU7-iz-lfg" id="2pa-8f-9Se"/>
+                <outlet property="laporkanButton" destination="xxS-nf-kqS" id="iUt-Ab-o4o"/>
+                <outlet property="linkInstructionLabel" destination="Goq-Wj-17R" id="Hur-Zv-nfs"/>
+                <outlet property="scrollView" destination="Rjl-ai-JtF" id="EOl-uM-t8U"/>
+                <outlet property="tulisDeskripsiPlaceholderLabel" destination="36Z-zd-ns7" id="71N-DQ-9kW"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" keyboardDismissMode="interactive" translatesAutoresizingMaskIntoConstraints="NO" id="Rjl-ai-JtF">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NnN-4I-lh8">
+                            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                            <subviews>
+                                <label hidden="YES" opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Anda dapat melaporkan transaksi dari produk ini ke Customer Care Tokopedia melalui link ini" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Goq-Wj-17R">
+                                    <rect key="frame" x="16" y="58" width="568" height="23.5"/>
+                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                                    <color key="textColor" red="0.46666666666666667" green="0.46666666666666667" blue="0.46666666666666667" alpha="1" colorSpace="calibratedRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xxS-nf-kqS">
+                                    <rect key="frame" x="217.5" y="110" width="165" height="31"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="31" id="aKb-8A-QBL"/>
+                                        <constraint firstAttribute="width" constant="165" id="bkY-5f-319"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
+                                    <color key="tintColor" red="1" green="0.3411764705882353" blue="0.13333333333333333" alpha="1" colorSpace="calibratedRGB"/>
+                                    <state key="normal" title="Laporkan"/>
+                                    <connections>
+                                        <action selector="didTapLaporkanButton:" destination="-1" eventType="touchUpInside" id="1LE-zq-NKz"/>
+                                    </connections>
+                                </button>
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="mU7-iz-lfg">
+                                    <rect key="frame" x="16" y="12" width="568" height="36"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="36" id="Aot-qg-EvB"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
+                                    <textInputTraits key="textInputTraits"/>
+                                </textField>
+                                <textView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Es4-wg-7Nw">
+                                    <rect key="frame" x="16" y="63" width="568" height="172"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="172" id="qgj-BE-pCB"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                            <real key="value" value="0.0"/>
+                                        </userDefinedRuntimeAttribute>
+                                    </userDefinedRuntimeAttributes>
+                                </textView>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tulis Deskripsi" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="36Z-zd-ns7">
+                                    <rect key="frame" x="23" y="71" width="93" height="12"/>
+                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                                    <color key="textColor" red="0.46666666666666667" green="0.46666666666666667" blue="0.46666666666666667" alpha="1" colorSpace="calibratedRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" red="0.89411764705882346" green="0.89411764705882346" blue="0.89411764705882346" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="trailing" secondItem="mU7-iz-lfg" secondAttribute="trailing" constant="16" id="2tb-Kr-eeZ"/>
+                                <constraint firstItem="Es4-wg-7Nw" firstAttribute="leading" secondItem="NnN-4I-lh8" secondAttribute="leading" constant="16" id="4gK-QA-y4A"/>
+                                <constraint firstItem="Es4-wg-7Nw" firstAttribute="leading" secondItem="36Z-zd-ns7" secondAttribute="trailing" constant="-100" id="DZb-uh-0Q2"/>
+                                <constraint firstItem="Goq-Wj-17R" firstAttribute="leading" secondItem="mU7-iz-lfg" secondAttribute="leading" id="F26-Dx-9yX"/>
+                                <constraint firstItem="Goq-Wj-17R" firstAttribute="trailing" secondItem="mU7-iz-lfg" secondAttribute="trailing" id="LUc-kE-DL8"/>
+                                <constraint firstItem="xxS-nf-kqS" firstAttribute="centerX" secondItem="NnN-4I-lh8" secondAttribute="centerX" id="LcP-dj-wZY"/>
+                                <constraint firstItem="Es4-wg-7Nw" firstAttribute="top" secondItem="mU7-iz-lfg" secondAttribute="bottom" constant="15" id="YOI-B3-SVi"/>
+                                <constraint firstItem="Goq-Wj-17R" firstAttribute="top" secondItem="mU7-iz-lfg" secondAttribute="bottom" constant="10" id="hEj-l0-UdO"/>
+                                <constraint firstItem="Es4-wg-7Nw" firstAttribute="top" secondItem="36Z-zd-ns7" secondAttribute="bottom" constant="-20" id="m3g-Pg-Qfz"/>
+                                <constraint firstItem="mU7-iz-lfg" firstAttribute="leading" secondItem="NnN-4I-lh8" secondAttribute="leading" constant="16" id="pQY-T2-KVi"/>
+                                <constraint firstItem="xxS-nf-kqS" firstAttribute="top" secondItem="Goq-Wj-17R" secondAttribute="bottom" constant="28.5" id="poA-Ji-ekw"/>
+                                <constraint firstAttribute="trailing" secondItem="Es4-wg-7Nw" secondAttribute="trailing" constant="16" id="qY7-Uz-pUV"/>
+                                <constraint firstItem="mU7-iz-lfg" firstAttribute="top" secondItem="NnN-4I-lh8" secondAttribute="top" constant="12" id="xYd-FT-bur"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="NnN-4I-lh8" firstAttribute="leading" secondItem="Rjl-ai-JtF" secondAttribute="leading" id="5f3-re-gHO"/>
+                        <constraint firstItem="NnN-4I-lh8" firstAttribute="centerY" secondItem="Rjl-ai-JtF" secondAttribute="centerY" id="9r7-va-qyg"/>
+                        <constraint firstAttribute="bottom" secondItem="NnN-4I-lh8" secondAttribute="bottom" id="FMw-l6-XCF"/>
+                        <constraint firstAttribute="trailing" secondItem="NnN-4I-lh8" secondAttribute="trailing" id="MBq-zf-NBC"/>
+                        <constraint firstItem="NnN-4I-lh8" firstAttribute="top" secondItem="Rjl-ai-JtF" secondAttribute="top" id="TGp-0Z-w6z"/>
+                        <constraint firstItem="NnN-4I-lh8" firstAttribute="centerX" secondItem="Rjl-ai-JtF" secondAttribute="centerX" id="wse-Vr-JFM"/>
+                    </constraints>
+                </scrollView>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="Rjl-ai-JtF" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="7kG-zd-V0F"/>
+                <constraint firstItem="Rjl-ai-JtF" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="RFW-Lz-UlO"/>
+                <constraint firstAttribute="trailing" secondItem="Rjl-ai-JtF" secondAttribute="trailing" id="Xzb-OS-mRE"/>
+                <constraint firstAttribute="bottom" secondItem="Rjl-ai-JtF" secondAttribute="bottom" id="aVy-yX-Gb1"/>
+            </constraints>
+        </view>
+    </objects>
+</document>
