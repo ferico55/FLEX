@@ -1229,7 +1229,7 @@ ImageSearchRequestDelegate
             //no data at all
             [_flowLayout setFooterReferenceSize:CGSizeZero];
 
-            if([_data objectForKey:@"search"] && ![[_data objectForKey:@"search"] isEqualToString:@""]){
+            if([self isUsingAnyFilter]){
                 [_spellCheckRequest getSpellingSuggestion:@"product" query:[_data objectForKey:@"search"] category:@"0"];
             }else{
                 _suggestion = @"";
@@ -1381,22 +1381,7 @@ ImageSearchRequestDelegate
 }
 
 - (BOOL) isUsingAnyFilter{
-    BOOL isUsingLocationFilter = [_params objectForKey:@"floc"] != nil && ![[_params objectForKey:@"floc"] isEqualToString:@""];
-    BOOL isUsingDepFilter = [_params objectForKey:@"sc"] != nil;
-    BOOL isUsingPriceMinFilter = [_params objectForKey:@"pmin"] != nil && ![[[NSString alloc]initWithFormat:@"%@", [_params objectForKey:@"pmin"]] isEqualToString:@"0"];
-    BOOL isUsingPriceMaxFilter = [_params objectForKey:@"pmax"] != nil && ![[[NSString alloc]initWithFormat:@"%@", [_params objectForKey:@"pmax"]] isEqualToString:@"0"];;
-    BOOL isUsingShopTypeFilter = [_params objectForKey:@"fshop"] != nil && ![[[NSString alloc]initWithFormat:@"%@", [_params objectForKey:@"fshop"]] isEqualToString:@"0"];;
-    
-    return  (isUsingDepFilter || isUsingLocationFilter || isUsingPriceMaxFilter || isUsingPriceMinFilter || isUsingShopTypeFilter);
-}
-
-- (BOOL) isUsingAnyFilterExceptCategory{
-    BOOL isUsingLocationFilter = [_params objectForKey:@"floc"] != nil && ![[_params objectForKey:@"floc"] isEqualToString:@""];
-    BOOL isUsingPriceMinFilter = [_params objectForKey:@"pmin"] != nil && ![[[NSString alloc]initWithFormat:@"%@", [_params objectForKey:@"pmin"]] isEqualToString:@"0"];
-    BOOL isUsingPriceMaxFilter = [_params objectForKey:@"pmax"] != nil && ![[[NSString alloc]initWithFormat:@"%@", [_params objectForKey:@"pmax"]] isEqualToString:@"0"];;
-    BOOL isUsingShopTypeFilter = [_params objectForKey:@"fshop"] != nil && ![[[NSString alloc]initWithFormat:@"%@", [_params objectForKey:@"fshop"]] isEqualToString:@"0"];;
-    
-    return  ( isUsingLocationFilter || isUsingPriceMaxFilter || isUsingPriceMinFilter || isUsingShopTypeFilter);
+    return [_activeFilterImageViews.firstObject isHidden];
 }
 
 #pragma mark - Promo collection delegate
