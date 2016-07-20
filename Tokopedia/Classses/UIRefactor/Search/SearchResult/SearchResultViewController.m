@@ -1139,7 +1139,7 @@ ImageSearchRequestDelegate
     [self reloadView];
     
     //set initial category
-    if (_initialBreadcrumb == nil) {
+    if (_initialBreadcrumb.count == 0) {
         _initialBreadcrumb = search.data.breadcrumb;
         if ([_delegate respondsToSelector:@selector(updateCategories:)]) {
             [_delegate updateCategories:search.data.breadcrumb];
@@ -1213,7 +1213,6 @@ ImageSearchRequestDelegate
                 [_flowLayout setFooterReferenceSize:CGSizeZero];
             }
             
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"changeNavigationTitle" object:[_params objectForKey:@"search"]];
             [_noResultView removeFromSuperview];
             
             if(_isFromImageSearch && [_params objectForKey:@"ob"] && [[_params objectForKey:@"ob"] isEqualToString:@"99"]){
@@ -1353,7 +1352,8 @@ ImageSearchRequestDelegate
 
 #pragma mark - No Result Delegate
 
-- (void) buttonDidTapped:(id)sender{
+- (void) buttonDidTapped:(UIButton*)sender{
+    _suggestion = sender.titleLabel.text ?:@"";
     [_params setObject:_suggestion forKey:@"search"];
     [_noResultView removeFromSuperview];
     
@@ -1361,9 +1361,9 @@ ImageSearchRequestDelegate
                             @"type" : [_data objectForKey:@"type"],
                             @"search": _suggestion
                             };
-    _data = newData;
-    self.title = _suggestion;
-    
+    [self setData:newData];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"changeNavigationTitle" object:_suggestion];
+
 //    [_networkManager doRequest];
     [self requestSearch];
 }
