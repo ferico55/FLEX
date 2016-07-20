@@ -85,7 +85,6 @@
         @"new_password": self.passwordNewTextField.text,
         @"password": self.currentPasswordTextField.text,
     };
-    __weak typeof(self) weakSelf = self;
     [self.networkManager requestWithBaseUrl:[NSString v4Url]
                                        path:@"/v4/action/people/edit_password.pl"
                                      method:RKRequestMethodPOST
@@ -93,9 +92,9 @@
                                     mapping:[ProfileSettings mapping]
                                   onSuccess:^(RKMappingResult *mappingResult,
                                               RKObjectRequestOperation *operation) {
-                                      [weakSelf didReceiveMappingResult:mappingResult];
+                                      [self didReceiveMappingResult:mappingResult];
                                   } onFailure:^(NSError *error) {
-                                      [weakSelf didReceiveError:error];
+                                      [self didReceiveError:error];
                                   }];
 }
 
