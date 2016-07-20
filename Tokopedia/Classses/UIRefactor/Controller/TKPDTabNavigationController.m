@@ -667,6 +667,7 @@
 - (void)changeNavigationTitle:(NSNotification*)notification {
     NSString *title = [notification object];
     if (title) {
+        self.navigationTitle = [title capitalizedString];
         self.navigationItem.title = [title capitalizedString];
     }
 }
