@@ -980,6 +980,8 @@ static NSString const *rows = @"12";
     if([self isInitialRequest]) {
         _hashtags = searchResult.data.hashtag;
         [_hashtagsscrollview removeAllSubviews];
+        [_iPadHastags removeAllSubviews];
+        
         [self setHashtagButtons:_hashtags];
         
         [_refreshControl endRefreshing];
