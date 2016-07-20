@@ -59,7 +59,7 @@ typedef NS_ENUM(NSInteger, SpellCheckNetworkManager) {
     
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
                                                                                           method:RKRequestMethodGET
-                                                                                     pathPattern:@"search/v1/spell/product"
+                                                                                     pathPattern:@"/search/v1/spell/product"
                                                                                          keyPath:@""
                                                                                      statusCodes:kTkpdIndexSetStatusCodeOK];
     [_objectManager addResponseDescriptor:responseDescriptor];
