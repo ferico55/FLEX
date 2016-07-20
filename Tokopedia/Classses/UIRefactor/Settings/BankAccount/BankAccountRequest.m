@@ -191,4 +191,8 @@
                               }];
 }
 
+- (NSString *)splitUriToPage:(NSString *)uri {
+    return [_networkManager splitUriToPage:uri];
+}
+
 @end

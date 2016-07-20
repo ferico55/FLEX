@@ -353,22 +353,7 @@
     if (_list.count > 0) {
         _isnodata = NO;
         _urinext =  account.paging.uri_next;
-        NSURL *url = [NSURL URLWithString:_urinext];
-        NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
-        
-        NSMutableDictionary *queries = [NSMutableDictionary new];
-        [queries removeAllObjects];
-        for (NSString *keyValuePair in querry)
-        {
-            NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
-            NSString *key = [pairComponents objectAtIndex:0];
-            NSString *value = [pairComponents objectAtIndex:1];
-            
-            [queries setObject:value forKey:key];
-        }
-        
-        _page = [[queries objectForKey:kTKPDPROFILE_APIPAGEKEY] integerValue];
-        
+        _page = [[_request splitUriToPage:_urinext] integerValue];        
         _table.tableFooterView = nil;
         
     } else {
