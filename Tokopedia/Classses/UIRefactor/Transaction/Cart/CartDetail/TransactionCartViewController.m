@@ -230,11 +230,7 @@
     }
     [self initNoResultView];
     [self setDefaultInputData];
-    
-    _alertLoading = [[UIAlertView alloc]initWithTitle:@"Processing" message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
 
-    _loadingView = [LoadingView new];
-    _loadingView.delegate = self;
     [_klikBCANotes setCustomAttributedText:_klikBCANotes.text];
 }
 
@@ -282,6 +278,16 @@
     _tableView.scrollsToTop = YES;
     [self adjustPaymentMethodView];
     [self swipeView:_paymentMethodView];
+}
+
+-(UIAlertView*)alertLoading{
+    if (!_alertLoading) {
+        _loadingView = [LoadingView new];
+        _loadingView.delegate = self;
+        _alertLoading = [[UIAlertView alloc]initWithTitle:@"Processing" message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
+    }
+    
+    return _alertLoading;
 }
 
 -(void)headerInstallmentAnimating
@@ -1542,7 +1548,7 @@
     _checkoutButton.enabled = !isLoading;
     _buyButton.enabled = !isLoading;
     if (isLoading) {
-        [_alertLoading show];
+        [[self alertLoading] show];
     } else{
         if (_refreshControl.isRefreshing) {
             _tableView.contentOffset = CGPointZero;
@@ -1551,7 +1557,7 @@
         if (_list.count>0) {
             _tableView.tableFooterView = (_indexPage == 1)?_buyView:_checkoutView;
         } else _tableView.tableFooterView = nil;
-        [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+        [[self alertLoading] dismissWithClickedButtonIndex:0 animated:YES];
     }
 }
 
