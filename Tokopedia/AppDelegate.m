@@ -91,6 +91,7 @@
         [self configureAppsflyer];
         [self configureAppIndexing];
         [self configureGoogleAnalytics];
+        [self registerNotificationSettingsForApplication:application];
         
         [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
 
@@ -200,7 +201,7 @@
     }
 }
 
-- (void)applicationDidFinishLaunching:(UIApplication *)application {
+- (void)registerNotificationSettingsForApplication:(UIApplication *)application {
     UIUserNotificationType userNotificationTypes = (UIUserNotificationTypeAlert |
                                                     UIUserNotificationTypeBadge |
                                                     UIUserNotificationTypeSound);
