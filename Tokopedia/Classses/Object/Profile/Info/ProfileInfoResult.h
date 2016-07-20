@@ -21,4 +21,6 @@
 @property (nonatomic, strong) ShopInfo *shop_info;
 @property (nonatomic, strong) ResponseSpeed *respond_speed;
 
++ (RKObjectMapping *)mapping;
+
 @end

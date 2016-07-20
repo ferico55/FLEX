@@ -83,6 +83,8 @@
                 StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[errorMessage] delegate:self];
                 [alert show];
                 self.emailText.text = @"";
+            } else {
+                [self showAlertToRegisterView];
             }
         }
     }
