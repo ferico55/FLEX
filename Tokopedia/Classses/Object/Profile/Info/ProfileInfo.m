@@ -10,4 +10,18 @@
 
 @implementation ProfileInfo
 
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[ProfileInfo class]];
+    
+    [mapping addAttributeMappingsFromArray:@[@"status",
+                                             @"server_process_time",
+                                             @"message_error"]];
+    
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data"
+                                                                            toKeyPath:@"result"
+                                                                          withMapping:[ProfileInfoResult mapping]]];
+    
+    return mapping;
+}
+
 @end
