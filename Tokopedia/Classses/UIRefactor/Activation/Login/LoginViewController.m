@@ -25,7 +25,7 @@
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import <QuartzCore/QuartzCore.h>
 #import "GAIDictionaryBuilder.h"
-#import "AppsFlyerTracker.h"
+#import <AppsFlyer/AppsFlyer.h>
 
 #import <GoogleOpenSource/GoogleOpenSource.h>
 
