@@ -827,7 +827,7 @@
     NSDictionary *userInfo = _dataInput;
 #define PRODUCT_MOVETO_WAREHOUSE_ID @"2"
     
-    Breadcrumb *category = [_dataInput objectForKey:DATA_CATEGORY_KEY];
+    CategoryDetail *category = [_dataInput objectForKey:DATA_CATEGORY_KEY];
     ProductEditDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
     CatalogList *catalog = [_dataInput objectForKey:DATA_CATALOG_KEY];
     
@@ -835,7 +835,7 @@
     NSInteger serverID = [_generateHost.result.generated_host.server_id integerValue]?:0;
     NSString *productName = product.product_name?:@"";
     NSString *productDescription = product.product_short_desc?:@"";
-    NSString *departmentID = category.department_id?:@"";
+    NSString *departmentID = category.categoryId?:@"";
     NSString *minimumOrder = product.product_min_order?:@"1";
     NSString *productPriceCurrencyID = product.product_currency_id?:@"";
     NSString *productPrice = product.product_price?:@"";
