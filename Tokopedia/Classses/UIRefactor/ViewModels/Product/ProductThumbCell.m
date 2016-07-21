@@ -31,6 +31,7 @@
     self.grosirLabel.hidden = viewModel.isWholesale ? NO : YES;
     self.grosirIconLocation.constant = viewModel.isProductPreorder ? 7 : -50;
     self.luckyIconLocation.constant = viewModel.isGoldShopProduct ? 7 : -19;
+    [_productName setLineBreakMode:NSLineBreakByTruncatingTail];
     
     self.grosirLabel.layer.masksToBounds = YES;
     self.preorderLabel.layer.masksToBounds = YES;
