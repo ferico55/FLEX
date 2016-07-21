@@ -36,8 +36,8 @@ class PulsaViewController: UIViewController, UITextFieldDelegate {
     func loadCategoryFromNetwork() {
         let networkManager = TokopediaNetworkManager()
         networkManager .
-            requestWithBaseUrl("http://private-c3816-digitalcategory.apiary-mock.com",
-                               path: "/categories",
+            requestWithBaseUrl("https://pulsa-api.tokopedia.com",
+                               path: "/v1/category/list",
                                method: .GET,
                                parameter: nil,
                                mapping: PulsaCategoryRoot.mapping(),
@@ -108,7 +108,6 @@ class PulsaViewController: UIViewController, UITextFieldDelegate {
         let characterCount = inputtedPrefix.characters.count - range.length
         
         if(characterCount == 4) {
-            let button = UIButton.init(frame: CGRectMake(<#T##x: CGFloat##CGFloat#>, <#T##y: CGFloat##CGFloat#>, <#T##width: CGFloat##CGFloat#>, <#T##height: CGFloat##CGFloat#>))
             let prefix = self.prefixes[inputtedPrefix]
             if(prefix != nil) {
                 let prefixImage = UIImageView.init(frame: CGRectMake(0, 0, 100, 50))
@@ -135,8 +134,8 @@ class PulsaViewController: UIViewController, UITextFieldDelegate {
     func loadProductFromNetwork() {
         let networkManager = TokopediaNetworkManager()
         networkManager .
-            requestWithBaseUrl("http://private-c3816-digitalcategory.apiary-mock.com",
-                               path: "/products",
+            requestWithBaseUrl("https://pulsa-api.tokopedia.com",
+                               path: "/v1/product/list",
                                method: .GET,
                                parameter: nil,
                                mapping: PulsaProductRoot.mapping(),
@@ -154,8 +153,8 @@ class PulsaViewController: UIViewController, UITextFieldDelegate {
     func loadOperatorFromNetwork() {
         let networkManager = TokopediaNetworkManager()
         networkManager .
-            requestWithBaseUrl("http://private-c3816-digitalcategory.apiary-mock.com",
-                               path: "/operators",
+            requestWithBaseUrl("https://pulsa-api.tokopedia.com",
+                               path: "/v1/operator/list",
                                method: .GET,
                                parameter: nil,
                                mapping: PulsaOperatorRoot.mapping(),
