@@ -9,7 +9,6 @@
 #import "TKPDStackView.h"
 
 @implementation TKPDStackView{
-    CGFloat counter;
 }
 
 /*
@@ -22,21 +21,21 @@
 
 -(void)pushView:(UIView *)view{
     if(_orientation == TKPDStackViewOrientationLeftToRight){
-        [view setFrame:CGRectMake(counter, 0, view.frame.size.width, view.frame.size.height)];
+        [view setFrame:CGRectMake(_counter, 0, view.frame.size.width, view.frame.size.height)];
         [self addSubview:view];
-        counter = counter + view.frame.size.width;
+        _counter = _counter + view.frame.size.width;
     }else if(_orientation == TKPDStackViewOrientationRightToLeft){
-        [view setFrame:CGRectMake(self.frame.size.width-view.frame.size.width-counter, 0, view.frame.size.width, view.frame.size.height)];
+        [view setFrame:CGRectMake(self.frame.size.width-view.frame.size.width-_counter, 0, view.frame.size.width, view.frame.size.height)];
         [self addSubview:view];
-        counter = counter + view.frame.size.width;
+        _counter = _counter + view.frame.size.width;
     }else if(_orientation == TKPDStackViewOrientationTopToBottom){
-        [view setFrame:CGRectMake(0, counter, view.frame.size.width, view.frame.size.height)];
+        [view setFrame:CGRectMake(0, _counter, view.frame.size.width, view.frame.size.height)];
         [self addSubview:view];
-        counter = counter + view.frame.size.height;
+        _counter = _counter + view.frame.size.height;
     }else if(_orientation == TKPDStackViewOrientationBottomToTop){
-        [view setFrame:CGRectMake(0, self.frame.size.height-view.frame.size.height-counter, view.frame.size.width, view.frame.size.height)];
+        [view setFrame:CGRectMake(0, self.frame.size.height-view.frame.size.height-_counter, view.frame.size.width, view.frame.size.height)];
         [self addSubview:view];
-        counter = counter + view.frame.size.height;
+        _counter = _counter + view.frame.size.height;
     }else{
         _orientation = TKPDStackViewOrientationLeftToRight;
         [self pushView:view];
@@ -48,7 +47,7 @@
     for (UIView *v in viewsToRemove) {
         [v removeFromSuperview];
     }
-    counter = 0;
+    _counter = 0;
 }
 
 @end

@@ -109,7 +109,6 @@
                             <label opaque="NO" userInteractionEnabled="NO" tag="3" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jakarta" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T0n-0t-ya4">
                                 <rect key="frame" x="20" y="369" width="130" height="16"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="130" id="Bzt-D7-B3w"/>
                                     <constraint firstAttribute="height" constant="16" id="CDi-TA-Yz4"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>

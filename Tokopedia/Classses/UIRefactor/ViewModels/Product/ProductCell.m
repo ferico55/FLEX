@@ -10,10 +10,17 @@
 #import "ProductModelView.h"
 #import "CatalogModelView.h"
 #import "ProductBadge.h"
+#import "QueueImageDownloader.h"
 
-@implementation ProductCell
+@implementation ProductCell{
+    QueueImageDownloader* imageDownloader;
+}
 
 - (void)setViewModel:(ProductModelView *)viewModel {
+    if(imageDownloader == nil){
+        imageDownloader = [QueueImageDownloader new];
+    }
+    
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 4.0;
     style.lineBreakMode = NSLineBreakByTruncatingTail;
@@ -40,36 +47,30 @@
     self.grosirLabel.hidden = viewModel.isWholesale ? NO : YES;
     
     self.preorderPosition.constant = !viewModel.isWholesale ? -42 : 3;
-    
-    
-    
     [self.productImage setImageWithURL:[NSURL URLWithString:viewModel.productThumbUrl] placeholderImage:[UIImage imageNamed:@"grey-bg.png"]];
-    
     
     //all of this is just for badges, dynamic badges
     [_badgesView removeAllPushedView];
     CGSize badgeSize = CGSizeMake(_badgesView.frame.size.height, _badgesView.frame.size.height);
     [_badgesView setOrientation:TKPDStackViewOrientationRightToLeft];
+    
+    
+    NSMutableArray *urls = [NSMutableArray new];
     for(ProductBadge* badge in viewModel.badges){
-        UIView *badgeView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, badgeSize.width, badgeSize.height)];
-        UIImageView *badgeImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, badgeSize.width, badgeSize.height)];
-        [badgeView addSubview:badgeImage];
-        
-        NSURLRequest* urlRequest = [[NSURLRequest alloc]initWithURL:[NSURL URLWithString:badge.image_url]];
-        [badgeImage setImageWithURLRequest:urlRequest
-                          placeholderImage:nil
-                                   success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-                                       if(image.size.width > 1){
-                                           [badgeImage setImage:image];
-                                           [_badgesView pushView:badgeView];
-                                       }
-                                   }
-                                   failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-                                       
-                                   }];
+        [urls addObject:badge.image_url];
     }
+    
+    [imageDownloader downloadImagesWithUrls:urls onComplete:^(NSArray<UIImage *> *images) {
+        for(UIImage *image in images){
+            if(image.size.width > 1){
+                UIView *badgeView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, badgeSize.width, badgeSize.height)];
+                UIImageView *badgeImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, badgeSize.width, badgeSize.height)];
+                badgeImageView.image = image;
+                [badgeView addSubview:badgeImageView];
+                [_badgesView pushView:badgeView];
+            }
+        }
+    }];
 }
 
 - (void)setCatalogViewModel:(CatalogModelView *)viewModel {
@@ -92,6 +93,10 @@
     self.locationImage.hidden = YES;
     self.shopLocation.text = nil;
     
+}
+- (void)prepareForReuse {
+    [super prepareForReuse];
+    [imageDownloader cancelAllOperations];
 }
 
 @end

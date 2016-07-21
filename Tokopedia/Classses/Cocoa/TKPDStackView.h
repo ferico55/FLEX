@@ -17,6 +17,7 @@ typedef NS_ENUM(NSInteger, TKPDStackViewOrientation){
 
 @interface TKPDStackView : UIView
 @property TKPDStackViewOrientation orientation;
+@property (atomic) NSInteger counter;
 
 -(void)pushView:(UIView*)view;
 -(void)removeAllPushedView;

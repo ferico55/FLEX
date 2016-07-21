@@ -2399,6 +2399,7 @@
 		BB5B50AD1D406FF400780391 /* Tokopedia-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB5B47731D406FF300780391 /* Tokopedia-Info.plist */; };
 		BB5B50AE1D406FF400780391 /* Tokopedia.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = BB5B47751D406FF300780391 /* Tokopedia.entitlements */; };
 		BB5B50AF1D406FF400780391 /* Tokopedia.xcworkspace in Resources */ = {isa = PBXBuildFile; fileRef = BB5B47761D406FF300780391 /* Tokopedia.xcworkspace */; };
+		BB5B68E31D40C56600780391 /* QueueImageDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = BB5B68E21D40C56600780391 /* QueueImageDownloader.m */; };
 		F25F6F270D531ED13A92CDB9 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4868E459AB2A65D133732296 /* libPods-Tokopedia.a */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
 		FC23B85A1ACD659900879D75 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8581ACD659900879D75 /* Fabric.framework */; };
@@ -5980,6 +5981,8 @@
 		BB5B47741D406FF300780391 /* Tokopedia-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Tokopedia-Prefix.pch"; sourceTree = "<group>"; };
 		BB5B47751D406FF300780391 /* Tokopedia.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Tokopedia.entitlements; sourceTree = "<group>"; };
 		BB5B47761D406FF300780391 /* Tokopedia.xcworkspace */ = {isa = PBXFileReference; lastKnownFileType = wrapper.workspace; path = Tokopedia.xcworkspace; sourceTree = "<group>"; };
+		BB5B68E11D40C56600780391 /* QueueImageDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QueueImageDownloader.h; sourceTree = "<group>"; };
+		BB5B68E21D40C56600780391 /* QueueImageDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QueueImageDownloader.m; sourceTree = "<group>"; };
 		C8A1445074FECD393EA18C17 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		FC23B8571ACD659900879D75 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		FC23B8581ACD659900879D75 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
@@ -6223,6 +6226,8 @@
 				BB5B38E61D406FE900780391 /* Utils */,
 				BB5B38E91D406FE900780391 /* ViewLabelUser.h */,
 				BB5B38EA1D406FE900780391 /* ViewLabelUser.m */,
+				BB5B68E11D40C56600780391 /* QueueImageDownloader.h */,
+				BB5B68E21D40C56600780391 /* QueueImageDownloader.m */,
 			);
 			path = Cocoa;
 			sourceTree = "<group>";
@@ -14528,6 +14533,7 @@
 				BB5B4C891D406FF300780391 /* EtalaseRequest.m in Sources */,
 				BB5B4A851D406FF300780391 /* FilterCells.swift in Sources */,
 				BB5B4A541D406FF300780391 /* ContactUsFormWireframe.m in Sources */,
+				BB5B68E31D40C56600780391 /* QueueImageDownloader.m in Sources */,
 				BB5B4B461D406FF300780391 /* NavigateViewController.m in Sources */,
 				BB5B4CA21D406FF400780391 /* FilterLocationViewController.m in Sources */,
 				BB5B49751D406FF300780391 /* Veritrans.m in Sources */,
