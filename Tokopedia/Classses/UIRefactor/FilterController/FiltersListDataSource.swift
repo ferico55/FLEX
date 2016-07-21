@@ -92,7 +92,7 @@ class FiltersListDataSource:  NSObject, UITableViewDelegate, UITableViewDataSour
             (cell as! FilterTableViewCell).label.text =  item.name
             (cell as! FilterTableViewCell).disableSelected = false
             (cell as! FilterTableViewCell).setPading(10)
-            for (index, selected) in selectedObjects.enumerate() {
+            for selected in selectedObjects {
                 if selected == item {
                     tableView .selectRowAtIndexPath(indexPath, animated: true, scrollPosition: .Bottom)
                 }
@@ -106,7 +106,7 @@ class FiltersListDataSource:  NSObject, UITableViewDelegate, UITableViewDataSour
             cell = TextFieldCell.init(style: .Default, reuseIdentifier: "cellTextField")
             (cell as! TextFieldCell).titleLabel.text = item.name
             
-            for (index, selected) in selectedObjects.enumerate() {
+            for selected in selectedObjects {
                 if selected.key == item.key {
                     
                     if Int(selected.value) == 0 {
@@ -247,7 +247,7 @@ class FiltersListDataSource:  NSObject, UITableViewDelegate, UITableViewDataSour
         
         let newString = (textField.text! as NSString).stringByReplacingCharactersInRange(range, withString: string)
         
-        var item : ListOption = self.item(textField.tag)
+        let item : ListOption = self.item(textField.tag)
         
         let selectedObject = item.copy() as! ListOption
         selectedObject.value = "\(newString)"

@@ -8,6 +8,23 @@
 
 #import "FavoritedShop.h"
 
-@implementation FavoritedShop : NSObject 
+@implementation FavoritedShop : NSObject
+
++(NSDictionary *)attributeMappingDictionary
+{
+    NSArray *keys = @[@"status",
+                      @"server_process_time"];
+    return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
+}
+
++(RKObjectMapping *) mapping {
+    // setup object mappings
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+    
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data" toKeyPath:@"data" withMapping:[FavoritedShopResult mapping]]];
+    
+    return mapping;
+}
 
 @end

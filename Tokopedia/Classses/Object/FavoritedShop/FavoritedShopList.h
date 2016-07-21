@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface FavoritedShopList : NSObject
+@interface FavoritedShopList : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *shop_image;
 @property (nonatomic, strong) NSString *shop_location;

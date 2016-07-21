@@ -12,7 +12,7 @@ target "Tokopedia" do
     pod 'GoogleMaps'
     pod 'Reveal-iOS-SDK', :configurations => ['Debug']
     pod 'Rollout.io', '~> 1.0.0'
-    pod 'AppsFlyer-SDK', '4.3.7'
+    pod 'AppsFlyerFramework'
     pod 'BlocksKit', '~> 2.2.5'
     pod 'Tweaks', '~> 2.0.0'
     pod 'UITableView+FDTemplateLayoutCell', '~> 1.4'

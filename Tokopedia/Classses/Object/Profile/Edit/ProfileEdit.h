@@ -10,7 +10,7 @@
 
 #import "ProfileEditResult.h"
 
-@interface ProfileEdit : NSObject
+@interface ProfileEdit : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSArray *message_error;
 @property (nonatomic, strong) NSString *status;

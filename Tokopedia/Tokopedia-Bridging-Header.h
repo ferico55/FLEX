@@ -63,3 +63,5 @@
 #import "GAITrackedViewController.h"
 #import "LoginViewController.h"
 #import "UIAlertView+BlocksKit.h"
+
+#import "ShopSettings.h"

@@ -9,7 +9,7 @@
 import UIKit
 
 @objc(ReportProductViewController)
-class ReportProductViewController: UIViewController, UITextViewDelegate, LoginViewDelegate{
+class ReportProductViewController: UIViewController, UITextViewDelegate{
     
     var productId: String!
 
@@ -38,7 +38,6 @@ class ReportProductViewController: UIViewController, UITextViewDelegate, LoginVi
         generateKeyboardNotification()
         setupHiddenObject()
         generateSubmitBarButtonItem()
-        setupDownPickerLayout()
         if userManager.isLogin {
             getReportTypeFromAPI()
         }
@@ -66,6 +65,7 @@ class ReportProductViewController: UIViewController, UITextViewDelegate, LoginVi
         }
         self.navigationController?.pushViewController(webViewVC, animated: true)
     }
+    
     // MARK: KeyboardNotification
     
     func generateKeyboardNotification() {
@@ -81,30 +81,6 @@ class ReportProductViewController: UIViewController, UITextViewDelegate, LoginVi
     
     func keyboardWillHide(notification: NSNotification) {
         scrollView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0)
-    }
-    
-    // MARK: Keyboard Functionality 
-    
-    func addDoneButtonOnKeyboard()
-    {
-        let doneToolbar: UIToolbar = UIToolbar(frame: CGRectMake(0, 0, 320, 50))
-        doneToolbar.barStyle = UIBarStyle.BlackTranslucent
-        
-        let flexSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
-        let done: UIBarButtonItem = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: #selector(doneButtonAction))
-        
-        var items: [UIBarButtonItem] = []
-        items.append(flexSpace)
-        items.append(done)
-        
-        doneToolbar.items = items
-        doneToolbar.sizeToFit()
-        
-        self.deskripsiTextView.inputAccessoryView = doneToolbar
-    }
-    
-    func doneButtonAction() {
-        self.deskripsiTextView.resignFirstResponder()
     }
     
     // MARK: Layout Setup
@@ -126,23 +102,8 @@ class ReportProductViewController: UIViewController, UITextViewDelegate, LoginVi
     }
     
     func setupHiddenObject() {
-        self.tulisDeskripsiPlaceholderLabel.hidden = true
-        self.laporkanButton.hidden = true
-        self.laporkanButton.cornerRadius = 5
-        self.laporkanButton.borderWidth = 1
-        self.laporkanButton.borderColor = UIColor(red: 255/255, green: 87/255, blue: 34/255, alpha: 1.0)
-        setLinkDescriptionLineSpacing()
         hideDeskripsiForm()
         hideLinkInstruction()
-    }
-    
-    func setLinkDescriptionLineSpacing() {
-        let attrString = NSMutableAttributedString(attributedString: linkInstructionLabel.attributedText!)
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineSpacing = 2
-        attrString.addAttribute(NSParagraphStyleAttributeName, value: paragraphStyle, range: NSMakeRange(0, (linkInstructionLabel.text?.characters.count)!))
-        self.linkInstructionLabel.attributedText = attrString
-
     }
     
     func showDeskripsiForm() {
@@ -165,13 +126,6 @@ class ReportProductViewController: UIViewController, UITextViewDelegate, LoginVi
         self.laporkanButton.hidden = false
     }
     
-    func setupDownPickerLayout() {
-        downPickerTextField.layer.borderWidth = 1
-        downPickerTextField.layer.cornerRadius = 3
-        downPickerTextField.layer.borderColor = UIColor(red: 66/225, green: 181/225, blue: 73/225, alpha: 1.0).CGColor
-        downPickerTextField.textColor = UIColor(red: 66/225, green: 181/225, blue: 73/225, alpha: 1.0)
-    }
-    
     func showOrHidePlaceholder() {
         if self.deskripsiTextView.text == "" && self.deskripsiTextView.hidden == false {
             self.tulisDeskripsiPlaceholderLabel.hidden = false
@@ -180,20 +134,10 @@ class ReportProductViewController: UIViewController, UITextViewDelegate, LoginVi
         }
     }
     
-    func showErrorAlertViewWithIsNeedPopViewController(need: Bool, error: String) {
-        errorAlertView = UIAlertView()
-        errorAlertView?.bk_initWithTitle("Terjadi Kesalahan", message: error)
-        if need == true {
-            errorAlertView?.bk_addButtonWithTitle("Kembali", handler: {
-                [weak self] in
-                if let weakSelf = self {
-                    weakSelf.navigationController?.popViewControllerAnimated(true)
-                }
-            })
-        } else {
-            errorAlertView?.bk_addButtonWithTitle("Kembali", handler: nil)
-        }
-        errorAlertView!.show()
+    func showErrorAlertViewWithIsNeedPopViewController(error: String) {
+        let stickyAlertView = StickyAlertView(errorMessages: [error], delegate: self)
+        stickyAlertView.show()
+        
     }
     
     func showSuccessAlertViewWithIsNeedPopViewController() {
@@ -228,7 +172,7 @@ class ReportProductViewController: UIViewController, UITextViewDelegate, LoginVi
             }) { (error) in
                 dispatch_async(dispatch_get_main_queue(), { [weak self] in
                     if let weakSelf = self {
-                        weakSelf.showErrorAlertViewWithIsNeedPopViewController(true, error: error.localizedDescription)
+                        weakSelf.showErrorAlertViewWithIsNeedPopViewController(error.localizedDescription)
                     }
                 })
         }
@@ -249,14 +193,14 @@ class ReportProductViewController: UIViewController, UITextViewDelegate, LoginVi
                         if reportProductResponse.data.is_success == "1" {
                             weakSelf.showSuccessAlertViewWithIsNeedPopViewController()
                         } else {
-                            weakSelf.showErrorAlertViewWithIsNeedPopViewController(false, error: reportProductResponse.message_error[0])
+                            weakSelf.showErrorAlertViewWithIsNeedPopViewController(reportProductResponse.message_error[0])
                         }
                     }
                 })
             }) { (error) in
                 dispatch_async(dispatch_get_main_queue(), { [weak self] in
                     if let weakSelf = self {
-                        weakSelf.showErrorAlertViewWithIsNeedPopViewController(true, error: error.localizedDescription)
+                        weakSelf.showErrorAlertViewWithIsNeedPopViewController(error.localizedDescription)
                     }
                 })
         }
@@ -311,11 +255,5 @@ class ReportProductViewController: UIViewController, UITextViewDelegate, LoginVi
     
     func textViewDidEndEditing(textView: UITextView) {
         showOrHidePlaceholder()
-    }
-    
-    // MARK: Login View delegate 
-    
-    func redirectViewController(viewController: AnyObject!) {
-        
     }
 }
