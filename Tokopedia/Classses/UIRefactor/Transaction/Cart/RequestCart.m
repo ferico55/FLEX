@@ -159,15 +159,15 @@
          NSDictionary *result = successResult.dictionary;
          TransactionAction *cart = [result objectForKey:@""];
          
-         if (cart.data.parameter != nil && cart.message_error.count == 0) {
+         if (cart.message_error.count > 0 || cart.data.parameter == nil) {
+             [StickyAlertView showErrorMessage:cart.message_error?:@[@"Error"]];
+             error(nil);
+         } else {
              NSArray *successMessages = cart.message_status;
              if (successMessages.count > 0) {
                  [StickyAlertView showSuccessMessage:successMessages];
              }
              success(cart.data);
-         } else {
-             [StickyAlertView showErrorMessage:cart.message_error?:@[@"Error"]];
-             error(nil);
          }
          
      } onFailure:^(NSError *errorResult) {

@@ -17,7 +17,7 @@
 #import "TKPDAlert.h"
 #import "WebViewController.h"
 #import "TPLocalytics.h"
-#import "AppsFlyerTracker.h"
+#import <AppsFlyer/AppsFlyer.h>
 #import "ActivationRequest.h"
 
 @interface CreatePasswordViewController ()
