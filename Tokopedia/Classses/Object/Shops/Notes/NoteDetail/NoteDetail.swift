@@ -27,20 +27,4 @@ class NoteDetail : NSObject, TKPObjectMapping
         
         return mapping
     }
-    
-    
-//    "status": "OK",
-//    "config": null,
-//    "server_process_time": "0.016287",
-//    "result": {
-//    "detail": {
-//    "notes_position": "3",
-//    "notes_status": "2",
-//    "notes_create_time": "11 Agustus 2015, 15:58",
-//    "notes_id": "520",
-//    "notes_title": "Kebijakan Pengembalian Produk",
-//    "notes_active": 1,
-//    "notes_update_time": "",
-//    "notes_content": "<p>eqweqweqweqweqweqw</p>"
-//    }
 }

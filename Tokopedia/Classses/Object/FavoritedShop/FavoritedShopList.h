@@ -15,7 +15,4 @@
 @property (nonatomic, strong) NSString *shop_id;
 @property (nonatomic, strong) NSString *shop_name;
 
-+(NSDictionary *) attributeMappingDictionary;
-+(RKObjectMapping *) mapping;
-
 @end
