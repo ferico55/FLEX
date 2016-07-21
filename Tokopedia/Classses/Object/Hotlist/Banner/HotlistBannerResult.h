@@ -10,7 +10,7 @@
 #import "HotlistBannerInfo.h"
 #import "HotlistBannerQuery.h"
 
-@interface HotlistBannerResult : NSObject
+@interface HotlistBannerResult : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) HotlistBannerInfo *info;
 @property (nonatomic, strong) HotlistBannerQuery *query;
