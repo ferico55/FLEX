@@ -13,12 +13,16 @@
 #import "TransactionAction.h"
 #import "TransactionCartEditViewController.h"
 
+#import "Tokopedia-Swift.h"
+
 @interface TransactionCartEditViewController ()<UITextViewDelegate, UITextFieldDelegate, UIScrollViewDelegate>
 {
     NSMutableDictionary *_dataInput;
     NSOperationQueue *_operationQueue;
     UIBarButtonItem *_barButtonSave;
     UITextView *_activeTextView;
+    
+    DelayedActionManager *quantityDelayedActionManager;
     
     CGPoint _keyboardPosition;
     CGSize _keyboardSize;
@@ -65,6 +69,8 @@
     UIEdgeInsets inset = _remarkTextView.textContainerInset;
     inset.left = 15;
     _remarkTextView.textContainerInset = inset;
+    
+    quantityDelayedActionManager = [DelayedActionManager new];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillShow:)
@@ -129,6 +135,19 @@
 
 
 #pragma mark - Methods
+- (IBAction)quantityStepperValueChanged:(UIStepper *)sender {
+    NSInteger qty = [_quantityTextField.text integerValue];
+    qty += (int)sender.value;
+    
+    //set min and max value
+    qty = fmin(999, qty);
+    _quantityTextField.text = [NSString stringWithFormat: @"%d", (int)qty];
+    
+    [self alertAndResetIfQtyTextFieldBelowMin];
+    
+    sender.value = 0;
+}
+
 -(void)setDefaultData:(NSDictionary*)data
 {
     _data = data;
@@ -179,10 +198,6 @@
 
 -(void)textFieldDidEndEditing:(UITextField *)textField
 {
-    ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
-
-    if ([_quantityTextField.text integerValue] < 1)
-        _quantityTextField.text = product.product_min_order;
 }
 
 -(void)textFieldDidBeginEditing:(UITextField *)textField
@@ -197,7 +212,24 @@ replacementString:(NSString*)string
     
     newText = [textField.text stringByReplacingCharactersInRange:range withString:string];
     
+    [quantityDelayedActionManager whenNotCalledFor:2 doAction:^{
+        [self alertAndResetIfQtyTextFieldBelowMin];
+    }];
+    
     return [newText isNumber] && [newText intValue] < 1000;
+}
+
+-(void)alertAndResetIfQtyTextFieldBelowMin
+{
+    ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
+    
+    if ([_quantityTextField.text integerValue] <[product.product_min_order integerValue]) {
+        _quantityTextField.text = product.product_min_order;
+        
+        NSArray *errorMessages = @[[NSString stringWithFormat: @"%@%@%@", @"Minimum pembelian adalah ", product.product_min_order, @" barang"]];
+        StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessages delegate:self];
+        [alert show];
+    }
 }
 
 #pragma mark - TextView Delegate

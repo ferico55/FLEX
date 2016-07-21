@@ -11,7 +11,6 @@
 #import "MyShopNoteDetailViewController.h"
 #import "GeneralList1GestureCell.h"
 
-#import "Notes.h"
 #import "GeneralAction.h"
 #import "InboxTalk.h"
 
@@ -27,6 +26,8 @@
 #import "ShopPageRequest.h"
 
 #import "NoResultReusableView.h"
+
+#import "Tokopedia-Swift.h"
 
 @interface ShopNotesPageViewController ()
 <

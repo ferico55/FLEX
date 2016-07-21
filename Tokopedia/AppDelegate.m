@@ -91,7 +91,6 @@
         [self configureAppsflyer];
         [self configureAppIndexing];
         [self configureGoogleAnalytics];
-        [self registerNotificationSettingsForApplication:application];
         
         [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
 
@@ -199,19 +198,6 @@
     if (permission.authorizationStatus == JLPermissionAuthorized) {
         [permission authorize:nil];
     }
-}
-
-- (void)registerNotificationSettingsForApplication:(UIApplication *)application {
-    UIUserNotificationType userNotificationTypes = (UIUserNotificationTypeAlert |
-                                                    UIUserNotificationTypeBadge |
-                                                    UIUserNotificationTypeSound);
-    UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:userNotificationTypes
-                                                                             categories:nil];
-    [application registerUserNotificationSettings:settings];
-    [application registerForRemoteNotifications];
-    
-    [application setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
-    application.applicationIconBadgeNumber = 0;
 }
 
 - (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken {

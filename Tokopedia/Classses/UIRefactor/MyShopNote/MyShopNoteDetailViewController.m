@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 
-#import "NoteDetail.h"
 #import "ShopSettings.h"
 #import "detail.h"
 #import "MyShopNoteDetailViewController.h"
@@ -14,6 +13,8 @@
 #import "TKPDTextView.h"
 #import "UserAuthentificationManager.h"
 #import "DetailShopResult.h"
+
+#import "Tokopedia-Swift.h"
 
 #pragma mark - MyShopNoteDetailViewController
 
@@ -58,14 +59,6 @@
 @property (weak, nonatomic) IBOutlet UITextField *titleNoteTextField;
 @property (weak, nonatomic) IBOutlet UILabel *timeNoteLabel;
 @property (weak, nonatomic) IBOutlet UITextView *contentNoteTextView;
-
--(void)cancelActionNote;
--(void)configureRestKitActionNote;
--(void)requestActionNote:(id)object;
--(void)requestSuccessActionNote:(id)object withOperation:(RKObjectRequestOperation*)operation;
--(void)requestFailureActionNote:(id)object;
--(void)requestProcessActionNote:(id)object;
--(void)requestTimeoutActionNote;
 
 @end
 
@@ -250,14 +243,12 @@
                 
                 if (_type == NOTES_RETURNABLE_PRODUCT &&
                     content && ![content isEqualToString:@""]) {
-                    [self configureRestKitActionNote];
-                    [self requestActionNote:_datainput];
+                    [self UpdateNote];
                 }
                 else if (notetitle && ![notetitle isEqualToString:@""] &&
                     content && ![content isEqualToString:@""])
                 {
-                    [self configureRestKitActionNote];
-                    [self requestActionNote:_datainput];
+                    [self UpdateNote];
                 }
                 else
                 {
@@ -275,7 +266,7 @@
                 }
                 break;
             }
-            case 12: {
+            case 12: {  
                 //edit
                 MyShopNoteDetailViewController *vc = [MyShopNoteDetailViewController new];
                 vc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
@@ -301,461 +292,206 @@
         }
     }
 }
+
 - (IBAction)gesture:(id)sender {
     [_activetextview resignFirstResponder];
 }
 
 #pragma mark - Request and Mapping
--(void)cancel
+-(void)showShopNoteDetail
 {
-    [_request cancel];
-    _request = nil;
-    [_objectmanager.operationQueue cancelAllOperations];
-    _objectmanager = nil;
+    MyShopNoteRequest *requestManager = [MyShopNoteRequest new];
+    [requestManager requestNoteDetail:@([[_auth objectForKey:kTKPD_SHOPIDKEY]integerValue] ?:[[_data objectForKey:kTKPD_SHOPIDKEY]integerValue])
+                               noteId:@([[_data objectForKey:kTKPDNOTES_APINOTEIDKEY]integerValue])
+                                terms:(_type == NOTES_RETURNABLE_PRODUCT)? @1:@0
+                            onSuccess:^(NoteDetail *noteDetail, RKObjectRequestOperation *operation) {
+                                [_cacheconnection connection:operation.HTTPRequestOperation.request didReceiveResponse:operation.HTTPRequestOperation.response];
+                                [_cachecontroller connectionDidFinish:_cacheconnection];
+                                [operation.HTTPRequestOperation.responseData writeToFile:_cachepath atomically:YES];
+                                
+                                [self actionUponSuccessfulRequestNoteDetail:noteDetail];
+                            }
+                            onFailure:^(NSError * error) {
+                                if ([error code] == NSURLErrorCancelled) {
+                                    if (_requestcount<kTKPDREQUESTCOUNTMAX) {
+                                        NSLog(@" ==== REQUESTCOUNT %zd =====",_requestcount);
+                                    }
+                                }
+                                else
+                                {
+                                    NSLog(@" ==== Failure on requesting note detail ====");
+                                }
+                            }];
 }
 
-- (void)configureRestKit
+-(void)actionUponSuccessfulRequestNoteDetail:(NoteDetail *)noteDetail
 {
-    // initialize RestKit
-    _objectmanager =  [RKObjectManager sharedClient];
+    _note = noteDetail;
     
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[NoteDetail class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
+    if ([_note.result.detail.notes_update_time isEqualToString:@""]|| _note.result.detail.notes_update_time == nil) {
+        _note.result.detail.notes_update_time = _note.result.detail.notes_create_time;
+    }
+    _barbuttonedit.enabled = YES;
     
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[NoteDetailResult class]];
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    style.lineSpacing = 6.0;
     
-    RKObjectMapping *detailMapping = [RKObjectMapping mappingForClass:[NoteDetails class]];
-    [detailMapping addAttributeMappingsFromDictionary:@{kTKPDNOTE_APINOTESTITLEKEY:kTKPDNOTE_APINOTESTITLEKEY,
-                                                        kTKPDNOTE_APINOTESUPDATETIMEKEY:kTKPDNOTE_APINOTESUPDATETIMEKEY,
-                                                        kTKPDNOTE_APINOTESCONTENTKEY:kTKPDNOTE_APINOTESCONTENTKEY,
-                                                        NOTE_CREATE_TIME:NOTE_CREATE_TIME
-                                                        }];
+    NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
     
-    //add relationship mapping
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                  toKeyPath:kTKPD_APIRESULTKEY
-                                                                                withMapping:resultMapping]];
+    UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
+    [attributes setObject:font forKey:NSFontAttributeName];
     
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIDETAILKEY
-                                                                                  toKeyPath:kTKPDDETAIL_APIDETAILKEY
-                                                                                withMapping:detailMapping]];
+    NSString *contentNote = [_note.result.detail.notes_content isEqualToString:@"0"]?@"":_note.result.detail.notes_content;
+    contentNote = [contentNote stringByReplacingOccurrencesOfString:@"\n" withString:@""];
     
-    // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                                  method:RKRequestMethodPOST
-                                                                                             pathPattern:kTKPDDETAILNOTES_APIPATH
-                                                                                                 keyPath:@""
-                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
+    if ([contentNote isEqualToString:@""] && _type == NOTES_RETURNABLE_PRODUCT) {
+        _isNewNoteReturnableProduct = YES;
+    }
     
-    [_objectmanager addResponseDescriptor:responseDescriptorStatus];
-}
-
-- (void)request
-{
-    if (_request.isExecuting) return;
+    NSData *data = [contentNote dataUsingEncoding:NSUnicodeStringEncoding];
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithData:data
+                                                                                          options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType }
+                                                                               documentAttributes:nil
+                                                                                            error:nil];
+    NSRange range = (NSRange){0,[attributedString length]};
+    [attributedString enumerateAttribute:NSFontAttributeName
+                                 inRange:range options:NSAttributedStringEnumerationLongestEffectiveRangeNotRequired
+                              usingBlock:^(id value, NSRange range, BOOL *stop) {
+                                  [attributedString addAttribute:NSFontAttributeName value:font range:range];
+                                  [attributedString addAttribute:NSParagraphStyleAttributeName value:style range:range];
+                              }];
+    _contentNoteTextView.attributedText = attributedString;
     
-    _requestcount++;
-    
-    NSInteger shopID = [[_auth objectForKey:kTKPD_SHOPIDKEY]integerValue] ?:[[_data objectForKey:kTKPD_SHOPIDKEY] integerValue];
-    NSInteger noteID = [[_data objectForKey:kTKPDNOTES_APINOTEIDKEY]integerValue];
-    NSInteger terms = (_type == NOTES_RETURNABLE_PRODUCT)?1:0;
-    
-	NSDictionary* param = @{
-                            kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETNOTESDETAILKEY,
-                            kTKPDDETAIL_APISHOPIDKEY : @(shopID),
-                            kTKPDNOTES_APINOTEIDKEY : @(noteID),
-                            NOTES_TERMS_FLAG_KEY : @(terms)
-                            };
-    NSTimer *timer;
-    
-    [_cachecontroller getFileModificationDate];
-
-    _timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
-	
-    if (_timeinterval > _cachecontroller.URLCacheInterval) {
+    if (_type == NOTES_RETURNABLE_PRODUCT)
+    {
+        _titleNoteTextField.enabled = NO;
+        _barbuttonedit.enabled = YES;
         
-        _request = [_objectmanager appropriateObjectRequestOperationWithObject:self
-                                                                        method:RKRequestMethodPOST
-                                                                          path:kTKPDDETAILNOTES_APIPATH
-                                                                    parameters:[param encrypt]];
+        NSDate *date = [NSDate date];
+        NSDateComponents *components = [[NSCalendar currentCalendar] components:NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:date];
+        NSInteger year = [components year];
+        NSInteger day = [components day];
         
-        [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-            [timer invalidate];
-            [self requestsuccess:mappingResult withOperation:operation];
-        } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-            [timer invalidate];
-            [self requestfailure:error];
-        }];
-        
-        [_operationQueue addOperation:_request];
-        
-        timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
-                                                 target:self
-                                               selector:@selector(requesttimeout)
-                                               userInfo:nil
-                                                repeats:NO];
-        
-        [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-    
-    }else{
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        dateFormatter.dateFormat = @"yyyyMMdd";
+        [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"id"]];
+        
+        dateFormatter.dateFormat=@"MMMM";
+        NSString * monthString = [[dateFormatter stringFromDate:date] capitalizedString];
+        NSLog(@"month: %@", monthString);
         [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-        NSLog(@"Updated: %@",[dateFormatter stringFromDate:_cachecontroller.fileDate]);
-        NSLog(@"cache and updated in last 24 hours.");
-        [self requestfailure:nil];
-    }
-}
-
--(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation *)operation
-{
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id stats = [result objectForKey:@""];
-    _note = stats;
-    BOOL status = [_note.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if (status) {
-        [_cacheconnection connection:operation.HTTPRequestOperation.request didReceiveResponse:operation.HTTPRequestOperation.response];
-        [_cachecontroller connectionDidFinish:_cacheconnection];
-        //save response data
-        [operation.HTTPRequestOperation.responseData writeToFile:_cachepath atomically:YES];
+        NSString *currentTime = [dateFormatter stringFromDate:date];
         
-        [self requestprocess:object];
-    }
-}
-
--(void)requestfailure:(id)object
-{
-    if (_timeinterval > _cachecontroller.URLCacheInterval) {
-        [self requestprocess:object];
-    }
-    else{
-        NSError* error;
-        NSData *data = [NSData dataWithContentsOfFile:_cachepath];
-        id parsedData = [RKMIMETypeSerialization objectFromData:data MIMEType:RKMIMETypeJSON error:&error];
-        if (parsedData == nil && error) {
-            NSLog(@"parser error");
-        }
-        
-        NSMutableDictionary *mappingsDictionary = [[NSMutableDictionary alloc] init];
-        for (RKResponseDescriptor *descriptor in _objectmanager.responseDescriptors) {
-            [mappingsDictionary setObject:descriptor.mapping forKey:descriptor.keyPath];
-        }
-        
-        RKMapperOperation *mapper = [[RKMapperOperation alloc] initWithRepresentation:parsedData mappingsDictionary:mappingsDictionary];
-        NSError *mappingError = nil;
-        BOOL isMapped = [mapper execute:&mappingError];
-        if (isMapped && !mappingError) {
-            RKMappingResult *mappingresult = [mapper mappingResult];
-            NSDictionary *result = mappingresult.dictionary;
-            id stats = [result objectForKey:@""];
-            _note = stats;
-            BOOL status = [_note.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-            
-            if (status) {
-                [self requestprocess:mappingresult];
-            }
-        }
-    }
-}
-
--(void)requestprocess:(id)object
-{
-    if (object) {
-        if ([object isKindOfClass:[RKMappingResult class]]) {
-            NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            
-            id stats = [result objectForKey:@""];
-            
-            _note = stats;
-            BOOL status = [_note.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-            
-            if (status) {
-                if ([_note.result.detail.notes_update_time isEqualToString:@""]|| _note.result.detail.notes_update_time == nil) {
-                    _note.result.detail.notes_update_time = _note.result.detail.notes_create_time;
-                }
-                _barbuttonedit.enabled = YES;
-                
-                NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-                style.lineSpacing = 6.0;
-                
-
-                NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
-                
-                UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
-                [attributes setObject:font forKey:NSFontAttributeName];
-                
-                NSString *contentNote = [_note.result.detail.notes_content isEqualToString:@"0"]?@"":_note.result.detail.notes_content;
-                contentNote = [contentNote stringByReplacingOccurrencesOfString:@"\n" withString:@"<br/>"];
-                
-                if ([contentNote isEqualToString:@""] && _type == NOTES_RETURNABLE_PRODUCT) {
-                    _isNewNoteReturnableProduct = YES;
-                }
-                
-                NSData *data = [contentNote dataUsingEncoding:NSUnicodeStringEncoding];
-                NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithData:data
-                                                                                                      options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType }
-                                                                                           documentAttributes:nil
-                                                                                                        error:nil];
-                NSRange range = (NSRange){0,[attributedString length]};
-                [attributedString enumerateAttribute:NSFontAttributeName
-                                             inRange:range options:NSAttributedStringEnumerationLongestEffectiveRangeNotRequired
-                                          usingBlock:^(id value, NSRange range, BOOL *stop) {
-                    [attributedString addAttribute:NSFontAttributeName value:font range:range];
-                    [attributedString addAttribute:NSParagraphStyleAttributeName value:style range:range];
-                }];
-                _contentNoteTextView.attributedText = attributedString;
-                
-                if (_type == NOTES_RETURNABLE_PRODUCT)
-                {
-                    _titleNoteTextField.enabled = NO;
-                    _barbuttonedit.enabled = YES;
-                    
-                    NSDate *date = [NSDate date];
-                    NSDateComponents *components = [[NSCalendar currentCalendar] components:NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:date];
-                    NSInteger year = [components year];
-                    NSInteger day = [components day];
-                    
-                    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-                    dateFormatter.dateFormat = @"yyyyMMdd";
-                    [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"id"]];
-                    
-                    dateFormatter.dateFormat=@"MMMM";
-                    NSString * monthString = [[dateFormatter stringFromDate:date] capitalizedString];
-                    NSLog(@"month: %@", monthString);
-                    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-                    NSString *currentTime = [dateFormatter stringFromDate:date];
-                    
-                    _timeNoteLabel.text = [NSString stringWithFormat:@"%zd %@ %zd, %@",
-                                           day, monthString, year, currentTime];
-                    [_datainput setObject:_timeNoteLabel.text forKey:kTKPDNOTE_APINOTESUPDATETIMEKEY];
-                }
-                else
-                {
-                    if (_type == kTKPDSETTINGEDIT_DATATYPEDETAILVIEWKEY) {
-                        _timeNoteLabel.text = [_note.result.detail.notes_update_time isEqual:@"0"]?@"":_note.result.detail.notes_update_time;
-                        _timeNoteLabel.hidden = NO;
-                    }
-                    _titleNoteTextField.text = [_note.result.detail.notes_title isEqual:@"0"]?@"":_note.result.detail.notes_title;
-                }
-
-                if (_titleNoteTextField.text.length > 0 && _contentNoteTextView.text.length > 0) {
-                    _barbuttonedit.enabled = YES;
-                    _barbuttonedit.tintColor = [UIColor whiteColor];
-                }
-            }
-        } else {
-            [self cancel];
-            NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
-            if ([(NSError*)object code] == NSURLErrorCancelled) {
-                if (_requestcount<kTKPDREQUESTCOUNTMAX) {
-                    NSLog(@" ==== REQUESTCOUNT %zd =====",_requestcount);
-                }
-            }
-        }
-    }
-}
-
--(void)requesttimeout
-{
-    [self cancel];
-}
-
-#pragma mark - Request Action Note
--(void)cancelActionNote
-{
-    [_requestActionNote cancel];
-    _requestActionNote = nil;
-    [_objectmanagerActionNote.operationQueue cancelAllOperations];
-    _objectmanagerActionNote = nil;
-}
-
--(void)configureRestKitActionNote
-{
-    _objectmanagerActionNote = [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ShopSettings class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ShopSettingsResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{kTKPDDETAIL_APIISSUCCESSKEY:kTKPDDETAIL_APIISSUCCESSKEY}];
-    
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                  toKeyPath:kTKPD_APIRESULTKEY
-                                                                                withMapping:resultMapping]];
-    
-    // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                            method:RKRequestMethodPOST
-                                                                                       pathPattern:kTKPDDETAILSHOPNOTEACTION_APIPATH
-                                                                                           keyPath:@""
-                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectmanagerActionNote addResponseDescriptor:responseDescriptor];
-    
-}
-
--(void)requestActionNote:(id)object
-{
-    if (_requestActionNote.isExecuting) return;
-    
-    NSTimer *timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
-                                                              target:self
-                                                            selector:@selector(requestTimeoutActionNote)
-                                                            userInfo:nil
-                                                             repeats:NO];
-    
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-    
-    NSDictionary *userinfo = (NSDictionary*)object;
-    
-    NSString *action;
-    if (_type == kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY || _isNewNoteReturnableProduct) {
-        action = kTKPDDETAIL_APIADDNOTESDETAILKEY;
+        _timeNoteLabel.text = [NSString stringWithFormat:@"%zd %@ %zd, %@",
+                               day, monthString, year, currentTime];
+        [_datainput setObject:_timeNoteLabel.text forKey:kTKPDNOTE_APINOTESUPDATETIMEKEY];
     }
     else
     {
-        action =kTKPDDETAIL_APIEDITNOTESDETAILKEY;
+        if (_type == kTKPDSETTINGEDIT_DATATYPEDETAILVIEWKEY) {
+            _timeNoteLabel.text = [_note.result.detail.notes_update_time isEqual:@"0"]?@"":_note.result.detail.notes_update_time;
+            _timeNoteLabel.hidden = NO;
+        }
+        _titleNoteTextField.text = [_note.result.detail.notes_title isEqual:@"0"]?@"":_note.result.detail.notes_title;
     }
     
-    NSString *noteID = [_data objectForKey:kTKPDNOTES_APINOTEIDKEY];
-    NSString *noteTitle = [userinfo objectForKey:kTKPDNOTE_APINOTESTITLEKEY]?:_note.result.detail.notes_title?:@"";
+    if (_titleNoteTextField.text.length > 0 && _contentNoteTextView.text.length > 0) {
+        _barbuttonedit.enabled = YES;
+        _barbuttonedit.tintColor = [UIColor whiteColor];
+    }
+}
+
+#pragma mark - Request Action Note
+-(void)UpdateNote
+{
+    MyShopNoteRequest *requestManager = [MyShopNoteRequest new];
+    
+    NSString *noteTitle = [_datainput objectForKey:kTKPDNOTE_APINOTESTITLEKEY]?:_note.result.detail.notes_title?:@"";
     if (_type == NOTES_RETURNABLE_PRODUCT) {
         noteTitle = @"Kebijakan Pengembalian Produk";
     }
+    NSString *noteContent = [_datainput objectForKey:kTKPDNOTE_APINOTESCONTENTKEY]?:[NSString convertHTML:_note.result.detail.notes_content]?:@"";
+    NSString *terms = (_type == NOTES_RETURNABLE_PRODUCT)?@"1":@"0";
     
-    
-    NSString *noteContent = [userinfo objectForKey:kTKPDNOTE_APINOTESCONTENTKEY]?:[NSString convertHTML:_note.result.detail.notes_content]?:@"";
-     NSInteger terms = (_type == NOTES_RETURNABLE_PRODUCT)?1:0;
-    
-    NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY:action,
-                            kTKPDNOTES_APINOTEIDKEY : noteID?:@"",
-                            kTKPDNOTES_APINOTETITLEKEY : noteTitle,
-                            kTKPDNOTES_APINOTECONTENTKEY : noteContent,
-                            NOTES_TERMS_FLAG_KEY : @(terms),
-                            };
-    _requestcount ++;
-    
-    _barbuttonedit.enabled = NO;
-    
-    _requestActionNote = [_objectmanagerActionNote appropriateObjectRequestOperationWithObject:self
-                                                                                        method:RKRequestMethodPOST
-                                                                                          path:kTKPDDETAILSHOPNOTEACTION_APIPATH
-                                                                                    parameters:[param encrypt]];
-    
-    [_requestActionNote setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestSuccessActionNote:mappingResult withOperation:operation];
-        [timer invalidate];
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [self requestFailureActionNote:error];
-        [timer invalidate];
-    }];
-    
-    [_operationQueue addOperation:_requestActionNote];
-    
-}
-
--(void)requestSuccessActionNote:(id)object withOperation:(RKObjectRequestOperation *)operation
-{
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id stat = [result objectForKey:@""];
-    ShopSettings *setting = stat;
-    BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if (status) {
-        [self requestProcessActionNote:object];
+    if (_type == kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY || _isNewNoteReturnableProduct) {
+        //add
+        [requestManager requestAddNoteWithTitle:noteTitle
+                                    noteContent:noteContent
+                                          terms:terms
+                                      onSuccess:^(NoteAction * noteAction) {
+                                          [self actionUponSuccessfulUpdateNote: noteAction];
+                                      }
+                                      onFailure:^(NSError * error) {
+                                          [self actionUponFailUpdateNote:error];
+                                      }];
+    }
+    else
+    {
+        //edit
+        NSString *noteId = [_data objectForKey:kTKPDNOTES_APINOTEIDKEY];
+        
+        [requestManager requestEditNote:noteId
+                              noteTitle:noteTitle
+                            noteContent:noteContent
+                                  terms:terms
+                              onSuccess:^(NoteAction * noteAction) {
+                                    [self actionUponSuccessfulUpdateNote: noteAction];
+                              }
+                              onFailure:^(NSError * error) {
+                                    [self actionUponFailUpdateNote:error];
+                              }];
     }
 }
 
--(void)requestFailureActionNote:(id)object
+-(void)actionUponSuccessfulUpdateNote: (NoteAction *)noteAction
 {
-    [self requestProcessActionNote:object];
-}
-
--(void)requestProcessActionNote:(id)object
-{
-    if (object) {
-        if ([object isKindOfClass:[RKMappingResult class]]) {
-            NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            id stat = [result objectForKey:@""];
-            ShopSettings *setting = stat;
-            BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-            
-            if (status) {
-                if (setting.result.is_success == 1) {
-                    
-                    NSArray *defaultMessage;
-                    switch (_type) {
-                        case kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY:
-                            defaultMessage = @[kTKPDNOTE_ADD_NOTE_SUCCESS];
-                            break;
-                        case kTKPDSETTINGEDIT_DATATYPEEDITVIEWKEY:
-                            defaultMessage = @[kTKPDNOTE_EDIT_NOTE_SUCCESS];
-                            break;
-                        case kTKPDSETTINGEDIT_DATATYPEEDITWITHREQUESTVIEWKEY:
-                            defaultMessage = @[kTKPDNOTE_EDIT_NOTE_SUCCESS];
-                            break;
-                        case NOTES_RETURNABLE_PRODUCT:
-                        {
-                            TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
-                            [secureStorage setKeychainWithValue:@"100" withKey:@"shop_has_terms"];
-                            [[NSNotificationCenter defaultCenter] postNotificationName:DID_UPDATE_SHOP_HAS_TERM_NOTIFICATION_NAME object:nil userInfo:nil];
-                        }
-                            break;
-                        default:
-                            defaultMessage = @[@"Sukses"];
-                            break;
-                    }
-
-                    NSArray *successMessages = setting.message_status?:defaultMessage;
-                    StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:self];
-                    [alert show];
-                
-                    if (_type == kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY) {
-                        if ([_delegate respondsToSelector:@selector(successCreateNewNote)]) {
-                            [_delegate successCreateNewNote];
-                        }
-                    } else {
-                        if ([_delegate respondsToSelector:@selector(successEditNote:)]) {
-                            _noteList.note_title = _titleNoteTextField.text;
-                            _noteList.note_status = _contentNoteTextView.text;
-                            [_delegate successEditNote:_noteList];
-                        }
-                    }
-                    
-                    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-                }
+    if ([noteAction.result.is_success isEqual: @"1"]) {
+        
+        NSArray *defaultMessage;
+        switch (_type) {
+            case kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY:
+                defaultMessage = @[kTKPDNOTE_ADD_NOTE_SUCCESS];
+                break;
+            case kTKPDSETTINGEDIT_DATATYPEEDITVIEWKEY:
+                defaultMessage = @[kTKPDNOTE_EDIT_NOTE_SUCCESS];
+                break;
+            case kTKPDSETTINGEDIT_DATATYPEEDITWITHREQUESTVIEWKEY:
+                defaultMessage = @[kTKPDNOTE_EDIT_NOTE_SUCCESS];
+                break;
+            case NOTES_RETURNABLE_PRODUCT:
+            {
+                TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+                [secureStorage setKeychainWithValue:@"100" withKey:@"shop_has_terms"];
+                [[NSNotificationCenter defaultCenter] postNotificationName:DID_UPDATE_SHOP_HAS_TERM_NOTIFICATION_NAME object:nil userInfo:nil];
             }
-            if(setting.message_error) {
-                NSArray *errorMessages = setting.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
-                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
-                [alert show];
+                break;
+            default:
+                defaultMessage = @[@"Sukses"];
+                break;
+        }
+        
+        NSArray *successMessages = noteAction.message_status?:defaultMessage;
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:self];
+        [alert show];
+        
+        if (_type == kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY) {
+            if ([_delegate respondsToSelector:@selector(successCreateNewNote)]) {
+                [_delegate successCreateNewNote];
+            }
+        } else {
+            if ([_delegate respondsToSelector:@selector(successEditNote:)]) {
+                _noteList.note_title = _titleNoteTextField.text;
+                _noteList.note_status = _contentNoteTextView.text;
+                [_delegate successEditNote:_noteList];
             }
         }
-        else{
-            
-            [self cancelActionNote];
-            NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
-            if ([(NSError*)object code] == NSURLErrorCancelled) {
-                if (_requestcount<kTKPDREQUESTCOUNTMAX) {
-                    NSLog(@" ==== REQUESTCOUNT %zd =====",_requestcount);
-                    //TODO:: Reload handler
-                }
-            }
-        }
+        
+        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
     }
 }
 
--(void)requestTimeoutActionNote
+-(void)actionUponFailUpdateNote: (NSError *)error
 {
-    [self cancelActionNote];
 }
 
 #pragma mark - Text Field delegate
@@ -888,14 +624,13 @@
                 }];
                 _contentNoteTextView.attributedText = attributedString;
                 
-                [self configureRestKit];
-                [self request];
+                [self showShopNoteDetail];
                 break;
             }
             case kTKPDSETTINGEDIT_DATATYPEEDITWITHREQUESTVIEWKEY: {
                 [_barbuttonedit setEnabled:YES];
-                [self configureRestKit];
-                [self request];
+                
+                [self showShopNoteDetail];
                 break;
             }
             case NOTES_RETURNABLE_PRODUCT:
@@ -907,8 +642,7 @@
                 
                 [self setTimeLabelBecomeCurrentDate];
                 
-                [self configureRestKit];
-                [self request];
+                [self showShopNoteDetail];
                 break;
             }
             default:
@@ -963,8 +697,7 @@
 
 -(void)didEditNote:(NSNotificationCenter*)notification
 {
-    [self configureRestKit];
-    [self request];
+    [self showShopNoteDetail];
 }
 
 #pragma mark - Keyboard notification
@@ -985,12 +718,16 @@
     _note.result.detail.notes_content = noteList.note_status;
     
     self.title = _noteList.note_title;
-
+    
+    //set the UI
     _titleNoteTextField.text = _noteList.note_title;
     [_titleNoteTextField sizeToFit];
     
+    [self setTimeLabelBecomeCurrentDate];
+    
     _contentNoteTextView.text = _noteList.note_status;
     
+    //set delegate
     if ([_delegate respondsToSelector:@selector(successEditNote:)]) {
         [_delegate successEditNote:_noteList];
     }

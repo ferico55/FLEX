@@ -58,3 +58,10 @@
 #import "FilterCategoryViewCell.h"
 #import "TKPObjectMapping.h"
 #import "CardIO.h"
+#import "WebViewController.h"
+#import "Downpicker.h"
+#import "GAITrackedViewController.h"
+#import "LoginViewController.h"
+#import "UIAlertView+BlocksKit.h"
+
+#import "ShopSettings.h"

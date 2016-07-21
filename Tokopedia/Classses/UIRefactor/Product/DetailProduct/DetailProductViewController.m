@@ -20,9 +20,6 @@
 #import "LabelMenu.h"
 #import "AlertPriceNotificationViewController.h"
 #import "PriceAlertViewController.h"
-#import "Notes.h"
-#import "NoteDetails.h"
-#import "NotesResult.h"
 #import "GalleryViewController.h"
 #import "detail.h"
 #import "search.h"
@@ -94,6 +91,8 @@
 #import "PriceAlertRequest.h"
 
 #import "TPLocalytics.h"
+
+#import "Tokopedia-Swift.h"
 
 #pragma mark - CustomButton Expand Desc
 @interface CustomButtonExpandDesc : UIButton
@@ -257,6 +256,8 @@ OtherProductDelegate
 @property (weak, nonatomic) IBOutlet UILabel *otherProductNoDataLabel;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *otherProductsConstraintHeight;
 
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *btnReportLeadingConstraint;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *btnShareHeight;
 -(void)cancel;
 -(void)configureRestKit;
 -(void)loadData;
@@ -276,6 +277,8 @@ OtherProductDelegate
     EtalaseList *selectedEtalase;
     
     PriceAlertRequest *_request;
+    
+    NSString *afterLoginRedirectTo;
 }
 
 @synthesize data = _data;
@@ -411,6 +414,12 @@ OtherProductDelegate
     btnShare.layer.borderColor = [[UIColor colorWithRed:219/255.0f green:219/255.0f blue:219/255.0f alpha:1.0f] CGColor];
     btnShare.layer.masksToBounds = YES;
     
+    //Set corner report button
+    btnReport.layer.cornerRadius = 5.0f;
+    btnReport.layer.borderWidth = 1;
+    btnReport.layer.borderColor = [[UIColor colorWithRed:219/255.0f green:219/255.0f blue:219/255.0f alpha:1.0f] CGColor];
+    btnReport.layer.masksToBounds = YES;
+    
     UITapGestureRecognizer *tapShopGes = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapShop)];
     [_shopClickView addGestureRecognizer:tapShopGes];
     [_shopClickView setUserInteractionEnabled:YES];
@@ -424,6 +433,8 @@ OtherProductDelegate
     self.infoShopView.layer.masksToBounds = YES;
     _constraintHeightBuyButton.constant = 0;
     _constraintHeightDinkButton.constant = 0;
+    
+    afterLoginRedirectTo = @"";
 }
 
 - (void)initNotification {
@@ -952,7 +963,6 @@ OtherProductDelegate
                     
                     [mView addSubview:btnExpand];
                 }
-                
                 [mView addSubview:bt];
                 return mView;
             }
@@ -1173,6 +1183,7 @@ OtherProductDelegate
                     _descriptionHeight = descriptionCell.descriptionlabel.frame.size.height;
                 }
             }
+            
             cell = descriptionCell;
             return cell;
         }
@@ -1581,21 +1592,21 @@ OtherProductDelegate
         RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[NotesResult class]];
         RKObjectMapping *noteDetailMapping = [RKObjectMapping mappingForClass:[NoteDetails class]];
         [noteDetailMapping addAttributeMappingsFromDictionary:@{
-                                                                CNotesPosition:CNotesPosition,
-                                                                CNotesStatus:CNotesStatus,
-                                                                CNotesCreateTime:CNotesCreateTime,
-                                                                CNotesID:CNotesID,
-                                                                CNotesTitle:CNotesTitle,
-                                                                CNotesActive:CNotesActive,
-                                                                CNotesUpdateTime:CNotesUpdateTime,
-                                                                CNotesContent:CNotesContent
+                                                                @"notes_position" : @"notes_position",
+                                                                @"notes_status" : @"notes_status",
+                                                                @"notes_create_time" : @"notes_create_time",
+                                                                @"notes_id" : @"notes_id",
+                                                                @"notes_title" : @"notes_title",
+                                                                @"notes_active" : @"notes_active",
+                                                                @"notes_update_time" : @"notes_update_time",
+                                                                @"notes_content" : @"notes_content"
                                                                 }];
         
         //Relation
         RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
         [statusMapping addPropertyMapping:resulRel];
         
-        RKRelationshipMapping *detailRel = [RKRelationshipMapping relationshipMappingFromKeyPath:CDetail toKeyPath:CDetail withMapping:noteDetailMapping];
+        RKRelationshipMapping *detailRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"detail" toKeyPath:@"detail" withMapping:noteDetailMapping];
         [resultMapping addPropertyMapping:detailRel];
         
         RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:[self getPath:tag] keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
@@ -2090,6 +2101,7 @@ OtherProductDelegate
                 _header.frame = CGRectMake(0, 0, _table.bounds.size.width, 520);
             }
             [viewContentWarehouse setHidden:NO];
+            [self hideReportButton];
             _table.tableHeaderView = _header;
         }
         else {
@@ -2104,6 +2116,10 @@ OtherProductDelegate
         
         [self requestprocess:object];
     }
+}
+
+- (void) hideReportButton{
+    _btnReportLeadingConstraint.constant = -(_btnShareHeight.constant) - 2 ;
 }
 
 - (void)unsetWarehouse {
@@ -2611,6 +2627,26 @@ OtherProductDelegate
         [self.navigationController presentViewController:navigationController animated:YES completion:nil];
     }
 }
+- (IBAction)actionReport:(UIButton *)sender {
+    if ([_userManager isLogin]) {
+        [self goToReportProductViewController];
+    } else {
+        LoginViewController *loginVC = [LoginViewController new];
+        loginVC.delegate = self;
+        loginVC.redirectViewController = self;
+        loginVC.isPresentedViewController = YES;
+        afterLoginRedirectTo = @"ReportProductViewController";
+        UINavigationController *loginNavController = [[UINavigationController alloc] initWithRootViewController:loginVC];
+        loginNavController.navigationBar.translucent = NO;
+        [self.navigationController presentViewController:loginNavController animated:YES completion:nil];
+    }
+}
+
+- (void) goToReportProductViewController {
+    ReportProductViewController *reportProductVC = [ReportProductViewController new];
+    reportProductVC.productId = [_loadedData objectForKey:@"product_id"];
+    [self.navigationController pushViewController:reportProductVC animated:YES];
+}
 
 - (UIBarButtonItem *)createBarButton:(CGRect)frame withImage:(UIImage*)image withAction:(SEL)action
 {
@@ -3052,7 +3088,9 @@ OtherProductDelegate
 
 #pragma mark - LoginView Delegate
 - (void)redirectViewController:(id)viewController{
-    
+    if ([afterLoginRedirectTo isEqualToString:@"ReportProductViewController"]) {
+        [self goToReportProductViewController];
+    }
 }
 
 - (void)cancelLoginView {

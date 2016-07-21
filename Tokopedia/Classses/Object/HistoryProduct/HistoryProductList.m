@@ -46,4 +46,27 @@
     return _viewModel;
 }
 
++ (NSDictionary *)attributeMappingDictionary{
+    NSArray *keys = @[@"product_price",
+                      @"product_id",
+                      @"shop_gold_status",
+                      @"shop_location",
+                      @"shop_name",
+                      @"product_image",
+                      @"product_name",
+                      @"shop_lucky",
+                      @"product_preorder",
+                      @"product_wholesale"];
+                      
+    return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
+}
+
++ (RKObjectMapping *)mapping{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    
+    [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+    
+    return mapping;
+}
+
 @end

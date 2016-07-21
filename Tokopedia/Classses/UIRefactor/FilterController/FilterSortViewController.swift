@@ -17,14 +17,19 @@ class FilterSortViewController: UIViewController, UITableViewDelegate, UITableVi
     private var tableView: UITableView = UITableView()
     private var source : String = ""
     private var refreshControl : UIRefreshControl = UIRefreshControl()
+    private var rootCategoryID : String = String()
     
-    init(source: String, items:[ListOption],selectedObject:ListOption, onCompletion: ((ListOption, [String:String]) -> Void), response:((FilterData) -> Void)){
+    /*
+        The designated initializer for sorting list view controller called from FitersController. Items is list of sorting option. E.g:Sorting by promotion, best match, etc.
+     */
+    init(source: String, items:[ListOption],selectedObject:ListOption, rootCategoryID:String, onCompletion: ((ListOption, [String:String]) -> Void), response:((FilterData) -> Void)){
         
         completionHandler = onCompletion
         completionHandlerResponse = response
         self.items = items
         self.selectedObject = selectedObject
         self.source = source
+        self.rootCategoryID = rootCategoryID
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -134,7 +139,9 @@ class FilterSortViewController: UIViewController, UITableViewDelegate, UITableVi
     }
 
     func requestFilter(){
-        RequestFilter.fetchFilter(source, success: { (response) in
+        RequestFilter.fetchFilter(source,
+                                  departmentID: self.rootCategoryID,
+                                  success: { (response) in
             self.items.removeAll()
             self.tableView.reloadData()
             
@@ -151,12 +158,23 @@ class FilterSortViewController: UIViewController, UITableViewDelegate, UITableVi
             self.tableView.setContentOffset(CGPointZero, animated:true)
             self.refreshControl.endRefreshing()
             
-            self.completionHandlerResponse(response)
+            self.completionHandlerResponse(self.addFilterCategory(response))
             self.tableView.reloadData()
             
         }) { (error) in
             self.tableView.setContentOffset(CGPointZero, animated:true)
             self.refreshControl.endRefreshing()
         }
+    }
+    
+    private func addFilterCategory(response:FilterData) -> FilterData{
+        if self.source == Source.Directory.description() {
+            let filter : ListFilter = ListFilter()
+            filter.title = "Kategori"
+            filter.isMultipleSelect = false
+            response.filter.insert(filter, atIndex: 0)
+            return response
+        }
+        return response
     }
 }

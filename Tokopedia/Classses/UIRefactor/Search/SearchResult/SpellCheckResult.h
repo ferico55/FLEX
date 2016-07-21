@@ -13,4 +13,6 @@
 @property (strong, nonatomic) NSString *suggest;
 @property (strong, nonatomic) NSString *total_data;
 
++ (RKObjectMapping*)mapping;
+
 @end

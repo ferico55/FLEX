@@ -8,8 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
-@interface SendOTPResult : NSObject
+@interface SendOTPResult : NSObject <TKPObjectMapping>
 
 @property (strong, nonatomic) NSString *is_success;
+
++(NSDictionary *) attributeMappingDictionary;
++(RKObjectMapping *) mapping;
 
 @end
