@@ -90,15 +90,17 @@
 -(void)requestProductFeedWithFavoriteShopString:(NSString*)favoriteShopString withPage:(NSInteger)page{
     networkManager.isUsingHmac = NO;
     productFeedNetworkManager.isParameterNotEncrypted = YES;
+    UserAuthentificationManager *userAuth = [UserAuthentificationManager new];
     
     [productFeedNetworkManager requestWithBaseUrl:[NSString aceUrl]
-                                             path:@"/search/v2.1/product"
+                                             path:@"/search/v2.3/product"
                                            method:RKRequestMethodGET
                                         parameter:@{@"device":@"ios",
                                                     @"rows":@(PER_PAGE),
                                                     @"start":@((page*PER_PAGE)),
                                                     @"shop_id":favoriteShopString,
                                                     @"ob":@(10),
+                                                    @"user_id":[userAuth getUserId],
                                                     @"source":@"feed"}
                                           mapping:[SearchAWS mapping]
                                         onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
