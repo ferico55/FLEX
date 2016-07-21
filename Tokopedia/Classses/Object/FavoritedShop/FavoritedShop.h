@@ -17,7 +17,4 @@
 @property (nonatomic, strong) NSString *server_process_time;
 @property (nonatomic, strong) FavoritedShopResult *data;
 
-+(NSDictionary *)attributeMappingDictionary;
-+(RKObjectMapping *) mapping;
-
 @end
