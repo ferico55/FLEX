@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "HotlistBannerQuery.h"
 
-@interface HotlistBannerInfo : NSObject
+@interface HotlistBannerInfo : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *meta_description;
 @property (nonatomic, strong) NSString *hotlist_description;

@@ -23,12 +23,14 @@ import UIKit
     private var completionHandler:([CategoryDetail])->Void = {(arg:[CategoryDetail]) -> Void in}
     private var refreshControl : UIRefreshControl = UIRefreshControl()
     private var rootCategoryID :String = ""
+    private var isMultipleSelect : Bool = true
     
-    init(rootCategoryID:String, selectedCategories:[CategoryDetail], initialCategories:[CategoryDetail], onCompletion: (([CategoryDetail]) -> Void)){
+    init(rootCategoryID:String, selectedCategories:[CategoryDetail], initialCategories:[CategoryDetail], isMultipleSelect:Bool, onCompletion: (([CategoryDetail]) -> Void)){
         self.rootCategoryID = rootCategoryID;
         completionHandler = onCompletion
         self.selectedCategories =  selectedCategories.map { ($0.copy() as! CategoryDetail) }
         self.initialCategories = initialCategories.map { ($0.copy() as! CategoryDetail) }
+        self.isMultipleSelect = isMultipleSelect
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -41,8 +43,8 @@ import UIKit
         
         tableView = UITableView.init(frame: CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height), style: .Plain)
 
-        tableView.allowsMultipleSelection = true
-        tableView.allowsMultipleSelectionDuringEditing = true
+        tableView.allowsMultipleSelection = isMultipleSelect
+        tableView.allowsMultipleSelectionDuringEditing = isMultipleSelect
         tableView.allowsSelection = true
         tableView.delegate = self
         tableView.dataSource = self
@@ -52,13 +54,13 @@ import UIKit
         self.view.addSubview(tableView)
         
         if (self.initialCategories.count == 0) {
-            refreshControl.addTarget(self, action: #selector(CategoryFilterViewController.refresh(_:)), forControlEvents: UIControlEvents.ValueChanged)
+            refreshControl.addTarget(self, action: #selector(CategoryFilterViewController.refresh), forControlEvents: UIControlEvents.ValueChanged)
             tableView.addSubview(refreshControl)
             
             tableView.setContentOffset(CGPointMake(0, -refreshControl.frame.size.height), animated:true)
             refreshControl.beginRefreshing()
 
-            self.requestCategory()
+            self.refresh()
         } else {
             self.showPresetCategories()
             self.addCategories(self.initialCategories)
@@ -90,12 +92,16 @@ import UIKit
         }
     }
 
-    func refresh(sender:AnyObject) {
-        self .requestCategory()
+    func refresh() {
+        if isMultipleSelect {
+            self.requestCategory(rootCategoryID)
+        } else {
+            self.requestCategory("")
+        }
     }
     
-    func requestCategory() {
-        RequestFilterCategory.fetchListFilterCategory(rootCategoryID, success: { (categories) in
+    func requestCategory(CategoryID:String) {
+        RequestFilterCategory.fetchListFilterCategory(CategoryID, success: { (categories) in
             
             self.categories.removeAll()
             self.tableView.reloadData()
@@ -103,8 +109,12 @@ import UIKit
             self.tableView.setContentOffset(CGPointZero, animated:true)
             self.refreshControl.endRefreshing()
             
-            self.addCategories(categories)
-            if self.selectedCategories.count>0 {
+            var newCategory :[CategoryDetail] = []
+            newCategory = self.categoryWithAddingAllTypeChildFromCategory(categories)
+            newCategory = self.categoryWithRemovedUnusedCategoryFromCategory(newCategory)
+            self.addCategories(newCategory)
+            
+            if self.selectedCategories.count > 0{
                 self.expandSelectedCategories()
             }
             
@@ -112,6 +122,78 @@ import UIKit
                 self.tableView.setContentOffset(CGPointZero, animated:true)
                 self.refreshControl.endRefreshing()
         }
+    }
+    
+    func categoryWithRemovedUnusedCategoryFromCategory( categories:[CategoryDetail]) -> [CategoryDetail] {
+        var newCategories : [CategoryDetail] = []
+        if Int(rootCategoryID) != 0{
+            for category in categories {
+                if category.categoryId == rootCategoryID {
+                    if selectedCategories.first?.categoryId == rootCategoryID || selectedCategories.count == 0 {
+                        self.setSelectedCategory([category])
+                    }
+                    category.isExpanded = true
+                }
+                for categoryChild in category.child {
+                    if categoryChild.categoryId == rootCategoryID {
+                        if selectedCategories.first?.categoryId == rootCategoryID || selectedCategories.count == 0 {
+                            self.setSelectedCategory([categoryChild])
+                        }
+                        category.isExpanded = true
+                    }
+                    for categoryLast in categoryChild.child {
+                        if categoryLast.categoryId == rootCategoryID {
+                            if selectedCategories.first?.categoryId == rootCategoryID || selectedCategories.count == 0 {
+                                self.setSelectedCategory([categoryLast])
+                            }
+                            category.isExpanded = true
+                        }
+                    }
+                }
+            }
+            
+            for category in categories {
+                if category.isExpanded == true {
+                    category.isExpanded = false
+                    newCategories.append(category)
+                }
+            }
+        } else {
+            newCategories = categories
+        }
+        return newCategories
+    }
+    
+    func setSelectedCategory(categories:[CategoryDetail]) {
+        self.selectedCategories = categories
+        completionHandler(self.selectedCategories)
+    }
+    
+    func categoryWithAddingAllTypeChildFromCategory(categories:[CategoryDetail]) -> [CategoryDetail]{
+        //kasi "Semua <kategory>" ke masing child kalo request dari hades..
+        for category in categories {
+            for categoryChild in category.child {
+                if categoryChild.tree != "3" {
+                    categoryChild.child.insert(self.newAllCategory(categoryChild), atIndex: 0)
+                }
+            }
+            if category.tree != "3" {
+                category.child.insert(self.newAllCategory(category), atIndex: 0)
+            }
+        }
+        
+        return categories
+    }
+    
+    func newAllCategory(category:CategoryDetail) -> CategoryDetail {
+        let newCategory : CategoryDetail = CategoryDetail();
+        newCategory.categoryId = category.categoryId;
+        newCategory.name = "Semua \(category.name)"
+        let tree: Int = Int(category.tree)!
+        newCategory.tree = "\(tree+1)"
+        newCategory.child = []
+        newCategory.parent = category.categoryId
+        return newCategory
     }
     
     func addCategories(categories:[CategoryDetail]) {
@@ -193,16 +275,36 @@ import UIKit
                 self.doExpandCategory(category)
             }
         } else {
-            category.isSelected = !category.isSelected
-            if category.isSelected == false {
-                self.tableView.deselectRowAtIndexPath(indexPath, animated: false)
-                for (index, selected) in selectedCategories.enumerate() {
-                    if selected.categoryId == category.categoryId && category.tree == selected.tree{
-                        selectedCategories .removeAtIndex(index)
+            if self.isMultipleSelect{
+                category.isSelected = !category.isSelected
+                if category.isSelected == false {
+                    self.tableView.deselectRowAtIndexPath(indexPath, animated: false)
+                    for (index, selected) in selectedCategories.enumerate() {
+                        if selected.categoryId == category.categoryId && category.tree == selected.tree{
+                            selectedCategories .removeAtIndex(index)
+                        }
+                    }
+                } else {
+                    selectedCategories.append(category)
+                }
+            } else{
+                category.isSelected = self.isSelectedCategory(category)
+                category.isSelected = !category.isSelected
+                if selectedCategories.count > 0 {
+                    let selectedCategory :CategoryDetail = self.selectedCategories.first!
+                    for (index, categoryShow) in self.categories.enumerate() {
+                        if selectedCategory.categoryId == categoryShow.categoryId{
+                            selectedCategories.removeAll()
+                            self.tableView.beginUpdates()
+                            self.tableView.reloadRowsAtIndexPaths([NSIndexPath.init(forRow: index, inSection: 0)], withRowAnimation: .None)
+                            self.tableView.endUpdates()
+                        }
                     }
                 }
-            } else {
-                selectedCategories.append(category)
+                if category.isSelected == true {
+                    selectedCategories.append(category)
+                    cell.setSelected(true, animated: false)
+                }
             }
             
             completionHandler(selectedCategories)
@@ -212,6 +314,14 @@ import UIKit
             cell.setArrowDirection(.Up)
         } else {
             cell.setArrowDirection(.Down)
+        }
+    }
+    
+    func isSelectedCategory(category:CategoryDetail) -> Bool {
+        if self.selectedCategories .contains(category) {
+            return true
+        } else  {
+            return false
         }
     }
     
@@ -268,6 +378,7 @@ import UIKit
             for selectedCategory in self.selectedCategories {
                 if category.categoryId == selectedCategory.categoryId && category.tree == selectedCategory.tree {
                     category.isSelected = true
+                    category.isExpanded = true
                 } else {
                     self.expandChildCategory(category)
                 }
@@ -278,7 +389,7 @@ import UIKit
     func expandChildCategory(category:(CategoryDetail)) {
         for childCategory in category.child {
             for selectedCategory in self.selectedCategories {
-                if childCategory.categoryId == selectedCategory.categoryId && childCategory.tree == selectedCategory.tree{
+                if childCategory.categoryId == selectedCategory.categoryId && childCategory.tree == selectedCategory.tree {
                     childCategory.isSelected = true
                     self.addCategoryChild(category)
                 } else {

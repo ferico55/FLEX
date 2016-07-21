@@ -622,19 +622,16 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     vc.delegate = self;
     vc.isFromAutoComplete = autocomplete;
     vc.data =@{kTKPDSEARCH_DATASEARCHKEY : searchText?:@"" ,
-               kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY,
-               kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
+               kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY};
     SearchResultViewController *vc1 = [SearchResultViewController new];
     vc.isFromAutoComplete = autocomplete;
     vc.delegate = self;
     vc1.data =@{kTKPDSEARCH_DATASEARCHKEY : searchText?:@"" ,
-                kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY,
-                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
+                kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY};
     SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
     vc.isFromAutoComplete = autocomplete;
     vc2.data =@{kTKPDSEARCH_DATASEARCHKEY : searchText?:@"" ,
-                kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY,
-                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
+                kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY};
     NSArray *viewcontrollers = @[vc,vc1,vc2];
     
     TKPDTabNavigationController *viewController = [TKPDTabNavigationController new];
