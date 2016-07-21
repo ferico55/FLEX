@@ -411,12 +411,6 @@
 		346B395B1D3F726100682477 /* EtalaseList.m in Sources */ = {isa = PBXBuildFile; fileRef = 346B2C4D1D3F725700682477 /* EtalaseList.m */; };
 		346B395C1D3F726100682477 /* EtalaseListOther.m in Sources */ = {isa = PBXBuildFile; fileRef = 346B2C4F1D3F725700682477 /* EtalaseListOther.m */; };
 		346B395D1D3F726100682477 /* EtalaseResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 346B2C511D3F725700682477 /* EtalaseResult.m */; };
-		346B395E1D3F726100682477 /* NoteDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 346B2C551D3F725700682477 /* NoteDetail.m */; };
-		346B395F1D3F726100682477 /* NoteDetailResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 346B2C571D3F725700682477 /* NoteDetailResult.m */; };
-		346B39601D3F726100682477 /* NoteDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 346B2C591D3F725700682477 /* NoteDetails.m */; };
-		346B39611D3F726100682477 /* Notes.m in Sources */ = {isa = PBXBuildFile; fileRef = 346B2C5B1D3F725700682477 /* Notes.m */; };
-		346B39621D3F726100682477 /* NotesList.m in Sources */ = {isa = PBXBuildFile; fileRef = 346B2C5D1D3F725700682477 /* NotesList.m */; };
-		346B39631D3F726100682477 /* NotesResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 346B2C5F1D3F725700682477 /* NotesResult.m */; };
 		346B39641D3F726100682477 /* Address.m in Sources */ = {isa = PBXBuildFile; fileRef = 346B2C621D3F725700682477 /* Address.m */; };
 		346B39651D3F726100682477 /* ClosedInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 346B2C641D3F725700682477 /* ClosedInfo.m */; };
 		346B39661D3F726100682477 /* DetailShopResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 346B2C661D3F725700682477 /* DetailShopResult.m */; };
@@ -1302,8 +1296,6 @@
 		346B3CD61D3F726200682477 /* ShopInfoShipmentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 346B32C11D3F725A00682477 /* ShopInfoShipmentCell.xib */; };
 		346B3CD71D3F726200682477 /* ShopInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 346B32C31D3F725A00682477 /* ShopInfoViewController.m */; };
 		346B3CD81D3F726200682477 /* ShopInfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 346B32C41D3F725A00682477 /* ShopInfoViewController.xib */; };
-		346B3CD91D3F726200682477 /* ShopNotesDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 346B32C71D3F725A00682477 /* ShopNotesDetailViewController.m */; };
-		346B3CDA1D3F726200682477 /* ShopNotesDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 346B32C81D3F725A00682477 /* ShopNotesDetailViewController.xib */; };
 		346B3CDB1D3F726200682477 /* SendMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 346B32CB1D3F725A00682477 /* SendMessageViewController.m */; };
 		346B3CDC1D3F726200682477 /* SendMessageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 346B32CC1D3F725B00682477 /* SendMessageViewController.xib */; };
 		346B3CDD1D3F726200682477 /* ShopSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 346B32CF1D3F725B00682477 /* ShopSettingViewController.m */; };
@@ -2403,6 +2395,16 @@
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
 		85C494BF1AD790DD008A314A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BE1AD790DD008A314A /* libz.dylib */; };
 		85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494C01AD790E4008A314A /* CoreData.framework */; };
+		D65002F21D4086FE005252C4 /* DelayedActionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65002F11D4086FE005252C4 /* DelayedActionManager.swift */; };
+		D65002F71D40874F005252C4 /* Notes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65002F41D40874F005252C4 /* Notes.swift */; };
+		D65002F81D40874F005252C4 /* NotesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65002F51D40874F005252C4 /* NotesList.swift */; };
+		D65002F91D40874F005252C4 /* NotesResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65002F61D40874F005252C4 /* NotesResult.swift */; };
+		D65002FC1D408758005252C4 /* NoteAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65002FA1D408758005252C4 /* NoteAction.swift */; };
+		D65002FD1D408758005252C4 /* NoteActionResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65002FB1D408758005252C4 /* NoteActionResult.swift */; };
+		D65003031D408778005252C4 /* NoteDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65003001D408778005252C4 /* NoteDetail.swift */; };
+		D65003041D408778005252C4 /* NoteDetailResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65003011D408778005252C4 /* NoteDetailResult.swift */; };
+		D65003051D408778005252C4 /* NoteDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65003021D408778005252C4 /* NoteDetails.swift */; };
+		D65003071D408794005252C4 /* MyShopNoteRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65003061D408794005252C4 /* MyShopNoteRequest.swift */; };
 		F25F6F270D531ED13A92CDB9 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4868E459AB2A65D133732296 /* libPods-Tokopedia.a */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
 		FC23B85A1ACD659900879D75 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8581ACD659900879D75 /* Fabric.framework */; };
@@ -3233,18 +3235,6 @@
 		346B2C4F1D3F725700682477 /* EtalaseListOther.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EtalaseListOther.m; sourceTree = "<group>"; };
 		346B2C501D3F725700682477 /* EtalaseResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EtalaseResult.h; sourceTree = "<group>"; };
 		346B2C511D3F725700682477 /* EtalaseResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EtalaseResult.m; sourceTree = "<group>"; };
-		346B2C541D3F725700682477 /* NoteDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteDetail.h; sourceTree = "<group>"; };
-		346B2C551D3F725700682477 /* NoteDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteDetail.m; sourceTree = "<group>"; };
-		346B2C561D3F725700682477 /* NoteDetailResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteDetailResult.h; sourceTree = "<group>"; };
-		346B2C571D3F725700682477 /* NoteDetailResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteDetailResult.m; sourceTree = "<group>"; };
-		346B2C581D3F725700682477 /* NoteDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteDetails.h; sourceTree = "<group>"; };
-		346B2C591D3F725700682477 /* NoteDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteDetails.m; sourceTree = "<group>"; };
-		346B2C5A1D3F725700682477 /* Notes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Notes.h; sourceTree = "<group>"; };
-		346B2C5B1D3F725700682477 /* Notes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Notes.m; sourceTree = "<group>"; };
-		346B2C5C1D3F725700682477 /* NotesList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotesList.h; sourceTree = "<group>"; };
-		346B2C5D1D3F725700682477 /* NotesList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotesList.m; sourceTree = "<group>"; };
-		346B2C5E1D3F725700682477 /* NotesResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotesResult.h; sourceTree = "<group>"; };
-		346B2C5F1D3F725700682477 /* NotesResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotesResult.m; sourceTree = "<group>"; };
 		346B2C611D3F725700682477 /* Address.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Address.h; sourceTree = "<group>"; };
 		346B2C621D3F725700682477 /* Address.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Address.m; sourceTree = "<group>"; };
 		346B2C631D3F725700682477 /* ClosedInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClosedInfo.h; sourceTree = "<group>"; };
@@ -4735,9 +4725,6 @@
 		346B32C21D3F725A00682477 /* ShopInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopInfoViewController.h; sourceTree = "<group>"; };
 		346B32C31D3F725A00682477 /* ShopInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopInfoViewController.m; sourceTree = "<group>"; };
 		346B32C41D3F725A00682477 /* ShopInfoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShopInfoViewController.xib; sourceTree = "<group>"; };
-		346B32C61D3F725A00682477 /* ShopNotesDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopNotesDetailViewController.h; sourceTree = "<group>"; };
-		346B32C71D3F725A00682477 /* ShopNotesDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopNotesDetailViewController.m; sourceTree = "<group>"; };
-		346B32C81D3F725A00682477 /* ShopNotesDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShopNotesDetailViewController.xib; sourceTree = "<group>"; };
 		346B32CA1D3F725A00682477 /* SendMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SendMessageViewController.h; sourceTree = "<group>"; };
 		346B32CB1D3F725A00682477 /* SendMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendMessageViewController.m; sourceTree = "<group>"; };
 		346B32CC1D3F725B00682477 /* SendMessageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SendMessageViewController.xib; sourceTree = "<group>"; };
@@ -5987,6 +5974,16 @@
 		85C494C01AD790E4008A314A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		AAA12C6A69BF6CB5F8EE3287 /* Pods-Tokopedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug.xcconfig"; sourceTree = "<group>"; };
 		C8A1445074FECD393EA18C17 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
+		D65002F11D4086FE005252C4 /* DelayedActionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DelayedActionManager.swift; sourceTree = "<group>"; };
+		D65002F41D40874F005252C4 /* Notes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notes.swift; sourceTree = "<group>"; };
+		D65002F51D40874F005252C4 /* NotesList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotesList.swift; sourceTree = "<group>"; };
+		D65002F61D40874F005252C4 /* NotesResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotesResult.swift; sourceTree = "<group>"; };
+		D65002FA1D408758005252C4 /* NoteAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NoteAction.swift; path = NoteAction/NoteAction.swift; sourceTree = "<group>"; };
+		D65002FB1D408758005252C4 /* NoteActionResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NoteActionResult.swift; path = NoteAction/NoteActionResult.swift; sourceTree = "<group>"; };
+		D65003001D408778005252C4 /* NoteDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NoteDetail.swift; path = NoteDetail/NoteDetail.swift; sourceTree = "<group>"; };
+		D65003011D408778005252C4 /* NoteDetailResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NoteDetailResult.swift; path = NoteDetail/NoteDetailResult.swift; sourceTree = "<group>"; };
+		D65003021D408778005252C4 /* NoteDetails.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NoteDetails.swift; path = NoteDetail/NoteDetails.swift; sourceTree = "<group>"; };
+		D65003061D408794005252C4 /* MyShopNoteRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyShopNoteRequest.swift; sourceTree = "<group>"; };
 		FC23B8571ACD659900879D75 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		FC23B8581ACD659900879D75 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		FC36DF8319B0656400AF74C1 /* Tokopedia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tokopedia.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -6234,6 +6231,7 @@
 		346B29361D3F725600682477 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				D65002F11D4086FE005252C4 /* DelayedActionManager.swift */,
 				346B29371D3F725600682477 /* NavigationHelper.h */,
 				346B29381D3F725600682477 /* NavigationHelper.m */,
 			);
@@ -7603,28 +7601,13 @@
 		346B2C521D3F725700682477 /* Notes */ = {
 			isa = PBXGroup;
 			children = (
-				346B2C531D3F725700682477 /* NoteDetail */,
-				346B2C5A1D3F725700682477 /* Notes.h */,
-				346B2C5B1D3F725700682477 /* Notes.m */,
-				346B2C5C1D3F725700682477 /* NotesList.h */,
-				346B2C5D1D3F725700682477 /* NotesList.m */,
-				346B2C5E1D3F725700682477 /* NotesResult.h */,
-				346B2C5F1D3F725700682477 /* NotesResult.m */,
+				D65002FF1D40876E005252C4 /* NoteDetail */,
+				D65002F41D40874F005252C4 /* Notes.swift */,
+				D65002F51D40874F005252C4 /* NotesList.swift */,
+				D65002F61D40874F005252C4 /* NotesResult.swift */,
+				D65002F31D408745005252C4 /* NoteAction */,
 			);
 			path = Notes;
-			sourceTree = "<group>";
-		};
-		346B2C531D3F725700682477 /* NoteDetail */ = {
-			isa = PBXGroup;
-			children = (
-				346B2C541D3F725700682477 /* NoteDetail.h */,
-				346B2C551D3F725700682477 /* NoteDetail.m */,
-				346B2C561D3F725700682477 /* NoteDetailResult.h */,
-				346B2C571D3F725700682477 /* NoteDetailResult.m */,
-				346B2C581D3F725700682477 /* NoteDetails.h */,
-				346B2C591D3F725700682477 /* NoteDetails.m */,
-			);
-			path = NoteDetail;
 			sourceTree = "<group>";
 		};
 		346B2C601D3F725700682477 /* ShopInfo */ = {
@@ -9357,6 +9340,7 @@
 		346B30681D3F725900682477 /* MyShopNote */ = {
 			isa = PBXGroup;
 			children = (
+				D65003061D408794005252C4 /* MyShopNoteRequest.swift */,
 				346B30691D3F725900682477 /* MyShopNoteDetailViewController.h */,
 				346B306A1D3F725900682477 /* MyShopNoteDetailViewController.m */,
 				346B306B1D3F725900682477 /* MyShopNoteDetailViewController.xib */,
@@ -10171,7 +10155,6 @@
 				346B32A11D3F725A00682477 /* Favorited */,
 				346B32A81D3F725A00682477 /* Header */,
 				346B32B21D3F725A00682477 /* Info */,
-				346B32C51D3F725A00682477 /* Notes */,
 				346B32C91D3F725A00682477 /* SendMessage */,
 				346B32CD1D3F725B00682477 /* Settings */,
 				346B32D11D3F725B00682477 /* string_shop.h */,
@@ -10292,16 +10275,6 @@
 				346B32C41D3F725A00682477 /* ShopInfoViewController.xib */,
 			);
 			path = Info;
-			sourceTree = "<group>";
-		};
-		346B32C51D3F725A00682477 /* Notes */ = {
-			isa = PBXGroup;
-			children = (
-				346B32C61D3F725A00682477 /* ShopNotesDetailViewController.h */,
-				346B32C71D3F725A00682477 /* ShopNotesDetailViewController.m */,
-				346B32C81D3F725A00682477 /* ShopNotesDetailViewController.xib */,
-			);
-			path = Notes;
 			sourceTree = "<group>";
 		};
 		346B32C91D3F725A00682477 /* SendMessage */ = {
@@ -12014,6 +11987,25 @@
 			path = XYPieChart;
 			sourceTree = "<group>";
 		};
+		D65002F31D408745005252C4 /* NoteAction */ = {
+			isa = PBXGroup;
+			children = (
+				D65002FA1D408758005252C4 /* NoteAction.swift */,
+				D65002FB1D408758005252C4 /* NoteActionResult.swift */,
+			);
+			name = NoteAction;
+			sourceTree = "<group>";
+		};
+		D65002FF1D40876E005252C4 /* NoteDetail */ = {
+			isa = PBXGroup;
+			children = (
+				D65003001D408778005252C4 /* NoteDetail.swift */,
+				D65003011D408778005252C4 /* NoteDetailResult.swift */,
+				D65003021D408778005252C4 /* NoteDetails.swift */,
+			);
+			name = NoteDetail;
+			sourceTree = "<group>";
+		};
 		E1A48FC656B05056B45251AD /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -12723,7 +12715,6 @@
 				346B3EA81D3F726200682477 /* icon_countdown@3x.png in Resources */,
 				346B3F861D3F726200682477 /* icon_retur@2x.png in Resources */,
 				346B3E481D3F726200682477 /* icon_button_wishlist_nonactive.png in Resources */,
-				346B3CDA1D3F726200682477 /* ShopNotesDetailViewController.xib in Resources */,
 				346B3D3B1D3F726200682477 /* TransactionCCViewController.xib in Resources */,
 				346B3AAB1D3F726100682477 /* TKPDTabInboxCustomerServiceNavigationController.xib in Resources */,
 				346B3EFA1D3F726200682477 /* icon_medal14@3x.png in Resources */,
@@ -13581,7 +13572,6 @@
 				346B388F1D3F726100682477 /* ResolutionAction.m in Sources */,
 				346B381E1D3F726100682477 /* CategoryData.swift in Sources */,
 				346B3A791D3F726100682477 /* CatalogViewController.m in Sources */,
-				346B39621D3F726100682477 /* NotesList.m in Sources */,
 				346B3A9C1D3F726100682477 /* DataRequest.m in Sources */,
 				346B38E11D3F726100682477 /* NotifyAttributes.m in Sources */,
 				346B3AB21D3F726100682477 /* TKPDTabNavigationController.m in Sources */,
@@ -13680,7 +13670,6 @@
 				346B37F81D3F726100682477 /* NavigationHelper.m in Sources */,
 				346B39021D3F726100682477 /* BankAccountFormList.m in Sources */,
 				346B386D1D3F726100682477 /* GoogleDistanceMatrixElement.m in Sources */,
-				346B39631D3F726100682477 /* NotesResult.m in Sources */,
 				346B37D11D3F726100682477 /* ALAsset+Date.m in Sources */,
 				346B384C1D3F726100682477 /* Review.m in Sources */,
 				346B381B1D3F726100682477 /* CatalogShopAWS.m in Sources */,
@@ -13702,6 +13691,7 @@
 				346B38051D3F726100682477 /* Logout.m in Sources */,
 				346B3B831D3F726100682477 /* ShopPaymentViewController.m in Sources */,
 				346B38271D3F726100682477 /* ContactUsActionResultStatus.m in Sources */,
+				D65003031D408778005252C4 /* NoteDetail.swift in Sources */,
 				346B38121D3F726100682477 /* SecurityRequestOTPResult.m in Sources */,
 				346B393D1D3F726100682477 /* SearchAutoCompleteCatalog.m in Sources */,
 				346B3A531D3F726100682477 /* TKPDAlertView.m in Sources */,
@@ -13729,6 +13719,7 @@
 				346B37E01D3F726100682477 /* UIKitCategory.m in Sources */,
 				346B3A131D3F726100682477 /* UIImageView%2BAFNetworking.swift in Sources */,
 				346B3B971D3F726100682477 /* ShipmentViewController.m in Sources */,
+				D65003051D408778005252C4 /* NoteDetails.swift in Sources */,
 				346B3B881D3F726100682477 /* CourierInfoViewController.m in Sources */,
 				346B41011D3F726200682477 /* EDStarRating.m in Sources */,
 				346B39641D3F726100682477 /* Address.m in Sources */,
@@ -13795,6 +13786,7 @@
 				346B37FB1D3F726100682477 /* NSString+MD5.m in Sources */,
 				346B3CFC1D3F726200682477 /* FilterViewController.m in Sources */,
 				346B399B1D3F726100682477 /* ResponseError.m in Sources */,
+				D65003041D408778005252C4 /* NoteDetailResult.swift in Sources */,
 				346B37F61D3F726100682477 /* UIScrollViewCategory.swift in Sources */,
 				346B396B1D3F726100682477 /* Shop.m in Sources */,
 				346B399A1D3F726100682477 /* RateResponse.m in Sources */,
@@ -13898,6 +13890,7 @@
 				346B39651D3F726100682477 /* ClosedInfo.m in Sources */,
 				346B37E81D3F726100682477 /* DBManager.m in Sources */,
 				346B3C1A1D3F726100682477 /* ProductReputationViewModel.m in Sources */,
+				D65002F21D4086FE005252C4 /* DelayedActionManager.swift in Sources */,
 				346B3A181D3F726100682477 /* TKPMappingManager.m in Sources */,
 				346B3CF11D3F726200682477 /* SmileyAndMedal.m in Sources */,
 				346B3AB01D3F726100682477 /* TKPDTabInboxTalkNavigationController.m in Sources */,
@@ -13909,6 +13902,7 @@
 				346B39681D3F726100682477 /* Payment.m in Sources */,
 				346B37DA1D3F726100682477 /* NSStringCategory.m in Sources */,
 				346B3A1A1D3F726100682477 /* UIViewController+TKPAdditions.m in Sources */,
+				D65002F81D40874F005252C4 /* NotesList.swift in Sources */,
 				346B3A301D3F726100682477 /* AlertCameraView.m in Sources */,
 				346B393F1D3F726100682477 /* SearchAutoCompleteDomains.m in Sources */,
 				346B3AAC1D3F726100682477 /* TKPDTabInboxMessageNavigationController.m in Sources */,
@@ -14069,11 +14063,13 @@
 				346B385F1D3F726100682477 /* FavoritedResult.m in Sources */,
 				346B3CD31D3F726200682477 /* ShopInfoPaymentCell.m in Sources */,
 				346B391F1D3F726100682477 /* ActionOrder.m in Sources */,
+				D65002F91D40874F005252C4 /* NotesResult.swift in Sources */,
 				346B39671D3F726100682477 /* Owner.m in Sources */,
 				346B3D7D1D3F726200682477 /* ProfileBiodataShopCell.m in Sources */,
 				346B39E21D3F726100682477 /* TxOrderPaymentEditForm.m in Sources */,
 				346B38B61D3F726100682477 /* InboxTicketTicket.m in Sources */,
 				346B3B0E1D3F726100682477 /* HomeTabHeaderViewController.m in Sources */,
+				D65002FC1D408758005252C4 /* NoteAction.swift in Sources */,
 				346B3C6C1D3F726100682477 /* SearchAutoCompleteCell.m in Sources */,
 				346B41041D3F726200682477 /* XYPieChart.m in Sources */,
 				346B3CEF1D3F726200682477 /* ShopTalkPageViewController.m in Sources */,
@@ -14119,6 +14115,7 @@
 				346B39FF1D3F726100682477 /* DKCamera.swift in Sources */,
 				346B3D3D1D3F726200682477 /* TransactionCartResultCell.m in Sources */,
 				346B39F91D3F726100682477 /* UploadImageValidation.m in Sources */,
+				D65003071D408794005252C4 /* MyShopNoteRequest.swift in Sources */,
 				346B37E31D3F726100682477 /* UITableView+RefreshControl.m in Sources */,
 				346B381C1D3F726100682477 /* CatalogShopAWSProductResult.m in Sources */,
 				346B40F91D3F726200682477 /* HPTextViewInternal.m in Sources */,
@@ -14201,7 +14198,6 @@
 				346B3D7B1D3F726200682477 /* ProfileBiodataCell.m in Sources */,
 				346B39A91D3F726100682477 /* TransactionATCFormResult.m in Sources */,
 				346B3AE11D3F726100682477 /* RequestFilter.swift in Sources */,
-				346B395F1D3F726100682477 /* NoteDetailResult.m in Sources */,
 				346B39FB1D3F726100682477 /* WishListObject.m in Sources */,
 				346B39301D3F726100682477 /* OrderShipment.m in Sources */,
 				346B3D771D3F726200682477 /* RequestOrderAction.m in Sources */,
@@ -14212,6 +14208,7 @@
 				346B383B1D3F726100682477 /* CatalogReview.m in Sources */,
 				346B39561D3F726100682477 /* AddShop.m in Sources */,
 				346B39971D3F726100682477 /* RateAttributes.m in Sources */,
+				D65002FD1D408758005252C4 /* NoteActionResult.swift in Sources */,
 				346B39F61D3F726100682477 /* UploadImageResult.m in Sources */,
 				346B3B5C1D3F726100682477 /* InboxTicketCell.m in Sources */,
 				346B3A931D3F726100682477 /* ContactUsPresenter.m in Sources */,
@@ -14245,7 +14242,6 @@
 				346B3A6B1D3F726100682477 /* RequestUploadImage.m in Sources */,
 				346B39AE1D3F726100682477 /* TransactionCalculatePriceResult.m in Sources */,
 				346B393C1D3F726100682477 /* List.m in Sources */,
-				346B39601D3F726100682477 /* NoteDetails.m in Sources */,
 				346B39AA1D3F726100682477 /* TransactionBuy.m in Sources */,
 				346B3C601D3F726100682477 /* DetailShipmentStatusCell.m in Sources */,
 				346B390B1D3F726100682477 /* PrivacyFormPrivacy.m in Sources */,
@@ -14294,7 +14290,6 @@
 				346B3CE61D3F726200682477 /* ShopNotesPageViewController.m in Sources */,
 				346B37D81D3F726100682477 /* NSString+TPBaseUrl.m in Sources */,
 				346B39BD1D3F726100682477 /* TxOrderConfirmationResult.m in Sources */,
-				346B39611D3F726100682477 /* Notes.m in Sources */,
 				346B38F71D3F726100682477 /* FavoriteShopResult.m in Sources */,
 				346B390A1D3F726100682477 /* PrivacyForm.m in Sources */,
 				346B38FC1D3F726100682477 /* ProfileSettings.m in Sources */,
@@ -14348,6 +14343,7 @@
 				346B3DA51D3F726200682477 /* VTToken.m in Sources */,
 				346B3B061D3F726100682477 /* RedirectHandler.m in Sources */,
 				346B39041D3F726100682477 /* BankAccountGetDefaultForm.m in Sources */,
+				D65002F71D40874F005252C4 /* Notes.swift in Sources */,
 				346B3C331D3F726100682477 /* HeaderCollectionReusableView.m in Sources */,
 				346B3C8A1D3F726100682477 /* BankAccountRequest.m in Sources */,
 				346B3C771D3F726100682477 /* SearchResultShopCell.m in Sources */,
@@ -14598,7 +14594,6 @@
 				346B3A3C1D3F726100682477 /* AlertListFilterView.m in Sources */,
 				346B383C1D3F726100682477 /* CatalogShops.m in Sources */,
 				346B3DAE1D3F726200682477 /* MainViewController.m in Sources */,
-				346B395E1D3F726100682477 /* NoteDetail.m in Sources */,
 				346B37F91D3F726100682477 /* ViewLabelUser.m in Sources */,
 				346B3B4D1D3F726100682477 /* ResolutionInputReceiptViewController.m in Sources */,
 				346B3BAB1D3F726100682477 /* PriceAlertViewController.m in Sources */,
@@ -14649,7 +14644,6 @@
 				346B3B701D3F726100682477 /* SalesViewController.m in Sources */,
 				346B3D081D3F726200682477 /* TKPInfoWindowMapView.swift in Sources */,
 				346B38611D3F726100682477 /* FavoritedShop.m in Sources */,
-				346B3CD91D3F726200682477 /* ShopNotesDetailViewController.m in Sources */,
 				346B3CE11D3F726200682477 /* EtalaseRequest.m in Sources */,
 				346B3C6F1D3F726100682477 /* SearchAutoCompleteViewController.m in Sources */,
 				346B39731D3F726100682477 /* ShopProductPageResponse.m in Sources */,

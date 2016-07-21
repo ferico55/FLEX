@@ -10,23 +10,6 @@
 
 @implementation DataUser
 
-+(RKObjectMapping *)mapping{
-    RKObjectMapping *dataMapping = [RKObjectMapping mappingForClass:[DataUser class]];
-    [dataMapping addAttributeMappingsFromArray:@[@"hobby",
-                                                 @"birth_day",
-                                                 @"user_messenger",
-                                                 @"full_name",
-                                                 @"birth_month",
-                                                 @"user_email",
-                                                 @"birth_year",
-                                                 @"user_phone",
-                                                 @"gender",
-                                                 @"user_image"
-                                                 ]];
-    return dataMapping;
-    
-}
-
 - (NSString *)hobby {
     if ([_hobby isEqualToString:@"0"]) {
         return @"";
@@ -68,6 +51,29 @@
 
 - (NSString *)user_image {
     return _user_image?:@"";
+}
+
++(NSDictionary *) attributeMappingDictionary{
+    NSArray *keys = @[@"hobby",
+                      @"birth_day",
+                      @"full_name",
+                      @"birth_month",
+                      @"birth_year",
+                      @"gender",
+                      @"user_image",
+                      @"user_email",
+                      @"user_messenger",
+                      @"user_phone"];
+    
+    return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
+}
+
++(RKObjectMapping *) mapping{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass: self];
+    
+    [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+    
+    return mapping;
 }
 
 @end

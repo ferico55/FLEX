@@ -9,10 +9,10 @@
 #import <Foundation/Foundation.h>
 @class ProductModelView;
 
-@interface HistoryProductList : NSObject
+@interface HistoryProductList : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *product_price;
-@property (nonatomic, strong) NSNumber *product_id;
+@property (nonatomic, strong) NSString *product_id;
 @property (nonatomic, strong) NSString *shop_gold_status;
 @property (nonatomic, strong) NSString *shop_location;
 @property (nonatomic, strong) NSString *shop_name;
@@ -29,5 +29,8 @@
 @property(nonatomic, assign) BOOL is_product_wholesale;
 
 @property (nonatomic, strong) ProductModelView *viewModel;
+
++(NSDictionary *)attributeMappingDictionary;
++(RKObjectMapping *)mapping;
 
 @end

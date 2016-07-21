@@ -11,10 +11,12 @@
 #import "Paging.h"
 #import "FavoritedShopList.h"
 
-@interface FavoritedShopResult : NSObject
+@interface FavoritedShopResult : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) Paging *paging;
 @property (nonatomic, strong) NSArray *list;
 @property (nonatomic, strong) NSArray *list_gold;
+
++(RKObjectMapping *) mapping;
 
 @end

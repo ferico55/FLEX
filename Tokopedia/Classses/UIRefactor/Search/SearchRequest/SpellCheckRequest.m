@@ -17,9 +17,9 @@ typedef NS_ENUM(NSInteger, SpellCheckNetworkManager) {
 };
 
 
-@interface SpellCheckRequest () <TokopediaNetworkManagerDelegate> {
+@interface SpellCheckRequest () {
     TokopediaNetworkManager *_networkManager;
-    __strong RKObjectManager *_objectManager;
+    
     NSString *_query;
     NSString *_type;
     NSString *_category;
@@ -28,13 +28,8 @@ typedef NS_ENUM(NSInteger, SpellCheckNetworkManager) {
 
 @implementation SpellCheckRequest
 
-- (NSString *)getPath:(int)tag {
-    NSString *path;
-    path = @"search/v1/spell/product";
-    return path;
-}
 
-- (NSDictionary *)getParameter:(int)tag {
+- (NSDictionary *)parameters {
     NSDictionary *parameters = @{
                                  @"st"  :   _type,
                                  @"q"   :   _query,
@@ -44,56 +39,31 @@ typedef NS_ENUM(NSInteger, SpellCheckNetworkManager) {
     return parameters;
 }
 
-- (id)getObjectManager:(int)tag {
-    _objectManager = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:[NSString aceUrl]]];
-    
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[SpellCheckResponse class]];
-    [statusMapping addAttributeMappingsFromArray:@[@"status", @"server_process_time"]];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[SpellCheckResult class]];
-    [resultMapping addAttributeMappingsFromArray:@[@"suggest", @"total_data"]];
-    
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data"
-                                                                                  toKeyPath:@"data"
-                                                                                withMapping:resultMapping]];
-    
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                          method:RKRequestMethodGET
-                                                                                     pathPattern:@"/search/v1/spell/product"
-                                                                                         keyPath:@""
-                                                                                     statusCodes:kTkpdIndexSetStatusCodeOK];
-    [_objectManager addResponseDescriptor:responseDescriptor];
-    
-    return _objectManager;
-}
-
-- (int)getRequestMethod:(int)tag {
-    return RKRequestMethodGET;
-}
-
 - (void)requestSpellingSuggestion {
     _networkManager = [TokopediaNetworkManager new];
-    _networkManager.delegate = self;
     _networkManager.tagRequest = SpellCheckNetworkManagerGet;
     _networkManager.isParameterNotEncrypted = YES;
     _networkManager.isUsingHmac = YES;
     _networkManager.timeInterval = 30;
-    [_networkManager doRequest];
-}
-- (NSString *)getRequestStatus:(RKMappingResult *)result withTag:(int)tag {
-    SpellCheckResponse *response = [[result dictionary] objectForKey:@""];
-    return response.status;
+    
+    [_networkManager requestWithBaseUrl:[NSString aceUrl]
+                                   path:@"/search/v1/spell/product"
+                                 method:RKRequestMethodGET
+                              parameter:[self parameters]
+                                mapping:[SpellCheckResponse mapping]
+                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                  [self actionAfterSuccessfulRequestWithResult:successResult];
+                              }
+                              onFailure:^(NSError *errorResult) {
+                              }];
+    
 }
 
-- (void)actionAfterRequest:(RKMappingResult *)result withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag {
-    SpellCheckResponse *response = [[result dictionary] objectForKey:@""];
+- (void)actionAfterSuccessfulRequestWithResult:(RKMappingResult*)successResult {
+    SpellCheckResponse *response = [[successResult dictionary] objectForKey:@""];
     NSString *suggest = [[response.data.suggest capitalizedString] stringByReplacingOccurrencesOfString:@"%20" withString:@" "];
     [self.delegate respondsToSelector:@selector(didReceiveSpellSuggestion:totalData:)];
     [self.delegate didReceiveSpellSuggestion:suggest totalData:response.data.total_data];
-}
-
-- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
-    
 }
 
 - (void)getSpellingSuggestion:(NSString*)type query:(NSString *)query category:(NSString *)category {
