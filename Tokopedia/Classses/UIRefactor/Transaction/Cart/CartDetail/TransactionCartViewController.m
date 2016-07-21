@@ -2242,16 +2242,7 @@
     
     [RequestCart fetchCartData:^(TransactionCartResult *data) {
         
-        NSArray <TransactionCartList*>*list = data.list;
-        for (int i = 0; i< data.list.count; i++) {
-            if (i < _list.count) {
-                list[i].cart_dropship_name = _list[i].cart_dropship_name?:@"";
-                list[i].cart_dropship_phone = _list[i].cart_dropship_phone?:@"";
-                list[i].cart_is_dropshipper = _list[i].cart_is_dropshipper?:@"";
-                list[i].cart_dropship_param = _list[i].cart_dropship_param?:@"";
-                list[i].cart_partial_param = _list[i].cart_partial_param?:@"";
-            }
-        }
+        NSArray *list = [self setCartDataFromPreviousCarts:_cart.list toNewCarts:data.list];
         [_list removeAllObjects];
         [_list addObjectsFromArray:list];
         
@@ -2282,6 +2273,30 @@
         }
         [self isLoading:NO];
     }];
+}
+
+-(NSArray <TransactionCartList*> *)setCartDataFromPreviousCarts:(NSArray <TransactionCartList*> *)previousCarts toNewCarts:(NSArray <TransactionCartList*> *)newCarts{
+    for (TransactionCartList *cart in previousCarts) {
+        for (TransactionCartList *newCart in newCarts) {
+            
+            if ([newCart.cart_shop.shop_id integerValue] == [cart.cart_shop.shop_id integerValue] &&
+                newCart.cart_destination.address_id == cart.cart_destination.address_id &&
+                [newCart.cart_shipments.shipment_id integerValue] == [cart.cart_shipments.shipment_id integerValue] &&
+                [newCart.cart_shipments.shipment_package_id integerValue] == [cart.cart_shipments.shipment_package_id integerValue]
+                ) {
+                
+                newCart.cart_dropship_name = cart.cart_dropship_name?:@"";
+                newCart.cart_dropship_phone = cart.cart_dropship_phone?:@"";
+                newCart.cart_is_dropshipper = cart.cart_is_dropshipper?:@"";
+                newCart.cart_dropship_param = cart.cart_dropship_param?:@"";
+                newCart.cart_is_partial = cart.cart_is_partial?:@"0";
+                newCart.cart_partial_param = cart.cart_partial_param?:@"";
+                
+            }
+        }
+    }
+    
+    return newCarts;
 }
 
 -(void)doCancelCart{
