@@ -50,9 +50,12 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
     
     private var rootCategoryID : String = ""
     
-    init(searchDataSource: Source, filterResponse:FilterData, rootCategoryID:String, categories: [CategoryDetail], selectedCategories:[CategoryDetail], selectedFilters:[ListOption], presentedVC:(UIViewController), onCompletion: ((selectedCategories:[CategoryDetail], selectedFilters:[ListOption], paramFilter:[String : String]) -> Void), onReceivedFilterDataOption:((FilterData) -> Void)){
+    /*
+        The designated initializer for filter option view controller. filterResponse (optional) is data option filter from previous fetch dynamic attibute. 
+     */
+    init(searchDataSource: Source, filterResponse:FilterData?, rootCategoryID:String, categories: [CategoryDetail], selectedCategories:[CategoryDetail], selectedFilters:[ListOption], presentedVC:(UIViewController), onCompletion: ((selectedCategories:[CategoryDetail], selectedFilters:[ListOption], paramFilter:[String : String]) -> Void), onReceivedFilterDataOption:((FilterData) -> Void)){
         
-        self.filterResponse = filterResponse
+        if filterResponse != nil { self.filterResponse = filterResponse! }
         self.categories = categories
         self.selectedCategories = selectedCategories
         self.selectedFilters = selectedFilters
@@ -67,7 +70,10 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
         self .presentControllerFilter()
     }
     
-    init(source:Source, sortResponse:FilterData, selectedSort: ListOption, presentedVC:(UIViewController), rootCategoryID:String, onCompletion: ((selectedSort:ListOption, paramSort:[String:String]) -> Void), onReceivedFilterDataOption:((FilterData) -> Void)){
+    /*
+        The designated initializer for sorting list view controller. sortResponse (optional) is list sort option from previous fetch dynamic attibute.
+     */
+    init(source:Source, sortResponse:FilterData?, selectedSort: ListOption, presentedVC:(UIViewController), rootCategoryID:String, onCompletion: ((selectedSort:ListOption, paramSort:[String:String]) -> Void), onReceivedFilterDataOption:((FilterData) -> Void)){
         
         self.selectedSort = selectedSort
         self.completionHandlerSort = onCompletion
@@ -75,7 +81,7 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
         self.source = source.description()
         self.rootCategoryID = rootCategoryID
         
-        self.filterResponse = sortResponse
+        if sortResponse != nil { self.filterResponse = sortResponse! }
         completionHandlerResponse = onReceivedFilterDataOption
         
         super.init()

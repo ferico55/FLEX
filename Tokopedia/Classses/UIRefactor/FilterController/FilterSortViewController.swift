@@ -19,6 +19,9 @@ class FilterSortViewController: UIViewController, UITableViewDelegate, UITableVi
     private var refreshControl : UIRefreshControl = UIRefreshControl()
     private var rootCategoryID : String = String()
     
+    /*
+        The designated initializer for sorting list view controller called from FitersController. Items is list of sorting option. E.g:Sorting by promotion, best match, etc.
+     */
     init(source: String, items:[ListOption],selectedObject:ListOption, rootCategoryID:String, onCompletion: ((ListOption, [String:String]) -> Void), response:((FilterData) -> Void)){
         
         completionHandler = onCompletion
