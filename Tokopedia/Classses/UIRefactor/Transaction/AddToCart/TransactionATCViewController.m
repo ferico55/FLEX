@@ -169,7 +169,17 @@ typedef enum
 }
 
 -(void)refreshView{
-    [self requestFormWithAddressID:@""];
+    if (_isnodata)
+    {
+        [self requestFormWithAddressID:@""];
+    }
+    else
+    {
+        _isFinishRequesting = NO;
+        [self alertAndResetIfQtyTextFieldBelowMin];
+        [self doCalculate];
+        [self requestRate];
+    }
 }
 
 - (void)setPlaceholder:(NSString *)placeholderText textView:(UITextView*)textView
@@ -779,6 +789,7 @@ typedef enum
     return _headerTableView[section];
 }
 
+#pragma mark - requestATC
 -(void)requestATC {
     
     [self adjustViewIsLoading:YES];
