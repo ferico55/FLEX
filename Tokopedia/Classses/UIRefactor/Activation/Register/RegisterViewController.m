@@ -20,7 +20,7 @@
 
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
-#import "AppsFlyerTracker.h"
+#import <AppsFlyer/AppsFlyer.h>
 #import "WebViewController.h"
 #import "TransactionCartRootViewController.h"
 

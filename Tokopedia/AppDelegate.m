@@ -13,7 +13,7 @@
 #import "AppDelegate.h"
 #import "MainViewController.h"
 #import "TKPDSecureStorage.h"
-#import "AppsFlyerTracker.h"
+#import <AppsFlyer/AppsFlyer.h>
 #import "Localytics.h"
 #import <GooglePlus/GooglePlus.h>
 #import <GoogleAppIndexing/GoogleAppIndexing.h>
@@ -91,6 +91,7 @@
         [self configureAppsflyer];
         [self configureAppIndexing];
         [self configureGoogleAnalytics];
+        [self registerNotificationSettingsForApplication:application];
         
         [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
 
@@ -200,11 +201,24 @@
     }
 }
 
-- (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
-{
+- (void)registerNotificationSettingsForApplication:(UIApplication *)application {
+    UIUserNotificationType userNotificationTypes = (UIUserNotificationTypeAlert |
+                                                    UIUserNotificationTypeBadge |
+                                                    UIUserNotificationTypeSound);
+    UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:userNotificationTypes
+                                                                             categories:nil];
+    [application registerUserNotificationSettings:settings];
+    [application registerForRemoteNotifications];
+    
+    [application setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
+    application.applicationIconBadgeNumber = 0;
+}
+
+- (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken {
     [[JLNotificationPermission sharedInstance] notificationResult:deviceToken error:nil];
 
-    
+    [[AppsFlyerTracker sharedTracker] registerUninstall:deviceToken];
+
     TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
     
     NSString *deviceTokenString = [[deviceToken description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
