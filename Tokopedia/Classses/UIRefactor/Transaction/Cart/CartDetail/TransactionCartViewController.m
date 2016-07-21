@@ -1091,6 +1091,7 @@
         NSInteger shipmentPackageID = [list.cart_shipments.shipment_package_id integerValue];
         NSString *partialDetailKey = [NSString stringWithFormat:FORMAT_CART_CANCEL_PARTIAL_KEY,shopID,addressID, shipmentPackageID];
         if(_list.count>0)
+            _list[i].cart_partial_param = [NSString stringWithFormat:@"%zd~%zd~%zd",shopID,addressID, shipmentPackageID];
             [partialListParam setObject:_list[i].cart_is_partial?:@"0" forKey:partialDetailKey];
     }
     [_dataInput setObject:partialListParam forKey:DATA_PARTIAL_LIST_KEY];
