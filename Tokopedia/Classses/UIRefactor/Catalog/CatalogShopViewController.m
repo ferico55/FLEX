@@ -336,7 +336,7 @@
 }
 
 -(BOOL)isUseDynamicFilter{
-    if(FBTweakValue(@"Dynamic", @"Filter", @"Enabled", NO)) {
+    if(FBTweakValue(@"Dynamic", @"Filter", @"Enabled", YES)) {
         return YES;
     } else {
         return NO;
