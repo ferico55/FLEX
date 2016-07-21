@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -35,21 +35,6 @@
                                 <color key="backgroundColor" red="0.90196078430000004" green="0.90196078430000004" blue="0.90196078430000004" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="aeK-n3-p3K" secondAttribute="height" multiplier="1:1" id="Z2v-nL-N6N"/>
-                                </constraints>
-                            </imageView>
-                            <imageView hidden="YES" userInteractionEnabled="NO" tag="10" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Badges_gold_merchant" translatesAutoresizingMaskIntoConstraints="NO" id="kIx-Wn-xWp" userLabel="Gold Badges">
-                                <rect key="frame" x="293" y="93" width="20" height="20"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="20" id="Xec-Y4-CP5"/>
-                                    <constraint firstAttribute="height" constant="20" id="sIG-gV-yVr"/>
-                                </constraints>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" tag="10" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="gfk-mY-d4D" userLabel="l">
-                                <rect key="frame" x="270" y="93" width="20" height="20"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="20" id="1rW-d2-MKX"/>
-                                    <constraint firstAttribute="width" constant="20" id="JbP-Qz-75v"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Product dengan nama yang sangat panjang dan tidak jelas" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kw8-LN-It2">
@@ -124,9 +109,8 @@
                                 </userDefinedRuntimeAttributes>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Toko Semua Senang" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ysz-tw-Sdy">
-                                <rect key="frame" x="121" y="85" width="161" height="21"/>
+                                <rect key="frame" x="121" y="85" width="105" height="21"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="161" id="6Sl-dQ-cOv"/>
                                     <constraint firstAttribute="height" constant="21" id="evZ-3L-Sox"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
@@ -150,28 +134,35 @@
                                     <constraint firstAttribute="height" constant="10" id="ktp-Br-sgO"/>
                                 </constraints>
                             </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cRl-Ja-Enl" customClass="TKPDStackView">
+                                <rect key="frame" x="226" y="92" width="86" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="86" id="Jj6-xW-0lB"/>
+                                    <constraint firstAttribute="height" constant="20" id="MyR-Jb-RHw"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="MTc-ah-pyf" firstAttribute="centerY" secondItem="459-Qy-tpA" secondAttribute="centerY" id="6E2-bK-RaX"/>
                             <constraint firstItem="MTc-ah-pyf" firstAttribute="leading" secondItem="fkG-Ep-UNO" secondAttribute="trailing" constant="4" id="7dh-oZ-zGd"/>
-                            <constraint firstItem="gfk-mY-d4D" firstAttribute="centerY" secondItem="kIx-Wn-xWp" secondAttribute="centerY" id="A02-8a-ppV"/>
                             <constraint firstAttribute="trailing" secondItem="Kw8-LN-It2" secondAttribute="trailing" constant="3" id="ARI-H7-8dL"/>
                             <constraint firstItem="ysz-tw-Sdy" firstAttribute="leading" secondItem="aeK-n3-p3K" secondAttribute="trailing" constant="8" id="Aeb-Fc-slm"/>
                             <constraint firstItem="Kw8-LN-It2" firstAttribute="top" secondItem="eFV-8v-Xwg" secondAttribute="top" constant="5" id="BW7-IX-wJl"/>
+                            <constraint firstItem="cRl-Ja-Enl" firstAttribute="leading" secondItem="ysz-tw-Sdy" secondAttribute="trailing" id="D8f-Jk-YlC"/>
                             <constraint firstItem="jcG-C2-gR2" firstAttribute="top" secondItem="459-Qy-tpA" secondAttribute="bottom" constant="1" id="Dds-sq-Aax"/>
                             <constraint firstAttribute="bottom" secondItem="Jyc-LY-qhp" secondAttribute="bottom" constant="6" id="KrE-aK-ZXL"/>
-                            <constraint firstItem="kIx-Wn-xWp" firstAttribute="leading" secondItem="gfk-mY-d4D" secondAttribute="trailing" constant="3" id="PDM-Gh-raU"/>
                             <constraint firstItem="3pI-6F-eJx" firstAttribute="top" secondItem="ysz-tw-Sdy" secondAttribute="bottom" constant="-7" id="Pov-PH-eBx"/>
-                            <constraint firstAttribute="bottom" secondItem="kIx-Wn-xWp" secondAttribute="bottom" constant="7" id="Sr1-6p-0Kr"/>
-                            <constraint firstAttribute="trailing" secondItem="kIx-Wn-xWp" secondAttribute="trailing" constant="7" id="X3I-28-jv3"/>
                             <constraint firstItem="459-Qy-tpA" firstAttribute="top" secondItem="Kw8-LN-It2" secondAttribute="bottom" constant="3" id="XIL-iW-sbT"/>
                             <constraint firstItem="3pI-6F-eJx" firstAttribute="leading" secondItem="Jyc-LY-qhp" secondAttribute="trailing" constant="1" id="YtL-3m-uEq"/>
                             <constraint firstItem="aeK-n3-p3K" firstAttribute="leading" secondItem="eFV-8v-Xwg" secondAttribute="leading" constant="7" id="ZIU-LO-z8z"/>
                             <constraint firstAttribute="bottom" secondItem="aeK-n3-p3K" secondAttribute="bottom" constant="7" id="fs5-6k-T7I"/>
+                            <constraint firstItem="cRl-Ja-Enl" firstAttribute="leading" secondItem="ysz-tw-Sdy" secondAttribute="trailing" id="h9k-8q-7W4"/>
                             <constraint firstItem="3pI-6F-eJx" firstAttribute="centerY" secondItem="Jyc-LY-qhp" secondAttribute="centerY" id="i0k-NE-TV0"/>
                             <constraint firstItem="Kw8-LN-It2" firstAttribute="leading" secondItem="aeK-n3-p3K" secondAttribute="trailing" constant="8" id="jPp-AN-0dU"/>
+                            <constraint firstAttribute="bottom" secondItem="cRl-Ja-Enl" secondAttribute="bottom" constant="8" id="jnS-nD-3gQ"/>
                             <constraint firstItem="aeK-n3-p3K" firstAttribute="top" secondItem="eFV-8v-Xwg" secondAttribute="top" constant="7" id="l45-Ge-7jS"/>
+                            <constraint firstAttribute="trailing" secondItem="cRl-Ja-Enl" secondAttribute="trailing" constant="8" id="lWo-aC-b7w"/>
                             <constraint firstItem="jcG-C2-gR2" firstAttribute="leading" secondItem="aeK-n3-p3K" secondAttribute="trailing" constant="8" id="mjk-cr-h1g"/>
                             <constraint firstAttribute="trailing" secondItem="459-Qy-tpA" secondAttribute="trailing" constant="8" id="oK1-zD-POU"/>
                             <constraint firstItem="459-Qy-tpA" firstAttribute="leading" secondItem="aeK-n3-p3K" secondAttribute="trailing" constant="8" id="op7-wm-S8R"/>
@@ -212,13 +203,11 @@
                 <constraint firstItem="eFV-8v-Xwg" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="oJR-Je-Dvt"/>
             </constraints>
             <connections>
+                <outlet property="badgesView" destination="cRl-Ja-Enl" id="4ru-hJ-gft"/>
                 <outlet property="catalogPriceLabel" destination="jcG-C2-gR2" id="7GC-Mn-yJ3"/>
-                <outlet property="goldShopBadge" destination="kIx-Wn-xWp" id="GKk-Ef-7fZ"/>
                 <outlet property="grosirIconLocation" destination="7dh-oZ-zGd" id="sQA-XD-q95"/>
                 <outlet property="grosirLabel" destination="fkG-Ep-UNO" id="WGa-Lb-Awp"/>
                 <outlet property="locationIcon" destination="Jyc-LY-qhp" id="Kxf-W6-BiF"/>
-                <outlet property="luckyIconLocation" destination="PDM-Gh-raU" id="EMh-65-ezT"/>
-                <outlet property="luckyMerchantBadge" destination="gfk-mY-d4D" id="BaD-iJ-CTC"/>
                 <outlet property="preorderLabel" destination="MTc-ah-pyf" id="qOg-zV-PCD"/>
                 <outlet property="productImage" destination="aeK-n3-p3K" id="olv-Ta-3Gb"/>
                 <outlet property="productName" destination="Kw8-LN-It2" id="7is-zw-gfN"/>
@@ -231,7 +220,6 @@
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="Badges_gold_merchant" width="40" height="40"/>
         <image name="icon_location.png" width="14" height="14"/>
     </resources>
 </document>

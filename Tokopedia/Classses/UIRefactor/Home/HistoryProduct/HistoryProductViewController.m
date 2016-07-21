@@ -22,6 +22,7 @@
 
 #import "RetryCollectionReusableView.h"
 #import "Tokopedia-Swift.h"
+#import "ProductBadge.h"
 
 static NSString *historyProductCellIdentifier = @"ProductCellIdentifier";
 #define normalWidth 320
@@ -290,6 +291,8 @@ typedef enum TagRequest {
     
     RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APILISTKEY toKeyPath:kTKPDHOME_APILISTKEY withMapping:listMapping];
     [dataMapping addPropertyMapping:listRel];
+    RKRelationshipMapping *badgeRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"badges" toKeyPath:@"badges" withMapping:[ProductBadge mapping]];
+    [listMapping addPropertyMapping:badgeRel];
     
     //register mappings with the provider using a response descriptor
     RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping

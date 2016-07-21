@@ -9,6 +9,7 @@
 #import "ProductThumbCell.h"
 #import "ProductModelView.h"
 #import "CatalogModelView.h"
+#import "ProductBadge.h"
 
 @implementation ProductThumbCell
 
@@ -28,7 +29,6 @@
     self.shopLocation.text = viewModel.shopLocation;
     self.preorderLabel.hidden = viewModel.isProductPreorder ? NO : YES;
     self.grosirLabel.hidden = viewModel.isWholesale ? NO : YES;
-    self.goldShopBadge.hidden = viewModel.isGoldShopProduct ? NO : YES;
     self.grosirIconLocation.constant = viewModel.isProductPreorder ? 7 : -50;
     self.luckyIconLocation.constant = viewModel.isGoldShopProduct ? 7 : -19;
     
@@ -38,13 +38,33 @@
     [self.productImage setImageWithURL:[NSURL URLWithString:viewModel.productThumbUrl] placeholderImage:[UIImage imageNamed:@"grey-bg.png"]];
     [self.productImage setContentMode:UIViewContentModeScaleAspectFit];
     
-    [self.luckyMerchantBadge setImageWithURL:[NSURL URLWithString:viewModel.luckyMerchantImageURL]];
-    [self.luckyMerchantBadge setContentMode:UIViewContentModeScaleAspectFill];
+    //all of this is just for badges, dynamic badges
+    [_badgesView removeAllPushedView];
+    CGSize badgeSize = CGSizeMake(_badgesView.frame.size.height, _badgesView.frame.size.height);
+    [_badgesView setOrientation:TKPDStackViewOrientationRightToLeft];
+    for(ProductBadge* badge in viewModel.badges){
+        UIView *badgeView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, badgeSize.width, badgeSize.height)];
+        UIImageView *badgeImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, badgeSize.width, badgeSize.height)];
+        [badgeView addSubview:badgeImage];
+        
+        NSURLRequest* urlRequest = [[NSURLRequest alloc]initWithURL:[NSURL URLWithString:badge.image_url]];
+        [badgeImage setImageWithURLRequest:urlRequest
+                          placeholderImage:nil
+                                   success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+                                       if(image.size.width > 1){
+                                           [badgeImage setImage:image];
+                                           [_badgesView pushView:badgeView];
+                                       }
+                                   }
+                                   failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+                                       
+                                   }];
+    }
 }
 
 - (void)setCatalogViewModel:(CatalogModelView *)viewModel {
-    [self.goldShopBadge setHidden:YES];
-
     [self.productImage setImageWithURL:[NSURL URLWithString:viewModel.catalogThumbUrl] placeholderImage:[UIImage imageNamed:@"grey-bg.png"]];
     [self.productImage setContentMode:UIViewContentModeScaleAspectFit];
     

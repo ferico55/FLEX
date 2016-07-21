@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "ProductBadge.h"
 @class ProductModelView;
 
 @interface HistoryProductList : NSObject
@@ -19,6 +20,7 @@
 @property (nonatomic, strong) NSString *product_image;
 @property (nonatomic, strong) NSString *product_name;
 @property (nonatomic, strong) NSString *shop_lucky;
+@property (nonatomic, strong) NSArray *badges;
 
 // this is happen because product_wholesale from API is integer format
 // we have to fix API Spec first

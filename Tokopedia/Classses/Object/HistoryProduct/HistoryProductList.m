@@ -39,7 +39,7 @@
         [viewModel setIsProductPreorder:self.is_product_preorder];
         [viewModel setIsWholesale:self.is_product_wholesale];
         [viewModel setShopLocation:self.shop_location];
-        
+        [viewModel setBadges:_badges];
         _viewModel = viewModel;
     }
     
