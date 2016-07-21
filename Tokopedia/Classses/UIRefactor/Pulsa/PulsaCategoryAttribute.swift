@@ -25,7 +25,7 @@ class PulsaCategoryAttribute: NSObject, NSCoding {
             "icon" : "icon",
             "is_new" : "is_new",
             "status" : "status",
-            "use_phonebook" : "use_phonebook",
+            "use_phonebook" : "use_phonebook"
         ]
     }
     

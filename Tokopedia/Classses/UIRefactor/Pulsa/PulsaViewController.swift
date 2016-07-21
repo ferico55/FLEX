@@ -13,6 +13,7 @@ import Foundation
 class PulsaViewController: UIViewController, UITextFieldDelegate {
     var cache: PulsaCache = PulsaCache()
     var prefixes = Dictionary<String, Dictionary<String, String>>()
+    var stackView = StackView!()
 
     @IBOutlet weak var pulsaCategoryControl: UISegmentedControl!
     
@@ -31,6 +32,7 @@ class PulsaViewController: UIViewController, UITextFieldDelegate {
         }
         
         self.loadOperatorFromNetwork()
+        
     }
     
     func loadCategoryFromNetwork() {
@@ -65,24 +67,23 @@ class PulsaViewController: UIViewController, UITextFieldDelegate {
     }
     
     func buildNumberField(category: PulsaCategory) {
-        let numberField = UITextField.init()
-        numberField.placeholder = category.attributes.client_number.help
-        numberField.borderStyle = .RoundedRect
-        numberField.rightViewMode = .WhileEditing
-        
-        numberField.delegate = self
-        
-        let phoneText = UILabel.init(frame: CGRectMake(10, 44, self.view.frame.width - 10, 44))
-        phoneText.text = category.attributes.client_number.text
-        
-        self.view.addSubview(numberField)
-        self.view.addSubview(phoneText)
-        
-        numberField .mas_makeConstraints{ make in
-            make.height.equalTo()(44)
-            make.width.equalTo()(self.view)
-            make.top.equalTo()(phoneText.mas_bottom)
+        if(stackView != nil) {
+            self.stackView.removeFromSuperview()
         }
+        
+        let stackViewFrame = CGRectMake(view.frame.origin.x, 44, view.frame.size.width, view.frame.size.height)
+        stackView = StackView.init(axis: .vertical, spacing: 4)
+        stackView.frame = stackViewFrame
+        stackView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+        
+        self.view .addSubview(stackView)
+        
+        let helloView = PulsaLayout(category: category, prefixes: self.prefixes, callback: { (prefix) -> Void in
+            self.loadProductFromNetwork()
+            
+        }).arrangement().makeViews()
+        
+        self.stackView .addArrangedSubviews([helloView])
     }
     
     func didReceiveCategory(category : PulsaCategoryRoot) {
@@ -92,8 +93,11 @@ class PulsaViewController: UIViewController, UITextFieldDelegate {
             self.pulsaCategoryControl.insertSegmentWithTitle(category.attributes.name, atIndex: i, animated: false)
             i += 1
         }
+        
+        self.buildNumberField(category.data[0])
         self.pulsaCategoryControl.hidden = false
         self.pulsaCategoryControl.selectedSegmentIndex = 0
+
     }
     
 
@@ -102,30 +106,6 @@ class PulsaViewController: UIViewController, UITextFieldDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    //MARK - UITextFieldDelegate
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
-        let inputtedPrefix = textField.text! + string as String
-        let characterCount = inputtedPrefix.characters.count - range.length
-        
-        if(characterCount == 4) {
-            let prefix = self.prefixes[inputtedPrefix]
-            if(prefix != nil) {
-                let prefixImage = UIImageView.init(frame: CGRectMake(0, 0, 100, 50))
-                prefixImage.setImageWithURL((NSURL.init(string: prefix!["image"]!)))
-                textField.rightView = prefixImage
-                
-//                self.fetchProductsById(prefix["id"])
-            } else {
-                textField.rightView = nil
-            }
-        }
-        
-        if(characterCount < 4) {
-            textField.rightView = nil
-        }
-        
-        return true
-    }
     
 //    func fetchProductsById(id: String) -> PulsaProductRoot{
 //        
@@ -134,8 +114,8 @@ class PulsaViewController: UIViewController, UITextFieldDelegate {
     func loadProductFromNetwork() {
         let networkManager = TokopediaNetworkManager()
         networkManager .
-            requestWithBaseUrl("https://pulsa-api.tokopedia.com",
-                               path: "/v1/product/list",
+            requestWithBaseUrl("http://private-c3816-digitalcategory.apiary-mock.com",
+                               path: "/products",
                                method: .GET,
                                parameter: nil,
                                mapping: PulsaProductRoot.mapping(),
@@ -147,6 +127,24 @@ class PulsaViewController: UIViewController, UITextFieldDelegate {
                                onFailure: { (errors) -> Void in
                                 
             });
+    }
+    
+    func didReceiveProduct(productRoot: PulsaProductRoot) {
+        let chooseProductButton = UIButton(frame: CGRectMake(0, 0, self.view.frame.size.width - 10, 44))
+        chooseProductButton.backgroundColor = UIColor.darkGrayColor()
+        chooseProductButton.setTitle("Pilih Nominal", forState: .Normal)
+        chooseProductButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        
+        let buyButton = UIButton(frame: CGRectMake(0, 0, self.view.frame.size.width - 10, 44))
+        buyButton.backgroundColor = UIColor.orangeColor()
+        buyButton.setTitle("Beli", forState: .Normal)
+        buyButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        
+        let stackButton = StackView.init(axis: .horizontal, spacing: 10, distribution: .fillEqualSize, contentInsets: UIEdgeInsetsMake(10, 10, 10, 10))
+        stackButton.addArrangedSubviews([chooseProductButton, buyButton])
+        
+        stackView.addArrangedSubviews([stackButton])
+        
     }
     
     
@@ -166,10 +164,6 @@ class PulsaViewController: UIViewController, UITextFieldDelegate {
                                onFailure: { (errors) -> Void in
                                 
             });
-    }
-    
-    func didReceiveProduct(productRoot: PulsaProductRoot) {
-        
     }
     
     func didReceiveOperator(operatorRoot: PulsaOperatorRoot) {

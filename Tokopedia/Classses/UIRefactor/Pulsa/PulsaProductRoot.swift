@@ -14,7 +14,7 @@ class PulsaProductRoot: NSObject, NSCoding {
     static func mapping() -> RKObjectMapping! {
         let mapping : RKObjectMapping = RKObjectMapping.init(forClass: self)
         
-        let relMapping : RKRelationshipMapping = RKRelationshipMapping.init(fromKeyPath: "data", toKeyPath: "data", withMapping: PulsaCategory.mapping())
+        let relMapping : RKRelationshipMapping = RKRelationshipMapping.init(fromKeyPath: "data", toKeyPath: "data", withMapping: PulsaProduct.mapping())
         mapping.addPropertyMapping(relMapping)
         
         return mapping

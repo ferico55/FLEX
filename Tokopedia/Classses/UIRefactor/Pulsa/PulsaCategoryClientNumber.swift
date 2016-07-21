@@ -12,13 +12,14 @@ class PulsaCategoryClientNumber: NSObject {
     var is_shown : Bool = false
     var text : String = ""
     var help : String = ""
-    
+    var placeholder: String = ""
     
     static func attributeMappingDictionary() -> [NSObject : AnyObject]! {
         return [
             "is_shown"  : "is_shown",
             "text" : "text",
             "help" : "help",
+            "placeholder" : "placeholder"
         ]
     }
     
@@ -39,6 +40,10 @@ class PulsaCategoryClientNumber: NSObject {
             self.text = text
         }
         
+        if let placeholder = aDecoder.decodeObjectForKey("placeholder") as? String {
+            self.placeholder = placeholder
+        }
+        
         if let is_shown = aDecoder.decodeObjectForKey("is_shown") as? Bool {
             self.is_shown = is_shown
         }
@@ -52,5 +57,6 @@ class PulsaCategoryClientNumber: NSObject {
         aCoder.encodeObject(is_shown, forKey: "is_shown")
         aCoder.encodeObject(text, forKey: "text")
         aCoder.encodeObject(help, forKey: "help")
+        aCoder.encodeObject(placeholder, forKey: "placeholder")
     }
 }

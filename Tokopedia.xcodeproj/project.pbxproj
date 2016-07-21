@@ -8,6 +8,31 @@
 
 /* Begin PBXBuildFile section */
 		2D50139230438B54812D14B9 /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */; };
+		7A59E56E1D409BEF002ECC7B /* Alignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A59E5521D409BEF002ECC7B /* Alignment.swift */; };
+		7A59E56F1D409BF0002ECC7B /* Flexibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A59E5531D409BEF002ECC7B /* Flexibility.swift */; };
+		7A59E5701D409BF0002ECC7B /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7A59E5541D409BEF002ECC7B /* Info.plist */; };
+		7A59E5711D409BF0002ECC7B /* CFAbsoluteTimeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A59E5561D409BEF002ECC7B /* CFAbsoluteTimeExtension.swift */; };
+		7A59E5721D409BF0002ECC7B /* CGSizeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A59E5571D409BEF002ECC7B /* CGSizeExtension.swift */; };
+		7A59E5731D409BF0002ECC7B /* Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A59E5581D409BEF002ECC7B /* Layout.swift */; };
+		7A59E5741D409BF0002ECC7B /* LayoutArrangement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A59E5591D409BEF002ECC7B /* LayoutArrangement.swift */; };
+		7A59E5751D409BF0002ECC7B /* LayoutAxis.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A59E55A1D409BEF002ECC7B /* LayoutAxis.swift */; };
+		7A59E5761D409BF0002ECC7B /* LayoutMeasurement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A59E55B1D409BEF002ECC7B /* LayoutMeasurement.swift */; };
+		7A59E5771D409BF0002ECC7B /* InsetLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A59E55D1D409BEF002ECC7B /* InsetLayout.swift */; };
+		7A59E5781D409BF0002ECC7B /* LabelLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A59E55E1D409BEF002ECC7B /* LabelLayout.swift */; };
+		7A59E5791D409BF0002ECC7B /* PositioningLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A59E55F1D409BEF002ECC7B /* PositioningLayout.swift */; };
+		7A59E57A1D409BF0002ECC7B /* SizeLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A59E5601D409BEF002ECC7B /* SizeLayout.swift */; };
+		7A59E57B1D409BF0002ECC7B /* StackLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A59E5611D409BEF002ECC7B /* StackLayout.swift */; };
+		7A59E57C1D409BF0002ECC7B /* AxisFlexibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A59E5631D409BEF002ECC7B /* AxisFlexibility.swift */; };
+		7A59E57D1D409BF0002ECC7B /* AxisPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A59E5641D409BEF002ECC7B /* AxisPoint.swift */; };
+		7A59E57E1D409BF0002ECC7B /* AxisSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A59E5651D409BEF002ECC7B /* AxisSize.swift */; };
+		7A59E57F1D409BF0002ECC7B /* LayoutAdapterCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A59E5671D409BEF002ECC7B /* LayoutAdapterCollectionView.swift */; };
+		7A59E5801D409BF0002ECC7B /* LayoutAdapterTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A59E5681D409BEF002ECC7B /* LayoutAdapterTableView.swift */; };
+		7A59E5811D409BF0002ECC7B /* ReloadableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A59E5691D409BEF002ECC7B /* ReloadableView.swift */; };
+		7A59E5821D409BF0002ECC7B /* ReloadableViewLayoutAdapter+UICollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A59E56A1D409BEF002ECC7B /* ReloadableViewLayoutAdapter+UICollectionView.swift */; };
+		7A59E5831D409BF0002ECC7B /* ReloadableViewLayoutAdapter+UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A59E56B1D409BEF002ECC7B /* ReloadableViewLayoutAdapter+UITableView.swift */; };
+		7A59E5841D409BF0002ECC7B /* ReloadableViewLayoutAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A59E56C1D409BEF002ECC7B /* ReloadableViewLayoutAdapter.swift */; };
+		7A59E5851D409BF0002ECC7B /* StackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A59E56D1D409BEF002ECC7B /* StackView.swift */; };
+		7A59E5871D409C19002ECC7B /* PulsaLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A59E5861D409C19002ECC7B /* PulsaLayout.swift */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
 		7ACE9C541BB00956006C4BB7 /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */; };
@@ -2437,6 +2462,31 @@
 		2D733D9158C7BF957D514506 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
 		4868E459AB2A65D133732296 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tokopedia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7A59E5521D409BEF002ECC7B /* Alignment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alignment.swift; sourceTree = "<group>"; };
+		7A59E5531D409BEF002ECC7B /* Flexibility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Flexibility.swift; sourceTree = "<group>"; };
+		7A59E5541D409BEF002ECC7B /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7A59E5561D409BEF002ECC7B /* CFAbsoluteTimeExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CFAbsoluteTimeExtension.swift; sourceTree = "<group>"; };
+		7A59E5571D409BEF002ECC7B /* CGSizeExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGSizeExtension.swift; sourceTree = "<group>"; };
+		7A59E5581D409BEF002ECC7B /* Layout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Layout.swift; sourceTree = "<group>"; };
+		7A59E5591D409BEF002ECC7B /* LayoutArrangement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutArrangement.swift; sourceTree = "<group>"; };
+		7A59E55A1D409BEF002ECC7B /* LayoutAxis.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutAxis.swift; sourceTree = "<group>"; };
+		7A59E55B1D409BEF002ECC7B /* LayoutMeasurement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutMeasurement.swift; sourceTree = "<group>"; };
+		7A59E55D1D409BEF002ECC7B /* InsetLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InsetLayout.swift; sourceTree = "<group>"; };
+		7A59E55E1D409BEF002ECC7B /* LabelLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelLayout.swift; sourceTree = "<group>"; };
+		7A59E55F1D409BEF002ECC7B /* PositioningLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PositioningLayout.swift; sourceTree = "<group>"; };
+		7A59E5601D409BEF002ECC7B /* SizeLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SizeLayout.swift; sourceTree = "<group>"; };
+		7A59E5611D409BEF002ECC7B /* StackLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StackLayout.swift; sourceTree = "<group>"; };
+		7A59E5631D409BEF002ECC7B /* AxisFlexibility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AxisFlexibility.swift; sourceTree = "<group>"; };
+		7A59E5641D409BEF002ECC7B /* AxisPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AxisPoint.swift; sourceTree = "<group>"; };
+		7A59E5651D409BEF002ECC7B /* AxisSize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AxisSize.swift; sourceTree = "<group>"; };
+		7A59E5671D409BEF002ECC7B /* LayoutAdapterCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutAdapterCollectionView.swift; sourceTree = "<group>"; };
+		7A59E5681D409BEF002ECC7B /* LayoutAdapterTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutAdapterTableView.swift; sourceTree = "<group>"; };
+		7A59E5691D409BEF002ECC7B /* ReloadableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReloadableView.swift; sourceTree = "<group>"; };
+		7A59E56A1D409BEF002ECC7B /* ReloadableViewLayoutAdapter+UICollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ReloadableViewLayoutAdapter+UICollectionView.swift"; sourceTree = "<group>"; };
+		7A59E56B1D409BEF002ECC7B /* ReloadableViewLayoutAdapter+UITableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ReloadableViewLayoutAdapter+UITableView.swift"; sourceTree = "<group>"; };
+		7A59E56C1D409BEF002ECC7B /* ReloadableViewLayoutAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReloadableViewLayoutAdapter.swift; sourceTree = "<group>"; };
+		7A59E56D1D409BEF002ECC7B /* StackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StackView.swift; sourceTree = "<group>"; };
+		7A59E5861D409C19002ECC7B /* PulsaLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulsaLayout.swift; sourceTree = "<group>"; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FacebookSDKStrings.bundle; sourceTree = "<group>"; };
@@ -6066,6 +6116,69 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7A59E5511D409BEF002ECC7B /* LayoutKit */ = {
+			isa = PBXGroup;
+			children = (
+				7A59E5521D409BEF002ECC7B /* Alignment.swift */,
+				7A59E5531D409BEF002ECC7B /* Flexibility.swift */,
+				7A59E5541D409BEF002ECC7B /* Info.plist */,
+				7A59E5551D409BEF002ECC7B /* Internal */,
+				7A59E5581D409BEF002ECC7B /* Layout.swift */,
+				7A59E5591D409BEF002ECC7B /* LayoutArrangement.swift */,
+				7A59E55A1D409BEF002ECC7B /* LayoutAxis.swift */,
+				7A59E55B1D409BEF002ECC7B /* LayoutMeasurement.swift */,
+				7A59E55C1D409BEF002ECC7B /* Layouts */,
+				7A59E5621D409BEF002ECC7B /* Math */,
+				7A59E5661D409BEF002ECC7B /* Views */,
+			);
+			path = LayoutKit;
+			sourceTree = "<group>";
+		};
+		7A59E5551D409BEF002ECC7B /* Internal */ = {
+			isa = PBXGroup;
+			children = (
+				7A59E5561D409BEF002ECC7B /* CFAbsoluteTimeExtension.swift */,
+				7A59E5571D409BEF002ECC7B /* CGSizeExtension.swift */,
+			);
+			path = Internal;
+			sourceTree = "<group>";
+		};
+		7A59E55C1D409BEF002ECC7B /* Layouts */ = {
+			isa = PBXGroup;
+			children = (
+				7A59E55D1D409BEF002ECC7B /* InsetLayout.swift */,
+				7A59E55E1D409BEF002ECC7B /* LabelLayout.swift */,
+				7A59E55F1D409BEF002ECC7B /* PositioningLayout.swift */,
+				7A59E5601D409BEF002ECC7B /* SizeLayout.swift */,
+				7A59E5611D409BEF002ECC7B /* StackLayout.swift */,
+			);
+			path = Layouts;
+			sourceTree = "<group>";
+		};
+		7A59E5621D409BEF002ECC7B /* Math */ = {
+			isa = PBXGroup;
+			children = (
+				7A59E5631D409BEF002ECC7B /* AxisFlexibility.swift */,
+				7A59E5641D409BEF002ECC7B /* AxisPoint.swift */,
+				7A59E5651D409BEF002ECC7B /* AxisSize.swift */,
+			);
+			path = Math;
+			sourceTree = "<group>";
+		};
+		7A59E5661D409BEF002ECC7B /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				7A59E5671D409BEF002ECC7B /* LayoutAdapterCollectionView.swift */,
+				7A59E5681D409BEF002ECC7B /* LayoutAdapterTableView.swift */,
+				7A59E5691D409BEF002ECC7B /* ReloadableView.swift */,
+				7A59E56A1D409BEF002ECC7B /* ReloadableViewLayoutAdapter+UICollectionView.swift */,
+				7A59E56B1D409BEF002ECC7B /* ReloadableViewLayoutAdapter+UITableView.swift */,
+				7A59E56C1D409BEF002ECC7B /* ReloadableViewLayoutAdapter.swift */,
+				7A59E56D1D409BEF002ECC7B /* StackView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		7AFC55C21D339F63000F6C88 /* Pulsa */ = {
 			isa = PBXGroup;
 			children = (
@@ -6084,6 +6197,7 @@
 				7AFC55DB1D33A00C000F6C88 /* PulsaProduct.swift */,
 				7AFC55DD1D33A018000F6C88 /* PulsaProductAttribute.swift */,
 				7AFC55DF1D33A034000F6C88 /* PulsaProductPromo.swift */,
+				7A59E5861D409C19002ECC7B /* PulsaLayout.swift */,
 			);
 			path = Pulsa;
 			sourceTree = "<group>";
@@ -8234,6 +8348,7 @@
 		8548A45E1D1A58E600D11E22 /* Third Party */ = {
 			isa = PBXGroup;
 			children = (
+				7A59E5511D409BEF002ECC7B /* LayoutKit */,
 				8548A45F1D1A58E600D11E22 /* DKImagePicker */,
 				8548A46D1D1A58E600D11E22 /* iCarousel.h */,
 				8548A46E1D1A58E600D11E22 /* iCarousel.m */,
@@ -12436,6 +12551,7 @@
 				8548B65A1D1A58F200D11E22 /* icon_smile_small@3x.png in Resources */,
 				8548B5C81D1A58F200D11E22 /* icon_neutral@3x.png in Resources */,
 				8548B1551D1A58F100D11E22 /* ProgressBarView.xib in Resources */,
+				7A59E5701D409BF0002ECC7B /* Info.plist in Resources */,
 				8548B2D51D1A58F100D11E22 /* SalesNewOrderViewController.xib in Resources */,
 				8548B55B1D1A58F200D11E22 /* icon_grid_satu@2x.png in Resources */,
 				8548B17F1D1A58F100D11E22 /* GeneralCheckmarkCell.xib in Resources */,
@@ -13572,6 +13688,7 @@
 				8548B1851D1A58F100D11E22 /* GeneralProductCell.m in Sources */,
 				8548AE731D1A58F100D11E22 /* UIActivityViewController+Extensions.m in Sources */,
 				8548B1081D1A58F100D11E22 /* CatalogShopCell.m in Sources */,
+				7A59E57E1D409BF0002ECC7B /* AxisSize.swift in Sources */,
 				8548B3671D1A58F100D11E22 /* ShopNotesDetailViewController.m in Sources */,
 				8548AE741D1A58F100D11E22 /* UIButtonCategory.swift in Sources */,
 				8548AE981D1A58F100D11E22 /* CreatePassword.m in Sources */,
@@ -13603,6 +13720,7 @@
 				8548AE751D1A58F100D11E22 /* UIImage+ImageEffects.m in Sources */,
 				8548B4171D1A58F200D11E22 /* UserProfileBiodataViewController.m in Sources */,
 				8548AFBF1D1A58F100D11E22 /* OrderDetail.m in Sources */,
+				7A59E5771D409BF0002ECC7B /* InsetLayout.swift in Sources */,
 				8548B3E91D1A58F200D11E22 /* TxOrderConfirmationDropshipCell.m in Sources */,
 				8548B0FD1D1A58F100D11E22 /* RequestUploadImageSubmit.m in Sources */,
 				8548B1011D1A58F100D11E22 /* TKPDPhotoPicker.m in Sources */,
@@ -13623,6 +13741,7 @@
 				8548B3FB1D1A58F200D11E22 /* TxOrderConfirmedViewController.m in Sources */,
 				8548B34A1D1A58F100D11E22 /* EditShopImageViewCell.m in Sources */,
 				8548B11F1D1A58F100D11E22 /* CategoryMenuViewController.m in Sources */,
+				7A59E5761D409BF0002ECC7B /* LayoutMeasurement.swift in Sources */,
 				8548B2F11D1A58F100D11E22 /* DetailShipmentStatusViewController.m in Sources */,
 				8548B1AB1D1A58F100D11E22 /* ProductInfoTableViewController.m in Sources */,
 				8548B2A51D1A58F100D11E22 /* SplitReputationViewController.m in Sources */,
@@ -13681,7 +13800,9 @@
 				8548B1661D1A58F100D11E22 /* DepositRequest.m in Sources */,
 				8548AFA31D1A58F100D11E22 /* PrivacyFormResult.m in Sources */,
 				8548B0131D1A58F100D11E22 /* SettingLocationResult.m in Sources */,
+				7A59E57A1D409BF0002ECC7B /* SizeLayout.swift in Sources */,
 				8548B1501D1A58F100D11E22 /* NoResult.m in Sources */,
+				7A59E56F1D409BF0002ECC7B /* Flexibility.swift in Sources */,
 				8548AF101D1A58F100D11E22 /* HotlistBanner.m in Sources */,
 				8548B2E21D1A58F100D11E22 /* BarCodeViewController.m in Sources */,
 				8548B2851D1A58F100D11E22 /* InboxReviewCell.m in Sources */,
@@ -13714,6 +13835,7 @@
 				8548B0001D1A58F100D11E22 /* Shipment.m in Sources */,
 				8548AE841D1A58F100D11E22 /* NSMutableURLRequest+TKPDURLRequestUploadImage.m in Sources */,
 				8548AF451D1A58F100D11E22 /* InboxTicket.m in Sources */,
+				7A59E57D1D409BF0002ECC7B /* AxisPoint.swift in Sources */,
 				8548B30A1D1A58F100D11E22 /* SearchResultViewController.m in Sources */,
 				8548B1FA1D1A58F100D11E22 /* LoginSecurity.m in Sources */,
 				8548B01E1D1A58F100D11E22 /* Province.m in Sources */,
@@ -13757,6 +13879,7 @@
 				8548B41E1D1A58F200D11E22 /* ProductModelView.m in Sources */,
 				8548B3171D1A58F100D11E22 /* SettingAddressViewController.m in Sources */,
 				7AFC55CE1D339F63000F6C88 /* PulsaCache.swift in Sources */,
+				7A59E56E1D409BEF002ECC7B /* Alignment.swift in Sources */,
 				8548B1C81D1A58F100D11E22 /* InboxRootViewController.m in Sources */,
 				8548AFE01D1A58F100D11E22 /* SendMessageResult.m in Sources */,
 				8548AFF81D1A58F100D11E22 /* Notes.m in Sources */,
@@ -13830,6 +13953,7 @@
 				8548AF511D1A58F100D11E22 /* ReplyInboxTicket.m in Sources */,
 				8548B2C81D1A58F100D11E22 /* ChooseProductCell.m in Sources */,
 				8548B3651D1A58F100D11E22 /* ShopInfoViewController.m in Sources */,
+				7A59E5751D409BF0002ECC7B /* LayoutAxis.swift in Sources */,
 				8548B10E1D1A58F100D11E22 /* CatalogViewController.m in Sources */,
 				7AFC55D71D339F63000F6C88 /* PulsaViewController.swift in Sources */,
 				8548AFCE1D1A58F100D11E22 /* SearchAWSShop.m in Sources */,
@@ -13917,6 +14041,7 @@
 				8548B2511D1A58F100D11E22 /* GalleryViewController.m in Sources */,
 				8548B3B91D1A58F100D11E22 /* TransactionCartEditViewController.m in Sources */,
 				8548B01D1D1A58F100D11E22 /* PosMinWeight.m in Sources */,
+				7A59E57C1D409BF0002ECC7B /* AxisFlexibility.swift in Sources */,
 				8548B1791D1A58F100D11E22 /* searchObject.swift in Sources */,
 				8548B2B11D1A58F100D11E22 /* PromoRequest.m in Sources */,
 				8548AEE81D1A58F100D11E22 /* ShopInfo.m in Sources */,
@@ -13997,6 +14122,7 @@
 				8548B01A1D1A58F100D11E22 /* Gojek.m in Sources */,
 				8548AECC1D1A58F100D11E22 /* Catalog.m in Sources */,
 				8548B3451D1A58F100D11E22 /* CloseShopViewController.m in Sources */,
+				7A59E57B1D409BF0002ECC7B /* StackLayout.swift in Sources */,
 				8548B2401D1A58F100D11E22 /* PriceAlertViewController.m in Sources */,
 				8548B2F31D1A58F100D11E22 /* FilterShipmentStatusViewController.m in Sources */,
 				8548AF3C1D1A58F100D11E22 /* InboxReviewList.m in Sources */,
@@ -14038,6 +14164,7 @@
 				8548B2021D1A58F100D11E22 /* MoreNavigationViewController.m in Sources */,
 				8548B0571D1A58F100D11E22 /* DataCredit.m in Sources */,
 				8548B1801D1A58F100D11E22 /* GeneralList1GestureCell.m in Sources */,
+				7A59E5841D409BF0002ECC7B /* ReloadableViewLayoutAdapter.swift in Sources */,
 				8548B3081D1A58F100D11E22 /* SearchResultShopViewController.m in Sources */,
 				8548B0C51D1A58F100D11E22 /* AlertCameraView.m in Sources */,
 				8548B30F1D1A58F100D11E22 /* SecurityQuestionViewController.swift in Sources */,
@@ -14115,6 +14242,7 @@
 				8548AF351D1A58F100D11E22 /* ResolutionDispute.m in Sources */,
 				8548B0281D1A58F100D11E22 /* Track.m in Sources */,
 				8548AFD51D1A58F100D11E22 /* SearchAutoCompleteCategory.m in Sources */,
+				7A59E5851D409BF0002ECC7B /* StackView.swift in Sources */,
 				8548B39E1D1A58F100D11E22 /* TokopediaCacheManager.m in Sources */,
 				8548AF8B1D1A58F100D11E22 /* ProfileEdit.m in Sources */,
 				8548B0A91D1A58F100D11E22 /* SwipeView.m in Sources */,
@@ -14124,6 +14252,7 @@
 				8548AFE51D1A58F100D11E22 /* ShipmentData.m in Sources */,
 				8548B27F1D1A58F100D11E22 /* GiveReviewViewController.m in Sources */,
 				8548B12B1D1A58F100D11E22 /* ContactUsViewController.m in Sources */,
+				7A59E5731D409BF0002ECC7B /* Layout.swift in Sources */,
 				8548B3F51D1A58F200D11E22 /* TxOrderConfirmedButtonArrowCell.m in Sources */,
 				8548B1751D1A58F100D11E22 /* ListOption.swift in Sources */,
 				8548B08F1D1A58F100D11E22 /* UploadImageSubmitResult.m in Sources */,
@@ -14214,6 +14343,7 @@
 				8548B0471D1A58F100D11E22 /* TransactionCartGateway.m in Sources */,
 				8548AE8D1D1A58F100D11E22 /* UIScrollViewCategory.swift in Sources */,
 				8548AFBE1D1A58F100D11E22 /* OrderDestination.m in Sources */,
+				7A59E57F1D409BF0002ECC7B /* LayoutAdapterCollectionView.swift in Sources */,
 				8548B0771D1A58F100D11E22 /* TxOrderPaymentEdit.m in Sources */,
 				8548AFC41D1A58F100D11E22 /* OrderProduct.m in Sources */,
 				8548AFB91D1A58F100D11E22 /* OrderBooking.m in Sources */,
@@ -14286,6 +14416,7 @@
 				8548AF8E1D1A58F100D11E22 /* FavoriteShopResult.m in Sources */,
 				8548AFE41D1A58F100D11E22 /* ShipmentCourierPackage.m in Sources */,
 				8548B1F31D1A58F100D11E22 /* InboxTicketDetailViewController.m in Sources */,
+				7A59E5801D409BF0002ECC7B /* LayoutAdapterTableView.swift in Sources */,
 				8548AF061D1A58F100D11E22 /* GoogleDistanceMatrixRow.m in Sources */,
 				8548AFAC1D1A58F100D11E22 /* PromoteResult.m in Sources */,
 				8548B41B1D1A58F200D11E22 /* CatalogModelView.m in Sources */,
@@ -14330,6 +14461,7 @@
 				8548AEB11D1A58F100D11E22 /* CatalogResult.m in Sources */,
 				8548AF941D1A58F100D11E22 /* ProfileSettingsResult.m in Sources */,
 				8548B05A1D1A58F100D11E22 /* InstallmentTerm.m in Sources */,
+				7A59E5821D409BF0002ECC7B /* ReloadableViewLayoutAdapter+UICollectionView.swift in Sources */,
 				8548B0031D1A58F100D11E22 /* ShopCloseDetail.m in Sources */,
 				8548AF631D1A58F100D11E22 /* DetailReputationReview.m in Sources */,
 				8548B0DD1D1A58F100D11E22 /* AlertRateView.m in Sources */,
@@ -14397,11 +14529,14 @@
 				8548B1301D1A58F100D11E22 /* TPRootWireframe.m in Sources */,
 				7AFC55D61D339F63000F6C88 /* PulsaOperatorRoot.swift in Sources */,
 				8548AEC81D1A58F100D11E22 /* DepositSummary.m in Sources */,
+				7A59E5721D409BF0002ECC7B /* CGSizeExtension.swift in Sources */,
 				8548B1D21D1A58F100D11E22 /* InboxResolutionCenterObjectMapping.m in Sources */,
+				7A59E5831D409BF0002ECC7B /* ReloadableViewLayoutAdapter+UITableView.swift in Sources */,
 				8548B03B1D1A58F100D11E22 /* TransactionAddressShippingResult.m in Sources */,
 				8548B3DF1D1A58F200D11E22 /* TxOrderTransactionDetailViewController.m in Sources */,
 				7AFC55E01D33A034000F6C88 /* PulsaProductPromo.swift in Sources */,
 				8548B1D31D1A58F100D11E22 /* InboxResolutionCenterTabViewController.m in Sources */,
+				7A59E5811D409BF0002ECC7B /* ReloadableView.swift in Sources */,
 				8548B1191D1A58F100D11E22 /* FilterCategoryViewCell.m in Sources */,
 				8548B2D41D1A58F100D11E22 /* SalesNewOrderViewController.m in Sources */,
 				8548B0F91D1A58F100D11E22 /* GenerateHostRequest.m in Sources */,
@@ -14533,6 +14668,7 @@
 				8548B16F1D1A58F100D11E22 /* FilterResponse.swift in Sources */,
 				8548B2831D1A58F100D11E22 /* HelpfulReviewResult.m in Sources */,
 				8548B3D91D1A58F200D11E22 /* TxOrderStatusCell.m in Sources */,
+				7A59E5871D409C19002ECC7B /* PulsaLayout.swift in Sources */,
 				8548AFA61D1A58F100D11E22 /* PromoProductImage.m in Sources */,
 				8548AF841D1A58F100D11E22 /* ProductTalkForm.m in Sources */,
 				8548AEB91D1A58F100D11E22 /* CategoryResponse.swift in Sources */,
@@ -14563,6 +14699,7 @@
 				8548B0D71D1A58F100D11E22 /* AlertLuckyView.m in Sources */,
 				8548AFA21D1A58F100D11E22 /* PrivacyFormPrivacy.m in Sources */,
 				8548B2AA1D1A58F100D11E22 /* ProductDataSource.swift in Sources */,
+				7A59E5791D409BF0002ECC7B /* PositioningLayout.swift in Sources */,
 				8548AEF81D1A58F100D11E22 /* FavoritedShop.m in Sources */,
 				8548B0621D1A58F100D11E22 /* TransactionVoucherResult.m in Sources */,
 				8548B3B31D1A58F100D11E22 /* CartGAHandler.m in Sources */,
@@ -14576,6 +14713,7 @@
 				8548B2FB1D1A58F100D11E22 /* SearchAutoCompleteCell.m in Sources */,
 				8548B3DB1D1A58F200D11E22 /* TxOrderStatusDetailViewController.m in Sources */,
 				8548B0401D1A58F100D11E22 /* TransactionATCFormResult.m in Sources */,
+				7A59E5711D409BF0002ECC7B /* CFAbsoluteTimeExtension.swift in Sources */,
 				8548B10C1D1A58F100D11E22 /* CatalogSpecificationCell.m in Sources */,
 				8548AE6F1D1A58F100D11E22 /* NSString+TPBaseUrl.m in Sources */,
 				8548AF131D1A58F100D11E22 /* HotlistBannerResult.m in Sources */,
@@ -14603,6 +14741,7 @@
 				8548B3331D1A58F100D11E22 /* BerhasilBukaTokoViewController.m in Sources */,
 				8548B23C1D1A58F100D11E22 /* InboxPriceAlertSplitViewController.m in Sources */,
 				8548B1DE1D1A58F100D11E22 /* ResolutionCenterInputViewController.m in Sources */,
+				7A59E5781D409BF0002ECC7B /* LabelLayout.swift in Sources */,
 				7AFC55DA1D339FFF000F6C88 /* PulsaProductRoot.swift in Sources */,
 				8548B0331D1A58F100D11E22 /* LuckyDeal.m in Sources */,
 				8548B3D71D1A58F200D11E22 /* TransactionObjectMapping.m in Sources */,
@@ -14692,6 +14831,7 @@
 				8548B2101D1A58F100D11E22 /* MyShopEtalaseEditViewController.m in Sources */,
 				8548AFB81D1A58F100D11E22 /* Order.m in Sources */,
 				8548AF981D1A58F100D11E22 /* BankAccountForm.m in Sources */,
+				7A59E5741D409BF0002ECC7B /* LayoutArrangement.swift in Sources */,
 				8548AFF21D1A58F100D11E22 /* EtalaseList.m in Sources */,
 				8548B3A61D1A58F100D11E22 /* RequestATC.m in Sources */,
 				8548AF081D1A58F100D11E22 /* GooglePlaceDetailGeometry.m in Sources */,
