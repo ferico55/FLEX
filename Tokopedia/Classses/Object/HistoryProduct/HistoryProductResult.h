@@ -11,9 +11,11 @@
 #import "Paging.h"
 #import "HistoryProductList.h"
 
-@interface HistoryProductResult : NSObject
+@interface HistoryProductResult : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) Paging *paging;
 @property (nonatomic, strong) NSArray *list;
+
++(RKObjectMapping *)mapping;
 
 @end

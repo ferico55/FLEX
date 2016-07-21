@@ -10,4 +10,18 @@
 
 @implementation HistoryProductResult
 
++(RKObjectMapping *)mapping{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"paging"
+                                                                            toKeyPath:@"paging"
+                                                                          withMapping:[Paging mapping]]];
+    
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"list"
+                                                                            toKeyPath:@"list"
+                                                                          withMapping:[HistoryProductList mapping]]];
+    
+    return mapping;
+}
+
 @end

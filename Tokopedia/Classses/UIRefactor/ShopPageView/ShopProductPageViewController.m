@@ -11,7 +11,6 @@
 #import "MyShopNoteDetailViewController.h"
 #import "GeneralProductCell.h"
 
-#import "Notes.h"
 #import "GeneralAction.h"
 #import "EtalaseList.h"
 #import "SearchItem.h"
