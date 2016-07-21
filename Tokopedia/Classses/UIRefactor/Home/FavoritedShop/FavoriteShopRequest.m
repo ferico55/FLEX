@@ -72,7 +72,7 @@
     
     [networkManager requestWithBaseUrl:[NSString v4Url]
                                   path:@"/v4/action/favorite-shop/fav_shop.pl"
-                                method:RKRequestMethodGET
+                                method:RKRequestMethodPOST
                              parameter:@{@"shop_id":shopId,
                                          @"ad_key":adKey}
                                mapping:[FavoriteShopAction mapping]

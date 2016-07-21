@@ -492,13 +492,6 @@
 
 -(void)actionUponFailUpdateNote: (NSError *)error
 {
-    NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)error description]);
-    if ([(NSError*)error code] == NSURLErrorCancelled) {
-        if (_requestcount<kTKPDREQUESTCOUNTMAX) {
-            NSLog(@" ==== REQUESTCOUNT %zd =====",_requestcount);
-            //TODO:: Reload handler
-        }
-    }
 }
 
 #pragma mark - Text Field delegate

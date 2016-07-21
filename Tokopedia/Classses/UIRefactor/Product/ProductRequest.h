@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "EtalaseList.h"
 #import "ShopSettings.h"
+#import "HistoryProduct.h"
 
 @interface ProductRequest : NSObject
 
@@ -24,5 +25,8 @@ setCompletionBlockWithSuccess:(void (^)(ShopSettings *response))success
 + (void)deleteProductWithId:(NSString *)productId
 setCompletionBlockWithSuccess:(void (^)(ShopSettings *response))success
                     failure:(void (^)(NSArray *errorMessages))failure;
+
++ (void)requestHistoryProductOnSuccess:(void (^)(HistoryProduct *productHistory))success
+                             OnFailure:(void (^)(NSError *error))failure;
 
 @end

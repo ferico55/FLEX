@@ -103,4 +103,24 @@ setCompletionBlockWithSuccess:(void (^)(ShopSettings *response))success
                              }];
 }
 
++ (void)requestHistoryProductOnSuccess:(void (^)(HistoryProduct *productHistory))success
+                             OnFailure:(void (^)(NSError *error))failure
+{
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    networkManager.isUsingHmac = YES;
+    
+    [networkManager requestWithBaseUrl:[NSString v4Url]
+                                   path:@"/v4/home/get_recent_view_product.pl"
+                                 method:RKRequestMethodGET
+                              parameter:@{@"action":@"get_recent_view_product"}
+                                mapping:[HistoryProduct mapping]
+                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                  HistoryProduct *response = [successResult.dictionary objectForKey:@""];
+                                  success(response);
+                              }
+                              onFailure:^(NSError *errorResult) {
+                                  failure(errorResult);
+                              }];
+}
+
 @end

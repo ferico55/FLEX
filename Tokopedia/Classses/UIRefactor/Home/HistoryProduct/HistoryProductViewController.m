@@ -11,7 +11,6 @@
 #import "detail.h"
 
 #import "HistoryProductViewController.h"
-#import "TokopediaNetworkManager.h"
 #import "NoResultReusableView.h"
 #import "NavigateViewController.h"
 
@@ -19,6 +18,8 @@
 #import "NavigateViewController.h"
 #import "HistoryProduct.h"
 #import "ProductCell.h"
+
+#import "ProductRequest.h"
 
 #import "RetryCollectionReusableView.h"
 #import "Tokopedia-Swift.h"
@@ -54,7 +55,6 @@ RetryViewDelegate
     UIRefreshControl *_refreshControl;
     
     __weak RKObjectManager *_objectmanager;
-    TokopediaNetworkManager *_networkManager;
     NoResultReusableView *_noResultView;
 }
 
@@ -104,20 +104,12 @@ RetryViewDelegate
     
     [self.view setFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, [[UIScreen mainScreen]bounds].size.height)];
     
-    //todo with network
-    _networkManager = [TokopediaNetworkManager new];
-    _networkManager.isUsingHmac = YES;
-    [_networkManager requestWithBaseUrl:[NSString v4Url]
-                                   path:@"/v4/home/get_recent_view_product.pl"
-                                 method:RKRequestMethodGET
-                              parameter:@{@"action":@"get_recent_view_product"}
-                                mapping:[HistoryProduct mapping]
-                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                  [self showProductsAfterRequest:successResult];
-                              }
-                              onFailure:^(NSError *errorResult) {
-                                  [self showRetryButtonIfEmpty];
-                              }];
+    //request product history
+    [ProductRequest requestHistoryProductOnSuccess:^(HistoryProduct *productHistory) {
+        [self showProductsAfterRequest:productHistory];
+    } OnFailure:^(NSError *error) {
+        [self showRetryButtonIfEmpty];
+    }];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -173,24 +165,17 @@ RetryViewDelegate
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [_networkManager requestCancel];
-    _networkManager = nil;
 }
 
 #pragma Methods
 -(void)refreshView:(UIRefreshControl*)refresh {
     _isShowRefreshControl = YES;
-    [_networkManager requestWithBaseUrl:[NSString v4Url]
-                                   path:@"/v4/home/get_recent_view_product.pl"
-                                 method:RKRequestMethodGET
-                              parameter:@{@"action":@"get_recent_view_product"}
-                                mapping:[HistoryProduct mapping]
-                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                  [self showProductsAfterRequest:successResult];
-                              }
-                              onFailure:^(NSError *errorResult) {
-                                  [self stopRefreshing];
-                              }];
+    
+    [ProductRequest requestHistoryProductOnSuccess:^(HistoryProduct *productHistory) {
+        [self showProductsAfterRequest:productHistory];
+    } OnFailure:^(NSError *error) {
+        [self stopRefreshing];
+    }];
 }
 
 
@@ -200,11 +185,8 @@ RetryViewDelegate
 }
 
 #pragma mark - RequestWithBaseUrl Methods
-- (void)showProductsAfterRequest:(id)successResult{
-    NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
-    HistoryProduct *feed = [result objectForKey:@""];
-    
-    _product = [feed.data.list mutableCopy];
+- (void)showProductsAfterRequest:(HistoryProduct *)productHistory{
+    _product = [productHistory.data.list mutableCopy];
     
     [_noResultView removeFromSuperview];
     if (_product.count >0) {
@@ -269,16 +251,11 @@ RetryViewDelegate
 
 #pragma mark - Other Method
 - (void)pressRetryButton {
-    [_networkManager requestWithBaseUrl:[NSString v4Url]
-                                   path:@"/v4/home/get_recent_view_product.pl"
-                                 method:RKRequestMethodGET
-                              parameter:@{@"action":@"get_recent_view_product"}
-                                mapping:[HistoryProduct mapping]
-                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                  [self showProductsAfterRequest:successResult];
-                              }
-                              onFailure:^(NSError *errorResult) {
-                              }];
+    [ProductRequest requestHistoryProductOnSuccess:^(HistoryProduct *productHistory) {
+        [self showProductsAfterRequest:productHistory];
+    } OnFailure:^(NSError *error) {
+        
+    }];
 }
 
 - (void)registerNib {
