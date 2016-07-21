@@ -2292,6 +2292,7 @@
                 newCart.cart_is_partial = cart.cart_is_partial?:@"0";
                 newCart.cart_partial_param = cart.cart_partial_param?:@"";
                 
+                break;
             }
         }
     }
