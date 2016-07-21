@@ -69,6 +69,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_resource "GoogleAppIndexing/Resources/GoogleAppIndexingResources.bundle"
   install_resource "GoogleMaps/Frameworks/GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle"
   install_resource "GoogleSignIn/Resources/GoogleSignIn.bundle"
+  install_resource "${BUILT_PRODUCTS_DIR}/DownPicker.bundle"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_resource "DBPrivacyHelper/DBPrivacyHelper/DBPrivacyHelperAssets.xcassets"
@@ -82,6 +83,7 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_resource "GoogleAppIndexing/Resources/GoogleAppIndexingResources.bundle"
   install_resource "GoogleMaps/Frameworks/GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle"
   install_resource "GoogleSignIn/Resources/GoogleSignIn.bundle"
+  install_resource "${BUILT_PRODUCTS_DIR}/DownPicker.bundle"
 fi
 
 rsync -avr --copy-links --no-relative --exclude '*/.svn/*' --files-from="$RESOURCES_TO_COPY" / "${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"

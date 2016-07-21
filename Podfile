@@ -23,6 +23,7 @@ target "Tokopedia" do
     pod 'Google/SignIn'
     pod 'FBSDKLoginKit'
     pod 'CardIO'
+    pod 'DownPicker'
 end
 
 target "TokopediaTests" do
