@@ -230,11 +230,7 @@
     }
     [self initNoResultView];
     [self setDefaultInputData];
-    
-    _alertLoading = [[UIAlertView alloc]initWithTitle:@"Processing" message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
 
-    _loadingView = [LoadingView new];
-    _loadingView.delegate = self;
     [_klikBCANotes setCustomAttributedText:_klikBCANotes.text];
 }
 
@@ -261,7 +257,6 @@
         
         if (_popFromToppay) {
             _popFromToppay = NO;
-            [self isLoading:YES];
             [self requestCartData];
         }
         if (_list.count>0) {
@@ -282,6 +277,16 @@
     _tableView.scrollsToTop = YES;
     [self adjustPaymentMethodView];
     [self swipeView:_paymentMethodView];
+}
+
+-(UIAlertView*)alertLoading{
+    if (!_alertLoading) {
+        _loadingView = [LoadingView new];
+        _loadingView.delegate = self;
+        _alertLoading = [[UIAlertView alloc]initWithTitle:@"Processing" message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
+    }
+    
+    return _alertLoading;
 }
 
 -(void)headerInstallmentAnimating
@@ -1542,7 +1547,7 @@
     _checkoutButton.enabled = !isLoading;
     _buyButton.enabled = !isLoading;
     if (isLoading) {
-        [_alertLoading show];
+        [[self alertLoading] show];
     } else{
         if (_refreshControl.isRefreshing) {
             _tableView.contentOffset = CGPointZero;
@@ -1551,7 +1556,7 @@
         if (_list.count>0) {
             _tableView.tableFooterView = (_indexPage == 1)?_buyView:_checkoutView;
         } else _tableView.tableFooterView = nil;
-        [_alertLoading dismissWithClickedButtonIndex:0 animated:YES];
+        [[self alertLoading] dismissWithClickedButtonIndex:0 animated:YES];
     }
 }
 
@@ -2420,7 +2425,7 @@
                                 saldo:_saldoTokopediaAmountTextField.text
                           voucherCode:voucherCode success:^(TransactionActionResult *data) {
                               
-                              [TransactionCartWebViewViewController pushToppayFrom:self data:data gatewayID:[gatewayID integerValue] gatewayName:gateway.gateway_name];
+                              [TransactionCartWebViewViewController pushToppayFrom:self data:data gatewayID:0 gatewayName:gateway.gateway_name];
                               _popFromToppay = YES;
                               [self isLoading:NO];
 

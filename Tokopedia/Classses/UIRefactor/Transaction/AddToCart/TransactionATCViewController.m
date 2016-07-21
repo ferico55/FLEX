@@ -204,8 +204,8 @@ typedef enum
     
     [self adjustViewIsLoading:YES];
     AddressFormList *editedAddress = _selectedAddress;
-    editedAddress.latitude = [[NSNumber numberWithDouble:latitude] stringValue];;
-    editedAddress.longitude = [[NSNumber numberWithDouble:longitude] stringValue];;
+    editedAddress.latitude = [[NSNumber numberWithDouble:latitude] stringValue];
+    editedAddress.longitude = [[NSNumber numberWithDouble:longitude] stringValue];
     
     [RequestEditAddress fetchEditAddress:_selectedAddress
                               isFromCart:@"1"
@@ -913,7 +913,7 @@ typedef enum
         return;
     }
     [self setAddress:address];
-    [self requestRate];
+    [self requestFormWithAddressID:[NSString stringWithFormat:@"%zd",address.address_id]?:@""];
 }
 
 -(void)requestAddAddress:(AddressFormList*)address{
@@ -936,7 +936,7 @@ typedef enum
 -(void)successAddAddress:(AddressFormList*)address result:(ProfileSettingsResult *)result {
     [self adjustViewIsLoading:NO];
     [self setAddress:address];
-    [self requestRate];
+    [self requestFormWithAddressID:[NSString stringWithFormat:@"%zd",address.address_id]?:@""];
 }
 
 -(void)failedAddAddress:(AddressFormList*)address error:(NSError*)error{
