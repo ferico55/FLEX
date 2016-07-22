@@ -675,7 +675,11 @@
     }
     else if (phone.length < MINIMUM_PHONE_CHARACTER_COUNT) {
         isValid = NO;
-        [messages addObject:ERRORMESSAGE_INVALID_PHONE_CHARACTER_COUNT];
+        [messages addObject:ERRORMESSAGE_INVALID_PHONE_CHARACTER_TOO_SHORT];
+    }
+    else if (phone.length > MAXIMUM_PHONE_CHARACTER_COUNT) {
+        isValid = NO;
+        [messages addObject:ERRORMESSAGE_INVALID_PHONE_CHARACTER_TOO_LONG];
     }
     
     if (_type == TYPE_ADD_EDIT_PROFILE_EDIT) {
