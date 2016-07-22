@@ -237,7 +237,7 @@
             }
             case 11: {
                 //save
-                NSMutableArray *messages;
+                NSMutableArray *messages = [NSMutableArray new];
                 NSString *notetitle = [_datainput objectForKey:kTKPDNOTE_APINOTESTITLEKEY]?:_note.result.detail.notes_title?:@"";
                 NSString *content = [_datainput objectForKey:kTKPDNOTE_APINOTESCONTENTKEY]?:_note.result.detail.notes_content;
                 
@@ -259,9 +259,9 @@
                         [messages addObject:@"Content harus diisi."];
                     }
                 }
-                if (messages) {
+                if (messages.count > 0) {
                     NSArray *array = messages;
-                    StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:array delegate:self];
+                    StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
                     [stickyAlertView show];
                 }
                 break;
@@ -488,10 +488,18 @@
         
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
     }
+    else
+    {
+        //The program flow shouldn't be able to go here
+        NSArray *errorMessages = @[@"Maaf, terjadi kendala saat menyimpan note!"];
+        StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
+        [stickyAlertView show];
+    }
 }
 
 -(void)actionUponFailUpdateNote: (NSError *)error
 {
+    
 }
 
 #pragma mark - Text Field delegate

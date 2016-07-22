@@ -33,6 +33,7 @@
     NSMutableArray *_list;
     NSInteger _requestcount;
     BOOL _isnodata;
+    BOOL _containReturnProductPolicy;
     
     __weak RKObjectManager *_objectmanager;
     __weak RKManagedObjectRequestOperation *_request;
@@ -211,18 +212,35 @@
         if ([sender tag] == 10) {
             [self.navigationController popViewControllerAnimated:YES];
         } else if ([sender tag] == 11) {
-            MyShopNoteDetailViewController *vc = [MyShopNoteDetailViewController new];
-            vc.delegate = self;
-            vc.data = @{kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY]?:@"",
-                        kTKPDDETAIL_DATATYPEKEY : @(kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY),
-                        };
-            
-            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
-            nav.navigationBar.translucent = NO;
-            
-            [self.navigationController presentViewController:nav animated:YES completion:nil];
+            if (_list.count - [self listDoesContainProductReturnPolicy] < 3)
+            {
+                MyShopNoteDetailViewController *vc = [MyShopNoteDetailViewController new];
+                vc.delegate = self;
+                vc.data = @{kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY]?:@"",
+                            kTKPDDETAIL_DATATYPEKEY : @(kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY),
+                            };
+                
+                UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+                nav.navigationBar.translucent = NO;
+                
+                [self.navigationController presentViewController:nav animated:YES completion:nil];
+            }
+            else
+            {
+                NSArray *errorMessages = @[@"Anda hanya bisa menambahkan 3 catatan dan 1 Kebiajakan Pengembalian Produk"];
+                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
+                [alert show];
+            }
         }
     }
+}
+                    
+- (BOOL)listDoesContainProductReturnPolicy
+{
+    if (_list.count > 0)
+        return [((NotesList *)_list[0]).note_status isEqual:@"2"];
+    else
+        return NO;
 }
 
 #pragma mark - Memory Management
