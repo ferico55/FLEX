@@ -710,7 +710,7 @@
                                                                                      delegate:self];
                     [alert show];
                 }
-                if (setting.result.is_success == 1 || setting.message_status) {
+                if ([setting.result.is_success boolValue] || setting.message_status) {
                     NSArray *successMessages = setting.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY];
                     StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages
                                                                                      delegate:self];
@@ -847,7 +847,7 @@
                     [alertView show];
                 }
                 
-                if (setting.result.is_success == 1) {
+                if ([setting.result.is_success boolValue]) {
                     NSArray *successMessages = setting.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY];
                     StickyAlertView *alertView = [[StickyAlertView alloc] initWithSuccessMessages:successMessages
                                                                                          delegate:self];

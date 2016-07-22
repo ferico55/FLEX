@@ -131,7 +131,7 @@
 {
     NSDictionary *resultDict = ((RKMappingResult*)successResult).dictionary;
     ProfileSettings *stat = [resultDict objectForKey:@""];
-    if (stat.data.is_success != 1) {
+    if (![stat.data.is_success boolValue]) {
         StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:stat.message_error?:@[@"Gagal mengubah lokasi"] delegate:_delegate];
         [alert show];
     }
@@ -195,7 +195,7 @@
                       onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
 
                           ProfileSettings *setting = [successResult.dictionary objectForKey:@""];
-                          if (setting.data.is_success == 1) {
+                          if ([setting.data.is_success boolValue]) {
                               [StickyAlertView showSuccessMessage:setting.message_status?:@[@"Sukses mengubah lokasi"]];
                               success(setting.data);
                           } else {

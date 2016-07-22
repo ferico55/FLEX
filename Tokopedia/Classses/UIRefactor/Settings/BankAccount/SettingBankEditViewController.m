@@ -201,7 +201,7 @@
                                                                                        delegate:self];
                         [alert show];
                     }
-                    if ([action.data.is_success isEqualToString:@"1"]) {
+                    if ([action.data.is_success boolValue]) {
                         NSArray *successMessages = action.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY];
                         StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages
                                                                                          delegate:self];

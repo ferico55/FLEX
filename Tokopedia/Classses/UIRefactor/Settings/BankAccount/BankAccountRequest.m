@@ -75,7 +75,7 @@
     [self requestEditDefaultBankAccountWithAccountID:accountID
                                              ownerID:ownerID
                                            onSuccess:^(ProfileSettings *settings) {
-                                               if (settings.data.is_success == 1) {
+                                               if ([settings.data.is_success boolValue]) {
                                                    _successCompletionBlock(settings);
                                                } else {
                                                    _errorCompletionBlock(nil);
