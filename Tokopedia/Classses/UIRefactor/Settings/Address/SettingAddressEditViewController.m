@@ -337,6 +337,7 @@
                         }];
                     } else {
                         [self requestActionAddAddress:_datainput];
+                        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                     }
                 }
                 break;
