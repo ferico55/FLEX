@@ -131,7 +131,7 @@
 {
     NSDictionary *resultDict = ((RKMappingResult*)successResult).dictionary;
     ProfileSettings *stat = [resultDict objectForKey:@""];
-    if (stat.data.is_success != 1) {
+    if (![stat.data.is_success boolValue]) {
         StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:stat.message_error?:@[@"Gagal menambah alamat"] delegate:_delegate];
         [alert show];
     }
@@ -201,16 +201,16 @@
                           
                           ProfileSettings *setting = [successResult.dictionary objectForKey:@""];
                           
-                          if (setting.data.is_success != 1) {
-                              [StickyAlertView showErrorMessage:setting.message_error?:@[@"Gagal menambah alamat"]];
-                              failure(nil);
-                          }
-                          else{
+                          if ([setting.data.is_success boolValue]) {
                               [StickyAlertView showSuccessMessage:setting.message_status?:@[@"Anda berhasil menambah alamat"]];
                               AddressFormList *addedAddress = [AddressFormList new];
                               addedAddress = address;
                               addedAddress.address_id =  [setting.data.address_id integerValue];
                               success(setting.data, addedAddress);
+                          }
+                          else{
+                              [StickyAlertView showErrorMessage:setting.message_error?:@[@"Gagal menambah alamat"]];
+                              failure(nil);
                           }
         
     } onFailure:^(NSError *errorResult) {
