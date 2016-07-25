@@ -201,7 +201,7 @@
                                                                                        delegate:self];
                         [alert show];
                     }
-                    if ([action.data.is_success isEqualToString:@"1"]) {
+                    if ([action.data.is_success boolValue]) {
                         NSArray *successMessages = action.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY];
                         StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages
                                                                                          delegate:self];
@@ -240,7 +240,7 @@
                 if (bankname && ![bankname isEqualToString:@""] &&
                     accountname && ![accountname isEqualToString:@""] &&
                     accountnumber  && ![accountnumber isEqualToString:@""] &&
-                    pass && passCharCount>=MINIMUM_PHONE_CHARACTER_COUNT &&
+                    pass && passCharCount>=MINIMUM_PHONE_CHARACTER_COUNT && //TODO: Change count reference
                     bankBranch && ![bankBranch isEqualToString:@""]) {
                     if (_type == 1) {
                         [self requestEditBank];
@@ -268,8 +268,8 @@
                     }
                     else
                     {
-                        if (passCharCount<MINIMUM_PHONE_CHARACTER_COUNT) {
-                            [messages addObject:ERRORMESSAGE_INVALID_PHONE_CHARACTER_COUNT];
+                        if (passCharCount<MINIMUM_PHONE_CHARACTER_COUNT) {  //TODO: Change count reference
+                            [messages addObject:ERRORMESSAGE_PASSWORD_TOO_SHORT];
                         }
                     }
                 }

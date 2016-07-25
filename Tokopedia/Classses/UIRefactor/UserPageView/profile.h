@@ -214,6 +214,7 @@ typedef enum
 #define kTKPDPROFILESETTINGBANKACCOUNT_LIMITPAGE 5
 
 #define MINIMUM_PHONE_CHARACTER_COUNT 6
+#define MAXIMUM_PHONE_CHARACTER_COUNT 20
 #define ERRORMESSAGE_NULL_PASSWORD @"Kata sandi harus diisi."
 #define ERRORMESSAGE_NULL_RECEIVER_NAME @"Nama penerima harus diisi."
 #define ERRORMESSAGE_NULL_ADDRESS_NAME @"Nama alamat harus diisi."
@@ -228,7 +229,10 @@ typedef enum
 #define ERRORMESSAGE_NULL_BANK_BRANCH @"Cabang harus diisi."
 #define ERRORMESSAGE_NULL_REKENING_NUMBER @"Nomor rekening harus diisi."
 
-#define ERRORMESSAGE_INVALID_PHONE_CHARACTER_COUNT @"Nomor telepon penerima terlalu pendek. Minimum 6 karakter."
+#define ERRORMESSAGE_PASSWORD_TOO_SHORT @"Password yang anda masukan terlalu pendek. Minimum 6 karakter."
+
+#define ERRORMESSAGE_INVALID_PHONE_CHARACTER_TOO_SHORT @"Nomor telepon penerima terlalu pendek. Minimum 6 karakter."
+#define ERRORMESSAGE_INVALID_PHONE_CHARACTER_TOO_LONG @"Nomor telepon penerima terlalu panjang. Maksimum 20 karakter."
 #define ERRORMESSAGE_INVALID_HOBBY_CHARACTER_COUNT @"Hobi terlalu panjang. Maksimum 128 karakter."
 
 #define kTKPDPROFILE_STANDARDTABLEVIEWCELLIDENTIFIER @"cell"
