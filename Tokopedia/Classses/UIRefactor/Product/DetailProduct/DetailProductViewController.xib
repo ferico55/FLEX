@@ -50,6 +50,8 @@
                 <outlet property="btnReputasi" destination="fGg-D4-sKa" id="cfS-1X-dlG"/>
                 <outlet property="btnShare" destination="Qan-1S-e2b" id="d6q-QY-yhy"/>
                 <outlet property="btnShareHeight" destination="ear-fi-MQf" id="tRJ-9r-ZSL"/>
+                <outlet property="btnShareLeadingConstraint" destination="WnV-St-6IU" id="5QK-UY-UAE"/>
+                <outlet property="btnShareTrailingConstraint" destination="fNV-ds-hVq" id="YvE-ds-Ld4"/>
                 <outlet property="btnWishList" destination="NZQ-y3-gDO" id="lIG-m7-2oD"/>
                 <outlet property="buyButton" destination="WIw-3J-tyi" id="TUX-zM-sxE"/>
                 <outlet property="constraintBadgeGoldWidth" destination="zq6-ok-slU" id="oFS-yx-EcC"/>
@@ -76,7 +78,7 @@
                 <outlet property="otherProductIndicator" destination="aht-6o-zFn" id="Lqw-mg-VHc"/>
                 <outlet property="otherProductNoDataLabel" destination="zMF-nz-BGG" id="qEq-XU-5fR"/>
                 <outlet property="otherProductsCollectionView" destination="Ib3-kj-22N" id="2tA-Ez-dZb"/>
-                <outlet property="otherProductsConstraintHeight" destination="MvV-eG-ZMr" id="aXT-iP-hTR"/>
+                <outlet property="otherProductsConstraintHeight" destination="C9a-Rs-qw3" id="7Gq-BG-wI1"/>
                 <outlet property="otherProductsFlowLayout" destination="KZs-Xy-aCe" id="BhS-Wm-PWo"/>
                 <outlet property="otherproductview" destination="P75-Lv-uni" id="Z0w-bp-kfw"/>
                 <outlet property="pagecontrol" destination="H1h-3a-FsP" id="J6E-C0-UQJ"/>
@@ -515,6 +517,17 @@
                                         <color key="titleColor" red="0.45882352941176469" green="0.45882352941176469" blue="0.45882352941176469" alpha="1" colorSpace="calibratedRGB"/>
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                            <real key="value" value="5"/>
+                                        </userDefinedRuntimeAttribute>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                            <real key="value" value="1"/>
+                                        </userDefinedRuntimeAttribute>
+                                        <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                            <color key="value" red="0.85882352941176465" green="0.85882352941176465" blue="0.85882352941176465" alpha="1" colorSpace="calibratedRGB"/>
+                                        </userDefinedRuntimeAttribute>
+                                    </userDefinedRuntimeAttributes>
                                     <connections>
                                         <action selector="actionShare:" destination="-1" eventType="touchUpInside" id="Bue-JI-fea"/>
                                     </connections>
@@ -555,6 +568,17 @@
                                         <constraint firstAttribute="width" secondItem="HFZ-gV-WHe" secondAttribute="height" multiplier="1:1" id="iD5-DH-6HW"/>
                                     </constraints>
                                     <state key="normal" image="icon_laporkan"/>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                            <real key="value" value="5"/>
+                                        </userDefinedRuntimeAttribute>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                            <real key="value" value="1"/>
+                                        </userDefinedRuntimeAttribute>
+                                        <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                            <color key="value" red="0.85882352941176465" green="0.85882352941176465" blue="0.85882352941176465" alpha="1" colorSpace="calibratedRGB"/>
+                                        </userDefinedRuntimeAttribute>
+                                    </userDefinedRuntimeAttributes>
                                     <connections>
                                         <action selector="actionReport:" destination="-1" eventType="touchUpInside" id="gwc-Ym-co4"/>
                                     </connections>

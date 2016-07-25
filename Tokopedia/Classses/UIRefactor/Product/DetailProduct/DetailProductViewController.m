@@ -258,6 +258,8 @@ OtherProductDelegate
 
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *btnReportLeadingConstraint;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *btnShareHeight;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *btnShareTrailingConstraint;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *btnShareLeadingConstraint;
 -(void)cancel;
 -(void)configureRestKit;
 -(void)loadData;
@@ -407,18 +409,6 @@ OtherProductDelegate
     //        _dinkButton.hidden = YES;
     //        _buyButton.hidden = NO;
     //    }
-    
-    //Set corner btn share
-    btnShare.layer.cornerRadius = 5.0f;
-    btnShare.layer.borderWidth = 1;
-    btnShare.layer.borderColor = [[UIColor colorWithRed:219/255.0f green:219/255.0f blue:219/255.0f alpha:1.0f] CGColor];
-    btnShare.layer.masksToBounds = YES;
-    
-    //Set corner report button
-    btnReport.layer.cornerRadius = 5.0f;
-    btnReport.layer.borderWidth = 1;
-    btnReport.layer.borderColor = [[UIColor colorWithRed:219/255.0f green:219/255.0f blue:219/255.0f alpha:1.0f] CGColor];
-    btnReport.layer.masksToBounds = YES;
     
     UITapGestureRecognizer *tapShopGes = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapShop)];
     [_shopClickView addGestureRecognizer:tapShopGes];
@@ -2098,10 +2088,11 @@ OtherProductDelegate
             else
             {
                 _constraintHeightShare.constant = 0;
+                btnShare.hidden = YES;
                 _header.frame = CGRectMake(0, 0, _table.bounds.size.width, 520);
             }
             [viewContentWarehouse setHidden:NO];
-            [self hideReportButton];
+            [self hideReportButtonWithIsNeedToChangeShareLeadingConsraint:NO];
             _table.tableHeaderView = _header;
         }
         else {
@@ -2118,8 +2109,21 @@ OtherProductDelegate
     }
 }
 
-- (void) hideReportButton{
-    _btnReportLeadingConstraint.constant = -(_btnShareHeight.constant) - 2 ;
+- (void) hideReportButtonWithIsNeedToChangeShareLeadingConsraint: (Boolean) isNeedToChangeShareLeadingConsraint{
+    
+    if (isNeedToChangeShareLeadingConsraint){
+        [btnShare.superview addConstraint: [NSLayoutConstraint
+                                            constraintWithItem:btnShare
+                                            attribute:NSLayoutAttributeLeading
+                                            relatedBy:NSLayoutRelationEqual
+                                            toItem:btnShare.superview
+                                            attribute:NSLayoutAttributeLeading
+                                            multiplier:1.0
+                                            constant:15]];
+        [btnReport removeFromSuperview];
+    } else {
+        _btnReportLeadingConstraint.constant = -(_btnShareHeight.constant) - 2 ;
+    }
 }
 
 - (void)unsetWarehouse {
@@ -2199,24 +2203,19 @@ OtherProductDelegate
                 }
                 
                 [btnWishList removeFromSuperview];
+                [btnPriceAlert removeFromSuperview];
                 
-                //Set position btn share
-                int n = (int)btnShare.constraints.count;
-                NSMutableArray *arrRemoveConstraint = [NSMutableArray new];
-                
-                for(int i=0;i<n;i++) {
-                    if([[btnShare.constraints objectAtIndex:i] isMemberOfClass:[NSLayoutConstraint class]]) {
-                        [arrRemoveConstraint addObject:[btnShare.constraints objectAtIndex:i]];
-                    }
-                }
-                [btnShare removeConstraints:arrRemoveConstraint];
-                [arrRemoveConstraint removeAllObjects];
-                arrRemoveConstraint = nil;
-                
-                [btnShare removeConstraints:btnShare.constraints];
-                [viewContentWishList addConstraint:[NSLayoutConstraint constraintWithItem:viewContentWishList attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:btnShare attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0]];
-                [viewContentWishList addConstraint:[NSLayoutConstraint constraintWithItem:viewContentWishList attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:btnShare attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0]];
-                
+                [btnShare removeConstraint:_btnShareTrailingConstraint];
+                [btnShare removeConstraint:_btnShareLeadingConstraint];
+                [btnShare.superview addConstraint: [NSLayoutConstraint
+                                         constraintWithItem:btnShare.superview
+                                         attribute:NSLayoutAttributeTrailing
+                                         relatedBy:NSLayoutRelationEqual
+                                         toItem:btnShare
+                                         attribute:NSLayoutAttributeTrailing
+                                         multiplier:1.0
+                                         constant:15]];
+                [self hideReportButtonWithIsNeedToChangeShareLeadingConsraint:YES];
             } else {
                 if(!_product.isDummyProduct) {
                     [_buyButton setHidden:NO];
