@@ -131,8 +131,8 @@ typedef enum
     _tableViewShipmentCell = [NSArray sortViewsWithTagInArray:_tableViewShipmentCell];
     _isnodata = YES;
     
-    [self setPlaceholder:@"Contoh: Warna Putih/Ukuran XL/Edisi ke-2" textView:_remarkTextView];
     _remarkTextView.delegate = self;
+
     
     requestPriceDelayedActionManager = [DelayedActionManager new];
     quantityDelayedActionManager = [DelayedActionManager new];
@@ -168,6 +168,11 @@ typedef enum
     _tableView.rowHeight = UITableViewAutomaticDimension;
 }
 
+-(void)viewDidAppear:(BOOL)animated
+{
+    [self setPlaceholder:@"Contoh: Warna Putih/Ukuran XL/Edisi ke-2" textView:_remarkTextView];
+}
+
 -(void)refreshView{
     if (_isnodata)
     {
@@ -184,11 +189,15 @@ typedef enum
 
 - (void)setPlaceholder:(NSString *)placeholderText textView:(UITextView*)textView
 {
-    UILabel *placeholderLabel = [[UILabel alloc] initWithFrame:CGRectMake(5.2, -6, textView.frame.size.width, 40)];
+    UILabel *placeholderLabel = [[UILabel alloc] initWithFrame:CGRectMake(5.2, 8, textView.frame.size.width, 40)];
     placeholderLabel.text = placeholderText;
-    placeholderLabel.font = [UIFont fontWithName:textView.font.fontName size:textView.font.pointSize];
+//    placeholderLabel.font = [UIFont fontWithName:textView.font.fontName size:textView.font.pointSize];
+    placeholderLabel.font = textView.font;
     placeholderLabel.textColor = [[UIColor blackColor] colorWithAlphaComponent:0.25];
     placeholderLabel.tag = 1;
+//    placeholderLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    placeholderLabel.numberOfLines = 0;
+    [placeholderLabel sizeToFit];
     [textView addSubview:placeholderLabel];
 }
 
