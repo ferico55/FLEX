@@ -819,7 +819,7 @@ typedef enum
 #define kTKPD_STATUSSUCCESS @"1"
 #define kTKPDMESSAGE_KEYTOUSERID @"to_user_id"
 #define kTKPDMESSAGE_KEYTO @"message_to"
-#define kTKPDMESSAGE_PLACEHOLDER @"Message"
+#define kTKPDMESSAGE_PLACEHOLDER @"Tulis Pesan"
 
 #define kTKPDTALK_ADDTALK @"add_product_talk"
 #define kTKPDTALK_TALKMESSAGE @"text_comment"
