@@ -19,6 +19,7 @@
 @property (strong, nonatomic) NSString* uri;
 @property (strong, nonatomic) PromoShopImage* image_shop;
 @property (nonatomic) BOOL gold_shop;
+@property (strong, nonatomic) NSArray *badges;
 
 +(RKObjectMapping*) mapping;
 
