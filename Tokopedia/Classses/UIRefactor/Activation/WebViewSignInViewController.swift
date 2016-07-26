@@ -81,6 +81,21 @@ class WebViewSignInViewController: UIViewController, UIWebViewDelegate, NJKWebVi
             alertView.show()
             return false
         }
+        
+        if let path = path where path.containsString("/error") {
+            NSURLSession.sharedSession().resetWithCompletionHandler() {}
+            
+            let message = url.parameters()["message"] as! String
+            
+            let alertView = UIAlertView.bk_alertViewWithTitle("Perhatian", message: message)
+            alertView.bk_addButtonWithTitle("OK", handler: {[unowned self] in
+                self.navigationController?.popViewControllerAnimated(true)
+                })
+            
+            alertView.show()
+            
+            return false
+        }
 
         return true
     }
