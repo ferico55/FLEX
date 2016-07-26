@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="GothamMedium.ttf">
+            <string>GothamMedium</string>
+        </mutableArray>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="AnnouncementTickerView" customModule="Tokopedia" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="336" height="80"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_toped_alert.png" translatesAutoresizingMaskIntoConstraints="NO" id="Uqu-Xq-rSv">
+                    <rect key="frame" x="8" y="8" width="64" height="64"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="64" id="cwu-1J-3Au"/>
+                        <constraint firstAttribute="width" constant="64" id="zBr-O3-6VO"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XDN-nm-adq" customClass="TTTAttributedLabel">
+                    <rect key="frame" x="80" y="37" width="248" height="35"/>
+                    <attributedString key="attributedText">
+                        <fragment content="Label">
+                            <attributes>
+                                <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <font key="NSFont" size="12" name="GothamBook"/>
+                            </attributes>
+                        </fragment>
+                    </attributedString>
+                    <nil key="highlightedColor"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="lineSpacing">
+                            <real key="value" value="5"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="742-un-lm8">
+                    <rect key="frame" x="80" y="8" width="248" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="jnd-XP-gye"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="742-un-lm8" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="1wD-dS-9Lo"/>
+                <constraint firstAttribute="bottom" secondItem="XDN-nm-adq" secondAttribute="bottom" constant="8" id="5cn-J1-HTm"/>
+                <constraint firstItem="XDN-nm-adq" firstAttribute="leading" secondItem="Uqu-Xq-rSv" secondAttribute="trailing" constant="8" id="96a-gx-hlD"/>
+                <constraint firstAttribute="trailing" secondItem="XDN-nm-adq" secondAttribute="trailing" constant="8" id="CXk-CX-29V"/>
+                <constraint firstItem="XDN-nm-adq" firstAttribute="top" secondItem="742-un-lm8" secondAttribute="bottom" constant="8" id="FEh-f0-2dJ"/>
+                <constraint firstItem="742-un-lm8" firstAttribute="leading" secondItem="Uqu-Xq-rSv" secondAttribute="trailing" constant="8" id="hWC-Op-xKI"/>
+                <constraint firstAttribute="trailing" secondItem="742-un-lm8" secondAttribute="trailing" constant="8" id="jqw-Sh-2rh"/>
+                <constraint firstItem="Uqu-Xq-rSv" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="k4w-qM-Nj9"/>
+                <constraint firstItem="Uqu-Xq-rSv" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="xir-H4-H5a"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="messageLabel" destination="XDN-nm-adq" id="Fmz-UO-z0H"/>
+                <outlet property="titleLabel" destination="742-un-lm8" id="QDJ-xI-7Uf"/>
+            </connections>
+            <point key="canvasLocation" x="593" y="260"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="icon_toped_alert.png" width="90" height="90"/>
+    </resources>
+</document>

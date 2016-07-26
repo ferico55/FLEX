@@ -65,3 +65,6 @@
 #import "UIAlertView+BlocksKit.h"
 
 #import "ShopSettings.h"
+
+#import "TTTAttributedLabel.h"
+#import "NSStringCategory.h"
