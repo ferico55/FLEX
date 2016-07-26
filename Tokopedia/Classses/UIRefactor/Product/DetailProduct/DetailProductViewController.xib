@@ -43,7 +43,6 @@
             <connections>
                 <outlet property="accuracynumberlabel" destination="yZc-at-0fE" id="tuK-ui-7l4"/>
                 <outlet property="accuracyrateview" destination="XEH-6q-AWR" id="PPM-wp-f2B"/>
-                <outlet property="act" destination="aLU-la-IJ3" id="pzS-Or-M08"/>
                 <outlet property="btnPriceAlert" destination="m0j-oE-jzy" id="BKg-0K-5vP"/>
                 <outlet property="btnReport" destination="HFZ-gV-WHe" id="hvM-YJ-Izl"/>
                 <outlet property="btnReportLeadingConstraint" destination="38k-8Q-r5t" id="GoO-Qo-4UK"/>
@@ -115,9 +114,6 @@
                         <outlet property="delegate" destination="-1" id="Kx5-N7-27O"/>
                     </connections>
                 </tableView>
-                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="aLU-la-IJ3">
-                    <rect key="frame" x="150" y="274" width="20" height="20"/>
-                </activityIndicatorView>
                 <button hidden="YES" opaque="NO" tag="16" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WIw-3J-tyi">
                     <rect key="frame" x="0.0" y="520" width="320" height="48"/>
                     <color key="backgroundColor" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
@@ -191,7 +187,6 @@
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="WIw-3J-tyi" secondAttribute="trailing" id="3CD-zS-oUj"/>
                 <constraint firstItem="WIw-3J-tyi" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="3lx-u4-S35"/>
-                <constraint firstAttribute="centerY" secondItem="aLU-la-IJ3" secondAttribute="centerY" id="5IJ-Cw-Wr3"/>
                 <constraint firstAttribute="trailing" secondItem="WIw-3J-tyi" secondAttribute="trailing" id="5UZ-uI-L5m"/>
                 <constraint firstItem="bXH-te-xtZ" firstAttribute="top" secondItem="lLg-MF-2b8" secondAttribute="bottom" id="Jfk-Li-WkP"/>
                 <constraint firstAttribute="trailing" secondItem="u8Q-zU-EhA" secondAttribute="trailing" id="R9E-cA-ze8"/>
@@ -203,7 +198,6 @@
                 <constraint firstItem="lLg-MF-2b8" firstAttribute="leading" secondItem="WIw-3J-tyi" secondAttribute="leading" id="gcj-7r-83E"/>
                 <constraint firstItem="WIw-3J-tyi" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="iLF-wF-sbY"/>
                 <constraint firstAttribute="bottom" secondItem="u8Q-zU-EhA" secondAttribute="bottom" id="klH-IR-oKc"/>
-                <constraint firstAttribute="centerX" secondItem="aLU-la-IJ3" secondAttribute="centerX" id="knW-Ic-9bU"/>
                 <constraint firstItem="WIw-3J-tyi" firstAttribute="top" secondItem="lLg-MF-2b8" secondAttribute="bottom" id="nYW-Eu-0yt"/>
                 <constraint firstAttribute="bottom" secondItem="WIw-3J-tyi" secondAttribute="bottom" id="tNQ-g5-TCG"/>
                 <constraint firstAttribute="bottom" secondItem="WIw-3J-tyi" secondAttribute="bottom" id="yiq-do-98V"/>

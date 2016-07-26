@@ -65,3 +65,6 @@
 #import "UIAlertView+BlocksKit.h"
 
 #import "ShopSettings.h"
+#import "TKPObjectMapping.h"
+#import "WholesalePrice.h"
+#import "Breadcrumb.h"
