@@ -205,7 +205,9 @@
     _table.tableFooterView = _footer;
 
     _data = [self generateData];
-    [self fetchTalkComments];
+    if(_fetchDataAtBeginning){
+        [self fetchTalkComments];
+    }
 }
 
 - (void)viewDidLayoutSubviews {

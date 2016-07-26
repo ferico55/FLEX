@@ -215,7 +215,7 @@ typedef enum {
 #define ARRAY_SOLUTION_PRODUCT_NOT_SAME_AS_DESCRIPTION @[@"Kembalikan Dana",@"Tukar barang sesuai pesanan",@"Retur barang dan kembalikan dana"]
 #define ARRAY_SOLUTION_PRODUCT_IS_BROKEN ARRAY_SOLUTION_PRODUCT_NOT_SAME_AS_DESCRIPTION
 #define ARRAY_SOLUTION_DIFFERENT_QTY @[@"Kembalikan Dana",@"Kirim barang sisanya",@"Retur barang dan kembalikan dana"]
-#define ARRAY_SOLUTION_DIFFERENT_SHIPPING_AGENCY @[]
+#define ARRAY_SOLUTION_DIFFERENT_SHIPPING_AGENCY @[@"Kembalikan Dana"]
 
 #define ARRAY_SOLUTION_PACKAGE_NOT_RECEIVED_CHANGE_SOLUTION @[@"Kembalikan Dana"]
 #define ARRAY_SOLUTION_PACKAGE_NOT_RECEIVED @[@"Kembalikan Dana",@"Minta bantuan penjual cek ke kurir"]

@@ -532,20 +532,18 @@ static NSInteger userViewHeight = 70;
 //    [[self getNetworkManager:CTagGetProductReview] doRequest];
     [self doRequestGetProductReview];
     
-    NSString *monthRange = @"";
-    NSString *shopQuality = @"";
-    NSString *shopAccuracy = @"";
-    NSNumberFormatter *value = [[NSNumberFormatter alloc] init];
-    value.numberStyle = NSNumberFormatterDecimalStyle;
+    NSNumber *monthRange = @(0);
+    NSNumber *shopQuality = @(0);
+    NSNumber *shopAccuracy = @(0);
     
     if (btnFilter6Month.tag == 1) {
-        monthRange = @"6";
+        monthRange = @(6);
     }
     
     if ((int)segmentedControl.selectedSegmentIndex == 0 && filterStar > 0) {
-        shopQuality = [@(filterStar) stringValue];
+        shopQuality = @(filterStar);
     } else if (filterStar > 0) {
-        shopAccuracy = [@(filterStar) stringValue];
+        shopAccuracy = @(filterStar);
     }
     
     [reviewRequest requestGetProductReviewWithProductID:_strProductID

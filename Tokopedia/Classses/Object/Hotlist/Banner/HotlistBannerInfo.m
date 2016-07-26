@@ -9,5 +9,22 @@
 #import "HotlistBannerInfo.h"
 
 @implementation HotlistBannerInfo
++(NSDictionary *)attributeMappingDictionary
+{
+    NSArray *keys = @[
+                      @"meta_description",
+                      @"hotlist_description",
+                      @"cover_img",
+                      @"title",
+                      ];
+    return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
+}
+
++(RKObjectMapping*)mapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+    return mapping;
+}
 
 @end

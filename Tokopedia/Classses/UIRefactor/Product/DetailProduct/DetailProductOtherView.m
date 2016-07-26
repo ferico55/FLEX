@@ -55,6 +55,8 @@
                 [_delegate DetailProductOtherView:self withindex:_index];
                 break;
             }
+            default:
+                break;
         }
     }
 }

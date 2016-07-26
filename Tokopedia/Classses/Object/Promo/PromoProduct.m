@@ -7,6 +7,7 @@
 //
 
 #import "PromoProduct.h"
+#import "ProductBadge.h"
 
 @implementation PromoProduct
 
@@ -14,12 +15,12 @@
     RKObjectMapping *promoProductMapping = [RKObjectMapping mappingForClass:[PromoProduct class]];
     [promoProductMapping addAttributeMappingsFromDictionary:@{@"id":@"product_id"}];
     [promoProductMapping addAttributeMappingsFromArray:@[@"name",
-                                                   @"uri",
-                                                   @"relative_uri",
-                                                   @"price_format",
-                                                   @"count_talk_format",
-                                                   @"count_review_format"
-                                                   ]];
+                                                         @"uri",
+                                                         @"relative_uri",
+                                                         @"price_format",
+                                                         @"count_talk_format",
+                                                         @"count_review_format"
+                                                         ]];
     [promoProductMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"category"
                                                                                         toKeyPath:@"category"
                                                                                       withMapping:[PromoCategory mapping]]];
@@ -29,6 +30,9 @@
     [promoProductMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"image"
                                                                                         toKeyPath:@"image"
                                                                                       withMapping:[PromoProductImage mapping]]];
+    [promoProductMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"badges"
+                                                                                        toKeyPath:@"badges"
+                                                                                      withMapping:[ProductBadge mapping]]];
     
     return promoProductMapping;
 }
@@ -43,6 +47,7 @@
         ProductModelView *viewModel = [[ProductModelView alloc] init];
         [viewModel setProductName:_name];
         [viewModel setProductPrice:_price_format];
+        viewModel.badges = _badges;
         /*
         [viewModel setProductShop:_];
         [viewModel setProductThumbUrl:self.product_image_200];
