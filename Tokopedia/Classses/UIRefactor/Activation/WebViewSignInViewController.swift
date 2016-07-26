@@ -59,7 +59,7 @@ class WebViewSignInViewController: UIViewController, UIWebViewDelegate, NJKWebVi
         let url = request.mainDocumentURL!
         self.navigationItem.title = path
 
-        if (path == "/mappauth/code") {
+        if path == "/mappauth/code" {
             NSURLSession.sharedSession().resetWithCompletionHandler() {}
             
             let code = url.parameters()["code"] as! String
@@ -68,7 +68,7 @@ class WebViewSignInViewController: UIViewController, UIWebViewDelegate, NJKWebVi
             return false
         }
         
-        if (path == "/wv/activation-social") {
+        if path == "/wv/activation-social" {
             NSURLSession.sharedSession().resetWithCompletionHandler() {}
             
             let message = url.parameters()["message"] as! String
