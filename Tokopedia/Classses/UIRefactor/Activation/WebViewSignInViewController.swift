@@ -67,6 +67,20 @@ class WebViewSignInViewController: UIViewController, UIWebViewDelegate, NJKWebVi
             navigationController?.popViewControllerAnimated(true)
             return false
         }
+        
+        if (path == "/wv/activation-social") {
+            NSURLSession.sharedSession().resetWithCompletionHandler() {}
+            
+            let message = url.parameters()["message"] as! String
+            
+            let alertView = UIAlertView.bk_alertViewWithTitle("Perhatian", message: message)
+            alertView.bk_addButtonWithTitle("OK", handler: {[unowned self] in
+                self.navigationController?.popViewControllerAnimated(true)
+            })
+            
+            alertView.show()
+            return false
+        }
 
         return true
     }
