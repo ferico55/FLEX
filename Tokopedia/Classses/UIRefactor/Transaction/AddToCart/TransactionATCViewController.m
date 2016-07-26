@@ -320,6 +320,8 @@ typedef enum
 -(void)setPlacePicker{
     [[GMSGeocoder geocoder] reverseGeocodeCoordinate:CLLocationCoordinate2DMake([_selectedAddress.latitude doubleValue], [_selectedAddress.longitude doubleValue]) completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error) {
         if (error != nil){
+            _pinLocationNameButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+            [_pinLocationNameButton setCustomAttributedText:@"Lokasi Tujuan"];
             return;
         }
         if (response == nil|| response.results.count == 0) {

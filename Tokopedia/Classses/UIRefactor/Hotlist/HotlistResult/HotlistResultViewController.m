@@ -817,10 +817,7 @@ static NSString const *rows = @"12";
     _promoRequest.page = _page;
     
     if([_data objectForKey:@"hotlist_id"] && (_page % 2 == 1 || _page == 1)){
-        NSString *departmentId = @"";
-        if(_bannerResult.query.sc){
-            departmentId = _bannerResult.query.sc;
-        }
+        NSString *departmentId = [self selectedCategoryIDsString];
 
         [_promoRequest requestForProductHotlist:[_data objectForKey:@"hotlist_id"]
                                      department:departmentId
@@ -1044,13 +1041,13 @@ static NSString const *rows = @"12";
     
     [params addEntriesFromDictionary:param];
     [params addEntriesFromDictionary:_selectedFilterParam?:@{}];
-    [params setObject:[self getSelectedCategoryIDsString]?:@"" forKey:@"sc"];
+    [params setObject:[self selectedCategoryIDsString]?:@"" forKey:@"sc"];
     [params addEntriesFromDictionary:_selectedSortParam?:@{}];
     
     return [params copy];
 }
 
--(NSString*)getSelectedCategoryIDsString{
+-(NSString*)selectedCategoryIDsString{
     
     NSString *categories = @"";
     if ( [self hasDefaultCategory] &&  [self hasSelectedCategories] && ![self hasRootCategory]) {
@@ -1077,7 +1074,7 @@ static NSString const *rows = @"12";
 }
 
 -(NSString *)getFilterCategoryIDs{
-    return [[_selectedCategories valueForKey:@"categoryId"] componentsJoinedByString:@","];
+    return [[_selectedCategories valueForKey:@"categoryId"] componentsJoinedByString:@","]?:@"";
 }
 
 -(NSString *)getSourceString{

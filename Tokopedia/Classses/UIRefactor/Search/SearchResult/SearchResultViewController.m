@@ -981,19 +981,9 @@ ImageSearchRequestDelegate
 }
 
 -(NSDictionary*)parameterDynamicFilter{
-    NSString *selectedCategory = [[_selectedCategories valueForKey:@"categoryId"] componentsJoinedByString:@","];
-    NSString *categories;
-    if ([[_params objectForKey:@"sc"] integerValue] != 0 && _selectedCategories.count > 0 && [_rootCategoryID isEqualToString:@""]) {
-        categories = [NSString stringWithFormat:@"%@,%@",selectedCategory,[_params objectForKey:@"sc"]?:@""];
-    } else if (_selectedCategories.count == 0){
-        categories = _rootCategoryID?:@"";
-    } else {
-        categories = selectedCategory;
-    }
-
     NSMutableDictionary *parameter = [[NSMutableDictionary alloc]init];
     [parameter setObject:@"ios" forKey:@"device"];
-    [parameter setObject:categories?:@"" forKey:@"sc"];
+    [parameter setObject:[self selectedCategoryIDsString]?:@"" forKey:@"sc"];
     if(_isFromImageSearch){
         [parameter setObject:_image_url forKey:@"image_url"];
         if (_strImageSearchResult) {
@@ -1020,6 +1010,19 @@ ImageSearchRequestDelegate
     [parameter addEntriesFromDictionary:_selectedSortParam];
     [parameter addEntriesFromDictionary:_selectedFilterParam];
     return parameter;
+}
+
+-(NSString*)selectedCategoryIDsString{
+    NSString *selectedCategory = [[_selectedCategories valueForKey:@"categoryId"] componentsJoinedByString:@","];
+    NSString *categories;
+    if ([[_params objectForKey:@"sc"] integerValue] != 0 && _selectedCategories.count > 0 && [_rootCategoryID isEqualToString:@""]) {
+        categories = [NSString stringWithFormat:@"%@,%@",selectedCategory,[_params objectForKey:@"sc"]?:@""];
+    } else if (_selectedCategories.count == 0){
+        categories = _rootCategoryID?:@"";
+    } else {
+        categories = selectedCategory;
+    }
+    return categories;
 }
 
 - (NSString*)generateProductIdString{
@@ -1391,7 +1394,7 @@ ImageSearchRequestDelegate
     
     if(page % 2 == 0){
         NSString *searchQuery =[_params objectForKey:@"search"]?:@"";
-        NSString *departmentId =[_params objectForKey:@"sc"]?:@"";
+        NSString *departmentId = [self selectedCategoryIDsString]?:@"";
         NSString *source = [searchQuery isEqualToString:@""]?@"directory":@"search";
         
         [_promoRequest requestForProductQuery:searchQuery

@@ -1090,9 +1090,14 @@
         //NSInteger shipmentID = [list.cart_shipments.shipment_id integerValue];
         NSInteger shipmentPackageID = [list.cart_shipments.shipment_package_id integerValue];
         NSString *partialDetailKey = [NSString stringWithFormat:FORMAT_CART_CANCEL_PARTIAL_KEY,shopID,addressID, shipmentPackageID];
-        if(_list.count>0)
+        
+        if([_list[i].cart_is_partial boolValue])
             _list[i].cart_partial_param = [NSString stringWithFormat:@"%zd~%zd~%zd",shopID,addressID, shipmentPackageID];
-            [partialListParam setObject:_list[i].cart_is_partial?:@"0" forKey:partialDetailKey];
+        else {
+            _list[i].cart_partial_param = @"";
+        }
+        
+        [partialListParam setObject:_list[i].cart_is_partial?:@"0" forKey:partialDetailKey];
     }
     [_dataInput setObject:partialListParam forKey:DATA_PARTIAL_LIST_KEY];
 }
@@ -2260,9 +2265,6 @@
         
         [self adjustAfterUpdateList];
         
-        NSDictionary *info = @{DATA_CART_DETAIL_LIST_KEY:_list.count > 0?_list[_indexSelectedShipment]:@{}};
-        [[NSNotificationCenter defaultCenter] postNotificationName:EDIT_CART_INSURANCE_POST_NOTIFICATION_NAME object:nil userInfo:info];
-        
         [self isLoading:NO];
         
         [TPLocalytics trackCartView:_cart];
@@ -2292,6 +2294,9 @@
                 newCart.cart_dropship_param = cart.cart_dropship_param?:@"";
                 newCart.cart_is_partial = cart.cart_is_partial?:@"0";
                 newCart.cart_partial_param = cart.cart_partial_param?:@"";
+                
+                NSDictionary *info = @{DATA_CART_DETAIL_LIST_KEY:newCart};
+                [[NSNotificationCenter defaultCenter] postNotificationName:EDIT_CART_INSURANCE_POST_NOTIFICATION_NAME object:nil userInfo:info];
                 
                 break;
             }
