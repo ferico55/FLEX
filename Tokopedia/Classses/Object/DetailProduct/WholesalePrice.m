@@ -17,4 +17,16 @@
                                                                 }];
     return wholesalePromoMapping;
 }
+
+
++(RKObjectMapping *)mapping{
+    RKObjectMapping* mapping = [RKObjectMapping mappingForClass:[WholesalePrice class]];
+    [mapping addAttributeMappingsFromDictionary:@{
+                                                    @"wholesale_min":@"wholesale_min",
+                                                    @"wholesale_max":@"wholesale_max",
+                                                    @"wholesale_price":@"wholesale_price"
+                                                }];
+    return mapping;
+}
+
 @end

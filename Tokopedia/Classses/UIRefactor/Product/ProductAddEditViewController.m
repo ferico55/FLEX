@@ -14,7 +14,7 @@
 #import "camera.h"
 #import "GenerateHost.h"
 #import "UploadImage.h"
-#import "Product.h"
+//#import "Product.h"
 #import "ShopSettings.h"
 #import "CatalogAddProduct.h"
 #import "ManageProduct.h"
@@ -33,6 +33,7 @@
 #import "UserAuthentificationManager.h"
 #import "TKPDPhotoPicker.h"
 #import "FilterCategoryViewController.h"
+#import "Tokopedia-Swift.h"
 
 #define DATA_SELECTED_BUTTON_KEY @"data_selected_button"
 
@@ -72,7 +73,7 @@ FilterCategoryViewDelegate
     NSInteger *_requestcountGenerateHost;
     GenerateHost *_generateHost;
     UploadImage *_images;
-    Product *_product;
+    ProductEdit *_product;
     ShopSettings *_setting;
     CatalogAddProduct *_catalog;
     
@@ -381,6 +382,7 @@ FilterCategoryViewDelegate
                                            @"Image_desc_array":_productImageDesc?:@[]
                                            };
                         _detailVC.shopHasTerm = _product.result.info.shop_has_terms?:@"";
+                        _detailVC.returnAbleStatus = _product.result.info.product_returnable?:@"";
                         _detailVC.generateHost = _generateHost;
                         _detailVC.delegate = self;
                         BOOL isShopHasTerm = ([_product.result.info.shop_has_terms isEqualToString:@""]||[_product.result.info.shop_has_terms isEqualToString:@"0"])?NO:YES;
@@ -1464,7 +1466,7 @@ FilterCategoryViewDelegate
         TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
         NSDictionary* auth = [secureStorage keychainDictionary];
         
-        DetailProductResult *detailProduct = _product.result;
+        ProductEditResult *detailProduct = _product.result;
         NSInteger productID = [detailProduct.product.product_id integerValue];
         NSInteger myshopID = [[auth objectForKey:kTKPD_SHOPIDKEY]integerValue];
         NSInteger pictureID = [_productImageIDs[index] integerValue];
@@ -1569,7 +1571,7 @@ FilterCategoryViewDelegate
             
             NSInteger previousValue = [[_dataInput objectForKey:API_PRODUCT_PRICE_CURRENCY_ID_KEY]integerValue];
             
-            NSInteger value = [[ARRAY_PRICE_CURRENCY[index] objectForKey:DATA_VALUE_KEY] integerValue];
+            NSInteger value = [ARRAY_PRICE_CURRENCY[index] objectForKey:DATA_VALUE_KEY];
             NSString *name = [ARRAY_PRICE_CURRENCY[index] objectForKey:DATA_NAME_KEY];
             
             if ( value == PRICE_CURRENCY_ID_USD && !isGoldShop) {
@@ -1582,7 +1584,7 @@ FilterCategoryViewDelegate
                     _productPriceTextField.text = @"";
                 }
                 ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
-                product.product_currency_id = [ARRAY_PRICE_CURRENCY[index] objectForKey:DATA_VALUE_KEY];
+                product.product_currency_id = [[ARRAY_PRICE_CURRENCY[index] objectForKey:DATA_VALUE_KEY] stringValue];
                 product.product_currency = name;
                 [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
                 [_dataInput setObject:@(value) forKey:API_PRODUCT_PRICE_CURRENCY_ID_KEY];
@@ -1595,7 +1597,7 @@ FilterCategoryViewDelegate
         {
             //weight curency
             NSInteger index = [[alertView.data objectForKey:DATA_INDEX_KEY] integerValue];
-            NSString *value = [ARRAY_WEIGHT_UNIT[index] objectForKey:DATA_VALUE_KEY];
+            NSString *value = [[ARRAY_WEIGHT_UNIT[index] objectForKey:DATA_VALUE_KEY] stringValue];
             NSString *name = [ARRAY_WEIGHT_UNIT[index] objectForKey:DATA_NAME_KEY];
             ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
             product.product_weight_unit_name = name;
@@ -1804,21 +1806,18 @@ FilterCategoryViewDelegate
             default:
                 break;
         }
-        DetailProductResult *result = _product.result;
-        ProductDetail *product = result.product;
+        ProductEditResult *result = _product.result;
+        ProductEditDetail *product = result.product;
         if (!product) {
-            product = [ProductDetail new];
+            product = [ProductEditDetail new];
             product.product_weight_unit_name = [ARRAY_WEIGHT_UNIT[0] objectForKey:DATA_NAME_KEY];
-            product.product_weight_unit = [ARRAY_WEIGHT_UNIT[0] objectForKey:DATA_VALUE_KEY];
+            product.product_weight_unit = [[ARRAY_WEIGHT_UNIT[0] objectForKey:DATA_VALUE_KEY] stringValue];
             
             product.product_currency = [ARRAY_PRICE_CURRENCY[0] objectForKey:DATA_NAME_KEY];
-            product.product_currency_id = [ARRAY_PRICE_CURRENCY[0] objectForKey:DATA_VALUE_KEY];
+            product.product_currency_id = [[ARRAY_PRICE_CURRENCY[0] objectForKey:DATA_VALUE_KEY] stringValue];
             
             product.product_min_order = @"1";
-            product.product_condition = [ARRAY_PRODUCT_CONDITION[0] objectForKey:DATA_VALUE_KEY];
-            
-            NSString *value = [ARRAY_PRODUCT_MOVETO_ETALASE[0] objectForKey:DATA_VALUE_KEY];
-            product.product_move_to = value;
+            product.product_condition = [[ARRAY_PRODUCT_CONDITION[0] objectForKey:DATA_VALUE_KEY] stringValue];
         }
         else
         {
@@ -1834,12 +1833,12 @@ FilterCategoryViewDelegate
                 product.product_currency = [ARRAY_PRICE_CURRENCY[1]objectForKey:DATA_NAME_KEY];
             }
             NSInteger indexMoveTo = ([product.product_etalase_id integerValue]>0)?1:0;
-            NSString *value = [ARRAY_PRODUCT_MOVETO_ETALASE[indexMoveTo] objectForKey:DATA_VALUE_KEY];
-            product.product_move_to = value;
+            NSString *value = [[ARRAY_PRODUCT_MOVETO_ETALASE[indexMoveTo] objectForKey:DATA_VALUE_KEY] stringValue];
+//            product.product_move_to = value;
             product.product_etalase_id = product.product_etalase_id?:@(0);
             product.product_short_desc = [product.product_short_desc stringByReplacingOccurrencesOfString:@"[nl]" withString:@"\n"];
-            product.product_description = product.product_short_desc?:@"";
-            product.product_returnable = _product.result.info.product_returnable?:@"";
+//            product.product_description = product.product_short_desc?:@"";
+            result.info.product_returnable = _product.result.info.product_returnable?:@"";
             product.product_min_order = _product.result.product.product_min_order?:@"1";
         }
         _minimumOrderTextField.text = product.product_min_order;
@@ -1858,7 +1857,7 @@ FilterCategoryViewDelegate
         
         NSMutableDictionary *productImageDescription = [NSMutableDictionary new];
         for (int i = 0 ; i<imageCount;i++) {
-            ProductImages *image = images[i];
+            ProductEditImages *image = images[i];
             ((UIButton*)_addImageButtons[i]).hidden = YES;
             [_productImageURLs replaceObjectAtIndex:i withObject:image.image_src];
             [_productImageIDs replaceObjectAtIndex:i withObject:[NSString stringWithFormat:@"%zd",image.image_id]];
@@ -1903,8 +1902,12 @@ FilterCategoryViewDelegate
         NSString *serverID = result.server_id?:_generateHost.result.generated_host.server_id?:@"0";
         
         if (result.breadcrumb.count > 0) {
-            CategoryDetail *category = [result.breadcrumb lastObject];
-            [_dataInput setObject:category forKey:DATA_CATEGORY_KEY];
+            Breadcrumb *category = [result.breadcrumb lastObject];
+            
+            CategoryDetail *filterCategory = [[CategoryDetail alloc] init];
+            filterCategory.categoryId = category.department_id;
+            filterCategory.name = category.department_name;
+            [_dataInput setObject:filterCategory forKey:DATA_CATEGORY_KEY];
         }
         
         NSString *priceCurencyID = result.product.product_currency_id?:@"1";
@@ -2135,122 +2138,7 @@ FilterCategoryViewDelegate
 {
     // initialize RestKit
     RKObjectManager *objectmanager =  [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *productMapping = [RKObjectMapping mappingForClass:[Product class]];
-    [productMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[DetailProductResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{API_SERVER_ID_KEY:API_SERVER_ID_KEY,
-                                                        API_IS_GOLD_SHOP_KEY:API_IS_GOLD_SHOP_KEY,
-                                                        }];
-    
-    RKObjectMapping *OtherInfoMapping = [RKObjectMapping mappingForClass:[Info class]];
-    [OtherInfoMapping addAttributeMappingsFromArray:@[API_PRODUCT_RETURNABLE_KEY,
-                                                      API_SHOP_HAS_TERMS_KEY
-                                                      ]];
-    
-    RKObjectMapping *infoMapping = [RKObjectMapping mappingForClass:[ProductDetail class]];
-    [infoMapping addAttributeMappingsFromDictionary:@{API_PRODUCT_NAME_KEY:API_PRODUCT_NAME_KEY,
-                                                      API_PRODUCT_WEIGHT_UNIT_KEY:API_PRODUCT_WEIGHT_UNIT_KEY,
-                                                      API_PRODUCT_DESCRIPTION_KEY:API_PRODUCT_DESCRIPTION_KEY,
-                                                      API_PRODUCT_PRICE_KEY:API_PRODUCT_PRICE_KEY,
-                                                      API_PRODUCT_INSURANCE_KEY:API_PRODUCT_INSURANCE_KEY,
-                                                      API_PRODUCT_CONDITION_KEY:API_PRODUCT_CONDITION_KEY,
-                                                      API_PRODUCT_MINIMUM_ORDER_KEY:API_PRODUCT_MINIMUM_ORDER_KEY,
-                                                      kTKPDDETAILPRODUCT_APIPRODUCTSTATUSKEY:kTKPDDETAILPRODUCT_APIPRODUCTSTATUSKEY,
-                                                      kTKPDDETAILPRODUCT_APIPRODUCTLASTUPDATEKEY:kTKPDDETAILPRODUCT_APIPRODUCTLASTUPDATEKEY,
-                                                      kTKPDDETAILPRODUCT_APIPRODUCTIDKEY:kTKPDDETAILPRODUCT_APIPRODUCTIDKEY,
-                                                      kTKPDDETAILPRODUCT_APIPRODUCTPRICEALERTKEY:kTKPDDETAILPRODUCT_APIPRODUCTPRICEALERTKEY,
-                                                      API_PRODUCT_WEIGHT_KEY:API_PRODUCT_WEIGHT_KEY,
-                                                      API_PRODUCT_FORM_PRICE_CURRENCY_ID_KEY:API_PRODUCT_FORM_PRICE_CURRENCY_ID_KEY,
-                                                      kTKPDDETAILPRODUCT_APICURRENCYKEY:kTKPDDETAILPRODUCT_APICURRENCYKEY,
-                                                      API_PRODUCT_ETALASE_ID_KEY:API_PRODUCT_ETALASE_ID_KEY,
-                                                      API_PRODUCT_DEPARTMENT_ID_KEY:API_PRODUCT_DEPARTMENT_ID_KEY,
-                                                      API_PRODUCT_FORM_DESCRIPTION_KEY:API_PRODUCT_FORM_DESCRIPTION_KEY,
-                                                      API_PRODUCT_FORM_DEPARTMENT_TREE_KEY:API_PRODUCT_FORM_DEPARTMENT_TREE_KEY,
-                                                      API_PRODUCT_FORM_RETURNABLE_KEY:API_PRODUCT_FORM_RETURNABLE_KEY,
-                                                      API_PRODUCT_MUST_INSURANCE_KEY:API_PRODUCT_MUST_INSURANCE_KEY,
-                                                      kTKPDDETAILPRODUCT_APIPRODUCTURKKEY:kTKPDDETAILPRODUCT_APIPRODUCTURKKEY,
-                                                      API_PRODUCT_FORM_ETALASE_NAME_KEY:API_PRODUCT_FORM_ETALASE_NAME_KEY
-                                                      }];
-    
-    RKObjectMapping *statisticMapping = [RKObjectMapping mappingForClass:[Statistic class]];
-    [statisticMapping addAttributeMappingsFromDictionary:@{kTKPDDETAILPRODUCT_APISTATISTICKEY:kTKPDDETAILPRODUCT_APISTATISTICKEY,
-                                                           kTKPDDETAILPRODUCT_APIPRODUCTSOLDKEY:kTKPDDETAILPRODUCT_APIPRODUCTSOLDKEY,
-                                                           kTKPDDETAILPRODUCT_APIPRODUCTTRANSACTIONKEY:kTKPDDETAILPRODUCT_APIPRODUCTTRANSACTIONKEY,
-                                                           kTKPDDETAILPRODUCT_APIPRODUCTSUCCESSRATEKEY:kTKPDDETAILPRODUCT_APIPRODUCTSUCCESSRATEKEY,
-                                                           kTKPDDETAILPRODUCT_APIPRODUCTVIEWKEY:kTKPDDETAILPRODUCT_APIPRODUCTVIEWKEY,
-                                                           kTKPDDETAILPRODUCT_APIPRODUCTCANCELRATEKEY:kTKPDDETAILPRODUCT_APIPRODUCTCANCELRATEKEY,
-                                                           kTKPDDETAILPRODUCT_APIPRODUCTTALKKEY:kTKPDDETAILPRODUCT_APIPRODUCTTALKKEY,
-                                                           kTKPDDETAILPRODUCT_APIPRODUCTTALKKEY:kTKPDDETAILPRODUCT_APIPRODUCTTALKKEY,
-                                                           kTKPDDETAILPRODUCT_APIPRODUCTREVIEWKEY:kTKPDDETAILPRODUCT_APIPRODUCTREVIEWKEY,
-                                                           KTKPDDETAILPRODUCT_APIPRODUCTQUALITYRATEKEY:KTKPDDETAILPRODUCT_APIPRODUCTQUALITYRATEKEY,
-                                                           KTKPDDETAILPRODUCT_APIPRODUCTACCURACYRATEKEY:KTKPDDETAILPRODUCT_APIPRODUCTACCURACYRATEKEY,
-                                                           KTKPDDETAILPRODUCT_APIPRODUCTQUALITYPOINTKEY:KTKPDDETAILPRODUCT_APIPRODUCTQUALITYPOINTKEY,
-                                                           KTKPDDETAILPRODUCT_APIPRODUCTACCURACYPOINTKEY:KTKPDDETAILPRODUCT_APIPRODUCTACCURACYPOINTKEY
-                                                           
-                                                           }];
-    
-    RKObjectMapping *shopinfoMapping = [RKObjectMapping mappingForClass:[ShopInfo class]];
-    [shopinfoMapping addAttributeMappingsFromDictionary:@{kTKPDDETAILPRODUCT_APISHOPINFOKEY:kTKPDDETAILPRODUCT_APISHOPINFOKEY,
-                                                          kTKPDDETAILPRODUCT_APISHOPOPENSINCEKEY:kTKPDDETAILPRODUCT_APISHOPOPENSINCEKEY,
-                                                          kTKPDDETAILPRODUCT_APISHOPLOCATIONKEY:kTKPDDETAILPRODUCT_APISHOPLOCATIONKEY,
-                                                          kTKPDDETAILPRODUCT_APISHOPLOCATIONKEY:kTKPDDETAILPRODUCT_APISHOPLOCATIONKEY,
-                                                          kTKPDDETAIL_APISHOPIDKEY:kTKPDDETAIL_APISHOPIDKEY,
-                                                          kTKPDDETAILPRODUCT_APISHOPLASTLOGINKEY:kTKPDDETAILPRODUCT_APISHOPLASTLOGINKEY,
-                                                          kTKPDDETAILPRODUCT_APISHOPTAGLINEKEY:kTKPDDETAILPRODUCT_APISHOPTAGLINEKEY,
-                                                          kTKPDDETAILPRODUCT_APISHOPNAMEKEY:kTKPDDETAILPRODUCT_APISHOPNAMEKEY,
-                                                          kTKPDDETAILPRODUCT_APISHOPISFAVKEY:kTKPDDETAILPRODUCT_APISHOPISFAVKEY,
-                                                          kTKPDDETAILPRODUCT_APISHOPDESCRIPTIONKEY:kTKPDDETAILPRODUCT_APISHOPDESCRIPTIONKEY,
-                                                          kTKPDDETAILPRODUCT_APISHOPAVATARKEY:kTKPDDETAILPRODUCT_APISHOPAVATARKEY,
-                                                          kTKPDDETAILPRODUCT_APISHOPDOMAINKEY:kTKPDDETAILPRODUCT_APISHOPDOMAINKEY
-                                                          }];
-    
-    RKObjectMapping *shopstatsMapping = [RKObjectMapping mappingForClass:[ShopStats class]];
-    [shopstatsMapping addAttributeMappingsFromDictionary:@{kTKPDDETAILPRODUCT_APISHOPSERVICERATEKEY:kTKPDDETAILPRODUCT_APISHOPSERVICERATEKEY,
-                                                           kTKPDDETAILPRODUCT_APISHOPSERVICEDESCRIPTIONKEY:kTKPDDETAILPRODUCT_APISHOPSERVICEDESCRIPTIONKEY,
-                                                           kTKPDDETAILPRODUCT_APISHOPSPEEDRATEKEY:kTKPDDETAILPRODUCT_APISHOPSPEEDRATEKEY,
-                                                           kTKPDDETAILPRODUCT_APISHOPACURACYRATEKEY:kTKPDDETAILPRODUCT_APISHOPACURACYRATEKEY,
-                                                           kTKPDDETAILPRODUCT_APISHOPACURACYDESCRIPTIONKEY:kTKPDDETAILPRODUCT_APISHOPACURACYDESCRIPTIONKEY,
-                                                           kTKPDDETAILPRODUCT_APISHOPSPEEDDESCRIPTIONKEY:kTKPDDETAILPRODUCT_APISHOPSPEEDDESCRIPTIONKEY
-                                                           }];
-    
-    RKObjectMapping *wholesaleMapping = [RKObjectMapping mappingForClass:[WholesalePrice class]];
-    [wholesaleMapping addAttributeMappingsFromArray:@[kTKPDDETAILPRODUCT_APIWHOLESALEMINKEY,kTKPDDETAILPRODUCT_APIWHOLESALEPRICEKEY,kTKPDDETAILPRODUCT_APIWHOLESALEMAXKEY]];
-    
-    RKObjectMapping *categoryMapping = [RKObjectMapping mappingForClass:[CategoryDetail class]];
-    [categoryMapping addAttributeMappingsFromDictionary:@{@"department_id" : @"categoryId", @"department_name" : @"name"}];
-    
-    RKObjectMapping *otherproductMapping = [RKObjectMapping mappingForClass:[OtherProduct class]];
-    [otherproductMapping addAttributeMappingsFromArray:@[API_PRODUCT_PRICE_KEY,
-                                                         API_PRODUCT_NAME_KEY,
-                                                         kTKPDDETAILPRODUCT_APIPRODUCTIDKEY,
-                                                         kTKPDDETAILPRODUCT_APIPRODUCTIMAGEKEY]];
-    
-    RKObjectMapping *imagesMapping = [RKObjectMapping mappingForClass:[ProductImages class]];
-    [imagesMapping addAttributeMappingsFromArray:@[kTKPDDETAILPRODUCT_APIIMAGEIDKEY,kTKPDDETAILPRODUCT_APIIMAGESTATUSKEY,kTKPDDETAILPRODUCT_APIIMAGEDESCRIPTIONKEY,kTKPDDETAILPRODUCT_APIIMAGEPRIMARYKEY,kTKPDDETAILPRODUCT_APIIMAGESRCKEY]];
-    
-    // Relationship Mapping
-    [productMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIRESULTKEY toKeyPath:kTKPDDETAIL_APIRESULTKEY withMapping:resultMapping]];
-    
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILPRODUCT_APIINFOKEY toKeyPath:kTKPDDETAILPRODUCT_APIINFOKEY withMapping:OtherInfoMapping]];
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_PRODUCT_INFO_KEY toKeyPath:API_PRODUCT_INFO_KEY withMapping:infoMapping]];
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILPRODUCT_APISTATISTICKEY toKeyPath:kTKPDDETAILPRODUCT_APISTATISTICKEY withMapping:statisticMapping]];
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILPRODUCT_APISHOPINFOKEY toKeyPath:kTKPDDETAILPRODUCT_APISHOPINFOKEY withMapping:shopinfoMapping]];
-    [shopinfoMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILPRODUCT_APISHOPSTATKEY toKeyPath:kTKPDDETAILPRODUCT_APISHOPSTATKEY withMapping:shopstatsMapping]];
-    
-    RKRelationshipMapping *breadcrumbRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIBREADCRUMBPATHKEY toKeyPath:kTKPDDETAIL_APIBREADCRUMBPATHKEY withMapping:categoryMapping];
-    [resultMapping addPropertyMapping:breadcrumbRel];
-    RKRelationshipMapping *otherproductRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIOTHERPRODUCTPATHKEY toKeyPath:kTKPDDETAIL_APIOTHERPRODUCTPATHKEY withMapping:otherproductMapping];
-    [resultMapping addPropertyMapping:otherproductRel];
-    RKRelationshipMapping *productimageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIPRODUCTIMAGEPATHKEY toKeyPath:kTKPDDETAIL_APIPRODUCTIMAGEPATHKEY withMapping:imagesMapping];
-    [resultMapping addPropertyMapping:productimageRel];
-    RKRelationshipMapping *wholesaleRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIWHOLESALEPRICEPATHKEY toKeyPath:kTKPDDETAIL_APIWHOLESALEPRICEPATHKEY withMapping:wholesaleMapping];
-    [resultMapping addPropertyMapping:wholesaleRel];
-    
-    // Response Descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:productMapping method:RKRequestMethodGET pathPattern:kTKPDDETAILPRODUCT_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[ProductEdit mapping] method:RKRequestMethodGET pathPattern:kTKPDDETAILPRODUCT_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [objectmanager addResponseDescriptor:responseDescriptor];
     
