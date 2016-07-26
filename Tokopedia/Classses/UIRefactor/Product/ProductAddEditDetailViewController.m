@@ -31,6 +31,8 @@
 #import "UserAuthentificationManager.h"
 #import "Tokopedia-Swift.h"
 
+NSString * const ProductStatusWarehouse = @"3";
+
 @interface ProductAddEditDetailViewController ()
 <
     UITableViewDataSource,
@@ -842,7 +844,7 @@
     NSString *productWeightUnitID = product.product_weight_unit?:@"";
     NSString *productWeight = product.product_weight?:@"";
     NSString *productInsurance = product.product_must_insurance?:@"";
-    NSString *moveToWarehouse = [product.product_status isEqualToString:@"3"]? @"2" : @"1";
+    NSString *moveToWarehouse = [product.product_status isEqualToString:ProductStatusWarehouse]? @"2" : @"1";
     
     NSString *etalaseUserInfoID = product.product_etalase_id?:@"";
     BOOL isNewEtalase = [etalaseUserInfoID isEqualToString:@"-1"];
