@@ -199,8 +199,7 @@
 }
 
 -(NSTimeInterval)allowedTimeInterval{
-    //return 60*60*24*1;
-    return 60;
+    return FBTweakValue(@"Security", @"Phone Verification", @"Notice Interval(Minutes)", 60*24*1)*60;
 }
 
 -(NSDate*)NSDatefromString:(NSString*)date{

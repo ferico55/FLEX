@@ -205,7 +205,7 @@
     _table.tableFooterView = _footer;
 
     _data = [self generateData];
-    if(_fetchDataAtBeginning){
+    if([self shouldFetchDataAtBeginning]){
         [self fetchTalkComments];
     }
 }
@@ -317,6 +317,11 @@
 }
 
 #pragma mark - Methods
+
+- (BOOL)shouldFetchDataAtBeginning{
+    return (_talk != nil);
+}
+
 - (void)initPopUp:(NSString *)strText withSender:(id)sender withRangeDesc:(NSRange)range
 {
     UILabel *lblShow = [[UILabel alloc] init];
