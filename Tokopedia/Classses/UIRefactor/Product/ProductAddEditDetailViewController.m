@@ -397,7 +397,7 @@ NSString * const ProductStatusWarehouse = @"3";
                 cell.detailTextLabel.text = productMustInsurance;
             }
             if (indexPath.row == BUTTON_PRODUCT_RETURNABLE) {
-                NSString *productReturnable =[ARRAY_PRODUCT_RETURNABLE[[_returnAbleStatus integerValue]]objectForKey:DATA_NAME_KEY];
+                NSString *productReturnable =[ARRAY_PRODUCT_RETURNABLE[[_returnableStatus integerValue]]objectForKey:DATA_NAME_KEY];
                 cell.detailTextLabel.text = productReturnable;
             }
             break;
@@ -895,7 +895,7 @@ NSString * const ProductStatusWarehouse = @"3";
                                       API_PRODUCT_CONDITION_KEY : productConditionID,
                                       API_PRODUCT_IMAGE_TOUPLOAD_KEY : [self paramPhoto]?:@"",
                                       API_PRODUCT_IMAGE_DEFAULT_KEY: [self photoDefault]?:@"",
-                                      API_PRODUCT_IS_RETURNABLE_KEY : _returnAbleStatus,
+                                      API_PRODUCT_IS_RETURNABLE_KEY : _returnableStatus,
                                       API_PRODUCT_IS_CHANGE_WHOLESALE_KEY:@(1),
                                       API_UNIQUE_ID_KEY:uniqueID,
                                       API_IS_DUPLICATE_KEY : @(duplicate),
@@ -1274,7 +1274,7 @@ NSString * const ProductStatusWarehouse = @"3";
     
     
     NSString *productID = product.product_id?:@"";
-    NSString *returnableProduct = _returnAbleStatus?:@"0";
+    NSString *returnableProduct = _returnableStatus?:@"0";
 
     
     NSDictionary* paramDictionary = @{kTKPDDETAIL_APIACTIONKEY:action?:@"",
@@ -1504,7 +1504,7 @@ NSString * const ProductStatusWarehouse = @"3";
         {
             NSInteger index = [[alertView.data objectForKey:DATA_INDEX_KEY] integerValue];
             NSString *value = [[ARRAY_PRODUCT_RETURNABLE[index] objectForKey:DATA_VALUE_KEY] stringValue];
-            _returnAbleStatus = value;
+            _returnableStatus = value;
             [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
             [_tableView reloadData];
             break;
@@ -1556,7 +1556,7 @@ NSString * const ProductStatusWarehouse = @"3";
         [_dataInput addEntriesFromDictionary:[_data objectForKey:DATA_INPUT_KEY]];
         
         ProductEditDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
-        NSString *productReturnable = _returnAbleStatus?:@"";
+        NSString *productReturnable = _returnableStatus?:@"";
         if ([productReturnable isEqualToString:@""] || [productReturnable isEqualToString:@"0"] || productReturnable == nil) {
             [_dataInput setObject:@(0) forKey:API_PRODUCT_IS_RETURNABLE_KEY];
             //[_dataInput setObject:@(-1) forKey:API_PRODUCT_IS_RETURNABLE_KEY];

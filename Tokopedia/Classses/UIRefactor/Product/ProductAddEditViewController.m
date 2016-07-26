@@ -382,7 +382,7 @@ FilterCategoryViewDelegate
                                            @"Image_desc_array":_productImageDesc?:@[]
                                            };
                         _detailVC.shopHasTerm = _product.result.info.shop_has_terms?:@"";
-                        _detailVC.returnAbleStatus = _product.result.info.product_returnable?:@"0";
+                        _detailVC.returnableStatus = _product.result.info.product_returnable?:@"0";
                         _detailVC.generateHost = _generateHost;
                         _detailVC.delegate = self;
                         BOOL isShopHasTerm = ([_product.result.info.shop_has_terms isEqualToString:@""]||[_product.result.info.shop_has_terms isEqualToString:@"0"])?NO:YES;

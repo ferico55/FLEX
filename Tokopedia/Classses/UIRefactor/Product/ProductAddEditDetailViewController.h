@@ -33,7 +33,7 @@
 @property BOOL isShopHasTerm;
 @property BOOL isNeedRequestAddProductPicture;
 
-@property NSString* returnAbleStatus;
+@property NSString* returnableStatus;
 
 /** 
  my $var_state = {
