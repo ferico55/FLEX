@@ -68,3 +68,13 @@
 
 #import "TTTAttributedLabel.h"
 #import "NSStringCategory.h"
+#import "iCarousel.h"
+#import "SwipeView.h"
+#import "TKPStoreManager.h"
+#import "TKPHomeBannerStore.h"
+#import "CarouselDataSource.h"
+#import "CategoryDataSource.h"
+#import "UIViewController+TKPAdditions.h"
+#import "CategoryViewCell.h"
+#import "Slide.h"
+#import "NSString+TPBaseUrl.h"

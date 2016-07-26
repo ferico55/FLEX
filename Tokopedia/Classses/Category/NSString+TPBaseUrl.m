@@ -74,4 +74,13 @@
                           ));
 }
 
++ (NSString*)mojitoUrl {
+    return  FBTweakValue(@"Network", @"Environment", @"Tokopedia Mojito Url", @"https://mojito.tokopedia.com",
+                         (@{
+                            @"https://mojito-staging.tokopedia.com" : @"Staging",
+                            @"https://mojito.tokopedia.com" : @"Production",
+                            }
+                          ));
+}
+
 @end

@@ -7,6 +7,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HomePageViewController" customModule="Tokopedia" customModuleProvider="target">
             <connections>
+                <outlet property="collectionView" destination="yax-V1-r73" id="UpX-yu-5iJ"/>
+                <outlet property="flowLayout" destination="F6Q-Eh-Afg" id="oSm-Y7-VZ8"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>

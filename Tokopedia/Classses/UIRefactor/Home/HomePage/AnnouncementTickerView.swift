@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AnnouncementTickerView: UIView {
+class AnnouncementTickerView: UIView, TTTAttributedLabelDelegate {
 
     @IBOutlet var titleLabel: UILabel!
     @IBOutlet var messageLabel: TTTAttributedLabel!
@@ -28,11 +28,11 @@ class AnnouncementTickerView: UIView {
     }
     
     // MARK: - Setter Methods    
-    func setTitleLabel(text: String) {
+    func setTitle(text: String) {
         titleLabel.text = text
     }
     
-    func setMessageLabel(text: String) {
+    func setMessage(text: String) {
         let attributedString = self.attributedMessage(text)
         messageLabel.enabledTextCheckingTypes = NSTextCheckingType.Link.rawValue
         messageLabel.attributedText = attributedString
