@@ -2092,7 +2092,7 @@ OtherProductDelegate
                 _header.frame = CGRectMake(0, 0, _table.bounds.size.width, 520);
             }
             [viewContentWarehouse setHidden:NO];
-            [self hideReportButtonWithIsNeedToChangeShareLeadingConsraint:NO];
+            [self hideReportButton:NO];
             _table.tableHeaderView = _header;
         }
         else {
@@ -2109,19 +2109,12 @@ OtherProductDelegate
     }
 }
 
-- (void) hideReportButtonWithIsNeedToChangeShareLeadingConsraint: (Boolean) isNeedToChangeShareLeadingConsraint{
+- (void) hideReportButton: (BOOL) isNeedToRemoveBtnReport{
     
-    if (isNeedToChangeShareLeadingConsraint){
-        [btnShare.superview addConstraint: [NSLayoutConstraint
-                                            constraintWithItem:btnShare
-                                            attribute:NSLayoutAttributeLeading
-                                            relatedBy:NSLayoutRelationEqual
-                                            toItem:btnShare.superview
-                                            attribute:NSLayoutAttributeLeading
-                                            multiplier:1.0
-                                            constant:15]];
+    if (isNeedToRemoveBtnReport){
         [btnReport removeFromSuperview];
     } else {
+        // hanya geser saja btn report ke luar layar, untuk menjaga bentuk share button tetap persegi
         _btnReportLeadingConstraint.constant = -(_btnShareHeight.constant) - 2 ;
     }
 }
@@ -2207,15 +2200,7 @@ OtherProductDelegate
                 
                 [btnShare removeConstraint:_btnShareTrailingConstraint];
                 [btnShare removeConstraint:_btnShareLeadingConstraint];
-                [btnShare.superview addConstraint: [NSLayoutConstraint
-                                         constraintWithItem:btnShare.superview
-                                         attribute:NSLayoutAttributeTrailing
-                                         relatedBy:NSLayoutRelationEqual
-                                         toItem:btnShare
-                                         attribute:NSLayoutAttributeTrailing
-                                         multiplier:1.0
-                                         constant:15]];
-                [self hideReportButtonWithIsNeedToChangeShareLeadingConsraint:YES];
+                [self hideReportButton:YES];
             } else {
                 if(!_product.isDummyProduct) {
                     [_buyButton setHidden:NO];

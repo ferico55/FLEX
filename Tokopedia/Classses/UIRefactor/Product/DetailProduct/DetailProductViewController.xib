@@ -591,6 +591,7 @@
                                 <constraint firstItem="NZQ-y3-gDO" firstAttribute="top" relation="greaterThanOrEqual" secondItem="hsX-QI-9sF" secondAttribute="top" constant="5" id="4i5-rO-VJf"/>
                                 <constraint firstAttribute="bottom" secondItem="RVt-c1-8bl" secondAttribute="bottom" id="53d-1B-GTY"/>
                                 <constraint firstAttribute="height" constant="50" id="6ja-ou-q2E"/>
+                                <constraint firstAttribute="trailing" secondItem="Qan-1S-e2b" secondAttribute="trailing" priority="750" constant="15" id="BlM-IR-NqO"/>
                                 <constraint firstItem="HFZ-gV-WHe" firstAttribute="width" secondItem="Qan-1S-e2b" secondAttribute="width" id="C9a-Rs-qw3"/>
                                 <constraint firstItem="HFZ-gV-WHe" firstAttribute="height" secondItem="Qan-1S-e2b" secondAttribute="height" id="R4r-xL-gLR"/>
                                 <constraint firstItem="RVt-c1-8bl" firstAttribute="leading" secondItem="hsX-QI-9sF" secondAttribute="leading" id="T0b-wJ-mv5"/>
@@ -599,6 +600,7 @@
                                 <constraint firstItem="m0j-oE-jzy" firstAttribute="leading" secondItem="Qan-1S-e2b" secondAttribute="trailing" constant="10" id="fNV-ds-hVq"/>
                                 <constraint firstItem="Qan-1S-e2b" firstAttribute="top" relation="greaterThanOrEqual" secondItem="hsX-QI-9sF" secondAttribute="top" constant="5" id="hvj-mk-BSf"/>
                                 <constraint firstItem="NZQ-y3-gDO" firstAttribute="leading" secondItem="m0j-oE-jzy" secondAttribute="trailing" constant="10" id="kng-AX-mWL"/>
+                                <constraint firstItem="Qan-1S-e2b" firstAttribute="leading" secondItem="hsX-QI-9sF" secondAttribute="leading" priority="750" constant="15" id="mgi-aD-3Nf"/>
                                 <constraint firstItem="m0j-oE-jzy" firstAttribute="width" secondItem="NZQ-y3-gDO" secondAttribute="width" id="qAe-Gf-fbQ"/>
                                 <constraint firstItem="Qan-1S-e2b" firstAttribute="top" secondItem="hsX-QI-9sF" secondAttribute="top" constant="5" id="t5G-7I-Akc"/>
                                 <constraint firstItem="NZQ-y3-gDO" firstAttribute="top" secondItem="hsX-QI-9sF" secondAttribute="top" constant="5" id="wJw-FM-xMh"/>
