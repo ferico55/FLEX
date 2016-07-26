@@ -30,10 +30,6 @@
     [promoProductMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"image"
                                                                                         toKeyPath:@"image"
                                                                                       withMapping:[PromoProductImage mapping]]];
-    [promoProductMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"badges"
-                                                                                        toKeyPath:@"badges"
-                                                                                      withMapping:[ProductBadge mapping]]];
-    
     return promoProductMapping;
 }
 
@@ -47,7 +43,6 @@
         ProductModelView *viewModel = [[ProductModelView alloc] init];
         [viewModel setProductName:_name];
         [viewModel setProductPrice:_price_format];
-        viewModel.badges = _badges;
         /*
         [viewModel setProductShop:_];
         [viewModel setProductThumbUrl:self.product_image_200];

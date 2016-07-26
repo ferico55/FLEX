@@ -205,7 +205,9 @@
     _table.tableFooterView = _footer;
 
     _data = [self generateData];
-    [self fetchTalkComments];
+    if([self shouldFetchDataAtBeginning]){
+        [self fetchTalkComments];
+    }
 }
 
 - (void)viewDidLayoutSubviews {
@@ -315,6 +317,11 @@
 }
 
 #pragma mark - Methods
+
+- (BOOL)shouldFetchDataAtBeginning{
+    return (_talk != nil);
+}
+
 - (void)initPopUp:(NSString *)strText withSender:(id)sender withRangeDesc:(NSRange)range
 {
     UILabel *lblShow = [[UILabel alloc] init];
@@ -720,26 +727,27 @@
         [_datainput setObject:list.comment_id forKey:@"comment_id"];
         [_datainput setObject:[_data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTIDKEY] forKey:@"product_id"];
         
-        if(![[_userManager getUserId] isEqualToString:list.comment_user_id] && ![_userManager isMyShopWithShopId:[_data objectForKey:@"talk_shop_id"]]) {
-            MGSwipeButton * report = [MGSwipeButton buttonWithTitle:@"Laporkan" backgroundColor:[UIColor colorWithRed:0 green:122/255.0 blue:255.05 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
-                _reportAction = @"report_comment_talk";
-                ReportViewController *reportController = [ReportViewController new];
-
-                reportController.onFinishWritingReport = ^(NSString *message) {
-                    [weakSelf reportCommentWithMessage:message];
-                };
-
-                [weakSelf.navigationController pushViewController:reportController animated:YES];
-                return YES;
-            }];
-            return @[report];
-        } else {
+        if([[_userManager getUserId] isEqualToString:list.comment_user_id]){
             MGSwipeButton * trash = [MGSwipeButton buttonWithTitle:@"Hapus" backgroundColor:[UIColor colorWithRed:255/255 green:59/255.0 blue:48/255.0 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
                 [weakSelf deleteCommentTalkAtIndexPath:indexPath];
                 return YES;
             }];
             
             return @[trash];
+        }else{
+            MGSwipeButton * report = [MGSwipeButton buttonWithTitle:@"Laporkan" backgroundColor:[UIColor colorWithRed:0 green:122/255.0 blue:255.05 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
+                _reportAction = @"report_comment_talk";
+                ReportViewController *reportController = [ReportViewController new];
+                
+                reportController.onFinishWritingReport = ^(NSString *message) {
+                    [weakSelf reportCommentWithMessage:message];
+                };
+                
+                [weakSelf.navigationController pushViewController:reportController animated:YES];
+                return YES;
+            }];
+            return @[report];
+
         }
         
     }

@@ -24,7 +24,6 @@
 @property (strong, nonatomic) PromoCategory *category;
 @property (strong, nonatomic) NSArray<WholesalePrice*> *wholesale_price;
 @property (strong, nonatomic) PromoProductImage *image;
-@property (strong, nonatomic) NSArray *badges;
 
 
 @property (strong, nonatomic) ProductModelView *viewModel;

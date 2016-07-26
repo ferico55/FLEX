@@ -18,6 +18,7 @@
 -(BOOL)isAllNonNumber;
 - (BOOL) isNumber;
 + (NSString *)stringReplaceAhrefWithUrl:(NSString *)string;
++ (NSString *)extracTKPMEUrl:(NSString *)string;
 
 - (BOOL) isNotAllBaseCharacter;
 
