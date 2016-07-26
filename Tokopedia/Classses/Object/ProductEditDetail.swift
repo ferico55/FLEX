@@ -27,7 +27,7 @@ class ProductEditDetail: NSObject {
     var product_weight_unit_name: String = ""
     
     static func mapping() -> RKObjectMapping {
-        let mapping : RKObjectMapping = RKObjectMapping.init(forClass: self)
+        let mapping : RKObjectMapping = RKObjectMapping(forClass: self)
         mapping .addAttributeMappingsFromDictionary([
             "product_min_order" : "product_min_order",
             "product_id" : "product_id",

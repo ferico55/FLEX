@@ -13,10 +13,10 @@ class ProductEdit: NSObject {
     var result: ProductEditResult!
     
     static func mapping() -> RKObjectMapping! {
-        let mapping : RKObjectMapping = RKObjectMapping.init(forClass: self)
+        let mapping : RKObjectMapping = RKObjectMapping(forClass: self)
         mapping.addAttributeMappingsFromDictionary(["status" : "status"])
 
-        mapping.addPropertyMapping(RKRelationshipMapping.init(fromKeyPath: "result", toKeyPath: "result", withMapping: ProductEditResult.mapping()))
+        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "result", toKeyPath: "result", withMapping: ProductEditResult.mapping()))
         
         return mapping
     }

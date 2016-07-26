@@ -109,7 +109,6 @@
 @interface DetailProductViewController ()
 <
 LabelMenuDelegate,
-//TTTAttributedLabelDelegate,
 GalleryViewControllerDelegate,
 UITableViewDelegate,
 UITableViewDataSource,
@@ -388,17 +387,6 @@ OtherProductDelegate
     _buyButton.hidden = YES;
     _dinkButton.hidden = YES;
     
-    //Set corner btn share
-    btnShare.layer.cornerRadius = 5.0f;
-    btnShare.layer.borderWidth = 1;
-    btnShare.layer.borderColor = [[UIColor colorWithRed:219/255.0f green:219/255.0f blue:219/255.0f alpha:1.0f] CGColor];
-    btnShare.layer.masksToBounds = YES;
-    
-    //Set corner report button
-    btnReport.layer.cornerRadius = 5.0f;
-    btnReport.layer.borderWidth = 1;
-    btnReport.layer.borderColor = [[UIColor colorWithRed:219/255.0f green:219/255.0f blue:219/255.0f alpha:1.0f] CGColor];
-    btnReport.layer.masksToBounds = YES;
     
     UITapGestureRecognizer *tapShopGes = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapShop)];
     [_shopClickView addGestureRecognizer:tapShopGes];
@@ -1090,8 +1078,8 @@ OtherProductDelegate
         [self productinfocell:productInfoCell withtableview:tableView];
         
         //Check product returnable
-        BOOL isProductReturnAble = _product.data.info.return_info && ![_product.data.info.return_info.content isEqualToString:@""];
-        if(isProductReturnAble) {
+        BOOL isProductReturnable = _product.data.info.return_info && ![_product.data.info.return_info.content isEqualToString:@""];
+        if(isProductReturnable) {
             NSArray* rgbArray = [_product.data.info.return_info.color_rgb componentsSeparatedByString:@","];
             UIColor* color = [UIColor colorWithRed:([rgbArray[0] integerValue]/255.0) green:([rgbArray[1] integerValue]/255.0) blue:([rgbArray[2] integerValue]/255.0) alpha:0.2];
             [productInfoCell setLblDescriptionToko:_product.data.info.return_info.content withImageURL:_product.data.info.return_info.icon withBGColor:color]

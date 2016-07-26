@@ -13,7 +13,7 @@ class ProductEditInfo: NSObject {
     var product_returnable: String = ""
     
     static func mapping() -> RKObjectMapping {
-        let mapping : RKObjectMapping = RKObjectMapping.init(forClass: self)
+        let mapping : RKObjectMapping = RKObjectMapping(forClass: self)
         
         mapping .addAttributeMappingsFromDictionary(["shop_has_terms" : "shop_has_terms", "product_returnable" : "product_returnable"])
         

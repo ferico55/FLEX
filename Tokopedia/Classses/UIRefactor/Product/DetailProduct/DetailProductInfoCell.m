@@ -85,15 +85,9 @@
     
     constraintHeightViewRetur.constant = (CPaddingTopDescToko*2)+labelHeight;
     UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
-    
-    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 4.0;
-    style.alignment = NSTextAlignmentLeft;
-    
     NSDictionary *attributes = @{NSForegroundColorAttributeName:[UIColor blackColor],
-                                 NSFontAttributeName: font,
-                                 NSParagraphStyleAttributeName: style,
-                                 };
+                                 NSFontAttributeName: font};
+    
     NSString *string = [NSString stringReplaceAhrefWithUrl:strText];
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:string attributes:attributes];
     lblMessageRetur.enabledTextCheckingTypes = NSTextCheckingTypeLink;

@@ -17,7 +17,7 @@ class ProductEditImages: NSObject {
     var image_src_300: String = ""
     
     static func mapping() -> RKObjectMapping! {
-        let mapping = RKObjectMapping.init(forClass: self)
+        let mapping = RKObjectMapping(forClass: self)
         
         mapping.addAttributeMappingsFromDictionary([
             "image_description" : "image_description",

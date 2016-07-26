@@ -20,7 +20,6 @@
 
 @interface DetailProductResult : NSObject
 
-//@property (nonatomic, strong) ProductDetail *product;
 @property (nonatomic, strong) NSString *server_id;
 @property (nonatomic) NSInteger shop_is_gold;
 @property (nonatomic, strong) Statistic *statistic;
