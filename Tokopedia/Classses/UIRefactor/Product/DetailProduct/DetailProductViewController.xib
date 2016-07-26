@@ -78,7 +78,7 @@
                 <outlet property="otherProductIndicator" destination="aht-6o-zFn" id="Lqw-mg-VHc"/>
                 <outlet property="otherProductNoDataLabel" destination="zMF-nz-BGG" id="qEq-XU-5fR"/>
                 <outlet property="otherProductsCollectionView" destination="Ib3-kj-22N" id="2tA-Ez-dZb"/>
-                <outlet property="otherProductsConstraintHeight" destination="C9a-Rs-qw3" id="7Gq-BG-wI1"/>
+                <outlet property="otherProductsConstraintHeight" destination="MvV-eG-ZMr" id="aXT-iP-hTR"/>
                 <outlet property="otherProductsFlowLayout" destination="KZs-Xy-aCe" id="BhS-Wm-PWo"/>
                 <outlet property="otherproductview" destination="P75-Lv-uni" id="Z0w-bp-kfw"/>
                 <outlet property="pagecontrol" destination="H1h-3a-FsP" id="J6E-C0-UQJ"/>
