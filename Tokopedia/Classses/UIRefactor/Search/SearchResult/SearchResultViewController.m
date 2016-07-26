@@ -1401,6 +1401,7 @@ ImageSearchRequestDelegate
                                    department:departmentId
                                          page:page/2
                                        source:source
+                              filterParameter:_selectedFilterParam
                                     onSuccess:^(NSArray<PromoResult *> *promoResult) {
                                         if (promoResult) {
                                             if(promoResult.count > 2){
