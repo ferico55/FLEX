@@ -52,7 +52,7 @@ class ReportProductViewController: UIViewController, UITextViewDelegate{
         super.didReceiveMemoryWarning()
     }
     
-    @IBAction func didTapLaporkanButton(sender: UIButton) {
+    @IBAction func didTapReportButton(sender: UIButton) {
         if let reportLinkUrl = reportLinkUrl {
             if reportLinkUrl.rangeOfString("gsd-tokopedia") != nil {
                 UIApplication.sharedApplication().openURL(NSURL(string: reportLinkUrl)!)
