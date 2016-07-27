@@ -52,18 +52,23 @@ class ReportProductViewController: UIViewController, UITextViewDelegate{
         super.didReceiveMemoryWarning()
     }
     
-    @IBAction func didTapLaporkanButton(sender: UIButton) {
-        var appVersion = NSBundle.mainBundle().infoDictionary!["CFBundleShortVersionString"]
-        appVersion = appVersion?.stringByReplacingOccurrencesOfString(".", withString: "")
-        let webViewVC = WebViewController()
-        webViewVC.strURL = reportLinkUrl! + "?flag_app=3&device=ios&app_version=\(appVersion)"
-        webViewVC.strTitle = "Laporkan Produk"
-        webViewVC.onTapLinkWithUrl = { (url) in
-            if (url.absoluteString == "https://www.tokopedia.com/") {
-                self.navigationController?.popViewControllerAnimated(true)
+    @IBAction func didTapReportButton(sender: UIButton) {
+        if let reportLinkUrl = reportLinkUrl {
+            if reportLinkUrl.rangeOfString("gsd-tokopedia") != nil {
+                UIApplication.sharedApplication().openURL(NSURL(string: reportLinkUrl)!)
+            } else {
+                let appVersion = UIApplicationCategory.getAppVersionStringWithoutDot()
+                let webViewVC = WebViewController()
+                webViewVC.strURL = reportLinkUrl + "?flag_app=3&device=ios&app_version=\(appVersion)"
+                webViewVC.strTitle = "Laporkan Produk"
+                webViewVC.onTapLinkWithUrl = { (url) in
+                    if (url.absoluteString == "https://www.tokopedia.com/") {
+                        self.navigationController?.popViewControllerAnimated(true)
+                    }
+                }
+                self.navigationController?.pushViewController(webViewVC, animated: true)
             }
         }
-        self.navigationController?.pushViewController(webViewVC, animated: true)
     }
     
     // MARK: KeyboardNotification

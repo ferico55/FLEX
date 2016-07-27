@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2D50139230438B54812D14B9 /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */; };
+		34DEA7931D4779B4005C94C2 /* UIApplicationCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34DEA7921D4779B4005C94C2 /* UIApplicationCategory.swift */; };
 		7A59F4821D471A9F002ECC7B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A59E58A1D471A93002ECC7B /* AppDelegate.m */; };
 		7A59F4831D471A9F002ECC7B /* TPAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A59E58E1D471A93002ECC7B /* TPAnalytics.m */; };
 		7A59F4841D471A9F002ECC7B /* TPLocalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A59E5901D471A93002ECC7B /* TPLocalytics.m */; };
@@ -2444,6 +2445,7 @@
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
 		2D733D9158C7BF957D514506 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
+		34DEA7921D4779B4005C94C2 /* UIApplicationCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIApplicationCategory.swift; sourceTree = "<group>"; };
 		4868E459AB2A65D133732296 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tokopedia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A59E5891D471A93002ECC7B /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -6249,6 +6251,7 @@
 				7A59E5E81D471A93002ECC7B /* Utils */,
 				7A59E5EC1D471A93002ECC7B /* ViewLabelUser.h */,
 				7A59E5ED1D471A93002ECC7B /* ViewLabelUser.m */,
+				34DEA7921D4779B4005C94C2 /* UIApplicationCategory.swift */,
 			);
 			path = Cocoa;
 			sourceTree = "<group>";
@@ -14160,6 +14163,7 @@
 				7A59F4F31D471A9F002ECC7B /* CatalogMarketPlace.m in Sources */,
 				7A59F8E91D471AA3002ECC7B /* ReputationDetailFormViewController.m in Sources */,
 				7A59F7511D471AA2002ECC7B /* ContactUsCategoryCell.m in Sources */,
+				34DEA7931D4779B4005C94C2 /* UIApplicationCategory.swift in Sources */,
 				7A59F9491D471AA4002ECC7B /* SettingAddressEditViewController.m in Sources */,
 				7A59F7011D471AA1002ECC7B /* AlertListView.m in Sources */,
 				7A59F8C21D471AA3002ECC7B /* MyReviewDetailTableViewCell.m in Sources */,

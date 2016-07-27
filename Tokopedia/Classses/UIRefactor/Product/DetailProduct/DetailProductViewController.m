@@ -387,7 +387,6 @@ OtherProductDelegate
     _buyButton.hidden = YES;
     _dinkButton.hidden = YES;
     
-    
     UITapGestureRecognizer *tapShopGes = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapShop)];
     [_shopClickView addGestureRecognizer:tapShopGes];
     [_shopClickView setUserInteractionEnabled:YES];
