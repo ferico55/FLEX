@@ -429,6 +429,9 @@ ImageSearchRequestDelegate
 -(void)adjustSelectedFilterFromData:(NSDictionary*)data{
     NSMutableArray *selectedFilters = [NSMutableArray new];
     for (NSString *key in [data allKeys]) {
+        if ([[data objectForKey:key] isKindOfClass:[NSDictionary class]] || [[data objectForKey:key] isKindOfClass:[NSArray class]]) {
+            break;
+        }
         if (![key isEqualToString:@"sc"]) {
             ListOption *filter = [ListOption new];
             filter.key = key;
