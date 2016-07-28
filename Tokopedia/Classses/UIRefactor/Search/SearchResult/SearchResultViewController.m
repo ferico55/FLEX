@@ -429,6 +429,9 @@ ImageSearchRequestDelegate
 -(void)adjustSelectedFilterFromData:(NSDictionary*)data{
     NSMutableArray *selectedFilters = [NSMutableArray new];
     for (NSString *key in [data allKeys]) {
+        if ([[data objectForKey:key] isKindOfClass:[NSDictionary class]] || [[data objectForKey:key] isKindOfClass:[NSArray class]]) {
+            break;
+        }
         if (![key isEqualToString:@"sc"]) {
             ListOption *filter = [ListOption new];
             filter.key = key;
@@ -1159,6 +1162,7 @@ ImageSearchRequestDelegate
     
     NSString *redirect_url = search.data.redirect_url;
     if(search.data.department_id && ![search.data.department_id isEqualToString:@"0"]) {
+        _rootCategoryID = ([_rootCategoryID integerValue] == 0)?search.data.department_id:_rootCategoryID;
         NSString *departementID = search.data.department_id?:@"";
         [_params setObject:departementID forKey:@"sc"];
         NSString *departementName = [_params objectForKey:@"department_name"]?:@"";
@@ -1250,7 +1254,6 @@ ImageSearchRequestDelegate
             [_collectionView reloadData];
         }
     } else {
-        _rootCategoryID = ([_rootCategoryID integerValue] == 0)?search.data.department_id:_rootCategoryID;
         NSURL *url = [NSURL URLWithString:search.data.redirect_url];
         NSArray* query = [[url path] componentsSeparatedByString: @"/"];
         
