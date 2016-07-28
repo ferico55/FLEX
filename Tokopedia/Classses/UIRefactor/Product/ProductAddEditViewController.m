@@ -59,7 +59,7 @@ FilterCategoryViewDelegate
 {
     NSMutableDictionary *_dataInput;
     NSMutableArray *_productImageURLs;
-    NSMutableArray *_productImageIDs;
+    NSMutableArray<NSString *> *_productImageIDs;
     NSMutableArray *_productImageDesc;
     
     UITextField *_activeTextField;
@@ -1860,7 +1860,7 @@ FilterCategoryViewDelegate
             ProductEditImages *image = images[i];
             ((UIButton*)_addImageButtons[i]).hidden = YES;
             [_productImageURLs replaceObjectAtIndex:i withObject:image.image_src];
-            [_productImageIDs replaceObjectAtIndex:i withObject:[NSString stringWithFormat:@"%zd",image.image_id]];
+            [_productImageIDs replaceObjectAtIndex:i withObject:[NSString stringWithFormat:@"%@",image.image_id]];
             [_productImageDesc replaceObjectAtIndex:i withObject:image.image_description];
             
             NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:image.image_src] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
