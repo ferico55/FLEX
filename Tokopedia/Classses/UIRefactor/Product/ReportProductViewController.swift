@@ -57,7 +57,7 @@ class ReportProductViewController: UIViewController, UITextViewDelegate{
             if reportLinkUrl.rangeOfString("gsd-tokopedia") != nil {
                 UIApplication.sharedApplication().openURL(NSURL(string: reportLinkUrl)!)
             } else {
-                let appVersion = UIApplicationCategory.getAppVersionStringWithoutDot()
+                let appVersion = UIApplication.getAppVersionStringWithoutDot()
                 let webViewVC = WebViewController()
                 webViewVC.strURL = reportLinkUrl + "?flag_app=3&device=ios&app_version=\(appVersion)"
                 webViewVC.strTitle = "Laporkan Produk"

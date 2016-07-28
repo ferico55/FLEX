@@ -126,7 +126,7 @@ import UIKit
     
     func categoryWithRemovedUnusedCategoryFromCategory( categories:[CategoryDetail]) -> [CategoryDetail] {
         var newCategories : [CategoryDetail] = []
-        if Int(rootCategoryID) != 0{
+        if Int(rootCategoryID) != 0 && rootCategoryID != ""{
             for category in categories {
                 if category.categoryId == rootCategoryID {
                     if selectedCategories.first?.categoryId == rootCategoryID || selectedCategories.count == 0 {
