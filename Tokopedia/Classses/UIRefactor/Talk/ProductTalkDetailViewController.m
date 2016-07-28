@@ -539,7 +539,7 @@
         comment.comment_create_time = dateString;
         comment.is_just_sent = YES;
         comment.comment_user_label = [_userManager isMyShopWithShopId:[_data objectForKey:TKPD_TALK_SHOP_ID]] ? @"Penjual" : @"Pengguna";
-
+        comment.comment_user_reputation = _userManager.reputation;
         if(![_act isAnimating]) {
             [_list addObject:comment];
             [_table reloadData];
