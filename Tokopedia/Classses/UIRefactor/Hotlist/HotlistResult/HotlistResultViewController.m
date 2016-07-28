@@ -114,6 +114,7 @@ static NSString const *rows = @"12";
     CategoryDetail *_selectedCategory;
     TokopediaNetworkManager *_requestHotlistManager;
     
+    
     FilterData *_filterResponse;
     NSArray<ListOption*> *_selectedFilters;
     NSDictionary *_selectedFilterParam;
@@ -165,7 +166,7 @@ static NSString const *rows = @"12";
 - (void) viewDidLoad {
     [super viewDidLoad];
     _page = 0;
-    
+        
     if (![self isUseDynamicFilter]) {
         [self setRightButton];
     }
@@ -247,10 +248,7 @@ static NSString const *rows = @"12";
     
     _promoRequest = [PromoRequest new];
     
-    _bannerRequest = [[HotlistBannerRequest alloc] init];
-    [_bannerRequest setDelegate:self];
-    [_bannerRequest setBannerKey:[_data objectForKey:kTKPDHOME_DATAQUERYKEY]?:@""];
-    [_bannerRequest requestBanner];
+    [self fetchDataHotlistBanner];
     
     self.scrollDirection = ScrollDirectionDown;
     
@@ -267,6 +265,21 @@ static NSString const *rows = @"12";
         self.screenName = @"Hot List Detail";
         [TPAnalytics trackScreenName:@"Hot List Detail" gridType:self.cellType];
     }
+}
+
+-(NSString*)getQueryBanner{
+    return [_data objectForKey:kTKPDHOME_DATAQUERYKEY]?:@"";
+}
+
+-(void)fetchDataHotlistBanner{
+    [HotlistBannerRequest fetchHotlistBannerWithQuery:[self getQueryBanner]
+                                            onSuccess:^(HotlistBannerResult *data) {
+                                                
+                                                [self didReceiveBannerHotlist:data];
+                                                
+                                            } onFailure:^(NSError *error) {
+                                                
+                                            }];
 }
 
 - (void)registerAllNib {
@@ -298,7 +311,7 @@ static NSString const *rows = @"12";
 }
 
 -(BOOL)isUseDynamicFilter{
-    if(FBTweakValue(@"Dynamic", @"Filter", @"Enabled", NO)) {
+    if(FBTweakValue(@"Dynamic", @"Filter", @"Enabled", YES)) {
         return YES;
     } else {
         return NO;
@@ -320,7 +333,7 @@ static NSString const *rows = @"12";
 
 - (IBAction)didTapSortButton:(id)sender {
     if ([self isUseDynamicFilter]){
-        [self pushDynamicSort];
+        [self searchWithDynamicSort];
     } else{
         [self pushSort];
     }
@@ -330,15 +343,30 @@ static NSString const *rows = @"12";
     return @"hot_product";
 }
 
--(void)pushDynamicSort{
-    FiltersController *controller = [[FiltersController alloc]initWithSource:[self hotlistFilterSource] sortResponse:_filterResponse?:[FilterData new] selectedSort:_selectedSort presentedVC:self onCompletion:^(ListOption * sort, NSDictionary*paramSort) {
+-(void)searchWithDynamicSort{
+    FiltersController *controller = [[FiltersController alloc]initWithSource:SourceHotlist
+                                                                sortResponse:_filterResponse?:[FilterData new]
+                                                                selectedSort:_selectedSort
+                                                                 presentedVC:self
+                                                              rootCategoryID:_rootCategoryID
+                                                                onCompletion:^(ListOption * sort, NSDictionary*paramSort) {
+                                                                    
         _selectedSortParam = paramSort;
         _selectedSort = sort;
-        _activeSortImageView.hidden = (_selectedSort == nil);
+        [self showSortingIsActive:[self getSortingIsActive]];
         [self refreshView:nil];
-    } response:^(FilterData * filterResponse) {
+        
+    } onReceivedFilterDataOption:^(FilterData * filterResponse) {
         _filterResponse = filterResponse;
     }];
+}
+
+-(BOOL)getSortingIsActive{
+    return (_selectedSort != nil);
+}
+
+-(void)showSortingIsActive:(BOOL)isActive{
+    _activeSortImageView.hidden = !isActive;
 }
 
 -(void)pushSort{
@@ -352,33 +380,40 @@ static NSString const *rows = @"12";
 
 - (IBAction)didTapFilterButton:(id)sender {
     if ([self isUseDynamicFilter]){
-        [self pushDynamicFilter];
+        [self searchWithDynamicFilter];
     } else{
         [self pushFilter];
     }
 }
 
--(void)pushDynamicFilter{
-    FiltersController *controller = [[FiltersController alloc]initWithSource:[self hotlistFilterSource]
-                                                              filterResponse:_filterResponse?:[FilterData new]
-                                                             rootCategoryID:@""
-                                                                  categories:[_initialCategories copy]
-                                                          selectedCategories:_selectedCategories
-                                                             selectedFilters:_selectedFilters
-                                                                 presentedVC:self
-                                                                onCompletion:^(NSArray<CategoryDetail *> * selectedCategories , NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
+-(void)searchWithDynamicFilter{
+    FiltersController *controller = [[FiltersController alloc]initWithSearchDataSource:SourceHotlist
+                                                                        filterResponse:_filterResponse?:[FilterData new]
+                                                                        rootCategoryID:@""
+                                                                            categories:[_initialCategories copy]
+                                                                    selectedCategories:_selectedCategories
+                                                                       selectedFilters:_selectedFilters
+                                                                           presentedVC:self
+                                                                          onCompletion:^(NSArray<CategoryDetail *> * selectedCategories , NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
         
         _selectedCategories = selectedCategories;
         _selectedFilters = selectedFilters;
         _selectedFilterParam = paramFilters;
         
-        _activeFilterImageView.hidden = (selectedCategories.count + selectedFilters.count == 0);
-        
+        [self isShowFilterIsActive:[self filterIsActive]];
         [self refreshView:nil];
         
-    } response:^(FilterData * filterResponse){
+    } onReceivedFilterDataOption:^(FilterData * filterResponse){
         _filterResponse = filterResponse;
     }];
+}
+
+-(BOOL)filterIsActive{
+    return (_selectedCategories.count + _selectedFilters.count > 0);
+}
+
+-(void)isShowFilterIsActive:(BOOL)isActive{
+    _activeFilterImageView.hidden = !isActive;
 }
 
 -(void)pushFilter{
@@ -584,8 +619,10 @@ static NSString const *rows = @"12";
         SearchResultViewController *vc = [SearchResultViewController new];
         NSString *searchtext = hashtags.department_id;
         vc.data =@{@"sc" : searchtext?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY};
+        vc.isFromDirectory = YES;
         SearchResultViewController *vc1 = [SearchResultViewController new];
         vc1.data =@{@"sc" : searchtext?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY};
+        vc1.isFromDirectory = YES;
         SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
         vc2.data =@{@"sc" : searchtext?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY};
         NSArray *viewcontrollers = @[vc,vc1,vc2];
@@ -780,10 +817,7 @@ static NSString const *rows = @"12";
     _promoRequest.page = _page;
     
     if([_data objectForKey:@"hotlist_id"] && (_page % 2 == 1 || _page == 1)){
-        NSString *departmentId = @"";
-        if(_bannerResult.query.sc){
-            departmentId = _bannerResult.query.sc;
-        }
+        NSString *departmentId = [self selectedCategoryIDsString];
 
         [_promoRequest requestForProductHotlist:[_data objectForKey:@"hotlist_id"]
                                      department:departmentId
@@ -863,34 +897,69 @@ static NSString const *rows = @"12";
     _swipegestureleft.enabled = YES;
     _swipegestureright.enabled = YES;
     
-
-    HotlistBannerQuery *q = _bannerResult.query;
-    
     //set query
-    NSDictionary *query = @{
-        @"negative_keyword" : q.negative_keyword?:@"",
-        @"sc" : q.sc?:@"",
-        @"ob" : q.ob?:@"",
-        @"terms" : q.terms?:@"",
-        @"fshop" : q.fshop?:@"",
-        @"q" : q.q?:@"",
-        @"pmin" : q.pmin?:@"",
-        @"pmax" : q.pmax?:@"",
-        @"type" : q.type?:@""
-    };
+    NSDictionary *query = [self hotlistBannerDictionaryFromDataBanner:bannerResult.query];
     
-    _rootCategoryID = q.sc;
+    _rootCategoryID = bannerResult.query.sc;
     [_detailfilter addEntriesFromDictionary:query];
     _selectedFilterParam = query;
     
     _start = 0;
+    [self adjustSelectedSortFromData:query];
+    [self adjustSelectedFilterFromData:query];
+    
     [self requestHotlist];
+}
 
+-(void)adjustSelectedFilterFromData:(NSDictionary*)data{
+    NSMutableArray *selectedFilters = [NSMutableArray new];
+    for (NSString *key in [data allKeys]) {
+        if (![key isEqualToString:@"sc"]) {
+            ListOption *filter = [ListOption new];
+            filter.key = key;
+            filter.value = [data objectForKey:key]?:@"";
+            if ([key isEqualToString:@"pmax"] || [key isEqualToString:@"pmin"]) {
+                filter.input_type = [self filterTextInputType];
+            }
+            [selectedFilters addObject:filter];
+        }
+    }
+    _selectedFilters = [selectedFilters copy];
+    _selectedFilterParam = data;
+}
+
+-(NSString *)filterTextInputType{
+    return @"textbox";
+}
+
+-(void)adjustSelectedSortFromData:(NSDictionary*)data{
+    ListOption *sort = [ListOption new];
+    sort.key = @"ob";
+    sort.value = [data objectForKey:@"ob"]?:@"";
+    _selectedSort = sort;
+    _selectedSortParam = @{@"ob":[data objectForKey:@"ob"]?:@""};
+    
+}
+
+-(NSDictionary*)hotlistBannerDictionaryFromDataBanner:(HotlistBannerQuery*)q{
+    NSDictionary *query = @{
+                            @"negative" : q.negative_keyword?:@"",
+                            @"sc" : q.sc?:@"",
+                            @"ob" : q.ob?:@"",
+                            @"terms" : q.terms?:@"",
+                            @"fshop" : ([q.fshop integerValue]==1 || q.fshop == nil)?@"":q.fshop,
+                            @"q" : q.q?:@"",
+                            @"pmin" : q.pmin?:@"",
+                            @"pmax" : q.pmax?:@"",
+                            @"type" : q.type?:@"",
+                            @"default_sc": q.sc?:@""
+                            };
+    return query;
 }
 
 - (void)requestHotlist {
     [_requestHotlistManager requestWithBaseUrl:[NSString aceUrl]
-                                          path:@"/search/v2.1/product"
+                                          path:@"/search/v2.3/product"
                                         method:RKRequestMethodGET
                                      parameter:[self parameters]
                                        mapping:[SearchAWS mapping]
@@ -910,6 +979,8 @@ static NSString const *rows = @"12";
     if([self isInitialRequest]) {
         _hashtags = searchResult.data.hashtag;
         [_hashtagsscrollview removeAllSubviews];
+        [_iPadHastags removeAllSubviews];
+        
         [self setHashtagButtons:_hashtags];
         
         [_refreshControl endRefreshing];
@@ -921,6 +992,7 @@ static NSString const *rows = @"12";
         if(searchResult.data.products.count == 0) {
             [_collectionView addSubview:_noResultView];
         }
+        [self.collectionView setContentOffset:CGPointZero];
     }
     
     //set initial category
@@ -951,41 +1023,68 @@ static NSString const *rows = @"12";
 }
 
 - (NSDictionary*)parametersDynamicFilter {
+    
+    NSMutableDictionary *params = [NSMutableDictionary new];
+    NSDictionary* param = @{
+                            @"device":@"ios",
+                            @"start" : @(_start),
+                            @"rows" : rows,
+                            @"hashtag" : [self isInitialRequest] ? @"true" : @"",
+                            @"breadcrumb" :  [self isInitialRequest] ? @"true" : @"",
+							@"source" : [self getSourceString],
+                            @"negative" : _bannerResult.query.negative_keyword?:@"",
+                            @"terms" : _bannerResult.query.terms?:@"",
+                            @"q" : _bannerResult.query.q?:@"",
+                            @"type" : _bannerResult.query.type?:@"",
+                            @"default_sc": _bannerResult.query.sc?:@""
+                            };
+    
+    [params addEntriesFromDictionary:param];
+    [params addEntriesFromDictionary:_selectedFilterParam?:@{}];
+    [params setObject:[self selectedCategoryIDsString]?:@"" forKey:@"sc"];
+    [params addEntriesFromDictionary:_selectedSortParam?:@{}];
+    
+    return [params copy];
+}
+
+-(NSString*)selectedCategoryIDsString{
+    
+    NSString *categories = @"";
+    if ( [self hasDefaultCategory] &&  [self hasSelectedCategories] && ![self hasRootCategory]) {
+        categories = [NSString stringWithFormat:@"%@,%@",[self getFilterCategoryIDs],[_detailfilter objectForKey:@"sc"]?:@""];
+    } else if (![self hasDefaultCategory] && ![self hasSelectedCategories]){
+        categories = _rootCategoryID?:@"";
+    } else {
+        categories = [self getFilterCategoryIDs];
+    }
+    
+    return categories;
+}
+
+-(BOOL)hasRootCategory{
+    return ![_rootCategoryID isEqualToString:@""];
+}
+
+-(BOOL)hasSelectedCategories{
+    return (_selectedCategories.count > 0);
+}
+
+-(BOOL)hasDefaultCategory{
+    return ([[_detailfilter objectForKey:@"sc"] integerValue] != 0);
+}
+
+-(NSString *)getFilterCategoryIDs{
+    return [[_selectedCategories valueForKey:@"categoryId"] componentsJoinedByString:@","]?:@"";
+}
+
+-(NSString *)getSourceString{
     NSString *source = @"";
     if(_isFromAutoComplete){
         source = @"jahe";
     }else{
         source = @"hot_product";
     }
-
-    NSMutableDictionary *params = [NSMutableDictionary new];
-    
-    NSString *selectedCategory = [[_selectedCategories valueForKey:@"categoryId"] componentsJoinedByString:@","];
-    NSString *categories;
-    if (![[_detailfilter objectForKey:@"sc"] isEqualToString:@""] && _selectedCategories.count > 0 && [_rootCategoryID isEqualToString:@""]) {
-        categories = [NSString stringWithFormat:@"%@,%@",selectedCategory,[_detailfilter objectForKey:@"sc"]?:@""];
-    } else if (![[_detailfilter objectForKey:@"sc"] isEqualToString:@""] && _selectedCategories.count == 0){
-        categories = [_detailfilter objectForKey:@"sc"]?:@"";
-    } else {
-        categories = selectedCategory;
-    }
-    
-    NSDictionary* param = @{
-                            @"device":@"ios",
-                            @"q" : [_detailfilter objectForKey:@"q"]?:[_data objectForKey:@"q"],
-                            @"start" : @(_start),
-                            @"rows" : rows,
-                            @"hashtag" : [self isInitialRequest] ? @"true" : @"",
-                            @"breadcrumb" :  [self isInitialRequest] ? @"true" : @"",
-							@"source" : source
-                            };
-    
-    [params addEntriesFromDictionary:param];
-    [params addEntriesFromDictionary:_selectedFilterParam];
-    [params setObject:categories?:@"" forKey:@"sc"];
-    [params addEntriesFromDictionary:_selectedSortParam];
-    
-    return [params copy];
+    return source;
 }
 
 -(NSDictionary*)parameterFilter{
@@ -1009,7 +1108,9 @@ static NSString const *rows = @"12";
                             @"pmax" :[_detailfilter objectForKey:@"pmax"]?:@"",
                             @"hashtag" : [self isInitialRequest] ? @"true" : @"",
                             @"breadcrumb" :  [self isInitialRequest] ? @"true" : @"",
-							@"source" : source
+							@"source" : source,
+                            @"type" : _detailfilter[@"type"]?:@"",
+                            @"negative_keyword": _detailfilter[@"negative_keyword"]?:@""
                             };
     
     return param;

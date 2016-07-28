@@ -10,4 +10,18 @@
 
 @implementation FavoriteShopActionResult
 
++ (NSDictionary *)attributeMappingDictionary
+{
+    NSArray *keys = @[@"content",
+                      @"is_success"];
+    return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
+}
++ (RKObjectMapping *)mapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+    
+    return mapping;
+}
+
 @end

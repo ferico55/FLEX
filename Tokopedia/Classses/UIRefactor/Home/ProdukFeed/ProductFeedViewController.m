@@ -172,6 +172,7 @@ FavoriteShopRequestDelegate
     [self registerNib];
     self.contentView = self.view;
     _isRequestingProductFeed = YES;
+    
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -192,6 +193,8 @@ FavoriteShopRequestDelegate
                                              selector:@selector(userDidLogin:)
                                                  name:TKPDUserDidLoginNotification
                                                object:nil];
+    
+    
 }
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     NavigateViewController *navigateController = [NavigateViewController new];

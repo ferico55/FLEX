@@ -36,6 +36,7 @@
 - (void)setUserImage:(NSString *)userImage;
 
 - (ReputationDetail *)reputation;
+- (BOOL)isUserPhoneVerified;
 
 + (void)ensureDeviceIdExistence;
 

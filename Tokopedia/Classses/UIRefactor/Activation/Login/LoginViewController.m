@@ -25,9 +25,6 @@
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import <QuartzCore/QuartzCore.h>
 #import "GAIDictionaryBuilder.h"
-#import "AppsFlyerTracker.h"
-#import "PhoneVerificationViewController.h"
-#import "HelloPhoneVerificationViewController.h"
 
 #import "Localytics.h"
 #import "Tokopedia-Swift.h"
@@ -42,6 +39,7 @@
 #import <Masonry/Masonry.h>
 #import <BlocksKit/UIControl+BlocksKit.h>
 #import "UIImage+Resize.h"
+#import <AppsFlyer/AppsFlyer.h>
 
 static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jdpts.apps.googleusercontent.com";
 
@@ -367,21 +365,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 }
 
 - (void)navigateToProperPage:(Login *)login {
-    if([login.result.msisdn_is_verified isEqualToString:@"0"]){
-        HelloPhoneVerificationViewController *controller = [HelloPhoneVerificationViewController new];
-        controller.delegate = self.delegate;
-        controller.redirectViewController = self.redirectViewController;
-
-        if(!_isFromTabBar){
-            [self.navigationController setNavigationBarHidden:YES animated:YES];
-            [self.navigationController pushViewController:controller animated:YES];
-        }else{
-            UINavigationController *navigationController = [[UINavigationController alloc] init];
-            navigationController.navigationBarHidden = YES;
-            navigationController.viewControllers = @[controller];
-            [self.navigationController presentViewController:navigationController animated:YES completion:nil];
-        }
-    }else{
+    if(!_triggerPhoneVerification){
         if (_isPresentedViewController && [self.delegate respondsToSelector:@selector(redirectViewController:)]) {
             [self.delegate redirectViewController:_redirectViewController];
             [self.navigationController dismissViewControllerAnimated:YES completion:nil];
@@ -391,6 +375,10 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
             [self.tabBarController setSelectedIndex:0];
             [((HomeTabViewController *)[tempNavController.viewControllers firstObject]) redirectToProductFeed];
         }
+    }else{
+        //to hotlist, so it will trigger the phoneverifviewcontroller
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"navigateToPageInTabBar" object:@"1"];
+        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
     }
 }
 

@@ -13,7 +13,7 @@
 #import "AppDelegate.h"
 #import "MainViewController.h"
 #import "TKPDSecureStorage.h"
-#import "AppsFlyerTracker.h"
+#import <AppsFlyer/AppsFlyer.h>
 #import "Localytics.h"
 #import <GoogleAppIndexing/GoogleAppIndexing.h>
 #import <Google/Analytics.h>
@@ -199,11 +199,11 @@
     }
 }
 
-- (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
-{
+- (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken {
     [[JLNotificationPermission sharedInstance] notificationResult:deviceToken error:nil];
 
-    
+    [[AppsFlyerTracker sharedTracker] registerUninstall:deviceToken];
+
     TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
     
     NSString *deviceTokenString = [[deviceToken description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];

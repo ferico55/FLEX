@@ -39,7 +39,6 @@
 <
     UIScrollViewDelegate,
     LoginViewDelegate,
-    TokopediaNetworkManagerDelegate,
     SettingUserProfileDelegate,
     UIPageViewControllerDelegate
 >
@@ -76,7 +75,6 @@
     ProfileInfo *_profileinfo;
     TokopediaNetworkManager *_networkManager;
     UserAuthentificationManager *_userManager;
-    
 }
 
 @property (strong, nonatomic) UserProfileBiodataViewController *biodataController;
@@ -186,10 +184,6 @@
     _cacheController.URLCacheInterval = 86400.0;
     _cacheConnection = [URLCacheConnection new];
     
-    _networkManager = [TokopediaNetworkManager new];
-    _networkManager.delegate = self;
-    
-    
     self.pageController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
     
     _pageController.dataSource = self;
@@ -226,9 +220,7 @@
     
     thisControl.hidden = true;
     
-    
-    
-    [_networkManager doRequest];
+    [self reloadProfile];
     [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
     [self.pageController didMoveToParentViewController:self];
     [self setScrollEnabled:NO forPageViewController:_pageController];
@@ -242,14 +234,12 @@
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-    [_networkManager requestCancel];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.pageController.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height+40);
     _userManager = [UserAuthentificationManager new];
-    
 }
 
 #pragma  - UIPageViewController Methods
@@ -297,12 +287,7 @@
     
 }
 
-
-
-
-
-
--(void)setScrollEnabled:(BOOL)enabled forPageViewController:(UIPageViewController*)pageViewController{
+- (void)setScrollEnabled:(BOOL)enabled forPageViewController:(UIPageViewController*)pageViewController{
     for(UIView* view in pageViewController.view.subviews){
         if([view isKindOfClass:[UIScrollView class]]){
             UIScrollView* scrollView=(UIScrollView*)view;
@@ -314,8 +299,7 @@
 
 #pragma mark - Request And Mapping
 
--(void)cancel
-{
+-(void)cancel {
     [_objectmanager.operationQueue cancelAllOperations];
     _objectmanager = nil;
 }
@@ -323,7 +307,7 @@
 
 
 #pragma mark - Memory Management
--(void)dealloc{
+-(void)dealloc {
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
     [[NSNotificationCenter defaultCenter] removeObserver: self];
     _networkManager.delegate = nil;
@@ -338,8 +322,8 @@
         
     }
 }
-- (void)showNavigationShopTitle:(NSNotification *)notification
-{
+
+- (void)showNavigationShopTitle:(NSNotification *)notification {
     [UIView animateWithDuration:0.2 animations:^(void) {
         self.title = [_data objectForKey:kTKPDDETAIL_APISHOPNAMEKEY];
     } completion:^(BOOL finished) {
@@ -348,8 +332,7 @@
     
 }
 
-- (void)hideNavigationShopTitle:(NSNotification *)notification
-{
+- (void)hideNavigationShopTitle:(NSNotification *)notification {
     [UIView animateWithDuration:0.2 animations:^(void) {
         self.title = @"";
     } completion:^(BOOL finished) {
@@ -359,7 +342,6 @@
 }
 
 #pragma mark - Tap Action
-
 
 - (IBAction)tap:(id)sender {
     
@@ -411,9 +393,6 @@
     }
 }
 
-
-
-
 #pragma mark - LoginView Delegate
 - (void)redirectViewController:(id)viewController
 {
@@ -425,154 +404,28 @@
 
 #pragma mark - Reload Profile
 - (void)reloadProfile {
-    [_networkManager doRequest];
-}
-
-#pragma mark - Tokopedia Network Delegate
-- (NSDictionary *)getParameter:(int)tag {
-    NSDictionary* param = @{
-                            kTKPDPROFILE_APIACTIONKEY : kTKPDPROFILE_APIGETPROFILEINFOKEY,
-                            kTKPDPROFILE_APIPROFILEUSERIDKEY : @([[_data objectForKey:kTKPDPROFILE_APIUSERIDKEY]integerValue])
-                            };
+    _networkManager = [TokopediaNetworkManager new];
+    _networkManager.isUsingHmac = YES;
+    _networkManager.isParameterNotEncrypted = NO;
     
-    return param;
-}
-
-- (NSString *)getPath:(int)tag {
-    return kTKPDPROFILE_PEOPLEAPIPATH;
-}
-
-- (id)getObjectManager:(int)tag {
-    // initialize RestKit
-    _objectmanager =  [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ProfileInfo class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ProfileInfoResult class]];
-    
-    RKObjectMapping *userinfoMapping = [RKObjectMapping mappingForClass:[UserInfo class]];
-    [userinfoMapping addAttributeMappingsFromDictionary:@{kTKPDPROFILE_APIUSEREMAILKEY:kTKPDPROFILE_APIUSEREMAILKEY,
-                                                          kTKPDPROFILE_APIUSERMESSENGERKEY:kTKPDPROFILE_APIUSERMESSENGERKEY,
-                                                          kTKPDPROFILE_APIUSERHOBBIESKEY:kTKPDPROFILE_APIUSERHOBBIESKEY,
-                                                          kTKPDPROFILE_APIUSERPHONEKEY:kTKPDPROFILE_APIUSERPHONEKEY,
-                                                          kTKPDPROFILE_APIUSERIDKEY:kTKPDPROFILE_APIUSERIDKEY,
-                                                          kTKPDPROFILE_APIUSERIMAGEKEY:kTKPDPROFILE_APIUSERIMAGEKEY,
-                                                          kTKPDPROFILE_APIUSERNAMEKEY:kTKPDPROFILE_APIUSERNAMEKEY
-                                                          }];
-    
-    RKObjectMapping *userReputationMapping = [RKObjectMapping mappingForClass:[ReputationDetail class]];
-    [userReputationMapping addAttributeMappingsFromDictionary:@{CPositivePercentage:CPositivePercentage,
-                                                                CNegative:CNegative,
-                                                                CPositif:CPositif,
-                                                                CNoReputation:CNoReputation,
-                                                                CNeutral:CNeutral}];
-    
-    RKObjectMapping *shopinfoMapping = [RKObjectMapping mappingForClass:[ShopInfo class]];
-    [shopinfoMapping addAttributeMappingsFromDictionary:@{kTKPDDETAILPRODUCT_APISHOPINFOKEY:kTKPDDETAILPRODUCT_APISHOPINFOKEY,
-                                                          kTKPDDETAILPRODUCT_APISHOPOPENSINCEKEY:kTKPDDETAILPRODUCT_APISHOPOPENSINCEKEY,
-                                                          kTKPDDETAILPRODUCT_APISHOPLOCATIONKEY:kTKPDDETAILPRODUCT_APISHOPLOCATIONKEY,
-                                                          kTKPDDETAILPRODUCT_APISHOPLOCATIONKEY:kTKPDDETAILPRODUCT_APISHOPLOCATIONKEY,
-                                                          kTKPDDETAIL_APISHOPIDKEY:kTKPDDETAIL_APISHOPIDKEY,
-                                                          kTKPDDETAILPRODUCT_APISHOPLASTLOGINKEY:kTKPDDETAILPRODUCT_APISHOPLASTLOGINKEY,
-                                                          kTKPDDETAILPRODUCT_APISHOPTAGLINEKEY:kTKPDDETAILPRODUCT_APISHOPTAGLINEKEY,
-                                                          kTKPDDETAILPRODUCT_APISHOPNAMEKEY:kTKPDDETAILPRODUCT_APISHOPNAMEKEY,
-                                                          kTKPDDETAILPRODUCT_APISHOPISFAVKEY:kTKPDDETAILPRODUCT_APISHOPISFAVKEY,
-                                                          kTKPDDETAILPRODUCT_APISHOPDESCRIPTIONKEY:kTKPDDETAILPRODUCT_APISHOPDESCRIPTIONKEY,
-                                                          kTKPDDETAILPRODUCT_APISHOPAVATARKEY:kTKPDDETAILPRODUCT_APISHOPAVATARKEY,
-                                                          kTKPDDETAILPRODUCT_APISHOPDOMAINKEY:kTKPDDETAILPRODUCT_APISHOPDOMAINKEY
-                                                          }];
-    
-    RKObjectMapping *shopstatsMapping = [RKObjectMapping mappingForClass:[ShopStats class]];
-    [shopstatsMapping addAttributeMappingsFromDictionary:@{kTKPDDETAILPRODUCT_APISHOPSERVICERATEKEY:kTKPDDETAILPRODUCT_APISHOPSERVICERATEKEY,
-                                                           kTKPDDETAILPRODUCT_APISHOPSERVICEDESCRIPTIONKEY:kTKPDDETAILPRODUCT_APISHOPSERVICEDESCRIPTIONKEY,
-                                                           kTKPDDETAILPRODUCT_APISHOPSPEEDRATEKEY:kTKPDDETAILPRODUCT_APISHOPSPEEDRATEKEY,
-                                                           kTKPDDETAILPRODUCT_APISHOPACURACYRATEKEY:kTKPDDETAILPRODUCT_APISHOPACURACYRATEKEY,
-                                                           kTKPDDETAILPRODUCT_APISHOPACURACYDESCRIPTIONKEY:kTKPDDETAILPRODUCT_APISHOPACURACYDESCRIPTIONKEY,
-                                                           kTKPDDETAILPRODUCT_APISHOPSPEEDDESCRIPTIONKEY:kTKPDDETAILPRODUCT_APISHOPSPEEDDESCRIPTIONKEY,
-                                                           CShopReputationScore:CShopReputationScore
-                                                           }];
-    
-    RKObjectMapping *shopBadgeMapping = [RKObjectMapping mappingForClass:[ShopBadgeLevel class]];
-    [shopBadgeMapping addAttributeMappingsFromArray:@[CLevel, CSet]];
-    
-    RKObjectMapping *countRatingMapping = [RKObjectMapping mappingForClass:[CountRatingResult class]];
-    [countRatingMapping addAttributeMappingsFromDictionary:@{CCountScoreGood:CCountScoreGood,
-                                                             CCountScoreNeutral:CCountScoreNeutral,
-                                                             CCountScoreBad:CCountScoreBad}];
-    
-//    RKObjectMapping *responseSpeedMapping = [RKObjectMapping mappingForClass:[ResponseSpeed class]];
-//    [responseSpeedMapping addAttributeMappingsFromDictionary:@{COneDay:COneDay,
-//                                                               CTwoDay:CTwoDay,
-//                                                               CThreeDay:CThreeDay,
-//                                                               CSpeedLevel:CSpeedLevel,
-//                                                               CBadge:CBadge,
-//                                                               CCountTotal:CCountTotal}];
-    
-    // Relationship Mapping
-    [shopstatsMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CShopBadgeLevel toKeyPath:CShopBadgeLevel withMapping:shopBadgeMapping]];
-    [shopstatsMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CShopLastOneMonth toKeyPath:CShopLastOneMonth withMapping:countRatingMapping]];
-    [shopstatsMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CShopLastSixMonth toKeyPath:CShopLastSixMonth withMapping:countRatingMapping]];
-    [shopstatsMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CShopLastTwelveMonth toKeyPath:CShopLastTwelveMonth withMapping:countRatingMapping]];
-    [userinfoMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CUserReputation toKeyPath:CUserReputation withMapping:userReputationMapping]];
-    
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                  toKeyPath:kTKPD_APIRESULTKEY
-                                                                                withMapping:resultMapping]];
-    
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDPROFILE_APIUSERINFOKEY
-                                                                                  toKeyPath:kTKPDPROFILE_APIUSERINFOKEY
-                                                                                withMapping:userinfoMapping]];
-    
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILPRODUCT_APISHOPINFOKEY
-                                                                                  toKeyPath:kTKPDDETAILPRODUCT_APISHOPINFOKEY
-                                                                                withMapping:shopinfoMapping]];
-    
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILPRODUCT_APISHOPSTATKEY
-                                                                                  toKeyPath:kTKPDDETAILPRODUCT_APISHOPSTATKEY
-                                                                                withMapping:shopstatsMapping]];
-//    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CResponseSpeed toKeyPath:CResponseSpeed withMapping:responseSpeedMapping]];
-    
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                            method:RKRequestMethodPOST
-                                                                                       pathPattern:kTKPDPROFILE_PEOPLEAPIPATH
-                                                                                           keyPath:@""
-                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectmanager addResponseDescriptor:responseDescriptor];
-    
-    return _objectmanager;
-}
-
-- (NSString *)getRequestStatus:(id)result withTag:(int)tag {
-    NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
-    id stat = [resultDict objectForKey:@""];
-    ProfileInfo *info = stat;
-    
-    return info.status;
-}
-
-- (void)actionBeforeRequest:(int)tag {
-
-}
-
-- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
-    NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
-    _profile = [result objectForKey:@""];
-    
-    if(_profile.status) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"setHeaderProfilePage" object:nil userInfo:@{@"profile" : _profile}];
-    }
-}
-
-- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
-    
-}
-
-- (void)actionAfterFailRequestMaxTries:(int)tag {
-    
+    [_networkManager requestWithBaseUrl:[NSString v4Url]
+                                   path:@"/v4/people/get_people_info.pl"
+                                 method:RKRequestMethodGET
+                              parameter:@{@"profile_user_id" : @([[_data objectForKey:kTKPDPROFILE_APIUSERIDKEY] integerValue])}
+                                mapping:[ProfileInfo mapping]
+                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                  _profile = [successResult.dictionary objectForKey:@""];
+                                  
+                                  if (_profile.status) {
+                                      [[NSNotificationCenter defaultCenter] postNotificationName:@"setHeaderProfilePage"
+                                                                                          object:nil
+                                                                                        userInfo:@{@"profile" : _profile}];
+                                  }
+                              }
+                              onFailure:^(NSError *errorResult) {
+                                  
+                                  
+                              }];
 }
 
 #pragma mark - Notification

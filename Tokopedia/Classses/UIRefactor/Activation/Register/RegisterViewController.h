@@ -11,5 +11,6 @@
 #import <GoogleSignIn/GoogleSignIn.h>
 
 @interface RegisterViewController : GAITrackedViewController <GIDSignInDelegate, GIDSignInUIDelegate>
+@property (nonatomic) NSString *emailFromForgotPassword;
 
 @end

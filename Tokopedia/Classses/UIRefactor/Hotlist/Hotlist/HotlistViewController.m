@@ -27,6 +27,8 @@
 
 #import "RequestNotifyLBLM.h"
 #import "NotificationManager.h"
+#import "PhoneVerifRequest.h"
+#import "PhoneVerifViewController.h"
 
 #pragma mark - HotlistView
 
@@ -50,6 +52,7 @@
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (strong, nonatomic, readonly) UICollectionViewFlowLayout *flowLayout;
+@property (nonatomic, strong) PhoneVerifRequest *phoneVerifRequest;
 
 @end
 
@@ -88,6 +91,7 @@
     _requestHotlistManager.isUsingHmac = YES;
     
     [self requestHotlist];
+    _phoneVerifRequest  = [PhoneVerifRequest new];
     
     UINib *cellNib = [UINib nibWithNibName:@"HotlistCollectionCell" bundle:nil];
     [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"HotlistCollectionCellIdentifier"];
@@ -138,7 +142,77 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(initNotificationManager) name:@"reloadNotification" object:nil];
     
     [self doRequestNotify];
+    [self checkForPhoneVerification];
 }
+
+
+-(void)checkForPhoneVerification{
+    if([self shouldShowPhoneVerif]){
+        [_phoneVerifRequest requestVerifiedStatusOnSuccess:^(NSString *isVerified) {
+            if(![isVerified isEqualToString:@"1"]){
+                PhoneVerifViewController *controller = [PhoneVerifViewController new];
+                UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
+                navigationController.navigationBar.translucent = NO;
+                navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+                [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+            }else{
+                
+            }
+        } onFailure:^(NSError *error) {
+            
+        }];
+    }
+}
+
+
+/*
+
+ apps should ask for phone verif if:
+ 1. is login
+ 2. msisdn_is_verified in secure storage is 0 ("msisdn_is_verified" is updated when: login or verifying phone number profile setting)
+ 3. if last appear timestamp in cache is nil, go to step 6(first login)
+ 4. check if phone verif last appear timestamp is already past time interval tolerance
+ 5. check WS, maybe user is already do phone verif in another media(other apps, website, etc)
+ 6. if not, do ask for verif
+ 
+*/
+- (BOOL)shouldShowPhoneVerif{
+    NSString *phoneVerifLastAppear = [[NSUserDefaults standardUserDefaults] stringForKey:PHONE_VERIF_LAST_APPEAR];
+    UserAuthentificationManager *userAuth = [UserAuthentificationManager new];
+    
+    if([userAuth isLogin]){
+        if(![userAuth isUserPhoneVerified]){
+            NSDate* lastAppearDate = [self NSDatefromString:phoneVerifLastAppear];
+            if(lastAppearDate){
+                NSTimeInterval timeIntervalSinceLastAppear = [[NSDate date]timeIntervalSinceDate:lastAppearDate];
+                NSTimeInterval allowedTimeInterval = [self allowedTimeInterval];
+                return timeIntervalSinceLastAppear > allowedTimeInterval;
+            }else{
+                return YES;
+            }
+        }else{
+            return NO;
+        }
+    }else{
+        return NO;
+    }
+}
+
+-(NSTimeInterval)allowedTimeInterval{
+    return FBTweakValue(@"Security", @"Phone Verification", @"Notice Interval(Minutes)", 60*24*1)*60;
+}
+
+-(NSDate*)NSDatefromString:(NSString*)date{
+    static NSDateFormatter *dateFormatter;
+    if (!dateFormatter)
+    {
+        dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"WIB"]];
+        [dateFormatter setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
+    }
+    return [dateFormatter dateFromString:date];
+}
+
 
 #pragma mark - Memory Management
 - (void)dealloc {

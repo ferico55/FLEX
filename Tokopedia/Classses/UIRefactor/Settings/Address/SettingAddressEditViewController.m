@@ -337,6 +337,7 @@
                         }];
                     } else {
                         [self requestActionAddAddress:_datainput];
+                        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                     }
                 }
                 break;
@@ -457,7 +458,7 @@
                 StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
                 [alert show];
             }
-            if (setting.data.is_success == 1) {
+            if ([setting.data.is_success boolValue]) {
                 //TODO:: add alert
                 NSDictionary *userinfo;
                 if (_type == TYPE_ADD_EDIT_PROFILE_EDIT){
@@ -674,7 +675,11 @@
     }
     else if (phone.length < MINIMUM_PHONE_CHARACTER_COUNT) {
         isValid = NO;
-        [messages addObject:ERRORMESSAGE_INVALID_PHONE_CHARACTER_COUNT];
+        [messages addObject:ERRORMESSAGE_INVALID_PHONE_CHARACTER_TOO_SHORT];
+    }
+    else if (phone.length > MAXIMUM_PHONE_CHARACTER_COUNT) {
+        isValid = NO;
+        [messages addObject:ERRORMESSAGE_INVALID_PHONE_CHARACTER_TOO_LONG];
     }
     
     if (_type == TYPE_ADD_EDIT_PROFILE_EDIT) {

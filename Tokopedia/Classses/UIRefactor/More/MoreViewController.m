@@ -190,7 +190,7 @@
     _operationQueue = [[NSOperationQueue alloc] init];
     
     _fullNameLabel.text = [_auth objectForKey:@"full_name"];
-    _versionLabel.text = [NSString stringWithFormat:@"Versi : %@", [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]];
+    _versionLabel.text = [NSString stringWithFormat:@"Versi : %@", [UIApplicationCategory getAppVersionString]];
     
     self.navigationController.title = @"More";
 //    [self initNotificationManager];
@@ -880,7 +880,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
         emailController.mailComposeDelegate = self;
         
         
-        NSString *messageBody = [NSString stringWithFormat:@"Device : %@ <br/> OS Version : %@ <br/> Email Tokopedia : %@ <br/> App Version : %@ <br/><br/> Komplain : ", [[UIDevice currentDevice] model], [[UIDevice currentDevice] systemVersion], [_auth objectForKey:kTKPD_USEREMAIL],[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]];
+        NSString *messageBody = [NSString stringWithFormat:@"Device : %@ <br/> OS Version : %@ <br/> Email Tokopedia : %@ <br/> App Version : %@ <br/><br/> Komplain : ", [[UIDevice currentDevice] model], [[UIDevice currentDevice] systemVersion], [_auth objectForKey:kTKPD_USEREMAIL],[UIApplicationCategory getAppVersionString]];
         
         [emailController setSubject:@"Feedback"];
         [emailController setMessageBody:messageBody isHTML:YES];
@@ -925,7 +925,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
     
     ContactUsWebViewController *controller = [ContactUsWebViewController new];
     controller.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:controller animated:YES];
+    [_wrapperViewController.navigationController pushViewController:controller animated:YES];
 }
 
 #pragma mark - Notification delegate

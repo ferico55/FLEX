@@ -381,21 +381,17 @@ enum TypePlacePicker : Int{
         let filemgr = NSFileManager.defaultManager()
         if filemgr.fileExistsAtPath(destinationPath) {
             print("File exists")
-            do {
-                let histories = try NSArray(contentsOfFile: destinationPath)!
+            if let histories = NSArray(contentsOfFile: destinationPath)
+            {
                 placeHistories.removeAllObjects()
                 placeHistories.addObjectsFromArray(histories as [AnyObject])
                 self.dataTableView[1] = []
-                for var index = 0; index < self.placeHistories.count-1; ++index{
+                for index in 0 ..< self.placeHistories.count-1{
                     self.dataTableView[1].insert(placeHistories[index]["addressSugestion"] as! String, atIndex: index)
                 }
                 // the above prints "some text"
-            } catch let error as NSError {
-                print("Error: \(error)")
             }
-        } else {
         }
-
     }
     
     func addressString(address:GMSAddress)-> String{
@@ -473,7 +469,7 @@ enum TypePlacePicker : Int{
             if(results?.count > 0){
                 self.autoCompleteResults = results as! Array
                 self.dataTableView[0]=[]
-                for var index = 0; index < self.autoCompleteResults.count-1; ++index{
+                for index in 0 ..< self.autoCompleteResults.count-1{
                     let place :GMSAutocompletePrediction = results![index] as! GMSAutocompletePrediction
                     self.dataTableView[0].insert(place.attributedFullText.string, atIndex: index)
                 }

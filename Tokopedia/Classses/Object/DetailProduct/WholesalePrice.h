@@ -15,5 +15,6 @@
 @property (strong, nonatomic) NSString *wholesale_price;
 
 +(RKObjectMapping*)mappingForPromo;
++(RKObjectMapping*)mapping;
 
 @end

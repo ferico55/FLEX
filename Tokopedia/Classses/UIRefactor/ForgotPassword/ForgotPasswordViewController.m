@@ -11,10 +11,11 @@
 #import "StickyAlertView.h"
 #import "GeneralAction.h"
 #import "string_settings.h"
+#import "RegisterViewController.h"
+#import <BlocksKit+UIKit.h>
 
-@interface ForgotPasswordViewController () {
+@interface ForgotPasswordViewController (){
     TokopediaNetworkManager *_networkManager;
-    __weak RKObjectManager *_objectManager;
 }
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
@@ -35,14 +36,15 @@
     self.scrollView.contentSize = _contentView.frame.size;
     
     _networkManager = [TokopediaNetworkManager new];
-    _networkManager.delegate = self;
     
     _emailText.layer.cornerRadius = 2;
     _emailText.layer.borderWidth = 1;
     _emailText.layer.borderColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.5].CGColor;
+    [_emailText setKeyboardType:UIKeyboardTypeEmailAddress];
     
     UIView *leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 12, 40)];
     _emailText.leftView = leftView;
+    _emailText.keyboardType = UIKeyboardTypeEmailAddress;
     _emailText.leftViewMode = UITextFieldViewModeAlways;
     
     _buttonForgot.layer.cornerRadius = 2;
@@ -72,14 +74,11 @@
                 [alert show];
                 self.emailText.text = @"";
             } else {
-                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Gagal mengirimkan kata sandi ke email Anda."]
-                                                                               delegate:self];
-                [alert show];
+                [self showAlertToRegisterView];
             }
         }
     }
 }
-
 
 #pragma mark - Tap on Button
 
@@ -104,6 +103,22 @@
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     [_emailText resignFirstResponder];
+}
+
+#pragma mark - Alert Controller
+
+- (void) showAlertToRegisterView {
+    __weak typeof(self) weakSelf = self;
+    
+    NSString *alertViewTitle = [NSString stringWithFormat:@"Email %@ belum terdaftar sebagai member Tokopedia", _emailText.text];
+    UIAlertView *alertView = [UIAlertView bk_alertViewWithTitle:alertViewTitle message:@"Anda akan kami arahkan ke halaman registrasi"];
+    [alertView bk_addButtonWithTitle:@"Tidak" handler:nil];
+    [alertView bk_addButtonWithTitle:@"OK" handler:^{
+        RegisterViewController *registerViewController = [RegisterViewController new];
+        registerViewController.emailFromForgotPassword = _emailText.text;
+        [weakSelf.navigationController pushViewController:registerViewController animated:YES];
+    }];
+    [alertView show];
 }
 
 @end
