@@ -73,7 +73,7 @@
 #pragma mark - Web view delegate
 
 - (void)loadWebView {
-    NSString *appVersion = [UIApplicationCategory getAppVersionStringWithoutDot];
+    NSString *appVersion = [UIApplication getAppVersionStringWithoutDot];
     NSString *urlString = [NSString stringWithFormat:@"https://m.tokopedia.com/bantuan?flag_app=3&device=ios&app_version=%@", appVersion];
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString]];
     [self.webView loadRequest:request];

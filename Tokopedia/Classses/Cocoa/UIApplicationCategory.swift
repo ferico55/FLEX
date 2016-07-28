@@ -6,8 +6,7 @@
 //  Copyright © 2016 TOKOPEDIA. All rights reserved.
 //
 
-@objc
-class UIApplicationCategory: NSObject {
+extension UIApplication {
     class func getAppVersionStringWithoutDot() -> String {
         var appVersion: String = NSBundle.mainBundle().infoDictionary!["CFBundleShortVersionString"] as! String
         appVersion = appVersion.stringByReplacingOccurrencesOfString(".", withString: "")
