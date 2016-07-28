@@ -42,7 +42,7 @@
         [viewModel setShopLocation:self.shop_location];
         [viewModel setIsProductPreorder:self.is_product_preorder];
         [viewModel setIsWholesale:self.is_product_wholesale];
-        
+        [viewModel setBadges:self.badges];
         _viewModel = viewModel;
     }
     
@@ -82,6 +82,9 @@
     [listMapping addAttributeMappingsFromArray:@[@"product_image", @"product_image_full", @"product_price", @"product_name", @"product_shop", @"product_id", @"product_review_count", @"product_talk_count", @"shop_gold_status", @"shop_name", @"is_owner",@"shop_location", @"shop_lucky", @"product_preorder", @"product_wholesale" ]];
     //catalog
     [listMapping addAttributeMappingsFromArray:@[@"catalog_id", @"catalog_name", @"catalog_price", @"catalog_uri", @"catalog_image", @"catalog_image_300", @"catalog_description", @"catalog_count_product"]];
+    
+    
+    [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"badges" toKeyPath:@"badges" withMapping:[ProductBadge mapping]]];
     
     return listMapping;
 

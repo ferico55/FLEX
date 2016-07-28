@@ -18,9 +18,8 @@
 #import "Rating.h"
 #import "Info.h"
 
-@interface DetailProductResult : NSObject <TKPObjectMapping>
+@interface DetailProductResult : NSObject
 
-@property (nonatomic, strong) ProductDetail *product;
 @property (nonatomic, strong) NSString *server_id;
 @property (nonatomic) NSInteger shop_is_gold;
 @property (nonatomic, strong) Statistic *statistic;
@@ -30,8 +29,11 @@
 @property (nonatomic, strong) NSArray *breadcrumb;
 @property (nonatomic, strong) NSArray *other_product;
 @property (nonatomic, strong) NSArray *product_images;
-@property (nonatomic, strong) Info *info;
+@property (nonatomic, strong) ProductDetail *info;
 
-- (NSDictionary *)productFieldObjects;
+//code tambal sulam
+@property (nonatomic, strong) ProductDetail *product;
+
++ (RKObjectMapping*)mapping;
 
 @end

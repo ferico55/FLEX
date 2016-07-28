@@ -65,7 +65,7 @@
     self.navigationItem.leftBarButtonItem = barbuttonleft;
     
     _sendButton = [[UIBarButtonItem alloc] initWithTitle:@"Kirim" style:UIBarButtonItemStyleDone target:(self) action:@selector(tap:)];
-    [_sendButton setTintColor:[UIColor whiteColor]];
+    [self disableSendButton];
     [_sendButton setTag:11];
     
     self.navigationItem.rightBarButtonItem = _sendButton;
@@ -73,6 +73,16 @@
     _talkfield.delegate = self;
     _talkfield.text = kTKPDMESSAGE_PLACEHOLDER;
     _talkfield.textColor = [UIColor lightGrayColor]; //optional
+    
+    
+}
+
+- (void) disableSendButton {
+    [_sendButton setTintColor:[UIColor colorWithRed:127.0/255.0f green:127.0/255.0f blue:127.0/255.0f alpha:1.0]];
+}
+
+- (void) enableSendButton {
+    [_sendButton setTintColor:[UIColor whiteColor]];
 }
 
 - (void)textViewDidBeginEditing:(UITextView *)textView
@@ -91,6 +101,22 @@
         textView.textColor = [UIColor lightGrayColor]; //optional
     }
     [textView resignFirstResponder];
+}
+
+- (void) textViewDidChange:(UITextView *)textView {
+    if ([self isTalkFieldTextLengthBelowFive]) {
+        [self disableSendButton];
+    } else {
+        [self enableSendButton];
+    }
+}
+
+- (Boolean) isTalkFieldTextLengthBelowFive  {
+    if ([_talkfield.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]].length < 5) {
+        return YES;
+    }
+    
+    return NO;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -126,7 +152,7 @@
     _sendButton.enabled = NO;
 
     NSDictionary* param = @{
-                            kTKPDTALK_TALKMESSAGE:_talkfield.text,
+                            kTKPDTALK_TALKMESSAGE:[_talkfield.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]],
                             kTKPDMESSAGE_PRODUCTIDKEY:[_data objectForKey:kTKPDMESSAGE_PRODUCTIDKEY]
                             };
 
@@ -193,7 +219,7 @@
             }
             
             case 11 : {
-                if(_talkfield.text.length < 5 || [_talkfield.text isEqualToString:kTKPDMESSAGE_PLACEHOLDER]) {
+                if([self isTalkFieldTextLengthBelowFive] || [_talkfield.text isEqualToString:kTKPDMESSAGE_PLACEHOLDER]) {
                     NSArray *array = [[NSArray alloc] initWithObjects:KTKPDMESSAGE_EMPTYFORM2, nil];
                     StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
                     [alert show];

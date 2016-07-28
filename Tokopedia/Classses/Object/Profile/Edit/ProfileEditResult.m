@@ -10,4 +10,14 @@
 
 @implementation ProfileEditResult
 
++(RKObjectMapping *) mapping{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data_user"
+                                                                            toKeyPath:@"data_user"
+                                                                          withMapping:[DataUser mapping]]];
+    
+    return mapping;
+}
+
 @end

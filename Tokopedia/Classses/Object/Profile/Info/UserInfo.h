@@ -23,4 +23,6 @@
 @property (nonatomic, strong) NSString *user_birth;
 @property (nonatomic, strong) ReputationDetail *user_reputation;
 
++ (RKObjectMapping *)mapping;
+
 @end

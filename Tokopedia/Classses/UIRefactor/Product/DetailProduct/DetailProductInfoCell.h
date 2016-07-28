@@ -40,8 +40,11 @@
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *categorybuttons;
 @property (weak, nonatomic) IBOutlet UIButton *etalasebutton;
 
+@property(copy) void(^didTapReturnableInfo)(NSURL* url);
+
 +(id)newcell;
 - (void)setLblDescriptionToko:(NSString *)strText;
+- (void)setLblDescriptionToko:(NSString *)strText withImageURL:(NSString*)url withBGColor:(UIColor*)color;
 - (void)hiddenViewRetur;
 - (TTTAttributedLabel *)getLblRetur;
 - (float)getHeightReturView;

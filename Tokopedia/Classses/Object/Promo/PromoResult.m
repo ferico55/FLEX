@@ -45,7 +45,7 @@
          [viewModel setIsGoldShopProduct:_shop.gold_shop];
          [viewModel setLuckyMerchantImageURL:_shop.lucky_shop];
         [viewModel setShopLocation:_shop.location];
-        
+        [viewModel setBadges:_shop.badges];
         _viewModel = viewModel;
     }
     

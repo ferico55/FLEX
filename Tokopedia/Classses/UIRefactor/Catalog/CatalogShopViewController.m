@@ -99,6 +99,8 @@
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UIView *footerView;
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicatorView;
+@property (strong, nonatomic) IBOutlet UIImageView *activeSortImageView;
+@property (strong, nonatomic) IBOutlet UIImageView *activeFilterImageView;
 
 @end
 
@@ -156,8 +158,8 @@
     _noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
     _noResultView.delegate = self;
     [_noResultView generateAllElements:@"no-result.png"
-                                 title:@"Belum ada toko yang menjual produk ini"
-                                  desc:@""
+                                 title:@"Oops... hasil pencarian Anda tidak dapat ditemukan"
+                                  desc:@"Belum ada toko yang menjual produk ini"
                               btnTitle:nil];
 }
 
@@ -334,7 +336,7 @@
 }
 
 -(BOOL)isUseDynamicFilter{
-    if(FBTweakValue(@"Dynamic", @"Filter", @"Enabled", NO)) {
+    if(FBTweakValue(@"Dynamic", @"Filter", @"Enabled", YES)) {
         return YES;
     } else {
         return NO;
@@ -343,33 +345,47 @@
 
 - (IBAction)didTapSortButton:(id)sender {
     if ([self isUseDynamicFilter]) {
-        [self pushDynamicSort];
+        [self isSearchWithDynamicSort];
     } else{
         [self pushSort];
     }
 }
 
--(void)pushDynamicSort{
-    FiltersController *controller = [[FiltersController alloc]initWithSource:[self sourceFilter] sortResponse:_filterResponse?:[FilterData new] selectedSort:_selectedSort presentedVC:self onCompletion:^(ListOption * sort, NSDictionary*paramSort) {
-        _selectedSortParam = paramSort;
-        _selectedSort = sort;
-        
-        [_catalog_shops removeAllObjects];
-        
-        [_tableView reloadData];
-        [_tableView setTableFooterView:_footerView];
-        
-        [_activityIndicatorView startAnimating];
-        
-        _catalogId = _catalog.result.catalog_info.catalog_id;
-        _orderBy = sort;
-        _page = 0;
-        
-        [_networkManager doRequest];
-        
-    } response:^(FilterData * filterResponse) {
-        _filterResponse = filterResponse;
-    }];
+-(void)isSearchWithDynamicSort{
+    FiltersController *controller = [[FiltersController alloc]initWithSource:SourceCatalogProduct
+                                                                sortResponse:_filterResponse?:[FilterData new]
+                                                                selectedSort:_selectedSort
+                                                                 presentedVC:self
+                                                              rootCategoryID:@""
+                                                                onCompletion:^(ListOption * sort, NSDictionary*paramSort) {
+                                                                    _selectedSortParam = paramSort;
+                                                                    _selectedSort = sort;
+                                                                    
+                                                                    [_catalog_shops removeAllObjects];
+                                                                    
+                                                                    [_tableView reloadData];
+                                                                    [_tableView setTableFooterView:_footerView];
+                                                                    
+                                                                    [_activityIndicatorView startAnimating];
+                                                                    
+                                                                    _catalogId = _catalog.result.catalog_info.catalog_id;
+                                                                    _orderBy = sort;
+                                                                    _page = 0;
+                                                                    
+                                                                    [self setActiveSort:[self isActiveSorting]];
+                                                                    [_networkManager doRequest];
+                                                                    
+                                                                } onReceivedFilterDataOption:^(FilterData * filterResponse) {
+                                                                    _filterResponse = filterResponse;
+                                                                }];
+}
+
+-(BOOL)isActiveSorting{
+    return _selectedSort != nil;
+}
+
+-(void)setActiveSort:(BOOL)isActive{
+    _activeSortImageView.hidden = !isActive;
 }
 
 -(void)pushSort{
@@ -386,7 +402,7 @@
 
 -(IBAction)didTapFilterButton:(id)sender{
     if ([self isUseDynamicFilter]) {
-        [self pushDynamicFilter];
+        [self searchWithDynamicFilter];
     } else {
         [self pushFilter];
     }
@@ -398,12 +414,14 @@
     [self.navigationController presentViewController:navigationController animated:YES completion:nil];
 }
 
--(void)pushDynamicFilter{
-    FiltersController *controller = [[FiltersController alloc]initWithSource:[self sourceFilter] filterResponse:_filterResponse?:[FilterData new] rootCategoryID:@"" categories:nil selectedCategories:_selectedCategories selectedFilters:_selectedFilters presentedVC:self onCompletion:^(NSArray<CategoryDetail *> * selectedCategories , NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
+-(void)searchWithDynamicFilter{
+    FiltersController *controller = [[FiltersController alloc]initWithSearchDataSource:SourceCatalogProduct filterResponse:_filterResponse?:[FilterData new] rootCategoryID:@"" categories:nil selectedCategories:_selectedCategories selectedFilters:_selectedFilters presentedVC:self onCompletion:^(NSArray<CategoryDetail *> * selectedCategories , NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
         
         _selectedCategories = selectedCategories;
         _selectedFilters = selectedFilters;
         _selectedFilterParam = paramFilters;
+        
+        [self setActiveFilter:[self isActiveFilter]];
         
         [_catalog_shops removeAllObjects];
         [_tableView reloadData];
@@ -413,9 +431,17 @@
         
         [_networkManager doRequest];
         
-    } response:^(FilterData * filterResponse){
+    } onReceivedFilterDataOption:^(FilterData * filterResponse){
         _filterResponse = filterResponse;
     }];
+}
+
+-(BOOL)isActiveFilter{
+    return _selectedFilters.count != 0;
+}
+
+-(void)setActiveFilter:(BOOL)isActive{
+    _activeFilterImageView.hidden = !isActive;
 }
 
 #pragma mark - Network manager delegate

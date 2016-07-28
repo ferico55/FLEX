@@ -15,4 +15,6 @@
 @property (nonatomic, strong) NSString *product_image;
 @property (nonatomic, strong) NSString *product_name;
 
++ (RKObjectMapping*)mapping;
+
 @end

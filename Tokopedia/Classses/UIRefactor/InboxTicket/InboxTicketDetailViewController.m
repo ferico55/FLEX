@@ -628,6 +628,8 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
             }];
         }];
     }
+    
+    self.tableView.hidden = NO;
 }
 
 - (void)loadTicketsData:(RKMappingResult *)mappingResult {
@@ -690,13 +692,10 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
         } else {
             if ([_ticketInformation.ticket_is_replied boolValue]) {
                 // Right now disable all open ticket
-                // [self showView:_reopenTicketAfterReplyView];
-                [self hideAllView];
+                 [self showView:_reopenTicketAfterReplyView];
             } else {
                 // Show reopen ticket
-                // Right now disable all open ticket
-                // [self showView:_reopenTicketView];
-                [self hideAllView];
+                 [self showView:_reopenTicketView];
             }
         }
     }
@@ -728,9 +727,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
                 if ([_ticketInformation.ticket_show_reopen_btn boolValue]) {
                     
                     // Show reopen ticket
-                    // Right now disable all open ticket
-                    // [self showView:_reopenTicketView];
-                    [self hideAllView];
+                     [self showView:_reopenTicketView];
 
                 } else {
                     [self showTicketRating:_ticketInformation];
@@ -745,9 +742,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
                 
                 if ([_ticketInformation.ticket_show_reopen_btn boolValue]) {
                     // Show reopen ticket
-                    // Right now disable all open ticket
-                    // [self showView:_reopenTicketView];
-                    [self hideAllView];
+                     [self showView:_reopenTicketView];
                 } else {
                     [self showTicketRating:_ticketInformation];
                 }

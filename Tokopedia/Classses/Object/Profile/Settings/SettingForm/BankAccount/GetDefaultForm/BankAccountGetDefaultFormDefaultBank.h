@@ -16,4 +16,6 @@
 @property (nonatomic, strong) NSString *bank_owner_id;
 @property (nonatomic, strong) NSString *token;
 
++ (RKObjectMapping *)mapping;
+
 @end

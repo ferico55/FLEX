@@ -450,7 +450,7 @@
             BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
             
             if (status) {
-                if (setting.data.is_success == 1) {
+                if ([setting.data.is_success boolValue]) {
                     StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:setting.message_status delegate:self];
                     [stickyAlertView show];
                     [self.navigationController popViewControllerAnimated:YES];

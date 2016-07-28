@@ -10,9 +10,9 @@
 
 @implementation Product
 
--(void)setData:(DetailProductResult *)data{
-    _result = data;
-}
+//-(void)setData:(DetailProductResult *)data{
+//    _result = data;
+//}
 
 +(NSDictionary *)attributeMappingDictionary
 {
