@@ -13,10 +13,10 @@
 		6255C11F1D472E9500330B7A /* AnnouncementTickerResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6255C11E1D472E9500330B7A /* AnnouncementTickerResult.swift */; };
 		6255C1211D472EAA00330B7A /* AnnouncementTickerObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6255C1201D472EAA00330B7A /* AnnouncementTickerObject.swift */; };
 		6255C1241D472EF700330B7A /* AnnouncementTickerRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6255C1231D472EF700330B7A /* AnnouncementTickerRequest.swift */; };
-		6255C1261D472F3400330B7A /* AnnouncementTickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6255C1251D472F3400330B7A /* AnnouncementTickerView.swift */; };
-		6255C1281D472F4000330B7A /* AnnouncementTickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6255C1271D472F4000330B7A /* AnnouncementTickerView.xib */; };
 		6255C12F1D47353E00330B7A /* HomePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6255C12D1D47353E00330B7A /* HomePageViewController.swift */; };
 		6255C1301D47353E00330B7A /* HomePageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6255C12E1D47353E00330B7A /* HomePageViewController.xib */; };
+		62BC8C4E1D4864F800EBA1A2 /* AnnouncementTickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 62BC8C4D1D4864F800EBA1A2 /* AnnouncementTickerView.m */; };
+		62BC8C501D4865C800EBA1A2 /* AnnouncementTickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 62BC8C4F1D4865C800EBA1A2 /* AnnouncementTickerView.xib */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
 		7ACE9C541BB00956006C4BB7 /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */; };
@@ -2453,10 +2453,11 @@
 		6255C11E1D472E9500330B7A /* AnnouncementTickerResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnnouncementTickerResult.swift; sourceTree = "<group>"; };
 		6255C1201D472EAA00330B7A /* AnnouncementTickerObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnnouncementTickerObject.swift; sourceTree = "<group>"; };
 		6255C1231D472EF700330B7A /* AnnouncementTickerRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnnouncementTickerRequest.swift; sourceTree = "<group>"; };
-		6255C1251D472F3400330B7A /* AnnouncementTickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnnouncementTickerView.swift; sourceTree = "<group>"; };
-		6255C1271D472F4000330B7A /* AnnouncementTickerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AnnouncementTickerView.xib; sourceTree = "<group>"; };
 		6255C12D1D47353E00330B7A /* HomePageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomePageViewController.swift; sourceTree = "<group>"; };
 		6255C12E1D47353E00330B7A /* HomePageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomePageViewController.xib; sourceTree = "<group>"; };
+		62BC8C4C1D4864F800EBA1A2 /* AnnouncementTickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnnouncementTickerView.h; sourceTree = "<group>"; };
+		62BC8C4D1D4864F800EBA1A2 /* AnnouncementTickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnnouncementTickerView.m; sourceTree = "<group>"; };
+		62BC8C4F1D4865C800EBA1A2 /* AnnouncementTickerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AnnouncementTickerView.xib; sourceTree = "<group>"; };
 		7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
@@ -6105,8 +6106,9 @@
 				6255C12D1D47353E00330B7A /* HomePageViewController.swift */,
 				6255C12E1D47353E00330B7A /* HomePageViewController.xib */,
 				6255C1231D472EF700330B7A /* AnnouncementTickerRequest.swift */,
-				6255C1251D472F3400330B7A /* AnnouncementTickerView.swift */,
-				6255C1271D472F4000330B7A /* AnnouncementTickerView.xib */,
+				62BC8C4C1D4864F800EBA1A2 /* AnnouncementTickerView.h */,
+				62BC8C4D1D4864F800EBA1A2 /* AnnouncementTickerView.m */,
+				62BC8C4F1D4865C800EBA1A2 /* AnnouncementTickerView.xib */,
 			);
 			path = HomePage;
 			sourceTree = "<group>";
@@ -12385,6 +12387,7 @@
 				BB554EFA1D40E91C003E9B7C /* icon_view@3x.png in Resources */,
 				BB554BFE1D40E91C003E9B7C /* TxOrderConfirmationShipmentCell.xib in Resources */,
 				BB554F8A1D40E91C003E9B7C /* icon_upload_image.png in Resources */,
+				62BC8C501D4865C800EBA1A2 /* AnnouncementTickerView.xib in Resources */,
 				BB554CA41D40E91C003E9B7C /* expand_arrow@2x.png in Resources */,
 				BB554CB81D40E91C003E9B7C /* icon-search-camera.png in Resources */,
 				BB554DB81D40E91C003E9B7C /* icon_more@2x.png in Resources */,
@@ -13165,7 +13168,6 @@
 				BB554CCD1D40E91C003E9B7C /* icon_audio.png in Resources */,
 				BB554D681D40E91C003E9B7C /* icon_grid_dua.png in Resources */,
 				BB554EA11D40E91C003E9B7C /* icon_toped_loading_grey-02@2x.png in Resources */,
-				6255C1281D472F4000330B7A /* AnnouncementTickerView.xib in Resources */,
 				BB554B571D40E91C003E9B7C /* CloseShopViewController.xib in Resources */,
 				BB554C711D40E91C003E9B7C /* icon_1.png in Resources */,
 				BB5549221D40E91C003E9B7C /* FilterCategoryViewCell.xib in Resources */,
@@ -13767,6 +13769,7 @@
 				BB5546671D40E91B003E9B7C /* URLCacheController.m in Sources */,
 				BB554A0B1D40E91C003E9B7C /* MoreViewController.m in Sources */,
 				BB55472A1D40E91B003E9B7C /* ResolutionActionResult.m in Sources */,
+				62BC8C4E1D4864F800EBA1A2 /* AnnouncementTickerView.m in Sources */,
 				BB5548C61D40E91C003E9B7C /* AddressCell.m in Sources */,
 				BB554BB51D40E91C003E9B7C /* RequestEditAddress.m in Sources */,
 				BB5548101D40E91B003E9B7C /* ShopProductPageResult.m in Sources */,
@@ -14512,7 +14515,6 @@
 				BB55492D1D40E91C003E9B7C /* ContactUsDataCollector.m in Sources */,
 				BB55479F1D40E91B003E9B7C /* BankAccountGetDefaultFormDefaultBank.m in Sources */,
 				BB554B851D40E91C003E9B7C /* ShopPageHeader.m in Sources */,
-				6255C1261D472F3400330B7A /* AnnouncementTickerView.swift in Sources */,
 				BB5549B41D40E91C003E9B7C /* Slide.m in Sources */,
 				BB5547B51D40E91B003E9B7C /* ShopReputation.m in Sources */,
 				BB5549081D40E91C003E9B7C /* RequestUploadImage.m in Sources */,

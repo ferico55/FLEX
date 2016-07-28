@@ -78,3 +78,4 @@
 #import "CategoryViewCell.h"
 #import "Slide.h"
 #import "NSString+TPBaseUrl.h"
+#import "AnnouncementTickerView.h"

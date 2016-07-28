@@ -9,7 +9,7 @@
 import UIKit
 
 class AnnouncementTickerRequest: NSObject {
-    class func fetchTicker(successCallback: ((response: AnnouncementTickerResult) -> Void), errorCallback:((NSError) -> Void)) {
+    func fetchTicker(successCallback: ((response: AnnouncementTickerResult) -> Void), errorCallback:((NSError) -> Void)) {
         let networkManager: TokopediaNetworkManager = TokopediaNetworkManager()
         
         networkManager.isUsingHmac = true
@@ -17,7 +17,8 @@ class AnnouncementTickerRequest: NSObject {
         networkManager.requestWithBaseUrl(NSString.mojitoUrl(),
                                           path: "/api/v1/tickers",
                                           method: .GET,
-                                          parameter: [:],
+                                          parameter: ["filter[device]":"ios",
+                                            "page[size]":"50"],
                                           mapping: AnnouncementTicker.mapping(),
                                           onSuccess: { (mappingResult, operation) in
                                             let result: Dictionary = mappingResult.dictionary() as Dictionary

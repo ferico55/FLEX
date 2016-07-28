@@ -23,6 +23,8 @@ import UIKit
     
     private var banner: [Slide!]!
     private var loadIndicator: UIActivityIndicatorView!
+    private var tickerRequest: AnnouncementTickerRequest!
+    private var tickerView: AnnouncementTickerView!
     
     private let sliderHeight: CGFloat = (UI_USER_INTERFACE_IDIOM() == .Pad) ? 225.0 : 175.0
     private let screenWidth = UIScreen.mainScreen().bounds.size.width
@@ -47,6 +49,11 @@ import UIKit
         
         let cellNib = UINib(nibName: "CategoryViewCell", bundle: nil)
         collectionView.registerNib(cellNib, forCellWithReuseIdentifier: "CategoryViewCellIdentifier")
+        collectionView.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: "bannerCell")
+        collectionView.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: "tickerCell")
+        collectionView.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: "miniSlideCell")
+        
+        tickerRequest = AnnouncementTickerRequest()
         
         let timer = NSTimer(timeInterval: 5.0, target: self, selector: #selector(moveToNextSlider), userInfo: nil, repeats: true)
         NSRunLoop.mainRunLoop().addTimer(timer, forMode: NSRunLoopCommonModes)
@@ -65,6 +72,7 @@ import UIKit
         navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .Bordered, target: self, action: nil)
         
         self.loadBanners()
+        self.requestTicker()
         
         TPAnalytics.trackScreenName("Top Category")
     }
@@ -90,33 +98,57 @@ import UIKit
             self!.slider.backgroundColor = backgroundColor
             
             self!.carouselDataSource = CarouselDataSource(banner: banner)
+            self!.carouselDataSource.delegate = self
             
             self!.slider.type = .Linear
             self!.slider.dataSource = self!.carouselDataSource
             self!.slider.delegate = self!.carouselDataSource
             self!.slider.decelerationRate = 0.5
             
-            self!.collectionView.addSubview(self!.slider)
-            self!.collectionView.bringSubviewToFront(self!.slider)
+            self!.categoryDataSource.slider = self!.slider
+            
+            self!.collectionView.reloadData()
             })
         
         bannersStore.fetchMiniSlideWithCompletion({[weak self] (slide, error) in
-            self!.digitalGoodsSwipeView = SwipeView(frame: CGRectMake(0, 0, self!.screenWidth, 120.0))
-            self!.digitalGoodsSwipeView.backgroundColor = backgroundColor
-            self!.digitalGoodsDataSource = DigitalGoodsDataSource(goods: slide, swipeView: self!.digitalGoodsSwipeView)
-            self!.digitalGoodsSwipeView.dataSource = self!.digitalGoodsDataSource
-            self!.digitalGoodsSwipeView.delegate = self
-            self!.digitalGoodsSwipeView.clipsToBounds = true
-            self!.digitalGoodsSwipeView.truncateFinalPage = true
-            self!.digitalGoodsSwipeView.decelerationRate = 0.5
-            
-            if (UI_USER_INTERFACE_IDIOM() == .Pad) {
-                self!.digitalGoodsSwipeView.alignment = .Center
-                self!.digitalGoodsSwipeView.isCenteredChild = true
+            if slide != nil {
+                self!.digitalGoodsSwipeView = SwipeView(frame: CGRectMake(0, 0, self!.screenWidth, 120.0))
+                self!.digitalGoodsSwipeView.backgroundColor = backgroundColor
+                self!.digitalGoodsDataSource = DigitalGoodsDataSource(goods: slide, swipeView: self!.digitalGoodsSwipeView)
+                self!.digitalGoodsSwipeView.dataSource = self!.digitalGoodsDataSource
+                self!.digitalGoodsSwipeView.delegate = self
+                self!.digitalGoodsSwipeView.clipsToBounds = true
+                self!.digitalGoodsSwipeView.truncateFinalPage = true
+                self!.digitalGoodsSwipeView.decelerationRate = 0.5
+                
+                if (UI_USER_INTERFACE_IDIOM() == .Pad) {
+                    self!.digitalGoodsSwipeView.alignment = .Center
+                    self!.digitalGoodsSwipeView.isCenteredChild = true
+                }
+                
+                self!.categoryDataSource.digitalGoodsSwipeView = self!.digitalGoodsSwipeView
+                
+                self!.collectionView.reloadData()
             }
             
-            self!.collectionView.addSubview(self!.digitalGoodsSwipeView)
             })
+    }
+    
+    func requestTicker() {
+        tickerRequest.fetchTicker({[weak self] (ticker) in
+            if (ticker.tickers.count > 0) {
+                let tick = ticker.tickers[0]
+                self!.tickerView = AnnouncementTickerView.newView()
+                self!.tickerView.setTitle(tick.title)
+                self!.tickerView.setMessage(tick.message)
+                
+                self!.categoryDataSource.ticker = self!.tickerView
+                
+                self!.collectionView.reloadData()
+            }
+        }) { (error) in
+            
+        }
     }
     
     func swipeView(swipeView: SwipeView!, didSelectItemAtIndex index: Int) {
