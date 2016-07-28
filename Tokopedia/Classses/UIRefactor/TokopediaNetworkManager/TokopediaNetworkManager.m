@@ -66,7 +66,7 @@
     //API Spec documentation: https://wiki.tokopedia.net/API_Specification
     
     _objectManager  = [_delegate getObjectManager:self.tagRequest];
-    NSString *appVersion = [UIApplicationCategory getAppVersionString];
+    NSString *appVersion = [UIApplication getAppVersionString];
     [_objectManager.HTTPClient setDefaultHeader:@"X-APP-VERSION" value:appVersion];
     [_objectManager.HTTPClient setDefaultHeader:@"Accept-Language" value:@"id-ID"];
     NSString *xDevice = [NSString stringWithFormat:@"ios-%@",appVersion];
@@ -351,7 +351,7 @@
     [_objectManager addResponseDescriptor:responseDescriptorStatus];
     
 
-    NSString *appVersion = [UIApplicationCategory getAppVersionString];
+    NSString *appVersion = [UIApplication getAppVersionString];
     [_objectManager.HTTPClient setDefaultHeader:@"X-APP-VERSION" value:appVersion];
     [_objectManager.HTTPClient setDefaultHeader:@"Accept-Language" value:@"id-ID"];
     NSString *xDevice = [NSString stringWithFormat:@"ios-%@",appVersion];
