@@ -411,7 +411,16 @@ NSString * const ProductStatusWarehouse = @"3";
             else if (indexPath.row == BUTTON_PRODUCT_ETALASE_DETAIL)
             {
                 //cell.detailTextLabel.textColor = (isProductWarehouse)?[UIColor grayColor]:[UIColor colorWithRed:(0.f/255.f) green:122.f/255.f blue:255.f/255.f alpha:1];
-                cell.detailTextLabel.text = ([product.product_etalase isEqualToString:@"0"]||!product.product_etalase)?@"Pilih Etalase":product.product_etalase;
+                NSString etalaseTitle;
+                if([product.product_etalase isEqualToString:@""] ||
+                   [product.product_etalase isEqualToString:@"0"] ||
+                   !product.product_etalase) {
+                    etalaseTitle = @"Pilih Etalase";
+                } else {
+                    etalaseTitle = product.product_etalase;
+                }
+                
+                cell.detailTextLabel.text = etalaseTitle;
             }
             break;
         case 2:
