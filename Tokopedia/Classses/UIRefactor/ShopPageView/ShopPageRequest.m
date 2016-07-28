@@ -117,7 +117,7 @@
                                    parameter:@{@"shop_id":shopId,
                                                @"shop_domain":shopDomain
                                                }
-                                     mapping:[Notes mapping_v4]
+                                     mapping:[Notes mapping]
                                    onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                        Notes *notes = [successResult.dictionary objectForKey:@""];
                                        successCallback(notes);

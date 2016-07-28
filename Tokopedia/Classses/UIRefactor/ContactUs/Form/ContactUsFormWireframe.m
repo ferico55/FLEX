@@ -17,6 +17,7 @@
 #import "TKPDTabViewController.h"
 #import "InboxTicketViewController.h"
 #import "InboxTicketDetailViewController.h"
+#import "InboxTicketSplitViewController.h"
 
 @implementation ContactUsFormWireframe
 
@@ -59,26 +60,33 @@
 }
 
 - (void)pushToInboxTicketFromNavigation:(UINavigationController *)navigation {
-    TKPDTabViewController *controller = [TKPDTabViewController new];
-    controller.hidesBottomBarWhenPushed = YES;
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        InboxTicketSplitViewController *controller = [InboxTicketSplitViewController new];
+        
+        [navigation pushViewController:controller animated:YES];
+    } else {
+        TKPDTabViewController *controller = [TKPDTabViewController new];
+        controller.hidesBottomBarWhenPushed = YES;
+        
+        InboxTicketViewController *allInbox = [InboxTicketViewController new];
+        allInbox.inboxCustomerServiceType = InboxCustomerServiceTypeAll;
+        allInbox.delegate = controller;
+        
+        InboxTicketViewController *unreadInbox = [InboxTicketViewController new];
+        unreadInbox.inboxCustomerServiceType = InboxCustomerServiceTypeInProcess;
+        unreadInbox.delegate = controller;
+        
+        InboxTicketViewController *closedInbox = [InboxTicketViewController new];
+        closedInbox.inboxCustomerServiceType = InboxCustomerServiceTypeClosed;
+        closedInbox.delegate = controller;
+        
+        controller.viewControllers = @[allInbox, unreadInbox, closedInbox];
+        controller.tabTitles = @[@"Semua", @"Dalam Proses", @"Ditutup"];
+        controller.menuTitles = @[@"Semua Layanan Pengguna", @"Belum Dibaca"];
+        
+        [navigation pushViewController:controller animated:YES];
+    }
     
-    InboxTicketViewController *allInbox = [InboxTicketViewController new];
-    allInbox.inboxCustomerServiceType = InboxCustomerServiceTypeAll;
-    allInbox.delegate = controller;
-    
-    InboxTicketViewController *unreadInbox = [InboxTicketViewController new];
-    unreadInbox.inboxCustomerServiceType = InboxCustomerServiceTypeInProcess;
-    unreadInbox.delegate = controller;
-    
-    InboxTicketViewController *closedInbox = [InboxTicketViewController new];
-    closedInbox.inboxCustomerServiceType = InboxCustomerServiceTypeClosed;
-    closedInbox.delegate = controller;
-    
-    controller.viewControllers = @[allInbox, unreadInbox, closedInbox];
-    controller.tabTitles = @[@"Semua", @"Dalam Proses", @"Ditutup"];
-    controller.menuTitles = @[@"Semua Layanan Pengguna", @"Belum Dibaca"];
-    
-    [navigation pushViewController:controller animated:YES];
 }
 
 @end

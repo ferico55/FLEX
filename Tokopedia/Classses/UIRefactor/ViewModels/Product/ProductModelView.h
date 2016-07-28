@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "ProductBadge.h"
 
 @interface ProductModelView : NSObject
 
@@ -26,6 +27,7 @@
 @property (strong, nonatomic) NSString *productTotalWeight;
 @property (strong, nonatomic) NSString *productNotes;
 @property (strong, nonatomic) NSString *productErrorMessage;
+@property (strong, nonatomic) NSArray *badges;
 
 @property BOOL isProductBuyAble;
 @property BOOL isGoldShopProduct;

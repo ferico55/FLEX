@@ -14,6 +14,7 @@ class ListFilter: NSObject, TKPObjectMapping {
     var options : [ListOption] = []
     var search : searchObject = searchObject()
     var isActiveFilter : Bool = false
+    var isMultipleSelect : Bool = true
 
     static func attributeMappingDictionary() -> [NSObject : AnyObject]! {
         return ["title" : "title"]

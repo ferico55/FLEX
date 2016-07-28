@@ -809,7 +809,7 @@
 - (void)failedLoadingMessages {
     _isrefreshview = NO;
     [_refreshControl endRefreshing];
-    _table.tableFooterView = _loadingView.view;
+    _table.tableFooterView = _loadingView;
 }
 
 #pragma mark - Retry Delegate

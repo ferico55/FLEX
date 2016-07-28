@@ -23,6 +23,8 @@
 
 #import "NSNumberFormatter+IDRFormater.h"
 
+#import "Tokopedia-Swift.h"
+
 @import GoogleMaps;
 
 typedef enum
@@ -76,6 +78,9 @@ typedef enum
     TransactionATCFormResult *_ATCForm;
     
     NSArray<RateAttributes*> *_shipments;
+    
+    DelayedActionManager *requestPriceDelayedActionManager;
+    DelayedActionManager *quantityDelayedActionManager;
 }
 
 @property (weak, nonatomic) IBOutlet UIButton *pinLocationNameButton;
@@ -126,8 +131,11 @@ typedef enum
     _tableViewShipmentCell = [NSArray sortViewsWithTagInArray:_tableViewShipmentCell];
     _isnodata = YES;
     
-    [self setPlaceholder:@"Contoh: Warna Putih/Ukuran XL/Edisi ke-2" textView:_remarkTextView];
     _remarkTextView.delegate = self;
+
+    
+    requestPriceDelayedActionManager = [DelayedActionManager new];
+    quantityDelayedActionManager = [DelayedActionManager new];
     
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:nil];
     [self.navigationItem setBackBarButtonItem:barButtonItem];
@@ -160,17 +168,36 @@ typedef enum
     _tableView.rowHeight = UITableViewAutomaticDimension;
 }
 
+-(void)viewDidAppear:(BOOL)animated
+{
+    [self setPlaceholder:@"Contoh: Warna Putih/Ukuran XL/Edisi ke-2" textView:_remarkTextView];
+}
+
 -(void)refreshView{
-    [self requestFormWithAddressID:@""];
+    if (_isnodata)
+    {
+        [self requestFormWithAddressID:@""];
+    }
+    else
+    {
+        _isFinishRequesting = NO;
+        [self alertAndResetIfQtyTextFieldBelowMin];
+        [self doCalculate];
+        [self requestRate];
+    }
 }
 
 - (void)setPlaceholder:(NSString *)placeholderText textView:(UITextView*)textView
 {
-    UILabel *placeholderLabel = [[UILabel alloc] initWithFrame:CGRectMake(5.2, -6, textView.frame.size.width, 40)];
+    UILabel *placeholderLabel = [[UILabel alloc] initWithFrame:CGRectMake(5.2, 8, textView.frame.size.width, 40)];
     placeholderLabel.text = placeholderText;
-    placeholderLabel.font = [UIFont fontWithName:textView.font.fontName size:textView.font.pointSize];
+//    placeholderLabel.font = [UIFont fontWithName:textView.font.fontName size:textView.font.pointSize];
+    placeholderLabel.font = textView.font;
     placeholderLabel.textColor = [[UIColor blackColor] colorWithAlphaComponent:0.25];
     placeholderLabel.tag = 1;
+//    placeholderLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    placeholderLabel.numberOfLines = 0;
+    [placeholderLabel sizeToFit];
     [textView addSubview:placeholderLabel];
 }
 
@@ -204,8 +231,8 @@ typedef enum
     
     [self adjustViewIsLoading:YES];
     AddressFormList *editedAddress = _selectedAddress;
-    editedAddress.latitude = [[NSNumber numberWithDouble:latitude] stringValue];;
-    editedAddress.longitude = [[NSNumber numberWithDouble:longitude] stringValue];;
+    editedAddress.latitude = [[NSNumber numberWithDouble:latitude] stringValue];
+    editedAddress.longitude = [[NSNumber numberWithDouble:longitude] stringValue];
     
     [RequestEditAddress fetchEditAddress:_selectedAddress
                               isFromCart:@"1"
@@ -259,7 +286,7 @@ typedef enum
                            } failed:^(NSError *error) {
                                
                                [self failedFetchForm:error];
-                               
+
                            }];
 }
 
@@ -302,6 +329,8 @@ typedef enum
 -(void)setPlacePicker{
     [[GMSGeocoder geocoder] reverseGeocodeCoordinate:CLLocationCoordinate2DMake([_selectedAddress.latitude doubleValue], [_selectedAddress.longitude doubleValue]) completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error) {
         if (error != nil){
+            _pinLocationNameButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+            [_pinLocationNameButton setCustomAttributedText:@"Lokasi Tujuan"];
             return;
         }
         if (response == nil|| response.results.count == 0) {
@@ -425,6 +454,27 @@ typedef enum
     return @"Maaf, kami belum dapat melakukan kalkulasi ongkos kirim menuju alamat Anda. Tim kami akan segera melakukan pemeriksaan.";
 }
 
+- (IBAction)productQuantityStepperValueChanged:(UIStepper *)sender {
+    NSInteger qty = [_productQuantityTextField.text integerValue];
+    qty += (int)sender.value;
+    
+    //limit quantity min and max value
+    qty = fmin(999, qty);
+    _productQuantityTextField.text = [NSString stringWithFormat: @"%d", (int)qty];
+    
+    [self alertAndResetIfQtyTextFieldBelowMin];
+    
+    //reset stepper
+    sender.value = 0;
+    
+    //request when stepper is not clicked for 1 sec
+    [requestPriceDelayedActionManager whenNotCalledFor:1 doAction:^{
+        [self doCalculate];
+        [self requestRate];
+    }];
+    
+}
+
 #pragma mark - Table View Data Source
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -541,16 +591,19 @@ typedef enum
                         NSInteger productPrice = [[[NSNumberFormatter IDRFormarter] numberFromString:product.product_price] integerValue];
                         NSInteger qty = [_productQuantityTextField.text integerValue];
                         
-                        NSNumber *price = [NSNumber numberWithInteger:(productPrice/qty)];
+                        NSNumber *price = [NSNumber numberWithInteger:(productPrice / qty)];
                         NSString *priceString = [[NSNumberFormatter IDRFormarter] stringFromNumber:price];
                         label.text = priceString;
+                        
                         break;
                     }
                     case TAG_BUTTON_TRANSACTION_PRODUCT_PRICE:
                     {
 
                         [self cell:cell setAccesoryType:UITableViewCellAccessoryNone isLoading:!_isFinishRequesting];
+
                         label.text = product.product_price;
+                        
                         break;
                     }
                     case TAG_BUTTON_TRANSACTION_SHIPMENT_COST:
@@ -747,6 +800,7 @@ typedef enum
     return _headerTableView[section];
 }
 
+#pragma mark - requestATC
 -(void)requestATC {
     
     [self adjustViewIsLoading:YES];
@@ -913,7 +967,7 @@ typedef enum
         return;
     }
     [self setAddress:address];
-    [self requestRate];
+    [self requestFormWithAddressID:[NSString stringWithFormat:@"%zd",address.address_id]?:@""];
 }
 
 -(void)requestAddAddress:(AddressFormList*)address{
@@ -936,7 +990,7 @@ typedef enum
 -(void)successAddAddress:(AddressFormList*)address result:(ProfileSettingsResult *)result {
     [self adjustViewIsLoading:NO];
     [self setAddress:address];
-    [self requestRate];
+    [self requestFormWithAddressID:[NSString stringWithFormat:@"%zd",address.address_id]?:@""];
 }
 
 -(void)failedAddAddress:(AddressFormList*)address error:(NSError*)error{
@@ -947,16 +1001,6 @@ typedef enum
 
 -(void)textFieldDidEndEditing:(UITextField *)textField
 {
-    _isFinishRequesting = NO;
-    
-    ProductDetail *product = _selectedProduct;
-
-    if ([textField.text integerValue] <1) {
-        textField.text = product.product_min_order;
-    }
-    
-    [self doCalculate];    
-    [self requestRate];
 }
 
 - (BOOL)textField:(UITextField*)textField shouldChangeCharactersInRange:(NSRange)range
@@ -965,6 +1009,13 @@ replacementString:(NSString*)string
     NSString* newText;
 
     newText = [textField.text stringByReplacingCharactersInRange:range withString:string];
+
+    [quantityDelayedActionManager whenNotCalledFor:2 doAction:^{
+        _isFinishRequesting = NO;
+        [self alertAndResetIfQtyTextFieldBelowMin];
+        [self doCalculate];
+        [self requestRate];
+    }];
     
     return [newText isNumber] && [newText integerValue] < 1000;
 }
@@ -1130,6 +1181,19 @@ replacementString:(NSString*)string
     product.product_quantity =_productQuantityTextField.text;
 
     [TPAnalytics trackAddToCart:product];
+}
+
+-(void)alertAndResetIfQtyTextFieldBelowMin
+{
+    ProductDetail *product = _selectedProduct;
+    
+    if ([_productQuantityTextField.text integerValue] <[product.product_min_order integerValue]) {
+        _productQuantityTextField.text = product.product_min_order;
+        
+        NSArray *errorMessages = @[[NSString stringWithFormat: @"%@%@%@", @"Minimum pembelian adalah ", product.product_min_order, @" barang"]];
+        StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessages delegate:self];
+        [alert show];
+    }
 }
 
 @end

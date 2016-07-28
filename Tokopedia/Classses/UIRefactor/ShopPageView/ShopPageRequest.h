@@ -10,9 +10,9 @@
 #import "ShopProductPageResponse.h"
 #import "ShopProductPageResult.h"
 #import "Talk.h"
-#import "Notes.h"
 #import "Review.h"
 #import "Shop.h"
+#import "Tokopedia-Swift.h"
 
 @interface ShopPageRequest : NSObject
 

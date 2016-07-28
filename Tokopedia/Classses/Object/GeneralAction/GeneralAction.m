@@ -22,7 +22,11 @@
                                                                                          toKeyPath:@"data"
                                                                                        withMapping:[GeneralActionResult mapping]]];
     
-    return generalActionMapping;    
+    [generalActionMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"result"
+                                                                                         toKeyPath:@"result"
+                                                                                       withMapping:[GeneralActionResult mapping]]];
+    
+    return generalActionMapping;
 }
 
 +(RKObjectMapping *)generalMapping{

@@ -367,7 +367,7 @@
 }
 
 -(BOOL)isUseDynamicFilter{
-    if(FBTweakValue(@"Dynamic", @"Filter", @"Enabled", NO)) {
+    if(FBTweakValue(@"Dynamic", @"Filter", @"Enabled", YES)) {
         return YES;
     } else {
         return NO;
@@ -667,6 +667,7 @@
 - (void)changeNavigationTitle:(NSNotification*)notification {
     NSString *title = [notification object];
     if (title) {
+        self.navigationTitle = [title capitalizedString];
         self.navigationItem.title = [title capitalizedString];
     }
 }

@@ -53,4 +53,27 @@
     return _user_image?:@"";
 }
 
++(NSDictionary *) attributeMappingDictionary{
+    NSArray *keys = @[@"hobby",
+                      @"birth_day",
+                      @"full_name",
+                      @"birth_month",
+                      @"birth_year",
+                      @"gender",
+                      @"user_image",
+                      @"user_email",
+                      @"user_messenger",
+                      @"user_phone"];
+    
+    return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
+}
+
++(RKObjectMapping *) mapping{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass: self];
+    
+    [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+    
+    return mapping;
+}
+
 @end

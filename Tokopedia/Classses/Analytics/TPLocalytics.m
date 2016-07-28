@@ -53,21 +53,21 @@
 }
 
 + (void)trackProductView:(Product *)response {
-    if (response.result.breadcrumb.count == 0) {
+    if (response.data.breadcrumb.count == 0) {
         return;
     }
     
     NSCharacterSet *notAllowedChars = [NSCharacterSet characterSetWithCharactersInString:@"Rp."];
-    NSString *price = [[response.result.product.product_price componentsSeparatedByCharactersInSet:notAllowedChars] componentsJoinedByString:@""];
+    NSString *price = [[response.data.info.product_price componentsSeparatedByCharactersInSet:notAllowedChars] componentsJoinedByString:@""];
     
-    Breadcrumb *category = response.result.breadcrumb[response.result.breadcrumb.count - 1];
+    Breadcrumb *category = response.data.breadcrumb[response.data.breadcrumb.count - 1];
 
     NSDictionary *attributes = @{
-        @"Product ID": response.result.product.product_id,
+        @"Product ID": response.data.info.product_id,
         @"Category": category.department_name,
         @"Price": price?:@"",
-        @"Price Alert": response.result.product.product_price_alert?:@"",
-        @"Wishlist": response.result.product.product_already_wishlist?:@""
+        @"Price Alert": response.data.info.product_price_alert?:@"",
+        @"Wishlist": response.data.info.product_already_wishlist?:@""
     };
     [Localytics tagEvent:@"Product Viewed" attributes:attributes];
 }

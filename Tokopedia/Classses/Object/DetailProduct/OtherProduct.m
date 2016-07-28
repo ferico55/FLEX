@@ -19,4 +19,12 @@
     return  [_product_name kv_decodeHTMLCharacterEntities];
 }
 
++ (RKObjectMapping*)mapping {
+    RKObjectMapping* mapping = [RKObjectMapping mappingForClass:[self class]];
+    
+    [mapping addAttributeMappingsFromArray:@[@"product_price", @"product_name", @"product_id", @"product_image"]];
+    
+    return mapping;
+}
+
 @end

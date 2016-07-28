@@ -324,7 +324,7 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
     [_closeShopRequest requestActionCloseShopFromNowUntil:[self stringFromNSDate:_dateSampaiDengan]
                                                 closeNote:_catatanTextView.text
                                                 onSuccess:^(CloseShopResponse *result) {
-                                                    if([result.data.is_success boolValue]){
+                                                    if([result.data.is_success isEqualToString:@"1"]){
                                                         _scheduleDetail.close_status = CLOSE_STATUS_CLOSED;
                                                         _scheduleDetail.close_start = [self stringFromNSDate:_dateMulaiDari];
                                                         _scheduleDetail.close_end = [self stringFromNSDate:_dateSampaiDengan];
@@ -357,7 +357,7 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
                                             until:[self stringFromNSDate:_dateSampaiDengan]
                                         closeNote:_catatanTextView.text
                                         onSuccess:^(CloseShopResponse *result) {
-                                            if([result.data.is_success boolValue]){
+                                            if([result.data.is_success isEqualToString:@"1"]){
                                                 _scheduleDetail.close_status = CLOSE_STATUS_CLOSE_SCHEDULED;
                                                 _scheduleDetail.close_start = [self stringFromNSDate:_dateMulaiDari];
                                                 _scheduleDetail.close_end = [self stringFromNSDate:_dateSampaiDengan];
@@ -389,7 +389,7 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
     [_closeShopRequest requestActionExtendCloseShopUntil:[self stringFromNSDate:_dateSampaiDengan]
                                                closeNote:_catatanTextView.text
                                                onSuccess:^(CloseShopResponse *result) {
-                                                   if([result.data.is_success boolValue]){
+                                                   if([result.data.is_success isEqualToString:@"1"]){
                                                        _scheduleDetail.close_status = CLOSE_STATUS_CLOSED;
                                                        _scheduleDetail.close_start = [self stringFromNSDate:_dateMulaiDari];
                                                        _scheduleDetail.close_end = [self stringFromNSDate:_dateSampaiDengan];
@@ -418,7 +418,7 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
     isLoading = YES;
     [self adjustView:CenterViewLoadingView withAnimation:NO];
     [_closeShopRequest requestActionAbortCloseScheduleOnSuccess:^(CloseShopResponse *result) {
-        if([result.data.is_success boolValue]){
+        if([result.data.is_success isEqualToString:@"1"]){
             _scheduleDetail.close_status = CLOSE_STATUS_OPEN;
             _scheduleDetail.close_start = [self stringFromNSDate:_dateMulaiDari];
             _scheduleDetail.close_end = [self stringFromNSDate:_dateSampaiDengan];
@@ -447,7 +447,7 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
     isLoading = YES;
     [self adjustView:CenterViewLoadingView withAnimation:YES];
     [_closeShopRequest requestActionOpenShopOnSuccess:^(CloseShopResponse *result) {
-        if([result.data.is_success boolValue]){
+        if([result.data.is_success isEqualToString:@"1"]){
             _scheduleDetail.close_status = CLOSE_STATUS_OPEN;
             _dateMulaiDari = nil;
             _dateSampaiDengan = nil;

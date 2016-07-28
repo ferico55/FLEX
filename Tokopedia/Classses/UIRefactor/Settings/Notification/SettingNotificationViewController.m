@@ -119,8 +119,10 @@
 
     if (self.listSwitchStatus.count > 0) {
         cell.settingSwitch.on = [self.listSwitchStatus[indexPath.row] boolValue];
+        [self SettingNotificationCell: cell withIndexPath:indexPath];
     } else {
         cell.settingSwitch.on = YES;
+        [self SettingNotificationCell: cell withIndexPath:indexPath];
     }
     return cell;
 }
@@ -173,6 +175,7 @@
             [self.listSwitchStatus addObject:notification.flag_talk_product];
             [self.listSwitchStatus addObject:notification.flag_message];
             [self.listSwitchStatus addObject:notification.flag_admin_message];
+            
             [self.tableView reloadData];
         }
     }

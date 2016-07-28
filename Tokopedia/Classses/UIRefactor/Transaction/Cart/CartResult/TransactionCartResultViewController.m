@@ -18,7 +18,7 @@
 #import "WebViewController.h"
 
 #import "TxOrderTabViewController.h"
-#import "AppsFlyerTracker.h"
+#import <AppsFlyer/AppsFlyer.h>
 #import "GalleryViewController.h"
 
 #import "Localytics.h"
@@ -648,7 +648,7 @@
     [[AppsFlyerTracker sharedTracker] trackEvent:AFEventPurchase withValues:@{
                                                                               AFEventParamRevenue : _cartBuy.transaction.grand_total_before_fee,
                                                                               }];
-    
+        
     NSString *paymentMethod = _cartBuy.transaction.gateway_name;
     NSCharacterSet *notAllowedChars = [NSCharacterSet characterSetWithCharactersInString:@"Rp."];
     NSString *paymentTotal = [[_cartBuy.transaction.grand_total_before_fee componentsSeparatedByCharactersInSet:notAllowedChars] componentsJoinedByString:@""];

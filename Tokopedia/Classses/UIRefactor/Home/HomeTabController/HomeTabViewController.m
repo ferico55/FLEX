@@ -310,16 +310,13 @@
         frame.origin.x = _scrollView.frame.size.width*page;
         frame.size.height = _scrollView.frame.size.height;
         _wishListViewController.view.frame = frame;
-        
         [self addChildViewController:_wishListViewController];
         [self.scrollView addSubview:_wishListViewController.view];
-        [_wishListViewController didMoveToParentViewController:self];
     } else if(page == 3) {
         CGRect frame = _historyController.view.frame;
         frame.origin.x = _scrollView.frame.size.width*page;
         frame.size.height = _scrollView.frame.size.height;
         _historyController.view.frame = frame;
-        
         [self addChildViewController:_historyController];
         [self.scrollView addSubview:_historyController.view];
         [_historyController didMoveToParentViewController:self];
@@ -328,7 +325,6 @@
         frame.origin.x = _scrollView.frame.size.width*page;
         frame.size.height = _scrollView.frame.size.height;
         _shopViewController.view.frame = frame;
-        
         [self addChildViewController:_shopViewController];
         [self.scrollView addSubview:_shopViewController.view];
         [_shopViewController didMoveToParentViewController:self];
