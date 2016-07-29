@@ -709,12 +709,15 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
             // Ticket closed, replied, not yet rate the ticket
             if ([_ticketInformation.ticket_respond_status isEqualToString:@"0"]) {
                 
-                if ([_ticketInformation.ticket_show_reopen_btn boolValue]) {
-                    // Show automatic closed ticket information
-                    [self showView:_automaticCloseView];
-                } else {
-                    // Show rating view
-                    [self showView:_ratingView];
+                if (IS_INBOX_TICKET_USE_VISIBLE_RATING)
+                {
+                    if ([_ticketInformation.ticket_show_reopen_btn boolValue]) {
+                        // Show automatic closed ticket information
+                        [self showView:_automaticCloseView];
+                    } else {
+                        // Show rating view
+                        [self showView:_ratingView];
+                    }
                 }
                 
             }
