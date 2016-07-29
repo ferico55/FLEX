@@ -33,6 +33,7 @@
 		7A59E5841D409BF0002ECC7B /* ReloadableViewLayoutAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A59E56C1D409BEF002ECC7B /* ReloadableViewLayoutAdapter.swift */; };
 		7A59E5851D409BF0002ECC7B /* StackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A59E56D1D409BEF002ECC7B /* StackView.swift */; };
 		7A59E5871D409C19002ECC7B /* PulsaLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A59E5861D409C19002ECC7B /* PulsaLayout.swift */; };
+		7A59FDCC1D4A431C002ECC7B /* PulsaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A59FDCB1D4A431C002ECC7B /* PulsaView.swift */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
 		7ACE9C541BB00956006C4BB7 /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */; };
@@ -2487,6 +2488,7 @@
 		7A59E56C1D409BEF002ECC7B /* ReloadableViewLayoutAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReloadableViewLayoutAdapter.swift; sourceTree = "<group>"; };
 		7A59E56D1D409BEF002ECC7B /* StackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StackView.swift; sourceTree = "<group>"; };
 		7A59E5861D409C19002ECC7B /* PulsaLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulsaLayout.swift; sourceTree = "<group>"; };
+		7A59FDCB1D4A431C002ECC7B /* PulsaView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulsaView.swift; sourceTree = "<group>"; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FacebookSDKStrings.bundle; sourceTree = "<group>"; };
@@ -6198,6 +6200,7 @@
 				7AFC55DD1D33A018000F6C88 /* PulsaProductAttribute.swift */,
 				7AFC55DF1D33A034000F6C88 /* PulsaProductPromo.swift */,
 				7A59E5861D409C19002ECC7B /* PulsaLayout.swift */,
+				7A59FDCB1D4A431C002ECC7B /* PulsaView.swift */,
 			);
 			path = Pulsa;
 			sourceTree = "<group>";
@@ -14816,6 +14819,7 @@
 				8548B2751D1A58F100D11E22 /* DetailMyReviewReputationViewController.m in Sources */,
 				8548B0951D1A58F100D11E22 /* TPSpotlight.m in Sources */,
 				8548B0D91D1A58F100D11E22 /* AlertPhoneVerification.m in Sources */,
+				7A59FDCC1D4A431C002ECC7B /* PulsaView.swift in Sources */,
 				8548AF8F1D1A58F100D11E22 /* ListFavoriteShop.m in Sources */,
 				8548AFE21D1A58F100D11E22 /* ShipmentCourier.m in Sources */,
 				8548B0B31D1A58F100D11E22 /* CreatePasswordViewController.m in Sources */,

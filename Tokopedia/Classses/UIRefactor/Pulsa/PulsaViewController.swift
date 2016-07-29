@@ -9,20 +9,22 @@
 import UIKit
 import Foundation
 
-@objc
+@objc(PulsaViewController)
+
 class PulsaViewController: UIViewController, UITextFieldDelegate {
     var cache: PulsaCache = PulsaCache()
     var prefixes = Dictionary<String, Dictionary<String, String>>()
-    var stackView = StackView!()
 
-    @IBOutlet weak var pulsaCategoryControl: UISegmentedControl!
+    var pulsaView = PulsaView!()
+
+    @IBOutlet weak var view1: UIView!
+    @IBOutlet weak var view2: UIView!
+    @IBOutlet weak var view3: UIView!
+    @IBOutlet weak var container: UIScrollView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.pulsaCategoryControl.hidden = true
-        self.pulsaCategoryControl .addTarget(self, action: #selector(didSelectSegmentControl), forControlEvents: .ValueChanged)
-        
+
         self.cache.loadCategories { (cachedCategory) in
             if(cachedCategory == nil) {
                 self.loadCategoryFromNetwork()
@@ -53,63 +55,12 @@ class PulsaViewController: UIViewController, UITextFieldDelegate {
             });
     }
     
-
-    func didSelectSegmentControl(sender : UISegmentedControl) {
-        self.cache.loadCategories { (cachedCategory) in
-            if(cachedCategory != nil) {
-                let category = cachedCategory?.data[sender.selectedSegmentIndex]
-                let shouldShowNumberField = category?.attributes.client_number.is_shown
-                if((shouldShowNumberField) != nil) {
-                    self.buildNumberField(category!)
-                }
-            }
-        }
-    }
-    
-    func buildNumberField(category: PulsaCategory) {
-        if(stackView != nil) {
-            self.stackView.removeFromSuperview()
-        }
-        
-        let stackViewFrame = CGRectMake(view.frame.origin.x, 44, view.frame.size.width, view.frame.size.height)
-        stackView = StackView.init(axis: .vertical, spacing: 4)
-        stackView.frame = stackViewFrame
-        stackView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
-        
-        self.view .addSubview(stackView)
-        
-        let helloView = PulsaLayout(category: category, prefixes: self.prefixes, callback: { (prefix) -> Void in
-            self.loadProductFromNetwork()
-            
-        }).arrangement().makeViews()
-        
-        self.stackView .addArrangedSubviews([helloView])
-    }
-    
     func didReceiveCategory(category : PulsaCategoryRoot) {
-        self.pulsaCategoryControl.removeAllSegments()
-        var i = 0;
-        for category in category.data {
-            self.pulsaCategoryControl.insertSegmentWithTitle(category.attributes.name, atIndex: i, animated: false)
-            i += 1
-        }
+        self.pulsaView = PulsaView(categories: category.data)
+        self.pulsaView.prefixes = self.prefixes
+        self.pulsaView .attachToView(self.view2)
         
-        self.buildNumberField(category.data[0])
-        self.pulsaCategoryControl.hidden = false
-        self.pulsaCategoryControl.selectedSegmentIndex = 0
-
     }
-    
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-    
-//    func fetchProductsById(id: String) -> PulsaProductRoot{
-//        
-//    }
     
     func loadProductFromNetwork() {
         let networkManager = TokopediaNetworkManager()
@@ -130,21 +81,7 @@ class PulsaViewController: UIViewController, UITextFieldDelegate {
     }
     
     func didReceiveProduct(productRoot: PulsaProductRoot) {
-        let chooseProductButton = UIButton(frame: CGRectMake(0, 0, self.view.frame.size.width - 10, 44))
-        chooseProductButton.backgroundColor = UIColor.darkGrayColor()
-        chooseProductButton.setTitle("Pilih Nominal", forState: .Normal)
-        chooseProductButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-        
-        let buyButton = UIButton(frame: CGRectMake(0, 0, self.view.frame.size.width - 10, 44))
-        buyButton.backgroundColor = UIColor.orangeColor()
-        buyButton.setTitle("Beli", forState: .Normal)
-        buyButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-        
-        let stackButton = StackView.init(axis: .horizontal, spacing: 10, distribution: .fillEqualSize, contentInsets: UIEdgeInsetsMake(10, 10, 10, 10))
-        stackButton.addArrangedSubviews([chooseProductButton, buyButton])
-        
-        stackView.addArrangedSubviews([stackButton])
-        
+        self.pulsaView.buildBuyButton(productRoot.data)
     }
     
     
@@ -175,9 +112,15 @@ class PulsaViewController: UIViewController, UITextFieldDelegate {
                 
                 prefixes[prefix] = prefixDictionary
             }
-            
         }
-    }
-    
+        
+        if(prefixes.count > 0) {
+            self.pulsaView.prefixes = self.prefixes    
+        }
+        
+        self.pulsaView.onPrefixEntered = { (prefix) -> Void in
+            self.loadProductFromNetwork()
+        }
 
+    }
 }
