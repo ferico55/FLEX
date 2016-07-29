@@ -104,10 +104,24 @@ typedef NS_ENUM(NSInteger, PromoRequestType) {
                               }];
 }
 
-- (void)requestForProductHotlist:(NSString *)hotlistId department:(NSString *)department page:(NSInteger)page onSuccess:(void (^)(NSArray<PromoResult *> *))successCallback onFailure:(void (^)(NSError *))errorCallback{
-    
+- (void)requestForProductHotlist:(NSString *)hotlistId
+                      department:(NSString *)department
+                            page:(NSInteger)page
+                 filterParameter:(NSDictionary *)filterParameter
+                       onSuccess:(void (^)(NSArray<PromoResult *> *))successCallback
+                       onFailure:(void (^)(NSError *))errorCallback
+{
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.isUsingHmac = YES;
+    
+    NSMutableDictionary *parameter = [[NSMutableDictionary alloc]init];
+    [parameter setObject: @"4" forKey:@"item"];
+    [parameter setObject: @"hotlist" forKey: @"src"];
+    [parameter setObject: @(page) forKey:@"page"];
+    [parameter setObject: department forKey: @"dep_id"];
+    [parameter setObject: hotlistId forKey: @"h"];
+    [parameter addEntriesFromDictionary:filterParameter];
+    
     [_networkManager requestWithBaseUrl:[NSString topAdsUrl]
                                    path:@"/promo/v1/display/products"
                                  method:RKRequestMethodGET
