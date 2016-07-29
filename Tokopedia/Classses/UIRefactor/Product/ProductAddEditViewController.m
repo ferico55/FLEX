@@ -14,7 +14,6 @@
 #import "camera.h"
 #import "GenerateHost.h"
 #import "UploadImage.h"
-//#import "Product.h"
 #import "ShopSettings.h"
 #import "CatalogAddProduct.h"
 #import "ManageProduct.h"
@@ -75,7 +74,7 @@ FilterCategoryViewDelegate
     UploadImage *_images;
     ProductEditResult *_editProductForm;
     ShopSettings *_setting;
-    CatalogAddProduct *_catalog;
+    NSArray<CatalogList*> *_catalogs;
     
     __weak RKObjectManager *_objectmanagerEditProductPicture;
     __weak RKManagedObjectRequestOperation *_requestEditProductPicture;
@@ -104,7 +103,6 @@ FilterCategoryViewDelegate
     NSMutableArray *_selectedIndexPathCameraController;
     
     TokopediaNetworkManager *_networkManagerDeleteImage;
-    TokopediaNetworkManager *_networkManagerCatalog;
     
     ProductAddEditDetailViewController *_detailVC;
     
@@ -112,6 +110,7 @@ FilterCategoryViewDelegate
     UIAlertView *_alertProcessing;
     
     CatalogList *_selectedCatalog;
+    CategoryDetail *_selectedCategory;
     
     BOOL _isCatalog;
     
@@ -146,8 +145,6 @@ FilterCategoryViewDelegate
 
 #define TAG_REQUEST_DETAIL 10
 #define TAG_REQUEST_DELETE_IMAGE 11
-#define TAG_REQUEST_LIST_CATALOG 12
-
 
 @implementation ProductAddEditViewController
 
@@ -191,10 +188,6 @@ FilterCategoryViewDelegate
     _networkManagerDeleteImage = [TokopediaNetworkManager new];
     _networkManagerDeleteImage.tagRequest = TAG_REQUEST_DELETE_IMAGE;
     _networkManagerDeleteImage.delegate = self;
-    
-    _networkManagerCatalog = [TokopediaNetworkManager new];
-    _networkManagerCatalog.tagRequest = TAG_REQUEST_LIST_CATALOG;
-    _networkManagerCatalog.delegate = self;
     
     _alertProcessing = [[UIAlertView alloc]initWithTitle:nil message:@"Processing" delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
     
@@ -248,7 +241,7 @@ FilterCategoryViewDelegate
         UserAuthentificationManager *auth = [UserAuthentificationManager new];
         CategoryDetail *lastCategory = [auth getLastProductAddCategory];
         if (lastCategory) {
-            [_dataInput setObject:lastCategory forKey:DATA_CATEGORY_KEY];
+            _selectedCategory = lastCategory;
         }
     }
     
@@ -597,8 +590,8 @@ FilterCategoryViewDelegate
                 }
                 if (indexPath.row == BUTTON_PRODUCT_CATEGORY) {
                     NSString *departmentTitle = @"Pilih Kategori";
-                    if ([_dataInput objectForKey:DATA_CATEGORY_KEY]) {
-                        CategoryDetail *category = [_dataInput objectForKey:DATA_CATEGORY_KEY];
+                    if (_selectedCategory) {
+                        CategoryDetail *category =_selectedCategory;
                         departmentTitle = category.name;
                     } else {
                         departmentTitle = @"Pilih Kategori";
@@ -713,7 +706,7 @@ FilterCategoryViewDelegate
                     FilterCategoryViewController *controller = [FilterCategoryViewController new];
                     controller.filterType = FilterCategoryTypeProductAddEdit;
                     controller.delegate = self;
-                    controller.selectedCategory = [_dataInput objectForKey:DATA_CATEGORY_KEY];
+                    controller.selectedCategory = _selectedCategory;
                     UINavigationController *navigation = [[UINavigationController new] initWithRootViewController:controller];
                     navigation.navigationBar.translucent = NO;
                     [self.navigationController presentViewController:navigation animated:YES completion:nil];
@@ -725,7 +718,7 @@ FilterCategoryViewDelegate
                         GeneralTableViewController *catalogVC = [GeneralTableViewController new];
                         catalogVC.delegate = self;
                         NSMutableArray *catalogs =[NSMutableArray new];
-                        for (CatalogList *catalog in _catalog.result.list) {
+                        for (CatalogList *catalog in _catalogs) {
                             [catalogs addObject:catalog.catalog_name];
                         }
                         catalogVC.objects = [catalogs copy];
@@ -808,10 +801,42 @@ FilterCategoryViewDelegate
     if (tag == TAG_REQUEST_DELETE_IMAGE) {
         return [self objectManagerDeleteImage];
     }
-    if (tag == TAG_REQUEST_LIST_CATALOG) {
-        return [self objectManagerCatalog];
-    }
     return nil;
+}
+
+-(void)fetchGetCatalogWithProductName:(NSString*)productName andDepartmentID:(NSString*)departmentID{
+    
+    [self isFinishGetDataCatalogs:NO];
+    
+    [RequestAddEditProduct fetchGetCatalog:productName
+                              departmentID:departmentID
+                                 onSuccess:^(NSArray<CatalogList *> * catalogs) {
+                                     
+                                     [self setListCatalogs:catalogs];
+                                     [self isFinishGetDataCatalogs:YES];
+                                     
+                                 } onFailure:^(NSError * error) {
+                                     
+                                     [self isFinishGetDataCatalogs:YES];
+                                     
+                                 }];
+}
+
+-(void)setListCatalogs:(NSArray<CatalogList*>*)catalogs{
+    _catalogs = catalogs;
+    
+    _isCatalog = (_catalogs.count>0);
+    [_tableView reloadData];
+
+}
+
+-(void)isFinishGetDataCatalogs:(BOOL)isFinish{
+    _isDoneRequestCatalog = isFinish;
+    if (isFinish) {
+        [_actCatalog stopAnimating];
+    }else {
+        [_actCatalog startAnimating];
+    }
 }
 
 -(NSDictionary *)getParameter:(int)tag
@@ -827,15 +852,6 @@ FilterCategoryViewDelegate
                                 };
         return param;
     }
-    if (tag == TAG_REQUEST_LIST_CATALOG) {
-        CategoryDetail *category = [_dataInput objectForKey:DATA_CATEGORY_KEY];
-        NSDictionary *param = @{
-                                kTKPDDETAIL_APIACTIONKEY    : ACTION_GET_CATALOG,
-                                @"product_name"             : _productNameTextField.text?:@"",
-                                @"product_department_id"    : category.categoryId?:@"",
-                                };
-        return param;
-    }
     return nil;
 }
 
@@ -847,9 +863,7 @@ FilterCategoryViewDelegate
     if (tag == TAG_REQUEST_DELETE_IMAGE) {
         return kTKPDDETAILACTIONPRODUCT_APIPATH;
     }
-    if (tag == TAG_REQUEST_LIST_CATALOG) {
-        return kTKDPDETAILCATALOG_APIPATH;
-    }
+
     return nil;
 }
 
@@ -862,11 +876,7 @@ FilterCategoryViewDelegate
         _setting = stats;
         return _setting.status;
     }
-    if (tag == TAG_REQUEST_LIST_CATALOG) {
-        _catalog = stats;
-        return _catalog.status;
-    }
-    
+
     return nil;
 }
 
@@ -875,29 +885,12 @@ FilterCategoryViewDelegate
     if (tag == TAG_REQUEST_DELETE_IMAGE) {
         
     }
-    if (tag == TAG_REQUEST_LIST_CATALOG) {
-        _isDoneRequestCatalog = NO;
-        [_actCatalog startAnimating];
-    }
 }
 
 -(void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag
 {
     if (tag == TAG_REQUEST_DELETE_IMAGE) {
         [self requestSuccessDeleteImage:successResult withOperation:operation];
-    }
-    if (tag == TAG_REQUEST_LIST_CATALOG) {
-        if (_catalog.result.list.count>0) {
-            _isCatalog = YES;
-            [_tableView reloadData];
-        }
-        else
-        {
-            _isCatalog = NO;
-            [_tableView reloadData];
-        }
-        _isDoneRequestCatalog = YES;
-        [_actCatalog stopAnimating];
     }
 }
 
@@ -931,14 +924,14 @@ FilterCategoryViewDelegate
                                         }];
 }
 
--(void)setEditProductForm:(ProductEdit*)form{
+-(void)setEditProductForm:(ProductEditResult*)form{
     _editProductForm = form;
     
     NSMutableDictionary *data = [NSMutableDictionary new];
     [data addEntriesFromDictionary:_data];
     [self setDefaultData:data];
     
-    [_networkManagerCatalog doRequest];
+    [self fetchGetCatalogWithProductName:_productNameTextField.text andDepartmentID:_selectedCategory.categoryId];
     
     if(_detailVC)
     {
@@ -1422,7 +1415,7 @@ FilterCategoryViewDelegate
 #pragma mark - Category Delegate
 
 - (void)didSelectCategory:(CategoryDetail *)category {
-    [_dataInput setObject:category forKey:DATA_CATEGORY_KEY];
+    _selectedCategory = category;
     NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY] integerValue];
     if (type == TYPE_ADD_EDIT_PRODUCT_ADD) {
         TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
@@ -1626,7 +1619,7 @@ FilterCategoryViewDelegate
     ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
     if (textField == _productNameTextField) {
         NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
-        [self requestCatalog];
+        [self fetchGetCatalogWithProductName:textField.text andDepartmentID:_selectedCategory.categoryId];
         if (type == TYPE_ADD_EDIT_PRODUCT_ADD || type == TYPE_ADD_EDIT_PRODUCT_COPY) {
             product.product_name = textField.text;
             [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
@@ -1735,11 +1728,6 @@ FilterCategoryViewDelegate
         return YES;
 }
 
--(void)requestCatalog
-{
-    [_networkManagerCatalog doRequest];
-}
-
 #pragma mark - Product Edit Detail Delegate
 -(void)ProductEditDetailViewController:(ProductAddEditDetailViewController *)cell withUserInfo:(NSDictionary *)userInfo
 {
@@ -1751,7 +1739,7 @@ FilterCategoryViewDelegate
 
 -(void)didSelectObject:(id)object senderIndexPath:(NSIndexPath *)indexPath
 {
-    for (CatalogList *catalog in _catalog.result.list) {
+    for (CatalogList *catalog in _catalogs) {
         if ([catalog.catalog_name isEqualToString:object]) {
             _selectedCatalog = catalog;
         }
@@ -1897,7 +1885,7 @@ FilterCategoryViewDelegate
             CategoryDetail *filterCategory = [[CategoryDetail alloc] init];
             filterCategory.categoryId = category.department_id;
             filterCategory.name = category.department_name;
-            [_dataInput setObject:filterCategory forKey:DATA_CATEGORY_KEY];
+            _selectedCategory = filterCategory;
         }
         
         NSString *priceCurencyID = result.product.product_currency_id?:@"1";
@@ -1970,7 +1958,7 @@ FilterCategoryViewDelegate
     NSString *productWeight = product.product_weight;
     NSString *productWeightUnitID = product.product_weight_unit;
     
-    CategoryDetail *category = [_dataInput objectForKey:DATA_CATEGORY_KEY];
+    CategoryDetail *category = _selectedCategory;
     NSString *departmentID = category.categoryId?: @"";
     
     BOOL isPriceCurrencyRupiah = ([productPriceCurrencyID integerValue] == PRICE_CURRENCY_ID_RUPIAH);
@@ -2132,39 +2120,6 @@ FilterCategoryViewDelegate
 //    [objectmanager addResponseDescriptor:responseDescriptor];
     
     return objectmanager;
-}
-
--(RKObjectManager*)objectManagerCatalog
-{
-    RKObjectManager *objectManager =[RKObjectManager sharedClient];
-    
-    RKObjectMapping *catalogMapping = [RKObjectMapping mappingForClass:[CatalogAddProduct class]];
-    [catalogMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                         kTKPD_APISERVERPROCESSTIMEKEY:
-                                                             kTKPD_APISERVERPROCESSTIMEKEY}];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[CatalogResult class]];
-    
-    RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[CatalogList class]];
-    [listMapping addAttributeMappingsFromArray:@[@"catalog_description",
-                                                 @"catalog_id",
-                                                 @"catalog_name",
-                                                 @"catalog_price",
-                                                 @"catalog_image"
-                                                 ]];
-    
-    [catalogMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIRESULTKEY toKeyPath:kTKPDDETAIL_APIRESULTKEY withMapping:resultMapping]];
-    
-    RKRelationshipMapping *listCatalog = [RKRelationshipMapping relationshipMappingFromKeyPath:@"list" toKeyPath:@"list" withMapping:listMapping];
-    [resultMapping addPropertyMapping:listCatalog];
-    
-    // Response Descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:catalogMapping method:RKRequestMethodGET pathPattern:kTKDPDETAILCATALOG_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [objectManager addResponseDescriptor:responseDescriptor];
-    
-    
-    return objectManager;
 }
 
 @end

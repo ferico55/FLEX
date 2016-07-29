@@ -9,5 +9,23 @@
 #import "CatalogList.h"
 
 @implementation CatalogList
++(NSDictionary *)attributeMappingDictionary
+{
+    NSArray *keys = @[
+                      @"catalog_description",
+                      @"catalog_id",
+                      @"catalog_name",
+                      @"catalog_price",
+                      @"catalog_image",
+                      ];
+    return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
+}
+
++(RKObjectMapping*)mapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+    return mapping;
+}
 
 @end

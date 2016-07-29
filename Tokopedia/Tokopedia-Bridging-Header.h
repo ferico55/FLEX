@@ -69,5 +69,6 @@
 #import "WholesalePrice.h"
 #import "Product.h"
 #import "Breadcrumb.h"
+#import "CatalogAddProduct.h"
 
 #import "StickyAlertView+NetworkErrorHandler.h"

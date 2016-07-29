@@ -38,4 +38,33 @@ import UIKit
             onFailure(error)
         }
     }
+    
+    class func fetchGetCatalog(productName:String, departmentID:String, onSuccess: (([CatalogList]) -> Void), onFailure:((NSError?)->Void)) {
+        
+        let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
+        networkManager.isUsingHmac = true
+        
+        let param : Dictionary = ["product_name":productName, "product_department_id":departmentID]
+        
+        networkManager.requestWithBaseUrl(NSString .v4Url(),
+                                          path: "/v4/catalog/get_catalog.pl",
+                                          method: .GET,
+                                          parameter: param,
+                                          mapping: CatalogAddProduct.mapping(),
+                                          onSuccess: { (mappingResult, operation) in
+                                            
+                                            let result : Dictionary = mappingResult.dictionary() as Dictionary
+                                            let response : CatalogAddProduct = result[""] as! CatalogAddProduct
+                                            
+                                            if response.message_error?.count > 0 {
+                                                StickyAlertView.showErrorMessage(response.message_error)
+                                                onFailure(nil)
+                                            } else {
+                                                onSuccess(response.data.list)
+                                            }
+                                            
+        }) { (error) in
+            onFailure(error)
+        }
+    }
 }
