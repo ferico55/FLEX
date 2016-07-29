@@ -79,11 +79,13 @@ class PulsaView: UIView {
                     self.onPrefixEntered!(self.numberField.text!)
                 } else {
                     self.numberField.rightView = nil
+                    self.hideBuyButtons()
                 }
             }
             
             if(characterCount < 4) {
                 self.numberField.rightView = nil
+                self.hideBuyButtons()
             }
         }, forControlEvents: .EditingChanged)
         
@@ -167,6 +169,19 @@ class PulsaView: UIView {
         
         productButton.hidden = false
         buyButton.hidden = false
+    }
+    
+    func hideBuyButtons() {
+        productButton.mas_updateConstraints { make in
+            make.height.equalTo()(0)
+        }
+        
+        buyButton.mas_updateConstraints { make in
+            make.height.equalTo()(0)
+        }
+        
+        productButton.hidden = true
+        buyButton.hidden = true
     }
     
     func recalibrateView() {
