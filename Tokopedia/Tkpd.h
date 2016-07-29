@@ -303,5 +303,6 @@ typedef enum {
 #define kTKPD_REDIRECT_TO_HOME  @"tokopedia.kTKPD_REDIRECT_TO_HOME"
 
 #define IS_INBOX_TICKET_USE_VISIBLE_RATING NO
+#define IS_INBOX_TICKET_CAN_CLOSE_CASE NO
 
 #endif

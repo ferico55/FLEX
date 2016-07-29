@@ -686,16 +686,18 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     
     // Ticket not closed
     if ([_ticketInformation.ticket_status isEqualToString:@"1"]) {
-        
-        if ([_ticketInformation.ticket_respond_status isEqualToString:@"0"]) {
-            [self showView:_buttonsView];
-        } else {
-            if ([_ticketInformation.ticket_is_replied boolValue]) {
-                // Right now disable all open ticket
-                 [self showView:_reopenTicketAfterReplyView];
+        if (IS_INBOX_TICKET_CAN_CLOSE_CASE)
+        {
+            if ([_ticketInformation.ticket_respond_status isEqualToString:@"0"]) {
+                [self showView:_buttonsView];
             } else {
-                // Show reopen ticket
-                 [self showView:_reopenTicketView];
+                if ([_ticketInformation.ticket_is_replied boolValue]) {
+                    // Right now disable all open ticket
+                     [self showView:_reopenTicketAfterReplyView];
+                } else {
+                    // Show reopen ticket
+                     [self showView:_reopenTicketView];
+                }
             }
         }
     }
@@ -729,8 +731,11 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
                 // Ticket closed, rated the ticket, but still can open ticket
                 if ([_ticketInformation.ticket_show_reopen_btn boolValue]) {
                     
-                    // Show reopen ticket
-                     [self showView:_reopenTicketView];
+                    if (IS_INBOX_TICKET_CAN_CLOSE_CASE)
+                    {
+                        // Show reopen ticket
+                         [self showView:_reopenTicketView];
+                    }
 
                 } else {
                     [self showTicketRating:_ticketInformation];
@@ -744,8 +749,11 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
                 [_ticketInformation.ticket_respond_status isEqualToString:@"2"]) {
                 
                 if ([_ticketInformation.ticket_show_reopen_btn boolValue]) {
-                    // Show reopen ticket
-                     [self showView:_reopenTicketView];
+                    if (IS_INBOX_TICKET_CAN_CLOSE_CASE)
+                    {
+                        // Show reopen ticket
+                         [self showView:_reopenTicketView];
+                    }
                 } else {
                     [self showTicketRating:_ticketInformation];
                 }
@@ -895,7 +903,10 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
                                           completion:nil];
 }
 - (IBAction)didTouchReopenButton:(UIButton *)sender {
-    [self showView:_buttonsView];
+    if (IS_INBOX_TICKET_CAN_CLOSE_CASE)
+    {
+        [self showView:_buttonsView];
+    }
 }
 
 #pragma mark - GalleryPhoto Delegate
