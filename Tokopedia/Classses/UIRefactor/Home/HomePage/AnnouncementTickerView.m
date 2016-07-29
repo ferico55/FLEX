@@ -47,9 +47,6 @@
     _messageLabel.verticalAlignment = TTTAttributedLabelVerticalAlignmentTop;
     _messageLabel.delegate = self;
     
-//    NSDataDetector *linkDetector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:nil];
-//    NSArray *matches = [linkDetector matchesInString:attString.string options:0 range:NSMakeRange(0, [attString length])];
-    
     for (NSTextCheckingResult* match in matches) {
         NSRange matchRange = [match rangeAtIndex:1];
         [mutArray addObject:[text substringWithRange:matchRange]];
@@ -60,6 +57,8 @@
         NSRange range = [attString.string rangeOfString:mutArray[ii]];
         [_messageLabel addLinkToURL:url withRange:range];
     }
+    
+    [_messageLabel sizeToFit];
 }
 
 - (NSAttributedString *)attributedMessage:(NSString *)text {

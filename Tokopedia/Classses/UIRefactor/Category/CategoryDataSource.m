@@ -150,19 +150,19 @@
     
     if (indexPath.section == 0) {
 //        UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
-//        if ([_slider isDescendantOfView:cell.contentView]) {
+//        if (![_slider isDescendantOfView:cell.contentView]) {
 //            return CGSizeZero;
 //        }
         return CGSizeMake(screenWidth, IS_IPAD ? 225 : 175);
     } else if (indexPath.section == 1) {
 //        UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
-//        if ([_ticker isDescendantOfView:cell.contentView]) {
+//        if (![_ticker isDescendantOfView:cell.contentView]) {
 //            return CGSizeZero;
 //        }
-        return CGSizeMake(screenWidth, 100);
+        return CGSizeMake(screenWidth, _ticker.messageLabel.bounds.size.height + _ticker.titleLabel.bounds.size.height + 24);
     } else if (indexPath.section == 2) {
 //        UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
-//        if ([_digitalGoodsSwipeView isDescendantOfView:cell.contentView]) {
+//        if (![_digitalGoodsSwipeView isDescendantOfView:cell.contentView]) {
 //            return CGSizeZero;
 //        }
         return CGSizeMake(screenWidth, 120);
