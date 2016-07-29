@@ -141,6 +141,9 @@ import UIKit
                 self!.tickerView = AnnouncementTickerView.newView()
                 self!.tickerView.setTitle(tick.title)
                 self!.tickerView.setMessage(tick.message)
+                self!.tickerView.onTapMessageWithUrl = {[weak self] (url) in
+                    self!.openWebViewWithURL(url)
+                }
                 
                 self!.categoryDataSource.ticker = self!.tickerView
                 
@@ -162,5 +165,18 @@ import UIKit
     
     func moveToNextSlider() {
         slider.scrollToItemAtIndex(slider.currentItemIndex + 1, duration: 1.0)
+    }
+    
+    func openWebViewWithURL(url: NSURL) {
+        let controller = WebViewController()
+        controller.strURL = url.absoluteString
+        controller.strTitle = "Mengarahkan..."
+        controller.onTapLinkWithUrl = {[weak self] (url) in
+            if url.absoluteString == "https://www.tokopedia.com/" {
+                self!.navigationController?.popViewControllerAnimated(true)
+            }
+        }
+        
+        navigationController?.pushViewController(controller, animated: true)
     }
 }

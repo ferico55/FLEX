@@ -38,20 +38,27 @@
 
 - (void)setMessage:(NSString *)text {
     NSAttributedString *attString = [self attributedMessage:text];
-    NSString *urlString = [NSString getLinkFromHTMLString:text];
+    NSArray *matches = [NSString getStringsBetweenAhrefTagWithString:text];
+    NSArray <NSString *> *links = [NSString getLinksBetweenAhrefTagWithString:text];
+    NSMutableArray *mutArray = [NSMutableArray new];
     
     _messageLabel.enabledTextCheckingTypes = NSTextCheckingTypeLink;
     _messageLabel.attributedText = attString;
+    _messageLabel.verticalAlignment = TTTAttributedLabelVerticalAlignmentTop;
     _messageLabel.delegate = self;
     
-    NSDataDetector *linkDetector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:nil];
-    NSArray *matches = [linkDetector matchesInString:attString.string options:0 range:NSMakeRange(0, [attString length])];
+//    NSDataDetector *linkDetector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:nil];
+//    NSArray *matches = [linkDetector matchesInString:attString.string options:0 range:NSMakeRange(0, [attString length])];
     
-    for(NSTextCheckingResult* match in matches) {
-        if (urlString) {
-            NSURL *url = [NSURL URLWithString:urlString];
-            [_messageLabel addLinkToURL:url withRange:match.range];
-        }
+    for (NSTextCheckingResult* match in matches) {
+        NSRange matchRange = [match rangeAtIndex:1];
+        [mutArray addObject:[text substringWithRange:matchRange]];
+    }
+    
+    for (NSInteger ii = 0; ii < [links count]; ii++) {
+        NSURL *url = [NSURL URLWithString:links[ii]];
+        NSRange range = [attString.string rangeOfString:mutArray[ii]];
+        [_messageLabel addLinkToURL:url withRange:range];
     }
 }
 
@@ -72,6 +79,7 @@
 
 - (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url {
     NSString *realUrl = [NSString stringWithFormat:@"https://tkp.me/r?url=%@", [url.absoluteString stringByReplacingOccurrencesOfString:@"*" withString:@"."]];
+    
     self.onTapMessageWithUrl([NSURL URLWithString:[realUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]);
 }
 
