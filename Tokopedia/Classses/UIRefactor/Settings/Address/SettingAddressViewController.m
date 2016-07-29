@@ -18,6 +18,7 @@
 #import "SettingAddressEditViewController.h"
 #import "SettingAddressExpandedCell.h"
 #import "TokopediaNetworkManager.h"
+#import "TPAnalytics.h"
 
 #import "MGSwipeButton.h"
 
@@ -709,7 +710,7 @@
                                                                                      delegate:self];
                     [alert show];
                 }
-                if (setting.result.is_success == 1 || setting.message_status) {
+                if ([setting.result.is_success boolValue] || setting.message_status) {
                     NSArray *successMessages = setting.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY];
                     StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages
                                                                                      delegate:self];
@@ -846,7 +847,7 @@
                     [alertView show];
                 }
                 
-                if (setting.result.is_success == 1) {
+                if ([setting.result.is_success boolValue]) {
                     NSArray *successMessages = setting.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY];
                     StickyAlertView *alertView = [[StickyAlertView alloc] initWithSuccessMessages:successMessages
                                                                                          delegate:self];
@@ -892,6 +893,11 @@
             {
                 //add new address
                 NSInteger type = [[_data objectForKey:DATA_TYPE_KEY]integerValue];
+                
+                if (type == TYPE_ADD_EDIT_PROFILE_ATC) {
+                    [TPAnalytics trackClickEvent:@"clickATC" category:@"Add to Cart" label:@"Add Address"];
+                }
+                
                 NSInteger typeAddAddress = (type == TYPE_ADD_EDIT_PROFILE_ATC || type == TYPE_ADD_EDIT_PROFILE_ADD_RESO || type == TYPE_ADD_EDIT_PROFILE_EDIT_RESO)?type:TYPE_ADD_EDIT_PROFILE_ADD_NEW;
                 SettingAddressEditViewController *vc = [SettingAddressEditViewController new];
                 vc.data = @{kTKPD_AUTHKEY: _auth,

@@ -10,6 +10,10 @@
 
 @implementation OrderBooking
 
-
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[self class]];
+    [mapping addAttributeMappingsFromArray:@[@"shop_id", @"api_url", @"type", @"token", @"ut"]];
+    return mapping;
+}
 
 @end

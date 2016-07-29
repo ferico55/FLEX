@@ -25,4 +25,8 @@
 
 - (void)requestBanner;
 
++(void)fetchHotlistBannerWithQuery:(NSString*)query
+                         onSuccess:(void(^)(HotlistBannerResult* data))success
+                         onFailure:(void(^)(NSError * error))failed;
+
 @end

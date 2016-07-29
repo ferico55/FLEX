@@ -135,13 +135,13 @@
     
     _detailfilter = [NSMutableDictionary new];
     NSDictionary *datafilter = [_data objectForKey:kTKPDFILTER_DATAFILTERKEY]?:@{};
-    [_detailfilter setObject:[datafilter objectForKey:kTKPDFILTER_APILOCATIONKEY]?:@"" forKey:kTKPDFILTER_APILOCATIONKEY];
+    [_detailfilter setObject:[datafilter objectForKey:@"floc"]?:@"" forKey:@"floc"];
     [_detailfilter setObject:[datafilter objectForKey:kTKPDFILTER_DATASORTVALUEKEY]?:@"" forKey:kTKPDFILTER_APICONDITIONKEY];
     
-    NSInteger pricemin = [[datafilter objectForKey:kTKPDFILTER_APIPRICEMINKEY] integerValue];
-    NSInteger pricemax = [[datafilter objectForKey:kTKPDFILTER_APIPRICEMAXKEY] integerValue];
-    [_detailfilter setObject:@(pricemin?:0) forKey:kTKPDFILTER_APIPRICEMINKEY];
-    [_detailfilter setObject:@(pricemax?:0) forKey:kTKPDFILTER_APIPRICEMAXKEY];
+    NSInteger pricemin = [[datafilter objectForKey:@"pmin"] integerValue];
+    NSInteger pricemax = [[datafilter objectForKey:@"pmax"] integerValue];
+    [_detailfilter setObject:@(pricemin?:0) forKey:@"pmin"];
+    [_detailfilter setObject:@(pricemax?:0) forKey:@"pmax"];
     
     _pricemin.text = (pricemin>0)?[NSString stringWithFormat:@"%zd",pricemin]:0;
     _pricemax.text = (pricemax>0)?[NSString stringWithFormat:@"%zd",pricemax]:0;
@@ -160,17 +160,17 @@
     [_detailfilter setObject:condition forKey:kTKPDFILTER_APICONDITIONKEY];
     [_detailfilter setObject:[datafilter objectForKey:kTKPDFILTERCONDITION_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0] forKey:kTKPDFILTERCONDITION_DATAINDEXPATHKEY];
     
-    NSInteger goldshopvalue = [[datafilter objectForKey:kTKPDFILTER_APISHOPTYPEKEY] integerValue];
+    NSInteger goldshopvalue = [[datafilter objectForKey:@"fshop"] integerValue];
     switch (goldshopvalue) {
         case 0:
-            [_detailfilter setObject:@(goldshopvalue) forKey:kTKPDFILTER_APISHOPTYPEKEY];
+            [_detailfilter setObject:@(goldshopvalue) forKey:@"fshop"];
             break;
         case 2:
         {
             switch (_type) {
                 case kTKPDFILTER_DATATYPESHOPVIEWKEY:
                 {
-                    [_detailfilter setObject:@(goldshopvalue) forKey:kTKPDFILTER_APISHOPTYPEKEY];
+                    [_detailfilter setObject:@(goldshopvalue) forKey:@"fshop"];
                     _shopsegmentcontrol.selectedSegmentIndex=1;
                     break;
                 }
@@ -185,13 +185,13 @@
                 case kTKPDFILTER_DATATYPEHOTLISTVIEWKEY:
                 case kTKPDFILTER_DATATYPEPRODUCTVIEWKEY:
                 { 
-                    [_detailfilter setObject:@(goldshopvalue) forKey:kTKPDFILTER_APISHOPTYPEKEY];
+                    [_detailfilter setObject:@(goldshopvalue) forKey:@"fshop"];
                     _productsegmentcontrol.selectedSegmentIndex = 1;
                     break;
                 }
                 case kTKPDFILTER_DATATYPECATALOGVIEWKEY:
                 {
-                    [_detailfilter setObject:@(goldshopvalue) forKey:kTKPDFILTER_APISHOPTYPEKEY];
+                    [_detailfilter setObject:@(goldshopvalue) forKey:@"fshop"];
                     _productsegmentcontrol.selectedSegmentIndex = 1;
                     break;
                 }
@@ -251,24 +251,14 @@
             case 11:
             {
                 //SUBMIT
-                NSInteger priceMin = [[_detailfilter objectForKey:kTKPDFILTER_APIPRICEMINKEY] integerValue];
-                NSInteger priceMax = [[_detailfilter objectForKey:kTKPDFILTER_APIPRICEMAXKEY] integerValue];
+                NSInteger priceMin = [[_detailfilter objectForKey:@"pmin"] integerValue];
+                NSInteger priceMax = [[_detailfilter objectForKey:@"pmax"] integerValue];
  
                 if (priceMax != nil && priceMax < priceMin) {
                     StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Harga minimum harus lebih kecil dari harga maksimum."] delegate:self];
                     [alert show];
                 } else {
-                    NSDictionary *userinfo = @{
-                                               kTKPDFILTER_APILOCATIONKEY:[_detailfilter objectForKey:kTKPDFILTER_APILOCATIONKEY]?:@"",
-                                               kTKPDFILTER_APISHOPTYPEKEY:[_detailfilter objectForKey:kTKPDFILTER_APISHOPTYPEKEY]?:@"",
-                                               kTKPDFILTER_APIPRICEMINKEY:[_detailfilter objectForKey:kTKPDFILTER_APIPRICEMINKEY]?:@"",
-                                               kTKPDFILTER_APIPRICEMAXKEY:[_detailfilter objectForKey:kTKPDFILTER_APIPRICEMAXKEY]?:@"",
-                                               kTKPDFILTER_APICONDITIONKEY:[_detailfilter objectForKey:kTKPDFILTER_APICONDITIONKEY]?:@"",
-                                               kTKPDFILTER_APILOCATIONNAMEKEY: [_detailfilter objectForKey:kTKPDFILTER_APILOCATIONNAMEKEY]?:@"",
-                                               kTKPDFILTERLOCATION_DATAINDEXPATHKEY:[_detailfilter objectForKey:kTKPDFILTERLOCATION_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0],
-                                               kTKPDFILTERCONDITION_DATAINDEXPATHKEY:[_detailfilter objectForKey:kTKPDFILTERCONDITION_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0],
-                                               kTKPDFILTER_APICONDITIONNAMEKEY : [_detailfilter objectForKey:kTKPDFILTER_APICONDITIONNAMEKEY]?:@""
-                                               };
+                    NSDictionary *userinfo = _detailfilter;
                     [_delegate FilterViewController:self withUserInfo:userinfo];
                     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                 }
@@ -329,7 +319,7 @@
         UISegmentedControl *button = (UISegmentedControl*)sender;
         switch (button.selectedSegmentIndex) {
             case 0:
-                [_detailfilter setObject:@(0) forKey:kTKPDFILTER_APISHOPTYPEKEY];
+                [_detailfilter setObject:@(0) forKey:@"fshop"];
                 break;
             case 1:
             {
@@ -338,12 +328,12 @@
                     case kTKPDFILTER_DATATYPEPRODUCTVIEWKEY:
                     case kTKPDFILTER_DATATYPECATALOGVIEWKEY:
                     {
-                        [_detailfilter setObject:@(3) forKey:kTKPDFILTER_APISHOPTYPEKEY];
+                        [_detailfilter setObject:@(3) forKey:@"fshop"];
                         break;
                     }
                     case kTKPDFILTER_DATATYPESHOPVIEWKEY:
                     {
-                        [_detailfilter setObject:@(2) forKey:kTKPDFILTER_APISHOPTYPEKEY];
+                        [_detailfilter setObject:@(2) forKey:@"fshop"];
                         break;
                     }
                     case kTKPDFILTER_DATATYPESHOPPRODUCTVIEWKEY:
@@ -406,7 +396,7 @@
     [_shoplocationbutton setTitle:[data objectForKey:kTKPDFILTER_APILOCATIONNAMEKEY] forState:UIControlStateNormal];
     [_productlocationbutton setTitle:[data objectForKey:kTKPDFILTER_APILOCATIONNAMEKEY] forState:UIControlStateNormal];
     [_detailcataloglocationbutton setTitle:[data objectForKey:kTKPDFILTER_APILOCATIONNAMEKEY] forState:UIControlStateNormal];
-    [_detailfilter setObject:[data objectForKey:kTKPDFILTER_APILOCATIONKEY] forKey:kTKPDFILTER_APILOCATIONKEY];
+    [_detailfilter setObject:[data objectForKey:@"floc"] forKey:@"floc"];
     [_detailfilter setObject:[data objectForKey:kTKPDFILTER_APILOCATIONNAMEKEY] forKey:kTKPDFILTER_APILOCATIONNAMEKEY];
     [_detailfilter setObject:[data objectForKey:kTKPDFILTERLOCATION_DATAINDEXPATHKEY] forKey:kTKPDFILTERLOCATION_DATAINDEXPATHKEY];
 }
@@ -442,9 +432,9 @@
 - (void)priceTextFieldChanged:(UITextField *)textField
 {
     if (textField == _pricemin || textField == _pricemincatalog) {
-        [_detailfilter setObject:textField.text forKey:kTKPDFILTER_APIPRICEMINKEY];
+        [_detailfilter setObject:textField.text forKey:@"pmin"];
     } else if (textField == _pricemax || textField == _pricemaxcatalog) {
-        [_detailfilter setObject:textField.text forKey:kTKPDFILTER_APIPRICEMAXKEY];
+        [_detailfilter setObject:textField.text forKey:@"pmax"];
     }
 }
 

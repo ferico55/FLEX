@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
@@ -103,9 +103,8 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="none" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="DOQ-8g-oz7">
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" style="grouped" separatorStyle="none" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="DOQ-8g-oz7">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                    <animations/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="jfA-Ev-joU"/>
@@ -113,7 +112,6 @@
                     </connections>
                 </tableView>
             </subviews>
-            <animations/>
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstItem="DOQ-8g-oz7" firstAttribute="top" secondItem="JT9-xt-M2G" secondAttribute="top" id="2zg-dD-AwQ"/>
@@ -137,7 +135,6 @@
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Invoice" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="gCE-qJ-3Mo">
                         <rect key="frame" x="15" y="16" width="50" height="12.5"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <animations/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                         <nil key="highlightedColor"/>
@@ -145,16 +142,13 @@
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="-" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ywi-yJ-7tR">
                         <rect key="frame" x="299" y="16" width="6" height="12.5"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <animations/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
-                <animations/>
                 <color key="backgroundColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="deviceRGB"/>
             </tableViewCellContentView>
-            <animations/>
             <color key="backgroundColor" red="0.88235294119999996" green="0.88235294119999996" blue="0.88235294119999996" alpha="1" colorSpace="calibratedRGB"/>
             <point key="canvasLocation" x="710" y="-94"/>
         </tableViewCell>
@@ -168,7 +162,6 @@
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Total Invoice" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="5fr-GV-O5s">
                         <rect key="frame" x="15" y="17" width="83.5" height="12"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <animations/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -177,16 +170,13 @@
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="OVr-YB-Luw">
                         <rect key="frame" x="299" y="16" width="6" height="12.5"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <animations/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
-                <animations/>
                 <color key="backgroundColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="deviceRGB"/>
             </tableViewCellContentView>
-            <animations/>
             <point key="canvasLocation" x="710" y="-10"/>
         </tableViewCell>
         <tableViewCell tag="10" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="KWo-R4-Fly" detailTextLabel="VKM-WS-chh" style="IBUITableViewCellStyleValue1" id="Ozq-VN-r4J" userLabel="payment date Table View Cell">
@@ -199,7 +189,6 @@
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Tanggal Pembayaran" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="KWo-R4-Fly">
                         <rect key="frame" x="15" y="16" width="137" height="12"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <animations/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
@@ -207,16 +196,13 @@
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="VKM-WS-chh">
                         <rect key="frame" x="299.5" y="16" width="5.5" height="12"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <animations/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
-                <animations/>
                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             </tableViewCellContentView>
-            <animations/>
             <color key="backgroundColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="deviceRGB"/>
             <point key="canvasLocation" x="710" y="100"/>
         </tableViewCell>
@@ -230,7 +216,6 @@
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Cara Pembayaran" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="NpX-JH-9rM">
                         <rect key="frame" x="15" y="17" width="115" height="12"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <animations/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
@@ -238,16 +223,13 @@
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="JJD-Kl-4Bh">
                         <rect key="frame" x="279" y="16" width="6" height="12.5"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <animations/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                         <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
-                <animations/>
                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             </tableViewCellContentView>
-            <animations/>
             <point key="canvasLocation" x="710" y="189"/>
         </tableViewCell>
         <tableViewCell tag="10" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="50p-cR-kSG" detailTextLabel="ggK-VA-KbX" style="IBUITableViewCellStyleValue1" id="nsd-xN-BdA" userLabel="rekening bank Table View Cell">
@@ -260,7 +242,6 @@
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Dari Rekening" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="50p-cR-kSG">
                         <rect key="frame" x="15" y="16" width="91" height="12"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <animations/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
@@ -268,16 +249,13 @@
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ggK-VA-KbX">
                         <rect key="frame" x="279.5" y="16" width="5.5" height="12"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <animations/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
-                <animations/>
                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             </tableViewCellContentView>
-            <animations/>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <point key="canvasLocation" x="698" y="278"/>
         </tableViewCell>
@@ -291,7 +269,6 @@
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Rekening Tujuan" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="h9P-0N-o09">
                         <rect key="frame" x="15" y="16" width="108" height="12"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <animations/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
@@ -299,16 +276,13 @@
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Pilih Rekening Tujuan" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="10h-oj-lCT">
                         <rect key="frame" x="146.5" y="16" width="138.5" height="12"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <animations/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
-                <animations/>
                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             </tableViewCellContentView>
-            <animations/>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <point key="canvasLocation" x="698" y="421"/>
         </tableViewCell>
@@ -324,7 +298,6 @@
                         <subviews>
                             <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Jumlah Pembayaran" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CBE-8X-t5a">
                                 <rect key="frame" x="15" y="0.0" width="132" height="44"/>
-                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="132" id="vN0-hR-Uee"/>
                                 </constraints>
@@ -334,7 +307,6 @@
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ZAH-Jd-Ovc">
                                 <rect key="frame" x="162" y="0.0" width="143" height="44"/>
-                                <animations/>
                                 <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
@@ -343,7 +315,6 @@
                                 </connections>
                             </textField>
                         </subviews>
-                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="CBE-8X-t5a" firstAttribute="leading" secondItem="KFm-2V-Gt8" secondAttribute="leading" constant="15" id="53V-vV-8vd"/>
@@ -361,7 +332,6 @@
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IQn-Q6-7LC">
                                 <rect key="frame" x="15" y="6" width="290" height="78"/>
-                                <animations/>
                                 <string key="text">Inputlah sesuai dengan jumlah uang yang Anda transfer. Masukkan jumlah pembayaran tanpa tanda titik koma.
 Contoh : 157500</string>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
@@ -369,7 +339,6 @@ Contoh : 157500</string>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <animations/>
                         <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="IQn-Q6-7LC" firstAttribute="leading" secondItem="zL6-oh-FjX" secondAttribute="leading" constant="15" id="2Dr-ad-62X"/>
@@ -379,7 +348,6 @@ Contoh : 157500</string>
                         </constraints>
                     </view>
                 </subviews>
-                <animations/>
                 <constraints>
                     <constraint firstItem="zL6-oh-FjX" firstAttribute="top" secondItem="KFm-2V-Gt8" secondAttribute="bottom" id="28j-Nv-Pxx"/>
                     <constraint firstItem="KFm-2V-Gt8" firstAttribute="top" secondItem="BhI-dx-N8c" secondAttribute="top" id="9N9-rp-ZMv"/>
@@ -390,7 +358,6 @@ Contoh : 157500</string>
                     <constraint firstItem="zL6-oh-FjX" firstAttribute="leading" secondItem="BhI-dx-N8c" secondAttribute="leading" id="s47-cQ-uvq"/>
                 </constraints>
             </tableViewCellContentView>
-            <animations/>
             <point key="canvasLocation" x="1055" y="377"/>
         </tableViewCell>
         <tableViewCell tag="9" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="4GS-NF-l1g" userLabel="NAMA PENGIRIM Table View Cell">
@@ -402,7 +369,6 @@ Contoh : 157500</string>
                 <subviews>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Nama Penyetor" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="21Q-AX-UJ8">
                         <rect key="frame" x="15" y="0.0" width="101" height="44"/>
-                        <animations/>
                         <constraints>
                             <constraint firstAttribute="width" constant="101" id="WeF-Mz-S9p"/>
                         </constraints>
@@ -412,7 +378,6 @@ Contoh : 157500</string>
                     </label>
                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="iZf-50-tca">
                         <rect key="frame" x="162" y="0.0" width="143" height="43"/>
-                        <animations/>
                         <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="calibratedRGB"/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <textInputTraits key="textInputTraits"/>
@@ -421,7 +386,6 @@ Contoh : 157500</string>
                         </connections>
                     </textField>
                 </subviews>
-                <animations/>
                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="iZf-50-tca" secondAttribute="trailing" constant="15" id="Csa-VD-1MI"/>
@@ -433,7 +397,6 @@ Contoh : 157500</string>
                     <constraint firstAttribute="bottom" secondItem="21Q-AX-UJ8" secondAttribute="bottom" id="jOB-zR-Qfx"/>
                 </constraints>
             </tableViewCellContentView>
-            <animations/>
             <point key="canvasLocation" x="1064" y="531"/>
         </tableViewCell>
         <tableViewCell tag="10" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="119" id="aAj-7J-rIR" userLabel="mark Table View Cell">
@@ -445,7 +408,6 @@ Contoh : 157500</string>
                 <subviews>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Keterangan" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BqT-PB-k2w">
                         <rect key="frame" x="15" y="10" width="132" height="12"/>
-                        <animations/>
                         <constraints>
                             <constraint firstAttribute="width" constant="132" id="3Fg-e9-qW2"/>
                             <constraint firstAttribute="height" constant="12" id="jyV-w5-WIE"/>
@@ -456,7 +418,6 @@ Contoh : 157500</string>
                     </label>
                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ogq-RH-17A">
                         <rect key="frame" x="11" y="21" width="294" height="87"/>
-                        <animations/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -465,7 +426,6 @@ Contoh : 157500</string>
                         </connections>
                     </textView>
                 </subviews>
-                <animations/>
                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 <constraints>
                     <constraint firstItem="BqT-PB-k2w" firstAttribute="top" secondItem="iYc-bT-HBT" secondAttribute="top" constant="10" id="J0G-ad-Nho"/>
@@ -476,7 +436,6 @@ Contoh : 157500</string>
                     <constraint firstAttribute="bottom" secondItem="Ogq-RH-17A" secondAttribute="bottom" constant="10.5" id="wiT-xH-ZHI"/>
                 </constraints>
             </tableViewCellContentView>
-            <animations/>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <point key="canvasLocation" x="698" y="682.5"/>
         </tableViewCell>
@@ -492,7 +451,6 @@ Contoh : 157500</string>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Info Slip Setoran Tunai" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Utt-gC-coI">
                                 <rect key="frame" x="15" y="11" width="226" height="21"/>
-                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="H8a-KQ-Qd5"/>
                                     <constraint firstAttribute="width" constant="226" id="rlD-Ar-rhZ"/>
@@ -502,14 +460,12 @@ Contoh : 157500</string>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_info_grey.png" translatesAutoresizingMaskIntoConstraints="NO" id="c4m-HS-2BG">
                                 <rect key="frame" x="285" y="11" width="20" height="20"/>
-                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="0hz-Nf-0kh"/>
                                     <constraint firstAttribute="width" constant="20" id="Imz-LA-Aw7"/>
                                 </constraints>
                             </imageView>
                         </subviews>
-                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="c4m-HS-2BG" secondAttribute="trailing" constant="15" id="8X2-do-Pk3"/>
@@ -519,7 +475,6 @@ Contoh : 157500</string>
                         </constraints>
                     </view>
                 </subviews>
-                <animations/>
                 <constraints>
                     <constraint firstAttribute="bottomMargin" secondItem="7GP-fM-HFp" secondAttribute="bottom" constant="-4.5" id="1eR-09-oKL"/>
                     <constraint firstAttribute="trailing" secondItem="7GP-fM-HFp" secondAttribute="trailing" id="h7I-F4-a62"/>
@@ -527,7 +482,6 @@ Contoh : 157500</string>
                     <constraint firstItem="7GP-fM-HFp" firstAttribute="top" secondItem="P0A-Zj-SWf" secondAttribute="top" id="paY-Tb-84r"/>
                 </constraints>
             </tableViewCellContentView>
-            <animations/>
             <point key="canvasLocation" x="956" y="56"/>
         </tableViewCell>
         <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="82" id="EZU-0d-Xjr" userLabel="Password Table View Cell">
@@ -542,7 +496,6 @@ Contoh : 157500</string>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="t4Y-d1-Gv4">
                                 <rect key="frame" x="0.0" y="43" width="320" height="1"/>
-                                <animations/>
                                 <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="In5-Mb-ZOd"/>
@@ -553,7 +506,6 @@ Contoh : 157500</string>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kata Sandi" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="251-FC-pfh">
                                         <rect key="frame" x="15" y="11" width="73" height="21"/>
-                                        <animations/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="73" id="dkK-m6-koQ"/>
                                         </constraints>
@@ -563,7 +515,6 @@ Contoh : 157500</string>
                                     </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="f6T-jJ-0Tt">
                                         <rect key="frame" x="107" y="0.0" width="1" height="43"/>
-                                        <animations/>
                                         <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="1" id="KmM-6S-3wz"/>
@@ -571,7 +522,6 @@ Contoh : 157500</string>
                                         </constraints>
                                     </view>
                                 </subviews>
-                                <animations/>
                                 <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstItem="251-FC-pfh" firstAttribute="leading" secondItem="inK-I1-9uz" secondAttribute="leading" constant="15" id="2Da-I9-DCY"/>
@@ -587,7 +537,6 @@ Contoh : 157500</string>
                             </view>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Kata sandi" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="dqX-oK-JfR">
                                 <rect key="frame" x="111" y="0.0" width="194" height="43"/>
-                                <animations/>
                                 <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                                 <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
@@ -596,7 +545,6 @@ Contoh : 157500</string>
                                 </connections>
                             </textField>
                         </subviews>
-                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="44" id="5l8-ut-Ved"/>
@@ -616,7 +564,6 @@ Contoh : 157500</string>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Masukkan password login Tokopedia Anda." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qzW-Uy-BZS">
                                 <rect key="frame" x="15" y="7" width="290" height="23"/>
-                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="23" id="urm-L1-M8h"/>
                                 </constraints>
@@ -625,7 +572,6 @@ Contoh : 157500</string>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <animations/>
                         <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="qzW-Uy-BZS" firstAttribute="centerX" secondItem="UK1-NI-S1I" secondAttribute="centerX" id="gBc-d9-6f0"/>
@@ -634,7 +580,6 @@ Contoh : 157500</string>
                         </constraints>
                     </view>
                 </subviews>
-                <animations/>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="UK1-NI-S1I" secondAttribute="trailing" id="6Li-fo-siG"/>
                     <constraint firstAttribute="trailing" secondItem="sGd-MF-S0M" secondAttribute="trailing" id="EXe-f7-c6h"/>
@@ -645,7 +590,6 @@ Contoh : 157500</string>
                     <constraint firstAttribute="bottom" secondItem="UK1-NI-S1I" secondAttribute="bottom" id="pfO-jt-qt8"/>
                 </constraints>
             </tableViewCellContentView>
-            <animations/>
             <point key="canvasLocation" x="-43" y="686"/>
         </tableViewCell>
         <tableViewCell tag="10" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="85" id="3BN-sT-PGO" userLabel="account name Table View Cell">
@@ -660,7 +604,6 @@ Contoh : 157500</string>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TAMBAH REKENING BANK" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t0h-sJ-t52">
                                 <rect key="frame" x="15" y="16" width="183" height="16"/>
-                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="183" id="BYQ-nq-JSd"/>
                                 </constraints>
@@ -670,7 +613,6 @@ Contoh : 157500</string>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JEO-Sj-mWB">
                                 <rect key="frame" x="259" y="0.0" width="46" height="40"/>
-                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="46" id="7dP-29-tfN"/>
                                 </constraints>
@@ -690,18 +632,17 @@ Contoh : 157500</string>
                                 </connections>
                             </button>
                         </subviews>
-                        <animations/>
                         <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="JEO-Sj-mWB" secondAttribute="trailing" constant="15" id="BIP-Eh-fC7"/>
                             <constraint firstAttribute="height" constant="40" id="KIF-Ox-8Pm"/>
                             <constraint firstItem="JEO-Sj-mWB" firstAttribute="top" secondItem="djV-sw-E5V" secondAttribute="top" id="Mw1-dm-fdM"/>
-                            <constraint firstItem="JEO-Sj-mWB" firstAttribute="leading" secondItem="t0h-sJ-t52" secondAttribute="trailing" constant="61" id="Tde-ah-mdR"/>
                             <constraint firstItem="t0h-sJ-t52" firstAttribute="top" secondItem="djV-sw-E5V" secondAttribute="top" constant="16" id="YPU-d8-zoD"/>
                             <constraint firstAttribute="bottom" secondItem="JEO-Sj-mWB" secondAttribute="bottom" id="hCS-X6-ZS6"/>
                             <constraint firstAttribute="bottom" secondItem="JEO-Sj-mWB" secondAttribute="bottom" id="jVY-4U-RHJ"/>
                             <constraint firstItem="JEO-Sj-mWB" firstAttribute="top" secondItem="djV-sw-E5V" secondAttribute="top" id="rSh-7H-zR3"/>
                             <constraint firstItem="t0h-sJ-t52" firstAttribute="bottom" secondItem="djV-sw-E5V" secondAttribute="bottomMargin" id="rTy-lW-cT2"/>
+                            <constraint firstAttribute="trailing" secondItem="JEO-Sj-mWB" secondAttribute="trailing" constant="15" id="ryk-vq-Q6C"/>
                             <constraint firstItem="JEO-Sj-mWB" firstAttribute="leading" secondItem="t0h-sJ-t52" secondAttribute="trailing" constant="61" id="u6j-zm-yng"/>
                             <constraint firstItem="t0h-sJ-t52" firstAttribute="leading" secondItem="djV-sw-E5V" secondAttribute="leading" constant="15" id="zYx-ca-8dT"/>
                         </constraints>
@@ -717,7 +658,6 @@ Contoh : 157500</string>
                             <mask key="constraints">
                                 <include reference="BIP-Eh-fC7"/>
                                 <exclude reference="Mw1-dm-fdM"/>
-                                <exclude reference="Tde-ah-mdR"/>
                                 <exclude reference="hCS-X6-ZS6"/>
                                 <include reference="jVY-4U-RHJ"/>
                                 <include reference="rSh-7H-zR3"/>
@@ -730,7 +670,6 @@ Contoh : 157500</string>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nama Bank" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FsP-d3-5aR">
                                 <rect key="frame" x="15" y="0.0" width="106" height="44"/>
-                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="106" id="YVi-jt-h1I"/>
                                 </constraints>
@@ -740,21 +679,18 @@ Contoh : 157500</string>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pilih Nama Bank" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pau-WK-xXi">
                                 <rect key="frame" x="136" y="0.0" width="155" height="44"/>
-                                <animations/>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                                 <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_arrow_right_gray.png" translatesAutoresizingMaskIntoConstraints="NO" id="JPv-uY-DrO">
                                 <rect key="frame" x="299" y="14" width="15" height="15"/>
-                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="15" id="He5-GU-iJs"/>
                                     <constraint firstAttribute="height" constant="15" id="m10-eV-8BN"/>
                                 </constraints>
                             </imageView>
                         </subviews>
-                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="JPv-uY-DrO" firstAttribute="leading" secondItem="pau-WK-xXi" secondAttribute="trailing" constant="8" id="2mT-0k-QEF"/>
@@ -770,7 +706,6 @@ Contoh : 157500</string>
                         </constraints>
                     </view>
                 </subviews>
-                <animations/>
                 <constraints>
                     <constraint firstItem="djV-sw-E5V" firstAttribute="leading" secondItem="XTc-Hk-PXd" secondAttribute="leading" id="0em-qo-YcF"/>
                     <constraint firstItem="hVJ-ne-H0P" firstAttribute="leading" secondItem="XTc-Hk-PXd" secondAttribute="leading" id="4ck-R8-3Jk"/>
@@ -780,7 +715,6 @@ Contoh : 157500</string>
                     <constraint firstAttribute="trailing" secondItem="hVJ-ne-H0P" secondAttribute="trailing" id="iSe-Sr-rlN"/>
                 </constraints>
             </tableViewCellContentView>
-            <animations/>
             <point key="canvasLocation" x="-237" y="510.5"/>
         </tableViewCell>
         <tableViewCell tag="12" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="1sV-Kr-wps" userLabel="nomor rekening Table View Cell">
@@ -795,7 +729,6 @@ Contoh : 157500</string>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nomor Rekening" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HLL-Ba-XTp">
                                 <rect key="frame" x="15" y="0.0" width="138" height="44"/>
-                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="138" id="RuG-gH-CBZ"/>
                                 </constraints>
@@ -805,7 +738,6 @@ Contoh : 157500</string>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="MDp-Kx-NAw">
                                 <rect key="frame" x="153" y="0.0" width="152" height="44"/>
-                                <animations/>
                                 <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
@@ -814,7 +746,6 @@ Contoh : 157500</string>
                                 </connections>
                             </textField>
                         </subviews>
-                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="MDp-Kx-NAw" firstAttribute="leading" secondItem="HLL-Ba-XTp" secondAttribute="trailing" id="Caq-IS-x31"/>
@@ -827,7 +758,6 @@ Contoh : 157500</string>
                         </constraints>
                     </view>
                 </subviews>
-                <animations/>
                 <constraints>
                     <constraint firstAttribute="bottom" secondItem="5jx-Ic-OEB" secondAttribute="bottom" id="99B-cZ-TuF"/>
                     <constraint firstAttribute="trailing" secondItem="5jx-Ic-OEB" secondAttribute="trailing" id="AKg-KF-Qvd"/>
@@ -835,7 +765,6 @@ Contoh : 157500</string>
                     <constraint firstItem="5jx-Ic-OEB" firstAttribute="leading" secondItem="mhy-zy-ctN" secondAttribute="leading" id="rmj-vD-oMc"/>
                 </constraints>
             </tableViewCellContentView>
-            <animations/>
             <point key="canvasLocation" x="-277" y="738"/>
         </tableViewCell>
         <tableViewCell tag="11" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="4YS-UJ-UwZ" userLabel="nomor rekening Table View Cell">
@@ -850,7 +779,6 @@ Contoh : 157500</string>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nama Pemilik Rekening" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zHw-1e-Vse">
                                 <rect key="frame" x="15" y="0.0" width="153" height="44"/>
-                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="153" id="HfP-b6-huK"/>
                                 </constraints>
@@ -860,7 +788,6 @@ Contoh : 157500</string>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="mFs-RM-vVK">
                                 <rect key="frame" x="176" y="0.0" width="129" height="44"/>
-                                <animations/>
                                 <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -869,7 +796,6 @@ Contoh : 157500</string>
                                 </connections>
                             </textField>
                         </subviews>
-                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="zHw-1e-Vse" secondAttribute="bottom" id="FUK-qp-sVI"/>
@@ -882,7 +808,6 @@ Contoh : 157500</string>
                         </constraints>
                     </view>
                 </subviews>
-                <animations/>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="BkY-S0-wRx" secondAttribute="trailing" id="ArV-Zr-IfR"/>
                     <constraint firstItem="BkY-S0-wRx" firstAttribute="top" secondItem="pSA-8e-aYV" secondAttribute="top" id="DSI-Sj-h52"/>
@@ -890,7 +815,6 @@ Contoh : 157500</string>
                     <constraint firstAttribute="bottom" secondItem="BkY-S0-wRx" secondAttribute="bottom" id="dYo-2k-jWZ"/>
                 </constraints>
             </tableViewCellContentView>
-            <animations/>
             <point key="canvasLocation" x="-277" y="632"/>
         </tableViewCell>
         <tableViewCell tag="13" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="125" id="UIx-Zm-JNY" userLabel="cabang Table View Cell">
@@ -905,7 +829,6 @@ Contoh : 157500</string>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cabang" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NeJ-4f-NxO">
                                 <rect key="frame" x="15" y="0.0" width="138" height="44"/>
-                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="138" id="e6s-2o-0Et"/>
                                 </constraints>
@@ -915,7 +838,6 @@ Contoh : 157500</string>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ike-yp-i7m">
                                 <rect key="frame" x="153" y="0.0" width="152" height="44"/>
-                                <animations/>
                                 <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -924,7 +846,6 @@ Contoh : 157500</string>
                                 </connections>
                             </textField>
                         </subviews>
-                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Ike-yp-i7m" firstAttribute="top" secondItem="LbU-xL-LyC" secondAttribute="top" id="07D-oZ-295"/>
@@ -942,13 +863,11 @@ Contoh : 157500</string>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="he9-Tw-6uE">
                                 <rect key="frame" x="15" y="0.0" width="290" height="80"/>
-                                <animations/>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                 <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <animations/>
                         <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="he9-Tw-6uE" firstAttribute="leading" secondItem="SHu-bH-qcb" secondAttribute="leading" constant="15" id="Eoj-qy-d8J"/>
@@ -958,7 +877,6 @@ Contoh : 157500</string>
                         </constraints>
                     </view>
                 </subviews>
-                <animations/>
                 <constraints>
                     <constraint firstItem="SHu-bH-qcb" firstAttribute="leading" secondItem="7YT-mw-Ap5" secondAttribute="leading" id="7i6-cu-dmp"/>
                     <constraint firstItem="LbU-xL-LyC" firstAttribute="leading" secondItem="7YT-mw-Ap5" secondAttribute="leading" id="BBa-Dt-gmL"/>
@@ -969,7 +887,6 @@ Contoh : 157500</string>
                     <constraint firstAttribute="trailing" secondItem="SHu-bH-qcb" secondAttribute="trailing" id="zpb-eg-tl6"/>
                 </constraints>
             </tableViewCellContentView>
-            <animations/>
             <point key="canvasLocation" x="87" y="338.5"/>
         </tableViewCell>
         <view contentMode="scaleToFill" id="Oij-qP-Jc5" userLabel="FooterView">
@@ -978,14 +895,12 @@ Contoh : 157500</string>
             <subviews>
                 <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="uhP-wS-z1j">
                     <rect key="frame" x="150" y="7" width="20" height="20"/>
-                    <animations/>
                     <constraints>
                         <constraint firstAttribute="height" constant="20" id="EJY-Ea-g9O"/>
                         <constraint firstAttribute="width" constant="20" id="SKY-kn-PvX"/>
                     </constraints>
                 </activityIndicatorView>
             </subviews>
-            <animations/>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstAttribute="centerY" secondItem="uhP-wS-z1j" secondAttribute="centerY" id="3km-3l-I23"/>
@@ -1007,7 +922,6 @@ Contoh : 157500</string>
                         <subviews>
                             <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GWM-uG-1W6">
                                 <rect key="frame" x="73" y="10" width="232" height="50"/>
-                                <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                                 <inset key="titleEdgeInsets" minX="6" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -1022,14 +936,12 @@ Contoh : 157500</string>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_upload_image.png" translatesAutoresizingMaskIntoConstraints="NO" id="ReT-nT-pnO">
                                 <rect key="frame" x="15" y="10" width="50" height="50"/>
-                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="ReT-nT-pnO" secondAttribute="height" multiplier="1:1" id="GJD-o6-g7h"/>
                                 </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W8c-0R-JNv">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="70"/>
-                                <animations/>
                                 <state key="normal">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -1038,7 +950,6 @@ Contoh : 157500</string>
                                 </connections>
                             </button>
                         </subviews>
-                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="GWM-uG-1W6" firstAttribute="leading" secondItem="ReT-nT-pnO" secondAttribute="trailing" constant="8" id="7xf-t2-b2Q"/>
@@ -1060,7 +971,6 @@ Contoh : 157500</string>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hfm-Pn-avB">
                                 <rect key="frame" x="19" y="0.0" width="143" height="30"/>
-                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="143" id="gWY-zF-dyK"/>
                                     <constraint firstAttribute="width" constant="143" id="k9U-Xn-5MN"/>
@@ -1084,7 +994,6 @@ Contoh : 157500</string>
                                 </connections>
                             </button>
                         </subviews>
-                        <animations/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="hfm-Pn-avB" firstAttribute="leading" secondItem="16f-3Y-366" secondAttribute="leading" constant="19" id="1Dq-tC-Vow"/>
@@ -1126,7 +1035,6 @@ Contoh : 157500</string>
                         </variation>
                     </view>
                 </subviews>
-                <animations/>
                 <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                 <constraints>
                     <constraint firstItem="16f-3Y-366" firstAttribute="leading" secondItem="kRi-NL-uTi" secondAttribute="leading" id="7vc-3c-nQA"/>
@@ -1138,7 +1046,6 @@ Contoh : 157500</string>
                     <constraint firstAttribute="trailing" secondItem="16f-3Y-366" secondAttribute="trailing" id="saw-tR-oRy"/>
                 </constraints>
             </tableViewCellContentView>
-            <animations/>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <point key="canvasLocation" x="617" y="1098"/>
         </tableViewCell>
@@ -1151,7 +1058,6 @@ Contoh : 157500</string>
                 <subviews>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pUl-Rf-zTU">
                         <rect key="frame" x="15" y="0.0" width="290" height="40"/>
-                        <animations/>
                         <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
                         <state key="normal" title="Tambah Rekening Bank">
@@ -1163,7 +1069,6 @@ Contoh : 157500</string>
                         </connections>
                     </button>
                 </subviews>
-                <animations/>
                 <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                 <constraints>
                     <constraint firstAttribute="bottom" secondItem="pUl-Rf-zTU" secondAttribute="bottom" constant="-0.5" id="0HQ-IG-w1n"/>
@@ -1172,7 +1077,6 @@ Contoh : 157500</string>
                     <constraint firstItem="pUl-Rf-zTU" firstAttribute="leading" secondItem="6F4-Ao-D2g" secondAttribute="leading" constant="15" id="t7C-Hx-gc4"/>
                 </constraints>
             </tableViewCellContentView>
-            <animations/>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <point key="canvasLocation" x="710" y="320"/>
         </tableViewCell>
@@ -1185,13 +1089,11 @@ Contoh : 157500</string>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Produk yang sudah dipesan dan dikonfirmasikan pembayarannya tidak dapat dibatalkan." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kn2-oN-t3A">
                         <rect key="frame" x="15" y="0.0" width="290" height="47"/>
-                        <animations/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                         <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
-                <animations/>
                 <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                 <constraints>
                     <constraint firstItem="Kn2-oN-t3A" firstAttribute="leading" secondItem="u3a-UI-v2J" secondAttribute="leading" constant="15" id="IBY-IV-UUi"/>
@@ -1200,7 +1102,6 @@ Contoh : 157500</string>
                     <constraint firstItem="Kn2-oN-t3A" firstAttribute="top" secondItem="u3a-UI-v2J" secondAttribute="top" id="kGu-1S-QCp"/>
                 </constraints>
             </tableViewCellContentView>
-            <animations/>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <point key="canvasLocation" x="983" y="784"/>
         </tableViewCell>
@@ -1219,13 +1120,11 @@ Contoh : 157500</string>
                                 <subviews>
                                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" fixedFrame="YES" text="Info Nomor Rekening" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="58g-a2-r3k">
                                         <rect key="frame" x="15" y="15" width="179" height="14"/>
-                                        <animations/>
                                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_info_grey.png" translatesAutoresizingMaskIntoConstraints="NO" id="L7Q-Ig-ce4">
                                         <rect key="frame" x="285" y="12" width="20" height="20"/>
-                                        <animations/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="20" id="9Vv-e8-63R"/>
                                             <constraint firstAttribute="height" constant="20" id="bcX-4K-pal"/>
@@ -1233,7 +1132,6 @@ Contoh : 157500</string>
                                     </imageView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BS9-6M-KHm" userLabel="Horizontal Border">
                                         <rect key="frame" x="0.0" y="43" width="320" height="1"/>
-                                        <animations/>
                                         <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="Z83-H5-5bT"/>
@@ -1241,7 +1139,6 @@ Contoh : 157500</string>
                                     </view>
                                     <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ovt-sD-KoB">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
-                                        <animations/>
                                         <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="15" maxY="0.0"/>
                                         <state key="normal">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -1251,7 +1148,6 @@ Contoh : 157500</string>
                                         </connections>
                                     </button>
                                 </subviews>
-                                <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="BS9-6M-KHm" secondAttribute="trailing" id="3Zq-KJ-qco"/>
@@ -1267,7 +1163,6 @@ Contoh : 157500</string>
                                 </constraints>
                             </view>
                         </subviews>
-                        <animations/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
@@ -1277,7 +1172,6 @@ Contoh : 157500</string>
                         </constraints>
                     </view>
                 </subviews>
-                <animations/>
                 <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                 <constraints>
                     <constraint firstItem="4Xg-i1-I5D" firstAttribute="top" secondItem="bvg-48-Fwv" secondAttribute="top" id="UKP-h4-uy4"/>
@@ -1286,7 +1180,6 @@ Contoh : 157500</string>
                     <constraint firstItem="4Xg-i1-I5D" firstAttribute="leading" secondItem="bvg-48-Fwv" secondAttribute="leading" id="pes-fd-Fox"/>
                 </constraints>
             </tableViewCellContentView>
-            <animations/>
             <point key="canvasLocation" x="887" y="934"/>
         </tableViewCell>
     </objects>

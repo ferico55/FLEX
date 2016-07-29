@@ -11,7 +11,6 @@
 #define API_ACTION_KEY                  @"action"
 #define API_CATALOG_ID_KEY              @"catalog_id"
 
-#define API_FILTER_LOCATION_KEY         @"location"
 #define API_FILTER_CONDITION_KEY        @"condition"
 #define API_FILTER_ORDER_BY_KEY         @"order_by"
 #define API_FILTER_PAGE_KEY             @"page"
@@ -27,8 +26,6 @@
 #define API_CATALOG_NAME_KEY            @"catalog_name"
 #define API_CATALOG_PRICE_KEY           @"catalog_price"
 
-#define API_PRICE_MIN_KEY               @"price_min"
-#define API_PRICE_MAX_KEY               @"price_max"
 
 #define API_CATALOG_DESCRIPTION_KEY     @"catalog_description"
 #define API_CATALOG_KEY_KEY             @"catalog_key"

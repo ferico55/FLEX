@@ -9,14 +9,19 @@
 #import <Foundation/Foundation.h>
 #import "ShopInfoResult.h"
 
+#import "EditShopTypeViewCell.h"
+#import "EditShopImageViewCell.h"
+#import "EditShopDescriptionViewCell.h"
+
 @protocol EditShopDelegate <NSObject>
 
 - (void)didTapShopPhoto;
 - (void)didTapShopStatus;
+- (void)didTapMerchantInfo;
 
 @end
 
-@interface EditShopDataSource : NSObject <UITableViewDataSource, UITableViewDelegate>
+@interface EditShopDataSource : NSObject <UITableViewDataSource, UITableViewDelegate, EditShopTypeViewCellDelegate>
 
 @property (strong, nonatomic) ShopInfoResult *shop;
 @property (weak, nonatomic) id<EditShopDelegate> delegate;

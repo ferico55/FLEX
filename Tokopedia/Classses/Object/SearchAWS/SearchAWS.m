@@ -16,7 +16,7 @@
     
     [mapping addAttributeMappingsFromDictionary:@{@"status" : @"status"}];
     
-    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"result" toKeyPath:@"result" withMapping:[SearchAWSResult mapping]]];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data" toKeyPath:@"data" withMapping:[SearchAWSResult mapping]]];
     
     return mapping;
 }

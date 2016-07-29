@@ -26,7 +26,7 @@ setCompletionBlockWithSuccess:(void (^)(ShopSettings *))success
     RKObjectMapping *mapping = [ShopSettings mapping];
     [networkManager requestWithBaseUrl:baseURL
                                   path:path
-                                method:RKRequestMethodGET
+                                method:RKRequestMethodPOST
                              parameter:parameter
                                mapping:mapping
                              onSuccess:^(RKMappingResult *mappingResult,
@@ -53,20 +53,26 @@ setCompletionBlockWithSuccess:(void (^)(ShopSettings *))success
     RKObjectMapping *mapping = [ShopSettings mapping];
     [networkManager requestWithBaseUrl:baseURL
                                   path:path
-                                method:RKRequestMethodGET
+                                method:RKRequestMethodPOST
                              parameter:parameter
                                mapping:mapping
                              onSuccess:^(RKMappingResult *mappingResult,
                                          RKObjectRequestOperation *operation) {
                                  ShopSettings *response = [mappingResult.dictionary objectForKey:@""];
                                  if (response.result.is_success == 1) {
-                                     success(response);
+                                     if (success) {
+                                         success(response);
+                                     }
                                      [[NSNotificationCenter defaultCenter] postNotificationName:ADD_PRODUCT_POST_NOTIFICATION_NAME object:self];
                                  } else if (response.message_error.count > 0) {
-                                     failure(response.message_error);
+                                     if (failure) {
+                                         failure(response.message_error);
+                                     }
                                  }
                              } onFailure:^(NSError *errorResult) {
-                                 failure(@[errorResult.localizedDescription]);
+                                 if (failure) {
+                                     failure(@[errorResult.localizedDescription]);                                     
+                                 }
                              }];
 }
 
@@ -81,7 +87,7 @@ setCompletionBlockWithSuccess:(void (^)(ShopSettings *response))success
     RKObjectMapping *mapping = [ShopSettings mapping];
     [networkManager requestWithBaseUrl:baseURL
                                   path:path
-                                method:RKRequestMethodGET
+                                method:RKRequestMethodPOST
                              parameter:parameter
                                mapping:mapping
                              onSuccess:^(RKMappingResult *mappingResult,
@@ -95,6 +101,26 @@ setCompletionBlockWithSuccess:(void (^)(ShopSettings *response))success
                              } onFailure:^(NSError *errorResult) {
                                  failure(@[errorResult.localizedDescription]);
                              }];
+}
+
++ (void)requestHistoryProductOnSuccess:(void (^)(HistoryProduct *productHistory))success
+                             OnFailure:(void (^)(NSError *error))failure
+{
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    networkManager.isUsingHmac = YES;
+    
+    [networkManager requestWithBaseUrl:[NSString v4Url]
+                                   path:@"/v4/home/get_recent_view_product.pl"
+                                 method:RKRequestMethodGET
+                              parameter:@{@"action":@"get_recent_view_product"}
+                                mapping:[HistoryProduct mapping]
+                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                  HistoryProduct *response = [successResult.dictionary objectForKey:@""];
+                                  success(response);
+                              }
+                              onFailure:^(NSError *errorResult) {
+                                  failure(errorResult);
+                              }];
 }
 
 @end

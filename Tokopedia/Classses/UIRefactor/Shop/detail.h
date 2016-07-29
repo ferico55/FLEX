@@ -186,7 +186,6 @@ typedef enum
 #define kTKPDDETAIL_APIPAGEKEY @"page"
 #define kTKPDDETAIL_APITOTALPAGEKEY @"total_page"
 #define kTKPDDETAIL_APILIMITKEY @"per_page"
-#define kTKPDDETAIL_APILOCATIONKEY @"location"
 #define kTKPDDETAIL_APIADDRESSKEY @"address"
 #define kTKPDDETAIL_APICONDITIONKEY @"condition"
 #define CStringPictureStatus @"picture_status"
@@ -670,9 +669,6 @@ typedef enum
 #define kTKPDDETAILCATALOG_APIIMAGEPRIMARYKEY @"image_primary"
 #define kTKPDDETAILCATALOG_APIIMAGESRCKEY @"image_src"
 
-#define kTKPDDETAILCATALOG_APIPRICEMINKEY @"price_min"
-#define kTKPDDETAILCATALOG_APIPRICEMAXKEY @"price_max"
-
 #define kTKPDDETAILCATALOG_APIREVIEWIMAGEKEY @"review_from_image"
 #define kTKPDDETAILCATALOG_APIREVIEWRATINGKEY @"review_rating"
 #define kTKPDDETAILCATALOG_APIREVIEWURLKEY @"review_url"
@@ -823,7 +819,7 @@ typedef enum
 #define kTKPD_STATUSSUCCESS @"1"
 #define kTKPDMESSAGE_KEYTOUSERID @"to_user_id"
 #define kTKPDMESSAGE_KEYTO @"message_to"
-#define kTKPDMESSAGE_PLACEHOLDER @"Message"
+#define kTKPDMESSAGE_PLACEHOLDER @"Tulis Pesan"
 
 #define kTKPDTALK_ADDTALK @"add_product_talk"
 #define kTKPDTALK_TALKMESSAGE @"text_comment"

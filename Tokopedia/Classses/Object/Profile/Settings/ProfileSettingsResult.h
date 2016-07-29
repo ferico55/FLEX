@@ -10,7 +10,7 @@
 
 @interface ProfileSettingsResult : NSObject <TKPObjectMapping>
 
-@property (nonatomic) NSInteger is_success;
-@property (nonatomic,strong) NSString *address_id;
+@property (nonatomic, strong) NSString *is_success;
+@property (nonatomic, strong) NSString *address_id;
 
 @end

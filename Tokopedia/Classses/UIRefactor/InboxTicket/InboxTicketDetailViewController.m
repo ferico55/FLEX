@@ -628,6 +628,8 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
             }];
         }];
     }
+    
+    self.tableView.hidden = NO;
 }
 
 - (void)loadTicketsData:(RKMappingResult *)mappingResult {
@@ -689,10 +691,11 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
             [self showView:_buttonsView];
         } else {
             if ([_ticketInformation.ticket_is_replied boolValue]) {
-                [self showView:_reopenTicketAfterReplyView];
+                // Right now disable all open ticket
+                 [self showView:_reopenTicketAfterReplyView];
             } else {
                 // Show reopen ticket
-                [self showView:_reopenTicketView];
+                 [self showView:_reopenTicketView];
             }
         }
     }
@@ -724,8 +727,8 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
                 if ([_ticketInformation.ticket_show_reopen_btn boolValue]) {
                     
                     // Show reopen ticket
-                    [self showView:_reopenTicketView];
-                    
+                     [self showView:_reopenTicketView];
+
                 } else {
                     [self showTicketRating:_ticketInformation];
                 }
@@ -739,7 +742,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
                 
                 if ([_ticketInformation.ticket_show_reopen_btn boolValue]) {
                     // Show reopen ticket
-                    [self showView:_reopenTicketView];
+                     [self showView:_reopenTicketView];
                 } else {
                     [self showTicketRating:_ticketInformation];
                 }
@@ -868,16 +871,11 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
 
 - (IBAction)didTouchUpRatingNoButton:(UIButton *)sender {
     _rating = NO;
-    InboxTicketReplyViewController *controller = [InboxTicketReplyViewController new];
-    controller.inboxTicket = self.inboxTicket;
-    controller.rating = @"2";
-    
-    UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:controller];
-    navigation.navigationBar.translucent = NO;
-    
-    [self.navigationController presentViewController:navigation
-                                            animated:YES
-                                          completion:nil];
+    _yesButton.hidden = YES;
+    _noButton.hidden = YES;
+    _ratingActivityIndicator.hidden = NO;
+    [_ratingActivityIndicator startAnimating];
+    [_ratingNetworkManager doRequest];
 }
 
 - (IBAction)didTouchLastCloseButton:(UIButton *)sender {
@@ -923,14 +921,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
 #pragma mark - Methods
 
 - (void)showView:(UIView *)view {
-    // Hide all buttons
-    self.buttonsView.hidden = YES;
-    self.ratingView.hidden = YES;
-    self.ticketClosedView.hidden = YES;
-    self.reopenTicketView.hidden = YES;
-    self.reopenTicketAfterReplyView.hidden = YES;
-    self.ratingResultView.hidden = YES;
-    self.automaticCloseView.hidden = YES;
+    [self hideAllView];
 
     // Show preferd button and update table bottom margin
     view.hidden = NO;
@@ -939,6 +930,17 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     // Reload table appearance
     [self.tableView reloadData];
     [self.tableView layoutIfNeeded];
+}
+
+- (void)hideAllView {
+    // Hide all buttons
+    self.buttonsView.hidden = YES;
+    self.ratingView.hidden = YES;
+    self.ticketClosedView.hidden = YES;
+    self.reopenTicketView.hidden = YES;
+    self.reopenTicketAfterReplyView.hidden = YES;
+    self.ratingResultView.hidden = YES;
+    self.automaticCloseView.hidden = YES;
 }
 
 - (void)refreshView {

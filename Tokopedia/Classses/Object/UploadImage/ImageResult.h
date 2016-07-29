@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "UploadDataImage.h"
 
 @interface ImageResult : NSObject
 
@@ -18,6 +19,10 @@
 @property (nonatomic, strong) NSString *file_path;
 @property (nonatomic, strong) NSString *file_th;
 @property (nonatomic, strong) NSArray *message_error;
+@property (nonatomic, strong) NSString *src;
+@property (nonatomic, strong) UploadDataImage *image;
+@property (nonatomic, strong) UploadDataImage *upload;
+@property (nonatomic, strong) UploadDataImage *data;
 
 + (RKObjectMapping*)mapping;
 

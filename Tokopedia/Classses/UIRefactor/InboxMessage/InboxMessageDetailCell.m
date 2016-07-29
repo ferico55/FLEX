@@ -10,6 +10,8 @@
 #import "InboxMessageDetailCell.h"
 #import "InboxMessageDetailList.h"
 #import "NavigationHelper.h"
+#import "UIGestureRecognizer+BlocksKit.h"
+#import "TTTAttributedLabel.h"
 
 #define CXTimeLabel 60.0f
 
@@ -42,8 +44,7 @@ static CGFloat messageTextSize = 17.0;
     }
 }
 
-+ (id)newcell
-{
++ (id)newcell {
     NSArray* a = [[NSBundle mainBundle] loadNibNamed:@"messagingCell" owner:nil options:0];
     for (id o in a) {
         if ([o isKindOfClass:[self class]]) {
@@ -54,7 +55,7 @@ static CGFloat messageTextSize = 17.0;
 }
 
 +(CGSize)messageSize:(NSString*)message {
-    return [message sizeWithFont:[UIFont fontWithName:@"GothamBook" size:messageTextSize] constrainedToSize:CGSizeMake([InboxMessageDetailCell maxTextWidth], CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
+    return [message sizeWithFont:[UIFont fontWithName:@"GothamBook" size:20.0] constrainedToSize:CGSizeMake([InboxMessageDetailCell maxTextWidth], CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
 }
 
 +(UIImage*)balloonImage:(BOOL)sent isSelected:(BOOL)selected {
@@ -81,11 +82,11 @@ static CGFloat messageTextSize = 17.0;
         _viewLabelUser = [[ViewLabelUser alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width-CXTimeLabel, CHeightUserLabel)];
         [_viewLabelUser setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"GothamBook" size:12.0f]];
         messageView = [[UIView alloc] initWithFrame:CGRectZero];
-        messageView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+        messageView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
         
         balloonView = [[UIImageView alloc] initWithFrame:CGRectZero];
         
-        messageLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        messageLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectZero];
         timeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         avatarImageView = [UIImageView circleimageview:[[UIImageView alloc] initWithImage:nil]];
 
@@ -104,8 +105,8 @@ static CGFloat messageTextSize = 17.0;
         self.timeLabel.backgroundColor = [UIColor clearColor];
         
         /*...and adds them to the view.*/
-        [self.messageView addSubview: self.balloonView];
-        [self.messageView addSubview: self.messageLabel];
+        [self.contentView addSubview: self.balloonView];
+        [self.contentView addSubview: self.messageLabel];
         
         [self.balloonView addSubview:_viewLabelUser];
         [self.contentView addSubview: self.timeLabel];
@@ -113,8 +114,8 @@ static CGFloat messageTextSize = 17.0;
         [self.contentView addSubview: self.avatarImageView];
         
         self.contentView.backgroundColor = [UIColor colorWithRed:(231.0/255.0) green:(231.0/255.0) blue:(231.0/255.0) alpha:1.0];
-//        self.contentView.backgroundColor = [UIColor greenColor];
         [self.contentView setFrame:CGRectMake(self.contentView.frame.origin.x, self.contentView.frame.origin.y, self.contentView.frame.size.width , 500)];
+        
         
         /*...and a gesture-recognizer, for LongPressure is added to the view.*/
         UILongPressGestureRecognizer *recognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
@@ -125,8 +126,7 @@ static CGFloat messageTextSize = 17.0;
     return self;
 }
 
-- (float)calculateSender:(UIFont *)font withColor:(UIColor *)color withSize:(CGSize)size withText:(NSString *)strText
-{
+- (float)calculateSender:(UIFont *)font withColor:(UIColor *)color withSize:(CGSize)size withText:(NSString *)strText {
     UILabel *tempLabel = [[UILabel alloc] init];
     tempLabel.textColor = color;
     tempLabel.font = font;
@@ -172,7 +172,18 @@ static CGFloat messageTextSize = 17.0;
         
         ballonViewFrame = CGRectMake(55.0f, timeLabelFrame.size.height, textSize.width + 2*textMarginHorizontal, textSize.height + 2*textMarginVertical + 5.0f + CHeightUserLabel);
         
-        if(ballonViewFrame.size.width < (_viewLabelUser.getLblText.frame.origin.x+widthUserLabel+(2*textMarginHorizontal))) {
+        // fixing bug ukuran balloon tidak pas, hanya terjadi di iOS 7
+        if ([[[UIDevice currentDevice] systemVersion] floatValue] < 8) {
+            CGRect ballonViewFrameTemp = _viewLabelUser.getLblText.frame;
+            if ([_message.user_label isEqualToString:@"Administrator"]) {
+                ballonViewFrameTemp.origin.x = 90;
+            } else {
+                ballonViewFrameTemp.origin.x = 71;
+            }
+            _viewLabelUser.getLblText.frame = ballonViewFrameTemp;
+        }
+        
+        if(ballonViewFrame.size.width < (_viewLabelUser.getLblText.frame.origin.x + widthUserLabel + (2 * textMarginHorizontal))) {
             ballonViewFrame.size.width = (_viewLabelUser.getLblText.frame.origin.x+widthUserLabel+(2*textMarginHorizontal));
         }
         
@@ -189,6 +200,7 @@ static CGFloat messageTextSize = 17.0;
     }
     
     self.viewLabelUser.frame = rectViewLabelUser;
+    self.viewLabelUser.text = _message.user_name;
     self.balloonView.image = [InboxMessageDetailCell balloonImage:self.sent isSelected:self.selected];
     
     /*Sets the pre-initialized frames  for the balloonView and messageView.*/
@@ -210,33 +222,7 @@ static CGFloat messageTextSize = 17.0;
     }
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    /*Selecting a UIMessagingCell will cause its subviews to be re-layouted. This process will not be animated! So handing animated = YES to this method will do nothing.*/
-    [super setSelected:selected animated:NO];
-    
-    [self setNeedsLayout];
-    
-    /*Furthermore, the cell becomes first responder when selected.*/
-    if (selected == YES) {
-        [self becomeFirstResponder];
-    } else {
-        [self resignFirstResponder];
-    }
-}
-
--(void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
-    
-}
-
--(void)setEditing:(BOOL)editing animated:(BOOL)animated {
-    
-}
-
-#pragma mark -
-#pragma mark UIGestureRecognizer-Handling
-
 - (void)handleLongPress:(UILongPressGestureRecognizer *)longPressRecognizer {
-    /*When a LongPress is recognized, the copy-menu will be displayed.*/
     if (longPressRecognizer.state != UIGestureRecognizerStateBegan) {
         return;
     }
@@ -247,17 +233,14 @@ static CGFloat messageTextSize = 17.0;
     
     UIMenuController * menu = [UIMenuController sharedMenuController];
     [menu setTargetRect:self.balloonView.frame inView:self];
-    
     [menu setMenuVisible:YES animated:YES];
 }
 
 -(BOOL)canBecomeFirstResponder {
-    /*This cell can become first-responder*/
     return YES;
 }
 
 -(BOOL)canPerformAction:(SEL)action withSender:(id)sender{
-    /*Allows the copy-Action on this cell.*/
     if (action == @selector(copy:)) {
         return YES;
     } else {
@@ -265,35 +248,50 @@ static CGFloat messageTextSize = 17.0;
     }
 }
 
-- (NSString *)stringReplaceAhrefWithUrl:(NSString *)string
-{
-    NSString *leadingTrailingWhiteSpacesPattern = @"<a[^>]+href=\"(.*?)\"[^>]*>.*?</a>";
 
-    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:leadingTrailingWhiteSpacesPattern options:NSRegularExpressionCaseInsensitive error:NULL];
+- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url  {
+    NSString* theRealUrl = [NSString stringWithFormat:@"https://tkp.me/r?url=%@", [url.absoluteString stringByReplacingOccurrencesOfString:@"*" withString:@"."]];
+    
+    self.onTapMessageWithUrl([NSURL URLWithString:[theRealUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]);
+}
 
-    NSRange stringRange = NSMakeRange(0, string.length);
-    NSString *trimmedString = [regex stringByReplacingMatchesInString:string options:NSMatchingReportProgress range:stringRange withTemplate:@"$1"];
-
-    return trimmedString;
+- (NSAttributedString*)attributedMessage:(InboxMessageDetailList*)message {
+    BOOL isLoggedInUser = [message.message_action isEqualToString:@"1"];
+    
+    UIFont *font = [UIFont fontWithName:@"GothamBook" size:14];
+    
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    style.lineSpacing = 4.0;
+    style.alignment = NSTextAlignmentLeft;
+    
+    NSDictionary *attributes = @{NSForegroundColorAttributeName: isLoggedInUser ? [UIColor whiteColor] : [UIColor blackColor],
+                                 NSFontAttributeName: font,
+                                 NSParagraphStyleAttributeName: style,
+                                 };
+    NSString *string = [NSString extracTKPMEUrl:message.message_reply];
+    NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:string attributes:attributes];
+    
+    return attributedString;
 }
 
 - (void)setMessage:(InboxMessageDetailList *)message {
     _message = message;
 
     InboxMessageDetailCell *cell = self;
-
-    UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
-    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 4.0;
-    style.alignment = NSTextAlignmentLeft;
-    NSDictionary *attributes = @{NSForegroundColorAttributeName: [UIColor whiteColor],
-            NSFontAttributeName: font,
-            NSParagraphStyleAttributeName: style,
-    };
-    NSString *string = message.message_reply;
-    string = [self stringReplaceAhrefWithUrl:string];
-    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:string attributes:attributes];
-    cell.messageLabel.attributedText = attributedText;
+    
+    
+    NSAttributedString* attributedString = [self attributedMessage:message];
+    self.messageLabel.enabledTextCheckingTypes = NSTextCheckingTypeLink;
+    self.messageLabel.attributedText = attributedString;
+    self.messageLabel.delegate = self;
+    
+    NSDataDetector *linkDetector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:nil];
+    NSArray *matches = [linkDetector matchesInString:attributedString.string options:0 range:NSMakeRange(0, [attributedString length])];
+    
+    for(NSTextCheckingResult* match in matches) {
+        [self.messageLabel addLinkToURL:match.URL withRange:match.range];
+    }
+    
     UITapGestureRecognizer *tapUser = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapUser)];
     [cell.avatarImageView addGestureRecognizer:tapUser];
     [cell.avatarImageView setUserInteractionEnabled:[NavigationHelper shouldDoDeepNavigation]];
@@ -328,6 +326,7 @@ static CGFloat messageTextSize = 17.0;
                                                  } failure:nil];
         }
     }
+    
 }
 
 -(void)copy:(id)sender {

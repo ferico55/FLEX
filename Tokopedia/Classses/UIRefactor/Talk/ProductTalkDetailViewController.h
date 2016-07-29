@@ -21,6 +21,7 @@
 @property (strong, nonatomic) TalkList *talk;
 @property (strong, nonatomic) NSIndexPath *indexPath;
 @property (nonatomic) BOOL enableDeepNavigation;
+@property (nonatomic) BOOL fetchDataAtBeginning;
 
 -(void)replaceDataSelected:(NSDictionary *)data;
 -(id) initByMarkingOpenedTalkAsRead:(BOOL) marksOpenedTalkAsRead;

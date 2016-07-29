@@ -89,7 +89,6 @@ NoResultDelegate
                                   desc:@""
                               btnTitle:@"Halaman Bantuan"];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAddTicket:) name:@"didAddTicket" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRemoveTicket:) name:@"didRemoveTicket" object:nil];
 }
 
 #pragma mark - Table view data source
@@ -185,8 +184,6 @@ NoResultDelegate
     } else if ([self.delegate respondsToSelector:@selector(pushViewController:)]) {
         [self.delegate pushViewController:controller];
     }
-    
-    
 }
 
 #pragma mark - Tokopedia network manager

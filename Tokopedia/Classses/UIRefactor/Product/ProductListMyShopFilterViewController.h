@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "EtalaseList.h"
+#import "Breadcrumb.h"
 
 @protocol ProductListMyShopFilterDelegate <NSObject>
 

@@ -10,4 +10,10 @@
 
 @implementation OrderCustomer
 
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[self class]];
+    [mapping addAttributeMappingsFromArray:@[@"customer_url", @"customer_id", @"customer_name", @"customer_image"]];
+    return mapping;
+}
+
 @end

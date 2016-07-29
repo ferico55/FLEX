@@ -18,7 +18,7 @@
 #import "WebViewController.h"
 
 #import "TxOrderTabViewController.h"
-#import "AppsFlyerTracker.h"
+#import <AppsFlyer/AppsFlyer.h>
 #import "GalleryViewController.h"
 
 #import "Localytics.h"
@@ -120,7 +120,8 @@
     [_tableView reloadData];
     
     TransactionBuyResult *result = [_data objectForKey:DATA_CART_RESULT_KEY];
-    [TPAnalytics trackPurchaseID:result.transaction.payment_id carts:result.transaction.carts];
+    NSString *voucherCode = [_data objectForKey:API_VOUCHER_CODE_KEY];
+    [TPAnalytics trackPurchaseID:result.transaction.payment_id carts:result.transaction.carts coupon:voucherCode];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -647,7 +648,7 @@
     [[AppsFlyerTracker sharedTracker] trackEvent:AFEventPurchase withValues:@{
                                                                               AFEventParamRevenue : _cartBuy.transaction.grand_total_before_fee,
                                                                               }];
-    
+        
     NSString *paymentMethod = _cartBuy.transaction.gateway_name;
     NSCharacterSet *notAllowedChars = [NSCharacterSet characterSetWithCharactersInString:@"Rp."];
     NSString *paymentTotal = [[_cartBuy.transaction.grand_total_before_fee componentsSeparatedByCharactersInSet:notAllowedChars] componentsJoinedByString:@""];

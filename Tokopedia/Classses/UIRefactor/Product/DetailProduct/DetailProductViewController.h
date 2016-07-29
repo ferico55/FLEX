@@ -11,7 +11,7 @@
 @interface DetailProductViewController : GAITrackedViewController
 {
     IBOutlet UIView *viewTableContentHeader, *viewContentWishList, *viewContentUlasanAndDiskusi, *viewContentWarehouse;
-    IBOutlet UIButton *btnWishList, *btnShare, *btnReputasi, *btnKecepatan, *btnPriceAlert;
+    IBOutlet UIButton *btnWishList, *btnShare, *btnReputasi, *btnKecepatan, *btnPriceAlert, *btnReport;
     IBOutlet UIActivityIndicatorView *headerActivityIndicator, *merchantActivityIndicator;
     IBOutlet UIPageControl *otherProductPageControl;
     IBOutlet UILabel *lblDescTokoTutup, *lblOtherProductTitle, *lblTitleWarehouse, *lblDescWarehouse;

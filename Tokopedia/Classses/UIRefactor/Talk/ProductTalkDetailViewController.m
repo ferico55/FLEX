@@ -25,6 +25,7 @@
 #import "TalkList.h"
 #import "stringrestkit.h"
 #import "string_inbox_talk.h"
+#import "WebViewController.h"
 
 #import <UITableView+FDTemplateLayoutCell/UITableView+FDTemplateLayoutCell.h>
 
@@ -204,7 +205,9 @@
     _table.tableFooterView = _footer;
 
     _data = [self generateData];
-    [self fetchTalkComments];
+    if([self shouldFetchDataAtBeginning]){
+        [self fetchTalkComments];
+    }
 }
 
 - (void)viewDidLayoutSubviews {
@@ -273,12 +276,25 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     GeneralTalkCommentCell* cell = [tableView dequeueReusableCellWithIdentifier:kTKPDGENERALTALKCOMMENTCELL_IDENTIFIER];
+    __weak __typeof(self) weakSelf = self;
     if (cell == nil) {
         cell = [GeneralTalkCommentCell newcell];
     }
     
     cell.delegate = self;
     cell.del = self;
+    cell.onTapTalkWithUrl = ^(NSURL* url){
+        WebViewController *controller = [[WebViewController alloc] init];
+        controller.strURL = url.absoluteString;
+        controller.strTitle = @"Mengarahkan...";
+        controller.onTapLinkWithUrl = ^(NSURL* url) {
+            if([url.absoluteString isEqualToString:@"https://www.tokopedia.com/"]) {
+                [weakSelf.navigationController popViewControllerAnimated:YES];
+            }
+        };
+        
+        [weakSelf.navigationController pushViewController:controller animated:YES];
+    };
 
     TalkCommentList *list = _list[indexPath.row];
 
@@ -301,6 +317,11 @@
 }
 
 #pragma mark - Methods
+
+- (BOOL)shouldFetchDataAtBeginning{
+    return (_talk != nil);
+}
+
 - (void)initPopUp:(NSString *)strText withSender:(id)sender withRangeDesc:(NSRange)range
 {
     UILabel *lblShow = [[UILabel alloc] init];
@@ -356,7 +377,7 @@
                ) {
                 [_talkInputView setHidden:NO];
             }
-            [_sendButton setEnabled:NO];
+            [self adjustSendButtonAvailability];
         } else {
             [_talkInputView setHidden:YES];
         }
@@ -506,9 +527,7 @@
         comment.comment_message = _growingtextview.text;
 
         if ([_auth objectForKey:@"shop_id"]) {
-            //TODO: the UserAuthenticationManager actually returns shop id as NSNumber*,
-            //so we need to get the string value of it. need to fix data type problem
-            NSString* userShopId = [((NSNumber*)[_userManager getShopId]) stringValue];
+            NSString* userShopId = [_userManager getShopId];
 
             if ([[_data objectForKey:@"talk_shop_id"] isEqualToString:userShopId]) {
                 comment.comment_shop_name = [_auth objectForKey:@"shop_name"];
@@ -608,7 +627,7 @@
 
 - (void)putSendCommentBack {
     _growingtextview.text = _savedComment;
-
+    [self adjustSendButtonAvailability];
     [_table beginUpdates];
     [_table deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:_list.count - 1 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
     [_list removeLastObject];
@@ -708,26 +727,27 @@
         [_datainput setObject:list.comment_id forKey:@"comment_id"];
         [_datainput setObject:[_data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTIDKEY] forKey:@"product_id"];
         
-        if(![[_userManager getUserId] isEqualToString:list.comment_user_id] && ![_userManager isMyShopWithShopId:[_data objectForKey:@"talk_shop_id"]]) {
-            MGSwipeButton * report = [MGSwipeButton buttonWithTitle:@"Laporkan" backgroundColor:[UIColor colorWithRed:0 green:122/255.0 blue:255.05 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
-                _reportAction = @"report_comment_talk";
-                ReportViewController *reportController = [ReportViewController new];
-
-                reportController.onFinishWritingReport = ^(NSString *message) {
-                    [weakSelf reportCommentWithMessage:message];
-                };
-
-                [weakSelf.navigationController pushViewController:reportController animated:YES];
-                return YES;
-            }];
-            return @[report];
-        } else {
+        if([[_userManager getUserId] isEqualToString:list.comment_user_id]){
             MGSwipeButton * trash = [MGSwipeButton buttonWithTitle:@"Hapus" backgroundColor:[UIColor colorWithRed:255/255 green:59/255.0 blue:48/255.0 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
                 [weakSelf deleteCommentTalkAtIndexPath:indexPath];
                 return YES;
             }];
             
             return @[trash];
+        }else{
+            MGSwipeButton * report = [MGSwipeButton buttonWithTitle:@"Laporkan" backgroundColor:[UIColor colorWithRed:0 green:122/255.0 blue:255.05 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
+                _reportAction = @"report_comment_talk";
+                ReportViewController *reportController = [ReportViewController new];
+                
+                reportController.onFinishWritingReport = ^(NSString *message) {
+                    [weakSelf reportCommentWithMessage:message];
+                };
+                
+                [weakSelf.navigationController pushViewController:reportController animated:YES];
+                return YES;
+            }];
+            return @[report];
+
         }
         
     }
@@ -1007,7 +1027,7 @@
 - (void)adjustSendButtonAvailability {
     NSString *text = [_growingtextview.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 
-    _sendButton.enabled = text.length > 5;
+    _sendButton.enabled = text.length >= 5;
 }
 
 - (void)setTalk:(TalkList *)list {

@@ -11,6 +11,7 @@
 #import "NSString+MD5.h"
 #import "activation.h"
 #import "MainViewController.h"
+#import "Tokopedia-swift.h"
 
 @implementation UserAuthentificationManager {
     NSMutableDictionary *_auth;
@@ -74,7 +75,15 @@
 }
 
 - (NSString *)getShopId {
-    return [_auth objectForKey:@"shop_id"]?:@"0";
+    if ([_auth objectForKey:@"shop_id"]) {
+        if ([[_auth objectForKey:@"shop_id"] isKindOfClass:[NSNumber class]]) {
+            return [NSString stringWithFormat:@"%@", [_auth objectForKey:@"shop_id"]];
+        } else {
+            return [_auth objectForKey:@"shop_id"];
+        }        
+    } else {
+        return @"0";
+    }
 }
 
 - (NSString *)getShopName {
@@ -88,12 +97,16 @@
     return [NSString stringWithFormat: @"%@", shopHasTerms]?:@"";
 }
 
--(Breadcrumb*)getLastProductAddCategory
+-(CategoryDetail *)getLastProductAddCategory
 {
-    Breadcrumb *category = [Breadcrumb new];
-    category.department_id = [_auth objectForKey:LAST_CATEGORY_VALUE]?:@"";
-    category.department_name = [_auth objectForKey:LAST_CATEGORY_NAME]?:@"";
-    return category;
+    if ([_auth objectForKey:LAST_CATEGORY_VALUE]) {
+        CategoryDetail *category = [[CategoryDetail alloc] init];
+        category.categoryId = [NSString stringWithFormat:@"%@", [_auth objectForKey:LAST_CATEGORY_VALUE]];
+        category.name = [NSString stringWithFormat:@"%@", [_auth objectForKey:LAST_CATEGORY_NAME]];
+        return category;
+    } else {
+        return nil;
+    }
 }
 
 - (NSDictionary *)autoAddParameter:(id)params
@@ -216,6 +229,11 @@
     }
 }
 
+- (BOOL)isUserPhoneVerified{
+    NSString* msisdn_is_verified = [NSString stringWithFormat:@"%@", [_auth objectForKey:@"msisdn_is_verified"]];
+    return [msisdn_is_verified isEqualToString:@"1"];
+}
+
 + (void)ensureDeviceIdExistence {
     // This is done to prevent users from getting kicked after login
     // that is caused by some devices that don't have device tokens.
@@ -223,11 +241,11 @@
     UserAuthentificationManager* authManager = [UserAuthentificationManager new];
     NSString* deviceId = [authManager getMyDeviceToken];
     
-    if ([@"0" isEqualToString:deviceId]) {
+    if ([@"0" isEqualToString:deviceId] || [deviceId isEqualToString:@"SIMULATORDUMMY"]) {
         deviceId = [[NSUUID UUID] UUIDString];
+        
+        [[TKPDSecureStorage standardKeyChains] setKeychainWithValue:deviceId withKey:kTKPD_DEVICETOKENKEY];
     }
-    
-    [[TKPDSecureStorage standardKeyChains] setKeychainWithValue:deviceId withKey:kTKPD_DEVICETOKENKEY];
 }
 
 @end

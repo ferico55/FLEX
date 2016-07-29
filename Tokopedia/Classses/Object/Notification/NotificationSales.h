@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NotificationSales : NSObject
+@interface NotificationSales : NSObject <TKPObjectMapping>
 
 @property (strong, nonatomic) NSString *sales_new_order;
 @property (strong, nonatomic) NSString *sales_shipping_confirm;

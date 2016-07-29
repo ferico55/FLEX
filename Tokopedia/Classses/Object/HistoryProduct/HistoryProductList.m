@@ -19,6 +19,14 @@
     return [_shop_name kv_decodeHTMLCharacterEntities];
 }
 
+- (BOOL)is_product_wholesale {
+    return _product_wholesale == 1? YES : NO;
+}
+
+- (BOOL)is_product_preorder {
+    return _product_preorder == 1? YES : NO;
+}
+
 - (ProductModelView *)viewModel {
     if(_viewModel == nil) {
         ProductModelView *viewModel = [[ProductModelView alloc] init];
@@ -28,11 +36,37 @@
         [viewModel setProductThumbUrl:self.product_image];
         [viewModel setIsGoldShopProduct:[self.shop_gold_status isEqualToString:@"1"]];
         [viewModel setLuckyMerchantImageURL:self.shop_lucky];
-        
+        [viewModel setIsProductPreorder:self.is_product_preorder];
+        [viewModel setIsWholesale:self.is_product_wholesale];
+        [viewModel setShopLocation:self.shop_location];
+        [viewModel setBadges:_badges];
         _viewModel = viewModel;
     }
     
     return _viewModel;
+}
+
++ (NSDictionary *)attributeMappingDictionary{
+    NSArray *keys = @[@"product_price",
+                      @"product_id",
+                      @"shop_gold_status",
+                      @"shop_location",
+                      @"shop_name",
+                      @"product_image",
+                      @"product_name",
+                      @"shop_lucky",
+                      @"product_preorder",
+                      @"product_wholesale"];
+                      
+    return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
+}
+
++ (RKObjectMapping *)mapping{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    
+    [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+    
+    return mapping;
 }
 
 @end

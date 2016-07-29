@@ -26,4 +26,8 @@
     return mapping;
 }
 
+- (NSString *)status {
+    return [_status kv_decodeHTMLCharacterEntities];
+}
+
 @end

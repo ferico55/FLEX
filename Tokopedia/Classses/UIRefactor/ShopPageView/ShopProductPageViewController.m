@@ -11,7 +11,6 @@
 #import "MyShopNoteDetailViewController.h"
 #import "GeneralProductCell.h"
 
-#import "Notes.h"
 #import "GeneralAction.h"
 #import "EtalaseList.h"
 #import "SearchItem.h"
@@ -270,7 +269,7 @@ EtalaseViewControllerDelegate
     [_collectionView addSubview:_refreshControl];
     
     [_flowLayout setFooterReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 50)];
-    [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
+//    [_flowLayout setSectionInset:UIEdgeInsetsMake(10, 10, 0, 10)];
     [_collectionView setCollectionViewLayout:_flowLayout];
     [_collectionView setAlwaysBounceVertical:YES];
     
@@ -405,14 +404,20 @@ EtalaseViewControllerDelegate
         cell = (ProductSingleViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
         [(ProductSingleViewCell*)cell setViewModel:list.viewModel];
         ((ProductSingleViewCell*)cell).infoContraint.constant = 0;
+        ((ProductSingleViewCell*)cell).locationIcon.hidden = YES;
+        ((ProductSingleViewCell*)cell).productShop.hidden = YES;
     } else if (self.cellType == UITableViewCellTypeTwoColumn) {
         cellid = @"ProductCellIdentifier";
         cell = (ProductCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
+        
         [(ProductCell*)cell setViewModel:list.viewModel];
+        ((ProductCell*)cell).locationImage.hidden = YES;
     } else {
         cellid = @"ProductThumbCellIdentifier";
         cell = (ProductThumbCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
         [(ProductThumbCell*)cell setViewModel:list.viewModel];
+        ((ProductThumbCell*)cell).locationIcon.hidden = YES;
+        ((ProductThumbCell*)cell).shopName.hidden = YES;
     }
     
     //next page if already last cell
@@ -442,13 +447,18 @@ EtalaseViewControllerDelegate
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-   return [ProductCellSize sizeWithType:self.cellType];
+    if(_cellType == UITableViewCellTypeTwoColumn) {
+        CGSize normalSize = [ProductCellSize sizeWithType:self.cellType];
+        return CGSizeMake(normalSize.width, normalSize.height - 30);
+    } else {
+        return [ProductCellSize sizeWithType:self.cellType];
+    }
 }
 
-- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
-    
-    return UIEdgeInsetsMake(10, 10, 10, 10);
-}
+//- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
+//    
+//    return UIEdgeInsetsMake(10, 10, 10, 10);
+//}
 
 
 #pragma mark - Refresh View

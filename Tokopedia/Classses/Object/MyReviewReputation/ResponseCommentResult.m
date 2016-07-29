@@ -28,7 +28,7 @@
     
     [responseCommentResultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"product_owner"
                                                                                                  toKeyPath:@"product_owner"
-                                                                                               withMapping:[ProductOwner mapping]]];
+                                                                                               withMapping:[ProductOwner mappingForInbox]]];
     
     [responseCommentResultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"review_response"
                                                                                                  toKeyPath:@"review_response"

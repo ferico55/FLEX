@@ -16,8 +16,8 @@
 #import "AlertDatePickerView.h"
 #import "TKPDAlert.h"
 #import "WebViewController.h"
-#import "Localytics.h"
-#import "AppsFlyerTracker.h"
+#import "TPLocalytics.h"
+#import <AppsFlyer/AppsFlyer.h>
 #import "ActivationRequest.h"
 
 @interface CreatePasswordViewController ()
@@ -662,7 +662,7 @@
                                                     [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification
                                                                                                         object:nil];
                                                     
-                                                    [Localytics setValue:@"Yes" forProfileAttribute:@"Is Login"];
+                                                    [TPLocalytics trackLoginStatus:YES];
                                                     
                                                     NSDictionary *trackerValues;
                                                     if (_gidGoogleUser) {
@@ -682,18 +682,20 @@
                                                                                                                    delegate:self];
                                                     [alert show];
                                                 }
-                                            }
-                                            else
-                                            {
+                                            } else {
                                                 StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Sign in gagal silahkan coba lagi."]
                                                                                                                delegate:self];
                                                 [alert show];
+                                                
+                                                [TPLocalytics trackLoginStatus:NO];
                                             }
                                         }
                                         onFailure:^(NSError *error) {
                                             StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Sign in gagal silahkan coba lagi."]
                                                                                                            delegate:self];
                                             [alert show];
+                                            
+                                            [TPLocalytics trackLoginStatus:NO];
                                         }];
 }
 
@@ -865,7 +867,7 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification
                                                                 object:nil];
             
-            [Localytics setValue:@"Yes" forProfileAttribute:@"Is Login"];
+            [TPLocalytics trackLoginStatus:YES];
             
             NSDictionary *trackerValues;
             if (_gidGoogleUser) {
@@ -885,12 +887,12 @@
                                                                            delegate:self];
             [alert show];
         }
-    }
-    else
-    {
+    } else {
         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Sign in gagal silahkan coba lagi."]
                                                                        delegate:self];
         [alert show];
+        
+        [TPLocalytics trackLoginStatus:YES];
     }
 }
 
@@ -898,6 +900,8 @@
     StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Sign in gagal silahkan coba lagi."]
                                                                    delegate:self];
     [alert show];
+    
+    [TPLocalytics trackLoginStatus:YES];
 }
 
 @end

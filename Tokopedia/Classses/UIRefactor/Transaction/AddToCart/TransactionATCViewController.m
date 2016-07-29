@@ -19,9 +19,11 @@
 #import "PlacePickerViewController.h"
 #import "NavigateViewController.h"
 #import "RequestATC.h"
-#import "ATCPushLocalytics.h"
+#import "TPLocalytics.h"
 
 #import "NSNumberFormatter+IDRFormater.h"
+
+#import "Tokopedia-Swift.h"
 
 @import GoogleMaps;
 
@@ -76,6 +78,9 @@ typedef enum
     TransactionATCFormResult *_ATCForm;
     
     NSArray<RateAttributes*> *_shipments;
+    
+    DelayedActionManager *requestPriceDelayedActionManager;
+    DelayedActionManager *quantityDelayedActionManager;
 }
 
 @property (weak, nonatomic) IBOutlet UIButton *pinLocationNameButton;
@@ -126,8 +131,11 @@ typedef enum
     _tableViewShipmentCell = [NSArray sortViewsWithTagInArray:_tableViewShipmentCell];
     _isnodata = YES;
     
-    [self setPlaceholder:@"Contoh : Warna hitam" textView:_remarkTextView];
+    [self setPlaceholder:@"Contoh: Warna Putih/Ukuran XL/Edisi ke-2" textView:_remarkTextView];
     _remarkTextView.delegate = self;
+    
+    requestPriceDelayedActionManager = [DelayedActionManager new];
+    quantityDelayedActionManager = [DelayedActionManager new];
     
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:nil];
     [self.navigationItem setBackBarButtonItem:barButtonItem];
@@ -158,21 +166,38 @@ typedef enum
     
     _tableView.estimatedRowHeight = 100.0;
     _tableView.rowHeight = UITableViewAutomaticDimension;
-    
-    [_messageZeroShipmentLabel setCustomAttributedText:_messageZeroShipmentLabel.text];
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    //set up placeholder label size
+    UILabel *placeholderLabel = [_remarkTextView viewWithTag:1];
+    placeholderLabel.frame = CGRectMake(5.2, 8, _remarkTextView.frame.size.width, 40);
+    [placeholderLabel sizeToFit];
 }
 
 -(void)refreshView{
-    [self requestFormWithAddressID:@""];
+    if (_isnodata)
+    {
+        [self requestFormWithAddressID:@""];
+    }
+    else
+    {
+        _isFinishRequesting = NO;
+        [self alertAndResetIfQtyTextFieldBelowMin];
+        [self doCalculate];
+        [self requestRate];
+    }
 }
 
 - (void)setPlaceholder:(NSString *)placeholderText textView:(UITextView*)textView
 {
-    UILabel *placeholderLabel = [[UILabel alloc] initWithFrame:CGRectMake(5.2, -6, textView.frame.size.width, 40)];
+    UILabel *placeholderLabel = [UILabel new];
     placeholderLabel.text = placeholderText;
-    placeholderLabel.font = [UIFont fontWithName:textView.font.fontName size:textView.font.pointSize];
+    placeholderLabel.font = textView.font;
     placeholderLabel.textColor = [[UIColor blackColor] colorWithAlphaComponent:0.25];
     placeholderLabel.tag = 1;
+    placeholderLabel.numberOfLines = 0;
     [textView addSubview:placeholderLabel];
 }
 
@@ -206,26 +231,39 @@ typedef enum
     
     [self adjustViewIsLoading:YES];
     AddressFormList *editedAddress = _selectedAddress;
-    editedAddress.latitude = [[NSNumber numberWithDouble:latitude] stringValue];;
-    editedAddress.longitude = [[NSNumber numberWithDouble:longitude] stringValue];;
+    editedAddress.latitude = [[NSNumber numberWithDouble:latitude] stringValue];
+    editedAddress.longitude = [[NSNumber numberWithDouble:longitude] stringValue];
     
     [RequestEditAddress fetchEditAddress:_selectedAddress
-                              isFromCart:@"0"
+                              isFromCart:@"1"
                                  success:^(ProfileSettingsResult *data) {
                                      
-                                     TKPAddressStreet *tkpAddressStreet = [TKPAddressStreet new];
-                                     NSString *addressStreet = [tkpAddressStreet getStreetAddress:address.thoroughfare];
-                                     
-                                     _pinLocationNameButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-                                     [_pinLocationNameButton setCustomAttributedText:[addressStreet isEqualToString:@""]?@"Tandai lokasi Anda":addressStreet];
-                                     _selectedAddress.longitude = [[NSNumber numberWithDouble:longitude] stringValue];
-                                     _selectedAddress.latitude = [[NSNumber numberWithDouble:latitude]stringValue];
-                                     
-                                     [self adjustViewIsLoading:NO];
+                                     [self successEditAddress:address longitude:longitude latitude:latitude result:data];
                                      
                                  } failure:^(NSError *error) {
-                                     [self adjustViewIsLoading:NO];
+                                     
+                                     [self failedEditAddress:error];
+                                 
                                  }];
+}
+
+-(void)successEditAddress:(GMSAddress *)address longitude:(double)longitude latitude:(double)latitude result:(ProfileSettingsResult*)data{
+    
+    TKPAddressStreet *tkpAddressStreet = [TKPAddressStreet new];
+    NSString *addressStreet = [tkpAddressStreet getStreetAddress:address.thoroughfare];
+    
+    _pinLocationNameButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    [_pinLocationNameButton setCustomAttributedText:[addressStreet isEqualToString:@""]?@"Tandai lokasi Anda":addressStreet];
+    _selectedAddress.longitude = [[NSNumber numberWithDouble:longitude] stringValue];
+    _selectedAddress.latitude = [[NSNumber numberWithDouble:latitude]stringValue];
+    
+    [self requestRate];
+    
+    [self adjustViewIsLoading:NO];
+}
+
+-(void)failedEditAddress:(NSError*)error{
+    [self adjustViewIsLoading:NO];
 }
 
 #pragma mark - View Action
@@ -243,26 +281,37 @@ typedef enum
                          addressID:addressID
                            success:^(TransactionATCFormResult *data) {
                                
-                               _ATCForm = data;
-                               _isnodata = NO;
-                               
-                               _shopNameLabel.text = _ATCForm.shop.name?:@"";
-                               
-                               [self setProduct:_ATCForm.form.product_detail];
-                               [self setAddress:_ATCForm.form.destination];
-                               [self setPlacePicker];
-                               
-                               if (_ATCForm.form.destination.address_id != 0) {
-                                   [self requestRate];
-                               }
-                            
-                               [self adjustViewIsLoading:NO];
-                               
-                               [_tableView reloadData];
+                               [self successFetchForm:data];
                                
                            } failed:^(NSError *error) {
-                               [self adjustViewIsLoading:NO];
+                               
+                               [self failedFetchForm:error];
+
                            }];
+}
+
+-(void)successFetchForm:(TransactionATCFormResult*)data{
+    _ATCForm = data;
+    _isnodata = NO;
+    
+    _shopNameLabel.text = _ATCForm.shop.name?:@"";
+    
+    [self setProduct:_ATCForm.form.product_detail];
+    [self setAddress:_ATCForm.form.destination];
+    [self setPlacePicker];
+    [self doCalculate];
+    
+    if (_ATCForm.form.destination.address_id != 0) {
+        [self requestRate];
+    }
+    
+    [self adjustViewIsLoading:NO];
+    
+    [_tableView reloadData];
+}
+
+-(void)failedFetchForm:(NSError*)error{
+    [self adjustViewIsLoading:NO];
 }
 
 -(void)adjustViewIsLoading:(BOOL)isLoading{
@@ -281,6 +330,8 @@ typedef enum
 -(void)setPlacePicker{
     [[GMSGeocoder geocoder] reverseGeocodeCoordinate:CLLocationCoordinate2DMake([_selectedAddress.latitude doubleValue], [_selectedAddress.longitude doubleValue]) completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error) {
         if (error != nil){
+            _pinLocationNameButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+            [_pinLocationNameButton setCustomAttributedText:@"Lokasi Tujuan"];
             return;
         }
         if (response == nil|| response.results.count == 0) {
@@ -288,7 +339,7 @@ typedef enum
             [_pinLocationNameButton setCustomAttributedText:@"Tandai lokasi Anda"];
             
         } else{
-            GMSAddress *placemark = [response results][0];
+            GMSAddress *placemark = [response results].firstObject;
             _pinLocationNameButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
             [_pinLocationNameButton setCustomAttributedText:[self addressString:placemark]];
         }
@@ -320,18 +371,29 @@ typedef enum
                           isShowOKE:_ATCForm.shop.show_oke
                           onSuccess:^(RateData *rateData) {
                               
-                              [self setShipments:rateData.attributes];
-                              [self adjustViewIsLoading:NO];
-                              [_tableView reloadData];
+                              [self successFetchShipmentFee:rateData];
                               
                           } onFailure:^(NSError *errorResult) {
-                              if (_selectedAddress.address_id != 0) {
-                                  _tableView.tableHeaderView = _messageZeroShipmentView;
-                              } else{
-                                      _tableView.tableHeaderView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 1, 1)];
-                              }
-                              [self adjustViewIsLoading:NO];
+                              
+                              [self failedFetchShipmentFee:errorResult];
+                          
                           }];
+}
+
+-(void)successFetchShipmentFee:(RateData*)data{
+    [self setShipments:data.attributes];
+    [self adjustViewIsLoading:NO];
+    [_tableView reloadData];
+}
+
+-(void)failedFetchShipmentFee:(NSError*)error{
+    if (_selectedAddress.address_id != 0) {
+        [_messageZeroShipmentLabel setCustomAttributedText:[self messageZeroShipmentDefault]];
+        _tableView.tableHeaderView = _messageZeroShipmentView;
+    } else{
+        _tableView.tableHeaderView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 1, 1)];
+    }
+    [self adjustViewIsLoading:NO];
 }
 
 -(void)setShipments:(NSArray<RateAttributes*> *)shipments{
@@ -344,8 +406,74 @@ typedef enum
             shipment.auto_resi_image = @"";
         }
     }
-    _selectedShipment = shipments[0];
-    _selectedShipmentPackage = shipments[0].products[0];
+    _selectedShipment = [self getSelectedShipmentFromShipments:shipments];
+    _selectedShipmentPackage = _selectedShipment.products.firstObject;
+    
+    [self isShowZeroShipmentErrorMessage:(shipments.count == 0) messageError:[self messageZeroShipmentAvailable]];
+}
+
+-(void)isShowZeroShipmentErrorMessage:(BOOL)isShow messageError:(NSString*)messageError{
+    if (isShow) {
+        [_messageZeroShipmentLabel setCustomAttributedText:messageError];
+        _tableView.tableHeaderView = _messageZeroShipmentView;
+    } else {
+        _tableView.tableHeaderView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 1, 1)];
+    }
+}
+
+-(RateAttributes*)getSelectedShipmentFromShipments:(NSArray<RateAttributes*> *)shipments{
+    if ([self shipments:shipments containsShipment:_selectedShipment]) {
+        [self updateSelectedShipmentPriceFromShipments:shipments];
+        return _selectedShipment;
+    } else {
+        return shipments.firstObject;
+    }
+}
+
+-(void)updateSelectedShipmentPriceFromShipments:(NSArray<RateAttributes*> *)shipments{
+    for (RateAttributes* shipmentObject in shipments) {
+        if ([shipmentObject.shipper_id integerValue] == [_selectedShipment.shipper_id integerValue]) {
+            _selectedShipment = shipmentObject;
+        }
+    }
+}
+
+-(BOOL)shipments:(NSArray<RateAttributes*> *)shipments containsShipment:(RateAttributes*)shipment{
+    for (RateAttributes* shipmentObject in shipments) {
+        if ([shipmentObject.shipper_id integerValue] == [shipment.shipper_id integerValue]) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
+-(NSString *)messageZeroShipmentAvailable{
+    return @"Mohon maaf alamat tujuan tidak didukung kurir.\nSilahkan perbarui alamat anda.";
+}
+
+-(NSString *)messageZeroShipmentDefault{
+    return @"Maaf, kami belum dapat melakukan kalkulasi ongkos kirim menuju alamat Anda. Tim kami akan segera melakukan pemeriksaan.";
+}
+
+- (IBAction)productQuantityStepperValueChanged:(UIStepper *)sender {
+    NSInteger qty = [_productQuantityTextField.text integerValue];
+    qty += (int)sender.value;
+    
+    //limit quantity min and max value
+    qty = fmin(999, qty);
+    _productQuantityTextField.text = [NSString stringWithFormat: @"%d", (int)qty];
+    
+    [self alertAndResetIfQtyTextFieldBelowMin];
+    
+    //reset stepper
+    sender.value = 0;
+    
+    //request when stepper is not clicked for 1 sec
+    [requestPriceDelayedActionManager whenNotCalledFor:1 doAction:^{
+        [self doCalculate];
+        [self requestRate];
+    }];
+    
 }
 
 #pragma mark - Table View Data Source
@@ -464,16 +592,19 @@ typedef enum
                         NSInteger productPrice = [[[NSNumberFormatter IDRFormarter] numberFromString:product.product_price] integerValue];
                         NSInteger qty = [_productQuantityTextField.text integerValue];
                         
-                        NSNumber *price = [NSNumber numberWithInteger:(productPrice/qty)];
+                        NSNumber *price = [NSNumber numberWithInteger:(productPrice / qty)];
                         NSString *priceString = [[NSNumberFormatter IDRFormarter] stringFromNumber:price];
                         label.text = priceString;
+                        
                         break;
                     }
                     case TAG_BUTTON_TRANSACTION_PRODUCT_PRICE:
                     {
 
                         [self cell:cell setAccesoryType:UITableViewCellAccessoryNone isLoading:!_isFinishRequesting];
+
                         label.text = product.product_price;
+                        
                         break;
                     }
                     case TAG_BUTTON_TRANSACTION_SHIPMENT_COST:
@@ -670,6 +801,7 @@ typedef enum
     return _headerTableView[section];
 }
 
+#pragma mark - requestATC
 -(void)requestATC {
     
     [self adjustViewIsLoading:YES];
@@ -685,27 +817,35 @@ typedef enum
                          remark:remark
                         success:^(TransactionAction *data) {
                             
-                            [self adjustViewIsLoading:NO];
-                            
-                            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                                                message:[data.message_status firstObject]
-                                                                               delegate:self
-                                                                      cancelButtonTitle:@"Kembali Belanja"
-                                                                      otherButtonTitles:@"Ke Keranjang Belanja",nil];
-                            alertView.tag=TAG_BUTTON_TRANSACTION_BUY;
-                            [alertView show];
-                            
-                            [self pushLocalyticsData];
-                            
-                            [TPAnalytics trackAddToCart:_selectedProduct];
-                            
-                            if (self.isSnapSearchProduct) {
-                                [TPAnalytics trackSnapSearchAddToCart:_selectedProduct];
-                            }
+                            [self successActionATC:data];
                             
                         } failed:^(NSError *error) {
-                            [self adjustViewIsLoading:NO];
+                            [self failedActionATC:error];
                         }];
+}
+
+-(void)successActionATC:(TransactionAction*)data{
+    [self adjustViewIsLoading:NO];
+    
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+                                                        message:[data.message_status firstObject]
+                                                       delegate:self
+                                              cancelButtonTitle:@"Kembali Belanja"
+                                              otherButtonTitles:@"Ke Keranjang Belanja",nil];
+    alertView.tag=TAG_BUTTON_TRANSACTION_BUY;
+    [alertView show];
+    
+    [self pushLocalyticsData];
+    
+    [TPAnalytics trackAddToCart:_selectedProduct];
+    
+    if (self.isSnapSearchProduct) {
+        [TPAnalytics trackSnapSearchAddToCart:_selectedProduct];
+    }
+}
+
+-(void)failedActionATC:(NSError*)error{
+    [self adjustViewIsLoading:NO];
 }
 
 -(void)doCalculate{
@@ -722,18 +862,22 @@ typedef enum
                               address:_selectedAddress
                               success:^(TransactionCalculatePriceResult *data) {
                                   
-                                  _selectedProduct.product_price = data.product.price;
-                                  [self setProduct:_selectedProduct];
-                                  
-                                  _ATCForm.form.shipment = data.shipment;
-                                  
-                                  [self adjustViewIsLoading:NO];
-
-                                  [_tableView reloadData];
+                                  [self successActionCalculate:data];
                                   
                               } failed:^(NSError *error) {
-                                  [self adjustViewIsLoading:NO];
+                                  [self failedActionCalculate:error];
                               }];
+}
+
+-(void)successActionCalculate:(TransactionCalculatePriceResult*)data{
+    _selectedProduct.product_price = data.product.price;
+    [self setProduct:_selectedProduct];
+    [self adjustViewIsLoading:NO];
+    [_tableView reloadData];
+}
+
+-(void)failedActionCalculate:(NSError*)error{
+    [self adjustViewIsLoading:NO];
 }
 
 -(NSString*)addressString:(GMSAddress*)address
@@ -758,7 +902,7 @@ typedef enum
             }
         }
         _selectedShipment = shipmentObject;
-        _selectedShipmentPackage = _selectedShipment.products[0];
+        _selectedShipmentPackage = _selectedShipment.products.firstObject;
     }
     else if (indexPath.row == TAG_BUTTON_TRANSACTION_SERVICE_TYPE)
     {
@@ -823,8 +967,8 @@ typedef enum
         [self requestAddAddress:address];
         return;
     }
-    NSString *addressID = [NSString stringWithFormat:@"%zd",address.address_id];
-    [self requestFormWithAddressID:addressID];
+    [self setAddress:address];
+    [self requestFormWithAddressID:[NSString stringWithFormat:@"%zd",address.address_id]?:@""];
 }
 
 -(void)requestAddAddress:(AddressFormList*)address{
@@ -832,34 +976,32 @@ typedef enum
     [self adjustViewIsLoading:YES];
     
     [RequestAddAddress fetchAddAddress:address
-                            isFromCart:@"0"
+                            isFromCart:@"1"
                                success:^(ProfileSettingsResult *data, AddressFormList *address) {
                                    
-                                   [self adjustViewIsLoading:NO];
-                                   NSString *addressID = [NSString stringWithFormat:@"%zd",address.address_id];
-                                   [self requestFormWithAddressID:addressID];
+                                   [self successAddAddress:address result:data];
                                    
                                } failure:^(NSError *error) {
                                    
-                                   [self adjustViewIsLoading:NO];
+                                   [self failedAddAddress:address error:error];
                                    
                                }];
+}
+
+-(void)successAddAddress:(AddressFormList*)address result:(ProfileSettingsResult *)result {
+    [self adjustViewIsLoading:NO];
+    [self setAddress:address];
+    [self requestFormWithAddressID:[NSString stringWithFormat:@"%zd",address.address_id]?:@""];
+}
+
+-(void)failedAddAddress:(AddressFormList*)address error:(NSError*)error{
+    [self adjustViewIsLoading:NO];
 }
 
 #pragma mark - Textfield Delegate
 
 -(void)textFieldDidEndEditing:(UITextField *)textField
 {
-    _isFinishRequesting = NO;
-    
-    ProductDetail *product = _selectedProduct;
-
-    if ([textField.text integerValue] <1) {
-        textField.text = product.product_min_order;
-    }
-    
-    [self doCalculate];
-    [_tableView reloadData];
 }
 
 - (BOOL)textField:(UITextField*)textField shouldChangeCharactersInRange:(NSRange)range
@@ -868,6 +1010,13 @@ replacementString:(NSString*)string
     NSString* newText;
 
     newText = [textField.text stringByReplacingCharactersInRange:range withString:string];
+
+    [quantityDelayedActionManager whenNotCalledFor:2 doAction:^{
+        _isFinishRequesting = NO;
+        [self alertAndResetIfQtyTextFieldBelowMin];
+        [self doCalculate];
+        [self requestRate];
+    }];
     
     return [newText isNumber] && [newText integerValue] < 1000;
 }
@@ -1025,7 +1174,6 @@ replacementString:(NSString*)string
 }
 
 - (void)pushLocalyticsData {
-    
     ProductDetail *product = _selectedProduct;
     NSCharacterSet *notAllowedChars = [NSCharacterSet characterSetWithCharactersInString:@"Rp."];
     NSString *productPrice = [[product.product_price componentsSeparatedByCharactersInSet:notAllowedChars] componentsJoinedByString:@""];
@@ -1033,7 +1181,20 @@ replacementString:(NSString*)string
     product.product_total_price = [NSString stringWithFormat:@"%zd",totalPrice];
     product.product_quantity =_productQuantityTextField.text;
 
-    [ATCPushLocalytics pushLocalyticsATCProduct:product];
+    [TPAnalytics trackAddToCart:product];
+}
+
+-(void)alertAndResetIfQtyTextFieldBelowMin
+{
+    ProductDetail *product = _selectedProduct;
+    
+    if ([_productQuantityTextField.text integerValue] <[product.product_min_order integerValue]) {
+        _productQuantityTextField.text = product.product_min_order;
+        
+        NSArray *errorMessages = @[[NSString stringWithFormat: @"%@%@%@", @"Minimum pembelian adalah ", product.product_min_order, @" barang"]];
+        StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessages delegate:self];
+        [alert show];
+    }
 }
 
 @end

@@ -779,6 +779,8 @@ typedef enum {
     
     if ([conversation.show_edit_addr_button integerValue]==1) {
         buttonTitle = BUTTON_TITLE_EDIT_ADDRESS;
+    } else {
+        buttonTitle = @"Lacak";
     }
     
     if (conversation.isAddedConversation)
@@ -934,8 +936,12 @@ typedef enum {
         buttonCount +=1;
     }
     
-    if ([self isShowTrackAndEditButton:conversation]) {
-        buttonCount +=2;
+    if (conversation.show_track_button == 1){
+        buttonCount +=1;
+    }
+    
+    if (conversation.show_edit_resi_button == 1) {
+        buttonCount +=1;
     }
 
     if (conversation.isAddedConversation) {

@@ -14,6 +14,8 @@
 #import "PromoProduct.h"
 #import "TransactionCartList.h"
 #import "PromoResult.h"
+#import "Localytics.h"
+#import "NSURL+Dictionary.h"
 
 @interface TPAnalytics ()
 
@@ -36,7 +38,22 @@
 
 + (void)trackScreenName:(NSString *)screeName {
     TPAnalytics *analytics = [[self alloc] init];
-    [analytics.dataLayer push:@{@"event": @"openScreen", @"screenName": screeName?:@""}];
+    UserAuthentificationManager *auth = [UserAuthentificationManager new];
+    if (auth.isLogin) {
+        NSDictionary *authenticatedData = @{
+        @"event": @"authenticated",
+        @"contactInfo": @{
+                @"userSeller": [auth.getShopId isEqualToString:@"0"]? @"0": @"1",
+                @"userFullName": [auth.getUserLoginData objectForKey:@"full_name"]?:@"",
+                @"userEmail": [auth.getUserLoginData objectForKey:@"user_email"]?:@"",
+                @"userId": auth.getUserId,
+                @"userMSISNVerified": [auth.getUserLoginData objectForKey:@"msisdn_is_verified"]?:@"",
+                @"shopID": auth.getShopId
+            },
+        };
+        [analytics.dataLayer push:authenticatedData];
+        [analytics.dataLayer push:@{@"event": @"openScreen", @"screenName": screeName}];
+    }
 }
 
 + (void)trackScreenName:(NSString *)screeName gridType:(NSInteger)gridType {
@@ -52,7 +69,11 @@
 
 + (void)trackUserId {
     TPAnalytics *analytics = [[self alloc] init];
-    [analytics.dataLayer push:@{@"user_id" : [analytics.userManager getUserId]?:@""}];
+    if (analytics.userManager.isLogin) {
+        [analytics.dataLayer push:@{@"user_id" : [analytics.userManager getUserId]?:@""}];
+        [Localytics setValue:[analytics.userManager getUserId]?:@"" forProfileAttribute:@"user_id"];
+        [Localytics setValue:[analytics.userManager getShopId]?:@"" forProfileAttribute:@"shop_id"];        
+    }
 }
 
 - (NSString *)getProductListName:(id)product {
@@ -250,7 +271,7 @@
     [analytics.dataLayer push:data];
 }
 
-+ (void)trackPurchaseID:(NSString *)purchaseID carts:(NSArray *)carts {
++ (void)trackPurchaseID:(NSString *)purchaseID carts:(NSArray *)carts coupon:(NSString *)coupon {
     if (!purchaseID || !carts) return;
     TPAnalytics *analytics = [[self alloc] init];
     NSMutableArray *purchasedItems = [NSMutableArray array];
@@ -289,6 +310,7 @@
                     @"id": purchaseID,
                     @"revenue": revenueString,
                     @"shipping": shippingString,
+                    @"coupon": coupon?:@"",
                 },
                 @"products" : purchasedItems
             }
@@ -343,6 +365,70 @@
     NSDictionary *data = @{
         @"event": @"snapSearchAddToCart",
         @"productId": product.product_id,
+    };
+    [analytics.dataLayer push:data];
+}
+
++ (void)trackAuthenticated:(NSDictionary *)data {
+    TPAnalytics *analytics = [[self alloc] init];
+    [analytics.dataLayer push:data];
+}
+
++ (void)trackSuccessSubmitReview:(NSInteger)status {
+    TPAnalytics *analytics = [[self alloc] init];
+    NSDictionary *data = @{
+                           @"event": @"successSubmitReview",
+						   @"submitReviewStatus": @(status)
+                           };
+    [analytics.dataLayer push:data];
+}
+
++ (void)trackSearchInboxReview {
+    TPAnalytics *analytics = [[self alloc] init];
+    NSDictionary *data = @{
+                           @"event": @"searchInboxReview"
+                           };
+    [analytics.dataLayer push:data];
+}
+
++ (void)trackPushNotificationAccepted:(BOOL)accepted {
+    TPAnalytics *analytics = [[self alloc] init];
+    NSDictionary *data = @{
+                            @"event": @"pushNotificationPermissionRequest",
+                            @"pushNotificationAllowed": @(accepted)
+                           };
+    
+    [analytics.dataLayer push:data];
+}
+
++ (void)trackOpenPushNotificationSetting {
+    TPAnalytics *analytics = [[self alloc] init];
+    NSDictionary *data = @{
+                           @"event": @"openPushNotificationSetting"
+                           };
+    
+    [analytics.dataLayer push:data];
+}
+
++ (void)trackCampaign:(NSURL *)url {
+    TPAnalytics *analytics = [[self alloc] init];
+    NSDictionary *data = @{
+        @"utmSource": [url.parameters objectForKey:@"utm_source"]?:@"",
+        @"utmMedium": [url.parameters objectForKey:@"utm_medium"]?:@"",
+        @"utmCampaign": [url.parameters objectForKey:@"utm_campaign"]?:@"",
+        @"utmContent": [url.parameters objectForKey:@"utm_content"]?:@"",
+        @"utmTerm": [url.parameters objectForKey:@"utm_term"]?:@"",
+        @"gclid": [url.parameters objectForKey:@"gclid"]?:@"",
+    };
+    [analytics.dataLayer push:data];
+}
+
++ (void)trackClickEvent:(NSString *)event category:(NSString *)category label:(NSString *)label {
+    TPAnalytics *analytics = [[self alloc] init];
+    NSDictionary *data = @{
+        @"event": event,
+        @"eventCategory": category,
+        @"eventLabel": label
     };
     [analytics.dataLayer push:data];
 }

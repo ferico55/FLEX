@@ -10,7 +10,6 @@
 #import "SegmentedReviewReputationViewController.h"
 #import "AlertPriceNotificationViewController.h"
 #import "detail.h"
-#import "CreateShopViewController.h"
 #import "MoreViewController.h"
 #import "more.h"
 #import "TKPDSecureStorage.h"
@@ -101,6 +100,8 @@
     NSURL *_deeplinkUrl;
     
     BOOL _shouldDisplayPushNotificationCell;
+    
+    CGRect _defaultTableFrame;
 }
 
 @property (weak, nonatomic) IBOutlet UILabel *depositLabel;
@@ -167,6 +168,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     // Add logo in navigation bar
     self.title = kTKPDMORE_TITLE;
     UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
@@ -188,7 +190,7 @@
     _operationQueue = [[NSOperationQueue alloc] init];
     
     _fullNameLabel.text = [_auth objectForKey:@"full_name"];
-    _versionLabel.text = [NSString stringWithFormat:@"Versi : %@", [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]];
+    _versionLabel.text = [NSString stringWithFormat:@"Versi : %@", [UIApplication getAppVersionString]];
     
     self.navigationController.title = @"More";
 //    [self initNotificationManager];
@@ -641,6 +643,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
     if (indexPath.section == 1 && indexPath.row == 0) {
         NavigateViewController *navigateController = [NavigateViewController new];
         [navigateController navigateToProfileFromViewController:wrapperController withUserID:[_auth objectForKey:MORE_USER_ID]];
+        
     }
     
     else if (indexPath.section == 1 && indexPath.row == 1) {
@@ -648,8 +651,10 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
         PurchaseViewController *purchaseController = [storyboard instantiateViewControllerWithIdentifier:@"PurchaseViewController"];
         purchaseController.notification = _notifManager.notification;
         [wrapperController.navigationController pushViewController:purchaseController animated:YES];
+        
     }
     else if(indexPath.section==1 && indexPath.row==2) {
+        
         UINavigationController *tempNavController = (UINavigationController *) [wrapperController.tabBarController.viewControllers firstObject];
         [((HomeTabViewController *)[tempNavController.viewControllers firstObject]) setIndexPage:2];
         [wrapperController.tabBarController setSelectedIndex:0];
@@ -845,12 +850,14 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
     if (permissionStatus == JLPermissionNotDetermined) {
         permission.extraAlertEnabled = false;
         [permission authorize: ^(NSString *deviceId, NSError *error) {
+            [TPAnalytics trackPushNotificationAccepted: deviceId != nil];
             [self togglePushNotificationCellVisibility];
         }];
     } else {
         ActivatePushInstructionViewController *viewController = [ActivatePushInstructionViewController new];
         
         viewController.viewControllerDidClosed = ^{
+            [TPAnalytics trackOpenPushNotificationSetting];
             [[JLNotificationPermission sharedInstance] displayAppSystemSettings];
         };
         [_wrapperViewController presentViewController:viewController animated:YES completion:nil];
@@ -873,14 +880,15 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
         emailController.mailComposeDelegate = self;
         
         
-        NSString *messageBody = [NSString stringWithFormat:@"Device : %@ <br/> OS Version : %@ <br/> Email Tokopedia : %@ <br/> App Version : %@ <br/><br/> Komplain : ", [[UIDevice currentDevice] model], [[UIDevice currentDevice] systemVersion], [_auth objectForKey:kTKPD_USEREMAIL],[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]];
+        NSString *messageBody = [NSString stringWithFormat:@"Device : %@ <br/> OS Version : %@ <br/> Email Tokopedia : %@ <br/> App Version : %@ <br/><br/> Komplain : ", [[UIDevice currentDevice] model], [[UIDevice currentDevice] systemVersion], [_auth objectForKey:kTKPD_USEREMAIL],[UIApplication getAppVersionString]];
         
         [emailController setSubject:@"Feedback"];
         [emailController setMessageBody:messageBody isHTML:YES];
         [emailController setToRecipients:@[@"ios.feedback@tokopedia.com"]];
         [emailController.navigationBar setTintColor:[UIColor whiteColor]];
         
-
+        //prevent changing table frame from setStatusBarHidden
+        _defaultTableFrame = self.tableView.frame;
         [self presentViewController:emailController animated:YES completion:^() {
             [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
         }];
@@ -917,7 +925,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
     
     ContactUsWebViewController *controller = [ContactUsWebViewController new];
     controller.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:controller animated:YES];
+    [_wrapperViewController.navigationController pushViewController:controller animated:YES];
 }
 
 #pragma mark - Notification delegate
@@ -950,9 +958,8 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
 #pragma mark - Action
 - (IBAction)actionCreateShop:(id)sender
 {
-    CreateShopViewController *createShopViewController = [CreateShopViewController new];
-    createShopViewController.moreViewController = self;
-    [self pushViewController:createShopViewController];
+    OpenShopViewController *controller = [[OpenShopViewController alloc] initWithNibName:@"OpenShopViewController" bundle:nil];
+    [self pushViewController:controller];
 }
 
 - (void)updateSaldoTokopedia:(NSNotification*)notification {
@@ -1001,7 +1008,10 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
 - (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
     [self dismissViewControllerAnimated:YES completion:^() {
         [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
-        self.tableView.frame = CGRectMake(0, 0, self.tableView.frame.size.width, self.tableView.frame.size.height);
+        
+        //undesired changes from tableview frame when setStatusBarHidden
+        //need to reframe tableView
+        self.tableView.frame = _defaultTableFrame;
     }];
 }
 

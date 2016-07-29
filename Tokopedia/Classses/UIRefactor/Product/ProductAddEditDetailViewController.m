@@ -23,12 +23,15 @@
 #import "MyShopEtalaseEditViewController.h"
 #import "MyShopNoteViewController.h"
 #import "Breadcrumb.h"
-#import "ProductDetail.h"
+
 #import "MyShopNoteDetailViewController.h"
 #import "TokopediaNetworkManager.h"
 #import "GAIDictionaryBuilder.h"
 #import "CatalogAddProduct.h"
 #import "UserAuthentificationManager.h"
+#import "Tokopedia-Swift.h"
+
+NSString * const ProductStatusWarehouse = @"3";
 
 @interface ProductAddEditDetailViewController ()
 <
@@ -309,13 +312,13 @@
 {
     BOOL isValid = YES;
     NSMutableArray *errorMessages = [NSMutableArray new];
-    ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
+    ProductEditDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
     
-    NSString *moveToWarehouse = product.product_move_to?:@"";
+//    NSString *moveToWarehouse = product.product_move_to?:@"";
     
-    NSNumber *etalaseUserInfoID = product.product_etalase_id?:@(0);
-    BOOL isNewEtalase = ([etalaseUserInfoID integerValue]==DATA_ADD_NEW_ETALASE_ID);
-    NSString *etalaseID = isNewEtalase?API_ADD_PRODUCT_NEW_ETALASE_TAG:[etalaseUserInfoID stringValue];
+    NSString* etalaseUserInfoID = product.product_etalase_id;
+    BOOL isNewEtalase = [etalaseUserInfoID isEqualToString:@"-1"];
+    NSString *etalaseID = isNewEtalase ? @"new" : etalaseUserInfoID;
     
     NSString *etalaseName = product.product_etalase?:@"";
     
@@ -383,7 +386,7 @@
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
+    ProductEditDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
     
     UITableViewCell *cell = nil;
     switch (indexPath.section) {
@@ -394,13 +397,13 @@
                 cell.detailTextLabel.text = productMustInsurance;
             }
             if (indexPath.row == BUTTON_PRODUCT_RETURNABLE) {
-                NSString *productReturnable =[ARRAY_PRODUCT_RETURNABLE[[product.product_returnable integerValue]]objectForKey:DATA_NAME_KEY];
+                NSString *productReturnable =[ARRAY_PRODUCT_RETURNABLE[[_returnableStatus integerValue]]objectForKey:DATA_NAME_KEY];
                 cell.detailTextLabel.text = productReturnable;
             }
             break;
         case 1:
             cell = _section1TableViewCell[indexPath.row];
-            BOOL isProductWarehouse = ([product.product_move_to integerValue] == PRODUCT_WAREHOUSE_YES_ID);
+            BOOL isProductWarehouse = [product.product_status isEqualToString:@"3"];
             if (indexPath.row == BUTTON_PRODUCT_ETALASE) {
                 NSString *moveTo = (isProductWarehouse)?[ARRAY_PRODUCT_MOVETO_ETALASE[0]objectForKey:DATA_NAME_KEY]:[ARRAY_PRODUCT_MOVETO_ETALASE[1]objectForKey:DATA_NAME_KEY];
                 cell.detailTextLabel.text = moveTo;
@@ -408,7 +411,16 @@
             else if (indexPath.row == BUTTON_PRODUCT_ETALASE_DETAIL)
             {
                 //cell.detailTextLabel.textColor = (isProductWarehouse)?[UIColor grayColor]:[UIColor colorWithRed:(0.f/255.f) green:122.f/255.f blue:255.f/255.f alpha:1];
-                cell.detailTextLabel.text = ([product.product_etalase isEqualToString:@"0"]||!product.product_etalase)?@"Pilih Etalase":product.product_etalase;
+                NSString* etalaseTitle;
+                if([product.product_etalase isEqualToString:@""] ||
+                   [product.product_etalase isEqualToString:@"0"] ||
+                   !product.product_etalase) {
+                    etalaseTitle = @"Pilih Etalase";
+                } else {
+                    etalaseTitle = product.product_etalase;
+                }
+                
+                cell.detailTextLabel.text = etalaseTitle;
             }
             break;
         case 2:
@@ -482,8 +494,8 @@
 {
     [_productDescriptionTextView resignFirstResponder];
     [_dataInput setObject:_productDescriptionTextView.text?:@"" forKey:API_PRODUCT_DESCRIPTION_KEY];
-    ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
-    BOOL isProductWarehouse = ([product.product_move_to integerValue] == PRODUCT_WAREHOUSE_YES_ID);
+    ProductEditDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
+    BOOL isProductWarehouse = [product.product_status isEqualToString:@"3"];
     switch (indexPath.section) {
         case 0:
             switch (indexPath.row) {
@@ -523,10 +535,10 @@
                 case BUTTON_PRODUCT_ETALASE_DETAIL:
                 {
                     //if (!isProductWarehouse) {
-                        ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
+                        ProductEditDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
                         EtalaseList *newEtalase = [EtalaseList new];
                         newEtalase.etalase_name = product.product_etalase;
-                        newEtalase.etalase_id = [product.product_etalase_id stringValue];
+                        newEtalase.etalase_id = product.product_etalase_id;
                         EtalaseViewController *etalaseViewController = [EtalaseViewController new];
                         etalaseViewController.isEditable = NO;
                         etalaseViewController.showOtherEtalase = NO;
@@ -827,13 +839,13 @@
 #define PRODUCT_MOVETO_WAREHOUSE_ID @"2"
     
     CategoryDetail *category = [_dataInput objectForKey:DATA_CATEGORY_KEY];
-    ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
+    ProductEditDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
     CatalogList *catalog = [_dataInput objectForKey:DATA_CATALOG_KEY];
     
     NSString *action = ACTION_ADD_PRODUCT_VALIDATION;
     NSInteger serverID = [_generateHost.result.generated_host.server_id integerValue]?:0;
     NSString *productName = product.product_name?:@"";
-    NSString *productDescription = product.product_description?:@"";
+    NSString *productDescription = product.product_short_desc?:@"";
     NSString *departmentID = category.categoryId?:@"";
     NSString *minimumOrder = product.product_min_order?:@"1";
     NSString *productPriceCurrencyID = product.product_currency_id?:@"";
@@ -841,18 +853,18 @@
     NSString *productWeightUnitID = product.product_weight_unit?:@"";
     NSString *productWeight = product.product_weight?:@"";
     NSString *productInsurance = product.product_must_insurance?:@"";
-    NSString *moveToWarehouse = product.product_move_to?:@"";
+    NSString *moveToWarehouse = [product.product_status isEqualToString:ProductStatusWarehouse]? @"2" : @"1";
     
-    NSNumber *etalaseUserInfoID = product.product_etalase_id?:@(0);
-    BOOL isNewEtalase = ([etalaseUserInfoID integerValue]==DATA_ADD_NEW_ETALASE_ID);
-    NSString *etalaseID = isNewEtalase?API_ADD_PRODUCT_NEW_ETALASE_TAG:[etalaseUserInfoID stringValue];
+    NSString *etalaseUserInfoID = product.product_etalase_id?:@"";
+    BOOL isNewEtalase = [etalaseUserInfoID isEqualToString:@"-1"];
+    NSString *etalaseID = isNewEtalase ? API_ADD_PRODUCT_NEW_ETALASE_TAG: etalaseUserInfoID;
     
     NSString *etalaseName = product.product_etalase?:@"";
     NSString *productConditionID = product.product_condition?:@"";
     NSArray *wholesaleList = [userInfo objectForKey:DATA_WHOLESALE_LIST_KEY]?:@[];
     
     NSString *productID = product.product_id?:@"";
-    NSInteger returnableProduct = [product.product_returnable integerValue];
+//    NSInteger returnableProduct = [product.product_returnable integerValue];
 
     NSString *catalogID = catalog.catalog_id?:@"";
     
@@ -892,7 +904,7 @@
                                       API_PRODUCT_CONDITION_KEY : productConditionID,
                                       API_PRODUCT_IMAGE_TOUPLOAD_KEY : [self paramPhoto]?:@"",
                                       API_PRODUCT_IMAGE_DEFAULT_KEY: [self photoDefault]?:@"",
-                                      API_PRODUCT_IS_RETURNABLE_KEY : @(returnableProduct),
+                                      API_PRODUCT_IS_RETURNABLE_KEY : _returnableStatus,
                                       API_PRODUCT_IS_CHANGE_WHOLESALE_KEY:@(1),
                                       API_UNIQUE_ID_KEY:uniqueID,
                                       API_IS_DUPLICATE_KEY : @(duplicate),
@@ -1238,12 +1250,12 @@
     NSDictionary *userInfo = _dataInput;
     
     NSString *action = ACTION_EDIT_PRODUCT_KEY;
-    ProductDetail *product = [userInfo objectForKey:DATA_PRODUCT_DETAIL_KEY];
+    ProductEditDetail *product = [userInfo objectForKey:DATA_PRODUCT_DETAIL_KEY];
     CategoryDetail *category = [userInfo objectForKey:DATA_CATEGORY_KEY];
     
     NSInteger serverID = [_generateHost.result.generated_host.server_id integerValue]?:0;
     NSString *productName = product.product_name?:@"";
-    NSString *productDescription = product.product_description?:@"";
+    NSString *productDescription = product.product_short_desc?:@"";
     NSString *productPrice = product.product_price?:0;
     NSString *productPriceCurrencyID = product.product_currency_id?:@"";
     NSString *productWeight = product.product_weight?:@"";
@@ -1252,16 +1264,16 @@
     NSString *minimumOrder = product.product_min_order?:@"";
     NSString *productInsurance = product.product_must_insurance?:@"";
     
-    //NSString *moveToWarehouse = [product.product_etalase_id isEqual:@(0)]?PRODUCT_MOVETO_WAREHOUSE_ID:@"1";
-    NSString *moveToWarehouse = product.product_move_to;
+//    NSString *moveToWarehouse = [product.product_etalase_id isEqual:@(0)]?PRODUCT_MOVETO_WAREHOUSE_ID:@"1";
+    NSString *moveToWarehouse = [product.product_status isEqualToString:@"3"] ? @"2" : @"1";
     
-    NSNumber *etalaseUserInfoID = product.product_etalase_id;
+    NSString *etalaseUserInfoID = product.product_etalase_id;
     //if ([etalaseUserInfoID isEqual:@(0)]) {
     //    [_moveToWarehouseNetworkManager doRequest];
     //    return @{};
     //}
     BOOL isNewEtalase = ([etalaseUserInfoID integerValue]==DATA_ADD_NEW_ETALASE_ID);
-    NSString *etalaseID = isNewEtalase?API_ADD_PRODUCT_NEW_ETALASE_TAG:[etalaseUserInfoID stringValue];
+    NSString *etalaseID = isNewEtalase ? API_ADD_PRODUCT_NEW_ETALASE_TAG : etalaseUserInfoID;
     
     NSString *etalaseName = product.product_etalase;
     NSString *productConditionID = product.product_condition;
@@ -1271,7 +1283,7 @@
     
     
     NSString *productID = product.product_id?:@"";
-    NSString *returnableProduct = product.product_returnable?:@"0";
+    NSString *returnableProduct = _returnableStatus?:@"0";
 
     
     NSDictionary* paramDictionary = @{kTKPDDETAIL_APIACTIONKEY:action?:@"",
@@ -1371,7 +1383,7 @@
 
 -(NSDictionary*)paramMoveToWarehouse
 {
-    ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
+    ProductEditDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
     
     NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY:ACTION_MOVE_TO_WAREHOUSE,
                             kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : product.product_id?:@"",
@@ -1416,8 +1428,8 @@
 {
     if (textView == _productDescriptionTextView) {
         if(textView.text.length != 0 && ![textView.text isEqualToString:@""]){
-            ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
-            product.product_description = textView.text;
+            ProductEditDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
+            product.product_short_desc = textView.text;
             [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
         }
     }
@@ -1461,12 +1473,12 @@
 -(void)alertView:(TKPDAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
 #define DEFAULT_ETALASE_DETAIL_TITLE_BUTTON @"Pilih Etalase"
-    ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY]?:[ProductDetail new];
+    ProductEditDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY]?:[ProductEditDetail new];
     switch (alertView.tag) {
         case 10:
         {
             NSInteger index = [[alertView.data objectForKey:DATA_INDEX_KEY] integerValue];
-            NSString *value = [ARRAY_PRODUCT_INSURACE[index] objectForKey:DATA_VALUE_KEY];
+            NSString *value = [[ARRAY_PRODUCT_INSURACE[index] objectForKey:DATA_VALUE_KEY] stringValue];
             product.product_must_insurance = value;
             [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
             [_tableView reloadData];
@@ -1475,7 +1487,7 @@
         case 12:
         {
             NSInteger index = [[alertView.data objectForKey:DATA_INDEX_KEY] integerValue];
-            NSString *value = [ARRAY_PRODUCT_CONDITION[index] objectForKey:DATA_VALUE_KEY];
+            NSString *value = [[ARRAY_PRODUCT_CONDITION[index] objectForKey:DATA_VALUE_KEY] stringValue];
             product.product_condition = value;
             [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
             [_tableView reloadData];
@@ -1484,8 +1496,9 @@
         case 11:
         {
             NSInteger index = [[alertView.data objectForKey:DATA_INDEX_KEY] integerValue];
-            NSString *value = [ARRAY_PRODUCT_MOVETO_ETALASE[index] objectForKey:DATA_VALUE_KEY];
-            product.product_move_to = value;//([value integerValue]==1)?@"0":value;
+            NSString *value = [[ARRAY_PRODUCT_MOVETO_ETALASE[index] objectForKey:DATA_VALUE_KEY] stringValue];
+            product.product_status = [value isEqualToString:@"1"] ? @"1" : @"3";
+//            product.product_move_to = value;//([value integerValue]==1)?@"0":value;
             /*
             if (index == 0) {
                 product.product_etalase_id = @(0);
@@ -1499,8 +1512,8 @@
         case 13:
         {
             NSInteger index = [[alertView.data objectForKey:DATA_INDEX_KEY] integerValue];
-            NSString *value = [ARRAY_PRODUCT_RETURNABLE[index] objectForKey:DATA_VALUE_KEY];
-            product.product_returnable = value;
+            NSString *value = [[ARRAY_PRODUCT_RETURNABLE[index] objectForKey:DATA_VALUE_KEY] stringValue];
+            _returnableStatus = value;
             [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
             [_tableView reloadData];
             break;
@@ -1513,8 +1526,8 @@
 #pragma mark - Product Etalase Delegate
 
 -(void)didSelectEtalase:(EtalaseList *)selectedEtalase{
-    ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
-    product.product_etalase_id = @([selectedEtalase.etalase_id integerValue]);
+    ProductEditDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
+    product.product_etalase_id = selectedEtalase.etalase_id;
     product.product_etalase = selectedEtalase.etalase_name;
     [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
     
@@ -1551,8 +1564,8 @@
         
         [_dataInput addEntriesFromDictionary:[_data objectForKey:DATA_INPUT_KEY]];
         
-        ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
-        NSString *productReturnable = product.product_returnable?:@"";
+        ProductEditDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
+        NSString *productReturnable = _returnableStatus?:@"";
         if ([productReturnable isEqualToString:@""] || [productReturnable isEqualToString:@"0"] || productReturnable == nil) {
             [_dataInput setObject:@(0) forKey:API_PRODUCT_IS_RETURNABLE_KEY];
             //[_dataInput setObject:@(-1) forKey:API_PRODUCT_IS_RETURNABLE_KEY];

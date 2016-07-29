@@ -10,4 +10,10 @@
 
 @implementation ActionOrderResult
 
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[self class]];
+    [mapping addAttributeMappingsFromArray:@[@"is_success"]];
+    return mapping;
+}
+
 @end

@@ -256,7 +256,7 @@
 }
 
 - (void) messageaction:(NSString*)action{
-    [self messageaction:action indexPaths:[_table indexPathsForSelectedRows]];
+    [self messageaction:action indexPaths:[_table indexPathsForSelectedRows]?:@[]];
 }
 
 - (void)messageaction:(NSString*)action indexPaths:(NSArray<NSIndexPath*>*)indexPaths{
@@ -809,7 +809,7 @@
 - (void)failedLoadingMessages {
     _isrefreshview = NO;
     [_refreshControl endRefreshing];
-    _table.tableFooterView = _loadingView.view;
+    _table.tableFooterView = _loadingView;
 }
 
 #pragma mark - Retry Delegate
