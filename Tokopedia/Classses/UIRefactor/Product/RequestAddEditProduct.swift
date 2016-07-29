@@ -103,12 +103,6 @@ import UIKit
                                                 onFailure()
                                             }
                                             
-                                            if response.message_error?.count > 0 {
-
-                                            } else {
-
-                                            }
-                                            
         }) { (error) in
             onFailure()
         }

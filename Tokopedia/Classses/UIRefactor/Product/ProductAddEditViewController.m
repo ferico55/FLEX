@@ -28,7 +28,6 @@
 #import "RequestUploadImage.h"
 #import "CameraAlbumListViewController.h"
 #import "CameraCollectionViewController.h"
-#import "TokopediaNetworkManager.h"
 #import "UserAuthentificationManager.h"
 #import "TKPDPhotoPicker.h"
 #import "FilterCategoryViewController.h"
@@ -50,7 +49,6 @@ ProductEditImageViewControllerDelegate,
 GenerateHostDelegate,
 CameraCollectionViewControllerDelegate,
 RequestUploadImageDelegate,
-TokopediaNetworkManagerDelegate,
 TKPDPhotoPickerDelegate,
 GeneralTableViewControllerDelegate,
 FilterCategoryViewDelegate
@@ -101,8 +99,6 @@ FilterCategoryViewDelegate
     NSMutableArray *_selectedImagesCameraController;
     NSMutableArray *_selectedIndexPathCameraController;
     
-    TokopediaNetworkManager *_networkManagerDeleteImage;
-    
     ProductAddEditDetailViewController *_detailVC;
     
     TKPDPhotoPicker *_photoPicker;
@@ -141,8 +137,6 @@ FilterCategoryViewDelegate
 @property (weak, nonatomic) IBOutlet UIView *productNameViewCell;
 
 @end
-
-#define TAG_REQUEST_DETAIL 10
 
 @implementation ProductAddEditViewController
 
@@ -785,16 +779,6 @@ FilterCategoryViewDelegate
     [_activeTextField resignFirstResponder];
 }
 
-#pragma mark - Request Product Detail
-
--(id)getObjectManager:(int)tag
-{
-    if (tag == TAG_REQUEST_DETAIL) {
-        return [self objectManagerDetail];
-    }
-    return nil;
-}
-
 -(void)fetchGetCatalogWithProductName:(NSString*)productName andDepartmentID:(NSString*)departmentID{
     
     [self isFinishGetDataCatalogs:NO];
@@ -828,44 +812,6 @@ FilterCategoryViewDelegate
     }else {
         [_actCatalog startAnimating];
     }
-}
-
--(NSDictionary *)getParameter:(int)tag
-{
-
-    return nil;
-}
-
--(NSString *)getPath:(int)tag
-{
-    if (tag == TAG_REQUEST_DETAIL) {
-        return kTKPDDETAILPRODUCT_APIPATH;
-    }
-
-    return nil;
-}
-
--(NSString *)getRequestStatus:(id)result withTag:(int)tag
-{
-    NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
-    id stats = [resultDict objectForKey:@""];
-    
-    return nil;
-}
-
--(void)actionBeforeRequest:(int)tag
-{
-
-}
-
--(void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag
-{
-
-}
-
--(void)actionAfterFailRequestMaxTries:(int)tag
-{
-
 }
 
 -(void)fetchFormEditProductID:(NSString*)productID{
@@ -1742,8 +1688,6 @@ FilterCategoryViewDelegate
 
 -(void)DidEditReturnableNote
 {
-    //_networkManager.delegate = self;
-    //[_networkManager doRequest];
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
     [notificationCenter postNotificationName:SHOULD_UPDATE_SHOP_HAS_TERM_NOTIFICATION_NAME object:nil];
 }
@@ -2099,18 +2043,4 @@ FilterCategoryViewDelegate
                      completion:^(BOOL finished){
                      }];
 }
-
-
-#pragma mark - Object Manager
-
-- (RKObjectManager*)objectManagerDetail
-{
-    // initialize RestKit
-    RKObjectManager *objectmanager =  [RKObjectManager sharedClient];
-    
-//    [objectmanager addResponseDescriptor:responseDescriptor];
-    
-    return objectmanager;
-}
-
 @end
