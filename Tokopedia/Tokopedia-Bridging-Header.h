@@ -79,3 +79,6 @@
 #import "Slide.h"
 #import "NSString+TPBaseUrl.h"
 #import "AnnouncementTickerView.h"
+#import "TKPObjectMapping.h"
+#import "WholesalePrice.h"
+#import "Breadcrumb.h"

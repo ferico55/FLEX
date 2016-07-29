@@ -58,7 +58,7 @@
 
     
     cell.commentlabel.enabledTextCheckingTypes = NSTextCheckingTypeLink;
-    NSString* string = [NSString stringReplaceAhrefWithUrl:list.comment_message];
+    NSString* string = [NSString extracTKPMEUrl:list.comment_message];
     cell.commentlabel.text = string;
     cell.commentlabel.delegate = self;
 

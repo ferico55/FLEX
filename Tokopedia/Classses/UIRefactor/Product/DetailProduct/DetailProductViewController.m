@@ -109,7 +109,6 @@
 @interface DetailProductViewController ()
 <
 LabelMenuDelegate,
-TTTAttributedLabelDelegate,
 GalleryViewControllerDelegate,
 UITableViewDelegate,
 UITableViewDataSource,
@@ -149,11 +148,6 @@ OtherProductDelegate
     NoteDetails *notesDetail;
     BOOL is_dismissed;
     NSDictionary *_auth;
-    
-    __weak RKObjectManager *_objectmanager;
-    TokopediaNetworkManager *tokopediaNetworkManager;
-    RKResponseDescriptor *_responseDescriptor;
-    NSOperationQueue *_operationQueue;
     
     __weak RKObjectManager *_objectOtherProductManager;
     TokopediaNetworkManager *tokopediaOtherProduct;
@@ -211,7 +205,7 @@ OtherProductDelegate
     OtherProductDataSource *_otherProductDataSource;
 }
 
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
+
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *otherProductIndicator;
 @property (strong, nonatomic) IBOutlet UIView *header;
 @property (weak, nonatomic) IBOutlet UITableView *table;
@@ -260,11 +254,6 @@ OtherProductDelegate
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *btnShareHeight;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *btnShareTrailingConstraint;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *btnShareLeadingConstraint;
--(void)cancel;
--(void)configureRestKit;
--(void)loadData;
--(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation*)operation;
--(void)requestprocess:(id)object;
 
 @end
 
@@ -311,7 +300,6 @@ OtherProductDelegate
     _headerimages = [NSMutableArray new];
     _otherproductviews = [NSMutableArray new];
     _otherProductObj = [NSMutableArray new];
-    _operationQueue = [NSOperationQueue new];
     _operationOtherProductQueue = [NSOperationQueue new];
     _operationFavoriteQueue = [NSOperationQueue new];
     operationWishList = [NSOperationQueue new];
@@ -340,9 +328,6 @@ OtherProductDelegate
     tokopediaNetworkManagerFavorite.delegate = self;
     tokopediaNetworkManagerFavorite.tagRequest = CTagFavorite;
     
-    tokopediaNetworkManager = [TokopediaNetworkManager new];
-    tokopediaNetworkManager.delegate = self;
-    tokopediaNetworkManager.tagRequest = CTagTokopediaNetworkManager;
     
     tokopediaOtherProduct = [TokopediaNetworkManager new];
     tokopediaOtherProduct.delegate = self;
@@ -402,14 +387,6 @@ OtherProductDelegate
     _buyButton.hidden = YES;
     _dinkButton.hidden = YES;
     
-    //    if([[_userManager getShopName] isEqualToString:[_loadedData objectForKey:@"shop_name"]]) {
-    //        _dinkButton.hidden = NO;
-    //        _buyButton.hidden = YES;
-    //    } else {
-    //        _dinkButton.hidden = YES;
-    //        _buyButton.hidden = NO;
-    //    }
-    
     UITapGestureRecognizer *tapShopGes = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapShop)];
     [_shopClickView addGestureRecognizer:tapShopGes];
     [_shopClickView setUserInteractionEnabled:YES];
@@ -425,6 +402,8 @@ OtherProductDelegate
     _constraintHeightDinkButton.constant = 0;
     
     afterLoginRedirectTo = @"";
+    
+    [self unsetWarehouse];
 }
 
 - (void)initNotification {
@@ -461,13 +440,8 @@ OtherProductDelegate
     }
 }
 
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-    [tokopediaNetworkManager requestCancel];
-}
 
--(void)viewWillAppear:(BOOL)animated
-{
+-(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
     self.screenName = @"Product Information";
@@ -488,7 +462,7 @@ OtherProductDelegate
     _favButton.enabled = YES;
     _favButton.titleEdgeInsets = UIEdgeInsetsMake(0, 10, 0, 0);
     
-    if (_isnodata || _product.result.shop_info.shop_id == nil) {
+    if (_isnodata || _product.data.shop_info.shop_id == nil) {
         
         ProductDetail *detailProduct = [ProductDetail new];
         detailProduct.product_id = [_loadedData objectForKey:@"product_id"];
@@ -499,7 +473,7 @@ OtherProductDelegate
         shopInfo.shop_name = [_loadedData objectForKey:@"shop_name"];
         
         DetailProductResult *result = [DetailProductResult new];
-        result.product = detailProduct;
+        result.info = detailProduct;
         result.shop_info = shopInfo;
         
         ProductImages *image = [ProductImages new];
@@ -507,14 +481,13 @@ OtherProductDelegate
         result.product_images = [NSArray arrayWithObject:image];
         
         Product *product = [Product new];
-        product.result = result;
+        product.data = result;
         product.status = @"OK";
         product.isDummyProduct = YES;
         [self requestprocess:product];
         
-        [self configureRestKit];
         [self loadData];
-        if (_product.result.wholesale_price) {
+        if (_product.data.wholesale_price) {
             _expandedSections = [[NSMutableArray alloc] initWithArray:@[[NSNumber numberWithInteger:0], [NSNumber numberWithInteger:1]]];
         } else {
             _expandedSections = [[NSMutableArray alloc] initWithArray:@[[NSNumber numberWithInteger:0]]];
@@ -561,9 +534,9 @@ OtherProductDelegate
         switch (btn.tag) {
             case 22 : {
                 ProductAddEditViewController *editProductVC = [ProductAddEditViewController new];
-                editProductVC.data = @{kTKPDDETAIL_APIPRODUCTIDKEY: _product.result.product.product_id,
+                editProductVC.data = @{kTKPDDETAIL_APIPRODUCTIDKEY: _product.data.info.product_id,
                                        kTKPD_AUTHKEY : _auth?:@{},
-                                       DATA_PRODUCT_DETAIL_KEY : _product.result.product,
+                                       DATA_PRODUCT_DETAIL_KEY : _product.data.info,
                                        DATA_TYPE_ADD_EDIT_PRODUCT_KEY : @(TYPE_ADD_EDIT_PRODUCT_EDIT),
                                        DATA_IS_GOLD_MERCHANT :@(0) //TODO:: Change Value
                                        };
@@ -576,8 +549,8 @@ OtherProductDelegate
             case 23:
             {
                 // Move To warehouse
-                if ([_product.result.product.product_status integerValue] == PRODUCT_STATE_BANNED ||
-                    [_product.result.product.product_status integerValue] == PRODUCT_STATE_PENDING) {
+                if ([_product.data.info.product_status integerValue] == PRODUCT_STATE_BANNED ||
+                    [_product.data.info.product_status integerValue] == PRODUCT_STATE_PENDING) {
                     StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Permintaan Anda tidak dapat diproses, produk sedang dalam pengawasan."] delegate:self];
                     [alert show];
                 }
@@ -595,10 +568,10 @@ OtherProductDelegate
         switch (btn.tag) {
             case 12:
             {
-                if(_product.result.shop_info.shop_domain != nil) {
+                if(_product.data.shop_info.shop_domain != nil) {
                     ProductReputationViewController *productReputationViewController = [ProductReputationViewController new];
-                    productReputationViewController.strShopDomain = _product.result.shop_info.shop_domain;
-                    productReputationViewController.strProductID = _product.result.product.product_id;
+                    productReputationViewController.strShopDomain = _product.data.shop_info.shop_domain;
+                    productReputationViewController.strProductID = _product.data.info.product_id;
                     [self.navigationController pushViewController:productReputationViewController animated:YES];
                 }
                 return;
@@ -607,7 +580,7 @@ OtherProductDelegate
                 
                 // go to review page
                 ProductReviewViewController *vc = [ProductReviewViewController new];
-                NSArray *images = _product.result.product_images;
+                NSArray *images = _product.data.product_images;
                 ProductImages *image = images[0];
                 
                 vc.data = @{
@@ -626,16 +599,16 @@ OtherProductDelegate
             {
                 // got to talk page
                 ProductTalkViewController *vc = [ProductTalkViewController new];
-                NSArray *images = _product.result.product_images;
+                NSArray *images = _product.data.product_images;
                 ProductImages *image = images.count>0? images[0]:nil;
                 
                 [_datatalk setObject:[_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@(0) forKey:kTKPDDETAIL_APIPRODUCTIDKEY];
                 [_datatalk setObject:image.image_src?:@(0) forKey:kTKPDDETAILPRODUCT_APIIMAGESRCKEY];
-                [_datatalk setObject:_product.result.statistic.product_sold_count?:@"0" forKey:kTKPDDETAILPRODUCT_APIPRODUCTSOLDKEY];
-                [_datatalk setObject:_product.result.statistic.product_view_count?:@"0" forKey:kTKPDDETAILPRODUCT_APIPRODUCTVIEWKEY];
-                [_datatalk setObject:_product.result.shop_info.shop_id?:@"" forKey:TKPD_TALK_SHOP_ID];
-                [_datatalk setObject:_product.result.product.product_status?:@"" forKey:TKPD_TALK_PRODUCT_STATUS];
-                [_datatalk setObject:_product.result.product.product_id forKey:TKPD_PRODUCT_ID  ];
+                [_datatalk setObject:_product.data.statistic.product_sold_count?:@"0" forKey:kTKPDDETAILPRODUCT_APIPRODUCTSOLDKEY];
+                [_datatalk setObject:_product.data.statistic.product_view_count?:@"0" forKey:kTKPDDETAILPRODUCT_APIPRODUCTVIEWKEY];
+                [_datatalk setObject:_product.data.shop_info.shop_id?:@"" forKey:TKPD_TALK_SHOP_ID];
+                [_datatalk setObject:_product.data.info.product_status?:@"" forKey:TKPD_TALK_PRODUCT_STATUS];
+                [_datatalk setObject:_product.data.info.product_id forKey:TKPD_PRODUCT_ID  ];
                 
                 NSMutableDictionary *data = [NSMutableDictionary new];
                 [data addEntriesFromDictionary:_datatalk];
@@ -655,8 +628,8 @@ OtherProductDelegate
                 if (_product) {
                     NSString *title = [NSString stringWithFormat:@"Jual %@ - %@ | Tokopedia ",
                                        _formattedProductTitle,
-                                       _product.result.shop_info.shop_name];
-                    NSURL *url = [NSURL URLWithString:_product.result.product.product_url];
+                                       _product.data.shop_info.shop_name];
+                    NSURL *url = [NSURL URLWithString:_product.data.info.product_url];
                     UIActivityViewController *controller = [UIActivityViewController shareDialogWithTitle:title
                                                                                                       url:url
                                                                                                    anchor:btn];
@@ -670,10 +643,10 @@ OtherProductDelegate
                 //Buy
                 if(_auth) {
                     TransactionATCViewController *transactionVC = [TransactionATCViewController new];
-                    transactionVC.wholeSales = _product.result.wholesale_price;
-                    transactionVC.productPrice = _product.result.product.product_price;
-                    transactionVC.data = @{DATA_DETAIL_PRODUCT_KEY:_product.result};
-                    transactionVC.productID = _product.result.product.product_id;
+                    transactionVC.wholeSales = _product.data.wholesale_price;
+                    transactionVC.productPrice = _product.data.info.product_price;
+                    transactionVC.data = @{DATA_DETAIL_PRODUCT_KEY:_product.data};
+                    transactionVC.productID = _product.data.info.product_id;
                     transactionVC.isSnapSearchProduct = _isSnapSearchProduct;
                     [self.navigationController pushViewController:transactionVC animated:YES];
                 } else {
@@ -695,7 +668,7 @@ OtherProductDelegate
             case 17 : {
                 if (tokopediaNetworkManagerFavorite.getObjectRequest!=nil && tokopediaNetworkManagerFavorite.getObjectRequest.isExecuting) return;
                 if(_auth) {
-                    [self favoriteShop:_product.result.shop_info.shop_id];
+                    [self favoriteShop:_product.data.shop_info.shop_id];
                 } else {
                     UINavigationController *navigationController = [[UINavigationController alloc] init];
                     navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
@@ -718,7 +691,7 @@ OtherProductDelegate
                 if(_auth) {
                     //UnLove Shop
                     [self configureFavoriteRestkit];
-                    [self favoriteShop:_product.result.shop_info.shop_id];
+                    [self favoriteShop:_product.data.shop_info.shop_id];
                 } else {
                     UINavigationController *navigationController = [[UINavigationController alloc] init];
                     navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
@@ -737,7 +710,7 @@ OtherProductDelegate
                 break;
             }
             case 20 : {
-                NSString *shopid = _product.result.shop_info.shop_id;
+                NSString *shopid = _product.data.shop_info.shop_id;
                 if(!shopid) {
                     return;
                 }
@@ -749,7 +722,7 @@ OtherProductDelegate
                     ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
                     
                     container.data = @{kTKPDDETAIL_APISHOPIDKEY:shopid,
-                                       kTKPDDETAIL_APISHOPNAMEKEY:_product.result.shop_info.shop_name,
+                                       kTKPDDETAIL_APISHOPNAMEKEY:_product.data.shop_info.shop_name,
                                        kTKPD_AUTHKEY:_auth?:@{}};
                     container.initialEtalase = selectedEtalase;
                     
@@ -803,8 +776,8 @@ OtherProductDelegate
             }
             case UIGestureRecognizerStateEnded: {
                 // Move To warehouse
-                if ([_product.result.product.product_status integerValue] == PRODUCT_STATE_BANNED ||
-                    [_product.result.product.product_status integerValue] == PRODUCT_STATE_PENDING) {
+                if ([_product.data.info.product_status integerValue] == PRODUCT_STATE_BANNED ||
+                    [_product.data.info.product_status integerValue] == PRODUCT_STATE_PENDING) {
                     StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Permintaan Anda tidak dapat diproses, produk sedang dalam pengawasan."] delegate:self];
                     [alert show];
                 }
@@ -863,16 +836,16 @@ OtherProductDelegate
             }
             case UIGestureRecognizerStateEnded: {
                 ProductAddEditViewController *editProductVC = [ProductAddEditViewController new];
-                if(_product.result.product.product_move_to == nil){
-                    if([_product.result.product.product_status intValue] ==PRODUCT_STATE_WAREHOUSE){
-                        _product.result.product.product_move_to = [@(PRODUCT_WAREHOUSE_YES_ID) stringValue];
+                if(_product.data.info.product_move_to == nil){
+                    if([_product.data.info.product_status intValue] ==PRODUCT_STATE_WAREHOUSE){
+                        _product.data.info.product_move_to = [@(PRODUCT_WAREHOUSE_YES_ID) stringValue];
                     }else{
-                        _product.result.product.product_move_to = [@(PRODUCT_WAREHOUSE_NO_ID) stringValue];
+                        _product.data.info.product_move_to = [@(PRODUCT_WAREHOUSE_NO_ID) stringValue];
                     }
                 }
-                editProductVC.data = @{kTKPDDETAIL_APIPRODUCTIDKEY: _product.result.product.product_id,
+                editProductVC.data = @{kTKPDDETAIL_APIPRODUCTIDKEY: _product.data.info.product_id,
                                        kTKPD_AUTHKEY : _auth?:@{},
-                                       DATA_PRODUCT_DETAIL_KEY : _product.result.product,
+                                       DATA_PRODUCT_DETAIL_KEY : _product.data.info,
                                        DATA_TYPE_ADD_EDIT_PRODUCT_KEY : @(TYPE_ADD_EDIT_PRODUCT_EDIT),
                                        DATA_IS_GOLD_MERCHANT :@(0) //TODO:: Change Value
                                        };
@@ -1058,8 +1031,8 @@ OtherProductDelegate
     if (sectionIsExanded) {
         if (indexPath.section == 0) {
             return _informationHeight+50;
-        } else if (indexPath.section == 1 && _product.result.wholesale_price.count > 0) {
-            return (44*2) + (_product.result.wholesale_price.count*44);//44 is standart height of uitableviewcell
+        } else if (indexPath.section == 1 && _product.data.wholesale_price.count > 0) {
+            return (44*2) + (_product.data.wholesale_price.count*44);//44 is standart height of uitableviewcell
         } else {
             return _descriptionHeight+50;
         }
@@ -1087,6 +1060,7 @@ OtherProductDelegate
     return 1;
 }
 
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell* cell = nil;
@@ -1103,28 +1077,19 @@ OtherProductDelegate
         [self productinfocell:productInfoCell withtableview:tableView];
         
         //Check product returnable
-        if(_product.result.product.product_returnable!=nil && [_product.result.product.product_returnable isEqualToString:@"1"]) {
-            if([_product.result.shop_info.shop_has_terms isEqualToString:@"0"]) {
-                NSString *strCanReture = [CStringCanReture stringByReplacingOccurrencesOfString:CStringCanRetureReplace withString:@""];
-                [productInfoCell setLblDescriptionToko:strCanReture];
-            }
-            else {
-                [productInfoCell setLblDescriptionToko:CStringCanReture];
-                NSRange range = [CStringCanReture rangeOfString:CStringCanRetureLinkDetection];
-                [productInfoCell getLblRetur].delegate = self;
-                
-                [[productInfoCell getLblRetur] addLinkToURL:[NSURL URLWithString:@""] withRange:range];
-                
-                tokopediaNoteCanReture = [TokopediaNetworkManager new];
-                tokopediaNoteCanReture.delegate = self;
-                tokopediaNoteCanReture.tagRequest = CTagNoteCanReture;
-                [tokopediaNoteCanReture doRequest];
-            }
-        }
-        else if(_product.result.product.product_returnable!=nil && [_product.result.product.product_returnable isEqualToString:@"2"]) {
-            [productInfoCell setLblDescriptionToko:CStringCannotReture];
-        }
-        else {
+        BOOL isProductReturnable = _product.data.info.return_info && ![_product.data.info.return_info.content isEqualToString:@""];
+        if(isProductReturnable) {
+            NSArray* rgbArray = [_product.data.info.return_info.color_rgb componentsSeparatedByString:@","];
+            UIColor* color = [UIColor colorWithRed:([rgbArray[0] integerValue]/255.0) green:([rgbArray[1] integerValue]/255.0) blue:([rgbArray[2] integerValue]/255.0) alpha:0.2];
+            [productInfoCell setLblDescriptionToko:_product.data.info.return_info.content withImageURL:_product.data.info.return_info.icon withBGColor:color]
+            ;
+            productInfoCell.didTapReturnableInfo = ^(NSURL* url) {
+                WebViewController* web = [[WebViewController alloc] init];
+                web.strTitle = @"Keterangan Pengembalian Barang";
+                web.strURL = [url absoluteString];
+                [self.navigationController pushViewController:web animated:YES];
+            };
+        } else {
             [productInfoCell hiddenViewRetur];
         }
         
@@ -1139,10 +1104,10 @@ OtherProductDelegate
             if (cell == nil) {
                 cell = [DetailProductWholesaleCell newcell];
                 CGRect tempContentView = cell.contentView.frame;
-                tempContentView.size.height = (_product.result.wholesale_price.count*4)+(44*2); //44 is height that currently is used(standard height uitableviewcell)
+                tempContentView.size.height = (_product.data.wholesale_price.count*4)+(44*2); //44 is height that currently is used(standard height uitableviewcell)
                 cell.contentView.frame = tempContentView;
             }
-            ((DetailProductWholesaleCell*)cell).data = @{kTKPDDETAIL_APIWHOLESALEPRICEPATHKEY : _product.result.wholesale_price};
+            ((DetailProductWholesaleCell*)cell).data = @{kTKPDDETAIL_APIWHOLESALEPRICEPATHKEY : _product.data.wholesale_price};
             
             return cell;
         }
@@ -1197,13 +1162,13 @@ OtherProductDelegate
 
 -(void)productinfocell:(DetailProductInfoCell *)cell withtableview:(UITableView*)tableView
 {
-    ((DetailProductInfoCell*)cell).minorderlabel.text = _product.result.product.product_min_order;
-    ((DetailProductInfoCell*)cell).weightlabel.text = [NSString stringWithFormat:@"%@ %@",_product.result.product.product_weight?:@"0", _product.result.product.product_weight_unit?:@"gr"];
-    ((DetailProductInfoCell*)cell).insurancelabel.text = _product.result.product.product_insurance;
-    ((DetailProductInfoCell*)cell).conditionlabel.text = _product.result.product.product_condition;
-    [((DetailProductInfoCell*)cell).etalasebutton setTitle:_product.result.product.product_etalase forState:UIControlStateNormal];
+    ((DetailProductInfoCell*)cell).minorderlabel.text = _product.data.info.product_min_order;
+    ((DetailProductInfoCell*)cell).weightlabel.text = [NSString stringWithFormat:@"%@ %@",_product.data.info.product_weight?:@"0", _product.data.info.product_weight_unit?:@"gr"];
+    ((DetailProductInfoCell*)cell).insurancelabel.text = _product.data.info.product_insurance;
+    ((DetailProductInfoCell*)cell).conditionlabel.text = _product.data.info.product_condition;
+    [((DetailProductInfoCell*)cell).etalasebutton setTitle:_product.data.info.product_etalase forState:UIControlStateNormal];
     
-    NSArray *breadcrumbs = _product.result.breadcrumb;
+    NSArray *breadcrumbs = _product.data.breadcrumb;
     for (int i = 0; i<3; i++) {
         UIButton *button = [cell.categorybuttons objectAtIndex:i];
         if (i < breadcrumbs.count) {
@@ -1215,30 +1180,23 @@ OtherProductDelegate
             [button setTitle:@"" forState:UIControlStateNormal];
         }
     }
-    if ([_product.result.product.product_status integerValue]==PRODUCT_STATE_WAREHOUSE || [_product.result.product.product_status integerValue]==PRODUCT_STATE_PENDING)
+    if ([_product.data.info.product_status integerValue]==PRODUCT_STATE_WAREHOUSE || [_product.data.info.product_status integerValue]==PRODUCT_STATE_PENDING)
         [cell.etalasebutton setTitle:@"-" forState:UIControlStateNormal];
     else
-        [cell.etalasebutton setTitle:_product.result.product.product_etalase?:@"-" forState:UIControlStateNormal];
+        [cell.etalasebutton setTitle:_product.data.info.product_etalase?:@"-" forState:UIControlStateNormal];
     cell.etalasebutton.hidden = NO;
 }
 
 #pragma mark - TokopediaNetwork Delegate
 - (NSDictionary*)getParameter:(int)tag
 {
-    NSString *productID = _product.result.product.product_id?:@"0";
+    NSString *productID = _product.data.info.product_id?:@"0";
     if(tag == CTagPromote)
         return @{@"action" : @"promote_product", @"product_id" : productID};
-    else if(tag == CTagTokopediaNetworkManager)
-        return @{
-                 kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETDETAILACTIONKEY,
-                 kTKPDDETAIL_APIPRODUCTIDKEY : [_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@"0",
-                 @"product_key" : [_data objectForKey:@"product_key"]?:@"",
-                 @"shop_domain" : [_data objectForKey:@"shop_domain"]?:@""
-                 };
     else if(tag == CTagOtherProduct)
-        return @{@"shop_id" : _product.result.shop_info.shop_id,
+        return @{@"shop_id" : _product.data.shop_info.shop_id,
                  @"device" : @"ios",
-                 @"-id" : _product.result.product.product_id,
+                 @"-id" : _product.data.info.product_id,
                  @"source":@"other_product"
                  };
     else if(tag == CTagFavorite)
@@ -1255,11 +1213,11 @@ OtherProductDelegate
                  kTKPDDETAIL_APIPRODUCTIDKEY : productID};
     else if(tag == CTagNoteCanReture)
         return @{kTKPDDETAIL_ACTIONKEY:kTKPDDETAIL_APIGETNOTESDETAILKEY,
-                 kTKPDNOTES_APINOTEIDKEY:_product.result.shop_info.shop_has_terms?:@"0",
+                 kTKPDNOTES_APINOTEIDKEY:_product.data.shop_info.shop_has_terms?:@"0",
                  NOTES_TERMS_FLAG_KEY:@(1),
-                 kTKPDDETAIL_APISHOPIDKEY:_product.result.shop_info.shop_id?:@"0"};
+                 kTKPDDETAIL_APISHOPIDKEY:_product.data.shop_info.shop_id?:@"0"};
     else if(tag == CTagPriceAlert) {
-        return @{kTKPDDETAIL_APIPRODUCTIDKEY:_product.result.product.product_id,
+        return @{kTKPDDETAIL_APIPRODUCTIDKEY:_product.data.info.product_id,
                  kTKPDDETAIL_ACTIONKEY : kTKPDREMOVE_PRODUCT_PRICE_ALERT};
     }
     
@@ -1268,8 +1226,6 @@ OtherProductDelegate
 
 -(int)getRequestMethod:(int)tag{
     if(tag == CTagPromote)
-        return RKRequestMethodPOST;
-    else if(tag == CTagTokopediaNetworkManager)
         return RKRequestMethodPOST;
     else if(tag == CTagOtherProduct)
         return RKRequestMethodGET;
@@ -1292,8 +1248,6 @@ OtherProductDelegate
 {
     if(tag == CTagPromote)
         return @"action/product.pl";
-    else if(tag == CTagTokopediaNetworkManager)
-        return [_detailProductPostUrl isEqualToString:@""] ? kTKPDDETAILPRODUCT_APIPATH : _detailProductPostUrl;
     else if(tag == CTagOtherProduct)
         //return [_detailProductPostUrl isEqualToString:@""] ? kTKPDDETAILPRODUCT_APIPATH : _detailProductPostUrl;
         return @"/search/v2.3/product";
@@ -1344,158 +1298,7 @@ OtherProductDelegate
         
         return _objectPromoteManager;
     }
-    else if(tag == CTagTokopediaNetworkManager)
-    {
-        // initialize RestKit
-        //        _objectmanager =  [RKObjectManager sharedClient];
-        //        _objectmanager =  ![_detailProductBaseUrl isEqualToString:kTkpdBaseURLString]?[RKObjectManager sharedClient:_detailProductBaseUrl]:[RKObjectManager sharedClient];
-        if([_detailProductBaseUrl isEqualToString:kTkpdBaseURLString] || [_detailProductBaseUrl isEqualToString:@""]) {
-            _objectmanager = [RKObjectManager sharedClient];
-        } else {
-            _objectmanager = [RKObjectManager sharedClient:_detailProductBaseUrl];
-        }
-        
-        // setup object mappings
-        RKObjectMapping *productMapping = [RKObjectMapping mappingForClass:[Product class]];
-        [productMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-        
-        RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[DetailProductResult class]];
-        RKObjectMapping *infoMapping = [RKObjectMapping mappingForClass:[ProductDetail class]];
-        [infoMapping addAttributeMappingsFromDictionary:@{API_PRODUCT_NAME_KEY:API_PRODUCT_NAME_KEY,
-                                                          API_PRODUCT_WEIGHT_UNIT_KEY:API_PRODUCT_WEIGHT_UNIT_KEY,
-                                                          API_PRODUCT_WEIGHT_KEY:API_PRODUCT_WEIGHT_KEY,
-                                                          API_PRODUCT_DESCRIPTION_KEY:API_PRODUCT_DESCRIPTION_KEY,
-                                                          API_PRODUCT_PRICE_KEY:API_PRODUCT_PRICE_KEY,
-                                                          API_PRODUCT_INSURANCE_KEY:API_PRODUCT_INSURANCE_KEY,
-                                                          API_PRODUCT_CONDITION_KEY:API_PRODUCT_CONDITION_KEY,
-                                                          API_PRODUCT_ETALASE_ID_KEY:API_PRODUCT_ETALASE_ID_KEY,
-                                                          KTKPDPRODUCT_RETURNABLE:KTKPDPRODUCT_RETURNABLE,
-                                                          API_PRODUCT_ETALASE_KEY:API_PRODUCT_ETALASE_KEY,
-                                                          API_PRODUCT_MINIMUM_ORDER_KEY:API_PRODUCT_MINIMUM_ORDER_KEY,
-                                                          kTKPDDETAILPRODUCT_APIPRODUCTSTATUSKEY:kTKPDDETAILPRODUCT_APIPRODUCTSTATUSKEY,
-                                                          kTKPDDETAILPRODUCT_APIPRODUCTLASTUPDATEKEY:kTKPDDETAILPRODUCT_APIPRODUCTLASTUPDATEKEY,
-                                                          kTKPDDETAILPRODUCT_APIPRODUCTIDKEY:kTKPDDETAILPRODUCT_APIPRODUCTIDKEY,
-                                                          kTKPDDETAILPRODUCT_APIPRODUCTPRICEALERTKEY:kTKPDDETAILPRODUCT_APIPRODUCTPRICEALERTKEY,
-                                                          kTKPDDETAILPRODUCT_APIPRODUCTURLKEY:kTKPDDETAILPRODUCT_APIPRODUCTURLKEY,
-                                                          kTKPDPRODUCT_ALREADY_WISHLIST:kTKPDPRODUCT_ALREADY_WISHLIST
-                                                          }];
-        
-        RKObjectMapping *statisticMapping = [RKObjectMapping mappingForClass:[Statistic class]];
-        [statisticMapping addAttributeMappingsFromDictionary:@{kTKPDDETAILPRODUCT_APISTATISTICKEY:kTKPDDETAILPRODUCT_APISTATISTICKEY,
-                                                               kTKPDDETAILPRODUCT_APIPRODUCTSOLDKEY:kTKPDDETAILPRODUCT_APIPRODUCTSOLDKEY,
-                                                               kTKPDDETAILPRODUCT_APIPRODUCTTRANSACTIONKEY:kTKPDDETAILPRODUCT_APIPRODUCTTRANSACTIONKEY,
-                                                               kTKPDDETAILPRODUCT_APIPRODUCTSUCCESSRATEKEY:kTKPDDETAILPRODUCT_APIPRODUCTSUCCESSRATEKEY,
-                                                               kTKPDDETAILPRODUCT_APIPRODUCTVIEWKEY:kTKPDDETAILPRODUCT_APIPRODUCTVIEWKEY,
-                                                               kTKPDDETAILPRODUCT_APIPRODUCTCANCELRATEKEY:kTKPDDETAILPRODUCT_APIPRODUCTCANCELRATEKEY,
-                                                               kTKPDDETAILPRODUCT_APIPRODUCTTALKKEY:kTKPDDETAILPRODUCT_APIPRODUCTTALKKEY,
-                                                               kTKPDDETAILPRODUCT_APIPRODUCTTALKKEY:kTKPDDETAILPRODUCT_APIPRODUCTTALKKEY,
-                                                               kTKPDDETAILPRODUCT_APIPRODUCTREVIEWKEY:kTKPDDETAILPRODUCT_APIPRODUCTREVIEWKEY,
-                                                               KTKPDDETAILPRODUCT_APIPRODUCTQUALITYRATEKEY:KTKPDDETAILPRODUCT_APIPRODUCTQUALITYRATEKEY,
-                                                               KTKPDDETAILPRODUCT_APIPRODUCTACCURACYRATEKEY:KTKPDDETAILPRODUCT_APIPRODUCTACCURACYRATEKEY,
-                                                               KTKPDDETAILPRODUCT_APIPRODUCTQUALITYPOINTKEY:KTKPDDETAILPRODUCT_APIPRODUCTQUALITYPOINTKEY,
-                                                               KTKPDDETAILPRODUCT_APIPRODUCTACCURACYPOINTKEY:KTKPDDETAILPRODUCT_APIPRODUCTACCURACYPOINTKEY
-                                                               
-                                                               }];
-        
-        RKObjectMapping *shopinfoMapping = [RKObjectMapping mappingForClass:[ShopInfo class]];
-        [shopinfoMapping addAttributeMappingsFromDictionary:@{kTKPDDETAILPRODUCT_APISHOPINFOKEY:kTKPDDETAILPRODUCT_APISHOPINFOKEY,
-                                                              kTKPDDETAILPRODUCT_APISHOPOPENSINCEKEY:kTKPDDETAILPRODUCT_APISHOPOPENSINCEKEY,
-                                                              kTKPDDETAILPRODUCT_APISHOPLOCATIONKEY:kTKPDDETAILPRODUCT_APISHOPLOCATIONKEY,
-                                                              kTKPDDETAIL_APISHOPIDKEY:kTKPDDETAIL_APISHOPIDKEY,
-                                                              kTKPDDETAILPRODUCT_APISHOPHASTERMKEY:kTKPDDETAILPRODUCT_APISHOPHASTERMKEY,
-                                                              kTKPDDETAILPRODUCT_APISHOPLASTLOGINKEY:kTKPDDETAILPRODUCT_APISHOPLASTLOGINKEY,
-                                                              kTKPDDETAILPRODUCT_APISHOPTAGLINEKEY:kTKPDDETAILPRODUCT_APISHOPTAGLINEKEY,
-                                                              kTKPDDETAILPRODUCT_APISHOPNAMEKEY:kTKPDDETAILPRODUCT_APISHOPNAMEKEY,
-                                                              kTKPDDETAILPRODUCT_APISHOPISFAVKEY:kTKPDDETAILPRODUCT_APISHOPISFAVKEY,
-                                                              kTKPDDETAILPRODUCT_APISHOPDESCRIPTIONKEY:kTKPDDETAILPRODUCT_APISHOPDESCRIPTIONKEY,
-                                                              kTKPDDETAILPRODUCT_APISHOPAVATARKEY:kTKPDDETAILPRODUCT_APISHOPAVATARKEY,
-                                                              kTKPDDETAILPRODUCT_APISHOPDOMAINKEY:kTKPDDETAILPRODUCT_APISHOPDOMAINKEY,
-                                                              API_IS_GOLD_SHOP_KEY:API_IS_GOLD_SHOP_KEY,
-                                                              kTKPDDETAILPRODUCT_APISHOPSTATUSKEY:kTKPDDETAILPRODUCT_APISHOPSTATUSKEY,
-                                                              kTKPDDETAILPRODUCT_APISHOPCLOSEDUNTIL:kTKPDDETAILPRODUCT_APISHOPCLOSEDUNTIL,
-                                                              kTKPDDETAILPRODUCT_APISHOPCLOSEDREASON:kTKPDDETAILPRODUCT_APISHOPCLOSEDREASON,
-                                                              kTKPDDETAILPRODUCT_APISHOPCLOSEDNOTE:kTKPDDETAILPRODUCT_APISHOPCLOSEDNOTE,
-                                                              kTKPDDETAILPRODUCT_APISHOPURLKEY:kTKPDDETAILPRODUCT_APISHOPURLKEY
-                                                              ,@"shop_lucky":@"shop_lucky"
-                                                              }];
-        
-        RKObjectMapping *productRatingMapping = [RKObjectMapping mappingForClass:[Rating class]];
-        [productRatingMapping addAttributeMappingsFromDictionary:@{kTKPDDETAILPRODUCT_APIQUALITYRATE:kTKPDDETAILPRODUCT_APIQUALITYRATE,
-                                                                   kTKPDDETAILPRODUCT_APIQUALITYSTAR:kTKPDDETAILPRODUCT_APIQUALITYSTAR,
-                                                                   kTKPDDETAILPRODUCT_APIACCURACYRATE:kTKPDDETAILPRODUCT_APIACCURACYRATE,
-                                                                   kTKPDDETAILPRODUCT_APIACCURACYSTAR:kTKPDDETAILPRODUCT_APIACCURACYSTAR
-                                                                   }];
-        
-        
-        RKObjectMapping *shopstatsMapping = [RKObjectMapping mappingForClass:[ShopStats class]];
-        [shopstatsMapping addAttributeMappingsFromDictionary:@{kTKPDDETAILPRODUCT_APISHOPSERVICERATEKEY:kTKPDDETAILPRODUCT_APISHOPSERVICERATEKEY,
-                                                               CShopReputationScore:CShopReputationScore,
-                                                               CShopSpeedDesc:CShopSpeedDesc,
-                                                               kTKPDDETAILPRODUCT_APISHOPSERVICEDESCRIPTIONKEY:kTKPDDETAILPRODUCT_APISHOPSERVICEDESCRIPTIONKEY,
-                                                               kTKPDDETAILPRODUCT_APISHOPSPEEDRATEKEY:kTKPDDETAILPRODUCT_APISHOPSPEEDRATEKEY,
-                                                               kTKPDDETAILPRODUCT_APISHOPACURACYRATEKEY:kTKPDDETAILPRODUCT_APISHOPACURACYRATEKEY,
-                                                               kTKPDDETAILPRODUCT_APISHOPACURACYDESCRIPTIONKEY:kTKPDDETAILPRODUCT_APISHOPACURACYDESCRIPTIONKEY,
-                                                               kTKPDDETAILPRODUCT_APISHOPSPEEDDESCRIPTIONKEY:kTKPDDETAILPRODUCT_APISHOPSPEEDDESCRIPTIONKEY
-                                                               }];
-        
-        
-        RKObjectMapping *shopBadgeMapping = [RKObjectMapping mappingForClass:[ShopBadgeLevel class]];
-        [shopBadgeMapping addAttributeMappingsFromArray:@[CLevel, CSet]];
-        
-        RKObjectMapping *wholesaleMapping = [RKObjectMapping mappingForClass:[WholesalePrice class]];
-        [wholesaleMapping addAttributeMappingsFromArray:@[kTKPDDETAILPRODUCT_APIWHOLESALEMINKEY,kTKPDDETAILPRODUCT_APIWHOLESALEPRICEKEY,kTKPDDETAILPRODUCT_APIWHOLESALEMAXKEY]];
-        
-        RKObjectMapping *breadcrumbMapping = [RKObjectMapping mappingForClass:[Breadcrumb class]];
-        [breadcrumbMapping addAttributeMappingsFromArray:@[kTKPDDETAILPRODUCT_APIDEPARTMENTNAMEKEY,API_DEPARTMENT_ID_KEY]];
-        
-        RKObjectMapping *otherproductMapping = [RKObjectMapping mappingForClass:[OtherProduct class]];
-        [otherproductMapping addAttributeMappingsFromArray:@[API_PRODUCT_PRICE_KEY,API_PRODUCT_NAME_KEY,kTKPDDETAILPRODUCT_APIPRODUCTIDKEY,kTKPDDETAILPRODUCT_APIPRODUCTIMAGEKEY]];
-        
-        RKObjectMapping *imagesMapping = [RKObjectMapping mappingForClass:[ProductImages class]];
-        [imagesMapping addAttributeMappingsFromArray:@[kTKPDDETAILPRODUCT_APIIMAGEIDKEY,kTKPDDETAILPRODUCT_APIIMAGESTATUSKEY,kTKPDDETAILPRODUCT_APIIMAGEDESCRIPTIONKEY,kTKPDDETAILPRODUCT_APIIMAGEPRIMARYKEY,kTKPDDETAILPRODUCT_APIIMAGESRCKEY]];
-        
-        
-        //        RKObjectMapping *responseSpeedMapping = [RKObjectMapping mappingForClass:[ResponseSpeed class]];
-        //        [responseSpeedMapping addAttributeMappingsFromDictionary:@{COneDay:COneDay,
-        //                                                                   CTwoDay:CTwoDay,
-        //                                                                   CThreeDay:CThreeDay,
-        //                                                                   CSpeedLevel:CSpeedLevel,
-        //                                                                   CBadge:CBadge,
-        //                                                                   CCountTotal:CCountTotal}];
-        
-        // Relationship Mapping
-        [shopstatsMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CShopBadgeLevel toKeyPath:CShopBadgeLevel withMapping:shopBadgeMapping]];
-        //        [shopinfoMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:CResponseFast toKeyPath:CResponseFast withMapping:responseSpeedMapping]];
-        
-        [productMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIRESULTKEY toKeyPath:kTKPDDETAIL_APIRESULTKEY withMapping:resultMapping]];
-        
-        [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILPRODUCT_APIINFOKEY toKeyPath:API_PRODUCT_INFO_KEY withMapping:infoMapping]];
-        [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILPRODUCT_APISTATISTICKEY toKeyPath:kTKPDDETAILPRODUCT_APISTATISTICKEY withMapping:statisticMapping]];
-        [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILPRODUCT_APISHOPINFOKEY toKeyPath:kTKPDDETAILPRODUCT_APISHOPINFOKEY withMapping:shopinfoMapping]];
-        
-        [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILPRODUCT_APIRATINGKEY toKeyPath:kTKPDDETAILPRODUCT_APIRATINGKEY withMapping:productRatingMapping]];
-        
-        [shopinfoMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILPRODUCT_APISHOPSTATKEY toKeyPath:kTKPDDETAILPRODUCT_APISHOPSTATKEY withMapping:shopstatsMapping]];
-        
-        RKRelationshipMapping *breadcrumbRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIBREADCRUMBPATHKEY toKeyPath:kTKPDDETAIL_APIBREADCRUMBPATHKEY withMapping:breadcrumbMapping];
-        [resultMapping addPropertyMapping:breadcrumbRel];
-        RKRelationshipMapping *otherproductRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIOTHERPRODUCTPATHKEY toKeyPath:kTKPDDETAIL_APIOTHERPRODUCTPATHKEY withMapping:otherproductMapping];
-        [resultMapping addPropertyMapping:otherproductRel];
-        RKRelationshipMapping *productimageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIPRODUCTIMAGEPATHKEY toKeyPath:kTKPDDETAIL_APIPRODUCTIMAGEPATHKEY withMapping:imagesMapping];
-        [resultMapping addPropertyMapping:productimageRel];
-        RKRelationshipMapping *wholesaleRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIWHOLESALEPRICEPATHKEY toKeyPath:kTKPDDETAIL_APIWHOLESALEPRICEPATHKEY withMapping:wholesaleMapping];
-        [resultMapping addPropertyMapping:wholesaleRel];
-        
-        // Response Descriptor
-        RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:productMapping
-                                                                                                method:RKRequestMethodPOST
-                                                                                           pathPattern:[self getPath:tag]
-                                                                                               keyPath:@""
-                                                                                           statusCodes:kTkpdIndexSetStatusCodeOK];
-        
-        [_objectmanager addResponseDescriptor:responseDescriptor];
-        return _objectmanager;
-    }
+   
     else if(tag == CTagOtherProduct)
     {
         //_objectOtherProductManager = [RKObjectManager sharedClient];
@@ -1702,7 +1505,7 @@ OtherProductDelegate
     }
     else if(tag == CTagTokopediaNetworkManager)
     {
-        [_act stopAnimating];
+        
         _buyButton.enabled = YES;
         [self configureGetOtherProductRestkit];
         
@@ -1738,7 +1541,7 @@ OtherProductDelegate
             stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringSuccessUnFavoriteShop] delegate:self];
         }
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"updateFavoriteShop" object:_product.result.shop_info.shop_url];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"updateFavoriteShop" object:_product.data.shop_info.shop_url];
         
         [stickyAlertView show];
         [self requestFavoriteResult:successResult withOperation:operation];
@@ -1818,13 +1621,13 @@ OtherProductDelegate
             StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringSuccessRemovePriceAlert] delegate:self];
             [stickyAlertView show];
             
-            _product.result.product.product_price_alert = @"0";
-            [self setBackgroundPriceAlert:[_product.result.product.product_price_alert isEqualToString:@"x"]];
+            _product.data.info.product_price_alert = @"0";
+            [self setBackgroundPriceAlert:[_product.data.info.product_price_alert isEqualToString:@"x"]];
         }
         [self setRequestingAction:btnPriceAlert isLoading:NO];
     }
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"didSeeAProduct" object:_product.result];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"didSeeAProduct" object:_product.data];
 }
 
 
@@ -1832,10 +1635,6 @@ OtherProductDelegate
 {
     
     if(tag == CTagPromote)
-    {
-        
-    }
-    else if(tag == CTagTokopediaNetworkManager)
     {
         
     }
@@ -1880,8 +1679,7 @@ OtherProductDelegate
     }
     else if(tag == CTagTokopediaNetworkManager)
     {
-        _act.hidden = YES;
-        [_act stopAnimating];
+
         [self unsetWarehouse];
         
     }
@@ -1900,27 +1698,6 @@ OtherProductDelegate
     }
 }
 
-- (void)actionRequestAsync:(int)tag
-{
-    if(tag == CTagPromote)
-    {
-        
-    }
-    else if(tag == CTagTokopediaNetworkManager)
-    {
-    }
-    else if(tag == CTagOtherProduct)
-    {
-    }
-    else if(tag == CTagFavorite)
-    {}
-    else if(tag == CTagUnWishList)
-    {}
-    else if(tag == CTagWishList)
-    {}
-    else if(tag == CTagPriceAlert)
-    {}
-}
 
 - (void)actionAfterFailRequestMaxTries:(int)tag
 {
@@ -1955,10 +1732,7 @@ OtherProductDelegate
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
-    
-    [tokopediaNetworkManager requestCancel];
     _promoteNetworkManager.delegate = nil;
-    [self cancel];
     
     tokopediaNetworkManagerWishList.delegate = nil;
     [tokopediaNetworkManagerWishList requestCancel];
@@ -1968,10 +1742,6 @@ OtherProductDelegate
     
     tokopediaNetworkManagerFavorite.delegate = nil;
     [tokopediaNetworkManagerFavorite requestCancel];
-    
-    tokopediaNetworkManager.delegate = nil;
-    [tokopediaNetworkManager requestCancel];
-    tokopediaNetworkManager = nil;
     
     tokopediaOtherProduct.delegate = nil;
     [tokopediaOtherProduct requestCancel];
@@ -1984,44 +1754,34 @@ OtherProductDelegate
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Request and Mapping
--(void)cancel
-{
-    [_objectmanager.operationQueue cancelAllOperations];
-    _objectmanager = nil;
+
+- (void)loadData {
+    TokopediaNetworkManager *networkManager = [[TokopediaNetworkManager alloc] init];
+    networkManager.isUsingHmac = YES;
+    [networkManager requestWithBaseUrl:[NSString v4Url]
+                                  path:@"/v4/product/get_detail.pl"
+                                method:RKRequestMethodGET
+                             parameter:@{
+                                         @"product_id" : [_data objectForKey:@"product_id"]?:@"0",
+                                         @"product_key" : [_data objectForKey:@"product_key"]?:@"",
+                                         @"shop_domain" : [_data objectForKey:@"shop_domain"]?:@""
+                                         }
+                               mapping:[Product mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                 [self requestsuccess:successResult withOperation:operation];
+                                 
+                             } onFailure:^(NSError *errorResult) {
+                                 
+                             }];
 }
 
-- (void)configureRestKit
-{
-    
-}
 
-- (void)loadData
-{
-    [_cachecontroller getFileModificationDate];
-    _timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
-    if (_timeinterval > _cachecontroller.URLCacheInterval) {
-        //        [_act startAnimating];
-        //        _buyButton.enabled = NO;
-        [tokopediaNetworkManager doRequest];
-    }
-    else {
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-        NSLog(@"Updated: %@",[dateFormatter stringFromDate:_cachecontroller.fileDate]);
-        NSLog(@"cache and updated in last 24 hours.");
-    }
-}
-
--(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation *)operation
-{
+-(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation *)operation {
     NSDictionary *result = ((RKMappingResult*)object).dictionary;
     _product = [result objectForKey:@""];
     
@@ -2030,7 +1790,7 @@ OtherProductDelegate
     
     if (status) {
         
-        if (_product.result == nil) {
+        if (_product.data == nil) {
             [self initNoResultView];
             self.table.hidden = YES;
             return;
@@ -2039,8 +1799,8 @@ OtherProductDelegate
         [self loadDataOtherProduct];
         
         //Set icon speed
-        [SmileyAndMedal setIconResponseSpeed:_product.result.shop_info.respond_speed.badge withImage:btnKecepatan largeImage:NO];
-        [SmileyAndMedal generateMedalWithLevel:_product.result.shop_info.shop_stats.shop_badge_level.level withSet:_product.result.shop_info.shop_stats.shop_badge_level.set withImage:btnReputasi isLarge:YES];
+        [SmileyAndMedal setIconResponseSpeed:_product.data.shop_info.respond_speed.badge withImage:btnKecepatan largeImage:NO];
+        [SmileyAndMedal generateMedalWithLevel:_product.data.shop_info.shop_stats.shop_badge_level.level withSet:_product.data.shop_info.shop_stats.shop_badge_level.set withImage:btnReputasi isLarge:YES];
         
         //Set image and title kecepatan
         CGFloat spacing = 6.0;
@@ -2058,30 +1818,30 @@ OtherProductDelegate
         
         
         //Set toko tutup
-        if(_product.result.shop_info.shop_status!=nil && [_product.result.shop_info.shop_status isEqualToString:@"2"]) {
+        if(_product.data.shop_info.shop_status!=nil && [_product.data.shop_info.shop_status isEqualToString:@"2"]) {
             viewContentTokoTutup.hidden = NO;
-            lblDescTokoTutup.text = [NSString stringWithFormat:FORMAT_TOKO_TUTUP, _product.result.shop_info.shop_is_closed_until];
-        } else if (_product.result.shop_info.shop_status != nil && [_product.result.shop_info.shop_status isEqualToString:@"3"]) {
+            lblDescTokoTutup.text = [NSString stringWithFormat:FORMAT_TOKO_TUTUP, _product.data.shop_info.shop_is_closed_until];
+        } else if (_product.data.shop_info.shop_status != nil && [_product.data.shop_info.shop_status isEqualToString:@"3"]) {
             viewContentTokoTutup.hidden = NO;
             lblDescTokoTutup.text = @"Toko ini sedang dimoderasi";
         }
         
         //Set shop in warehouse
-        if([_product.result.product.product_status intValue]!=PRODUCT_STATE_WAREHOUSE &&
-           [_product.result.product.product_status intValue]!=PRODUCT_STATE_PENDING) {
+        if([_product.data.info.product_status intValue]!=PRODUCT_STATE_WAREHOUSE &&
+           [_product.data.info.product_status intValue]!=PRODUCT_STATE_PENDING) {
             [self unsetWarehouse];
-        } else if ([_product.result.product.product_status intValue] ==PRODUCT_STATE_WAREHOUSE||
-                   [_product.result.product.product_status integerValue] == PRODUCT_STATE_PENDING) {
+        } else if ([_product.data.info.product_status intValue] ==PRODUCT_STATE_WAREHOUSE||
+                   [_product.data.info.product_status integerValue] == PRODUCT_STATE_PENDING) {
             
-            if([_product.result.product.product_status integerValue] == PRODUCT_STATE_BANNED ||
-               [_product.result.product.product_status integerValue] == PRODUCT_STATE_PENDING) {
+            if([_product.data.info.product_status integerValue] == PRODUCT_STATE_BANNED ||
+               [_product.data.info.product_status integerValue] == PRODUCT_STATE_PENDING) {
                 lblTitleWarehouse.text = CStringTitleBanned;
                 [self initAttributeText:lblDescWarehouse withStrText:CStringDescBanned withColor:lblDescWarehouse.textColor withFont:lblDescWarehouse.font withAlignment:NSTextAlignmentCenter];
             }
             
             constraintHeightWarehouse.constant = 50;
             UserAuthentificationManager *userAuthentificationManager = [UserAuthentificationManager new];
-            if(![userAuthentificationManager isMyShopWithShopId:_product.result.shop_info.shop_id]){
+            if(![userAuthentificationManager isMyShopWithShopId:_product.data.shop_info.shop_id]){
                 _constraintHeightShare.constant = 50;
                 _header.frame = CGRectMake(0, 0, _table.bounds.size.width, 570);
             }
@@ -2125,8 +1885,7 @@ OtherProductDelegate
     //    [viewContentWarehouse removeConstraint:constraintHeightWarehouse];
     //    [viewContentWarehouse addConstraints:_constraint];
     viewContentWarehouse.hidden = YES;
-    _header.frame = CGRectMake(0, 0, _table.bounds.size.width, 520
-                               );
+    _header.frame = CGRectMake(0, 0, _table.bounds.size.width, 520);
     _table.tableHeaderView = _header;
     
 }
@@ -2148,8 +1907,8 @@ OtherProductDelegate
             [self addUserActivity];
         }
         
-        _formattedProductDescription = [NSString convertHTML:_product.result.product.product_description]?:@"-";
-        _formattedProductTitle = [NSString stringWithFormat:@" %@", _product.result.product.product_name];
+        _formattedProductDescription = [NSString convertHTML:_product.data.info.product_description]?:@"-";
+        _formattedProductTitle = [NSString stringWithFormat:@" %@", _product.data.info.product_name];
         BOOL status = [_product.status isEqualToString:kTKPDREQUEST_OKSTATUS];
         
         if (status) {
@@ -2157,19 +1916,19 @@ OtherProductDelegate
             _constraintHeightBuyButton.constant = 48;
             _constraintHeightDinkButton.constant = 48;
             
-            if (_product.result.wholesale_price.count > 0) {
+            if (_product.data.wholesale_price.count > 0) {
                 _isnodatawholesale = NO;
             }
             if([_formattedProductDescription isEqualToString:@"0"])
                 _formattedProductDescription = NO_DESCRIPTION;
             
-            selectedEtalase.etalase_id = [_product.result.product.product_etalase_id stringValue];;
-            selectedEtalase.etalase_name = _product.result.product.product_etalase;
+            selectedEtalase.etalase_id = [_product.data.info.product_etalase_id stringValue];;
+            selectedEtalase.etalase_name = _product.data.info.product_etalase;
             
             UserAuthentificationManager *userAuthentificationManager = [UserAuthentificationManager new];
             self.navigationItem.rightBarButtonItems = nil;
             
-            if([userAuthentificationManager isMyShopWithShopId:_product.result.shop_info.shop_id] && [userAuthentificationManager isLogin] && !_product.isDummyProduct) {
+            if([userAuthentificationManager isMyShopWithShopId:_product.data.shop_info.shop_id] && [userAuthentificationManager isLogin] && !_product.isDummyProduct) {
                 //MyShop
                 [_dinkButton setHidden:NO];
                 UIBarButtonItem *barbutton;
@@ -2178,7 +1937,7 @@ OtherProductDelegate
                 [barbutton setTag:22];
                 
                 UIBarButtonItem *barbutton1;
-                if ([_product.result.product.product_status integerValue] == PRODUCT_STATE_WAREHOUSE) {
+                if ([_product.data.info.product_status integerValue] == PRODUCT_STATE_WAREHOUSE) {
                     barbutton1 = [self createBarButton:CGRectMake(0,0,22,22) withImage:[UIImage imageNamed:@"icon_move_etalase.png"] withAction:@selector(gestureMoveToEtalase:)];
                     [barbutton1 setTag:23];
                 }
@@ -2188,8 +1947,8 @@ OtherProductDelegate
                     [barbutton1 setTag:24];
                 }
                 
-                if([_product.result.product.product_status integerValue] == PRODUCT_STATE_BANNED ||
-                   [_product.result.product.product_status integerValue] == PRODUCT_STATE_PENDING) {
+                if([_product.data.info.product_status integerValue] == PRODUCT_STATE_BANNED ||
+                   [_product.data.info.product_status integerValue] == PRODUCT_STATE_PENDING) {
                     self.navigationItem.rightBarButtonItems = nil;
                 } else {
                     self.navigationItem.rightBarButtonItems = @[barbutton, barbutton1];
@@ -2220,7 +1979,7 @@ OtherProductDelegate
                 btnWishList.titleEdgeInsets = btnPriceAlert.titleEdgeInsets = UIEdgeInsetsMake(3, 0, 0, 0);
                 
                 //Set background wishlist
-                if([_product.result.product.product_already_wishlist isEqualToString:@"1"])
+                if([_product.data.info.product_already_wishlist isEqualToString:@"1"])
                 {
                     [self setBackgroundWishlist:YES];
                     btnWishList.tag = 0;
@@ -2233,7 +1992,7 @@ OtherProductDelegate
                 
                 
                 //Set background priceAlert
-                [self setBackgroundPriceAlert:[_product.result.product.product_price_alert isEqualToString:@"x"]];
+                [self setBackgroundPriceAlert:[_product.data.info.product_price_alert isEqualToString:@"x"]];
             }
             
             if(_product.isDummyProduct) {
@@ -2262,7 +2021,7 @@ OtherProductDelegate
             }
             
             //Track in GA
-            [TPAnalytics trackProductView:_product.result.product];
+            [TPAnalytics trackProductView:_product.data.info];
             [TPLocalytics trackProductView:_product];
 
             _isnodata = NO;
@@ -2270,7 +2029,7 @@ OtherProductDelegate
             
             _table.hidden = NO;
             
-            if(_product.result.shop_info.shop_status!=nil && [_product.result.shop_info.shop_status isEqualToString:@"2"]) {
+            if(_product.data.shop_info.shop_status!=nil && [_product.data.shop_info.shop_status isEqualToString:@"2"]) {
                 if(hasSetTokoTutup){
                     return;
                 }
@@ -2280,12 +2039,12 @@ OtherProductDelegate
             }
             else {
                 //Check is in warehouse
-                if([_product.result.product.product_status integerValue]==PRODUCT_STATE_WAREHOUSE || [_product.result.product.product_status integerValue]==PRODUCT_STATE_PENDING) {
+                if([_product.data.info.product_status integerValue]==PRODUCT_STATE_WAREHOUSE || [_product.data.info.product_status integerValue]==PRODUCT_STATE_PENDING) {
                     [self hiddenButtonBuyAndPromo];
                 }
             }
             
-            if(_product.result.shop_info.shop_already_favorited == 1) {
+            if(_product.data.shop_info.shop_already_favorited == 1) {
                 _favButton.tag = 17;
                 [self setButtonFav];
             } else {
@@ -2293,7 +2052,7 @@ OtherProductDelegate
                 [self setButtonFav];
             }
             
-            if([_userManager isMyShopWithShopId:_product.result.shop_info.shop_id]) {
+            if([_userManager isMyShopWithShopId:_product.data.shop_info.shop_id]) {
                 _favButton.hidden = YES;
             } else {
                 _favButton.hidden = NO;
@@ -2322,7 +2081,7 @@ OtherProductDelegate
 
 #pragma mark - Cell Delegate
 - (void)gotToSearchWithDepartment:(NSInteger)index {
-    NSArray *breadcrumbs = _product.result.breadcrumb;
+    NSArray *breadcrumbs = _product.data.breadcrumb;
     Breadcrumb *breadcrumb = breadcrumbs[index-10];
     
     SearchResultViewController *vc = [SearchResultViewController new];
@@ -2354,7 +2113,7 @@ OtherProductDelegate
         }
         case 12:
         {
-            NSArray *breadcrumbs = _product.result.breadcrumb;
+            NSArray *breadcrumbs = _product.data.breadcrumb;
             if([breadcrumbs count] == 3) {
                 [self gotToSearchWithDepartment:12];
             }
@@ -2364,18 +2123,18 @@ OtherProductDelegate
         case 13:
         {
             // Etalase
-            if(_product.result.product.product_etalase_id != nil) {
+            if(_product.data.info.product_etalase_id != nil) {
                 ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
                 
-                container.data = @{kTKPDDETAIL_APISHOPIDKEY:_product.result.shop_info.shop_id,
+                container.data = @{kTKPDDETAIL_APISHOPIDKEY:_product.data.shop_info.shop_id,
                                    kTKPD_AUTHKEY:_auth?:[NSNull null],
-                                   @"product_etalase_name" : _product.result.product.product_etalase,
-                                   @"product_etalase_id" : _product.result.product.product_etalase_id};
+                                   @"product_etalase_name" : _product.data.info.product_etalase,
+                                   @"product_etalase_id" : _product.data.info.product_etalase_id};
                 
-                if([_product.result.product.product_etalase_id respondsToSelector:@selector(stringValue)]){
+                if([_product.data.info.product_etalase_id respondsToSelector:@selector(stringValue)]){
                     EtalaseList *initEtalase = [EtalaseList new];
-                    [initEtalase setEtalase_id:[_product.result.product.product_etalase_id stringValue]];
-                    [initEtalase setEtalase_name:_product.result.product.product_etalase];
+                    [initEtalase setEtalase_id:[_product.data.info.product_etalase_id stringValue]];
+                    [initEtalase setEtalase_name:_product.data.info.product_etalase];
                     container.initialEtalase = initEtalase;
                 }
                 [self.navigationController pushViewController:container animated:YES];
@@ -2394,7 +2153,7 @@ OtherProductDelegate
 {
     SearchAWSProduct *product = _otherProductObj[index];
     if ([[_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY] integerValue] != [product.product_id integerValue]) {
-        [_TKPDNavigator navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_image withShopName:_product.result.shop_info.shop_name];
+        [_TKPDNavigator navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_image withShopName:_product.data.shop_info.shop_name];
     }
 }
 
@@ -2432,13 +2191,13 @@ OtherProductDelegate
 
 - (IBAction)actionReputasi:(id)sender
 {
-    NSString *strText = [NSString stringWithFormat:@"%@ %@", _product.result.shop_info.shop_stats.shop_reputation_score, CStringPoin];
+    NSString *strText = [NSString stringWithFormat:@"%@ %@", _product.data.shop_info.shop_stats.shop_reputation_score, CStringPoin];
     [self initPopUp:strText withSender:sender withRangeDesc:NSMakeRange(strText.length-CStringPoin.length, CStringPoin.length)];
 }
 
 - (IBAction)actionKecepatan:(id)sender
 {
-    [self initPopUp:_product.result.shop_info.respond_speed.speed_level withSender:sender withRangeDesc:NSMakeRange(0, 0)];
+    [self initPopUp:_product.data.shop_info.respond_speed.speed_level withSender:sender withRangeDesc:NSMakeRange(0, 0)];
 }
 
 - (void)setBackgroundPriceAlert:(BOOL)isActive
@@ -2543,11 +2302,11 @@ OtherProductDelegate
 
 - (IBAction)actionShare:(id)sender
 {
-    if (_product.result.product.product_url) {
+    if (_product.data.info.product_url) {
         NSString *title = [NSString stringWithFormat:@"%@ - %@ | Tokopedia ",
                            _formattedProductTitle,
-                           _product.result.shop_info.shop_name];
-        NSURL *url = [NSURL URLWithString:_product.result.product.product_url];
+                           _product.data.shop_info.shop_name];
+        NSURL *url = [NSURL URLWithString:_product.data.info.product_url];
         UIActivityViewController *controller = [UIActivityViewController shareDialogWithTitle:title
                                                                                           url:url
                                                                                        anchor:sender];
@@ -2573,20 +2332,20 @@ OtherProductDelegate
     if(_auth) {
         if(btnPriceAlert.backgroundColor == [UIColor whiteColor]) { //Not price alert yet
             PriceAlertViewController *priceAlertViewController = [PriceAlertViewController new];
-            priceAlertViewController.productDetail = _product.result.product;
+            priceAlertViewController.productDetail = _product.data.info;
             [self.navigationController pushViewController:priceAlertViewController animated:YES];
         }
         else {
             [self setRequestingAction:btnPriceAlert isLoading:YES];
 //            [tokopediaNetworkManagerPriceAlert doRequest];
-            [_request requestRemoveProductPriceAlertWithProductID:_product.result.product.product_id
+            [_request requestRemoveProductPriceAlertWithProductID:_product.data.info.product_id
                                                         onSuccess:^(GeneralAction *obj) {
                                                             if([obj.data.is_success isEqualToString:@"1"]) {
                                                                 StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringSuccessRemovePriceAlert] delegate:self];
                                                                 [stickyAlertView show];
                                                                 
-                                                                _product.result.product.product_price_alert = @"0";
-                                                                [self setBackgroundPriceAlert:[_product.result.product.product_price_alert isEqualToString:@"x"]];
+                                                                _product.data.info.product_price_alert = @"0";
+                                                                [self setBackgroundPriceAlert:[_product.data.info.product_price_alert isEqualToString:@"x"]];
                                                             }
                                                             [self setRequestingAction:btnPriceAlert isLoading:NO];
                                                         }
@@ -2674,25 +2433,25 @@ OtherProductDelegate
     
     
     //Update header view
-    _pricelabel.text = _product.result.product.product_price;
-    _countsoldlabel.text = [NSString stringWithFormat:@"%@", _product.result.statistic.product_sold_count?:@""];
-    _countviewlabel.text = [NSString stringWithFormat:@"%@", _product.result.statistic.product_view_count?:@""];
+    _pricelabel.text = _product.data.info.product_price;
+    _countsoldlabel.text = [NSString stringWithFormat:@"%@", _product.data.statistic.product_sold_count?:@""];
+    _countviewlabel.text = [NSString stringWithFormat:@"%@", _product.data.statistic.product_view_count?:@""];
     
-    [_reviewbutton setTitle:[NSString stringWithFormat:@"%@ Ulasan",_product.result.statistic.product_review_count?:@""] forState:UIControlStateNormal];
+    [_reviewbutton setTitle:[NSString stringWithFormat:@"%@ Ulasan",_product.data.statistic.product_review_count?:@""] forState:UIControlStateNormal];
     [_reviewbutton.layer setBorderWidth:1];
     [_reviewbutton.layer setBorderColor:[UIColor colorWithRed:231.0/255.0 green:231.0/255.0 blue:231.0/255.0 alpha:1].CGColor];
     
-    [_talkaboutbutton setTitle:[NSString stringWithFormat:@"%@ Diskusi",_product.result.statistic.product_talk_count?:@""] forState:UIControlStateNormal];
+    [_talkaboutbutton setTitle:[NSString stringWithFormat:@"%@ Diskusi",_product.data.statistic.product_talk_count?:@""] forState:UIControlStateNormal];
     [_talkaboutbutton.layer setBorderWidth:1];
     [_talkaboutbutton.layer setBorderColor:[UIColor colorWithRed:231.0/255.0 green:231.0/255.0 blue:231.0/255.0 alpha:1].CGColor];
     
-    _qualitynumberlabel.text = _product.result.rating.product_rating_point;
-    _qualityrateview.starscount = [_product.result.rating.product_rating_star_point integerValue];
+    _qualitynumberlabel.text = _product.data.rating.product_rating_point;
+    _qualityrateview.starscount = [_product.data.rating.product_rating_star_point integerValue];
     
-    _accuracynumberlabel.text = _product.result.rating.product_rate_accuracy_point;
-    _accuracyrateview.starscount = [_product.result.rating.product_accuracy_star_rate integerValue];
+    _accuracynumberlabel.text = _product.data.rating.product_rate_accuracy_point;
+    _accuracyrateview.starscount = [_product.data.rating.product_accuracy_star_rate integerValue];
     
-    NSArray *images = _product.result.product_images;
+    NSArray *images = _product.data.product_images;
     
     NSMutableArray *headerImages = [NSMutableArray new];
     
@@ -2756,13 +2515,13 @@ OtherProductDelegate
     _imagescrollview.showsHorizontalScrollIndicator = NO;
     
     [_datatalk setObject:_formattedProductTitle?:@"" forKey:API_PRODUCT_NAME_KEY];
-    [_datatalk setObject:_product.result.product.product_price?:@"" forKey:API_PRODUCT_PRICE_KEY];
+    [_datatalk setObject:_product.data.info.product_price?:@"" forKey:API_PRODUCT_PRICE_KEY];
     [_datatalk setObject:_headerimages?:@"" forKey:kTKPDDETAILPRODUCT_APIPRODUCTIMAGESKEY];
 }
 
 -(void)setFooterViewData
 {
-    [_shopname setTitle:_product.result.shop_info.shop_name forState:UIControlStateNormal];
+    [_shopname setTitle:_product.data.shop_info.shop_name forState:UIControlStateNormal];
     
     NSTextAttachment *attachment = [[NSTextAttachment alloc] init];
     attachment.image = [UIImage imageNamed:@"icon_location.png"];
@@ -2770,23 +2529,23 @@ OtherProductDelegate
     NSAttributedString *attachmentString = [NSAttributedString attributedStringWithAttachment:attachment];
     
     NSMutableAttributedString *myString= [[NSMutableAttributedString alloc]initWithAttributedString:attachmentString ];
-    NSAttributedString *newAttString = [[NSAttributedString alloc] initWithString:_product.result.shop_info.shop_location?:@"" attributes:nil];
+    NSAttributedString *newAttString = [[NSAttributedString alloc] initWithString:_product.data.shop_info.shop_location?:@"" attributes:nil];
     [myString appendAttributedString:newAttString];
     _shoplocation.attributedText = myString;
-    //_shoplocation.text = _product.result.shop_info.shop_location?:@"";
+    //_shoplocation.text = _product.data.shop_info.shop_location?:@"";
     
-    if(_product.result.shop_info.shop_is_gold == 1) {
+    if(_product.data.shop_info.shop_is_gold == 1) {
         _goldShop.hidden = NO;
     } else {
         _goldShop.hidden = YES;
     }
-    _constraintBadgeGoldWidth.constant = (_product.result.shop_info.shop_is_gold == 1)?20:0;
-    _constraintBadgeLuckySpace.constant = (_product.result.shop_info.shop_is_gold == 1)?4:0;
+    _constraintBadgeGoldWidth.constant = (_product.data.shop_info.shop_is_gold == 1)?20:0;
+    _constraintBadgeLuckySpace.constant = (_product.data.shop_info.shop_is_gold == 1)?4:0;
     
     
     UIImageView *thumb = _shopthumb;
     
-    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_product.result.shop_info.shop_avatar] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_product.data.shop_info.shop_avatar] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     //request.URL = url;
     
     thumb.image = [UIImage imageNamed:@"icon_default_shop.jpg"];
@@ -2806,7 +2565,7 @@ OtherProductDelegate
         
     }];
     
-    request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_product.result.shop_info.shop_lucky] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_product.data.shop_info.shop_lucky] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     [self.luckyBadgeImageView setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
@@ -2883,20 +2642,16 @@ OtherProductDelegate
 }
 
 - (void)requestFailureOtherProduct:(id)error {
-    [self cancel];
     if ([(NSError*)error code] == NSURLErrorCancelled) {
         if (_requestcount<kTKPDREQUESTCOUNTMAX) {
             NSLog(@" ==== REQUESTCOUNT %zd =====",_requestcount);
             //_table.tableFooterView = _footer;
-            [_act startAnimating];
+//            [_act startAnimating];
             //                    [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
             [self performSelector:@selector(loadData) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
         }
-        else
-            [_act stopAnimating];
+        
     }
-    else
-        [_act stopAnimating];
 }
 
 - (void)requestProcessOtherProduct:(id)object {
@@ -2973,7 +2728,7 @@ OtherProductDelegate
         [self setRequestingAction:btnWishList isLoading:YES];
         tokopediaNetworkManagerWishList.tagRequest = CTagUnWishList;
         [tokopediaNetworkManagerWishList doRequest];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"didRemovedProductFromWishList" object:_product.result.product.product_id];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"didRemovedProductFromWishList" object:_product.data.info.product_id];
     } else {
         UINavigationController *navigationController = [[UINavigationController alloc] init];
         navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
@@ -3000,15 +2755,15 @@ OtherProductDelegate
         tokopediaNetworkManagerWishList.tagRequest = CTagWishList;
         [tokopediaNetworkManagerWishList doRequest];
         
-        NSString *productId = _product.result.product.product_id?:@"";
-        NSString *productName = _product.result.product.product_name?:@"";
+        NSString *productId = _product.data.info.product_id?:@"";
+        NSString *productName = _product.data.info.product_name?:@"";
         
         NSArray *categories = [[_data objectForKey:@"product"] breadcrumb];
         Breadcrumb *lastCategory = [categories objectAtIndex:categories.count - 1];
         NSString *productCategory = lastCategory.department_name?:@"";
         
         NSCharacterSet *notAllowedChars = [NSCharacterSet characterSetWithCharactersInString:@"Rp."];
-        NSString *productPrice = [[_product.result.product.product_price componentsSeparatedByCharactersInSet:notAllowedChars] componentsJoinedByString:@""]?:@"";
+        NSString *productPrice = [[_product.data.info.product_price componentsSeparatedByCharactersInSet:notAllowedChars] componentsJoinedByString:@""]?:@"";
         
         NSDictionary *attributes = @{
                                      @"Product Id" : productId,
@@ -3022,7 +2777,7 @@ OtherProductDelegate
         [Localytics incrementValueBy:1
                  forProfileAttribute:@"Profile : Has Wishlist"
                            withScope:LLProfileScopeApplication];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"didAddedProductToWishList" object:_product.result.product.product_id];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"didAddedProductToWishList" object:_product.data.info.product_id];
         
     } else {
         UINavigationController *navigationController = [[UINavigationController alloc] init];
@@ -3085,7 +2840,7 @@ OtherProductDelegate
 - (void)tapProductGallery {
     //    NSDictionary *data = @{
     //                           @"image_index" : @(_pageheaderimages),
-    //                           @"images" : _product.result.product_images
+    //                           @"images" : _product.data.product_images
     //                           };
     //
     //    ProductGalleryViewController *vc = [ProductGalleryViewController new];
@@ -3106,19 +2861,19 @@ OtherProductDelegate
 
 - (void)tapShop {
     ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
-    if(!_product.result.shop_info.shop_id) {
+    if(!_product.data.shop_info.shop_id) {
         return;
     }
-    container.data = @{kTKPDDETAIL_APISHOPIDKEY:_product.result.shop_info.shop_id,
-                       kTKPDDETAIL_APISHOPNAMEKEY:_product.result.shop_info.shop_name,
+    container.data = @{kTKPDDETAIL_APISHOPIDKEY:_product.data.shop_info.shop_id,
+                       kTKPDDETAIL_APISHOPNAMEKEY:_product.data.shop_info.shop_name,
                        kTKPD_AUTHKEY:_auth?:[NSNull null]};
     [self.navigationController pushViewController:container animated:YES];
 }
 
--(void)refreshRequest:(NSNotification*)notification
-{
-    tokopediaNetworkManager.delegate = self;
-    [tokopediaNetworkManager doRequest];
+-(void)refreshRequest:(NSNotification*)notification {
+//    tokopediaNetworkManager.delegate = self;
+//    [tokopediaNetworkManager doRequest];
+    [self loadData];
 }
 
 #pragma mark - GalleryPhoto Delegate
@@ -3135,11 +2890,11 @@ OtherProductDelegate
 - (NSString*)photoGallery:(GalleryViewController *)gallery captionForPhotoAtIndex:(NSUInteger)index
 {
     if(((int) index) < 0)
-        return ((ProductImages *) [_product.result.product_images objectAtIndex:0]).image_description;
-    else if(((int)index) > _product.result.product_images.count-1)
-        return ((ProductImages *) [_product.result.product_images objectAtIndex:_product.result.product_images.count-1]).image_description;
+        return ((ProductImages *) [_product.data.product_images objectAtIndex:0]).image_description;
+    else if(((int)index) > _product.data.product_images.count-1)
+        return ((ProductImages *) [_product.data.product_images objectAtIndex:_product.data.product_images.count-1]).image_description;
     
-    return ((ProductImages *) [_product.result.product_images objectAtIndex:index]).image_description;
+    return ((ProductImages *) [_product.data.product_images objectAtIndex:index]).image_description;
 }
 
 - (UIImage *)photoGallery:(NSUInteger)index {
@@ -3166,7 +2921,7 @@ OtherProductDelegate
 {
     if(alertView.tag == 1){
         if (buttonIndex == 1) {
-            NSString *productId = _product.result.product.product_id;
+            NSString *productId = _product.data.info.product_id;
             [ProductRequest moveProductToWarehouse:productId
                      setCompletionBlockWithSuccess:^(ShopSettings *response) {
                          
@@ -3178,7 +2933,7 @@ OtherProductDelegate
         if(buttonIndex == 1){
             EtalaseViewController *controller = [EtalaseViewController new];
             controller.delegate = self;
-            controller.shopId =_product.result.shop_info.shop_id;
+            controller.shopId =_product.data.shop_info.shop_id;
             controller.isEditable = NO;
             controller.showOtherEtalase = NO;
             controller.enableAddEtalase = YES;
@@ -3190,7 +2945,7 @@ OtherProductDelegate
 }
 -(void)didSelectEtalase:(EtalaseList *)selectedEtalasee{
     selectedEtalase = selectedEtalasee;
-    NSString *productId = _product.result.product.product_id;
+    NSString *productId = _product.data.info.product_id;
     [ProductRequest moveProduct:productId
                       toEtalase:selectedEtalase
   setCompletionBlockWithSuccess:^(ShopSettings *response) {
@@ -3220,21 +2975,6 @@ OtherProductDelegate
     _auth = [_userManager getUserLoginData];
 }
 
-#pragma mark - TTTAttributeLabel Delegate
-- (void)attributedLabel:(TTTAttributedLabel *)label didLongPressLinkWithURL:(NSURL *)url atPoint:(CGPoint)point
-{
-    
-}
-
-- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url
-{
-    if(notesDetail!=nil && notesDetail.notes_content!=nil) {
-        WebViewController *webViewController = [WebViewController new];
-        webViewController.strTitle = CStringSyaratDanKetentuan;
-        webViewController.strContentHTML = [NSString stringWithFormat:@"<font face='Gotham Book' size='2'>%@</font>", notesDetail.notes_content];
-        [self.navigationController pushViewController:webViewController animated:YES];
-    }
-}
 
 
 #pragma mark - PopUp
@@ -3296,7 +3036,7 @@ OtherProductDelegate
 
 - (void)addUserActivity {
     if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"9.0")) {
-        self.userActivity = [TPSpotlight productDetailActivity:_product.result];
+        self.userActivity = [TPSpotlight productDetailActivity:_product.data];
     }
 }
 

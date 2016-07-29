@@ -19,6 +19,7 @@
 - (BOOL)isAllNonNumber;
 - (BOOL)isNumber;
 + (NSString *)stringReplaceAhrefWithUrl:(NSString *)string;
++ (NSString *)extracTKPMEUrl:(NSString *)string;
 
 + (NSArray *)getStringsBetweenAhrefTagWithString:(NSString *)string;
 + (NSArray <NSString *> *)getLinksBetweenAhrefTagWithString:(NSString *)string;

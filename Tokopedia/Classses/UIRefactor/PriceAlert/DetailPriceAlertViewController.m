@@ -19,7 +19,7 @@
 #import "LoginViewController.h"
 #import "LoadingView.h"
 #import "NoResult.h"
-#import "Paging.h"
+//#import "Paging.h"
 #import "PriceAlertCell.h"
 #import "Product.h"
 #import "PriceAlertViewController.h"
@@ -374,7 +374,7 @@
 - (void)continueProcessBuy:(DetailProductResult *)productDetail {
     TransactionATCViewController *transactionVC = [TransactionATCViewController new];
     transactionVC.data = @{DATA_DETAIL_PRODUCT_KEY:productDetail};
-    transactionVC.productID = productDetail.product.product_id;
+    transactionVC.productID = productDetail.info.product_id;
     [self.navigationController pushViewController:transactionVC animated:YES];
 }
 
@@ -970,7 +970,7 @@
         
         
         if ([self canRedirectView]) {
-            [self continueProcessBuy:product.result];
+            [self continueProcessBuy:product.data];
         }
     }
 }

@@ -16,4 +16,6 @@
 @property (nonatomic) NSInteger image_primary;
 @property (nonatomic, strong) NSString *image_src;
 
++ (RKObjectMapping*)mapping;
+
 @end
