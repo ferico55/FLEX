@@ -70,5 +70,6 @@
 #import "Product.h"
 #import "Breadcrumb.h"
 #import "CatalogAddProduct.h"
+#import "GeneralAction.h"
 
 #import "StickyAlertView+NetworkErrorHandler.h"

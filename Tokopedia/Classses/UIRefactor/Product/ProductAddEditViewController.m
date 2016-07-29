@@ -73,7 +73,6 @@ FilterCategoryViewDelegate
     GenerateHost *_generateHost;
     UploadImage *_images;
     ProductEditResult *_editProductForm;
-    ShopSettings *_setting;
     NSArray<CatalogList*> *_catalogs;
     
     __weak RKObjectManager *_objectmanagerEditProductPicture;
@@ -144,7 +143,6 @@ FilterCategoryViewDelegate
 @end
 
 #define TAG_REQUEST_DETAIL 10
-#define TAG_REQUEST_DELETE_IMAGE 11
 
 @implementation ProductAddEditViewController
 
@@ -184,10 +182,6 @@ FilterCategoryViewDelegate
     
     _tableView.delegate = self;
     _tableView.dataSource = self;
-    
-    _networkManagerDeleteImage = [TokopediaNetworkManager new];
-    _networkManagerDeleteImage.tagRequest = TAG_REQUEST_DELETE_IMAGE;
-    _networkManagerDeleteImage.delegate = self;
     
     _alertProcessing = [[UIAlertView alloc]initWithTitle:nil message:@"Processing" delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
     
@@ -798,9 +792,6 @@ FilterCategoryViewDelegate
     if (tag == TAG_REQUEST_DETAIL) {
         return [self objectManagerDetail];
     }
-    if (tag == TAG_REQUEST_DELETE_IMAGE) {
-        return [self objectManagerDeleteImage];
-    }
     return nil;
 }
 
@@ -815,7 +806,7 @@ FilterCategoryViewDelegate
                                      [self setListCatalogs:catalogs];
                                      [self isFinishGetDataCatalogs:YES];
                                      
-                                 } onFailure:^(NSError * error) {
+                                 } onFailure:^{
                                      
                                      [self isFinishGetDataCatalogs:YES];
                                      
@@ -841,17 +832,7 @@ FilterCategoryViewDelegate
 
 -(NSDictionary *)getParameter:(int)tag
 {
-    if (tag == TAG_REQUEST_DELETE_IMAGE) {
-        NSInteger productID = [[_dataInput objectForKey:API_PRODUCT_ID_KEY]integerValue];
-        NSInteger myshopID = [[_dataInput objectForKey:kTKPD_SHOPIDKEY]integerValue];
-        NSInteger pictureID = [[_dataInput objectForKey:API_PRODUCT_PICTURE_ID_KEY]integerValue];
-        NSDictionary *param = @{kTKPDDETAIL_APIACTIONKEY : ACTION_DELETE_IMAGE,
-                                API_PRODUCT_ID_KEY: @(productID),
-                                kTKPD_SHOPIDKEY : @(myshopID),
-                                API_PRODUCT_PICTURE_ID_KEY:@(pictureID)
-                                };
-        return param;
-    }
+
     return nil;
 }
 
@@ -859,9 +840,6 @@ FilterCategoryViewDelegate
 {
     if (tag == TAG_REQUEST_DETAIL) {
         return kTKPDDETAILPRODUCT_APIPATH;
-    }
-    if (tag == TAG_REQUEST_DELETE_IMAGE) {
-        return kTKPDDETAILACTIONPRODUCT_APIPATH;
     }
 
     return nil;
@@ -872,34 +850,22 @@ FilterCategoryViewDelegate
     NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
     id stats = [resultDict objectForKey:@""];
     
-    if (tag == TAG_REQUEST_DELETE_IMAGE) {
-        _setting = stats;
-        return _setting.status;
-    }
-
     return nil;
 }
 
 -(void)actionBeforeRequest:(int)tag
 {
-    if (tag == TAG_REQUEST_DELETE_IMAGE) {
-        
-    }
+
 }
 
 -(void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag
 {
-    if (tag == TAG_REQUEST_DELETE_IMAGE) {
-        [self requestSuccessDeleteImage:successResult withOperation:operation];
-    }
+
 }
 
 -(void)actionAfterFailRequestMaxTries:(int)tag
 {
-    if (tag == TAG_REQUEST_DELETE_IMAGE) {
-        [_networkManagerDeleteImage doRequest];
-        [self cancelDeletedImage];
-    }
+
 }
 
 -(void)fetchFormEditProductID:(NSString*)productID{
@@ -916,12 +882,37 @@ FilterCategoryViewDelegate
                                             [self enableButtonBeforeSuccessRequest:YES];
                                             [_alertProcessing dismissWithClickedButtonIndex:0 animated:YES];
                                             
-                                        } onFailure:^(NSError *error) {
+                                        } onFailure:^{
                                             
                                             [self enableButtonBeforeSuccessRequest:YES];
                                             [_alertProcessing dismissWithClickedButtonIndex:0 animated:YES];
                                             
                                         }];
+}
+
+-(void)fetchDeleteProductPictID:(NSString*)pictureID productID:(NSString*)productID shopID:(NSString*)shopID{
+    
+    [RequestAddEditProduct fetchDeleteProductPictID:pictureID
+                                          productID:productID
+                                             shopID:shopID onSuccess:^{
+                                                 
+                                                 NSArray *objectProductPhoto = _productImageIDs;
+                                                 NSMutableArray *photos = [NSMutableArray new];
+                                                 for (NSString *photo in objectProductPhoto) {
+                                                     if (![photo isEqualToString:@""]) {
+                                                         [photos addObject:photo];
+                                                     }
+                                                 }
+                                                 objectProductPhoto = [photos copy];
+                                                 NSString *stringImageURLs = [[objectProductPhoto valueForKey:@"description"] componentsJoinedByString:@"~"];
+                                                 [_dataInput setObject:stringImageURLs forKey:API_PRODUCT_IMAGE_TOUPLOAD_KEY];
+                                                 [[NSNotificationCenter defaultCenter] postNotificationName:ADD_PRODUCT_POST_NOTIFICATION_NAME object:nil];
+                                                 
+                                             } onFailure:^{
+                                                 
+                                                 [self cancelDeletedImage];
+                                                 
+                                             }];
 }
 
 -(void)setEditProductForm:(ProductEditResult*)form{
@@ -1446,12 +1437,9 @@ FilterCategoryViewDelegate
             [self setDefaultImageAtIndex:0];
         }
         
-        TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-        NSDictionary* auth = [secureStorage keychainDictionary];
-        
         ProductEditResult *detailProduct = _editProductForm;
         NSInteger productID = [detailProduct.product.product_id integerValue];
-        NSInteger myshopID = [[auth objectForKey:kTKPD_SHOPIDKEY]integerValue];
+        NSInteger myshopID = [[self getShopID]integerValue];
         NSInteger pictureID = [_productImageIDs[index] integerValue];
         NSDictionary *userInfo = @{API_PRODUCT_ID_KEY: @(productID),
                                    kTKPD_SHOPIDKEY : @(myshopID),
@@ -1467,7 +1455,10 @@ FilterCategoryViewDelegate
         [ImageNameDictionary removeObjectForKey:imageDescriptionKey];
         [_dataInput setObject:ImageNameDictionary forKey:API_PRODUCT_IMAGE_DESCRIPTION_KEY];
         
-        [_networkManagerDeleteImage doRequest];
+        [self fetchDeleteProductPictID:_productImageIDs[index]
+                             productID:_editProductForm.product.product_id?:@""
+                                shopID:[self getShopID]];
+        
     }
     else  if (type == TYPE_ADD_EDIT_PRODUCT_COPY) {
         
@@ -1838,7 +1829,7 @@ FilterCategoryViewDelegate
             ProductEditImages *image = images[i];
             ((UIButton*)_addImageButtons[i]).hidden = YES;
             [_productImageURLs replaceObjectAtIndex:i withObject:image.image_src];
-            [_productImageIDs replaceObjectAtIndex:i withObject:[NSString stringWithFormat:@"%zd",image.image_id]];
+            [_productImageIDs replaceObjectAtIndex:i withObject:image.image_id];
             [_productImageDesc replaceObjectAtIndex:i withObject:image.image_description];
             
             NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:image.image_src] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];

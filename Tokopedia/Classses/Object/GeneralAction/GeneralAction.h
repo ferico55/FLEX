@@ -10,8 +10,7 @@
 
 #import "GeneralActionResult.h"
 
-@interface
-GeneralAction : NSObject
+@interface GeneralAction : NSObject
 
 @property (nonatomic, strong) NSArray *message_error;
 @property (nonatomic, strong) NSArray *message_status;
