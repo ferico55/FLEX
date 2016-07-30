@@ -168,7 +168,8 @@ class PulsaView: UIView {
         productButton.layer.cornerRadius = 3
         productButton.layer.borderColor = UIColor.greenColor().CGColor
         productButton.layer.borderWidth = 1
-        productButton.setTitleColor(UIColor.greenColor(), forState: .Normal)
+        productButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        productButton.backgroundColor = UIColor.lightGrayColor()
         productButton.hidden = true
         
         buttonsPlaceholder.addSubview(productButton)
@@ -216,8 +217,15 @@ class PulsaView: UIView {
             make.height.equalTo()(44)
         }
         
-        productButton.hidden = false
-        buyButton.hidden = false
+        UIView.animateWithDuration(1.0, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.5, options: .CurveEaseInOut, animations: {
+            self.setNeedsLayout()
+            self .layoutIfNeeded()
+            
+            self.productButton.hidden = false
+            self.buyButton.hidden = false
+        }, completion: { finished in
+        
+        })
         
         buyButton.bk_addEventHandler({ [unowned self] button -> Void in
             if(self.isValidNumber(self.numberField.text!)) {
@@ -234,6 +242,7 @@ class PulsaView: UIView {
         buyButton.mas_updateConstraints { make in
             make.height.equalTo()(0)
         }
+        
         
         productButton.hidden = true
         buyButton.hidden = true
