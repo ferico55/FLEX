@@ -18,7 +18,7 @@ class PulsaView: UIView {
     var buyButton: UIButton!
     var buttonsPlaceholder: UIView!
     var fieldPlaceholder: UIView!
-    var onPrefixEntered: (((String) -> Void)?)
+    var didPrefixEntered: (((String) -> Void)?)
     var selectedOperator = PulsaOperator()
     var contactNumber: UIImageView!
     
@@ -81,33 +81,7 @@ class PulsaView: UIView {
         numberField.borderStyle = .RoundedRect
         numberField.rightViewMode = .Always
         numberField.keyboardType = .NumberPad
-        numberField.bk_addEventHandler ({[unowned self] number in
-            //operator must exists first
-            let inputtedPrefix = self.numberField.text
-            let characterCount = inputtedPrefix!.characters.count
-            
-            if(characterCount == 4) {
-                if(self.prefixes?.count == 0) { return }
-                
-                let prefix = self.prefixes![inputtedPrefix!]
-                if(prefix != nil) {
-                    let prefixImage = UIImageView.init(frame: CGRectMake(0, 0, 70, 35))
-                    prefixImage.setImageWithURL((NSURL.init(string: prefix!["image"]!)))
-                    self.numberField.rightView = prefixImage
-                    self.numberField.rightViewMode = .Always
-                    
-                    self.onPrefixEntered!(prefix!["id"]!)
-                } else {
-                    self.numberField.rightView = nil
-                    self.hideBuyButtons()
-                }
-            }
-            
-            if(characterCount < 4) {
-                self.numberField.rightView = nil
-                self.hideBuyButtons()
-            }
-            }, forControlEvents: .EditingChanged)
+        
         
         fieldPlaceholder.addSubview(numberField)
         numberField.mas_makeConstraints { make in
@@ -146,6 +120,37 @@ class PulsaView: UIView {
             make.left.equalTo()(self.mas_left)
             make.right.equalTo()(self.mas_right)
         }
+    }
+    
+    func didOperatorReceived() {
+        numberField.bk_addEventHandler ({[unowned self] number in
+            //operator must exists first
+            //fix this to prevent crash using serial dispatch
+            let inputtedPrefix = self.numberField.text
+            let characterCount = inputtedPrefix!.characters.count
+            
+            if(characterCount == 4) {
+                if(self.prefixes?.count == 0) { return }
+                
+                let prefix = self.prefixes![inputtedPrefix!]
+                if(prefix != nil) {
+                    let prefixImage = UIImageView.init(frame: CGRectMake(0, 0, 70, 35))
+                    prefixImage.setImageWithURL((NSURL.init(string: prefix!["image"]!)))
+                    self.numberField.rightView = prefixImage
+                    self.numberField.rightViewMode = .Always
+                    
+                    self.didPrefixEntered!(prefix!["id"]!)
+                } else {
+                    self.numberField.rightView = nil
+                    self.hideBuyButtons()
+                }
+            }
+            
+            if(characterCount < 4) {
+                self.numberField.rightView = nil
+                self.hideBuyButtons()
+            }
+            }, forControlEvents: .EditingChanged)
     }
     
     func buildButtons() {

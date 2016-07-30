@@ -16,6 +16,7 @@ class PulsaViewController: UIViewController, UITextFieldDelegate {
     var prefixes = Dictionary<String, Dictionary<String, String>>()
 
     var pulsaView = PulsaView!()
+    var requestManager = PulsaRequest!()
 
     @IBOutlet weak var view1: UIView!
     @IBOutlet weak var view2: UIView!
@@ -25,84 +26,21 @@ class PulsaViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.cache.loadCategories { (cachedCategory) in
-            if(cachedCategory == nil) {
-                self.loadCategoryFromNetwork()
-            } else {
-                self.didReceiveCategory(cachedCategory!)
+        requestManager = PulsaRequest()
+        requestManager.requestCategory()
+        requestManager.didReceiveCategory = { [unowned self] categories in
+            self.pulsaView = PulsaView(categories: categories)
+            self.pulsaView .attachToView(self.view2)
+            
+            self.requestManager.requestOperator()
+            self.requestManager.didReceiveOperator = { operators in
+                self.didReceiveOperator(operators)
             }
         }
     }
     
-    func loadCategoryFromNetwork() {
-        let networkManager = TokopediaNetworkManager()
-        networkManager .
-            requestWithBaseUrl("https://pulsa-api.tokopedia.com",
-                               path: "/v1/category/list",
-                               method: .GET,
-                               parameter: nil,
-                               mapping: PulsaCategoryRoot.mapping(),
-                               onSuccess: { (mappingResult, operation) -> Void in
-                                let category = mappingResult.dictionary()[""] as! PulsaCategoryRoot
-                                self .didReceiveCategory(category)
-                                self.cache .storeCategories(category)
-                },
-                               onFailure: { (errors) -> Void in
-                                
-            });
-    }
-    
-    func didReceiveCategory(category : PulsaCategoryRoot) {
-        self.pulsaView = PulsaView(categories: category.data)
-        self.pulsaView .attachToView(self.view2)
-        
-        self.loadOperatorFromNetwork()
-    }
-    
-    func loadProductFromNetwork(operatorId: String) {
-        let networkManager = TokopediaNetworkManager()
-        networkManager.isParameterNotEncrypted = true
-        networkManager .
-            requestWithBaseUrl("https://pulsa-api.tokopedia.com",
-                               path: "/v1/product/list",
-                               method: .GET,
-                               parameter: ["operator_id" : operatorId],
-                               mapping: PulsaProductRoot.mapping(),
-                               onSuccess: { (mappingResult, operation) -> Void in
-                                let productRoot = mappingResult.dictionary()[""] as! PulsaProductRoot
-                                self.didReceiveProduct(productRoot)
-                                
-                },
-                               onFailure: { (errors) -> Void in
-                                
-            });
-    }
-    
-    func didReceiveProduct(productRoot: PulsaProductRoot) {
-        self.pulsaView.showBuyButton(productRoot.data)
-    }
-    
-    
-    func loadOperatorFromNetwork() {
-        let networkManager = TokopediaNetworkManager()
-        networkManager .
-            requestWithBaseUrl("https://pulsa-api.tokopedia.com",
-                               path: "/v1/operator/list",
-                               method: .GET,
-                               parameter: nil,
-                               mapping: PulsaOperatorRoot.mapping(),
-                               onSuccess: { (mappingResult, operation) -> Void in
-                                let operatorRoot = mappingResult.dictionary()[""] as! PulsaOperatorRoot
-                                self.didReceiveOperator(operatorRoot)
-                                
-                },
-                               onFailure: { (errors) -> Void in
-                                
-            });
-    }
-    
-    func didReceiveOperator(operatorRoot: PulsaOperatorRoot) {
-        for op in operatorRoot.data {
+    func didReceiveOperator(operators: [PulsaOperator]) {
+        for op in operators {
             for prefix in op.attributes.prefix {
                 var prefixDictionary = Dictionary<String, String>()
                 prefixDictionary["image"] = op.attributes.image
@@ -116,9 +54,13 @@ class PulsaViewController: UIViewController, UITextFieldDelegate {
             self.pulsaView.prefixes = self.prefixes    
         }
         
-        self.pulsaView.onPrefixEntered = { (operatorId) -> Void in
-            self.pulsaView.selectedOperator = self.findOperatorById(operatorId, operators: operatorRoot.data)
-            self.loadProductFromNetwork(operatorId)
+        self.pulsaView.didOperatorReceived();
+        self.pulsaView.didPrefixEntered = { (operatorId) -> Void in
+            self.pulsaView.selectedOperator = self.findOperatorById(operatorId, operators: operators)
+            self.requestManager.requestProduct(operatorId)
+            self.requestManager.didReceiveProduct = { products in
+                self.pulsaView.showBuyButton(products)
+            }
         }
     }
     
