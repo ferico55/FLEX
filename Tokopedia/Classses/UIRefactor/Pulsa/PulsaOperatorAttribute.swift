@@ -14,6 +14,8 @@ class PulsaOperatorAttribute: NSObject, NSCoding {
     var image : String = ""
     var status : Int = 1
     var prefix: [String] = []
+    var minimum_length: Int = 0
+    var maximum_length: Int = 0
     
     static func attributeMappingDictionary() -> [NSObject : AnyObject]! {
         return [
@@ -22,6 +24,8 @@ class PulsaOperatorAttribute: NSObject, NSCoding {
             "image" : "image",
             "status" : "status",
             "prefix" : "prefix",
+            "minimum_length" : "minimum_length",
+            "maximum_length" : "maximum_length",
         ]
     }
     
@@ -51,6 +55,14 @@ class PulsaOperatorAttribute: NSObject, NSCoding {
             self.image = image
         }
         
+        if let minimum_length = aDecoder.decodeObjectForKey("minimum_length") as? Int {
+            self.minimum_length = minimum_length
+        }
+        
+        if let maximum_length = aDecoder.decodeObjectForKey("maximum_length") as? Int {
+            self.maximum_length = maximum_length
+        }
+        
         if let status = aDecoder.decodeObjectForKey("status") as? Int {
             self.status = status
         }
@@ -66,5 +78,7 @@ class PulsaOperatorAttribute: NSObject, NSCoding {
         aCoder.encodeObject(image, forKey: "image")
         aCoder.encodeObject(status, forKey: "status")
         aCoder.encodeObject(prefix, forKey: "prefix")
+        aCoder.encodeObject(minimum_length, forKey: "minimum_length")
+        aCoder.encodeObject(maximum_length, forKey: "maximum_length")
     }
 }

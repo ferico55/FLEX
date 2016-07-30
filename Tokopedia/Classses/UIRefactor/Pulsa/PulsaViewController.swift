@@ -62,13 +62,14 @@ class PulsaViewController: UIViewController, UITextFieldDelegate {
         
     }
     
-    func loadProductFromNetwork() {
+    func loadProductFromNetwork(operatorId: String) {
         let networkManager = TokopediaNetworkManager()
+        networkManager.isParameterNotEncrypted = true
         networkManager .
-            requestWithBaseUrl("http://private-c3816-digitalcategory.apiary-mock.com",
-                               path: "/products",
+            requestWithBaseUrl("https://pulsa-api.tokopedia.com",
+                               path: "/v1/product/list",
                                method: .GET,
-                               parameter: nil,
+                               parameter: ["operator_id" : operatorId],
                                mapping: PulsaProductRoot.mapping(),
                                onSuccess: { (mappingResult, operation) -> Void in
                                 let productRoot = mappingResult.dictionary()[""] as! PulsaProductRoot
@@ -81,7 +82,7 @@ class PulsaViewController: UIViewController, UITextFieldDelegate {
     }
     
     func didReceiveProduct(productRoot: PulsaProductRoot) {
-        self.pulsaView.buildBuyButton(productRoot.data)
+        self.pulsaView.showBuyButton(productRoot.data)
     }
     
     
@@ -118,9 +119,20 @@ class PulsaViewController: UIViewController, UITextFieldDelegate {
             self.pulsaView.prefixes = self.prefixes    
         }
         
-        self.pulsaView.onPrefixEntered = { (prefix) -> Void in
-            self.loadProductFromNetwork()
+        self.pulsaView.onPrefixEntered = { (operatorId) -> Void in
+            self.pulsaView.selectedOperator = self.findOperatorById(operatorId, operators: operatorRoot.data)
+            self.loadProductFromNetwork(operatorId)
         }
-
+    }
+    
+    func findOperatorById(id: String, operators: [PulsaOperator]) -> PulsaOperator{
+        var foundOperator = PulsaOperator()
+        operators.enumerate().forEach { index, op in
+            if(op.id == id) {
+                foundOperator = operators[index]
+            }
+        }
+        
+        return foundOperator
     }
 }

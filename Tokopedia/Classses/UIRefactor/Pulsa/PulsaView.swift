@@ -18,8 +18,9 @@ class PulsaView: UIView {
     var buyButton: UIButton!
     var buttonsPlaceholder: UIView!
     var onPrefixEntered: (((String) -> Void)?)
+    var selectedOperator = PulsaOperator()
     
-    var prefixes: Dictionary<String, Dictionary<String, String>>!
+    var prefixes: Dictionary<String, Dictionary<String, String>>?
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -46,6 +47,7 @@ class PulsaView: UIView {
         }, forControlEvents: .ValueChanged)
 
         self.buildAllView(categories[0])
+        self.pulsaCategoryControl.selectedSegmentIndex = 0
     }
     
     func buildAllView(category: PulsaCategory) {
@@ -55,7 +57,13 @@ class PulsaView: UIView {
             }
         }
 
-        //field creation
+        self.buildFields(category)
+        self.buildButtons()
+        
+        self.recalibrateView()
+    }
+    
+    func buildFields(category: PulsaCategory) {
         numberField = UITextField(frame: CGRectZero)
         
         numberField.placeholder = category.attributes.client_number.placeholder
@@ -67,16 +75,16 @@ class PulsaView: UIView {
             let characterCount = inputtedPrefix!.characters.count
             
             if(characterCount == 4) {
-                if(self.prefixes.count == 0) { return }
+                if(self.prefixes!.count == 0) { return }
                 
-                let prefix = self.prefixes[inputtedPrefix!]
+                let prefix = self.prefixes![inputtedPrefix!]
                 if(prefix != nil) {
                     let prefixImage = UIImageView.init(frame: CGRectMake(0, 0, 70, 35))
                     prefixImage.setImageWithURL((NSURL.init(string: prefix!["image"]!)))
                     self.numberField.rightView = prefixImage
                     self.numberField.rightViewMode = .Always
                     
-                    self.onPrefixEntered!(self.numberField.text!)
+                    self.onPrefixEntered!(prefix!["id"]!)
                 } else {
                     self.numberField.rightView = nil
                     self.hideBuyButtons()
@@ -87,7 +95,7 @@ class PulsaView: UIView {
                 self.numberField.rightView = nil
                 self.hideBuyButtons()
             }
-        }, forControlEvents: .EditingChanged)
+            }, forControlEvents: .EditingChanged)
         
         self.addSubview(numberField)
         numberField.mas_makeConstraints { make in
@@ -109,8 +117,9 @@ class PulsaView: UIView {
             make.left.equalTo()(self.mas_left)
             make.right.equalTo()(self.mas_right)
         }
-        
-        //buttons creation
+    }
+    
+    func buildButtons() {
         buttonsPlaceholder = UIView(frame: CGRectZero)
         self.addSubview(buttonsPlaceholder)
         
@@ -138,7 +147,6 @@ class PulsaView: UIView {
             make.bottom.equalTo()(self.mas_bottom)
         }
         
-        
         buyButton = UIButton(frame: CGRectZero)
         buyButton.setTitle("Beli", forState: .Normal)
         buyButton.layer.cornerRadius = 3
@@ -154,11 +162,18 @@ class PulsaView: UIView {
             make.left.equalTo()(self.productButton.mas_right).offset()(10)
             make.right.equalTo()(self.buttonsPlaceholder.mas_right)
         }
-        
-        self.recalibrateView()
     }
     
-    func buildBuyButton(products: [PulsaProduct]) {
+    func isValidNumber(number: String) -> Bool{
+        if(number.characters.count > self.selectedOperator.attributes.minimum_length &&
+            number.characters.count < self.selectedOperator.attributes.maximum_length) {
+            return true
+        }
+        
+        return false
+    }
+    
+    func showBuyButton(products: [PulsaProduct]) {
         productButton.mas_updateConstraints { make in
             make.height.equalTo()(44)
         }
@@ -169,6 +184,12 @@ class PulsaView: UIView {
         
         productButton.hidden = false
         buyButton.hidden = false
+        
+        buyButton.bk_addEventHandler({ [unowned self] button -> Void in
+            if(self.isValidNumber(self.numberField.text!)) {
+                //buy!
+            }
+        }, forControlEvents: .TouchUpInside)
     }
     
     func hideBuyButtons() {
