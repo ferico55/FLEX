@@ -57,9 +57,7 @@ class PulsaViewController: UIViewController, UITextFieldDelegate {
     
     func didReceiveCategory(category : PulsaCategoryRoot) {
         self.pulsaView = PulsaView(categories: category.data)
-        self.pulsaView.prefixes = self.prefixes
         self.pulsaView .attachToView(self.view2)
-        
     }
     
     func loadProductFromNetwork(operatorId: String) {

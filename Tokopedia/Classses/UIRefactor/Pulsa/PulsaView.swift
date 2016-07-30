@@ -17,8 +17,10 @@ class PulsaView: UIView {
     var productButton: UIButton!
     var buyButton: UIButton!
     var buttonsPlaceholder: UIView!
+    var fieldPlaceholder: UIView!
     var onPrefixEntered: (((String) -> Void)?)
     var selectedOperator = PulsaOperator()
+    var contactNumber: UIImageView!
     
     var prefixes: Dictionary<String, Dictionary<String, String>>?
     
@@ -64,6 +66,15 @@ class PulsaView: UIView {
     }
     
     func buildFields(category: PulsaCategory) {
+        fieldPlaceholder = UIView(frame: CGRectZero)
+        self.addSubview(fieldPlaceholder)
+        
+        fieldPlaceholder.mas_makeConstraints { make in
+            make.top.equalTo()(self.pulsaCategoryControl.mas_bottom).offset()(10)
+            make.left.equalTo()(self.mas_left)
+            make.right.equalTo()(self.mas_right)
+        }
+        
         numberField = UITextField(frame: CGRectZero)
         
         numberField.placeholder = category.attributes.client_number.placeholder
@@ -97,12 +108,28 @@ class PulsaView: UIView {
             }
             }, forControlEvents: .EditingChanged)
         
-        self.addSubview(numberField)
+        fieldPlaceholder.addSubview(numberField)
         numberField.mas_makeConstraints { make in
             make.height.equalTo()(44)
-            make.top.equalTo()(self.pulsaCategoryControl.mas_bottom).offset()(10)
+            make.top.equalTo()(self.fieldPlaceholder.mas_top)
             make.left.equalTo()(self.mas_left)
-            make.right.equalTo()(self.mas_right)
+            make.right.equalTo()(self.mas_right).offset()(category.attributes.use_phonebook ? -44 : 0)
+        }
+        
+        if(category.attributes.use_phonebook) {
+            contactNumber = UIImageView(image: UIImage(named: "icon_login.png"))
+            fieldPlaceholder.addSubview(contactNumber)
+            
+            contactNumber.mas_makeConstraints { make in
+                make.height.equalTo()(44)
+                make.width.equalTo()(44)
+                make.left.equalTo()(self.numberField.mas_right)
+                make.top.equalTo()(self.fieldPlaceholder.mas_top)
+            }
+            
+            contactNumber.bk_whenTapped {
+                
+            }
         }
         
         
@@ -124,7 +151,7 @@ class PulsaView: UIView {
         self.addSubview(buttonsPlaceholder)
         
         buttonsPlaceholder.mas_makeConstraints { make in
-            make.top.equalTo()(self.numberErrorLabel.mas_bottom)
+            make.top.equalTo()(self.fieldPlaceholder.mas_bottom)
             make.left.equalTo()(self.mas_left)
             make.right.equalTo()(self.mas_right)
         }
