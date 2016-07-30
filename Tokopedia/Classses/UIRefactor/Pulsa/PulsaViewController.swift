@@ -32,9 +32,6 @@ class PulsaViewController: UIViewController, UITextFieldDelegate {
                 self.didReceiveCategory(cachedCategory!)
             }
         }
-        
-        self.loadOperatorFromNetwork()
-        
     }
     
     func loadCategoryFromNetwork() {
@@ -47,8 +44,8 @@ class PulsaViewController: UIViewController, UITextFieldDelegate {
                                mapping: PulsaCategoryRoot.mapping(),
                                onSuccess: { (mappingResult, operation) -> Void in
                                 let category = mappingResult.dictionary()[""] as! PulsaCategoryRoot
-                                self.cache .storeCategories(category)
                                 self .didReceiveCategory(category)
+                                self.cache .storeCategories(category)
                 },
                                onFailure: { (errors) -> Void in
                                 
@@ -58,6 +55,8 @@ class PulsaViewController: UIViewController, UITextFieldDelegate {
     func didReceiveCategory(category : PulsaCategoryRoot) {
         self.pulsaView = PulsaView(categories: category.data)
         self.pulsaView .attachToView(self.view2)
+        
+        self.loadOperatorFromNetwork()
     }
     
     func loadProductFromNetwork(operatorId: String) {

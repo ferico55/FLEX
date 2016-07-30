@@ -46,8 +46,8 @@ class PulsaView: UIView {
         
         pulsaCategoryControl .bk_addEventHandler({[unowned self] control in
             self.buildAllView(categories[control.selectedSegmentIndex])
-        }, forControlEvents: .ValueChanged)
-
+            }, forControlEvents: .ValueChanged)
+        
         self.buildAllView(categories[0])
         self.pulsaCategoryControl.selectedSegmentIndex = 0
     }
@@ -58,7 +58,7 @@ class PulsaView: UIView {
                 subview.removeFromSuperview()
             }
         }
-
+        
         self.buildFields(category)
         self.buildButtons()
         
@@ -82,11 +82,12 @@ class PulsaView: UIView {
         numberField.rightViewMode = .Always
         numberField.keyboardType = .NumberPad
         numberField.bk_addEventHandler ({[unowned self] number in
+            //operator must exists first
             let inputtedPrefix = self.numberField.text
             let characterCount = inputtedPrefix!.characters.count
             
             if(characterCount == 4) {
-                if(self.prefixes!.count == 0) { return }
+                if(self.prefixes?.count == 0) { return }
                 
                 let prefix = self.prefixes![inputtedPrefix!]
                 if(prefix != nil) {
@@ -114,6 +115,7 @@ class PulsaView: UIView {
             make.top.equalTo()(self.fieldPlaceholder.mas_top)
             make.left.equalTo()(self.mas_left)
             make.right.equalTo()(self.mas_right).offset()(category.attributes.use_phonebook ? -44 : 0)
+            make.bottom.equalTo()(self.fieldPlaceholder.mas_bottom)
         }
         
         if(category.attributes.use_phonebook) {
@@ -140,7 +142,7 @@ class PulsaView: UIView {
         
         numberErrorLabel.mas_makeConstraints { make in
             make.height.equalTo()(0)
-            make.top.equalTo()(self.numberField.mas_bottom).offset()(3)
+            make.top.equalTo()(self.fieldPlaceholder.mas_bottom).offset()(3)
             make.left.equalTo()(self.mas_left)
             make.right.equalTo()(self.mas_right)
         }
@@ -151,7 +153,7 @@ class PulsaView: UIView {
         self.addSubview(buttonsPlaceholder)
         
         buttonsPlaceholder.mas_makeConstraints { make in
-            make.top.equalTo()(self.fieldPlaceholder.mas_bottom)
+            make.top.equalTo()(self.numberErrorLabel.mas_bottom)
             make.left.equalTo()(self.mas_left)
             make.right.equalTo()(self.mas_right)
         }
@@ -171,7 +173,7 @@ class PulsaView: UIView {
             make.top.equalTo()(self.buttonsPlaceholder.mas_top).offset()(10)
             make.left.equalTo()(self.mas_left)
             make.width.equalTo()(150)
-            make.bottom.equalTo()(self.mas_bottom)
+            make.bottom.equalTo()(self.buttonsPlaceholder.mas_bottom)
         }
         
         buyButton = UIButton(frame: CGRectZero)
@@ -216,7 +218,7 @@ class PulsaView: UIView {
             if(self.isValidNumber(self.numberField.text!)) {
                 //buy!
             }
-        }, forControlEvents: .TouchUpInside)
+            }, forControlEvents: .TouchUpInside)
     }
     
     func hideBuyButtons() {
@@ -258,7 +260,7 @@ class PulsaView: UIView {
             make.right.equalTo()(container.mas_right)
             make.bottom.equalTo()(container.mas_bottom)
         }
-
+        
     }
-
+    
 }
