@@ -62,7 +62,7 @@ class PulsaViewController: UIViewController, UITextFieldDelegate {
             self.pulsaView.prefixes = self.prefixes    
         }
         
-        self.pulsaView.didOperatorReceived();
+        self.pulsaView.addActionNumberField();
         self.pulsaView.didPrefixEntered = { [unowned self] operatorId in
             self.pulsaView.selectedOperator = self.findOperatorById(operatorId, operators: operators)
             self.requestManager.requestProduct(operatorId)

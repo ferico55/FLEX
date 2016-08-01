@@ -48,7 +48,8 @@ class PulsaView: UIView {
         
         pulsaCategoryControl .bk_addEventHandler({[unowned self] control in
             self.buildAllView(categories[control.selectedSegmentIndex])
-            }, forControlEvents: .ValueChanged)
+            self.addActionNumberField()
+        }, forControlEvents: .ValueChanged)
         
         self.buildAllView(categories[0])
         self.pulsaCategoryControl.selectedSegmentIndex = 0
@@ -127,7 +128,7 @@ class PulsaView: UIView {
         }
     }
     
-    func didOperatorReceived() {
+    func addActionNumberField() {
         numberField.bk_addEventHandler ({[unowned self] number in
             //operator must exists first
             //fix this to prevent crash using serial dispatch
