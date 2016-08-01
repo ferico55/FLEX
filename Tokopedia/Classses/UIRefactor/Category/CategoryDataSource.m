@@ -149,23 +149,23 @@
     CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
     
     if (indexPath.section == 0) {
-//        UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
-//        if (![_slider isDescendantOfView:cell.contentView]) {
-//            return CGSizeZero;
-//        }
-        return CGSizeMake(screenWidth, IS_IPAD ? 225 : 175);
+        if (_slider) {
+            return CGSizeMake(screenWidth, IS_IPAD ? 225 : 175);
+        } else {
+            return CGSizeMake(screenWidth, 1);
+        }
     } else if (indexPath.section == 1) {
-//        UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
-//        if (![_ticker isDescendantOfView:cell.contentView]) {
-//            return CGSizeZero;
-//        }
-        return CGSizeMake(screenWidth, _ticker.messageLabel.bounds.size.height + _ticker.titleLabel.bounds.size.height + 24);
+        if (_ticker) {
+            return CGSizeMake(screenWidth, _ticker.messageLabel.bounds.size.height + _ticker.titleLabel.bounds.size.height + 24);
+        } else {
+            return CGSizeMake(screenWidth, 1);
+        }
     } else if (indexPath.section == 2) {
-//        UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
-//        if (![_digitalGoodsSwipeView isDescendantOfView:cell.contentView]) {
-//            return CGSizeZero;
-//        }
-        return CGSizeMake(screenWidth, 120);
+        if (_slider) {
+            return CGSizeMake(screenWidth, 120);
+        } else {
+            return CGSizeMake(screenWidth, 1);
+        }
     } else if (indexPath.section == 3) {
         if(IS_IPAD) {
             return CGSizeMake((screenWidth/5)-10, 135);
