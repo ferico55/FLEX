@@ -46,6 +46,9 @@
     _messageLabel.attributedText = attString;
     _messageLabel.verticalAlignment = TTTAttributedLabelVerticalAlignmentTop;
     _messageLabel.delegate = self;
+    _messageLabel.linkAttributes = @{NSForegroundColorAttributeName : [UIColor colorWithRed:49/255.0 green:140/255.0 blue:47/255.0 alpha:1.0],
+                                     NSUnderlineStyleAttributeName : @(NSUnderlineStyleNone),
+                                     NSFontAttributeName : [UIFont fontWithName:@"Gotham Medium" size:13.0]};
     
     for (NSTextCheckingResult* match in matches) {
         NSRange matchRange = [match rangeAtIndex:1];
@@ -70,7 +73,7 @@
     NSDictionary *attributes = @{NSForegroundColorAttributeName : [UIColor blackColor],
                                  NSFontAttributeName : font,
                                  NSParagraphStyleAttributeName : style};
-    NSString *string = [NSString stringReplaceAhrefWithUrl:text];
+    NSString *string = [NSString extracTKPMEUrl:text];
     NSAttributedString *attString = [[NSAttributedString alloc] initWithString:string attributes:attributes];
     
     return attString;
