@@ -8,6 +8,7 @@
 
 import UIKit
 
+@IBDesignable
 @objc class HomePageViewController: UIViewController, iCarouselDelegate, SwipeViewDelegate {
     
     @IBOutlet var collectionView: UICollectionView!
@@ -28,6 +29,14 @@ import UIKit
     
     private let sliderHeight: CGFloat = (UI_USER_INTERFACE_IDIOM() == .Pad) ? 225.0 : 175.0
     private let screenWidth = UIScreen.mainScreen().bounds.size.width
+    
+    init() {
+        super.init(nibName: "HomePageViewController", bundle: nil)
+    }
+    
+    required init(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

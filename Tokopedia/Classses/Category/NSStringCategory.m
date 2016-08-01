@@ -185,29 +185,9 @@
 }
 
 + (NSArray<NSString *> *)getLinksBetweenAhrefTagWithString:(NSString *)string {
-    NSScanner *myScanner;
-    NSMutableArray<NSString *> *array = [NSMutableArray new];
-    NSString *text = nil;
-    myScanner = [NSScanner scannerWithString:string];
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"<a[^>]+href=\"(.*?)\"[^>]*>.*?</a>" options:NSRegularExpressionCaseInsensitive|NSRegularExpressionUseUnicodeWordBoundaries error:nil];
     
-    while ([myScanner isAtEnd] == NO) {
-        
-        [myScanner scanUpToString:@"<" intoString:NULL] ;
-        
-        [myScanner scanUpToString:@">" intoString:&text] ;
-        
-        if ([text rangeOfString:@"a href="].location == NSNotFound) {
-            
-        } else {
-            text = [text stringByReplacingOccurrencesOfString:@"<a href="
-                                                   withString:@""];
-            text = [text stringByReplacingOccurrencesOfString:@" target=" withString:@""];
-            text = [text stringByReplacingOccurrencesOfString:@"\"" withString:@""];
-            text = [text stringByReplacingOccurrencesOfString:@"_blank" withString:@""];
-            
-            [array addObject:text];
-        }
-    }
+    NSArray *array = [regex matchesInString:string options:0 range:NSMakeRange(0, [string length])];
     
     return array;
 }
