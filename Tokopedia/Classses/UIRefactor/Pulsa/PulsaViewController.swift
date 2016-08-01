@@ -71,6 +71,7 @@ class PulsaViewController: UIViewController, UITextFieldDelegate {
                 phoneNumber = phoneNumber.stringByReplacingOccurrencesOfString("[^0-9]", withString: "", options: .RegularExpressionSearch, range: nil)
                 
                 self.pulsaView.numberField.text = phoneNumber
+                self.pulsaView.setRightViewNumberField()
             }
             
             self.navigationController!.pushViewController(controller, animated: true)

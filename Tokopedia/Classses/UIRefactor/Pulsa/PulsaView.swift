@@ -131,31 +131,32 @@ class PulsaView: UIView {
         numberField.bk_addEventHandler ({[unowned self] number in
             //operator must exists first
             //fix this to prevent crash using serial dispatch
-            let inputtedPrefix = self.numberField.text
-            let characterCount = inputtedPrefix!.characters.count
+            self.setRightViewNumberField()
             
-            if(characterCount == 4) {
-                if(self.prefixes?.count == 0) { return }
+            }, forControlEvents: .EditingChanged)
+    }
+    
+    func setRightViewNumberField() {
+        var inputtedPrefix = (self.numberField.text)!
+        let characterCount = inputtedPrefix.characters.count
+        
+        if(characterCount >= 4) {
+            if(self.prefixes?.count == 0) { return }
+            inputtedPrefix = inputtedPrefix.substringWithRange(Range<String.Index>(start: inputtedPrefix.startIndex.advancedBy(0), end: inputtedPrefix.startIndex.advancedBy(4)))
+            
+            let prefix = self.prefixes![inputtedPrefix]
+            if(prefix != nil) {
+                let prefixImage = UIImageView.init(frame: CGRectMake(0, 0, 70, 35))
+                prefixImage.setImageWithURL((NSURL.init(string: prefix!["image"]!)))
+                self.numberField.rightView = prefixImage
+                self.numberField.rightViewMode = .Always
                 
-                let prefix = self.prefixes![inputtedPrefix!]
-                if(prefix != nil) {
-                    let prefixImage = UIImageView.init(frame: CGRectMake(0, 0, 70, 35))
-                    prefixImage.setImageWithURL((NSURL.init(string: prefix!["image"]!)))
-                    self.numberField.rightView = prefixImage
-                    self.numberField.rightViewMode = .Always
-                    
-                    self.didPrefixEntered!(prefix!["id"]!)
-                } else {
-                    self.numberField.rightView = nil
-                    self.hideBuyButtons()
-                }
-            }
-            
-            if(characterCount < 4) {
+                self.didPrefixEntered!(prefix!["id"]!)
+            } else {
                 self.numberField.rightView = nil
                 self.hideBuyButtons()
             }
-            }, forControlEvents: .EditingChanged)
+        }
     }
     
     func buildButtons() {
