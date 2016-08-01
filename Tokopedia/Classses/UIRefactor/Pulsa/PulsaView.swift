@@ -14,6 +14,7 @@ class PulsaView: UIView {
     var pulsaCategoryControl: UISegmentedControl!
     var numberField: UITextField!
     var numberErrorLabel: UILabel!
+    var buttonErrorLabel: UILabel!
     var productButton: UIButton!
     var buyButton: UIButton!
     var buttonsPlaceholder: UIView!
@@ -23,6 +24,10 @@ class PulsaView: UIView {
     var selectedOperator = PulsaOperator()
     var phoneBook: UIImageView!
     let addressBook = APAddressBook()
+    
+    struct ButtonConstant {
+        static let defaultProductButtonTitle = "Pilih Nominal"
+    }
     
     var prefixes: Dictionary<String, Dictionary<String, String>>?
     
@@ -118,6 +123,7 @@ class PulsaView: UIView {
         numberErrorLabel = UILabel(frame: CGRectZero)
         numberErrorLabel.text = "Error"
         numberErrorLabel.textColor = UIColor.redColor()
+        numberErrorLabel.font = UIFont.init(name: "GothamBook", size: 12.0)
         self.addSubview(numberErrorLabel)
         
         numberErrorLabel.mas_makeConstraints { make in
@@ -133,6 +139,13 @@ class PulsaView: UIView {
             //operator must exists first
             //fix this to prevent crash using serial dispatch
             self.setRightViewNumberField()
+            self.numberErrorLabel.mas_updateConstraints { make in
+                make.height.equalTo()(0)
+            }
+            
+            self.buttonErrorLabel.mas_updateConstraints { make in
+                make.height.equalTo()(0)
+            }
             
             }, forControlEvents: .EditingChanged)
     }
@@ -174,7 +187,7 @@ class PulsaView: UIView {
         }
         
         productButton = UIButton(frame: CGRectZero)
-        productButton.setTitle("Pilih Nominal", forState: .Normal)
+        productButton.setTitle(ButtonConstant.defaultProductButtonTitle, forState: .Normal)
         productButton.layer.cornerRadius = 3
         productButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
         productButton.backgroundColor = UIColor.lightGrayColor()
@@ -205,15 +218,40 @@ class PulsaView: UIView {
             make.left.equalTo()(self.productButton.mas_right).offset()(10)
             make.right.equalTo()(self.buttonsPlaceholder.mas_right)
         }
+        
+        buttonErrorLabel = UILabel(frame: CGRectZero)
+        buttonErrorLabel.text = "Error"
+        buttonErrorLabel.textColor = UIColor.redColor()
+        buttonErrorLabel.font = UIFont.init(name: "GothamBook", size: 12.0)
+        self.addSubview(buttonErrorLabel)
+        
+        buttonErrorLabel.mas_makeConstraints { make in
+            make.height.equalTo()(0)
+            make.top.equalTo()(self.buttonsPlaceholder.mas_bottom).offset()(3)
+            make.left.equalTo()(self.mas_left)
+            make.right.equalTo()(self.mas_right)
+        }
     }
     
     func isValidNumber(number: String) -> Bool{
-        if(number.characters.count > self.selectedOperator.attributes.minimum_length &&
-            number.characters.count < self.selectedOperator.attributes.maximum_length) {
-            return true
+        if(number.characters.count < self.selectedOperator.attributes.minimum_length) {
+            self.numberErrorLabel.text = "Nomor terlalu pendek, minimal "+String(self.selectedOperator.attributes.minimum_length)+" karakter"
+            return false
+        } else if(number.characters.count > self.selectedOperator.attributes.maximum_length) {
+            self.numberErrorLabel.text = "Nomor terlalu panjang, maksimal "+String(self.selectedOperator.attributes.maximum_length)+" karakter"
+            return false
         }
         
-        return false
+        return true
+    }
+    
+    func isValidNominal() -> Bool {
+        if(self.productButton.currentTitle == ButtonConstant.defaultProductButtonTitle) {
+            buttonErrorLabel.text = "Pilih nominal terlebih dahulu"
+            return false
+        } else {
+            return true
+        }
     }
     
     func showBuyButton(products: [PulsaProduct]) {
@@ -236,10 +274,18 @@ class PulsaView: UIView {
         })
         
         buyButton.bk_addEventHandler({ [unowned self] button -> Void in
-            if(self.isValidNumber(self.numberField.text!)) {
-                //buy!
+            if(!self.isValidNumber(self.numberField.text!)) {
+                self.numberErrorLabel.mas_updateConstraints { make in
+                    make.height.equalTo()(22)
+                }
+            } else if(!self.isValidNominal()) {
+                self.buttonErrorLabel.mas_updateConstraints { make in
+                    make.height.equalTo()(22)
+                }
+            } else {
+                
             }
-            }, forControlEvents: .TouchUpInside)
+        }, forControlEvents: .TouchUpInside)
     }
     
     func hideBuyButtons() {
