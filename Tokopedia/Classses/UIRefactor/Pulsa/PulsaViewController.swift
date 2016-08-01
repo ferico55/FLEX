@@ -41,12 +41,20 @@ class PulsaViewController: UIViewController, UITextFieldDelegate {
     
     func didReceiveOperator(operators: [PulsaOperator]) {
         for op in operators {
-            for prefix in op.attributes.prefix {
+            for var prefix in op.attributes.prefix {
                 var prefixDictionary = Dictionary<String, String>()
                 prefixDictionary["image"] = op.attributes.image
                 prefixDictionary["id"] = op.id
                 
-                prefixes[prefix] = prefixDictionary
+                if(prefix.characters.count == 3) {
+                    let range = 0...9
+                    range.enumerate().forEach { index, element in
+                        prefixes[prefix.stringByAppendingString(String(element))] = prefixDictionary
+                    }
+                } else {
+                    prefixes[prefix] = prefixDictionary
+                }
+                
             }
         }
         
