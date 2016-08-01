@@ -10,4 +10,12 @@
 
 @implementation InboxTicketPaging
 
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    
+    [mapping addAttributeMappingsFromArray:@[@"uri_previous", @"uri_next"]];
+
+    return mapping;
+}
+
 @end

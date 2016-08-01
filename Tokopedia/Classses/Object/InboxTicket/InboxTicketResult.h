@@ -8,8 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "InboxTicketPaging.h"
+#import "InboxTicketList.h"
 
-@interface InboxTicketResult : NSObject
+@interface InboxTicketResult : NSObject <TKPObjectMapping>
 
 @property (strong, nonatomic) InboxTicketPaging *paging;
 @property (strong, nonatomic) NSArray *list;
