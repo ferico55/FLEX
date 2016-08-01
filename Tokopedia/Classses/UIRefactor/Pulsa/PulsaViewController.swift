@@ -55,12 +55,25 @@ class PulsaViewController: UIViewController, UITextFieldDelegate {
         }
         
         self.pulsaView.didOperatorReceived();
-        self.pulsaView.didPrefixEntered = { (operatorId) -> Void in
+        self.pulsaView.didPrefixEntered = { [unowned self] operatorId in
             self.pulsaView.selectedOperator = self.findOperatorById(operatorId, operators: operators)
             self.requestManager.requestProduct(operatorId)
             self.requestManager.didReceiveProduct = { products in
                 self.pulsaView.showBuyButton(products)
             }
+        }
+        
+        self.pulsaView.didTapAddressbook = { [unowned self] contacts in
+            let controller = AddressBookViewController()
+            controller.contacts = contacts
+            controller.didTapContact = { [unowned self] contact in
+                var phoneNumber = (contact.phones?.first?.number)!
+                phoneNumber = phoneNumber.stringByReplacingOccurrencesOfString("[^0-9]", withString: "", options: .RegularExpressionSearch, range: nil)
+                
+                self.pulsaView.numberField.text = phoneNumber
+            }
+            
+            self.navigationController!.pushViewController(controller, animated: true)
         }
     }
     

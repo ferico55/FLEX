@@ -24,6 +24,7 @@ target "Tokopedia" do
     pod 'SPTPersistentCache', '~> 1.0'
     pod 'FBSDKLoginKit'
     pod 'LayoutKit'
+    pod 'APAddressBook/Swift'
     pod 'Masonry'
 end
 

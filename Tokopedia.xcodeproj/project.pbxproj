@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		2D50139230438B54812D14B9 /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */; };
+		7A1563DA1D4C7C960050A423 /* PulsaRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1563D91D4C7C960050A423 /* PulsaRequest.swift */; };
+		7A1A7DE11D4F0524008FE696 /* AddressBookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1A7DDF1D4F0524008FE696 /* AddressBookViewController.swift */; };
+		7A1A7DE21D4F0524008FE696 /* AddressBookViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A1A7DE01D4F0524008FE696 /* AddressBookViewController.xib */; };
+		7A1A7DE51D4F0A30008FE696 /* AddressBookCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1A7DE31D4F0A30008FE696 /* AddressBookCell.swift */; };
+		7A1A7DE61D4F0A30008FE696 /* AddressBookCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A1A7DE41D4F0A30008FE696 /* AddressBookCell.xib */; };
 		7A59E56E1D409BEF002ECC7B /* Alignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A59E5521D409BEF002ECC7B /* Alignment.swift */; };
 		7A59E56F1D409BF0002ECC7B /* Flexibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A59E5531D409BEF002ECC7B /* Flexibility.swift */; };
 		7A59E5701D409BF0002ECC7B /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7A59E5541D409BEF002ECC7B /* Info.plist */; };
@@ -2463,6 +2468,11 @@
 		2D733D9158C7BF957D514506 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
 		4868E459AB2A65D133732296 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tokopedia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7A1563D91D4C7C960050A423 /* PulsaRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulsaRequest.swift; sourceTree = "<group>"; };
+		7A1A7DDF1D4F0524008FE696 /* AddressBookViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressBookViewController.swift; sourceTree = "<group>"; };
+		7A1A7DE01D4F0524008FE696 /* AddressBookViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddressBookViewController.xib; sourceTree = "<group>"; };
+		7A1A7DE31D4F0A30008FE696 /* AddressBookCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressBookCell.swift; sourceTree = "<group>"; };
+		7A1A7DE41D4F0A30008FE696 /* AddressBookCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddressBookCell.xib; sourceTree = "<group>"; };
 		7A59E5521D409BEF002ECC7B /* Alignment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alignment.swift; sourceTree = "<group>"; };
 		7A59E5531D409BEF002ECC7B /* Flexibility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Flexibility.swift; sourceTree = "<group>"; };
 		7A59E5541D409BEF002ECC7B /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -6201,6 +6211,11 @@
 				7AFC55DF1D33A034000F6C88 /* PulsaProductPromo.swift */,
 				7A59E5861D409C19002ECC7B /* PulsaLayout.swift */,
 				7A59FDCB1D4A431C002ECC7B /* PulsaView.swift */,
+				7A1563D91D4C7C960050A423 /* PulsaRequest.swift */,
+				7A1A7DDF1D4F0524008FE696 /* AddressBookViewController.swift */,
+				7A1A7DE01D4F0524008FE696 /* AddressBookViewController.xib */,
+				7A1A7DE31D4F0A30008FE696 /* AddressBookCell.swift */,
+				7A1A7DE41D4F0A30008FE696 /* AddressBookCell.xib */,
 			);
 			path = Pulsa;
 			sourceTree = "<group>";
@@ -12988,6 +13003,7 @@
 				8548B75A1D1A58F200D11E22 /* tokopedia.png in Resources */,
 				8548B64F1D1A58F200D11E22 /* icon_smile25@3x.png in Resources */,
 				8548B59A1D1A58F200D11E22 /* icon_medal_gold14@3x.png in Resources */,
+				7A1A7DE61D4F0A30008FE696 /* AddressBookCell.xib in Resources */,
 				8548B37C1D1A58F100D11E22 /* ShopReviewPageViewController.xib in Resources */,
 				8548B4CA1D1A58F200D11E22 /* icon_button_pricealert_active@2x.png in Resources */,
 				8548B7811D1A58F200D11E22 /* wishlist.png in Resources */,
@@ -13430,6 +13446,7 @@
 				8548B35E1D1A58F100D11E22 /* ShopInfoAddressCell.xib in Resources */,
 				8548B4A41D1A58F200D11E22 /* icon-plus-math.png in Resources */,
 				8548B6CF1D1A58F200D11E22 /* launch_image@3x.png in Resources */,
+				7A1A7DE21D4F0524008FE696 /* AddressBookViewController.xib in Resources */,
 				8548B1F01D1A58F100D11E22 /* InboxTalkViewController.xib in Resources */,
 				8548B5511D1A58F200D11E22 /* icon_filter@2x.png in Resources */,
 				8548B6A11D1A58F200D11E22 /* icon_uncheck_red@1x.png in Resources */,
@@ -14427,6 +14444,7 @@
 				8548B3591D1A58F100D11E22 /* ShopStatView.m in Sources */,
 				8548AF7C1D1A58F100D11E22 /* DetailPriceAlert.m in Sources */,
 				8548AEC61D1A58F100D11E22 /* DepositFormBankAccountList.m in Sources */,
+				7A1563DA1D4C7C960050A423 /* PulsaRequest.swift in Sources */,
 				8548B0E81D1A58F100D11E22 /* TKPDAlertView.m in Sources */,
 				8548AFDD1D1A58F100D11E22 /* SearchRedirect.m in Sources */,
 				8548B09E1D1A58F100D11E22 /* ImagePickerController.swift in Sources */,
@@ -14702,6 +14720,7 @@
 				8548B0D71D1A58F100D11E22 /* AlertLuckyView.m in Sources */,
 				8548AFA21D1A58F100D11E22 /* PrivacyFormPrivacy.m in Sources */,
 				8548B2AA1D1A58F100D11E22 /* ProductDataSource.swift in Sources */,
+				7A1A7DE51D4F0A30008FE696 /* AddressBookCell.swift in Sources */,
 				7A59E5791D409BF0002ECC7B /* PositioningLayout.swift in Sources */,
 				8548AEF81D1A58F100D11E22 /* FavoritedShop.m in Sources */,
 				8548B0621D1A58F100D11E22 /* TransactionVoucherResult.m in Sources */,
@@ -14787,6 +14806,7 @@
 				8548AF301D1A58F100D11E22 /* ResolutionCenterDetailResult.m in Sources */,
 				8548B33F1D1A58F100D11E22 /* ShopTagDescriptionViewCell.swift in Sources */,
 				8548B3421D1A58F100D11E22 /* CloseShopRequest.m in Sources */,
+				7A1A7DE11D4F0524008FE696 /* AddressBookViewController.swift in Sources */,
 				8548B1641D1A58F100D11E22 /* DepositListBankViewController.m in Sources */,
 				8548B1351D1A58F100D11E22 /* ContactUsFormDataManager.m in Sources */,
 				8548B0A61D1A58F100D11E22 /* README.md in Sources */,

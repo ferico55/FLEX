@@ -19,8 +19,10 @@ class PulsaView: UIView {
     var buttonsPlaceholder: UIView!
     var fieldPlaceholder: UIView!
     var didPrefixEntered: (((String) -> Void)?)
+    var didTapAddressbook: ([APContact] -> Void)?
     var selectedOperator = PulsaOperator()
-    var contactNumber: UIImageView!
+    var phoneBook: UIImageView!
+    let addressBook = APAddressBook()
     
     var prefixes: Dictionary<String, Dictionary<String, String>>?
     
@@ -93,18 +95,21 @@ class PulsaView: UIView {
         }
         
         if(category.attributes.use_phonebook) {
-            contactNumber = UIImageView(image: UIImage(named: "icon_login.png"))
-            fieldPlaceholder.addSubview(contactNumber)
+            phoneBook = UIImageView(image: UIImage(named: "icon_login.png"))
+            phoneBook.userInteractionEnabled = true
+            fieldPlaceholder.addSubview(phoneBook)
             
-            contactNumber.mas_makeConstraints { make in
+            phoneBook.mas_makeConstraints { make in
                 make.height.equalTo()(44)
                 make.width.equalTo()(44)
                 make.left.equalTo()(self.numberField.mas_right)
                 make.top.equalTo()(self.fieldPlaceholder.mas_top)
             }
             
-            contactNumber.bk_whenTapped {
-                
+            phoneBook.bk_whenTapped { [unowned self] in
+                self.addressBook.loadContacts({ (contacts: [APContact]?, error: NSError?) in
+                    self.didTapAddressbook!(contacts!)
+                })
             }
         }
         
