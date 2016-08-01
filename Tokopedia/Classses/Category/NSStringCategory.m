@@ -185,16 +185,35 @@
 }
 
 + (NSArray<NSString *> *)getLinksBetweenAhrefTagWithString:(NSString *)string {
-    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"<a[^>]+href=\"(.*?)\"[^>]*>.*?</a>" options:NSRegularExpressionCaseInsensitive|NSRegularExpressionUseUnicodeWordBoundaries error:nil];
+    NSScanner *myScanner;
+    NSMutableArray<NSString *> *array = [NSMutableArray new];
+    NSString *text = nil;
+    myScanner = [NSScanner scannerWithString:string];
     
-    NSArray *array = [regex matchesInString:string options:0 range:NSMakeRange(0, [string length])];
+    while ([myScanner isAtEnd] == NO) {
+        
+        [myScanner scanUpToString:@"<" intoString:NULL] ;
+        
+        [myScanner scanUpToString:@">" intoString:&text] ;
+        
+        if ([text rangeOfString:@"a href="].location == NSNotFound) {
+            
+        } else {
+            text = [text stringByReplacingOccurrencesOfString:@"<a href="
+                                                   withString:@""];
+            text = [text stringByReplacingOccurrencesOfString:@" target=" withString:@""];
+            text = [text stringByReplacingOccurrencesOfString:@"\"" withString:@""];
+            text = [text stringByReplacingOccurrencesOfString:@"_blank" withString:@""];
+            
+            [array addObject:text];
+        }
+    }
     
     return array;
 }
 
 + (NSString *)stringReplaceAhrefWithUrl:(NSString *)string{
     NSString *leadingTrailingWhiteSpacesPattern = @"<a[^>]+href=\"(.*?)\"[^>]*>.*?</a>";
-    
     
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:leadingTrailingWhiteSpacesPattern options:NSRegularExpressionCaseInsensitive|NSRegularExpressionUseUnicodeWordBoundaries error:NULL];
     

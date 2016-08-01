@@ -149,13 +149,16 @@ import UIKit
                 let tick = ticker.tickers[0]
                 self!.tickerView = AnnouncementTickerView.newView()
                 self!.tickerView.setTitle(tick.title)
-                self!.tickerView.setMessage("Mau tes multiple url yaah: ini <a href=\"https://www.tokopedia.com/\">URL Pertama ke Tokopedia.com</a> & <a href=\"https://www.youtube.com/\">URL Kedua ke Youtube</a> hahaha. Tambah lagi ah <a href=\"http://forum.realityfanforum.com/index.php\">URL Ketiga</a>, <a href=\"http://www.japantimes.co.jp/news/2016/07/27/business/airbnb-home-sharing-war-heats-japan/\">Tes Lagi</a>, <a href=\"http://serebii.net/index2.shtml\">Coba lagi</a>")
+                self!.tickerView.setMessage(tick.message)
                 self!.tickerView.onTapMessageWithUrl = {[weak self] (url) in
                     self!.openWebViewWithURL(url)
                 }
                 
                 self!.categoryDataSource.ticker = self!.tickerView
                 
+                self!.collectionView.reloadData()
+            } else {
+                self!.categoryDataSource.ticker = nil
                 self!.collectionView.reloadData()
             }
         }) { (error) in
