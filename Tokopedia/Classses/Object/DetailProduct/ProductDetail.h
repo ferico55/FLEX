@@ -6,10 +6,11 @@
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 
+@class ProductReturnInfo;
 #import <Foundation/Foundation.h>
-
 #import "ProductModelView.h"
 #import "Errors.h"
+
 
 #define CProductID @"product_id"
 #define CProductPrice @"product_price"
@@ -63,6 +64,7 @@
 @property (nonatomic, strong) NSString *product_error_msg;
 @property (nonatomic, strong) NSString *product_price_last;
 @property (nonatomic, strong) NSString *product_cat_name;
+@property (nonatomic, strong) ProductReturnInfo *return_info;
 
 @property (nonatomic, strong) NSArray *errors;
 

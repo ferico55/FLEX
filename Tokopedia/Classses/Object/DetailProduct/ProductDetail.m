@@ -7,6 +7,8 @@
 //
 
 #import "ProductDetail.h"
+#import "Tokopedia-Swift.h"
+
 
 @implementation ProductDetail
 
@@ -124,6 +126,8 @@
 {
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
     [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+    
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"return_info" toKeyPath:@"return_info" withMapping:[ProductReturnInfo mapping]]];
     
     RKRelationshipMapping *errorMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"errors" toKeyPath:@"errors" withMapping:[Errors mapping]];
     [mapping addPropertyMapping:errorMapping];

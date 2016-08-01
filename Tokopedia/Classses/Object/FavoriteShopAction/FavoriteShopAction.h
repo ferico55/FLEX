@@ -10,7 +10,7 @@
 
 #import "FavoriteShopActionResult.h"
 
-@interface FavoriteShopAction : NSObject
+@interface FavoriteShopAction : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSArray *message_error;
 @property (nonatomic, strong) NSString *status;

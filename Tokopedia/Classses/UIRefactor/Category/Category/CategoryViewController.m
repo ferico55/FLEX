@@ -40,7 +40,6 @@ NSInteger const bannerHeight = 115;
 @property (nonatomic, strong) DigitalGoodsDataSource *digitalGoodsDataSource;
 @property (nonatomic, strong) CategoryDataSource *categoryDataSource;
 
-
 @end
 
 @implementation CategoryViewController
@@ -111,7 +110,6 @@ NSInteger const bannerHeight = 115;
     self.screenName = @"Top Category";
     [TPAnalytics trackScreenName:@"Top Category"];
 }
-
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];

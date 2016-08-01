@@ -166,7 +166,15 @@
          NSDictionary *result = successResult.dictionary;
          TransactionAction *cart = [result objectForKey:@""];
          
-         if (cart.data.parameter != nil && cart.message_error.count == 0) {
+         if (cart.message_error.count > 0 || cart.data.parameter == nil) {
+             [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:cart.message_error?:@[@"Error"]]
+                                                      type:NotificationTypeError
+                                                  duration:4.0
+                                               buttonTitle:nil
+                                               dismissable:YES
+                                                    action:nil];
+             error(nil);
+         } else {
              NSArray *successMessages = cart.message_status;
              if (successMessages.count > 0) {
                  [StickyAlertView showSuccessMessage:successMessages];
@@ -178,14 +186,6 @@
                                                         action:nil];
              }
              success(cart.data);
-         } else {
-             [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:cart.message_error?:@[@"Error"]]
-                                                      type:NotificationTypeError
-                                                  duration:4.0
-                                               buttonTitle:nil
-                                               dismissable:YES
-                                                    action:nil];
-             error(nil);
          }
          
      } onFailure:^(NSError *errorResult) {

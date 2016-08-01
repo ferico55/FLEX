@@ -20,7 +20,7 @@
 
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
-#import "AppsFlyerTracker.h"
+#import <AppsFlyer/AppsFlyer.h>
 #import "WebViewController.h"
 #import "TransactionCartRootViewController.h"
 
@@ -205,6 +205,11 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     self.textfielddob.isBottomRoundCorner = YES;
     self.textfieldpassword.isTopRoundCorner = YES;
     self.textfieldconfirmpass.isBottomRoundCorner = YES;
+    
+    if (_emailFromForgotPassword != nil && _emailFromForgotPassword.length != 0) {
+        self.textfieldemail.text = _emailFromForgotPassword;
+        [_datainput setObject:self.textfieldemail.text forKey:kTKPDREGISTER_APIEMAILKEY];
+    }
     
     self.signUpButton.layer.cornerRadius = 2;
 
@@ -689,7 +694,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
         }
         case 13:
         {
-            [self.navigationController popViewControllerAnimated:YES];
+            [self.navigationController popToRootViewControllerAnimated:YES];
             break;
         }
         default:

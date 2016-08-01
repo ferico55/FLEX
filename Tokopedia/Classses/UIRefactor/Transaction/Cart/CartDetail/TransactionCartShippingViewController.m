@@ -166,9 +166,9 @@
 
 -(NSString*)addressString:(GMSAddress*)address
 {
-    NSString *strSnippet = @"Pilih lokasi pengiriman";
+    NSString *strSnippet = @"Lokasi Pengiriman";
     TKPAddressStreet *tkpAddressStreet = [TKPAddressStreet new];
-    strSnippet = [tkpAddressStreet getStreetAddress:address.thoroughfare];
+    strSnippet = [tkpAddressStreet getStreetAddress:address.thoroughfare]?:@"Lokasi pengiriman";
     return  strSnippet;
 }
 
@@ -1441,31 +1441,30 @@
         _isFinishCalculate = NO;
         [[GMSGeocoder geocoder] reverseGeocodeCoordinate:CLLocationCoordinate2DMake([address.latitude doubleValue], [address.longitude doubleValue]) completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error) {
             if (error != nil){
+                [self adjustLocationName:@"Lokasi Pengiriman"];
                 return;
             }
             
             if (response == nil || response.results.count == 0) {
-                _pinLocationNameButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-                [_pinLocationNameButton setCustomAttributedText:@"Tandai lokasi Anda"];
-                _isFinishCalculate = YES;
-                [_tableView reloadData];
-                
+                [self adjustLocationName:@"Lokasi Pengiriman"];
             } else{
                 GMSAddress *placemark = [response results][0];
-                _pinLocationNameButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-                [_pinLocationNameButton setCustomAttributedText:[self addressString:placemark]];
-                _isFinishCalculate = YES;
-                [_tableView reloadData];
+                [self adjustLocationName:[self addressString:placemark]];
             }
         }];
     }
     else
     {
-        _isFinishCalculate = YES;
-        _pinLocationNameButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-        [_pinLocationNameButton setCustomAttributedText:@"Pilih Lokasi Pengiriman"];
+        [self adjustLocationName:@"Pilih Lokasi Pengiriman"];
     }
     
+    [_tableView reloadData];
+}
+
+-(void)adjustLocationName:(NSString*)name{
+    _pinLocationNameButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    [_pinLocationNameButton setCustomAttributedText:name];
+    _isFinishCalculate = YES;
     [_tableView reloadData];
 }
 

@@ -9,6 +9,7 @@
 #import "DetailProductInfoCell.h"
 #import "TTTAttributedLabel.h"
 #import "string_more.h"
+
 @interface DetailProductInfoCell()<TTTAttributedLabelDelegate>
 @end
 
@@ -79,6 +80,34 @@
     lblMessageRetur.text = strText;
 }
 
+- (void)setLblDescriptionToko:(NSString *)strText withImageURL:(NSString *)url withBGColor:(UIColor *)color{
+    float labelHeight = 50;
+    
+    constraintHeightViewRetur.constant = (CPaddingTopDescToko*2)+labelHeight;
+    UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
+    NSDictionary *attributes = @{NSForegroundColorAttributeName:[UIColor blackColor],
+                                 NSFontAttributeName: font};
+    
+    NSString *string = [NSString stringReplaceAhrefWithUrl:strText];
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:string attributes:attributes];
+    lblMessageRetur.enabledTextCheckingTypes = NSTextCheckingTypeLink;
+    lblMessageRetur.attributedText = attributedString;
+    lblMessageRetur.delegate = self;
+    viewRetur.backgroundColor = color;
+    
+    
+    NSDataDetector *linkDetector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:nil];
+    NSTextCheckingResult* firstMatch = [linkDetector firstMatchInString:attributedString.string options:0 range:NSMakeRange(0, [attributedString length])];
+    
+    NSString* replaceString = @"Pelajari lebih lanjut.";
+    [attributedString replaceCharactersInRange:firstMatch.range withString:replaceString];
+    NSRange range = NSMakeRange(firstMatch.range.location, replaceString.length);
+    lblMessageRetur.attributedText = attributedString;
+    [lblMessageRetur addLinkToURL:firstMatch.URL withRange:range];
+    
+    [imgRetur setImageWithURL:[NSURL URLWithString:url]];
+}
+
 - (void)hiddenViewRetur
 {
     constraintHeightViewRetur.constant = 0;
@@ -91,5 +120,10 @@
 - (float)getHeightReturView
 {
     return constraintHeightViewRetur.constant;
+}
+
+#pragma mark - TTTAttributedDelegate
+- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url {
+    self.didTapReturnableInfo(url);
 }
 @end

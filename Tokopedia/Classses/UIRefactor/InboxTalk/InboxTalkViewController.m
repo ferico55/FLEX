@@ -172,6 +172,7 @@
     UIViewController* containerViewController = (UIViewController*)_delegate;
 
     ProductTalkDetailViewController* detailVC = [[ProductTalkDetailViewController alloc] initByMarkingOpenedTalkAsRead:YES];
+    detailVC.fetchDataAtBeginning = YES;
     detailVC.talk = list;
     detailVC.indexPath = indexPath;
     detailVC.enableDeepNavigation = [NavigationHelper shouldDoDeepNavigation];

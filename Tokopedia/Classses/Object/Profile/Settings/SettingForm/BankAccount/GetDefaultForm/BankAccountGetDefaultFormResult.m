@@ -10,4 +10,15 @@
 
 @implementation BankAccountGetDefaultFormResult
 
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[BankAccountGetDefaultFormResult class]];
+    
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"default_bank"
+                                                                            toKeyPath:@"default_bank"
+                                                                          withMapping:[BankAccountGetDefaultFormDefaultBank mapping]]];
+    
+    return mapping;
+    
+}
+
 @end

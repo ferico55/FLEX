@@ -13,6 +13,7 @@
 #import "NSString+MD5.h"
 #import "TkpdHMAC.h"
 #import <BlocksKit/BlocksKit.h>
+#import "Tokopedia-Swift.h"
 
 #define TkpdNotificationForcedLogout @"NOTIFICATION_FORCE_LOGOUT"
 
@@ -65,7 +66,7 @@
     //API Spec documentation: https://wiki.tokopedia.net/API_Specification
     
     _objectManager  = [_delegate getObjectManager:self.tagRequest];
-    NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    NSString *appVersion = [UIApplication getAppVersionString];
     [_objectManager.HTTPClient setDefaultHeader:@"X-APP-VERSION" value:appVersion];
     [_objectManager.HTTPClient setDefaultHeader:@"Accept-Language" value:@"id-ID"];
     NSString *xDevice = [NSString stringWithFormat:@"ios-%@",appVersion];
@@ -226,6 +227,10 @@
 }
 
 - (NSString*)splitUriToPage:(NSString*)uri {
+    return [TokopediaNetworkManager getPageFromUri:uri];
+}
+
++ (NSString *)getPageFromUri:(NSString *)uri {
     NSURL *url = [NSURL URLWithString:uri];
     NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
     
@@ -296,7 +301,7 @@
     [_objectManager addResponseDescriptor:responseDescriptorStatus];
     
 
-    NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    NSString *appVersion = [UIApplication getAppVersionString];
     [_objectManager.HTTPClient setDefaultHeader:@"X-APP-VERSION" value:appVersion];
     [_objectManager.HTTPClient setDefaultHeader:@"Accept-Language" value:@"id-ID"];
     NSString *xDevice = [NSString stringWithFormat:@"ios-%@",appVersion];

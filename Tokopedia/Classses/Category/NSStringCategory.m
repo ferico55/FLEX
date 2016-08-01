@@ -163,14 +163,7 @@
     return price;
 }
 
-+ (NSString *)joinStringsWithBullets:(NSArray *)strings {
-    if (strings.count == 1) {
-        return strings[0];
-    }
-    
-    return [NSString stringWithFormat:@"\u25CF %@", [[strings valueForKey:@"description"] componentsJoinedByString:@"\n\u25CF "]];
-}
-+ (NSString *)stringReplaceAhrefWithUrl:(NSString *)string{
++ (NSString *)extracTKPMEUrl:(NSString *)string{
     NSString *leadingTrailingWhiteSpacesPattern = @"<a[^>]+href=\".*?\"[^>]*>(.*?)</a>";
     
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:leadingTrailingWhiteSpacesPattern options:NSRegularExpressionCaseInsensitive|NSRegularExpressionUseUnicodeWordBoundaries error:NULL];
@@ -181,6 +174,27 @@
     NSString* replacedString = [trimmedString stringByReplacingOccurrencesOfString:@"&bull;" withString:@"*"];
     
     return replacedString;
+}
+
++ (NSString *)joinStringsWithBullets:(NSArray *)strings {
+    if (strings.count == 1) {
+        return strings[0];
+    }
+    
+    return [NSString stringWithFormat:@"\u25CF %@", [[strings valueForKey:@"description"] componentsJoinedByString:@"\n\u25CF "]];
+}
+
++ (NSString *)stringReplaceAhrefWithUrl:(NSString *)string{
+    NSString *leadingTrailingWhiteSpacesPattern = @"<a[^>]+href=\"(.*?)\"[^>]*>.*?</a>";
+    
+    
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:leadingTrailingWhiteSpacesPattern options:NSRegularExpressionCaseInsensitive|NSRegularExpressionUseUnicodeWordBoundaries error:NULL];
+    
+    NSRange stringRange = NSMakeRange(0, string.length);
+    NSString *trimmedString = [regex stringByReplacingMatchesInString:string options:NSMatchingReportProgress range:stringRange withTemplate:@"$1"];
+    
+    
+    return trimmedString;
 }
 
 

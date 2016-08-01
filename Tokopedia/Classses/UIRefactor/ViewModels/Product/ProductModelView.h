@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Errors.h"
+#import "ProductBadge.h"
 
 @interface ProductModelView : NSObject
 
@@ -26,6 +27,7 @@
 @property (strong, nonatomic) NSString *productTotalWeight;
 @property (strong, nonatomic) NSString *productNotes;
 @property (strong, nonatomic) NSString *productErrorMessage;
+@property (strong, nonatomic) NSArray *badges;
 
 @property (strong, nonatomic) NSArray<Errors *> *productErrors;
 @property (strong, nonatomic) NSArray<Errors *> *cartErrors;

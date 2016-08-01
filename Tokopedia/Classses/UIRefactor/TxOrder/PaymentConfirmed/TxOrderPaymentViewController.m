@@ -36,6 +36,8 @@
 
 #import "ListRekeningBank.h"
 
+#import "NSNumberFormatter+IDRFormater.h"
+
 @interface TxOrderPaymentViewController ()<UITableViewDataSource, UITableViewDelegate, TKPDAlertViewDelegate,SettingBankAccountViewControllerDelegate, GeneralTableViewControllerDelegate, SettingBankNameViewControllerDelegate,UITextFieldDelegate,UITextViewDelegate, UIScrollViewDelegate, SuccessPaymentConfirmationDelegate, TokopediaNetworkManagerDelegate, TKPDPhotoPickerDelegate>
 {
     NSMutableDictionary *_dataInput;
@@ -815,7 +817,18 @@
         [invoiceLabel setCustomAttributedText:_invoice];
     }
     if (cell == _section0Cell[1]) {
-        textString = (_isConfirmed)?formIsConfirmed.payment.order_left_amount_idr:form.order.order_left_amount_idr;
+        if ([self isPaymentTypeSaldoTokopedia]) {
+            double fixed_order_saldo_left_amount;
+            if (!_isConfirmed) {
+                fixed_order_saldo_left_amount = [form.order.order_left_amount doubleValue]  - [form.order.order_confirmation_code doubleValue];
+            } else {
+                fixed_order_saldo_left_amount = [formIsConfirmed.payment.order_left_amount doubleValue]  - [formIsConfirmed.payment.order_confirmation_code doubleValue];
+            }
+            NSString *fixed_order_saldo_left_amount_idr = [[NSNumberFormatter IDRFormarter] stringFromNumber:[NSNumber numberWithInteger:fixed_order_saldo_left_amount]];
+            textString = fixed_order_saldo_left_amount_idr;
+        } else {
+            textString = (_isConfirmed)?formIsConfirmed.payment.order_left_amount_idr:form.order.order_left_amount_idr;
+        }
     }
     
     if (cell == _section1Cell[0]) {

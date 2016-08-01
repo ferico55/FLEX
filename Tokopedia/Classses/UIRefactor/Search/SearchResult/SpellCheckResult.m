@@ -10,4 +10,12 @@
 
 @implementation SpellCheckResult
 
++ (RKObjectMapping *)mapping {
+    RKObjectMapping* mapping = [RKObjectMapping mappingForClass:self];
+    
+    [mapping addAttributeMappingsFromArray:@[@"suggest", @"total_data"]];
+    
+    return mapping;
+}
+
 @end

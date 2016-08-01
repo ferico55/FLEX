@@ -9,6 +9,7 @@
 #import "ContactUsWebViewController.h"
 #import "NJKWebViewProgressView.h"
 #import "NJKWebViewProgress.h"
+#import "Tokopedia-Swift.h"
 
 @interface ContactUsWebViewController () <UIWebViewDelegate, NJKWebViewProgressDelegate>
 
@@ -72,8 +73,7 @@
 #pragma mark - Web view delegate
 
 - (void)loadWebView {
-    NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-    appVersion = [appVersion stringByReplacingOccurrencesOfString:@"." withString:@""];
+    NSString *appVersion = [UIApplication getAppVersionStringWithoutDot];
     NSString *urlString = [NSString stringWithFormat:@"https://m.tokopedia.com/bantuan?flag_app=3&device=ios&app_version=%@", appVersion];
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString]];
     [self.webView loadRequest:request];
