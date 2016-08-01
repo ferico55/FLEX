@@ -166,8 +166,8 @@ class PulsaView: UIView {
         productButton = UIButton(frame: CGRectZero)
         productButton.setTitle("Pilih Nominal", forState: .Normal)
         productButton.layer.cornerRadius = 3
-        productButton.layer.borderColor = UIColor.greenColor().CGColor
-        productButton.layer.borderWidth = 1
+//        productButton.layer.borderColor = UIColor.greenColor().CGColor
+//        productButton.layer.borderWidth = 1
         productButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
         productButton.backgroundColor = UIColor.lightGrayColor()
         productButton.hidden = true
