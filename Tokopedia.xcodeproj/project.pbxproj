@@ -2416,6 +2416,10 @@
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
 		85C494BF1AD790DD008A314A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BE1AD790DD008A314A /* libz.dylib */; };
 		85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494C01AD790E4008A314A /* CoreData.framework */; };
+		BB75F5201D4B4B0B00196BCE /* ResolutionCenterSellerEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB75F51E1D4B4B0B00196BCE /* ResolutionCenterSellerEditViewController.m */; };
+		BB75F5211D4B4B0B00196BCE /* ResolutionCenterSellerEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB75F51F1D4B4B0B00196BCE /* ResolutionCenterSellerEditViewController.xib */; };
+		BB75F5251D4EEC9000196BCE /* ResolutionCenterSellerEditProductCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BB75F5231D4EEC9000196BCE /* ResolutionCenterSellerEditProductCell.m */; };
+		BB75F5261D4EEC9000196BCE /* ResolutionCenterSellerEditProductCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB75F5241D4EEC9000196BCE /* ResolutionCenterSellerEditProductCell.xib */; };
 		F25F6F270D531ED13A92CDB9 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4868E459AB2A65D133732296 /* libPods-Tokopedia.a */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
 		FC23B85A1ACD659900879D75 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8581ACD659900879D75 /* Fabric.framework */; };
@@ -6009,6 +6013,12 @@
 		85C494BE1AD790DD008A314A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		85C494C01AD790E4008A314A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		AAA12C6A69BF6CB5F8EE3287 /* Pods-Tokopedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug.xcconfig"; sourceTree = "<group>"; };
+		BB75F51D1D4B4B0B00196BCE /* ResolutionCenterSellerEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionCenterSellerEditViewController.h; sourceTree = "<group>"; };
+		BB75F51E1D4B4B0B00196BCE /* ResolutionCenterSellerEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionCenterSellerEditViewController.m; sourceTree = "<group>"; };
+		BB75F51F1D4B4B0B00196BCE /* ResolutionCenterSellerEditViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ResolutionCenterSellerEditViewController.xib; sourceTree = "<group>"; };
+		BB75F5221D4EEC9000196BCE /* ResolutionCenterSellerEditProductCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionCenterSellerEditProductCell.h; sourceTree = "<group>"; };
+		BB75F5231D4EEC9000196BCE /* ResolutionCenterSellerEditProductCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionCenterSellerEditProductCell.m; sourceTree = "<group>"; };
+		BB75F5241D4EEC9000196BCE /* ResolutionCenterSellerEditProductCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ResolutionCenterSellerEditProductCell.xib; sourceTree = "<group>"; };
 		C8A1445074FECD393EA18C17 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		FC23B8571ACD659900879D75 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		FC23B8581ACD659900879D75 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
@@ -8310,6 +8320,7 @@
 		45484C261D4B0A3B001B10CD /* UIRefactor */ = {
 			isa = PBXGroup;
 			children = (
+				BB75F51C1D4B4ACD00196BCE /* ResolutionCenter */,
 				45484C271D4B0A3B001B10CD /* Activation */,
 				45484C471D4B0A3B001B10CD /* Address */,
 				45484C511D4B0A3B001B10CD /* Alert */,
@@ -12071,6 +12082,19 @@
 			path = Tokopedia;
 			sourceTree = "<group>";
 		};
+		BB75F51C1D4B4ACD00196BCE /* ResolutionCenter */ = {
+			isa = PBXGroup;
+			children = (
+				BB75F51D1D4B4B0B00196BCE /* ResolutionCenterSellerEditViewController.h */,
+				BB75F51E1D4B4B0B00196BCE /* ResolutionCenterSellerEditViewController.m */,
+				BB75F51F1D4B4B0B00196BCE /* ResolutionCenterSellerEditViewController.xib */,
+				BB75F5221D4EEC9000196BCE /* ResolutionCenterSellerEditProductCell.h */,
+				BB75F5231D4EEC9000196BCE /* ResolutionCenterSellerEditProductCell.m */,
+				BB75F5241D4EEC9000196BCE /* ResolutionCenterSellerEditProductCell.xib */,
+			);
+			path = ResolutionCenter;
+			sourceTree = "<group>";
+		};
 		E1A48FC656B05056B45251AD /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -12753,6 +12777,7 @@
 				45485EE91D4B0A40001B10CD /* icon_more@2x.png in Resources */,
 				45485E011D4B0A40001B10CD /* icon_speed_bad_large@3x.png in Resources */,
 				454859591D4B0A3F001B10CD /* HotlistResultViewController.xib in Resources */,
+				BB75F5261D4EEC9000196BCE /* ResolutionCenterSellerEditProductCell.xib in Resources */,
 				45485C041D4B0A40001B10CD /* icon_13.png in Resources */,
 				45485D961D4B0A40001B10CD /* icon_problem_buyer@3x.png in Resources */,
 				45485DAC1D4B0A40001B10CD /* icon_retry_grey.png in Resources */,
@@ -13263,6 +13288,7 @@
 				45485D6B1D4B0A40001B10CD /* icon_neutral_sad50.png in Resources */,
 				45485C731D4B0A40001B10CD /* icon_button_wishlist_nonactive@3x.png in Resources */,
 				45485B661D4B0A3F001B10CD /* TransactionCartShippingViewController.xib in Resources */,
+				BB75F5211D4B4B0B00196BCE /* ResolutionCenterSellerEditViewController.xib in Resources */,
 				45485ECB1D4B0A40001B10CD /* icon_search_active@3x.png in Resources */,
 				4548591A1D4B0A3F001B10CD /* GeneralAlertCell.xib in Resources */,
 				45485E5A1D4B0A40001B10CD /* icon_search@2x.png in Resources */,
@@ -14080,6 +14106,7 @@
 				454857241D4B0A3F001B10CD /* ProfileEdit.m in Sources */,
 				454856AA1D4B0A3F001B10CD /* DepartmentTree.m in Sources */,
 				45485BC41D4B0A40001B10CD /* ProductModelView.m in Sources */,
+				BB75F5251D4EEC9000196BCE /* ResolutionCenterSellerEditProductCell.m in Sources */,
 				45485A371D4B0A3F001B10CD /* MyReviewReputationViewController.m in Sources */,
 				454856C81D4B0A3F001B10CD /* ResolutionDetail.m in Sources */,
 				4548569E1D4B0A3F001B10CD /* GoogleplaceDetailResult.m in Sources */,
@@ -14136,6 +14163,7 @@
 				454857E61D4B0A3F001B10CD /* TransactionCCResult.m in Sources */,
 				454857F21D4B0A3F001B10CD /* DataCredit.m in Sources */,
 				4548569C1D4B0A3F001B10CD /* GooglePlaceDetailGeometry.m in Sources */,
+				BB75F5201D4B4B0B00196BCE /* ResolutionCenterSellerEditViewController.m in Sources */,
 				4548570B1D4B0A3F001B10CD /* NotificationSales.m in Sources */,
 				454859D11D4B0A3F001B10CD /* IntroViewController.swift in Sources */,
 				4548576F1D4B0A3F001B10CD /* SearchAutoCompleteDomains.m in Sources */,
