@@ -11,8 +11,12 @@
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
         </mutableArray>
         <mutableArray key="GothamMedium.ttf">
+            <string>GothamMedium</string>
             <string>GothamMedium</string>
             <string>GothamMedium</string>
         </mutableArray>
@@ -22,10 +26,13 @@
             <connections>
                 <outlet property="invoiceCell" destination="b0g-NG-TeO" id="ndY-kP-1QR"/>
                 <outlet property="reasonCell" destination="M3A-Lt-x7Y" id="wRh-lc-X7W"/>
+                <outlet property="reasonTextView" destination="eAE-IJ-D7y" id="OjY-h6-lIj"/>
+                <outlet property="refundValueCell" destination="0xn-5P-btC" id="uIP-Kl-qd0"/>
                 <outlet property="sellerInfoCell" destination="4mg-c6-BqJ" id="sjK-bC-vCe"/>
                 <outlet property="showAllComplainCell" destination="fuM-5n-QcU" id="hAW-xg-sof"/>
                 <outlet property="solutionCell" destination="evF-J2-Wms" id="hmN-JV-czY"/>
                 <outlet property="tableView" destination="c54-xr-0zt" id="9y9-8I-5p7"/>
+                <outlet property="totalInvoiceCell" destination="Eky-0O-CB4" id="c0c-sh-PtQ"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -34,9 +41,9 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="c54-xr-0zt">
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="default" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="c54-xr-0zt">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                 </tableView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -118,7 +125,7 @@
                     <constraint firstItem="7Lw-aK-VUD" firstAttribute="leading" secondItem="UkT-rh-VB6" secondAttribute="trailing" constant="8" id="wXS-c5-nFf"/>
                 </constraints>
             </tableViewCellContentView>
-            <point key="canvasLocation" x="643" y="165"/>
+            <point key="canvasLocation" x="643" y="161"/>
         </tableViewCell>
         <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="fuM-5n-QcU">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -150,7 +157,7 @@
                     <constraint firstItem="02E-0n-E32" firstAttribute="leading" secondItem="HZD-wB-vkx" secondAttribute="leading" constant="8" id="xG5-pP-2i1"/>
                 </constraints>
             </tableViewCellContentView>
-            <point key="canvasLocation" x="643" y="260"/>
+            <point key="canvasLocation" x="643" y="255"/>
         </tableViewCell>
         <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="evF-J2-Wms">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -168,7 +175,7 @@
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="whr-q6-BNS">
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="whr-q6-BNS">
                         <rect key="frame" x="57" y="10" width="222" height="24"/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <state key="normal" title="Tukar Barang sesuai pesanan">
@@ -187,7 +194,7 @@
                     <constraint firstItem="862-BZ-Xnc" firstAttribute="leading" secondItem="CWA-m9-uFw" secondAttribute="leading" constant="8" id="voS-Jh-Tug"/>
                 </constraints>
             </tableViewCellContentView>
-            <point key="canvasLocation" x="643" y="346"/>
+            <point key="canvasLocation" x="643" y="339"/>
         </tableViewCell>
         <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="109" id="M3A-Lt-x7Y">
             <rect key="frame" x="0.0" y="0.0" width="320" height="109"/>
@@ -196,7 +203,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="108"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="Isi alasan di sini" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="eAE-IJ-D7y" customClass="TKPDTextView">
+                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" keyboardDismissMode="interactive" text="Isi alasan di sini" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="eAE-IJ-D7y" customClass="TKPDTextView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="108"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -204,7 +211,70 @@
                     </textView>
                 </subviews>
             </tableViewCellContentView>
-            <point key="canvasLocation" x="643" y="463.5"/>
+            <point key="canvasLocation" x="643" y="674.5"/>
+        </tableViewCell>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="44" id="Eky-0O-CB4">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Eky-0O-CB4" id="i9n-en-67P">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Dari Total Invoice" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7k3-Tk-fdi">
+                        <rect key="frame" x="8" y="16" width="120" height="12"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="120" id="oJY-v8-8zf"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rp 24.000" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uec-Ku-EtZ">
+                        <rect key="frame" x="136" y="16" width="176" height="12"/>
+                        <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="7k3-Tk-fdi" firstAttribute="leading" secondItem="i9n-en-67P" secondAttribute="leading" constant="8" id="S80-Iw-qgm"/>
+                    <constraint firstItem="7k3-Tk-fdi" firstAttribute="centerY" secondItem="i9n-en-67P" secondAttribute="centerY" id="SEY-XP-TMc"/>
+                    <constraint firstItem="Uec-Ku-EtZ" firstAttribute="leading" secondItem="7k3-Tk-fdi" secondAttribute="trailing" constant="8" id="nPG-zt-tpg"/>
+                    <constraint firstItem="Uec-Ku-EtZ" firstAttribute="centerY" secondItem="i9n-en-67P" secondAttribute="centerY" id="z9A-ki-bb8"/>
+                    <constraint firstAttribute="trailing" secondItem="Uec-Ku-EtZ" secondAttribute="trailing" constant="8" id="zSU-lp-MRL"/>
+                </constraints>
+            </tableViewCellContentView>
+            <point key="canvasLocation" x="643" y="423"/>
+        </tableViewCell>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="73" id="0xn-5P-btC">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="73"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="0xn-5P-btC" id="gvL-4a-yMM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="72"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jumlah yang Anda inginkan" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fZd-nc-r8C">
+                        <rect key="frame" x="8" y="8" width="166" height="14"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="14" id="k2A-yX-DUm"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Besaran dana yang ingin dikembalikan" placeholder="Masukkan jumlah yang Anda inginkan" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="LIv-wK-QDX">
+                        <rect key="frame" x="8" y="30" width="304" height="30"/>
+                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                        <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                    </textField>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="fZd-nc-r8C" firstAttribute="top" secondItem="gvL-4a-yMM" secondAttribute="top" constant="8" id="IiD-lQ-7oz"/>
+                    <constraint firstItem="fZd-nc-r8C" firstAttribute="leading" secondItem="gvL-4a-yMM" secondAttribute="leading" constant="8" id="bRH-0X-8cA"/>
+                </constraints>
+            </tableViewCellContentView>
+            <point key="canvasLocation" x="643" y="531.5"/>
         </tableViewCell>
     </objects>
     <resources>
