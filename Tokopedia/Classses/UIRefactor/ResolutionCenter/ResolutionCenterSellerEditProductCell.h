@@ -10,4 +10,9 @@
 
 @interface ResolutionCenterSellerEditProductCell : UITableViewCell
 
+@property (strong, nonatomic) IBOutlet UIImageView *productImage;
+@property (strong, nonatomic) IBOutlet UIButton *productNameButton;
+@property (strong, nonatomic) IBOutlet UILabel *problemLabel;
+@property (strong, nonatomic) IBOutlet UILabel *problemDescriptionLabel;
++ (id)newcell;
 @end

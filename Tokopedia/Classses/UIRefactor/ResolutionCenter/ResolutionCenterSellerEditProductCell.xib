@@ -16,7 +16,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="99" id="KGk-i7-Jjw" customClass="ResolutionCenterSellerEditProductCell">
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ResolutionCenterSellerEditProductCell" rowHeight="99" id="KGk-i7-Jjw" customClass="ResolutionCenterSellerEditProductCell">
             <rect key="frame" x="0.0" y="0.0" width="320" height="99"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
@@ -31,7 +31,7 @@
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1 Produk tidak sesuai deskripsi" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nv8-lt-sE8">
-                        <rect key="frame" x="66" y="26" width="168" height="10"/>
+                        <rect key="frame" x="66" y="26" width="185" height="10"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="10" id="9jL-Ay-hyh"/>
                         </constraints>
@@ -49,7 +49,7 @@ Nanigenai you na asa ga kita ofuton ga itoshii na tanoshii ichinichi ni naru you
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tmh-VT-knZ">
-                        <rect key="frame" x="66" y="8" width="135" height="14"/>
+                        <rect key="frame" x="66" y="8" width="146" height="14"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="14" id="kjJ-ov-DJr"/>
                         </constraints>
@@ -73,10 +73,10 @@ Nanigenai you na asa ga kita ofuton ga itoshii na tanoshii ichinichi ni naru you
                 </constraints>
             </tableViewCellContentView>
             <connections>
-                <outlet property="problemDescriptionLabel" destination="3yJ-bC-Izx" id="ql6-lc-ab4"/>
-                <outlet property="problemLabel" destination="nv8-lt-sE8" id="rBk-aA-x1W"/>
-                <outlet property="productImage" destination="XqR-Fw-sSY" id="Boq-Yx-uCH"/>
-                <outlet property="productNameButton" destination="Tmh-VT-knZ" id="Ib0-0F-hFF"/>
+                <outlet property="problemDescriptionLabel" destination="3yJ-bC-Izx" id="uc1-wO-ZQY"/>
+                <outlet property="problemLabel" destination="nv8-lt-sE8" id="CFQ-v7-hN8"/>
+                <outlet property="productImage" destination="XqR-Fw-sSY" id="T7K-p4-Zcf"/>
+                <outlet property="productNameButton" destination="Tmh-VT-knZ" id="0zj-1O-x5j"/>
             </connections>
             <point key="canvasLocation" x="490" y="319.5"/>
         </tableViewCell>

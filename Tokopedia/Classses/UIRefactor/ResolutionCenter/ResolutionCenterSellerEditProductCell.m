@@ -10,14 +10,21 @@
 
 @interface ResolutionCenterSellerEditProductCell ()
 
-@property (strong, nonatomic) IBOutlet UIImageView *productImage;
-@property (strong, nonatomic) IBOutlet UIButton *productNameButton;
-@property (strong, nonatomic) IBOutlet UILabel *problemLabel;
-@property (strong, nonatomic) IBOutlet UILabel *problemDescriptionLabel;
 
 @end
 
 @implementation ResolutionCenterSellerEditProductCell
+
++ (id)newcell
+{
+    NSArray* a = [[NSBundle mainBundle] loadNibNamed:@"ResolutionCenterSellerEditProductCell" owner:nil options:0];
+    for (id o in a) {
+        if ([o isKindOfClass:[self class]]) {
+            return o;
+        }
+    }
+    return nil;
+}
 
 - (void)awakeFromNib {
     [super awakeFromNib];
