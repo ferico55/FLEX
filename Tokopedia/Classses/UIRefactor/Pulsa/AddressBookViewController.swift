@@ -24,6 +24,7 @@ class AddressBookViewController: UIViewController, UITableViewDelegate, UITableV
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.title = "Your Contact"
         self.tableView .registerNib(UINib(nibName: "AddressBookCell", bundle: nil), forCellReuseIdentifier: "AddressBookCellId")
     }
     
@@ -35,12 +36,17 @@ class AddressBookViewController: UIViewController, UITableViewDelegate, UITableV
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.contacts.count
     }
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 70
+    }
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = self.tableView .dequeueReusableCellWithIdentifier("AddressBookCellId") as! AddressBookCell
         
         let contact = self.contacts[indexPath.row]
         cell.phoneNumber.text = contact.phones?.first?.number
+        cell.contactName.text = contact.name?.firstName
         
         return cell
     }
