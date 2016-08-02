@@ -71,5 +71,6 @@
 #import "Breadcrumb.h"
 #import "CatalogAddProduct.h"
 #import "GeneralAction.h"
+#import "AddProductValidation.h"
 
 #import "StickyAlertView+NetworkErrorHandler.h"

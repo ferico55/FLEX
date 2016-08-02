@@ -31,9 +31,15 @@
 #import "UserAuthentificationManager.h"
 #import "TKPDPhotoPicker.h"
 #import "FilterCategoryViewController.h"
+#import "NSNumberFormatter+IDRFormater.h"
 #import "Tokopedia-Swift.h"
 
 #define DATA_SELECTED_BUTTON_KEY @"data_selected_button"
+
+@implementation SelectedImage
+
+
+@end
 
 #pragma mark - Setting Add Product View Controller
 @interface ProductAddEditViewController ()
@@ -67,45 +73,28 @@ FilterCategoryViewDelegate
     CGRect _containerDefault;
     CGSize _scrollviewContentSize;
     
-    NSInteger *_requestcountGenerateHost;
     GenerateHost *_generateHost;
     UploadImage *_images;
     ProductEditResult *_editProductForm;
+    ProductEditDetail *_product;
     NSArray<CatalogList*> *_catalogs;
-    
-    __weak RKObjectManager *_objectmanagerEditProductPicture;
-    __weak RKManagedObjectRequestOperation *_requestEditProductPicture;
-    
-    NSMutableArray *_errorMessage;
-    
-    NSInteger _requestCount;
-    NSInteger _requestcountDeleteImage;
-    
-    NSString *_cachepath;
-    URLCacheController *_cachecontroller;
-    URLCacheConnection *_cacheconnection;
-    NSTimeInterval _timeinterval;
-    
-    NSMutableArray *_uploadingImages;
     
     UIBarButtonItem *_nextBarButtonItem;
     BOOL _isFinishedUploadImages;
     NSDictionary *_auth;
     UserAuthentificationManager *_authManager;
-    BOOL _isNodata;
     
     BOOL _isBeingPresented;
     
+    NSMutableArray <SelectedImage*>*_selectedImages;
+    NSMutableArray <DKAsset*>*_selectedAsset;
+    DKAsset *_defaultImage;
     NSMutableArray *_selectedImagesCameraController;
     NSMutableArray *_selectedIndexPathCameraController;
     
     ProductAddEditDetailViewController *_detailVC;
     
-    TKPDPhotoPicker *_photoPicker;
     UIAlertView *_alertProcessing;
-    
-    CatalogList *_selectedCatalog;
-    CategoryDetail *_selectedCategory;
     
     BOOL _isCatalog;
     
@@ -140,16 +129,6 @@ FilterCategoryViewDelegate
 
 @implementation ProductAddEditViewController
 
-#pragma mark - Initialization
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        _isFinishedUploadImages = YES;
-    }
-    return self;
-}
-
 #pragma mark - View Lifecycle
 - (void)viewDidLoad
 {
@@ -163,16 +142,8 @@ FilterCategoryViewDelegate
     _section3TableViewCell = [NSArray sortViewsWithTagInArray:_section3TableViewCell];
     
     _dataInput = [NSMutableDictionary new];
-    _errorMessage = [NSMutableArray new];
-    _cacheconnection = [URLCacheConnection new];
-    _cachecontroller = [URLCacheController new];
-    _uploadingImages = [NSMutableArray new];
-    
-    _selectedImagesCameraController = [[NSMutableArray alloc]initWithObjects:@"",@"",@"",@"",@"", nil];
-    _selectedIndexPathCameraController = [[NSMutableArray alloc]initWithObjects:@"",@"",@"",@"",@"", nil];
-    _productImageURLs = [[NSMutableArray alloc]initWithObjects:@"",@"",@"",@"",@"", nil];
-    _productImageIDs = [[NSMutableArray alloc]initWithObjects:@"",@"",@"",@"",@"", nil];
-    _productImageDesc = [[NSMutableArray alloc]initWithObjects:@"",@"",@"",@"",@"", nil];
+    _selectedImages = [NSMutableArray new];
+    _selectedAsset = [NSMutableArray new];
     
     _tableView.delegate = self;
     _tableView.dataSource = self;
@@ -199,25 +170,13 @@ FilterCategoryViewDelegate
     _nextBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Lanjut"
                                                           style:UIBarButtonItemStyleDone
                                                          target:(self)
-                                                         action:@selector(tap:)];
+                                                         action:@selector(onTapNextButton:)];
     _nextBarButtonItem.tag = 11;
     self.navigationItem.rightBarButtonItem = _nextBarButtonItem;
     
-    for (UIButton *buttonAdd in _addImageButtons) {
-        buttonAdd.enabled = NO;
-    }
-    
-    [_thumbProductImageViews makeObjectsPerformSelector:@selector(setHidden:) withObject:@(YES)];
-    for (UIImageView *productImageView in _thumbProductImageViews) {
-        productImageView.userInteractionEnabled = NO;
-        productImageView.contentMode = UIViewContentModeScaleAspectFill;
-    }
     [self setDefaultData:_data];
     
     _authManager = [UserAuthentificationManager new];
-    
-    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
-    _auth = [secureStorage keychainDictionary];
     
     NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
     if (type == TYPE_ADD_EDIT_PRODUCT_EDIT || type == TYPE_ADD_EDIT_PRODUCT_COPY)
@@ -229,14 +188,9 @@ FilterCategoryViewDelegate
         UserAuthentificationManager *auth = [UserAuthentificationManager new];
         CategoryDetail *lastCategory = [auth getLastProductAddCategory];
         if (lastCategory) {
-            _selectedCategory = lastCategory;
+            _product.product_category = lastCategory;
         }
     }
-    
-    RequestGenerateHost *generateHost =[RequestGenerateHost new];
-    [generateHost configureRestkitGenerateHost];
-    [generateHost requestGenerateHost];
-    generateHost.delegate = self;
     
     if (type == TYPE_ADD_EDIT_PRODUCT_EDIT) {
         _productNameTextField.enabled = NO;
@@ -246,7 +200,12 @@ FilterCategoryViewDelegate
 }
 
 -(NSString *)getProductID{
-    NSString *productID = [_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@"";
+    NSString *productID = @"";
+    if ([[_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY] isKindOfClass:[NSNumber class]]) {
+        productID = [[_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY] stringValue];
+    } else {
+        productID = [_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY];
+    };
     return productID;
 }
 
@@ -313,6 +272,29 @@ FilterCategoryViewDelegate
 }
 
 #pragma mark - View Action
+
+-(void)onTapNextButton:(UIBarButtonItem*)button{
+    if ([self dataInputIsValid]) {
+        NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
+        UserAuthentificationManager *authManager = [UserAuthentificationManager new];
+        NSString *shopHasTerm = [authManager getShopHasTerm];
+        _editProductForm.info.shop_has_terms = shopHasTerm;
+        if (!_detailVC)_detailVC = [ProductAddEditDetailViewController new];
+        _detailVC.title = self.title;
+        _detailVC.product = _product;
+        _detailVC.type = type;
+        _detailVC.dataInput = _dataInput;
+        _detailVC.selectedImages = _selectedImages;
+        _detailVC.shopHasTerm = _editProductForm.info.shop_has_terms?:@"";
+        _detailVC.returnableStatus = _editProductForm.info.product_returnable?:@"0";
+        _detailVC.delegate = self;
+        BOOL isShopHasTerm = ([_editProductForm.info.shop_has_terms isEqualToString:@""]||[_editProductForm.info.shop_has_terms isEqualToString:@"0"])?NO:YES;
+        _detailVC.isShopHasTerm = isShopHasTerm;
+        
+        [self.navigationController pushViewController:_detailVC animated:YES];
+    }
+}
+
 -(IBAction)tap:(id)sender
 {
     [_activeTextField resignFirstResponder];
@@ -330,49 +312,7 @@ FilterCategoryViewDelegate
             }
             case 11:
             {
-                if (!_isFinishedUploadImages) {
-                    NSArray *errorMessage = @[ERRORMESSAGE_PROCESSING_UPLOAD_IMAGE];
-                    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessage delegate:self];
-                    [alert show];
-                }
-                else{
-                    if ([self dataInputIsValid]) {
-                        NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
-                        NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
-                        id productDetail = [_data objectForKey:DATA_PRODUCT_DETAIL_KEY]?:@"";
-                        NSString *defaultImagePath = [_dataInput objectForKey:API_PRODUCT_IMAGE_DEFAULT_KEY];
-                        if (!defaultImagePath) {
-                            defaultImagePath = (type == TYPE_ADD_EDIT_PRODUCT_ADD || type == TYPE_ADD_EDIT_PRODUCT_COPY)? [_productImageURLs firstObject]:[_productImageIDs firstObject];
-                            [_dataInput setObject:defaultImagePath forKey:API_PRODUCT_IMAGE_DEFAULT_KEY];
-                        }
-                        UserAuthentificationManager *authManager = [UserAuthentificationManager new];
-                        NSString *shopHasTerm = [authManager getShopHasTerm];
-                        _editProductForm.info.shop_has_terms = shopHasTerm;
-                        
-                        if (!_detailVC)_detailVC = [ProductAddEditDetailViewController new];
-                        _detailVC.title = self.title;
-                        _detailVC.data = @{kTKPD_AUTHKEY : auth?:@{},
-                                           DATA_INPUT_KEY : _dataInput?:@{},
-                                           DATA_TYPE_ADD_EDIT_PRODUCT_KEY : @(type),
-                                           DATA_PRODUCT_DETAIL_KEY: productDetail,
-                                           DATA_SHOP_HAS_TERM_KEY:_editProductForm.info.shop_has_terms?:@"0",
-                                           @"Image_desc_array":_productImageDesc?:@[]
-                                           };
-                        _detailVC.shopHasTerm = _editProductForm.info.shop_has_terms?:@"";
-                        _detailVC.returnableStatus = _editProductForm.info.product_returnable?:@"0";
-                        _detailVC.generateHost = _generateHost;
-                        _detailVC.delegate = self;
-                        BOOL isShopHasTerm = ([_editProductForm.info.shop_has_terms isEqualToString:@""]||[_editProductForm.info.shop_has_terms isEqualToString:@"0"])?NO:YES;
-                        _detailVC.isShopHasTerm = isShopHasTerm;
-                        //_detailVC.isNeedRequestAddProductPicture = YES;
-                        [self.navigationController pushViewController:_detailVC animated:YES];
-                    }
-                    else
-                    {
-                        StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:_errorMessage delegate:self];
-                        [alert show];
-                    }
-                }
+
                 break;
             }
             default:
@@ -400,133 +340,69 @@ FilterCategoryViewDelegate
                 [v show];
                 break;
             }
-            case 20: // tag 20-24 add product
-            case 21:
-            case 22:
-            case 23:
-            case 24:
-            {
-                NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
-                if (type == TYPE_ADD_EDIT_PRODUCT_EDIT || type == TYPE_ADD_EDIT_PRODUCT_COPY) {
-                    [self didTapImageButtonSingleSelection:(UIButton*)sender];
-                }
-                else
-                    [self didTapImageButton:(UIButton*)sender];
-                break;
-            }
             default:
                 break;
         }
     }
 }
-
--(void)didTapImageButton:(UIButton*)sender
+-(IBAction)onTapImageButton:(UIButton*)sender
 {
-    CameraAlbumListViewController *albumVC = [CameraAlbumListViewController new];
-    albumVC.title = @"Album";
-    albumVC.delegate = self;
-    CameraCollectionViewController *photoVC = [CameraCollectionViewController new];
-    photoVC.title = @"All Picture";
-    photoVC.delegate = self;
-    photoVC.isAddEditProduct = YES;
-    photoVC.tag = sender.tag;
-    NSMutableArray *notEmptyImageIndex = [NSMutableArray new];
-    for (UIImageView *image in _thumbProductImageViews) {
-        if (image.image == nil)
-        {
-            [notEmptyImageIndex addObject:@(image.tag - 20)];
-        }
+    if ([self isButtonWithProductImage:sender]) {
+        [self editImageDetailAtIndex:sender.tag-1];
+    } else {
+        [self selectImageFromCameraOrAlbum];
     }
-    NSMutableArray *selectedImage = [NSMutableArray new];
-    for (id selected in _selectedImagesCameraController) {
-        if (![selected isEqual:@""]) {
-            [selectedImage addObject: selected];
-        }
-    }
-    NSMutableArray *selectedIndexPath = [NSMutableArray new];
-    for (NSIndexPath *selected in _selectedIndexPathCameraController) {
-        if (![selected isEqual:@""]) {
-            [selectedIndexPath addObject:selected];
-        }
-    }
-    photoVC.maxSelected = 5;
-    
-    photoVC.selectedImagesArray = selectedImage;
-    
-    selectedIndexPath = [NSMutableArray new];
-    for (NSIndexPath *selected in _selectedIndexPathCameraController) {
-        if (![selected isEqual:@""]) {
-            [selectedIndexPath addObject:selected];
-        }
-    }
-    photoVC.selectedIndexPath = _selectedIndexPathCameraController;
-    
-    UINavigationController *nav = [[UINavigationController alloc]init];
-    nav.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
-    nav.navigationBar.translucent = NO;
-    nav.navigationBar.tintColor = [UIColor whiteColor];
-    NSArray *controllers = @[albumVC,photoVC];
-    [nav setViewControllers:controllers];
-    [self.navigationController presentViewController:nav animated:YES completion:nil];
 }
 
--(void)didTapImageButtonSingleSelection:(UIButton*)sender
-{
-    _photoPicker = [[TKPDPhotoPicker alloc] initWithParentViewController:self
-                                                  pickerTransistionStyle:UIModalTransitionStyleCoverVertical];
-    _photoPicker.tag = sender.tag - 20;
-    _photoPicker.delegate = self;
+-(BOOL)isButtonWithProductImage:(UIButton*)button{
+    return (button.tag != _selectedImages.count+1);
 }
 
-- (IBAction)gesture:(id)sender
-{
-    [_activeTextField resignFirstResponder];
-    
-    UITapGestureRecognizer* gesture = (UITapGestureRecognizer*)sender;
-    switch (gesture.state)
-    {
-        case UIGestureRecognizerStateBegan:
-        {
-            break;
-        }
-        case UIGestureRecognizerStateChanged:
-        {
-            break;
-        }
-        case UIGestureRecognizerStateEnded:
-        {
-            if (gesture.view.tag > 0) {
-                NSInteger indexImage = gesture.view.tag-20;
-                NSNumber *defaultImagePath =[_dataInput objectForKey:API_PRODUCT_IMAGE_DEFAULT_KEY];
-                
-                NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
-                NSNumber *selectedImagePath = (type == TYPE_ADD_EDIT_PRODUCT_ADD || type == TYPE_ADD_EDIT_PRODUCT_COPY)? _productImageURLs[indexImage]:_productImageIDs[indexImage];
-                
-                BOOL isDefaultImage;
-                if (defaultImagePath)
-                    isDefaultImage = [defaultImagePath isEqual:selectedImagePath];
-                else
-                    isDefaultImage = (gesture.view.tag-20 == 0);
-                
-                ProductEditImageViewController *vc = [ProductEditImageViewController new];
-                vc.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:@{},
-                            kTKPDSHOPEDIT_APIUPLOADFILEPATHKEY : _productImageURLs[indexImage]?:@"",
-                            kTKPDDETAIL_DATAINDEXKEY : @(indexImage),
-                            DATA_IS_DEFAULT_IMAGE : @(isDefaultImage),
-                            DATA_PRODUCT_IMAGE_NAME_KEY : _productImageDesc[indexImage]?:@"",
-                            };
-                vc.uploadedImage = ((UIImageView*)_thumbProductImageViews[indexImage]).image;
-                vc.delegate = self;
-                vc.isDefaultFromWS = (type == TYPE_ADD_EDIT_PRODUCT_EDIT && indexImage == 0);
-                vc.type = type;
-                [self.navigationController pushViewController:vc animated:YES];
-            }
-            
-            break;
-        }
-        default:
-            break;
+-(void)editImageDetailAtIndex:(NSUInteger)index{
+
+    NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
+    BOOL isDefaultImage = [_selectedImages[index].imagePrimary boolValue];
+
+    ProductEditImageViewController *vc = [ProductEditImageViewController new];
+    vc.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:@{},
+                kTKPDSHOPEDIT_APIUPLOADFILEPATHKEY : _productImageURLs[index]?:@"",
+                kTKPDDETAIL_DATAINDEXKEY : @(index),
+                DATA_IS_DEFAULT_IMAGE : @(isDefaultImage),
+                DATA_PRODUCT_IMAGE_NAME_KEY : _productImageDesc[index]?:@"",
+                };
+    vc.uploadedImage = _selectedImages[index].image;
+    vc.delegate = self;
+//    vc.selectedImage = _selectedImages[index];
+    vc.isDefaultFromWS = (type == TYPE_ADD_EDIT_PRODUCT_EDIT && index == 0);
+    vc.type = type;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+-(void)selectImageFromCameraOrAlbum{
+    __weak typeof(self) wself = self;
+    [ImagePickerController showImagePicker:self
+                                 assetType:DKImagePickerControllerAssetTypeallPhotos
+                       allowMultipleSelect:YES
+                                showCancel:YES
+                                showCamera:YES
+                               maxSelected:5 - (_selectedImages.count-_selectedAsset.count)
+                            selectedAssets:_selectedAsset
+                                completion:^(NSArray<DKAsset *> *asset) {
+                                    [wself setSelectedAsset:asset];
+                                    [wself addImageFromAsset];
+                                }];
+}
+
+-(void)setSelectedAsset:(NSArray<DKAsset*>*)selectedAsset{
+    [_selectedAsset removeAllObjects];
+    [_selectedAsset addObjectsFromArray:selectedAsset];
+}
+
+-(BOOL)isDefaultImage:(DKAsset*)image{
+    if (_defaultImage == nil) {
+        return ([image isEqual:_selectedAsset.firstObject]);
     }
+    return ([image isEqual:_defaultImage]);
 }
 
 #pragma mark - Table View Data Source
@@ -553,72 +429,55 @@ FilterCategoryViewDelegate
         default:
             break;
     }
-#ifdef kTKPDHOTLISTRESULT_NODATAENABLE
-    return _isNodata?1:rowCount;
-#else
-    return _isNodata?0:rowCount;
-#endif
+    return rowCount;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
+    ProductEditDetail *product = _product;
     UITableViewCell* cell = nil;
-    if (!_isNodata) {
-        switch (indexPath.section) {
-            case 0:
-                cell = _section0TableViewCell[indexPath.row];
-                break;
-            case 1:
-                cell = _section1TableViewCell[indexPath.row];
-                if (indexPath.row == BUTTON_PRODUCT_PRODUCT_NAME) {
-                    NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
-                    if (type == TYPE_ADD_EDIT_PRODUCT_EDIT) {
-                        _productNameViewCell.hidden = NO;
-                    }
+    switch (indexPath.section) {
+        case 0:
+            cell = _section0TableViewCell[indexPath.row];
+            break;
+        case 1:
+            cell = _section1TableViewCell[indexPath.row];
+            if (indexPath.row == BUTTON_PRODUCT_PRODUCT_NAME) {
+                NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
+                if (type == TYPE_ADD_EDIT_PRODUCT_EDIT) {
+                    _productNameViewCell.hidden = NO;
                 }
-                if (indexPath.row == BUTTON_PRODUCT_CATEGORY) {
-                    NSString *departmentTitle = @"Pilih Kategori";
-                    if (_selectedCategory) {
-                        CategoryDetail *category =_selectedCategory;
-                        departmentTitle = category.name;
-                    } else {
-                        departmentTitle = @"Pilih Kategori";
-                    }
-                    cell.detailTextLabel.text = departmentTitle;
+            }
+            if (indexPath.row == BUTTON_PRODUCT_CATEGORY) {
+                NSString *departmentTitle = @"Pilih Kategori";
+                if (product.product_category) {
+                    CategoryDetail *category =product.product_category;
+                    departmentTitle = category.name;
+                } else {
+                    departmentTitle = @"Pilih Kategori";
                 }
-                if (indexPath.row == BUTTON_PRODUCT_CATALOG) {
-                    _catalogLabel.text = _selectedCatalog.catalog_name?:@"Pilih Katalog";
-                    cell.detailTextLabel.text = _selectedCatalog.catalog_name?:@"Pilih Katalog";
-                }
-                break;
-            case 2:
-                cell = _section2TableViewCell[indexPath.row];
-                if (indexPath.row==BUTTON_PRODUCT_PRICE_CURRENCY) {
-                    NSString *currencyName = product.product_currency;
-                    cell.detailTextLabel.text = currencyName;
-                }
-                break;
-            case 3:
-                cell = _section3TableViewCell[indexPath.row];
-                if (indexPath.row == BUTTON_PRODUCT_WEIGHT_UNIT) {
-                    NSString *weightUnitName = product.product_weight_unit_name;
-                    cell.detailTextLabel.text = weightUnitName;
-                }
-                break;
-            default:
-                break;
-        }
-    } else {
-        static NSString *CellIdentifier = kTKPDDETAIL_STANDARDTABLEVIEWCELLIDENTIFIER;
-        
-        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-        if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        }
-        
-        cell.textLabel.text = kTKPDDETAIL_NODATACELLTITLE;
-        cell.detailTextLabel.text = kTKPDDETAIL_NODATACELLDESCS;
+                cell.detailTextLabel.text = departmentTitle;
+            }
+            if (indexPath.row == BUTTON_PRODUCT_CATALOG) {
+                _catalogLabel.text = product.product_catalog.catalog_name?:@"Pilih Katalog";
+                cell.detailTextLabel.text = product.product_catalog.catalog_name?:@"Pilih Katalog";
+            }
+            break;
+        case 2:
+            cell = _section2TableViewCell[indexPath.row];
+            if (indexPath.row==BUTTON_PRODUCT_PRICE_CURRENCY) {
+                NSString *currencyName = product.product_currency;
+                cell.detailTextLabel.text = currencyName;
+            }
+            break;
+        case 3:
+            cell = _section3TableViewCell[indexPath.row];
+            if (indexPath.row == BUTTON_PRODUCT_WEIGHT_UNIT) {
+                NSString *weightUnitName = product.product_weight_unit_name;
+                cell.detailTextLabel.text = weightUnitName;
+            }
+            break;
+        default:
+            break;
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
@@ -681,7 +540,7 @@ FilterCategoryViewDelegate
                 {
                     NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
                     if (type == TYPE_ADD_EDIT_PRODUCT_EDIT) {
-                        _productNameTextField.enabled = NO;
+//                        _productNameTextField.enabled = NO;
                         UIAlertView *editableNameProductAlert = [[UIAlertView alloc]initWithTitle:nil message:ERRRORMESSAGE_CANNOT_EDIT_PRODUCT_NAME delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
                         [editableNameProductAlert show];
                     }
@@ -694,7 +553,7 @@ FilterCategoryViewDelegate
                     FilterCategoryViewController *controller = [FilterCategoryViewController new];
                     controller.filterType = FilterCategoryTypeProductAddEdit;
                     controller.delegate = self;
-                    controller.selectedCategory = _selectedCategory;
+                    controller.selectedCategory = _product.product_category;
                     UINavigationController *navigation = [[UINavigationController new] initWithRootViewController:controller];
                     navigation.navigationBar.translucent = NO;
                     [self.navigationController presentViewController:navigation animated:YES completion:nil];
@@ -710,7 +569,7 @@ FilterCategoryViewDelegate
                             [catalogs addObject:catalog.catalog_name];
                         }
                         catalogVC.objects = [catalogs copy];
-                        catalogVC.selectedObject = _selectedCatalog.catalog_name?:@"";
+                        catalogVC.selectedObject = _product.product_catalog.catalog_name?:@"";
                         [self.navigationController pushViewController:catalogVC animated:YES];
                     }
                 }
@@ -767,13 +626,6 @@ FilterCategoryViewDelegate
     return view;
 }
 
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (_isNodata) {
-        cell.backgroundColor = [UIColor whiteColor];
-    }
-}
-
 -(void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView
 {
     [_activeTextField resignFirstResponder];
@@ -824,7 +676,7 @@ FilterCategoryViewDelegate
                                         onSuccess:^(ProductEditResult * form) {
                                             
                                             [self setEditProductForm:form];
-                                            
+                                            [self addImageFromForm];
                                             [self enableButtonBeforeSuccessRequest:YES];
                                             [_alertProcessing dismissWithClickedButtonIndex:0 animated:YES];
                                             
@@ -861,20 +713,73 @@ FilterCategoryViewDelegate
                                              }];
 }
 
+-(void)setProductDetail:(ProductEditDetail*)product{
+    _product = product;
+    
+    NSInteger index = [product.product_weight_unit integerValue]-1;
+    if (index<0) {
+        index = 0;
+    }
+    _product.product_weight_unit_name = [ARRAY_WEIGHT_UNIT[index] objectForKey:DATA_NAME_KEY];
+    if ([_product.product_currency isEqualToString:@"idr"]) {
+        _product.product_currency = [ARRAY_PRICE_CURRENCY[0]objectForKey:DATA_NAME_KEY];
+    }
+    if ([_product.product_currency isEqualToString:@"usd"]) {
+        _product.product_currency = [ARRAY_PRICE_CURRENCY[1]objectForKey:DATA_NAME_KEY];
+    }
+
+    _product.product_short_desc = [product.product_short_desc stringByReplacingOccurrencesOfString:@"[nl]" withString:@"\n"];
+    
+    _minimumOrderTextField.text = product.product_min_order;
+    
+    if (_editProductForm.breadcrumb.count > 0) {
+        Breadcrumb *category = [_editProductForm.breadcrumb lastObject];
+        
+        CategoryDetail *filterCategory = [[CategoryDetail alloc] init];
+        filterCategory.categoryId = category.department_id;
+        filterCategory.name = category.department_name;
+        _product.product_category = filterCategory;
+    }
+    
+    NSString *priceCurencyID = product.product_currency_id?:@"1";
+    NSString *price = product.product_price?:@"";
+    NSString *weight = product.product_weight?:@"";
+    
+    _productNameTextField.text = product.product_name;
+    _productNameBeforeCopy = product.product_name;
+    
+    NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
+    _productNameTextField.enabled = (type ==TYPE_ADD_EDIT_PRODUCT_ADD || type == TYPE_ADD_EDIT_PRODUCT_COPY)?YES:NO;
+    
+    CGFloat priceInteger = [price floatValue];
+    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    if ([priceCurencyID integerValue] == PRICE_CURRENCY_ID_RUPIAH) {
+        price = (priceInteger>0)?[[NSNumberFormatter IDRFormarter] stringFromNumber:@(priceInteger)]:@"";
+    }
+    else
+    {
+        [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+        [formatter setCurrencyCode:@"USD"];
+        [formatter setNegativeFormat:@"-¤#,##0.00"];
+        price = [formatter stringFromNumber:@(priceInteger)];
+        
+    }
+    
+    _productPriceTextField.text = price;
+    _productWeightTextField.text = weight;
+}
+
 -(void)setEditProductForm:(ProductEditResult*)form{
     _editProductForm = form;
     
-    NSMutableDictionary *data = [NSMutableDictionary new];
-    [data addEntriesFromDictionary:_data];
-    [self setDefaultData:data];
+    [self setProductDetail:_editProductForm.product];
     
-    [self fetchGetCatalogWithProductName:_productNameTextField.text andDepartmentID:_selectedCategory.categoryId];
+    [self fetchGetCatalogWithProductName:_productNameTextField.text andDepartmentID:_product.product_category.categoryId];
     
     if(_detailVC)
     {
         NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
         NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
-        id productDetail = [_data objectForKey:DATA_PRODUCT_DETAIL_KEY]?:@"";
         NSString *defaultImagePath = [_dataInput objectForKey:API_PRODUCT_IMAGE_DEFAULT_KEY];
         if (!defaultImagePath) {
             defaultImagePath = (type == TYPE_ADD_EDIT_PRODUCT_ADD || type == TYPE_ADD_EDIT_PRODUCT_COPY)? [_productImageURLs firstObject]:[_productImageIDs firstObject];
@@ -882,12 +787,10 @@ FilterCategoryViewDelegate
         }
         _detailVC.data = @{kTKPD_AUTHKEY : auth?:@{},
                            DATA_INPUT_KEY : _dataInput,
-                           DATA_TYPE_ADD_EDIT_PRODUCT_KEY : @(type),
-                           DATA_PRODUCT_DETAIL_KEY: productDetail,
                            DATA_SHOP_HAS_TERM_KEY:_editProductForm.info.shop_has_terms?:@""
                            };
         _detailVC.shopHasTerm = _editProductForm.info.shop_has_terms;
-        _detailVC.generateHost = _generateHost;
+        _detailVC.product = _product;
         _detailVC.delegate = self;
         
         //_detailVC.isNeedRequestAddProductPicture = YES;
@@ -895,6 +798,75 @@ FilterCategoryViewDelegate
     
     
     [_tableView reloadData];
+}
+
+-(void)addImageFromForm{
+    
+    NSArray <ProductEditImages*> *selectedImagesEditProduct = _editProductForm.product_images;
+
+    for (ProductEditImages* selectedImage in selectedImagesEditProduct) {
+        SelectedImage *imageObject = [SelectedImage new];
+        
+        UIImageView *thumb = [UIImageView new];
+        NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:selectedImage.image_src_300] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+        [thumb setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+            imageObject.image = image;
+            [self setImageButtons];
+        } failure:nil];
+        
+        imageObject.desc = selectedImage.description?:@"";
+        imageObject.imageID = selectedImage.image_id?:@"";
+        imageObject.imagePrimary = selectedImage.image_primary;
+        
+        [_selectedImages addObject:imageObject];
+    }
+    
+    [self setImageButtons];
+}
+
+-(void)addImageFromAsset{
+    
+    NSMutableArray *tempSelected = [_selectedImages mutableCopy];
+    for (SelectedImage *selected in _selectedImages) {
+        if (selected.isFromAsset) {
+            [tempSelected removeObject:selected];
+        }
+    }
+    
+    [_selectedImages removeAllObjects];
+    [_selectedImages addObjectsFromArray:tempSelected];
+    
+    for (DKAsset* selectedImage in _selectedAsset) {
+        SelectedImage *imageObject = [SelectedImage new];
+        imageObject.image = selectedImage.resizedImage;
+        imageObject.desc = selectedImage.description?:@"";
+        imageObject.imageID = @"";
+        imageObject.isFromAsset = YES;
+        imageObject.imagePrimary = ([self isDefaultImage:selectedImage])?@"1":@"";
+        
+        [_selectedImages addObject:imageObject];
+    }
+    
+    [self setImageButtons];
+}
+
+-(void)setImageButtons{
+    for (UIButton *button in _addImageButtons) {
+        button.hidden = YES;
+        [button setBackgroundImage:[UIImage imageNamed:@"icon_upload_image.png"] forState:UIControlStateNormal];
+    }
+    for (int i = 0; i<_selectedImages.count; i++) {
+        ((UIButton*)_addImageButtons[i]).hidden = NO;
+        
+        [_addImageButtons[i] setBackgroundImage:_selectedImages[i].image forState:UIControlStateNormal];
+        
+    }
+    if (_selectedImages.count<_addImageButtons.count) {
+        UIButton *uploadedButton = (UIButton*)_addImageButtons[_selectedImages.count];
+        uploadedButton.hidden = NO;
+        
+        //        _scrollViewUploadPhoto.contentSize = CGSizeMake(uploadedButton.frame.origin.x+uploadedButton.frame.size.width+30, 0);
+    }
 }
 
 -(UserAuthentificationManager *)authManager{
@@ -908,451 +880,10 @@ FilterCategoryViewDelegate
     return [[self authManager] getShopId];
 }
 
-#pragma mark Request Generate Host
--(void)successGenerateHost:(GenerateHost *)generateHost
-{
-    _generateHost = generateHost;
-    ((UIButton*)_addImageButtons[0]).enabled = YES;
-    
-    //[_alertProcessing dismissWithClickedButtonIndex:0 animated:YES];
-}
-
--(void)failedGenerateHost:(NSArray *)errorMessages
-{
-    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessages delegate:self];
-    [alert show];
-    [_alertProcessing dismissWithClickedButtonIndex:0 animated:NO];
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-#pragma mark Request Action Upload Photo
--(void)successUploadObject:(id)object withMappingResult:(UploadImage *)uploadImage
-{
-    _images = uploadImage;
-    
-    [_uploadingImages removeObject:object];
-    
-    UIImageView *thumbProductImage = [object objectForKey:DATA_SELECTED_IMAGE_VIEW_KEY];
-    thumbProductImage.alpha = 1.0;
-    
-    thumbProductImage.userInteractionEnabled = YES;
-    
-    NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
-    
-    if (type == TYPE_ADD_EDIT_PRODUCT_EDIT) {
-        [self configureRestKitEditProductPicture];
-        [self requestEditProductPicture:object];
-    }
-    else
-    {
-        [_productImageURLs replaceObjectAtIndex:thumbProductImage.tag-20 withObject:_images.result.file_path?:@""];
-        [_productImageIDs replaceObjectAtIndex:thumbProductImage.tag-20 withObject:_images.result.pic_id?:@""];
-        
-        NSArray *objectProductPhoto = (type == TYPE_ADD_EDIT_PRODUCT_ADD || type == TYPE_ADD_EDIT_PRODUCT_COPY)?_productImageURLs:_productImageIDs;
-        NSMutableArray *photos = [NSMutableArray new];
-        for (NSString *photo in objectProductPhoto) {
-            if (![photo isEqualToString:@""]) {
-                [photos addObject:photo];
-            }
-        }
-        objectProductPhoto = [photos copy];
-        NSString *stringImageURLs = [[objectProductPhoto valueForKey:@"description"] componentsJoinedByString:@"~"];
-        [_dataInput setObject:stringImageURLs forKey:API_PRODUCT_IMAGE_TOUPLOAD_KEY];
-        NSLog(@" Product image URL %@ with string %@ ", objectProductPhoto, stringImageURLs);
-    }
-    
-    [self requestProcessUploadPhoto];
-}
-
--(void)failedUploadObject:(id)object
-{
-    UIImageView *imageView = [object objectForKey:DATA_SELECTED_IMAGE_VIEW_KEY];
-    imageView.image = nil;
-    
-    for (UIButton *button in _addImageButtons) {
-        if (button.tag == imageView.tag) {
-            button.hidden = NO;
-            button.enabled = YES;
-        }
-    }
-    
-    imageView.hidden = YES;
-    
-    [_uploadingImages removeObject:object];
-    NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
-    NSMutableArray *objectProductPhoto = [NSMutableArray new];
-    objectProductPhoto = (type == TYPE_ADD_EDIT_PRODUCT_ADD || type == TYPE_ADD_EDIT_PRODUCT_COPY)?_productImageURLs:_productImageIDs;
-    for (int i = 0; i<_selectedImagesCameraController.count; i++) {
-        if ([_selectedImagesCameraController[i]isEqual:[object objectForKey:DATA_SELECTED_PHOTO_KEY]]) {
-            [_selectedImagesCameraController replaceObjectAtIndex:i withObject:@""];
-            [_selectedIndexPathCameraController replaceObjectAtIndex:i withObject:@""];
-            if (type == TYPE_ADD_EDIT_PRODUCT_ADD)
-                [objectProductPhoto replaceObjectAtIndex:i withObject:@""];
-        }
-    }
-    
-    NSString *stringImageURLs = [[objectProductPhoto valueForKey:@"description"] componentsJoinedByString:@"~"];
-    [_dataInput setObject:stringImageURLs forKey:API_PRODUCT_IMAGE_TOUPLOAD_KEY];
-    
-    [self requestProcessUploadPhoto];
-}
-
--(void)failedUploadErrorMessage:(NSArray *)errorMessage
-{
-    StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:errorMessage delegate:self];
-    [stickyAlertView show];
-}
-
-- (void)requestProcessUploadPhoto
-{
-    if (_uploadingImages.count ==0) _isFinishedUploadImages = YES;
-    
-}
-
-#pragma mark Request Delete Image
--(RKObjectManager*)objectManagerDeleteImage
-{
-    RKObjectManager *objectManager =  [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ShopSettings class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ShopSettingsResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{kTKPDDETAIL_APIISSUCCESSKEY:kTKPDDETAIL_APIISSUCCESSKEY}];
-    
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    
-    // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDDETAILACTIONPRODUCT_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [objectManager addResponseDescriptor:responseDescriptor];
-    
-    return objectManager;
-}
-
--(void)requestSuccessDeleteImage:(id)object withOperation:(RKObjectRequestOperation*)operation
-{
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id stat = [result objectForKey:@""];
-    ShopSettings *setting = stat;
-    BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if (status) {
-        if(setting.message_error)
-        {
-            NSArray *array = setting.message_error?:[[NSArray alloc] initWithObjects:ERRORMESSAGE_DELETE_PRODUCT_IMAGE, nil];
-            StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:array delegate:self];
-            [alert show];
-            [self cancelDeletedImage];
-        }
-        if (setting.result.is_success == 1) {
-            NSArray *array = setting.message_status?:[[NSArray alloc] initWithObjects:SUCCESSMESSAGE_DELETE_PRODUCT_IMAGE, nil];
-            StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:array delegate:self];
-            [alert show];
-            NSArray *objectProductPhoto = _productImageIDs;
-            NSMutableArray *photos = [NSMutableArray new];
-            for (NSString *photo in objectProductPhoto) {
-                if (![photo isEqualToString:@""]) {
-                    [photos addObject:photo];
-                }
-            }
-            objectProductPhoto = [photos copy];
-            NSString *stringImageURLs = [[objectProductPhoto valueForKey:@"description"] componentsJoinedByString:@"~"];
-            [_dataInput setObject:stringImageURLs forKey:API_PRODUCT_IMAGE_TOUPLOAD_KEY];
-            [[NSNotificationCenter defaultCenter] postNotificationName:ADD_PRODUCT_POST_NOTIFICATION_NAME object:nil];
-            
-        }
-    }
-}
-
-#pragma mark Request Edit Product Picture
--(void)configureRestKitEditProductPicture
-{
-    _objectmanagerEditProductPicture =  [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[UploadImage class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[UploadImageResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{@"pic_id":@"pic_id",
-                                                        @"is_success":@"is_success"}];
-    
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    
-    // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDDETAILACTIONPRODUCT_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectmanagerEditProductPicture addResponseDescriptor:responseDescriptor];
-}
-
--(void)cancelEditProductPicture
-{
-    [_requestEditProductPicture cancel];
-    _requestEditProductPicture = nil;
-    
-    [_objectmanagerEditProductPicture.operationQueue cancelAllOperations];
-    _objectmanagerEditProductPicture = nil;
-}
-
-- (void)requestEditProductPicture:(id)pictureObject
-{
-    if(_requestEditProductPicture.isExecuting) return;
-    
-    NSDictionary *param = @{@"action" : @"edit_product_picture",
-                            @"pic_obj" : _images.result.pic_obj
-                            };
-    
-    NSTimer *timer;
-    
-    _requestEditProductPicture = [_objectmanagerEditProductPicture appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILACTIONPRODUCT_APIPATH parameters:[param encrypt]];
-    [_requestEditProductPicture setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestSuccessEditProductPicture:pictureObject withOperation:operation mappingResult:mappingResult];
-        [timer invalidate];
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [_alertProcessing dismissWithClickedButtonIndex:0 animated:YES];
-        [timer invalidate];
-    }];
-    
-    [[[RKObjectManager sharedClient] operationQueue] addOperation:_requestEditProductPicture];
-    
-    timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutEditProductPicture) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-}
-
-
--(void)requestSuccessEditProductPicture:(id)object withOperation:(RKObjectRequestOperation*)operation mappingResult:(RKMappingResult*)mappingResult
-{
-    NSDictionary *result = mappingResult.dictionary;
-    id info = [result objectForKey:@""];
-    _images = info;
-    NSString *statusstring = _images.status;
-    BOOL status = [statusstring isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if (status) {
-        if ([_images.result.is_success integerValue] == 1) {
-            UIImageView *thumbProductImage = [object objectForKey:DATA_SELECTED_IMAGE_VIEW_KEY];
-            thumbProductImage.alpha = 1.0;
-            
-            thumbProductImage.userInteractionEnabled = YES;
-            
-            [_productImageURLs replaceObjectAtIndex:thumbProductImage.tag-20 withObject:_images.result.file_path?:@""];
-            [_productImageIDs replaceObjectAtIndex:thumbProductImage.tag-20 withObject:_images.result.pic_id?:@""];
-            
-            NSMutableArray *photos = [NSMutableArray new];
-            for (NSString *photo in _productImageIDs) {
-                if (![photo isEqualToString:@""]) {
-                    [photos addObject:photo];
-                }
-            }
-            
-            NSString *stringImageURLs = [[photos valueForKey:@"description"] componentsJoinedByString:@"~"];
-            [_dataInput setObject:stringImageURLs forKey:API_PRODUCT_IMAGE_TOUPLOAD_KEY];
-            NSLog(@" Product image URL %@ with string %@ ", photos, stringImageURLs);
-            [[NSNotificationCenter defaultCenter] postNotificationName:ADD_PRODUCT_POST_NOTIFICATION_NAME object:nil userInfo:nil];
-        }
-    }
-}
-
--(void)requestTimeoutEditProductPicture
-{
-    [self cancelEditProductPicture];
-    [_alertProcessing dismissWithClickedButtonIndex:0 animated:YES];
-}
-
-
-
-#pragma mark - Camera Delegate
--(void)didDismissController:(CameraCollectionViewController *)controller withUserInfo:(NSDictionary *)userinfo
-{
-    NSArray *selectedImages = [userinfo objectForKey:@"selected_images"];
-    NSArray *selectedIndexpaths = [userinfo objectForKey:@"selected_indexpath"];
-    NSInteger sourceType = [[userinfo objectForKey:DATA_CAMERA_SOURCE_TYPE] integerValue];
-    
-    // Cari Index Image yang kosong
-    NSMutableArray *emptyImageIndex = [NSMutableArray new];
-    for (UIImageView *image in _thumbProductImageViews) {
-        if (image.image == nil)
-        {
-            [emptyImageIndex addObject:@(image.tag - 20)];
-        }
-    }
-    
-    //Upload Image yg belum diupload tp dipilih
-    int j = 0;
-    for (NSDictionary *selected in selectedImages) {
-        if ([selected isKindOfClass:[NSDictionary class]]) {
-            if (j>=emptyImageIndex.count) {
-                return;
-            }
-            if (![self Array:[_selectedImagesCameraController copy] containObject:selected])
-            {
-                NSUInteger index = [emptyImageIndex[j] integerValue];
-                [_selectedImagesCameraController replaceObjectAtIndex:index withObject:selected];
-                NSMutableDictionary *data = [NSMutableDictionary new];
-                [data addEntriesFromDictionary:selected];
-                NSUInteger indexIndexPath = [_selectedImagesCameraController indexOfObject:selected];
-                if(indexIndexPath < selectedIndexpaths.count)[data setObject:selectedIndexpaths[indexIndexPath] forKey:@"selected_indexpath"];
-                [self setImageData:[data copy] tag:index];
-                j++;
-            }
-        }
-    }
-}
-
-#pragma mark - TKPDPhotoPicker delegate
-
-- (void)photoPicker:(TKPDPhotoPicker *)picker didDismissCameraControllerWithUserInfo:(NSDictionary *)userInfo
-{
-    [self setImageData:userInfo tag:picker.tag];
-}
-
--(void)didRemoveImageDictionary:(NSDictionary *)removedImage
-{
-    //Hapus Image dari camera controller
-    //    NSMutableArray *removedImages = [NSMutableArray new];
-    for (int i = 0; i<_selectedImagesCameraController.count; i++) {
-        if ([_selectedImagesCameraController[i] isKindOfClass:[NSDictionary class]]) {
-            NSDictionary *photoObjectInArray = [_selectedImagesCameraController[i] objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
-            NSDictionary *photoObject = [removedImage objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
-            
-            UIImage* imageObject = [photoObject objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
-            UIGraphicsBeginImageContextWithOptions(kTKPDCAMERA_UPLOADEDIMAGESIZE, NO, imageObject.scale);
-            [imageObject drawInRect:kTKPDCAMERA_UPLOADEDIMAGERECT];
-            imageObject = UIGraphicsGetImageFromCurrentImageContext();
-            UIGraphicsEndImageContext();
-            
-            if ([self image:[photoObjectInArray objectForKey:kTKPDCAMERA_DATAPHOTOKEY] isEqualTo:[photoObject objectForKey:kTKPDCAMERA_DATAPHOTOKEY]]) {
-                
-                NSMutableDictionary *object = [NSMutableDictionary new];
-                [object setObject:_selectedImagesCameraController[i] forKey:DATA_SELECTED_PHOTO_KEY];
-                [object setObject:_selectedIndexPathCameraController[i] forKey:DATA_SELECTED_INDEXPATH_KEY];
-                [object setObject:_thumbProductImageViews[i] forKey:DATA_SELECTED_IMAGE_VIEW_KEY];
-                
-                [self failedUploadObject:object];
-                break;
-            }
-        }
-    }
-}
-
-- (BOOL)image:(UIImage *)image1 isEqualTo:(UIImage *)image2
-{
-    NSData *data1 = UIImagePNGRepresentation(image1);
-    NSData *data2 = UIImagePNGRepresentation(image2);
-    
-    return [data1 isEqual:data2];
-}
-
--(BOOL)Array:(NSArray*)array containObject:(NSDictionary*)object
-{
-    if (object && [object isKindOfClass:[NSDictionary class]]) {
-        for (id objectInArray in array) {
-            if ([objectInArray isKindOfClass:[NSDictionary class]]) {
-                NSDictionary *photoObjectInArray = [objectInArray objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
-                NSDictionary *photoObject = [object objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
-                if ([self image:[photoObjectInArray objectForKey:kTKPDCAMERA_DATAPHOTOKEY] isEqualTo:[photoObject objectForKey:kTKPDCAMERA_DATAPHOTOKEY]]) {
-                    return YES;
-                }
-            }
-        }
-    }
-    return NO;
-}
-
--(void)setImageData:(NSDictionary*)data tag:(NSInteger)tag
-{
-    id selectedIndexpaths = [data objectForKey:@"selected_indexpath"];
-    [_selectedIndexPathCameraController replaceObjectAtIndex:tag withObject:selectedIndexpaths?:@""];
-    
-    NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
-    
-    NSInteger tagView = tag +20;
-    NSMutableDictionary *object = [NSMutableDictionary new];
-    [object setObject:data forKey:DATA_SELECTED_PHOTO_KEY];
-    UIImageView *imageView;
-    
-    NSDictionary* photo = [data objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
-    
-    UIImage* imagePhoto = [photo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
-    
-    for (UIImageView *image in _thumbProductImageViews) {
-        if (image.tag == tagView)
-        {
-            image.image = imagePhoto;
-            image.hidden = NO;
-            image.alpha = 0.5f;
-            imageView = image;
-        }
-    }
-    
-    if (imageView != nil) {
-        [object setObject:imageView forKey:DATA_SELECTED_IMAGE_VIEW_KEY];
-    }
-    
-    if (type == TYPE_ADD_EDIT_PRODUCT_ADD) {
-        [object setObject:_selectedImagesCameraController[tag] forKey:DATA_SELECTED_PHOTO_KEY];
-        [object setObject:_selectedIndexPathCameraController[tag] forKey:DATA_SELECTED_INDEXPATH_KEY];
-    }
-    
-    for (UIButton *button in _addImageButtons) {
-        if (button.tag == tagView) {
-            button.enabled = NO;
-        }
-        if (button.tag == tagView+1)
-        {
-            for (UIImageView *image in _thumbProductImageViews) {
-                if (image.tag == tagView+1)
-                {
-                    if (image.image == nil) {
-                        button.enabled = YES;
-                    }
-                }
-            }
-        }
-    }
-    
-    [self actionUploadImage:object];
-}
-
-#pragma mark - Upload Image
--(void)actionUploadImage:(id)object
-{
-    _isFinishedUploadImages = NO;
-    [_uploadingImages addObject:object];
-    
-    RequestUploadImage *uploadImage = [RequestUploadImage new];
-    NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
-    NSString *productID = @"";
-    if (type != TYPE_ADD_EDIT_PRODUCT_COPY) {
-        productID = _editProductForm.product.product_id;
-    }
-    [uploadImage requestActionUploadObject:object?:@{}
-                             generatedHost:_generateHost.result.generated_host?:[GeneratedHost new]
-                                    action:ACTION_UPLOAD_PRODUCT_IMAGE
-                                    newAdd:1
-                                 productID:productID paymentID:@""
-                                 fieldName:@"fileToUpload"
-                                   success:^(id imageObject, UploadImage *image) {
-                                       [self successUploadObject:imageObject withMappingResult:image];
-                                   } failure:^(id imageObject, NSError *error) {
-                                       [self failedUploadObject:imageObject];
-                                   }];
-}
-
-#pragma mark - Category Delegate
+#pragma mark - Delegate
 
 - (void)didSelectCategory:(CategoryDetail *)category {
-    _selectedCategory = category;
+    _product.product_category = category;
     NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY] integerValue];
     if (type == TYPE_ADD_EDIT_PRODUCT_ADD) {
         TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
@@ -1362,92 +893,14 @@ FilterCategoryViewDelegate
     [self.tableView reloadData];
 }
 
-#pragma mark - Product Edit Image Delegate
-
--(void)deleteProductImageAtIndex:(NSInteger)index isDefaultImage:(BOOL)isDefaultImage
-{
-    [_dataInput setObject:_productImageIDs[index] forKey:DATA_LAST_DELETED_IMAGE_ID];
-    [_dataInput setObject:_productImageURLs forKey:DATA_LAST_DELETED_IMAGE_PATH];
-    [_dataInput setObject:@(index) forKey:DATA_LAST_DELETED_INDEX];
-    [_dataInput setObject:((UIImageView*)_thumbProductImageViews[index]).image forKey:DATA_LAST_DELETED_IMAGE];
-    
-    NSMutableDictionary *object = [NSMutableDictionary new];
-    [object setObject:_selectedImagesCameraController[index]  forKey:DATA_SELECTED_PHOTO_KEY];
-    [object setObject:_thumbProductImageViews[index] forKey:DATA_SELECTED_IMAGE_VIEW_KEY];
-    [object setObject:_selectedIndexPathCameraController[index] forKey:DATA_SELECTED_INDEXPATH_KEY];
-    
-    NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
-    if (type == TYPE_ADD_EDIT_PRODUCT_EDIT) {
-        
-        if (index != 0 && isDefaultImage) {
-            [self setDefaultImageAtIndex:0];
-        }
-        
-        ProductEditResult *detailProduct = _editProductForm;
-        NSInteger productID = [detailProduct.product.product_id integerValue];
-        NSInteger myshopID = [[self getShopID]integerValue];
-        NSInteger pictureID = [_productImageIDs[index] integerValue];
-        NSDictionary *userInfo = @{API_PRODUCT_ID_KEY: @(productID),
-                                   kTKPD_SHOPIDKEY : @(myshopID),
-                                   API_PRODUCT_PICTURE_ID_KEY:@(pictureID)
-                                   };
-        [_dataInput addEntriesFromDictionary:userInfo];
-        [_productImageDesc replaceObjectAtIndex:index withObject:@""];
-        
-        NSInteger imageID =[_productImageIDs[index] integerValue];
-        NSString *imageDescriptionKey = [NSString stringWithFormat:API_PRODUCT_IMAGE_DESCRIPTION_KEY@"%zd",imageID];
-        NSMutableDictionary *ImageNameDictionary = [NSMutableDictionary new];
-        ImageNameDictionary = [[_dataInput objectForKey:API_PRODUCT_IMAGE_DESCRIPTION_KEY] mutableCopy];
-        [ImageNameDictionary removeObjectForKey:imageDescriptionKey];
-        [_dataInput setObject:ImageNameDictionary forKey:API_PRODUCT_IMAGE_DESCRIPTION_KEY];
-        
-        [self fetchDeleteProductPictID:_productImageIDs[index]
-                             productID:_editProductForm.product.product_id?:@""
-                                shopID:[self getShopID]];
-        
-    }
-    else  if (type == TYPE_ADD_EDIT_PRODUCT_COPY) {
-        
-    }
-    
-    ((UIButton*)_addImageButtons[index]).hidden = NO;
-    ((UIButton*)_addImageButtons[index]).enabled = YES;
-    [_productImageIDs replaceObjectAtIndex:index withObject:@""];
-    [_productImageURLs replaceObjectAtIndex:index withObject:@""];
-    [_productImageDesc replaceObjectAtIndex:index withObject:@""];
-    ((UIImageView*)_thumbProductImageViews[index]).image = nil;
-    ((UIImageView*)_thumbProductImageViews[index]).hidden = YES;
-    
-    NSArray *objectProductPhoto;
-    if (type == TYPE_ADD_EDIT_PRODUCT_ADD || type == TYPE_ADD_EDIT_PRODUCT_COPY) {
-        NSMutableArray *photos = [NSMutableArray new];
-        for (NSString *photo in _productImageURLs) {
-            if (![photo isEqualToString:@""]) {
-                [photos addObject:photo];
-            }
-        }
-        objectProductPhoto = [photos copy];
-        NSString *stringImageURLs = [[objectProductPhoto valueForKey:@"description"] componentsJoinedByString:@"~"];
-        [_dataInput setObject:stringImageURLs forKey:API_PRODUCT_IMAGE_TOUPLOAD_KEY];
-    }
-    
-    [self failedUploadObject:object];
+-(void)setDefaultImage:(DKAsset *)defaultImage{
+    _defaultImage = defaultImage;
 }
 
--(void)setDefaultImageAtIndex:(NSInteger)index
-{
-    for (UILabel *defaultImageLabel in _defaultImageLabels) {
-        defaultImageLabel.hidden = YES;
-    }
-    NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
-    ((UILabel*)_defaultImageLabels[index]).hidden = NO;
-    NSString *imagePath = _productImageURLs[index];
-    NSString *imageID = _productImageIDs[index];
-    NSString *defaultImage = (type == TYPE_ADD_EDIT_PRODUCT_ADD||type == TYPE_ADD_EDIT_PRODUCT_COPY)?imagePath:imageID;
-    NSArray *photosAll = (type == TYPE_ADD_EDIT_PRODUCT_ADD||type == TYPE_ADD_EDIT_PRODUCT_COPY)?_productImageURLs:_productImageIDs;
-    [_dataInput setObject:defaultImage forKey:API_PRODUCT_IMAGE_DEFAULT_KEY];
-    [_dataInput setObject:[NSString stringWithFormat:@"%ld", (long)index] forKey:API_PRODUCT_IMAGE_DEFAULT_INDEX];
+-(void)deleteImage:(DKAsset *)image{
+//    [_selectedImages removeObject:image];
 }
+
 
 -(void)setProductImageName:(NSString *)name atIndex:(NSInteger)index
 {
@@ -1503,11 +956,9 @@ FilterCategoryViewDelegate
                 if (value != previousValue) {
                     _productPriceTextField.text = @"";
                 }
-                ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
+                ProductEditDetail *product = _product;
                 product.product_currency_id = [[ARRAY_PRICE_CURRENCY[index] objectForKey:DATA_VALUE_KEY] stringValue];
                 product.product_currency = name;
-                [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
-                [_dataInput setObject:@(value) forKey:API_PRODUCT_PRICE_CURRENCY_ID_KEY];
                 [_tableView reloadData];
                 
             }
@@ -1519,10 +970,9 @@ FilterCategoryViewDelegate
             NSInteger index = [[alertView.data objectForKey:DATA_INDEX_KEY] integerValue];
             NSString *value = [[ARRAY_WEIGHT_UNIT[index] objectForKey:DATA_VALUE_KEY] stringValue];
             NSString *name = [ARRAY_WEIGHT_UNIT[index] objectForKey:DATA_NAME_KEY];
-            ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
+            ProductEditDetail *product = _product;
             product.product_weight_unit_name = name;
             product.product_weight_unit = value;
-            [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
             [_tableView reloadData];
             break;
         }
@@ -1553,13 +1003,12 @@ FilterCategoryViewDelegate
 
 -(BOOL)textFieldShouldEndEditing:(UITextField *)textField
 {
-    ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
+    ProductEditDetail *product = _product;
     if (textField == _productNameTextField) {
         NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
-        [self fetchGetCatalogWithProductName:textField.text andDepartmentID:_selectedCategory.categoryId];
+        [self fetchGetCatalogWithProductName:textField.text andDepartmentID:_product.product_category.categoryId];
         if (type == TYPE_ADD_EDIT_PRODUCT_ADD || type == TYPE_ADD_EDIT_PRODUCT_COPY) {
             product.product_name = textField.text;
-            [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
         }
     }
     if (textField == _productPriceTextField) {
@@ -1580,22 +1029,19 @@ FilterCategoryViewDelegate
             productPrice = [[currencyFormatter numberFromString:textField.text] stringValue];
         }
         product.product_price = productPrice;
-        [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
     }
     if (textField == _productWeightTextField) {
         product.product_weight = textField.text;
-        [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
     }
     if (textField == _minimumOrderTextField) {
         product.product_min_order = textField.text;
-        [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
     }
     return YES;
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-    ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
+    ProductEditDetail *product = _product;
     BOOL isIDRCurrency = ([product.product_currency_id integerValue] == PRICE_CURRENCY_ID_RUPIAH);
     if (textField == _productPriceTextField) {
         if (isIDRCurrency) {
@@ -1678,10 +1124,9 @@ FilterCategoryViewDelegate
 {
     for (CatalogList *catalog in _catalogs) {
         if ([catalog.catalog_name isEqualToString:object]) {
-            _selectedCatalog = catalog;
+            _product.product_catalog = catalog;
         }
     }
-    [_dataInput setObject:_selectedCatalog?:[CatalogList new] forKey:DATA_CATALOG_KEY];
     
     [_tableView reloadData];
 }
@@ -1719,181 +1164,44 @@ FilterCategoryViewDelegate
             default:
                 break;
         }
-        ProductEditResult *result = _editProductForm;
-        ProductEditDetail *product = result.product;
-        if (!product) {
-            product = [ProductEditDetail new];
-            product.product_weight_unit_name = [ARRAY_WEIGHT_UNIT[0] objectForKey:DATA_NAME_KEY];
-            product.product_weight_unit = [[ARRAY_WEIGHT_UNIT[0] objectForKey:DATA_VALUE_KEY] stringValue];
-            
-            product.product_currency = [ARRAY_PRICE_CURRENCY[0] objectForKey:DATA_NAME_KEY];
-            product.product_currency_id = [[ARRAY_PRICE_CURRENCY[0] objectForKey:DATA_VALUE_KEY] stringValue];
-            
-            product.product_min_order = @"1";
-            product.product_condition = [[ARRAY_PRODUCT_CONDITION[0] objectForKey:DATA_VALUE_KEY] stringValue];
-        }
-        else
-        {
-            NSInteger index = [product.product_weight_unit integerValue]-1;
-            if (index<0) {
-                index = 0;
-            }
-            product.product_weight_unit_name = [ARRAY_WEIGHT_UNIT[index] objectForKey:DATA_NAME_KEY];
-            if ([product.product_currency isEqualToString:@"idr"]) {
-                product.product_currency = [ARRAY_PRICE_CURRENCY[0]objectForKey:DATA_NAME_KEY];
-            }
-            if ([product.product_currency isEqualToString:@"usd"]) {
-                product.product_currency = [ARRAY_PRICE_CURRENCY[1]objectForKey:DATA_NAME_KEY];
-            }
-            NSInteger indexMoveTo = ([product.product_etalase_id integerValue]>0)?1:0;
-            NSString *value = [[ARRAY_PRODUCT_MOVETO_ETALASE[indexMoveTo] objectForKey:DATA_VALUE_KEY] stringValue];
-//            product.product_move_to = value;
-            product.product_etalase_id = product.product_etalase_id?:@(0);
-            product.product_short_desc = [product.product_short_desc stringByReplacingOccurrencesOfString:@"[nl]" withString:@"\n"];
-//            product.product_description = product.product_short_desc?:@"";
-            result.info.product_returnable = _editProductForm.info.product_returnable?:@"";
-            product.product_min_order = _editProductForm.product.product_min_order?:@"1";
-        }
-        _minimumOrderTextField.text = product.product_min_order;
-        [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
-        [_dataInput setObject:product.product_currency_id forKey:API_PRODUCT_PRICE_CURRENCY_ID_KEY];
+
+        ProductEditDetail *product = [ProductEditDetail new];
+        product.product_weight_unit_name = [ARRAY_WEIGHT_UNIT[0] objectForKey:DATA_NAME_KEY];
+        product.product_weight_unit = [[ARRAY_WEIGHT_UNIT[0] objectForKey:DATA_VALUE_KEY] stringValue];
         
-        NSArray *images = result.product_images;
-        NSInteger imageCount = images.count;
-        if (imageCount>5) {
-            imageCount = 5;
-        }
-        NSInteger addProductImageCount = (imageCount<_addImageButtons.count)?imageCount:imageCount-1;
-        if (_generateHost.result.generated_host != nil) {
-            ((UIButton*)_addImageButtons[addProductImageCount]).enabled = YES;
+        product.product_currency = [ARRAY_PRICE_CURRENCY[0] objectForKey:DATA_NAME_KEY];
+        product.product_currency_id = [[ARRAY_PRICE_CURRENCY[0] objectForKey:DATA_VALUE_KEY] stringValue];
+        
+        product.product_min_order = @"1";
+        product.product_condition = [[ARRAY_PRODUCT_CONDITION[0] objectForKey:DATA_VALUE_KEY] stringValue];
+        
+        UserAuthentificationManager *auth = [UserAuthentificationManager new];
+        CategoryDetail *lastCategory = [auth getLastProductAddCategory];
+        if (lastCategory) {
+            product.product_category = lastCategory;
         }
         
-        NSMutableDictionary *productImageDescription = [NSMutableDictionary new];
-        for (int i = 0 ; i<imageCount;i++) {
-            ProductEditImages *image = images[i];
-            ((UIButton*)_addImageButtons[i]).hidden = YES;
-            [_productImageURLs replaceObjectAtIndex:i withObject:image.image_src];
-            [_productImageIDs replaceObjectAtIndex:i withObject:image.image_id];
-            [_productImageDesc replaceObjectAtIndex:i withObject:image.image_description];
-            
-            NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:image.image_src] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-            UIImageView *thumb = (UIImageView*)_thumbProductImageViews[i];
-            thumb.userInteractionEnabled = NO;
-            thumb.hidden = NO;
-            thumb.image = nil;
-            [thumb setContentMode:UIViewContentModeCenter];
-            //thumb.hidden = YES;	//@prepareforreuse then @reset
-            [thumb setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-                [thumb setImage:image animated:YES];
-#pragma clang diagnostic pop
-                thumb.userInteractionEnabled = YES;
-                [thumb setContentMode:UIViewContentModeScaleAspectFill];
-                
-            } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-            }];
-            
-            NSString *productImageDescriptionKey = [NSString stringWithFormat:API_PRODUCT_IMAGE_DESCRIPTION_KEY@"%zd",image.image_id];
-            [productImageDescription setObject:image.image_description forKey:productImageDescriptionKey];
-        }
-        
-        [_dataInput setObject:productImageDescription forKey:API_PRODUCT_IMAGE_DESCRIPTION_KEY];
-        
-        NSArray *objectProductPhoto = (type == TYPE_ADD_EDIT_PRODUCT_ADD||type == TYPE_ADD_EDIT_PRODUCT_COPY)?_productImageURLs:_productImageIDs;
-        NSMutableArray *photos = [NSMutableArray new];
-        for (NSString *photo in objectProductPhoto) {
-            if (![photo isEqualToString:@""]) {
-                [photos addObject:photo];
-            }
-        }
-        objectProductPhoto = [photos copy];
-        NSString *stringImageURLs = [[objectProductPhoto valueForKey:@"description"] componentsJoinedByString:@"~"];
-        [_dataInput setObject:stringImageURLs forKey:API_PRODUCT_IMAGE_TOUPLOAD_KEY];
-        NSLog(@" Product image URL %@ with string %@ ", objectProductPhoto, stringImageURLs);
-        
-        NSString *serverID = result.server_id?:_generateHost.result.generated_host.server_id?:@"0";
-        
-        if (result.breadcrumb.count > 0) {
-            Breadcrumb *category = [result.breadcrumb lastObject];
-            
-            CategoryDetail *filterCategory = [[CategoryDetail alloc] init];
-            filterCategory.categoryId = category.department_id;
-            filterCategory.name = category.department_name;
-            _selectedCategory = filterCategory;
-        }
-        
-        NSString *priceCurencyID = result.product.product_currency_id?:@"1";
-        NSString *price = result.product.product_price?:@"";
-        NSString *weight = result.product.product_weight?:@"";
-        NSArray *wholesale = result.wholesale_price?:@[];
-        [_dataInput setObject:wholesale forKey:DATA_WHOLESALE_LIST_KEY];
-        BOOL isWarehouse = ([result.product.product_etalase_id integerValue]>0)?NO:YES;
-        NSInteger uploadToWarehouse = isWarehouse?UPLOAD_TO_VALUE_IF_IS_WAREHOUSE:UPLOAD_TO_VALUE_IF_ISNOT_WAREHOUSE;
-        BOOL isGoldShop = result.shop_is_gold;
-        
-        _productNameTextField.text = product.product_name;
-        _productNameBeforeCopy = product.product_name;
-        //_productNameTextField.enabled = (type ==TYPE_ADD_EDIT_PRODUCT_ADD || type == TYPE_ADD_EDIT_PRODUCT_COPY)?YES:NO;
-        
-        CGFloat priceInteger = [price floatValue];
-        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-        if ([priceCurencyID integerValue] == PRICE_CURRENCY_ID_RUPIAH) {
-            [formatter setGroupingSeparator:@"."];
-            [formatter setGroupingSize:3];
-            [formatter setUsesGroupingSeparator:YES];
-            [formatter setSecondaryGroupingSize:3];
-            price = (priceInteger>0)?[formatter stringFromNumber:@(priceInteger)]:@"";
-        }
-        else
-        {
-            [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-            [formatter setCurrencyCode:@"USD"];
-            [formatter setNegativeFormat:@"-¤#,##0.00"];
-            price = [formatter stringFromNumber:@(priceInteger)];
-            
-        }
-        
-        _productPriceTextField.text = price;
-        _productWeightTextField.text = weight;
-        
-        [_dataInput setObject:serverID forKey:API_SERVER_ID_KEY];
-        [_dataInput setObject:wholesale forKey:DATA_WHOLESALE_LIST_KEY];
-        [_dataInput setObject:@(uploadToWarehouse) forKey:API_PRODUCT_MOVETO_WAREHOUSE_KEY];
-        //        [_dataInput setObject:@(etalaseID) forKey:API_PRODUCT_ETALASE_ID_KEY];
-        [_dataInput setObject:@(isGoldShop) forKey:API_IS_GOLD_SHOP_KEY];
-        //        [_dataInput setObject:@(returnable) forKey:API_PRODUCT_IS_RETURNABLE_KEY];
-        
+        [self setProductDetail:product];
     }
 }
 
 - (BOOL)dataInputIsValid
 {
-    [_errorMessage removeAllObjects];
+    NSMutableArray *errorMessage = [NSMutableArray new];
     BOOL isValid = YES;
     BOOL isValidPrice = YES;
     BOOL isValidWeight = YES;
-    int nImage = 0;
+
+    BOOL isValidImage = _selectedImages.count>0;
     
-    
-    NSMutableArray *productImagesTemp = [NSMutableArray new];
-    for (NSString *productImage in _productImageURLs) {
-        if (![productImage isEqualToString:@""]) {
-            [productImagesTemp addObject:productImage];
-            nImage++;
-        }
-    }
-    //BOOL isValidImage = (productImagesTemp.count>0);
-    BOOL isValidImage = nImage!=0;
-    
-    ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY]?:[ProductDetail new];
+    ProductEditDetail *product = _product?:[ProductEditDetail new];
     NSString *productName = product.product_name;
     NSString *productPrice = product.product_price;
     NSString *productPriceCurrencyID = product.product_currency_id;
     NSString *productWeight = product.product_weight;
     NSString *productWeightUnitID = product.product_weight_unit;
     
-    CategoryDetail *category = _selectedCategory;
+    CategoryDetail *category = _product.product_category;
     NSString *departmentID = category.categoryId?: @"";
     
     BOOL isPriceCurrencyRupiah = ([productPriceCurrencyID integerValue] == PRICE_CURRENCY_ID_RUPIAH);
@@ -1928,53 +1236,58 @@ FilterCategoryViewDelegate
     }
     NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
     if (type == TYPE_ADD_EDIT_PRODUCT_COPY && [productName isEqualToString:_productNameBeforeCopy]) {
-        [_errorMessage addObject:@"Tidak dapat menyalin dengan Nama Produk yang sama."];
+        [errorMessage addObject:@"Tidak dapat menyalin dengan Nama Produk yang sama."];
         isValid = NO;
     }
     
     if ( !productName || [productName isEqualToString:@""]) {
-        [_errorMessage addObject:ERRORMESSAGE_NULL_PRODUCT_NAME];
+        [errorMessage addObject:ERRORMESSAGE_NULL_PRODUCT_NAME];
         isValid = NO;
     }
     if (!(productPrice > 0)) {
-        [_errorMessage addObject:ERRORMESSAGE_NULL_PRICE];
+        [errorMessage addObject:ERRORMESSAGE_NULL_PRICE];
         isValid = NO;
     }
     else
     {
         if ([productPriceCurrencyID integerValue] == PRICE_CURRENCY_ID_RUPIAH &&
             ([productPrice integerValue]<MINIMUM_PRICE_RUPIAH || [productPrice integerValue]>MAXIMUM_PRICE_RUPIAH)) {
-            [_errorMessage addObject:ERRORMESSAGE_INVALID_PRICE_RUPIAH];
+            [errorMessage addObject:ERRORMESSAGE_INVALID_PRICE_RUPIAH];
             isValid = NO;
         }
         else if ([productPriceCurrencyID integerValue] == PRICE_CURRENCY_ID_USD &&
                  ([productPrice floatValue]<MINIMUM_PRICE_USD || [productPrice floatValue]>MAXIMUM_PRICE_USD)) {
-            [_errorMessage addObject:ERRORMESSAGE_INVALID_PRICE_USD];
+            [errorMessage addObject:ERRORMESSAGE_INVALID_PRICE_USD];
             isValid = NO;
         }
     }
     if ([departmentID isEqualToString:@""]) {
-        [_errorMessage addObject:ERRORMESSAGE_NULL_CATEGORY];
+        [errorMessage addObject:ERRORMESSAGE_NULL_CATEGORY];
         isValid = NO;
     }
     if ([productWeightUnitID integerValue] == WEIGHT_UNIT_ID_GRAM &&
         ([productWeight integerValue]<MINIMUM_WEIGHT_GRAM || [productWeight integerValue]>MAXIMUM_WEIGHT_GRAM)) {
-        [_errorMessage addObject:ERRORMESSAGE_INVALID_WEIGHT_GRAM];
+        [errorMessage addObject:ERRORMESSAGE_INVALID_WEIGHT_GRAM];
         isValid = NO;
     }
     else if ([productWeightUnitID integerValue] == WEIGHT_UNIT_ID_KILOGRAM &&
              ([productWeight integerValue]<MINIMUM_WEIGHT_KILOGRAM || [productWeight integerValue]>MAXIMUM_WEIGHT_KILOGRAM)) {
-        [_errorMessage addObject:ERRORMESSAGE_INVALID_WEIGHT_KILOGRAM];
+        [errorMessage addObject:ERRORMESSAGE_INVALID_WEIGHT_KILOGRAM];
         isValid = NO;
     }
     
     if ([product.product_min_order integerValue]>=1000) {
         isValid = NO;
-        [_errorMessage addObject:@"Maksimal minimum pembelian untuk 1 produk adalah 999"];
+        [errorMessage addObject:@"Maksimal minimum pembelian untuk 1 produk adalah 999"];
     }
     
     if (!isValidImage) {
-        [_errorMessage addObject:ERRORMESSAGE_NULL_IMAGE];
+        [errorMessage addObject:ERRORMESSAGE_NULL_IMAGE];
+    }
+    
+    if (errorMessage.count>0) {
+        StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessage delegate:self];
+        [alert show];
     }
     
     return (isValidWeight && isValidPrice && isValid && isValidImage);
@@ -1983,7 +1296,6 @@ FilterCategoryViewDelegate
 -(void)enableButtonBeforeSuccessRequest:(BOOL)isEnable
 {
     _nextBarButtonItem.enabled = isEnable;
-    ((UIButton*)_addImageButtons[0]).enabled = NO;
     
     _productNameTextField.userInteractionEnabled = isEnable;
     _minimumOrderTextField.userInteractionEnabled = isEnable;

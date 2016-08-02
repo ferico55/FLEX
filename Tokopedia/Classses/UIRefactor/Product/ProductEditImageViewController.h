@@ -8,12 +8,15 @@
 
 #import <UIKit/UIKit.h>
 @class ProductEditImageViewController;
+@class DKAsset;
 
 #pragma mark - Product Edit Image Delegate
 @protocol ProductEditImageViewControllerDelegate <NSObject>
 @required
 -(void)deleteProductImageAtIndex:(NSInteger)index isDefaultImage:(BOOL)isDefaultImage;
 -(void)setDefaultImageAtIndex:(NSInteger)index;
+-(void)setDefaultImage:(DKAsset*)defaultImage;
+-(void)deleteImage:(DKAsset*)image;
 -(void)setProductImageName:(NSString*)name atIndex:(NSInteger)index;
 
 @optional
@@ -31,6 +34,7 @@
 
 @property (nonatomic,strong) NSDictionary *data;
 @property (nonatomic, strong) UIImage *uploadedImage;
+@property (nonatomic, strong) DKAsset *selectedImage;
 @property (nonatomic) BOOL isDefaultFromWS;
 @property (nonatomic) NSInteger type;
 @property (weak, nonatomic) IBOutlet UIView *setDefaultView;

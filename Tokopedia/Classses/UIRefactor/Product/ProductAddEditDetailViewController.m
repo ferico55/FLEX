@@ -274,18 +274,9 @@ NSString * const ProductStatusWarehouse = @"3";
             }
             case BARBUTTON_PRODUCT_SAVE:
             {
-                NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
-                if (type == TYPE_ADD_EDIT_PRODUCT_ADD|| type == TYPE_ADD_EDIT_PRODUCT_COPY) {
+                if (_type == TYPE_ADD_EDIT_PRODUCT_ADD|| _type == TYPE_ADD_EDIT_PRODUCT_COPY) {
                     if ([self isValidInput]) {
-                        NSString *postKey = [_dataInput objectForKey:API_POSTKEY_KEY];
-                        if ([postKey isEqualToString:@""]|| postKey == nil) {
-                            [_validationNetworkManager doRequest];
-                        }
-                        else
-                        {
-                            [_processingAlert show];
-                            [_addPictureNetworkManager doRequest];
-                        }
+                        [self fetchAddProduct];
                     }
                 } else {
                     [_editNetworkManager doRequest];
@@ -308,11 +299,58 @@ NSString * const ProductStatusWarehouse = @"3";
     }
 }
 
+-(void)fetchAddProduct{
+    
+    [_processingAlert show];
+    _saveBarButtonItem.enabled = NO;
+    
+    NSString *duplicate = (_type == TYPE_ADD_EDIT_PRODUCT_COPY)?@"1":@"0";
+    
+    ProductEditDetail *product = _product;
+        
+    NSArray *wholesaleList = [_dataInput objectForKey:DATA_WHOLESALE_LIST_KEY]?:@[];
+    NSMutableDictionary *wholesales = [NSMutableDictionary new];
+    for (NSDictionary *wholesale in wholesaleList) {
+        [wholesales addEntriesFromDictionary:wholesale];
+    }
+
+    [RequestAddEditProduct fetchAddProduct:duplicate
+                                   product:product
+                            selectedImages:_selectedImages
+                                 wholesale:wholesales
+                                 onSuccess:^{
+        
+        [self successAddProduct];
+        
+    } onFailure:^{
+        
+        _saveBarButtonItem.enabled = YES;
+        [_processingAlert dismissWithClickedButtonIndex:0 animated:YES];
+        
+    }];
+}
+
+-(void)successAddProduct{
+    
+    // UA
+    [TPAnalytics trackScreenName:@"Add Product - Success"];
+    
+    // GA
+    id tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker setAllowIDFACollection:YES];
+    [tracker set:kGAIScreenName value:@"Add Product - Success"];
+    [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+    
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:ADD_PRODUCT_POST_NOTIFICATION_NAME object:nil userInfo:nil];
+    [_processingAlert dismissWithClickedButtonIndex:0 animated:YES];
+}
+
 -(BOOL)isValidInput
 {
     BOOL isValid = YES;
     NSMutableArray *errorMessages = [NSMutableArray new];
-    ProductEditDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
+    ProductEditDetail *product = _product;
     
 //    NSString *moveToWarehouse = product.product_move_to?:@"";
     
@@ -386,7 +424,7 @@ NSString * const ProductStatusWarehouse = @"3";
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    ProductEditDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
+    ProductEditDetail *product = _product;
     
     UITableViewCell *cell = nil;
     switch (indexPath.section) {
@@ -485,7 +523,7 @@ NSString * const ProductStatusWarehouse = @"3";
 {
     [_productDescriptionTextView resignFirstResponder];
     [_dataInput setObject:_productDescriptionTextView.text?:@"" forKey:API_PRODUCT_DESCRIPTION_KEY];
-    ProductEditDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
+    ProductEditDetail *product = _product;
     BOOL isProductWarehouse = [product.product_status isEqualToString:@"3"];
     switch (indexPath.section) {
         case 0:
@@ -526,7 +564,7 @@ NSString * const ProductStatusWarehouse = @"3";
                 case BUTTON_PRODUCT_ETALASE_DETAIL:
                 {
                     //if (!isProductWarehouse) {
-                        ProductEditDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
+                        ProductEditDetail *product = _product;
                         EtalaseList *newEtalase = [EtalaseList new];
                         newEtalase.etalase_name = product.product_etalase;
                         newEtalase.etalase_id = product.product_etalase_id;
@@ -781,7 +819,7 @@ NSString * const ProductStatusWarehouse = @"3";
 
 -(void)showErrorAlert
 {
-    NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
+    NSInteger type = _type;
     NSArray *errorString;
     if (type == TYPE_ADD_EDIT_PRODUCT_ADD) {
         errorString = [[NSArray alloc] initWithObjects:@"Gagal menambahkan produk. Mohon coba kembali.", nil];
@@ -830,7 +868,7 @@ NSString * const ProductStatusWarehouse = @"3";
 #define PRODUCT_MOVETO_WAREHOUSE_ID @"2"
     
     CategoryDetail *category = [_dataInput objectForKey:DATA_CATEGORY_KEY];
-    ProductEditDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
+    ProductEditDetail *product = _product;
     CatalogList *catalog = [_dataInput objectForKey:DATA_CATALOG_KEY];
     
     NSString *action = ACTION_ADD_PRODUCT_VALIDATION;
@@ -868,8 +906,7 @@ NSString * const ProductStatusWarehouse = @"3";
     NSString *udid = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
     NSString *uniqueID = [NSString stringWithFormat:@"%zd%@%@",userID,udid,dateString];
     
-    NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
-    NSInteger duplicate = (type == TYPE_ADD_EDIT_PRODUCT_COPY)?1:0;
+    NSInteger duplicate = (_type == TYPE_ADD_EDIT_PRODUCT_COPY)?1:0;
     
     _uniqueID = uniqueID;
     [_dataInput setObject:uniqueID forKey:API_UNIQUE_ID_KEY];
@@ -930,31 +967,31 @@ NSString * const ProductStatusWarehouse = @"3";
 
 -(void)requestProcessActionAddProductValidation:(id)object
 {
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id stat = [result objectForKey:@""];
-    AddProductValidation *setting = stat;
-    BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if (status) {
-        if ([setting.result.post_key isEqualToString:@"1"] || setting.result.post_key == nil) {
-            NSArray *array = setting.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-            StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:array delegate:self];
-            [alert show];
-            _saveBarButtonItem.enabled = YES;
-            [_processingAlert dismissWithClickedButtonIndex:0 animated:YES];
-        } else {
-            [_dataInput setObject:setting.result.post_key?:@"" forKey:API_POSTKEY_KEY];
-            NSString *uploadedFile = [_dataInput objectForKey:API_FILE_UPLOADED_KEY];
-            if ([uploadedFile isEqualToString:@""] || uploadedFile == nil) {
-                [_addPictureNetworkManager doRequest];
-            }
-            else
-            {
-                [_submitNetworkManager doRequest];
-            }
-            
-        }
-    }
+//    NSDictionary *result = ((RKMappingResult*)object).dictionary;
+//    id stat = [result objectForKey:@""];
+//    AddProductValidation *setting = stat;
+//    BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+//    
+//    if (status) {
+//        if ([setting.result.post_key isEqualToString:@"1"] || setting.result.post_key == nil) {
+//            NSArray *array = setting.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
+//            StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:array delegate:self];
+//            [alert show];
+//            _saveBarButtonItem.enabled = YES;
+//            [_processingAlert dismissWithClickedButtonIndex:0 animated:YES];
+//        } else {
+//            [_dataInput setObject:setting.result.post_key?:@"" forKey:API_POSTKEY_KEY];
+//            NSString *uploadedFile = [_dataInput objectForKey:API_FILE_UPLOADED_KEY];
+//            if ([uploadedFile isEqualToString:@""] || uploadedFile == nil) {
+//                [_addPictureNetworkManager doRequest];
+//            }
+//            else
+//            {
+//                [_submitNetworkManager doRequest];
+//            }
+//            
+//        }
+//    }
 }
 
 
@@ -996,8 +1033,7 @@ NSString * const ProductStatusWarehouse = @"3";
     NSString *photoDefaultIndex = [_dataInput objectForKey:API_PRODUCT_IMAGE_DEFAULT_INDEX]?:@"0";
     NSString *serverID = _generateHost.result.generated_host.server_id?:@"";
 
-    NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
-    NSInteger duplicate = (type == TYPE_ADD_EDIT_PRODUCT_COPY)?1:0;
+    NSInteger duplicate = (_type == TYPE_ADD_EDIT_PRODUCT_COPY)?1:0;
     
     productPhotoDesc = [[[_data objectForKey:@"Image_desc_array"] valueForKey:@"description"] componentsJoinedByString:@"~"];
     
@@ -1093,7 +1129,6 @@ NSString * const ProductStatusWarehouse = @"3";
         else
         {
             [_dataInput setObject:setting.result.file_uploaded?:@"" forKey:API_FILE_UPLOADED_KEY];
-            _isNeedRequestAddProductPicture = NO;
             [_submitNetworkManager doRequest];
         }
     }
@@ -1150,8 +1185,7 @@ NSString * const ProductStatusWarehouse = @"3";
     NSInteger randomNumber = arc4random() % 16;
     NSString *uniqueID = _uniqueID;//[NSString stringWithFormat:@"%@%zd",[_dataInput objectForKey:API_UNIQUE_ID_KEY],randomNumber];
     
-    NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
-    NSInteger duplicate = (type == TYPE_ADD_EDIT_PRODUCT_COPY)?1:0;
+    NSInteger duplicate = (_type == TYPE_ADD_EDIT_PRODUCT_COPY)?1:0;
     
     NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY:action,
                             API_POSTKEY_KEY:postKey,
@@ -1189,8 +1223,7 @@ NSString * const ProductStatusWarehouse = @"3";
             [tracker set:kGAIScreenName value:@"Add Product - Success"];
             [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
             
-            NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
-            NSString *defaultSuccessMessage = (type == TYPE_ADD_EDIT_PRODUCT_ADD)?SUCCESSMESSAGE_ADD_PRODUCT:SUCCESSMESSAGE_EDIT_PRODUCT;SUCCESSMESSAGE_ADD_PRODUCT;
+            NSString *defaultSuccessMessage = (_type == TYPE_ADD_EDIT_PRODUCT_ADD)?SUCCESSMESSAGE_ADD_PRODUCT:SUCCESSMESSAGE_EDIT_PRODUCT;SUCCESSMESSAGE_ADD_PRODUCT;
             NSArray *array = setting.message_status?:[[NSArray alloc] initWithObjects:defaultSuccessMessage, nil];
             StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:array delegate:self];
             [alert show];
@@ -1241,7 +1274,7 @@ NSString * const ProductStatusWarehouse = @"3";
     NSDictionary *userInfo = _dataInput;
     
     NSString *action = ACTION_EDIT_PRODUCT_KEY;
-    ProductEditDetail *product = [userInfo objectForKey:DATA_PRODUCT_DETAIL_KEY];
+    ProductEditDetail *product = _product;
     CategoryDetail *category = [userInfo objectForKey:DATA_CATEGORY_KEY];
     
     NSInteger serverID = [_generateHost.result.generated_host.server_id integerValue]?:0;
@@ -1327,7 +1360,7 @@ NSString * const ProductStatusWarehouse = @"3";
             [alert show];
         }
         if (setting.result.is_success == 1) {
-            NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
+            NSInteger type = _type;
             NSString *defaultSuccessMessage;
             if (type == TYPE_ADD_EDIT_PRODUCT_ADD)defaultSuccessMessage=SUCCESSMESSAGE_ADD_PRODUCT;
             if (type == TYPE_ADD_EDIT_PRODUCT_EDIT)defaultSuccessMessage=SUCCESSMESSAGE_EDIT_PRODUCT;
@@ -1374,7 +1407,7 @@ NSString * const ProductStatusWarehouse = @"3";
 
 -(NSDictionary*)paramMoveToWarehouse
 {
-    ProductEditDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
+    ProductEditDetail *product = _product;
     
     NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY:ACTION_MOVE_TO_WAREHOUSE,
                             kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : product.product_id?:@"",
@@ -1419,9 +1452,8 @@ NSString * const ProductStatusWarehouse = @"3";
 {
     if (textView == _productDescriptionTextView) {
         if(textView.text.length != 0 && ![textView.text isEqualToString:@""]){
-            ProductEditDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
+            ProductEditDetail *product = _product;
             product.product_short_desc = textView.text;
-            [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
         }
     }
     return YES;
@@ -1464,14 +1496,13 @@ NSString * const ProductStatusWarehouse = @"3";
 -(void)alertView:(TKPDAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
 #define DEFAULT_ETALASE_DETAIL_TITLE_BUTTON @"Pilih Etalase"
-    ProductEditDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY]?:[ProductEditDetail new];
+    ProductEditDetail *product = _product?:[ProductEditDetail new];
     switch (alertView.tag) {
         case 10:
         {
             NSInteger index = [[alertView.data objectForKey:DATA_INDEX_KEY] integerValue];
             NSString *value = [[ARRAY_PRODUCT_INSURACE[index] objectForKey:DATA_VALUE_KEY] stringValue];
             product.product_must_insurance = value;
-            [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
             [_tableView reloadData];
             break;
         }
@@ -1480,7 +1511,6 @@ NSString * const ProductStatusWarehouse = @"3";
             NSInteger index = [[alertView.data objectForKey:DATA_INDEX_KEY] integerValue];
             NSString *value = [[ARRAY_PRODUCT_CONDITION[index] objectForKey:DATA_VALUE_KEY] stringValue];
             product.product_condition = value;
-            [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
             [_tableView reloadData];
             break;
         }
@@ -1496,7 +1526,6 @@ NSString * const ProductStatusWarehouse = @"3";
                 product.product_etalase = nil;
             }
              */
-            [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
             [_tableView reloadData];
             break;
         }
@@ -1505,7 +1534,6 @@ NSString * const ProductStatusWarehouse = @"3";
             NSInteger index = [[alertView.data objectForKey:DATA_INDEX_KEY] integerValue];
             NSString *value = [[ARRAY_PRODUCT_RETURNABLE[index] objectForKey:DATA_VALUE_KEY] stringValue];
             _returnableStatus = value;
-            [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
             [_tableView reloadData];
             break;
         }
@@ -1517,10 +1545,9 @@ NSString * const ProductStatusWarehouse = @"3";
 #pragma mark - Product Etalase Delegate
 
 -(void)didSelectEtalase:(EtalaseList *)selectedEtalase{
-    ProductEditDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
+    ProductEditDetail *product = _product;
     product.product_etalase_id = selectedEtalase.etalase_id;
     product.product_etalase = selectedEtalase.etalase_name;
-    [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
     
     [_tableView reloadData];
 
@@ -1555,7 +1582,7 @@ NSString * const ProductStatusWarehouse = @"3";
         
         [_dataInput addEntriesFromDictionary:[_data objectForKey:DATA_INPUT_KEY]];
         
-        ProductEditDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
+        ProductEditDetail *product = _product;
         NSString *productReturnable = _returnableStatus?:@"";
         if ([productReturnable isEqualToString:@""] || [productReturnable isEqualToString:@"0"] || productReturnable == nil) {
             [_dataInput setObject:@(0) forKey:API_PRODUCT_IS_RETURNABLE_KEY];
@@ -1570,8 +1597,7 @@ NSString * const ProductStatusWarehouse = @"3";
         
         NSArray *wholesaleList = [_dataInput objectForKey:DATA_WHOLESALE_LIST_KEY]?:@[];
         
-        NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
-        if ((type == TYPE_ADD_EDIT_PRODUCT_EDIT || type == TYPE_ADD_EDIT_PRODUCT_COPY) && [[wholesaleList firstObject] isKindOfClass:[WholesalePrice class]]) {
+        if ((_type == TYPE_ADD_EDIT_PRODUCT_EDIT || _type == TYPE_ADD_EDIT_PRODUCT_COPY) && [[wholesaleList firstObject] isKindOfClass:[WholesalePrice class]]) {
             for (WholesalePrice *wholesale in wholesaleList) {
                 float price = [wholesale.wholesale_price floatValue];
                 NSInteger minimumQuantity = [wholesale.wholesale_min integerValue];

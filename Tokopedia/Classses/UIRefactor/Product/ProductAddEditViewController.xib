@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -51,17 +51,12 @@
                 <outletCollection property="section3TableViewCell" destination="ZKX-WK-i3N" id="SeT-Ya-VFm"/>
                 <outletCollection property="addImageButtons" destination="Aeh-Li-6p2" id="9j4-5b-DYp"/>
                 <outletCollection property="addImageButtons" destination="47V-6y-qEZ" id="D8Y-Bc-D6g"/>
-                <outletCollection property="thumbProductImageViews" destination="H9L-dr-2Pr" id="JoL-Qa-uOe"/>
-                <outletCollection property="thumbProductImageViews" destination="hHm-DH-0x7" id="tBg-NF-wD4"/>
                 <outletCollection property="defaultImageLabels" destination="kcb-8X-aZ5" id="fO1-Sg-LmS"/>
-                <outletCollection property="thumbProductImageViews" destination="UbQ-js-vPD" id="YhH-0C-uWF"/>
                 <outletCollection property="defaultImageLabels" destination="vmH-NT-DRo" id="Zxl-J5-5K1"/>
                 <outletCollection property="defaultImageLabels" destination="VUL-u4-wSK" id="H7l-LB-NqD"/>
                 <outletCollection property="addImageButtons" destination="dBT-V1-SfM" id="9XN-sJ-24B"/>
                 <outletCollection property="addImageButtons" destination="hxP-Yp-NW4" id="04z-iJ-HVH"/>
-                <outletCollection property="thumbProductImageViews" destination="YA4-Jj-sUX" id="u0N-Qb-1qF"/>
                 <outletCollection property="defaultImageLabels" destination="iKO-ss-scB" id="C7n-Ui-eXM"/>
-                <outletCollection property="thumbProductImageViews" destination="3He-PU-aEy" id="OpB-QU-aPg"/>
                 <outletCollection property="defaultImageLabels" destination="AoT-LA-hUr" id="tWc-kc-miV"/>
                 <outletCollection property="addImageButtons" destination="KZm-9S-UTs" id="VVH-8q-gsM"/>
                 <outletCollection property="section1TableViewCell" destination="OjL-lB-SFm" id="sfa-J5-qOM"/>
@@ -137,6 +132,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="138"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wwW-UJ-8dn" id="kuN-Ak-D6J">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="137.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2Iz-Da-6TE">
@@ -156,6 +152,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="NQR-wY-053" id="KjW-1Q-r8c">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view tag="7" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RYM-7j-tEe">
@@ -212,14 +209,17 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cs7-GF-KDZ" id="7cS-U4-DRy">
+                <rect key="frame" x="0.0" y="0.0" width="287" height="43.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Kategori" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="aL4-Nq-vk4">
+                        <rect key="frame" x="15" y="16" width="56" height="12"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Pilih Kategori" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="UNT-6c-vVm">
+                        <rect key="frame" x="198.5" y="16" width="86.5" height="12"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -233,6 +233,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="lFj-Q9-vIH" id="T1h-pG-Ex3">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="1" placeholder="0" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="k4w-qB-h49">
@@ -269,6 +270,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="BTn-V7-uEL" id="Pr3-Jc-8hO">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="0" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jnr-GO-VCy">
@@ -294,14 +296,17 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="r4I-MX-jcN" id="HsI-qc-kDX">
+                <rect key="frame" x="0.0" y="0.0" width="287" height="43.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Harga pas / Buah" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="YfZ-pT-pae">
+                        <rect key="frame" x="15" y="16" width="113" height="12"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Rp" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Zyn-HW-BU4">
+                        <rect key="frame" x="266.5" y="16" width="18.5" height="12"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -315,6 +320,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ZKX-WK-i3N" id="fmS-Yh-OuX">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="0" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Gvt-ER-XGX">
@@ -340,14 +346,17 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ycv-l3-uAu" id="837-Y5-mgi">
+                <rect key="frame" x="0.0" y="0.0" width="287" height="43.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Berat" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="OtB-84-6WE">
+                        <rect key="frame" x="15" y="16" width="35.5" height="12"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Gram (g)" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="INe-QN-RpB">
+                        <rect key="frame" x="225.5" y="16" width="59.5" height="12"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -394,49 +403,49 @@
             <rect key="frame" x="0.0" y="0.0" width="525" height="130"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <button opaque="NO" tag="20" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dBT-V1-SfM">
+                <button opaque="NO" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dBT-V1-SfM">
                     <rect key="frame" x="15" y="13" width="90" height="90"/>
                     <state key="normal" backgroundImage="icon_upload_image.png">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
-                        <action selector="tap:" destination="-1" eventType="touchUpInside" id="RgC-Ze-zEo"/>
+                        <action selector="onTapImageButton:" destination="-1" eventType="touchUpInside" id="MAQ-pu-K8d"/>
                     </connections>
                 </button>
-                <button opaque="NO" tag="21" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Aeh-Li-6p2">
+                <button hidden="YES" opaque="NO" tag="2" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Aeh-Li-6p2">
                     <rect key="frame" x="115" y="13" width="90" height="90"/>
                     <state key="normal" backgroundImage="icon_upload_image.png">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
-                        <action selector="tap:" destination="-1" eventType="touchUpInside" id="xL7-NR-dcn"/>
+                        <action selector="onTapImageButton:" destination="-1" eventType="touchUpInside" id="z6y-ZM-wfo"/>
                     </connections>
                 </button>
-                <button opaque="NO" tag="22" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KZm-9S-UTs">
+                <button hidden="YES" opaque="NO" tag="3" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KZm-9S-UTs">
                     <rect key="frame" x="215" y="13" width="90" height="90"/>
                     <state key="normal" backgroundImage="icon_upload_image.png">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
-                        <action selector="tap:" destination="-1" eventType="touchUpInside" id="yFK-Vw-gnK"/>
+                        <action selector="onTapImageButton:" destination="-1" eventType="touchUpInside" id="RJT-4H-BlT"/>
                     </connections>
                 </button>
-                <button opaque="NO" tag="23" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hxP-Yp-NW4">
+                <button hidden="YES" opaque="NO" tag="4" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hxP-Yp-NW4">
                     <rect key="frame" x="315" y="13" width="90" height="90"/>
                     <state key="normal" backgroundImage="icon_upload_image.png">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
-                        <action selector="tap:" destination="-1" eventType="touchUpInside" id="WHr-Me-Gm8"/>
+                        <action selector="onTapImageButton:" destination="-1" eventType="touchUpInside" id="TBB-3E-JDZ"/>
                     </connections>
                 </button>
-                <button opaque="NO" tag="24" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="47V-6y-qEZ">
+                <button hidden="YES" opaque="NO" tag="5" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="47V-6y-qEZ">
                     <rect key="frame" x="415" y="13" width="90" height="90"/>
                     <state key="normal" backgroundImage="icon_upload_image.png">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
-                        <action selector="tap:" destination="-1" eventType="touchUpInside" id="WEq-d6-h7V"/>
+                        <action selector="onTapImageButton:" destination="-1" eventType="touchUpInside" id="PPm-00-Lb7"/>
                     </connections>
                 </button>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="20" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Gambar Utama" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AoT-LA-hUr">
@@ -469,41 +478,6 @@
                     <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <imageView clipsSubviews="YES" tag="20" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UbQ-js-vPD">
-                    <rect key="frame" x="15" y="13" width="90" height="90"/>
-                    <gestureRecognizers/>
-                    <connections>
-                        <outletCollection property="gestureRecognizers" destination="cRg-Tg-287" appends="YES" id="FID-tw-Wbs"/>
-                    </connections>
-                </imageView>
-                <imageView clipsSubviews="YES" tag="21" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hHm-DH-0x7">
-                    <rect key="frame" x="115" y="13" width="90" height="90"/>
-                    <gestureRecognizers/>
-                    <connections>
-                        <outletCollection property="gestureRecognizers" destination="szN-TW-Bc4" appends="YES" id="agF-x7-IiS"/>
-                    </connections>
-                </imageView>
-                <imageView clipsSubviews="YES" tag="22" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3He-PU-aEy">
-                    <rect key="frame" x="215" y="13" width="90" height="90"/>
-                    <gestureRecognizers/>
-                    <connections>
-                        <outletCollection property="gestureRecognizers" destination="bC6-MH-yhz" appends="YES" id="gcl-1a-QuG"/>
-                    </connections>
-                </imageView>
-                <imageView clipsSubviews="YES" tag="23" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="H9L-dr-2Pr">
-                    <rect key="frame" x="315" y="13" width="90" height="90"/>
-                    <gestureRecognizers/>
-                    <connections>
-                        <outletCollection property="gestureRecognizers" destination="Emw-24-1ZH" appends="YES" id="cH2-lX-6f7"/>
-                    </connections>
-                </imageView>
-                <imageView clipsSubviews="YES" tag="24" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YA4-Jj-sUX">
-                    <rect key="frame" x="415" y="13" width="90" height="90"/>
-                    <gestureRecognizers/>
-                    <connections>
-                        <outletCollection property="gestureRecognizers" destination="riA-rS-Lve" appends="YES" id="QE8-Vo-8hG"/>
-                    </connections>
-                </imageView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
@@ -513,15 +487,18 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="OjL-lB-SFm" id="6OX-P8-eUn">
+                <rect key="frame" x="0.0" y="0.0" width="287" height="43.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Katalog" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="02V-Rd-TyY">
+                        <rect key="frame" x="15" y="16" width="50.5" height="12"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Pilih Katalog" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="NSK-s2-24p">
+                        <rect key="frame" x="204" y="16" width="81" height="12"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>

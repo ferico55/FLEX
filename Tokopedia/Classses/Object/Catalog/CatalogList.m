@@ -9,6 +9,14 @@
 #import "CatalogList.h"
 
 @implementation CatalogList
+
+-(NSString *)catalog_id{
+    if (_catalog_id == nil){
+        return @"";
+    }
+    return _catalog_id;
+}
+
 +(NSDictionary *)attributeMappingDictionary
 {
     NSArray *keys = @[

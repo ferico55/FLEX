@@ -166,8 +166,7 @@
     [_activeTextField resignFirstResponder];
 }
 - (IBAction)tapDefaultPict:(UIButton*)sender {
-    NSInteger indexImage = [[_data objectForKey:kTKPDDETAIL_DATAINDEXKEY]integerValue];
-    [_delegate setDefaultImageAtIndex:indexImage];
+    [_delegate setDefaultImage:_selectedImage];
     
     sender.hidden = YES;
     _defaultPictLabel.hidden = NO;
@@ -270,9 +269,9 @@
     switch (buttonIndex) {
         case 1:
         {
-            NSInteger indexImage = [[_data objectForKey:kTKPDDETAIL_DATAINDEXKEY]integerValue];
-            BOOL isDefaultImage = _isDefaultImage;
-            [_delegate deleteProductImageAtIndex:indexImage isDefaultImage:isDefaultImage];
+            if ([_delegate respondsToSelector:@selector(deleteImage:)]) {
+                [_delegate deleteImage:_selectedImage];
+            }
             [self.navigationController popViewControllerAnimated:YES];
             break;
         }
