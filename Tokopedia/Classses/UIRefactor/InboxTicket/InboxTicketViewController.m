@@ -19,8 +19,6 @@
 #import "NoResultReusableView.h"
 #import "ContactUsWebViewController.h"
 
-#import "Tokopedia-Swift.h"
-
 @interface InboxTicketViewController ()
 <
     TokopediaNetworkManagerDelegate,
@@ -190,21 +188,18 @@ NoResultDelegate
 
 - (void)requestInboxTicketList
 {
-    NSString *status = @"";
-    if (self.inboxCustomerServiceType == InboxCustomerServiceTypeInProcess) {
-        status = @"1";
-    } else if (self.inboxCustomerServiceType == InboxCustomerServiceTypeClosed) {
-        status = @"2";
-    }
-    
-    [InboxTicketRequest requestInboxTicketList:status
-                                        filter:_filter
-                                          page:@(_page)
-                                     onSuccess:^(InboxTicket *inboxTicket) {
-                                         [self actionAfterRequest:inboxTicket];
-                                     }
-                                     onFailure:^(NSError *errorResult) {
-                                     }];
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    networkManager.isUsingHmac = YES;
+    [networkManager requestWithBaseUrl:[NSString v4Url]
+                                  path:@"/v4/inbox-ticket/get_inbox_ticket.pl"
+                                method:RKRequestMethodGET
+                             parameter:[self parameter]
+                               mapping:[InboxTicket mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                 [self actionAfterRequest:successResult withOperation:operation];
+                             } onFailure:^(NSError *errorResult) {
+                                 
+                             }];
 }
 
 - (NSDictionary *)parameter
@@ -225,7 +220,9 @@ NoResultDelegate
     return dictionary;
 }
 
-- (void)actionAfterRequest:(InboxTicket *)inboxTicket{
+- (void)actionAfterRequest:(RKMappingResult *)mappingResult withOperation:(RKObjectRequestOperation *)operation{
+    InboxTicket *inboxTicket = [mappingResult.dictionary objectForKey:@""];
+    
     if (_page == 1) {
         [_tickets removeAllObjects];
     }

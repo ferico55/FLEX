@@ -7,9 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "InboxTicketDetail.h"
 
-@interface InboxTicketReply : NSObject <TKPObjectMapping>
+@interface InboxTicketReply : NSObject
 
 @property (strong, nonatomic) NSMutableArray *ticket_reply_data;
 @property (strong, nonatomic) NSString *ticket_reply_total_data;

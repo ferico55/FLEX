@@ -2415,7 +2415,6 @@
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
 		85C494BF1AD790DD008A314A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BE1AD790DD008A314A /* libz.dylib */; };
 		85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494C01AD790E4008A314A /* CoreData.framework */; };
-		D6BEF9D71D50479A00F5F624 /* InboxTicketRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6BEF9D61D50479A00F5F624 /* InboxTicketRequest.swift */; };
 		F25F6F270D531ED13A92CDB9 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4868E459AB2A65D133732296 /* libPods-Tokopedia.a */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
 		FC23B85A1ACD659900879D75 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8581ACD659900879D75 /* Fabric.framework */; };
@@ -6008,7 +6007,6 @@
 		85C494C01AD790E4008A314A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		AAA12C6A69BF6CB5F8EE3287 /* Pods-Tokopedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug.xcconfig"; sourceTree = "<group>"; };
 		C8A1445074FECD393EA18C17 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
-		D6BEF9D61D50479A00F5F624 /* InboxTicketRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InboxTicketRequest.swift; sourceTree = "<group>"; };
 		FC23B8571ACD659900879D75 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		FC23B8581ACD659900879D75 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		FC36DF8319B0656400AF74C1 /* Tokopedia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tokopedia.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -9341,7 +9339,6 @@
 				7A59ECF01D471A96002ECC7B /* InboxTicketViewController.h */,
 				7A59ECF11D471A96002ECC7B /* InboxTicketViewController.m */,
 				7A59ECF21D471A96002ECC7B /* string_inbox_ticket.h */,
-				D6BEF9D61D50479A00F5F624 /* InboxTicketRequest.swift */,
 			);
 			path = InboxTicket;
 			sourceTree = "<group>";
@@ -13599,7 +13596,6 @@
 				7A59F6801D471AA1002ECC7B /* CCData.m in Sources */,
 				7A59F8641D471AA3002ECC7B /* AlertPriceNotificationViewController.m in Sources */,
 				7A59F8B71D471AA3002ECC7B /* HelpfulReviewResponse.m in Sources */,
-				D6BEF9D71D50479A00F5F624 /* InboxTicketRequest.swift in Sources */,
 				7A59F6741D471AA1002ECC7B /* TransactionCartResult.m in Sources */,
 				7A59F79C1D471AA2002ECC7B /* FilterData.swift in Sources */,
 				7A59F7DD1D471AA2002ECC7B /* HomeFlowLayout.m in Sources */,

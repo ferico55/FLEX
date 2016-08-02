@@ -10,7 +10,7 @@
 #import "InboxTicketReply.h"
 #import "InboxTicketTicket.h"
 
-@interface InboxTicketResultDetail : NSObject <TKPObjectMapping>
+@interface InboxTicketResultDetail : NSObject
 
 @property (strong, nonatomic) InboxTicketReply *ticket_reply;
 @property (strong, nonatomic) InboxTicketTicket *ticket;

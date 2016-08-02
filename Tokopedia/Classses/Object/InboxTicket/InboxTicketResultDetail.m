@@ -10,13 +10,4 @@
 
 @implementation InboxTicketResultDetail
 
-+ (RKObjectMapping *)mapping {
-    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
-    
-    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"ticket_reply" toKeyPath:@"ticket_reply" withMapping:[InboxTicketReply mapping]]];
-    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"ticket" toKeyPath:@"ticket" withMapping:[InboxTicketTicket mapping]]];
-    
-    return mapping;
-}
-
 @end
