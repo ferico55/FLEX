@@ -19,7 +19,7 @@ class PulsaView: UIView {
     var buyButton: UIButton!
     var buttonsPlaceholder: UIView!
     var fieldPlaceholder: UIView!
-    var didPrefixEntered: (((String, String) -> Void)?)
+    var didPrefixEntered: ((operatorId: String, categoryId: String) -> Void)?
     var didTapAddressbook: ([APContact] -> Void)?
     var didTapProduct:([PulsaProduct] -> Void)?
     var phoneBook: UIImageView!
@@ -179,7 +179,7 @@ class PulsaView: UIView {
             self.numberField.rightView = prefixImage
             self.numberField.rightViewMode = .Always
             
-            self.didPrefixEntered!(prefix!["id"]!, self.selectedCategory.id!)
+            self.didPrefixEntered!(operatorId: prefix!["id"]!, categoryId: self.selectedCategory.id!)
         } else {
             self.numberField.rightView = nil
             self.hideBuyButtons()
@@ -280,10 +280,13 @@ class PulsaView: UIView {
         
         })
         
+        //prevent keep adding button to handler
+        productButton.bk_removeEventHandlersForControlEvents(.TouchUpInside)
         productButton.bk_addEventHandler({ button -> Void in
             self.didTapProduct!(products)
         }, forControlEvents: .TouchUpInside)
         
+        buyButton.bk_removeEventHandlersForControlEvents(.TouchUpInside)
         buyButton.bk_addEventHandler({ button -> Void in
             if(!self.isValidNumber(self.numberField.text!)) {
                 self.numberErrorLabel.mas_updateConstraints { make in

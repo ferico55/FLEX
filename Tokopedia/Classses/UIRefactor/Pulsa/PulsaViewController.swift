@@ -40,6 +40,9 @@ class PulsaViewController: UIViewController, UITextFieldDelegate {
     }
     
     func didReceiveOperator(operators: [PulsaOperator]) {
+        
+        //mapping operator by prefix
+        // {0812 : {"image" : "simpati.png", "id" : "1"}}
         for op in operators {
             for var prefix in op.attributes.prefix {
                 var prefixDictionary = Dictionary<String, String>()
@@ -66,6 +69,7 @@ class PulsaViewController: UIViewController, UITextFieldDelegate {
         self.pulsaView.didPrefixEntered = { [unowned self] operatorId, categoryId in
             let debounced = Debouncer(delay: 1.0) {
                 self.pulsaView.selectedOperator = self.findOperatorById(operatorId, operators: operators)
+                
                 self.requestManager.requestProduct(operatorId, categoryId: categoryId)
                 self.requestManager.didReceiveProduct = { products in
                     self.pulsaView.showBuyButton(products)
@@ -78,7 +82,7 @@ class PulsaViewController: UIViewController, UITextFieldDelegate {
                             self.pulsaView.productButton.setTitle(product.attributes.desc, forState: .Normal)
                         }
                         
-                        self.navigationController?.pushViewController(controller, animated: true)
+                        self.navigationController!.pushViewController(controller, animated: true)
                     }
                 }
             }
