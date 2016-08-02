@@ -58,7 +58,9 @@ NoResultDelegate
     _currentTabSegmentIndex = 0;
     _filter = @"all";
 
-    [self requestInboxTicketList];
+    _networkManager = [TokopediaNetworkManager new];
+    _networkManager.delegate = self;
+    [_networkManager doRequest];
     
     _refreshControl = [[UIRefreshControl alloc] init];
     _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
@@ -159,7 +161,7 @@ NoResultDelegate
     NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1;
     if (row == indexPath.row) {
         if (_uriNext != NULL && ![_uriNext isEqualToString:@"0"] && _uriNext != 0) {
-            [self requestInboxTicketList];
+            [_networkManager doRequest];
         }
     }
 }
@@ -186,23 +188,7 @@ NoResultDelegate
 
 #pragma mark - Tokopedia network manager
 
-- (void)requestInboxTicketList
-{
-    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
-    networkManager.isUsingHmac = YES;
-    [networkManager requestWithBaseUrl:[NSString v4Url]
-                                  path:@"/v4/inbox-ticket/get_inbox_ticket.pl"
-                                method:RKRequestMethodGET
-                             parameter:[self parameter]
-                               mapping:[InboxTicket mapping]
-                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                 [self actionAfterRequest:successResult withOperation:operation];
-                             } onFailure:^(NSError *errorResult) {
-                                 
-                             }];
-}
-
-- (NSDictionary *)parameter
+- (NSDictionary *)getParameter:(int)tag
 {
     NSString *status = @"";
     if (self.inboxCustomerServiceType == InboxCustomerServiceTypeInProcess) {
@@ -220,7 +206,106 @@ NoResultDelegate
     return dictionary;
 }
 
-- (void)actionAfterRequest:(RKMappingResult *)mappingResult withOperation:(RKObjectRequestOperation *)operation{
+- (NSString *)getPath:(int)tag
+{
+    return API_PATH;
+}
+
+- (id)getObjectManager:(int)tag {
+    RKObjectManager *objectManager = [RKObjectManager sharedClient];
+    
+    // setup object mappings
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[InboxTicket class]];
+    [statusMapping addAttributeMappingsFromDictionary:@{
+                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
+                                                        }];
+    
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[InboxTicketResult class]];
+    
+    RKObjectMapping *inboxTicketMapping = [RKObjectMapping mappingForClass:[InboxTicketList class]];
+    [inboxTicketMapping addAttributeMappingsFromArray:@[API_LIST_TICKET_CREATE_TIME_KEY,
+                                                        API_LIST_TICKET_CREATE_TIME_FMT2_KEY,
+                                                        API_LIST_TICKET_FIRST_MESSAGE_NAME_KEY,
+                                                        API_LIST_TICKET_UPDATE_TIME_FMT2_KEY,
+                                                        API_LIST_TICKET_UPDATE_TIME_FMT_KEY,
+                                                        API_LIST_TICKET_STATUS_KEY,
+                                                        API_LIST_TICKET_READ_STATUS_KEY,
+                                                        API_LIST_TICKET_UPDATE_IS_CS_KEY,
+                                                        API_LIST_TICKET_INBOX_ID_KEY,
+                                                        API_LIST_TICKET_UPDATE_BY_URL_KEY,
+                                                        API_LIST_TICKET_CATEGORY_KEY,
+                                                        API_LIST_TICKET_TITLE_KEY,
+                                                        API_LIST_TICKET_TOTAL_MESSAGE_KEY,
+                                                        API_LIST_TICKET_SHOW_MORE_KEY,
+                                                        API_LIST_TICKET_RESPOND_STATUS_KEY,
+                                                        API_LIST_TICKET_IS_REPLIED_KEY,
+                                                        API_LIST_TICKET_URL_DETAIL_KEY,
+                                                        API_LIST_TICKET_UPDATE_BY_ID_KEY,
+                                                        API_LIST_TICKET_ID_KEY,
+                                                        API_LIST_TICKET_UPDATE_BY_NAME_KEY,
+                                                        API_LIST_TICKET_CATEGORY_ID_KEY
+                                                        ]];
+    
+    RKObjectMapping *userInvolveMapping = [RKObjectMapping mappingForClass:[InboxTicketUserInvolve class]];
+    [userInvolveMapping addAttributeMappingsFromArray:@[
+                                                        API_LIST_TICKET_FULL_NAME_KEY,
+                                                        ]];
+    
+    RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[InboxTicketPaging class]];
+    [pagingMapping addAttributeMappingsFromArray:@[API_PAGING_URI_NEXT_KEY,
+                                                   API_PAGING_URI_PREV_KEY]];
+    
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
+                                                                                  toKeyPath:kTKPD_APIRESULTKEY
+                                                                                withMapping:resultMapping]];
+    
+    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_LIST_KEY
+                                                                                 toKeyPath:API_LIST_KEY
+                                                                               withMapping:inboxTicketMapping];
+    [resultMapping addPropertyMapping:listRel];
+    
+    RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:API_PAGING_KEY
+                                                                                 toKeyPath:API_PAGING_KEY
+                                                                               withMapping:pagingMapping];
+    [resultMapping addPropertyMapping:pageRel];
+    
+    RKRelationshipMapping *userInvolve = [RKRelationshipMapping relationshipMappingFromKeyPath:API_LIST_TICKET_USER_INVOLVE_KEY
+                                                                                     toKeyPath:API_LIST_TICKET_USER_INVOLVE_KEY
+                                                                                   withMapping:userInvolveMapping];
+    [inboxTicketMapping addPropertyMapping:userInvolve];
+    
+    // register mappings with the provider using a response descriptor
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                            method:RKRequestMethodPOST
+                                                                                       pathPattern:API_PATH
+                                                                                           keyPath:@""
+                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    [objectManager addResponseDescriptor:responseDescriptor];
+    
+    return objectManager;
+}
+
+- (NSString *)getRequestStatus:(RKMappingResult *)mappingResult withTag:(int)tag {
+    InboxTicket *inboxTicket = [mappingResult.dictionary objectForKey:@""];
+    return inboxTicket.status;
+}
+
+- (void)actionBeforeRequest:(int)tag {
+    UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    [indicator startAnimating];
+    
+    CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, 60);
+    UIView *loadingView = [[UIView alloc] initWithFrame:frame];
+    [loadingView addSubview:indicator];
+    
+    indicator.center = loadingView.center;
+    
+    self.tableView.tableFooterView = loadingView;
+}
+
+- (void)actionAfterRequest:(RKMappingResult *)mappingResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag{
     InboxTicket *inboxTicket = [mappingResult.dictionary objectForKey:@""];
     
     if (_page == 1) {
@@ -332,8 +417,8 @@ NoResultDelegate
 
 - (void)refreshView {
     _page = 1;
-    //[_networkManager requestCancel];
-    [self requestInboxTicketList];
+    [_networkManager requestCancel];
+    [_networkManager doRequest];
 }
 
 - (void)reloadDataSource:(NSNotification *)notification {
@@ -351,8 +436,8 @@ NoResultDelegate
         _page = 1;
         [_tickets removeAllObjects];
         [self.tableView reloadData];
-        //[_networkManager requestCancel];
-        [self requestInboxTicketList];
+        [_networkManager requestCancel];
+        [_networkManager doRequest];
     }
 }
 

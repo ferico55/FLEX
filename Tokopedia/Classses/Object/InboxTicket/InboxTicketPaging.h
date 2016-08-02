@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface InboxTicketPaging : NSObject <TKPObjectMapping>
+@interface InboxTicketPaging : NSObject
 
 @property (strong, nonatomic) NSString *uri_next;
 @property (strong, nonatomic) NSString *uri_previous;

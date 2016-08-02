@@ -10,13 +10,4 @@
 
 @implementation InboxTicket
 
-+ (RKObjectMapping *)mapping {
-    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[self class]];
-    
-    [mapping addAttributeMappingsFromArray:@[@"status", @"config", @"server_process_time"]];
-    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data" toKeyPath:@"result" withMapping:[InboxTicketResult mapping]]];
-    
-    return mapping;
-}
-
 @end

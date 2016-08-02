@@ -18,32 +18,4 @@
     return [_ticket_category kv_decodeHTMLCharacterEntities];
 }
 
-+ (RKObjectMapping *)mapping {
-    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[self class]];
-    
-    [mapping addAttributeMappingsFromArray:@[@"ticket_create_time_fmt2",
-                                             @"ticket_first_message_name",
-                                             @"ticket_update_time_fmt2",
-                                             @"ticket_create_time_fmt",
-                                             @"ticket_update_time_fmt",
-                                             @"ticket_status",
-                                             @"ticket_read_status",
-                                             @"ticket_update_is_cs",
-                                             @"ticket_inbox_id",
-                                             @"ticket_update_buy_url",
-                                             @"ticket_category",
-                                             @"ticket_title",
-                                             @"ticket_total_message",
-                                             @"ticket_show_more",
-                                             @"ticket_respond_status",
-                                             @"ticket_is_replied",
-                                             @"ticket_url_detail",
-                                             @"ticket_update_by_id",
-                                             @"ticket_id",
-                                             @"ticket_update_by_name"
-                                             ]];
-    
-    return mapping;
-}
-
 @end

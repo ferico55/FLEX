@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "InboxTicketResult.h"
 
-@interface InboxTicket : NSObject <TKPObjectMapping>
+@interface InboxTicket : NSObject
 
 @property (strong, nonatomic) NSString *status;
 @property (strong, nonatomic) NSString *config;
