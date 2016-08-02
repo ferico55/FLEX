@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface InboxTicketTicket : NSObject
+@interface InboxTicketTicket : NSObject <TKPObjectMapping>
 
 @property (strong, nonatomic) NSString *ticket_first_message_name;
 @property (strong, nonatomic) NSString *ticket_create_time;

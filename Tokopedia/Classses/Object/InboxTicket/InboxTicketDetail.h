@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "ConversationViewModel.h"
 
-@interface InboxTicketDetail : NSObject
+@interface InboxTicketDetail : NSObject <TKPObjectMapping>
 
 @property (strong, nonatomic) NSString *ticket_detail_id;
 @property (strong, nonatomic) NSString *ticket_detail_create_time;

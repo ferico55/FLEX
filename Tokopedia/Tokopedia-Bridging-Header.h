@@ -68,3 +68,6 @@
 #import "TKPObjectMapping.h"
 #import "WholesalePrice.h"
 #import "Breadcrumb.h"
+
+#import "InboxTicket.h"
+#import "DetailInboxTicket.h"

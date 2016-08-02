@@ -39,4 +39,24 @@
     return viewModel;
 }
 
++ (RKObjectMapping *)mapping {
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[self class]];
+    
+    [mapping addAttributeMappingsFromArray:@[@"ticket_detail_id",
+                                             @"ticket_detail_create_time",
+                                             @"ticket_detail_create_time_fmt",
+                                             @"ticket_detail_user_name",
+                                             @"ticket_detail_new_rating",
+                                             @"ticket_detail_is_cs",
+                                             @"ticket_detail_user_url",
+                                             @"ticket_detail_user_label_id",
+                                             @"ticket_detail_user_label",
+                                             @"ticket_detail_user_image",
+                                             @"ticket_detail_user_id",
+                                             @"ticket_detail_new_status",
+                                             @"ticket_detail_detail_message"]];
+    
+    return mapping;
+}
+
 @end
