@@ -150,4 +150,24 @@
                              }];
 }
 
++(void)fetchCreateResolutionDataWithOrderId:(NSString *)orderId success:(void (^)(ResolutionCenterCreateResponse *))success failure:(void (^)(NSError *))failure{
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    networkManager.isUsingHmac = YES;
+    
+    UserAuthentificationManager *userAuth = [UserAuthentificationManager new];
+    [networkManager requestWithBaseUrl:@"http://new.mn-hang.ndvl/web-service"
+                                  path:@"/v4/inbox-resolution-center/get_create_resolution_form_new.pl"
+                                method:RKRequestMethodGET
+                             parameter:@{@"order_id":orderId,
+                                         @"user_id":[userAuth getUserId]
+                                         }
+                               mapping:[ResolutionCenterCreateResponse mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                 ResolutionCenterCreateResponse *result = [successResult.dictionary objectForKey:@""];
+                                 success(result);
+                             } onFailure:^(NSError *errorResult) {
+                                 failure(errorResult);
+                             }];
+}
+
 @end

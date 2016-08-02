@@ -2420,6 +2420,12 @@
 		BB75F5211D4B4B0B00196BCE /* ResolutionCenterSellerEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB75F51F1D4B4B0B00196BCE /* ResolutionCenterSellerEditViewController.xib */; };
 		BB75F5251D4EEC9000196BCE /* ResolutionCenterSellerEditProductCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BB75F5231D4EEC9000196BCE /* ResolutionCenterSellerEditProductCell.m */; };
 		BB75F5261D4EEC9000196BCE /* ResolutionCenterSellerEditProductCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB75F5241D4EEC9000196BCE /* ResolutionCenterSellerEditProductCell.xib */; };
+		BB75F5291D4F32BB00196BCE /* ResolutionCenterCreateResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = BB75F5281D4F32BB00196BCE /* ResolutionCenterCreateResponse.m */; };
+		BB75F52C1D4F333900196BCE /* ResolutionCenterCreateData.m in Sources */ = {isa = PBXBuildFile; fileRef = BB75F52B1D4F333900196BCE /* ResolutionCenterCreateData.m */; };
+		BB75F52F1D4F33E500196BCE /* ResolutionCenterCreateForm.m in Sources */ = {isa = PBXBuildFile; fileRef = BB75F52E1D4F33E500196BCE /* ResolutionCenterCreateForm.m */; };
+		BB75F5321D4F352000196BCE /* ResolutionCenterCreateList.m in Sources */ = {isa = PBXBuildFile; fileRef = BB75F5311D4F352000196BCE /* ResolutionCenterCreateList.m */; };
+		BB75F5351D4F35D200196BCE /* ResolutionCenterCreateTroubleList.m in Sources */ = {isa = PBXBuildFile; fileRef = BB75F5341D4F35D200196BCE /* ResolutionCenterCreateTroubleList.m */; };
+		BB75F5381D4F365A00196BCE /* ResolutionCenterCreateSolutionList.m in Sources */ = {isa = PBXBuildFile; fileRef = BB75F5371D4F365A00196BCE /* ResolutionCenterCreateSolutionList.m */; };
 		F25F6F270D531ED13A92CDB9 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4868E459AB2A65D133732296 /* libPods-Tokopedia.a */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
 		FC23B85A1ACD659900879D75 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8581ACD659900879D75 /* Fabric.framework */; };
@@ -6019,6 +6025,18 @@
 		BB75F5221D4EEC9000196BCE /* ResolutionCenterSellerEditProductCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionCenterSellerEditProductCell.h; sourceTree = "<group>"; };
 		BB75F5231D4EEC9000196BCE /* ResolutionCenterSellerEditProductCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionCenterSellerEditProductCell.m; sourceTree = "<group>"; };
 		BB75F5241D4EEC9000196BCE /* ResolutionCenterSellerEditProductCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ResolutionCenterSellerEditProductCell.xib; sourceTree = "<group>"; };
+		BB75F5271D4F32BB00196BCE /* ResolutionCenterCreateResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionCenterCreateResponse.h; sourceTree = "<group>"; };
+		BB75F5281D4F32BB00196BCE /* ResolutionCenterCreateResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionCenterCreateResponse.m; sourceTree = "<group>"; };
+		BB75F52A1D4F333900196BCE /* ResolutionCenterCreateData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionCenterCreateData.h; sourceTree = "<group>"; };
+		BB75F52B1D4F333900196BCE /* ResolutionCenterCreateData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionCenterCreateData.m; sourceTree = "<group>"; };
+		BB75F52D1D4F33E500196BCE /* ResolutionCenterCreateForm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionCenterCreateForm.h; sourceTree = "<group>"; };
+		BB75F52E1D4F33E500196BCE /* ResolutionCenterCreateForm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionCenterCreateForm.m; sourceTree = "<group>"; };
+		BB75F5301D4F352000196BCE /* ResolutionCenterCreateList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionCenterCreateList.h; sourceTree = "<group>"; };
+		BB75F5311D4F352000196BCE /* ResolutionCenterCreateList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionCenterCreateList.m; sourceTree = "<group>"; };
+		BB75F5331D4F35D200196BCE /* ResolutionCenterCreateTroubleList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionCenterCreateTroubleList.h; sourceTree = "<group>"; };
+		BB75F5341D4F35D200196BCE /* ResolutionCenterCreateTroubleList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionCenterCreateTroubleList.m; sourceTree = "<group>"; };
+		BB75F5361D4F365A00196BCE /* ResolutionCenterCreateSolutionList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionCenterCreateSolutionList.h; sourceTree = "<group>"; };
+		BB75F5371D4F365A00196BCE /* ResolutionCenterCreateSolutionList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionCenterCreateSolutionList.m; sourceTree = "<group>"; };
 		C8A1445074FECD393EA18C17 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		FC23B8571ACD659900879D75 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		FC23B8581ACD659900879D75 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
@@ -12091,6 +12109,18 @@
 				BB75F5221D4EEC9000196BCE /* ResolutionCenterSellerEditProductCell.h */,
 				BB75F5231D4EEC9000196BCE /* ResolutionCenterSellerEditProductCell.m */,
 				BB75F5241D4EEC9000196BCE /* ResolutionCenterSellerEditProductCell.xib */,
+				BB75F5271D4F32BB00196BCE /* ResolutionCenterCreateResponse.h */,
+				BB75F5281D4F32BB00196BCE /* ResolutionCenterCreateResponse.m */,
+				BB75F52A1D4F333900196BCE /* ResolutionCenterCreateData.h */,
+				BB75F52B1D4F333900196BCE /* ResolutionCenterCreateData.m */,
+				BB75F52D1D4F33E500196BCE /* ResolutionCenterCreateForm.h */,
+				BB75F52E1D4F33E500196BCE /* ResolutionCenterCreateForm.m */,
+				BB75F5301D4F352000196BCE /* ResolutionCenterCreateList.h */,
+				BB75F5311D4F352000196BCE /* ResolutionCenterCreateList.m */,
+				BB75F5331D4F35D200196BCE /* ResolutionCenterCreateTroubleList.h */,
+				BB75F5341D4F35D200196BCE /* ResolutionCenterCreateTroubleList.m */,
+				BB75F5361D4F365A00196BCE /* ResolutionCenterCreateSolutionList.h */,
+				BB75F5371D4F365A00196BCE /* ResolutionCenterCreateSolutionList.m */,
 			);
 			path = ResolutionCenter;
 			sourceTree = "<group>";
@@ -13893,6 +13923,7 @@
 				4548594A1D4B0A3F001B10CD /* SliderData.m in Sources */,
 				454857811D4B0A3F001B10CD /* ShipmentProvinceData.m in Sources */,
 				45485B5F1D4B0A3F001B10CD /* TransactionCartEditViewController.m in Sources */,
+				BB75F52C1D4F333900196BCE /* ResolutionCenterCreateData.m in Sources */,
 				454856821D4B0A3F001B10CD /* TalkCommentResult.m in Sources */,
 				454856F31D4B0A3F001B10CD /* ManageProduct.m in Sources */,
 				454858A71D4B0A3F001B10CD /* CatalogShopViewController.m in Sources */,
@@ -13919,10 +13950,12 @@
 				4548576A1D4B0A3F001B10CD /* ImageSearchResponseData.m in Sources */,
 				45485AE11D4B0A3F001B10CD /* OpenShopSuccessViewController.swift in Sources */,
 				4548573C1D4B0A3F001B10CD /* PrivacyFormResult.m in Sources */,
+				BB75F52F1D4F33E500196BCE /* ResolutionCenterCreateForm.m in Sources */,
 				45485BD21D4B0A40001B10CD /* VTCardDetails.m in Sources */,
 				454857E71D4B0A3F001B10CD /* TransactionEditAddressForm.m in Sources */,
 				45485A601D4B0A3F001B10CD /* ReputationMyReviewViewController.m in Sources */,
 				45485B7D1D4B0A40001B10CD /* TransactionObjectMapping.m in Sources */,
+				BB75F5321D4F352000196BCE /* ResolutionCenterCreateList.m in Sources */,
 				45485F2D1D4B0A40001B10CD /* XYPieChart.m in Sources */,
 				45485AC51D4B0A3F001B10CD /* SettingBankDetailViewController.m in Sources */,
 				454858661D4B0A3F001B10CD /* AlertInfoPaymentConfirmationView.m in Sources */,
@@ -13997,6 +14030,7 @@
 				454859C41D4B0A3F001B10CD /* ShipmentLocationPickupViewCell.m in Sources */,
 				454857C11D4B0A3F001B10CD /* Tiki.m in Sources */,
 				4548571B1D4B0A3F001B10CD /* ProductTalkCommentAction.m in Sources */,
+				BB75F5291D4F32BB00196BCE /* ResolutionCenterCreateResponse.m in Sources */,
 				4548588C1D4B0A3F001B10CD /* CameraAlbumListViewController.m in Sources */,
 				454858A51D4B0A3F001B10CD /* CatalogShopCell.m in Sources */,
 				4548567E1D4B0A3F001B10CD /* Statistic.m in Sources */,
@@ -14673,6 +14707,7 @@
 				454857831D4B0A3F001B10CD /* ShipmentResult.m in Sources */,
 				454858F51D4B0A3F001B10CD /* StarsRateView.m in Sources */,
 				454857A41D4B0A3F001B10CD /* ShopProductPageList.m in Sources */,
+				BB75F5351D4F35D200196BCE /* ResolutionCenterCreateTroubleList.m in Sources */,
 				454856891D4B0A3F001B10CD /* Favorited.m in Sources */,
 				45485A1B1D4B0A3F001B10CD /* DetailReputationReviewComponent.mm in Sources */,
 				45485B0B1D4B0A3F001B10CD /* ShopInfoViewController.m in Sources */,
@@ -14751,6 +14786,7 @@
 				4548571F1D4B0A3F001B10CD /* ChangePhoneNumber.m in Sources */,
 				45485A9B1D4B0A3F001B10CD /* ShipmentStatusViewController.m in Sources */,
 				454856A01D4B0A3F001B10CD /* GooglePlacesDetail.m in Sources */,
+				BB75F5381D4F365A00196BCE /* ResolutionCenterCreateSolutionList.m in Sources */,
 				454858CD1D4B0A3F001B10CD /* TPRootWireframe.m in Sources */,
 				4548575E1D4B0A3F001B10CD /* OrderResult.m in Sources */,
 				454857C61D4B0A3F001B10CD /* TrackOrderHistory.m in Sources */,

@@ -9,6 +9,7 @@
 #import "ResolutionCenterSellerEditViewController.h"
 #import "ResolutionCenterSellerEditProductCell.h"
 #import "TKPDTextView.h"
+#import "RequestResolutionData.h"
 
 @interface ResolutionCenterSellerEditViewController ()<UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate>
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
@@ -29,8 +30,14 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     [self registerForKeyboardNotifications];
+    
+    [RequestResolutionData fetchCreateResolutionDataWithOrderId:@"123123" success:^(ResolutionCenterCreateResponse *data) {
+        
+    } failure:^(NSError *error) {
+        
+    }];
+    
     _tableView.delegate = self;
     _tableView.dataSource = self;
 }
