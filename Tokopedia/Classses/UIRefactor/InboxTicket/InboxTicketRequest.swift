@@ -61,5 +61,51 @@ class InboxTicketRequest: NSObject {
         })
 
     }
+    
+    class func requestInboxTicketViewMore(ticketId:NSString,
+                                        onSuccess:(DetailInboxTicket -> Void),
+                                        onFailure:(NSError -> Void))
+    {
+        let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
+        networkManager.isUsingHmac = true
+        
+        networkManager.requestWithBaseUrl(NSString.v4Url(),
+                                          path: "/v4/inbox-ticket/get_inbox_ticket_view_more.pl",
+                                          method: .GET,
+                                          parameter: ["ticket_id" : "\(ticketId)"],
+                                          mapping: DetailInboxTicket.mapping(),
+                                          onSuccess: { (successResult, _) in
+                                            let result : Dictionary = successResult.dictionary() as Dictionary
+                                            let response : DetailInboxTicket = result[""] as! DetailInboxTicket
+                                            onSuccess(response)
+            },
+                                          onFailure: { (errorResult) in
+                                            onFailure(errorResult)
+        })
+        
+    }
+    
+    class func requestTicketGiveRating(ticketId:NSString,
+                                          onSuccess:(DetailInboxTicket -> Void),
+                                          onFailure:(NSError -> Void))
+    {
+        let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
+        networkManager.isUsingHmac = true
+        
+        networkManager.requestWithBaseUrl(NSString.v4Url(),
+                                          path: "/v4/inbox-ticket/get_inbox_ticket_view_more.pl",
+                                          method: .GET,
+                                          parameter: ["ticket_id" : "\(ticketId)"],
+                                          mapping: DetailInboxTicket.mapping(),
+                                          onSuccess: { (successResult, _) in
+                                            let result : Dictionary = successResult.dictionary() as Dictionary
+                                            let response : DetailInboxTicket = result[""] as! DetailInboxTicket
+                                            onSuccess(response)
+            },
+                                          onFailure: { (errorResult) in
+                                            onFailure(errorResult)
+        })
+        
+    }
 
 }

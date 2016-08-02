@@ -20,6 +20,8 @@
 #import "GalleryViewController.h"
 #import "UserContainerViewController.h"
 
+#import "Tokopedia-Swift.h"
+
 NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
 
 @interface InboxTicketDetailViewController ()
@@ -132,7 +134,12 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     _networkManager.tagRequest = 1;
 
     if (self.inboxTicket || self.inboxTicketId) {
-        [_networkManager doRequest];
+        [InboxTicketRequest requestInboxTicketDetail:_inboxTicket.ticket_inbox_id?:_inboxTicketId
+                                           onSuccess:^(DetailInboxTicket * detailInboxTicket) {
+                                               [self actionAfterSuccessfulRequestInboxTicketDetail:detailInboxTicket];
+                                           }
+                                           onFailure:^(NSError * errorResult) {
+                                           }];
     }
 
     _ratingNetworkManager = [TokopediaNetworkManager new];
@@ -220,7 +227,12 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
         
         [self showRefreshControl];
         
-        [_networkManager doRequest];
+        [InboxTicketRequest requestInboxTicketDetail:_inboxTicket.ticket_inbox_id?:_inboxTicketId
+                                           onSuccess:^(DetailInboxTicket * detailInboxTicket) {
+                                               [self actionAfterSuccessfulRequestInboxTicketDetail:detailInboxTicket];
+                                           }
+                                           onFailure:^(NSError * errorResult) {
+                                           }];
     }
     else {
         self.navigationItem.titleView = nil;
@@ -586,6 +598,50 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     }
 }
 
+- (void)actionAfterSuccessfulRequestInboxTicketDetail:(DetailInboxTicket *)detailInboxTicket
+{
+    [self loadTicketsData:detailInboxTicket];
+    [self setTitleView];
+    [self setCategoryView];
+    
+    self.tableView.hidden = NO;
+}
+
+- (void)actionAfterSuccessfulRequestGiveRating
+{
+    NSString *rating = _rating?@"Membantu":@"Tidak Membantu";
+    NSString *text = [NSString stringWithFormat:@"Penilaian Anda : %@", rating];
+    
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    style.alignment = NSTextAlignmentCenter;
+    
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:text];
+    UIFont *font = [UIFont fontWithName:@"GothamMedium" size:12];
+    [attributedString addAttribute:NSFontAttributeName value:font range:NSMakeRange(17, rating.length)];
+    [attributedString addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, text.length)];
+    
+    self.ratingResultLabel.attributedText = attributedString;
+    
+    self.ratingResultBottomConstraint.constant = -self.ratingResultView.frame.size.height;
+    self.tableBottomConstraint.constant = self.ratingResultView.frame.size.height;
+    [self.tableView reloadData];
+    [self.tableView layoutIfNeeded];
+    
+    [self showView:_ratingResultView];
+    
+    [_ratingActivityIndicator stopAnimating];
+    
+    [UIView animateWithDuration:0.2 animations:^{
+        self.ratingFormBottomConstraint.constant = -self.ratingView.frame.size.height;
+    } completion:^(BOOL finished) {
+        self.ratingView.hidden = YES;
+        [UIView animateWithDuration:0.2 animations:^{
+            self.ratingResultBottomConstraint.constant = 0;
+        }];
+    }];
+
+}
+
 - (void)actionAfterRequest:(RKMappingResult *)mappingResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
     
     // action after request ticket detail
@@ -632,9 +688,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     self.tableView.hidden = NO;
 }
 
-- (void)loadTicketsData:(RKMappingResult *)mappingResult {
-    DetailInboxTicket *response = [mappingResult.dictionary objectForKey:@""];
-    
+- (void)loadTicketsData:(DetailInboxTicket *)response {
     if (!_ticketInformation) {
         _ticketInformation = response.result.ticket;
         if ([_ticketInformation.ticket_status isEqualToString:@"2"] &&
@@ -857,7 +911,13 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
 - (IBAction)didTouchUpLoadMoreButton:(UIButton *)sender {
     [sender setTitle:@"Memuat..." forState:UIControlStateNormal];
     _isLoadingMore = YES;
-    [_networkManager doRequest];
+    
+    [InboxTicketRequest requestInboxTicketViewMore:_inboxTicket.ticket_id?:_inboxTicketId
+                                         onSuccess:^(DetailInboxTicket * detailInboxTicket) {
+                                             [self actionAfterSuccessfulRequestInboxTicketDetail:detailInboxTicket];
+                                         }
+                                         onFailure:^(NSError * detailInboxTicket) {
+                                         }];
 }
 
 - (IBAction)didTouchUpRatingYesButton:(UIButton *)sender {
@@ -946,7 +1006,13 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
 - (void)refreshView {
     _isLoadingMore = NO;
     _ticketInformation = nil;
-    [_networkManager doRequest];
+    
+    [InboxTicketRequest requestInboxTicketDetail:_inboxTicket.ticket_inbox_id?:_inboxTicketId
+                                       onSuccess:^(DetailInboxTicket * detailInboxTicket) {
+                                           [self actionAfterSuccessfulRequestInboxTicketDetail:detailInboxTicket];
+                                       }
+                                       onFailure:^(NSError * errorResult) {
+                                       }];
 }
 
 - (void)configureRefreshControl {
