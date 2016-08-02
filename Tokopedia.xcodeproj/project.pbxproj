@@ -2426,6 +2426,9 @@
 		BB75F5321D4F352000196BCE /* ResolutionCenterCreateList.m in Sources */ = {isa = PBXBuildFile; fileRef = BB75F5311D4F352000196BCE /* ResolutionCenterCreateList.m */; };
 		BB75F5351D4F35D200196BCE /* ResolutionCenterCreateTroubleList.m in Sources */ = {isa = PBXBuildFile; fileRef = BB75F5341D4F35D200196BCE /* ResolutionCenterCreateTroubleList.m */; };
 		BB75F5381D4F365A00196BCE /* ResolutionCenterCreateSolutionList.m in Sources */ = {isa = PBXBuildFile; fileRef = BB75F5371D4F365A00196BCE /* ResolutionCenterCreateSolutionList.m */; };
+		BB75F53B1D508CAD00196BCE /* ResolutionProductResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = BB75F53A1D508CAB00196BCE /* ResolutionProductResponse.m */; };
+		BB75F53E1D508D0B00196BCE /* ResolutionProductData.m in Sources */ = {isa = PBXBuildFile; fileRef = BB75F53D1D508D0B00196BCE /* ResolutionProductData.m */; };
+		BB75F5411D508D9900196BCE /* ResolutionProductList.m in Sources */ = {isa = PBXBuildFile; fileRef = BB75F5401D508D9900196BCE /* ResolutionProductList.m */; };
 		F25F6F270D531ED13A92CDB9 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4868E459AB2A65D133732296 /* libPods-Tokopedia.a */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
 		FC23B85A1ACD659900879D75 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8581ACD659900879D75 /* Fabric.framework */; };
@@ -6037,6 +6040,12 @@
 		BB75F5341D4F35D200196BCE /* ResolutionCenterCreateTroubleList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionCenterCreateTroubleList.m; sourceTree = "<group>"; };
 		BB75F5361D4F365A00196BCE /* ResolutionCenterCreateSolutionList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionCenterCreateSolutionList.h; sourceTree = "<group>"; };
 		BB75F5371D4F365A00196BCE /* ResolutionCenterCreateSolutionList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionCenterCreateSolutionList.m; sourceTree = "<group>"; };
+		BB75F5391D508CAB00196BCE /* ResolutionProductResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionProductResponse.h; sourceTree = "<group>"; };
+		BB75F53A1D508CAB00196BCE /* ResolutionProductResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionProductResponse.m; sourceTree = "<group>"; };
+		BB75F53C1D508D0B00196BCE /* ResolutionProductData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionProductData.h; sourceTree = "<group>"; };
+		BB75F53D1D508D0B00196BCE /* ResolutionProductData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionProductData.m; sourceTree = "<group>"; };
+		BB75F53F1D508D9900196BCE /* ResolutionProductList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionProductList.h; sourceTree = "<group>"; };
+		BB75F5401D508D9900196BCE /* ResolutionProductList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionProductList.m; sourceTree = "<group>"; };
 		C8A1445074FECD393EA18C17 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		FC23B8571ACD659900879D75 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		FC23B8581ACD659900879D75 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
@@ -12121,6 +12130,12 @@
 				BB75F5341D4F35D200196BCE /* ResolutionCenterCreateTroubleList.m */,
 				BB75F5361D4F365A00196BCE /* ResolutionCenterCreateSolutionList.h */,
 				BB75F5371D4F365A00196BCE /* ResolutionCenterCreateSolutionList.m */,
+				BB75F5391D508CAB00196BCE /* ResolutionProductResponse.h */,
+				BB75F53A1D508CAB00196BCE /* ResolutionProductResponse.m */,
+				BB75F53C1D508D0B00196BCE /* ResolutionProductData.h */,
+				BB75F53D1D508D0B00196BCE /* ResolutionProductData.m */,
+				BB75F53F1D508D9900196BCE /* ResolutionProductList.h */,
+				BB75F5401D508D9900196BCE /* ResolutionProductList.m */,
 			);
 			path = ResolutionCenter;
 			sourceTree = "<group>";
@@ -14520,6 +14535,7 @@
 				454859C21D4B0A3F001B10CD /* CourierViewCell.m in Sources */,
 				454858161D4B0A3F001B10CD /* TxOrderPaymentEditOrder.m in Sources */,
 				454857E31D4B0A3F001B10CD /* TransactionCartList.m in Sources */,
+				BB75F53E1D508D0B00196BCE /* ResolutionProductData.m in Sources */,
 				45485A7E1D4B0A3F001B10CD /* OrderDetailViewController.m in Sources */,
 				4548599F1D4B0A3F001B10CD /* MoreNavigationViewController.m in Sources */,
 				45485BC71D4B0A40001B10CD /* ProductTableViewCell.m in Sources */,
@@ -14553,6 +14569,7 @@
 				454857B11D4B0A3F001B10CD /* ShopSettings.m in Sources */,
 				454858361D4B0A3F001B10CD /* DKImagePickerController.swift in Sources */,
 				454856A61D4B0A3F001B10CD /* HotlistBannerQuery.m in Sources */,
+				BB75F5411D508D9900196BCE /* ResolutionProductList.m in Sources */,
 				454856711D4B0A3F001B10CD /* ProductDetail.m in Sources */,
 				454856081D4B0A3F001B10CD /* UITableView+LoadingView.m in Sources */,
 				454856071D4B0A3F001B10CD /* UITableView+IndexPath.m in Sources */,
@@ -14740,6 +14757,7 @@
 				45485AAF1D4B0A3F001B10CD /* SearchResultViewController.m in Sources */,
 				4548598A1D4B0A3F001B10CD /* InboxTalkSplitViewController.m in Sources */,
 				454858781D4B0A3F001B10CD /* AlertPickerView.m in Sources */,
+				BB75F53B1D508CAD00196BCE /* ResolutionProductResponse.m in Sources */,
 				45485AEA1D4B0A3F001B10CD /* CloseShopResult.m in Sources */,
 				45485B1C1D4B0A3F001B10CD /* ShopPageRequest.m in Sources */,
 				454858DB1D4B0A3F001B10CD /* TKPDTabBarNavigationController.m in Sources */,

@@ -13,6 +13,7 @@
 #import "ResolutionCenterDetail.h"
 #import "ShipmentOrder.h"
 #import "ResolutionCenterCreateResponse.h"
+#import "ResolutionProductResponse.h"
 
 typedef enum{
     TypeResolutionAll,
@@ -47,5 +48,7 @@ typedef enum{
 +(void)fetchCreateResolutionDataWithOrderId:(NSString*)orderId
                                     success:(void(^) (ResolutionCenterCreateResponse* data))success
                                     failure:(void(^)(NSError* error))failure;
-
++(void)fetchAllProductsInTransactionWithOrderId:(NSString*)orderId
+                                      success:(void(^) (ResolutionProductResponse* data))success
+                                      failure:(void(^)(NSError* error))failure;
 @end

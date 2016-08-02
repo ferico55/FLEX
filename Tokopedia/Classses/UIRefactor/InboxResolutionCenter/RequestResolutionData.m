@@ -155,8 +155,8 @@
     networkManager.isUsingHmac = YES;
     
     UserAuthentificationManager *userAuth = [UserAuthentificationManager new];
-    [networkManager requestWithBaseUrl:@"http://new.mn-hang.ndvl/web-service"
-                                  path:@"/v4/inbox-resolution-center/get_create_resolution_form_new.pl"
+    [networkManager requestWithBaseUrl:@"http://private-c1055-joef1.apiary-mock.com"
+                                  path:@"/create"
                                 method:RKRequestMethodGET
                              parameter:@{@"order_id":orderId,
                                          @"user_id":[userAuth getUserId]
@@ -164,6 +164,26 @@
                                mapping:[ResolutionCenterCreateResponse mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                  ResolutionCenterCreateResponse *result = [successResult.dictionary objectForKey:@""];
+                                 success(result);
+                             } onFailure:^(NSError *errorResult) {
+                                 failure(errorResult);
+                             }];
+}
+
++(void)fetchAllProductsInTransactionWithOrderId:(NSString *)orderId success:(void (^)(ResolutionProductResponse *))success failure:(void (^)(NSError *))failure{
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    networkManager.isUsingHmac = YES;
+    
+    UserAuthentificationManager *userAuth = [UserAuthentificationManager new];
+    [networkManager requestWithBaseUrl:@"http://private-c1055-joef1.apiary-mock.com"
+                                  path:@"/get_product_list"
+                                method:RKRequestMethodGET
+                             parameter:@{@"order_id":orderId,
+                                         @"user_id":[userAuth getUserId]
+                                         }
+                               mapping:[ResolutionCenterCreateResponse mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                 ResolutionProductResponse *result = [successResult.dictionary objectForKey:@""];
                                  success(result);
                              } onFailure:^(NSError *errorResult) {
                                  failure(errorResult);
