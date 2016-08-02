@@ -46,20 +46,19 @@
 
 - (UICollectionViewCell *) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
-        UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"bannerCell" forIndexPath:indexPath];
-        if (![_slider isDescendantOfView:cell.contentView]) {
-            [cell.contentView addSubview:_slider];
-        }
-        
-        
-        return cell;
-    } else if (indexPath.section == 1) {
         UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"tickerCell" forIndexPath:indexPath];
         if (![_ticker isDescendantOfView:cell.contentView]) {
             CGRect bounds = cell.contentView.bounds;
             _ticker.frame = bounds;
             [_ticker updateConstraintsIfNeeded];
             [cell.contentView addSubview:_ticker];
+        }
+        
+        return cell;
+    } else if (indexPath.section == 1) {
+        UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"bannerCell" forIndexPath:indexPath];
+        if (![_slider isDescendantOfView:cell.contentView]) {
+            [cell.contentView addSubview:_slider];
         }
         
         return cell;
@@ -149,19 +148,20 @@
     CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
     
     if (indexPath.section == 0) {
+        if (_ticker) {
+            return CGSizeMake(screenWidth, _ticker.messageLabel.bounds.size.height + _ticker.titleLabel.bounds.size.height + 40);
+        } else {
+            return CGSizeMake(screenWidth, 1);
+        }
+        
+    } else if (indexPath.section == 1) {
         if (_slider) {
             return CGSizeMake(screenWidth, IS_IPAD ? 225 : 175);
         } else {
             return CGSizeMake(screenWidth, 1);
         }
-    } else if (indexPath.section == 1) {
-        if (_ticker) {
-            return CGSizeMake(screenWidth, _ticker.messageLabel.bounds.size.height + _ticker.titleLabel.bounds.size.height + 24);
-        } else {
-            return CGSizeMake(screenWidth, 1);
-        }
     } else if (indexPath.section == 2) {
-        if (_slider) {
+        if (_digitalGoodsSwipeView) {
             return CGSizeMake(screenWidth, 120);
         } else {
             return CGSizeMake(screenWidth, 1);
