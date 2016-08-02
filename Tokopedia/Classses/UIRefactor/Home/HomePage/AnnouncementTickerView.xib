@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -16,46 +16,58 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="AnnouncementTickerView">
-            <rect key="frame" x="0.0" y="0.0" width="300" height="80"/>
+            <rect key="frame" x="0.0" y="0.0" width="330" height="110"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lJz-b7-42H">
-                    <rect key="frame" x="10" y="10" width="282" height="21"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jtG-AW-fRn">
+                    <rect key="frame" x="8" y="8" width="314" height="94"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lJz-b7-42H">
+                            <rect key="frame" x="8" y="8" width="298" height="21"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="21" id="IgH-BD-Hdi"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YYi-t2-kAa" customClass="TTTAttributedLabel">
+                            <rect key="frame" x="2" y="37" width="298" height="49"/>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="lineSpacing">
+                                    <real key="value" value="1"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" red="1" green="1" blue="0.85902847780000002" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="21" id="IgH-BD-Hdi"/>
+                        <constraint firstAttribute="trailing" secondItem="YYi-t2-kAa" secondAttribute="trailing" constant="8" id="2Wu-81-6jS"/>
+                        <constraint firstItem="YYi-t2-kAa" firstAttribute="leading" secondItem="jtG-AW-fRn" secondAttribute="leading" constant="8" id="JBz-Pv-fyO"/>
+                        <constraint firstItem="lJz-b7-42H" firstAttribute="leading" secondItem="jtG-AW-fRn" secondAttribute="leading" constant="8" id="K2f-zs-Ebo"/>
+                        <constraint firstAttribute="bottom" secondItem="YYi-t2-kAa" secondAttribute="bottom" constant="8" id="VwC-mA-cK7"/>
+                        <constraint firstAttribute="trailing" secondItem="lJz-b7-42H" secondAttribute="trailing" constant="8" id="cio-a5-T1b"/>
+                        <constraint firstItem="lJz-b7-42H" firstAttribute="top" secondItem="jtG-AW-fRn" secondAttribute="top" constant="8" id="nqI-wt-oql"/>
+                        <constraint firstItem="YYi-t2-kAa" firstAttribute="top" secondItem="lJz-b7-42H" secondAttribute="bottom" constant="8" id="xr5-UW-aQa"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
-                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YYi-t2-kAa" customClass="TTTAttributedLabel">
-                    <rect key="frame" x="10" y="32" width="282" height="40"/>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
-                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="number" keyPath="lineSpacing">
-                            <real key="value" value="1"/>
-                        </userDefinedRuntimeAttribute>
-                    </userDefinedRuntimeAttributes>
-                </label>
+                </view>
             </subviews>
-            <color key="backgroundColor" red="1" green="1" blue="0.85902847780000002" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" red="0.94901960784313721" green="0.94901960784313721" blue="0.94901960784313721" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="YYi-t2-kAa" secondAttribute="bottom" constant="8" id="2Ga-Ck-O9p"/>
-                <constraint firstItem="YYi-t2-kAa" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="10" id="4aK-Zj-iOV"/>
-                <constraint firstAttribute="trailing" secondItem="YYi-t2-kAa" secondAttribute="trailing" constant="8" id="SPS-Q5-uRX"/>
-                <constraint firstAttribute="trailing" secondItem="lJz-b7-42H" secondAttribute="trailing" constant="8" id="bCG-W7-teK"/>
-                <constraint firstItem="lJz-b7-42H" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="10" id="cdn-CC-jlw"/>
-                <constraint firstItem="lJz-b7-42H" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="10" id="lre-hl-26E"/>
-                <constraint firstItem="YYi-t2-kAa" firstAttribute="top" secondItem="lJz-b7-42H" secondAttribute="bottom" constant="1" id="npu-Ff-LjK"/>
+                <constraint firstAttribute="bottom" secondItem="jtG-AW-fRn" secondAttribute="bottom" constant="8" id="QmZ-50-ixE"/>
+                <constraint firstItem="jtG-AW-fRn" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="gvS-g4-HYg"/>
+                <constraint firstAttribute="trailing" secondItem="jtG-AW-fRn" secondAttribute="trailing" constant="8" id="kRc-G9-bGG"/>
+                <constraint firstItem="jtG-AW-fRn" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="pad-mQ-k9d"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="messageLabel" destination="YYi-t2-kAa" id="XfC-4t-CPe"/>
                 <outlet property="titleLabel" destination="lJz-b7-42H" id="cv9-0R-Fqp"/>
             </connections>
-            <point key="canvasLocation" x="33" y="-37"/>
+            <point key="canvasLocation" x="291" y="124"/>
         </view>
     </objects>
 </document>
