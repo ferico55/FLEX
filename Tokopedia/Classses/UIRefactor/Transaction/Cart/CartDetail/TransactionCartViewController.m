@@ -2357,7 +2357,7 @@
         [_noInternetConnectionView removeFromSuperview];
         _saldoTokopediaCell.contentView.backgroundColor = [UIColor whiteColor];
         _saldoTextFieldCell.contentView.backgroundColor = [UIColor whiteColor];
-        NSArray *list = [self setCartDataFromPreviousCarts:_cart.list toNewCarts:data.list];
+        NSArray<TransactionCartList*> *list = [self setCartDataFromPreviousCarts:_cart.list toNewCarts:data.list];
         [_list removeAllObjects];
         [_list addObjectsFromArray:list];
         

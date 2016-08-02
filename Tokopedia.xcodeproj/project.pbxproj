@@ -9,6 +9,23 @@
 /* Begin PBXBuildFile section */
 		2D50139230438B54812D14B9 /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */; };
 		34DEA7931D4779B4005C94C2 /* UIApplicationCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34DEA7921D4779B4005C94C2 /* UIApplicationCategory.swift */; };
+		622463EB1D5040BE00081B68 /* Errors.m in Sources */ = {isa = PBXBuildFile; fileRef = 622463EA1D5040BD00081B68 /* Errors.m */; };
+		622463EF1D50426100081B68 /* CustomNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 622463ED1D50426100081B68 /* CustomNotificationView.m */; };
+		622463F01D50426100081B68 /* CustomNotificationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 622463EE1D50426100081B68 /* CustomNotificationView.xib */; };
+		622463F41D50431600081B68 /* GeneralTextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 622463F21D50431600081B68 /* GeneralTextFieldCell.m */; };
+		622463F51D50431600081B68 /* GeneralTextFieldCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 622463F31D50431600081B68 /* GeneralTextFieldCell.xib */; };
+		622463FA1D5043F500081B68 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 622463F71D5043F500081B68 /* Info.plist */; };
+		622463FB1D5043F500081B68 /* SwiftOverlays.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622463F91D5043F500081B68 /* SwiftOverlays.swift */; };
+		622463FD1D5044C800081B68 /* UIViewControllerCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622463FC1D5044C800081B68 /* UIViewControllerCategory.swift */; };
+		622464071D5051AC00081B68 /* closetoko@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = 622463FE1D5051AB00081B68 /* closetoko@1x.png */; };
+		622464081D5051AC00081B68 /* closetoko@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 622463FF1D5051AB00081B68 /* closetoko@2x.png */; };
+		622464091D5051AC00081B68 /* closetoko@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 622464001D5051AB00081B68 /* closetoko@3x.png */; };
+		6224640A1D5051AC00081B68 /* ic_error_outline.png in Resources */ = {isa = PBXBuildFile; fileRef = 622464011D5051AB00081B68 /* ic_error_outline.png */; };
+		6224640B1D5051AC00081B68 /* ic_error_outline@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 622464021D5051AB00081B68 /* ic_error_outline@2x.png */; };
+		6224640C1D5051AC00081B68 /* ic_error_outline@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 622464031D5051AC00081B68 /* ic_error_outline@3x.png */; };
+		6224640D1D5051AC00081B68 /* icon_dismiss.png in Resources */ = {isa = PBXBuildFile; fileRef = 622464041D5051AC00081B68 /* icon_dismiss.png */; };
+		6224640E1D5051AC00081B68 /* icon_dismiss@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 622464051D5051AC00081B68 /* icon_dismiss@2x.png */; };
+		6224640F1D5051AC00081B68 /* icon_dismiss@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 622464061D5051AC00081B68 /* icon_dismiss@3x.png */; };
 		7A59F4821D471A9F002ECC7B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A59E58A1D471A93002ECC7B /* AppDelegate.m */; };
 		7A59F4831D471A9F002ECC7B /* TPAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A59E58E1D471A93002ECC7B /* TPAnalytics.m */; };
 		7A59F4841D471A9F002ECC7B /* TPLocalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A59E5901D471A93002ECC7B /* TPLocalytics.m */; };
@@ -2447,6 +2464,27 @@
 		2D733D9158C7BF957D514506 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
 		34DEA7921D4779B4005C94C2 /* UIApplicationCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIApplicationCategory.swift; sourceTree = "<group>"; };
 		4868E459AB2A65D133732296 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tokopedia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		622463E91D5040BD00081B68 /* Errors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Errors.h; sourceTree = "<group>"; };
+		622463EA1D5040BD00081B68 /* Errors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Errors.m; sourceTree = "<group>"; };
+		622463EC1D50426100081B68 /* CustomNotificationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomNotificationView.h; sourceTree = "<group>"; };
+		622463ED1D50426100081B68 /* CustomNotificationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomNotificationView.m; sourceTree = "<group>"; };
+		622463EE1D50426100081B68 /* CustomNotificationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomNotificationView.xib; sourceTree = "<group>"; };
+		622463F11D50431600081B68 /* GeneralTextFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralTextFieldCell.h; sourceTree = "<group>"; };
+		622463F21D50431600081B68 /* GeneralTextFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralTextFieldCell.m; sourceTree = "<group>"; };
+		622463F31D50431600081B68 /* GeneralTextFieldCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GeneralTextFieldCell.xib; sourceTree = "<group>"; };
+		622463F71D5043F500081B68 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		622463F81D5043F500081B68 /* SwiftOverlays.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwiftOverlays.h; sourceTree = "<group>"; };
+		622463F91D5043F500081B68 /* SwiftOverlays.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftOverlays.swift; sourceTree = "<group>"; };
+		622463FC1D5044C800081B68 /* UIViewControllerCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewControllerCategory.swift; sourceTree = "<group>"; };
+		622463FE1D5051AB00081B68 /* closetoko@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "closetoko@1x.png"; sourceTree = "<group>"; };
+		622463FF1D5051AB00081B68 /* closetoko@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "closetoko@2x.png"; sourceTree = "<group>"; };
+		622464001D5051AB00081B68 /* closetoko@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "closetoko@3x.png"; sourceTree = "<group>"; };
+		622464011D5051AB00081B68 /* ic_error_outline.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_error_outline.png; sourceTree = "<group>"; };
+		622464021D5051AB00081B68 /* ic_error_outline@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_error_outline@2x.png"; sourceTree = "<group>"; };
+		622464031D5051AC00081B68 /* ic_error_outline@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_error_outline@3x.png"; sourceTree = "<group>"; };
+		622464041D5051AC00081B68 /* icon_dismiss.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_dismiss.png; sourceTree = "<group>"; };
+		622464051D5051AC00081B68 /* icon_dismiss@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_dismiss@2x.png"; sourceTree = "<group>"; };
+		622464061D5051AC00081B68 /* icon_dismiss@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_dismiss@3x.png"; sourceTree = "<group>"; };
 		7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A59E5891D471A93002ECC7B /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		7A59E58A1D471A93002ECC7B /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -6084,6 +6122,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		622463E81D5040BD00081B68 /* Error */ = {
+			isa = PBXGroup;
+			children = (
+				622463E91D5040BD00081B68 /* Errors.h */,
+				622463EA1D5040BD00081B68 /* Errors.m */,
+			);
+			path = Error;
+			sourceTree = "<group>";
+		};
+		622463F61D5043F500081B68 /* SwiftOverlays */ = {
+			isa = PBXGroup;
+			children = (
+				622463F71D5043F500081B68 /* Info.plist */,
+				622463F81D5043F500081B68 /* SwiftOverlays.h */,
+				622463F91D5043F500081B68 /* SwiftOverlays.swift */,
+			);
+			path = SwiftOverlays;
+			sourceTree = "<group>";
+		};
 		7A59E5881D471A93002ECC7B /* Tokopedia */ = {
 			isa = PBXGroup;
 			children = (
@@ -6163,6 +6220,7 @@
 		7A59E5981D471A93002ECC7B /* Category */ = {
 			isa = PBXGroup;
 			children = (
+				622463FC1D5044C800081B68 /* UIViewControllerCategory.swift */,
 				7A59E5991D471A93002ECC7B /* ALAsset+Date.h */,
 				7A59E59A1D471A93002ECC7B /* ALAsset+Date.m */,
 				7A59E59B1D471A93002ECC7B /* NSArray+PerformSelector.h */,
@@ -6289,6 +6347,7 @@
 		7A59E5FC1D471A93002ECC7B /* Object */ = {
 			isa = PBXGroup;
 			children = (
+				622463E81D5040BD00081B68 /* Error */,
 				7A59E5FD1D471A93002ECC7B /* Activation */,
 				7A59E6281D471A93002ECC7B /* Address */,
 				7A59E6331D471A93002ECC7B /* Catalog */,
@@ -8245,6 +8304,7 @@
 		7A59EA701D471A94002ECC7B /* Third Party */ = {
 			isa = PBXGroup;
 			children = (
+				622463F61D5043F500081B68 /* SwiftOverlays */,
 				7A59EA711D471A94002ECC7B /* DKImagePicker */,
 				7A59EA7F1D471A94002ECC7B /* iCarousel.h */,
 				7A59EA801D471A94002ECC7B /* iCarousel.m */,
@@ -8508,6 +8568,9 @@
 		7A59EACD1D471A95002ECC7B /* Alert */ = {
 			isa = PBXGroup;
 			children = (
+				622463EC1D50426100081B68 /* CustomNotificationView.h */,
+				622463ED1D50426100081B68 /* CustomNotificationView.m */,
+				622463EE1D50426100081B68 /* CustomNotificationView.xib */,
 				7A59EACE1D471A95002ECC7B /* AlertBaseUrl.h */,
 				7A59EACF1D471A95002ECC7B /* AlertBaseUrl.m */,
 				7A59EAD01D471A95002ECC7B /* AlertBaseUrl.xib */,
@@ -8947,6 +9010,9 @@
 		7A59EC0B1D471A95002ECC7B /* GeneralCell */ = {
 			isa = PBXGroup;
 			children = (
+				622463F11D50431600081B68 /* GeneralTextFieldCell.h */,
+				622463F21D50431600081B68 /* GeneralTextFieldCell.m */,
+				622463F31D50431600081B68 /* GeneralTextFieldCell.xib */,
 				7A59EC0C1D471A95002ECC7B /* GeneralAlertCell.h */,
 				7A59EC0D1D471A95002ECC7B /* GeneralAlertCell.m */,
 				7A59EC0E1D471A95002ECC7B /* GeneralAlertCell.xib */,
@@ -10974,6 +11040,15 @@
 		7A59F1021D471A99002ECC7B /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				622463FE1D5051AB00081B68 /* closetoko@1x.png */,
+				622463FF1D5051AB00081B68 /* closetoko@2x.png */,
+				622464001D5051AB00081B68 /* closetoko@3x.png */,
+				622464011D5051AB00081B68 /* ic_error_outline.png */,
+				622464021D5051AB00081B68 /* ic_error_outline@2x.png */,
+				622464031D5051AC00081B68 /* ic_error_outline@3x.png */,
+				622464041D5051AC00081B68 /* icon_dismiss.png */,
+				622464051D5051AC00081B68 /* icon_dismiss@2x.png */,
+				622464061D5051AC00081B68 /* icon_dismiss@3x.png */,
 				7A59F1031D471A99002ECC7B /* activate_push_1.png */,
 				7A59F1041D471A99002ECC7B /* activate_push_1@2x.png */,
 				7A59F1051D471A99002ECC7B /* activate_push_1@3x.png */,
@@ -12304,6 +12379,7 @@
 				7A59FCF11D471AA8002ECC7B /* icon_more_active.png in Resources */,
 				7A59F6EF1D471AA1002ECC7B /* AddressViewController.xib in Resources */,
 				7A59FB5F1D471AA6002ECC7B /* icon_comment_bubble.png in Resources */,
+				622463F01D50426100081B68 /* CustomNotificationView.xib in Resources */,
 				7A59F8561D471AA3002ECC7B /* ShipmentLocationPickupViewCell.xib in Resources */,
 				7A59FB601D471AA6002ECC7B /* icon_comment_bubble@2x.png in Resources */,
 				7A59FB7A1D471AA6002ECC7B /* icon_dislike.png in Resources */,
@@ -12359,6 +12435,7 @@
 				7A59F88A1D471AA3002ECC7B /* ProductTalkViewController.xib in Resources */,
 				7A59F9B31D471AA4002ECC7B /* ShopTalkPageViewController.xib in Resources */,
 				7A59FB131D471AA6002ECC7B /* icon_camera_album.png in Resources */,
+				6224640D1D5051AC00081B68 /* icon_dismiss.png in Resources */,
 				7A59FCE21D471AA8002ECC7B /* icon_urutkan_alt.png in Resources */,
 				7A59F7521D471AA2002ECC7B /* ContactUsCategoryCell.xib in Resources */,
 				7A59FB111D471AA6002ECC7B /* icon_camera@2x.png in Resources */,
@@ -12436,6 +12513,7 @@
 				7A59FA9A1D471AA5002ECC7B /* icon_11.png in Resources */,
 				7A59F9711D471AA4002ECC7B /* OpenShopNameViewCell.xib in Resources */,
 				7A59FC731D471AA7002ECC7B /* icon_shop_grey@2x.png in Resources */,
+				6224640C1D5051AC00081B68 /* ic_error_outline@3x.png in Resources */,
 				7A59FADF1D471AA6002ECC7B /* icon-search-camera@2x.png in Resources */,
 				7A59FB0C1D471AA6002ECC7B /* icon_button_wishlist_nonactive@2x.png in Resources */,
 				7A59F7661D471AA2002ECC7B /* ContactUsFormMainCategoryCell.xib in Resources */,
@@ -12576,6 +12654,7 @@
 				7A59FC801D471AA7002ECC7B /* icon_signin_active@2x.png in Resources */,
 				7A59FA9E1D471AA5002ECC7B /* icon_13.png in Resources */,
 				7A59F7131D471AA1002ECC7B /* StickyAlertView.xib in Resources */,
+				6224640A1D5051AC00081B68 /* ic_error_outline.png in Resources */,
 				7A59FD6A1D471AA8002ECC7B /* ic_cart.png in Resources */,
 				7A59FB1D1D471AA6002ECC7B /* icon_category@3x.png in Resources */,
 				7A59FBDC1D471AA7002ECC7B /* icon_message@2x.png in Resources */,
@@ -12629,6 +12708,7 @@
 				7A59FB4A1D471AA6002ECC7B /* icon_checkmark.png in Resources */,
 				7A59FD5D1D471AA8002ECC7B /* icon_category_active@2x.png in Resources */,
 				7A59FB201D471AA6002ECC7B /* icon_11@3x.png in Resources */,
+				622464091D5051AC00081B68 /* closetoko@3x.png in Resources */,
 				7A59FB441D471AA6002ECC7B /* icon_checklist.png in Resources */,
 				7A59FC551D471AA7002ECC7B /* icon_sad50.png in Resources */,
 				7A59F9B81D471AA4002ECC7B /* FilterConditionViewController.xib in Resources */,
@@ -12739,6 +12819,7 @@
 				7A59F7AB1D471AA2002ECC7B /* GeneralAlertCell.xib in Resources */,
 				7A59FD791D471AA8002ECC7B /* icon_home@2x.png in Resources */,
 				7A59FC431D471AA7002ECC7B /* icon_questionmark_grey@3x.png in Resources */,
+				622463FA1D5043F500081B68 /* Info.plist in Resources */,
 				7A59F9B91D471AA4002ECC7B /* FilterLocationViewCell.xib in Resources */,
 				7A59FB2C1D471AA6002ECC7B /* icon_2@3x.png in Resources */,
 				7A59FD5F1D471AA8002ECC7B /* icon_home@3x.png in Resources */,
@@ -12825,6 +12906,7 @@
 				7A59FC291D471AA7002ECC7B /* icon_plus_blue.png in Resources */,
 				7A59FD9B1D471AA8002ECC7B /* icon_cancel_grey@2x.png in Resources */,
 				7A59FD2D1D471AA8002ECC7B /* no-result@2x.png in Resources */,
+				622463F51D50431600081B68 /* GeneralTextFieldCell.xib in Resources */,
 				7A59FAFA1D471AA6002ECC7B /* icon_button_favorite_active@2x.png in Resources */,
 				7A59FAC31D471AA5002ECC7B /* collapse_arrow.png in Resources */,
 				7A59FBA31D471AA6002ECC7B /* icon_like.png in Resources */,
@@ -13041,6 +13123,7 @@
 				7A59FBB11D471AA6002ECC7B /* icon_love.png in Resources */,
 				7A59FB811D471AA6002ECC7B /* icon_edit_grey@2x.png in Resources */,
 				7A59F99F1D471AA4002ECC7B /* SendMessageViewController.xib in Resources */,
+				6224640E1D5051AC00081B68 /* icon_dismiss@2x.png in Resources */,
 				7A59FA271D471AA5002ECC7B /* TxOrderDropshipCell.xib in Resources */,
 				7A59FA941D471AA5002ECC7B /* camera@2x.png in Resources */,
 				7A59FCB01D471AA7002ECC7B /* icon_star_active.png in Resources */,
@@ -13185,6 +13268,7 @@
 				7A59F8581D471AA3002ECC7B /* ShipmentLocationViewCell.xib in Resources */,
 				7A59F6F41D471AA1002ECC7B /* AlertCameraView.xib in Resources */,
 				7A59FB481D471AA6002ECC7B /* icon_checklist_grey@2x.png in Resources */,
+				622464081D5051AC00081B68 /* closetoko@2x.png in Resources */,
 				7A59FB041D471AA6002ECC7B /* icon_button_pricealert_nonactive@3x.png in Resources */,
 				7A59FB151D471AA6002ECC7B /* icon_cancel.png in Resources */,
 				7A59FB611D471AA6002ECC7B /* icon_comment_bubble@3x.png in Resources */,
@@ -13392,6 +13476,7 @@
 				7A59FA881D471AA5002ECC7B /* balloon_read_left.png in Resources */,
 				7A59F8781D471AA3002ECC7B /* DetailProductViewController.xib in Resources */,
 				7A59F8201D471AA2002ECC7B /* InboxTicketCell.xib in Resources */,
+				6224640B1D5051AC00081B68 /* ic_error_outline@2x.png in Resources */,
 				7A59FAF61D471AA6002ECC7B /* icon_btn_trash@1x.png in Resources */,
 				7A59F87C1D471AA3002ECC7B /* DetailProductWholesaleTableCell.xib in Resources */,
 				7A59FCFC1D471AA8002ECC7B /* image_search.png in Resources */,
@@ -13416,6 +13501,7 @@
 				7A59FD981D471AA8002ECC7B /* icon_camera_grey_active.png in Resources */,
 				7A59F96B1D471AA4002ECC7B /* BerhasilBukaTokoViewController.xib in Resources */,
 				7A59FC471D471AA7002ECC7B /* icon_retry_grey@2x.png in Resources */,
+				622464071D5051AC00081B68 /* closetoko@1x.png in Resources */,
 				7A59F9AC1D471AA4002ECC7B /* ShopPageHeader.xib in Resources */,
 				7A59FD091D471AA8002ECC7B /* locateButton.png in Resources */,
 				7A59F8EC1D471AA3002ECC7B /* ReputationDetailViewController.xib in Resources */,
@@ -13451,6 +13537,7 @@
 				7A59FB531D471AA6002ECC7B /* icon_circle.png in Resources */,
 				7A59FAA01D471AA5002ECC7B /* icon_14.png in Resources */,
 				7A59FB651D471AA6002ECC7B /* icon_contact_us_arrow.png in Resources */,
+				6224640F1D5051AC00081B68 /* icon_dismiss@3x.png in Resources */,
 				7A59FD411D471AA8002ECC7B /* slide2b.png in Resources */,
 				7A59F8FE1D471AA3002ECC7B /* ChooseProductCell.xib in Resources */,
 				7A59FD4B1D471AA8002ECC7B /* pin_poin_toped_60.png in Resources */,
@@ -13828,6 +13915,7 @@
 				7A59F6961D471AA1002ECC7B /* TxOrderConfirmedResult.m in Sources */,
 				7A59F5951D471AA0002ECC7B /* SubmitReviewResult.m in Sources */,
 				7A59F8291D471AA2002ECC7B /* MiniSlide.m in Sources */,
+				622463EB1D5040BE00081B68 /* Errors.m in Sources */,
 				7A59F7891D471AA2002ECC7B /* TextField.m in Sources */,
 				7A59F8511D471AA3002ECC7B /* CourierProductViewCell.m in Sources */,
 				7A59F5321D471A9F002ECC7B /* HistoryProductList.m in Sources */,
@@ -14022,6 +14110,7 @@
 				7A59F6401D471AA0002ECC7B /* SettingPaymentResult.m in Sources */,
 				7A59F5AA1D471AA0002ECC7B /* ProductFeedResult.m in Sources */,
 				7A59F5471D471A9F002ECC7B /* InboxMessageDetailResult.m in Sources */,
+				622463FB1D5043F500081B68 /* SwiftOverlays.swift in Sources */,
 				7A59F7FA1D471AA2002ECC7B /* InboxResolutionCenterComplainCell.m in Sources */,
 				7A59F8F51D471AA3002ECC7B /* FooterCollectionReusableView.m in Sources */,
 				7A59F58E1D471AA0002ECC7B /* ProductOwner.m in Sources */,
@@ -14192,6 +14281,7 @@
 				7A59F5451D471A9F002ECC7B /* InboxMessageDetailBetween.m in Sources */,
 				7A59F7951D471AA2002ECC7B /* DepositSummaryCell.m in Sources */,
 				7A59F57C1D471AA0002ECC7B /* TotalLikeDislike.m in Sources */,
+				622463EF1D50426100081B68 /* CustomNotificationView.m in Sources */,
 				7A59F71D1D471AA1002ECC7B /* CameraAlbumListViewController.m in Sources */,
 				7A59FA471D471AA5002ECC7B /* PenilaianUserCell.m in Sources */,
 				7A59F4BF1D471A9F002ECC7B /* Logout.m in Sources */,
@@ -14297,6 +14387,7 @@
 				7A59F82C1D471AA3002ECC7B /* ActivatePushInstructionViewController.swift in Sources */,
 				7A59F6141D471AA0002ECC7B /* ShipmentServiceData.m in Sources */,
 				7A59F69C1D471AA1002ECC7B /* MethodList.m in Sources */,
+				622463FD1D5044C800081B68 /* UIViewControllerCategory.swift in Sources */,
 				7A59F4CA1D471A9F002ECC7B /* SecurityQuestionResult.m in Sources */,
 				7A59F7341D471AA1002ECC7B /* CatalogSectionHeaderView.m in Sources */,
 				7A59F5961D471AA0002ECC7B /* Note.m in Sources */,
@@ -14578,6 +14669,7 @@
 				7A59F6301D471AA0002ECC7B /* ShopInfoImage.m in Sources */,
 				7A59F8DA1D471AA3002ECC7B /* SplitReputationViewController.m in Sources */,
 				7A59F6101D471AA0002ECC7B /* ShipmentOrder.m in Sources */,
+				622463F41D50431600081B68 /* GeneralTextFieldCell.m in Sources */,
 				7A59F9CF1D471AA5002ECC7B /* TKPPlacePickerViewController.swift in Sources */,
 				7A59F8CC1D471AA3002ECC7B /* ProductDetailReputationViewController.m in Sources */,
 				7A59F7AE1D471AA2002ECC7B /* GeneralList1GestureCell.m in Sources */,

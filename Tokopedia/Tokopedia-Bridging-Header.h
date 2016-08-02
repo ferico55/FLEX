@@ -69,3 +69,4 @@
 #import "TKPObjectMapping.h"
 #import "WholesalePrice.h"
 #import "Breadcrumb.h"
+#import "UIView+BlocksKit.h"
