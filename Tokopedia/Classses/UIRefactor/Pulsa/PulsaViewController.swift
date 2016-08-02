@@ -63,12 +63,26 @@ class PulsaViewController: UIViewController, UITextFieldDelegate {
         }
         
         self.pulsaView.addActionNumberField();
-        self.pulsaView.didPrefixEntered = { [unowned self] operatorId in
-            self.pulsaView.selectedOperator = self.findOperatorById(operatorId, operators: operators)
-            self.requestManager.requestProduct(operatorId)
-            self.requestManager.didReceiveProduct = { products in
-                self.pulsaView.showBuyButton(products)
+        self.pulsaView.didPrefixEntered = { [unowned self] operatorId, categoryId in
+            let debounced = Debouncer(delay: 1.0) {
+                self.pulsaView.selectedOperator = self.findOperatorById(operatorId, operators: operators)
+                self.requestManager.requestProduct(operatorId, categoryId: categoryId)
+                self.requestManager.didReceiveProduct = { products in
+                    self.pulsaView.showBuyButton(products)
+                    self.pulsaView.didTapProduct = { [unowned self] products in
+                        let controller = PulsaProductViewController()
+                        controller.products = products
+                        controller.didSelectProduct = { [unowned self] product in
+                            self.pulsaView.selectedProduct = product
+                            self.pulsaView.hideErrors()
+                            self.pulsaView.productButton.setTitle(product.attributes.desc, forState: .Normal)
+                        }
+                        
+                        self.navigationController?.pushViewController(controller, animated: true)
+                    }
+                }
             }
+            debounced.call()
         }
         
         self.pulsaView.didTapAddressbook = { [unowned self] contacts in
@@ -79,7 +93,12 @@ class PulsaViewController: UIViewController, UITextFieldDelegate {
                 phoneNumber = phoneNumber.stringByReplacingOccurrencesOfString("[^0-9]", withString: "", options: .RegularExpressionSearch, range: nil)
                 
                 self.pulsaView.numberField.text = phoneNumber
-                self.pulsaView.setRightViewNumberField()
+                
+                if(phoneNumber.characters.count >= 4) {
+                    let prefix = phoneNumber.substringWithRange(Range<String.Index>(start: phoneNumber.startIndex.advancedBy(0), end: phoneNumber.startIndex.advancedBy(4)))
+                    
+                    self.pulsaView.setRightViewNumberField(prefix)
+                }
             }
             
             self.navigationController!.pushViewController(controller, animated: true)
@@ -96,4 +115,5 @@ class PulsaViewController: UIViewController, UITextFieldDelegate {
         
         return foundOperator
     }
+    
 }

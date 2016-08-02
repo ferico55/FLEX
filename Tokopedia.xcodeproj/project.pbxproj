@@ -13,6 +13,11 @@
 		7A1A7DE21D4F0524008FE696 /* AddressBookViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A1A7DE01D4F0524008FE696 /* AddressBookViewController.xib */; };
 		7A1A7DE51D4F0A30008FE696 /* AddressBookCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1A7DE31D4F0A30008FE696 /* AddressBookCell.swift */; };
 		7A1A7DE61D4F0A30008FE696 /* AddressBookCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A1A7DE41D4F0A30008FE696 /* AddressBookCell.xib */; };
+		7A1A7DE91D50432D008FE696 /* PulsaProductViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1A7DE71D50432D008FE696 /* PulsaProductViewController.swift */; };
+		7A1A7DEA1D50432E008FE696 /* PulsaProductViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A1A7DE81D50432D008FE696 /* PulsaProductViewController.xib */; };
+		7A1A7DF11D5044E7008FE696 /* PulsaProductCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1A7DEF1D5044E6008FE696 /* PulsaProductCell.swift */; };
+		7A1A7DF21D5044E7008FE696 /* PulsaProductCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A1A7DF01D5044E7008FE696 /* PulsaProductCell.xib */; };
+		7A1A7DF41D5080A4008FE696 /* Debouncer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1A7DF31D5080A4008FE696 /* Debouncer.swift */; };
 		7A59E56E1D409BEF002ECC7B /* Alignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A59E5521D409BEF002ECC7B /* Alignment.swift */; };
 		7A59E56F1D409BF0002ECC7B /* Flexibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A59E5531D409BEF002ECC7B /* Flexibility.swift */; };
 		7A59E5701D409BF0002ECC7B /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7A59E5541D409BEF002ECC7B /* Info.plist */; };
@@ -2473,6 +2478,11 @@
 		7A1A7DE01D4F0524008FE696 /* AddressBookViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddressBookViewController.xib; sourceTree = "<group>"; };
 		7A1A7DE31D4F0A30008FE696 /* AddressBookCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressBookCell.swift; sourceTree = "<group>"; };
 		7A1A7DE41D4F0A30008FE696 /* AddressBookCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddressBookCell.xib; sourceTree = "<group>"; };
+		7A1A7DE71D50432D008FE696 /* PulsaProductViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulsaProductViewController.swift; sourceTree = "<group>"; };
+		7A1A7DE81D50432D008FE696 /* PulsaProductViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PulsaProductViewController.xib; sourceTree = "<group>"; };
+		7A1A7DEF1D5044E6008FE696 /* PulsaProductCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulsaProductCell.swift; sourceTree = "<group>"; };
+		7A1A7DF01D5044E7008FE696 /* PulsaProductCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PulsaProductCell.xib; sourceTree = "<group>"; };
+		7A1A7DF31D5080A4008FE696 /* Debouncer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Debouncer.swift; sourceTree = "<group>"; };
 		7A59E5521D409BEF002ECC7B /* Alignment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alignment.swift; sourceTree = "<group>"; };
 		7A59E5531D409BEF002ECC7B /* Flexibility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Flexibility.swift; sourceTree = "<group>"; };
 		7A59E5541D409BEF002ECC7B /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -6216,6 +6226,11 @@
 				7A1A7DE01D4F0524008FE696 /* AddressBookViewController.xib */,
 				7A1A7DE31D4F0A30008FE696 /* AddressBookCell.swift */,
 				7A1A7DE41D4F0A30008FE696 /* AddressBookCell.xib */,
+				7A1A7DE71D50432D008FE696 /* PulsaProductViewController.swift */,
+				7A1A7DE81D50432D008FE696 /* PulsaProductViewController.xib */,
+				7A1A7DEF1D5044E6008FE696 /* PulsaProductCell.swift */,
+				7A1A7DF01D5044E7008FE696 /* PulsaProductCell.xib */,
+				7A1A7DF31D5080A4008FE696 /* Debouncer.swift */,
 			);
 			path = Pulsa;
 			sourceTree = "<group>";
@@ -12795,6 +12810,7 @@
 				8548B6FA1D1A58F200D11E22 /* onboarding5_bell.png in Resources */,
 				8548B73D1D1A58F200D11E22 /* ic_search@2x.png in Resources */,
 				8548B5A01D1A58F200D11E22 /* icon_medal_silver14@3x.png in Resources */,
+				7A1A7DF21D5044E7008FE696 /* PulsaProductCell.xib in Resources */,
 				8548B4631D1A58F200D11E22 /* icon_10@2x.png in Resources */,
 				8548B62C1D1A58F200D11E22 /* icon_search_active@2x.png in Resources */,
 				8548B0F21D1A58F100D11E22 /* CameraCollectionCell.xib in Resources */,
@@ -13183,6 +13199,7 @@
 				8548B4021D1A58F200D11E22 /* WebViewInvoiceViewController.xib in Resources */,
 				8548B63C1D1A58F200D11E22 /* icon_shop_info.png in Resources */,
 				8548B2981D1A58F100D11E22 /* ProductDetailReputationViewController.xib in Resources */,
+				7A1A7DEA1D50432E008FE696 /* PulsaProductViewController.xib in Resources */,
 				8548B1B11D1A58F100D11E22 /* HotlistCell.xib in Resources */,
 				8548B6931D1A58F200D11E22 /* icon_track_grey@2x.png in Resources */,
 				8548B7141D1A58F200D11E22 /* pin_poin_toped_70.png in Resources */,
@@ -14320,6 +14337,7 @@
 				8548B0A81D1A58F100D11E22 /* RSKPlaceholderTextView.swift in Sources */,
 				8548B1021D1A58F100D11E22 /* CatalogProductCell.m in Sources */,
 				8548B2181D1A58F100D11E22 /* ShopPaymentViewController.m in Sources */,
+				7A1A7DF11D5044E7008FE696 /* PulsaProductCell.swift in Sources */,
 				8548B2691D1A58F100D11E22 /* ProductListMyShopCell.m in Sources */,
 				8548B25C1D1A58F100D11E22 /* ProductAddCaptionViewController.m in Sources */,
 				8548B1A01D1A58F100D11E22 /* FavoriteShopRequest.m in Sources */,
@@ -14532,6 +14550,7 @@
 				8548B1101D1A58F100D11E22 /* FilterCatalogViewController.m in Sources */,
 				8548B1831D1A58F100D11E22 /* GeneralPhotoProductCell.m in Sources */,
 				8548B3821D1A58F100D11E22 /* FilterConditionViewController.m in Sources */,
+				7A1A7DE91D50432D008FE696 /* PulsaProductViewController.swift in Sources */,
 				8548B0381D1A58F100D11E22 /* TransactionActionResult.m in Sources */,
 				8548AEAE1D1A58F100D11E22 /* AddressResult.m in Sources */,
 				8548B0991D1A58F100D11E22 /* DKAssetGroupVC.swift in Sources */,
@@ -14663,6 +14682,7 @@
 				8548AE811D1A58F100D11E22 /* ImageDownloader.m in Sources */,
 				8548AF0D1D1A58F100D11E22 /* HistoryProduct.m in Sources */,
 				8548B22C1D1A58F100D11E22 /* ShipmentViewController.m in Sources */,
+				7A1A7DF41D5080A4008FE696 /* Debouncer.swift in Sources */,
 				8548B0EF1D1A58F100D11E22 /* CameraAlbumListViewController.m in Sources */,
 				8548B0811D1A58F100D11E22 /* TxOrderStatusResult.m in Sources */,
 				8548B1311D1A58F100D11E22 /* DataRequest.m in Sources */,

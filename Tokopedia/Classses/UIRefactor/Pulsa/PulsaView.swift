@@ -19,11 +19,15 @@ class PulsaView: UIView {
     var buyButton: UIButton!
     var buttonsPlaceholder: UIView!
     var fieldPlaceholder: UIView!
-    var didPrefixEntered: (((String) -> Void)?)
+    var didPrefixEntered: (((String, String) -> Void)?)
     var didTapAddressbook: ([APContact] -> Void)?
-    var selectedOperator = PulsaOperator()
+    var didTapProduct:([PulsaProduct] -> Void)?
     var phoneBook: UIImageView!
     let addressBook = APAddressBook()
+    
+    var selectedOperator = PulsaOperator()
+    var selectedCategory = PulsaCategory()
+    var selectedProduct = PulsaProduct()
     
     struct ButtonConstant {
         static let defaultProductButtonTitle = "Pilih Nominal"
@@ -52,12 +56,14 @@ class PulsaView: UIView {
         }
         
         pulsaCategoryControl .bk_addEventHandler({[unowned self] control in
-            self.buildAllView(categories[control.selectedSegmentIndex])
+            self.selectedCategory = categories[control.selectedSegmentIndex]
+            self.buildAllView(self.selectedCategory)
             self.addActionNumberField()
         }, forControlEvents: .ValueChanged)
         
         self.buildAllView(categories[0])
         self.pulsaCategoryControl.selectedSegmentIndex = 0
+        self.selectedCategory = categories[0]
     }
     
     func buildAllView(category: PulsaCategory) {
@@ -138,38 +144,42 @@ class PulsaView: UIView {
         numberField.bk_addEventHandler ({[unowned self] number in
             //operator must exists first
             //fix this to prevent crash using serial dispatch
-            self.setRightViewNumberField()
-            self.numberErrorLabel.mas_updateConstraints { make in
-                make.height.equalTo()(0)
+            let inputtedText = self.numberField.text!
+            if(inputtedText.characters.count == 4) {
+                let prefix = inputtedText.substringWithRange(Range<String.Index>(start: inputtedText.startIndex.advancedBy(0), end: inputtedText.startIndex.advancedBy(4)))
+                
+                self.setRightViewNumberField(prefix)
+                self.hideErrors()
             }
             
-            self.buttonErrorLabel.mas_updateConstraints { make in
-                make.height.equalTo()(0)
+            if(inputtedText.characters.count < 4) {
+                self.numberField.rightView = nil
+                self.hideBuyButtons()
             }
+            
             
             }, forControlEvents: .EditingChanged)
     }
     
-    func setRightViewNumberField() {
-        var inputtedPrefix = (self.numberField.text)!
-        let characterCount = inputtedPrefix.characters.count
+    func hideErrors() {
+        self.numberErrorLabel.mas_updateConstraints { make in
+            make.height.equalTo()(0)
+        }
         
-        if(characterCount >= 4) {
-            if(self.prefixes?.count == 0) { return }
-            inputtedPrefix = inputtedPrefix.substringWithRange(Range<String.Index>(start: inputtedPrefix.startIndex.advancedBy(0), end: inputtedPrefix.startIndex.advancedBy(4)))
+        self.buttonErrorLabel.mas_updateConstraints { make in
+            make.height.equalTo()(0)
+        }
+    }
+    
+    func setRightViewNumberField(inputtedPrefix: String) {
+        let prefix = self.prefixes![inputtedPrefix]
+        if(prefix != nil) {
+            let prefixImage = UIImageView.init(frame: CGRectMake(0, 0, 70, 35))
+            prefixImage.setImageWithURL((NSURL.init(string: prefix!["image"]!)))
+            self.numberField.rightView = prefixImage
+            self.numberField.rightViewMode = .Always
             
-            let prefix = self.prefixes![inputtedPrefix]
-            if(prefix != nil) {
-                let prefixImage = UIImageView.init(frame: CGRectMake(0, 0, 70, 35))
-                prefixImage.setImageWithURL((NSURL.init(string: prefix!["image"]!)))
-                self.numberField.rightView = prefixImage
-                self.numberField.rightViewMode = .Always
-                
-                self.didPrefixEntered!(prefix!["id"]!)
-            } else {
-                self.numberField.rightView = nil
-                self.hideBuyButtons()
-            }
+            self.didPrefixEntered!(prefix!["id"]!, self.selectedCategory.id!)
         } else {
             self.numberField.rightView = nil
             self.hideBuyButtons()
@@ -264,16 +274,17 @@ class PulsaView: UIView {
         }
         
         UIView.animateWithDuration(1.0, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.5, options: .CurveEaseInOut, animations: {
-            self.setNeedsLayout()
-            self .layoutIfNeeded()
-            
             self.productButton.hidden = false
             self.buyButton.hidden = false
         }, completion: { finished in
         
         })
         
-        buyButton.bk_addEventHandler({ [unowned self] button -> Void in
+        productButton.bk_addEventHandler({ button -> Void in
+            self.didTapProduct!(products)
+        }, forControlEvents: .TouchUpInside)
+        
+        buyButton.bk_addEventHandler({ button -> Void in
             if(!self.isValidNumber(self.numberField.text!)) {
                 self.numberErrorLabel.mas_updateConstraints { make in
                     make.height.equalTo()(22)

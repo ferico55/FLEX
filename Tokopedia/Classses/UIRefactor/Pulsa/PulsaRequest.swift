@@ -68,18 +68,18 @@ class PulsaRequest: NSObject {
             });
     }
     
-    func requestProduct(operatorId: String) {
-        self.requestProductFromNetwork(operatorId)
+    func requestProduct(operatorId: String, categoryId: String) {
+        self.requestProductFromNetwork(operatorId, categoryId: categoryId)
     }
     
-    private func requestProductFromNetwork(operatorId: String) {
+    private func requestProductFromNetwork(operatorId: String, categoryId: String) {
         let networkManager = TokopediaNetworkManager()
         networkManager.isParameterNotEncrypted = true
         networkManager .
             requestWithBaseUrl("https://pulsa-api.tokopedia.com",
                                path: "/v1/product/list",
                                method: .GET,
-                               parameter: ["operator_id" : operatorId],
+                               parameter: ["operator_id" : operatorId, "category_id" : categoryId],
                                mapping: PulsaProductRoot.mapping(),
                                onSuccess: { (mappingResult, operation) -> Void in
                                 let productRoot = mappingResult.dictionary()[""] as! PulsaProductRoot
