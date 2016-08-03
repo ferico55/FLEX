@@ -53,7 +53,22 @@ class PulsaView: UIView {
             pulsaCategoryControl.insertSegmentWithTitle(category.attributes.name, atIndex: index, animated: true)
         }
         
-        
+        //set new icon for new category
+        pulsaCategoryControl.subviews.reverse().enumerate().forEach { controlIndex, segment in
+            segment.subviews.enumerate().forEach { index, view in
+                if(view is UILabel) {
+                    let label = view as! UILabel
+                    label.frame = CGRectMake(0, 0, 97, 50)
+                    label.numberOfLines = 0
+                    
+                    if(categories[controlIndex].attributes.is_new == true) {
+                        let new = UIImageView(image: UIImage(named: "red_dot.png"))
+                        new.frame = CGRectMake(75, -10, 10, 10)
+                        label .addSubview(new)
+                    }
+                }
+            }
+        }
         
         self.addSubview(pulsaCategoryControl)
         pulsaCategoryControl.mas_makeConstraints { make in

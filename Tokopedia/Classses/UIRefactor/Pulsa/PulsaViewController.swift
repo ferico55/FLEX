@@ -29,7 +29,14 @@ class PulsaViewController: UIViewController, UITextFieldDelegate {
         requestManager = PulsaRequest()
         requestManager.requestCategory()
         requestManager.didReceiveCategory = { [unowned self] categories in
-            var sortedCategories = categories
+            var activeCategories: [PulsaCategory] = []
+            categories.enumerate().forEach { id, category in
+                if(category.attributes.status == 1) {
+                    activeCategories.append(category)
+                }
+            }
+            
+            var sortedCategories = activeCategories
             sortedCategories.sortInPlace({
                 $0.attributes.weight < $1.attributes.weight
             })

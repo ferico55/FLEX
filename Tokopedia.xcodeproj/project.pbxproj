@@ -21,6 +21,7 @@
 		7A1A7DF81D518F5A008FE696 /* icon_phonebook.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A1A7DF51D518F59008FE696 /* icon_phonebook.png */; };
 		7A1A7DF91D518F5A008FE696 /* icon_phonebook@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A1A7DF61D518F5A008FE696 /* icon_phonebook@2x.png */; };
 		7A1A7DFA1D518F5A008FE696 /* icon_phonebook@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A1A7DF71D518F5A008FE696 /* icon_phonebook@3x.png */; };
+		7A1A7DFC1D51C762008FE696 /* red_dot.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A1A7DFB1D51C762008FE696 /* red_dot.png */; };
 		7A59E56E1D409BEF002ECC7B /* Alignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A59E5521D409BEF002ECC7B /* Alignment.swift */; };
 		7A59E56F1D409BF0002ECC7B /* Flexibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A59E5531D409BEF002ECC7B /* Flexibility.swift */; };
 		7A59E5701D409BF0002ECC7B /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7A59E5541D409BEF002ECC7B /* Info.plist */; };
@@ -2489,6 +2490,7 @@
 		7A1A7DF51D518F59008FE696 /* icon_phonebook.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_phonebook.png; sourceTree = "<group>"; };
 		7A1A7DF61D518F5A008FE696 /* icon_phonebook@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_phonebook@2x.png"; sourceTree = "<group>"; };
 		7A1A7DF71D518F5A008FE696 /* icon_phonebook@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_phonebook@3x.png"; sourceTree = "<group>"; };
+		7A1A7DFB1D51C762008FE696 /* red_dot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = red_dot.png; sourceTree = "<group>"; };
 		7A59E5521D409BEF002ECC7B /* Alignment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alignment.swift; sourceTree = "<group>"; };
 		7A59E5531D409BEF002ECC7B /* Flexibility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Flexibility.swift; sourceTree = "<group>"; };
 		7A59E5541D409BEF002ECC7B /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -11103,6 +11105,7 @@
 		8548AAE21D1A58EA00D11E22 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				7A1A7DFB1D51C762008FE696 /* red_dot.png */,
 				7A1A7DF51D518F59008FE696 /* icon_phonebook.png */,
 				7A1A7DF61D518F5A008FE696 /* icon_phonebook@2x.png */,
 				7A1A7DF71D518F5A008FE696 /* icon_phonebook@3x.png */,
@@ -12435,6 +12438,7 @@
 				8548B7671D1A58F200D11E22 /* Icon_check_green_bg@2x.png in Resources */,
 				8548B7391D1A58F200D11E22 /* ic_home@2x.png in Resources */,
 				8548B5C61D1A58F200D11E22 /* icon_neutral50@3x.png in Resources */,
+				7A1A7DFC1D51C762008FE696 /* red_dot.png in Resources */,
 				8548B5B91D1A58F200D11E22 /* icon_netral50@2x.png in Resources */,
 				8548B74A1D1A58F200D11E22 /* icon_hotlist_active@2x.png in Resources */,
 				8548B51A1D1A58F200D11E22 /* icon_checkmark_green@2x-01.png in Resources */,
