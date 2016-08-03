@@ -72,17 +72,19 @@ class PulsaViewController: UIViewController, UITextFieldDelegate {
                 
                 self.requestManager.requestProduct(operatorId, categoryId: categoryId)
                 self.requestManager.didReceiveProduct = { products in
-                    self.pulsaView.showBuyButton(products)
-                    self.pulsaView.didTapProduct = { [unowned self] products in
-                        let controller = PulsaProductViewController()
-                        controller.products = products
-                        controller.didSelectProduct = { [unowned self] product in
-                            self.pulsaView.selectedProduct = product
-                            self.pulsaView.hideErrors()
-                            self.pulsaView.productButton.setTitle(product.attributes.desc, forState: .Normal)
+                    if(products.count > 0) {
+                        self.pulsaView.showBuyButton(products)
+                        self.pulsaView.didTapProduct = { [unowned self] products in
+                            let controller = PulsaProductViewController()
+                            controller.products = products
+                            controller.didSelectProduct = { [unowned self] product in
+                                self.pulsaView.selectedProduct = product
+                                self.pulsaView.hideErrors()
+                                self.pulsaView.productButton.setTitle(product.attributes.desc, forState: .Normal)
+                            }
+                            
+                            self.navigationController!.pushViewController(controller, animated: true)
                         }
-                        
-                        self.navigationController!.pushViewController(controller, animated: true)
                     }
                 }
             }
