@@ -150,6 +150,7 @@ class PulsaView: UIView {
                 
                 self.setRightViewNumberField(prefix)
                 self.hideErrors()
+                self.productButton.setTitle(ButtonConstant.defaultProductButtonTitle, forState: .Normal)
             }
             
             if(inputtedText.characters.count < 4) {
@@ -292,12 +293,25 @@ class PulsaView: UIView {
                 self.numberErrorLabel.mas_updateConstraints { make in
                     make.height.equalTo()(22)
                 }
-            } else if(!self.isValidNominal()) {
+            } else {
+                self.numberErrorLabel.mas_updateConstraints { make in
+                    make.height.equalTo()(0)
+                }
+            }
+        
+            
+            if(!self.isValidNominal()) {
                 self.buttonErrorLabel.mas_updateConstraints { make in
                     make.height.equalTo()(22)
                 }
             } else {
-                
+                self.buttonErrorLabel.mas_updateConstraints { make in
+                    make.height.equalTo()(0)
+                }
+            }
+            
+            if(self.isValidNominal() && self.isValidNumber(self.numberField.text!)) {
+                self.hideErrors()
             }
         }, forControlEvents: .TouchUpInside)
     }
