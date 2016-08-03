@@ -25,10 +25,15 @@
 @property (strong, nonatomic) ResolutionCenterCreateStepOneViewController *stepOneViewController;
 @property (strong, nonatomic) ResolutionCenterCreateStepTwoViewController *stepTwoViewController;
 @property (strong, nonatomic) ResolutionCenterCreateStepThreeViewController *stepThreeViewController;
+@property (strong, nonatomic) IBOutlet UIButton *firstButton;
+@property (strong, nonatomic) IBOutlet UIButton *secondButton;
+@property (strong, nonatomic) IBOutlet UIButton *thirdButton;
+@property (strong, nonatomic) IBOutlet UIProgressView *progressBar;
 @end
 
 @implementation ResolutionCenterCreateViewController{
     NSInteger _currentIndex;
+    UIColor* greenColor;
 }
 
 - (void)viewDidLoad {
@@ -46,8 +51,19 @@
     
     
     [self initViewControllers];
+    [self initPageIndicator];
     [self initPageControl];
 
+}
+
+-(void)initPageIndicator{
+    greenColor = [UIColor colorWithRed:0.295 green:0.745 blue:0.295 alpha:1];
+    _firstButton.layer.cornerRadius = _firstButton.frame.size.width/2;
+    _firstButton.clipsToBounds = YES;
+    _secondButton.layer.cornerRadius = _secondButton.frame.size.width/2;
+    _secondButton.clipsToBounds = YES;
+    _thirdButton.layer.cornerRadius = _thirdButton.frame.size.width/2;
+    _thirdButton.clipsToBounds = YES;
 }
 
 -(void)initPageControl{
@@ -114,10 +130,16 @@
 
 -(UIViewController*)viewControllerAtIndex:(NSInteger)index{
     if(index == 0){
+        [_firstButton setBackgroundColor:greenColor];
+        [_progressBar setProgress:0 animated:YES];
         return _stepOneViewController;
     }else if(index == 1){
+        [_secondButton setBackgroundColor:greenColor];
+        [_progressBar setProgress:0.5 animated:YES];
         return _stepTwoViewController;
     }else if(index == 2){
+        [_thirdButton setBackgroundColor:greenColor];
+        [_progressBar setProgress:1 animated:YES];
         return _stepThreeViewController;
     }
     return nil;

@@ -19,8 +19,12 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ResolutionCenterCreateViewController">
             <connections>
                 <outlet property="contentView" destination="jlU-OY-V16" id="pSC-l0-8Vw"/>
+                <outlet property="firstButton" destination="qgl-vP-tgl" id="uwM-RC-oRM"/>
                 <outlet property="headerView" destination="8Hd-AL-60n" id="acg-Wi-jB3"/>
                 <outlet property="pageIndicatorView" destination="Jti-i8-qAg" id="Blp-8r-TQh"/>
+                <outlet property="progressBar" destination="KlF-GG-iPX" id="p9D-vu-hj3"/>
+                <outlet property="secondButton" destination="JA5-cn-Eu3" id="MLt-fb-Y4I"/>
+                <outlet property="thirdButton" destination="fhP-iO-rSB" id="V9d-yP-exc"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -34,12 +38,12 @@
                     <subviews>
                         <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progressViewStyle="bar" translatesAutoresizingMaskIntoConstraints="NO" id="KlF-GG-iPX">
                             <rect key="frame" x="30" y="19" width="260" height="3"/>
-                            <color key="progressTintColor" red="0.0" green="0.62199819087982178" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="progressTintColor" red="0.25098039220000001" green="0.70980392160000005" blue="0.23137254900000001" alpha="1" colorSpace="calibratedRGB"/>
                             <color key="trackTintColor" red="0.83529411760000005" green="0.83529411760000005" blue="0.83529411760000005" alpha="1" colorSpace="calibratedRGB"/>
                         </progressView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qgl-vP-tgl">
                             <rect key="frame" x="30" y="10" width="20" height="20"/>
-                            <color key="backgroundColor" red="0.0" green="0.62199819087982178" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="backgroundColor" red="0.25098039215686274" green="0.70980392156862748" blue="0.23137254901960785" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="20" id="S61-2N-yey"/>
                                 <constraint firstAttribute="width" constant="20" id="gZr-Fp-gcQ"/>
