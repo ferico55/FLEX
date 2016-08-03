@@ -33,6 +33,12 @@ class PulsaView: UIView {
         static let defaultProductButtonTitle = "Pilih Nominal"
     }
     
+    struct CategoryConstant {
+        static let Pulsa = "1"
+        static let PaketData = "2"
+        static let Listrik = "3"
+    }
+    
     var prefixes: Dictionary<String, Dictionary<String, String>>?
     
     required init?(coder aDecoder: NSCoder) {
@@ -107,15 +113,15 @@ class PulsaView: UIView {
         }
         
         if(category.attributes.use_phonebook) {
-            phoneBook = UIImageView(image: UIImage(named: "icon_login.png"))
+            phoneBook = UIImageView(image: UIImage(named: "icon_phonebook@3x.png"))
             phoneBook.userInteractionEnabled = true
             fieldPlaceholder.addSubview(phoneBook)
             
             phoneBook.mas_makeConstraints { make in
-                make.height.equalTo()(44)
-                make.width.equalTo()(44)
-                make.left.equalTo()(self.numberField.mas_right)
-                make.top.equalTo()(self.fieldPlaceholder.mas_top)
+                make.height.equalTo()(32)
+                make.width.equalTo()(32)
+                make.left.equalTo()(self.numberField.mas_right).offset()(5)
+                make.top.equalTo()(self.fieldPlaceholder.mas_top).offset()(5)
             }
             
             phoneBook.bk_whenTapped { [unowned self] in
@@ -158,7 +164,6 @@ class PulsaView: UIView {
                 self.hideBuyButtons()
             }
             
-            
             }, forControlEvents: .EditingChanged)
     }
     
@@ -173,17 +178,26 @@ class PulsaView: UIView {
     }
     
     func setRightViewNumberField(inputtedPrefix: String) {
-        let prefix = self.prefixes![inputtedPrefix]
-        if(prefix != nil) {
+        if(self.selectedCategory.id == CategoryConstant.Pulsa || self.selectedCategory.id == CategoryConstant.PaketData) {
+            let prefix = self.prefixes![inputtedPrefix]
+            if(prefix != nil) {
+                self.didPrefixEntered!(operatorId: prefix!["id"]!, categoryId: self.selectedCategory.id!)
+                
+                let prefixImage = UIImageView.init(frame: CGRectMake(0, 0, 70, 35))
+                prefixImage.setImageWithURL((NSURL.init(string: prefix!["image"]!)))
+                self.numberField.rightView = prefixImage
+                self.numberField.rightViewMode = .Always
+            } else {
+                self.numberField.rightView = nil
+                self.hideBuyButtons()
+            }
+        } else if(self.selectedCategory.id == CategoryConstant.Listrik) {
+            self.didPrefixEntered!(operatorId: "6", categoryId: self.selectedCategory.id!)
+            
             let prefixImage = UIImageView.init(frame: CGRectMake(0, 0, 70, 35))
-            prefixImage.setImageWithURL((NSURL.init(string: prefix!["image"]!)))
+            prefixImage.setImageWithURL((NSURL.init(string: self.selectedOperator.attributes.image)))
             self.numberField.rightView = prefixImage
             self.numberField.rightViewMode = .Always
-            
-            self.didPrefixEntered!(operatorId: prefix!["id"]!, categoryId: self.selectedCategory.id!)
-        } else {
-            self.numberField.rightView = nil
-            self.hideBuyButtons()
         }
     }
     

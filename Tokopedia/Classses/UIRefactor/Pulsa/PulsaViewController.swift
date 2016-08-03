@@ -49,6 +49,7 @@ class PulsaViewController: UIViewController, UITextFieldDelegate {
                 prefixDictionary["image"] = op.attributes.image
                 prefixDictionary["id"] = op.id
                 
+                //BOLT only had 3 chars prefix
                 if(prefix.characters.count == 3) {
                     let range = 0...9
                     range.enumerate().forEach { index, element in
@@ -57,7 +58,6 @@ class PulsaViewController: UIViewController, UITextFieldDelegate {
                 } else {
                     prefixes[prefix] = prefixDictionary
                 }
-                
             }
         }
         
@@ -67,7 +67,7 @@ class PulsaViewController: UIViewController, UITextFieldDelegate {
         
         self.pulsaView.addActionNumberField();
         self.pulsaView.didPrefixEntered = { [unowned self] operatorId, categoryId in
-            let debounced = Debouncer(delay: 1.0) {
+//            let debounced = Debouncer(delay: 1.0) {
                 self.pulsaView.selectedOperator = self.findOperatorById(operatorId, operators: operators)
                 
                 self.requestManager.requestProduct(operatorId, categoryId: categoryId)
@@ -87,8 +87,8 @@ class PulsaViewController: UIViewController, UITextFieldDelegate {
                         }
                     }
                 }
-            }
-            debounced.call()
+//            }
+//            debounced.call()
         }
         
         self.pulsaView.didTapAddressbook = { [unowned self] contacts in
