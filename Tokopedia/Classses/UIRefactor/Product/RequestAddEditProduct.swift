@@ -110,8 +110,211 @@ import UIKit
         }
     }
     
+    // MARK: - EDIT PRODUCT REQUEST
     
-    class func fetchAddProduct(isDuplicate:String, product:ProductEditDetail, selectedImages:[SelectedImage],wholesale:[String:String], onSuccess: (() -> Void), onFailure:(()->Void)) {
+    class func fetchEditProduct(form:ProductEditResult, onSuccess: (() -> Void), onFailure:(()->Void)) {
+        
+        RequestAddEditProduct.errorCompletionHandler = onFailure
+        
+        var imageIDs : [String] = []
+        
+        self.fetchGenerateHost { (generatedHost) in
+            
+            form.product_images.forEach({ (selectedImage) in
+                
+                if selectedImage.image_id == "" {
+                    self.fetchEditProductPicture(generatedHost,
+                        selectedImage: selectedImage,
+                        productID:  form.product.product_id,
+                        onSuccess: { (imageID) in
+                            
+                            imageIDs.append(imageID)
+                            selectedImage.image_id = imageID
+                            
+                            if imageIDs.count == form.product_images.count {
+                                self.fetchEditProductSubmit(form,
+                                    generatedHost: generatedHost,
+                                    onSuccess: { () in
+                                        
+                                        onSuccess()
+                                    
+                                })
+                            }
+                        
+                    })
+                } else {
+                    imageIDs.append(selectedImage.image_id)
+                    if imageIDs.count == form.product_images.count {
+                        self.fetchEditProductSubmit(form,
+                            generatedHost: generatedHost,
+                            onSuccess: { () in
+                                
+                                onSuccess()
+                                
+                        })
+                    }
+                }
+                
+            })
+            
+        }
+    }
+    
+    private class func fetchEditProductPicture(generatedHost:GeneratedHost, selectedImage:ProductEditImages, productID:String, onSuccess: ((imageID:String) -> Void)) {
+        
+        self.fetchUploadProductImage(selectedImage.image,
+            path: "https://\(generatedHost.upload_host)",
+            serverID: generatedHost.server_id,
+            productID: productID,
+            onSuccess: { (pictObj) in
+                
+                if pictObj.pic_obj != nil{
+                    self.fetchEditProductPictureGetImageID(pictObj.pic_obj,
+                        onSuccess: { (imageID) in
+                            
+                            onSuccess(imageID:imageID)
+                    })
+                } else {
+                    RequestAddEditProduct.errorCompletionHandler()
+                }
+        })
+
+    }
+    
+    private class func fetchEditProductPictureGetImageID(picObj:String, onSuccess: ((imageID:String) -> Void)) {
+        
+        let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
+        networkManager.isUsingHmac = true
+        
+        let param :[String:String] = [
+            "pic_obj" : picObj,
+        ]
+        
+        networkManager.requestWithBaseUrl(NSString.v4Url(),
+                                          path: "/v4/action/product/edit_product_picture.pl",
+                                          method: .POST,
+                                          parameter: param,
+                                          mapping: UploadImage.mapping(),
+                                          onSuccess: { (mappingResult, operation) in
+                                            
+                                            let result : Dictionary = mappingResult.dictionary() as Dictionary
+                                            let response : UploadImage = result[""] as! UploadImage
+                                            
+                                            if response.data.is_success == "1"{
+                                                if response.message_status?.count>0 {
+                                                    StickyAlertView.showSuccessMessage(response.message_status)
+                                                }
+                                                onSuccess(imageID: response.data.pic_id)
+                                            } else {
+                                                if let errors = response.message_error{
+                                                    StickyAlertView.showErrorMessage(errors)
+                                                } else {
+                                                    StickyAlertView.showErrorMessage(["Gagal menambah produk"])
+                                                }
+                                                RequestAddEditProduct.errorCompletionHandler()
+                                            }
+                                            
+        }) { (error) in
+            RequestAddEditProduct.errorCompletionHandler()
+            StickyAlertView.showErrorMessage(["Gagal menambah produk"])
+        }
+        
+    }
+    
+    private class func fetchEditProductSubmit(form:ProductEditResult, generatedHost:GeneratedHost, onSuccess: (() -> Void)){
+        
+        let imageIDs:[String] = form.product_images.map{$0.image_id}
+        let imageIDString : String = imageIDs.joinWithSeparator("~")
+        
+        let pictDescriptions:[String] = form.product_images.map{$0.image_description}
+        let pictDescriptionString : String = pictDescriptions.joinWithSeparator("~")
+        
+        var pictureDefault : String = ""
+        for selectedImage in form.product_images where selectedImage.image_primary == "1" {
+            pictureDefault = selectedImage.image_id
+        }
+        
+        /*
+         Upload to
+         1 -> etalase
+         2 -> warehouse
+         3 -> pending
+         */
+        
+        let product :ProductEditDetail = form.product
+        
+        var uploadTo : String = "1"
+        if product == "3" {
+            uploadTo = "2"
+        }
+        
+        var param : [String:String] = [
+            "product_catalog_id"        : product.product_catalog.catalog_id,
+            "product_change_catalog"    : "1",
+            "product_change_wholesale"  : "1",
+            "product_change_photo"      : "1",
+            "product_condition"         : product.product_condition,
+            "product_department_id"     : product.product_category.categoryId,
+            "product_description"       : product.product_short_desc,
+            "product_etalase_id"        : product.product_etalase_id,
+            "product_etalase_name"      : product.product_etalase,
+            "product_id"                : product.product_id,
+            "product_min_order"         : product.product_min_order,
+            "product_must_insurance"    : product.product_must_insurance,
+            "product_name"              : product.product_name,
+            "product_photo"             : imageIDString,
+//            "product_photo_desc + photo_id (dynamic key)
+            "product_photo_default"     : pictureDefault,
+            "product_price"             : product.product_price,
+            "product_price_currency"    : product.product_currency_id,
+            "product_returnable"        : product.product_returnable,
+            "product_upload_to"         : uploadTo,
+            "product_weight"            : product.product_weight,
+            "product_weight_unit"       : product.product_weight_unit,
+//            "po_process_type -> value type 1 = day , 2 = week , 3 = month
+//            "po_process_value -> for processing value
+            "server_id"                 : generatedHost.server_id
+        ]
+        
+//        param.update(wholesale)
+        
+        let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
+        networkManager.isUsingHmac = true
+        
+        networkManager.requestWithBaseUrl(NSString .v4Url(),
+                                          path: "/v4/action/product/add_product_validation.pl",
+                                          method: .POST,
+                                          parameter: param,
+                                          mapping: AddProductValidation.mapping(),
+                                          onSuccess: { (mappingResult, operation) in
+                                            
+                                            let result : Dictionary = mappingResult.dictionary() as Dictionary
+                                            let response : AddProductValidation = result[""] as! AddProductValidation
+                                            
+                                            if response.data.post_key != nil {
+                                                if response.message_status?.count>0 {
+                                                    StickyAlertView.showSuccessMessage(response.message_status)
+                                                }
+                                                onSuccess()
+                                            } else {
+                                                if let errors = response.message_error{
+                                                    StickyAlertView.showErrorMessage(errors)
+                                                } else {
+                                                    StickyAlertView.showErrorMessage(["Gagal menambah produk"])
+                                                }
+                                                RequestAddEditProduct.errorCompletionHandler()
+                                            }
+                                            
+        }) { (error) in
+            RequestAddEditProduct.errorCompletionHandler()
+            StickyAlertView.showErrorMessage(["Gagal menambah produk"])
+        }
+        
+    }
+    
+    //MARK: - ADD PRODUCT REQUEST
+    
+    class func fetchAddProduct(form:ProductEditResult,isDuplicate:String,  onSuccess: (() -> Void), onFailure:(()->Void)) {
         
         RequestAddEditProduct.errorCompletionHandler = onFailure
         
@@ -119,27 +322,26 @@ import UIKit
 
         self.fetchGenerateHost({ (generatedHost) in
             
-            selectedImages.forEach{ selectedImage in
+            form.product_images.forEach{ selectedImage in
                 
                 self.fetchUploadProductImage(selectedImage.image,
                     path: "https://\(generatedHost.upload_host)",
                     serverID: generatedHost.server_id,
+                    productID: "",
                     onSuccess: { (pictObj) in
                         
                         imageFilePaths.append(pictObj.file_path)
-                        selectedImage.filePath = pictObj.file_path
+                        selectedImage.image_src = pictObj.file_path
                         
-                        if imageFilePaths.count == selectedImages.count{
+                        if imageFilePaths.count == form.product_images.count{
                             
-                            self.fetchValidationAddProduct(isDuplicate,
-                                product: product,
-                                selectedImages: selectedImages,
+                            self.fetchValidationAddProduct(form,
+                                isDuplicate: isDuplicate,
                                 generatedHost: generatedHost,
-                                wholesale: wholesale,
                                 onSuccess: { (postKey) in
                                     
                                     self.fetchAddProductImages(isDuplicate,
-                                        selectedImages: selectedImages,
+                                        selectedImages: form.product_images,
                                         generatedHost: generatedHost,
                                         onSuccess: { (fileUploaded) in
                                             
@@ -163,17 +365,17 @@ import UIKit
         })
     }
     
-    private class func fetchValidationAddProduct(isDuplicate:String, product:ProductEditDetail, selectedImages:[SelectedImage], generatedHost:GeneratedHost,wholesale:[String:String], onSuccess: ((postKey:String) -> Void)){
+    private class func fetchValidationAddProduct(form:ProductEditResult, isDuplicate:String, generatedHost:GeneratedHost, onSuccess: ((postKey:String) -> Void)){
         
-        let filePaths:[String] = selectedImages.map{$0.filePath}
+        let filePaths:[String] = form.product_images.map{$0.image_src}
         let filePathString : String = filePaths.joinWithSeparator("~")
         
-        let pictDescriptions:[String] = selectedImages.map{$0.desc}
+        let pictDescriptions:[String] = form.product_images.map{$0.image_description}
         let pictDescriptionString : String = pictDescriptions.joinWithSeparator("~")
         
         var pictureDefault : String = ""
-        for selectedImage in selectedImages where selectedImage.imagePrimary == "1" {
-            pictureDefault = selectedImage.filePath
+        for selectedImage in form.product_images where selectedImage.image_primary == "1" {
+            pictureDefault = selectedImage.image_src
         }
         
         /*
@@ -182,6 +384,8 @@ import UIKit
          2 -> warehouse
          3 -> pending
          */
+        
+        let product: ProductEditDetail = form.product
         
         var uploadTo : String = "1"
         if product.product_status == "3" {
@@ -212,7 +416,7 @@ import UIKit
             //"po_process_value -> for processing value
         ]
         
-        param.update(wholesale)
+//        param.update(wholesale)
         
         let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
@@ -249,52 +453,20 @@ import UIKit
     }
     
     
-    private class func fetchGenerateHost( onSuccess: ((generatedHost:GeneratedHost) -> Void)) {
-        RequestGenerateHost .fetchGenerateHostSuccess({ (generatedHost) in
-            
-            onSuccess(generatedHost:generatedHost)
-            
-        }) { (error) in
-            RequestAddEditProduct.errorCompletionHandler()
-            StickyAlertView.showErrorMessage(["Gagal generate host"])
-        }
-    }
-    
-    private class func fetchUploadProductImage(Image:UIImage, path:String, serverID:String, onSuccess: ((pictObj:ImageResult) -> Void)){
-        let auth : UserAuthentificationManager = UserAuthentificationManager();
-        let postObject :RequestObjectUploadImage = RequestObjectUploadImage() 
-        postObject.user_id = auth.getUserId()
-        postObject.server_id = serverID
-        
-        RequestUploadImage.requestUploadImage(Image,
-                                              withUploadHost: path,
-                                              path: "/web-service/v4/action/upload-image/upload_product_image.pl",
-                                              name: "fileToUpload",
-                                              fileName: "Image",
-                                              requestObject: postObject,
-                                              onSuccess: { (imageResult) in
-                                                
-                                                onSuccess(pictObj: imageResult)
-            }, onFailure: { (error) in
-                RequestAddEditProduct.errorCompletionHandler()
-                StickyAlertView.showErrorMessage(["Gagal mengupload gambar"])
-        })
-    }
-    
-    private class func fetchAddProductImages(isDuplicate:String, selectedImages:[SelectedImage], generatedHost:GeneratedHost, onSuccess: ((fileUploaded:String) -> Void)) {
+    private class func fetchAddProductImages(isDuplicate:String, selectedImages:[ProductEditImages], generatedHost:GeneratedHost, onSuccess: ((fileUploaded:String) -> Void)) {
         
         let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
         
-        let filePaths:[String] = selectedImages.map{$0.filePath}
+        let filePaths:[String] = selectedImages.map{$0.image_src}
         let filePathString : String = filePaths.joinWithSeparator("~")
         
-        let pictDescriptions:[String] = selectedImages.map{$0.desc}
+        let pictDescriptions:[String] = selectedImages.map{$0.image_description}
         let pictDescriptionString : String = pictDescriptions.joinWithSeparator("~")
         
         var pictureDefault : String = ""
-        for selectedImage in selectedImages where selectedImage.imagePrimary == "1" {
-            pictureDefault = selectedImage.filePath
+        for selectedImage in selectedImages where selectedImage.image_primary == "1" {
+            pictureDefault = selectedImage.image_src
         }
         
         let param :[String:String] = [
@@ -409,6 +581,41 @@ import UIKit
         }) { (error) in
             onFailure()
         }
+    }
+    
+    //MARK: - UPLOAD IMAGE
+    private class func fetchGenerateHost( onSuccess: ((generatedHost:GeneratedHost) -> Void)) {
+        RequestGenerateHost .fetchGenerateHostSuccess({ (generatedHost) in
+            
+            onSuccess(generatedHost:generatedHost)
+            
+        }) { (error) in
+            RequestAddEditProduct.errorCompletionHandler()
+            StickyAlertView.showErrorMessage(["Gagal generate host"])
+        }
+    }
+    
+    private class func fetchUploadProductImage(Image:UIImage, path:String, serverID:String, productID:String, onSuccess: ((pictObj:ImageResult) -> Void)){
+        let auth : UserAuthentificationManager = UserAuthentificationManager();
+        let postObject :RequestObjectUploadImage = RequestObjectUploadImage()
+        postObject.user_id = auth.getUserId()
+        postObject.server_id = serverID
+        postObject.add_new = "1"
+        postObject.product_id = productID
+        
+        RequestUploadImage.requestUploadImage(Image,
+                                              withUploadHost: path,
+                                              path: "/web-service/v4/action/upload-image/upload_product_image.pl",
+                                              name: "fileToUpload",
+                                              fileName: "Image",
+                                              requestObject: postObject,
+                                              onSuccess: { (imageResult) in
+                                                
+                                                onSuccess(pictObj: imageResult)
+            }, onFailure: { (error) in
+                RequestAddEditProduct.errorCompletionHandler()
+                StickyAlertView.showErrorMessage(["Gagal mengupload gambar"])
+        })
     }
 
 }

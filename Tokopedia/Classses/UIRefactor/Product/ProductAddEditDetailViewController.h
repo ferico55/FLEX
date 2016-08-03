@@ -30,17 +30,9 @@
 
 
 @property (strong,nonatomic) NSDictionary *data;
-
-@property GenerateHost *generateHost;
-@property (strong,nonatomic) NSString *shopHasTerm;
-@property BOOL isShopHasTerm;
-@property BOOL isNeedRequestAddProductPicture;
-
 @property NSString* returnableStatus;
-@property (strong,nonatomic) NSArray <SelectedImage*> *selectedImages;
-@property (strong,nonatomic) ProductEditDetail *product;
+@property ProductEditResult* form;
 @property NSInteger type;
-@property NSDictionary *dataInput;
 
 /** 
  my $var_state = {

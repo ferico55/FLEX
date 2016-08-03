@@ -172,24 +172,6 @@ NSString * const ProductStatusWarehouse = @"3";
 
 -(void)initNetworkManager
 {
-    _validationNetworkManager = [TokopediaNetworkManager new];
-    _validationNetworkManager.delegate = self;
-    _validationNetworkManager.tagRequest = TAG_REQUEST_VALIDATION;
-    
-    _addPictureNetworkManager = [TokopediaNetworkManager new];
-    _addPictureNetworkManager.delegate = self;
-    _addPictureNetworkManager.isParameterNotEncrypted = YES;
-    _addPictureNetworkManager.tagRequest = TAG_REQUEST_PICTURE;
-    _addPictureNetworkManager.timeInterval = 30;
-    
-    _submitNetworkManager = [TokopediaNetworkManager new];
-    _submitNetworkManager.delegate = self;
-    _submitNetworkManager.tagRequest = TAG_REQUEST_SUBMIT;
-    _submitNetworkManager.timeInterval = 30;
-    
-    _editNetworkManager = [TokopediaNetworkManager new];
-    _editNetworkManager.delegate = self;
-    _editNetworkManager.tagRequest = TAG_REQUEST_EDIT;
     
     _moveToWarehouseNetworkManager = [TokopediaNetworkManager new];
     _moveToWarehouseNetworkManager.delegate = self;
@@ -202,7 +184,7 @@ NSString * const ProductStatusWarehouse = @"3";
     
     UITableViewCell *returnableCell = (UITableViewCell*)_section0TableViewCell[1];
     
-    if (_isShopHasTerm) {
+    if (_form.info.shop_has_terms) {
         returnableCell.detailTextLabel.textColor = TEXT_COLOUR_ENABLE;
     }
     else
@@ -210,7 +192,7 @@ NSString * const ProductStatusWarehouse = @"3";
         returnableCell.detailTextLabel.textColor = TEXT_COLOUR_DISABLE;
     }
     
-    _returnableProductSwitch.enabled = _isShopHasTerm;
+    _returnableProductSwitch.enabled = _form.info.shop_has_terms;
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -230,18 +212,6 @@ NSString * const ProductStatusWarehouse = @"3";
     
     _tableView.delegate = nil;
     _tableView.dataSource = nil;
-    
-    [_validationNetworkManager requestCancel];
-    _validationNetworkManager.delegate = nil;
-    
-    [_addPictureNetworkManager requestCancel];
-    _addPictureNetworkManager.delegate = nil;
-    
-    [_submitNetworkManager requestCancel];
-    _submitNetworkManager.delegate = nil;
-    
-    [_editNetworkManager requestCancel];
-    _editNetworkManager.delegate = nil;
     
     [_moveToWarehouseNetworkManager requestCancel];
     _moveToWarehouseNetworkManager.delegate = nil;
@@ -279,7 +249,7 @@ NSString * const ProductStatusWarehouse = @"3";
                         [self fetchAddProduct];
                     }
                 } else {
-                    [_editNetworkManager doRequest];
+                    [self fetchEditProduct];
                 }
                 break;
             }
@@ -306,7 +276,7 @@ NSString * const ProductStatusWarehouse = @"3";
     
     NSString *duplicate = (_type == TYPE_ADD_EDIT_PRODUCT_COPY)?@"1":@"0";
     
-    ProductEditDetail *product = _product;
+    ProductEditDetail *product = _form.product;
         
     NSArray *wholesaleList = [_dataInput objectForKey:DATA_WHOLESALE_LIST_KEY]?:@[];
     NSMutableDictionary *wholesales = [NSMutableDictionary new];
@@ -314,13 +284,38 @@ NSString * const ProductStatusWarehouse = @"3";
         [wholesales addEntriesFromDictionary:wholesale];
     }
 
-    [RequestAddEditProduct fetchAddProduct:duplicate
-                                   product:product
-                            selectedImages:_selectedImages
-                                 wholesale:wholesales
+    [RequestAddEditProduct fetchAddProduct:_form
+                                   isDuplicate:duplicate
                                  onSuccess:^{
         
         [self successAddProduct];
+        
+    } onFailure:^{
+        
+        _saveBarButtonItem.enabled = YES;
+        [_processingAlert dismissWithClickedButtonIndex:0 animated:YES];
+        
+    }];
+}
+
+-(void)fetchEditProduct{
+    
+    [_processingAlert show];
+    _saveBarButtonItem.enabled = NO;
+    
+    NSArray *wholesaleList = [_dataInput objectForKey:DATA_WHOLESALE_LIST_KEY]?:@[];
+    NSMutableDictionary *wholesales = [NSMutableDictionary new];
+    for (NSDictionary *wholesale in wholesaleList) {
+        [wholesales addEntriesFromDictionary:wholesale];
+    }
+    
+    [RequestAddEditProduct fetchEditProduct:_form onSuccess:^{
+        
+        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:ADD_PRODUCT_POST_NOTIFICATION_NAME object:nil userInfo:nil];
+        _saveBarButtonItem.enabled = YES;
+        [_processingAlert dismissWithClickedButtonIndex:0 animated:YES];
         
     } onFailure:^{
         
@@ -350,7 +345,7 @@ NSString * const ProductStatusWarehouse = @"3";
 {
     BOOL isValid = YES;
     NSMutableArray *errorMessages = [NSMutableArray new];
-    ProductEditDetail *product = _product;
+    ProductEditDetail *product = _form.product;
     
 //    NSString *moveToWarehouse = product.product_move_to?:@"";
     
@@ -424,7 +419,7 @@ NSString * const ProductStatusWarehouse = @"3";
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    ProductEditDetail *product = _product;
+    ProductEditDetail *product = _form.product;
     
     UITableViewCell *cell = nil;
     switch (indexPath.section) {
@@ -523,7 +518,7 @@ NSString * const ProductStatusWarehouse = @"3";
 {
     [_productDescriptionTextView resignFirstResponder];
     [_dataInput setObject:_productDescriptionTextView.text?:@"" forKey:API_PRODUCT_DESCRIPTION_KEY];
-    ProductEditDetail *product = _product;
+    ProductEditDetail *product = _form.product;
     BOOL isProductWarehouse = [product.product_status isEqualToString:@"3"];
     switch (indexPath.section) {
         case 0:
@@ -539,7 +534,7 @@ NSString * const ProductStatusWarehouse = @"3";
                 }
                 case BUTTON_PRODUCT_RETURNABLE:
                 {
-                    if (_isShopHasTerm) {
+                    if (_form.info.shop_has_terms) {
                         AlertPickerView *alertView = [AlertPickerView newview];
                         alertView.tag = 13;
                         alertView.delegate = self;
@@ -564,7 +559,7 @@ NSString * const ProductStatusWarehouse = @"3";
                 case BUTTON_PRODUCT_ETALASE_DETAIL:
                 {
                     //if (!isProductWarehouse) {
-                        ProductEditDetail *product = _product;
+                        ProductEditDetail *product = _form.product;
                         EtalaseList *newEtalase = [EtalaseList new];
                         newEtalase.etalase_name = product.product_etalase;
                         newEtalase.etalase_id = product.product_etalase_id;
@@ -626,18 +621,6 @@ NSString * const ProductStatusWarehouse = @"3";
 #pragma mark - Network Manager
 -(id)getObjectManager:(int)tag
 {
-    if (tag == TAG_REQUEST_VALIDATION) {
-        return [self objectManagerValidation];
-    }
-    if (tag == TAG_REQUEST_PICTURE) {
-        return [self objectManagerAddProductPicture];
-    }
-    if (tag == TAG_REQUEST_SUBMIT) {
-        return [self objectManagerSubmit];
-    }
-    if (tag == TAG_REQUEST_EDIT) {
-        return [self objectManagerEditProduct];
-    }
     if (tag == TAG_REQUEST_MOVE_TO) {
         return [self objectManagerMoveToWarehouse];
     }
@@ -646,18 +629,6 @@ NSString * const ProductStatusWarehouse = @"3";
 
 -(NSDictionary *)getParameter:(int)tag
 {
-    if (tag == TAG_REQUEST_VALIDATION) {
-        return [self paramValidation];
-    }
-    if (tag == TAG_REQUEST_PICTURE) {
-        return [self paramAddPicture];
-    }
-    if (tag == TAG_REQUEST_SUBMIT) {
-        return [self paramSubmit];
-    }
-    if (tag == TAG_REQUEST_EDIT) {
-        return [self paramEdit];
-    }
     if (tag == TAG_REQUEST_MOVE_TO) {
         return [self paramMoveToWarehouse];
     }
@@ -720,26 +691,6 @@ NSString * const ProductStatusWarehouse = @"3";
 
 -(void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag
 {
-    if (tag == TAG_REQUEST_VALIDATION) {
-        [self requestSuccessActionAddProductValidation:successResult
-                                         withOperation:operation];
-    }
-    if (tag == TAG_REQUEST_PICTURE) {
-        [self requestSuccessActionAddProductPicture:successResult
-                                      withOperation:operation];
-        
-    }
-    if (tag == TAG_REQUEST_SUBMIT) {
-        [self requestSuccessActionAddProductSubmit:successResult
-                                     withOperation:operation];
-        
-    }
-    if (tag == TAG_REQUEST_EDIT) {
-        [self requestSuccessActionEditProduct:successResult
-                                withOperation:operation];
-        _saveBarButtonItem.enabled = YES;
-        [_processingAlert dismissWithClickedButtonIndex:0 animated:YES];
-    }
     if (tag == TAG_REQUEST_MOVE_TO) {
         [self requestSuccessActionMoveToWarehouse:successResult
                                     withOperation:operation];
@@ -834,137 +785,6 @@ NSString * const ProductStatusWarehouse = @"3";
     [alert show];
 }
 
-#pragma mark - -Request Add Product Validation
--(RKObjectManager*)objectManagerValidation
-{
-    RKObjectManager *objectManager = [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[AddProductValidation class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[AddProductValidationResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{kTKPDDETAIL_APIISSUCCESSKEY:kTKPDDETAIL_APIISSUCCESSKEY,
-                                                        API_POSTKEY_KEY : API_POSTKEY_KEY
-                                                        }];
-    
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    
-    // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDDETAILACTIONPRODUCT_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [objectManager addResponseDescriptor:responseDescriptor];
-    
-    return objectManager;
-}
-
--(NSDictionary*)paramValidation
-{
-    NSDictionary *userInfo = _dataInput;
-#define PRODUCT_MOVETO_WAREHOUSE_ID @"2"
-    
-    CategoryDetail *category = [_dataInput objectForKey:DATA_CATEGORY_KEY];
-    ProductEditDetail *product = _product;
-    CatalogList *catalog = [_dataInput objectForKey:DATA_CATALOG_KEY];
-    
-    NSString *action = ACTION_ADD_PRODUCT_VALIDATION;
-    NSInteger serverID = [_generateHost.result.generated_host.server_id integerValue]?:0;
-    NSString *productName = product.product_name?:@"";
-    NSString *productDescription = product.product_short_desc?:@"";
-    NSString *departmentID = category.categoryId?:@"";
-    NSString *minimumOrder = product.product_min_order?:@"1";
-    NSString *productPriceCurrencyID = product.product_currency_id?:@"";
-    NSString *productPrice = product.product_price?:@"";
-    NSString *productWeightUnitID = product.product_weight_unit?:@"";
-    NSString *productWeight = product.product_weight?:@"";
-    NSString *productInsurance = product.product_must_insurance?:@"";
-    NSString *moveToWarehouse = [product.product_status isEqualToString:ProductStatusWarehouse]? @"2" : @"1";
-    
-    NSString *etalaseUserInfoID = product.product_etalase_id?:@"";
-    BOOL isNewEtalase = [etalaseUserInfoID isEqualToString:@"-1"];
-    NSString *etalaseID = isNewEtalase ? API_ADD_PRODUCT_NEW_ETALASE_TAG: etalaseUserInfoID;
-    
-    NSString *etalaseName = product.product_etalase?:@"";
-    NSString *productConditionID = product.product_condition?:@"";
-    NSArray *wholesaleList = [userInfo objectForKey:DATA_WHOLESALE_LIST_KEY]?:@[];
-    
-    NSString *productID = product.product_id?:@"";
-//    NSInteger returnableProduct = [product.product_returnable integerValue];
-
-    NSString *catalogID = catalog.catalog_id?:@"";
-    
-    NSString *userID = [_auth objectForKey:kTKPD_USERIDKEY]?:@"";
-    
-    NSString *dateString = [NSDateFormatter localizedStringFromDate:[NSDate date]
-                                                          dateStyle:NSDateFormatterShortStyle
-                                                          timeStyle:NSDateFormatterFullStyle];
-    //NSString *uniqueID = [NSString stringWithFormat:@"%zd2365364365645644564564",userID];
-    NSString *udid = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
-    NSString *uniqueID = [NSString stringWithFormat:@"%zd%@%@",userID,udid,dateString];
-    
-    NSInteger duplicate = (_type == TYPE_ADD_EDIT_PRODUCT_COPY)?1:0;
-    
-    _uniqueID = uniqueID;
-    [_dataInput setObject:uniqueID forKey:API_UNIQUE_ID_KEY];
-    
-    NSString *productPhotoDesc = [[[_data objectForKey:@"Image_desc_array"] valueForKey:@"description"] componentsJoinedByString:@"~"]?:@"";
-    
-    NSDictionary* paramDictionary = @{kTKPDDETAIL_APIACTIONKEY:action,
-                                      API_PRODUCT_ID_KEY: productID,
-                                      API_SERVER_ID_KEY : @(serverID)?:@(0),
-                                      API_PRODUCT_NAME_KEY: productName,
-                                      API_PRODUCT_PRICE_KEY: productPrice,
-                                      API_PRODUCT_PRICE_CURRENCY_ID_KEY: productPriceCurrencyID,
-                                      @"product_catalog_id":catalogID,
-                                      API_PRODUCT_WEIGHT_KEY: productWeight,
-                                      API_PRODUCT_WEIGHT_UNIT_KEY: productWeightUnitID,
-                                      API_PRODUCT_DEPARTMENT_ID_KEY: departmentID,
-                                      API_PRODUCT_MINIMUM_ORDER_KEY : minimumOrder,
-                                      API_PRODUCT_DESCRIPTION_KEY : productDescription,
-                                      API_PRODUCT_MUST_INSURANCE_KEY : productInsurance,
-                                      API_PRODUCT_MOVETO_WAREHOUSE_KEY : moveToWarehouse,
-                                      API_PRODUCT_ETALASE_ID_KEY : etalaseID,
-                                      API_PRODUCT_ETALASE_NAME_KEY : etalaseName,
-                                      API_PRODUCT_CONDITION_KEY : productConditionID,
-                                      API_PRODUCT_IMAGE_TOUPLOAD_KEY : [self paramPhoto]?:@"",
-                                      API_PRODUCT_IMAGE_DEFAULT_KEY: [self photoDefault]?:@"",
-                                      API_PRODUCT_IS_RETURNABLE_KEY : _returnableStatus,
-                                      API_PRODUCT_IS_CHANGE_WHOLESALE_KEY:@(1),
-                                      API_UNIQUE_ID_KEY:uniqueID,
-                                      API_IS_DUPLICATE_KEY : @(duplicate),
-                                      API_PRODUCT_IMAGE_DESCRIPTION_KEY: [self paramPhotoDesc]?:@""
-                                      };
-    NSMutableDictionary *paramMutableDict = [NSMutableDictionary new];
-    [paramMutableDict addEntriesFromDictionary:paramDictionary];
-    
-    for (NSDictionary *wholesale in wholesaleList) {
-        [paramMutableDict addEntriesFromDictionary:wholesale];
-    }
-    //NSString *productImageDesc = [userInfo objectForKey:API_PRODUCT_IMAGE_DESCRIPTION_KEY]?:@"";
-    //[paramMutableDict setObject:productImageDesc forKey:API_PRODUCT_IMAGE_DESCRIPTION_KEY];
-    
-    NSDictionary *param = [paramMutableDict copy];
-    
-    return param;
-}
-
-
--(void)requestSuccessActionAddProductValidation:(id)object withOperation:(RKObjectRequestOperation *)operation
-{
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id stat = [result objectForKey:@""];
-    AddProductValidation *setting = stat;
-    BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if (status) {
-        [self requestProcessActionAddProductValidation:object];
-    }
-}
-
 -(void)requestProcessActionAddProductValidation:(id)object
 {
 //    NSDictionary *result = ((RKMappingResult*)object).dictionary;
@@ -997,119 +817,6 @@ NSString * const ProductStatusWarehouse = @"3";
 
 #pragma mark -Request Action Add Product Picture
 
--(RKObjectManager*)objectManagerAddProductPicture
-{
-    //_objectManagerActionAddProductPicture = [RKObjectManager sharedClient];
-    NSString *urlString = [NSString stringWithFormat:@"http://%@/ws",_generateHost.result.generated_host.upload_host];
-    RKObjectManager *objectManager = [RKObjectManager sharedClient:urlString];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[AddProductPicture class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[AddProductPictureResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{API_FILE_UPLOADED_KEY:API_FILE_UPLOADED_KEY}];
-    
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    
-    // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:@"action/upload-image-helper.pl" keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [objectManager addResponseDescriptor:responseDescriptor];
-    
-    NSLog(@"%@",objectManager);
-    
-    return objectManager;
-}
-
--(NSDictionary*)paramAddPicture
-{
-    NSString *action = ACTION_ADD_PRODUCT_PICTURE;
-    NSString *productPhotoDesc = [_dataInput objectForKey:API_PRODUCT_IMAGE_DESCRIPTION_KEY]?:@"";
-    NSString *photoDefaultIndex = [_dataInput objectForKey:API_PRODUCT_IMAGE_DEFAULT_INDEX]?:@"0";
-    NSString *serverID = _generateHost.result.generated_host.server_id?:@"";
-
-    NSInteger duplicate = (_type == TYPE_ADD_EDIT_PRODUCT_COPY)?1:0;
-    
-    productPhotoDesc = [[[_data objectForKey:@"Image_desc_array"] valueForKey:@"description"] componentsJoinedByString:@"~"];
-    
-    UserAuthentificationManager *auth = [UserAuthentificationManager new];
-    NSString *userID = [auth getUserId]?:@"";
-
-    NSDictionary* param = @{
-                            kTKPDDETAIL_APIACTIONKEY:action?:@"",
-                            API_SERVER_ID_KEY : serverID?:@"",
-                            API_PRODUCT_IMAGE_TOUPLOAD_KEY : [self paramPhoto]?:@"",
-                            API_PRODUCT_IMAGE_DESCRIPTION_KEY: [self paramPhotoDesc]?:@"",
-                            API_PRODUCT_IMAGE_DEFAULT_KEY: [self photoDefault]?:@"",
-                            API_IS_DUPLICATE_KEY :@(duplicate),
-                            @"user_id" :userID
-                            };
-    return param;
-}
-
--(NSString*)photoDefault
-{
-    NSString *photoDefault = [_dataInput objectForKey:API_PRODUCT_IMAGE_DEFAULT_KEY]?:@"";
-    NSString *productImage = [_dataInput objectForKey:API_PRODUCT_IMAGE_TOUPLOAD_KEY]?:@"";
-
-    NSString *myString = productImage;
-    NSArray *productImages = [myString componentsSeparatedByCharactersInSet:
-                              [NSCharacterSet characterSetWithCharactersInString:@"~"]
-                              ];
-    
-    NSMutableArray *paramPhotoArray = [NSMutableArray new];
-    for (int i = 0; i<productImages.count; i++) {
-        if (![productImages[i] isEqualToString:@""]) {
-            [paramPhotoArray addObject:productImages[i]];
-        }
-    }
-    
-    for (int i = 0; i<paramPhotoArray.count; i++) {
-        if ([productImages[i] isEqualToString:photoDefault]) {
-            photoDefault = [NSString stringWithFormat:@"%d",i];
-        }
-    }
-    
-    return photoDefault;
-}
-
--(NSString *)paramPhoto
-{
-    NSString *myString = [_dataInput objectForKey:API_PRODUCT_IMAGE_TOUPLOAD_KEY];
-    NSArray *productImages = [myString componentsSeparatedByCharactersInSet:
-                              [NSCharacterSet characterSetWithCharactersInString:@"~"]
-                              ];
-    NSMutableArray *paramPhotoArray = [NSMutableArray new];
-    for (int i = 0; i<productImages.count; i++) {
-        if (![productImages[i] isEqualToString:@""]) {
-            [paramPhotoArray addObject:productImages[i]];
-        }
-    }
-    NSString *paramPhoto = [[[paramPhotoArray copy] valueForKey:@"description"] componentsJoinedByString:@"~"]?:@"";
-
-    return paramPhoto;
-}
-
--(NSString *)paramPhotoDesc
-{
-    NSArray *photodescriptions = [_data objectForKey:@"Image_desc_array"];
-    NSMutableArray *paramPhotoDescArray = [NSMutableArray new];
-    for (NSString *desc in photodescriptions) {
-        if (![desc isEqualToString:@""]) {
-            [paramPhotoDescArray addObject:desc];
-        }
-    }
-    
-    NSString *paramPhotoDesc = [[[paramPhotoDescArray copy] valueForKey:@"description"] componentsJoinedByString:@"~"]?:@"";
-    
-    return paramPhotoDesc;
-}
-
 -(void)requestSuccessActionAddProductPicture:(id)object withOperation:(RKObjectRequestOperation *)operation
 {
     NSDictionary *result = ((RKMappingResult*)object).dictionary;
@@ -1140,61 +847,6 @@ NSString * const ProductStatusWarehouse = @"3";
 }
 
 #pragma mark -Request Add Product Submit
-
--(RKObjectManager*)objectManagerSubmit
-{
-    RKObjectManager *objectManager = [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[AddProductSubmit class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[AddProductSubmitResult class]];
-    
-    [resultMapping addAttributeMappingsFromDictionary:@{kTKPD_APIISSUCCESSKEY:kTKPD_APIISSUCCESSKEY,
-                                                        API_PRODUCT_ID_KEY:API_PRODUCT_ID_KEY,
-                                                        API_PRODUCT_PRIMARY_PHOTO_KEY:API_PRODUCT_PRIMARY_PHOTO_KEY,
-                                                        API_PRODUCT_DESC_KEY:API_PRODUCT_DESC_KEY,
-                                                        API_PRODUCT_ETALASE_KEY:API_PRODUCT_ETALASE_KEY,
-                                                        API_PRODUCT_DESTINATION_KEY:API_PRODUCT_DESTINATION_KEY,
-                                                        API_PRODUCT_URL_KEY:API_PRODUCT_URL_KEY,
-                                                        API_PRODUCT_NAME_KEY:API_PRODUCT_NAME_KEY
-                                                        }];
-    
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    
-    // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDDETAILACTIONPRODUCT_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [objectManager addResponseDescriptor:responseDescriptor];
-    
-    return objectManager;
-}
-
--(NSDictionary*)paramSubmit
-{
-    NSString *action = ACTION_ADD_PRODUCT_SUBMIT;
-    
-    NSString *postKey = [_dataInput objectForKey:API_POSTKEY_KEY];
-    NSString *uploadedFile = [_dataInput objectForKey:API_FILE_UPLOADED_KEY];
-
-    NSInteger randomNumber = arc4random() % 16;
-    NSString *uniqueID = _uniqueID;//[NSString stringWithFormat:@"%@%zd",[_dataInput objectForKey:API_UNIQUE_ID_KEY],randomNumber];
-    
-    NSInteger duplicate = (_type == TYPE_ADD_EDIT_PRODUCT_COPY)?1:0;
-    
-    NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY:action,
-                            API_POSTKEY_KEY:postKey,
-                            API_FILE_UPLOADED_KEY:uploadedFile,
-                            API_UNIQUE_ID_KEY : uniqueID,
-                            API_IS_DUPLICATE_KEY:@(duplicate),
-                            };
-    return param;
-}
 
 -(void)requestSuccessActionAddProductSubmit:(id)object withOperation:(RKObjectRequestOperation *)operation
 {
@@ -1235,116 +887,6 @@ NSString * const ProductStatusWarehouse = @"3";
 }
 
 #pragma mark -Request Edit Product
-
--(void)cancelActionEditProduct
-{
-    [_requestActionEditProduct cancel];
-    _requestActionEditProduct = nil;
-    [_objectManagerActionEditProduct.operationQueue cancelAllOperations];
-    _objectManagerActionEditProduct = nil;
-}
-
--(RKObjectManager *)objectManagerEditProduct
-{
-    RKObjectManager *objectManager = [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ShopSettings class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ShopSettingsResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{kTKPD_APIISSUCCESSKEY:kTKPD_APIISSUCCESSKEY}];
-    
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    
-    // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDDETAILACTIONPRODUCT_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [objectManager addResponseDescriptor:responseDescriptor];
-    
-    return objectManager;
-}
-
--(NSDictionary*)paramEdit
-{
-    NSDictionary *userInfo = _dataInput;
-    
-    NSString *action = ACTION_EDIT_PRODUCT_KEY;
-    ProductEditDetail *product = _product;
-    CategoryDetail *category = [userInfo objectForKey:DATA_CATEGORY_KEY];
-    
-    NSInteger serverID = [_generateHost.result.generated_host.server_id integerValue]?:0;
-    NSString *productName = product.product_name?:@"";
-    NSString *productDescription = product.product_short_desc?:@"";
-    NSString *productPrice = product.product_price?:0;
-    NSString *productPriceCurrencyID = product.product_currency_id?:@"";
-    NSString *productWeight = product.product_weight?:@"";
-    NSString *productWeightUnitID = product.product_weight_unit?:@"";
-    NSString *departmentID = category.categoryId?:@"";
-    NSString *minimumOrder = product.product_min_order?:@"";
-    NSString *productInsurance = product.product_must_insurance?:@"";
-    
-//    NSString *moveToWarehouse = [product.product_etalase_id isEqual:@(0)]?PRODUCT_MOVETO_WAREHOUSE_ID:@"1";
-    NSString *moveToWarehouse = [product.product_status isEqualToString:@"3"] ? @"2" : @"1";
-    
-    NSString *etalaseUserInfoID = product.product_etalase_id;
-    //if ([etalaseUserInfoID isEqual:@(0)]) {
-    //    [_moveToWarehouseNetworkManager doRequest];
-    //    return @{};
-    //}
-    BOOL isNewEtalase = ([etalaseUserInfoID integerValue]==DATA_ADD_NEW_ETALASE_ID);
-    NSString *etalaseID = isNewEtalase ? API_ADD_PRODUCT_NEW_ETALASE_TAG : etalaseUserInfoID;
-    
-    NSString *etalaseName = product.product_etalase;
-    NSString *productConditionID = product.product_condition;
-    NSString *productImage = [userInfo objectForKey:API_PRODUCT_IMAGE_TOUPLOAD_KEY]?:@"";
-    NSArray *wholesaleList = [userInfo objectForKey:DATA_WHOLESALE_LIST_KEY]?:@[];
-    NSString *photoDefault = [userInfo objectForKey:API_PRODUCT_IMAGE_DEFAULT_KEY]?:@"";
-    
-    
-    NSString *productID = product.product_id?:@"";
-    NSString *returnableProduct = _returnableStatus?:@"0";
-
-    
-    NSDictionary* paramDictionary = @{kTKPDDETAIL_APIACTIONKEY:action?:@"",
-                                      API_PRODUCT_ID_KEY: productID,
-                                      API_SERVER_ID_KEY : @(serverID)?:@(0),
-                                      API_PRODUCT_NAME_KEY: productName,
-                                      API_PRODUCT_PRICE_KEY: productPrice,
-                                      API_PRODUCT_PRICE_CURRENCY_ID_KEY: productPriceCurrencyID,
-                                      API_PRODUCT_WEIGHT_KEY: productWeight,
-                                      API_PRODUCT_WEIGHT_UNIT_KEY: productWeightUnitID,
-                                      API_PRODUCT_DEPARTMENT_ID_KEY: departmentID,
-                                      API_PRODUCT_MINIMUM_ORDER_KEY : minimumOrder,
-                                      API_PRODUCT_DESCRIPTION_KEY : productDescription,
-                                      API_PRODUCT_MUST_INSURANCE_KEY : productInsurance,
-                                      API_PRODUCT_MOVETO_WAREHOUSE_KEY : moveToWarehouse,
-                                      API_PRODUCT_ETALASE_ID_KEY : etalaseID,
-                                      API_PRODUCT_ETALASE_NAME_KEY : etalaseName?:@"",
-                                      API_PRODUCT_CONDITION_KEY : productConditionID,
-                                      API_PRODUCT_IMAGE_TOUPLOAD_KEY : productImage?:@(0),
-                                      API_PRODUCT_IMAGE_DEFAULT_KEY: photoDefault?:@"",
-                                      API_PRODUCT_IS_RETURNABLE_KEY : returnableProduct?:@"",
-                                      API_PRODUCT_IS_CHANGE_WHOLESALE_KEY:@(1),
-                                      };
-    NSMutableDictionary *paramMutableDict = [NSMutableDictionary new];
-    [paramMutableDict addEntriesFromDictionary:paramDictionary];
-    
-    for (NSDictionary *wholesale in wholesaleList) {
-        [paramMutableDict addEntriesFromDictionary:wholesale];
-    }
-    
-    NSDictionary *imageDescriptions = [userInfo objectForKey:API_PRODUCT_IMAGE_DESCRIPTION_KEY];
-    [paramMutableDict addEntriesFromDictionary:imageDescriptions];
-    
-    NSDictionary *param = [paramMutableDict copy];
-    
-    return param;
-}
 
 -(void)requestSuccessActionEditProduct:(id)object withOperation:(RKObjectRequestOperation *)operation
 {
@@ -1407,7 +949,7 @@ NSString * const ProductStatusWarehouse = @"3";
 
 -(NSDictionary*)paramMoveToWarehouse
 {
-    ProductEditDetail *product = _product;
+    ProductEditDetail *product = _form.product;
     
     NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY:ACTION_MOVE_TO_WAREHOUSE,
                             kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : product.product_id?:@"",
@@ -1452,7 +994,7 @@ NSString * const ProductStatusWarehouse = @"3";
 {
     if (textView == _productDescriptionTextView) {
         if(textView.text.length != 0 && ![textView.text isEqualToString:@""]){
-            ProductEditDetail *product = _product;
+            ProductEditDetail *product = _form.product;
             product.product_short_desc = textView.text;
         }
     }
@@ -1496,7 +1038,7 @@ NSString * const ProductStatusWarehouse = @"3";
 -(void)alertView:(TKPDAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
 #define DEFAULT_ETALASE_DETAIL_TITLE_BUTTON @"Pilih Etalase"
-    ProductEditDetail *product = _product?:[ProductEditDetail new];
+    ProductEditDetail *product = _form.product?:[ProductEditDetail new];
     switch (alertView.tag) {
         case 10:
         {
@@ -1545,7 +1087,7 @@ NSString * const ProductStatusWarehouse = @"3";
 #pragma mark - Product Etalase Delegate
 
 -(void)didSelectEtalase:(EtalaseList *)selectedEtalase{
-    ProductEditDetail *product = _product;
+    ProductEditDetail *product = _form.product;
     product.product_etalase_id = selectedEtalase.etalase_id;
     product.product_etalase = selectedEtalase.etalase_name;
     
@@ -1562,17 +1104,7 @@ NSString * const ProductStatusWarehouse = @"3";
 #pragma mark - Methods
 -(void)setShopHasTerm:(NSString *)shopHasTerm
 {
-    _shopHasTerm = shopHasTerm;
-    if (shopHasTerm) {
-        if ([shopHasTerm isEqualToString:@""]||[shopHasTerm isEqualToString:@"0"] || shopHasTerm == nil) {
-            _isShopHasTerm = NO;
-        }
-        else
-        {
-            _isShopHasTerm = YES;
-        }
-    }
-    
+    _form.info.shop_has_terms = shopHasTerm;
 }
 
 -(void)setDefaultData:(NSDictionary*)data
@@ -1582,7 +1114,7 @@ NSString * const ProductStatusWarehouse = @"3";
         
         [_dataInput addEntriesFromDictionary:[_data objectForKey:DATA_INPUT_KEY]];
         
-        ProductEditDetail *product = _product;
+        ProductEditDetail *product = _form.product;
         NSString *productReturnable = _returnableStatus?:@"";
         if ([productReturnable isEqualToString:@""] || [productReturnable isEqualToString:@"0"] || productReturnable == nil) {
             [_dataInput setObject:@(0) forKey:API_PRODUCT_IS_RETURNABLE_KEY];
@@ -1609,14 +1141,7 @@ NSString * const ProductStatusWarehouse = @"3";
         
         UserAuthentificationManager *auth = [UserAuthentificationManager new];
         NSString *shopHasTerm = [auth getShopHasTerm];
-        
-        if ([shopHasTerm isEqualToString:@""]||[shopHasTerm isEqualToString:@"0"] || shopHasTerm == nil) {
-            _isShopHasTerm = NO;
-        }
-        else
-        {
-            _isShopHasTerm= YES;
-        }
+        _form.info.shop_has_terms = shopHasTerm;
         
         [_tableView reloadData];
     }
@@ -1680,14 +1205,7 @@ NSString * const ProductStatusWarehouse = @"3";
 {
     UserAuthentificationManager *auth = [UserAuthentificationManager new];
     NSString *shopHasTerm = [auth getShopHasTerm];
-    
-    if ([shopHasTerm isEqualToString:@""]||[shopHasTerm isEqualToString:@"0"] || shopHasTerm == nil) {
-        _isShopHasTerm = NO;
-    }
-    else
-    {
-        _isShopHasTerm= YES;
-    }
+    _form.info.shop_has_terms= shopHasTerm;
     
     [_tableView reloadData];
 }
