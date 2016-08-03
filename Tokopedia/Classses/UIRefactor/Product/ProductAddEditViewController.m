@@ -39,14 +39,11 @@ UITableViewDelegate,
 TKPDAlertViewDelegate,
 CategoryMenuViewDelegate,
 ProductEditDetailViewControllerDelegate,
-ProductEditImageViewControllerDelegate,
 RequestUploadImageDelegate,
 GeneralTableViewControllerDelegate,
 FilterCategoryViewDelegate
 >
 {
-    NSMutableDictionary *_dataInput;
-    
     UITextField *_activeTextField;
     
     CGPoint _keyboardPosition;
@@ -59,8 +56,6 @@ FilterCategoryViewDelegate
     NSArray<CatalogList*> *_catalogs;
     
     UIBarButtonItem *_nextBarButtonItem;
-    BOOL _isFinishedUploadImages;
-    NSDictionary *_auth;
     UserAuthentificationManager *_authManager;
     
     BOOL _isBeingPresented;
@@ -117,11 +112,7 @@ FilterCategoryViewDelegate
     _section2TableViewCell = [NSArray sortViewsWithTagInArray:_section2TableViewCell];
     _section3TableViewCell = [NSArray sortViewsWithTagInArray:_section3TableViewCell];
     
-    _dataInput = [NSMutableDictionary new];
     _selectedAsset = [NSMutableArray new];
-    
-    _tableView.delegate = self;
-    _tableView.dataSource = self;
     
     _alertProcessing = [[UIAlertView alloc]initWithTitle:nil message:@"Processing" delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
     
@@ -657,22 +648,6 @@ FilterCategoryViewDelegate
                                         }];
 }
 
--(void)fetchDeleteProductPictID:(NSString*)pictureID productID:(NSString*)productID shopID:(NSString*)shopID{
-    
-    [RequestAddEditProduct fetchDeleteProductPictID:pictureID
-                                          productID:productID
-                                             shopID:shopID onSuccess:^{
-                                                 
-                                                 //TODO:: REMOVE IMAGE
-                                                 [[NSNotificationCenter defaultCenter] postNotificationName:ADD_PRODUCT_POST_NOTIFICATION_NAME object:nil];
-                                                 
-                                             } onFailure:^{
-                                                 
-                                                 [self cancelDeletedImage];
-                                                 
-                                             }];
-}
-
 -(void)setProductDetail:(ProductEditDetail*)product{
     _form.product = product;
     
@@ -825,20 +800,6 @@ FilterCategoryViewDelegate
         [secureStorage setKeychainWithValue:category.name withKey:LAST_CATEGORY_NAME];
     }
     [self.tableView reloadData];
-}
-
--(void)setDefaultImage:(DKAsset *)defaultImage{
-    _defaultImage = defaultImage;
-}
-
--(void)deleteImage:(DKAsset *)image{
-//    [_selectedImages removeObject:image];
-}
-
-
--(void)setProductImageName:(NSString *)name atIndex:(NSInteger)index
-{
-    _form.product_images[index].image_description = name;
 }
 
 #pragma mark - Alert View Delegate
@@ -1024,15 +985,6 @@ FilterCategoryViewDelegate
         return YES;
 }
 
-#pragma mark - Product Edit Detail Delegate
--(void)ProductEditDetailViewController:(ProductAddEditDetailViewController *)cell withUserInfo:(NSDictionary *)userInfo
-{
-    NSDictionary *updatedDataInput = [userInfo objectForKey:DATA_INPUT_KEY];
-    
-    [_dataInput removeAllObjects];
-    [_dataInput addEntriesFromDictionary:updatedDataInput];
-}
-
 -(void)didSelectObject:(id)object senderIndexPath:(NSIndexPath *)indexPath
 {
     for (CatalogList *catalog in _catalogs) {
@@ -1061,13 +1013,8 @@ FilterCategoryViewDelegate
         NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
         switch (type) {
             case TYPE_ADD_EDIT_PRODUCT_ADD:
-            {
                 self.title =  TITLE_ADD_PRODUCT;
-                [_dataInput setObject:@(PRICE_CURRENCY_ID_RUPIAH) forKey:API_PRODUCT_PRICE_CURRENCY_ID_KEY];
-                
-                [_tableView reloadData];
                 break;
-            }
             case TYPE_ADD_EDIT_PRODUCT_EDIT:
                 self.title = TITLE_EDIT_PRODUCT;
                 break;
@@ -1215,19 +1162,6 @@ FilterCategoryViewDelegate
     _productPriceTextField.userInteractionEnabled = isEnable;
     _productWeightTextField.userInteractionEnabled = isEnable;
     
-}
-
--(void)cancelDeletedImage
-{
-    NSInteger index = [[_dataInput objectForKey:DATA_LAST_DELETED_INDEX]integerValue];
-    UIImage *image = [_dataInput objectForKey:DATA_LAST_DELETED_IMAGE];
-    
-    image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    ((UIButton*)_addImageButtons[index]).hidden = YES;
-    ((UIImageView*)_thumbProductImageViews[index]).image = image;
-    ((UIImageView*)_thumbProductImageViews[index]).hidden = NO;
 }
 
 #pragma mark - Keyboard Notification

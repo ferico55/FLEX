@@ -6,50 +6,27 @@
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 
-#import "detail.h"
-#import "camera.h"
-#import "string_product.h"
 #import "ProductEditImageViewController.h"
-#import "TKPDPhotoPicker.h"
 
-@interface ProductEditImageViewController () <UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, UIScrollViewDelegate, TKPDPhotoPickerDelegate>
-{
-    NSMutableDictionary *_dataInput;
-    UITextField *_activeTextField;
-    
-    CGPoint _keyboardPosition;
-    CGSize _keyboardSize;
-    
-    TKPDPhotoPicker *_photoPicker;
-    
-    BOOL _isDefaultImage;
-}
+#import "Tokopedia-Swift.h"
+
+@interface ProductEditImageViewController () <UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView *productImageView;
 @property (weak, nonatomic) IBOutlet UITextField *productNameTextField;
-@property (weak, nonatomic) IBOutlet UISwitch *defaultPictureSwitch;
 @property (weak, nonatomic) IBOutlet UITableView *table;
 @property (weak, nonatomic) IBOutlet UIButton *deleteImageButton;
 @property (weak, nonatomic) IBOutlet UILabel *defaultPictLabel;
 @property (weak, nonatomic) IBOutlet UIButton *setDefaultButton;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintDeleteButton;
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section1Cells;
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section0Cells;
 
-- (IBAction)tap:(id)sender;
+@property (copy, nonatomic) void (^defaultImageObject)(ProductEditImages *imageObject);
+@property (copy, nonatomic) void (^deleteImageObject)(ProductEditImages *imageObject, DKAsset *imageAsset);
 
 @end
 
 @implementation ProductEditImageViewController
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
 
 - (void)viewDidLoad
 {
@@ -238,60 +215,7 @@
     return 40;
 }
 
--(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [cell setBackgroundColor:[UIColor clearColor]];
-}
-
-#pragma mark - Photo picker delegate
-
-- (void)photoPicker:(TKPDPhotoPicker *)picker didDismissCameraControllerWithUserInfo:(NSDictionary *)userInfo
-{
-    NSDictionary* photo = [userInfo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
-    UIImage* image = [photo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
-    UIGraphicsBeginImageContextWithOptions(kTKPDCAMERA_UPLOADEDIMAGESIZE, NO, image.scale);
-    [image drawInRect:kTKPDCAMERA_UPLOADEDIMAGERECT];
-    image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-
-    _productImageView.image = image;
-
-    NSData* imageData = [photo objectForKey:DATA_CAMERA_IMAGEDATA];
-    [_dataInput setObject:imageData forKey:DATA_CAMERA_IMAGEDATA];
-
-    NSInteger indexImage = [[_data objectForKey:kTKPDDETAIL_DATAINDEXKEY]integerValue];
-    [_delegate updateProductImage:image AtIndex:indexImage withUserInfo:userInfo];
-}
-
-#pragma mark - Alert View Delegate
--(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    switch (buttonIndex) {
-        case 1:
-        {
-            if ([_delegate respondsToSelector:@selector(deleteImage:)]) {
-                [_delegate deleteImage:_selectedImage];
-            }
-            [self.navigationController popViewControllerAnimated:YES];
-            break;
-        }
-        default:
-            break;
-    }
-}
-
--(void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView
-{
-    [_activeTextField resignFirstResponder];
-    _activeTextField = nil;
-}
-
 #pragma mark - Text Field Delegate
--(BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
-    _activeTextField = textField;
-    return YES;
-}
-
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{
     
     [textField resignFirstResponder];
