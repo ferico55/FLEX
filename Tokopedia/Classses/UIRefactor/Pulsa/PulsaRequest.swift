@@ -35,7 +35,7 @@ class PulsaRequest: NSObject {
             requestWithBaseUrl("https://pulsa-api.tokopedia.com",
                                path: "/v1/category/list",
                                method: .GET,
-                               parameter: nil,
+                               parameter: ["device" : "ios"],
                                mapping: PulsaCategoryRoot.mapping(),
                                onSuccess: { (mappingResult, operation) -> Void in
                                 let category = mappingResult.dictionary()[""] as! PulsaCategoryRoot
@@ -57,7 +57,7 @@ class PulsaRequest: NSObject {
             requestWithBaseUrl("https://pulsa-api.tokopedia.com",
                                path: "/v1/operator/list",
                                method: .GET,
-                               parameter: nil,
+                               parameter: ["device" : "ios"],
                                mapping: PulsaOperatorRoot.mapping(),
                                onSuccess: { (mappingResult, operation) -> Void in
                                 let operatorRoot = mappingResult.dictionary()[""] as! PulsaOperatorRoot
@@ -79,7 +79,7 @@ class PulsaRequest: NSObject {
             requestWithBaseUrl("https://pulsa-api.tokopedia.com",
                                path: "/v1/product/list",
                                method: .GET,
-                               parameter: ["operator_id" : operatorId, "category_id" : categoryId],
+                               parameter: ["operator_id" : operatorId, "category_id" : categoryId, "device" : "ios"],
                                mapping: PulsaProductRoot.mapping(),
                                onSuccess: { (mappingResult, operation) -> Void in
                                 let productRoot = mappingResult.dictionary()[""] as! PulsaProductRoot

@@ -19,11 +19,13 @@ class PulsaView: UIView {
     var buyButton: UIButton!
     var buttonsPlaceholder: UIView!
     var fieldPlaceholder: UIView!
+    var saldoButtonPlaceholder: UIView!
     var didPrefixEntered: ((operatorId: String, categoryId: String) -> Void)?
     var didTapAddressbook: ([APContact] -> Void)?
     var didTapProduct:([PulsaProduct] -> Void)?
     var phoneBook: UIImageView!
     let addressBook = APAddressBook()
+    var saldoSwitch = UISwitch()
     
     var selectedOperator = PulsaOperator()
     var selectedCategory = PulsaCategory()
@@ -143,7 +145,9 @@ class PulsaView: UIView {
             
             phoneBook.bk_whenTapped { [unowned self] in
                 self.addressBook.loadContacts({ (contacts: [APContact]?, error: NSError?) in
-                    self.didTapAddressbook!(contacts!)
+                    if((error == nil)) {
+                        self.didTapAddressbook!(contacts!)
+                    }
                 })
             }
         }
@@ -161,6 +165,41 @@ class PulsaView: UIView {
             make.left.equalTo()(self.mas_left)
             make.right.equalTo()(self.mas_right)
         }
+        
+        saldoButtonPlaceholder = UIView(frame: CGRectZero)
+        self.addSubview(saldoButtonPlaceholder)
+        saldoButtonPlaceholder.mas_makeConstraints { make in
+            make.top.equalTo()(self.numberErrorLabel.mas_bottom).offset()(3)
+            make.left.equalTo()(self.mas_left)
+            make.right.equalTo()(self.mas_right)
+            make.height.equalTo()(0)
+        }
+        
+        self.saldoSwitch = UISwitch(frame: CGRectZero)
+        self.saldoSwitch.on = false
+        self.saldoSwitch.hidden = true
+        
+        saldoButtonPlaceholder.addSubview(self.saldoSwitch)
+        
+        self.saldoSwitch.mas_makeConstraints { make in
+            make.height.equalTo()(self.saldoButtonPlaceholder.mas_height)
+            make.top.equalTo()(self.saldoButtonPlaceholder.mas_top).offset()(5)
+            make.right.equalTo()(self.mas_right)
+            make.width.equalTo()(51)
+        }
+        
+        
+        let saldoLabel = UILabel(frame: CGRectZero)
+        saldoLabel.text = "Bayar menggunakan saldo"
+        saldoLabel.textColor = UIColor.grayColor()
+        saldoButtonPlaceholder.addSubview(saldoLabel)
+        
+        saldoLabel.mas_makeConstraints { make in
+            make.height.equalTo()(self.saldoButtonPlaceholder.mas_height)
+            make.top.equalTo()(self.saldoButtonPlaceholder.mas_top)
+            make.right.equalTo()(self.saldoSwitch.mas_left).offset()(-10)
+        }
+        
     }
     
     func addActionNumberField() {
@@ -223,7 +262,7 @@ class PulsaView: UIView {
         self.addSubview(buttonsPlaceholder)
         
         buttonsPlaceholder.mas_makeConstraints { make in
-            make.top.equalTo()(self.numberErrorLabel.mas_bottom)
+            make.top.equalTo()(self.saldoButtonPlaceholder.mas_bottom)
             make.left.equalTo()(self.mas_left)
             make.right.equalTo()(self.mas_right)
         }
@@ -239,7 +278,7 @@ class PulsaView: UIView {
         
         productButton.mas_makeConstraints { make in
             make.height.equalTo()(0)
-            make.top.equalTo()(self.buttonsPlaceholder.mas_top).offset()(10)
+            make.top.equalTo()(self.buttonsPlaceholder.mas_top)
             make.left.equalTo()(self.mas_left)
             make.width.equalTo()(150)
             make.bottom.equalTo()(self.buttonsPlaceholder.mas_bottom)
@@ -262,7 +301,6 @@ class PulsaView: UIView {
         }
         
         buttonErrorLabel = UILabel(frame: CGRectZero)
-        buttonErrorLabel.text = "Error"
         buttonErrorLabel.textColor = UIColor.redColor()
         buttonErrorLabel.font = UIFont.init(name: "GothamBook", size: 12.0)
         self.addSubview(buttonErrorLabel)
@@ -273,6 +311,7 @@ class PulsaView: UIView {
             make.left.equalTo()(self.mas_left)
             make.right.equalTo()(self.mas_right)
         }
+        
     }
     
     func isValidNumber(number: String) -> Bool{
@@ -304,6 +343,11 @@ class PulsaView: UIView {
         buyButton.mas_updateConstraints { make in
             make.height.equalTo()(44)
         }
+        
+        saldoButtonPlaceholder.mas_updateConstraints { make in
+            make.height.equalTo()(self.selectedCategory.attributes.instant_checkout_available ? 44 : 0)
+        }
+        self.saldoSwitch.hidden = self.selectedCategory.attributes.instant_checkout_available ? false : true
         
         UIView.animateWithDuration(1.0, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.5, options: .CurveEaseInOut, animations: {
             self.productButton.hidden = false
@@ -356,7 +400,11 @@ class PulsaView: UIView {
             make.height.equalTo()(0)
         }
         
+        saldoButtonPlaceholder.mas_updateConstraints { make in
+            make.height.equalTo()(0)
+        }
         
+        self.saldoSwitch.hidden = true
         productButton.hidden = true
         buyButton.hidden = true
     }
