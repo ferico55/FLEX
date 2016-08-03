@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Foundation
 
 @IBDesignable
 @objc class HomePageViewController: UIViewController, iCarouselDelegate, SwipeViewDelegate {
@@ -146,7 +147,8 @@ import UIKit
     func requestTicker() {
         tickerRequest.fetchTicker({[weak self] (ticker) in
             if (ticker.tickers.count > 0) {
-                let tick = ticker.tickers[0]
+                let randomIndex = Int(arc4random_uniform(UInt32(ticker.tickers.count)))
+                let tick = ticker.tickers[randomIndex]
                 self!.tickerView = AnnouncementTickerView.newView()
                 self!.tickerView.setTitle(tick.title)
                 self!.tickerView.setMessage(tick.message)
@@ -191,4 +193,6 @@ import UIKit
         
         navigationController?.pushViewController(controller, animated: true)
     }
+    
+    
 }
