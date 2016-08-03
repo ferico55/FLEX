@@ -94,4 +94,8 @@
     [Localytics tagEvent:@"Login" attributes:@{@"success": status?@"Yes": @"No"}];
 }
 
++ (void)trackScreenName:(NSString *)screenName {
+    [Localytics tagScreen:screenName];
+}
+
 @end

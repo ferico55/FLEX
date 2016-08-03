@@ -36,7 +36,7 @@
     return self;
 }
 
-+ (void)trackScreenName:(NSString *)screeName {
++ (void)trackScreenName:(NSString *)screenName {
     TPAnalytics *analytics = [[self alloc] init];
     UserAuthentificationManager *auth = [UserAuthentificationManager new];
     if (auth.isLogin) {
@@ -52,19 +52,23 @@
             },
         };
         [analytics.dataLayer push:authenticatedData];
-        [analytics.dataLayer push:@{@"event": @"openScreen", @"screenName": screeName}];
+        [analytics.dataLayer push:@{@"event": @"openScreen", @"screenName": screenName}];
     }
+    
+    [TPLocalytics trackScreenName:screenName];
 }
 
-+ (void)trackScreenName:(NSString *)screeName gridType:(NSInteger)gridType {
-    if (!screeName || !gridType) return;
++ (void)trackScreenName:(NSString *)screenName gridType:(NSInteger)gridType {
+    if (!screenName || !gridType) return;
     TPAnalytics *analytics = [[self alloc] init];
     NSDictionary *data = @{
         @"event" : @"openScreen",
-        @"screenName" : screeName?:@"",
+        @"screenName" : screenName?:@"",
         @"gridType" : @(gridType)
     };
     [analytics.dataLayer push:data];
+    
+    [TPLocalytics trackScreenName:screenName];
 }
 
 + (void)trackUserId {

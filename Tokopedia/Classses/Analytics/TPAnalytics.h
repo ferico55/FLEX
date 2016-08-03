@@ -13,8 +13,8 @@
 
 @interface TPAnalytics : NSObject
 
-+ (void)trackScreenName:(NSString *)screeName;
-+ (void)trackScreenName:(NSString *)screeName gridType:(NSInteger)gridType;
++ (void)trackScreenName:(NSString *)screenName;
++ (void)trackScreenName:(NSString *)screenName gridType:(NSInteger)gridType;
 
 + (void)trackUserId;
 
