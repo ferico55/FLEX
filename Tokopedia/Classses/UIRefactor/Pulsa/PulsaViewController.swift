@@ -29,12 +29,23 @@ class PulsaViewController: UIViewController, UITextFieldDelegate {
         requestManager = PulsaRequest()
         requestManager.requestCategory()
         requestManager.didReceiveCategory = { [unowned self] categories in
-            self.pulsaView = PulsaView(categories: categories)
+            var sortedCategories = categories
+            sortedCategories.sortInPlace({
+                $0.attributes.weight < $1.attributes.weight
+            })
+            
+            self.pulsaView = PulsaView(categories: sortedCategories)
             self.pulsaView .attachToView(self.view2)
             
             self.requestManager.requestOperator()
             self.requestManager.didReceiveOperator = { operators in
-                self.didReceiveOperator(operators)
+                var sortedOperators = operators
+                
+                sortedOperators.sortInPlace({
+                    $0.attributes.weight < $1.attributes.weight
+                })
+                
+                self.didReceiveOperator(sortedOperators)
             }
         }
     }
@@ -76,7 +87,19 @@ class PulsaViewController: UIViewController, UITextFieldDelegate {
                         self.pulsaView.showBuyButton(products)
                         self.pulsaView.didTapProduct = { [unowned self] products in
                             let controller = PulsaProductViewController()
-                            controller.products = products
+                            var activeProducts: [PulsaProduct] = []
+                            
+                            products.map { product in
+                                if(product.attributes.status == 1) {
+                                    activeProducts.append(product)
+                                }
+                            }
+                            
+                            activeProducts.sortInPlace({
+                                $0.attributes.weight < $1.attributes.weight
+                            })
+                            
+                            controller.products = activeProducts
                             controller.didSelectProduct = { [unowned self] product in
                                 self.pulsaView.selectedProduct = product
                                 self.pulsaView.hideErrors()

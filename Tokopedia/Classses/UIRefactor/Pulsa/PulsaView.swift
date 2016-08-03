@@ -53,6 +53,8 @@ class PulsaView: UIView {
             pulsaCategoryControl.insertSegmentWithTitle(category.attributes.name, atIndex: index, animated: true)
         }
         
+        
+        
         self.addSubview(pulsaCategoryControl)
         pulsaCategoryControl.mas_makeConstraints { make in
             make.height.equalTo()(44)

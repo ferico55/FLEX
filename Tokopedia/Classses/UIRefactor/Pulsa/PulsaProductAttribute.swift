@@ -15,6 +15,7 @@ class PulsaProductAttribute: NSObject, NSCoding {
     var detail_url : String = ""
     var price : Int = 0
     var status : Int = 1
+    var weight : Int = 1
     var promo : PulsaProductPromo = PulsaProductPromo()
     
     static func attributeMappingDictionary() -> [NSObject : AnyObject]! {
@@ -25,6 +26,7 @@ class PulsaProductAttribute: NSObject, NSCoding {
             "detail_url"  : "detail_url",
             "price"  : "price",
             "status"  : "status",
+            "weight" : "weight"
         ]
     }
     
@@ -68,6 +70,10 @@ class PulsaProductAttribute: NSObject, NSCoding {
             self.status = status
         }
         
+        if let weight = aDecoder.decodeObjectForKey("weight") as? Int {
+            self.weight = weight
+        }
+        
         if let promo = aDecoder.decodeObjectForKey("promo") as? PulsaProductPromo {
             self.promo = promo
         }
@@ -75,6 +81,7 @@ class PulsaProductAttribute: NSObject, NSCoding {
     
     func encodeWithCoder(aCoder: NSCoder) {
         aCoder.encodeObject(desc, forKey: "desc")
+        aCoder.encodeObject(weight, forKey: "weight")
         aCoder.encodeObject(info, forKey: "info")
         aCoder.encodeObject(detail, forKey: "detail")
         aCoder.encodeObject(detail_url, forKey: "detail_url")
