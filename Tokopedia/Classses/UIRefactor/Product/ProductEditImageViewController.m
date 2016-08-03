@@ -36,15 +36,8 @@
     
     _section0Cells = [NSArray sortViewsWithTagInArray:_section0Cells];
     
-    _dataInput = [NSMutableDictionary new];
-    
-    [self setDefaultData:_data];
-    
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
-    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
-    barButtonItem.tag = 10;
-    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:nil];
+    self.navigationItem.backBarButtonItem = barButtonItem;
     
     /** keyboard notification **/
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
@@ -54,6 +47,8 @@
     [nc addObserver:self selector:@selector(keyboardWillHide:)
                name:UIKeyboardWillHideNotification
              object:nil];
+    
+    [self setAppearance];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -69,85 +64,34 @@
     // Dispose of any resources that can be recreated.
 }
 
--(void)setDefaultData:(NSDictionary*)data
-{
-    _data = data;
-    if (data) {
-        _productImageView.image = _uploadedImage;
-        
-        BOOL isDefaultImage = [[_data objectForKey:DATA_IS_DEFAULT_IMAGE]boolValue];
-        _defaultPictLabel.hidden = !isDefaultImage;
-        _setDefaultButton.hidden = isDefaultImage;
-        _isDefaultImage = isDefaultImage;
-        
-        NSString *productName = [_data objectForKey:DATA_PRODUCT_IMAGE_NAME_KEY];
-        _productNameTextField.text = productName;
-        
-        if (_isDefaultFromWS) {
-            _deleteImageButton.hidden = YES;
-        }
-    }
+-(void)setAppearance{
+    
+    _productImageView.image = _imageObject.image;
+    _defaultPictLabel.hidden = ![_imageObject.image_primary boolValue];
+    _setDefaultButton.hidden = [_imageObject.image_primary boolValue];
+    
+    _productNameTextField.text = _imageObject.image_description?:@"";
+    
+    _deleteImageButton.hidden = [_imageObject.image_primary boolValue];
 }
 
+
 #pragma mark - View Action
-- (IBAction)tap:(id)sender {
-    [_activeTextField resignFirstResponder];
-    if ([sender isKindOfClass:[UIButton class]]) {
-        UIButton *button = (UIButton*)sender;
-        switch (button.tag) {
-            case BUTTON_PRODUCT_DELETE_PRODUCT_IMAGE:
-            {
-                BOOL isDefaultImage = _isDefaultImage;
-                if (!_isDefaultFromWS && _type == TYPE_ADD_EDIT_PRODUCT_EDIT) {
-                    isDefaultImage = NO;
-                }
-                if (isDefaultImage) {
-                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:ERRORMESSAGE_INVALID_DELETE_PRODUCT_IMAGE delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                    [alertView show];
-                }
-                else{
-                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:CONFIRMATIONMESSAGE_DELETE_PRODUCT_IMAGE delegate:self cancelButtonTitle:@"Tidak" otherButtonTitles:@"Ya",nil];
-                    [alertView show];
-                }
-                break;
-            }
-            case BUTTON_PRODUCT_UPDATE_PRODUCT_IMAGE:
-            {
-                _photoPicker = [[TKPDPhotoPicker alloc] initWithSourceType:UIImagePickerControllerSourceTypeCamera
-                                                      parentViewController:self
-                                                     pickerTransitionStyle:UIModalTransitionStyleCrossDissolve];
-                _photoPicker.delegate = self;
-                break;
-            }
-            default:
-                break;
-        }
+- (IBAction)onTapDeleteImageButton:(id)sender {
+    if (self.deleteImageObject) {
+        self.deleteImageObject(_imageObject, _imageAsset);
     }
-    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
-        UIBarButtonItem *barButtonItem = (UIBarButtonItem*)sender;
-        switch (barButtonItem.tag) {
-            case BARBUTTON_PRODUCT_SAVE:
-                //[_delegate ProductEditImageViewController:self withUserInfo:];
-                break;
-            case BARBUTTON_PRODUCT_BACK:
-            {
-                [self.navigationController popViewControllerAnimated:YES];
-                break;
-            }
-            default:
-                break;
-        }
-    }
+    [self.navigationController popViewControllerAnimated:YES];
 }
-- (IBAction)gesture:(id)sender {
-    [_activeTextField resignFirstResponder];
-}
-- (IBAction)tapDefaultPict:(UIButton*)sender {
-    [_delegate setDefaultImage:_selectedImage];
-    
+
+
+- (IBAction)onTapDefaultPict:(UIButton*)sender {
     sender.hidden = YES;
     _defaultPictLabel.hidden = NO;
-    _isDefaultImage = YES;
+    _imageObject.image_primary = @"1";
+    if(self.defaultImageObject){
+        self.defaultImageObject(_imageObject);
+    }
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -224,9 +168,7 @@
 
 -(BOOL)textFieldShouldEndEditing:(UITextField *)textField
 {
-    NSString *productName = textField.text;
-    NSInteger indexImage = [[_data objectForKey:kTKPDDETAIL_DATAINDEXKEY]integerValue];
-    [_delegate setProductImageName:productName atIndex:indexImage];
+    _imageObject.image_description = textField.text;
     return YES;
 }
 
@@ -238,11 +180,7 @@
     UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
     _table.contentInset = contentInsets;
     _table.scrollIndicatorInsets = contentInsets;
-    
-    if (_activeTextField == _productNameTextField) {
-        [_table scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-    }
-
+    [_table scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 }
 
 - (void)keyboardWillHide:(NSNotification *)info {

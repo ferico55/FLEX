@@ -320,22 +320,65 @@ FilterCategoryViewDelegate
 }
 
 -(void)editImageDetailAtIndex:(NSUInteger)index{
-
-    NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
-    BOOL isDefaultImage = [_form.product_images[index].image_primary boolValue];
-
     ProductEditImageViewController *vc = [ProductEditImageViewController new];
-    vc.data = @{
-                kTKPDDETAIL_DATAINDEXKEY : @(index),
-                DATA_IS_DEFAULT_IMAGE : @(isDefaultImage),
-                DATA_PRODUCT_IMAGE_NAME_KEY : _form.product_images[index].image_description?:@"",
-                };
-    vc.uploadedImage = _form.product_images[index].image;
-    vc.delegate = self;
-//    vc.selectedImage = _selectedImages[index];
-    vc.isDefaultFromWS = (type == TYPE_ADD_EDIT_PRODUCT_EDIT && index == 0);
-    vc.type = type;
+    vc.imageObject = _form.product_images[index];
+    [vc setDefaultImageObject:^(ProductEditImages *imageObject) {
+        for (ProductEditImages *image in _form.product_images) {
+            if (![image isEqual:imageObject]) {
+                image.image_primary = @"0";
+            }
+        }
+        [self setImageButtons];
+    }];
+    [vc setDeleteImageObject:^(ProductEditImages *imageObject, DKAsset *imageAsset) {
+
+        [self deleteImageObject:imageObject withImageAsset:imageAsset];
+        if (!imageObject.isFromAsset) {
+            [self fetchDeleteImageObject:imageObject withImageAsset:imageAsset atIndex:index];
+        }
+    }];
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+-(void)deleteImageObject:(ProductEditImages*)imageObject withImageAsset:(DKAsset*)imageAsset{
+    NSMutableArray *images = [NSMutableArray new];
+    for (ProductEditImages *image in _form.product_images) {
+        if (![image isEqual:imageObject]) {
+            [images addObject:image];
+        }
+    }
+    _form.product_images = [images copy];
+    
+    if (imageAsset) {
+        [_selectedAsset removeObject:imageAsset];
+    }
+    
+    [self setImageButtons];
+}
+
+-(void)fetchDeleteImageObject:(ProductEditImages*)imageObject withImageAsset:(DKAsset*)imageAsset atIndex:(NSUInteger)index{
+    [self enableButtonBeforeSuccessRequest:NO];
+    [RequestAddEditProduct fetchDeleteProductImageObject:imageObject productID:_form.product.product_id shopID:[self getShopID] onSuccess:^{
+        [self enableButtonBeforeSuccessRequest:YES];
+        [[NSNotificationCenter defaultCenter] postNotificationName:ADD_PRODUCT_POST_NOTIFICATION_NAME object:nil];
+    } onFailure:^{
+        [self insertImageObject:imageObject withImageAsset:imageAsset atIndex:index];
+        [self enableButtonBeforeSuccessRequest:YES];
+    }];
+}
+
+-(void)insertImageObject:(ProductEditImages*)imageObject withImageAsset:(DKAsset*)imageAsset atIndex:(NSUInteger)index{
+    NSMutableArray *images = [NSMutableArray new];
+    [images addObjectsFromArray:_form.product_images];
+
+    [images insertObject:imageObject atIndex:index];
+    _form.product_images = [images copy];
+    
+    if (imageAsset) {
+        [_selectedAsset addObject:imageAsset];
+    }
+    
+    [self setImageButtons];
 }
 
 -(void)selectImageFromCameraOrAlbum{
@@ -765,10 +808,10 @@ FilterCategoryViewDelegate
         [button setBackgroundImage:[UIImage imageNamed:@"icon_upload_image.png"] forState:UIControlStateNormal];
     }
     for (int i = 0; i<_form.product_images.count; i++) {
-        ((UIButton*)_addImageButtons[i]).hidden = NO;
-        
-        [_addImageButtons[i] setBackgroundImage:_form.product_images[i].image forState:UIControlStateNormal];
-        
+        if (i<_addImageButtons.count) {
+            ((UIButton*)_addImageButtons[i]).hidden = NO;
+            [_addImageButtons[i] setBackgroundImage:_form.product_images[i].image forState:UIControlStateNormal];
+        }
     }
     if (_form.product_images.count<_addImageButtons.count) {
         UIButton *uploadedButton = (UIButton*)_addImageButtons[_form.product_images.count];
@@ -816,7 +859,7 @@ FilterCategoryViewDelegate
             
             NSInteger index = [[alertView.data objectForKey:DATA_INDEX_KEY] integerValue];
             
-            NSInteger previousValue = [[_dataInput objectForKey:API_PRODUCT_PRICE_CURRENCY_ID_KEY]integerValue];
+            NSInteger previousValue = [_form.product.product_currency_id integerValue];
             
             NSInteger value = [[ARRAY_PRICE_CURRENCY[index] objectForKey:DATA_VALUE_KEY] integerValue];
             NSString *name = [ARRAY_PRICE_CURRENCY[index] objectForKey:DATA_NAME_KEY];
@@ -887,7 +930,7 @@ FilterCategoryViewDelegate
     }
     if (textField == _productPriceTextField) {
         NSString *productPrice;
-        NSInteger currency = [[_dataInput objectForKey:API_PRODUCT_PRICE_CURRENCY_ID_KEY]integerValue];
+        NSInteger currency = [_form.product.product_currency_id integerValue];
         BOOL isIDRCurrency = (currency == PRICE_CURRENCY_ID_RUPIAH);
         if (isIDRCurrency)
         {

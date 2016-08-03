@@ -70,7 +70,7 @@ import UIKit
         }
     }
     
-    class func fetchDeleteProductPictID(pictureID:String, productID:String, shopID:String, onSuccess: (() -> Void), onFailure:(()->Void)) {
+    class func fetchDeleteProductImageObject(imageObject:ProductEditImages, productID:String, shopID:String, onSuccess: (() -> Void), onFailure:(()->Void)) {
         
         let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
@@ -78,7 +78,7 @@ import UIKit
         let param : Dictionary = [
             "product_id"  : productID,
             "shop_id"     : shopID,
-            "picture_id"  : pictureID
+            "picture_id"  : imageObject.image_id
         ]
         
         networkManager.requestWithBaseUrl(NSString .v4Url(),
