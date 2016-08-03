@@ -2429,6 +2429,14 @@
 		BB75F53B1D508CAD00196BCE /* ResolutionProductResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = BB75F53A1D508CAB00196BCE /* ResolutionProductResponse.m */; };
 		BB75F53E1D508D0B00196BCE /* ResolutionProductData.m in Sources */ = {isa = PBXBuildFile; fileRef = BB75F53D1D508D0B00196BCE /* ResolutionProductData.m */; };
 		BB75F5411D508D9900196BCE /* ResolutionProductList.m in Sources */ = {isa = PBXBuildFile; fileRef = BB75F5401D508D9900196BCE /* ResolutionProductList.m */; };
+		BB75F5481D50921200196BCE /* ResolutionCenterCreateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB75F5461D50921200196BCE /* ResolutionCenterCreateViewController.m */; };
+		BB75F5491D50921200196BCE /* ResolutionCenterCreateViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB75F5471D50921200196BCE /* ResolutionCenterCreateViewController.xib */; };
+		BB75F54D1D518CA500196BCE /* ResolutionCenterCreateStepOneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB75F54B1D518CA500196BCE /* ResolutionCenterCreateStepOneViewController.m */; };
+		BB75F54E1D518CA600196BCE /* ResolutionCenterCreateStepOneViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB75F54C1D518CA500196BCE /* ResolutionCenterCreateStepOneViewController.xib */; };
+		BB75F5521D518CF600196BCE /* ResolutionCenterCreateStepTwoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB75F5501D518CF600196BCE /* ResolutionCenterCreateStepTwoViewController.m */; };
+		BB75F5531D518CF600196BCE /* ResolutionCenterCreateStepTwoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB75F5511D518CF600196BCE /* ResolutionCenterCreateStepTwoViewController.xib */; };
+		BB75F5571D518D0D00196BCE /* ResolutionCenterCreateStepThreeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB75F5551D518D0D00196BCE /* ResolutionCenterCreateStepThreeViewController.m */; };
+		BB75F5581D518D0D00196BCE /* ResolutionCenterCreateStepThreeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB75F5561D518D0D00196BCE /* ResolutionCenterCreateStepThreeViewController.xib */; };
 		F25F6F270D531ED13A92CDB9 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4868E459AB2A65D133732296 /* libPods-Tokopedia.a */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
 		FC23B85A1ACD659900879D75 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8581ACD659900879D75 /* Fabric.framework */; };
@@ -6046,6 +6054,18 @@
 		BB75F53D1D508D0B00196BCE /* ResolutionProductData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionProductData.m; sourceTree = "<group>"; };
 		BB75F53F1D508D9900196BCE /* ResolutionProductList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionProductList.h; sourceTree = "<group>"; };
 		BB75F5401D508D9900196BCE /* ResolutionProductList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionProductList.m; sourceTree = "<group>"; };
+		BB75F5451D50921200196BCE /* ResolutionCenterCreateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionCenterCreateViewController.h; sourceTree = "<group>"; };
+		BB75F5461D50921200196BCE /* ResolutionCenterCreateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionCenterCreateViewController.m; sourceTree = "<group>"; };
+		BB75F5471D50921200196BCE /* ResolutionCenterCreateViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ResolutionCenterCreateViewController.xib; sourceTree = "<group>"; };
+		BB75F54A1D518CA500196BCE /* ResolutionCenterCreateStepOneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionCenterCreateStepOneViewController.h; sourceTree = "<group>"; };
+		BB75F54B1D518CA500196BCE /* ResolutionCenterCreateStepOneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionCenterCreateStepOneViewController.m; sourceTree = "<group>"; };
+		BB75F54C1D518CA500196BCE /* ResolutionCenterCreateStepOneViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ResolutionCenterCreateStepOneViewController.xib; sourceTree = "<group>"; };
+		BB75F54F1D518CF600196BCE /* ResolutionCenterCreateStepTwoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionCenterCreateStepTwoViewController.h; sourceTree = "<group>"; };
+		BB75F5501D518CF600196BCE /* ResolutionCenterCreateStepTwoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionCenterCreateStepTwoViewController.m; sourceTree = "<group>"; };
+		BB75F5511D518CF600196BCE /* ResolutionCenterCreateStepTwoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ResolutionCenterCreateStepTwoViewController.xib; sourceTree = "<group>"; };
+		BB75F5541D518D0D00196BCE /* ResolutionCenterCreateStepThreeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionCenterCreateStepThreeViewController.h; sourceTree = "<group>"; };
+		BB75F5551D518D0D00196BCE /* ResolutionCenterCreateStepThreeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionCenterCreateStepThreeViewController.m; sourceTree = "<group>"; };
+		BB75F5561D518D0D00196BCE /* ResolutionCenterCreateStepThreeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ResolutionCenterCreateStepThreeViewController.xib; sourceTree = "<group>"; };
 		C8A1445074FECD393EA18C17 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		FC23B8571ACD659900879D75 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		FC23B8581ACD659900879D75 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
@@ -12136,6 +12156,18 @@
 				BB75F53D1D508D0B00196BCE /* ResolutionProductData.m */,
 				BB75F53F1D508D9900196BCE /* ResolutionProductList.h */,
 				BB75F5401D508D9900196BCE /* ResolutionProductList.m */,
+				BB75F5451D50921200196BCE /* ResolutionCenterCreateViewController.h */,
+				BB75F5461D50921200196BCE /* ResolutionCenterCreateViewController.m */,
+				BB75F5471D50921200196BCE /* ResolutionCenterCreateViewController.xib */,
+				BB75F54A1D518CA500196BCE /* ResolutionCenterCreateStepOneViewController.h */,
+				BB75F54B1D518CA500196BCE /* ResolutionCenterCreateStepOneViewController.m */,
+				BB75F54C1D518CA500196BCE /* ResolutionCenterCreateStepOneViewController.xib */,
+				BB75F54F1D518CF600196BCE /* ResolutionCenterCreateStepTwoViewController.h */,
+				BB75F5501D518CF600196BCE /* ResolutionCenterCreateStepTwoViewController.m */,
+				BB75F5511D518CF600196BCE /* ResolutionCenterCreateStepTwoViewController.xib */,
+				BB75F5541D518D0D00196BCE /* ResolutionCenterCreateStepThreeViewController.h */,
+				BB75F5551D518D0D00196BCE /* ResolutionCenterCreateStepThreeViewController.m */,
+				BB75F5561D518D0D00196BCE /* ResolutionCenterCreateStepThreeViewController.xib */,
 			);
 			path = ResolutionCenter;
 			sourceTree = "<group>";
@@ -12539,6 +12571,7 @@
 				45485B481D4B0A3F001B10CD /* TrackOrderViewController.xib in Resources */,
 				45485D061D4B0A40001B10CD /* icon_info@2x.png in Resources */,
 				45485ED81D4B0A40001B10CD /* ic_search.png in Resources */,
+				BB75F5581D518D0D00196BCE /* ResolutionCenterCreateStepThreeViewController.xib in Resources */,
 				45485F111D4B0A40001B10CD /* icon_lihat_komplain@2x.png in Resources */,
 				45485C631D4B0A40001B10CD /* icon_button_favorite_nonactive@2x.png in Resources */,
 				45485E331D4B0A40001B10CD /* icon_trash@2x.png in Resources */,
@@ -13276,6 +13309,7 @@
 				45485DD81D4B0A40001B10CD /* icon_shop_grey.png in Resources */,
 				45485C801D4B0A40001B10CD /* icon_cart_active@2x.png in Resources */,
 				45485AF31D4B0A3F001B10CD /* EditShopNoteViewCell.xib in Resources */,
+				BB75F54E1D518CA600196BCE /* ResolutionCenterCreateStepOneViewController.xib in Resources */,
 				45485C581D4B0A40001B10CD /* icon_arrow_white_up@3x.png in Resources */,
 				45485C931D4B0A40001B10CD /* icon_3@3x.png in Resources */,
 				45485E0A1D4B0A40001B10CD /* icon_speed_grey@3x.png in Resources */,
@@ -13297,6 +13331,7 @@
 				45485E5F1D4B0A40001B10CD /* icon_signin_active.png in Resources */,
 				45485B061D4B0A3F001B10CD /* ShopInfoAddressView.xib in Resources */,
 				454859881D4B0A3F001B10CD /* ReviewFormViewController.xib in Resources */,
+				BB75F5491D50921200196BCE /* ResolutionCenterCreateViewController.xib in Resources */,
 				454858F01D4B0A3F001B10CD /* NoResultView.xib in Resources */,
 				45485B621D4B0A3F001B10CD /* TransactionCartFormMandiriClickPayViewController.xib in Resources */,
 				45485E2F1D4B0A40001B10CD /* icon_toped_loading_grey@2x.png in Resources */,
@@ -13306,6 +13341,7 @@
 				45485D4D1D4B0A40001B10CD /* icon_nav_arrow_up.png in Resources */,
 				45485C4F1D4B0A40001B10CD /* icon_arrow_up.png in Resources */,
 				45485D2D1D4B0A40001B10CD /* icon_medal_diamond@2x.png in Resources */,
+				BB75F5531D518CF600196BCE /* ResolutionCenterCreateStepTwoViewController.xib in Resources */,
 				454858651D4B0A3F001B10CD /* AlertDatePickerView.xib in Resources */,
 				45485EE41D4B0A40001B10CD /* icon_hotlist@3x.png in Resources */,
 				45485D7B1D4B0A40001B10CD /* icon_no_data_grey.png in Resources */,
@@ -13909,6 +13945,7 @@
 				454857551D4B0A3F001B10CD /* OrderCustomer.m in Sources */,
 				454858021D4B0A3F001B10CD /* TxOrderCancelPaymentFormForm.m in Sources */,
 				454855F91D4B0A3F001B10CD /* NSArrayCategory.m in Sources */,
+				BB75F5481D50921200196BCE /* ResolutionCenterCreateViewController.m in Sources */,
 				454859DD1D4B0A3F001B10CD /* PriceAlertRequest.m in Sources */,
 				45485A621D4B0A3F001B10CD /* ReputationPageViewController.m in Sources */,
 				454857EF1D4B0A3F001B10CD /* TxOrderConfirmationResult.m in Sources */,
@@ -14025,6 +14062,7 @@
 				45485A1F1D4B0A3F001B10CD /* GiveReviewRatingViewController.m in Sources */,
 				45485B141D4B0A3F001B10CD /* EtalaseViewController.m in Sources */,
 				454856CD1D4B0A3F001B10CD /* InboxReview.m in Sources */,
+				BB75F5521D518CF600196BCE /* ResolutionCenterCreateStepTwoViewController.m in Sources */,
 				454856FB1D4B0A3F001B10CD /* MyReviewReputation.m in Sources */,
 				45485AD31D4B0A3F001B10CD /* ProfileSettingViewController.m in Sources */,
 				454856B31D4B0A3F001B10CD /* InboxMessageActionResult.m in Sources */,
@@ -14143,6 +14181,7 @@
 				454857D01D4B0A3F001B10CD /* LuckyDealData.m in Sources */,
 				45485A331D4B0A3F001B10CD /* MyReviewDetailViewController.m in Sources */,
 				454856D71D4B0A3F001B10CD /* ConversationViewModel.m in Sources */,
+				BB75F54D1D518CA500196BCE /* ResolutionCenterCreateStepOneViewController.m in Sources */,
 				45485B3A1D4B0A3F001B10CD /* TKPInfoWindowMapView.swift in Sources */,
 				454857161D4B0A3F001B10CD /* ProductEditInfo.swift in Sources */,
 				454858171D4B0A3F001B10CD /* TxOrderPaymentEditResult.m in Sources */,
@@ -14266,6 +14305,7 @@
 				454858F91D4B0A3F001B10CD /* TKPDTextView.m in Sources */,
 				45485A511D4B0A3F001B10CD /* PromoCollectionReusableView.m in Sources */,
 				45485B611D4B0A3F001B10CD /* TransactionCartFormMandiriClickPayViewController.m in Sources */,
+				BB75F5571D518D0D00196BCE /* ResolutionCenterCreateStepThreeViewController.m in Sources */,
 				454856E31D4B0A3F001B10CD /* RatingResponse.m in Sources */,
 				454856971D4B0A3F001B10CD /* GoogleDistanceMatrixDuration.m in Sources */,
 				454857621D4B0A3F001B10CD /* WarehouseResponse.m in Sources */,
