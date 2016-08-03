@@ -120,6 +120,8 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.title = _isEdit ? @"Ubah Ulasan" : @"Tulis Ulasan";
+    
+    [TPAnalytics trackScreenName:@"Give Review Detail Page"];
 }
 
 - (void)setAttachedPictures {
