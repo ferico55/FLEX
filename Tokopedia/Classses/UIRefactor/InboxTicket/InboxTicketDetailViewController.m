@@ -643,7 +643,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
                 self.inboxTicket.ticket_show_more_messages = YES;
             }
         } else {
-            if ([_ticketInformation.ticket_total_message integerValue] > 2) {
+            if ([response.result.ticket_reply.ticket_reply_total_data integerValue] > 2) {
                 self.inboxTicket.ticket_show_more_messages = YES;
             }
         }
@@ -686,18 +686,15 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     
     // Ticket not closed
     if ([_ticketInformation.ticket_status isEqualToString:@"1"]) {
-        if (IS_INBOX_TICKET_CAN_CLOSE_CASE)
-        {
-            if ([_ticketInformation.ticket_respond_status isEqualToString:@"0"]) {
-                [self showView:_buttonsView];
+        if ([_ticketInformation.ticket_respond_status isEqualToString:@"0"]) {
+            [self showView:_buttonsView];
+        } else {
+            if ([_ticketInformation.ticket_is_replied boolValue]) {
+                // Right now disable all open ticket
+                 [self showView:_reopenTicketAfterReplyView];
             } else {
-                if ([_ticketInformation.ticket_is_replied boolValue]) {
-                    // Right now disable all open ticket
-                     [self showView:_reopenTicketAfterReplyView];
-                } else {
-                    // Show reopen ticket
-                     [self showView:_reopenTicketView];
-                }
+                // Show reopen ticket
+                 [self showView:_reopenTicketView];
             }
         }
     }
@@ -721,6 +718,10 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
                         [self showView:_ratingView];
                     }
                 }
+                else
+                {
+                    [self hideAllView];
+                }
                 
             }
             
@@ -731,11 +732,8 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
                 // Ticket closed, rated the ticket, but still can open ticket
                 if ([_ticketInformation.ticket_show_reopen_btn boolValue]) {
                     
-                    if (IS_INBOX_TICKET_CAN_CLOSE_CASE)
-                    {
-                        // Show reopen ticket
-                         [self showView:_reopenTicketView];
-                    }
+                    // Show reopen ticket
+                    [self showView:_reopenTicketView];
 
                 } else {
                     [self showTicketRating:_ticketInformation];
@@ -749,11 +747,8 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
                 [_ticketInformation.ticket_respond_status isEqualToString:@"2"]) {
                 
                 if ([_ticketInformation.ticket_show_reopen_btn boolValue]) {
-                    if (IS_INBOX_TICKET_CAN_CLOSE_CASE)
-                    {
-                        // Show reopen ticket
-                         [self showView:_reopenTicketView];
-                    }
+                    // Show reopen ticket
+                    [self showView:_reopenTicketView];
                 } else {
                     [self showTicketRating:_ticketInformation];
                 }
@@ -779,6 +774,13 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
         self.inboxTicket.ticket_status = _ticketInformation.ticket_status;
         self.inboxTicket.ticket_read_status = _ticketInformation.ticket_read_status;
         [self.delegate updateInboxTicket:self.inboxTicket];
+    }
+    
+    if (!IS_INBOX_TICKET_CAN_CLOSE_CASE)
+    {
+        _lastCloseButton.hidden = YES;
+        _closeTicketButton.hidden = YES;
+        _cloesAfterCSButton.hidden = YES;
     }
     
     [[NSNotificationCenter defaultCenter] postNotificationName:TKPDInboxTicketReceiveData object:nil];

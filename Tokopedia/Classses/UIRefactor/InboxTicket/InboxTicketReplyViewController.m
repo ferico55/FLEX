@@ -232,7 +232,7 @@
             [indicatorView startAnimating];
             UIBarButtonItem *indicatorBarButton = [[UIBarButtonItem alloc] initWithCustomView:indicatorView];
             self.navigationItem.rightBarButtonItem = indicatorBarButton;
-                        [_firstStepNetworkManager doRequest];
+            [_firstStepNetworkManager doRequest];
         } else {
             NSString *errorMessage = @"Anda belum selesai mengunggah gambar";
             StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[errorMessage] delegate:self];
