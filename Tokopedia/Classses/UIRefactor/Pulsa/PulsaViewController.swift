@@ -11,7 +11,7 @@ import Foundation
 
 @objc(PulsaViewController)
 
-class PulsaViewController: UIViewController, UITextFieldDelegate {
+class PulsaViewController: UIViewController, UITextFieldDelegate, LoginViewDelegate {
     var cache: PulsaCache = PulsaCache()
     var prefixes = Dictionary<String, Dictionary<String, String>>()
 
@@ -43,6 +43,21 @@ class PulsaViewController: UIViewController, UITextFieldDelegate {
             
             self.pulsaView = PulsaView(categories: sortedCategories)
             self.pulsaView .attachToView(self.view2)
+            self.pulsaView.didAskedForLogin = {
+                let navigation = UINavigationController()
+                navigation.navigationBar.backgroundColor = UIColor(red: (18.0/255.0), green: (199.0/255.0), blue: (0/255.0), alpha: 1)
+                navigation.navigationBar.translucent = false
+                navigation.navigationBar.tintColor = UIColor.whiteColor()
+                
+                let controller = LoginViewController()
+                controller.isPresentedViewController = true
+                controller.redirectViewController = self
+                controller.delegate = self
+                
+                navigation.viewControllers = [controller]
+                
+                self.navigationController?.presentViewController(navigation, animated: true, completion: nil)
+            }
             
             self.requestManager.requestOperator()
             self.requestManager.didReceiveOperator = { operators in
@@ -150,6 +165,10 @@ class PulsaViewController: UIViewController, UITextFieldDelegate {
         }
         
         return foundOperator
+    }
+    
+    func redirectViewController(viewController: AnyObject!) {
+        
     }
     
 }

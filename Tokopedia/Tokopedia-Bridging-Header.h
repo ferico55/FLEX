@@ -62,4 +62,6 @@
 #import <BlocksKit/BlocksKit.h>
 #import <BlocksKit/BlocksKit+UIKit.h>
 #import <APAddressBook/APAddressBook-Bridging.h>
+#import "GAITrackedViewController.h"
+#import "LoginViewController.h"
 

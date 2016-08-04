@@ -23,6 +23,7 @@ class PulsaView: UIView {
     var didPrefixEntered: ((operatorId: String, categoryId: String) -> Void)?
     var didTapAddressbook: ([APContact] -> Void)?
     var didTapProduct:([PulsaProduct] -> Void)?
+    var didAskedForLogin: (Void -> Void)?
     var phoneBook: UIImageView!
     let addressBook = APAddressBook()
     var saldoSwitch = UISwitch()
@@ -387,6 +388,13 @@ class PulsaView: UIView {
             
             if(self.isValidNominal() && self.isValidNumber(self.numberField.text!)) {
                 self.hideErrors()
+                
+                let userManager = UserAuthentificationManager()
+                if(!userManager.isLogin) {
+                    self.didAskedForLogin!()
+                } else {
+                    //open scrooge
+                }
             }
         }, forControlEvents: .TouchUpInside)
     }
