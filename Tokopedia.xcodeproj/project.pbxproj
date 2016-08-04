@@ -2416,6 +2416,8 @@
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
 		85C494BF1AD790DD008A314A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BE1AD790DD008A314A /* libz.dylib */; };
 		85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494C01AD790E4008A314A /* CoreData.framework */; };
+		BB20194F1D534321001673D9 /* ResolutionCenterCreateStepTwoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BB20194D1D534321001673D9 /* ResolutionCenterCreateStepTwoCell.m */; };
+		BB2019501D534321001673D9 /* ResolutionCenterCreateStepTwoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB20194E1D534321001673D9 /* ResolutionCenterCreateStepTwoCell.xib */; };
 		BB593B221D51C61A0027C73E /* ResolutionCenterCreateStepOneCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BB593B201D51C61A0027C73E /* ResolutionCenterCreateStepOneCell.m */; };
 		BB593B231D51C61A0027C73E /* ResolutionCenterCreateStepOneCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB593B211D51C61A0027C73E /* ResolutionCenterCreateStepOneCell.xib */; };
 		BB593B251D51C7A50027C73E /* badge_prosecure.png in Resources */ = {isa = PBXBuildFile; fileRef = BB593B241D51C7A50027C73E /* badge_prosecure.png */; };
@@ -6035,6 +6037,9 @@
 		85C494BE1AD790DD008A314A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		85C494C01AD790E4008A314A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		AAA12C6A69BF6CB5F8EE3287 /* Pods-Tokopedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug.xcconfig"; sourceTree = "<group>"; };
+		BB20194C1D534321001673D9 /* ResolutionCenterCreateStepTwoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionCenterCreateStepTwoCell.h; sourceTree = "<group>"; };
+		BB20194D1D534321001673D9 /* ResolutionCenterCreateStepTwoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionCenterCreateStepTwoCell.m; sourceTree = "<group>"; };
+		BB20194E1D534321001673D9 /* ResolutionCenterCreateStepTwoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ResolutionCenterCreateStepTwoCell.xib; sourceTree = "<group>"; };
 		BB593B1F1D51C61A0027C73E /* ResolutionCenterCreateStepOneCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionCenterCreateStepOneCell.h; sourceTree = "<group>"; };
 		BB593B201D51C61A0027C73E /* ResolutionCenterCreateStepOneCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionCenterCreateStepOneCell.m; sourceTree = "<group>"; };
 		BB593B211D51C61A0027C73E /* ResolutionCenterCreateStepOneCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ResolutionCenterCreateStepOneCell.xib; sourceTree = "<group>"; };
@@ -12187,6 +12192,9 @@
 				BB593B2B1D51F4BF0027C73E /* ResolutionCenterChooseProblemViewController.h */,
 				BB593B2C1D51F4BF0027C73E /* ResolutionCenterChooseProblemViewController.m */,
 				BB593B2D1D51F4BF0027C73E /* ResolutionCenterChooseProblemViewController.xib */,
+				BB20194C1D534321001673D9 /* ResolutionCenterCreateStepTwoCell.h */,
+				BB20194D1D534321001673D9 /* ResolutionCenterCreateStepTwoCell.m */,
+				BB20194E1D534321001673D9 /* ResolutionCenterCreateStepTwoCell.xib */,
 			);
 			path = ResolutionCenter;
 			sourceTree = "<group>";
@@ -13167,6 +13175,7 @@
 				4548597C1D4B0A3F001B10CD /* ResolutionCenterInputViewController.xib in Resources */,
 				454859641D4B0A3F001B10CD /* InboxMessageViewController.xib in Resources */,
 				45485B511D4B0A3F001B10CD /* TransactionShipmentATCTableViewCell.xib in Resources */,
+				BB2019501D534321001673D9 /* ResolutionCenterCreateStepTwoCell.xib in Resources */,
 				454859861D4B0A3F001B10CD /* InboxReviewViewController.xib in Resources */,
 				45485EC21D4B0A40001B10CD /* icon_category_active.png in Resources */,
 				45485BFD1D4B0A40001B10CD /* icon_1.png in Resources */,
@@ -14111,6 +14120,7 @@
 				4548567E1D4B0A3F001B10CD /* Statistic.m in Sources */,
 				4548563F1D4B0A3F001B10CD /* AddressObj.m in Sources */,
 				454856BA1D4B0A3F001B10CD /* ResolutionAction.m in Sources */,
+				BB20194F1D534321001673D9 /* ResolutionCenterCreateStepTwoCell.m in Sources */,
 				454856411D4B0A3F001B10CD /* AddressResult.m in Sources */,
 				45485AF51D4B0A3F001B10CD /* EditShopTypeViewCell.m in Sources */,
 				4548579E1D4B0A3F001B10CD /* ShopCloseDetail.m in Sources */,
