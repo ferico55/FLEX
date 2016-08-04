@@ -19,7 +19,6 @@
 @property (weak, nonatomic) IBOutlet UITextField *productPriceTextField;
 
 @property (copy, nonatomic) void (^removeWholesale)(WholesalePrice *wholesale);
-@property (copy, nonatomic) void (^editWholesale)(WholesalePrice *wholesale);
 
 @end
 
@@ -66,9 +65,6 @@
 }
 - (IBAction)didEndEditingMax:(UITextField *)textField {
     _wholesale.wholesale_max = textField.text;
-    if (self.editWholesale) {
-        self.editWholesale(_wholesale);
-    }
 }
 
 - (IBAction)didEndEditingPrice:(UITextField *)textField {
@@ -79,16 +75,10 @@
         price = [[NSNumberFormatter USDFormarter] numberFromString:textField.text];
 
     _wholesale.wholesale_price = [price stringValue];
-    if (self.editWholesale) {
-        self.editWholesale(_wholesale);
-    }
 }
 
 - (IBAction)didEndEditingMin:(UITextField *)textField {
     _wholesale.wholesale_min = textField.text;
-    if (self.editWholesale) {
-        self.editWholesale(_wholesale);
-    }
 }
 
 #pragma mark - Textfield Delegate

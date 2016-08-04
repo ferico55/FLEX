@@ -117,10 +117,6 @@
         [wself removeCell:cellWholesale atIndexPath:indexPath];
     }];
     
-    [cell setEditWholesale:^(WholesalePrice *wholesale) {
-        
-    }];
-
     return cell;
 
 }

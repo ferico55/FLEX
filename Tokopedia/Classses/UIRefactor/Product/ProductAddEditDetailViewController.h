@@ -10,19 +10,9 @@
 
 @class ProductEditResult;
 
-@class ProductAddEditDetailViewController;
-
 #pragma mark - Product Edit Detail Delegate
-@protocol ProductEditDetailViewControllerDelegate <NSObject>
-@optional
--(void)DidEditReturnableNote;
-
-@end
 
 @interface ProductAddEditDetailViewController : UIViewController
-
-@property (nonatomic, weak) IBOutlet id<ProductEditDetailViewControllerDelegate> delegate;
-
 @property ProductEditResult* form;
 @property NSInteger type;
 

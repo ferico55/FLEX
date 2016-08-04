@@ -23,6 +23,5 @@
 +(id)newcell;
 
 - (void)setRemoveWholesale:(void (^)(WholesalePrice *wholesale))removeWholesale;
-- (void)setEditWholesale:(void (^)(WholesalePrice *wholesale))editWholesales;
 
 @end

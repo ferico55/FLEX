@@ -30,7 +30,6 @@ UITableViewDataSource,
 UITableViewDelegate,
 TKPDAlertViewDelegate,
 CategoryMenuViewDelegate,
-ProductEditDetailViewControllerDelegate,
 GeneralTableViewControllerDelegate,
 FilterCategoryViewDelegate
 >
@@ -98,15 +97,13 @@ FilterCategoryViewDelegate
         UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
                                                                           style:UIBarButtonItemStyleBordered
                                                                          target:self
-                                                                         action:@selector(tap:)];
-        barButtonItem.tag = 10;
+                                                                         action:@selector(onTapBackBarButton:)];
         self.navigationItem.leftBarButtonItem = barButtonItem;
     } else {
         UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
                                                                           style:UIBarButtonItemStyleBordered
                                                                          target:self
                                                                          action:nil];
-        barButtonItem.tag = 10;
         self.navigationItem.backBarButtonItem = barButtonItem;
     }
     

@@ -58,9 +58,6 @@ NSString * const ProductStatusWarehouse = @"3";
 {
     [super viewDidLoad];
     
-    [self adjustBarButton];
-    [self adjustReturnableNotesLabel];
-    
     _processingAlert = [[UIAlertView alloc]initWithTitle:nil message:@"Uploading..." delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
     
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
@@ -76,28 +73,7 @@ NSString * const ProductStatusWarehouse = @"3";
                name:DID_UPDATE_SHOP_HAS_TERM_NOTIFICATION_NAME
              object:nil];
     
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                                      style:UIBarButtonItemStyleBordered
-                                                                     target:self
-                                                                     action:nil];
-    barButtonItem.tag = 10;
-    self.navigationItem.backBarButtonItem = barButtonItem;
     [self setAppearance];
-}
-
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    UITableViewCell *returnableCell = (UITableViewCell*)_section0TableViewCell[1];
-    
-    if (_form.info.shop_has_terms) {
-        returnableCell.detailTextLabel.textColor = TEXT_COLOUR_ENABLE;
-    }
-    else
-    {
-        returnableCell.detailTextLabel.textColor = TEXT_COLOUR_DISABLE;
-    }
 }
 
 #pragma mark - Memory Management
@@ -574,11 +550,6 @@ NSString * const ProductStatusWarehouse = @"3";
 
 
 #pragma mark - Methods
--(void)setShopHasTerm:(NSString *)shopHasTerm
-{
-    _form.info.shop_has_terms = shopHasTerm;
-}
-
 -(void)setAppearance {
     ProductEditDetail *product = _form.product;
 
@@ -618,11 +589,6 @@ NSString * const ProductStatusWarehouse = @"3";
                              range:[_pengembalianProductLabel.text rangeOfString:_pengembalianProductLabel.text]];
     
     _pengembalianProductLabel.attributedText = attributedString;
-}
-
--(void)didEditNote:(NSNotification*)notification
-{
-    [_delegate DidEditReturnableNote];
 }
 
 -(void)didUpdateShopHasTerms:(NSNotification*)notification
