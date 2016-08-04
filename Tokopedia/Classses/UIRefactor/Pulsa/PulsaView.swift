@@ -199,6 +199,7 @@ class PulsaView: UIView {
         let saldoLabel = UILabel(frame: CGRectZero)
         saldoLabel.text = "Bayar menggunakan saldo"
         saldoLabel.textColor = UIColor.grayColor()
+        saldoLabel.font = UIFont(name: "GothamBook", size: 13.0)
         saldoButtonPlaceholder.addSubview(saldoLabel)
         
         saldoLabel.mas_makeConstraints { make in
@@ -280,6 +281,7 @@ class PulsaView: UIView {
         productButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
         productButton.backgroundColor = UIColor.lightGrayColor()
         productButton.hidden = true
+        productButton.titleLabel?.font = UIFont(name: "GothamMedium", size: 14.0)
         
         buttonsPlaceholder.addSubview(productButton)
         
@@ -297,6 +299,7 @@ class PulsaView: UIView {
         buyButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
         buyButton.backgroundColor = UIColor.orangeColor()
         buyButton.hidden = true
+        buyButton.titleLabel?.font = UIFont(name: "GothamMedium", size: 14.0)
         
         buttonsPlaceholder.addSubview(buyButton)
         
