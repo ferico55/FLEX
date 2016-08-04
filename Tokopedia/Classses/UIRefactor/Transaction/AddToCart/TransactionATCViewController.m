@@ -131,8 +131,8 @@ typedef enum
     _tableViewShipmentCell = [NSArray sortViewsWithTagInArray:_tableViewShipmentCell];
     _isnodata = YES;
     
+    [self setPlaceholder:@"Contoh: Warna Putih/Ukuran XL/Edisi ke-2" textView:_remarkTextView];
     _remarkTextView.delegate = self;
-
     
     requestPriceDelayedActionManager = [DelayedActionManager new];
     quantityDelayedActionManager = [DelayedActionManager new];
@@ -170,7 +170,10 @@ typedef enum
 
 -(void)viewDidAppear:(BOOL)animated
 {
-    [self setPlaceholder:@"Contoh: Warna Putih/Ukuran XL/Edisi ke-2" textView:_remarkTextView];
+    //set up placeholder label size
+    UILabel *placeholderLabel = [_remarkTextView viewWithTag:1];
+    placeholderLabel.frame = CGRectMake(5.2, 8, _remarkTextView.frame.size.width, 40);
+    [placeholderLabel sizeToFit];
 }
 
 -(void)refreshView{
@@ -189,15 +192,12 @@ typedef enum
 
 - (void)setPlaceholder:(NSString *)placeholderText textView:(UITextView*)textView
 {
-    UILabel *placeholderLabel = [[UILabel alloc] initWithFrame:CGRectMake(5.2, 8, textView.frame.size.width, 40)];
+    UILabel *placeholderLabel = [UILabel new];
     placeholderLabel.text = placeholderText;
-//    placeholderLabel.font = [UIFont fontWithName:textView.font.fontName size:textView.font.pointSize];
     placeholderLabel.font = textView.font;
     placeholderLabel.textColor = [[UIColor blackColor] colorWithAlphaComponent:0.25];
     placeholderLabel.tag = 1;
-//    placeholderLabel.lineBreakMode = NSLineBreakByWordWrapping;
     placeholderLabel.numberOfLines = 0;
-    [placeholderLabel sizeToFit];
     [textView addSubview:placeholderLabel];
 }
 
@@ -299,6 +299,7 @@ typedef enum
     [self setProduct:_ATCForm.form.product_detail];
     [self setAddress:_ATCForm.form.destination];
     [self setPlacePicker];
+    [self doCalculate];
     
     if (_ATCForm.form.destination.address_id != 0) {
         [self requestRate];

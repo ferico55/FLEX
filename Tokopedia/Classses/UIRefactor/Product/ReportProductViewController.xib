@@ -70,7 +70,7 @@
                                         </userDefinedRuntimeAttribute>
                                     </userDefinedRuntimeAttributes>
                                     <connections>
-                                        <action selector="didTapLaporkanButton:" destination="-1" eventType="touchUpInside" id="1LE-zq-NKz"/>
+                                        <action selector="didTapReportButton:" destination="-1" eventType="touchUpInside" id="dB5-In-lmu"/>
                                     </connections>
                                 </button>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="mU7-iz-lfg">
