@@ -272,6 +272,13 @@ import UIKit
             "server_id"                 : generatedHost.server_id
         ]
         
+        form.product_images.forEach { (imageObject) in
+            let photoDescriptionParam :[String:String] = [
+                "product_photo_desc\(imageObject.image_id)" : imageObject.image_description
+            ]
+            param.update(photoDescriptionParam)
+        }
+        
         for (index,wholesale) in form.wholesale_price.enumerate() {
             let wholesaleParam : [String:String] = [
                 "qty_max_\(index+1)" : wholesale.wholesale_max,
