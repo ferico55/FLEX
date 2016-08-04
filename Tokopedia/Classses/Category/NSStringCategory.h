@@ -10,18 +10,18 @@
 
 @interface NSString (TkpdCategory)
 
--(NSString *)isEmail;
-+(NSString *)convertHTML:(NSString *)html;
-+(NSString *)getLinkFromHTMLString:(NSString*)html;
-+(NSString*) timeLeftSinceDate:(NSDate *)dateT;
-- (BOOL) isNotAllBaseCharacter;
--(BOOL)isAllNonNumber;
-- (BOOL) isNumber;
+- (NSString *)isEmail;
+- (NSString *)priceFromStringIDR;
++ (NSString *)convertHTML:(NSString *)html;
++ (NSString *)getLinkFromHTMLString:(NSString*)html;
++ (NSString *)timeLeftSinceDate:(NSDate *)dateT;
+- (BOOL)isNotAllBaseCharacter;
+- (BOOL)isAllNonNumber;
+- (BOOL)isNumber;
 + (NSString *)stringReplaceAhrefWithUrl:(NSString *)string;
 + (NSString *)extracTKPMEUrl:(NSString *)string;
 
-- (BOOL) isNotAllBaseCharacter;
-
--(NSString *)priceFromStringIDR;
++ (NSArray *)getStringsBetweenAhrefTagWithString:(NSString *)string;
++ (NSArray <NSString *> *)getLinksBetweenAhrefTagWithString:(NSString *)string;
 
 @end

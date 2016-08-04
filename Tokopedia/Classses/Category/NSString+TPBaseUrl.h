@@ -16,5 +16,6 @@
 + (NSString*)topAdsUrl;
 + (NSString*)keroUrl;
 + (NSString*)hadesUrl;
++ (NSString*)mojitoUrl;
 
 @end
