@@ -78,6 +78,8 @@
                                mapping:[Login mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                  Login *login = successResult.dictionary[@""];
+                                 login.result.email = accountInfo.email;
+                                 
                                  if (login.result.security && ![login.result.security.allow_login isEqualToString:@"1"]) {
                                      [self verifyPhoneNumber:login onPhoneNumberVerified:^{
                                          [weakSelf authenticateToMarketplaceWithAccountInfo:accountInfo
