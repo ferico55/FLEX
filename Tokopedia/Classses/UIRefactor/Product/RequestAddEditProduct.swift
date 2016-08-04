@@ -226,9 +226,6 @@ import UIKit
         let imageIDs:[String] = form.product_images.map{$0.image_id}
         let imageIDString : String = imageIDs.joinWithSeparator("~")
         
-        let pictDescriptions:[String] = form.product_images.map{$0.image_description}
-        let pictDescriptionString : String = pictDescriptions.joinWithSeparator("~")
-        
         var pictureDefault : String = ""
         for selectedImage in form.product_images where selectedImage.image_primary == "1" {
             pictureDefault = selectedImage.image_id
@@ -263,7 +260,6 @@ import UIKit
             "product_must_insurance"    : product.product_must_insurance,
             "product_name"              : product.product_name,
             "product_photo"             : imageIDString,
-//            "product_photo_desc + photo_id (dynamic key)
             "product_photo_default"     : pictureDefault,
             "product_price"             : product.product_price,
             "product_price_currency"    : product.product_currency_id,

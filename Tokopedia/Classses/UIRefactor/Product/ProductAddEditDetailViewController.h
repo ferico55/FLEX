@@ -7,10 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ProductAddEditViewController.h"
+
 @class ProductEditResult;
-@class ProductEditDetail;
-#import "GenerateHost.h"
 
 @class ProductAddEditDetailViewController;
 
