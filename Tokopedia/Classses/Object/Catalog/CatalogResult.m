@@ -9,6 +9,14 @@
 #import "CatalogResult.h"
 
 @implementation CatalogResult
+
+-(NSArray<CatalogList *> *)list{
+    if (_list == nil) {
+        return @[];
+    }
+    return _list;
+}
+
 +(NSDictionary *)attributeMappingDictionary
 {
     return nil;
