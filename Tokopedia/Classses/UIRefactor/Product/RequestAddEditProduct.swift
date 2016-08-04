@@ -504,7 +504,7 @@ import UIKit
                                             let result : Dictionary = mappingResult.dictionary() as Dictionary
                                             let response : UploadImage = result[""] as! UploadImage
                                             
-                                            if response.data.is_success == "1"{
+                                            if response.data?.is_success == "1"{
                                                 if response.message_status?.count>0 {
                                                     StickyAlertView.showSuccessMessage(response.message_status)
                                                 }
@@ -618,7 +618,9 @@ import UIKit
         postObject.user_id = auth.getUserId()
         postObject.server_id = serverID
         postObject.add_new = "1"
-        postObject.product_id = productID
+        if productID != "" {
+            postObject.product_id = productID
+        }
         
         RequestUploadImage.requestUploadImage(Image,
                                               withUploadHost: path,
