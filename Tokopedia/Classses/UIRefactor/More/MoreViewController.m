@@ -70,6 +70,10 @@
 
 #import "Tokopedia-Swift.h"
 
+//for testing only, if you see this, delete this
+#import "ResolutionCenterSellerEditViewController.h"
+#import "ResolutionCenterCreateViewController.h"
+
 #define CTagProfileInfo 12
 #define CTagLP 13
 
@@ -641,8 +645,13 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
     }
     
     if (indexPath.section == 1 && indexPath.row == 0) {
+        /*
         NavigateViewController *navigateController = [NavigateViewController new];
         [navigateController navigateToProfileFromViewController:wrapperController withUserID:[_auth objectForKey:MORE_USER_ID]];
+        */
+        ResolutionCenterCreateViewController *vc = [ResolutionCenterCreateViewController new];
+        wrapperController.navigationController.navigationBar.translucent = NO;
+        [wrapperController.navigationController pushViewController:vc animated:YES];
         
     }
     
