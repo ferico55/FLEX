@@ -261,6 +261,13 @@ NSString * const ProductStatusWarehouse = @"3";
                 cell.detailTextLabel.text = productMustInsurance;
             }
             if (indexPath.row == BUTTON_PRODUCT_RETURNABLE) {
+                if (![_form.info.shop_has_terms isEqualToString:@""]) {
+                    cell.detailTextLabel.textColor = TEXT_COLOUR_ENABLE;
+                    cell.userInteractionEnabled = true;
+                } else {
+                    cell.detailTextLabel.textColor = TEXT_COLOUR_DISABLE;
+                    cell.userInteractionEnabled = false;
+                }
                 NSString *productReturnable =[ARRAY_PRODUCT_RETURNABLE[[product.product_returnable integerValue]]objectForKey:DATA_NAME_KEY];
                 cell.detailTextLabel.text = productReturnable;
             }
@@ -274,7 +281,7 @@ NSString * const ProductStatusWarehouse = @"3";
             }
             else if (indexPath.row == BUTTON_PRODUCT_ETALASE_DETAIL)
             {
-                cell.detailTextLabel.text = ([product.product_etalase isEqualToString:@"0"]||!product.product_etalase)?@"Pilih Etalase":product.product_etalase;
+                cell.detailTextLabel.text = ([product.product_etalase isEqualToString:@""])?@"Pilih Etalase":product.product_etalase;
             }
             break;
         case 2:
@@ -561,12 +568,20 @@ NSString * const ProductStatusWarehouse = @"3";
     NSString *shopHasTerm = [auth getShopHasTerm];
     _form.info.shop_has_terms = shopHasTerm;
     
+    [self adjustBarButton];
+    [self adjustReturnableNotesLabel];
+    
     [_tableView reloadData];
 }
 
 -(void)adjustBarButton
 {
-
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                      style:UIBarButtonItemStyleBordered
+                                                                     target:self
+                                                                     action:nil];
+    self.navigationItem.backBarButtonItem = barButtonItem;
+    
     _saveBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Simpan"
                                                           style:UIBarButtonItemStyleDone
                                                          target:(self)

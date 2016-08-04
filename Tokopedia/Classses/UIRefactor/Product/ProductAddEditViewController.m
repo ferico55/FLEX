@@ -181,6 +181,7 @@ FilterCategoryViewDelegate
 #pragma mark - View Action
 
 -(void)onTapNextButton:(UIBarButtonItem*)button{
+    [[self.tableView superview] endEditing:YES];
     if ([self dataInputIsValid]) {
         NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
         UserAuthentificationManager *authManager = [UserAuthentificationManager new];
@@ -190,35 +191,21 @@ FilterCategoryViewDelegate
         detailVC.title = self.title;
         detailVC.form = _form;
         detailVC.type = type;
-        detailVC.delegate = self;
         [self.navigationController pushViewController:detailVC animated:YES];
+    }
+}
+
+-(void)onTapBackBarButton:(UIBarButtonItem*)button{
+    if (self.navigationItem.leftBarButtonItem) {
+        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    } else {
+        [self.navigationController popViewControllerAnimated:YES];
     }
 }
 
 -(IBAction)tap:(id)sender
 {
     [_activeTextField resignFirstResponder];
-    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
-        UIBarButtonItem *btn = (UIBarButtonItem *)sender;
-        switch (btn.tag) {
-            case 10:
-            {
-                if (self.navigationItem.leftBarButtonItem) {
-                    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-                } else {
-                    [self.navigationController popViewControllerAnimated:YES];
-                }
-                break;
-            }
-            case 11:
-            {
-
-                break;
-            }
-            default:
-                break;
-        }
-    }
     if ([sender isKindOfClass:[UIButton class]]) {
         UIButton *btn = (UIButton*)sender;
         switch (btn.tag) {
@@ -402,12 +389,8 @@ FilterCategoryViewDelegate
             }
             if (indexPath.row == BUTTON_PRODUCT_CATEGORY) {
                 NSString *departmentTitle = @"Pilih Kategori";
-                if (product.product_category) {
-                    CategoryDetail *category =product.product_category;
-                    departmentTitle = category.name;
-                } else {
-                    departmentTitle = @"Pilih Kategori";
-                }
+                CategoryDetail *category =product.product_category;
+                departmentTitle = ([category.name isEqualToString:@""])?@"Pilih Kategori":category.name;
                 cell.detailTextLabel.text = departmentTitle;
             }
             if (indexPath.row == BUTTON_PRODUCT_CATALOG) {
@@ -622,8 +605,8 @@ FilterCategoryViewDelegate
                                            shopID:[self getShopID]
                                         onSuccess:^(ProductEditResult * form) {
                                             
-                                            [self setEditProductForm:form];
-                                            [self addImageFromForm];
+                                            [self setProductForm:form];
+                                            [self addImageFromURLStrings];
                                             [self enableButtonBeforeSuccessRequest:YES];
                                             [_alertProcessing dismissWithClickedButtonIndex:0 animated:YES];
                                             
@@ -695,7 +678,7 @@ FilterCategoryViewDelegate
     _productWeightTextField.text = weight;
 }
 
--(void)setEditProductForm:(ProductEditResult*)form{
+-(void)setProductForm:(ProductEditResult*)form{
     _form = form;
     
     [self setProductDetail:_form.product];
@@ -705,7 +688,7 @@ FilterCategoryViewDelegate
     [_tableView reloadData];
 }
 
--(void)addImageFromForm{
+-(void)addImageFromURLStrings{
     
     NSArray <ProductEditImages*> *selectedImagesEditProduct = _form.product_images;
     for (ProductEditImages* selectedImage in selectedImagesEditProduct) {
@@ -785,6 +768,7 @@ FilterCategoryViewDelegate
         [secureStorage setKeychainWithValue:category.categoryId withKey:LAST_CATEGORY_VALUE];
         [secureStorage setKeychainWithValue:category.name withKey:LAST_CATEGORY_NAME];
     }
+    [self fetchGetCatalogWithProductName:_productNameTextField.text andDepartmentID:_form.product.product_category.categoryId];
     [self.tableView reloadData];
 }
 
@@ -1006,9 +990,7 @@ FilterCategoryViewDelegate
     product.product_condition = [[ARRAY_PRODUCT_CONDITION[0] objectForKey:DATA_VALUE_KEY] stringValue];
     
     CategoryDetail *lastCategory = [[self authManager] getLastProductAddCategory];
-    if (lastCategory) {
-        product.product_category = lastCategory;
-    }
+    product.product_category = lastCategory?:[CategoryDetail new];
     
     [self setProductDetail:product];
 }
