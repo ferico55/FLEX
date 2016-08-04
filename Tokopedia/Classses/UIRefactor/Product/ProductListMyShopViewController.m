@@ -430,7 +430,7 @@ NoResultDelegate
 - (NSDictionary *)parameters {
     NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
     NSInteger shopID = [[auth objectForKey:kTKPD_SHOPIDKEY]integerValue];
-    NSString *orderByID = [_dataFilter objectForKey:kTKPDFILTER_APIORDERBYKEY]?:@"";
+    NSString *orderByID = [_dataFilter objectForKey:kTKPDFILTER_APIORDERBYKEY]?:[self defaultOrderByValue];
     NSString *etalase = [_dataFilter objectForKey:API_PRODUCT_ETALASE_ID_KEY]?:@"";
     NSString *keyword = [_dataFilter objectForKey:API_KEYWORD_KEY]?:@"";
     
@@ -454,6 +454,10 @@ NoResultDelegate
                                  @"keyword": keyword,
                                  };
     return parameters;
+}
+
+-(NSString*)defaultOrderByValue{
+    return @"1";
 }
 
 -(void)pressRetryButton {
