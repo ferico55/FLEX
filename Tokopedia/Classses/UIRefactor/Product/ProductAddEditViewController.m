@@ -173,14 +173,6 @@ FilterCategoryViewDelegate
     [super viewDidDisappear:animated];
     [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardWillHideNotification object:nil];
-    
-    self.title = @"";
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                                      style:UIBarButtonItemStyleBordered
-                                                                     target:self
-                                                                     action:nil];
-    barButtonItem.tag = 10;
-    self.navigationItem.backBarButtonItem = barButtonItem;
 }
 
 #pragma mark - Memory Management

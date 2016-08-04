@@ -600,7 +600,6 @@ NSString * const ProductStatusWarehouse = @"3";
                                                           style:UIBarButtonItemStyleDone
                                                          target:(self)
                                                          action:@selector(onTapSave:)];
-    _saveBarButtonItem.tag = BARBUTTON_PRODUCT_SAVE;
     self.navigationItem.rightBarButtonItem = _saveBarButtonItem;
 }
 
