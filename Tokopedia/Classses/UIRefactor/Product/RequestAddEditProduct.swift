@@ -241,7 +241,7 @@ import UIKit
         let product :ProductEditDetail = form.product
         
         var uploadTo : String = "1"
-        if product == "3" {
+        if product.product_status == "3" {
             uploadTo = "2"
         }
         
