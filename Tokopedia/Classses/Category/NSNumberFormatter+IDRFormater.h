@@ -11,5 +11,7 @@
 @interface NSNumberFormatter (IDRFormater)
 
 +(NSNumberFormatter*)IDRFormarter;
++(NSNumberFormatter*)IDRFormarterWithoutCurency;
++(NSNumberFormatter*)USDFormarter;
 
 @end

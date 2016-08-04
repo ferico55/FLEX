@@ -21,4 +21,21 @@
     return formatter;
 }
 
++(NSNumberFormatter*)IDRFormarterWithoutCurency{
+    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    [formatter setGroupingSeparator:@"."];
+    [formatter setGroupingSize:3];
+    [formatter setUsesGroupingSeparator:YES];
+    [formatter setSecondaryGroupingSize:3];
+    return formatter;
+}
+
++(NSNumberFormatter*)USDFormarter{
+    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+    [formatter setCurrencyCode:@"USD"];
+    [formatter setNegativeFormat:@"-¤#,##0.00"];
+    return formatter;
+}
+
 @end
