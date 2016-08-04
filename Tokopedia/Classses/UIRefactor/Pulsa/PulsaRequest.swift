@@ -31,8 +31,9 @@ class PulsaRequest: NSObject {
     
     private func requestCategoryFromNetwork() {
         let networkManager = TokopediaNetworkManager()
+        networkManager.isParameterNotEncrypted = true
         networkManager .
-            requestWithBaseUrl("https://pulsa-api.tokopedia.com",
+            requestWithBaseUrl(NSString.pulsaUrl(),
                                path: "/v1/category/list",
                                method: .GET,
                                parameter: ["device" : "ios"],
@@ -53,8 +54,9 @@ class PulsaRequest: NSObject {
     
     private func requestOperatorFromNetwork() {
         let networkManager = TokopediaNetworkManager()
+        networkManager.isParameterNotEncrypted = true
         networkManager .
-            requestWithBaseUrl("https://pulsa-api.tokopedia.com",
+            requestWithBaseUrl(NSString.pulsaUrl(),
                                path: "/v1/operator/list",
                                method: .GET,
                                parameter: ["device" : "ios"],
@@ -76,7 +78,7 @@ class PulsaRequest: NSObject {
         let networkManager = TokopediaNetworkManager()
         networkManager.isParameterNotEncrypted = true
         networkManager .
-            requestWithBaseUrl("https://pulsa-api.tokopedia.com",
+            requestWithBaseUrl(NSString.pulsaUrl(),
                                path: "/v1/product/list",
                                method: .GET,
                                parameter: ["operator_id" : operatorId, "category_id" : categoryId, "device" : "ios"],
