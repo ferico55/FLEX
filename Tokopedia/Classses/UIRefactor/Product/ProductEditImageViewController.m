@@ -89,6 +89,7 @@
     sender.hidden = YES;
     _defaultPictLabel.hidden = NO;
     _imageObject.image_primary = @"1";
+    self.deleteImageButton.hidden = YES;
     if(self.defaultImageObject){
         self.defaultImageObject(_imageObject);
     }
