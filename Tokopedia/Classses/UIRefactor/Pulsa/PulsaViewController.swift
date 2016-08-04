@@ -12,7 +12,6 @@ import Foundation
 @objc(PulsaViewController)
 
 class PulsaViewController: UIViewController, UITextFieldDelegate, LoginViewDelegate {
-    var cache: PulsaCache = PulsaCache()
     var prefixes = Dictionary<String, Dictionary<String, String>>()
 
     var pulsaView = PulsaView!()

@@ -49,7 +49,14 @@ class PulsaRequest: NSObject {
     }
     
     func requestOperator() {
-        self.requestOperatorFromNetwork()
+        self.cache.loadOperators{ (cachedOperator) in
+            if(cachedOperator == nil) {
+                self.requestOperatorFromNetwork()
+            } else {
+                self.didReceiveOperator(cachedOperator!.data)
+            }
+        }
+        
     }
     
     private func requestOperatorFromNetwork() {
@@ -63,6 +70,7 @@ class PulsaRequest: NSObject {
                                mapping: PulsaOperatorRoot.mapping(),
                                onSuccess: { (mappingResult, operation) -> Void in
                                 let operatorRoot = mappingResult.dictionary()[""] as! PulsaOperatorRoot
+                                self.cache.storeOperators(operatorRoot)
                                 self.didReceiveOperator(operatorRoot.data)
                 },
                                onFailure: { (errors) -> Void in

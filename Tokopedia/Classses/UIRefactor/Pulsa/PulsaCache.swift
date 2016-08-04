@@ -52,4 +52,31 @@ class PulsaCache: NSObject {
                },
                onQueue: dispatch_get_main_queue())
     }
+    
+    func storeOperators(op: PulsaOperatorRoot) {
+        let data = NSKeyedArchiver.archivedDataWithRootObject(op)
+        self.cache .
+            storeData(data,
+                      forKey: "operators", ttl: 60*60,
+                      locked: false,
+                      withCallback: { (response: SPTPersistentCacheResponse) in
+                        
+                },
+                      onQueue: dispatch_get_main_queue())
+    }
+    
+    func loadOperators(loadOperatorCallBack: (op: PulsaOperatorRoot?) -> ()) {
+        self.cache .
+            loadDataForKey("operators",
+                           withCallback: { (response: SPTPersistentCacheResponse) in
+                            if(response.record.data.length != 0) {
+                                let operators = NSKeyedUnarchiver.unarchiveObjectWithData(response.record.data) as! PulsaOperatorRoot
+                                return loadOperatorCallBack(op: operators)
+                            } else {
+                                return loadOperatorCallBack(op: nil)
+                            }
+                            
+                },
+                           onQueue: dispatch_get_main_queue())
+    }
 }
