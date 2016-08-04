@@ -153,20 +153,19 @@
         if (_ticker) {
             return CGSizeMake(screenWidth, _ticker.messageLabel.bounds.size.height + _ticker.titleLabel.bounds.size.height + 40); // 40 is the constraints height total
         } else {
-            return CGSizeMake(screenWidth, FLT_MIN);
+            return CGSizeMake(screenWidth, 1);
         }
-        
     } else if (indexPath.section == 1) {
         if (_slider) {
             return CGSizeMake(screenWidth, IS_IPAD ? 225 : 175);
         } else {
-            return CGSizeMake(screenWidth, FLT_MIN);
+            return CGSizeMake(screenWidth, 1);
         }
     } else if (indexPath.section == 2) {
         if (_digitalGoodsSwipeView) {
             return CGSizeMake(screenWidth, 120);
         } else {
-            return CGSizeMake(screenWidth, FLT_MIN);
+            return CGSizeMake(screenWidth, 1);
         }
     } else if (indexPath.section == 3) {
         if(IS_IPAD) {

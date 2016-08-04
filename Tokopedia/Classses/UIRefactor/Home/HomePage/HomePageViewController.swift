@@ -158,11 +158,9 @@ import Foundation
                 
                 self!.categoryDataSource.ticker = self!.tickerView
                 
-                self!.collectionView.reloadData()
-            } else {
-                self!.categoryDataSource.ticker = nil
-                self!.collectionView.reloadData()
             }
+            
+            self!.collectionView.reloadData()
         }) { (error) in
             
         }
