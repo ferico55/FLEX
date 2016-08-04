@@ -13,6 +13,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ResolutionCenterCreateStepOneViewController">
             <connections>
+                <outlet property="activityIndicator" destination="kMs-Yx-xYo" id="Cbt-Le-sgb"/>
+                <outlet property="problemButton" destination="qvE-DL-eZc" id="X3v-eU-zRF"/>
                 <outlet property="problemCell" destination="Juv-79-I8h" id="q71-Cu-jaR"/>
                 <outlet property="tableView" destination="rUS-IR-FaS" id="X1E-gX-MVx"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -25,7 +27,7 @@
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="rUS-IR-FaS">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
-                    <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                    <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                 </tableView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -46,21 +48,24 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Masalah" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X9m-lf-BLn">
-                        <rect key="frame" x="8" y="16" width="52" height="12"/>
+                        <rect key="frame" x="16" y="16" width="52" height="12"/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qvE-DL-eZc">
-                        <rect key="frame" x="68" y="10" width="219" height="24"/>
+                        <rect key="frame" x="76" y="10" width="211" height="24"/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <state key="normal" title="Pilih">
                             <color key="titleColor" red="0.074509803920000006" green="0.56470588239999997" blue="0.054901960780000002" alpha="1" colorSpace="calibratedRGB"/>
                         </state>
                     </button>
+                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="kMs-Yx-xYo">
+                        <rect key="frame" x="259" y="10" width="20" height="20"/>
+                    </activityIndicatorView>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="X9m-lf-BLn" firstAttribute="leading" secondItem="PT7-k9-HjY" secondAttribute="leading" constant="8" id="3TY-Ie-X6x"/>
+                    <constraint firstItem="X9m-lf-BLn" firstAttribute="leading" secondItem="PT7-k9-HjY" secondAttribute="leading" constant="16" id="3TY-Ie-X6x"/>
                     <constraint firstItem="X9m-lf-BLn" firstAttribute="centerY" secondItem="PT7-k9-HjY" secondAttribute="centerY" id="GkL-78-xpM"/>
                     <constraint firstItem="qvE-DL-eZc" firstAttribute="centerY" secondItem="PT7-k9-HjY" secondAttribute="centerY" id="aGr-0B-f16"/>
                     <constraint firstAttribute="trailing" secondItem="qvE-DL-eZc" secondAttribute="trailing" id="o50-dN-OSW"/>

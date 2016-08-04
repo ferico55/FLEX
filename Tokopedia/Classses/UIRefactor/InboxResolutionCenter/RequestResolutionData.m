@@ -181,7 +181,7 @@
                              parameter:@{@"order_id":orderId,
                                          @"user_id":[userAuth getUserId]
                                          }
-                               mapping:[ResolutionCenterCreateResponse mapping]
+                               mapping:[ResolutionProductResponse mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                  ResolutionProductResponse *result = [successResult.dictionary objectForKey:@""];
                                  success(result);

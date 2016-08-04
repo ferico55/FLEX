@@ -8,7 +8,9 @@
 
 #import "ResolutionCenterChooseProblemViewController.h"
 
-@interface ResolutionCenterChooseProblemViewController ()
+@interface ResolutionCenterChooseProblemViewController ()<UITableViewDataSource, UITableViewDelegate>
+@property (strong, nonatomic) IBOutlet UITableView *tableView;
+@property (strong, nonatomic) ResolutionCenterCreateList* selectedList;
 
 @end
 
@@ -16,22 +18,55 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    _tableView.delegate = self;
+    _tableView.dataSource = self;
+    [_tableView reloadData];
+    
+    UIBarButtonItem *nextButton = [[UIBarButtonItem alloc] initWithTitle:@"Selesai" style: UIBarButtonItemStyleDone target:self action:@selector(didTapFinishButton)];
+    self.navigationItem.rightBarButtonItem = nextButton;
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (IBAction)didTapFinishButton{
+    if(_selectedList){
+        [_delegate didSelectProblem:_selectedList];
+        [self.navigationController popViewControllerAnimated:YES];
+    }else{
+        StickyAlertView* alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Anda belum memilih masalah pada barang yang Anda terima."] delegate:self];
+        [alert show];
+    }
 }
-*/
 
+#pragma mark - UITableView Delegate
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    ResolutionCenterCreateList* currentList = [_list_ts objectAtIndex:indexPath.row];
+    
+    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+    cell.textLabel.font = [UIFont fontWithName:@"GothamBook" size:13];
+    cell.textLabel.text = currentList.category_trouble_text;
+    if(_selectedList && [currentList.category_trouble_id isEqualToString:_selectedList.category_trouble_id]){
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    }else{
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
+    return cell;
+}
+
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    return 1;
+}
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return _list_ts.count;
+}
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 44;
+}
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    _selectedList = [_list_ts objectAtIndex:indexPath.row];
+    [_tableView reloadData];
+
+}
 @end

@@ -7,7 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ResolutionCenterCreateList.h"
+
+@protocol ResolutionCenterChooseProblemDelegate <NSObject>
+@optional
+-(void)didSelectProblem:(ResolutionCenterCreateList*)selectedProblem;
+@end
 
 @interface ResolutionCenterChooseProblemViewController : UIViewController
-
+@property (strong, nonatomic) NSArray<ResolutionCenterCreateList*>* list_ts;
+@property (nonatomic, weak) id<ResolutionCenterChooseProblemDelegate> delegate;
 @end

@@ -10,6 +10,8 @@
 #import "ResolutionCenterCreateStepOneViewController.h"
 #import "ResolutionCenterCreateStepTwoViewController.h"
 #import "ResolutionCenterCreateStepThreeViewController.h"
+#import "ResolutionProductList.h"
+#import "ResolutionCenterCreateData.h"
 
 @interface ResolutionCenterCreateViewController ()
 <
@@ -29,6 +31,9 @@
 @property (strong, nonatomic) IBOutlet UIButton *secondButton;
 @property (strong, nonatomic) IBOutlet UIButton *thirdButton;
 @property (strong, nonatomic) IBOutlet UIProgressView *progressBar;
+
+@property (strong, nonatomic) NSMutableArray<ResolutionProductList*>* selectedProduct;
+@property (strong, nonatomic) ResolutionCenterCreateData* formData;
 @end
 
 @implementation ResolutionCenterCreateViewController{
@@ -49,6 +54,8 @@
     UIBarButtonItem *nextButton = [[UIBarButtonItem alloc] initWithTitle:@"Lanjut" style: UIBarButtonItemStyleDone target:self action:@selector(didTapNextButton)];
     self.navigationItem.rightBarButtonItem = nextButton;
     
+    
+    _selectedProduct = [NSMutableArray new];
     
     [self initViewControllers];
     [self initPageIndicator];
@@ -92,6 +99,14 @@
     _stepTwoViewController = [ResolutionCenterCreateStepTwoViewController new];
     _stepThreeViewController = [ResolutionCenterCreateStepThreeViewController new];
     
+    _stepOneViewController.formData = self.formData;
+    _stepOneViewController.selectedProduct = self.selectedProduct;
+    _stepTwoViewController.formData = self.formData;
+    _stepTwoViewController.selectedProduct = self.selectedProduct;
+    /*
+    _stepThreeViewController.formData = self.formData;
+    _stepThreeViewController.selectedProduct = self.selectedProduct;
+     */
 }
 
 - (void)didReceiveMemoryWarning {

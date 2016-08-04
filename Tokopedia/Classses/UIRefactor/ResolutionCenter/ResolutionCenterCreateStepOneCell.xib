@@ -43,10 +43,10 @@
                             <constraint firstAttribute="height" constant="14" id="UOV-72-DL1"/>
                         </constraints>
                         <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Badge_prosecure.png" translatesAutoresizingMaskIntoConstraints="NO" id="Jde-9b-HwN">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Badges_gold_merchant" translatesAutoresizingMaskIntoConstraints="NO" id="Jde-9b-HwN">
                         <rect key="frame" x="94" y="35" width="19" height="19"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="19" id="E8I-lu-H5V"/>
@@ -89,7 +89,7 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="Badge_prosecure.png" width="16" height="16"/>
+        <image name="Badges_gold_merchant" width="40" height="40"/>
         <image name="icon_checklist_grey.png" width="30" height="30"/>
     </resources>
 </document>
