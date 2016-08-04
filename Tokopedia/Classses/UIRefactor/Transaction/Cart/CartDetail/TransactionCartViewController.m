@@ -2602,14 +2602,16 @@
                               [self isLoading:NO];
 
                           } error:^(NSError *error) {
-                              [self doClearAllData];
+                              if (error) {
+                                  [self doClearAllData];
                                   [_refreshControl beginRefreshing];
                                   [_tableView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
                                   _paymentMethodView.hidden = YES;
                                   [_noInternetConnectionView generateRequestErrorViewWithError:error];
                                   [_tableView addSubview:_noInternetConnectionView];
+                                  
+                              }
                               [self isLoading:NO];
-                              
                           }];
 }
 
