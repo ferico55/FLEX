@@ -89,6 +89,7 @@ NSString * const ProductStatusWarehouse = @"3";
 
 #pragma mark - View Action
 -(void)onTapSave:(UIBarButtonItem*)sender{
+    [[self.tableView superview] endEditing:YES];
     if (_type == TYPE_ADD_EDIT_PRODUCT_ADD|| _type == TYPE_ADD_EDIT_PRODUCT_COPY) {
         if ([self isValidInput]) {
             [self fetchAddProduct];
