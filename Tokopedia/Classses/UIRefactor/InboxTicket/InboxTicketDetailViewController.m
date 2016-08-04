@@ -44,7 +44,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     BOOL _rating;
     
     NSMutableArray *_messages;
-    NSInteger *_page;
+    NSInteger _page;
     InboxTicketTicket *_ticketInformation;
     InboxTicketDetail *_ticketDetail;
 
@@ -127,6 +127,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     self.tableView.contentInset = UIEdgeInsetsMake(-30, 0, 0, 0);
     
     _messages = [NSMutableArray new];
+    _page = 0;
     
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.delegate = self;
@@ -212,10 +213,11 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
         _ticketDetail = nil;
         _ticketInformation = nil;
         _isLoadingMore = NO;
+        _page = 0;
         
         self.view.hidden = NO;
         
-        [_loadMoreButton setTitle:@"Lihat Semua" forState:UIControlStateNormal];
+        [_loadMoreButton setTitle:@"Lihat Sebelumnya" forState:UIControlStateNormal];
         
         [self setTitleView];
         
@@ -400,7 +402,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    if (self.inboxTicket.ticket_show_more_messages && section == 0 && !_isLoadingMore) {
+    if (self.inboxTicket.ticket_show_more_messages && section == 0) {
         return _loadMoreView;
     } else {
         return nil;
@@ -408,7 +410,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    if (self.inboxTicket.ticket_show_more_messages && section == 0 && !_isLoadingMore) {
+    if (self.inboxTicket.ticket_show_more_messages && section == 0) {
         return _loadMoreView.frame.size.height;
     } else {
         return 0;
@@ -423,7 +425,8 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
         if (_isLoadingMore) {
             dictionary = @{
                            API_ACTION_KEY             : API_GET_INBOX_TICKET_VIEW_MORE,
-                           API_LIST_TICKET_ID_KEY     : _inboxTicket.ticket_id?:_inboxTicketId
+                           API_LIST_TICKET_ID_KEY     : _inboxTicket.ticket_id?:_inboxTicketId,
+                           @"page"                    : [[NSNumber numberWithInteger:_page] stringValue]
                            };
         } else {
             dictionary = @{
@@ -643,12 +646,13 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
             if ([_ticketInformation.ticket_total_message integerValue] >= 2) {
                 self.inboxTicket.ticket_show_more_messages = YES;
             }
-        } else {
-            if ([response.result.ticket_reply.ticket_reply_total_data integerValue] > 2) {
-                self.inboxTicket.ticket_show_more_messages = YES;
-            }
         }
     }
+    
+    if (_page < [response.result.ticket_reply.ticket_reply_total_page integerValue]){
+        self.inboxTicket.ticket_show_more_messages = YES;
+    }
+
 
     self.tableView.sectionHeaderHeight = 0;
     
@@ -678,8 +682,9 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     }
     
     if (self.inboxTicket.ticket_show_more_messages) {
-        NSArray *array = @[@[_ticketDetail], tickets];
-        _messages = [NSMutableArray arrayWithArray:array];
+        //NSArray *array = @[@[_ticketDetail], tickets];
+        //_messages = [NSMutableArray arrayWithArray:array];
+        [_messages addObjectsFromArray:tickets];
     } else {
         _messages = [NSMutableArray arrayWithArray:@[_ticketDetail]];
         [_messages addObjectsFromArray:tickets];
@@ -755,6 +760,8 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
         }
 
     }
+    
+    [_loadMoreButton setTitle:@"Lihat Sebelumnya" forState:UIControlStateNormal];
     
     [self.tableView reloadData];
     self.tableView.tableFooterView = nil;
@@ -858,6 +865,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
 - (IBAction)didTouchUpLoadMoreButton:(UIButton *)sender {
     [sender setTitle:@"Memuat..." forState:UIControlStateNormal];
     _isLoadingMore = YES;
+    _page++;
     [_networkManager doRequest];
 }
 
@@ -947,6 +955,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
 - (void)refreshView {
     _isLoadingMore = NO;
     _ticketInformation = nil;
+    _page = 0;
     [_networkManager doRequest];
 }
 
