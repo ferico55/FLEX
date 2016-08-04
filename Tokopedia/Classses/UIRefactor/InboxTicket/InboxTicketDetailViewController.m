@@ -582,12 +582,12 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
 }
 
 - (void)actionBeforeRequest:(int)tag {
-    if (tag == 1) {
-        if (_messages.count == 0) {
-            self.tableView.tableFooterView = _tableFooterView;
-            [_indicatorView startAnimating];
-        }
-    }
+//    if (tag == 1) {
+//        if (_messages.count == 0) {
+//            self.tableView.tableFooterView = _tableFooterView;
+//            [_indicatorView startAnimating];
+//        }
+//    }
 }
 
 - (void)actionAfterRequest:(RKMappingResult *)mappingResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
@@ -652,6 +652,10 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     if (_page < [response.result.ticket_reply.ticket_reply_total_page integerValue]){
         self.inboxTicket.ticket_show_more_messages = YES;
     }
+    else
+    {
+        self.inboxTicket.ticket_show_more_messages = NO;
+    }
 
 
     self.tableView.sectionHeaderHeight = 0;
@@ -681,13 +685,17 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
         [tickets addObject:message];
     }
     
-    if (self.inboxTicket.ticket_show_more_messages) {
-        //NSArray *array = @[@[_ticketDetail], tickets];
-        //_messages = [NSMutableArray arrayWithArray:array];
-        [_messages addObjectsFromArray:tickets];
-    } else {
-        _messages = [NSMutableArray arrayWithArray:@[_ticketDetail]];
-        [_messages addObjectsFromArray:tickets];
+    if (_messages.count != 0)
+    {
+        
+        [_messages[1] removeObjectsInArray:tickets];
+        NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, tickets.count)];
+        [_messages[1] insertObjects:tickets atIndexes:indexSet];
+    }
+    else
+    {
+        NSArray *array = @[@[_ticketDetail], tickets];
+        _messages = [NSMutableArray arrayWithArray:array];
     }
     
     // Ticket not closed
@@ -772,7 +780,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     
     if ([self.delegate respondsToSelector:@selector(updateInboxTicket:)]) {
         NSInteger total = [_ticketInformation.ticket_total_message integerValue];
-        self.inboxTicket.ticket_total_message = [NSString stringWithFormat:@"%d", total];
+        self.inboxTicket.ticket_total_message = [NSString stringWithFormat:@"%ld", (long)total];
         self.inboxTicket.ticket_status = _ticketInformation.ticket_status;
         self.inboxTicket.ticket_read_status = _ticketInformation.ticket_read_status;
         [self.delegate updateInboxTicket:self.inboxTicket];
@@ -782,7 +790,14 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
 }
 
 - (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
+    NSString *errorMessage = @"Maaf, terjadi kendala pada server";
+    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[errorMessage] delegate:self];
+    [alert show];
     
+    if (_page > 0)
+    {
+        _page = _page - 1;
+    }
 }
 
 - (void)actionAfterFailRequestMaxTries:(int)tag {
