@@ -17,20 +17,14 @@
 #pragma mark - Product Edit Detail Delegate
 @protocol ProductEditDetailViewControllerDelegate <NSObject>
 @optional
--(void)ProductEditDetailViewController:(ProductAddEditDetailViewController*)cell withUserInfo:(NSDictionary*)userInfo;
--(void)MoveToWareHouseAtIndexPath:(NSIndexPath*)indexPath;
 -(void)DidEditReturnableNote;
 
 @end
 
 @interface ProductAddEditDetailViewController : UIViewController
 
-
 @property (nonatomic, weak) IBOutlet id<ProductEditDetailViewControllerDelegate> delegate;
 
-
-@property (strong,nonatomic) NSDictionary *data;
-@property NSString* returnableStatus;
 @property ProductEditResult* form;
 @property NSInteger type;
 

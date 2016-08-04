@@ -10,24 +10,16 @@
 #import "detail.h"
 #import "string_product.h"
 #import "string_alert.h"
-#import "category.h"
-#import "ShopSettings.h"
 #import "CatalogAddProduct.h"
-#import "ManageProduct.h"
 #import "AlertPickerView.h"
 #import "ProductAddEditViewController.h"
 #import "ProductAddEditDetailViewController.h"
 #import "ProductEditImageViewController.h"
 #import "CategoryMenuViewController.h"
-#import "URLCacheController.h"
-#import "StickyAlertView.h"
-#import "UserAuthentificationManager.h"
 #import "FilterCategoryViewController.h"
-#import "NSNumberFormatter+IDRFormater.h"
 #import "Tokopedia-Swift.h"
 
 #define DATA_SELECTED_BUTTON_KEY @"data_selected_button"
-
 
 #pragma mark - Setting Add Product View Controller
 @interface ProductAddEditViewController ()
@@ -39,18 +31,11 @@ UITableViewDelegate,
 TKPDAlertViewDelegate,
 CategoryMenuViewDelegate,
 ProductEditDetailViewControllerDelegate,
-RequestUploadImageDelegate,
 GeneralTableViewControllerDelegate,
 FilterCategoryViewDelegate
 >
 {
     UITextField *_activeTextField;
-    
-    CGPoint _keyboardPosition;
-    CGSize _keyboardSize;
-    
-    CGRect _containerDefault;
-    CGSize _scrollviewContentSize;
     
     ProductEditResult *_form;
     NSArray<CatalogList*> *_catalogs;
@@ -58,12 +43,8 @@ FilterCategoryViewDelegate
     UIBarButtonItem *_nextBarButtonItem;
     UserAuthentificationManager *_authManager;
     
-    BOOL _isBeingPresented;
-    
     NSMutableArray <DKAsset*>*_selectedAsset;
-    DKAsset *_defaultImage;
-    
-    ProductAddEditDetailViewController *_detailVC;
+    DKAsset *_defaultImageFromAsset;
     
     UIAlertView *_alertProcessing;
     
@@ -89,10 +70,7 @@ FilterCategoryViewDelegate
 @property (weak, nonatomic) IBOutlet UITextField *productWeightTextField;
 @property (weak, nonatomic) IBOutlet UIView *productImagesContentView;
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *addImageButtons;
-@property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *thumbProductImageViews;
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *defaultImageLabels;
-@property (weak, nonatomic) IBOutlet UILabel *catalogLabel;
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *actCatalog;
 
 @property (weak, nonatomic) IBOutlet UIView *productNameViewCell;
 
@@ -106,7 +84,6 @@ FilterCategoryViewDelegate
     [super viewDidLoad];
     
     _addImageButtons = [NSArray sortViewsWithTagInArray:_addImageButtons];
-    _thumbProductImageViews = [NSArray sortViewsWithTagInArray:_thumbProductImageViews];
     _defaultImageLabels = [NSArray sortViewsWithTagInArray:_defaultImageLabels];
     _section1TableViewCell = [NSArray sortViewsWithTagInArray:_section1TableViewCell];
     _section2TableViewCell = [NSArray sortViewsWithTagInArray:_section2TableViewCell];
@@ -116,8 +93,8 @@ FilterCategoryViewDelegate
     
     _alertProcessing = [[UIAlertView alloc]initWithTitle:nil message:@"Processing" delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
     
-    _isBeingPresented = self.navigationController.isBeingPresented;
-    if (_isBeingPresented) {
+    BOOL isBeingPresented = self.navigationController.isBeingPresented;
+    if (isBeingPresented) {
         UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
                                                                           style:UIBarButtonItemStyleBordered
                                                                          target:self
@@ -140,29 +117,26 @@ FilterCategoryViewDelegate
     _nextBarButtonItem.tag = 11;
     self.navigationItem.rightBarButtonItem = _nextBarButtonItem;
     
-    [self setDefaultData:_data];
-    
-    _authManager = [UserAuthentificationManager new];
+    [_productImageScrollView addSubview:_productImagesContentView];
     
     NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
-    if (type == TYPE_ADD_EDIT_PRODUCT_EDIT || type == TYPE_ADD_EDIT_PRODUCT_COPY)
-    {
-        [self fetchFormEditProductID:[self getProductID]];
+    switch (type) {
+        case TYPE_ADD_EDIT_PRODUCT_ADD:
+            self.title =  @"Tambah Produk";
+            [self setDefaultForm];
+            break;
+        case TYPE_ADD_EDIT_PRODUCT_EDIT:
+            self.title = @"Ubah Produk";
+            _productNameTextField.enabled = NO;
+            [self fetchFormEditProductID:[self getProductID]];
+            break;
+        case TYPE_ADD_EDIT_PRODUCT_COPY:
+            self.title = @"Salin Produk";
+            [self fetchFormEditProductID:[self getProductID]];
+            break;
+        default:
+            break;
     }
-    else if(type == TYPE_ADD_EDIT_PRODUCT_ADD)
-    {
-        UserAuthentificationManager *auth = [UserAuthentificationManager new];
-        CategoryDetail *lastCategory = [auth getLastProductAddCategory];
-        if (lastCategory) {
-            _form.product.product_category = lastCategory;
-        }
-    }
-    
-    if (type == TYPE_ADD_EDIT_PRODUCT_EDIT) {
-        _productNameTextField.enabled = NO;
-    }
-    
-    [_productImageScrollView addSubview:_productImagesContentView];
 }
 
 -(NSString *)getProductID{
@@ -186,23 +160,6 @@ FilterCategoryViewDelegate
     [nc addObserver:self selector:@selector(keyboardWillHide:)
                name:UIKeyboardWillHideNotification
              object:nil];
-    
-    NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
-    switch (type) {
-        case TYPE_ADD_EDIT_PRODUCT_ADD:
-            self.title = @"Tambah Produk";
-            break;
-        case TYPE_ADD_EDIT_PRODUCT_EDIT:
-            self.title = @"Ubah Produk";
-            break;
-        case TYPE_ADD_EDIT_PRODUCT_COPY:
-            self.title = @"Salin Produk";
-            break;
-        default:
-            break;
-    }
-    
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 }
 
 -(void)viewDidLayoutSubviews
@@ -230,11 +187,6 @@ FilterCategoryViewDelegate
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
-    _tableView.delegate = nil;
-    _tableView.dataSource = nil;
-    
-    _detailVC = nil;
 }
 
 #pragma mark - View Action
@@ -245,14 +197,12 @@ FilterCategoryViewDelegate
         UserAuthentificationManager *authManager = [UserAuthentificationManager new];
         NSString *shopHasTerm = [authManager getShopHasTerm];
         _form.info.shop_has_terms = shopHasTerm;
-        if (!_detailVC)_detailVC = [ProductAddEditDetailViewController new];
-        _detailVC.title = self.title;
-        _detailVC.form = _form;
-        _detailVC.type = type;
-//        _detailVC.shopHasTerm = _editProductForm.info.shop_has_terms?:@"";
-        _detailVC.delegate = self;
-//        BOOL isShopHasTerm = ([_editProductForm.info.shop_has_terms isEqualToString:@""]||[_editProductForm.info.shop_has_terms isEqualToString:@"0"])?NO:YES;
-        [self.navigationController pushViewController:_detailVC animated:YES];
+        ProductAddEditDetailViewController *detailVC = [ProductAddEditDetailViewController new];
+        detailVC.title = self.title;
+        detailVC.form = _form;
+        detailVC.type = type;
+        detailVC.delegate = self;
+        [self.navigationController pushViewController:detailVC animated:YES];
     }
 }
 
@@ -358,7 +308,10 @@ FilterCategoryViewDelegate
 
 -(void)fetchDeleteImageObject:(ProductEditImages*)imageObject withImageAsset:(DKAsset*)imageAsset atIndex:(NSUInteger)index{
     [self enableButtonBeforeSuccessRequest:NO];
-    [RequestAddEditProduct fetchDeleteProductImageObject:imageObject productID:_form.product.product_id shopID:[self getShopID] onSuccess:^{
+    [RequestAddEditProduct fetchDeleteProductImageObject:imageObject
+                                               productID:_form.product.product_id
+                                                  shopID:[self getShopID]
+                                               onSuccess:^{
         [self enableButtonBeforeSuccessRequest:YES];
         [[NSNotificationCenter defaultCenter] postNotificationName:ADD_PRODUCT_POST_NOTIFICATION_NAME object:nil];
     } onFailure:^{
@@ -402,10 +355,18 @@ FilterCategoryViewDelegate
 }
 
 -(BOOL)isDefaultImage:(DKAsset*)image{
-    if (_defaultImage == nil) {
+    
+    ProductEditImages *primary;
+    for (ProductEditImages *image in _form.product_images) {
+        if ([image.image_primary boolValue]) {
+            primary = image;
+        }
+    }
+    
+    if (_defaultImageFromAsset == nil && primary == nil) {
         return ([image isEqual:_selectedAsset.firstObject]);
     }
-    return ([image isEqual:_defaultImage]);
+    return NO;
 }
 
 #pragma mark - Table View Data Source
@@ -461,7 +422,6 @@ FilterCategoryViewDelegate
                 cell.detailTextLabel.text = departmentTitle;
             }
             if (indexPath.row == BUTTON_PRODUCT_CATALOG) {
-                _catalogLabel.text = product.product_catalog.catalog_name?:@"Pilih Katalog";
                 cell.detailTextLabel.text = product.product_catalog.catalog_name?:@"Pilih Katalog";
             }
             break;
@@ -662,11 +622,6 @@ FilterCategoryViewDelegate
 
 -(void)isFinishGetDataCatalogs:(BOOL)isFinish{
     _isDoneRequestCatalog = isFinish;
-    if (isFinish) {
-        [_actCatalog stopAnimating];
-    }else {
-        [_actCatalog startAnimating];
-    }
 }
 
 -(void)fetchFormEditProductID:(NSString*)productID{
@@ -789,8 +744,6 @@ FilterCategoryViewDelegate
     for (DKAsset* selectedImage in _selectedAsset) {
         ProductEditImages *imageObject = [ProductEditImages new];
         imageObject.image = selectedImage.thumbnailImage;
-        imageObject.image_description = selectedImage.description?:@"";
-        imageObject.image_id = @"";
         imageObject.isFromAsset = YES;
         imageObject.image_primary = ([self isDefaultImage:selectedImage])?@"1":@"";
         
@@ -811,13 +764,14 @@ FilterCategoryViewDelegate
         if (i<_addImageButtons.count) {
             ((UIButton*)_addImageButtons[i]).hidden = NO;
             [_addImageButtons[i] setBackgroundImage:_form.product_images[i].image forState:UIControlStateNormal];
+            ((UILabel*)_defaultImageLabels[i]).hidden = (![_form.product_images[i].image_primary boolValue]);
         }
     }
     if (_form.product_images.count<_addImageButtons.count) {
         UIButton *uploadedButton = (UIButton*)_addImageButtons[_form.product_images.count];
         uploadedButton.hidden = NO;
         
-        //        _scrollViewUploadPhoto.contentSize = CGSizeMake(uploadedButton.frame.origin.x+uploadedButton.frame.size.width+30, 0);
+        _productImageScrollView.contentSize = CGSizeMake(uploadedButton.frame.origin.x+uploadedButton.frame.size.width+30, 0);
     }
 }
 
@@ -1048,44 +1002,26 @@ FilterCategoryViewDelegate
 
 #pragma mark - Methods
 
-- (void) setDefaultData:(NSDictionary*)data
-{
-    _data = data;
-    if (data) {
-        
-        NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
-        switch (type) {
-            case TYPE_ADD_EDIT_PRODUCT_ADD:
-                self.title =  TITLE_ADD_PRODUCT;
-                break;
-            case TYPE_ADD_EDIT_PRODUCT_EDIT:
-                self.title = TITLE_EDIT_PRODUCT;
-                break;
-            case TYPE_ADD_EDIT_PRODUCT_COPY:
-                self.title = TITLE_SALIN_PRODUCT;
-                break;
-            default:
-                break;
-        }
+-(void)setDefaultForm{
+    
+    _form = [ProductEditResult new];
 
-        ProductEditDetail *product = [ProductEditDetail new];
-        product.product_weight_unit_name = [ARRAY_WEIGHT_UNIT[0] objectForKey:DATA_NAME_KEY];
-        product.product_weight_unit = [[ARRAY_WEIGHT_UNIT[0] objectForKey:DATA_VALUE_KEY] stringValue];
-        
-        product.product_currency = [ARRAY_PRICE_CURRENCY[0] objectForKey:DATA_NAME_KEY];
-        product.product_currency_id = [[ARRAY_PRICE_CURRENCY[0] objectForKey:DATA_VALUE_KEY] stringValue];
-        
-        product.product_min_order = @"1";
-        product.product_condition = [[ARRAY_PRODUCT_CONDITION[0] objectForKey:DATA_VALUE_KEY] stringValue];
-        
-        UserAuthentificationManager *auth = [UserAuthentificationManager new];
-        CategoryDetail *lastCategory = [auth getLastProductAddCategory];
-        if (lastCategory) {
-            product.product_category = lastCategory;
-        }
-        
-        [self setProductDetail:product];
+    ProductEditDetail *product = [ProductEditDetail new];
+    product.product_weight_unit_name = [ARRAY_WEIGHT_UNIT[0] objectForKey:DATA_NAME_KEY];
+    product.product_weight_unit = [[ARRAY_WEIGHT_UNIT[0] objectForKey:DATA_VALUE_KEY] stringValue];
+    
+    product.product_currency = [ARRAY_PRICE_CURRENCY[0] objectForKey:DATA_NAME_KEY];
+    product.product_currency_id = [[ARRAY_PRICE_CURRENCY[0] objectForKey:DATA_VALUE_KEY] stringValue];
+    
+    product.product_min_order = @"1";
+    product.product_condition = [[ARRAY_PRODUCT_CONDITION[0] objectForKey:DATA_VALUE_KEY] stringValue];
+    
+    CategoryDetail *lastCategory = [[self authManager] getLastProductAddCategory];
+    if (lastCategory) {
+        product.product_category = lastCategory;
     }
+    
+    [self setProductDetail:product];
 }
 
 - (BOOL)dataInputIsValid

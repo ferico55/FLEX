@@ -7,41 +7,22 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ProductDetail.h"
-@class ProductEditWholesaleCell;
 
-#pragma mark - Product Edit Wholesale Cell Delegate
-@protocol ProductEditWholesaleCellDelegate <NSObject>
-@optional
--(void)ProductEditWholesaleCell:(ProductEditWholesaleCell*)cell withindexpath:(NSIndexPath*)indexpath;
-@required
--(void)removeCell:(ProductEditWholesaleCell*)cell atIndexPath:(NSIndexPath*)indexPath;
--(void)ProductEditWholesaleCell:(ProductEditWholesaleCell*)cell textFieldShouldReturn:(UITextField *)textField withIndexPath:(NSIndexPath*)indexPath;
--(void)ProductEditWholesaleCell:(ProductEditWholesaleCell*)cell textFieldShouldEndEditing:(UITextField *)textField withIndexPath:(NSIndexPath*)indexPath;
--(void)ProductEditWholesaleCell:(ProductEditWholesaleCell*)cell textFieldShouldBeginEditing:(UITextField *)textField withIndexPath:(NSIndexPath*)indexPath;
--(void)ProductEditWholesaleCell:(ProductEditWholesaleCell *)cell textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string;
-
-@end
+@class ProductEditResult;
+@class WholesalePrice;
 
 #define PRODUCT_EDIT_WHOLESALE_CELL_IDENTIFIER @"ProductEditWholesaleCellIdentifier"
 
 @interface ProductEditWholesaleCell : UITableViewCell <UITextFieldDelegate>
 
-
-@property (nonatomic, weak) IBOutlet id<ProductEditWholesaleCellDelegate> delegate;
-
-
-@property (weak, nonatomic) IBOutlet UITextField *minimumProductTextField;
-@property (weak, nonatomic) IBOutlet UITextField *maximumProductTextField;
-@property (weak, nonatomic) IBOutlet UILabel *productCurrencyLabel;
-@property (weak, nonatomic) IBOutlet UITextField *productPriceTextField;
 @property (weak, nonatomic) IBOutlet UIButton *deleteWholesaleButton;
 
-@property (weak, nonatomic) IBOutlet UITextField *activeTextField;
-@property (strong, nonatomic) IBOutlet NSIndexPath *indexPath;
-
-@property (strong, nonatomic) ProductDetail *product;
+@property (strong, nonatomic) NSString *productPriceCurency;
+@property WholesalePrice *wholesale;
 
 +(id)newcell;
+
+- (void)setRemoveWholesale:(void (^)(WholesalePrice *wholesale))removeWholesale;
+- (void)setEditWholesale:(void (^)(WholesalePrice *wholesale))editWholesales;
 
 @end

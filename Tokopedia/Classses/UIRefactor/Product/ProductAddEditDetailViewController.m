@@ -7,25 +7,17 @@
 //
 
 #import "detail.h"
-#import "ShopSettings.h"
 #import "string_product.h"
-#import "string_alert.h"
 #import "EtalaseList.h"
-#import "WholesalePrice.h"
-#import "sortfiltershare.h"
 #import "AlertPickerView.h"
 #import "ProductAddEditDetailViewController.h"
 #import "EtalaseViewController.h"
 #import "ProductEditWholesaleViewController.h"
 #import "MyShopEtalaseEditViewController.h"
 #import "MyShopNoteViewController.h"
-#import "Breadcrumb.h"
 
 #import "MyShopNoteDetailViewController.h"
-#import "TokopediaNetworkManager.h"
 #import "GAIDictionaryBuilder.h"
-#import "CatalogAddProduct.h"
-#import "UserAuthentificationManager.h"
 #import "Tokopedia-Swift.h"
 
 NSString * const ProductStatusWarehouse = @"3";
@@ -36,46 +28,13 @@ NSString * const ProductStatusWarehouse = @"3";
     UITableViewDelegate,
     UITextViewDelegate,
     TKPDAlertViewDelegate,
-    EtalaseViewControllerDelegate,
-    ProductEditWholesaleViewControllerDelegate,
-    TokopediaNetworkManagerDelegate
+    EtalaseViewControllerDelegate
 >
 {
-    CGPoint _keyboardPosition;
-    CGSize _keyboardSize;
-    
-    CGRect _containerDefault;
-    CGSize _scrollviewContentSize;
-    
-    NSDictionary *_auth;
-    NSMutableDictionary *_dataInput;
-    NSMutableArray *_wholesaleList;
-    
-    UITextView *_activeTextView;
-    
-    NSInteger _requestCount;
-    NSOperationQueue *_operationQueue;
-    
     UIAlertView *_processingAlert;
-    
-    __weak RKObjectManager *_objectmanagerActionMoveToWarehouse;
-    __weak RKManagedObjectRequestOperation *_requestActionMoveToWarehouse;
-    
-    TokopediaNetworkManager *_validationNetworkManager;
-    TokopediaNetworkManager *_addPictureNetworkManager;
-    TokopediaNetworkManager *_submitNetworkManager;
-    TokopediaNetworkManager *_editNetworkManager;
-    TokopediaNetworkManager *_moveToWarehouseNetworkManager;
-    
     UIBarButtonItem *_saveBarButtonItem;
-    UserAuthentificationManager *_userManager;
-    
-    BOOL _isNodata;
-    BOOL _isBeingPresented;
-    EtalaseList *_selectedEtalase;
-    
-    NSString *_uniqueID;
 }
+
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section0TableViewCell;
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section1TableViewCell;
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section2TableViewCell;
@@ -85,30 +44,14 @@ NSString * const ProductStatusWarehouse = @"3";
 @property (strong, nonatomic) IBOutlet UIView *section3FooterView;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
-@property (weak, nonatomic) IBOutlet UISwitch *returnableProductSwitch;
 @property (weak, nonatomic) IBOutlet UITextView *productDescriptionTextView;
 @property (weak, nonatomic) IBOutlet UILabel *pengembalianProductLabel;
 
-- (IBAction)gesture:(id)sender;
 - (IBAction)tap:(id)sender;
 
 @end
 
-#define TAG_REQUEST_MOVE_TO 14
-
 @implementation ProductAddEditDetailViewController
-
-#pragma mark - Initialization
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        _wholesaleList = [NSMutableArray new];
-        _dataInput = [NSMutableDictionary new];
-        _operationQueue = [NSOperationQueue new];
-    }
-    return self;
-}
 
 #pragma mark - View Lifecycle
 - (void)viewDidLoad
@@ -116,13 +59,7 @@ NSString * const ProductStatusWarehouse = @"3";
     [super viewDidLoad];
     
     [self adjustBarButton];
-    [self setDefaultData:_data];
     [self adjustReturnableNotesLabel];
-    [self initNetworkManager];
-    
-    _tableView.delegate = self;
-    _tableView.dataSource = self;
-    _userManager = [UserAuthentificationManager new];
     
     _processingAlert = [[UIAlertView alloc]initWithTitle:nil message:@"Uploading..." delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
     
@@ -133,9 +70,6 @@ NSString * const ProductStatusWarehouse = @"3";
     [nc addObserver:self selector:@selector(keyboardWillHide:)
                name:UIKeyboardWillHideNotification
              object:nil];
-    
-    _isBeingPresented = self.navigationController.isBeingPresented;
-
 
     [nc addObserver:self
            selector:@selector(didUpdateShopHasTerms:)
@@ -148,15 +82,7 @@ NSString * const ProductStatusWarehouse = @"3";
                                                                      action:nil];
     barButtonItem.tag = 10;
     self.navigationItem.backBarButtonItem = barButtonItem;
-    
-}
-
--(void)initNetworkManager
-{
-    
-    _moveToWarehouseNetworkManager = [TokopediaNetworkManager new];
-    _moveToWarehouseNetworkManager.delegate = self;
-    _moveToWarehouseNetworkManager.tagRequest = TAG_REQUEST_MOVE_TO;
+    [self setAppearance];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -172,22 +98,11 @@ NSString * const ProductStatusWarehouse = @"3";
     {
         returnableCell.detailTextLabel.textColor = TEXT_COLOUR_DISABLE;
     }
-    
-    _returnableProductSwitch.enabled = _form.info.shop_has_terms;
-}
-
--(void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    
 }
 
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
-    
-    [_moveToWarehouseNetworkManager requestCancel];
-    _moveToWarehouseNetworkManager.delegate = nil;
 }
 
 - (void)didReceiveMemoryWarning
@@ -197,49 +112,25 @@ NSString * const ProductStatusWarehouse = @"3";
 }
 
 #pragma mark - View Action
+-(void)onTapSave:(UIBarButtonItem*)sender{
+    if (_type == TYPE_ADD_EDIT_PRODUCT_ADD|| _type == TYPE_ADD_EDIT_PRODUCT_COPY) {
+        if ([self isValidInput]) {
+            [self fetchAddProduct];
+        }
+    } else {
+        [self fetchEditProduct];
+    }
+}
 -(IBAction)tap:(id)sender
 {
-    [_activeTextView resignFirstResponder];
-    if ([sender isKindOfClass:[UISwitch class]]) {
-        UISwitch *returnableSwitch =(UISwitch*)sender;
-        BOOL isReturnable = returnableSwitch.on;
-        [_dataInput setObject:@(isReturnable) forKey:API_PRODUCT_IS_RETURNABLE_KEY];
-    }
-    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
-        UIBarButtonItem *button = (UIBarButtonItem*)sender;
-        switch (button.tag) {
-            case BARBUTTON_PRODUCT_BACK:
-            {
-                NSDictionary *userInfo = @{DATA_INPUT_KEY:_dataInput};
-                [_delegate ProductEditDetailViewController:self withUserInfo:userInfo];
-                [self.navigationController popViewControllerAnimated:YES];
-                break;
-            }
-            case BARBUTTON_PRODUCT_SAVE:
-            {
-                if (_type == TYPE_ADD_EDIT_PRODUCT_ADD|| _type == TYPE_ADD_EDIT_PRODUCT_COPY) {
-                    if ([self isValidInput]) {
-                        [self fetchAddProduct];
-                    }
-                } else {
-                    [self fetchEditProduct];
-                }
-                break;
-            }
-            default:
-                break;
-        }
-    }
-    if ([sender isKindOfClass:[UIButton class]]) {
-        MyShopNoteDetailViewController *vc = [MyShopNoteDetailViewController new];
-        vc.data = @{kTKPDDETAIL_DATATYPEKEY : @(NOTES_RETURNABLE_PRODUCT)
-                    };
-        
-        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
-        nav.navigationBar.translucent = NO;
-        
-        [self.navigationController presentViewController:nav animated:YES completion:nil];
-    }
+    MyShopNoteDetailViewController *vc = [MyShopNoteDetailViewController new];
+    vc.data = @{kTKPDDETAIL_DATATYPEKEY : @(NOTES_RETURNABLE_PRODUCT)
+                };
+    
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+    nav.navigationBar.translucent = NO;
+    
+    [self.navigationController presentViewController:nav animated:YES completion:nil];
 }
 
 -(void)fetchAddProduct{
@@ -249,27 +140,19 @@ NSString * const ProductStatusWarehouse = @"3";
     
     NSString *duplicate = (_type == TYPE_ADD_EDIT_PRODUCT_COPY)?@"1":@"0";
     
-    ProductEditDetail *product = _form.product;
-        
-    NSArray *wholesaleList = [_dataInput objectForKey:DATA_WHOLESALE_LIST_KEY]?:@[];
-    NSMutableDictionary *wholesales = [NSMutableDictionary new];
-    for (NSDictionary *wholesale in wholesaleList) {
-        [wholesales addEntriesFromDictionary:wholesale];
-    }
-
     [RequestAddEditProduct fetchAddProduct:_form
-                                   isDuplicate:duplicate
+                               isDuplicate:duplicate
                                  onSuccess:^{
-        
-        [self successAddProduct];
-        
-    } onFailure:^{
-        
-        _saveBarButtonItem.enabled = YES;
-        [_processingAlert dismissWithClickedButtonIndex:0 animated:YES];
-        [self trackerFailAddProduct];
-        
-    }];
+                                     
+                                     [self successAddProduct];
+                                     
+                                 } onFailure:^{
+                                     
+                                     _saveBarButtonItem.enabled = YES;
+                                     [_processingAlert dismissWithClickedButtonIndex:0 animated:YES];
+                                     [self trackerFailAddProduct];
+                                     
+                                 }];
 }
 
 -(void)trackerFailAddProduct{
@@ -286,13 +169,7 @@ NSString * const ProductStatusWarehouse = @"3";
     
     [_processingAlert show];
     _saveBarButtonItem.enabled = NO;
-    
-    NSArray *wholesaleList = [_dataInput objectForKey:DATA_WHOLESALE_LIST_KEY]?:@[];
-    NSMutableDictionary *wholesales = [NSMutableDictionary new];
-    for (NSDictionary *wholesale in wholesaleList) {
-        [wholesales addEntriesFromDictionary:wholesale];
-    }
-    
+
     [RequestAddEditProduct fetchEditProduct:_form onSuccess:^{
         
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
@@ -331,8 +208,6 @@ NSString * const ProductStatusWarehouse = @"3";
     NSMutableArray *errorMessages = [NSMutableArray new];
     ProductEditDetail *product = _form.product;
     
-//    NSString *moveToWarehouse = product.product_move_to?:@"";
-    
     NSString* etalaseUserInfoID = product.product_etalase_id;
     BOOL isNewEtalase = [etalaseUserInfoID isEqualToString:@"-1"];
     NSString *etalaseID = isNewEtalase ? @"new" : etalaseUserInfoID;
@@ -357,15 +232,11 @@ NSString * const ProductStatusWarehouse = @"3";
 }
 
 - (IBAction)gesture:(id)sender {
-    [_activeTextView resignFirstResponder];
     if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
         UITapGestureRecognizer *gesture = (UITapGestureRecognizer*)sender;
         if (gesture.view.tag == GESTURE_PRODUCT_EDIT_WHOLESALE) {
             ProductEditWholesaleViewController *editWholesaleVC = [ProductEditWholesaleViewController new];
-            editWholesaleVC.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY],
-                                     DATA_INPUT_KEY : _dataInput
-                                     };
-            editWholesaleVC.delegate = self;
+            editWholesaleVC.form = _form;
             [self.navigationController pushViewController:editWholesaleVC animated:YES];
         }
     }
@@ -414,7 +285,7 @@ NSString * const ProductStatusWarehouse = @"3";
                 cell.detailTextLabel.text = productMustInsurance;
             }
             if (indexPath.row == BUTTON_PRODUCT_RETURNABLE) {
-                NSString *productReturnable =[ARRAY_PRODUCT_RETURNABLE[[_returnableStatus integerValue]]objectForKey:DATA_NAME_KEY];
+                NSString *productReturnable =[ARRAY_PRODUCT_RETURNABLE[[product.product_returnable integerValue]]objectForKey:DATA_NAME_KEY];
                 cell.detailTextLabel.text = productReturnable;
             }
             break;
@@ -427,7 +298,6 @@ NSString * const ProductStatusWarehouse = @"3";
             }
             else if (indexPath.row == BUTTON_PRODUCT_ETALASE_DETAIL)
             {
-                //cell.detailTextLabel.textColor = (isProductWarehouse)?[UIColor grayColor]:[UIColor colorWithRed:(0.f/255.f) green:122.f/255.f blue:255.f/255.f alpha:1];
                 cell.detailTextLabel.text = ([product.product_etalase isEqualToString:@"0"]||!product.product_etalase)?@"Pilih Etalase":product.product_etalase;
             }
             break;
@@ -501,9 +371,7 @@ NSString * const ProductStatusWarehouse = @"3";
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [_productDescriptionTextView resignFirstResponder];
-    [_dataInput setObject:_productDescriptionTextView.text?:@"" forKey:API_PRODUCT_DESCRIPTION_KEY];
-    ProductEditDetail *product = _form.product;
-    BOOL isProductWarehouse = [product.product_status isEqualToString:@"3"];
+    _form.product.product_short_desc = _productDescriptionTextView.text?:@"";
     switch (indexPath.section) {
         case 0:
             switch (indexPath.row) {
@@ -542,20 +410,20 @@ NSString * const ProductStatusWarehouse = @"3";
                 }
                 case BUTTON_PRODUCT_ETALASE_DETAIL:
                 {
-                    //if (!isProductWarehouse) {
-                        ProductEditDetail *product = _form.product;
-                        EtalaseList *newEtalase = [EtalaseList new];
-                        newEtalase.etalase_name = product.product_etalase;
-                        newEtalase.etalase_id = product.product_etalase_id;
-                        EtalaseViewController *etalaseViewController = [EtalaseViewController new];
-                        etalaseViewController.isEditable = NO;
-                        etalaseViewController.showOtherEtalase = NO;
-                        etalaseViewController.shopId = [_userManager getShopId];
-                        etalaseViewController.initialSelectedEtalase = newEtalase;
-                        etalaseViewController.delegate = self;
-                        [etalaseViewController setEnableAddEtalase:YES];
-                        [self.navigationController pushViewController:etalaseViewController animated:YES];
-                    //}
+                    ProductEditDetail *product = _form.product;
+                    EtalaseList *newEtalase = [EtalaseList new];
+                    newEtalase.etalase_name = product.product_etalase;
+                    newEtalase.etalase_id = product.product_etalase_id;
+                    EtalaseViewController *etalaseViewController = [EtalaseViewController new];
+                    etalaseViewController.isEditable = NO;
+                    etalaseViewController.showOtherEtalase = NO;
+                    UserAuthentificationManager *auth = [UserAuthentificationManager new];
+                    etalaseViewController.shopId = [auth getShopId];
+                    etalaseViewController.initialSelectedEtalase = newEtalase;
+                    etalaseViewController.delegate = self;
+                    [etalaseViewController setEnableAddEtalase:YES];
+                    [self.navigationController pushViewController:etalaseViewController animated:YES];
+
                     break;
                 }
             }
@@ -580,10 +448,7 @@ NSString * const ProductStatusWarehouse = @"3";
                 case BUTTON_PRODUCT_EDIT_WHOLESALE:
                 {
                     ProductEditWholesaleViewController *editWholesaleVC = [ProductEditWholesaleViewController new];
-                    editWholesaleVC.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY],
-                                             DATA_INPUT_KEY : _dataInput
-                                             };
-                    editWholesaleVC.delegate = self;
+                    editWholesaleVC.form = _form;
                     [self.navigationController pushViewController:editWholesaleVC animated:YES];
                 }
                     break;
@@ -597,92 +462,6 @@ NSString * const ProductStatusWarehouse = @"3";
     }
 }
 
--(void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView
-{
-    [_productDescriptionTextView resignFirstResponder];
-}
-
-#pragma mark - Network Manager
--(id)getObjectManager:(int)tag
-{
-    if (tag == TAG_REQUEST_MOVE_TO) {
-        return [self objectManagerMoveToWarehouse];
-    }
-    return nil;
-}
-
--(NSDictionary *)getParameter:(int)tag
-{
-    if (tag == TAG_REQUEST_MOVE_TO) {
-        return [self paramMoveToWarehouse];
-    }
-    return nil;
-}
-
--(NSString *)getPath:(int)tag
-{
-
-    return kTKPDDETAILACTIONPRODUCT_APIPATH;
-}
-
--(NSString *)getRequestStatus:(id)result withTag:(int)tag
-{
-    NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
-    id stat = [resultDict objectForKey:@""];
-    if (tag == TAG_REQUEST_MOVE_TO) {
-        ShopSettings *setting = stat;
-        return setting.status;
-    }
-    
-    return nil;
-}
-
--(void)actionBeforeRequest:(int)tag
-{
-    if (tag == TAG_REQUEST_MOVE_TO) {
-    }
-}
-
--(void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag
-{
-    if (tag == TAG_REQUEST_MOVE_TO) {
-        [self requestSuccessActionMoveToWarehouse:successResult
-                                    withOperation:operation];
-        
-    }
-}
-
--(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
-{
-    NSError *error = (NSError*)errorResult;
-    
-    NSArray *errorMessage;
-    if (error.code == -999) {
-    }
-    else
-    {
-        if(error.code == -1011) {
-            errorMessage = @[@"Mohon maaf, terjadi kendala pada server"];
-        } else if (error.code==-1009) {
-            errorMessage = @[@"Tidak ada koneksi internet"];
-        }  else {
-            errorMessage = @[[error localizedDescription]];
-        }
-        
-        StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessage delegate:self];
-        [alert show];
-        
-        [self performSelector:@selector(dismissViewController) withObject:self afterDelay:3.0];
-    }
-
-}
-
--(void)dismissViewController
-{
-    [_processingAlert dismissWithClickedButtonIndex:0 animated:YES];
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
 -(void)actionAfterFailRequestMaxTries:(int)tag
 {
     // UA
@@ -693,99 +472,9 @@ NSString * const ProductStatusWarehouse = @"3";
     [tracker setAllowIDFACollection:YES];
     [tracker set:kGAIScreenName value:@"Add Product - Fail"];
     [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
-    
-    if (tag == TAG_REQUEST_MOVE_TO) {
-        
-    }
-}
-
--(void)showErrorAlert
-{
-    NSInteger type = _type;
-    NSArray *errorString;
-    if (type == TYPE_ADD_EDIT_PRODUCT_ADD) {
-        errorString = [[NSArray alloc] initWithObjects:@"Gagal menambahkan produk. Mohon coba kembali.", nil];
-    }
-    if (type == TYPE_ADD_EDIT_PRODUCT_EDIT) {
-        errorString = [[NSArray alloc] initWithObjects:@"Gagal mengubah produk. Mohon coba kembali.", nil];
-    }
-    if (type == TYPE_ADD_EDIT_PRODUCT_COPY) {
-        errorString = [[NSArray alloc] initWithObjects:@"Gagal menyalin produk. Mohon coba kembali.", nil];
-    }
-    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorString delegate:self];
-    [alert show];
-}
-
-
-#pragma mark Request Action MoveToWarehouse
-
--(RKObjectManager*)objectManagerMoveToWarehouse
-{
-    RKObjectManager *objectmanager = [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ShopSettings class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ShopSettingsResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{kTKPDDETAIL_APIISSUCCESSKEY:kTKPDDETAIL_APIISSUCCESSKEY}];
-    
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    
-    // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDDETAILACTIONPRODUCT_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [objectmanager addResponseDescriptor:responseDescriptor];
-    
-    return objectmanager;
-}
-
--(NSDictionary*)paramMoveToWarehouse
-{
-    ProductEditDetail *product = _form.product;
-    
-    NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY:ACTION_MOVE_TO_WAREHOUSE,
-                            kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : product.product_id?:@"",
-                            };
-    return param;
-}
-
-
--(void)requestSuccessActionMoveToWarehouse:(id)object withOperation:(RKObjectRequestOperation *)operation
-{
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id stat = [result objectForKey:@""];
-    ShopSettings *setting = stat;
-    BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if (status) {
-        if(setting.message_error)
-        {
-            NSArray *array = setting.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-            StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:array delegate:self];
-            [alert show];
-        }
-        if (setting.result.is_success == 1) {
-            NSArray *array = setting.message_status?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY, nil];
-            StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:array delegate:self];
-            [alert show];
-            
-            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-        }
-    }
 }
 
 #pragma mark - TextView Delegate
--(BOOL)textViewShouldBeginEditing:(UITextView *)textView{
-    [textView resignFirstResponder];
-    _activeTextView = textView;
-    
-    return YES;
-}
 
 -(BOOL)textViewShouldEndEditing:(UITextView *)textView
 {
@@ -803,8 +492,6 @@ NSString * const ProductStatusWarehouse = @"3";
 #define PRODUCT_DESCRIPTION_CHARACTER_LIMIT 2000
     return textView.text.length + (text.length - range.length) <= PRODUCT_DESCRIPTION_CHARACTER_LIMIT;
 }
-
-
 
 #pragma mark - Keyboard Notification
 - (void)keyboardWillShow:(NSNotification *)aNotification {
@@ -858,13 +545,6 @@ NSString * const ProductStatusWarehouse = @"3";
             NSInteger index = [[alertView.data objectForKey:DATA_INDEX_KEY] integerValue];
             NSString *value = [[ARRAY_PRODUCT_MOVETO_ETALASE[index] objectForKey:DATA_VALUE_KEY] stringValue];
             product.product_status = [value isEqualToString:@"1"] ? @"1" : @"3";
-//            product.product_move_to = value;//([value integerValue]==1)?@"0":value;
-            /*
-            if (index == 0) {
-                product.product_etalase_id = @(0);
-                product.product_etalase = nil;
-            }
-             */
             [_tableView reloadData];
             break;
         }
@@ -872,7 +552,7 @@ NSString * const ProductStatusWarehouse = @"3";
         {
             NSInteger index = [[alertView.data objectForKey:DATA_INDEX_KEY] integerValue];
             NSString *value = [[ARRAY_PRODUCT_RETURNABLE[index] objectForKey:DATA_VALUE_KEY] stringValue];
-            _returnableStatus = value;
+            _form.product.product_returnable = value;
             [_tableView reloadData];
             break;
         }
@@ -892,11 +572,6 @@ NSString * const ProductStatusWarehouse = @"3";
 
 }
 
-#pragma mark - Product Wholesale View Controller Delegate
--(void)ProductEditWholesaleViewController:(ProductEditWholesaleViewController *)viewController withWholesaleList:(NSArray *)list
-{
-    [_dataInput setObject:list forKey:DATA_WHOLESALE_LIST_KEY];
-}
 
 #pragma mark - Methods
 -(void)setShopHasTerm:(NSString *)shopHasTerm
@@ -904,74 +579,27 @@ NSString * const ProductStatusWarehouse = @"3";
     _form.info.shop_has_terms = shopHasTerm;
 }
 
--(void)setDefaultData:(NSDictionary*)data
-{
-    _data = data;
-    if (data) {
-        
-        [_dataInput addEntriesFromDictionary:[_data objectForKey:DATA_INPUT_KEY]];
-        
-        ProductEditDetail *product = _form.product;
-        NSString *productReturnable = _returnableStatus?:@"";
-        if ([productReturnable isEqualToString:@""] || [productReturnable isEqualToString:@"0"] || productReturnable == nil) {
-            [_dataInput setObject:@(0) forKey:API_PRODUCT_IS_RETURNABLE_KEY];
-            //[_dataInput setObject:@(-1) forKey:API_PRODUCT_IS_RETURNABLE_KEY];
-        }
-        BOOL isProductReturnable = ([productReturnable integerValue] == RETURNABLE_YES_ID)?YES:NO;
-        _returnableProductSwitch.on = isProductReturnable;
-        
-        NSString *productDescription = [NSString convertHTML:product.product_short_desc]?:@"";
-        productDescription = ([productDescription isEqualToString:@"0"])?@"":productDescription;
-        _productDescriptionTextView.text = productDescription;
-        
-        NSArray *wholesaleList = [_dataInput objectForKey:DATA_WHOLESALE_LIST_KEY]?:@[];
-        
-        if ((_type == TYPE_ADD_EDIT_PRODUCT_EDIT || _type == TYPE_ADD_EDIT_PRODUCT_COPY) && [[wholesaleList firstObject] isKindOfClass:[WholesalePrice class]]) {
-            for (WholesalePrice *wholesale in wholesaleList) {
-                float price = [wholesale.wholesale_price floatValue];
-                NSInteger minimumQuantity = [wholesale.wholesale_min integerValue];
-                NSInteger maximumQuantity = [wholesale.wholesale_max integerValue];
-                [self addWholesaleListPrice:price withQuantityMinimum:minimumQuantity andQuantityMaximum:maximumQuantity];
-            }
-            [_dataInput setObject:_wholesaleList forKey:DATA_WHOLESALE_LIST_KEY];
-        }
-        
-        UserAuthentificationManager *auth = [UserAuthentificationManager new];
-        NSString *shopHasTerm = [auth getShopHasTerm];
-        _form.info.shop_has_terms = shopHasTerm;
-        
-        [_tableView reloadData];
-    }
-}
+-(void)setAppearance {
+    ProductEditDetail *product = _form.product;
 
--(void)addWholesaleListPrice:(float)price withQuantityMinimum:(NSInteger)minimum andQuantityMaximum:(NSInteger)maximum
-{
-    NSInteger wholesaleListIndex = _wholesaleList.count+1;
-    NSString *wholesalePriceKey = [NSString stringWithFormat:@"%@%zd",API_WHOLESALE_PRICE,wholesaleListIndex];
-    NSString *wholesaleQuantityMaximum = [NSString stringWithFormat:@"%@%zd",API_WHOLESALE_QUANTITY_MAXIMUM_KEY,wholesaleListIndex];
-    NSString *wholesaleQuantityMinimum = [NSString stringWithFormat:@"%@%zd",API_WHOLESALE_QUANTITY_MINIMUM_KEY,wholesaleListIndex];
+    NSString *productDescription = [NSString convertHTML:product.product_short_desc]?:@"";
+    productDescription = ([productDescription isEqualToString:@"0"])?@"":productDescription;
+    _productDescriptionTextView.text = productDescription;
     
+    UserAuthentificationManager *auth = [UserAuthentificationManager new];
+    NSString *shopHasTerm = [auth getShopHasTerm];
+    _form.info.shop_has_terms = shopHasTerm;
     
-    NSDictionary *wholesale = @{wholesalePriceKey:@(price),
-                                wholesaleQuantityMaximum:@(maximum),
-                                wholesaleQuantityMinimum:@(minimum)
-                                };
-    [_wholesaleList addObject:wholesale];
+    [_tableView reloadData];
 }
 
 -(void)adjustBarButton
 {
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                                      style:UIBarButtonItemStylePlain
-                                                                     target:self
-                                                                     action:@selector(tap:)];
-    barButtonItem.tag = BARBUTTON_PRODUCT_BACK;
-    self.navigationItem.backBarButtonItem = barButtonItem;
-    
+
     _saveBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Simpan"
                                                           style:UIBarButtonItemStyleDone
                                                          target:(self)
-                                                         action:@selector(tap:)];
+                                                         action:@selector(onTapSave:)];
     _saveBarButtonItem.tag = BARBUTTON_PRODUCT_SAVE;
     self.navigationItem.rightBarButtonItem = _saveBarButtonItem;
 }

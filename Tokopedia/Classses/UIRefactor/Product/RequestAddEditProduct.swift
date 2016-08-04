@@ -276,13 +276,20 @@ import UIKit
             "server_id"                 : generatedHost.server_id
         ]
         
-//        param.update(wholesale)
+        for (index,wholesale) in form.wholesale_price.enumerate() {
+            let wholesaleParam : [String:String] = [
+                "qty_max_\(index+1)" : wholesale.wholesale_max,
+                "qty_min_\(index+1)" : wholesale.wholesale_min,
+                "prd_prc_\(index+1)" : wholesale.wholesale_price
+            ]
+            param.update(wholesaleParam)
+        }
         
         let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
         
         networkManager.requestWithBaseUrl(NSString .v4Url(),
-                                          path: "/v4/action/product/add_product_validation.pl",
+                                          path: "/v4/action/product/edit_product.pl",
                                           method: .POST,
                                           parameter: param,
                                           mapping: AddProductValidation.mapping(),
@@ -291,7 +298,7 @@ import UIKit
                                             let result : Dictionary = mappingResult.dictionary() as Dictionary
                                             let response : AddProductValidation = result[""] as! AddProductValidation
                                             
-                                            if response.data.post_key != nil {
+                                            if response.data.is_success == "1" {
                                                 if response.message_status?.count>0 {
                                                     StickyAlertView.showSuccessMessage(response.message_status)
                                                 }
@@ -416,7 +423,14 @@ import UIKit
             //"po_process_value -> for processing value
         ]
         
-//        param.update(wholesale)
+        for (index,wholesale) in form.wholesale_price.enumerate() {
+            let wholesaleParam : [String:String] = [
+                "qty_max_\(index+1)" : wholesale.wholesale_max,
+                "qty_min_\(index+1)" : wholesale.wholesale_min,
+                "prd_prc_\(index+1)" : wholesale.wholesale_price
+            ]
+            param.update(wholesaleParam)
+        }
         
         let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
