@@ -149,9 +149,9 @@ class PulsaViewController: UIViewController, UITextFieldDelegate, LoginViewDeleg
                 var activeProducts: [PulsaProduct] = []
                 
                 products.map { product in
-                    if(product.attributes.status == 1) {
+//                    if(product.attributes.status == 1) {
                         activeProducts.append(product)
-                    }
+//                    }
                 }
                 
                 activeProducts.sortInPlace({

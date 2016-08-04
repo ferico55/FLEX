@@ -37,8 +37,34 @@ class PulsaProductViewController: UIViewController, UITableViewDelegate, UITable
         
         let product = self.products[indexPath.row]
         cell.productName.text = product.attributes.desc
+        cell.productDesc.text = product.attributes.detail
+        cell.productStatus.layer.masksToBounds = true
+        
+        if let promo = product.attributes.promo {
+            let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: product.attributes.price)
+            attributeString.addAttribute(NSStrikethroughStyleAttributeName, value: 2, range: NSMakeRange(0, attributeString.length))
+
+            cell.promoPrice.text = promo.new_price
+            cell.currentPrice.attributedText = attributeString
+            cell.promoPrice.hidden = false
+        } else {
+            cell.promoPrice.hidden = true
+            cell.currentPrice.text = product.attributes.price
+        }
+        
+        if(product.attributes.status == 1) {
+            cell.productStatus.hidden = true
+            cell.userInteractionEnabled = true
+        } else {
+            cell.productStatus.hidden = false
+            cell.userInteractionEnabled = false
+        }
         
         return cell
+    }
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 98
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {

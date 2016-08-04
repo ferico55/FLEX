@@ -13,10 +13,10 @@ class PulsaProductAttribute: NSObject, NSCoding {
     var info : String = ""
     var detail : String = ""
     var detail_url : String = ""
-    var price : Int = 0
+    var price : String = ""
     var status : Int = 1
     var weight : Int = 1
-    var promo : PulsaProductPromo = PulsaProductPromo()
+    var promo : PulsaProductPromo?
     
     static func attributeMappingDictionary() -> [NSObject : AnyObject]! {
         return [
@@ -62,7 +62,7 @@ class PulsaProductAttribute: NSObject, NSCoding {
             self.detail_url = detail_url
         }
         
-        if let price = aDecoder.decodeObjectForKey("price") as? Int {
+        if let price = aDecoder.decodeObjectForKey("price") as? String {
             self.price = price
         }
         

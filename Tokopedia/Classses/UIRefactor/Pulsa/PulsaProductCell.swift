@@ -10,6 +10,11 @@ import UIKit
 
 class PulsaProductCell: UITableViewCell {
     @IBOutlet weak var productName: UILabel!
+    @IBOutlet weak var productDesc: UILabel!
+    @IBOutlet weak var currentPrice: UILabel!
+    @IBOutlet weak var promoPrice: UILabel!
+    @IBOutlet weak var productStatus: UILabel!
+    
 
     override func awakeFromNib() {
         super.awakeFromNib()
