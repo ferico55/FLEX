@@ -108,13 +108,14 @@
     BOOL _isSelectDurationInstallment;
     BOOL _isSaldoError;
     BOOL _isDropshipperError;
+    BOOL _shouldDisplayButtonOnErrorAlert;
     
     TransactionVoucherData *_voucherData;
 
     NoResultReusableView *_noResultView;
     NoResultReusableView *_noInternetConnectionView;
     
-    NSMutableArray *_saldoErrorMessages;
+    NSMutableArray *_errorMessages;
     
     UIView *_lineView;
 }
@@ -246,6 +247,11 @@
     [self initNoResultView];
     [self initNoInternetConnectionView];
     [self setDefaultInputData];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(insertErrorMessage:)
+                                                 name:@"AddErrorMessage"
+                                               object:nil];
 
     [_klikBCANotes setCustomAttributedText:_klikBCANotes.text];
     
@@ -992,7 +998,8 @@
 {
     BOOL isValid = YES;
     
-    NSMutableArray *messageError = [NSMutableArray new];
+    _errorMessages = [NSMutableArray new];
+    _shouldDisplayButtonOnErrorAlert = NO;
     
     if (_indexPage == 0) {
         if ([((UILabel*)_selectedPaymentMethodLabels[0]).text isEqualToString:@"Pilih"])
@@ -1000,7 +1007,7 @@
         NSInteger gateway = [[_dataInput objectForKey:API_GATEWAY_LIST_ID_KEY]integerValue];
         if (gateway == -1) {
             isValid = NO;
-            [messageError addObject:ERRORMESSAGE_NULL_CART_PAYMENT];
+            [_errorMessages addObject:ERRORMESSAGE_NULL_CART_PAYMENT];
             [self tapChoosePayment:self];
         }
         if (gateway == TYPE_GATEWAY_CC) {
@@ -1018,19 +1025,19 @@
             NSNumber *deposit = [_dataInput objectForKey:DATA_USED_SALDO_KEY];
             if ([deposit integerValue] == 0) {
                 isValid = NO;
-                [messageError addObject:@"Saldo harus diisi."];
+                [_errorMessages addObject:@"Saldo harus diisi."];
                 _saldoErrorIcon.hidden = NO;
                 [self swipeView:_saldoTextFieldCell];
             } else {
                 if ([deposit integerValue] >= grandTotal) {
                     isValid = NO;
-                    [messageError addObject:@"Jumlah Saldo Tokopedia yang Anda masukkan terlalu banyak. Gunakan Pembayaran Saldo Tokopedia apabila mencukupi."];
+                    [_errorMessages addObject:@"Jumlah Saldo Tokopedia yang Anda masukkan terlalu banyak. Gunakan Pembayaran Saldo Tokopedia apabila mencukupi."];
                     _saldoErrorIcon.hidden = NO;
                     [self swipeView:_saldoTextFieldCell];
                 }
                 if ([deposit integerValue]> [self depositAmountUser]) {
                     isValid = NO;
-                    [messageError addObject:@"Saldo Tokopedia Anda tidak mencukupi."];
+                    [_errorMessages addObject:@"Saldo Tokopedia Anda tidak mencukupi."];
                     _saldoErrorIcon.hidden = NO;
                     [self swipeView:_saldoTextFieldCell];
                 }
@@ -1044,14 +1051,14 @@
             NSString *userID = _userIDKlikBCATextField.text;
             if ([userID isEqualToString:@""] || userID == nil) {
                 isValid = NO;
-                [messageError addObject:ERRORMESSAGE_NULL_CART_USERID];
+                [_errorMessages addObject:ERRORMESSAGE_NULL_CART_USERID];
             }
         }
         if ([_cartSummary.deposit_amount integerValue]>0 && ![self isHalfDepositAndPaymentInstantWithPaymentGatewayIntegerValue:[_cartSummary.gateway integerValue]]) {
             NSString *password = _passwordTextField.text;
             if ([password isEqualToString:@""] || password == nil) {
                 isValid = NO;
-                [messageError addObject:ERRORMESSAGE_NULL_CART_PASSWORD];
+                [_errorMessages addObject:ERRORMESSAGE_NULL_CART_PASSWORD];
             }
         }
     }
@@ -1066,8 +1073,8 @@
                 }
                 isValid = NO;
                 _list[i].isDropshipperNameError = YES;
-                if (![messageError containsObject:ERRORMESSAGE_SENDER_NAME_NILL])
-                    [messageError addObject:ERRORMESSAGE_SENDER_NAME_NILL];
+                if (![_errorMessages containsObject:ERRORMESSAGE_SENDER_NAME_NILL])
+                    [_errorMessages addObject:ERRORMESSAGE_SENDER_NAME_NILL];
             } else {
                 _list[i].isDropshipperNameError = NO;
             }
@@ -1077,16 +1084,16 @@
                 }
                 isValid = NO;
                 _list[i].isDropshipperPhoneError = YES;
-                if (![messageError containsObject:ERRORMESSAGE_SENDER_PHONE_NILL])
-                    [messageError addObject:ERRORMESSAGE_SENDER_PHONE_NILL];
+                if (![_errorMessages containsObject:ERRORMESSAGE_SENDER_PHONE_NILL])
+                    [_errorMessages addObject:ERRORMESSAGE_SENDER_PHONE_NILL];
             } else if (_list[i].cart_dropship_phone.length < 6) {
                 if (firstErrorCartIndex == -1) {
                     firstErrorCartIndex = i;
                 }
                 isValid = NO;
                 _list[i].isDropshipperPhoneError = YES;
-                if (![messageError containsObject:@"Nomor telepon terlalu pendek, minimum 6 karakter."])
-                    [messageError addObject:@"Nomor telepon terlalu pendek, minimum 6 karakter."];
+                if (![_errorMessages containsObject:@"Nomor telepon terlalu pendek, minimum 6 karakter."])
+                    [_errorMessages addObject:@"Nomor telepon terlalu pendek, minimum 6 karakter."];
             } else {
                 _list[i].isDropshipperPhoneError = NO;
             }
@@ -1100,13 +1107,15 @@
     
     
     NSLog(@"%d",isValid);
-    if (!isValid && messageError.count > 0) {
-        [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:[messageError copy]]
+    if (!isValid && _errorMessages.count > 0) {
+        [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:[_errorMessages copy]]
                                                  type:0
                                              duration:4.0
-                                          buttonTitle:nil
+                                          buttonTitle:_shouldDisplayButtonOnErrorAlert?@"Belanja Lagi":nil
                                           dismissable:YES
-                                               action:nil];
+                                               action:_shouldDisplayButtonOnErrorAlert?^{
+                                                   [[NSNotificationCenter defaultCenter] postNotificationName:@"navigateToPageInTabBar" object:@"1"];
+                                               }:nil];
     }
 
     return isValid;
@@ -1180,6 +1189,13 @@
                                                     context:context].size;
     
     return expectedLabelSize.height;
+}
+
+- (void)insertErrorMessage:(NSNotification *)notification {
+    NSDictionary *userInfo = [notification userInfo];
+    
+    [_errorMessages addObject:[userInfo objectForKey:@"errorMessage"]];
+    _shouldDisplayButtonOnErrorAlert = ![[userInfo objectForKey:@"buttonTitle"] isEqualToString:@""];
 }
 
 #pragma mark - Custom Error Message View Delegate

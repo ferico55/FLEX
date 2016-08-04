@@ -10,6 +10,8 @@
 #import "NSNumberFormatter+IDRFormater.h"
 #import "Tokopedia-Swift.h"
 
+#define CICILAN_KARTU_KREDIT_GATEWAY_ID @"12"
+
 @implementation RequestCart
 
 +(void)fetchCartData:(void(^)(TransactionCartResult *data))success error:(void (^)(NSError *error))error{
@@ -97,9 +99,11 @@
                                      [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:cart.message_error]
                                                                               type:NotificationTypeError
                                                                           duration:4.0
-                                                                       buttonTitle:nil
+                                                                       buttonTitle:[[param objectForKey:@"gateway"] isEqualToString:CICILAN_KARTU_KREDIT_GATEWAY_ID]?@"Belanja Lagi":nil
                                                                        dismissable:YES
-                                                                            action:nil];
+                                                                            action:[[param objectForKey:@"gateway"] isEqualToString:CICILAN_KARTU_KREDIT_GATEWAY_ID]?^{
+                                                                                [[NSNotificationCenter defaultCenter] postNotificationName:@"navigateToPageInTabBar" object:@"1"];
+                                                                            }:nil];
                                      error(nil);
                                  } else
                                      success(cart.result);

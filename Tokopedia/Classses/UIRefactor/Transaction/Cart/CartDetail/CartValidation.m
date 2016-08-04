@@ -17,21 +17,15 @@
 {
     BOOL isValid = YES;
     
-    NSMutableArray *errorMessages = [NSMutableArray new];
-    
     if (!(voucherCode) || [voucherCode isEqualToString:@""]) {
         isValid = NO;
-        [errorMessages addObject:@"Masukkan kode voucher terlebih dahulu."];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"AddErrorMessage"
+                                                            object:nil
+                                                          userInfo:@{@"errorMessage" : @"Masukkan kode voucher terlebih dahulu.",
+                                                                     @"buttonTitle" : @""}];
     }
     
-    if (!isValid) {
-        [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:errorMessages]
-                                                 type:0
-                                             duration:4.0
-                                          buttonTitle:nil
-                                          dismissable:YES
-                                               action:nil];
-    }
+    
     
     return  isValid;
 }
@@ -39,22 +33,15 @@
 
 +(BOOL)isValidInputCCCart:(TransactionCartResult*)cart {
     BOOL isvalid = YES;
-    NSMutableArray *errorMessage = [NSMutableArray new];
     if ([cart.grand_total integerValue] < [CartValidation minimumPaymentCC]) {
-        [errorMessage addObject:[CartValidation errorMessageMinimumPaymenCC]];
         isvalid = NO;
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"AddErrorMessage"
+                                                            object:nil
+                                                          userInfo:@{@"errorMessage" : [CartValidation errorMessageMinimumPaymenCC],
+                                                                     @"buttonTitle" : @"Belanja Lagi"}];
     }
     
-    if (!isvalid) {
-        [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:errorMessage]
-                                                 type:0
-                                             duration:4.0
-                                          buttonTitle:@"Belanja Lagi"
-                                          dismissable:YES
-                                               action:^{
-                                                   [[NSNotificationCenter defaultCenter] postNotificationName:@"navigateToPageInTabBar" object:@"1"];
-                                               }];
-    }
+    
     
     return isvalid;
 }
@@ -70,22 +57,15 @@
 
 +(BOOL)isValidInputKlikBCACart:(TransactionCartResult*)cart {
     BOOL isvalid = YES;
-    NSMutableArray *errorMessage = [NSMutableArray new];
     if ([cart.grand_total integerValue] < [CartValidation minimumPaymentKlikBCA]) {
-        [errorMessage addObject:[CartValidation errorMessageMinimumPaymenKlikBCA]];
         isvalid = NO;
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"AddErrorMessage"
+                                                            object:nil
+                                                          userInfo:@{@"errorMessage" : [CartValidation errorMessageMinimumPaymenKlikBCA],
+                                                                     @"buttonTitle" : @"Belanja Lagi"}];
     }
     
-    if (!isvalid) {
-        [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:errorMessage]
-                                                 type:0
-                                             duration:4.0
-                                          buttonTitle:@"Belanja Lagi"
-                                          dismissable:YES
-                                               action:^{
-                                                   [[NSNotificationCenter defaultCenter] postNotificationName:@"navigateToPageInTabBar" object:@"1"];
-                                               }];
-    }
+    
     
     return isvalid;
 }
@@ -103,21 +83,12 @@
 +(BOOL)isValidInputIndomaretCart:(TransactionCartResult*)cart
 {
     BOOL isvalid = YES;
-    NSMutableArray *errorMessage = [NSMutableArray new];
     if ([cart.grand_total integerValue] <[CartValidation minimumPaymentIndomaret]) {
-        [errorMessage addObject:[CartValidation errorMessageMinimumPaymenIndomaret]];
         isvalid = NO;
-    }
-    
-    if (!isvalid) {
-        [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:errorMessage]
-                                                 type:0
-                                             duration:4.0
-                                          buttonTitle:@"Belanja Lagi"
-                                          dismissable:YES
-                                               action:^{
-                                                   [[NSNotificationCenter defaultCenter] postNotificationName:@"navigateToPageInTabBar" object:@"1"];
-                                               }];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"AddErrorMessage"
+                                                            object:nil
+                                                          userInfo:@{@"errorMessage" : [CartValidation errorMessageMinimumPaymenIndomaret],
+                                                                     @"buttonTitle" : @"Belanja Lagi"}];
     }
     
     return isvalid;

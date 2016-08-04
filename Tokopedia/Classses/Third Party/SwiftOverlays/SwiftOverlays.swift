@@ -134,6 +134,8 @@ public class SwiftOverlays: NSObject {
 
     static var bannerWindow : UIWindow?
     
+    static var hasDisplayedAlert : Bool = false
+    
     public class Utils {
         
         /**
@@ -422,7 +424,10 @@ public class SwiftOverlays: NSObject {
         let gestureRecognizer = UITapGestureRecognizer(target: self, action: selector)
         notificationView.addGestureRecognizer(gestureRecognizer)
         
-        bannerWindow!.addSubview(notificationView)
+        if !notificationView.isDescendantOfView(bannerWindow!) && !hasDisplayedAlert {
+            bannerWindow!.addSubview(notificationView)
+            hasDisplayedAlert = true
+        }
         
         if animated {
             let frame = notificationView.frame
@@ -452,6 +457,8 @@ public class SwiftOverlays: NSObject {
         } else if sender.isKindOfClass(UIView) {
             notificationView = (sender as! UIView)
         }
+        
+        hasDisplayedAlert = false
         
         UIView.animateWithDuration(bannerDissapearAnimationDuration,
             animations: { () -> Void in

@@ -39,6 +39,7 @@
 
 - (void)setMessageLabelWithText:(NSString *)text {
     _messageLabel.text = text;
+    [_messageLabel sizeToFit];
 }
 
 - (void)setActionButtonLabelWithText:(NSString *)text {
