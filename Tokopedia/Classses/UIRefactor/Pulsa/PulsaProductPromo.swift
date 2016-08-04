@@ -13,7 +13,7 @@ class PulsaProductPromo: NSObject, NSCoding {
     var terms : String = ""
     var value_text : String = ""
     var bonus_text : String = ""
-    var new_price : Int = 1
+    var new_price : String = ""
     
     static func attributeMappingDictionary() -> [NSObject : AnyObject]! {
         return [
@@ -55,7 +55,7 @@ class PulsaProductPromo: NSObject, NSCoding {
             self.bonus_text = bonus_text
         }
         
-        if let new_price = aDecoder.decodeObjectForKey("new_price") as? Int {
+        if let new_price = aDecoder.decodeObjectForKey("new_price") as? String {
             self.new_price = new_price
         }
     }

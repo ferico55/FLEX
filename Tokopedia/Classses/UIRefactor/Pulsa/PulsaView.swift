@@ -20,17 +20,22 @@ class PulsaView: UIView {
     var buttonsPlaceholder: UIView!
     var fieldPlaceholder: UIView!
     var saldoButtonPlaceholder: UIView!
+    var phoneBook: UIImageView!
+    
+    let addressBook = APAddressBook()
+    var saldoSwitch = UISwitch()
+    var selectedOperator = PulsaOperator()
+    var selectedCategory = PulsaCategory()
+    var selectedProduct = PulsaProduct()
+    var userManager = UserAuthentificationManager()
+    
     var didPrefixEntered: ((operatorId: String, categoryId: String) -> Void)?
     var didTapAddressbook: ([APContact] -> Void)?
     var didTapProduct:([PulsaProduct] -> Void)?
     var didAskedForLogin: (Void -> Void)?
-    var phoneBook: UIImageView!
-    let addressBook = APAddressBook()
-    var saldoSwitch = UISwitch()
+    var didSuccessPressBuy: (NSURL -> Void)?
     
-    var selectedOperator = PulsaOperator()
-    var selectedCategory = PulsaCategory()
-    var selectedProduct = PulsaProduct()
+    var prefixes: Dictionary<String, Dictionary<String, String>>?
     
     struct ButtonConstant {
         static let defaultProductButtonTitle = "Pilih Nominal"
@@ -42,7 +47,7 @@ class PulsaView: UIView {
         static let Listrik = "3"
     }
     
-    var prefixes: Dictionary<String, Dictionary<String, String>>?
+    
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -51,6 +56,7 @@ class PulsaView: UIView {
     init(categories: [PulsaCategory]) {
         super.init(frame: CGRectZero)
         
+        userManager = UserAuthentificationManager()
         pulsaCategoryControl = UISegmentedControl(frame: CGRectZero)
         categories.enumerate().forEach { index, category in
             pulsaCategoryControl.insertSegmentWithTitle(category.attributes.name, atIndex: index, animated: true)
@@ -389,11 +395,22 @@ class PulsaView: UIView {
             if(self.isValidNominal() && self.isValidNumber(self.numberField.text!)) {
                 self.hideErrors()
                 
-                let userManager = UserAuthentificationManager()
-                if(!userManager.isLogin) {
+                if(!self.userManager.isLogin) {
                     self.didAskedForLogin!()
                 } else {
                     //open scrooge
+                    var pulsaUrl = "https://pulsa.tokopedia.com?action=init_data&client_number=" + self.numberField.text!
+                        pulsaUrl += "&product_id=" + self.selectedProduct.id!
+                        pulsaUrl += "&operator_id=" +  self.selectedOperator.id!
+                        pulsaUrl += "&instant_checkout=" + (self.saldoSwitch.on ? "1" : "0")
+                        pulsaUrl += "&utm_source=ios"
+                    
+                    let customAllowedSet =  NSCharacterSet(charactersInString:"=\"#%/<>?@\\^`{|}&").invertedSet
+                    var url = "https://js.tokopedia.com/wvlogin?uid=" + self.userManager.getUserId()
+                        url += "&token=" + self.userManager.getMyDeviceToken()
+                        url += "&url=" + pulsaUrl.stringByAddingPercentEncodingWithAllowedCharacters(customAllowedSet)!
+                    
+                    self.didSuccessPressBuy!(NSURL(string: url)!)
                 }
             }
         }, forControlEvents: .TouchUpInside)
