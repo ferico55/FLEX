@@ -44,6 +44,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     BOOL _rating;
     
     NSMutableArray *_messages;
+    NSInteger *_page;
     InboxTicketTicket *_ticketInformation;
     InboxTicketDetail *_ticketDetail;
 
@@ -637,13 +638,13 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     
     if (!_ticketInformation) {
         _ticketInformation = response.result.ticket;
-        if ([_ticketInformation.ticket_status isEqualToString:@"2"] &&
+        if ([_ticketInformation.ticket_status isEqualToString:@"2"] && //CLOSED
             ![_ticketInformation.ticket_respond_status isEqualToString:@"0"]) {
             if ([_ticketInformation.ticket_total_message integerValue] >= 2) {
                 self.inboxTicket.ticket_show_more_messages = YES;
             }
         } else {
-            if ([_ticketInformation.ticket_total_message integerValue] > 2) {
+            if ([response.result.ticket_reply.ticket_reply_total_data integerValue] > 2) {
                 self.inboxTicket.ticket_show_more_messages = YES;
             }
         }
