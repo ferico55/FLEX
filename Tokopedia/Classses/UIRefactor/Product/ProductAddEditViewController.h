@@ -8,10 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@class DKAsset;
-
 @interface ProductAddEditViewController : UIViewController
 
-@property (nonatomic, strong) NSDictionary *data;
+@property (nonatomic, strong) NSString *productID;
+@property (nonatomic) int type;
 
 @end

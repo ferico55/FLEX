@@ -312,15 +312,8 @@
     UserAuthentificationManager *auth = [UserAuthentificationManager new];
     if (auth.getUserId && auth.getShopId) {
         //add product
-        TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-        NSDictionary *dataAuth = [secureStorage keychainDictionary];
-        
         ProductAddEditViewController *controller = [ProductAddEditViewController new];
-        controller.data = @{
-            kTKPD_AUTHKEY                   : dataAuth?:@{},
-            DATA_TYPE_ADD_EDIT_PRODUCT_KEY  : @(TYPE_ADD_EDIT_PRODUCT_ADD),
-        };
-        
+        controller.type = TYPE_ADD_EDIT_PRODUCT_ADD;
         self.activeController.hidesBottomBarWhenPushed = YES;
         [self.activeController.navigationController pushViewController:controller animated:YES];
         self.activeController.hidesBottomBarWhenPushed = NO;

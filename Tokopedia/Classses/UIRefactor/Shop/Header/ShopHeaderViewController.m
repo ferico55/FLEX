@@ -441,7 +441,6 @@
             NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
             if ([(NSError*)object code] == NSURLErrorCancelled) {
                 if (_requestCount<kTKPDREQUESTCOUNTMAX) {
-                    NSLog(@" ==== REQUESTCOUNT %d =====",_requestCount);
                     [self performSelector:@selector(configureRestKit)
                                withObject:nil
                                afterDelay:kTKPDREQUEST_DELAYINTERVAL];
@@ -703,10 +702,7 @@
             
             if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY] integerValue] == [[_auth objectForKey:kTKPD_SHOPIDKEY] integerValue]) {
                 ProductAddEditViewController *productViewController = [ProductAddEditViewController new];
-                productViewController.data = @{
-                                               kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY]?:@{},
-                                               DATA_TYPE_ADD_EDIT_PRODUCT_KEY : @(TYPE_ADD_EDIT_PRODUCT_ADD),
-                                               };
+                productViewController.type = TYPE_ADD_EDIT_PRODUCT_ADD;
                 UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:productViewController];
                 nav.navigationBar.translucent = NO;
                 

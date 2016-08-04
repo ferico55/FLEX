@@ -17,6 +17,7 @@
 #import "ProductEditImageViewController.h"
 #import "CategoryMenuViewController.h"
 #import "FilterCategoryViewController.h"
+#import "NSNumberFormatter+IDRFormater.h"
 #import "Tokopedia-Swift.h"
 
 #define DATA_SELECTED_BUTTON_KEY @"data_selected_button"
@@ -46,9 +47,7 @@ FilterCategoryViewDelegate
     DKAsset *_defaultImageFromAsset;
     
     UIAlertView *_alertProcessing;
-    
-    BOOL _isCatalog;
-    
+
     NSString *_productNameBeforeCopy;
     
     BOOL _isDoneRequestCatalog;
@@ -99,25 +98,17 @@ FilterCategoryViewDelegate
                                                                          target:self
                                                                          action:@selector(onTapBackBarButton:)];
         self.navigationItem.leftBarButtonItem = barButtonItem;
-    } else {
-        UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                                          style:UIBarButtonItemStyleBordered
-                                                                         target:self
-                                                                         action:nil];
-        self.navigationItem.backBarButtonItem = barButtonItem;
     }
     
     _nextBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Lanjut"
                                                           style:UIBarButtonItemStyleDone
                                                          target:(self)
                                                          action:@selector(onTapNextButton:)];
-    _nextBarButtonItem.tag = 11;
     self.navigationItem.rightBarButtonItem = _nextBarButtonItem;
     
     [_productImageScrollView addSubview:_productImagesContentView];
     
-    NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
-    switch (type) {
+    switch (_type) {
         case TYPE_ADD_EDIT_PRODUCT_ADD:
             self.title =  @"Tambah Produk";
             [self setDefaultForm];
@@ -125,31 +116,20 @@ FilterCategoryViewDelegate
         case TYPE_ADD_EDIT_PRODUCT_EDIT:
             self.title = @"Ubah Produk";
             _productNameTextField.enabled = NO;
-            [self fetchFormEditProductID:[self getProductID]];
+            [self fetchFormEditProductID:_productID];
             break;
         case TYPE_ADD_EDIT_PRODUCT_COPY:
             self.title = @"Salin Produk";
-            [self fetchFormEditProductID:[self getProductID]];
+            [self fetchFormEditProductID:_productID];
             break;
         default:
             break;
     }
+    
+    [self addObserver];
 }
 
--(NSString *)getProductID{
-    NSString *productID = @"";
-    if ([[_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY] isKindOfClass:[NSNumber class]]) {
-        productID = [[_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY] stringValue];
-    } else {
-        productID = [_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY];
-    };
-    return productID;
-}
-
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    // keyboard notification
+-(void)addObserver{
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(keyboardWillShow:)
                name:UIKeyboardWillShowNotification
@@ -159,17 +139,11 @@ FilterCategoryViewDelegate
              object:nil];
 }
 
+
 -(void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
     _productImageScrollView.contentSize = _productImagesContentView.frame.size;
-}
-
--(void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 
 #pragma mark - Memory Management
@@ -183,14 +157,13 @@ FilterCategoryViewDelegate
 -(void)onTapNextButton:(UIBarButtonItem*)button{
     [[self.tableView superview] endEditing:YES];
     if ([self dataInputIsValid]) {
-        NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
         UserAuthentificationManager *authManager = [UserAuthentificationManager new];
         NSString *shopHasTerm = [authManager getShopHasTerm];
         _form.info.shop_has_terms = shopHasTerm;
         ProductAddEditDetailViewController *detailVC = [ProductAddEditDetailViewController new];
         detailVC.title = self.title;
         detailVC.form = _form;
-        detailVC.type = type;
+        detailVC.type = _type;
         [self.navigationController pushViewController:detailVC animated:YES];
     }
 }
@@ -382,8 +355,7 @@ FilterCategoryViewDelegate
         case 1:
             cell = _section1TableViewCell[indexPath.row];
             if (indexPath.row == BUTTON_PRODUCT_PRODUCT_NAME) {
-                NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
-                if (type == TYPE_ADD_EDIT_PRODUCT_EDIT) {
+                if (_type == TYPE_ADD_EDIT_PRODUCT_EDIT) {
                     _productNameViewCell.hidden = NO;
                 }
             }
@@ -445,7 +417,7 @@ FilterCategoryViewDelegate
             break;
         case 1:
             cellHeight = ((UITableViewCell*)_section1TableViewCell[indexPath.row]).frame.size.height;
-            if (!_isCatalog && indexPath.row == BUTTON_PRODUCT_CATALOG) {
+            if ((_catalogs.count==0) && indexPath.row == BUTTON_PRODUCT_CATALOG) {
                 cellHeight = 0;
             }
             else
@@ -473,9 +445,7 @@ FilterCategoryViewDelegate
             switch (indexPath.row) {
                 case BUTTON_PRODUCT_PRODUCT_NAME:
                 {
-                    NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
-                    if (type == TYPE_ADD_EDIT_PRODUCT_EDIT) {
-//                        _productNameTextField.enabled = NO;
+                    if (_type == TYPE_ADD_EDIT_PRODUCT_EDIT) {
                         UIAlertView *editableNameProductAlert = [[UIAlertView alloc]initWithTitle:nil message:ERRRORMESSAGE_CANNOT_EDIT_PRODUCT_NAME delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
                         [editableNameProductAlert show];
                     }
@@ -554,18 +524,6 @@ FilterCategoryViewDelegate
     
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
-    view.backgroundColor = [UIColor clearColor];
-    return view;
-}
-
--(void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView
-{
-    [_activeTextField resignFirstResponder];
-}
-
 -(void)fetchGetCatalogWithProductName:(NSString*)productName andDepartmentID:(NSString*)departmentID{
     
     [self isFinishGetDataCatalogs:NO];
@@ -586,10 +544,7 @@ FilterCategoryViewDelegate
 
 -(void)setListCatalogs:(NSArray<CatalogList*>*)catalogs{
     _catalogs = catalogs;
-    
-    _isCatalog = (_catalogs.count>0);
     [_tableView reloadData];
-
 }
 
 -(void)isFinishGetDataCatalogs:(BOOL)isFinish{
@@ -648,34 +603,20 @@ FilterCategoryViewDelegate
     
     NSString *priceCurencyID = product.product_currency_id?:@"1";
     NSString *price = product.product_price?:@"";
-    NSString *weight = product.product_weight?:@"";
     
     _productNameTextField.text = product.product_name;
     _productNameBeforeCopy = product.product_name;
     
-    NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
-    _productNameTextField.enabled = (type ==TYPE_ADD_EDIT_PRODUCT_ADD || type == TYPE_ADD_EDIT_PRODUCT_COPY)?YES:NO;
+    _productNameTextField.enabled = (_type ==TYPE_ADD_EDIT_PRODUCT_ADD || _type == TYPE_ADD_EDIT_PRODUCT_COPY)?YES:NO;
     
     CGFloat priceInteger = [price floatValue];
-    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-    if ([priceCurencyID integerValue] == PRICE_CURRENCY_ID_RUPIAH) {
-        [formatter setGroupingSeparator:@"."];
-        [formatter setGroupingSize:3];
-        [formatter setUsesGroupingSeparator:YES];
-        [formatter setSecondaryGroupingSize:3];
-        price = (priceInteger>0)?[formatter stringFromNumber:@(priceInteger)]:@"";
-    }
+    if ([priceCurencyID integerValue] == PRICE_CURRENCY_ID_RUPIAH)
+        price = (priceInteger>0)?[[NSNumberFormatter IDRFormarterWithoutCurency] stringFromNumber:@(priceInteger)]:@"";
     else
-    {
-        [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-        [formatter setCurrencyCode:@"USD"];
-        [formatter setNegativeFormat:@"-¤#,##0.00"];
-        price = [formatter stringFromNumber:@(priceInteger)];
-        
-    }
-    
+        price = [[NSNumberFormatter USDFormarter] stringFromNumber:@(priceInteger)];
+
     _productPriceTextField.text = price;
-    _productWeightTextField.text = weight;
+    _productWeightTextField.text = product.product_weight?:@"";
 }
 
 -(void)setProductForm:(ProductEditResult*)form{
@@ -762,8 +703,7 @@ FilterCategoryViewDelegate
 
 - (void)didSelectCategory:(CategoryDetail *)category {
     _form.product.product_category = category;
-    NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY] integerValue];
-    if (type == TYPE_ADD_EDIT_PRODUCT_ADD) {
+    if (_type == TYPE_ADD_EDIT_PRODUCT_ADD) {
         TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
         [secureStorage setKeychainWithValue:category.categoryId withKey:LAST_CATEGORY_VALUE];
         [secureStorage setKeychainWithValue:category.name withKey:LAST_CATEGORY_NAME];
@@ -828,10 +768,8 @@ FilterCategoryViewDelegate
 
 #pragma mark - Text Field Delegate
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
-    _activeTextField = textField;
     if (textField == _productNameTextField) {
-        NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
-        if (type == TYPE_ADD_EDIT_PRODUCT_EDIT) {
+        if (_type == TYPE_ADD_EDIT_PRODUCT_EDIT) {
             UIAlertView *editableNameProductAlert = [[UIAlertView alloc]initWithTitle:nil message:ERRRORMESSAGE_CANNOT_EDIT_PRODUCT_NAME delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
             [editableNameProductAlert show];
         }
@@ -839,39 +777,22 @@ FilterCategoryViewDelegate
     return YES;
 }
 
--(BOOL)textFieldShouldReturn:(UITextField *)textField{
-    
-    [textField resignFirstResponder];
-    return YES;
-}
-
 -(BOOL)textFieldShouldEndEditing:(UITextField *)textField
 {
     ProductEditDetail *product = _form.product;
     if (textField == _productNameTextField) {
-        NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
+        product.product_name = textField.text;
         [self fetchGetCatalogWithProductName:textField.text andDepartmentID:product.product_category.categoryId];
-        if (type == TYPE_ADD_EDIT_PRODUCT_ADD || type == TYPE_ADD_EDIT_PRODUCT_COPY) {
-            product.product_name = textField.text;
-        }
+
     }
     if (textField == _productPriceTextField) {
         NSString *productPrice;
         NSInteger currency = [_form.product.product_currency_id integerValue];
         BOOL isIDRCurrency = (currency == PRICE_CURRENCY_ID_RUPIAH);
         if (isIDRCurrency)
-        {
-            productPrice = [textField.text stringByReplacingOccurrencesOfString:@"." withString:@""];
-            productPrice = [productPrice stringByReplacingOccurrencesOfString:@"," withString:@""];
-        }
+            productPrice = [[[NSNumberFormatter IDRFormarterWithoutCurency] numberFromString:textField.text] stringValue];
         else
-        {
-            NSNumberFormatter *currencyFormatter = [[NSNumberFormatter alloc] init];
-            [currencyFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-            [currencyFormatter setCurrencyCode:@"USD"];
-            [currencyFormatter setNegativeFormat:@"-¤#,##0.00"];
-            productPrice = [[currencyFormatter numberFromString:textField.text] stringValue];
-        }
+            productPrice = [[[NSNumberFormatter USDFormarter] numberFromString:textField.text] stringValue];
         product.product_price = productPrice;
     }
     if (textField == _productWeightTextField) {
@@ -1044,8 +965,7 @@ FilterCategoryViewDelegate
         else
             isValidWeight = NO;
     }
-    NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
-    if (type == TYPE_ADD_EDIT_PRODUCT_COPY && [productName isEqualToString:_productNameBeforeCopy]) {
+    if (_type == TYPE_ADD_EDIT_PRODUCT_COPY && [productName isEqualToString:_productNameBeforeCopy]) {
         [errorMessage addObject:@"Tidak dapat menyalin dengan Nama Produk yang sama."];
         isValid = NO;
     }

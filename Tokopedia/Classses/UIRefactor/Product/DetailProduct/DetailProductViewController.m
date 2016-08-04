@@ -534,12 +534,8 @@ OtherProductDelegate
         switch (btn.tag) {
             case 22 : {
                 ProductAddEditViewController *editProductVC = [ProductAddEditViewController new];
-                editProductVC.data = @{kTKPDDETAIL_APIPRODUCTIDKEY: _product.data.info.product_id,
-                                       kTKPD_AUTHKEY : _auth?:@{},
-                                       DATA_PRODUCT_DETAIL_KEY : _product.data.info,
-                                       DATA_TYPE_ADD_EDIT_PRODUCT_KEY : @(TYPE_ADD_EDIT_PRODUCT_EDIT),
-                                       DATA_IS_GOLD_MERCHANT :@(0) //TODO:: Change Value
-                                       };
+                editProductVC.type = TYPE_ADD_EDIT_PRODUCT_EDIT;
+                editProductVC.productID = _product.data.info.product_id;
                 UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:editProductVC];
                 nav.navigationBar.translucent = NO;
                 
@@ -843,12 +839,8 @@ OtherProductDelegate
                         _product.data.info.product_move_to = [@(PRODUCT_WAREHOUSE_NO_ID) stringValue];
                     }
                 }
-                editProductVC.data = @{kTKPDDETAIL_APIPRODUCTIDKEY: _product.data.info.product_id,
-                                       kTKPD_AUTHKEY : _auth?:@{},
-                                       DATA_PRODUCT_DETAIL_KEY : _product.data.info,
-                                       DATA_TYPE_ADD_EDIT_PRODUCT_KEY : @(TYPE_ADD_EDIT_PRODUCT_EDIT),
-                                       DATA_IS_GOLD_MERCHANT :@(0) //TODO:: Change Value
-                                       };
+                editProductVC.productID = _product.data.info.product_id;
+                editProductVC.type = TYPE_ADD_EDIT_PRODUCT_EDIT;
                 UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:editProductVC];
                 nav.navigationBar.translucent = NO;
                 

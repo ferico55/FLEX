@@ -118,14 +118,8 @@
 #pragma mark - Action Method
 - (IBAction)actionTambahProduct:(id)sender
 {
-    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
-    NSDictionary *_data = [secureStorage keychainDictionary];
-    
     ProductAddEditViewController *productViewController = [ProductAddEditViewController new];
-    productViewController.data = @{
-                                   kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY]?:@{},
-                                   DATA_TYPE_ADD_EDIT_PRODUCT_KEY : @(TYPE_ADD_EDIT_PRODUCT_ADD),
-                                   };
+    productViewController.type = TYPE_ADD_EDIT_PRODUCT_ADD;
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:productViewController];
     nav.navigationBar.translucent = NO;
     [self.navigationController presentViewController:nav animated:YES completion:nil];
