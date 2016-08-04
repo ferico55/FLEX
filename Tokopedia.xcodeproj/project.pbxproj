@@ -1513,7 +1513,6 @@
 		92F644C51D49F47B006F2EAD /* ActivationRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 92F63C141D49F479006F2EAD /* ActivationRequest.m */; };
 		92F644C61D49F47B006F2EAD /* AuthenticationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 92F63C161D49F479006F2EAD /* AuthenticationService.m */; };
 		92F644C71D49F47B006F2EAD /* CreatePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92F63C191D49F479006F2EAD /* CreatePasswordViewController.m */; };
-		92F644C81D49F47B006F2EAD /* CreatePasswordViewController.m.orig in Resources */ = {isa = PBXBuildFile; fileRef = 92F63C1A1D49F479006F2EAD /* CreatePasswordViewController.m.orig */; };
 		92F644C91D49F47B006F2EAD /* CreatePasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 92F63C1B1D49F479006F2EAD /* CreatePasswordViewController.xib */; };
 		92F644CA1D49F47B006F2EAD /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92F63C1E1D49F479006F2EAD /* LoginViewController.m */; };
 		92F644CB1D49F47B006F2EAD /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 92F63C1F1D49F479006F2EAD /* LoginViewController.xib */; };
@@ -1524,7 +1523,6 @@
 		92F644D01D49F47B006F2EAD /* VerifiedStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 92F63C2A1D49F479006F2EAD /* VerifiedStatus.m */; };
 		92F644D11D49F47B006F2EAD /* VerifiedStatusMSISDN.m in Sources */ = {isa = PBXBuildFile; fileRef = 92F63C2C1D49F479006F2EAD /* VerifiedStatusMSISDN.m */; };
 		92F644D21D49F47B006F2EAD /* VerifiedStatusResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 92F63C2E1D49F479006F2EAD /* VerifiedStatusResult.m */; };
-		92F644D31D49F47B006F2EAD /* RegisterViewController.h.orig in Resources */ = {isa = PBXBuildFile; fileRef = 92F63C311D49F479006F2EAD /* RegisterViewController.h.orig */; };
 		92F644D41D49F47B006F2EAD /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92F63C321D49F479006F2EAD /* RegisterViewController.m */; };
 		92F644D51D49F47B006F2EAD /* RegisterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 92F63C331D49F479006F2EAD /* RegisterViewController.xib */; };
 		92F644D61D49F47B006F2EAD /* SignInProviderListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F63C351D49F479006F2EAD /* SignInProviderListView.swift */; };
@@ -1719,7 +1717,6 @@
 		92F645931D49F47B006F2EAD /* RequestShippingCity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F63D7A1D49F479006F2EAD /* RequestShippingCity.swift */; };
 		92F645941D49F47B006F2EAD /* searchObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F63D7B1D49F479006F2EAD /* searchObject.swift */; };
 		92F645951D49F47B006F2EAD /* ForgotPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92F63D7E1D49F479006F2EAD /* ForgotPasswordViewController.m */; };
-		92F645961D49F47B006F2EAD /* ForgotPasswordViewController.m.orig in Resources */ = {isa = PBXBuildFile; fileRef = 92F63D7F1D49F479006F2EAD /* ForgotPasswordViewController.m.orig */; };
 		92F645971D49F47B006F2EAD /* ForgotPasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 92F63D801D49F479006F2EAD /* ForgotPasswordViewController.xib */; };
 		92F645981D49F47B006F2EAD /* GeneralAlertCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 92F63D831D49F479006F2EAD /* GeneralAlertCell.m */; };
 		92F645991D49F47B006F2EAD /* GeneralAlertCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 92F63D841D49F479006F2EAD /* GeneralAlertCell.xib */; };
@@ -2276,7 +2273,6 @@
 		92F647C01D49F47B006F2EAD /* MaintenanceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 92F641531D49F47A006F2EAD /* MaintenanceViewController.xib */; };
 		92F647C11D49F47B006F2EAD /* TokopediaCacheManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 92F641551D49F47A006F2EAD /* TokopediaCacheManager.m */; };
 		92F647C21D49F47B006F2EAD /* TokopediaNetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 92F641571D49F47A006F2EAD /* TokopediaNetworkManager.m */; };
-		92F647C31D49F47B006F2EAD /* TokopediaNetworkManager.m.orig in Resources */ = {isa = PBXBuildFile; fileRef = 92F641581D49F47A006F2EAD /* TokopediaNetworkManager.m.orig */; };
 		92F647C41D49F47B006F2EAD /* TrackOrderHistoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 92F6415C1D49F47A006F2EAD /* TrackOrderHistoryCell.m */; };
 		92F647C51D49F47B006F2EAD /* TrackOrderHistoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 92F6415D1D49F47A006F2EAD /* TrackOrderHistoryCell.xib */; };
 		92F647C61D49F47B006F2EAD /* TrackOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92F6415F1D49F47A006F2EAD /* TrackOrderViewController.m */; };
@@ -4560,7 +4556,6 @@
 		92F63C161D49F479006F2EAD /* AuthenticationService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthenticationService.m; sourceTree = "<group>"; };
 		92F63C181D49F479006F2EAD /* CreatePasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreatePasswordViewController.h; sourceTree = "<group>"; };
 		92F63C191D49F479006F2EAD /* CreatePasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreatePasswordViewController.m; sourceTree = "<group>"; };
-		92F63C1A1D49F479006F2EAD /* CreatePasswordViewController.m.orig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CreatePasswordViewController.m.orig; sourceTree = "<group>"; };
 		92F63C1B1D49F479006F2EAD /* CreatePasswordViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CreatePasswordViewController.xib; sourceTree = "<group>"; };
 		92F63C1D1D49F479006F2EAD /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		92F63C1E1D49F479006F2EAD /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
@@ -4579,7 +4574,6 @@
 		92F63C2D1D49F479006F2EAD /* VerifiedStatusResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VerifiedStatusResult.h; sourceTree = "<group>"; };
 		92F63C2E1D49F479006F2EAD /* VerifiedStatusResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VerifiedStatusResult.m; sourceTree = "<group>"; };
 		92F63C301D49F479006F2EAD /* RegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisterViewController.h; sourceTree = "<group>"; };
-		92F63C311D49F479006F2EAD /* RegisterViewController.h.orig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = RegisterViewController.h.orig; sourceTree = "<group>"; };
 		92F63C321D49F479006F2EAD /* RegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisterViewController.m; sourceTree = "<group>"; };
 		92F63C331D49F479006F2EAD /* RegisterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RegisterViewController.xib; sourceTree = "<group>"; };
 		92F63C341D49F479006F2EAD /* stringregister.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stringregister.h; sourceTree = "<group>"; };
@@ -4893,7 +4887,6 @@
 		92F63D7B1D49F479006F2EAD /* searchObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = searchObject.swift; sourceTree = "<group>"; };
 		92F63D7D1D49F479006F2EAD /* ForgotPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForgotPasswordViewController.h; sourceTree = "<group>"; };
 		92F63D7E1D49F479006F2EAD /* ForgotPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForgotPasswordViewController.m; sourceTree = "<group>"; };
-		92F63D7F1D49F479006F2EAD /* ForgotPasswordViewController.m.orig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ForgotPasswordViewController.m.orig; sourceTree = "<group>"; };
 		92F63D801D49F479006F2EAD /* ForgotPasswordViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ForgotPasswordViewController.xib; sourceTree = "<group>"; };
 		92F63D821D49F479006F2EAD /* GeneralAlertCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralAlertCell.h; sourceTree = "<group>"; };
 		92F63D831D49F479006F2EAD /* GeneralAlertCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralAlertCell.m; sourceTree = "<group>"; };
@@ -5786,7 +5779,6 @@
 		92F641551D49F47A006F2EAD /* TokopediaCacheManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TokopediaCacheManager.m; sourceTree = "<group>"; };
 		92F641561D49F47A006F2EAD /* TokopediaNetworkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TokopediaNetworkManager.h; sourceTree = "<group>"; };
 		92F641571D49F47A006F2EAD /* TokopediaNetworkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TokopediaNetworkManager.m; sourceTree = "<group>"; };
-		92F641581D49F47A006F2EAD /* TokopediaNetworkManager.m.orig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TokopediaNetworkManager.m.orig; sourceTree = "<group>"; };
 		92F6415A1D49F47A006F2EAD /* string_track_order.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_track_order.h; sourceTree = "<group>"; };
 		92F6415B1D49F47A006F2EAD /* TrackOrderHistoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrackOrderHistoryCell.h; sourceTree = "<group>"; };
 		92F6415C1D49F47A006F2EAD /* TrackOrderHistoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TrackOrderHistoryCell.m; sourceTree = "<group>"; };
@@ -9573,7 +9565,6 @@
 			children = (
 				92F63C181D49F479006F2EAD /* CreatePasswordViewController.h */,
 				92F63C191D49F479006F2EAD /* CreatePasswordViewController.m */,
-				92F63C1A1D49F479006F2EAD /* CreatePasswordViewController.m.orig */,
 				92F63C1B1D49F479006F2EAD /* CreatePasswordViewController.xib */,
 			);
 			path = CreatePassword;
@@ -9620,7 +9611,6 @@
 			isa = PBXGroup;
 			children = (
 				92F63C301D49F479006F2EAD /* RegisterViewController.h */,
-				92F63C311D49F479006F2EAD /* RegisterViewController.h.orig */,
 				92F63C321D49F479006F2EAD /* RegisterViewController.m */,
 				92F63C331D49F479006F2EAD /* RegisterViewController.xib */,
 				92F63C341D49F479006F2EAD /* stringregister.h */,
@@ -10078,7 +10068,6 @@
 			children = (
 				92F63D7D1D49F479006F2EAD /* ForgotPasswordViewController.h */,
 				92F63D7E1D49F479006F2EAD /* ForgotPasswordViewController.m */,
-				92F63D7F1D49F479006F2EAD /* ForgotPasswordViewController.m.orig */,
 				92F63D801D49F479006F2EAD /* ForgotPasswordViewController.xib */,
 			);
 			path = ForgotPassword;
@@ -11655,7 +11644,6 @@
 				92F641551D49F47A006F2EAD /* TokopediaCacheManager.m */,
 				92F641561D49F47A006F2EAD /* TokopediaNetworkManager.h */,
 				92F641571D49F47A006F2EAD /* TokopediaNetworkManager.m */,
-				92F641581D49F47A006F2EAD /* TokopediaNetworkManager.m.orig */,
 			);
 			path = TokopediaNetworkManager;
 			sourceTree = "<group>";
@@ -12514,7 +12502,6 @@
 				92F645991D49F47B006F2EAD /* GeneralAlertCell.xib in Resources */,
 				92F647831D49F47B006F2EAD /* ShopInfoAddressCell.xib in Resources */,
 				7A59FCC41D471AA7002ECC7B /* icon_toped_alert@3x.png in Resources */,
-				92F647C31D49F47B006F2EAD /* TokopediaNetworkManager.m.orig in Resources */,
 				92F6469D1D49F47B006F2EAD /* GiveReviewDetailViewController.xib in Resources */,
 				7A59FB181D471AA6002ECC7B /* icon_cart@2x.png in Resources */,
 				7A59FD471D471AA8002ECC7B /* slide3_content.png in Resources */,
@@ -12934,7 +12921,6 @@
 				7A59FC1D1D471AA7002ECC7B /* icon_order_cancel-01@2x.png in Resources */,
 				7A59FB381D471AA6002ECC7B /* icon_category_list_white@2x.png in Resources */,
 				7A59FDA21D471AA8002ECC7B /* icon_info_grey.png in Resources */,
-				92F644C81D49F47B006F2EAD /* CreatePasswordViewController.m.orig in Resources */,
 				7A59FB841D471AA6002ECC7B /* icon_facebook.png in Resources */,
 				7A59FC9D1D471AA7002ECC7B /* icon_speed_fast@2x.png in Resources */,
 				7A59FB2E1D471AA6002ECC7B /* icon_4@3x.png in Resources */,
@@ -12964,7 +12950,6 @@
 				7A59FD651D471AA8002ECC7B /* icon_search_active@3x.png in Resources */,
 				7A59FCB71D471AA7002ECC7B /* icon_star_unactive@2x.png in Resources */,
 				7A59FA781D471AA5002ECC7B /* GothamMedium.ttf in Resources */,
-				92F644D31D49F47B006F2EAD /* RegisterViewController.h.orig in Resources */,
 				7A59FBE01D471AA7002ECC7B /* icon_more_active@2x.png in Resources */,
 				7A59FA8F1D471AA5002ECC7B /* camera-grey.png in Resources */,
 				92F647961D49F47B006F2EAD /* ShopContainerViewController.xib in Resources */,
@@ -13147,7 +13132,6 @@
 				7A59FAAB1D471AA5002ECC7B /* icon_19@2x.png in Resources */,
 				92F648111D49F47B006F2EAD /* TxOrderConfirmationProductCell.xib in Resources */,
 				92F647041D49F47B006F2EAD /* SalesTransactionListViewController.xib in Resources */,
-				92F645961D49F47B006F2EAD /* ForgotPasswordViewController.m.orig in Resources */,
 				7A59FCE41D471AA8002ECC7B /* icon_view.png in Resources */,
 				7A59FD291D471AA8002ECC7B /* top_bg.png in Resources */,
 				7A59FCDA1D471AA7002ECC7B /* icon_uncheck_red@2x.png in Resources */,
