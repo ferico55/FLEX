@@ -168,9 +168,9 @@ import Foundation
     
     func swipeView(swipeView: SwipeView!, didSelectItemAtIndex index: Int) {
         let good: MiniSlide = digitalGoodsDataSource.goodsAtIndex(index)
-        let webView: WebViewController = WebViewController()
-        webView.strTitle = "Tokopedia"
-        webView.strURL = good.redirect_url
+        let webView = PulsaViewController()
+//        webView.strTitle = "Tokopedia"
+//        webView.strURL = good.redirect_url
         
         navigationController?.pushViewController(webView, animated: true)
     }

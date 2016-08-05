@@ -16,6 +16,8 @@
 @property(nonatomic, weak) UIViewController *delegate;
 @property(nonatomic, weak) iCarousel *slider;
 @property(nonatomic, weak) SwipeView *digitalGoodsSwipeView;
+@property(nonatomic, strong) UIView* pulsaPlaceholder;
+@property(nonatomic, weak) UIView* pulsaView;
 @property(nonatomic, weak) AnnouncementTickerView *ticker;
 
 @end

@@ -17,5 +17,6 @@
 + (NSString*)keroUrl;
 + (NSString*)hadesUrl;
 + (NSString*)mojitoUrl;
++ (NSString*)pulsaUrl;
 
 @end

@@ -297,7 +297,8 @@ NoResultDelegate
     _isNeedToSearch = NO;
     [_searchbar resignFirstResponder];
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
-        if ([sender tag] == 11) {
+        UIBarButtonItem* button = (UIBarButtonItem*)sender;
+        if (button.tag == 11) {
             ProductAddEditViewController *vc = [ProductAddEditViewController new];
             vc.data = @{
                         kTKPD_AUTHKEY                   : [_data objectForKey:kTKPD_AUTHKEY]?:@{},

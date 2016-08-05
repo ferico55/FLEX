@@ -1,5 +1,8 @@
 PODS:
   - AFNetworking (1.3.4)
+  - APAddressBook/Core (0.2.3)
+  - APAddressBook/Swift (0.2.3):
+    - APAddressBook/Core
   - AppsFlyerFramework (4.5.1)
   - BlocksKit (2.2.5):
     - BlocksKit/All (= 2.2.5)
@@ -72,7 +75,9 @@ PODS:
   - JLPermissions/Notification (2.2.8):
     - DBPrivacyHelper (= 0.6.3)
     - JLPermissions/Core
+  - LayoutKit (0.2.1)
   - Localytics (3.5.1)
+  - Masonry (1.0.1)
   - NJKWebViewProgress (0.2.3):
     - NJKWebViewProgress/Core (= 0.2.3)
     - NJKWebViewProgress/ProgressView (= 0.2.3)
@@ -96,12 +101,14 @@ PODS:
   - Reveal-iOS-SDK (1.6.2)
   - Rollout.io (1.0.0)
   - SOCKit (1.1)
+  - SPTPersistentCache (1.0.0)
   - TransitionKit (1.1.1)
   - TTTAttributedLabel (1.13.4)
   - Tweaks (2.0.0)
   - UITableView+FDTemplateLayoutCell (1.4)
 
 DEPENDENCIES:
+  - APAddressBook/Swift
   - AppsFlyerFramework
   - BlocksKit (~> 2.2.5)
   - CardIO
@@ -116,17 +123,21 @@ DEPENDENCIES:
   - GoogleMaps
   - GoogleTagManager
   - JLPermissions/Notification
+  - LayoutKit
   - Localytics (~> 3.5.0)
+  - Masonry
   - NJKWebViewProgress
   - RestKit (~> 0.20.0)
   - Reveal-iOS-SDK
   - Rollout.io (~> 1.0.0)
+  - SPTPersistentCache (~> 1.0)
   - TTTAttributedLabel
   - Tweaks (~> 2.0.0)
   - UITableView+FDTemplateLayoutCell (~> 1.4)
 
 SPEC CHECKSUMS:
   AFNetworking: cf8e418e16f0c9c7e5c3150d019a3c679d015018
+  APAddressBook: 2a91bf05999548bea210ec9d1a68073f4dc8bfce
   AppsFlyerFramework: 3d62e8c0408280ed06431345e192a461db339400
   BlocksKit: 7f422b971407001178d181a43b99014ea2591fe6
   Bolts: a0058fa3b331c5a1e4402d534f2dae36dbff31e4
@@ -152,12 +163,15 @@ SPEC CHECKSUMS:
   GoogleTagManager: d93ce3ea323b5989f07c7cf24a59e69ed36841b6
   GoogleUtilities: 8ed9134debe11719097881711464752900668f10
   JLPermissions: 27606b544932eb9fb1897f2e08ebcc4a10b8bc3b
+  LayoutKit: 650bf944830763dcf04002478bef040967bbc2df
   Localytics: da06c00606839b53978ca093adbca1d8afdeeb3e
+  Masonry: a1a931a0d08870ed8ae415a2ea5ea68ebcac77df
   NJKWebViewProgress: f481fd424cb5ecc27eacae11b5397db92fba9a4d
   RestKit: aac0c81c60d30fdd829d627d062f0eea231eb52c
   Reveal-iOS-SDK: e2250b3c155bcfac53ae223ddc1f76d08f206c33
   Rollout.io: 149a0164264c8960b0e963ddd28232aefdc12c46
   SOCKit: c7376ac262bea9115b8f749358f762522a47d392
+  SPTPersistentCache: c2ab4542796647387441169e352ba5f812128153
   TransitionKit: aec4d65b2be460fec0db04f905e8bedca601d669
   TTTAttributedLabel: 0a2ac7b2dd726d32a070dafb01446026b11e624f
   Tweaks: 524fa47636cce3bf3a4d9156e980f10ae9480e81
