@@ -26,7 +26,6 @@
                 <outlet property="loginButton" destination="BjJ-ah-R04" id="dvv-2B-Ufl"/>
                 <outlet property="orLabel" destination="3T9-rP-bSY" id="8hU-bC-bhi"/>
                 <outlet property="passwordTextField" destination="rJv-0e-sEO" id="wTA-pJ-GR0"/>
-                <outlet property="screenLogin" destination="tu9-kn-elL" id="oKK-HZ-puV"/>
                 <outlet property="signInProviderContainer" destination="g0F-wj-qxp" id="uKA-3g-pJa"/>
                 <outlet property="view" destination="lpZ-Wc-EfF" id="4lY-8H-fs8"/>
             </connections>
@@ -37,9 +36,19 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="screen_login" translatesAutoresizingMaskIntoConstraints="NO" id="tu9-kn-elL">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
-                </imageView>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QfQ-ON-DwI" userLabel="LoadingView">
+                    <rect key="frame" x="0.0" y="10" width="0.0" height="0.0"/>
+                    <subviews>
+                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="OfY-Za-Mqc">
+                            <rect key="frame" x="-10" y="-10" width="20" height="20"/>
+                        </activityIndicatorView>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="centerY" secondItem="OfY-Za-Mqc" secondAttribute="centerY" id="jUB-F0-f5e"/>
+                        <constraint firstAttribute="centerX" secondItem="OfY-Za-Mqc" secondAttribute="centerX" id="obx-fx-LSj"/>
+                    </constraints>
+                </view>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="i2V-1Q-6fX">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                     <subviews>
@@ -158,32 +167,15 @@
                         <constraint firstAttribute="bottom" secondItem="VIo-ub-GYT" secondAttribute="bottom" constant="15" id="dml-pB-vJb"/>
                     </constraints>
                 </scrollView>
-                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QfQ-ON-DwI" userLabel="LoadingView">
-                    <rect key="frame" x="0.0" y="10" width="0.0" height="0.0"/>
-                    <subviews>
-                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="OfY-Za-Mqc">
-                            <rect key="frame" x="-10" y="-10" width="20" height="20"/>
-                        </activityIndicatorView>
-                    </subviews>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstAttribute="centerY" secondItem="OfY-Za-Mqc" secondAttribute="centerY" id="jUB-F0-f5e"/>
-                        <constraint firstAttribute="centerX" secondItem="OfY-Za-Mqc" secondAttribute="centerX" id="obx-fx-LSj"/>
-                    </constraints>
-                </view>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstItem="i2V-1Q-6fX" firstAttribute="leading" secondItem="lpZ-Wc-EfF" secondAttribute="leading" id="0pv-zP-C2b"/>
-                <constraint firstAttribute="bottom" secondItem="tu9-kn-elL" secondAttribute="bottom" id="4OX-Yt-nue"/>
                 <constraint firstItem="QfQ-ON-DwI" firstAttribute="centerX" secondItem="lpZ-Wc-EfF" secondAttribute="centerX" id="GuT-1P-ZvU"/>
                 <constraint firstAttribute="bottom" secondItem="i2V-1Q-6fX" secondAttribute="bottom" id="PBj-ji-84Y"/>
                 <constraint firstItem="QfQ-ON-DwI" firstAttribute="centerY" secondItem="lpZ-Wc-EfF" secondAttribute="centerY" id="X3o-rl-sCh"/>
-                <constraint firstItem="tu9-kn-elL" firstAttribute="leading" secondItem="lpZ-Wc-EfF" secondAttribute="leading" id="dKb-nv-vhH"/>
-                <constraint firstAttribute="trailing" secondItem="tu9-kn-elL" secondAttribute="trailing" id="jhN-OL-ieO"/>
                 <constraint firstItem="i2V-1Q-6fX" firstAttribute="top" secondItem="lpZ-Wc-EfF" secondAttribute="top" id="kaK-aZ-aJ1"/>
                 <constraint firstAttribute="trailing" secondItem="i2V-1Q-6fX" secondAttribute="trailing" id="tgV-1q-hdB"/>
-                <constraint firstItem="tu9-kn-elL" firstAttribute="top" secondItem="lpZ-Wc-EfF" secondAttribute="top" id="wm9-tx-1Mr"/>
             </constraints>
             <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
@@ -198,7 +190,4 @@
             </connections>
         </tapGestureRecognizer>
     </objects>
-    <resources>
-        <image name="screen_login" width="640" height="1136"/>
-    </resources>
 </document>
