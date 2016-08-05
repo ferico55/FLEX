@@ -30,23 +30,6 @@ class PulsaViewController: UIViewController, LoginViewDelegate {
             self.didReceiveCategory(categories)
         }
     }
-    
-    override func viewDidLayoutSubviews() {
-        let scrollViewBounds = scrollView.bounds
-        let containerViewBounds = container.bounds
-        
-        var scrollViewInsets = UIEdgeInsetsZero
-        scrollViewInsets.top = scrollViewBounds.size.height/2.0;
-        scrollViewInsets.top -= container.bounds.size.height/2.0;
-        
-        scrollViewInsets.bottom = scrollViewBounds.size.height/2.0
-        scrollViewInsets.bottom -= container.bounds.size.height/2.0;
-        scrollViewInsets.bottom += 1
-        
-        scrollView.contentInset = scrollViewInsets
-    }
-    
-    
     func didReceiveCategory(categories: [PulsaCategory]) {
         var activeCategories: [PulsaCategory] = []
         categories.enumerate().forEach { id, category in

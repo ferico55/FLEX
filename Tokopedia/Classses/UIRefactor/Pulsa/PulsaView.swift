@@ -9,6 +9,7 @@
 import UIKit
 import Foundation
 
+@objc
 class PulsaView: UIView {
     
     var pulsaCategoryControl: UISegmentedControl!
@@ -135,7 +136,7 @@ class PulsaView: UIView {
             make.top.equalTo()(self.fieldPlaceholder.mas_top)
             make.left.equalTo()(self.mas_left)
             make.right.equalTo()(self.mas_right).offset()(category.attributes.use_phonebook ? -44 : 0)
-            make.bottom.equalTo()(self.fieldPlaceholder.mas_bottom)
+//            make.bottom.equalTo()(self.fieldPlaceholder.mas_bottom)
         }
         
         if(category.attributes.use_phonebook) {

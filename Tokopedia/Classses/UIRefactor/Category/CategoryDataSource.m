@@ -12,6 +12,7 @@
 #import "SearchResultViewController.h"
 #import "SearchResultShopViewController.h"
 #import "TKPDTabNavigationController.h"
+#import "Tokopedia-Swift.h"
 
 #define categoryNames @[@"Pakaian",@"Handphone & Tablet", @"Office & Stationery", @"Fashion & Aksesoris", @"Laptop & Aksesoris", @"Souvenir, Kado & Hadiah", @"Kecantikan", @"Komputer & Aksesoris", @"Mainan & Hobi", @"Kesehatan", @"Elektronik", @"Makanan & Minuman", @"Rumah Tangga", @"Kamera, Foto & Video", @"Buku", @"Dapur", @"Otomotif", @"Software", @"Perawatan Bayi", @"Olahraga", @"Film, Musik & Game", @"Produk Lainnya"]
 
@@ -64,8 +65,10 @@
         return cell;
     } else if (indexPath.section == 2) {
         UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"miniSlideCell" forIndexPath:indexPath];
-        if (![_digitalGoodsSwipeView isDescendantOfView:cell.contentView]) {
-            [cell.contentView addSubview:_digitalGoodsSwipeView];
+        if (![_pulsaContainer isDescendantOfView:cell.contentView]) {
+            [_pulsaContainer attachToView:cell.contentView];
+            
+            [cell.contentView addSubview:_pulsaContainer];
         }
         
         
@@ -139,7 +142,9 @@
         viewController.hidesBottomBarWhenPushed = YES;
         [viewController setNavigationTitle:categoryName?:@""];
         
-        [_delegate.navigationController pushViewController:viewController animated:YES];
+        PulsaViewController *controller = [[PulsaViewController alloc] init];
+        
+        [_delegate.navigationController pushViewController:controller animated:YES];
     }
 }
 
@@ -162,7 +167,7 @@
             return CGSizeMake(screenWidth, 1);
         }
     } else if (indexPath.section == 2) {
-        if (_digitalGoodsSwipeView) {
+        if (_pulsaContainer) {
             return CGSizeMake(screenWidth, 120);
         } else {
             return CGSizeMake(screenWidth, 1);
