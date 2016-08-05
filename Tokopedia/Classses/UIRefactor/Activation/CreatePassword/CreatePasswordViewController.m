@@ -425,6 +425,14 @@
     NSDictionary *trackerValues = @{AFEventParamRegistrationMethod : eventType};
 
     [[AppsFlyerTracker sharedTracker] trackEvent:AFEventCompleteRegistration withValues:trackerValues];
+    
+    if ([_userProfile.provider isEqualToString:@"1"]) {
+        [TPLocalytics trackRegistrationWith:RegistrationPlatformFacebook success:YES];
+    } else if ([_userProfile.provider isEqualToString:@"2"]) {
+        [TPLocalytics trackRegistrationWith:RegistrationPlatformGoogle success:YES];
+    } else if ([_userProfile.provider isEqualToString:@"4"]) {
+        [TPLocalytics trackRegistrationWith:RegistrationPlatformYahoo success:YES];
+    }
 }
 
 #pragma mark - Keyboard Notification

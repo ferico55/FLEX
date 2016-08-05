@@ -16,6 +16,7 @@ typedef NS_ENUM(NSInteger, RegistrationPlatform) {
     RegistrationPlatformFacebook,
     RegistrationPlatformGoogle,
     RegistrationPlatformEmail,
+    RegistrationPlatformYahoo
 };
 
 @interface TPLocalytics : NSObject

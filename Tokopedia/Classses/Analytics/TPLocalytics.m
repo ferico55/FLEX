@@ -80,12 +80,16 @@
         method = @"Google";
     } else if (platform == RegistrationPlatformEmail) {
         method = @"Email";
+    } else if (platform == RegistrationPlatformYahoo) {
+        method = @"Yahoo";
     }
+    
     NSDictionary *attributes = @{
         @"Success": success? @"Yes": @"No",
         @"Previous Screen": @"Login",
         @"Method": method
     };
+    
     [Localytics tagEvent:@"Registration Summary" attributes:attributes];
 }
 
