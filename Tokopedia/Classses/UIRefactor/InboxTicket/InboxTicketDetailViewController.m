@@ -45,7 +45,6 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     
     NSMutableArray *_messages;
     NSInteger _page;
-    NSInteger _totalPage;
     InboxTicketTicket *_ticketInformation;
     InboxTicketDetail *_ticketDetail;
 
