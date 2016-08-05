@@ -583,12 +583,12 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
 }
 
 - (void)actionBeforeRequest:(int)tag {
-//    if (tag == 1) {
-//        if (_messages.count == 0) {
-//            self.tableView.tableFooterView = _tableFooterView;
-//            [_indicatorView startAnimating];
-//        }
-//    }
+    if (tag == 1) {
+        if (_messages.count == 0) {
+            self.tableView.tableFooterView = _tableFooterView;
+            [_indicatorView startAnimating];
+        }
+    }
 }
 
 - (void)actionAfterRequest:(RKMappingResult *)mappingResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
