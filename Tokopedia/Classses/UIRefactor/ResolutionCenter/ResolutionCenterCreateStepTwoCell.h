@@ -7,7 +7,22 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DownPicker.h"
 
 @interface ResolutionCenterCreateStepTwoCell : UITableViewCell
+@property (strong, nonatomic) IBOutlet DownPicker *troublePicker;
+@property (strong, nonatomic) IBOutlet UIView *headerView;
+@property (strong, nonatomic) IBOutlet UIView *problemView;
 
+@property (strong, nonatomic) IBOutlet UIButton *productName;
+@property (strong, nonatomic) IBOutlet UIImageView *prosecureBadge;
+@property (strong, nonatomic) IBOutlet UILabel *prosecureLabel;
+@property (strong, nonatomic) IBOutlet UIImageView *productImage;
+@property (strong, nonatomic) IBOutlet UIStepper *quantityStepper;
+@property (strong, nonatomic) IBOutlet UILabel *quantityLabel;
+@property (strong, nonatomic) IBOutlet UITextView *problemTextView;
+
+
+
++ (id)newcell;
 @end

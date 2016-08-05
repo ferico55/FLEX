@@ -9,10 +9,18 @@
 #import "ResolutionCenterCreateStepTwoCell.h"
 
 @implementation ResolutionCenterCreateStepTwoCell
-
++ (id)newcell
+{
+    NSArray* a = [[NSBundle mainBundle] loadNibNamed:@"ResolutionCenterCreateStepTwoCell" owner:nil options:0];
+    for (id o in a) {
+        if ([o isKindOfClass:[self class]]) {
+            return o;
+        }
+    }
+    return nil;
+}
 - (void)awakeFromNib {
     [super awakeFromNib];
-    // Initialization code
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -20,5 +28,10 @@
 
     // Configure the view for the selected state
 }
+
+- (IBAction)stepperValueChanged:(id)sender {
+    _quantityLabel.text = [NSString stringWithFormat:@"%.f", _quantityStepper.value];
+}
+
 
 @end

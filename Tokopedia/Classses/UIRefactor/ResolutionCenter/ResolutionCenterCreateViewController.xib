@@ -78,7 +78,7 @@
                             </state>
                         </button>
                     </subviews>
-                    <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                    <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstItem="KlF-GG-iPX" firstAttribute="centerY" secondItem="Jti-i8-qAg" secondAttribute="centerY" id="1hN-BX-yYu"/>
                         <constraint firstItem="JA5-cn-Eu3" firstAttribute="centerY" secondItem="Jti-i8-qAg" secondAttribute="centerY" id="3Sc-XS-zpf"/>

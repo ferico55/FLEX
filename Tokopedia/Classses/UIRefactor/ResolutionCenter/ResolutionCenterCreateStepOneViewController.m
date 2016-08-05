@@ -100,13 +100,13 @@ ResolutionCenterChooseProblemDelegate
         [self.navigationController pushViewController:vc animated:YES];
     }else if(indexPath.section == 1){
         ResolutionProductList *selectedProduct = [_productData.list objectAtIndex:indexPath.row];
-        [_selectedProduct addObject:selectedProduct];
+        [_result.selectedProduct addObject:selectedProduct];
     }
 }
 
 -(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath{
     if(indexPath.section == 1){
-        [_selectedProduct removeObject:[_productData.list objectAtIndex:indexPath.row]];
+        [_result.selectedProduct removeObject:[_productData.list objectAtIndex:indexPath.row]];
     }
 }
 

@@ -12,6 +12,7 @@
 #import "ResolutionCenterCreateStepThreeViewController.h"
 #import "ResolutionProductList.h"
 #import "ResolutionCenterCreateData.h"
+#import "ResolutionCenterCreateResult.h"
 
 @interface ResolutionCenterCreateViewController ()
 <
@@ -32,7 +33,7 @@
 @property (strong, nonatomic) IBOutlet UIButton *thirdButton;
 @property (strong, nonatomic) IBOutlet UIProgressView *progressBar;
 
-@property (strong, nonatomic) NSMutableArray<ResolutionProductList*>* selectedProduct;
+@property (strong, nonatomic) ResolutionCenterCreateResult* result;
 @property (strong, nonatomic) ResolutionCenterCreateData* formData;
 @end
 
@@ -54,8 +55,7 @@
     UIBarButtonItem *nextButton = [[UIBarButtonItem alloc] initWithTitle:@"Lanjut" style: UIBarButtonItemStyleDone target:self action:@selector(didTapNextButton)];
     self.navigationItem.rightBarButtonItem = nextButton;
     
-    
-    _selectedProduct = [NSMutableArray new];
+    _result = [[ResolutionCenterCreateResult alloc]init];
     
     [self initViewControllers];
     [self initPageIndicator];
@@ -100,9 +100,9 @@
     _stepThreeViewController = [ResolutionCenterCreateStepThreeViewController new];
     
     _stepOneViewController.formData = self.formData;
-    _stepOneViewController.selectedProduct = self.selectedProduct;
+    _stepOneViewController.result = self.result;
     _stepTwoViewController.formData = self.formData;
-    _stepTwoViewController.selectedProduct = self.selectedProduct;
+    _stepTwoViewController.result = self.result;
     /*
     _stepThreeViewController.formData = self.formData;
     _stepThreeViewController.selectedProduct = self.selectedProduct;
@@ -161,7 +161,15 @@
 }
 
 - (IBAction)didTapBackButton{
-    [self.navigationController popViewControllerAnimated:YES];
+    if(_currentIndex == 0){
+        [self.navigationController popViewControllerAnimated:YES];
+    }else{
+        _currentIndex--;
+        [_pageController setViewControllers:@[[self viewControllerAtIndex:_currentIndex]]
+                                  direction:UIPageViewControllerNavigationDirectionReverse
+                                   animated:YES
+                                 completion:nil];
+    }
 }
 - (IBAction)didTapNextButton{
     _currentIndex++;

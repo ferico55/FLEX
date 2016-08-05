@@ -2444,6 +2444,7 @@
 		BB75F5531D518CF600196BCE /* ResolutionCenterCreateStepTwoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB75F5511D518CF600196BCE /* ResolutionCenterCreateStepTwoViewController.xib */; };
 		BB75F5571D518D0D00196BCE /* ResolutionCenterCreateStepThreeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB75F5551D518D0D00196BCE /* ResolutionCenterCreateStepThreeViewController.m */; };
 		BB75F5581D518D0D00196BCE /* ResolutionCenterCreateStepThreeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB75F5561D518D0D00196BCE /* ResolutionCenterCreateStepThreeViewController.xib */; };
+		BBEA11271D547C5000626AD3 /* ResolutionCenterCreateResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BBEA11261D547C5000626AD3 /* ResolutionCenterCreateResult.m */; };
 		F25F6F270D531ED13A92CDB9 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4868E459AB2A65D133732296 /* libPods-Tokopedia.a */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
 		FC23B85A1ACD659900879D75 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8581ACD659900879D75 /* Fabric.framework */; };
@@ -6083,6 +6084,8 @@
 		BB75F5541D518D0D00196BCE /* ResolutionCenterCreateStepThreeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionCenterCreateStepThreeViewController.h; sourceTree = "<group>"; };
 		BB75F5551D518D0D00196BCE /* ResolutionCenterCreateStepThreeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionCenterCreateStepThreeViewController.m; sourceTree = "<group>"; };
 		BB75F5561D518D0D00196BCE /* ResolutionCenterCreateStepThreeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ResolutionCenterCreateStepThreeViewController.xib; sourceTree = "<group>"; };
+		BBEA11251D547C5000626AD3 /* ResolutionCenterCreateResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionCenterCreateResult.h; sourceTree = "<group>"; };
+		BBEA11261D547C5000626AD3 /* ResolutionCenterCreateResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionCenterCreateResult.m; sourceTree = "<group>"; };
 		C8A1445074FECD393EA18C17 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		FC23B8571ACD659900879D75 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		FC23B8581ACD659900879D75 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
@@ -12195,6 +12198,8 @@
 				BB20194C1D534321001673D9 /* ResolutionCenterCreateStepTwoCell.h */,
 				BB20194D1D534321001673D9 /* ResolutionCenterCreateStepTwoCell.m */,
 				BB20194E1D534321001673D9 /* ResolutionCenterCreateStepTwoCell.xib */,
+				BBEA11251D547C5000626AD3 /* ResolutionCenterCreateResult.h */,
+				BBEA11261D547C5000626AD3 /* ResolutionCenterCreateResult.m */,
 			);
 			path = ResolutionCenter;
 			sourceTree = "<group>";
@@ -14649,6 +14654,7 @@
 				454858E61D4B0A3F001B10CD /* TKPDTabViewController.m in Sources */,
 				4548587B1D4B0A3F001B10CD /* AlertShipmentCodeView.m in Sources */,
 				454859151D4B0A3F001B10CD /* RequestShippingCity.swift in Sources */,
+				BBEA11271D547C5000626AD3 /* ResolutionCenterCreateResult.m in Sources */,
 				454857D81D4B0A3F001B10CD /* ShipmentAvailable.m in Sources */,
 				454859761D4B0A3F001B10CD /* RequestCancelResolution.m in Sources */,
 				4548584D1D4B0A3F001B10CD /* ActivationRequest.m in Sources */,

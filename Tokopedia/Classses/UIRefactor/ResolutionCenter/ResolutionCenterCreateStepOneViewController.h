@@ -9,9 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "ResolutionCenterCreateData.h"
 #import "ResolutionProductList.h"
+#import "ResolutionCenterCreateResult.h"
 
 @interface ResolutionCenterCreateStepOneViewController : UIViewController
 
 @property (strong, nonatomic) ResolutionCenterCreateData* formData;
-@property (strong, nonatomic) NSMutableArray<ResolutionProductList*>* selectedProduct;
+@property (strong, nonatomic) ResolutionCenterCreateResult* result;
 @end
