@@ -905,10 +905,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
                                           completion:nil];
 }
 - (IBAction)didTouchReopenButton:(UIButton *)sender {
-    if (IS_INBOX_TICKET_CAN_CLOSE_CASE)
-    {
-        [self showView:_buttonsView];
-    }
+    [self showView:_buttonsView];
 }
 
 #pragma mark - GalleryPhoto Delegate
