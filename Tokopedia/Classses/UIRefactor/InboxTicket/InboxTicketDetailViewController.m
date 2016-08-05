@@ -45,10 +45,11 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     
     NSMutableArray *_messages;
     NSInteger _page;
+    NSInteger _totalPage;
     InboxTicketTicket *_ticketInformation;
     InboxTicketDetail *_ticketDetail;
 
-    BOOL _isLoadingMore;
+    BOOL _canLoadMore;
     
     NSIndexPath *_selectedIndexPath;
 }
@@ -188,7 +189,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     self.automaticCloseRatingYesButton.layer.cornerRadius = 2;
     self.automaticCloseReopenButton.layer.cornerRadius = 2;
     
-    _isLoadingMore = NO;
+    _canLoadMore = NO;
     
     if ([self.delegate respondsToSelector:@selector(updateInboxTicket:)]) {
         self.inboxTicket.ticket_read_status = @"2";
@@ -212,7 +213,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     if (inboxTicket) {
         _ticketDetail = nil;
         _ticketInformation = nil;
-        _isLoadingMore = NO;
+        _canLoadMore = NO;
         _page = 0;
         
         self.view.hidden = NO;
@@ -353,7 +354,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     } else {
         ticket = _messages[indexPath.row];
     }
-    
+
     NSString *message = ticket.ticket_detail_message;
     if ([ticket.ticket_detail_new_rating isEqualToString:@"1"]) {
         message = [NSString stringWithFormat:@"%@\n\nMemberikan Penilaian : Membantu", ticket.ticket_detail_message];
@@ -402,7 +403,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    if (self.inboxTicket.ticket_show_more_messages && section == 0) {
+    if (self.inboxTicket.ticket_show_more_messages && section == 0 && _canLoadMore) {
         return _loadMoreView;
     } else {
         return nil;
@@ -410,7 +411,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    if (self.inboxTicket.ticket_show_more_messages && section == 0) {
+    if (self.inboxTicket.ticket_show_more_messages && section == 0 && _canLoadMore) {
         return _loadMoreView.frame.size.height;
     } else {
         return 0;
@@ -422,7 +423,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
 - (NSDictionary *)getParameter:(int)tag {
     NSDictionary *dictionary;
     if (tag == 1) {
-        if (_isLoadingMore) {
+        if (_canLoadMore) {
             dictionary = @{
                            API_ACTION_KEY             : API_GET_INBOX_TICKET_VIEW_MORE,
                            API_LIST_TICKET_ID_KEY     : _inboxTicket.ticket_id?:_inboxTicketId,
@@ -647,20 +648,17 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
                 self.inboxTicket.ticket_show_more_messages = YES;
             }
         }
+        else
+        {
+            if ([_ticketInformation.ticket_total_message integerValue] > 2) {
+                self.inboxTicket.ticket_show_more_messages = YES;
+            }
+        }
     }
     
-    if (_page < [response.result.ticket_reply.ticket_reply_total_page integerValue]){
-        self.inboxTicket.ticket_show_more_messages = YES;
-    }
-    else
-    {
-        self.inboxTicket.ticket_show_more_messages = NO;
-    }
-
-
     self.tableView.sectionHeaderHeight = 0;
     
-    if (_isLoadingMore) {
+    if (_canLoadMore) {
         self.tableView.sectionFooterHeight = 0;
     }
     
@@ -685,15 +683,15 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
         [tickets addObject:message];
     }
     
-    if (_messages.count != 0)
+    if (_canLoadMore && [(NSMutableArray *)_messages[1] count] > 2)
     {
-        
-        [_messages[1] removeObjectsInArray:tickets];
+        //append new ticket
         NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, tickets.count)];
         [_messages[1] insertObjects:tickets atIndexes:indexSet];
     }
     else
     {
+        //replace the old ticket with the new one
         NSArray *array = @[@[_ticketDetail], tickets];
         _messages = [NSMutableArray arrayWithArray:array];
     }
@@ -787,6 +785,12 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     }
     
     [[NSNotificationCenter defaultCenter] postNotificationName:TKPDInboxTicketReceiveData object:nil];
+    
+    if (_page < [response.result.ticket_reply.ticket_reply_total_page integerValue]){
+        _canLoadMore = YES;
+    } else {
+        _canLoadMore = NO;
+    }
 }
 
 - (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
@@ -798,6 +802,8 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     {
         _page = _page - 1;
     }
+    
+    [_loadMoreButton setTitle:@"Lihat Sebelumnya" forState:UIControlStateNormal];
 }
 
 - (void)actionAfterFailRequestMaxTries:(int)tag {
@@ -879,7 +885,6 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
 
 - (IBAction)didTouchUpLoadMoreButton:(UIButton *)sender {
     [sender setTitle:@"Memuat..." forState:UIControlStateNormal];
-    _isLoadingMore = YES;
     _page++;
     [_networkManager doRequest];
 }
@@ -968,7 +973,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
 }
 
 - (void)refreshView {
-    _isLoadingMore = NO;
+    _canLoadMore = NO;
     _ticketInformation = nil;
     _page = 0;
     [_networkManager doRequest];
