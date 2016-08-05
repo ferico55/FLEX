@@ -2451,7 +2451,6 @@
 		7A5898D41D534DC1006042E6 /* Tokopedia.xcworkspace in Resources */ = {isa = PBXBuildFile; fileRef = 7A588F4B1D534DB7006042E6 /* Tokopedia.xcworkspace */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
-		7ACBC8F81D54797600019F5F /* PulsaInteraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACBC8F71D54797600019F5F /* PulsaInteraction.swift */; };
 		7ACE9C541BB00956006C4BB7 /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */; };
 		7ACE9C551BB00956006C4BB7 /* FBAudienceNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C4F1BB00956006C4BB7 /* FBAudienceNetwork.framework */; };
 		7ACE9C581BB00956006C4BB7 /* FBSDKMessengerShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */; };
@@ -14807,7 +14806,6 @@
 				7A5891321D534DB8006042E6 /* TransactionActionResult.m in Sources */,
 				7A58931D1D534DBA006042E6 /* PurchaseViewController.m in Sources */,
 				7A58934C1D534DBA006042E6 /* NotificationViewController.m in Sources */,
-				7ACBC8F81D54797600019F5F /* PulsaInteraction.swift in Sources */,
 				7A5891091D534DB8006042E6 /* AddProductSubmitResult.m in Sources */,
 				7A5893081D534DBA006042E6 /* InboxTalkViewController.m in Sources */,
 				7A5892161D534DB9006042E6 /* CatalogProductCell.m in Sources */,

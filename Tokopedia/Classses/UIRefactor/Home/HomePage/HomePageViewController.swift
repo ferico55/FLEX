@@ -10,10 +10,9 @@ import UIKit
 import Foundation
 
 @IBDesignable
-@objc class HomePageViewController: UIViewController, iCarouselDelegate, SwipeViewDelegate, LoginViewDelegate {
-    
-    @IBOutlet var collectionView: UICollectionView!
-    @IBOutlet var flowLayout: UICollectionViewFlowLayout!
+@objc
+
+class HomePageViewController: UIViewController, iCarouselDelegate, SwipeViewDelegate, LoginViewDelegate {
     
     private var slider: iCarousel!
     private var digitalGoodsSwipeView: SwipeView!
@@ -23,6 +22,7 @@ import Foundation
     private var digitalGoodsDataSource: DigitalGoodsDataSource!
     private var categoryDataSource: CategoryDataSource!
     
+    
     private var banner: [Slide!]!
     private var loadIndicator: UIActivityIndicatorView!
     private var tickerRequest: AnnouncementTickerRequest!
@@ -31,6 +31,13 @@ import Foundation
     var pulsaView = PulsaView!()
     var prefixes = Dictionary<String, Dictionary<String, String>>()
     var requestManager = PulsaRequest!()
+    
+    
+    var carouselView: UIView!
+    var pulsaPlaceholder: UIView!
+    var categoryView: UIView!
+    var collectionView: UICollectionView!
+    
     
     private let sliderHeight: CGFloat = (UI_USER_INTERFACE_IDIOM() == .Pad) ? 225.0 : 175.0
     private let screenWidth = UIScreen.mainScreen().bounds.size.width
@@ -46,48 +53,43 @@ import Foundation
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        collectionView.contentSize = view.bounds.size
         
-        loadIndicator = UIActivityIndicatorView(frame: CGRectMake(0, 0, UIScreen.mainScreen().bounds.size.width, 30))
-        collectionView.addSubview(loadIndicator)
+        self.categoryDataSource = CategoryDataSource()
+        self.categoryDataSource.delegate = self
         
-        loadIndicator.bringSubviewToFront(view)
-        loadIndicator.startAnimating()
-        
-        categoryDataSource = CategoryDataSource()
-        categoryDataSource.delegate = self
-        
-        collectionView.dataSource = categoryDataSource
-        collectionView.delegate = categoryDataSource
-        collectionView.backgroundColor = UIColor.whiteColor()
+        let flow = UICollectionViewFlowLayout()
+        self.collectionView = UICollectionView(frame: CGRectZero, collectionViewLayout: flow)
+        self.collectionView.dataSource = self.categoryDataSource
+        self.collectionView.delegate = self.categoryDataSource
         
         let cellNib = UINib(nibName: "CategoryViewCell", bundle: nil)
-        collectionView.registerNib(cellNib, forCellWithReuseIdentifier: "CategoryViewCellIdentifier")
-        collectionView.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: "bannerCell")
-        collectionView.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: "tickerCell")
-        collectionView.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: "miniSlideCell")
+        self.collectionView.registerNib(cellNib, forCellWithReuseIdentifier: "CategoryViewCellIdentifier")
+        
+//        self.view.addSubview(self.collectionView)
+
+        self.carouselView = UIView(frame: CGRectZero)
+        self.view.addSubview((self.carouselView)!)
+        
+        self.pulsaPlaceholder = UIView(frame: CGRectZero)
+        self.view.addSubview(self.pulsaPlaceholder)
+        
+        self.categoryView = UIView(frame: CGRectZero)
+        self.categoryView.backgroundColor = UIColor.blackColor()
+        self.view.addSubview(self.categoryView)
         
         tickerRequest = AnnouncementTickerRequest()
+        self.loadBanners()
+        self.requestTicker()
+        
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .Bordered, target: self, action: nil)
         
         let timer = NSTimer(timeInterval: 5.0, target: self, selector: #selector(moveToNextSlider), userInfo: nil, repeats: true)
         NSRunLoop.mainRunLoop().addTimer(timer, forMode: NSRunLoopCommonModes)
-        
-        // Do any additional setup after loading the view.
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .Bordered, target: self, action: nil)
-        
-        self.loadBanners()
-        self.requestTicker()
-        
+
         TPAnalytics.trackScreenName("Top Category")
     }
     
@@ -104,9 +106,8 @@ import Foundation
         
         let backgroundColor = UIColor(red: 242/255.0, green: 242/255.0, blue: 242/255.0, alpha: 1.0)
         
+        
         bannersStore.fetchBannerWithCompletion({[weak self] (banner, error) in
-            self!.loadIndicator.stopAnimating()
-            
             self!.banner = banner
             self!.slider = iCarousel(frame: CGRectMake(0, 0, self!.screenWidth, self!.sliderHeight))
             self!.slider.backgroundColor = backgroundColor
@@ -119,33 +120,42 @@ import Foundation
             self!.slider.delegate = self!.carouselDataSource
             self!.slider.decelerationRate = 0.5
             
-            self!.categoryDataSource.slider = self!.slider
             
-            self!.collectionView.reloadData()
-            })
-        
-//        bannersStore.fetchMiniSlideWithCompletion({[weak self] (slide, error) in
-//            if slide != nil {
-//                self!.digitalGoodsSwipeView = SwipeView(frame: CGRectMake(0, 0, self!.screenWidth, 120.0))
-//                self!.digitalGoodsSwipeView.backgroundColor = backgroundColor
-//                self!.digitalGoodsDataSource = DigitalGoodsDataSource(goods: slide, swipeView: self!.digitalGoodsSwipeView)
-//                self!.digitalGoodsSwipeView.dataSource = self!.digitalGoodsDataSource
-//                self!.digitalGoodsSwipeView.delegate = self
-//                self!.digitalGoodsSwipeView.clipsToBounds = true
-//                self!.digitalGoodsSwipeView.truncateFinalPage = true
-//                self!.digitalGoodsSwipeView.decelerationRate = 0.5
-//                
-//                if (UI_USER_INTERFACE_IDIOM() == .Pad) {
-//                    self!.digitalGoodsSwipeView.alignment = .Center
-//                    self!.digitalGoodsSwipeView.isCenteredChild = true
-//                }
-//                
-//                self!.categoryDataSource.digitalGoodsSwipeView = self!.digitalGoodsSwipeView
-//                
-//                self!.collectionView.reloadData()
+            self?.carouselView .addSubview(self!.slider)
+            self?.carouselView.mas_makeConstraints { make in
+                make.top.equalTo()(self!.view.mas_top)
+                make.left.equalTo()(self!.view.mas_left)
+                make.right.equalTo()(self!.view.mas_right)
+            }
+            
+            self?.slider.mas_makeConstraints { make in
+                make.height.equalTo()(175)
+                make.top.equalTo()(self?.carouselView.mas_top)
+                make.left.equalTo()(self?.carouselView.mas_left)
+                make.right.equalTo()(self?.carouselView.mas_right)
+                make.bottom.equalTo()(self?.carouselView.mas_bottom)
+            }
+            
+            self!.pulsaPlaceholder.mas_makeConstraints { make in
+                make.left.equalTo()(self!.view.mas_left)
+                make.right.equalTo()(self!.view.mas_right)
+                make.top.equalTo()(self!.carouselView.mas_bottom).offset()(10)
+            }
+            
+            self?.categoryView.mas_makeConstraints { make in
+                make.left.equalTo()(self!.view.mas_left)
+                make.right.equalTo()(self!.view.mas_right)
+                make.height.equalTo()(10)
+                make.top.equalTo()(self!.pulsaPlaceholder.mas_bottom)
+            }
+            
+//            self?.collectionView.mas_makeConstraints { make in
+//                make.left.equalTo()(self!.view.mas_left)
+//                make.right.equalTo()(self!.view.mas_right)
+//                make.top.equalTo()(self!.pulsaPlaceholder.mas_bottom).offset()(10)
 //            }
-//            
-//            })
+        })
+        
         
         self.requestManager = PulsaRequest()
         self.requestManager.requestCategory()
@@ -165,6 +175,7 @@ import Foundation
             
             let container = UIView(frame: CGRectZero)
             self.pulsaView = PulsaView(categories: sortedCategories)
+            self.pulsaView.attachToView(self.pulsaPlaceholder)
             
             self.pulsaView.didAskedForLogin = {
                 let navigation = UINavigationController()
@@ -200,8 +211,7 @@ import Foundation
                 self.didReceiveOperator(sortedOperators)
             }
             
-            self.categoryDataSource.pulsaContainer = self.pulsaView
-            self.collectionView.reloadData()
+//            self.categoryDataSource.pulsaContainer = self.pulsaView
         }
         
         
@@ -292,7 +302,6 @@ import Foundation
                 self.navigationController!.pushViewController(controller, animated: true)
             }
         }
-        self.collectionView.reloadData()
     }
     
     func findOperatorById(id: String, operators: [PulsaOperator]) -> PulsaOperator{
@@ -322,11 +331,10 @@ import Foundation
                     self!.openWebViewWithURL(url)
                 }
                 
-                self!.categoryDataSource.ticker = self!.tickerView
+//                self!.categoryDataSource.ticker = self!.tickerView
                 
             }
             
-            self!.collectionView.reloadData()
         }) { (error) in
             
         }
