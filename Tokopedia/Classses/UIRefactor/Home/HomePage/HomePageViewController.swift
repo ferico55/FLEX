@@ -58,14 +58,17 @@ class HomePageViewController: UIViewController, iCarouselDelegate, SwipeViewDele
         self.categoryDataSource.delegate = self
         
         let flow = UICollectionViewFlowLayout()
-        self.collectionView = UICollectionView(frame: CGRectZero, collectionViewLayout: flow)
+        
+        self.collectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: flow)
         self.collectionView.dataSource = self.categoryDataSource
         self.collectionView.delegate = self.categoryDataSource
+        self.collectionView.backgroundColor = UIColor.redColor()
+        self.collectionView.contentSize = self.view.bounds.size
         
         let cellNib = UINib(nibName: "CategoryViewCell", bundle: nil)
         self.collectionView.registerNib(cellNib, forCellWithReuseIdentifier: "CategoryViewCellIdentifier")
         
-//        self.view.addSubview(self.collectionView)
+        self.view.addSubview(self.collectionView)
 
         self.carouselView = UIView(frame: CGRectZero)
         self.view.addSubview((self.carouselView)!)
@@ -73,9 +76,11 @@ class HomePageViewController: UIViewController, iCarouselDelegate, SwipeViewDele
         self.pulsaPlaceholder = UIView(frame: CGRectZero)
         self.view.addSubview(self.pulsaPlaceholder)
         
-        self.categoryView = UIView(frame: CGRectZero)
-        self.categoryView.backgroundColor = UIColor.blackColor()
-        self.view.addSubview(self.categoryView)
+        self.collectionView.mas_makeConstraints { make in
+            make.left.equalTo()(self.view.mas_left)
+            make.right.equalTo()(self.view.mas_right)
+            make.top.equalTo()(self.pulsaPlaceholder.mas_bottom).offset()(10)
+        }
         
         tickerRequest = AnnouncementTickerRequest()
         self.loadBanners()
@@ -91,6 +96,7 @@ class HomePageViewController: UIViewController, iCarouselDelegate, SwipeViewDele
         super.viewWillAppear(animated)
 
         TPAnalytics.trackScreenName("Top Category")
+        self.collectionView.reloadData()
     }
     
     override func viewDidDisappear(animated: Bool) {
@@ -142,18 +148,12 @@ class HomePageViewController: UIViewController, iCarouselDelegate, SwipeViewDele
                 make.top.equalTo()(self!.carouselView.mas_bottom).offset()(10)
             }
             
-            self?.categoryView.mas_makeConstraints { make in
-                make.left.equalTo()(self!.view.mas_left)
-                make.right.equalTo()(self!.view.mas_right)
-                make.height.equalTo()(10)
-                make.top.equalTo()(self!.pulsaPlaceholder.mas_bottom)
+            self?.collectionView.mas_makeConstraints { make in
+                make.top.equalTo()(self?.pulsaPlaceholder.mas_bottom)
+                make.left.equalTo()(self?.view.mas_left)
+                make.right.equalTo()(self?.view.mas_right)
+                make.bottom.equalTo()(self?.view.mas_bottom)
             }
-            
-//            self?.collectionView.mas_makeConstraints { make in
-//                make.left.equalTo()(self!.view.mas_left)
-//                make.right.equalTo()(self!.view.mas_right)
-//                make.top.equalTo()(self!.pulsaPlaceholder.mas_bottom).offset()(10)
-//            }
         })
         
         
