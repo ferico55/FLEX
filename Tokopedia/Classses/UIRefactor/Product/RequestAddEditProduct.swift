@@ -329,6 +329,29 @@ import UIKit
         RequestAddEditProduct.errorCompletionHandler = onFailure
         
         var imageFilePaths : [String] = []
+        
+        self.getGeneratedHost()
+        .subscribeNext { (generatedHost) in
+            form.product_images.forEach{ selectedImage in
+                self.getUploadProductImage(selectedImage.image,
+                    path: "https://\(generatedHost.upload_host)",
+                    serverID: generatedHost.server_id,
+                    productID: "")
+                .subscribeNext{ (pictObj) in
+                        
+                    imageFilePaths.append(pictObj.file_path)
+                    selectedImage.image_src = pictObj.file_path
+                        
+                       if imageFilePaths.count == form.product_images.count{
+                            self.getPostKey(form, isDuplicate: isDuplicate,
+                                generatedHost: generatedHost)
+                            .subscribeNext({ (postKey) in
+                                
+                            })
+                        }
+                }
+            }
+        }
 
         self.fetchGenerateHost({ (generatedHost) in
             
@@ -374,6 +397,106 @@ import UIKit
             
         })
     }
+    private class func getPostKey(form:ProductEditResult, isDuplicate:String, generatedHost:GeneratedHost) -> Observable<String> {
+        return Observable.create({ (observer) -> Disposable in
+            let filePaths:[String] = form.product_images.map{$0.image_src}
+            let filePathString : String = filePaths.joinWithSeparator("~")
+            
+            let pictDescriptions:[String] = form.product_images.map{$0.image_description}
+            let pictDescriptionString : String = pictDescriptions.joinWithSeparator("~")
+            
+            var pictureDefault : String = ""
+            for selectedImage in form.product_images where selectedImage.image_primary == "1" {
+                pictureDefault = selectedImage.image_src
+            }
+            
+            /*
+             Upload to
+             1 -> etalase
+             2 -> warehouse
+             3 -> pending
+             */
+            
+            let product: ProductEditDetail = form.product
+            
+            var uploadTo : String = "1"
+            if product.product_status == "3" {
+                uploadTo = "2"
+            }
+            
+            var param : [String:String] = [
+                "server_id"             : generatedHost.server_id,
+                "duplicate"             : isDuplicate,
+                "product_name"          : product.product_name,
+                "product_description"   : product.product_short_desc,
+                "product_department_id" : product.product_category.categoryId,
+                "product_catalog_id"    : (product.product_catalog.catalog_id)!,
+                "product_min_order"     : product.product_min_order,
+                "product_price_currency": product.product_currency_id,
+                "product_price"         : product.product_price,
+                "product_weight_unit"   : product.product_weight_unit,
+                "product_weight"        : product.product_weight,
+                "product_photo"         : filePathString,
+                "product_photo_desc"    : pictDescriptionString,
+                "product_photo_default" : pictureDefault,
+                "product_must_insurance": product.product_must_insurance,
+                "product_upload_to"     : uploadTo,
+                "product_etalase_id"    : product.product_etalase_id,
+                "product_etalase_name"  : product.product_etalase,
+                "product_condition"     : product.product_condition,
+                //"po_process_type -> value type 1 = day , 2 = week , 3 = month
+                //"po_process_value -> for processing value
+            ]
+            
+            for (index,wholesale) in form.wholesale_price.enumerate() {
+                let wholesaleParam : [String:String] = [
+                    "qty_max_\(index+1)" : wholesale.wholesale_max,
+                    "qty_min_\(index+1)" : wholesale.wholesale_min,
+                    "prd_prc_\(index+1)" : wholesale.wholesale_price
+                ]
+                param.update(wholesaleParam)
+            }
+            
+            let networkManager : TokopediaNetworkManager = TokopediaNetworkManager()
+            networkManager.isUsingHmac = true
+            
+            _ = networkManager.requestWithBaseUrl(NSString .v4Url(),
+                path: "/v4/action/product/add_product_validation.pl",
+                method: .POST,
+                parameter: param,
+                mapping: AddProductValidation.mapping(),
+                onSuccess: { (mappingResult, operation) in
+                    
+                    let result : Dictionary = mappingResult.dictionary() as Dictionary
+                    let response : AddProductValidation = result[""] as! AddProductValidation
+                    
+                    if response.data.post_key != nil {
+                        if response.message_status?.count>0 {
+                            StickyAlertView.showSuccessMessage(response.message_status)
+                        }
+                        observer.onNext(response.data.post_key)
+                    } else {
+                        if let errors = response.message_error{
+                            StickyAlertView.showErrorMessage(errors)
+                        } else {
+                            StickyAlertView.showErrorMessage(["Gagal menambah produk"])
+                        }
+                        RequestAddEditProduct.errorCompletionHandler()
+                    }
+                    
+            }) { (error) in
+                RequestAddEditProduct.errorCompletionHandler()
+                StickyAlertView.showErrorMessage(["Gagal menambah produk"])
+            }
+            
+            return AnonymousDisposable {
+                RequestAddEditProduct.errorCompletionHandler()
+                StickyAlertView.showErrorMessage(["Gagal generate host"])
+            }
+            
+        })
+    }
+    
     
     private class func fetchValidationAddProduct(form:ProductEditResult, isDuplicate:String, generatedHost:GeneratedHost, onSuccess: ((postKey:String) -> Void)){
         
@@ -611,6 +734,23 @@ import UIKit
             StickyAlertView.showErrorMessage(["Gagal generate host"])
         }
     }
+    private class func getGeneratedHost() -> Observable<GeneratedHost> {
+        return Observable.create({ (observer) -> Disposable in
+            _ = RequestGenerateHost .fetchGenerateHostSuccess({ (generatedHost) in
+                observer.onNext(generatedHost)
+                observer.onCompleted()
+            }) { (error) in
+                observer.onError(error)
+                RequestAddEditProduct.errorCompletionHandler()
+                StickyAlertView.showErrorMessage(["Gagal generate host"])
+            }
+            
+            return AnonymousDisposable {
+                RequestAddEditProduct.errorCompletionHandler()
+                StickyAlertView.showErrorMessage(["Gagal generate host"])
+            }
+        })
+    }
     
     private class func fetchUploadProductImage(Image:UIImage, path:String, serverID:String, productID:String, onSuccess: ((pictObj:ImageResult) -> Void)){
         let auth : UserAuthentificationManager = UserAuthentificationManager();
@@ -636,8 +776,40 @@ import UIKit
                 StickyAlertView.showErrorMessage(["Gagal mengupload gambar"])
         })
     }
+    
+    private class func getUploadProductImage(Image:UIImage, path:String, serverID:String, productID:String) -> Observable<ImageResult>{
+        return Observable.create({ (observer) -> Disposable in
+            let auth : UserAuthentificationManager = UserAuthentificationManager();
+            let postObject :RequestObjectUploadImage = RequestObjectUploadImage()
+            postObject.user_id = auth.getUserId()
+            postObject.server_id = serverID
+            postObject.add_new = "1"
+            if productID != "" {
+                postObject.product_id = productID
+            }
+            
+            let request = RequestUploadImage.requestUploadImage(Image,
+                withUploadHost: path,
+                path: "/web-service/v4/action/upload-image/upload_product_image.pl",
+                name: "fileToUpload",
+                fileName: "Image",
+                requestObject: postObject,
+                onSuccess: { (imageResult) in
+                    observer.onNext(imageResult)
+                    observer.onCompleted()
+                }, onFailure: { (error) in
+                    observer.onError(error)
+                    RequestAddEditProduct.errorCompletionHandler()
+                    StickyAlertView.showErrorMessage(["Gagal mengupload gambar"])
+            })
+            return AnonymousDisposable{
+                RequestAddEditProduct.errorCompletionHandler()
+            }
+        })
+    }
 
 }
+
 
 extension Dictionary {
     mutating func update(other:Dictionary) {
