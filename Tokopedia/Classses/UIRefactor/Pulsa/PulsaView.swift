@@ -34,6 +34,7 @@ class PulsaView: UIView {
     var didTapAddressbook: ([APContact] -> Void)?
     var didTapProduct:([PulsaProduct] -> Void)?
     var didAskedForLogin: (Void -> Void)?
+    var invalidateViewHeight: (Void -> Void)?
     var didSuccessPressBuy: (NSURL -> Void)?
     
     var prefixes: Dictionary<String, Dictionary<String, String>>?
@@ -48,14 +49,13 @@ class PulsaView: UIView {
         static let Listrik = "3"
     }
     
-    
-    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     init(categories: [PulsaCategory]) {
         super.init(frame: CGRectZero)
+        
         
         userManager = UserAuthentificationManager()
         pulsaCategoryControl = UISegmentedControl(frame: CGRectZero)
@@ -92,6 +92,7 @@ class PulsaView: UIView {
             self.selectedCategory = categories[control.selectedSegmentIndex]
             self.buildAllView(self.selectedCategory)
             self.addActionNumberField()
+            self.invalidateViewHeight!()
         }, forControlEvents: .ValueChanged)
         
         self.buildAllView(categories[0])
@@ -213,6 +214,7 @@ class PulsaView: UIView {
     
     func addActionNumberField() {
         numberField.bk_addEventHandler ({[unowned self] number in
+            
             //operator must exists first
             //fix this to prevent crash using serial dispatch
             let inputtedText = self.numberField.text!
@@ -295,7 +297,7 @@ class PulsaView: UIView {
         }
         
         buyButton = UIButton(frame: CGRectZero)
-        buyButton.setTitle("Beli", forState: .Normal)
+        buyButton.setTitle("BELI", forState: .Normal)
         buyButton.layer.cornerRadius = 3
         buyButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
         buyButton.backgroundColor = UIColor.orangeColor()
@@ -375,6 +377,8 @@ class PulsaView: UIView {
         
         buyButton.bk_removeEventHandlersForControlEvents(.TouchUpInside)
         buyButton.bk_addEventHandler({ button -> Void in
+            self.invalidateViewHeight!()
+            
             if(!self.isValidNumber(self.numberField.text!)) {
                 self.numberErrorLabel.mas_updateConstraints { make in
                     make.height.equalTo()(22)
@@ -418,6 +422,8 @@ class PulsaView: UIView {
                 }
             }
         }, forControlEvents: .TouchUpInside)
+        
+        self.invalidateViewHeight!()
     }
     
     func hideBuyButtons() {
@@ -436,6 +442,8 @@ class PulsaView: UIView {
         self.saldoSwitch.hidden = true
         productButton.hidden = true
         buyButton.hidden = true
+        
+        self.invalidateViewHeight!()
     }
     
     func recalibrateView() {
@@ -452,6 +460,8 @@ class PulsaView: UIView {
         self.subviews.last?.mas_makeConstraints { make in
             make.bottom.equalTo()(self.mas_bottom)
         }
+        
+        
     }
     
     
@@ -459,9 +469,9 @@ class PulsaView: UIView {
         container.addSubview(self)
         
         self.mas_makeConstraints {make in
-            make.left.equalTo()(container.mas_left)
-            make.top.equalTo()(container.mas_top)
-            make.right.equalTo()(container.mas_right)
+            make.left.equalTo()(container.mas_left).offset()(10)
+            make.top.equalTo()(container.mas_top).offset()(10)
+            make.right.equalTo()(container.mas_right).offset()(-10)
             make.bottom.equalTo()(container.mas_bottom)
         }
         
