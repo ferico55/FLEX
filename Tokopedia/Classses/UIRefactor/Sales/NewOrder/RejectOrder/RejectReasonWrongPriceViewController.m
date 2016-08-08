@@ -130,8 +130,11 @@
     [_order.order_products bk_each:^(id obj) {
         OrderProduct* selected = obj;
         if([selected.product_id isEqualToString:orderProduct.product_id]){
-            selected.product_weight = orderProduct.product_weight;
-            selected.product_price = orderProduct.product_price;
+            NSInteger tempWeight = [orderProduct.product_weight integerValue];
+            NSInteger tempPrice = [orderProduct.product_price integerValue];
+            
+            selected.product_current_weight = [NSString stringWithFormat:@"%ld", (long)tempWeight];
+            selected.product_normal_price = [NSString stringWithFormat:@"%ld", (long)tempPrice];
             selected.product_weight_unit = orderProduct.product_weight_unit;
             selected.product_price_currency = orderProduct.product_price_currency;
         }
