@@ -267,12 +267,12 @@
 -(void)alertView:(TKPDAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if(alertView.tag == CURRENCY_PICKER){
         NSInteger index = [[alertView.data objectForKey:DATA_INDEX_KEY] integerValue];
-        _orderProduct.product_price_currency = [ARRAY_PRICE_CURRENCY[index] objectForKey:DATA_VALUE_KEY];
+        _orderProduct.product_price_currency = [NSString stringWithFormat:@"%@",[ARRAY_PRICE_CURRENCY[index] objectForKey:DATA_VALUE_KEY]];
         NSString *name = [ARRAY_PRICE_CURRENCY[index] objectForKey:DATA_NAME_KEY];
         _currencyLabel.text = name;
     }else if(alertView.tag == WEIGHT_PICKER){
         NSInteger index = [[alertView.data objectForKey:DATA_INDEX_KEY] integerValue];
-        _orderProduct.product_weight_unit = [ARRAY_WEIGHT_UNIT[index] objectForKey:DATA_VALUE_KEY];
+        _orderProduct.product_weight_unit = [NSString stringWithFormat:@"%@",[ARRAY_WEIGHT_UNIT[index] objectForKey:DATA_VALUE_KEY]];
         NSString *name = [ARRAY_WEIGHT_UNIT[index] objectForKey:DATA_NAME_KEY];
         _weightLabel.text = name;
     }
