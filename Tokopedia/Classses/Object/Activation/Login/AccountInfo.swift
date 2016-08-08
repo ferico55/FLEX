@@ -14,9 +14,7 @@ class AccountInfo: NSObject {
     var createdPassword: Bool = false
     var email = ""
     var name = ""
-    
-    //TODO: temporarily disabled because the web service returns null
-    var requiredFields = ["name", "phone", "password"]
+    var requiredFields = [String]()
     var phoneNumber = ""
 
 
@@ -27,9 +25,7 @@ class AccountInfo: NSObject {
             "created_password": "createdPassword",
             "email":"email",
             "name":"name",
-            
-            //TODO: temporarily disabled because the web service returns null
-//            "create_password_list": "requiredFields",
+            "create_password_list": "requiredFields",
             "phone": "phoneNumber"
         ])
         
