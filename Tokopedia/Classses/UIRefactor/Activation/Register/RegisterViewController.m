@@ -275,7 +275,10 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
                 NSString *confirmpass = [_datainput objectForKey:kTKPDREGISTER_APICONFIRMPASSKEY];
                 BOOL isagree = [[_datainput objectForKey:kTKPDACTIVATION_DATAISAGREEKEY]boolValue];
                 
+                NSPredicate *test = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", @"[A-Za-z ]*"];
+                
                 if (fullname && ![fullname isEqualToString:@""] &&
+                    [test evaluateWithObject:fullname] &&
                     phone &&
                     email && [email isEmail] &&
                     pass && ![pass isEqualToString:@""] &&
