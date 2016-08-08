@@ -27,7 +27,7 @@ class SignInProviderListView: UIView {
             button.layer.cornerRadius = 3
             button.adjustsImageWhenHighlighted = false
             
-            button.setTitle("Login dengan \(provider.name)", forState: .Normal)
+            button.setTitle("Masuk dengan \(provider.name)", forState: .Normal)
             button.backgroundColor = UIColor.fromHexString(provider.color)
             
             button.setTitleColor(textColorForBackground(button.backgroundColor!), forState: .Normal)
