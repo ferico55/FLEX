@@ -143,7 +143,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     [self.signInProviderContainer removeAllSubviews];
     SignInProviderListView *signInProviderView = [[SignInProviderListView alloc] initWithProviders:providers];
     signInProviderView.onWebViewProviderSelected = ^(SignInProvider *provider){
-        [weakSelf webViewLoginWithUrl:provider.signInUrl];
+        [weakSelf webViewLoginWithProvider:provider];
     };
     
     signInProviderView.onFacebookSelected = ^{
@@ -263,8 +263,8 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void)webViewLoginWithUrl:(NSString *)url {
-    WebViewSignInViewController *controller = [[WebViewSignInViewController alloc] initWithUrl:url];
+- (void)webViewLoginWithProvider:(SignInProvider *)provider {
+    WebViewSignInViewController *controller = [[WebViewSignInViewController alloc] initWithProvider:provider];
     controller.onReceiveToken = ^(NSString *token) {
         _loadingView.hidden = NO;
         _formContainer.hidden = YES;

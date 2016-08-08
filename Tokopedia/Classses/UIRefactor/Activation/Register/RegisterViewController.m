@@ -135,7 +135,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     [providerListView attachToView:_signInProviderContainer];
     
     providerListView.onWebViewProviderSelected = ^(SignInProvider *provider) {
-        [self webViewLoginWithUrl:provider.signInUrl];
+        [self webViewLoginWithProvider:provider];
     };
     
     providerListView.onFacebookSelected = ^{
@@ -152,10 +152,10 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     };
 }
 
-- (void)webViewLoginWithUrl:(NSString *)url {
+- (void)webViewLoginWithProvider:(SignInProvider *)provider {
     __weak typeof(self) weakSelf = self;
     
-    WebViewSignInViewController *controller = [[WebViewSignInViewController alloc] initWithUrl:url];
+    WebViewSignInViewController *controller = [[WebViewSignInViewController alloc] initWithProvider:provider];
     controller.onReceiveToken = ^(NSString *token) {
         [weakSelf showLoadingMode];
         
