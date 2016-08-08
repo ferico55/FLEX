@@ -12,33 +12,27 @@ import Foundation
 @IBDesignable
 @objc
 
-class HomePageViewController: UIViewController, iCarouselDelegate, SwipeViewDelegate, LoginViewDelegate {
+class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDelegate {
     
-    private var slider: iCarousel!
-    private var digitalGoodsSwipeView: SwipeView!
-    private var bannerView: UIImageView!
-    private var sliderView: UIView!
-    private var carouselDataSource: CarouselDataSource!
-    private var digitalGoodsDataSource: DigitalGoodsDataSource!
-    private var categoryDataSource: CategoryDataSource!
+    var slider: iCarousel!
+    var carouselDataSource: CarouselDataSource!
+    var categoryDataSource: CategoryDataSource!
     
-    
-    private var banner: [Slide!]!
-    private var loadIndicator: UIActivityIndicatorView!
-    private var tickerRequest: AnnouncementTickerRequest!
-    private var tickerView: AnnouncementTickerView!
+    var banner: [Slide!]!
+    var tickerRequest: AnnouncementTickerRequest!
+    var tickerView: AnnouncementTickerView!
     
     var pulsaView = PulsaView!()
     var prefixes = Dictionary<String, Dictionary<String, String>>()
     var requestManager = PulsaRequest!()
-    
+    var navigator = PulsaNavigator!()
     
     var carouselView: UIView!
     var pulsaPlaceholder: UIView!
-    var categoryView: UIView!
-    var collectionView: UICollectionView!
     
-    
+    @IBOutlet var collectionView: UICollectionView!
+    @IBOutlet var flow: UICollectionViewFlowLayout!
+   
     private let sliderHeight: CGFloat = (UI_USER_INTERFACE_IDIOM() == .Pad) ? 225.0 : 175.0
     private let screenWidth = UIScreen.mainScreen().bounds.size.width
     
@@ -53,35 +47,23 @@ class HomePageViewController: UIViewController, iCarouselDelegate, SwipeViewDele
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
         self.categoryDataSource = CategoryDataSource()
         self.categoryDataSource.delegate = self
         
-        let flow = UICollectionViewFlowLayout()
+        flow.headerReferenceSize = CGSizeMake(self.view.frame.width, 292)
         
-        self.collectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: flow)
         self.collectionView.dataSource = self.categoryDataSource
         self.collectionView.delegate = self.categoryDataSource
-        self.collectionView.backgroundColor = UIColor.redColor()
-        self.collectionView.contentSize = self.view.bounds.size
+        self.collectionView.backgroundColor = UIColor.whiteColor()
+        self.collectionView.collectionViewLayout = flow
         
         let cellNib = UINib(nibName: "CategoryViewCell", bundle: nil)
         self.collectionView.registerNib(cellNib, forCellWithReuseIdentifier: "CategoryViewCellIdentifier")
-        
-        self.view.addSubview(self.collectionView)
 
         self.carouselView = UIView(frame: CGRectZero)
-        self.view.addSubview((self.carouselView)!)
-        
         self.pulsaPlaceholder = UIView(frame: CGRectZero)
-        self.view.addSubview(self.pulsaPlaceholder)
-        
-        self.collectionView.mas_makeConstraints { make in
-            make.left.equalTo()(self.view.mas_left)
-            make.right.equalTo()(self.view.mas_right)
-            make.top.equalTo()(self.pulsaPlaceholder.mas_bottom).offset()(10)
-        }
-        
+        self.pulsaPlaceholder.backgroundColor = UIColor.whiteColor()
+
         tickerRequest = AnnouncementTickerRequest()
         self.loadBanners()
         self.requestTicker()
@@ -96,7 +78,6 @@ class HomePageViewController: UIViewController, iCarouselDelegate, SwipeViewDele
         super.viewWillAppear(animated)
 
         TPAnalytics.trackScreenName("Top Category")
-        self.collectionView.reloadData()
     }
     
     override func viewDidDisappear(animated: Bool) {
@@ -111,8 +92,6 @@ class HomePageViewController: UIViewController, iCarouselDelegate, SwipeViewDele
         let bannersStore = HomePageViewController.self.TKP_rootController().storeManager().homeBannerStore
         
         let backgroundColor = UIColor(red: 242/255.0, green: 242/255.0, blue: 242/255.0, alpha: 1.0)
-        
-        
         bannersStore.fetchBannerWithCompletion({[weak self] (banner, error) in
             self!.banner = banner
             self!.slider = iCarousel(frame: CGRectMake(0, 0, self!.screenWidth, self!.sliderHeight))
@@ -126,36 +105,33 @@ class HomePageViewController: UIViewController, iCarouselDelegate, SwipeViewDele
             self!.slider.delegate = self!.carouselDataSource
             self!.slider.decelerationRate = 0.5
             
-            
             self?.carouselView .addSubview(self!.slider)
+            self?.collectionView.addSubview((self?.carouselView)!)
+            self?.collectionView.bringSubviewToFront((self?.carouselView)!)
+            
             self?.carouselView.mas_makeConstraints { make in
-                make.top.equalTo()(self!.view.mas_top)
+                make.top.equalTo()(self!.collectionView.mas_top)
                 make.left.equalTo()(self!.view.mas_left)
                 make.right.equalTo()(self!.view.mas_right)
             }
             
+            self?.collectionView.addSubview((self?.pulsaPlaceholder)!)
+            
             self?.slider.mas_makeConstraints { make in
-                make.height.equalTo()(175)
+                make.height.equalTo()(self!.sliderHeight)
                 make.top.equalTo()(self?.carouselView.mas_top)
                 make.left.equalTo()(self?.carouselView.mas_left)
                 make.right.equalTo()(self?.carouselView.mas_right)
                 make.bottom.equalTo()(self?.carouselView.mas_bottom)
             }
             
-            self!.pulsaPlaceholder.mas_makeConstraints { make in
-                make.left.equalTo()(self!.view.mas_left)
-                make.right.equalTo()(self!.view.mas_right)
-                make.top.equalTo()(self!.carouselView.mas_bottom).offset()(10)
+            self?.pulsaPlaceholder.mas_makeConstraints { make in
+                make.left.equalTo()(self?.carouselView.mas_left)
+                make.right.equalTo()(self?.carouselView.mas_right)
+                make.top.equalTo()(self!.carouselView?.mas_bottom)
             }
-            
-            self?.collectionView.mas_makeConstraints { make in
-                make.top.equalTo()(self?.pulsaPlaceholder.mas_bottom)
-                make.left.equalTo()(self?.view.mas_left)
-                make.right.equalTo()(self?.view.mas_right)
-                make.bottom.equalTo()(self?.view.mas_bottom)
-            }
+
         })
-        
         
         self.requestManager = PulsaRequest()
         self.requestManager.requestCategory()
@@ -177,27 +153,17 @@ class HomePageViewController: UIViewController, iCarouselDelegate, SwipeViewDele
             self.pulsaView = PulsaView(categories: sortedCategories)
             self.pulsaView.attachToView(self.pulsaPlaceholder)
             
+            self.navigator = PulsaNavigator()
+            self.navigator.pulsaView = self.pulsaView
+            self.navigator.controller = self
+            
             self.pulsaView.didAskedForLogin = {
-                let navigation = UINavigationController()
-                navigation.navigationBar.backgroundColor = UIColor(red: (18.0/255.0), green: (199.0/255.0), blue: (0/255.0), alpha: 1)
-                navigation.navigationBar.translucent = false
-                navigation.navigationBar.tintColor = UIColor.whiteColor()
-                
-                let controller = LoginViewController()
-                controller.isPresentedViewController = true
-                controller.redirectViewController = self
-                controller.delegate = self
-                
-                navigation.viewControllers = [controller]
-                
-                self.navigationController?.presentViewController(navigation, animated: true, completion: nil)
+                self.navigator.loginDelegate = self
+                self.navigator.navigateToLoginIfRequired()
             }
             
             self.pulsaView.didSuccessPressBuy = { url in
-                let controller = WebViewController()
-                controller.strURL = url.absoluteString
-                
-                self.navigationController!.pushViewController(controller, animated: true)
+                self.navigator.navigateToSuccess(url)
             }
             
             self.requestManager.requestOperator()
@@ -211,17 +177,14 @@ class HomePageViewController: UIViewController, iCarouselDelegate, SwipeViewDele
                 self.didReceiveOperator(sortedOperators)
             }
             
-//            self.categoryDataSource.pulsaContainer = self.pulsaView
         }
-        
-        
     }
     
-    func didReceiveOperator(operators: [PulsaOperator]) {
+    func mappingPrefixFromOperators(operators: [PulsaOperator]) {
         //mapping operator by prefix
         // {0812 : {"image" : "simpati.png", "id" : "1"}}
-        for op in operators {
-            for var prefix in op.attributes.prefix {
+        operators.enumerate().forEach { id, op in
+            op.attributes.prefix.map { prefix in
                 var prefixDictionary = Dictionary<String, String>()
                 prefixDictionary["image"] = op.attributes.image
                 prefixDictionary["id"] = op.id
@@ -236,42 +199,40 @@ class HomePageViewController: UIViewController, iCarouselDelegate, SwipeViewDele
                     prefixes[prefix] = prefixDictionary
                 }
             }
+            
         }
         
         if(prefixes.count > 0) {
             self.pulsaView.prefixes = self.prefixes
         }
+    }
+    
+    func didReceiveOperator(operators: [PulsaOperator]) {
+        self.mappingPrefixFromOperators(operators)
         
         self.pulsaView.addActionNumberField();
-        self.pulsaView.didPrefixEntered = { [unowned self] operatorId, categoryId in
-            //            let debounced = Debouncer(delay: 1.0) {
+        self.pulsaView.invalidateViewHeight = {
+            let debounced = Debouncer(delay: 0.1) {
+                self.flow.headerReferenceSize = CGSizeMake(self.view.frame.width, self.pulsaPlaceholder.frame.origin.y + self.pulsaPlaceholder.frame.size.height)
+            }
+            
+            debounced.call()
+        }
+        
+        self.pulsaView.didPrefixEntered = { operatorId, categoryId in
             self.pulsaView.selectedOperator = self.findOperatorById(operatorId, operators: operators)
             
             self.requestManager.requestProduct(operatorId, categoryId: categoryId)
+            self.pulsaView.showBuyButton([])
+            
             self.requestManager.didReceiveProduct = { products in
                 self.didReceiveProduct(products)
             }
-            //            }
-            //            debounced.call()
+
         }
         
         self.pulsaView.didTapAddressbook = { [unowned self] contacts in
-            let controller = AddressBookViewController()
-            controller.contacts = contacts
-            controller.didTapContact = { [unowned self] contact in
-                var phoneNumber = (contact.phones?.first?.number)!
-                phoneNumber = phoneNumber.stringByReplacingOccurrencesOfString("[^0-9]", withString: "", options: .RegularExpressionSearch, range: nil)
-                
-                self.pulsaView.numberField.text = phoneNumber
-                
-                if(phoneNumber.characters.count >= 4) {
-                    let prefix = phoneNumber.substringWithRange(Range<String.Index>(start: phoneNumber.startIndex.advancedBy(0), end: phoneNumber.startIndex.advancedBy(4)))
-                    
-                    self.pulsaView.setRightViewNumberField(prefix)
-                }
-            }
-            
-            self.navigationController!.pushViewController(controller, animated: true)
+            self.navigator.navigateToAddressBook(contacts)
         }
     }
     
@@ -279,27 +240,7 @@ class HomePageViewController: UIViewController, iCarouselDelegate, SwipeViewDele
         if(products.count > 0) {
             self.pulsaView.showBuyButton(products)
             self.pulsaView.didTapProduct = { [unowned self] products in
-                let controller = PulsaProductViewController()
-                var activeProducts: [PulsaProduct] = []
-                
-                products.map { product in
-                    //                    if(product.attributes.status == 1) {
-                    activeProducts.append(product)
-                    //                    }
-                }
-                
-                activeProducts.sortInPlace({
-                    $0.attributes.weight < $1.attributes.weight
-                })
-                
-                controller.products = activeProducts
-                controller.didSelectProduct = { [unowned self] product in
-                    self.pulsaView.selectedProduct = product
-                    self.pulsaView.hideErrors()
-                    self.pulsaView.productButton.setTitle(product.attributes.desc, forState: .Normal)
-                }
-                
-                self.navigationController!.pushViewController(controller, animated: true)
+                self.navigator.navigateToPulsaProduct(products)
             }
         }
     }
@@ -328,10 +269,8 @@ class HomePageViewController: UIViewController, iCarouselDelegate, SwipeViewDele
                 self!.tickerView.setTitle(tick.title)
                 self!.tickerView.setMessage(tick.message)
                 self!.tickerView.onTapMessageWithUrl = {[weak self] (url) in
-                    self!.openWebViewWithURL(url)
+                    self!.navigator.navigateToWebTicker(url)
                 }
-                
-//                self!.categoryDataSource.ticker = self!.tickerView
                 
             }
             
@@ -340,31 +279,7 @@ class HomePageViewController: UIViewController, iCarouselDelegate, SwipeViewDele
         }
     }
     
-    func swipeView(swipeView: SwipeView!, didSelectItemAtIndex index: Int) {
-        let good: MiniSlide = digitalGoodsDataSource.goodsAtIndex(index)
-        let webView = PulsaViewController()
-//        webView.strTitle = "Tokopedia"
-//        webView.strURL = good.redirect_url
-        
-        navigationController?.pushViewController(webView, animated: true)
-    }
-    
     func moveToNextSlider() {
         slider.scrollToItemAtIndex(slider.currentItemIndex + 1, duration: 1.0)
     }
-    
-    func openWebViewWithURL(url: NSURL) {
-        let controller = WebViewController()
-        controller.strURL = url.absoluteString
-        controller.strTitle = "Mengarahkan..."
-        controller.onTapLinkWithUrl = {[weak self] (url) in
-            if url.absoluteString == "https://www.tokopedia.com/" {
-                self!.navigationController?.popViewControllerAnimated(true)
-            }
-        }
-        
-        navigationController?.pushViewController(controller, animated: true)
-    }
-    
-    
 }

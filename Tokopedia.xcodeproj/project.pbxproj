@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		2D50139230438B54812D14B9 /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */; };
+		7A3AA16E1D55E0A9004A1245 /* PulsaInteraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3AA16D1D55E0A9004A1245 /* PulsaInteraction.swift */; };
+		7A3AA1701D58375D004A1245 /* PulsaNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3AA16F1D58375D004A1245 /* PulsaNavigator.swift */; };
 		7A588F4C1D534DB7006042E6 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A58800C1D534DAC006042E6 /* AppDelegate.m */; };
 		7A588F4D1D534DB7006042E6 /* TPAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A5880101D534DAC006042E6 /* TPAnalytics.m */; };
 		7A588F4E1D534DB7006042E6 /* TPLocalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A5880121D534DAC006042E6 /* TPLocalytics.m */; };
@@ -2511,6 +2513,8 @@
 		2D733D9158C7BF957D514506 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
 		4868E459AB2A65D133732296 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tokopedia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7A3AA16D1D55E0A9004A1245 /* PulsaInteraction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulsaInteraction.swift; sourceTree = "<group>"; };
+		7A3AA16F1D58375D004A1245 /* PulsaNavigator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulsaNavigator.swift; sourceTree = "<group>"; };
 		7A58800B1D534DAC006042E6 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		7A58800C1D534DAC006042E6 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		7A58800F1D534DAC006042E6 /* TPAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPAnalytics.h; sourceTree = "<group>"; };
@@ -6105,7 +6109,6 @@
 		7A588F4B1D534DB7006042E6 /* Tokopedia.xcworkspace */ = {isa = PBXFileReference; lastKnownFileType = wrapper.workspace; path = Tokopedia.xcworkspace; sourceTree = "<group>"; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
-		7ACBC8F71D54797600019F5F /* PulsaInteraction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulsaInteraction.swift; sourceTree = "<group>"; };
 		7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FacebookSDKStrings.bundle; sourceTree = "<group>"; };
 		7ACE9C4F1BB00956006C4BB7 /* FBAudienceNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBAudienceNetwork.framework; sourceTree = "<group>"; };
 		7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKMessengerShareKit.framework; sourceTree = "<group>"; };
@@ -10054,7 +10057,8 @@
 				7A5889061D534DAF006042E6 /* PulsaView.swift */,
 				7A5889071D534DAF006042E6 /* PulsaViewController.swift */,
 				7A5889081D534DAF006042E6 /* PulsaViewController.xib */,
-				7ACBC8F71D54797600019F5F /* PulsaInteraction.swift */,
+				7A3AA16D1D55E0A9004A1245 /* PulsaInteraction.swift */,
+				7A3AA16F1D58375D004A1245 /* PulsaNavigator.swift */,
 			);
 			path = Pulsa;
 			sourceTree = "<group>";
@@ -14324,6 +14328,7 @@
 				7A588F6D1D534DB7006042E6 /* NSMutableAttributedString+TKPCategory.m in Sources */,
 				7A5890441D534DB8006042E6 /* ReplyInboxTicket.m in Sources */,
 				7A5891A21D534DB9006042E6 /* LayoutArrangement.swift in Sources */,
+				7A3AA1701D58375D004A1245 /* PulsaNavigator.swift in Sources */,
 				7A5890381D534DB8006042E6 /* InboxTicket.m in Sources */,
 				7A5891E31D534DB9006042E6 /* AlertListBankView.m in Sources */,
 				7A5892521D534DB9006042E6 /* TKPDTabBarNavigationController.m in Sources */,
@@ -14806,6 +14811,7 @@
 				7A5891321D534DB8006042E6 /* TransactionActionResult.m in Sources */,
 				7A58931D1D534DBA006042E6 /* PurchaseViewController.m in Sources */,
 				7A58934C1D534DBA006042E6 /* NotificationViewController.m in Sources */,
+				7A3AA16E1D55E0A9004A1245 /* PulsaInteraction.swift in Sources */,
 				7A5891091D534DB8006042E6 /* AddProductSubmitResult.m in Sources */,
 				7A5893081D534DBA006042E6 /* InboxTalkViewController.m in Sources */,
 				7A5892161D534DB9006042E6 /* CatalogProductCell.m in Sources */,
