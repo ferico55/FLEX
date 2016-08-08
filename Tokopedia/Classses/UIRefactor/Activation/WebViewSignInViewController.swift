@@ -11,6 +11,8 @@ import UIKit
 @objc(WebViewSignInViewController)
 class WebViewSignInViewController: UIViewController, UIWebViewDelegate, NJKWebViewProgressDelegate {
 
+    private let provider: SignInProvider
+    
     var onReceiveToken: (String -> Void)?
 
     @IBOutlet var progressView: NJKWebViewProgressView!
@@ -28,16 +30,13 @@ class WebViewSignInViewController: UIViewController, UIWebViewDelegate, NJKWebVi
         return progress
     }()
 
-    private let url: String
-
     required init?(coder aDecoder: NSCoder) {
         fatalError("use init(url) instead")
     }
-
-    required init(url: String) {
-        self.url = url
+    
+    required init(provider: SignInProvider) {
+        self.provider = provider
         super.init(nibName: nil, bundle: nil)
-        
     }
 
     override func viewDidLoad() {
@@ -45,7 +44,7 @@ class WebViewSignInViewController: UIViewController, UIWebViewDelegate, NJKWebVi
 
         let request = NSMutableURLRequest()
         request.setValue("Mozilla/5.0 (iPod; U; CPU iPhone OS 4_3_3 like Mac OS X; ja-jp) AppleWebKit/533.17.9 (KHTML, like Gecko) Version/5.0.2 Mobile/8J2 Safari/6533.18.5", forHTTPHeaderField: "User-Agent")
-        request.URL = NSURL(string: url)
+        request.URL = NSURL(string: provider.signInUrl)
 
         webView.loadRequest(request)
     }
@@ -57,7 +56,7 @@ class WebViewSignInViewController: UIViewController, UIWebViewDelegate, NJKWebVi
     func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
         let path = request.mainDocumentURL!.path
         let url = request.mainDocumentURL!
-        self.navigationItem.title = path
+        self.navigationItem.title = "Masuk dengan \(provider.name)"
 
         if path == "/mappauth/code" {
             NSURLSession.sharedSession().resetWithCompletionHandler() {}

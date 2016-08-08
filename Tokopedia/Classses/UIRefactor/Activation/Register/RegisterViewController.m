@@ -135,7 +135,7 @@ GIDSignInUIDelegate
     [providerListView attachToView:_signInProviderContainer];
     
     providerListView.onWebViewProviderSelected = ^(SignInProvider *provider) {
-        [self webViewLoginWithUrl:provider.signInUrl];
+        [self webViewLoginWithProvider:provider];
     };
     
     providerListView.onFacebookSelected = ^{
@@ -152,10 +152,10 @@ GIDSignInUIDelegate
     };
 }
 
-- (void)webViewLoginWithUrl:(NSString *)url {
+- (void)webViewLoginWithProvider:(SignInProvider *)provider {
     __weak typeof(self) weakSelf = self;
     
-    WebViewSignInViewController *controller = [[WebViewSignInViewController alloc] initWithUrl:url];
+    WebViewSignInViewController *controller = [[WebViewSignInViewController alloc] initWithProvider:provider];
     controller.onReceiveToken = ^(NSString *token) {
         [weakSelf showLoadingMode];
         
