@@ -9,6 +9,7 @@
 #import "RejectReasonEmptyStockViewController.h"
 #import "RejectReasonEmptyStockCell.h"
 #import "RejectOrderRequest.h"
+#import <BlocksKit/BlocksKit.h>
 
 @interface RejectReasonEmptyStockViewController ()<UITableViewDelegate, UITableViewDataSource>
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
@@ -30,6 +31,12 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+-(void)viewWillDisappear:(BOOL)animated{
+    [_order.order_products bk_each:^(id obj) {
+        OrderProduct *currentProduct = (OrderProduct*)obj;
+        currentProduct.emptyStock = NO;
+    }];
 }
 
 #pragma mark - Table View

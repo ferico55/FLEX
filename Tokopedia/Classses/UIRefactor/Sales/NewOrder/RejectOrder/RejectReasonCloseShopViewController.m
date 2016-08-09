@@ -63,6 +63,12 @@
     //TODO: reset empty stock state
     [_tableView reloadData];
 }
+-(void)viewWillDisappear:(BOOL)animated{
+    [_order.order_products bk_each:^(id obj) {
+        OrderProduct *currentProduct = (OrderProduct*)obj;
+        currentProduct.emptyStock = NO;
+    }];
+}
 
 #pragma mark - Table View
 

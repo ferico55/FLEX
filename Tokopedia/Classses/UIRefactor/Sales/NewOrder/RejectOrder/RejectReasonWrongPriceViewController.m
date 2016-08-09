@@ -15,7 +15,7 @@
 #import "string_product.h"
 #import "NSNumberFormatter+IDRFormater.h"
 
-@interface RejectReasonWrongPriceViewController ()<UITableViewDelegate, UITableViewDataSource, RejectReasonWrongPriceDelegate, RejectReasonEditPriceDelegate>
+@interface RejectReasonWrongPriceViewController ()<UITableViewDelegate, UITableViewDataSource, RejectReasonWrongPriceDelegate, RejectReasonEditPriceDelegate, UIGestureRecognizerDelegate>
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UIButton *confirmButton;
 
@@ -29,6 +29,7 @@
     [super viewDidLoad];
     _tableView.dataSource = self;
     _tableView.delegate = self;
+    [_tableView reloadData];
     
     _rejectOrderRequest = [RejectOrderRequest new];
 }
@@ -37,7 +38,13 @@
     [super didReceiveMemoryWarning];
 }
 
-#pragma mark - Table View
+-(void)viewWillDisappear:(BOOL)animated{
+    [_order.order_products bk_each:^(id obj) {
+        OrderProduct *currentProduct = (OrderProduct*)obj;
+        currentProduct.emptyStock = NO;
+    }];
+}
+
 #pragma mark - Table View
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 1;
