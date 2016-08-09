@@ -123,7 +123,6 @@
                                                        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Kendala koneksi internet"] delegate:self];
                                                        [alert show];
                                                    }];
-    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 -(void)tableViewCell:(UITableViewCell *)cell changeProductPriceAtIndexPath:(NSIndexPath *)indexPath{
@@ -137,8 +136,8 @@
     [_order.order_products bk_each:^(id obj) {
         OrderProduct* selected = obj;
         if([selected.product_id isEqualToString:orderProduct.product_id]){
-            NSInteger tempWeight = [orderProduct.product_weight integerValue];
-            NSInteger tempPrice = [orderProduct.product_price integerValue];
+            NSInteger tempWeight = [orderProduct.product_current_weight integerValue];
+            NSInteger tempPrice = [orderProduct.product_normal_price integerValue];
             
             selected.product_current_weight = [NSString stringWithFormat:@"%ld", (long)tempWeight];
             selected.product_normal_price = [NSString stringWithFormat:@"%ld", (long)tempPrice];
