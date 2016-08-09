@@ -197,6 +197,9 @@
                                                            _orderProduct.product_weight = [_weightTextField.text stringByAppendingString:[@" " stringByAppendingString:weightName]];
                                                            _orderProduct.product_current_weight = _weightTextField.text;
                                                            
+                                                           StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[@"Anda berhasil memperbarui informasi produk Anda."] delegate:self];
+                                                           [alert show];
+                                                           
                                                            [self.navigationController popViewControllerAnimated:YES];
                                                            [_delegate didChangeProductPriceWeight:_orderProduct];
                                                        }else{
