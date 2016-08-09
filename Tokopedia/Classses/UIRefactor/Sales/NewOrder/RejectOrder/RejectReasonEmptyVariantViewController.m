@@ -68,6 +68,7 @@
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     [cell setSelected:NO animated:NO];
+    cell.indexPath = indexPath;
     cell.delegate = self;
     OrderProduct *currentProduct = [_order.order_products objectAtIndex:indexPath.row];
     [cell setViewModel:currentProduct.viewModel];
