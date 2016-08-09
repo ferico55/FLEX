@@ -611,9 +611,9 @@ FilterCategoryViewDelegate
     
     CGFloat priceInteger = [price floatValue];
     if ([priceCurencyID integerValue] == PRICE_CURRENCY_ID_RUPIAH)
-        price = (priceInteger>0)?[[NSNumberFormatter IDRFormarterWithoutCurency] stringFromNumber:@(priceInteger)]:@"";
+        price = (priceInteger>0)?[[NSNumberFormatter IDRFormatterWithoutCurency] stringFromNumber:@(priceInteger)]:@"";
     else
-        price = [[NSNumberFormatter USDFormarter] stringFromNumber:@(priceInteger)];
+        price = [[NSNumberFormatter USDFormatter] stringFromNumber:@(priceInteger)];
 
     _productPriceTextField.text = price;
     _productWeightTextField.text = product.product_weight?:@"";
@@ -791,9 +791,9 @@ FilterCategoryViewDelegate
         NSInteger currency = [_form.product.product_currency_id integerValue];
         BOOL isIDRCurrency = (currency == PRICE_CURRENCY_ID_RUPIAH);
         if (isIDRCurrency)
-            productPrice = [[[NSNumberFormatter IDRFormarterWithoutCurency] numberFromString:textField.text] stringValue];
+            productPrice = [[[NSNumberFormatter IDRFormatterWithoutCurency] numberFromString:textField.text] stringValue];
         else
-            productPrice = [[[NSNumberFormatter USDFormarter] numberFromString:textField.text] stringValue];
+            productPrice = [[[NSNumberFormatter USDFormatter] numberFromString:textField.text] stringValue];
         product.product_price = productPrice;
     }
     if (textField == _productWeightTextField) {

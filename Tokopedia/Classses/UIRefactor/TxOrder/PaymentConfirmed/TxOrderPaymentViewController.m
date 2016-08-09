@@ -824,7 +824,7 @@
             } else {
                 fixed_order_saldo_left_amount = [formIsConfirmed.payment.order_left_amount doubleValue]  - [formIsConfirmed.payment.order_confirmation_code doubleValue];
             }
-            NSString *fixed_order_saldo_left_amount_idr = [[NSNumberFormatter IDRFormarter] stringFromNumber:[NSNumber numberWithInteger:fixed_order_saldo_left_amount]];
+            NSString *fixed_order_saldo_left_amount_idr = [[NSNumberFormatter IDRFormatter] stringFromNumber:[NSNumber numberWithInteger:fixed_order_saldo_left_amount]];
             textString = fixed_order_saldo_left_amount_idr;
         } else {
             textString = (_isConfirmed)?formIsConfirmed.payment.order_left_amount_idr:form.order.order_left_amount_idr;

@@ -1,5 +1,5 @@
 //
-//  NSNumberFormatter+IDRFormater.m
+//  NSNumberFormatter+IDRFormatter.m
 //  Tokopedia
 //
 //  Created by Renny Runiawati on 3/16/16.
@@ -8,9 +8,9 @@
 
 #import "NSNumberFormatter+IDRFormater.h"
 
-@implementation NSNumberFormatter (IDRFormater)
+@implementation NSNumberFormatter (IDRFormatter)
 
-+(NSNumberFormatter*)IDRFormarter{
++(NSNumberFormatter*)IDRFormatter{
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     formatter.numberStyle = NSNumberFormatterCurrencyStyle;
     formatter.currencyCode = @"Rp ";
@@ -21,7 +21,7 @@
     return formatter;
 }
 
-+(NSNumberFormatter*)IDRFormarterWithoutCurency{
++(NSNumberFormatter*)IDRFormatterWithoutCurency{
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     [formatter setGroupingSeparator:@"."];
     [formatter setGroupingSize:3];
@@ -30,7 +30,7 @@
     return formatter;
 }
 
-+(NSNumberFormatter*)USDFormarter{
++(NSNumberFormatter*)USDFormatter{
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
     [formatter setCurrencyCode:@"USD"];
