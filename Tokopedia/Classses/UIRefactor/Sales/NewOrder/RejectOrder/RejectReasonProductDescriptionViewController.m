@@ -31,8 +31,7 @@
     rejectOrderRequest = [RejectOrderRequest new];
     
     UIBarButtonItem *doneButton = [[UIBarButtonItem alloc]
-                                       initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-                                       target:self action:@selector(doneButtonClicked:)];
+                                   initWithTitle:@"Selesai" style:UIBarButtonItemStyleDone target:self action:@selector(doneButtonClicked:)];
     self.navigationItem.rightBarButtonItem = doneButton;
     
     [_scrollView setScrollEnabled:YES];
