@@ -271,7 +271,7 @@
 
 #pragma mark - Scroll View Delegate
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView{
-    [self resignFirstResponder];
+    [self.view endEditing:YES];
 }
 
 #pragma mark - TextView Delegate
