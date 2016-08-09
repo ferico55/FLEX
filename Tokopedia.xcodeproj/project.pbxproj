@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		2D50139230438B54812D14B9 /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */; };
-		7A3AA16E1D55E0A9004A1245 /* PulsaInteraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3AA16D1D55E0A9004A1245 /* PulsaInteraction.swift */; };
 		7A3AA1701D58375D004A1245 /* PulsaNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3AA16F1D58375D004A1245 /* PulsaNavigator.swift */; };
+		7A3AA1721D586AC7004A1245 /* PulsaKeyboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3AA1711D586AC7004A1245 /* PulsaKeyboardManager.swift */; };
 		7A588F4C1D534DB7006042E6 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A58800C1D534DAC006042E6 /* AppDelegate.m */; };
 		7A588F4D1D534DB7006042E6 /* TPAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A5880101D534DAC006042E6 /* TPAnalytics.m */; };
 		7A588F4E1D534DB7006042E6 /* TPLocalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A5880121D534DAC006042E6 /* TPLocalytics.m */; };
@@ -1179,7 +1179,6 @@
 		7A5893DA1D534DBB006042E6 /* PulsaCategoryClientNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5888F61D534DAF006042E6 /* PulsaCategoryClientNumber.swift */; };
 		7A5893DB1D534DBB006042E6 /* PulsaCategoryRoot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5888F71D534DAF006042E6 /* PulsaCategoryRoot.swift */; };
 		7A5893DC1D534DBB006042E6 /* PulsaCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5888F81D534DAF006042E6 /* PulsaCategoryView.swift */; };
-		7A5893DD1D534DBB006042E6 /* PulsaLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5888F91D534DAF006042E6 /* PulsaLayout.swift */; };
 		7A5893DE1D534DBB006042E6 /* PulsaOperator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5888FA1D534DAF006042E6 /* PulsaOperator.swift */; };
 		7A5893DF1D534DBB006042E6 /* PulsaOperatorAttribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5888FB1D534DAF006042E6 /* PulsaOperatorAttribute.swift */; };
 		7A5893E01D534DBB006042E6 /* PulsaOperatorRoot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5888FC1D534DAF006042E6 /* PulsaOperatorRoot.swift */; };
@@ -2513,8 +2512,8 @@
 		2D733D9158C7BF957D514506 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
 		4868E459AB2A65D133732296 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tokopedia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		7A3AA16D1D55E0A9004A1245 /* PulsaInteraction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulsaInteraction.swift; sourceTree = "<group>"; };
 		7A3AA16F1D58375D004A1245 /* PulsaNavigator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulsaNavigator.swift; sourceTree = "<group>"; };
+		7A3AA1711D586AC7004A1245 /* PulsaKeyboardManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulsaKeyboardManager.swift; sourceTree = "<group>"; };
 		7A58800B1D534DAC006042E6 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		7A58800C1D534DAC006042E6 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		7A58800F1D534DAC006042E6 /* TPAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPAnalytics.h; sourceTree = "<group>"; };
@@ -4587,7 +4586,6 @@
 		7A5888F61D534DAF006042E6 /* PulsaCategoryClientNumber.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulsaCategoryClientNumber.swift; sourceTree = "<group>"; };
 		7A5888F71D534DAF006042E6 /* PulsaCategoryRoot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulsaCategoryRoot.swift; sourceTree = "<group>"; };
 		7A5888F81D534DAF006042E6 /* PulsaCategoryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulsaCategoryView.swift; sourceTree = "<group>"; };
-		7A5888F91D534DAF006042E6 /* PulsaLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulsaLayout.swift; sourceTree = "<group>"; };
 		7A5888FA1D534DAF006042E6 /* PulsaOperator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulsaOperator.swift; sourceTree = "<group>"; };
 		7A5888FB1D534DAF006042E6 /* PulsaOperatorAttribute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulsaOperatorAttribute.swift; sourceTree = "<group>"; };
 		7A5888FC1D534DAF006042E6 /* PulsaOperatorRoot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulsaOperatorRoot.swift; sourceTree = "<group>"; };
@@ -10041,7 +10039,6 @@
 				7A5888F61D534DAF006042E6 /* PulsaCategoryClientNumber.swift */,
 				7A5888F71D534DAF006042E6 /* PulsaCategoryRoot.swift */,
 				7A5888F81D534DAF006042E6 /* PulsaCategoryView.swift */,
-				7A5888F91D534DAF006042E6 /* PulsaLayout.swift */,
 				7A5888FA1D534DAF006042E6 /* PulsaOperator.swift */,
 				7A5888FB1D534DAF006042E6 /* PulsaOperatorAttribute.swift */,
 				7A5888FC1D534DAF006042E6 /* PulsaOperatorRoot.swift */,
@@ -10057,8 +10054,8 @@
 				7A5889061D534DAF006042E6 /* PulsaView.swift */,
 				7A5889071D534DAF006042E6 /* PulsaViewController.swift */,
 				7A5889081D534DAF006042E6 /* PulsaViewController.xib */,
-				7A3AA16D1D55E0A9004A1245 /* PulsaInteraction.swift */,
 				7A3AA16F1D58375D004A1245 /* PulsaNavigator.swift */,
+				7A3AA1711D586AC7004A1245 /* PulsaKeyboardManager.swift */,
 			);
 			path = Pulsa;
 			sourceTree = "<group>";
@@ -13862,6 +13859,7 @@
 				7A588FD31D534DB7006042E6 /* Rating.m in Sources */,
 				7A5891621D534DB9006042E6 /* TxOrderCancelPaymentResult.m in Sources */,
 				7A5890071D534DB8006042E6 /* DepartmentChild.m in Sources */,
+				7A3AA1721D586AC7004A1245 /* PulsaKeyboardManager.swift in Sources */,
 				7A5890801D534DB8006042E6 /* DataUser.m in Sources */,
 				7A5893AA1D534DBB006042E6 /* MyReviewDetailHeaderComponent.mm in Sources */,
 				7A5892E91D534DBA006042E6 /* InboxResolSplitViewController.m in Sources */,
@@ -14526,7 +14524,6 @@
 				7A588F791D534DB7006042E6 /* UIApplicationCategory.swift in Sources */,
 				7A5893571D534DBA006042E6 /* PriceAlertCell.m in Sources */,
 				7A58941B1D534DBB006042E6 /* SalesTransactionListViewController.m in Sources */,
-				7A5893DD1D534DBB006042E6 /* PulsaLayout.swift in Sources */,
 				7A588F5E1D534DB7006042E6 /* UIButtonCategory.swift in Sources */,
 				7A5890E11D534DB8006042E6 /* ShipmentResponse.m in Sources */,
 				7A588F771D534DB7006042E6 /* TKPDStackView.m in Sources */,
@@ -14811,7 +14808,6 @@
 				7A5891321D534DB8006042E6 /* TransactionActionResult.m in Sources */,
 				7A58931D1D534DBA006042E6 /* PurchaseViewController.m in Sources */,
 				7A58934C1D534DBA006042E6 /* NotificationViewController.m in Sources */,
-				7A3AA16E1D55E0A9004A1245 /* PulsaInteraction.swift in Sources */,
 				7A5891091D534DB8006042E6 /* AddProductSubmitResult.m in Sources */,
 				7A5893081D534DBA006042E6 /* InboxTalkViewController.m in Sources */,
 				7A5892161D534DB9006042E6 /* CatalogProductCell.m in Sources */,

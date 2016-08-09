@@ -29,6 +29,8 @@ class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDele
     
     var carouselView: UIView!
     var pulsaPlaceholder: UIView!
+    var tickerPlaceholder: UIView!
+    var keyboardManager: PulsaKeyboardManager!
     
     @IBOutlet var collectionView: UICollectionView!
     @IBOutlet var flow: UICollectionViewFlowLayout!
@@ -47,10 +49,12 @@ class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDele
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        
         self.categoryDataSource = CategoryDataSource()
         self.categoryDataSource.delegate = self
         
-        flow.headerReferenceSize = CGSizeMake(self.view.frame.width, 292)
+        flow.headerReferenceSize = CGSizeZero
         
         self.collectionView.dataSource = self.categoryDataSource
         self.collectionView.delegate = self.categoryDataSource
@@ -62,7 +66,12 @@ class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDele
 
         self.carouselView = UIView(frame: CGRectZero)
         self.pulsaPlaceholder = UIView(frame: CGRectZero)
+        self.tickerPlaceholder = UIView(frame: CGRectZero)
         self.pulsaPlaceholder.backgroundColor = UIColor.whiteColor()
+        
+        self.collectionView.addSubview(self.tickerPlaceholder)
+        self.collectionView.addSubview(self.carouselView)
+        self.collectionView.addSubview(self.pulsaPlaceholder)
 
         tickerRequest = AnnouncementTickerRequest()
         self.loadBanners()
@@ -72,6 +81,9 @@ class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDele
         
         let timer = NSTimer(timeInterval: 5.0, target: self, selector: #selector(moveToNextSlider), userInfo: nil, repeats: true)
         NSRunLoop.mainRunLoop().addTimer(timer, forMode: NSRunLoopCommonModes)
+        
+        self.keyboardManager = PulsaKeyboardManager()
+        self.keyboardManager.collectionView = self.collectionView
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -85,6 +97,14 @@ class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDele
         
         let bannersStore = HomePageViewController.self.TKP_rootController().storeManager().homeBannerStore
         bannersStore.stopBannerRequest()
+        
+        self.keyboardManager.endObservingKeyboard()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        self.keyboardManager.beginObservingKeyboard()
     }
     
     // MARK: - Request Banner
@@ -106,16 +126,13 @@ class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDele
             self!.slider.decelerationRate = 0.5
             
             self?.carouselView .addSubview(self!.slider)
-            self?.collectionView.addSubview((self?.carouselView)!)
             self?.collectionView.bringSubviewToFront((self?.carouselView)!)
             
             self?.carouselView.mas_makeConstraints { make in
-                make.top.equalTo()(self!.collectionView.mas_top)
+                make.top.equalTo()(self!.tickerPlaceholder.mas_bottom)
                 make.left.equalTo()(self!.view.mas_left)
                 make.right.equalTo()(self!.view.mas_right)
             }
-            
-            self?.collectionView.addSubview((self?.pulsaPlaceholder)!)
             
             self?.slider.mas_makeConstraints { make in
                 make.height.equalTo()(self!.sliderHeight)
@@ -131,6 +148,7 @@ class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDele
                 make.top.equalTo()(self!.carouselView?.mas_bottom)
             }
 
+            self?.refreshCollectionViewSize()
         })
         
         self.requestManager = PulsaRequest()
@@ -213,7 +231,7 @@ class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDele
         self.pulsaView.addActionNumberField();
         self.pulsaView.invalidateViewHeight = {
             let debounced = Debouncer(delay: 0.1) {
-                self.flow.headerReferenceSize = CGSizeMake(self.view.frame.width, self.pulsaPlaceholder.frame.origin.y + self.pulsaPlaceholder.frame.size.height)
+                self.refreshCollectionViewSize()
             }
             
             debounced.call()
@@ -223,7 +241,6 @@ class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDele
             self.pulsaView.selectedOperator = self.findOperatorById(operatorId, operators: operators)
             
             self.requestManager.requestProduct(operatorId, categoryId: categoryId)
-            self.pulsaView.showBuyButton([])
             
             self.requestManager.didReceiveProduct = { products in
                 self.didReceiveProduct(products)
@@ -262,16 +279,34 @@ class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDele
     
     func requestTicker() {
         tickerRequest.fetchTicker({[weak self] (ticker) in
+            
             if (ticker.tickers.count > 0) {
                 let randomIndex = Int(arc4random_uniform(UInt32(ticker.tickers.count)))
                 let tick = ticker.tickers[randomIndex]
                 self!.tickerView = AnnouncementTickerView.newView()
+                self?.tickerPlaceholder.addSubview((self?.tickerView)!)
+                
                 self!.tickerView.setTitle(tick.title)
                 self!.tickerView.setMessage(tick.message)
                 self!.tickerView.onTapMessageWithUrl = {[weak self] (url) in
                     self!.navigator.navigateToWebTicker(url)
                 }
                 
+                self?.tickerPlaceholder.mas_makeConstraints { make in
+                    make.top.equalTo()(self!.collectionView.mas_top)
+                    make.left.equalTo()(self!.view.mas_left)
+                    make.right.equalTo()(self!.view.mas_right)
+                }
+                
+                
+                self?.tickerView.mas_makeConstraints { make in
+                    make.left.equalTo()(self?.view.mas_left)
+                    make.right.equalTo()(self?.view.mas_right)
+                    make.top.equalTo()(self?.collectionView.mas_top)
+                    make.bottom.equalTo()(self?.tickerPlaceholder.mas_bottom)
+                }
+                
+                self?.refreshCollectionViewSize()
             }
             
         }) { (error) in
@@ -281,5 +316,13 @@ class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDele
     
     func moveToNextSlider() {
         slider.scrollToItemAtIndex(slider.currentItemIndex + 1, duration: 1.0)
+    }
+    
+    func refreshCollectionViewSize() {
+        let debounced = Debouncer(delay: 0.1) {
+            self.flow.headerReferenceSize = CGSizeMake(self.view.frame.width, self.pulsaPlaceholder.frame.origin.y + self.pulsaPlaceholder.frame.size.height)
+        }
+        
+        debounced.call()
     }
 }

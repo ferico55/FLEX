@@ -56,7 +56,6 @@ class PulsaView: UIView {
     init(categories: [PulsaCategory]) {
         super.init(frame: CGRectZero)
         
-        
         userManager = UserAuthentificationManager()
         pulsaCategoryControl = UISegmentedControl(frame: CGRectZero)
         categories.enumerate().forEach { index, category in
@@ -65,19 +64,20 @@ class PulsaView: UIView {
         
         //set new icon for new category
         pulsaCategoryControl.subviews.reverse().enumerate().forEach { controlIndex, segment in
+            if(categories[controlIndex].attributes.is_new == true) {
+                let new = UIImageView(image: UIImage(named: "red_dot.png"))
+                new.frame = CGRectMake(5, 5, 10, 10)
+                segment .addSubview(new)
+            }
+            
             segment.subviews.enumerate().forEach { index, view in
                 if(view is UILabel) {
                     let label = view as! UILabel
                     label.frame = CGRectMake(0, 0, 97, 50)
                     label.numberOfLines = 0
-                    
-                    if(categories[controlIndex].attributes.is_new == true) {
-                        let new = UIImageView(image: UIImage(named: "red_dot.png"))
-                        new.frame = CGRectMake(75, -10, 10, 10)
-                        label .addSubview(new)
-                    }
                 }
             }
+
         }
         
         self.addSubview(pulsaCategoryControl)
@@ -250,9 +250,12 @@ class PulsaView: UIView {
             if(prefix != nil) {
                 self.didPrefixEntered!(operatorId: prefix!["id"]!, categoryId: self.selectedCategory.id!)
                 
-                let prefixImage = UIImageView.init(frame: CGRectMake(0, 0, 70, 35))
+                let prefixImage = UIImageView.init(frame: CGRectMake(0, 0, 60, 30))
+                let prefixView = UIView(frame: CGRectMake(0, 0, prefixImage.frame.size.width + 10.0, prefixImage.frame.size.height ))
+                prefixView .addSubview(prefixImage)
+               
                 prefixImage.setImageWithURL((NSURL.init(string: prefix!["image"]!)))
-                self.numberField.rightView = prefixImage
+                self.numberField.rightView = prefixView
                 self.numberField.rightViewMode = .Always
             } else {
                 self.numberField.rightView = nil
@@ -261,9 +264,14 @@ class PulsaView: UIView {
         } else if(self.selectedCategory.id == CategoryConstant.Listrik) {
             self.didPrefixEntered!(operatorId: "6", categoryId: self.selectedCategory.id!)
             
-            let prefixImage = UIImageView.init(frame: CGRectMake(0, 0, 70, 35))
+            
+            let prefixImage = UIImageView.init(frame: CGRectMake(0, 0, 60, 30))
+            let prefixView = UIView(frame: CGRectMake(0, 0, prefixImage.frame.size.width + 10.0, prefixImage.frame.size.height ))
+            prefixView .addSubview(prefixImage)
+            
+            prefixImage.contentMode = .ScaleAspectFill
             prefixImage.setImageWithURL((NSURL.init(string: self.selectedOperator.attributes.image)))
-            self.numberField.rightView = prefixImage
+            self.numberField.rightView = prefixView
             self.numberField.rightViewMode = .Always
         }
     }
@@ -281,9 +289,12 @@ class PulsaView: UIView {
         productButton = UIButton(frame: CGRectZero)
         productButton.setTitle(ButtonConstant.defaultProductButtonTitle, forState: .Normal)
         productButton.layer.cornerRadius = 3
-        productButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-        productButton.backgroundColor = UIColor.lightGrayColor()
+
+        productButton.setTitleColor(UIColor(red: (66/255.0), green: (189/255.0), blue: (65/255.0), alpha: 1.0), forState: .Normal)
+        productButton.backgroundColor = UIColor.whiteColor()
         productButton.hidden = true
+        productButton.layer.borderColor = UIColor(red: (66/255.0), green: (189/255.0), blue: (65/255.0), alpha: 1.0).CGColor
+        productButton.layer.borderWidth = 1.0
         productButton.titleLabel?.font = UIFont(name: "GothamMedium", size: 14.0)
         
         buttonsPlaceholder.addSubview(productButton)

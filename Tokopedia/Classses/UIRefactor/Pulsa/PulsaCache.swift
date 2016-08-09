@@ -19,7 +19,7 @@ class PulsaCache: NSObject {
         let cacheOption = SPTPersistentCacheOptions.init(
                             cachePath: cachePath,
                             identifier: cacheIdentifier,
-                            defaultExpirationInterval: 60*60,
+                            defaultExpirationInterval: 24*60*60,
                             garbageCollectorInterval: (1*SPTPersistentCacheDefaultGCIntervalSec)) { (string: String) in
             
                             }
@@ -30,7 +30,7 @@ class PulsaCache: NSObject {
         let data = NSKeyedArchiver.archivedDataWithRootObject(category)
         self.cache .
             storeData(data,
-              forKey: "categories", ttl: 60*60,
+              forKey: "categories", ttl: 24*60*60,
               locked: false,
               withCallback: { (response: SPTPersistentCacheResponse) in
 
@@ -57,7 +57,7 @@ class PulsaCache: NSObject {
         let data = NSKeyedArchiver.archivedDataWithRootObject(op)
         self.cache .
             storeData(data,
-                      forKey: "operators", ttl: 60*60,
+                      forKey: "operators", ttl: 24*60*60,
                       locked: false,
                       withCallback: { (response: SPTPersistentCacheResponse) in
                         
