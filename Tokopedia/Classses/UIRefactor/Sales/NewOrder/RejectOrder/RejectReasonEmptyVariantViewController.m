@@ -136,6 +136,9 @@
 #pragma mark - Product Description Delegate
 
 - (void)didChangeProductDescription:(OrderProduct *)orderProduct {
+    StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:@[@"Anda berhasil mengubah deskripsi produk."] delegate:self];
+    [alert show];
+    
     [_order.order_products bk_each:^(id obj) {
         OrderProduct* selected = obj;
         if([selected.product_id isEqualToString:orderProduct.product_id]){

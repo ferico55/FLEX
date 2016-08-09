@@ -73,6 +73,8 @@
                                                             description:_orderProduct.product_description
                                                               onSuccess:^(NSString *isSuccess) {
                                                                   if([isSuccess boolValue]){
+                                                                      StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[@"Anda berhasil memperbarui informasi produk Anda."] delegate:self];
+                                                                      [alert show];
                                                                       [self.delegate didChangeProductDescription:_orderProduct];
                                                                       [self.navigationController popViewControllerAnimated:YES];
                                                                   }
