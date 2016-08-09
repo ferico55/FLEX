@@ -331,6 +331,12 @@ import UIKit
         var imageFilePaths : [String] = []
         
         self.getGeneratedHost()
+        .flatMap { (generateHost) -> Observable<ImageResult> in
+            return getUploadProductImage(UIImage(), path: "", serverID: "", productID: "")
+            Observable.zip(<#T##source1: ObservableType##ObservableType#>, <#T##source2: ObservableType##ObservableType#>, resultSelector: <#T##(O1.E, O2.E) throws -> Element#>)
+        }
+        
+        self.getGeneratedHost()
         .subscribeNext { (generatedHost) in
             form.product_images.forEach{ selectedImage in
                 self.getUploadProductImage(selectedImage.image,
@@ -788,7 +794,7 @@ import UIKit
                 postObject.product_id = productID
             }
             
-            let request = RequestUploadImage.requestUploadImage(Image,
+            _ = RequestUploadImage.requestUploadImage(Image,
                 withUploadHost: path,
                 path: "/web-service/v4/action/upload-image/upload_product_image.pl",
                 name: "fileToUpload",
@@ -798,7 +804,7 @@ import UIKit
                     observer.onNext(imageResult)
                     observer.onCompleted()
                 }, onFailure: { (error) in
-                    observer.onError(error)
+//                    observer.onError(error)
                     RequestAddEditProduct.errorCompletionHandler()
                     StickyAlertView.showErrorMessage(["Gagal mengupload gambar"])
             })
