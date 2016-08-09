@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface HotlistBannerQuery : NSObject
+@interface HotlistBannerQuery : NSObject <TKPObjectMapping>
 
 
 @property (nonatomic, strong) NSString *negative_keyword;

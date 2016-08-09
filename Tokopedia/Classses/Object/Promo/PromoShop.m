@@ -7,6 +7,7 @@
 //
 
 #import "PromoShop.h"
+#import "ProductBadge.h"
 
 @implementation PromoShop
 
@@ -23,7 +24,9 @@
     [promoShopMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"image_shop"
                                                                                      toKeyPath:@"image_shop"
                                                                                    withMapping:[PromoShopImage mapping]]];
-    
+    [promoShopMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"badges"
+                                                                                        toKeyPath:@"badges"
+                                                                                      withMapping:[ProductBadge mapping]]];
     return promoShopMapping;
 }
 

@@ -186,10 +186,6 @@ NoResultDelegate
     }
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return _tickets.count > 0? 100: 0;
-}
-
 #pragma mark - Tokopedia network manager
 
 - (NSDictionary *)getParameter:(int)tag

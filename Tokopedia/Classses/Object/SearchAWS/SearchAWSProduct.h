@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "TKPObjectMapping.h"
+#import "ProductBadge.h"
 @class ProductModelView;
 @class CatalogModelView;
 
@@ -34,6 +35,7 @@
 
 @property (nonatomic, strong) NSString *shop_id;
 @property (nonatomic, strong) NSString *condition;
+@property (nonatomic, strong) NSArray *badges;
 
 // this is happen because product_wholesale from API is integer format
 // we have to fix API Spec first

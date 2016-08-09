@@ -10,4 +10,14 @@
 
 @implementation Product
 
++ (RKObjectMapping *)mapping {
+    RKObjectMapping* mapping = [RKObjectMapping mappingForClass:self];
+    
+    [mapping addAttributeMappingsFromDictionary:@{@"status" : @"status"}];
+    
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data" toKeyPath:@"data" withMapping:[DetailProductResult mapping]]];
+    
+    return mapping;
+}
+
 @end

@@ -168,17 +168,36 @@ typedef enum
     _tableView.rowHeight = UITableViewAutomaticDimension;
 }
 
+-(void)viewDidAppear:(BOOL)animated
+{
+    //set up placeholder label size
+    UILabel *placeholderLabel = [_remarkTextView viewWithTag:1];
+    placeholderLabel.frame = CGRectMake(5.2, 8, _remarkTextView.frame.size.width, 40);
+    [placeholderLabel sizeToFit];
+}
+
 -(void)refreshView{
-    [self requestFormWithAddressID:@""];
+    if (_isnodata)
+    {
+        [self requestFormWithAddressID:@""];
+    }
+    else
+    {
+        _isFinishRequesting = NO;
+        [self alertAndResetIfQtyTextFieldBelowMin];
+        [self doCalculate];
+        [self requestRate];
+    }
 }
 
 - (void)setPlaceholder:(NSString *)placeholderText textView:(UITextView*)textView
 {
-    UILabel *placeholderLabel = [[UILabel alloc] initWithFrame:CGRectMake(5.2, -6, textView.frame.size.width, 40)];
+    UILabel *placeholderLabel = [UILabel new];
     placeholderLabel.text = placeholderText;
-    placeholderLabel.font = [UIFont fontWithName:textView.font.fontName size:textView.font.pointSize];
+    placeholderLabel.font = textView.font;
     placeholderLabel.textColor = [[UIColor blackColor] colorWithAlphaComponent:0.25];
     placeholderLabel.tag = 1;
+    placeholderLabel.numberOfLines = 0;
     [textView addSubview:placeholderLabel];
 }
 
@@ -280,6 +299,7 @@ typedef enum
     [self setProduct:_ATCForm.form.product_detail];
     [self setAddress:_ATCForm.form.destination];
     [self setPlacePicker];
+    [self doCalculate];
     
     if (_ATCForm.form.destination.address_id != 0) {
         [self requestRate];
@@ -310,6 +330,8 @@ typedef enum
 -(void)setPlacePicker{
     [[GMSGeocoder geocoder] reverseGeocodeCoordinate:CLLocationCoordinate2DMake([_selectedAddress.latitude doubleValue], [_selectedAddress.longitude doubleValue]) completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error) {
         if (error != nil){
+            _pinLocationNameButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+            [_pinLocationNameButton setCustomAttributedText:@"Lokasi Tujuan"];
             return;
         }
         if (response == nil|| response.results.count == 0) {
@@ -779,6 +801,7 @@ typedef enum
     return _headerTableView[section];
 }
 
+#pragma mark - requestATC
 -(void)requestATC {
     
     [self adjustViewIsLoading:YES];

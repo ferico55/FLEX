@@ -56,7 +56,8 @@ class FiltersTableViewController: UIViewController {
     
     //Mark: - reset Filter
     func resetSelectedFilter() -> Void {
-        filtersDatasource.selectedObjects = []
+        self.selectedObjects = []
+        filtersDatasource.resetSelectedFilter()
         tableView.reloadData()
     }
 

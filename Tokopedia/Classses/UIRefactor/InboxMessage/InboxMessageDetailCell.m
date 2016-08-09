@@ -268,7 +268,7 @@ static CGFloat messageTextSize = 17.0;
                                  NSFontAttributeName: font,
                                  NSParagraphStyleAttributeName: style,
                                  };
-    NSString *string = [NSString stringReplaceAhrefWithUrl:message.message_reply];
+    NSString *string = [NSString extracTKPMEUrl:message.message_reply];
     NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:string attributes:attributes];
     
     return attributedString;

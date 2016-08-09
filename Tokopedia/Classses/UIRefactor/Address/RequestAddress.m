@@ -26,30 +26,29 @@
     URLCacheController *_cacheController;
 }
 
--(TokopediaNetworkManager*)setNetworkManager:(TokopediaNetworkManager*)networkManager withTag:(int)tag {
-    if (!networkManager){
-        networkManager = [TokopediaNetworkManager new];
-        networkManager.tagRequest = tag;
-        [self initCache];
-    }
+-(TokopediaNetworkManager*)setNetworkManagerWithTag:(int)tag {
+    TokopediaNetworkManager* networkManager = [TokopediaNetworkManager new];
+    networkManager.tagRequest = tag;
+    [self initCache];
+    
     return networkManager;
 }
 
 -(void)doRequestProvinces
 {
-    [self setNetworkManager:_provinceNetworkManager withTag:TagRequestGetProvince];
+    _provinceNetworkManager = [self setNetworkManagerWithTag:TagRequestGetProvince];
     [self doRequestNetworkManager:_provinceNetworkManager];
 }
 
 -(void)doRequestCities
 {
-    [self setNetworkManager:_cityNetworkManager withTag:TagRequestGetCity];
+    _cityNetworkManager = [self setNetworkManagerWithTag:TagRequestGetCity];
     [self doRequestNetworkManager:_cityNetworkManager];
 }
 
 -(void)doRequestDistricts
 {
-    [self setNetworkManager:_districtNetworkManager withTag:TagRequestGetDistrict];
+    _districtNetworkManager = [self setNetworkManagerWithTag:TagRequestGetDistrict];
     [self doRequestNetworkManager:_districtNetworkManager];
 }
 

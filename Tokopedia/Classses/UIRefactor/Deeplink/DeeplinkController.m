@@ -21,6 +21,7 @@
 #import "TPContactUsDependencies.h"
 #import "LoginViewController.h"
 #import "PhoneVerifViewController.h"
+#import "NSURL+Dictionary.h"
 
 #import "string_product.h"
 
@@ -117,8 +118,12 @@
         [self redirectToDirectory:explodedPathUrl];
     }
     else if ([[url absoluteString] rangeOfString:@"search"].location != NSNotFound) {
-        //search
-        [self redirectToSearch:url];
+        if ([url.parameters objectForKey:@"q"]) {
+            //search
+            [self redirectToSearchResult:url];
+        } else {
+            [self redirectToSearchPage];
+        }
     }
     else if([explodedPathUrl[1] isEqualToString:@"hot"]) {
         //hot
@@ -222,63 +227,53 @@
     [self.navigator navigateToSearchFromViewController:self.activeController withData:departments];
 }
 
-- (void)redirectToSearch:(NSURL *)url {
+- (void)redirectToSearchPage {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"redirectToSearch" object:self];
+}
+
+- (void)redirectToSearchResult:(NSURL *)url {
     NSString *urlString = [[url absoluteString] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    NSDictionary *urlDict = [urlString URLQueryParametersWithOptions:URLQueryOptionDefault];
-    NSDictionary *data = urlDict;
+    NSMutableDictionary *data = [[urlString URLQueryParametersWithOptions:URLQueryOptionDefault] mutableCopy];
+    [data setObject:url.parameters[@"q"] forKey:@"search"];
     
-    SearchResultViewController *vc = [[SearchResultViewController alloc] init];
-    NSMutableDictionary *datas = [NSMutableDictionary new];
-    [datas addEntriesFromDictionary:data];
-    [datas setObject:@"search_product" forKey:@"type"];
-    vc.data = [datas copy];
-    SearchResultViewController *vc1 = [[SearchResultViewController alloc] init];
-    [datas setObject:@"search_catalog" forKey:@"type"];
-    vc.data = [datas copy];
-    SearchResultShopViewController *vc2 = [[SearchResultShopViewController alloc] init];
-    [datas setObject:@"search_shop" forKey:@"type"];
-    vc.data = [datas copy];
+    SearchResultViewController *searchProductController = [[SearchResultViewController alloc] init];
+    [data setObject:@"search_product" forKey:@"type"];
+    searchProductController.data = [data copy];
+
+    SearchResultViewController *searchCatalogController = [[SearchResultViewController alloc] init];
+    [data setObject:@"search_catalog" forKey:@"type"];
+    searchCatalogController.data = [data copy];
+    
+    SearchResultShopViewController *searchShopController = [[SearchResultShopViewController alloc] init];
+    [data setObject:@"search_shop" forKey:@"type"];
+    searchShopController.data = [data copy];
 
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-        NSArray *viewcontrollers = @[vc,vc1,vc2];
+        NSArray *viewControllers = @[searchProductController, searchCatalogController, searchShopController];
         
-        TKPDTabNavigationController *vcs = [[TKPDTabNavigationController alloc] init];
-
-        [vcs setNavigationTitle:[data objectForKey:@"q"]];
-        [vcs setViewControllers:viewcontrollers];
+        TKPDTabNavigationController *tabController = [[TKPDTabNavigationController alloc] init];
+        [tabController setNavigationTitle:[data objectForKey:@"q"]];
+        [tabController setViewControllers:viewControllers];
         
         if ([[data objectForKey:@"st"] isEqualToString:@"catalog"]) {
 
-            [vcs setSelectedIndex:1];
-            [vcs setSelectedViewController:vc1 animated:YES];
+            [tabController setSelectedIndex:1];
+            [tabController setSelectedViewController:searchProductController animated:YES];
             
-            NSDictionary *userInfo = @{
-                                       @"count" : @(3),
-                                       @"selectedIndex" : @(1),
-                                       };
-            
-            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SEARCHSEGMENTCONTROLPOSTNOTIFICATIONNAMEKEY
-                                                                object:nil
-                                                              userInfo:userInfo];
+            NSDictionary *userInfo = @{@"count": @(3), @"selectedIndex": @(1)};
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"setsegmentcontrol" object:nil userInfo:userInfo];
 
         } else if ([[data objectForKey:@"st"] isEqualToString:@"shop"]) {
             
-            [vcs setSelectedIndex:2];
-            [vcs setSelectedViewController:vc2 animated:YES];
+            [tabController setSelectedIndex:2];
+            [tabController setSelectedViewController:searchCatalogController animated:YES];
 
-            NSDictionary *userInfo = @{
-                                       @"count" : @(2),
-                                       @"selectedIndex" : @(1),
-                                       @"hasCatalog" : @(NO)
-                                       };
-            
-            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SEARCHSEGMENTCONTROLPOSTNOTIFICATIONNAMEKEY
-                                                                object:nil
-                                                              userInfo:userInfo];
+            NSDictionary *userInfo = @{@"count": @(2),  @"selectedIndex": @(1), @"hasCatalog": @(NO)};
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"setsegmentcontrol" object:nil userInfo:userInfo];
         }
-        
-        vcs.hidesBottomBarWhenPushed = YES;
-        [self.activeController.navigationController pushViewController:vcs animated:YES];
+
+        tabController.hidesBottomBarWhenPushed = YES;
+        [self.activeController.navigationController pushViewController:tabController animated:YES];
     });
 }
 

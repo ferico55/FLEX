@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TKPDStackView.h"
 @class ProductModelView;
 @class CatalogModelView;
 
@@ -28,5 +29,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *grosirLabel;
 @property (weak, nonatomic) IBOutlet UILabel *preorderLabel;
 @property (weak, nonatomic) IBOutlet UILabel *catalogPriceLabel;
+
+@property (strong, nonatomic) IBOutlet TKPDStackView *badgesView;
 
 @end
