@@ -152,6 +152,8 @@ typedef enum TagRequest {
 
     _tableView.contentInset = UIEdgeInsetsMake(top, right, bottom, left);
     _tableView.contentOffset = CGPointMake(0, -66);
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applyRejectOperation) name:@"applyRejectOperation" object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -162,6 +164,10 @@ typedef enum TagRequest {
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+}
+
+-(void)applyRejectOperation{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - Methods
