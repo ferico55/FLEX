@@ -523,7 +523,7 @@
                 _postKey = response .result.post_key;
                 [_secondStepNetworkManager doRequest];
             } else {
-                [[NSNotificationCenter defaultCenter] postNotificationName:TKPDInboxTicketLoadData object:nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:TKPDInboxAddNewTicket object:ticket];
             }
         } else if (tag == 2) {
             if (response.result.file_uploaded) {
@@ -535,7 +535,7 @@
             }
         } else if (tag == 3) {
             if ([response.result.is_success boolValue]) {
-                [[NSNotificationCenter defaultCenter] postNotificationName:TKPDInboxTicketLoadData object:nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:TKPDInboxAddNewTicket object:ticket];
             }
         }
     }

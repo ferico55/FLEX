@@ -196,8 +196,8 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     }
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(refreshView)
-                                                 name:TKPDInboxTicketLoadData
+                                             selector:@selector(appendTicketFromNotification:)
+                                                 name:TKPDInboxAddNewTicket
                                                object:nil];
 }
 
@@ -783,8 +783,6 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
         [self.delegate updateInboxTicket:self.inboxTicket];
     }
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:TKPDInboxTicketReceiveData object:nil];
-    
     if (_page < [response.result.ticket_reply.ticket_reply_total_page integerValue]){
         _canLoadMore = YES;
     } else {
@@ -985,6 +983,15 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     [_refreshControl setAutoresizingMask:(UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleLeftMargin)];
     [[_refreshControl.subviews objectAtIndex:0] setFrame:CGRectMake(0, 0, 20, 20)];
     [self.tableView addSubview:_refreshControl];
+}
+
+- (void)appendTicketFromNotification:(NSNotification *)notification {
+    InboxTicketDetail *ticket = [notification object];
+    [_messages[1] addObject:ticket];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:TKPDInboxTicketReceiveData object:nil];
+    
+    [self.tableView reloadData];
 }
 
 @end
