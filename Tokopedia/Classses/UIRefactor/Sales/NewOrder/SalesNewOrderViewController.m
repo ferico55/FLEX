@@ -540,6 +540,7 @@
 #pragma mark - Reskit methods
 
 - (void)fetchLatestOrderData {
+    _tableView.tableFooterView = _footerView;
     NSDictionary *parameters = @{
         @"deadline": _deadline,
         @"status": _filter,
@@ -570,8 +571,9 @@
                                           if (_orders.count == 0) {
                                               CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, 103);
                                               NoResultView *noResultView = [[NoResultView alloc] initWithFrame:frame];
-                                              _tableView.tableFooterView = noResultView;
-                                              _tableView.sectionFooterHeight = noResultView.frame.size.height;
+                                              _tableView.backgroundView = noResultView;
+                                          }else{
+                                              _tableView.backgroundView = nil;
                                           }
                                           if (_page == 0) {
                                               [_activityIndicator stopAnimating];
@@ -581,9 +583,13 @@
                                           _activityIndicator.hidden = YES;
                                           [_refreshControl endRefreshing];
                                           [_tableView reloadData];
+                                      }else{
+                                          StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Kendala pada server"] delegate:self];
+                                          [alert show];
                                       }
                                   } onFailure:^(NSError *errorResult) {
-                                  
+                                      StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Kendala koneksi internet" ] delegate:self];
+                                      [alert show];
                                   }];
 }
 
