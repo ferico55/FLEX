@@ -293,8 +293,10 @@ FilterCategoryViewDelegate
                                maxSelected:5 - (_form.product_images.count-_selectedAsset.count)
                             selectedAssets:_selectedAsset
                                 completion:^(NSArray<DKAsset *> *asset) {
-                                    [wself setSelectedAsset:asset];
-                                    [wself addImageFromAsset];
+                                    dispatch_async (dispatch_get_main_queue(), ^{
+                                        [wself setSelectedAsset:asset];
+                                        [wself addImageFromAsset];
+                                    });
                                 }];
 }
 
