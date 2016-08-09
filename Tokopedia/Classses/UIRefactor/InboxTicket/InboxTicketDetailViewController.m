@@ -697,7 +697,6 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     
     // Ticket not closed
     if ([_ticketInformation.ticket_status isEqualToString:@"1"]) {
-        
         if ([_ticketInformation.ticket_respond_status isEqualToString:@"0"]) {
             [self showView:_buttonsView];
         } else {
@@ -720,12 +719,19 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
             // Ticket closed, replied, not yet rate the ticket
             if ([_ticketInformation.ticket_respond_status isEqualToString:@"0"]) {
                 
-                if ([_ticketInformation.ticket_show_reopen_btn boolValue]) {
-                    // Show automatic closed ticket information
-                    [self showView:_automaticCloseView];
-                } else {
-                    // Show rating view
-                    [self showView:_ratingView];
+                if (IS_INBOX_TICKET_USE_VISIBLE_RATING)
+                {
+                    if ([_ticketInformation.ticket_show_reopen_btn boolValue]) {
+                        // Show automatic closed ticket information
+                        [self showView:_automaticCloseView];
+                    } else {
+                        // Show rating view
+                        [self showView:_ratingView];
+                    }
+                }
+                else
+                {
+                    [self hideAllView];
                 }
                 
             }
@@ -738,7 +744,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
                 if ([_ticketInformation.ticket_show_reopen_btn boolValue]) {
                     
                     // Show reopen ticket
-                     [self showView:_reopenTicketView];
+                    [self showView:_reopenTicketView];
 
                 } else {
                     [self showTicketRating:_ticketInformation];
@@ -753,7 +759,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
                 
                 if ([_ticketInformation.ticket_show_reopen_btn boolValue]) {
                     // Show reopen ticket
-                     [self showView:_reopenTicketView];
+                    [self showView:_reopenTicketView];
                 } else {
                     [self showTicketRating:_ticketInformation];
                 }
@@ -788,6 +794,14 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     } else {
         _canLoadMore = NO;
     }
+    if (!IS_INBOX_TICKET_CAN_CLOSE_CASE)
+    {
+        _lastCloseButton.hidden = YES;
+        _closeTicketButton.hidden = YES;
+        _cloesAfterCSButton.hidden = YES;
+    }
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:TKPDInboxTicketReceiveData object:nil];
 }
 
 - (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
