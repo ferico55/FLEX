@@ -70,6 +70,16 @@
     }];
 }
 
+- (void)registerForKeyboardNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWasShown:)
+                                                 name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillBeHidden:)
+                                                 name:UIKeyboardWillHideNotification object:nil];
+}
+
 #pragma mark - Table View
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -262,6 +272,34 @@
 #pragma mark - Scroll View Delegate
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView{
     [self resignFirstResponder];
+}
+
+#pragma mark - TextView Delegate
+
+- (void)keyboardWasShown:(NSNotification*)aNotification
+{
+    if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad){
+        NSDictionary* info = [aNotification userInfo];
+        CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+        UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
+        _tableView.contentInset = contentInsets;
+        _tableView.scrollIndicatorInsets = contentInsets;
+        
+        CGRect aRect = self.view.frame;
+        aRect.size.height -= kbSize.height;
+        if (!CGRectContainsPoint(aRect, _textView.frame.origin) ) {
+            CGPoint scrollPoint = CGPointMake(0.0, _textView.frame.origin.y+kbSize.height );
+            [_tableView setContentOffset:scrollPoint animated:YES];
+        }
+    }
+}
+
+// Called when the UIKeyboardWillHideNotification is sent
+- (void)keyboardWillBeHidden:(NSNotification*)aNotification
+{
+    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
+    _tableView.contentInset = contentInsets;
+    _tableView.scrollIndicatorInsets = contentInsets;
 }
 
 @end
