@@ -569,8 +569,7 @@
                                               _nextURL = nil;
                                           }
                                           if (_orders.count == 0) {
-                                              CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, 103);
-                                              NoResultView *noResultView = [[NoResultView alloc] initWithFrame:frame];
+                                              NoResultView *noResultView = [[NoResultView alloc] initWithFrame:[[UIScreen mainScreen]bounds]];
                                               _tableView.backgroundView = noResultView;
                                           }else{
                                               _tableView.backgroundView = nil;
