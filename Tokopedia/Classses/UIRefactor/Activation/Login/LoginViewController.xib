@@ -37,7 +37,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <view hidden="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QfQ-ON-DwI" userLabel="LoadingView">
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QfQ-ON-DwI" userLabel="LoadingView">
                     <rect key="frame" x="160" y="240" width="0.0" height="0.0"/>
                     <subviews>
                         <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="OfY-Za-Mqc">
@@ -46,8 +46,10 @@
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="centerY" secondItem="OfY-Za-Mqc" secondAttribute="centerY" id="jUB-F0-f5e"/>
-                        <constraint firstAttribute="centerX" secondItem="OfY-Za-Mqc" secondAttribute="centerX" id="obx-fx-LSj"/>
+                        <constraint firstItem="OfY-Za-Mqc" firstAttribute="leading" secondItem="QfQ-ON-DwI" secondAttribute="leading" constant="-10" id="DqI-nY-CTs"/>
+                        <constraint firstAttribute="bottom" secondItem="OfY-Za-Mqc" secondAttribute="bottom" constant="-10" id="S5l-z4-445"/>
+                        <constraint firstItem="OfY-Za-Mqc" firstAttribute="top" secondItem="QfQ-ON-DwI" secondAttribute="top" constant="-10" id="di2-N5-vuN"/>
+                        <constraint firstAttribute="trailing" secondItem="OfY-Za-Mqc" secondAttribute="trailing" constant="-10" id="kHx-iY-Kbm"/>
                     </constraints>
                 </view>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" keyboardDismissMode="onDrag" translatesAutoresizingMaskIntoConstraints="NO" id="i2V-1Q-6fX">
