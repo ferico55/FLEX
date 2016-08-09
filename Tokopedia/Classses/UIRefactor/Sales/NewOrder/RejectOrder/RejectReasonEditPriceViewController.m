@@ -83,10 +83,8 @@
         [self.productImage setImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"]];
     }];
     
-    
     UIBarButtonItem *submitButton = [[UIBarButtonItem alloc]
-                                       initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-                                       target:self action:@selector(submitButtonTapped:)];
+                                   initWithTitle:@"Selesai" style:UIBarButtonItemStyleDone target:self action:@selector(submitButtonTapped:)];
     self.navigationItem.rightBarButtonItem = submitButton;
     
     _rejectOrderRequest = [RejectOrderRequest new];
