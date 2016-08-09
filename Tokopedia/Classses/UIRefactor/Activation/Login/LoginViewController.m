@@ -76,6 +76,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *googleButtonTopConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *facebookButtonTopConstraint;
+@property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
 
 @property (strong, nonatomic) IBOutlet UIView *formContainer;
 @property (strong, nonatomic) IBOutlet UIView *signInProviderContainer;
@@ -93,6 +94,8 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    __weak typeof(self) weakSelf = self;
     
     TAGContainer *container;
     
@@ -129,6 +132,12 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     [self updateFormViewAppearance];
 
     [self setSignInProviders:[SignInProvider defaultProviders]];
+    
+    [_scrollView bk_whenTapped:^{
+        [weakSelf.view endEditing:YES];
+    }];
+    
+    
 
     [[AuthenticationService sharedService]
             getThirdPartySignInOptionsOnSuccess:^(NSArray<SignInProvider *> *providers) {

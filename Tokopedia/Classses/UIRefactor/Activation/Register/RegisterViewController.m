@@ -276,7 +276,10 @@ GIDSignInUIDelegate
                 NSString *confirmpass = [_datainput objectForKey:kTKPDREGISTER_APICONFIRMPASSKEY];
                 BOOL isagree = [[_datainput objectForKey:kTKPDACTIVATION_DATAISAGREEKEY]boolValue];
                 
+                NSPredicate *test = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", @"[A-Za-z ]*"];
+                
                 if (fullname && ![fullname isEqualToString:@""] &&
+                    [test evaluateWithObject:fullname] &&
                     phone &&
                     email && [email isEmail] &&
                     pass && ![pass isEqualToString:@""] &&
