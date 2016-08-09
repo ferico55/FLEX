@@ -104,6 +104,7 @@
 
     self.navigationItem.backBarButtonItem = self.backBarButton;
     self.navigationItem.rightBarButtonItem = self.filterBarButton;
+    [_activityIndicator startAnimating];
     
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.isUsingHmac = YES;
@@ -546,6 +547,7 @@
         @"status": _filter,
         @"page": [NSNumber numberWithInteger:_page],
     };
+    
     [_networkManager requestWithBaseUrl:[NSString v4Url]
                                        path:@"/v4/myshop-order/get_order_new.pl"
                                      method:RKRequestMethodGET
@@ -565,21 +567,11 @@
                                               if ([_nextURL.parameters objectForKey:@"page"]) {
                                                   _page = [_nextURL.parameters[@"page"] integerValue];
                                               }
+                                              _tableView.tableFooterView = _footerView;
                                           } else {
                                               _nextURL = nil;
-                                          }
-                                          if (_orders.count == 0) {
-                                              NoResultView *noResultView = [[NoResultView alloc] initWithFrame:[[UIScreen mainScreen]bounds]];
-                                              _tableView.backgroundView = noResultView;
-                                          }else{
-                                              _tableView.backgroundView = nil;
-                                          }
-                                          if (_page == 0) {
-                                              [_activityIndicator stopAnimating];
-                                              _activityIndicator.hidden = NO;
                                               _tableView.tableFooterView = nil;
                                           }
-                                          _activityIndicator.hidden = YES;
                                           [_refreshControl endRefreshing];
                                           [_tableView reloadData];
                                       }else{
@@ -590,6 +582,7 @@
                                       StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Kendala koneksi internet" ] delegate:self];
                                       [alert show];
                                   }];
+    
 }
 
 #pragma mark - Reskit Actions
