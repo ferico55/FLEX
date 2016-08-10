@@ -790,12 +790,19 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
         self.inboxTicket.ticket_read_status = _ticketInformation.ticket_read_status;
         [self.delegate updateInboxTicket:self.inboxTicket];
     }
-    if (((NSMutableArray *)_messages[1]).count < [response.result.ticket_reply.ticket_reply_total_data integerValue]){
-//    if (_page < [response.result.ticket_reply.ticket_reply_total_page integerValue]){
-        _canLoadMore = YES;
+
+    if (_page == 0) {
+        if (((NSMutableArray *)_messages[1]).count < [response.result.ticket_reply.ticket_reply_total_data integerValue]){
+            _canLoadMore = YES;
+        }
     } else {
-        _canLoadMore = NO;
+        if (_page < [response.result.ticket_reply.ticket_reply_total_page integerValue]){
+            _canLoadMore = YES;
+        } else {
+            _canLoadMore = NO;
+        }
     }
+    
     if (!IS_INBOX_TICKET_CAN_CLOSE_CASE)
     {
         _lastCloseButton.hidden = YES;
