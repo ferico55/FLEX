@@ -176,6 +176,7 @@
 }
 
 - (IBAction)endDateButtonTapped:(id)sender {
+    [self.view endEditing:YES];
     AlertDatePickerView *datePicker = [AlertDatePickerView newview];
     datePicker.data = @{kTKPDALERTVIEW_DATATYPEKEY:@(kTKPDALERT_DATAALERTTYPECLOSESHOPKEY)};
     datePicker.delegate = self;

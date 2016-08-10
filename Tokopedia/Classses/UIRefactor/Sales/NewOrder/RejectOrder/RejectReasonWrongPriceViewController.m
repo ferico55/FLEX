@@ -39,10 +39,13 @@
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
-    [_order.order_products bk_each:^(id obj) {
-        OrderProduct *currentProduct = (OrderProduct*)obj;
-        currentProduct.emptyStock = NO;
-    }];
+    [super viewWillDisappear:animated];
+    if(self.isMovingFromParentViewController){
+        [_order.order_products bk_each:^(id obj) {
+            OrderProduct *currentProduct = (OrderProduct*)obj;
+            currentProduct.emptyStock = NO;
+        }];
+    }
 }
 
 #pragma mark - Table View
@@ -127,7 +130,8 @@
 
 -(void)tableViewCell:(UITableViewCell *)cell changeProductPriceAtIndexPath:(NSIndexPath *)indexPath{
     RejectReasonEditPriceViewController *vc = [RejectReasonEditPriceViewController new];
-    vc.orderProduct = [_order.order_products objectAtIndex:indexPath.row];
+    OrderProduct *currentProduct = [_order.order_products objectAtIndex:indexPath.row];
+    vc.orderProduct = currentProduct;
     vc.delegate = self;
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -143,6 +147,7 @@
             selected.product_normal_price = [NSString stringWithFormat:@"%ld", (long)tempPrice];
             selected.product_weight_unit = orderProduct.product_weight_unit;
             selected.product_price_currency = orderProduct.product_price_currency;
+            selected.emptyStock = orderProduct.emptyStock;
         }
     }];
     [_tableView reloadData];

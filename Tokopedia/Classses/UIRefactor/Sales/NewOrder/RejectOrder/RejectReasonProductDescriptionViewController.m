@@ -77,6 +77,9 @@
                                                                       [alert show];
                                                                       [self.delegate didChangeProductDescription:_orderProduct];
                                                                       [self.navigationController popViewControllerAnimated:YES];
+                                                                  }else{
+                                                                      StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Deskripsi yang Anda masukkan salah" ] delegate:self];
+                                                                      [alert show];
                                                                   }
                                                               } onFailure:^(NSError *error) {
                                                                   StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Kendala koneksi internet"] delegate:self];

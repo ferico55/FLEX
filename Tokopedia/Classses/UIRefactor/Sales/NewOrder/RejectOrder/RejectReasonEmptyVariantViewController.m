@@ -40,10 +40,12 @@
     // Dispose of any resources that can be recreated.
 }
 -(void)viewWillDisappear:(BOOL)animated{
-    [_order.order_products bk_each:^(id obj) {
-        OrderProduct *currentProduct = (OrderProduct*)obj;
-        currentProduct.emptyStock = NO;
-    }];
+    if(self.isMovingFromParentViewController){
+        [_order.order_products bk_each:^(id obj) {
+            OrderProduct *currentProduct = (OrderProduct*)obj;
+            currentProduct.emptyStock = NO;
+        }];
+    }
 }
 #pragma mark - Table View
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{

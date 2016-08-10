@@ -171,6 +171,12 @@
         
         StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:@[@"Anda berhasil membatalkan pesanan"] delegate:self];
         [alert show];
+        
+        if (_orders.count == 0) {
+            CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, 156);
+            NoResultView *noResultView = [[NoResultView alloc] initWithFrame:frame];
+            _tableView.tableFooterView = noResultView;
+        }
     }
 }
 
@@ -709,6 +715,7 @@
 
 - (void)refreshData {
     _page = 1;
+    _tableView.tableFooterView  = _footerView;
     [self fetchLatestOrderData];
 }
 
