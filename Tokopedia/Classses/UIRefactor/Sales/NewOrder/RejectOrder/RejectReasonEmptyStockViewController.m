@@ -59,8 +59,12 @@
                                                                options:nil];
         cell = [topLevelObjects objectAtIndex:0];
     }
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     OrderProduct *currentProduct = [_order.order_products objectAtIndex:indexPath.row];
+    if(currentProduct.emptyStock){
+        [cell setSelected:YES];
+    }else{
+        [cell setSelected:NO];
+    }
     [cell setViewModel:currentProduct.viewModel];
     return cell;
 }
