@@ -56,12 +56,12 @@ UIScrollViewDelegate
     cell.quantityStepper.maximumValue = [currentProduct.quantity integerValue];
     
     
-    cell.troublePicker  = [[DownPicker alloc] initWithTextField:cell.troublePicker withData:nil];
+    cell.troublePicker  = [[DownPicker alloc] initWithTextField:cell.troublePicker withData:[self generateDownPickerChoices]];
     return cell;
 }
 
 -(NSMutableArray*)generateDownPickerChoices{
-    return nil;
+    return [_result generatePossibleTroubleTextListWithCategoryTroubleId:@"1"];
 }
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -76,4 +76,7 @@ UIScrollViewDelegate
     return 280;
 }
 
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    [self.view endEditing:YES];
+}
 @end

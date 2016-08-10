@@ -34,7 +34,6 @@
 @property (strong, nonatomic) IBOutlet UIProgressView *progressBar;
 
 @property (strong, nonatomic) ResolutionCenterCreateResult* result;
-@property (strong, nonatomic) ResolutionCenterCreateData* formData;
 @end
 
 @implementation ResolutionCenterCreateViewController{
@@ -99,9 +98,7 @@
     _stepTwoViewController = [ResolutionCenterCreateStepTwoViewController new];
     _stepThreeViewController = [ResolutionCenterCreateStepThreeViewController new];
     
-    _stepOneViewController.formData = self.formData;
     _stepOneViewController.result = self.result;
-    _stepTwoViewController.formData = self.formData;
     _stepTwoViewController.result = self.result;
     /*
     _stepThreeViewController.formData = self.formData;

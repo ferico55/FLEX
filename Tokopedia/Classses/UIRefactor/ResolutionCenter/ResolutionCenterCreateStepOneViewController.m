@@ -93,10 +93,10 @@ ResolutionCenterChooseProblemDelegate
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    if(indexPath.section == 0 && _formData){
+    if(indexPath.section == 0 && _result.formData){
         ResolutionCenterChooseProblemViewController *vc = [ResolutionCenterChooseProblemViewController new];
         vc.delegate = self;
-        vc.list_ts = _formData.list_ts;
+        vc.list_ts = _result.formData.list_ts;
         [self.navigationController pushViewController:vc animated:YES];
     }else if(indexPath.section == 1){
         ResolutionProductList *selectedProduct = [_productData.list objectAtIndex:indexPath.row];
@@ -153,7 +153,7 @@ ResolutionCenterChooseProblemDelegate
 -(void)fetchForm{
     [RequestResolutionData fetchCreateResolutionDataWithOrderId:@"123123"
                                                         success:^(ResolutionCenterCreateResponse *data) {
-                                                            _formData = data.data;
+                                                            _result.formData = data.data;
                                                             [_problemButton setHidden:NO];
                                                             [_activityIndicator setHidden:YES];
                                                         } failure:^(NSError *error) {
