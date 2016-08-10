@@ -54,6 +54,8 @@
         [analytics.dataLayer push:authenticatedData];
         [analytics.dataLayer push:@{@"event": @"openScreen", @"screenName": screeName}];
     }
+    
+    [Localytics tagScreen:screeName];
 }
 
 + (void)trackScreenName:(NSString *)screeName gridType:(NSInteger)gridType {

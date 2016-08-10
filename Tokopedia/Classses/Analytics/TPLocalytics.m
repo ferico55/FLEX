@@ -94,4 +94,12 @@
     [Localytics tagEvent:@"Login" attributes:@{@"success": status?@"Yes": @"No"}];
 }
 
++ (void)trackAddProductPriceAlert:(ProductDetail *)product price:(NSString *)price success:(BOOL)isSuccess {
+    NSDictionary *attributes = @{@"Completed" : isSuccess?@"Yes":@"No",
+                                 @"Product ID" : product.product_id,
+                                 @"Alert Price" : price};
+    
+    [Localytics tagEvent:@"Price Alert" attributes:attributes];
+}
+
 @end
