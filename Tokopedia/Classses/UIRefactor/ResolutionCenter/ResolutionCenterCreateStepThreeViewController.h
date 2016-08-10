@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ResolutionCenterCreateData.h"
+#import "ResolutionCenterCreateResult.h"
 
 @interface ResolutionCenterCreateStepThreeViewController : UIViewController
-
+@property (strong, nonatomic) ResolutionCenterCreateData* formData;
+@property (strong, nonatomic) ResolutionCenterCreateResult* result;
 @end
