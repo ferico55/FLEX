@@ -676,7 +676,7 @@ enum RequestError : ErrorType {
                 onSuccess: { (imageResult) in
                     
                     if imageResult.pic_obj != nil{
-                        selectedImage.image_src = imageResult.pic_obj
+                        selectedImage.fileUploaded = imageResult.pic_obj
                         observer.onNext(selectedImage)
                         observer.onCompleted()
                     } else {
