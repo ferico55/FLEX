@@ -125,12 +125,7 @@ typedef NS_ENUM(NSInteger, PromoRequestType) {
     [_networkManager requestWithBaseUrl:[NSString topAdsUrl]
                                    path:@"/promo/v1/display/products"
                                  method:RKRequestMethodGET
-                              parameter:@{@"item":@"4",
-                                          @"src":@"hotlist",
-                                          @"page":@(page),
-                                          @"dep_id":department,
-                                          @"h":hotlistId
-                                          }
+                              parameter:parameter
                                 mapping:[PromoResponse mapping]
                               onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                   PromoResponse *response = [[successResult dictionary] objectForKey:@""];
