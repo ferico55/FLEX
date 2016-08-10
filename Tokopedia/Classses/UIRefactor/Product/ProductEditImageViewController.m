@@ -22,7 +22,7 @@
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section0Cells;
 
 @property (copy, nonatomic) void (^defaultImageObject)(ProductEditImages *imageObject);
-@property (copy, nonatomic) void (^deleteImageObject)(ProductEditImages *imageObject, DKAsset *imageAsset);
+@property (copy, nonatomic) void (^deleteImageObject)(ProductEditImages *imageObject);
 
 @end
 
@@ -79,7 +79,7 @@
 #pragma mark - View Action
 - (IBAction)onTapDeleteImageButton:(id)sender {
     if (self.deleteImageObject) {
-        self.deleteImageObject(_imageObject, _imageAsset);
+        self.deleteImageObject(_imageObject);
     }
     [self.navigationController popViewControllerAnimated:YES];
 }

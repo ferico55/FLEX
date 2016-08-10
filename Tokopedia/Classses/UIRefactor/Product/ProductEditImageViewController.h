@@ -14,8 +14,7 @@
 @interface ProductEditImageViewController : UIViewController
 
 @property (nonatomic, strong) ProductEditImages *imageObject;
-@property (nonatomic, strong) DKAsset *imageAsset;
 - (void)setDefaultImageObject:(void (^)(ProductEditImages *imageObject))defaultImageObject;
-- (void)setDeleteImageObject:(void (^)(ProductEditImages *imageObject, DKAsset *imageAsset))deleteImageObject;
+- (void)setDeleteImageObject:(void (^)(ProductEditImages *imageObject))deleteImageObject;
 
 @end

@@ -229,17 +229,17 @@ FilterCategoryViewDelegate
         }
         [self setImageButtons];
     }];
-    [vc setDeleteImageObject:^(ProductEditImages *imageObject, DKAsset *imageAsset) {
+    [vc setDeleteImageObject:^(ProductEditImages *imageObject) {
 
-        [self deleteImageObject:imageObject withImageAsset:imageAsset];
+        [self deleteImageObject:imageObject];
         if (!imageObject.isFromAsset) {
-            [self fetchDeleteImageObject:imageObject withImageAsset:imageAsset atIndex:index];
+            [self fetchDeleteImageObject:imageObject atIndex:index];
         }
     }];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
--(void)deleteImageObject:(ProductEditImages*)imageObject withImageAsset:(DKAsset*)imageAsset{
+-(void)deleteImageObject:(ProductEditImages*)imageObject{
     NSMutableArray *images = [NSMutableArray new];
     for (ProductEditImages *image in _form.product_images) {
         if (![image isEqual:imageObject]) {
@@ -248,6 +248,7 @@ FilterCategoryViewDelegate
     }
     _form.product_images = [images copy];
     
+    DKAsset *imageAsset = imageObject.asset;
     if (imageAsset) {
         [_selectedAsset removeObject:imageAsset];
     }
@@ -255,7 +256,7 @@ FilterCategoryViewDelegate
     [self setImageButtons];
 }
 
--(void)fetchDeleteImageObject:(ProductEditImages*)imageObject withImageAsset:(DKAsset*)imageAsset atIndex:(NSUInteger)index{
+-(void)fetchDeleteImageObject:(ProductEditImages*)imageObject atIndex:(NSUInteger)index{
     [self enableButtonBeforeSuccessRequest:NO];
     [RequestAddEditProduct fetchDeleteProductImageObject:imageObject
                                                productID:_form.product.product_id
@@ -264,18 +265,19 @@ FilterCategoryViewDelegate
         [self enableButtonBeforeSuccessRequest:YES];
         [[NSNotificationCenter defaultCenter] postNotificationName:ADD_PRODUCT_POST_NOTIFICATION_NAME object:nil];
     } onFailure:^{
-        [self insertImageObject:imageObject withImageAsset:imageAsset atIndex:index];
+        [self insertImageObject:imageObject atIndex:index];
         [self enableButtonBeforeSuccessRequest:YES];
     }];
 }
 
--(void)insertImageObject:(ProductEditImages*)imageObject withImageAsset:(DKAsset*)imageAsset atIndex:(NSUInteger)index{
+-(void)insertImageObject:(ProductEditImages*)imageObject atIndex:(NSUInteger)index{
     NSMutableArray *images = [NSMutableArray new];
     [images addObjectsFromArray:_form.product_images];
 
     [images insertObject:imageObject atIndex:index];
     _form.product_images = [images copy];
     
+    DKAsset *imageAsset = _form.product_images[index].asset;
     if (imageAsset) {
         [_selectedAsset addObject:imageAsset];
     }
@@ -657,8 +659,9 @@ FilterCategoryViewDelegate
     }
     for (DKAsset* selectedImage in _selectedAsset) {
         ProductEditImages *imageObject = [ProductEditImages new];
-        imageObject.image = selectedImage.thumbnailImage;
+        imageObject.image = selectedImage.resizedImage;
         imageObject.isFromAsset = YES;
+        imageObject.asset = selectedImage;
         imageObject.image_primary = ([self isDefaultImage:selectedImage])?@"1":@"";
         
         [selectedImages addObject:imageObject];
