@@ -45,10 +45,10 @@
     NSString *wholesalePrice = @"";
     
     if ([_productPriceCurency integerValue] == PRICE_CURRENCY_ID_RUPIAH) {
-        wholesalePrice = [[NSNumberFormatter IDRFormarterWithoutCurency] stringFromNumber:@(priceInteger)];
+        wholesalePrice = [[NSNumberFormatter IDRFormatterWithoutCurency] stringFromNumber:@(priceInteger)];
         self.productCurrencyLabel.text = @"Rp";
     } else {
-        wholesalePrice = [[NSNumberFormatter USDFormarter] stringFromNumber:@(priceInteger)];
+        wholesalePrice = [[NSNumberFormatter USDFormatter] stringFromNumber:@(priceInteger)];
         self.productCurrencyLabel.text = @"US$";
     }
     
@@ -70,9 +70,9 @@
 - (IBAction)didEndEditingPrice:(UITextField *)textField {
     NSNumber *price;
     if ([_productPriceCurency integerValue] == PRICE_CURRENCY_ID_RUPIAH)
-        price = [[NSNumberFormatter IDRFormarterWithoutCurency] numberFromString:textField.text];
+        price = [[NSNumberFormatter IDRFormatterWithoutCurency] numberFromString:textField.text];
     else
-        price = [[NSNumberFormatter USDFormarter] numberFromString:textField.text];
+        price = [[NSNumberFormatter USDFormatter] numberFromString:textField.text];
 
     _wholesale.wholesale_price = [price stringValue];
 }

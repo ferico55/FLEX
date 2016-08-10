@@ -61,10 +61,10 @@
     CGFloat priceInteger = [_form.product.product_price floatValue];
     
     if ([_form.product.product_currency_id integerValue] == PRICE_CURRENCY_ID_RUPIAH) {
-        self.productPriceLabel.text = [[NSNumberFormatter IDRFormarterWithoutCurency] stringFromNumber:@(priceInteger)];
+        self.productPriceLabel.text = [[NSNumberFormatter IDRFormatterWithoutCurency] stringFromNumber:@(priceInteger)];
         self.currencyLabel.text = @"Rp";
     } else {
-        self.productPriceLabel.text = [[NSNumberFormatter USDFormarter] stringFromNumber:@(priceInteger)];
+        self.productPriceLabel.text = [[NSNumberFormatter USDFormatter] stringFromNumber:@(priceInteger)];
         self.currencyLabel.text = @"US$";
     }
     _table.tableHeaderView = _headerView;
@@ -148,10 +148,10 @@
 
     CGFloat priceInteger = [productPricePerProduct floatValue];
     if ([priceCurrencyID integerValue] == PRICE_CURRENCY_ID_RUPIAH) {
-        _productPriceLabel.text = (priceInteger>0)?[[NSNumberFormatter IDRFormarterWithoutCurency] stringFromNumber:@(priceInteger)]:@"";
+        _productPriceLabel.text = (priceInteger>0)?[[NSNumberFormatter IDRFormatterWithoutCurency] stringFromNumber:@(priceInteger)]:@"";
         _currencyLabel.text = @"Rp";
     } else {
-        _productPriceLabel.text = [[NSNumberFormatter USDFormarter] stringFromNumber:@(priceInteger)];
+        _productPriceLabel.text = [[NSNumberFormatter USDFormatter] stringFromNumber:@(priceInteger)];
         _currencyLabel.text = @"US$";
     }
 

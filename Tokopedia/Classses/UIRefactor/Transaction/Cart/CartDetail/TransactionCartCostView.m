@@ -35,7 +35,7 @@
     self.infoButton.hidden = ([viewModel.logiscticFee integerValue]==0);
     [self.subtotalLabel setText:viewModel.totalProductPriceIDR animated:YES];
     NSInteger aditionalFeeValue = [viewModel.logiscticFee integerValue]+[viewModel.insuranceFee integerValue];
-    NSString *formatAdditionalFeeValue = [[NSNumberFormatter IDRFormarter] stringFromNumber:@(aditionalFeeValue)];
+    NSString *formatAdditionalFeeValue = [[NSNumberFormatter IDRFormatter] stringFromNumber:@(aditionalFeeValue)];
     [self.insuranceLabel setText:formatAdditionalFeeValue animated:YES];
     [self.shippingCostLabel setText:viewModel.shippingRateIDR animated:YES];
     [self.totalLabel setText:viewModel.totalAmountIDR animated:YES];
