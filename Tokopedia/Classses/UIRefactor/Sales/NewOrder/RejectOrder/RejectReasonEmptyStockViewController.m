@@ -60,6 +60,7 @@
         cell = [topLevelObjects objectAtIndex:0];
     }
     OrderProduct *currentProduct = [_order.order_products objectAtIndex:indexPath.row];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     if(currentProduct.emptyStock){
         [cell setSelected:YES];
     }else{
