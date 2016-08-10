@@ -94,21 +94,35 @@
     selected.emptyStock = !selected.emptyStock;
 }
 - (IBAction)confirmButtonTapped:(id)sender {
-    [_rejectOrderRequest requestActionRejectOrderWithOrderId:_order.order_detail.detail_order_id
-                                               emptyProducts:_order.order_products
-                                                  reasonCode:_reasonCode
-                                                   onSuccess:^(GeneralAction *result) {
-                                                       if([result.data.is_success boolValue]){
-                                                           [[NSNotificationCenter defaultCenter] postNotificationName:@"applyRejectOperation" object:nil];
-                                                           [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-                                                       }else{
-                                                           StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:result.message_error delegate:self];
+    if([self validate]){
+        [_rejectOrderRequest requestActionRejectOrderWithOrderId:_order.order_detail.detail_order_id
+                                                   emptyProducts:_order.order_products
+                                                      reasonCode:_reasonCode
+                                                       onSuccess:^(GeneralAction *result) {
+                                                           if([result.data.is_success boolValue]){
+                                                               [[NSNotificationCenter defaultCenter] postNotificationName:@"applyRejectOperation" object:nil];
+                                                               [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                                                           }else{
+                                                               StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:result.message_error delegate:self];
+                                                               [alert show];
+                                                           }
+                                                       } onFailure:^(NSError *error) {
+                                                           StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Kendala koneksi internet"] delegate:self];
                                                            [alert show];
-                                                       }
-                                                   } onFailure:^(NSError *error) {
-                                                       StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Kendala koneksi internet"] delegate:self];
-                                                       [alert show];
-                                                   }];
+                                                       }];
+    }else{
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Anda belum memilih stok barang yang kosong"] delegate:self];
+        [alert show];
+    }
+}
+-(BOOL)validate{
+    BOOL noEmptyStock = YES;
+    for(OrderProduct *product in _order.order_products){
+        if(product.emptyStock){
+            noEmptyStock = NO;
+        }
+    }
+    return !noEmptyStock;
 }
 
 @end

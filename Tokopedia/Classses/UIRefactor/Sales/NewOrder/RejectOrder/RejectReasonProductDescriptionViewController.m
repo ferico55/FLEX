@@ -67,27 +67,41 @@
 }
 
 -(IBAction)doneButtonClicked:(id)sender{
-    if(_productDescriptionTextView.text && ![_productDescriptionTextView.text isEqualToString:@""]){
-        _orderProduct.product_description = _productDescriptionTextView.text;
-        [rejectOrderRequest requestActionChangeProductDescriptionWithId:_orderProduct.product_id
-                                                            description:_orderProduct.product_description
-                                                              onSuccess:^(NSString *isSuccess) {
-                                                                  if([isSuccess boolValue]){
-                                                                      StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[@"Anda berhasil memperbarui informasi produk Anda."] delegate:self];
+    if([self isTextViewNotEmpty]){
+        if([self isUserHasNotChangeAnything]){
+            StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Anda belum melakukan perubahan pada deskripsi produk"] delegate:self];
+            [alert show];
+        }else{
+            _orderProduct.product_description = _productDescriptionTextView.text;
+            [rejectOrderRequest requestActionChangeProductDescriptionWithId:_orderProduct.product_id
+                                                                description:_orderProduct.product_description
+                                                                  onSuccess:^(NSString *isSuccess) {
+                                                                      if([isSuccess boolValue]){
+                                                                          StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[@"Anda berhasil memperbarui informasi produk Anda."] delegate:self];
+                                                                          [alert show];
+                                                                          [self.delegate didChangeProductDescription:_orderProduct];
+                                                                          [self.navigationController popViewControllerAnimated:YES];
+                                                                      }
+                                                                  } onFailure:^(NSError *error) {
+                                                                      StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Kendala koneksi internet"] delegate:self];
                                                                       [alert show];
-                                                                      [self.delegate didChangeProductDescription:_orderProduct];
-                                                                      [self.navigationController popViewControllerAnimated:YES];
-                                                                  }
-                                                              } onFailure:^(NSError *error) {
-                                                                  StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Kendala koneksi internet"] delegate:self];
-                                                                  [alert show];
-                                                              }];
+                                                                  }];
+        }
     }else{
         StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Deskripsi produk tidak boleh kosong"] delegate:self];
         [alert show];
     }
     
 }
+
+-(BOOL)isTextViewNotEmpty{
+    return _productDescriptionTextView.text && ![_productDescriptionTextView.text isEqualToString:@""];
+}
+
+-(BOOL)isUserHasNotChangeAnything{
+    return [_productDescriptionTextView.text isEqualToString:_orderProduct.product_description];
+}
+
 - (IBAction)emptyStockButtonClicked:(id)sender {
     if(!_orderProduct.emptyStock){
         [_emptyStockButton setBackgroundColor:[UIColor colorWithRed:0.699 green:0.699 blue:0.699 alpha:1]];
