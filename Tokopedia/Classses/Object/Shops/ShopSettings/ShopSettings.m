@@ -12,7 +12,7 @@
 +(RKObjectMapping *)mapping{
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[ShopSettings class]];
     [mapping addAttributeMappingsFromArray:@[@"message_error", @"status", @"server_process_time"]];
-    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data" toKeyPath:@"data" withMapping:[ShopSettingsResult mapping]]];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data" toKeyPath:@"result" withMapping:[ShopSettingsResult mapping]]];
     return mapping;
 }
 @end
