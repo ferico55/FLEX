@@ -9,7 +9,10 @@
 #import <Foundation/Foundation.h>
 #import "ResolutionCenterCreateTroubleList.h"
 #import "ResolutionProductList.h"
+#import "ResolutionCenterCreateData.h"
 
 @interface ResolutionCenterCreateResult : NSObject
 @property (strong, nonatomic) NSMutableArray<ResolutionProductList*>* selectedProduct;
+@property (strong, nonatomic) ResolutionCenterCreateData* formData;
+-(NSMutableArray*)generatePossibleTroubleTextListWithCategoryTroubleId:(NSString*)categoryTroubleId;
 @end
