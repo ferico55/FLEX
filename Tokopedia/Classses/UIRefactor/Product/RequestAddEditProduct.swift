@@ -144,7 +144,7 @@ enum RequestError : ErrorType {
         
         return selectedImages
             .toObservable()
-            .takeWhile({ selectedImage -> Bool in
+            .skipWhile({ selectedImage -> Bool in
                 return (selectedImage.image_id != "")
             })
             .flatMap({ selectedImage -> Observable<ProductEditImages> in
