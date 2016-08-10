@@ -449,9 +449,11 @@ enum RequestError : ErrorType {
         let pictDescriptions:[String] = form.product_images.map{$0.image_description}
         let pictDescriptionString : String = pictDescriptions.joinWithSeparator("~")
         
-        var pictureDefault : String = ""
-        for selectedImage in form.product_images where selectedImage.image_primary == "1" {
-            pictureDefault = selectedImage.image_src
+        var pictureDefault : String = "0"
+        for (index, selectedImage) in form.product_images.enumerate(){
+            if selectedImage.image_primary == "1" {
+                pictureDefault = "\(index)"
+            }
         }
         
         /*
@@ -549,9 +551,11 @@ enum RequestError : ErrorType {
         let pictDescriptions:[String] = selectedImages.map{$0.image_description}
         let pictDescriptionString : String = pictDescriptions.joinWithSeparator("~")
         
-        var pictureDefault : String = ""
-        for selectedImage in selectedImages where selectedImage.image_primary == "1" {
-            pictureDefault = selectedImage.image_src
+        var pictureDefault : String = "0"
+        for (index, selectedImage) in selectedImages.enumerate(){
+            if selectedImage.image_primary == "1" {
+                pictureDefault = "\(index)"
+            }
         }
         
         let param :[String:String] = [

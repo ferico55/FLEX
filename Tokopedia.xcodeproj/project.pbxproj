@@ -185,7 +185,6 @@
 		45725AD31D49E10400D11EB3 /* LabelMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 45724C141D49E0FE00D11EB3 /* LabelMenu.m */; };
 		45725AD41D49E10400D11EB3 /* NSMutableAttributedString+TKPCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 45724C161D49E0FE00D11EB3 /* NSMutableAttributedString+TKPCategory.m */; };
 		45725AD51D49E10400D11EB3 /* NSMutableURLRequest+TKPDURLRequestUploadImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 45724C181D49E0FE00D11EB3 /* NSMutableURLRequest+TKPDURLRequestUploadImage.m */; };
-		45725AD61D49E10400D11EB3 /* NSNumberFormatter+IDRFormater.m in Sources */ = {isa = PBXBuildFile; fileRef = 45724C1A1D49E0FE00D11EB3 /* NSNumberFormatter+IDRFormater.m */; };
 		45725AD71D49E10400D11EB3 /* NSStringAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = 45724C1C1D49E0FE00D11EB3 /* NSStringAttribute.m */; };
 		45725AD81D49E10400D11EB3 /* NSUserDefaultCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 45724C1E1D49E0FE00D11EB3 /* NSUserDefaultCategory.m */; };
 		45725AD91D49E10400D11EB3 /* QueueImageDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 45724C201D49E0FE00D11EB3 /* QueueImageDownloader.m */; };
@@ -2798,8 +2797,6 @@
 		45724C161D49E0FE00D11EB3 /* NSMutableAttributedString+TKPCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableAttributedString+TKPCategory.m"; sourceTree = "<group>"; };
 		45724C171D49E0FE00D11EB3 /* NSMutableURLRequest+TKPDURLRequestUploadImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableURLRequest+TKPDURLRequestUploadImage.h"; sourceTree = "<group>"; };
 		45724C181D49E0FE00D11EB3 /* NSMutableURLRequest+TKPDURLRequestUploadImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableURLRequest+TKPDURLRequestUploadImage.m"; sourceTree = "<group>"; };
-		45724C191D49E0FE00D11EB3 /* NSNumberFormatter+IDRFormater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumberFormatter+IDRFormater.h"; sourceTree = "<group>"; };
-		45724C1A1D49E0FE00D11EB3 /* NSNumberFormatter+IDRFormater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumberFormatter+IDRFormater.m"; sourceTree = "<group>"; };
 		45724C1B1D49E0FE00D11EB3 /* NSStringAttribute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSStringAttribute.h; sourceTree = "<group>"; };
 		45724C1C1D49E0FE00D11EB3 /* NSStringAttribute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSStringAttribute.m; sourceTree = "<group>"; };
 		45724C1D1D49E0FE00D11EB3 /* NSUserDefaultCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSUserDefaultCategory.h; sourceTree = "<group>"; };
@@ -6718,8 +6715,6 @@
 				45724C161D49E0FE00D11EB3 /* NSMutableAttributedString+TKPCategory.m */,
 				45724C171D49E0FE00D11EB3 /* NSMutableURLRequest+TKPDURLRequestUploadImage.h */,
 				45724C181D49E0FE00D11EB3 /* NSMutableURLRequest+TKPDURLRequestUploadImage.m */,
-				45724C191D49E0FE00D11EB3 /* NSNumberFormatter+IDRFormater.h */,
-				45724C1A1D49E0FE00D11EB3 /* NSNumberFormatter+IDRFormater.m */,
 				45724C1B1D49E0FE00D11EB3 /* NSStringAttribute.h */,
 				45724C1C1D49E0FE00D11EB3 /* NSStringAttribute.m */,
 				45724C1D1D49E0FE00D11EB3 /* NSUserDefaultCategory.h */,
@@ -14994,7 +14989,6 @@
 				45725EF31D49E10400D11EB3 /* MyReviewDetailTableViewCell.m in Sources */,
 				450E6EB11D54389D00AFA588 /* Observable+Creation.swift in Sources */,
 				45725F651D49E10400D11EB3 /* SearchAutoCompleteViewController.m in Sources */,
-				45725AD61D49E10400D11EB3 /* NSNumberFormatter+IDRFormater.m in Sources */,
 				45725E0A1D49E10400D11EB3 /* ProductInfoTableViewController.m in Sources */,
 				45725FDD1D49E10400D11EB3 /* ShopPageHeader.m in Sources */,
 				45725B1E1D49E10400D11EB3 /* DepositSummaryDetail.m in Sources */,
