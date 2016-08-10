@@ -8745,7 +8745,6 @@
 		457250B91D49E0FF00D11EB3 /* Third Party */ = {
 			isa = PBXGroup;
 			children = (
-				45F418C61D5479210037CC4D /* RxCocoa */,
 				450E6DAF1D54389C00AFA588 /* RxSwift */,
 				457250BA1D49E0FF00D11EB3 /* DKImagePicker */,
 				457250C81D49E0FF00D11EB3 /* iCarousel.h */,
@@ -12559,109 +12558,6 @@
 				45725AB31D49E10300D11EB3 /* XYPieChart.m */,
 			);
 			path = XYPieChart;
-			sourceTree = "<group>";
-		};
-		45F418C61D5479210037CC4D /* RxCocoa */ = {
-			isa = PBXGroup;
-			children = (
-				45F418C71D5479210037CC4D /* Common */,
-				45F418CD1D5479210037CC4D /* iOS */,
-				45F418D21D5479210037CC4D /* OSX */,
-			);
-			path = RxCocoa;
-			sourceTree = "<group>";
-		};
-		45F418C71D5479210037CC4D /* Common */ = {
-			isa = PBXGroup;
-			children = (
-				45F418C81D5479210037CC4D /* CocoaUnits */,
-				45F418CA1D5479210037CC4D /* Observables */,
-				45F418CC1D5479210037CC4D /* Proxies */,
-			);
-			path = Common;
-			sourceTree = "<group>";
-		};
-		45F418C81D5479210037CC4D /* CocoaUnits */ = {
-			isa = PBXGroup;
-			children = (
-				45F418C91D5479210037CC4D /* Driver */,
-			);
-			path = CocoaUnits;
-			sourceTree = "<group>";
-		};
-		45F418C91D5479210037CC4D /* Driver */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Driver;
-			sourceTree = "<group>";
-		};
-		45F418CA1D5479210037CC4D /* Observables */ = {
-			isa = PBXGroup;
-			children = (
-				45F418CB1D5479210037CC4D /* Implementations */,
-			);
-			path = Observables;
-			sourceTree = "<group>";
-		};
-		45F418CB1D5479210037CC4D /* Implementations */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Implementations;
-			sourceTree = "<group>";
-		};
-		45F418CC1D5479210037CC4D /* Proxies */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Proxies;
-			sourceTree = "<group>";
-		};
-		45F418CD1D5479210037CC4D /* iOS */ = {
-			isa = PBXGroup;
-			children = (
-				45F418CE1D5479210037CC4D /* DataSources */,
-				45F418CF1D5479210037CC4D /* Events */,
-				45F418D01D5479210037CC4D /* Protocols */,
-				45F418D11D5479210037CC4D /* Proxies */,
-			);
-			path = iOS;
-			sourceTree = "<group>";
-		};
-		45F418CE1D5479210037CC4D /* DataSources */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = DataSources;
-			sourceTree = "<group>";
-		};
-		45F418CF1D5479210037CC4D /* Events */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Events;
-			sourceTree = "<group>";
-		};
-		45F418D01D5479210037CC4D /* Protocols */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Protocols;
-			sourceTree = "<group>";
-		};
-		45F418D11D5479210037CC4D /* Proxies */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Proxies;
-			sourceTree = "<group>";
-		};
-		45F418D21D5479210037CC4D /* OSX */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = OSX;
 			sourceTree = "<group>";
 		};
 		7A59E5881D471A93002ECC7B /* Tokopedia */ = {
