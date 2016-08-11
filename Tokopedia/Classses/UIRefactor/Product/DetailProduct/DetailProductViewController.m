@@ -2758,7 +2758,7 @@ OtherProductDelegate
         NSString *productId = _product.data.info.product_id?:@"";
         NSString *productName = _product.data.info.product_name?:@"";
         
-        NSArray *categories = [[_data objectForKey:@"product"] breadcrumb];
+        NSArray *categories = _product.data.breadcrumb;
         Breadcrumb *lastCategory = [categories objectAtIndex:categories.count - 1];
         NSString *productCategory = lastCategory.department_name?:@"";
         

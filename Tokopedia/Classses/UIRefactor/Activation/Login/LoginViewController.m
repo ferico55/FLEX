@@ -395,8 +395,15 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 }
 
 - (void)trackUserSignIn:(Login *)login {
-// Login UA
+    // Login UA
     [TPAnalytics trackLoginUserID:login.result.user_id];
+    [TPAnalytics trackAuthenticatedWithLoginResult:login.result];
+    
+    [TPLocalytics trackLoginStatus:YES];
+    [Localytics setValue:login.result.user_id forProfileAttribute:@"user_id"];
+    [Localytics setValue:login.result.email forProfileAttribute:@"user_email"];
+    [Localytics setCustomerId:login.result.user_id];
+    [Localytics setCustomerFullName:login.result.full_name];
 
     //add user login to GA
     id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
