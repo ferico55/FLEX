@@ -375,7 +375,7 @@
 
 - (void)keyboardWillShow:(NSNotification *)note {
     // get keyboard size and loctaion
-    if(_activeTextField.tag != 10) {
+    if(_activeTextField.tag != 10 && (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad)) {
         CGRect keyboardBounds;
         [[note.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue: &keyboardBounds];
         NSNumber *duration = [note.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
