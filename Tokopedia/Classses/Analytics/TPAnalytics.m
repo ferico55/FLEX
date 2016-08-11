@@ -373,8 +373,19 @@
     [analytics.dataLayer push:data];
 }
 
-+ (void)trackAuthenticated:(NSDictionary *)data {
++ (void)trackAuthenticatedWithLoginResult:(LoginResult *)result {
     TPAnalytics *analytics = [[self alloc] init];
+    
+    NSDictionary *data = @{@"event" : @"authenticated",
+                           @"contactInfo" : @{@"userSeller" : result.seller_status,
+                                              @"userFullName" : result.full_name,
+                                              @"userEmail" : result.email?:@"",
+                                              @"userId" : result.user_id,
+                                              @"userMSISNVerified" : result.msisdn_is_verified,
+                                              @"shopId" : result.shop_id
+                                              }
+                           };
+    
     [analytics.dataLayer push:data];
 }
 

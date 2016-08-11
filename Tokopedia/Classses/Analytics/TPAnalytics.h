@@ -10,6 +10,7 @@
 #import "TAGDataLayer.h"
 #import "TAGManager.h"
 #import "ProductDetail.h"
+#import "LoginResult.h"
 
 @interface TPAnalytics : NSObject
 
@@ -46,7 +47,7 @@
 + (void)trackSnapSearchCategory:(NSString *)categoryName;
 + (void)trackSnapSearchAddToCart:(ProductDetail *)product;
 
-+ (void)trackAuthenticated:(NSDictionary *)data;
++ (void)trackAuthenticatedWithLoginResult:(LoginResult *)result;
 + (void)trackSuccessSubmitReview:(NSInteger)status;
 + (void)trackSearchInboxReview;
 

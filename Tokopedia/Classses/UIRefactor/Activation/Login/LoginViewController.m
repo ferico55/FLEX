@@ -397,17 +397,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
 - (void)trackUserSignIn:(Login *)login {
     // Login UA
     [TPAnalytics trackLoginUserID:login.result.user_id];
-    
-    
-    [TPAnalytics trackAuthenticated:@{@"event" : @"authenticated",
-                                      @"contactInfo" : @{@"userSeller" : login.result.seller_status,
-                                                         @"userFullName" : login.result.full_name,
-                                                         @"userEmail" : login.result.email?:@"",
-                                                         @"userId" : login.result.user_id,
-                                                         @"userMSISNVerified" : login.result.msisdn_is_verified,
-                                                         @"shopId" : login.result.shop_id
-                                                         }
-                                      }];
+    [TPAnalytics trackAuthenticatedWithLoginResult:login.result];
     
     [TPLocalytics trackLoginStatus:YES];
     [Localytics setValue:login.result.user_id forProfileAttribute:@"user_id"];
