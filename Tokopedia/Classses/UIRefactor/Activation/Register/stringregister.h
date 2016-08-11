@@ -20,7 +20,7 @@
 #define ERRORMESSAGE_NULL_AGREMENT @"Anda harus menyetujui syarat dan ketentuan serta kebijakan privasi dari Tokopedia"
 #define ERRORMESSAGE_INVALID_PHONE_COUNT @"Nomor HP terlalu pendek, minimum 6 karakter."
 #define ERRORMESSAGE_INVALID_PASSWORD_COUNT @"Kata sandi terlalu pendek, minimum 6 karakter."
-#define ERRORMESSAGE_INVALID_EMAIL_FORMAR @"Alamat email tidak benar."
+#define ERRORMESSAGE_INVALID_EMAIL_FORMAR @"Format email salah"
 #define ERRORMESSAGE_INVALID_PASSWORD_AND_CONFIRM_PASSWORD @"Kata sandi dan konfirmasi kata sandi tidak sama."
 
 #endif
