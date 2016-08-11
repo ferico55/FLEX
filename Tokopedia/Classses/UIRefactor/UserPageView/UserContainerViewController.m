@@ -33,6 +33,7 @@
 #import "SettingUserProfileViewController.h"
 #import "ShopContainerViewController.h"
 #import "UIView+HVDLayout.h"
+#import "GTMNSString+HTML.h"
 
 
 @interface UserContainerViewController ()
@@ -415,11 +416,9 @@
                                 mapping:[ProfileInfo mapping]
                               onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                   _profile = [successResult.dictionary objectForKey:@""];
-                                  
+                                  _profile.result.user_info.user_name = [_profile.result.user_info.user_name gtm_stringByUnescapingFromHTML];
                                   if (_profile.status) {
-                                      [[NSNotificationCenter defaultCenter] postNotificationName:@"setHeaderProfilePage"
-                                                                                          object:nil
-                                                                                        userInfo:@{@"profile" : _profile}];
+                                      [self postNotificationSetProfileHeader];
                                   }
                               }
                               onFailure:^(NSError *errorResult) {
