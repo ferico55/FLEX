@@ -29,6 +29,7 @@
     CGSize _scrollviewContentSize;
 }
 
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIImageView *productThumbImageView;
 @property (weak, nonatomic) IBOutlet UILabel *productNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *productPriceLabel;
@@ -59,6 +60,8 @@
     [_barButtonSave setTintColor:[UIColor whiteColor]];
     _barButtonSave.tag = TAG_BAR_BUTTON_TRANSACTION_DONE;
     self.navigationItem.rightBarButtonItem = _barButtonSave;
+    
+    [_scrollView setContentSize:CGSizeMake(_scrollView.frame.size.width, 1000.0)];
     
     _remarkTextView.delegate = self;
     [self setDefaultData:_data];
