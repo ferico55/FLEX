@@ -135,7 +135,7 @@
 
     CGRect frame = _scrollViewContentView.frame;
     frame.origin = CGPointZero;
-    frame.size.width = screenWidth;
+    frame.size.width = 90 * 5;
     _scrollViewContentView.frame = frame;
 
     self.scrollViewContentView.hidden = YES;
