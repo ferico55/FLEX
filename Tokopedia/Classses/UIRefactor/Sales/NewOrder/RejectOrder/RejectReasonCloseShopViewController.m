@@ -118,11 +118,6 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
         OrderProduct *currentProduct = [_order.order_products objectAtIndex:indexPath.row];
-        if(currentProduct.emptyStock){
-            [cell setSelected:YES];
-        }else{
-            [cell setSelected:NO];
-        }
         [cell setViewModel:currentProduct.viewModel];
         return cell;
     }
@@ -168,7 +163,12 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     OrderProduct *selected = [_order.order_products objectAtIndex:indexPath.row];
-    selected.emptyStock = !selected.emptyStock;
+    if(selected.emptyStock){
+        selected.emptyStock = NO;
+        [_tableView deselectRowAtIndexPath:indexPath animated:YES];
+    }else{
+        selected.emptyStock = YES;
+    }
 }
 
 #pragma mark - Button

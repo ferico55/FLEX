@@ -144,7 +144,7 @@
     [_order.order_products bk_each:^(id obj) {
         OrderProduct* selected = obj;
         if([selected.product_id isEqualToString:orderProduct.product_id]){
-            selected.product_description = orderProduct.product_description;
+            selected.product_description = [orderProduct.product_description stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
             selected.emptyStock = orderProduct.emptyStock;
         }
     }];

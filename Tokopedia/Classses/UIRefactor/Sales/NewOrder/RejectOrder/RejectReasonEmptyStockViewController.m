@@ -61,11 +61,6 @@
     }
     OrderProduct *currentProduct = [_order.order_products objectAtIndex:indexPath.row];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    if(currentProduct.emptyStock){
-        [cell setSelected:YES];
-    }else{
-        [cell setSelected:NO];
-    }
     [cell setViewModel:currentProduct.viewModel];
     return cell;
 }
@@ -96,8 +91,14 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     OrderProduct *selected = [_order.order_products objectAtIndex:indexPath.row];
-    selected.emptyStock = !selected.emptyStock;
+    if(selected.emptyStock){
+        selected.emptyStock = NO;
+        [_tableView deselectRowAtIndexPath:indexPath animated:YES];
+    }else{
+        selected.emptyStock = YES;
+    }
 }
+
 - (IBAction)confirmButtonTapped:(id)sender {
     if([self validate]){
         [_rejectOrderRequest requestActionRejectOrderWithOrderId:_order.order_detail.detail_order_id

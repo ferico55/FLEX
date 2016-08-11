@@ -39,14 +39,14 @@
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    if([self isSelected]){
+    //[super setSelected:selected animated:animated];
+    if(selected){
         [_checkImage setImage:[UIImage imageNamed:@"icon_checkmark_green.png"]];
         [_stokKosongLabel setHidden:NO];
     }else{
         [_checkImage setImage:[UIImage imageNamed:@"icon_circle.png"]];
         [_stokKosongLabel setHidden:YES];
     }
-    [super setSelected:selected animated:animated];
 }
 
 @end
