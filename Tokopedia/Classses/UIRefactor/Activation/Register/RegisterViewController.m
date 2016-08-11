@@ -163,11 +163,10 @@ GIDSignInUIDelegate
          loginWithTokenString:token
          fromViewController:self
          successCallback:^(Login *login) {
-             [TPLocalytics trackRegistrationWith:RegistrationPlatformYahoo success:YES];
              [self onLoginSuccess:login];
          }
          failureCallback:^(NSError *error) {
-             [TPLocalytics trackRegistrationWith:RegistrationPlatformYahoo success:NO];
+             
          }];
     };
     [self.navigationController pushViewController:controller animated:YES];
@@ -676,12 +675,9 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
      doThirdPartySignInWithUserProfile:[CreatePasswordUserProfile fromFacebook:data]
      fromViewController:self
      onSignInComplete:^(Login *login) {
-         [TPLocalytics trackRegistrationWith:RegistrationPlatformFacebook success:YES];
          [self onLoginSuccess:login];
      }
      onFailure:^(NSError *error) {
-         [TPLocalytics trackRegistrationWith:RegistrationPlatformFacebook success:NO];
-         
          [StickyAlertView showErrorMessage:@[@"Sign in gagal silahkan coba lagi."]];
      }];
 }
@@ -776,10 +772,8 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
      fromViewController:self
      onSignInComplete:^(Login *login) {
          [self onLoginSuccess:login];
-         [TPLocalytics trackRegistrationWith:RegistrationPlatformGoogle success:YES];
      }
      onFailure:^(NSError *error) {
-         [TPLocalytics trackRegistrationWith:RegistrationPlatformGoogle success:NO];
          [StickyAlertView showErrorMessage:@[@"Sign in gagal silahkan coba lagi."]];
      }];
 }

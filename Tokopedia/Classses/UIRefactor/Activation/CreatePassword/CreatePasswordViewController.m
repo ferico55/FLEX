@@ -421,7 +421,15 @@
 }
 
 - (void)trackRegistration {
-    NSString* eventType = [_userProfile.provider isEqualToString:@"1"]?@"Facebook Registration":@"Google Registration";
+    
+    NSString* eventType = @"Facebook Registration";
+    
+    if ([_userProfile.provider isEqualToString:@"2"]) {
+        eventType = @"Google Registration";
+    } else if ([_userProfile.provider isEqualToString:@"4"]) {
+        eventType = @"Yahoo Registration";
+    }
+    
     NSDictionary *trackerValues = @{AFEventParamRegistrationMethod : eventType};
 
     [[AppsFlyerTracker sharedTracker] trackEvent:AFEventCompleteRegistration withValues:trackerValues];
