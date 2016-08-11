@@ -37,8 +37,8 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <view hidden="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QfQ-ON-DwI" userLabel="LoadingView">
-                    <rect key="frame" x="0.0" y="10" width="0.0" height="0.0"/>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QfQ-ON-DwI" userLabel="LoadingView">
+                    <rect key="frame" x="160" y="240" width="0.0" height="0.0"/>
                     <subviews>
                         <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="OfY-Za-Mqc">
                             <rect key="frame" x="-10" y="-10" width="20" height="20"/>
@@ -46,14 +46,16 @@
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="centerY" secondItem="OfY-Za-Mqc" secondAttribute="centerY" id="jUB-F0-f5e"/>
-                        <constraint firstAttribute="centerX" secondItem="OfY-Za-Mqc" secondAttribute="centerX" id="obx-fx-LSj"/>
+                        <constraint firstItem="OfY-Za-Mqc" firstAttribute="leading" secondItem="QfQ-ON-DwI" secondAttribute="leading" constant="-10" id="DqI-nY-CTs"/>
+                        <constraint firstAttribute="bottom" secondItem="OfY-Za-Mqc" secondAttribute="bottom" constant="-10" id="S5l-z4-445"/>
+                        <constraint firstItem="OfY-Za-Mqc" firstAttribute="top" secondItem="QfQ-ON-DwI" secondAttribute="top" constant="-10" id="di2-N5-vuN"/>
+                        <constraint firstAttribute="trailing" secondItem="OfY-Za-Mqc" secondAttribute="trailing" constant="-10" id="kHx-iY-Kbm"/>
                     </constraints>
                 </view>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" keyboardDismissMode="onDrag" translatesAutoresizingMaskIntoConstraints="NO" id="i2V-1Q-6fX">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                     <subviews>
-                        <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VIo-ub-GYT" userLabel="Form View">
+                        <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VIo-ub-GYT" userLabel="Form View">
                             <rect key="frame" x="15" y="0.0" width="290" height="201"/>
                             <subviews>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="TaY-hL-DlK" customClass="TextField">
@@ -130,7 +132,7 @@
                                         <action selector="didTapForgotPasswordButton" destination="-1" eventType="touchUpInside" id="vRA-Vw-eOJ"/>
                                     </connections>
                                 </button>
-                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="g0F-wj-qxp">
+                                <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="g0F-wj-qxp">
                                     <rect key="frame" x="0.0" y="201" width="290" height="0.0"/>
                                 </view>
                             </subviews>
@@ -144,7 +146,7 @@
                                 <constraint firstAttribute="centerX" secondItem="Meb-uf-Mbe" secondAttribute="centerX" id="Fr5-Cv-eTh"/>
                                 <constraint firstItem="TaY-hL-DlK" firstAttribute="top" secondItem="VIo-ub-GYT" secondAttribute="top" id="HBI-JD-Q00"/>
                                 <constraint firstAttribute="bottom" secondItem="g0F-wj-qxp" secondAttribute="bottom" id="KHG-bW-tmM"/>
-                                <constraint firstItem="g0F-wj-qxp" firstAttribute="top" secondItem="3T9-rP-bSY" secondAttribute="bottom" constant="2" id="O6W-2S-Mme"/>
+                                <constraint firstItem="g0F-wj-qxp" firstAttribute="top" secondItem="3T9-rP-bSY" secondAttribute="bottom" constant="10" id="O6W-2S-Mme"/>
                                 <constraint firstItem="R1P-bi-QzD" firstAttribute="trailing" secondItem="3T9-rP-bSY" secondAttribute="leading" constant="-10" id="OYm-qQ-dBz"/>
                                 <constraint firstItem="rJv-0e-sEO" firstAttribute="leading" secondItem="VIo-ub-GYT" secondAttribute="leading" id="RG5-4U-SVW"/>
                                 <constraint firstItem="TaY-hL-DlK" firstAttribute="leading" secondItem="VIo-ub-GYT" secondAttribute="leading" id="T3H-cs-s3Y"/>
