@@ -174,9 +174,11 @@
              [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:cart.message_error?:@[@"Error"]]
                                                       type:NotificationTypeError
                                                   duration:4.0
-                                               buttonTitle:nil
+                                               buttonTitle:[cart.errors[0].name isEqualToString:@"minimum-payment"]?@"Belanja Lagi":nil
                                                dismissable:YES
-                                                    action:nil];
+                                                    action:[cart.errors[0].name isEqualToString:@"minimum-payment"]?^{
+                                                        [[NSNotificationCenter defaultCenter] postNotificationName:@"navigateToPageInTabBar" object:@"1"];
+                                                    }:nil];
              error(nil);
          } else {
              NSArray *successMessages = cart.message_status;
@@ -213,13 +215,27 @@
                                  
                                  NSDictionary *result = successResult.dictionary;
                                  TransactionVoucher *cart = [result objectForKey:@""];
-                                 [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:cart.message_error]
-                                                                          type:NotificationTypeError
-                                                                      duration:4.0
-                                                                   buttonTitle:nil
-                                                                   dismissable:YES
-                                                                        action:nil];
-                                 success(cart);
+                                 if (cart.message_error.count > 0) {
+                                     [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:cart.message_error]
+                                                                              type:NotificationTypeError
+                                                                          duration:4.0
+                                                                       buttonTitle:nil
+                                                                       dismissable:YES
+                                                                            action:nil];
+                                     error(nil);
+                                 } else {
+                                     if (cart.message_status.count > 0) {
+                                         [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:cart.message_status]
+                                                                                  type:NotificationTypeSuccess
+                                                                              duration:4.0
+                                                                           buttonTitle:nil
+                                                                           dismissable:YES
+                                                                                action:nil];
+                                         
+                                     }
+                                     success(cart);
+                                     
+                                 }
                                  
                              } onFailure:^(NSError *errorResult) {
                                  error(errorResult);

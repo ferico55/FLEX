@@ -2488,25 +2488,21 @@
     NSString *voucherCode = [_dataInput objectForKey:API_VOUCHER_CODE_KEY]?:@"";
     [RequestCart fetchVoucherCode:voucherCode
                           success:^(TransactionVoucher *data) {
-                              if (data.message_error.count > 0) {
-                                  
-                              } else {
-                                  _voucherData = data.result.data_voucher;
-                                  
-                                  _voucherCodeButton.hidden = YES;
-                                  _voucherAmountLabel.hidden = NO;
-                                  
-                                  NSInteger voucher = [_voucherData.voucher_amount integerValue];
-                                  NSString *voucherString = [[NSNumberFormatter IDRFormarter] stringFromNumber:[NSNumber numberWithInteger:voucher]];
-                                  voucherString = [NSString stringWithFormat:@"Anda mendapatkan voucher %@", voucherString];
-                                  _voucherAmountLabel.text = voucherString;
-                                  _voucherAmountLabel.font = [UIFont fontWithName:@"GothamBook" size:12];
-                                  
-                                  _buttonVoucherInfo.hidden = YES;
-                                  _buttonCancelVoucher.hidden = NO;
-                                  
-                                  [self adjustGrandTotalWithDeposit:_saldoTokopediaAmountTextField.text];
-                              }
+                              _voucherData = data.result.data_voucher;
+                              
+                              _voucherCodeButton.hidden = YES;
+                              _voucherAmountLabel.hidden = NO;
+                              
+                              NSInteger voucher = [_voucherData.voucher_amount integerValue];
+                              NSString *voucherString = [[NSNumberFormatter IDRFormarter] stringFromNumber:[NSNumber numberWithInteger:voucher]];
+                              voucherString = data.message_status?[data.message_status firstObject]:[NSString stringWithFormat:@"Anda mendapatkan voucher %@", voucherString];
+                              _voucherAmountLabel.text = voucherString;
+                              _voucherAmountLabel.font = [UIFont fontWithName:@"GothamBook" size:12];
+                              
+                              _buttonVoucherInfo.hidden = YES;
+                              _buttonCancelVoucher.hidden = NO;
+                              
+                              [self adjustGrandTotalWithDeposit:_saldoTokopediaAmountTextField.text];
                               
                               [self isLoading:NO];
                               [_tableView reloadData];
