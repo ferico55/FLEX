@@ -201,7 +201,7 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     signIn.scopes = @[ @"profile", @"email" ];
     signIn.delegate = self;
     signIn.uiDelegate = self;
-    signIn.allowsSignInWithWebView = YES;
+    signIn.allowsSignInWithWebView = NO;
 }
 
 -(void)viewWillDisappear:(BOOL)animated
