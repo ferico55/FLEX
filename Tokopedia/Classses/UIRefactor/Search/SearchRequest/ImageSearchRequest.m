@@ -87,7 +87,7 @@ TokopediaNetworkManagerDelegate
 }
 
 -(void)failedGenerateHost:(NSArray *)errorMessages{
-    [_delegate failToReceiveImageSearchResult:@"error_generate_host"];
+    [_delegate failToReceiveImageSearchResult:@"Gagal tersambung ke server"];
 }
 
 #pragma mark - RequestUploadImage delegate
