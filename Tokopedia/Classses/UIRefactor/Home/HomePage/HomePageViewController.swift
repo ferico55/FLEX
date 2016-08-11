@@ -27,7 +27,7 @@ class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDele
     var requestManager = PulsaRequest!()
     var navigator = PulsaNavigator!()
     
-    var carouselView: UIView!
+    var sliderPlaceholder: UIView!
     var pulsaPlaceholder: UIView!
     var tickerPlaceholder: UIView!
     var keyboardManager: PulsaKeyboardManager!
@@ -64,18 +64,18 @@ class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDele
         let cellNib = UINib(nibName: "CategoryViewCell", bundle: nil)
         self.collectionView.registerNib(cellNib, forCellWithReuseIdentifier: "CategoryViewCellIdentifier")
 
-        self.carouselView = UIView(frame: CGRectZero)
+        self.sliderPlaceholder = UIView(frame: CGRectZero)
         self.pulsaPlaceholder = UIView(frame: CGRectZero)
         self.tickerPlaceholder = UIView(frame: CGRectZero)
         self.pulsaPlaceholder.backgroundColor = UIColor.whiteColor()
         
         self.collectionView.addSubview(self.tickerPlaceholder)
-        self.collectionView.addSubview(self.carouselView)
+        self.collectionView.addSubview(self.sliderPlaceholder)
         self.collectionView.addSubview(self.pulsaPlaceholder)
 
-        tickerRequest = AnnouncementTickerRequest()
-        self.loadBanners()
+        self.requestBanner()
         self.requestTicker()
+        self.requestPulsaWidget()
         
         navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .Bordered, target: self, action: nil)
         
@@ -107,8 +107,7 @@ class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDele
         self.keyboardManager.beginObservingKeyboard()
     }
     
-    // MARK: - Request Banner
-    func loadBanners() {
+    func requestBanner() {
         let bannersStore = HomePageViewController.self.TKP_rootController().storeManager().homeBannerStore
         
         let backgroundColor = UIColor(red: 242/255.0, green: 242/255.0, blue: 242/255.0, alpha: 1.0)
@@ -125,10 +124,10 @@ class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDele
             self!.slider.delegate = self!.carouselDataSource
             self!.slider.decelerationRate = 0.5
             
-            self?.carouselView .addSubview(self!.slider)
-            self?.collectionView.bringSubviewToFront((self?.carouselView)!)
+            self?.sliderPlaceholder .addSubview(self!.slider)
+            self?.collectionView.bringSubviewToFront((self?.sliderPlaceholder)!)
             
-            self?.carouselView.mas_makeConstraints { make in
+            self?.sliderPlaceholder.mas_makeConstraints { make in
                 make.top.equalTo()(self!.tickerPlaceholder.mas_bottom)
                 make.left.equalTo()(self!.view.mas_left)
                 make.right.equalTo()(self!.view.mas_right)
@@ -136,21 +135,24 @@ class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDele
             
             self?.slider.mas_makeConstraints { make in
                 make.height.equalTo()(self!.sliderHeight)
-                make.top.equalTo()(self?.carouselView.mas_top)
-                make.left.equalTo()(self?.carouselView.mas_left)
-                make.right.equalTo()(self?.carouselView.mas_right)
-                make.bottom.equalTo()(self?.carouselView.mas_bottom)
+                make.top.equalTo()(self?.sliderPlaceholder.mas_top)
+                make.left.equalTo()(self?.sliderPlaceholder.mas_left)
+                make.right.equalTo()(self?.sliderPlaceholder.mas_right)
+                make.bottom.equalTo()(self?.sliderPlaceholder.mas_bottom)
             }
             
             self?.pulsaPlaceholder.mas_makeConstraints { make in
-                make.left.equalTo()(self?.carouselView.mas_left)
-                make.right.equalTo()(self?.carouselView.mas_right)
-                make.top.equalTo()(self!.carouselView?.mas_bottom)
+                make.left.equalTo()(self?.sliderPlaceholder.mas_left)
+                make.right.equalTo()(self?.sliderPlaceholder.mas_right)
+                make.top.equalTo()(self!.sliderPlaceholder?.mas_bottom)
             }
 
             self?.refreshCollectionViewSize()
         })
-        
+
+    }
+    
+    func requestPulsaWidget() {
         self.requestManager = PulsaRequest()
         self.requestManager.requestCategory()
         self.requestManager.didReceiveCategory = { [unowned self] categories in
@@ -165,7 +167,7 @@ class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDele
             sortedCategories.sortInPlace({
                 $0.attributes.weight < $1.attributes.weight
             })
-
+            
             self.pulsaView = PulsaView(categories: sortedCategories)
             self.pulsaView.attachToView(self.pulsaPlaceholder)
             
@@ -276,6 +278,7 @@ class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDele
     }
     
     func requestTicker() {
+        tickerRequest = AnnouncementTickerRequest()
         tickerRequest.fetchTicker({[weak self] (ticker) in
             
             if (ticker.tickers.count > 0) {
@@ -294,12 +297,12 @@ class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDele
                     make.top.equalTo()(self!.collectionView.mas_top)
                     make.left.equalTo()(self!.view.mas_left)
                     make.right.equalTo()(self!.view.mas_right)
-                    
                 }
                 
                 
                 self?.tickerView.mas_makeConstraints { make in
-                    make.left.right().equalTo()(self?.view)
+                    make.left.equalTo()(self?.view.mas_left)
+                    make.right.equalTo()(self?.view.mas_right)
                     make.top.bottom().equalTo()(self?.tickerPlaceholder)
                 }
                 
