@@ -311,6 +311,12 @@ ImageSearchRequestDelegate
     
 }
 
+-(void)failToReceiveImageSearchResult:(NSString*)errorMessage {
+    NSArray *errorMessageArray = [[NSArray alloc] initWithObjects:errorMessage, nil];
+    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessageArray delegate:self];
+    [alert show];
+}
+
 -(NSString*)getSearchSource{
     return [_data objectForKey:@"type"]?:@"";
 }
