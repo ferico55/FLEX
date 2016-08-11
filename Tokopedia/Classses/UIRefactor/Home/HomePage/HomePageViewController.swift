@@ -50,7 +50,7 @@ class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDele
         super.viewDidLoad()
         
         
-        
+        self.view .addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard)))
         self.categoryDataSource = CategoryDataSource()
         self.categoryDataSource.delegate = self
         
@@ -166,8 +166,6 @@ class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDele
                 $0.attributes.weight < $1.attributes.weight
             })
 
-            
-            let container = UIView(frame: CGRectZero)
             self.pulsaView = PulsaView(categories: sortedCategories)
             self.pulsaView.attachToView(self.pulsaPlaceholder)
             
@@ -296,14 +294,13 @@ class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDele
                     make.top.equalTo()(self!.collectionView.mas_top)
                     make.left.equalTo()(self!.view.mas_left)
                     make.right.equalTo()(self!.view.mas_right)
+                    
                 }
                 
                 
                 self?.tickerView.mas_makeConstraints { make in
-                    make.left.equalTo()(self?.view.mas_left)
-                    make.right.equalTo()(self?.view.mas_right)
-                    make.top.equalTo()(self?.collectionView.mas_top)
-                    make.bottom.equalTo()(self?.tickerPlaceholder.mas_bottom)
+                    make.left.right().equalTo()(self?.view)
+                    make.top.bottom().equalTo()(self?.tickerPlaceholder)
                 }
                 
                 self?.refreshCollectionViewSize()
@@ -325,4 +322,9 @@ class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDele
         
         debounced.call()
     }
+    
+    func dismissKeyboard() {
+        self.view.endEditing(true)
+    }
+    
 }
