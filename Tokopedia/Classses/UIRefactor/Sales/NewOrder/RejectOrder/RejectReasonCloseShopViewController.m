@@ -186,9 +186,16 @@
 }
 
 - (IBAction)confirmButtonTapped:(id)sender {
-    if([self validateForm]){
+    NSArray *selectedIndexPaths = _tableView.indexPathsForSelectedRows;
+    NSMutableArray *selectedProducts = [NSMutableArray new];
+    for(NSIndexPath *indexPath in selectedIndexPaths){
+        OrderProduct* selectedProduct = [_order.order_products objectAtIndex:indexPath.row];
+        selectedProduct.emptyStock = YES;
+        [selectedProducts addObject:selectedProduct];
+    }
+    if([self validateFormWithSelectedProducts:selectedProducts]){
         [_rejectOrderRequest requestActionRejectOrderWithOrderId:_order.order_detail.detail_order_id
-                                                   emptyProducts:_order.order_products
+                                                   emptyProducts:selectedProducts
                                                       reasonCode:_reasonCode
                                                         closeEnd:[self stringFromNSDate:_endDate]
                                                        closeNote:_textView.text
@@ -207,7 +214,7 @@
     }
 }
 
--(BOOL)validateForm{
+-(BOOL)validateFormWithSelectedProducts:(NSMutableArray*)selectedProducts{
     BOOL isOkay = YES;
     NSMutableArray* errors = [NSMutableArray new];
     if(_endDate == nil){
@@ -217,6 +224,10 @@
     if(_textView.text== nil || [_textView.text isEqualToString:@""]){
         isOkay = NO;
         [errors addObject:@"Alasan tutup toko belum diisi"];
+    }
+    if(_showEmptyStockSection && selectedProducts.count == 0){
+        isOkay = NO;
+        [errors addObject:@"Anda belum memilih stok barang yang kosong"];
     }
     if(isOkay){
         return YES;

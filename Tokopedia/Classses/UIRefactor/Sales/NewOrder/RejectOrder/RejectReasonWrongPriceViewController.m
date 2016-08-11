@@ -38,6 +38,11 @@
     [super didReceiveMemoryWarning];
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [_tableView reloadData];
+}
+
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     if(self.isMovingFromParentViewController){

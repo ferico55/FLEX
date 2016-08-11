@@ -89,20 +89,17 @@
     return 40;
 }
 
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    OrderProduct *selected = [_order.order_products objectAtIndex:indexPath.row];
-    if(selected.emptyStock){
-        selected.emptyStock = NO;
-        [_tableView deselectRowAtIndexPath:indexPath animated:YES];
-    }else{
-        selected.emptyStock = YES;
-    }
-}
-
 - (IBAction)confirmButtonTapped:(id)sender {
-    if([self validate]){
+    NSArray *selectedIndexPaths = _tableView.indexPathsForSelectedRows;
+    NSMutableArray *selectedProducts = [NSMutableArray new];
+    for(NSIndexPath *indexPath in selectedIndexPaths){
+        OrderProduct* selectedProduct = [_order.order_products objectAtIndex:indexPath.row];
+        selectedProduct.emptyStock = YES;
+        [selectedProducts addObject:selectedProduct];
+    }
+    if(selectedProducts.count > 0){
         [_rejectOrderRequest requestActionRejectOrderWithOrderId:_order.order_detail.detail_order_id
-                                                   emptyProducts:_order.order_products
+                                                   emptyProducts:selectedProducts
                                                       reasonCode:_reasonCode
                                                        onSuccess:^(GeneralAction *result) {
                                                            if([result.data.is_success boolValue]){
@@ -121,14 +118,4 @@
         [alert show];
     }
 }
--(BOOL)validate{
-    BOOL noEmptyStock = YES;
-    for(OrderProduct *product in _order.order_products){
-        if(product.emptyStock){
-            noEmptyStock = NO;
-        }
-    }
-    return !noEmptyStock;
-}
-
 @end

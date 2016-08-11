@@ -568,15 +568,21 @@
                                               [_orders removeAllObjects];
                                           }
                                           [_orders addObjectsFromArray:result.list];
-                                          if (result.paging.uri_next) {
-                                              _nextURL = result.paging.uriNext;
-                                              if ([_nextURL.parameters objectForKey:@"page"]) {
-                                                  _page = [_nextURL.parameters[@"page"] integerValue];
+                                          if(_orders.count > 0){
+                                              if (result.paging.uri_next) {
+                                                  _nextURL = result.paging.uriNext;
+                                                  if ([_nextURL.parameters objectForKey:@"page"]) {
+                                                      _page = [_nextURL.parameters[@"page"] integerValue];
+                                                  }
+                                                  _tableView.tableFooterView = _footerView;
+                                              } else {
+                                                  _nextURL = nil;
+                                                  _tableView.tableFooterView = nil;
                                               }
-                                              _tableView.tableFooterView = _footerView;
-                                          } else {
-                                              _nextURL = nil;
-                                              _tableView.tableFooterView = nil;
+                                          }else{
+                                              CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, 156);
+                                              NoResultView *noResultView = [[NoResultView alloc] initWithFrame:frame];
+                                              _tableView.tableFooterView = noResultView;
                                           }
                                           [_refreshControl endRefreshing];
                                           [_tableView reloadData];

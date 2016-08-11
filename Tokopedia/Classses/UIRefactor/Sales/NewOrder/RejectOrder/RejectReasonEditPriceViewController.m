@@ -145,12 +145,14 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if(indexPath.section == 1 && indexPath.row == 0){
+        [self.view endEditing:YES];
         AlertPickerView *v = [AlertPickerView newview];
         v.pickerData = ARRAY_PRICE_CURRENCY;
         v.tag = CURRENCY_PICKER;
         v.delegate = self;
         [v show];
     }else if(indexPath.section == 2 && indexPath.row == 0){
+        [self.view endEditing:YES];
         AlertPickerView *v = [AlertPickerView newview];
         v.pickerData = ARRAY_WEIGHT_UNIT;
         v.tag = WEIGHT_PICKER;

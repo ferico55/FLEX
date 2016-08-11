@@ -24,6 +24,10 @@
     NSIndexPath* selectedIndexPath;
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [_tableView reloadData];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -69,7 +73,6 @@
         cell = [topLevelObjects objectAtIndex:0];
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    [cell setSelected:NO animated:NO];
     cell.indexPath = indexPath;
     cell.delegate = self;
     OrderProduct *currentProduct = [_order.order_products objectAtIndex:indexPath.row];
