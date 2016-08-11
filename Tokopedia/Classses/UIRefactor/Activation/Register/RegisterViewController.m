@@ -434,12 +434,12 @@ GIDSignInUIDelegate
                                                                                delegate:self];
             [alertView show];
             
-            [TPLocalytics trackRegistrationWith:RegistrationPlatformEmail success:NO];
+            [TPLocalytics trackRegistrationWithProvider:@"0" success:NO];
         } else {
             [self.view layoutSubviews];
             
             [[AppsFlyerTracker sharedTracker] trackEvent:AFEventCompleteRegistration withValues:@{AFEventParamRegistrationMethod : @"Manual Registration"}];
-            [TPLocalytics trackRegistrationWith:RegistrationPlatformEmail success:YES];
+            [TPLocalytics trackRegistrationWithProvider:@"0" success:YES];
             [Localytics setValue:@"Yes" forProfileAttribute:@"Is Login"];
             
             TKPDAlert *alert = [TKPDAlert newview];

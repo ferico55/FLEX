@@ -66,7 +66,6 @@
                                             successCallback(obj);
                                         }
                                         onFailure:^(NSError *errorResult) {
-                                            [TPLocalytics trackRegistrationWith:RegistrationPlatformGoogle success:NO];
                                             errorCallback(errorResult);
                                         }];
     

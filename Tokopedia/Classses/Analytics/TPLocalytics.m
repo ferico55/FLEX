@@ -72,23 +72,24 @@
     [Localytics tagEvent:@"Product Viewed" attributes:attributes];
 }
 
-+ (void)trackRegistrationWith:(RegistrationPlatform)platform success:(BOOL)success {
++ (void)trackRegistrationWithProvider:(NSString *)provider success:(BOOL)success {
+    
     NSString *method = @"";
-    if (platform == RegistrationPlatformFacebook) {
+    if ([provider isEqualToString:@"1"]) {
         method = @"Facebook";
-    } else if (platform == RegistrationPlatformGoogle) {
+    } else if ([provider isEqualToString:@"2"]) {
         method = @"Google";
-    } else if (platform == RegistrationPlatformEmail) {
+    } else if ([provider isEqualToString:@"0"]) {
         method = @"Email";
-    } else if (platform == RegistrationPlatformYahoo) {
+    } else if ([provider isEqualToString:@"4"]) {
         method = @"Yahoo";
     }
     
     NSDictionary *attributes = @{
-        @"Success": success? @"Yes": @"No",
-        @"Previous Screen": @"Login",
-        @"Method": method
-    };
+                                 @"Success": success? @"Yes": @"No",
+                                 @"Previous Screen": @"Login",
+                                 @"Method": method
+                                 };
     
     [Localytics tagEvent:@"Registration Summary" attributes:attributes];
 }
