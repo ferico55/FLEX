@@ -207,7 +207,7 @@ enum RequestError : ErrorType {
             let imageIDs:[String] = form.product_images.map{$0.image_id}
             let imageIDString : String = imageIDs.joinWithSeparator("~")
             
-            var pictureDefault : String = ""
+            var pictureDefault : String = (form.product_images.first?.image_id)!
             for selectedImage in form.product_images where selectedImage.image_primary == "1" {
                 pictureDefault = selectedImage.image_id
             }
