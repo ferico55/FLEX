@@ -212,7 +212,7 @@
     NSString *path = @"/v4/action/myshop/open_shop_validation.pl";
     [self.networkManager requestWithBaseUrl:[NSString v4Url]
                                        path:path
-                                     method:RKRequestMethodGET
+                                     method:RKRequestMethodPOST
                                   parameter:_parameters
                                     mapping:[AddShop mapping]
                                   onSuccess:^(RKMappingResult *mappingResult, RKObjectRequestOperation *operation) {
