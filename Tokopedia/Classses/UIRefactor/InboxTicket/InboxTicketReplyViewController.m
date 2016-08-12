@@ -26,6 +26,9 @@
 
 #import "InboxTicketDetailAttachment.h"
 
+#define EACH_PHOTO_WITH_SPACING_WIDTH 90
+#define MAX_PHOTO_COUNT 5
+
 @interface InboxTicketReplyViewController ()
 <
     TokopediaNetworkManagerDelegate,
@@ -135,7 +138,7 @@
 
     CGRect frame = _scrollViewContentView.frame;
     frame.origin = CGPointZero;
-    frame.size.width = 90 * 5;
+    frame.size.width = EACH_PHOTO_WITH_SPACING_WIDTH * MAX_PHOTO_COUNT;
     _scrollViewContentView.frame = frame;
 
     self.scrollViewContentView.hidden = YES;
@@ -198,7 +201,7 @@
     self.photoScrollView.contentOffset = CGPointZero;
     
     if (_selectedImagesCameraController.count > 0) {
-        NSInteger maxWidth = _selectedImagesCameraController.count * 90;
+        NSInteger maxWidth = _selectedImagesCameraController.count * EACH_PHOTO_WITH_SPACING_WIDTH;
         maxWidth += 10; // add right margin
         self.photoScrollView.contentSize = CGSizeMake(maxWidth, self.photoScrollView.frame.size.height);
     }
@@ -312,7 +315,7 @@
     }
     
     if (_selectedImagesCameraController.count > 0) {
-        NSInteger maxWidth = _selectedImagesCameraController.count * 90;
+        NSInteger maxWidth = _selectedImagesCameraController.count * EACH_PHOTO_WITH_SPACING_WIDTH;
         maxWidth += 10; // add right margin
         self.photoScrollView.contentSize = CGSizeMake(maxWidth, self.photoScrollView.frame.size.height);
         self.photoScrollView.hidden = NO;
@@ -581,11 +584,11 @@
         button.hidden = YES;
     }
     
-    if (selectedImages.count < 5) {
-        CGFloat width = (90 * maxIndex) + 90;
+    if (selectedImages.count < MAX_PHOTO_COUNT) {
+        CGFloat width = (EACH_PHOTO_WITH_SPACING_WIDTH * maxIndex) + EACH_PHOTO_WITH_SPACING_WIDTH;
         self.photoScrollView.contentSize = CGSizeMake(width, self.photoScrollView.frame.size.height);
     } else {
-        CGFloat width = 90 * maxIndex;
+        CGFloat width = EACH_PHOTO_WITH_SPACING_WIDTH * maxIndex;
         self.photoScrollView.contentSize = CGSizeMake(width, self.photoScrollView.frame.size.height);
     }
     
@@ -645,7 +648,7 @@
     }
     
     if (_uploadedPhotos.count == _selectedImagesCameraController.count) {
-        if (_uploadedPhotos.count < 5) {
+        if (_uploadedPhotos.count < MAX_PHOTO_COUNT) {
             UIImageView *imageView = [self.photosImageView objectAtIndex:_uploadedPhotos.count];
             imageView.image = [UIImage imageNamed:@"icon_upload_image.png"];
             imageView.userInteractionEnabled = YES;
@@ -656,16 +659,16 @@
         }
     }
     
-    if (_uploadedPhotos.count < 5) {
+    if (_uploadedPhotos.count < MAX_PHOTO_COUNT) {
         CGFloat width;
         if (_uploadedPhotos.count == _selectedImagesCameraController.count) {
-            width = (90 * _uploadedPhotos.count) + 90;
+            width = (EACH_PHOTO_WITH_SPACING_WIDTH * _uploadedPhotos.count) + EACH_PHOTO_WITH_SPACING_WIDTH;
         } else {
-            width = 90 * _uploadedPhotos.count;
+            width = EACH_PHOTO_WITH_SPACING_WIDTH * _uploadedPhotos.count;
         }
         self.photoScrollView.contentSize = CGSizeMake(width, self.photoScrollView.frame.size.height);
     } else {
-        CGFloat width = 90 * _uploadedPhotos.count;
+        CGFloat width = EACH_PHOTO_WITH_SPACING_WIDTH * _uploadedPhotos.count;
         self.photoScrollView.contentSize = CGSizeMake(width, self.photoScrollView.frame.size.height);
     }
 }
@@ -709,7 +712,7 @@
     }
     
     if (_uploadedPhotos.count == _selectedImagesCameraController.count) {
-        if (_uploadedPhotos.count < 5) {
+        if (_uploadedPhotos.count < MAX_PHOTO_COUNT) {
             UIImageView *imageView = [self.photosImageView objectAtIndex:_uploadedPhotos.count];
             imageView.image = [UIImage imageNamed:@"icon_upload_image.png"];
             imageView.userInteractionEnabled = YES;
@@ -720,16 +723,16 @@
         }
     }
     
-    if (_uploadedPhotos.count < 5) {
+    if (_uploadedPhotos.count < MAX_PHOTO_COUNT) {
         CGFloat width;
         if (_uploadedPhotos.count == _selectedImagesCameraController.count) {
-            width = (90 * _uploadedPhotos.count) + 90;
+            width = (EACH_PHOTO_WITH_SPACING_WIDTH * _uploadedPhotos.count) + EACH_PHOTO_WITH_SPACING_WIDTH;
         } else {
-            width = 90 * _uploadedPhotos.count;
+            width = EACH_PHOTO_WITH_SPACING_WIDTH * _uploadedPhotos.count;
         }
         self.photoScrollView.contentSize = CGSizeMake(width, self.photoScrollView.frame.size.height);
     } else {
-        CGFloat width = 90 * _uploadedPhotos.count;
+        CGFloat width = EACH_PHOTO_WITH_SPACING_WIDTH * _uploadedPhotos.count;
         self.photoScrollView.contentSize = CGSizeMake(width, self.photoScrollView.frame.size.height);
     }
     
