@@ -25,6 +25,12 @@ class PulsaNavigator: NSObject {
             var phoneNumber = (contact.phones?.first?.number)!
             phoneNumber = phoneNumber.stringByReplacingOccurrencesOfString("[^0-9]", withString: "", options: .RegularExpressionSearch, range: nil)
             
+            //replace 2 first characters if 62 with 0
+            let firstTwoCharacter = phoneNumber.substringWithRange(Range<String.Index>(start: phoneNumber.startIndex.advancedBy(0), end: phoneNumber.startIndex.advancedBy(2)))
+            if(firstTwoCharacter == "62") {
+                phoneNumber = phoneNumber.stringByReplacingCharactersInRange(phoneNumber.startIndex..<phoneNumber.startIndex.advancedBy(2), withString: "0")
+            }
+            
             self.pulsaView.numberField.text = phoneNumber
             
             if(phoneNumber.characters.count >= 4) {
