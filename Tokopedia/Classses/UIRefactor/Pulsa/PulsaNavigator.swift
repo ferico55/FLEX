@@ -40,6 +40,7 @@ class PulsaNavigator: NSObject {
             }
         }
         
+        controller.hidesBottomBarWhenPushed = true
         self.controller.navigationController!.pushViewController(controller, animated: true)
     }
     
@@ -62,6 +63,7 @@ class PulsaNavigator: NSObject {
             self.pulsaView.productButton.setTitle(product.attributes.desc, forState: .Normal)
         }
         
+        controller.hidesBottomBarWhenPushed = true
         self.controller.navigationController!.pushViewController(controller, animated: true)
     }
     
