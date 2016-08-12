@@ -181,30 +181,9 @@ NSString * const ProductStatusWarehouse = @"3";
 
 -(BOOL)isValidInput
 {
-    BOOL isValid = YES;
-    NSMutableArray *errorMessages = [NSMutableArray new];
-    ProductEditDetail *product = _form.product;
+    FormProductValidation *validation = [FormProductValidation new];
+    BOOL isValid = [validation isValidFormSecondStep:_form type:_type];
     
-    NSString* etalaseUserInfoID = product.product_etalase_id;
-    BOOL isNewEtalase = [etalaseUserInfoID isEqualToString:@"-1"];
-    NSString *etalaseID = isNewEtalase ? @"new" : etalaseUserInfoID;
-    
-    NSString *etalaseName = product.product_etalase?:@"";
-    
-    if (isNewEtalase && (etalaseName == nil || [etalaseName isEqualToString:@""])) {
-        isValid = NO;
-        [errorMessages addObject:@"Nama etalase belum diisi"];
-    }
-    if (!isNewEtalase && [etalaseID integerValue] == 0) {
-        isValid = NO;
-        [errorMessages addObject:@"Etalase belum dipilih"];
-    }
-    
-    
-    if (!isValid) {
-        StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessages delegate:self];
-        [alert show];
-    }
     return isValid;
 }
 

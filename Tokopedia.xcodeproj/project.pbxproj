@@ -151,6 +151,7 @@
 		450E6ED61D54389D00AFA588 /* ReplaySubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450E6E471D54389C00AFA588 /* ReplaySubject.swift */; };
 		450E6ED71D54389D00AFA588 /* SubjectType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450E6E481D54389D00AFA588 /* SubjectType.swift */; };
 		450E6ED81D54389D00AFA588 /* Variable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450E6E491D54389D00AFA588 /* Variable.swift */; };
+		45288CF01D5D7E21001A0CA2 /* FormProductValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45288CEF1D5D7E21001A0CA2 /* FormProductValidation.swift */; };
 		45725AB41D49E10400D11EB3 /* TPAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 45724BD51D49E0FE00D11EB3 /* TPAnalytics.m */; };
 		45725AB51D49E10400D11EB3 /* TPLocalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 45724BD71D49E0FE00D11EB3 /* TPLocalytics.m */; };
 		45725AB61D49E10400D11EB3 /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 45724BDA1D49E0FE00D11EB3 /* URLCacheAlert.m */; };
@@ -2731,6 +2732,7 @@
 		450E6E471D54389C00AFA588 /* ReplaySubject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReplaySubject.swift; sourceTree = "<group>"; };
 		450E6E481D54389D00AFA588 /* SubjectType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubjectType.swift; sourceTree = "<group>"; };
 		450E6E491D54389D00AFA588 /* Variable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Variable.swift; sourceTree = "<group>"; };
+		45288CEF1D5D7E21001A0CA2 /* FormProductValidation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormProductValidation.swift; sourceTree = "<group>"; };
 		45724BD41D49E0FE00D11EB3 /* TPAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPAnalytics.h; sourceTree = "<group>"; };
 		45724BD51D49E0FE00D11EB3 /* TPAnalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPAnalytics.m; sourceTree = "<group>"; };
 		45724BD61D49E0FE00D11EB3 /* TPLocalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPLocalytics.h; sourceTree = "<group>"; };
@@ -10080,6 +10082,7 @@
 				457254751D49E10000D11EB3 /* RequestMoveTo.m */,
 				457254761D49E10000D11EB3 /* SimpleReputation */,
 				4572547C1D49E10000D11EB3 /* string_product.h */,
+				45288CEF1D5D7E21001A0CA2 /* FormProductValidation.swift */,
 			);
 			path = Product;
 			sourceTree = "<group>";
@@ -15142,6 +15145,7 @@
 				4572605D1D49E10400D11EB3 /* TxOrderConfirmedButtonArrowCell.m in Sources */,
 				450E6E581D54389D00AFA588 /* Disposable.swift in Sources */,
 				45725D0F1D49E10400D11EB3 /* ActivationRequest.m in Sources */,
+				45288CF01D5D7E21001A0CA2 /* FormProductValidation.swift in Sources */,
 				45725E381D49E10400D11EB3 /* RequestCancelResolution.m in Sources */,
 				45725CCF1D49E10400D11EB3 /* OrderDetailForm.m in Sources */,
 				45725CBF1D49E10400D11EB3 /* TransactionVoucherResult.m in Sources */,
