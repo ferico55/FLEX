@@ -162,7 +162,7 @@
                             <constraint firstAttribute="height" constant="15" id="WWw-Ge-Drz"/>
                             <constraint firstAttribute="width" constant="297" id="ZQh-Ms-Kzm"/>
                         </constraints>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
                         <color key="textColor" red="0.30196078430000001" green="0.30196078430000001" blue="0.30196078430000001" alpha="1" colorSpace="deviceRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -274,7 +274,7 @@
                             <constraint firstAttribute="height" constant="21" id="3Tv-iM-nf1"/>
                             <constraint firstAttribute="width" constant="297" id="5Qu-Ns-os9"/>
                         </constraints>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="10"/>
                         <color key="textColor" red="0.30196078430000001" green="0.30196078430000001" blue="0.30196078430000001" alpha="1" colorSpace="deviceRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -284,11 +284,12 @@
                             <constraint firstAttribute="height" constant="21" id="798-Ju-oD7"/>
                             <constraint firstAttribute="width" constant="297" id="KJA-qN-NG7"/>
                         </constraints>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="10"/>
                         <color key="textColor" red="0.30196078430000001" green="0.30196078430000001" blue="0.30196078430000001" alpha="1" colorSpace="deviceRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
+                <color key="backgroundColor" red="0.88627450980392153" green="0.88235294117647056" blue="0.88627450980392153" alpha="1" colorSpace="calibratedRGB"/>
                 <constraints>
                     <constraint firstItem="ThK-YM-K8z" firstAttribute="top" secondItem="JTt-G1-su4" secondAttribute="bottom" id="0ql-2f-6cg"/>
                     <constraint firstAttribute="bottom" secondItem="TSB-MM-dzX" secondAttribute="bottom" constant="41" id="3hK-J9-e5V"/>
