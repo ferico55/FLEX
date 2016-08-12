@@ -443,7 +443,7 @@ FilterCategoryViewDelegate
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [_activeTextField resignFirstResponder];
+    [[self.tableView superview] endEditing:YES];
     switch (indexPath.section) {
         case 1:
             switch (indexPath.row) {

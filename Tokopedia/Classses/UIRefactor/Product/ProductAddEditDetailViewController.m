@@ -333,7 +333,7 @@ NSString * const ProductStatusWarehouse = @"3";
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [_productDescriptionTextView resignFirstResponder];
+    [[self.tableView superview] endEditing:YES];
     _form.product.product_short_desc = _productDescriptionTextView.text?:@"";
     switch (indexPath.section) {
         case 0:
