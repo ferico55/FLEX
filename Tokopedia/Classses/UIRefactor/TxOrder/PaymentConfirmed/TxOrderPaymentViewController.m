@@ -947,6 +947,10 @@
     return @"Nama Bank harus diisi";
 }
 
+-(NSString *)errorNilBankBranchName{
+    return @"Nama Cabang Bank harus diisi";
+}
+
 -(NSString*)errorNillSystemBank{
     return @"Bank Tujuan belum dipilih";
 }
@@ -991,6 +995,10 @@
         }
         if (![self getSelectedAccountBank].bank_name) {
             [errorMessage addObject:[self errorNillBankName]];
+            isValid = NO;
+        }
+        if (![self getSelectedAccountBank].bank_branch) {
+            [errorMessage addObject:[self errorNilBankBranchName]];
             isValid = NO;
         }
         if (![self getSelectedSystemBank].sysbank_id) {
@@ -1251,15 +1259,29 @@
 {
     BankAccountFormList *bankAcount = [_dataInput objectForKey:DATA_SELECTED_BANK_ACCOUNT_KEY]?:[BankAccountFormList new];
     if (textField == _accountNameTextField) {
-        bankAcount.bank_account_name = textField.text;
+        if (![textField.text  isEqual: @""]) {
+            bankAcount.bank_account_name = textField.text;
+        } else {
+            bankAcount.bank_account_name = nil;
+        }
         [_dataInput setObject:bankAcount forKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
     }
     if (textField == _rekeningNumberTextField) {
-        bankAcount.bank_account_number = textField.text;
+        if (![textField.text  isEqual: @""]) {
+            bankAcount.bank_account_number = textField.text;
+        } else {
+            bankAcount.bank_account_number = nil;
+        }
+
         [_dataInput setObject:bankAcount forKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
     }
     if (textField == _branchTextField) {
-        bankAcount.bank_branch = textField.text;
+        if (![textField.text  isEqual: @""]) {
+            bankAcount.bank_branch = textField.text;
+        } else {
+            bankAcount.bank_branch = nil;
+        }
+        
         [_dataInput setObject:bankAcount forKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
     }
     
