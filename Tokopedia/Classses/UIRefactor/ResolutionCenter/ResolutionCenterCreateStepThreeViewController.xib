@@ -26,6 +26,11 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ResolutionCenterCreateStepThreeViewController">
             <connections>
+                <outlet property="photoCell" destination="NLW-hR-rp9" id="cnk-q3-Hbe"/>
+                <outlet property="refundCell" destination="DfM-iZ-8IM" id="Szy-ch-JDu"/>
+                <outlet property="solutionCell" destination="SrN-HB-a0r" id="cu0-Mf-ReM"/>
+                <outlet property="tableView" destination="OG8-eR-WdK" id="0gB-X0-YCZ"/>
+                <outlet property="uploadButtons" destination="tFy-FR-csz" id="Mpz-b1-gL2"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -34,7 +39,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="OG8-eR-WdK">
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="default" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="OG8-eR-WdK">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                     <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                 </tableView>
@@ -47,7 +52,7 @@
                 <constraint firstItem="OG8-eR-WdK" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="uRO-oL-dsD"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="194" y="273"/>
+            <point key="canvasLocation" x="-117" y="258"/>
         </view>
         <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="SrN-HB-a0r">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -79,7 +84,7 @@
                     <constraint firstItem="Y2X-Mz-WGm" firstAttribute="leading" secondItem="NZ7-fz-2Dl" secondAttribute="leadingMargin" id="m7e-uc-jZz"/>
                 </constraints>
             </tableViewCellContentView>
-            <point key="canvasLocation" x="559" y="55"/>
+            <point key="canvasLocation" x="245" y="40"/>
         </tableViewCell>
         <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="119" id="DfM-iZ-8IM">
             <rect key="frame" x="0.0" y="0.0" width="320" height="119"/>
@@ -107,8 +112,8 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rfz-Th-zge">
-                        <rect key="frame" x="0.0" y="44" width="320" height="1"/>
-                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <rect key="frame" x="16" y="44" width="288" height="1"/>
+                        <color key="backgroundColor" red="0.92156862750000001" green="0.92156862750000001" blue="0.94509803920000002" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="1" id="BJu-lu-hPT"/>
                         </constraints>
@@ -133,13 +138,13 @@
                     </textField>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="Rfz-Th-zge" firstAttribute="leading" secondItem="9dF-be-awI" secondAttribute="leading" id="Haq-QM-P0E"/>
+                    <constraint firstItem="Rfz-Th-zge" firstAttribute="leading" secondItem="9dF-be-awI" secondAttribute="leading" constant="16" id="Haq-QM-P0E"/>
                     <constraint firstItem="EwW-pG-vDb" firstAttribute="top" secondItem="9dF-be-awI" secondAttribute="top" constant="16" id="IW3-aA-eVU"/>
                     <constraint firstItem="gfP-AI-jzF" firstAttribute="top" secondItem="Rfz-Th-zge" secondAttribute="bottom" constant="8" id="UgI-eQ-PG5"/>
                     <constraint firstItem="2vh-nE-FY6" firstAttribute="top" secondItem="9dF-be-awI" secondAttribute="top" constant="16" id="XPh-Ed-s81"/>
                     <constraint firstItem="Rfz-Th-zge" firstAttribute="top" secondItem="2vh-nE-FY6" secondAttribute="bottom" constant="17" id="me6-An-WPB"/>
                     <constraint firstAttribute="trailing" secondItem="DK2-3m-52S" secondAttribute="trailing" constant="8" id="nLT-Ky-MZc"/>
-                    <constraint firstAttribute="trailing" secondItem="Rfz-Th-zge" secondAttribute="trailing" id="p4k-FY-2Xv"/>
+                    <constraint firstAttribute="trailing" secondItem="Rfz-Th-zge" secondAttribute="trailing" constant="16" id="p4k-FY-2Xv"/>
                     <constraint firstItem="EwW-pG-vDb" firstAttribute="leading" secondItem="9dF-be-awI" secondAttribute="leading" constant="8" id="qxI-U1-CRf"/>
                     <constraint firstItem="DK2-3m-52S" firstAttribute="leading" secondItem="9dF-be-awI" secondAttribute="leading" constant="8" id="s2n-fa-6fd"/>
                     <constraint firstAttribute="trailing" secondItem="2vh-nE-FY6" secondAttribute="trailing" constant="8" id="s2t-kq-YOn"/>
@@ -147,7 +152,7 @@
                     <constraint firstItem="DK2-3m-52S" firstAttribute="top" secondItem="gfP-AI-jzF" secondAttribute="bottom" constant="8" id="uow-LQ-pB4"/>
                 </constraints>
             </tableViewCellContentView>
-            <point key="canvasLocation" x="559" y="178.5"/>
+            <point key="canvasLocation" x="245" y="163.5"/>
         </tableViewCell>
         <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="236" id="NLW-hR-rp9">
             <rect key="frame" x="0.0" y="0.0" width="320" height="236"/>
@@ -289,7 +294,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
-                <color key="backgroundColor" red="0.88627450980392153" green="0.88235294117647056" blue="0.88627450980392153" alpha="1" colorSpace="calibratedRGB"/>
+                <color key="backgroundColor" red="0.92156862745098034" green="0.92156862745098034" blue="0.94509803921568625" alpha="1" colorSpace="calibratedRGB"/>
                 <constraints>
                     <constraint firstItem="ThK-YM-K8z" firstAttribute="top" secondItem="JTt-G1-su4" secondAttribute="bottom" id="0ql-2f-6cg"/>
                     <constraint firstAttribute="bottom" secondItem="TSB-MM-dzX" secondAttribute="bottom" constant="41" id="3hK-J9-e5V"/>
@@ -310,7 +315,7 @@
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-            <point key="canvasLocation" x="559" y="401"/>
+            <point key="canvasLocation" x="245" y="380"/>
         </tableViewCell>
     </objects>
     <resources>
