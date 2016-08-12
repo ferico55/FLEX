@@ -26,8 +26,9 @@
 
 #import "InboxTicketDetailAttachment.h"
 
-#define EACH_PHOTO_WITH_SPACING_WIDTH 90
-#define MAX_PHOTO_COUNT 5
+//only visible in this file
+static NSInteger const EACH_PHOTO_WITH_SPACING_WIDTH = 90;
+static NSInteger const MAX_PHOTO_COUNT = 5;
 
 @interface InboxTicketReplyViewController ()
 <
