@@ -9,6 +9,19 @@
 #import "WholesalePrice.h"
 
 @implementation WholesalePrice
+
+-(NSString *)wholesale_price{
+    return _wholesale_price?:@"";
+}
+
+-(NSString *)wholesale_max{
+    return _wholesale_max;
+}
+
+-(NSString *)wholesale_min{
+    return _wholesale_min?:@"";
+}
+
 +(RKObjectMapping *)mappingForPromo{
     RKObjectMapping* wholesalePromoMapping = [RKObjectMapping mappingForClass:[WholesalePrice class]];
     [wholesalePromoMapping addAttributeMappingsFromDictionary:@{@"quantity_min_format":@"wholesale_min",
