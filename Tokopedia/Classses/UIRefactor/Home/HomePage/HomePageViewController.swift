@@ -78,10 +78,7 @@ class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDele
         self.requestPulsaWidget()
         
         navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .Bordered, target: self, action: nil)
-        
-        let timer = NSTimer(timeInterval: 5.0, target: self, selector: #selector(moveToNextSlider), userInfo: nil, repeats: true)
-        NSRunLoop.mainRunLoop().addTimer(timer, forMode: NSRunLoopCommonModes)
-        
+       
         self.keyboardManager = PulsaKeyboardManager()
         self.keyboardManager.collectionView = self.collectionView
     }
@@ -146,6 +143,9 @@ class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDele
                 make.right.equalTo()(self?.sliderPlaceholder.mas_right)
                 make.top.equalTo()(self!.sliderPlaceholder?.mas_bottom)
             }
+            
+            let timer = NSTimer(timeInterval: 5.0, target: self!, selector: #selector(self!.moveToNextSlider), userInfo: nil, repeats: true)
+            NSRunLoop.mainRunLoop().addTimer(timer, forMode: NSRunLoopCommonModes)
 
             self?.refreshCollectionViewSize()
         })
