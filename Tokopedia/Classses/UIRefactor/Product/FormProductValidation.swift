@@ -224,7 +224,7 @@ class FormProductValidation: NSObject {
         
         if wholesales.count >= 2 {
             do{
-                try self.lastWholesaleValidation(wholesales[wholesales.count-1], newWholesale: wholesales.last!)
+                try self.lastWholesaleValidation(wholesales[wholesales.count-2], newWholesale: wholesales.last!)
             } catch Errors.errorMessage(let message) {
                 self.errorMessages.append(message)
             } catch {
