@@ -15,21 +15,17 @@
 #import "Tokopedia-Swift.h"
 
 #define PRICE_CURRENCY_ID_RUPIAH 1
-#define MINIMUM_PRICE_RUPIAH 100
-#define MAXIMUM_PRICE_RUPIAH 50000000
-
 #define PRICE_CURRENCY_ID_USD 2
-#define MINIMUM_PRICE_USD 1
-#define MAXIMUM_PRICE_USD 4000
 
 @interface ProductEditWholesaleViewController ()<UITableViewDataSource,UITableViewDelegate>
+{
+    NSMutableArray <WholesalePrice*> *_wholesales;
+}
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
 @property (strong, nonatomic) IBOutlet UIView *headerView;
 @property (weak, nonatomic) IBOutlet UILabel *currencyLabel;
 @property (weak, nonatomic) IBOutlet UILabel *productPriceLabel;
-
-- (IBAction)tap:(id)sender;
 
 @end
 
@@ -41,6 +37,10 @@
     [super viewDidLoad];
     
     self.title = @"Harga Grosir";
+    
+    UIBarButtonItem *saveBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Simpan" style:UIBarButtonItemStylePlain target:(self) action:@selector(onTapSave:)];
+    [saveBarButtonItem setTintColor:[UIColor whiteColor]];
+    self.navigationItem.rightBarButtonItem = saveBarButtonItem;
     
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:(self) action:nil];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
@@ -54,14 +54,15 @@
              object:nil];
     
     [self setHeaderAppearance];
-    if(_form.wholesale_price.count == 0)[self addWholesalePrice:@"" withQtyMin:@"" andQtyMax:@""];
+    _wholesales = [_form.wholesale_price mutableCopy];
+    if(_wholesales.count == 0)[self addWholesalePrice:@"" withQtyMin:@"" andQtyMax:@""];
 }
 
 -(void)setHeaderAppearance{
     CGFloat priceInteger = [_form.product.product_price floatValue];
     
     if ([_form.product.product_currency_id integerValue] == PRICE_CURRENCY_ID_RUPIAH) {
-        self.productPriceLabel.text = [[NSNumberFormatter IDRFormatterWithoutCurency] stringFromNumber:@(priceInteger)];
+        self.productPriceLabel.text = [[NSNumberFormatter IDRFormatterWithoutCurency] stringFromNumber:@(priceInteger)]?:@"";
         self.currencyLabel.text = @"Rp";
     } else {
         self.productPriceLabel.text = [[NSNumberFormatter USDFormatter] stringFromNumber:@(priceInteger)];
@@ -71,30 +72,34 @@
 }
 
 #pragma mark - View Gesture
-- (IBAction)tap:(id)sender {
-
-    if ([self isValidMaxWholesaleList] && [self isValidQuantityValue] && [self isValidWholesalePriceCompareNet] && [self isValidWholesalePrice]) {
+-(void)onTapSave:(UIBarButtonItem*)sender{
+    [[self.table superview] endEditing:YES];
+    if ([self isValidMaxWholesaleList]) {
+        _form.wholesale_price = [_wholesales copy];
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+}
+- (IBAction)onTapAddWholesale:(id)sender {
+    [[self.table superview] endEditing:YES];
+    if ([self isValidMaxWholesaleList]) {
         [self addWholesalePrice:@"" withQtyMin:@"" andQtyMax:@""];
-        [_table reloadData];
-        
-        [_table scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_form.wholesale_price.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+        [_table scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_wholesales.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
     }
 }
 
 -(void)addWholesalePrice:(NSString*)price withQtyMin:(NSString*)min andQtyMax:(NSString*)max{
     WholesalePrice *wholesale = [WholesalePrice new];
-    wholesale.wholesale_price = price;
-    wholesale.wholesale_max = max;
-    wholesale.wholesale_min = min;
+    wholesale.wholesale_price = price?:@"";
+    wholesale.wholesale_max = max?:@"";
+    wholesale.wholesale_min = min?:@"";
     
-    NSMutableArray *wholesales = [[NSMutableArray alloc]initWithArray:_form.wholesale_price];
-    [wholesales addObject:wholesale];
-    _form.wholesale_price = [wholesales copy];
+    [_wholesales addObject:wholesale];
+    [_table reloadData];
 }
 
 #pragma mark - Table View Data Source
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return _form.wholesale_price.count;
+    return _wholesales.count;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -106,15 +111,19 @@
         cell = [ProductEditWholesaleCell newcell];
     }
 
-    WholesalePrice *wholesale = _form.wholesale_price[indexPath.row];
+    WholesalePrice *wholesale = _wholesales[indexPath.row];
     cell.wholesale = wholesale;
     cell.productPriceCurency = _form.product.product_currency_id;
-    cell.deleteWholesaleButton.hidden = (indexPath.row == 0);
     
     __weak typeof(self) wself = self;
     __block ProductEditWholesaleCell *cellWholesale = cell;
     [cell setRemoveWholesale:^(WholesalePrice *wholesale) {
-        [wself removeCell:cellWholesale atIndexPath:indexPath];
+        if (indexPath.row == 0) {
+            [_wholesales removeAllObjects];
+            [wself addWholesalePrice:@"" withQtyMin:@"" andQtyMax:@""];
+        } else {
+            [wself removeCell:cellWholesale atIndexPath:indexPath];
+        }
     }];
     
     return cell;
@@ -122,14 +131,14 @@
 }
 -(void)removeCell:(ProductEditWholesaleCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-    NSMutableArray *wholesaleList = [[NSMutableArray alloc]initWithArray:_form.wholesale_price];
+    NSMutableArray *wholesaleList = [[NSMutableArray alloc]initWithArray:_wholesales];
 
     NSMutableArray *deletedIndexPath = [NSMutableArray new];
-    for (NSInteger i=_form.wholesale_price.count-1; i>=indexPath.row; i--) {
+    for (NSInteger i=_wholesales.count-1; i>=indexPath.row; i--) {
         [deletedIndexPath addObject:[NSIndexPath indexPathForRow:i inSection:0]];
-        [wholesaleList removeObject:_form.wholesale_price[i]];
+        [wholesaleList removeObject:_wholesales[i]];
     }
-    _form.wholesale_price = [wholesaleList copy];
+    _wholesales = wholesaleList;
     
     [_table beginUpdates];
     [_table deleteRowsAtIndexPaths:deletedIndexPath
@@ -140,27 +149,10 @@
 }
 
 #pragma mark - Methods
--(void)setAppearance
-{
-    ProductEditDetail *product = _form.product;
-    NSString *priceCurrencyID = product.product_currency_id;
-    NSString *productPricePerProduct = product.product_price;
-
-    CGFloat priceInteger = [productPricePerProduct floatValue];
-    if ([priceCurrencyID integerValue] == PRICE_CURRENCY_ID_RUPIAH) {
-        _productPriceLabel.text = (priceInteger>0)?[[NSNumberFormatter IDRFormatterWithoutCurency] stringFromNumber:@(priceInteger)]:@"";
-        _currencyLabel.text = @"Rp";
-    } else {
-        _productPriceLabel.text = [[NSNumberFormatter USDFormatter] stringFromNumber:@(priceInteger)];
-        _currencyLabel.text = @"US$";
-    }
-
-}
-
 -(BOOL)isValidMaxWholesaleList
 {
     FormProductValidation *validation = [FormProductValidation new];
-    BOOL isValid = [validation isValidFormProductWholesale:_form];
+    BOOL isValid = [validation isValidFormProductWholesale:_wholesales product:_form.product];
     
     return isValid;
 }
