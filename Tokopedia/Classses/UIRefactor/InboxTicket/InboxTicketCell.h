@@ -13,8 +13,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *statusLabel;
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
-@property (weak, nonatomic) IBOutlet UIButton *ticketTotalMessageButton;
-@property (weak, nonatomic) IBOutlet UILabel *userInvolvedNameLabel;
 
 + (id)initCell;
 
