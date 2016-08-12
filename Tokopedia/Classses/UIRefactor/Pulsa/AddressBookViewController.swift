@@ -24,7 +24,7 @@ class AddressBookViewController: UIViewController, UITableViewDelegate, UITableV
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "Your Contact"
+        self.title = "Nomor Kontak"
         self.tableView .registerNib(UINib(nibName: "AddressBookCell", bundle: nil), forCellReuseIdentifier: "AddressBookCellId")
     }
     
