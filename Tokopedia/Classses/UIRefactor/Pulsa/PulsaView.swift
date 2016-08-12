@@ -56,7 +56,6 @@ class PulsaView: UIView {
     init(categories: [PulsaCategory]) {
         super.init(frame: CGRectZero)
         
-        userManager = UserAuthentificationManager()
         pulsaCategoryControl = UISegmentedControl(frame: CGRectZero)
         categories.enumerate().forEach { index, category in
             pulsaCategoryControl.insertSegmentWithTitle(category.attributes.name, atIndex: index, animated: true)
@@ -208,13 +207,12 @@ class PulsaView: UIView {
             make.height.equalTo()(self.saldoButtonPlaceholder.mas_height)
             make.top.equalTo()(self.saldoButtonPlaceholder.mas_top)
             make.right.equalTo()(self.saldoSwitch.mas_left).offset()(-10)
-        }
-        
+        }   
     }
     
     func addActionNumberField() {
         numberField.bk_addEventHandler ({[unowned self] number in
-            
+            self.hideErrors()
             //operator must exists first
             //fix this to prevent crash using serial dispatch
             let inputtedText = self.numberField.text!
@@ -222,7 +220,6 @@ class PulsaView: UIView {
                 let prefix = inputtedText.substringWithRange(Range<String.Index>(start: inputtedText.startIndex.advancedBy(0), end: inputtedText.startIndex.advancedBy(4)))
                 
                 self.setRightViewNumberField(prefix)
-                self.hideErrors()
                 self.productButton.setTitle(ButtonConstant.defaultProductButtonTitle, forState: .Normal)
             }
             
@@ -414,6 +411,7 @@ class PulsaView: UIView {
             if(self.isValidNominal() && self.isValidNumber(self.numberField.text!)) {
                 self.hideErrors()
                 
+                self.userManager = UserAuthentificationManager()
                 if(!self.userManager.isLogin) {
                     self.didAskedForLogin!()
                 } else {
