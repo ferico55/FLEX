@@ -24,6 +24,7 @@ class PulsaProductViewController: UIViewController, UITableViewDelegate, UITable
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.title = "Pilih Nominal"
 
         self.tableView.registerNib(UINib(nibName: "PulsaProductCell", bundle: nil), forCellReuseIdentifier: "PulsaProductCellId")
     }
