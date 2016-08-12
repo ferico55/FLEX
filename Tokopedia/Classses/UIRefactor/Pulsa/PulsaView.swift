@@ -106,10 +106,71 @@ class PulsaView: UIView {
             }
         }
         
+        
         self.buildFields(category)
         self.buildButtons()
-        
+        self.buildUseSaldoView()
+
         self.recalibrateView()
+    }
+    
+    func buildUseSaldoView() {
+        saldoButtonPlaceholder = UIView(frame: CGRectZero)
+        self.addSubview(saldoButtonPlaceholder)
+        saldoButtonPlaceholder.mas_makeConstraints { make in
+            make.top.equalTo()(self.buttonErrorLabel.mas_bottom).offset()(10)
+            make.left.equalTo()(self.mas_left)
+            make.right.equalTo()(self.mas_right)
+            make.height.equalTo()(0)
+        }
+        
+        
+        
+        self.saldoSwitch = UISwitch(frame: CGRectZero)
+        self.saldoSwitch.on = false
+        self.saldoSwitch.hidden = true
+        
+        saldoButtonPlaceholder.addSubview(self.saldoSwitch)
+        
+        self.saldoSwitch.mas_makeConstraints { make in
+            make.height.equalTo()(self.saldoButtonPlaceholder.mas_height)
+            make.top.equalTo()(self.saldoButtonPlaceholder.mas_top).offset()(5)
+            make.width.equalTo()(51)
+            make.left.equalTo()(self.saldoButtonPlaceholder.mas_left)
+        }
+        
+        
+        //saldo label
+        let saldoLabel = UILabel(frame: CGRectZero)
+        saldoLabel.text = "Bayar dengan Saldo Tokopedia"
+        saldoLabel.numberOfLines = 2
+        saldoLabel.textColor = UIColor.grayColor()
+        saldoLabel.font = UIFont(name: "GothamBook", size: 12.0)
+        saldoButtonPlaceholder.addSubview(saldoLabel)
+        
+        saldoLabel.mas_makeConstraints { make in
+            make.height.top().equalTo()(self.saldoButtonPlaceholder)
+            make.width.equalTo()(120)
+            make.left.equalTo()(self.saldoSwitch.mas_right).offset()(5)
+        }
+        
+        buyButton = UIButton(frame: CGRectZero)
+        buyButton.setTitle("BELI", forState: .Normal)
+        buyButton.layer.cornerRadius = 3
+        buyButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        buyButton.backgroundColor = UIColor.orangeColor()
+        buyButton.hidden = true
+        buyButton.titleLabel?.font = UIFont(name: "GothamMedium", size: 14.0)
+        
+        saldoButtonPlaceholder.addSubview(buyButton)
+        
+        buyButton.mas_makeConstraints { make in
+            make.height.equalTo()(0)
+            make.top.equalTo()(self.saldoButtonPlaceholder.mas_top)
+            make.left.equalTo()(saldoLabel.mas_right).offset()(10)
+            make.right.equalTo()(self.saldoButtonPlaceholder.mas_right)
+        }
+
     }
     
     func buildFields(category: PulsaCategory) {
@@ -160,7 +221,6 @@ class PulsaView: UIView {
             }
         }
         
-        
         numberErrorLabel = UILabel(frame: CGRectZero)
         numberErrorLabel.text = "Error"
         numberErrorLabel.textColor = UIColor.redColor()
@@ -173,41 +233,7 @@ class PulsaView: UIView {
             make.left.equalTo()(self.mas_left)
             make.right.equalTo()(self.mas_right)
         }
-        
-        saldoButtonPlaceholder = UIView(frame: CGRectZero)
-        self.addSubview(saldoButtonPlaceholder)
-        saldoButtonPlaceholder.mas_makeConstraints { make in
-            make.top.equalTo()(self.numberErrorLabel.mas_bottom).offset()(3)
-            make.left.equalTo()(self.mas_left)
-            make.right.equalTo()(self.mas_right)
-            make.height.equalTo()(0)
-        }
-        
-        self.saldoSwitch = UISwitch(frame: CGRectZero)
-        self.saldoSwitch.on = false
-        self.saldoSwitch.hidden = true
-        
-        saldoButtonPlaceholder.addSubview(self.saldoSwitch)
-        
-        self.saldoSwitch.mas_makeConstraints { make in
-            make.height.equalTo()(self.saldoButtonPlaceholder.mas_height)
-            make.top.equalTo()(self.saldoButtonPlaceholder.mas_top).offset()(5)
-            make.right.equalTo()(self.mas_right)
-            make.width.equalTo()(51)
-        }
-        
-        
-        let saldoLabel = UILabel(frame: CGRectZero)
-        saldoLabel.text = "Bayar menggunakan saldo"
-        saldoLabel.textColor = UIColor.grayColor()
-        saldoLabel.font = UIFont(name: "GothamBook", size: 13.0)
-        saldoButtonPlaceholder.addSubview(saldoLabel)
-        
-        saldoLabel.mas_makeConstraints { make in
-            make.height.equalTo()(self.saldoButtonPlaceholder.mas_height)
-            make.top.equalTo()(self.saldoButtonPlaceholder.mas_top)
-            make.right.equalTo()(self.saldoSwitch.mas_left).offset()(-10)
-        }   
+       
     }
     
     func addActionNumberField() {
@@ -273,12 +299,13 @@ class PulsaView: UIView {
         }
     }
     
+    
     func buildButtons() {
         buttonsPlaceholder = UIView(frame: CGRectZero)
         self.addSubview(buttonsPlaceholder)
         
         buttonsPlaceholder.mas_makeConstraints { make in
-            make.top.equalTo()(self.saldoButtonPlaceholder.mas_bottom)
+            make.top.equalTo()(self.numberErrorLabel.mas_bottom).offset()(5)
             make.left.equalTo()(self.mas_left)
             make.right.equalTo()(self.mas_right)
         }
@@ -300,26 +327,10 @@ class PulsaView: UIView {
             make.height.equalTo()(0)
             make.top.equalTo()(self.buttonsPlaceholder.mas_top)
             make.left.equalTo()(self.mas_left)
-            make.width.equalTo()(150)
+            make.right.equalTo()(self.mas_right)
             make.bottom.equalTo()(self.buttonsPlaceholder.mas_bottom)
         }
         
-        buyButton = UIButton(frame: CGRectZero)
-        buyButton.setTitle("BELI", forState: .Normal)
-        buyButton.layer.cornerRadius = 3
-        buyButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-        buyButton.backgroundColor = UIColor.orangeColor()
-        buyButton.hidden = true
-        buyButton.titleLabel?.font = UIFont(name: "GothamMedium", size: 14.0)
-        
-        buttonsPlaceholder.addSubview(buyButton)
-        
-        buyButton.mas_makeConstraints { make in
-            make.height.equalTo()(0)
-            make.top.equalTo()(self.productButton.mas_top)
-            make.left.equalTo()(self.productButton.mas_right).offset()(10)
-            make.right.equalTo()(self.buttonsPlaceholder.mas_right)
-        }
         
         buttonErrorLabel = UILabel(frame: CGRectZero)
         buttonErrorLabel.textColor = UIColor.redColor()
