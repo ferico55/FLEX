@@ -432,8 +432,7 @@
             break;
         case 1:
         {
-            BankAccountFormList *selectedBank = [_dataInput objectForKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
-            if (([self isPaymentTypeTransfer] || [self isPaymentTypeSaldoTokopedia] || _isNewRekening || [selectedBank.bank_account_id integerValue] == 0 || [self isPaymentTypeDefault]) && indexPath.row == 2) {
+            if (([self isPaymentTypeTransfer] || [self isPaymentTypeSaldoTokopedia] || _isNewRekening || [self isPaymentTypeDefault]) && indexPath.row == 2) {
                 return 0;
             }
             if(indexPath.row == 3)
@@ -1310,6 +1309,13 @@
             }
             return YES;
         }
+    }
+    else if (textField == _depositorTextField)
+    {
+        if (range.location == 0 && range.length == 0 && [string isEqualToString:@" "])
+            return NO;
+        else
+            return YES;
     }
     return YES;
 }
