@@ -842,6 +842,13 @@ typedef enum
     if (self.isSnapSearchProduct) {
         [TPAnalytics trackSnapSearchAddToCart:_selectedProduct];
     }
+    
+    [[AppsFlyerTracker sharedTracker] trackEvent:AFEventAddToCart withValues:@{
+                                                                               AFEventParamContentId : _selectedProduct.product_id,
+                                                                               AFEventParamContentType : @"Product",
+                                                                               AFEventParamPrice : _selectedProduct.price,
+                                                                               AFEventParamCurrency : _selectedProduct.product_currency,
+                                                                               AFEventParamQuantity : _productQuantityTextField.text}];
 }
 
 -(void)failedActionATC:(NSError*)error{
