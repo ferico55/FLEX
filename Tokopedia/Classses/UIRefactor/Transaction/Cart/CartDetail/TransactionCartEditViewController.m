@@ -61,13 +61,11 @@
     _barButtonSave.tag = TAG_BAR_BUTTON_TRANSACTION_DONE;
     self.navigationItem.rightBarButtonItem = _barButtonSave;
     
-    [_scrollView setContentSize:CGSizeMake(_scrollView.frame.size.width, 1000.0)];
+    _scrollView.delegate = self;
     
     _remarkTextView.delegate = self;
     [self setDefaultData:_data];
     [self setTextViewPlaceholder:@"Contoh: Warna Putih/Ukuran XL/Edisi ke-2"];
-    
-    [_remarkTextView becomeFirstResponder];
     
     UIEdgeInsets inset = _remarkTextView.textContainerInset;
     inset.left = 15;
@@ -193,10 +191,10 @@
     }
 }
 
--(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-//    [_quantityTextField resignFirstResponder];
-//    [_activeTextView resignFirstResponder];
+    [_quantityTextField resignFirstResponder];
+    [_activeTextView resignFirstResponder];
 }
 
 -(void)textFieldDidEndEditing:(UITextField *)textField
