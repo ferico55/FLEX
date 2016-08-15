@@ -262,7 +262,7 @@
     NSDictionary *parameters = @{@"post_key": _postKey?:@"", @"file_uploaded": _fileUploaded?:@""};
     [self.networkManager requestWithBaseUrl:[NSString v4Url]
                                        path:path
-                                     method:RKRequestMethodGET
+                                     method:RKRequestMethodPOST
                                   parameter:parameters
                                     mapping:[AddShop mapping]
                                   onSuccess:^(RKMappingResult *mappingResult,
