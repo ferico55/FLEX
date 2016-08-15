@@ -48,7 +48,7 @@
                                                           @"product_id"         :productId,
                                                           @"user_id"            :[auth getUserId]
                                                           }
-                                                mapping:[GeneralAction generalMapping]
+                                                mapping:[GeneralAction mapping]
                                               onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                                   GeneralAction *result = [successResult.dictionary objectForKey:@""];
                                                   successCallback(result.data.is_success);
@@ -73,7 +73,7 @@
                                                           @"product_weight_unit":weightUnit,
                                                           @"user_id":[auth getUserId]
                                                           }
-                                                mapping:[GeneralAction generalMapping]
+                                                mapping:[GeneralAction mapping]
                                               onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                                   GeneralAction *result = [successResult.dictionary objectForKey:@""];
                                                   successCallback(result);
@@ -134,7 +134,7 @@
                                                      @"user_id"         :[auth getUserId],
                                                      @"order_id"        :orderId
                                                      }
-                                           mapping:[GeneralAction generalMapping]
+                                           mapping:[GeneralAction mapping]
                                          onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                              GeneralAction *result = [successResult.dictionary objectForKey:@""];
                                              successCallback(result);
@@ -159,7 +159,7 @@
                                                      @"user_id"         :[auth getUserId],
                                                      @"order_id"        :orderId
                                                      }
-                                           mapping:[GeneralAction generalMapping]
+                                           mapping:[GeneralAction mapping]
                                          onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                              GeneralAction *result = [successResult.dictionary objectForKey:@""];
                                              successCallback(result);
@@ -186,7 +186,7 @@
                                                      @"user_id"         :[auth getUserId],
                                                      @"order_id"        :orderId
                                                      }
-                                           mapping:[GeneralAction generalMapping]
+                                           mapping:[GeneralAction mapping]
                                          onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                              GeneralAction *result = [successResult.dictionary objectForKey:@""];
                                              successCallback(result);

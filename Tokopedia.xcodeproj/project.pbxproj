@@ -1427,7 +1427,6 @@
 		BB20FC051D532EF4001673D9 /* OpenShopNameViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BB20F1AC1D532EED001673D9 /* OpenShopNameViewCell.m */; };
 		BB20FC061D532EF4001673D9 /* OpenShopNameViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB20F1AD1D532EED001673D9 /* OpenShopNameViewCell.xib */; };
 		BB20FC071D532EF4001673D9 /* OpenShopRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = BB20F1AF1D532EED001673D9 /* OpenShopRequest.m */; };
-		BB20FC081D532EF4001673D9 /* OpenShopShipment.m in Sources */ = {isa = PBXBuildFile; fileRef = BB20F1B11D532EED001673D9 /* OpenShopShipment.m */; };
 		BB20FC091D532EF4001673D9 /* OpenShopSuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB20F1B21D532EED001673D9 /* OpenShopSuccessViewController.swift */; };
 		BB20FC0A1D532EF4001673D9 /* OpenShopSuccessViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB20F1B31D532EED001673D9 /* OpenShopSuccessViewController.xib */; };
 		BB20FC0B1D532EF4001673D9 /* OpenShopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB20F1B41D532EED001673D9 /* OpenShopViewController.swift */; };
@@ -4794,8 +4793,6 @@
 		BB20F1AD1D532EED001673D9 /* OpenShopNameViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OpenShopNameViewCell.xib; sourceTree = "<group>"; };
 		BB20F1AE1D532EED001673D9 /* OpenShopRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenShopRequest.h; sourceTree = "<group>"; };
 		BB20F1AF1D532EED001673D9 /* OpenShopRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenShopRequest.m; sourceTree = "<group>"; };
-		BB20F1B01D532EED001673D9 /* OpenShopShipment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenShopShipment.h; sourceTree = "<group>"; };
-		BB20F1B11D532EED001673D9 /* OpenShopShipment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenShopShipment.m; sourceTree = "<group>"; };
 		BB20F1B21D532EED001673D9 /* OpenShopSuccessViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenShopSuccessViewController.swift; sourceTree = "<group>"; };
 		BB20F1B31D532EED001673D9 /* OpenShopSuccessViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OpenShopSuccessViewController.xib; sourceTree = "<group>"; };
 		BB20F1B41D532EED001673D9 /* OpenShopViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenShopViewController.swift; sourceTree = "<group>"; };
@@ -10364,8 +10361,6 @@
 				BB20F1AD1D532EED001673D9 /* OpenShopNameViewCell.xib */,
 				BB20F1AE1D532EED001673D9 /* OpenShopRequest.h */,
 				BB20F1AF1D532EED001673D9 /* OpenShopRequest.m */,
-				BB20F1B01D532EED001673D9 /* OpenShopShipment.h */,
-				BB20F1B11D532EED001673D9 /* OpenShopShipment.m */,
 				BB20F1B21D532EED001673D9 /* OpenShopSuccessViewController.swift */,
 				BB20F1B31D532EED001673D9 /* OpenShopSuccessViewController.xib */,
 				BB20F1B41D532EED001673D9 /* OpenShopViewController.swift */,
@@ -14697,7 +14692,6 @@
 				BB20F78E1D532EF4001673D9 /* TalkCommentResult.m in Sources */,
 				BB20F9E31D532EF4001673D9 /* ContactUsFormViewController.m in Sources */,
 				BB20FA031D532EF4001673D9 /* TableViewScrollAndSwipe.m in Sources */,
-				BB20FC081D532EF4001673D9 /* OpenShopShipment.m in Sources */,
 				BB20F7FC1D532EF4001673D9 /* LoyaltyPointDetail.m in Sources */,
 				BB20F9B51D532EF4001673D9 /* CatalogSpecificationCell.m in Sources */,
 				BB20F7EE1D532EF4001673D9 /* InboxTicketUserInvolve.m in Sources */,

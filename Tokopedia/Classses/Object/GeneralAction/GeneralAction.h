@@ -21,6 +21,4 @@ GeneralAction : NSObject
 @property (nonatomic, strong) GeneralActionResult *data;
 
 + (RKObjectMapping*)mapping;
-
-+ (RKObjectMapping*)generalMapping;
 @end

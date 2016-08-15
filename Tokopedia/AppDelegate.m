@@ -179,8 +179,6 @@
 - (void)configureLocalyticsInApplication:(UIApplication *)application withOptions:(NSDictionary *)launchOptions {
     [Localytics autoIntegrate:@"97b3341c7dfdf3b18a19401-84d7f640-4d6a-11e5-8930-003e57fecdee"
                 launchOptions:launchOptions];
-    [Localytics setTestModeEnabled:YES];
-    [Localytics tagEvent:@"Developer Options"];
 #ifdef DEBUG
     [Localytics setTestModeEnabled:YES];
     [Localytics tagEvent:@"Developer Options"];
