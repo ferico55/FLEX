@@ -278,7 +278,9 @@ static NSString const *rows = @"12";
                                                 [self didReceiveBannerHotlist:data];
                                                 
                                             } onFailure:^(NSError *error) {
-                                                
+                                                NSArray *errorMessage = @[@"Maaf, permintaan anda gagal"];
+                                                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessage delegate:self];
+                                                [alert show];
                                             }];
 }
 
@@ -638,6 +640,7 @@ static NSString const *rows = @"12";
 -(void)refreshView:(UIRefreshControl*)refresh {
     [_requestHotlistManager requestCancel];
     _start = 0;
+    [_promo removeAllObjects];
     [_refreshControl beginRefreshing];
     
     [self requestHotlist];
@@ -822,6 +825,7 @@ static NSString const *rows = @"12";
         [_promoRequest requestForProductHotlist:[_data objectForKey:@"hotlist_id"]
                                      department:departmentId
                                            page:_page / 2
+                                filterParameter:_selectedFilterParam
                                       onSuccess:^(NSArray<PromoResult *> *promoResult) {
                                           if (promoResult) {
                                               if(IS_IPAD) {
