@@ -96,7 +96,7 @@ TokopediaNetworkManagerDelegate
     [_delegate didReceiveUploadedImageURL:uploadedImageURL];
 }
 -(void)failedUploadObject:(id)object{
-    [_delegate failToReceiveImageSearchResult:@"error_upload_image"];
+    [_delegate failToReceiveImageSearchResult:@"Gagal mengupload foto."];
 }
 
 #pragma mark Tokopedia Network Manager Delegate
