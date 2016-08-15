@@ -145,7 +145,7 @@ class PulsaView: UIView {
         saldoLabel.text = "Bayar dengan Saldo Tokopedia"
         saldoLabel.numberOfLines = 2
         saldoLabel.textColor = UIColor.grayColor()
-        saldoLabel.font = UIFont(name: "GothamBook", size: 12.0)
+        saldoLabel.font = UIFont.systemFontOfSize(12)
         saldoButtonPlaceholder.addSubview(saldoLabel)
         
         saldoLabel.mas_makeConstraints { make in
@@ -160,7 +160,7 @@ class PulsaView: UIView {
         buyButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
         buyButton.backgroundColor = UIColor.orangeColor()
         buyButton.hidden = true
-        buyButton.titleLabel?.font = UIFont(name: "GothamMedium", size: 14.0)
+        buyButton.titleLabel?.font = UIFont.systemFontOfSize(14)
         
         saldoButtonPlaceholder.addSubview(buyButton)
         
@@ -213,6 +213,9 @@ class PulsaView: UIView {
             }
             
             phoneBook.bk_whenTapped { [unowned self] in
+                self.addressBook.filterBlock = { contacts in
+                    return contacts.phones?.count > 0
+                }
                 self.addressBook.loadContacts({ (contacts: [APContact]?, error: NSError?) in
                     if((error == nil)) {
                         self.didTapAddressbook!(contacts!)
@@ -224,7 +227,8 @@ class PulsaView: UIView {
         numberErrorLabel = UILabel(frame: CGRectZero)
         numberErrorLabel.text = "Error"
         numberErrorLabel.textColor = UIColor.redColor()
-        numberErrorLabel.font = UIFont.init(name: "GothamBook", size: 12.0)
+        numberErrorLabel.font = UIFont.systemFontOfSize(12)
+        
         self.addSubview(numberErrorLabel)
         
         numberErrorLabel.mas_makeConstraints { make in
@@ -314,12 +318,13 @@ class PulsaView: UIView {
         productButton.setTitle(ButtonConstant.defaultProductButtonTitle, forState: .Normal)
         productButton.layer.cornerRadius = 3
 
-        productButton.setTitleColor(UIColor(red: (66/255.0), green: (189/255.0), blue: (65/255.0), alpha: 1.0), forState: .Normal)
+        productButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
         productButton.backgroundColor = UIColor.whiteColor()
         productButton.hidden = true
-        productButton.layer.borderColor = UIColor(red: (66/255.0), green: (189/255.0), blue: (65/255.0), alpha: 1.0).CGColor
+        productButton.layer.borderColor = UIColor(red: (231.0/255.0), green: (231.0/255.0), blue: (231/255.0), alpha: 1).CGColor
         productButton.layer.borderWidth = 1.0
-        productButton.titleLabel?.font = UIFont(name: "GothamMedium", size: 14.0)
+        productButton.contentHorizontalAlignment = .Left
+        productButton.contentEdgeInsets = UIEdgeInsetsMake(0, -5, 0, 0)
         
         buttonsPlaceholder.addSubview(productButton)
         
@@ -334,7 +339,7 @@ class PulsaView: UIView {
         
         buttonErrorLabel = UILabel(frame: CGRectZero)
         buttonErrorLabel.textColor = UIColor.redColor()
-        buttonErrorLabel.font = UIFont.init(name: "GothamBook", size: 12.0)
+        buttonErrorLabel.font = UIFont.systemFontOfSize(12)
         self.addSubview(buttonErrorLabel)
         
         buttonErrorLabel.mas_makeConstraints { make in
@@ -443,6 +448,9 @@ class PulsaView: UIView {
             }
         }, forControlEvents: .TouchUpInside)
         
+        productButton.setImage(UIImage(named: "icon_arrow_down.png"), forState: .Normal)
+        productButton.imageEdgeInsets = UIEdgeInsetsMake(0, self.productButton.frame.size.width - 30, 0, 0)
+        
         self.invalidateViewHeight!()
     }
     
@@ -480,8 +488,6 @@ class PulsaView: UIView {
         self.subviews.last?.mas_makeConstraints { make in
             make.bottom.equalTo()(self.mas_bottom)
         }
-        
-        
     }
     
     
@@ -492,7 +498,7 @@ class PulsaView: UIView {
             make.left.equalTo()(container.mas_left).offset()(10)
             make.top.equalTo()(container.mas_top).offset()(10)
             make.right.equalTo()(container.mas_right).offset()(-10)
-            make.bottom.equalTo()(container.mas_bottom)
+            make.bottom.equalTo()(container.mas_bottom).offset()(-10)
         }
         
     }
