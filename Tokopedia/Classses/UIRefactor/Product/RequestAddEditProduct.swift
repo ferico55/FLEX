@@ -285,6 +285,8 @@ enum RequestError : ErrorType {
                     if response.data.is_success == "1" {
                         if response.message_status?.count>0 {
                             StickyAlertView.showSuccessMessage(response.message_status)
+                        } else {
+                            StickyAlertView.showErrorMessage(["Anda telah berhasil memperbarui produk"])
                         }
                         observer.onNext("1")
                         observer.onCompleted()
@@ -292,13 +294,13 @@ enum RequestError : ErrorType {
                         if let errors = response.message_error{
                             StickyAlertView.showErrorMessage(errors)
                         } else {
-                            StickyAlertView.showErrorMessage(["Gagal menambah produk"])
+                            StickyAlertView.showErrorMessage(["Gagal memperbarui produk"])
                         }
                         observer.onError(RequestError.networkError)
                     }
                     
             }) { (error) in
-                StickyAlertView.showErrorMessage(["Gagal menambah produk"])
+                StickyAlertView.showErrorMessage(["Gagal memperbarui produk"])
                 observer.onError(RequestError.networkError)
             }
             
