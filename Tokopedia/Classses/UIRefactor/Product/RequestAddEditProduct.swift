@@ -631,6 +631,8 @@ enum RequestError : ErrorType {
                         RequestAddEditProduct.errorCompletionHandler()
                         if response.message_status?.count>0 {
                             StickyAlertView.showSuccessMessage(response.message_status)
+                        }else{
+                            StickyAlertView.showSuccessMessage(["Anda telah berhasil menambah produk"])
                         }
                         observer.onNext("1")
                         observer.onCompleted()
