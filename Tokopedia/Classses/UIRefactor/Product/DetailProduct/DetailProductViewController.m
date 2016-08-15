@@ -1591,6 +1591,14 @@ OtherProductDelegate
             btnWishList.tag = 0;
             [[NSNotificationCenter defaultCenter] postNotificationName:kTKPDOBSERVER_WISHLIST object:nil];
             [self setRequestingAction:btnWishList isLoading:NO];
+            
+            [[AppsFlyerTracker sharedTracker] trackEvent:AFEventAddToWishlist withValues:@{
+                                                                                           AFEventParamPrice : _product.data.product.price,
+                                                                                           AFEventParamContentType : @"Product",
+                                                                                           AFEventParamContentId : _product.data.product.product_id,
+                                                                                           AFEventParamCurrency : _product.data.product.product_currency,
+                                                                                           AFEventParamQuantity : @(1)
+                                                                                           }];
         }
         else
         {
