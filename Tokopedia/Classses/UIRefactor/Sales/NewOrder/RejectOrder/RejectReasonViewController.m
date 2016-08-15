@@ -55,6 +55,12 @@
     
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    [TPAnalytics trackScreenName:@"Reject Reason Page"];
+}
+
 #pragma mark - TableView Delegate and DataSource
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     RejectReason *reason = [_rejectReasons objectAtIndex:indexPath.row];

@@ -39,6 +39,13 @@
     }];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    [TPAnalytics trackScreenName:@"Reject Reason Empty Stock Page"];
+}
+
+
 #pragma mark - Table View
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 1;

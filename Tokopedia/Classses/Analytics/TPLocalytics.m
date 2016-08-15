@@ -10,6 +10,7 @@
 #import "SearchAWSResult.h"
 #import "Paging.h"
 #import "Breadcrumb.h"
+#import "NSNumberFormatter+IDRFormater.h"
 
 @implementation TPLocalytics
 
@@ -29,8 +30,7 @@
 
 + (void)trackAddToCart:(ProductDetail*)product {
     NSString *productId = product.product_id;
-    NSCharacterSet *notAllowedChars = [NSCharacterSet characterSetWithCharactersInString:@"Rp."];
-    NSString *productPrice = [[product.product_price componentsSeparatedByCharactersInSet:notAllowedChars] componentsJoinedByString:@""];
+    NSNumber *price = [[NSNumberFormatter IDRFormarter] numberFromString:product.product_price];
     NSInteger totalPrice = [product.product_total_price integerValue];
     NSString *total = [NSString stringWithFormat:@"%zd", totalPrice];
     NSString *productQuantity = product.product_quantity;
@@ -38,7 +38,7 @@
     NSDictionary *attributes = @{
         @"Product Id" : productId,
         @"Category" : product.product_cat_name?:@"",
-        @"Price" : productPrice?:@"",
+        @"Price" : price?:@(0),
         @"Value of Cart" : total?:@"",
         @"Items in Cart" : productQuantity?:@""
     };
@@ -57,15 +57,14 @@
         return;
     }
     
-    NSCharacterSet *notAllowedChars = [NSCharacterSet characterSetWithCharactersInString:@"Rp."];
-    NSString *price = [[response.data.info.product_price componentsSeparatedByCharactersInSet:notAllowedChars] componentsJoinedByString:@""];
+    NSNumber *price = [[NSNumberFormatter IDRFormarter] numberFromString:response.data.info.product_price];
     
     Breadcrumb *category = response.data.breadcrumb[response.data.breadcrumb.count - 1];
 
     NSDictionary *attributes = @{
         @"Product ID": response.data.info.product_id,
         @"Category": category.department_name,
-        @"Price": price?:@"",
+        @"Price": price?:@(0),
         @"Price Alert": response.data.info.product_price_alert?:@"",
         @"Wishlist": response.data.info.product_already_wishlist?:@""
     };
@@ -92,6 +91,10 @@
 + (void)trackLoginStatus:(BOOL)status {
     [Localytics setValue:status?@"Yes": @"No" forProfileAttribute:@"Is Login"];
     [Localytics tagEvent:@"Login" attributes:@{@"success": status?@"Yes": @"No"}];
+}
+
++ (void)trackScreenName:(NSString *)screenName {
+    [Localytics tagScreen:screenName];
 }
 
 @end

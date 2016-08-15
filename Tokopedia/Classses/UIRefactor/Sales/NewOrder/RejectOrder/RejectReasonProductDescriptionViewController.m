@@ -66,6 +66,12 @@
 
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    [TPAnalytics trackScreenName:@"Reject Reason Change Product Description Page"];
+}
+
 -(IBAction)doneButtonClicked:(id)sender{
     if([self isTextViewNotEmpty]){
         _orderProduct.product_description = _productDescriptionTextView.text;
