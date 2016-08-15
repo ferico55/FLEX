@@ -43,7 +43,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     TokopediaNetworkManager *_ratingNetworkManager;
     BOOL _rating;
     
-    NSMutableArray *_messages;
+    NSMutableArray<NSMutableArray *> *_messages;
     NSInteger _page;
     InboxTicketTicket *_ticketInformation;
     InboxTicketDetail *_ticketDetail;
@@ -641,18 +641,6 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     
     if (!_ticketInformation) {
         _ticketInformation = response.result.ticket;
-//        if ([_ticketInformation.ticket_status isEqualToString:@"2"] && //CLOSED
-//            ![_ticketInformation.ticket_respond_status isEqualToString:@"0"]) {
-//            if ([_ticketInformation.ticket_total_message integerValue] >= 2) {
-//                self.inboxTicket.ticket_show_more_messages = YES;
-//            }
-//        }
-//        else
-//        {
-//            if ([_ticketInformation.ticket_total_message integerValue] > 2) {
-//                self.inboxTicket.ticket_show_more_messages = YES;
-//            }
-//        }
     }
     
     self.inboxTicket.ticket_show_more_messages = YES;
@@ -684,7 +672,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
         [tickets addObject:message];
     }
     
-    if (_canLoadMore && [(NSMutableArray *)_messages[1] count] > 2)
+    if (_canLoadMore && [_messages[1] count] > 2)
     {
         //append new ticket
         NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, tickets.count)];
