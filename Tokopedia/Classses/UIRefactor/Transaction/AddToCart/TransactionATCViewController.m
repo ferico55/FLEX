@@ -843,11 +843,13 @@ typedef enum
         [TPAnalytics trackSnapSearchAddToCart:_selectedProduct];
     }
     
+    NSNumber *price = [[NSNumberFormatter IDRFormarter] numberFromString:_selectedProduct.product_price];
+    
     [[AppsFlyerTracker sharedTracker] trackEvent:AFEventAddToCart withValues:@{
                                                                                AFEventParamContentId : _selectedProduct.product_id,
                                                                                AFEventParamContentType : @"Product",
-                                                                               AFEventParamPrice : _selectedProduct.price,
-                                                                               AFEventParamCurrency : _selectedProduct.product_currency,
+                                                                               AFEventParamPrice : price,
+                                                                               AFEventParamCurrency : _selectedProduct.product_currency?:@"IDR",
                                                                                AFEventParamQuantity : _productQuantityTextField.text}];
 }
 
