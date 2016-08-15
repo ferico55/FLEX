@@ -93,6 +93,7 @@
 #import "TPLocalytics.h"
 
 #import "Tokopedia-Swift.h"
+#import "NSNumberFormatter+IDRFormater.h"
 
 #pragma mark - CustomButton Expand Desc
 @interface CustomButtonExpandDesc : UIButton
@@ -1592,11 +1593,13 @@ OtherProductDelegate
             [[NSNotificationCenter defaultCenter] postNotificationName:kTKPDOBSERVER_WISHLIST object:nil];
             [self setRequestingAction:btnWishList isLoading:NO];
             
+            NSNumber *price = [[NSNumberFormatter IDRFormarter] numberFromString:_product.data.info.price?:_product.data.info.product_price];
+            
             [[AppsFlyerTracker sharedTracker] trackEvent:AFEventAddToWishlist withValues:@{
-                                                                                           AFEventParamPrice : _product.data.product.price,
+                                                                                           AFEventParamPrice : price,
                                                                                            AFEventParamContentType : @"Product",
-                                                                                           AFEventParamContentId : _product.data.product.product_id,
-                                                                                           AFEventParamCurrency : _product.data.product.product_currency,
+                                                                                           AFEventParamContentId : _product.data.info.product_id,
+                                                                                           AFEventParamCurrency : _product.data.info.product_currency?:@"IDR",
                                                                                            AFEventParamQuantity : @(1)
                                                                                            }];
         }
@@ -1873,6 +1876,7 @@ OtherProductDelegate
         //save response data to plist
         [operation.HTTPRequestOperation.responseData writeToFile:_cachepath atomically:YES];
         
+        [self trackProduct];
         [self requestprocess:object];
     }
 }
@@ -2029,15 +2033,7 @@ OtherProductDelegate
             }
             
             //Track in GA
-            [TPAnalytics trackProductView:_product.data.info];
-            [TPLocalytics trackProductView:_product];
-            [[AppsFlyerTracker sharedTracker] trackEvent:AFEventContentView withValues:@{
-                                                                                         AFEventParamPrice : _product.data.info.price,
-                                                                                         AFEventParamContentId : _product.data.info.product_id,
-                                                                                         AFEventParamCurrency : _product.data.info.product_currency,
-                                                                                         AFEventParamContentType : @"Product"
-                                                                                         }];
-
+            
             _isnodata = NO;
             [_table reloadData];
             
@@ -2074,13 +2070,27 @@ OtherProductDelegate
             }
             
             // UIView below table view (View More Product button)
-            //TODO::
             CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height+100);
             UIView *backgroundGreyView = [[UIView alloc] initWithFrame:frame];
             backgroundGreyView.backgroundColor = [UIColor clearColor];
             [self.view insertSubview:backgroundGreyView belowSubview:self.table];
         }
     }
+}
+
+- (void)trackProduct {
+    [TPAnalytics trackProductView:_product.data.info];
+    [TPLocalytics trackProductView:_product];
+    
+    NSNumber *price = [[NSNumberFormatter IDRFormarter] numberFromString:_product.data.info.price?:_product.data.info.product_price];
+    
+    [[AppsFlyerTracker sharedTracker] trackEvent:AFEventContentView withValues:@{
+                                                                                 AFEventParamPrice : price,
+                                                                                 AFEventParamContentId : _product.data.info.product_id,
+                                                                                 AFEventParamCurrency : @"IDR",
+                                                                                 AFEventParamContentType : @"Product"
+                                                                                 }];
+
 }
 
 
