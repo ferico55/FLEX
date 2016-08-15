@@ -290,6 +290,8 @@
                  onFailure:(void (^)(NSError *))errorCallback {
     if(_objectRequest.isExecuting) return;
     
+    NSDictionary* bindedParameters = [parameter autoParameters];
+    
     _requestCount ++;
 
     _objectManager  = [RKObjectManager sharedClient:baseUrl];
@@ -311,7 +313,7 @@
     if(self.isUsingHmac) {
         TkpdHMAC *hmac = [TkpdHMAC new];
         NSString* date = [hmac getDate];
-        NSString *signature = [hmac generateSignatureWithMethod:[self getStringRequestMethod:method] tkpdPath:path parameter:parameter date:date];
+        NSString *signature = [hmac generateSignatureWithMethod:[self getStringRequestMethod:method] tkpdPath:path parameter:bindedParameters date:date];
         
         [_objectManager.HTTPClient setDefaultHeader:@"Request-Method" value:[hmac getRequestMethod]];
         [_objectManager.HTTPClient setDefaultHeader:@"Content-MD5" value:[hmac getParameterMD5]];
@@ -335,7 +337,7 @@
         _objectRequest = [_objectManager appropriateObjectRequestOperationWithObject:nil
                                                                               method:method
                                                                                 path:path
-                                                                          parameters:[parameter autoParameters]];
+                                                                          parameters:bindedParameters];
     } else {
         NSDictionary *parameters;
         if (self.isParameterNotEncrypted) {
