@@ -26,7 +26,6 @@
 
 #import "CartCell.h"
 #import "CartValidation.h"
-#import "CartGAHandler.h"
 
 #import "TransactionCCViewController.h"
 
@@ -2510,11 +2509,6 @@
 #pragma mark - Delegate LoadingView
 - (void)pressRetryButton {
     [self refreshRequestCart];
-}
-
-#pragma mark - Sending data to GA
-- (void)sendingProductDataToGA {
-    [CartGAHandler sendingProductCart:_cart.list page:_indexPage gateway:[_dataInput objectForKey:@"gateway"]];
 }
 
 #pragma mark - NoResult Delegate

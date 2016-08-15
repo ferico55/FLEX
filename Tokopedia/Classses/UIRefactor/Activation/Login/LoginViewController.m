@@ -781,16 +781,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     [Localytics setValue:_login.result.user_id forProfileAttribute:@"user_id"];
     [Localytics setValue:[_activation objectForKey:kTKPDACTIVATION_DATAEMAILKEY] forProfileAttribute:@"user_email"];
     
-    //add user login to GA
-    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
-    [tracker setAllowIDFACollection:YES];
-    [tracker set:@"&uid" value:_login.result.user_id];
-    // This hit will be sent with the User ID value and be visible in User-ID-enabled views (profiles).
-    [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"UX"            // Event category (required)
-                                                          action:@"User Sign In"  // Event action (required)
-                                                           label:nil              // Event label
-                                                           value:nil] build]];    // Event value
-    
     [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidLoginNotification object:nil];

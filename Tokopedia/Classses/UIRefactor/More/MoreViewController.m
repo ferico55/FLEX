@@ -260,12 +260,6 @@
     
     [self updateSaldoTokopedia:nil];
     
-    //manual GA Track
-    id tracker = [[GAI sharedInstance] defaultTracker];
-    [tracker setAllowIDFACollection:YES];
-    [tracker set:kGAIScreenName value:@"More Navigation Page"];
-    [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
-    
     // Universal Analytics
     [TPAnalytics trackScreenName:@"More Navigation Page"];
 }
@@ -794,12 +788,6 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
         } else if(indexPath.row == 2) {
             // UA
             [TPAnalytics trackScreenName:@"Privacy Policy"];
-            
-            // GA
-            id tracker = [[GAI sharedInstance] defaultTracker];
-            [tracker setAllowIDFACollection:YES];
-            [tracker set:kGAIScreenName value:@"Privacy Policy"];
-            [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
 
             WebViewController *webViewController = [WebViewController new];
             webViewController.strURL = kTKPDMORE_PRIVACY_URL;
@@ -808,12 +796,6 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
         } else if(indexPath.row == 3) {
             // UA
             [TPAnalytics trackScreenName:@"Share App"];
-            
-            // GA
-            id tracker = [[GAI sharedInstance] defaultTracker];
-            [tracker setAllowIDFACollection:YES];
-            [tracker set:kGAIScreenName value:@"Share App"];
-            [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
             
             NSString *title = @"Download Aplikasi Tokopedia Sekarang Juga! \nNikmati kemudahan jual beli online di tanganmu.";
             NSURL *url = [NSURL URLWithString:@"https://itunes.apple.com/id/app/tokopedia/id1001394201"];
@@ -864,12 +846,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
     }
 }
 
--(void)pushIOSFeedback
-{
-    id tracker = [[GAI sharedInstance] defaultTracker];
-    [tracker setAllowIDFACollection:YES];
-    [tracker set:kGAIScreenName value:@"iOS Feedback"];
-    [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+-(void)pushIOSFeedback {
     
     [TPAnalytics trackScreenName:@"iOS Feedback"];
     
@@ -920,11 +897,6 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
 //}
 
 - (void)navigateToContactUs:(NSNotification*)notification{
-    id tracker = [[GAI sharedInstance] defaultTracker];
-    [tracker setAllowIDFACollection:YES];
-    [tracker set:kGAIScreenName value:@"New Contact Us"];
-    [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
-    
     ContactUsWebViewController *controller = [ContactUsWebViewController new];
     controller.hidesBottomBarWhenPushed = YES;
     [_wrapperViewController.navigationController pushViewController:controller animated:YES];
