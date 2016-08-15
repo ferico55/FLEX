@@ -628,7 +628,6 @@
                     break;
                 default:
                     if([self isValidInput]) {
-                        [self sendingProductDataToGA];
                         if([self isHandlePaymentWithNative]) {
                             [self doCheckout];
                         } else if ([self isCanUseToppay]) {
@@ -687,7 +686,6 @@
                 default:
                     break;
             }
-            [self sendingProductDataToGA];
         }
     }
 }

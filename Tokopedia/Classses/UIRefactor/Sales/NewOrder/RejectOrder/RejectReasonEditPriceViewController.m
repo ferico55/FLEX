@@ -104,6 +104,12 @@
                                                  name:UIKeyboardWillHideNotification object:nil];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    [TPAnalytics trackScreenName:@"Reject Reason Edit Price Page"];
+}
+
 #pragma mark - Table View
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 3;
