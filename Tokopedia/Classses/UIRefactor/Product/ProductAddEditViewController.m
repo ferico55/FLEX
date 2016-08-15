@@ -745,6 +745,7 @@ FilterCategoryViewDelegate
             else{
                 if (value != previousValue) {
                     _productPriceTextField.text = @"";
+                    _form.product.product_price = @"";
                 }
                 ProductEditDetail *product = _form.product;
                 product.product_currency_id = [[ARRAY_PRICE_CURRENCY[index] objectForKey:DATA_VALUE_KEY] stringValue];
