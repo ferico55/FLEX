@@ -2415,6 +2415,7 @@
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
 		85C494BF1AD790DD008A314A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BE1AD790DD008A314A /* libz.dylib */; };
 		85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494C01AD790E4008A314A /* CoreData.framework */; };
+		9234B7041D615A0B00F7EC26 /* UIFont+Theme.m in Sources */ = {isa = PBXBuildFile; fileRef = 9234B7031D615A0B00F7EC26 /* UIFont+Theme.m */; };
 		F25F6F270D531ED13A92CDB9 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4868E459AB2A65D133732296 /* libPods-Tokopedia.a */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
 		FC23B85A1ACD659900879D75 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8581ACD659900879D75 /* Fabric.framework */; };
@@ -6005,6 +6006,8 @@
 		85C494BC1AD790C2008A314A /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
 		85C494BE1AD790DD008A314A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		85C494C01AD790E4008A314A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		9234B7021D615A0B00F7EC26 /* UIFont+Theme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+Theme.h"; sourceTree = "<group>"; };
+		9234B7031D615A0B00F7EC26 /* UIFont+Theme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIFont+Theme.m"; sourceTree = "<group>"; };
 		AAA12C6A69BF6CB5F8EE3287 /* Pods-Tokopedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug.xcconfig"; sourceTree = "<group>"; };
 		C8A1445074FECD393EA18C17 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		FC23B8571ACD659900879D75 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
@@ -6203,6 +6206,8 @@
 				7A59E5BE1D471A93002ECC7B /* UITextView+UITextView_Placeholder.h */,
 				7A59E5BF1D471A93002ECC7B /* UITextView+UITextView_Placeholder.m */,
 				7A59E5C01D471A93002ECC7B /* UIViewCategory.swift */,
+				9234B7021D615A0B00F7EC26 /* UIFont+Theme.h */,
+				9234B7031D615A0B00F7EC26 /* UIFont+Theme.m */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -13856,6 +13861,7 @@
 				7A59F8A11D471AA3002ECC7B /* ReportProductGetTypeResponse.swift in Sources */,
 				7A59F76F1D471AA2002ECC7B /* TKPDTabInboxMessageNavigationController.m in Sources */,
 				7A59F9EF1D471AA5002ECC7B /* TransactionCartEditViewController.m in Sources */,
+				9234B7041D615A0B00F7EC26 /* UIFont+Theme.m in Sources */,
 				7A59F68F1D471AA1002ECC7B /* TxEMoneyData.m in Sources */,
 				7A59F67C1D471AA1002ECC7B /* TxOrderConfirmation.m in Sources */,
 				7A59F4FE1D471A9F002ECC7B /* Info.m in Sources */,
