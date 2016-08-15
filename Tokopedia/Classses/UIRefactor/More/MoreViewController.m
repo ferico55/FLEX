@@ -871,6 +871,8 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
     [tracker set:kGAIScreenName value:@"iOS Feedback"];
     [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
     
+    [TPAnalytics trackScreenName:@"iOS Feedback"];
+    
     //            [Helpshift setName:[_auth objectForKey:@"full_name"] andEmail:nil];
     //            [[Helpshift sharedInstance]showFAQs:self withOptions:nil];
     //            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
