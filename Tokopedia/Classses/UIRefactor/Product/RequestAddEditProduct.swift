@@ -690,7 +690,6 @@ enum RequestError : ErrorType {
 
                 }, onFailure: { (error) in
                     observer.onError(RequestError.networkError)
-                    StickyAlertView.showErrorMessage(["Gagal mengupload gambar"])
             })
             
             return NopDisposable.instance
@@ -722,7 +721,6 @@ enum RequestError : ErrorType {
                             observer.onCompleted()
                         }, onFailure: { (error) in
                             observer.onError(RequestError.networkError)
-                            StickyAlertView.showErrorMessage(["Gagal mengupload gambar"])
                     })
                     
                     return NopDisposable.instance
