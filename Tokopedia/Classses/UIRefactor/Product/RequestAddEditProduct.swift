@@ -286,7 +286,7 @@ enum RequestError : ErrorType {
                         if response.message_status?.count>0 {
                             StickyAlertView.showSuccessMessage(response.message_status)
                         } else {
-                            StickyAlertView.showErrorMessage(["Anda telah berhasil memperbarui produk"])
+                            StickyAlertView.showSuccessMessage(["Anda telah berhasil memperbarui produk"])
                         }
                         observer.onNext("1")
                         observer.onCompleted()
