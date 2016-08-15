@@ -68,7 +68,10 @@
                                  @"user_id"  : @"user_id",
                                  @"payment_id": @"payment_id",
                                  @"action" : @"action",
-                                 @"web_service" : @"web_service"
+                                 @"web_service" : @"web_service",
+                                 @"new_add": @"add_new",
+                                 @"resolution": @"resolution",
+                                 @"server_id": @"server_id"
                                  };
     
     return dictionary;
