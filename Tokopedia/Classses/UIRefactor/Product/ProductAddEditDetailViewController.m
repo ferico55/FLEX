@@ -261,7 +261,7 @@ NSString * const ProductStatusWarehouse = @"3";
             }
             else if (indexPath.row == BUTTON_PRODUCT_ETALASE_DETAIL)
             {
-                cell.detailTextLabel.text = ([product.product_etalase isEqualToString:@""])?@"Pilih Etalase":product.product_etalase;
+                cell.detailTextLabel.text = ([product.product_etalase isEqualToString:@""])?@"Pilih Etalase":[product.product_etalase kv_decodeHTMLCharacterEntities];;
             }
             break;
         case 2:
