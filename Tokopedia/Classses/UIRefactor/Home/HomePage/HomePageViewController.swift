@@ -66,8 +66,8 @@ class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDele
 
         self.sliderPlaceholder = UIView(frame: CGRectZero)
         self.pulsaPlaceholder = UIView(frame: CGRectZero)
+        self.pulsaPlaceholder.backgroundColor = UIColor(red: (242/255.0), green: (242/255.0), blue: (242/255.0), alpha: 1)
         self.tickerPlaceholder = UIView(frame: CGRectZero)
-        self.pulsaPlaceholder.backgroundColor = UIColor.whiteColor()
         
         self.collectionView.addSubview(self.tickerPlaceholder)
         self.collectionView.addSubview(self.sliderPlaceholder)
