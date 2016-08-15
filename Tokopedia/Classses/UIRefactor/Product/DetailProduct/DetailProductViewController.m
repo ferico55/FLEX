@@ -2023,6 +2023,12 @@ OtherProductDelegate
             //Track in GA
             [TPAnalytics trackProductView:_product.data.info];
             [TPLocalytics trackProductView:_product];
+            [[AppsFlyerTracker sharedTracker] trackEvent:AFEventContentView withValues:@{
+                                                                                         AFEventParamPrice : _product.data.info.price,
+                                                                                         AFEventParamContentId : _product.data.info.product_id,
+                                                                                         AFEventParamCurrency : _product.data.info.product_currency,
+                                                                                         AFEventParamContentType : @"Product"
+                                                                                         }];
 
             _isnodata = NO;
             [_table reloadData];

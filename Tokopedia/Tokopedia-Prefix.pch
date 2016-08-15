@@ -69,6 +69,7 @@
     #import "TKPStoreManager.h"
     #import "TKPMappingManager.h"
     #import "TKPObjectMapping.h"
+    #import <AppsFlyer/AppsFlyer.h>
 
     #import "TPSpotlight.h"
     #import "StickyAlertView+NetworkErrorHandler.h"
