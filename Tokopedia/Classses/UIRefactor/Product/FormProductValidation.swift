@@ -246,7 +246,7 @@ class FormProductValidation: NSObject {
         
         do{
             try self.wholesaleQuantityMaxValidation(quantityMax, product: product)
-            guard quantityMin < quantityMax else {
+            guard Int(quantityMax) > Int(quantityMin) else {
                 throw Errors.errorMessage("Jumlah maksimum harus lebih besar dari jumlah minimum")
             }
         } catch Errors.errorMessage(let message) {
