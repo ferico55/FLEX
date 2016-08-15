@@ -27,7 +27,7 @@
 @property (strong, nonatomic) NSString *order_auto_resi;
 @property (strong, nonatomic) OrderDeadline *order_deadline;
 @property (strong, nonatomic) NSString *order_auto_awb;
-@property (strong, nonatomic) NSArray *order_products;
+@property (strong, nonatomic) NSMutableArray *order_products;
 @property (strong, nonatomic) OrderShipment *order_shipment;
 @property (strong, nonatomic) OrderLast *order_last;
 @property (strong, nonatomic) NSMutableArray *order_history;

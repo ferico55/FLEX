@@ -34,6 +34,10 @@
 #import "OrderSellerShop.h"
 
 #import "ProductRequest.h"
+#import "RejectReasonViewController.h"
+
+#import <BlocksKit/BlocksKit.h>
+#import "UIAlertView+BlocksKit.h"
 
 @interface SalesNewOrderViewController ()
 <
@@ -42,7 +46,6 @@
     UIAlertViewDelegate,
     SalesOrderCellDelegate,
     ChooseProductDelegate,
-    RejectExplanationDelegate,
     FilterDelegate,
     ProductQuantityDelegate,
     OrderDetailDelegate
@@ -88,7 +91,9 @@
 
 @end
 
-@implementation SalesNewOrderViewController
+@implementation SalesNewOrderViewController{
+    BOOL _needToDoLazyCellRemoval;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -99,45 +104,80 @@
 
     self.navigationItem.backBarButtonItem = self.backBarButton;
     self.navigationItem.rightBarButtonItem = self.filterBarButton;
+    [_activityIndicator startAnimating];
     
-    self.networkManager = [TokopediaNetworkManager new];
-    self.networkManager.isUsingHmac = YES;
+    _networkManager = [TokopediaNetworkManager new];
+    _networkManager.isUsingHmac = YES;
 
-    self.actionNetworkManager = [TokopediaNetworkManager new];
-    self.actionNetworkManager.isUsingHmac = YES;
+    _actionNetworkManager = [TokopediaNetworkManager new];
+    _actionNetworkManager.isUsingHmac = YES;
 
-    self.page = 1;
-    self.limit = 6;
-    self.deadline = @"";
-    self.filter = @"";
+    _page = 1;
+    _limit = 6;
+    _deadline = @"";
+    _filter = @"";
     
-    self.numberOfProcessedOrder = 0;
+    _numberOfProcessedOrder = 0;
     
-    self.orders = [NSMutableArray new];
-    self.orderInProcess = [NSMutableDictionary new];
+    _orders = [NSMutableArray new];
+    _orderInProcess = [NSMutableDictionary new];
     
-    self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 10, 0);
-    self.tableView.tableHeaderView = _alertView;
-    self.tableView.tableFooterView = _footerView;
+    _tableView.contentInset = UIEdgeInsetsMake(0, 0, 10, 0);
+    _tableView.tableHeaderView = _alertView;
+    _tableView.tableFooterView = _footerView;
     
-    self.refreshControl = [UIRefreshControl new];
-    [self.refreshControl addTarget:self action:@selector(refreshData) forControlEvents:UIControlEventValueChanged];
-    [self.tableView addSubview:_refreshControl];
+    _refreshControl = [UIRefreshControl new];
+    [_refreshControl addTarget:self action:@selector(refreshData) forControlEvents:UIControlEventValueChanged];
+    [_tableView addSubview:_refreshControl];
     
     self.alertLabel.attributedText = self.alertAttributedString;
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applyRejectOperation) name:@"applyRejectOperation" object:nil];
     [self fetchLatestOrderData];
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    if(_needToDoLazyCellRemoval){
+        [self performSelector:@selector(removeFinishedCell) withObject:nil afterDelay:0.5];
+        _needToDoLazyCellRemoval = NO;
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    if ([self.delegate respondsToSelector:@selector(viewController:numberOfProcessedOrder:)]) {
-        [self.delegate viewController:self numberOfProcessedOrder:_numberOfProcessedOrder];
+    if ([_delegate respondsToSelector:@selector(viewController:numberOfProcessedOrder:)]) {
+        [_delegate viewController:self numberOfProcessedOrder:_numberOfProcessedOrder];
     }
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+}
+
+-(void)applyRejectOperation{
+    if(UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad){
+        _needToDoLazyCellRemoval = YES;
+    }else{        
+        [self performSelector:@selector(removeFinishedCell) withObject:nil afterDelay:0.5];
+    }
+}
+
+-(void)removeFinishedCell{
+    if(_selectedIndexPath != nil){
+        [_orders removeObjectAtIndex:_selectedIndexPath.row];
+        [_tableView deleteRowsAtIndexPaths:@[_selectedIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self performSelector:@selector(reloadData) withObject:nil afterDelay:0.5];
+        _selectedIndexPath = nil;
+        
+        StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:@[@"Anda berhasil membatalkan pesanan"] delegate:self];
+        [alert show];
+        
+        if (_orders.count == 0) {
+            CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, 156);
+            NoResultView *noResultView = [[NoResultView alloc] initWithFrame:frame];
+            _tableView.tableFooterView = noResultView;
+        }
+    }
 }
 
 #pragma mark - Bar button item
@@ -156,6 +196,14 @@
                                                                        target:self
                                                                        action:@selector(didTapFilterButton:)];
     return filterBarButton;
+}
+
+#pragma mark - Refresh control
+
+- (UIRefreshControl *)refreshControl {
+    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+    [refreshControl addTarget:self action:@selector(refreshData) forControlEvents:UIControlEventValueChanged];
+    return refreshControl;
 }
 
 #pragma mark - Note view
@@ -180,7 +228,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.orders.count;
+    return _orders.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -198,7 +246,7 @@
     
     cell.indexPath = indexPath;
     
-    OrderTransaction *order = [self.orders objectAtIndex:indexPath.row];
+    OrderTransaction *order = [_orders objectAtIndex:indexPath.row];
 
     cell.invoiceNumberLabel.text = order.order_detail.detail_invoice;
 
@@ -273,7 +321,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if ([tableView isLastIndexPath:indexPath] && self.nextURL) {
+    if ([tableView isLastIndexPath:indexPath] && _nextURL) {
         [self fetchLatestOrderData];
     }
 }
@@ -297,82 +345,63 @@
 #pragma mark - Cell delegate
 
 - (void)tableViewCell:(UITableViewCell *)cell acceptOrderAtIndexPath:(NSIndexPath *)indexPath {
-    self.selectedOrder = [self.orders objectAtIndex:indexPath.row];
-    self.selectedIndexPath = indexPath;
-    if (self.selectedOrder.order_payment.payment_process_day_left >= 0) {
-        if (self.selectedOrder.order_detail.detail_partial_order == 1) {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Terima Pesanan"
-                                                                message:@"Pembeli menyetujui apabila stok barang yang tersedia hanya sebagian"
-                                                               delegate:self
-                                                      cancelButtonTitle:@"Batal"
-                                                      otherButtonTitles:@"Terima Pesanan", @"Terima Sebagian", nil];
-            alertView.tag = 2;
-            [alertView show];
+    _selectedOrder = [_orders objectAtIndex:indexPath.row];
+    _selectedIndexPath = indexPath;
+    if ([self isOrderNotExpired]) {
+        if ([self isBuyerAcceptPartial]) {
+            [self showAlertViewAcceptPartialConfirmation];
         } else {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Terima Pesanan"
-                                                                message:@"Apakah Anda yakin ingin menerima pesanan ini?"
-                                                               delegate:self
-                                                      cancelButtonTitle:@"Batal"
-                                                      otherButtonTitles:@"Ya", nil];
-            alertView.tag = 4;
-            [alertView show];
+            [self showAlertViewAcceptConfirmation];
         }
     } else {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Pesanan Expired"
-                                                            message:@"Pesanan ini telah melewati batas waktu respon (3 hari)"
-                                                           delegate:self
-                                                  cancelButtonTitle:@"Batal"
-                                                  otherButtonTitles:@"Tolak Pesanan", nil];
-        alertView.tag = 5;
-        [alertView show];
+        [self showAlertViewAcceptExpiredConfirmation];
     }
 }
 
 - (void)tableViewCell:(UITableViewCell *)cell rejectOrderAtIndexPath:(NSIndexPath *)indexPath {
-    self.selectedOrder = [self.orders objectAtIndex:indexPath.row];
-    self.selectedIndexPath = indexPath;
-    if (self.selectedOrder.order_detail.detail_partial_order == 1) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Tolak Pesanan"
-                                                            message:@"Pembeli menyetujui apabila stok barang yang tersedia hanya sebagian"
-                                                           delegate:self
-                                                  cancelButtonTitle:@"Batal"
-                                                  otherButtonTitles:@"Tolak Pesanan", @"Terima Sebagian", nil];
-        alertView.tag = 1;
-        [alertView show];
+    _selectedOrder = [_orders objectAtIndex:indexPath.row];
+    _selectedIndexPath = indexPath;
+    
+    if ([self isBuyerAcceptPartial]) {
+        [self showAlertViewRejectPartialConfirmation];
     } else {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Pilih Alasan Penolakan"
-                                                            message:nil
-                                                           delegate:self
-                                                  cancelButtonTitle:@"Batal"
-                                                  otherButtonTitles:@"Pesanan barang habis", @"Barang tidak dapat dikirim", @"Lainnya", nil];
-        alertView.tag = 3;
-        [alertView show];
+        [self showRejectReason];
     }
 }
 
 - (void)tableViewCell:(UITableViewCell *)cell didSelectPriceAtIndexPath:(NSIndexPath *)indexPath {
-    self.selectedOrder = [self.orders objectAtIndex:indexPath.row];
-    self.selectedIndexPath = indexPath;
+    _selectedOrder = [_orders objectAtIndex:indexPath.row];
+    _selectedIndexPath = indexPath;
 
     OrderDetailViewController *controller = [[OrderDetailViewController alloc] init];
-    controller.transaction = [self.orders objectAtIndex:indexPath.row];
+    controller.transaction = [_orders objectAtIndex:indexPath.row];
     controller.delegate = self;
 
     [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)tableViewCell:(UITableViewCell *)cell didSelectUserAtIndexPath:(NSIndexPath *)indexPath {
-    self.selectedOrder = [self.orders objectAtIndex:indexPath.row];
-    self.selectedIndexPath = indexPath;
+    _selectedOrder = [_orders objectAtIndex:indexPath.row];
+    _selectedIndexPath = indexPath;
 
     NavigateViewController *controller = [NavigateViewController new];
     [controller navigateToProfileFromViewController:self withUserID:_selectedOrder.order_customer.customer_id];
 }
 
+-(void)showRejectReason{
+    RejectReasonViewController *vc = [RejectReasonViewController new];
+    vc.order = _selectedOrder;
+    
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
+    [navigationController.navigationBar setTranslucent:NO];
+    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+}
+
 #pragma mark - Choose product delegate
 
 - (void)didSelectProducts:(NSArray *)products {
-    self.selectedProducts = products;
+    _selectedProducts = products;
     
     [self requestActionType:@"reject"
                      reason:@"Persediaan barang habis"
@@ -407,67 +436,83 @@
 #pragma mark - Filter delegate
 
 - (void)didFinishFilterInvoice:(NSString *)invoice dueDate:(NSString *)dueDate {
-    [self.orders removeAllObjects];
+    [_orders removeAllObjects];
 
-    [self.tableView reloadData];
-    [self.tableView setTableFooterView:nil];
+    [_tableView reloadData];
+    [_tableView setTableFooterView:nil];
     
-    self.activityIndicator.hidden = NO;
-    [self.activityIndicator startAnimating];
+    _activityIndicator.hidden = NO;
+    [_activityIndicator startAnimating];
     
-    self.page = 1;
-    self.filter = invoice;
-    self.deadline = dueDate;
+    _page = 1;
+    _filter = invoice;
+    _deadline = dueDate;
     
     [self fetchLatestOrderData];
 }
 
-#pragma mark - Alert view delegate
+#pragma mark - Alert view
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (alertView.tag == 1) {
-        if (buttonIndex == 1) {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Pilih Alasan Penolakan"
-                                                                message:nil
-                                                               delegate:self
-                                                      cancelButtonTitle:@"Batal"
-                                                      otherButtonTitles:@"Pesanan barang habis", @"Barang tidak dapat dikirim", @"Lainnya", nil];
-            alertView.tag = 3;
-            [alertView show];
-        } else if (buttonIndex == 2) {
-            [self showManageProductQuantityPage];
-        }
-    }
-    else if (alertView.tag == 2) {
-        if (buttonIndex == 1) {
-            [self requestActionType:@"accept" reason:nil products:nil productQuantity:nil];
-        } else if (buttonIndex == 2) {
-            [self showManageProductQuantityPage];
-        }
-    }
-    else if (alertView.tag == 3) {
-        if (buttonIndex == 1) {
-            [self showChooseAcceptedProductPage];
-        } else if (buttonIndex == 2) {
-            [self requestActionType:@"reject" reason:@"Barang tidak dapat dikirim" products:self.selectedOrder.order_products productQuantity:nil];
-        } else if (buttonIndex == 3) {
-            [self showRejectOrderPage];
-        }
-    }
-    else if (alertView.tag == 4) {
-        if (buttonIndex == 1) {
-            [self requestActionType:@"accept" reason:nil products:nil productQuantity:nil];
-        }
-    } else if (alertView.tag == 5) {
-        if (buttonIndex == 1) {
-            [self requestActionType:@"reject" reason:@"Order expired" products:_selectedOrder.order_products productQuantity:nil];
-        }
-    }
+- (void)showAlertViewAcceptConfirmation{
+    __weak typeof(self) welf = self;
+    UIAlertView *alert = [[UIAlertView alloc] bk_initWithTitle:@"Terima Pesanan"
+                                                       message:@"Apakah Anda yakin ingin menerima pesanan ini?"];
+    [alert bk_setCancelButtonWithTitle:@"Batal" handler:^{
+        //nope
+    }];
+    [alert bk_addButtonWithTitle:@"Terima Pesanan" handler:^{
+        [welf requestActionType:@"accept" reason:nil products:nil productQuantity:nil];
+    }];
+    [alert show];
 }
+
+- (void)showAlertViewAcceptPartialConfirmation{
+    __weak typeof(self) welf = self;
+    UIAlertView *alert = [[UIAlertView alloc]bk_initWithTitle:@"Terima Pesanan" message:@"Pembeli menyetujui apabila stok barang yang tersedia hanya sebagian"];
+    [alert bk_setCancelButtonWithTitle:@"Batal" handler:^{
+        //nope
+    }];
+    [alert bk_addButtonWithTitle:@"Terima Pesanan" handler:^{
+        [welf requestActionType:@"accept" reason:nil products:nil productQuantity:nil];
+    }];
+    [alert bk_addButtonWithTitle:@"Terima Sebagian" handler:^{
+        [welf showManageProductQuantityPage];
+    }];
+    [alert show];
+}
+
+- (void)showAlertViewRejectPartialConfirmation{
+    __weak typeof(self) welf = self;
+    UIAlertView *alert = [[UIAlertView alloc] bk_initWithTitle:@"Tolak Pesanan" message:@"Pembeli menyetujui apabila stok barang yang tersedia hanya sebagian"];
+    [alert bk_setCancelButtonWithTitle:@"Batal" handler:^{
+        //nope
+    }];
+    [alert bk_addButtonWithTitle:@"Tolak Pesanan" handler:^{
+        [welf showRejectReason];
+    }];
+    [alert bk_addButtonWithTitle:@"Terima Sebagian" handler:^{
+        [welf showManageProductQuantityPage];
+    }];
+    [alert show];
+}
+
+-(void)showAlertViewAcceptExpiredConfirmation{
+    __weak typeof(self) welf = self;
+    UIAlertView *alert = [[UIAlertView alloc]bk_initWithTitle:@"Pesanan Expired"
+                                                      message:@"Pesanan ini telah melewati batas waktu respon (3 hari)"];
+    [alert bk_setCancelButtonWithTitle:@"Batal" handler:^{
+        //nope
+    }];
+    [alert bk_addButtonWithTitle:@"Tolak Pesanan" handler:^{
+        [welf requestActionType:@"reject" reason:@"Order expired" products:_selectedOrder.order_products productQuantity:nil];
+    }];
+    [alert show];
+}
+
 
 - (void)showManageProductQuantityPage {
     ProductQuantityViewController *controller = [[ProductQuantityViewController alloc] init];
-    OrderTransaction *order = [self.orders objectAtIndex:_selectedIndexPath.row];
+    OrderTransaction *order = [_orders objectAtIndex:_selectedIndexPath.row];
     controller.products = order.order_products;
     controller.delegate = self;
     
@@ -480,7 +525,7 @@
 - (void)showChooseAcceptedProductPage {
     ChooseProductViewController *controller = [[ChooseProductViewController alloc] init];
     controller.delegate = self;
-    controller.products = self.selectedOrder.order_products;
+    controller.products = _selectedOrder.order_products;
 
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
     navigationController.navigationBar.translucent = NO;
@@ -490,7 +535,6 @@
 
 - (void)showRejectOrderPage {
     OrderRejectExplanationViewController *controller = [[OrderRejectExplanationViewController alloc] init];
-    controller.delegate = self;
     
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
     navigationController.navigationBar.translucent = NO;
@@ -503,12 +547,14 @@
 #pragma mark - Reskit methods
 
 - (void)fetchLatestOrderData {
+    _tableView.tableFooterView = _footerView;
     NSDictionary *parameters = @{
         @"deadline": _deadline,
         @"status": _filter,
         @"page": [NSNumber numberWithInteger:_page],
     };
-    [self.networkManager requestWithBaseUrl:[NSString v4Url]
+    
+    [_networkManager requestWithBaseUrl:[NSString v4Url]
                                        path:@"/v4/myshop-order/get_order_new.pl"
                                      method:RKRequestMethodGET
                                   parameter:parameters
@@ -519,35 +565,36 @@
                                       OrderResult *result = response.result;
                                       if ([response.status isEqualToString:@"OK"]) {
                                           if (_page == 1) {
-                                              [self.orders removeAllObjects];
+                                              [_orders removeAllObjects];
                                           }
-                                          [self.orders addObjectsFromArray:result.list];
-                                          if (result.paging.uri_next) {
-                                              self.nextURL = result.paging.uriNext;
-                                              if ([self.nextURL.parameters objectForKey:@"page"]) {
-                                                  self.page = [self.nextURL.parameters[@"page"] integerValue];
+                                          [_orders addObjectsFromArray:result.list];
+                                          if(_orders.count > 0){
+                                              if (result.paging.uri_next) {
+                                                  _nextURL = result.paging.uriNext;
+                                                  if ([_nextURL.parameters objectForKey:@"page"]) {
+                                                      _page = [_nextURL.parameters[@"page"] integerValue];
+                                                  }
+                                                  _tableView.tableFooterView = _footerView;
+                                              } else {
+                                                  _nextURL = nil;
+                                                  _tableView.tableFooterView = nil;
                                               }
-                                          } else {
-                                              self.nextURL = nil;
-                                          }
-                                          if (self.orders.count == 0) {
-                                              CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, 103);
+                                          }else{
+                                              CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, 156);
                                               NoResultView *noResultView = [[NoResultView alloc] initWithFrame:frame];
-                                              self.tableView.tableFooterView = noResultView;
-                                              self.tableView.sectionFooterHeight = noResultView.frame.size.height;
+                                              _tableView.tableFooterView = noResultView;
                                           }
-                                          if (self.page == 0) {
-                                              [self.activityIndicator stopAnimating];
-                                              self.activityIndicator.hidden = NO;
-                                              self.tableView.tableFooterView = nil;
-                                          }
-                                          self.activityIndicator.hidden = YES;
-                                          [self.refreshControl endRefreshing];
-                                          [self.tableView reloadData];
+                                          [_refreshControl endRefreshing];
+                                          [_tableView reloadData];
+                                      }else{
+                                          StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Kendala pada server"] delegate:self];
+                                          [alert show];
                                       }
                                   } onFailure:^(NSError *errorResult) {
-                                  
+                                      StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Kendala koneksi internet" ] delegate:self];
+                                      [alert show];
                                   }];
+    
 }
 
 #pragma mark - Reskit Actions
@@ -582,7 +629,7 @@
         @"reason": reason?:@"",
     };
     
-    [self.actionNetworkManager requestWithBaseUrl:[NSString v4Url]
+    [_actionNetworkManager requestWithBaseUrl:[NSString v4Url]
                                              path:@"/v4/action/myshop-order/proceed_order.pl"
                                            method:RKRequestMethodPOST
                                         parameter:parameters
@@ -604,8 +651,8 @@
     [_orderInProcess setObject:object forKey:key];
 
     // Delete row for the object
-    [self.orders removeObjectAtIndex:indexPath.row];
-    [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    [_orders removeObjectAtIndex:indexPath.row];
+    [_tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     [self performSelector:@selector(reloadData) withObject:nil afterDelay:0.5];
 }
 
@@ -628,10 +675,10 @@
         StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[message] delegate:self];
         [alert show];
         
-        if (self.orders.count == 0) {
+        if (_orders.count == 0) {
             CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, 156);
             NoResultView *noResultView = [[NoResultView alloc] initWithFrame:frame];
-            self.tableView.tableFooterView = noResultView;
+            _tableView.tableFooterView = noResultView;
         }
     } else if (actionOrder.message_error) {
         [self performSelector:@selector(restoreData:errorMessages:)
@@ -644,7 +691,7 @@
 }
 
 - (void)reloadData {
-    [self.tableView reloadData];
+    [_tableView reloadData];
 }
 
 - (void)restoreData:(NSString *)orderId errorMessages:(NSArray *)errorMessages {
@@ -663,8 +710,8 @@
         OrderTransaction *order = [dict objectForKey:@"order"];
         NSIndexPath *objectIndexPath = [dict objectForKey:@"indexPath"];
         
-        [self.orders insertObject:order atIndex:objectIndexPath.row];
-        [self.tableView insertRowsAtIndexPaths:@[objectIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [_orders insertObject:order atIndex:objectIndexPath.row];
+        [_tableView insertRowsAtIndexPaths:@[objectIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
         
         [self performSelector:@selector(reloadData) withObject:nil afterDelay:0.5];
 
@@ -673,8 +720,17 @@
 }
 
 - (void)refreshData {
-    self.page = 1;
+    _page = 1;
+    _tableView.tableFooterView  = _footerView;
     [self fetchLatestOrderData];
+}
+
+- (BOOL)isOrderNotExpired{
+    return _selectedOrder.order_payment.payment_process_day_left >= 0;
+}
+
+- (BOOL)isBuyerAcceptPartial{
+    return _selectedOrder.order_detail.detail_partial_order == 1;
 }
 
 #pragma mark - Order detail delegate

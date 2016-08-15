@@ -82,6 +82,4 @@ DEPRECATED_ATTRIBUTE
                     mapping:(RKObjectMapping*)mapping
                   onSuccess:(void(^)(RKMappingResult* successResult, RKObjectRequestOperation* operation))successCallback
                   onFailure:(void(^)(NSError* errorResult)) errorCallback;
-
-
 @end
