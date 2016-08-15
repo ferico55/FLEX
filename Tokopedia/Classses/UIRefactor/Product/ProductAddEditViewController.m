@@ -310,14 +310,16 @@ FilterCategoryViewDelegate
 -(BOOL)isDefaultImage:(DKAsset*)image{
     
     ProductEditImages *primary;
-    for (ProductEditImages *image in _form.product_images) {
-        if ([image.image_primary boolValue]) {
-            primary = image;
+    for (ProductEditImages *selectedImage in _form.product_images) {
+        if ([selectedImage.image_primary boolValue]) {
+            primary = selectedImage;
         }
     }
     
     if (_defaultImageFromAsset == nil && primary == nil) {
         return ([image isEqual:_selectedAsset.firstObject]);
+    } else {
+        return ([primary.asset isEqual:image]);
     }
     return NO;
 }
@@ -683,7 +685,7 @@ FilterCategoryViewDelegate
         if (i<_addImageButtons.count) {
             ((UIButton*)_addImageButtons[i]).hidden = NO;
             [_addImageButtons[i] setBackgroundImage:_form.product_images[i].image forState:UIControlStateNormal];
-            ((UILabel*)_defaultImageLabels[i]).hidden = (![_form.product_images[i].image_primary boolValue]);
+            ((UILabel*)_defaultImageLabels[i]).hidden = !([_form.product_images[i].image_primary boolValue]);
         }
     }
     if (_form.product_images.count<_addImageButtons.count) {
