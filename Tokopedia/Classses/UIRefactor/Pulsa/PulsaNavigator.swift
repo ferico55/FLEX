@@ -22,7 +22,7 @@ class PulsaNavigator: NSObject {
         let controller = AddressBookViewController()
         controller.contacts = contacts
         controller.didTapContact = { [unowned self] contact in
-            var phoneNumber = (contact.phones?.first?.number)!
+            var phoneNumber = contact
             phoneNumber = phoneNumber.stringByReplacingOccurrencesOfString("[^0-9]", withString: "", options: .RegularExpressionSearch, range: nil)
             
             //replace 2 first characters if 62 with 0

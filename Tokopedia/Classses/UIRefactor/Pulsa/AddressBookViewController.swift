@@ -12,7 +12,7 @@ class AddressBookViewController: UIViewController, UITableViewDelegate, UITableV
 
     @IBOutlet weak var tableView: UITableView!
     var contacts: [APContact]!
-    var didTapContact: (APContact -> Void)?
+    var didTapContact: (String -> Void)?
     
     init() {
         super.init(nibName: "AddressBookViewController", bundle: nil)
@@ -29,11 +29,15 @@ class AddressBookViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        self.didTapContact!(contacts[indexPath.row])
+        self.didTapContact!(contacts[indexPath.section].phones![indexPath.row].number!)
         self.navigationController?.popViewControllerAnimated(true)
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.contacts[section].phones!.count
+    }
+    
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return self.contacts.count
     }
     
@@ -44,10 +48,15 @@ class AddressBookViewController: UIViewController, UITableViewDelegate, UITableV
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = self.tableView .dequeueReusableCellWithIdentifier("AddressBookCellId") as! AddressBookCell
         
-        let contact = self.contacts[indexPath.row]
-        cell.phoneNumber.text = contact.phones?.first?.number
-        cell.contactName.text = contact.name?.firstName
+        let contact = self.contacts[indexPath.section]
+        cell.phoneNumber.text = contact.phones![indexPath.row].number
         
         return cell
+    }
+    
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        let contact = self.contacts[section]
+        
+        return contact.name?.firstName
     }
 }

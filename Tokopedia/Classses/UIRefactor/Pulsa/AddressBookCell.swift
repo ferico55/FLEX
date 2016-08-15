@@ -11,7 +11,6 @@ import UIKit
 class AddressBookCell: UITableViewCell {
 
     @IBOutlet var phoneNumber: UILabel!
-    @IBOutlet var contactName: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

@@ -6107,6 +6107,7 @@
 		7A588F4B1D534DB7006042E6 /* Tokopedia.xcworkspace */ = {isa = PBXFileReference; lastKnownFileType = wrapper.workspace; path = Tokopedia.xcworkspace; sourceTree = "<group>"; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
+		7AB5D54C1D6172D800F82421 /* icon_arrow_down_black.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_arrow_down_black.png; sourceTree = "<group>"; };
 		7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FacebookSDKStrings.bundle; sourceTree = "<group>"; };
 		7ACE9C4F1BB00956006C4BB7 /* FBAudienceNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBAudienceNetwork.framework; sourceTree = "<group>"; };
 		7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKMessengerShareKit.framework; sourceTree = "<group>"; };
@@ -11223,6 +11224,7 @@
 		7A588BC81D534DB2006042E6 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				7AB5D54C1D6172D800F82421 /* icon_arrow_down_black.png */,
 				7A588BC91D534DB2006042E6 /* activate_push_1.png */,
 				7A588BCA1D534DB2006042E6 /* activate_push_1@2x.png */,
 				7A588BCB1D534DB2006042E6 /* activate_push_1@3x.png */,

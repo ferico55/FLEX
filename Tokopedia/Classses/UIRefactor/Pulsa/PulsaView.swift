@@ -96,6 +96,7 @@ class PulsaView: UIView {
         
         self.buildAllView(categories[0])
         self.pulsaCategoryControl.selectedSegmentIndex = 0
+        self.pulsaCategoryControl.backgroundColor = UIColor.whiteColor()
         self.selectedCategory = categories[0]
     }
     

@@ -121,8 +121,8 @@ class PulsaViewController: UIViewController, LoginViewDelegate {
         self.pulsaView.didTapAddressbook = { [unowned self] contacts in
             let controller = AddressBookViewController()
             controller.contacts = contacts
-            controller.didTapContact = { [unowned self] contact in
-                var phoneNumber = (contact.phones?.first?.number)!
+            controller.didTapContact = { [unowned self] phoneNumber in
+                var phoneNumber = phoneNumber
                 phoneNumber = phoneNumber.stringByReplacingOccurrencesOfString("[^0-9]", withString: "", options: .RegularExpressionSearch, range: nil)
                 
                 self.pulsaView.numberField.text = phoneNumber
