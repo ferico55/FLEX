@@ -13,9 +13,9 @@ enum Errors:ErrorType{
 }
 
 enum FormType:Int{
-    case AddProduct
-    case EditProduct
-    case CopyProduct
+    case AddProduct = 1
+    case EditProduct = 2
+    case CopyProduct = 3
 }
 
 enum PriceCurrencyType:String{
@@ -34,6 +34,8 @@ class FormProductValidation: NSObject {
     private var type : FormType = FormType.AddProduct
     
     func isValidFormFirstStep(form: ProductEditResult, type:Int, productNameBeforeCopy: String) -> Bool {
+        
+        self.type = FormType.init(rawValue: type)!
         
         do{
             try self.imageValidation(form.product_images)
