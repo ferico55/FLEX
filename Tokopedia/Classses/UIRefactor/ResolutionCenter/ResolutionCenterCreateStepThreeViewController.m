@@ -7,23 +7,35 @@
 //
 
 #import "ResolutionCenterCreateStepThreeViewController.h"
+#import "Tokopedia-Swift.h"
 
 @interface ResolutionCenterCreateStepThreeViewController ()<UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate>
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UITableViewCell *solutionCell;
 @property (strong, nonatomic) IBOutlet UITableViewCell *refundCell;
 @property (strong, nonatomic) IBOutlet UITableViewCell *photoCell;
-
-@property (strong, nonatomic) IBOutlet UIButton *uploadButtons;
+@property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *uploadButtons;
+@property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *cancelButtons;
+@property (strong, nonatomic) IBOutlet UIScrollView *scrollViewUploadPhoto;
 
 @end
 
-@implementation ResolutionCenterCreateStepThreeViewController
+@implementation ResolutionCenterCreateStepThreeViewController{
+    NSMutableArray <DKAsset *>*_selectedImages;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     _tableView.delegate = self;
     _tableView.dataSource = self;
+    
+    _cancelButtons = [NSArray sortViewsWithTagInArray:_cancelButtons];
+    _uploadButtons = [NSArray sortViewsWithTagInArray:_uploadButtons];
+    _selectedImages = [NSMutableArray new];
+    
+    for(UIButton *btn in _cancelButtons) {
+        btn.hidden = YES;
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -93,4 +105,51 @@
     return 0;
 }
 
+#pragma mark - Methods
+- (IBAction)uploadButtonTapped:(id)sender {
+    [self navigateToPhotoPicker];
+}
+
+-(void)navigateToPhotoPicker{
+    __weak typeof(self) wself = self;
+    [ImagePickerController showImagePicker:self
+                                 assetType:DKImagePickerControllerAssetTypeallPhotos
+                       allowMultipleSelect:YES
+                                showCancel:YES
+                                showCamera:YES
+                               maxSelected:5
+                            selectedAssets:_selectedImages completion:^(NSArray<DKAsset *> * images) {
+                                dispatch_async(dispatch_get_main_queue(), ^{
+                                    if (wself != nil) {
+                                        typeof(self) sself = wself;
+                                        [sself->_selectedImages removeAllObjects];
+                                        [sself->_selectedImages addObjectsFromArray:images];
+                                        [sself setSelectedImages];
+                                    }
+                                });
+                            }];
+}
+
+-(void)setSelectedImages{
+    for (UIButton *button in _uploadButtons) {
+        button.hidden = YES;
+        [button setBackgroundImage:[UIImage imageNamed:@"icon_upload_image.png"] forState:UIControlStateNormal];
+    }
+    for (UIButton *button in _cancelButtons) { button.hidden = YES; }
+    for (int i = 0; i<_selectedImages.count; i++) {
+        ((UIButton*)_uploadButtons[i]).hidden = NO;
+        ((UIButton*)_cancelButtons[i]).hidden = NO;
+        [_uploadButtons[i] setBackgroundImage:_selectedImages[i].thumbnailImage forState:UIControlStateNormal];
+    }
+    if (_selectedImages.count<_uploadButtons.count) {
+        UIButton *uploadedButton = (UIButton*)_uploadButtons[_selectedImages.count];
+        uploadedButton.hidden = NO;
+        _scrollViewUploadPhoto.contentSize = CGSizeMake(uploadedButton.frame.origin.x+uploadedButton.frame.size.width+30, 0);
+    }
+}
+- (IBAction)cancelButtonTapped:(id)sender {
+    UIButton* button = (UIButton*)sender;
+    [_selectedImages removeObjectAtIndex:button.tag];
+    [self setSelectedImages];
+}
 @end
