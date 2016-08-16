@@ -984,11 +984,11 @@
     }
     
     if ([self isPaymentTypeBank] && _isNewRekening) {
-        if (![self getSelectedAccountBank].bank_account_name) {
+        if (![self getSelectedAccountBank].bank_account_name || [[self getSelectedAccountBank].bank_account_name isEqualToString:@""]) {
             [errorMessage addObject:[self errorNillBankAccountName]];
             isValid = NO;
         }
-        if (![self getSelectedAccountBank].bank_account_number) {
+        if (![self getSelectedAccountBank].bank_account_number || [[self getSelectedAccountBank].bank_account_number isEqualToString:@""]) {
             [errorMessage addObject:[self errorNillBankAcountNumber]];
             isValid = NO;
         }
@@ -996,7 +996,7 @@
             [errorMessage addObject:[self errorNillBankName]];
             isValid = NO;
         }
-        if (![self getSelectedAccountBank].bank_branch) {
+        if (![self getSelectedAccountBank].bank_branch || [[self getSelectedAccountBank].bank_branch isEqualToString:@""]) {
             [errorMessage addObject:[self errorNilBankBranchName]];
             isValid = NO;
         }
@@ -1258,29 +1258,17 @@
 {
     BankAccountFormList *bankAcount = [_dataInput objectForKey:DATA_SELECTED_BANK_ACCOUNT_KEY]?:[BankAccountFormList new];
     if (textField == _accountNameTextField) {
-        if (![textField.text  isEqual: @""]) {
-            bankAcount.bank_account_name = textField.text;
-        } else {
-            bankAcount.bank_account_name = nil;
-        }
+        bankAcount.bank_account_name = textField.text;
         [_dataInput setObject:bankAcount forKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
     }
+    
     if (textField == _rekeningNumberTextField) {
-        if (![textField.text  isEqual: @""]) {
-            bankAcount.bank_account_number = textField.text;
-        } else {
-            bankAcount.bank_account_number = nil;
-        }
-
+        bankAcount.bank_account_number = textField.text;
         [_dataInput setObject:bankAcount forKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
     }
+    
     if (textField == _branchTextField) {
-        if (![textField.text  isEqual: @""]) {
-            bankAcount.bank_branch = textField.text;
-        } else {
-            bankAcount.bank_branch = nil;
-        }
-        
+        bankAcount.bank_branch = textField.text;
         [_dataInput setObject:bankAcount forKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
     }
     
