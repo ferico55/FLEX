@@ -32,7 +32,7 @@ class PulsaKeyboardManager: NSObject {
     func didShowKeyboard() {
         let attributes = self.collectionView.layoutAttributesForSupplementaryElementOfKind(UICollectionElementKindSectionHeader, atIndexPath: NSIndexPath(forRow: 0, inSection: 0))
         
-        self.collectionView.setContentOffset(CGPointMake(0, (attributes?.frame.size.height)! - 117), animated: true)
+        self.collectionView.setContentOffset(CGPointMake(0, 194), animated: true)
             
     }
 }
