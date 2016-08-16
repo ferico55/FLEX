@@ -17,7 +17,7 @@ static CKComponent* timestampLabel(NSString* createTime) {
     return [CKLabelComponent
             newWithLabelAttributes:{
                 .string = createTime,
-                .font = [UIFont fontWithName:@"Gotham Book" size:12],
+                .font = [UIFont microTheme],
                 .lineBreakMode = NSLineBreakByTruncatingMiddle,
                 .maximumNumberOfLines = 1,
                 .color = [UIColor colorWithWhite:179.0/255 alpha:1]
@@ -120,7 +120,7 @@ static CKComponent* button(DetailReputationReview *review, SEL buttonAction, NSS
                               [CKLabelComponent
                                newWithLabelAttributes:{
                                    .string = review.product_name,
-                                   .font = [UIFont fontWithName:@"Gotham Medium" size:14],
+                                   .font = [UIFont largeThemeMedium],
                                    .lineBreakMode = NSLineBreakByTruncatingMiddle,
                                    .maximumNumberOfLines = 1
                                }

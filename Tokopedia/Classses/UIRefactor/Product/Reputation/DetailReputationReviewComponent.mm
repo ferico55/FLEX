@@ -25,7 +25,7 @@ static CKComponent* skipButton (DetailReputationReview* review) {
                 }
                 images:{}
                 backgroundImages:{}
-                titleFont:[UIFont fontWithName:@"Gotham Book" size:12.0]
+                titleFont:[UIFont microTheme]
                 selected:NO
                 enabled:YES
                 action:@selector(didTapToSkipReview:)
@@ -57,7 +57,7 @@ static CKComponent* messageLabel(DetailReputationReview* review, NSString* role)
                 [CKLabelComponent
                  newWithLabelAttributes:{
                      .string = message,
-                     .font = [UIFont fontWithName:@"Gotham Book" size:14],
+                     .font = [UIFont largeTheme],
                      .maximumNumberOfLines = 0,
                      .lineSpacing = 5.0
                  }
@@ -80,7 +80,7 @@ static CKComponent* giveReviewButton(DetailReputationReview* review, NSString* r
                  }
                  images:{}
                  backgroundImages:{}
-                 titleFont:[UIFont fontWithName:@"Gotham Book" size:14.0]
+                 titleFont:[UIFont largeThemeMedium]
                  selected:NO
                  enabled:YES
                  action:@selector(didTapToGiveReview:)
@@ -116,7 +116,7 @@ static CKComponent *giveResponseButton(DetailReputationReview *review, NSString 
                  }
                  images:{}
                  backgroundImages:{}
-                 titleFont:[UIFont fontWithName:@"Gotham Book" size:14.0]
+                 titleFont:[UIFont largeThemeMedium]
                  selected:NO
                  enabled:YES
                  action:@selector(didTapToGiveResponse:)

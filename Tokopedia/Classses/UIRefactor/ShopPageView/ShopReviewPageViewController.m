@@ -432,7 +432,7 @@
 - (void)setPropertyLabelDesc:(TTTAttributedLabel *)lblDesc {
     lblDesc.backgroundColor = [UIColor clearColor];
     lblDesc.textAlignment = NSTextAlignmentLeft;
-    lblDesc.font = [UIFont fontWithName:@"Gotham Book" size:13.0f];
+    lblDesc.font = [UIFont smallTheme];
     lblDesc.textColor = [UIColor colorWithRed:117/255.0f green:117/255.0f blue:117/255.0f alpha:1.0f];
     lblDesc.lineBreakMode = NSLineBreakByWordWrapping;
     lblDesc.numberOfLines = 0;
@@ -835,14 +835,14 @@
         NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:strDescription];
         [str addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, strDescription.length)];
         [str addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:78/255.0f green:134/255.0f blue:38/255.0f alpha:1.0f] range:NSMakeRange(strDescription.length-strLihatSelengkapnya.length, strLihatSelengkapnya.length)];
-        [str addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Gotham Book" size:lblDesc.font.pointSize] range:NSMakeRange(0, strDescription.length)];
+        [str addAttribute:NSFontAttributeName value:[UIFont largeTheme] range:NSMakeRange(0, strDescription.length)];
         lblDesc.attributedText = str;
         [lblDesc addLinkToURL:[NSURL URLWithString:@""] withRange:range];
     }
     else {
         NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:strDescription];
         [str addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, strDescription.length)];
-        [str addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Gotham Book" size:lblDesc.font.pointSize] range:NSMakeRange(0, strDescription.length)];
+        [str addAttribute:NSFontAttributeName value:[UIFont largeTheme] range:NSMakeRange(0, strDescription.length)];
         lblDesc.attributedText = str;
         lblDesc.delegate = nil;
         [lblDesc addLinkToURL:[NSURL URLWithString:@""] withRange:NSMakeRange(0, 0)];
