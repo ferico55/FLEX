@@ -87,6 +87,12 @@ TokopediaNetworkManagerDelegate
     _fileUploaded = [NSMutableDictionary new];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    [TPAnalytics trackScreenName:@"Review Summary Page"];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }

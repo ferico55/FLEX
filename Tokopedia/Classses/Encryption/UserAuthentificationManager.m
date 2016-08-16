@@ -51,12 +51,6 @@
         } else {
             return [[_auth objectForKey:@"user_id"] stringValue];
         }
-    } else if ([_auth objectForKey:@"tmp_user_id"]){
-        if ([[_auth objectForKey:@"tmp_user_id"] isKindOfClass:[NSString class]]) {
-            return [_auth objectForKey:@"tmp_user_id"];
-        } else {
-            return [[_auth objectForKey:@"tmp_user_id"] stringValue];
-        }
     }
     return @"0";
 }

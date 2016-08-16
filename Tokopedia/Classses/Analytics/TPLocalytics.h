@@ -12,19 +12,13 @@
 #import "Product.h"
 #import "SearchAWS.h"
 
-typedef NS_ENUM(NSInteger, RegistrationPlatform) {
-    RegistrationPlatformFacebook,
-    RegistrationPlatformGoogle,
-    RegistrationPlatformEmail,
-};
-
 @interface TPLocalytics : NSObject
 
 + (void)trackCartView:(TransactionCartResult *)cart;
 + (void)trackAddToCart:(ProductDetail *)product;
 + (void)trackProductView:(Product *)product;
 
-+ (void)trackRegistrationWith:(RegistrationPlatform)platform success:(BOOL)success;
++ (void)trackRegistrationWithProvider:(NSString *)provider success:(BOOL)success;
 + (void)trackLoginStatus:(BOOL)status;
 + (void)trackScreenName:(NSString *)screenName;
 
