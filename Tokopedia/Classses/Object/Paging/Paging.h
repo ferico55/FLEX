@@ -10,7 +10,7 @@
 #define CUriNext @"uri_next"
 #define CUriPrevious @"uri_previous"
 
-@interface Paging : NSObject
+@interface Paging : NSObject <TKPObjectMapping>
 
 @property (strong, nonatomic) NSString *uri_next;
 @property (strong, nonatomic) NSString *uri_previous;
@@ -20,7 +20,5 @@
 
 - (void)encodeWithCoder:(NSCoder *)encoder;
 - (id)initWithCoder:(NSCoder *)decoder;
-
-+ (RKObjectMapping *)mapping;
 
 @end

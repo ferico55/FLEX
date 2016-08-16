@@ -17,4 +17,5 @@
 @property (nonatomic, strong) NSString *payment_default_status;
 
 +(RKObjectMapping*)mapping;
+
 @end

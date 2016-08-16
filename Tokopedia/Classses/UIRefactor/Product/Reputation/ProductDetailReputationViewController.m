@@ -160,6 +160,8 @@
     
     heightScreenView = self.view.bounds.size.height;
     constHeightViewContent.constant = heightScreenView;
+    
+    [TPAnalytics trackScreenName:@"Product Review Detail Page"];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

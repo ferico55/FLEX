@@ -21,4 +21,15 @@
     return formatter;
 }
 
++(NSNumberFormatter*)USDFormatter{
+    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    formatter.numberStyle = NSNumberFormatterCurrencyStyle;
+    formatter.currencyCode = @"US$";
+    formatter.currencyGroupingSeparator = @",";
+    formatter.currencyDecimalSeparator = @".";
+    formatter.maximumFractionDigits = 2;
+    formatter.minimumFractionDigits = 2;
+    return formatter;
+}
+
 @end

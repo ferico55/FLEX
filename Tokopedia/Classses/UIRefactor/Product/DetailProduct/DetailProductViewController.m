@@ -93,6 +93,7 @@
 #import "TPLocalytics.h"
 
 #import "Tokopedia-Swift.h"
+#import "NSNumberFormatter+IDRFormater.h"
 
 #pragma mark - CustomButton Expand Desc
 @interface CustomButtonExpandDesc : UIButton
@@ -1591,6 +1592,16 @@ OtherProductDelegate
             btnWishList.tag = 0;
             [[NSNotificationCenter defaultCenter] postNotificationName:kTKPDOBSERVER_WISHLIST object:nil];
             [self setRequestingAction:btnWishList isLoading:NO];
+            
+            NSNumber *price = [[NSNumberFormatter IDRFormarter] numberFromString:_product.data.info.price?:_product.data.info.product_price];
+            
+            [[AppsFlyerTracker sharedTracker] trackEvent:AFEventAddToWishlist withValues:@{
+                                                                                           AFEventParamPrice : price,
+                                                                                           AFEventParamContentType : @"Product",
+                                                                                           AFEventParamContentId : _product.data.info.product_id,
+                                                                                           AFEventParamCurrency : _product.data.info.product_currency?:@"IDR",
+                                                                                           AFEventParamQuantity : @(1)
+                                                                                           }];
         }
         else
         {
@@ -1865,6 +1876,7 @@ OtherProductDelegate
         //save response data to plist
         [operation.HTTPRequestOperation.responseData writeToFile:_cachepath atomically:YES];
         
+        [self trackProduct];
         [self requestprocess:object];
     }
 }
@@ -2021,9 +2033,7 @@ OtherProductDelegate
             }
             
             //Track in GA
-            [TPAnalytics trackProductView:_product.data.info];
-            [TPLocalytics trackProductView:_product];
-
+            
             _isnodata = NO;
             [_table reloadData];
             
@@ -2060,13 +2070,27 @@ OtherProductDelegate
             }
             
             // UIView below table view (View More Product button)
-            //TODO::
             CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height+100);
             UIView *backgroundGreyView = [[UIView alloc] initWithFrame:frame];
             backgroundGreyView.backgroundColor = [UIColor clearColor];
             [self.view insertSubview:backgroundGreyView belowSubview:self.table];
         }
     }
+}
+
+- (void)trackProduct {
+    [TPAnalytics trackProductView:_product.data.info];
+    [TPLocalytics trackProductView:_product];
+    
+    NSNumber *price = [[NSNumberFormatter IDRFormarter] numberFromString:_product.data.info.price?:_product.data.info.product_price];
+    
+    [[AppsFlyerTracker sharedTracker] trackEvent:AFEventContentView withValues:@{
+                                                                                 AFEventParamPrice : price,
+                                                                                 AFEventParamContentId : _product.data.info.product_id,
+                                                                                 AFEventParamCurrency : @"IDR",
+                                                                                 AFEventParamContentType : @"Product"
+                                                                                 }];
+
 }
 
 
@@ -2758,7 +2782,7 @@ OtherProductDelegate
         NSString *productId = _product.data.info.product_id?:@"";
         NSString *productName = _product.data.info.product_name?:@"";
         
-        NSArray *categories = [[_data objectForKey:@"product"] breadcrumb];
+        NSArray *categories = _product.data.breadcrumb;
         Breadcrumb *lastCategory = [categories objectAtIndex:categories.count - 1];
         NSString *productCategory = lastCategory.department_name?:@"";
         

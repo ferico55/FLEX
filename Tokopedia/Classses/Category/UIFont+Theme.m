@@ -8,10 +8,6 @@
 
 #import "UIFont+Theme.h"
 
-static CGFloat adjustedSize(CGFloat fontSize) {
-    return fontSize + ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad? 2: 0);
-}
-
 @implementation UIFont(Theme)
 
 + (UIFont *)mediumSystemFontOfSize:(CGFloat)size {
@@ -19,15 +15,11 @@ static CGFloat adjustedSize(CGFloat fontSize) {
         return [UIFont systemFontOfSize:size weight:UIFontWeightMedium];
     }
     
-    return [UIFont fontWithName:@"HelveticaNeue-Medium" size:adjustedSize(size)];
-}
-
-+ (UIFont *)normalSystemFontOfSize:(CGFloat)size {
-    return [UIFont systemFontOfSize:adjustedSize(size)];
+    return [UIFont fontWithName:@"HelveticaNeue-Medium" size:size];
 }
 
 + (UIFont *)title1Theme {
-    return [UIFont normalSystemFontOfSize:17];
+    return [UIFont systemFontOfSize:17];
 }
 
 + (UIFont *)title1ThemeMedium {
@@ -35,7 +27,7 @@ static CGFloat adjustedSize(CGFloat fontSize) {
 }
 
 + (UIFont *)title2Theme {
-    return [UIFont normalSystemFontOfSize:15];
+    return [UIFont systemFontOfSize:15];
 }
 
 + (UIFont *)title2ThemeMedium {
@@ -43,7 +35,7 @@ static CGFloat adjustedSize(CGFloat fontSize) {
 }
 
 + (UIFont *)largeTheme {
-    return [UIFont normalSystemFontOfSize:14];
+    return [UIFont systemFontOfSize:14];
 }
 
 + (UIFont *)largeThemeMedium {
@@ -51,7 +43,7 @@ static CGFloat adjustedSize(CGFloat fontSize) {
 }
 
 + (UIFont *)smallTheme {
-    return [UIFont normalSystemFontOfSize:13];
+    return [UIFont systemFontOfSize:13];
 }
 
 + (UIFont *)smallThemeMedium {
@@ -59,7 +51,7 @@ static CGFloat adjustedSize(CGFloat fontSize) {
 }
 
 + (UIFont *)microTheme {
-    return [UIFont normalSystemFontOfSize:12];
+    return [UIFont systemFontOfSize:12];
 }
 
 + (UIFont *)microThemeMedium {

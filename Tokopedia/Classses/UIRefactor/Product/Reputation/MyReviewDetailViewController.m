@@ -217,6 +217,12 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    [TPAnalytics trackScreenName:@"Inbox Review Detail Page"];
+}
+
 #pragma mark - GTM
 - (void)configureGTM {
     [TPAnalytics trackUserId];

@@ -9,33 +9,47 @@
 #import "OrderRejectExplanationViewController.h"
 #import "UITextView+UITextView_Placeholder.h"
 #import "TKPDTextView.h"
+#import <BlocksKit/BlocksKit.h>
+#import "UIBarButtonItem+BlocksKit.h"
+#import "RejectOrderRequest.h"
 
 @interface OrderRejectExplanationViewController ()
 
 @property (weak, nonatomic) IBOutlet TKPDTextView *textView;
-
+@property (strong, nonatomic) RejectOrderRequest* rejectOrderRequest;
 @end
 
 @implementation OrderRejectExplanationViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     self.title = @"Keterangan";
-
-    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
-                                                                     style:UIBarButtonItemStyleBordered
-                                                                    target:self
-                                                                    action:@selector(tap:)];
-    cancelButton.tag = 1;
-    self.navigationItem.leftBarButtonItem = cancelButton;
     
-    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Selesai"
-                                                                   style:UIBarButtonItemStyleDone
-                                                                  target:self
-                                                                  action:@selector(tap:)];
-    doneButton.tag = 2;
-    self.navigationItem.rightBarButtonItem = doneButton;
+    _rejectOrderRequest = [RejectOrderRequest new];
+    
+    __weak typeof(self) welf = self;
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] bk_initWithTitle:@"Selesai" style:UIBarButtonItemStyleDone handler:^(id sender) {
+        if (_textView.text.length == 0) {
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Keterangan harus diisi."] delegate:self];
+            [alert show];
+        } else {
+            [welf.rejectOrderRequest requestActionRejectOrderWithOrderId:welf.order.order_detail.detail_order_id
+                                                                  reason:_textView.text
+                                                              reasonCode:welf.reasonCode
+                                                               onSuccess:^(GeneralAction *result) {
+                                                                   if([result.data.is_success boolValue]){
+                                                                       [[NSNotificationCenter defaultCenter] postNotificationName:@"applyRejectOperation" object:nil];
+                                                                       [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                                                                   }else{
+                                                                       StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:result.message_error delegate:welf];
+                                                                       [alert show];
+                                                                   }
+                                                               } onFailure:^(NSError *error) {
+                                                                   StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Kendala koneksi internet"] delegate:welf];
+                                                                   [alert show];
+                                                               }];            
+        }
+    }];
 
     _textView.placeholder = @"Tulis Keterangan";
 }
@@ -48,26 +62,6 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-}
-
-#pragma mark - Actions
-
-- (IBAction)tap :(id)sender
-{
-    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
-        UIBarButtonItem *button = (UIBarButtonItem *)sender;
-        if (button.tag == 1) {
-            [self dismissViewControllerAnimated:YES completion:nil];
-        } else if (button.tag == 2) {
-            if (_textView.text.length == 0) {
-                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Keterangan harus diisi."] delegate:self];
-                [alert show];
-            } else {
-                [self.delegate didFinishWritingExplanation:_textView.text];
-                [self dismissViewControllerAnimated:YES completion:nil];
-            }
-        }
-    }
 }
 
 @end

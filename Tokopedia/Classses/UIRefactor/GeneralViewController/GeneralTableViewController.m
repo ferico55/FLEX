@@ -148,7 +148,7 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
             //NSLOG(@"thumb: %@", thumb);
-            [thumb setContentMode:UIViewContentModeCenter];
+            [thumb setContentMode:UIViewContentModeScaleAspectFit];
             [thumb setImage:image];
 #pragma clang diagnostic pop
         } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {

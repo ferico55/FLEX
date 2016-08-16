@@ -176,12 +176,6 @@
     
     // UA
     [TPAnalytics trackScreenName:@"Top Notification Center"];
-    
-    // GA
-    id tracker = [[GAI sharedInstance] defaultTracker];
-    [tracker setAllowIDFACollection:YES];
-    [tracker set:kGAIScreenName value:@"Top Notification Center"];
-    [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
 }
 
 - (void)didReceiveMemoryWarning {

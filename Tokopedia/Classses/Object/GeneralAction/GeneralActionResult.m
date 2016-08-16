@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 
+#import "GeneralAction.h"
+#import "ProductTalkDetailViewController.h"
 #import "GeneralActionResult.h"
 
 @implementation GeneralActionResult
@@ -19,4 +21,11 @@
     return generalActionResultMapping;
 }
 
++(RKObjectMapping *)generalMapping{
+    RKObjectMapping *generalActionResultMapping = [RKObjectMapping mappingForClass:[GeneralActionResult class]];
+    
+    [generalActionResultMapping addAttributeMappingsFromArray:@[@"is_success"]];
+    
+    return generalActionResultMapping;
+}
 @end

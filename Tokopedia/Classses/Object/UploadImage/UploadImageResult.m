@@ -19,7 +19,8 @@
                       @"pic_src",
                       @"file_name",
                       @"file_uploaded",
-                      @"is_success"];
+                      @"is_success",
+                      @"src"];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }
 
