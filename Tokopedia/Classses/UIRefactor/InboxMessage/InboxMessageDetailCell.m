@@ -162,7 +162,7 @@ static CGFloat messageTextSize = 17.0;
         ballonViewFrame = CGRectMake(self.frame.size.width - (textSize.width + 2*textMarginHorizontal), timeLabelFrame.size.height, textSize.width + 2*textMarginHorizontal, textSize.height + 2*textMarginVertical + 5.0f);
         
         
-        timeLabelFrame = CGRectMake(self.frame.size.width - dateSize.width - textMarginHorizontal, ballonViewFrame.size.height +5, dateSize.width, dateSize.height);
+        timeLabelFrame = CGRectMake(self.frame.size.width - dateSize.width - textMarginHorizontal, ballonViewFrame.size.height, dateSize.width, dateSize.height);
         
         messageLabelFrame = CGRectMake(self.frame.size.width - (textSize.width + textMarginHorizontal),  ballonViewFrame.origin.y + textMarginVertical, textSize.width, textSize.height);
         
@@ -188,7 +188,7 @@ static CGFloat messageTextSize = 17.0;
             ballonViewFrame.size.width = (_viewLabelUser.getLblText.frame.origin.x+widthUserLabel+(2*textMarginHorizontal));
         }
         
-        timeLabelFrame = CGRectMake(CXTimeLabel, ballonViewFrame.size.height +5 , dateSize.width, dateSize.height);
+        timeLabelFrame = CGRectMake(CXTimeLabel, ballonViewFrame.size.height , dateSize.width, dateSize.height);
         
         messageLabelFrame = CGRectMake(textMarginHorizontal + 55.0f, CHeightUserLabel + ballonViewFrame.origin.y + textMarginVertical, textSize.width, textSize.height);
         
