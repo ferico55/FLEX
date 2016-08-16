@@ -66,6 +66,7 @@
 
     #import "TPAnalytics.h"
     #import "TPLocalytics.h"
+    #import "Localytics.h"
     #import "UIViewController+TKPAdditions.h"
     #import "TKPStoreManager.h"
     #import "TKPMappingManager.h"
