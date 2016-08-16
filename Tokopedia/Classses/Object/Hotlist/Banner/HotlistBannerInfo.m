@@ -9,6 +9,11 @@
 #import "HotlistBannerInfo.h"
 
 @implementation HotlistBannerInfo
+
+-(NSString*) hotlist_description{
+    return [_hotlist_description kv_decodeHTMLCharacterEntities];
+}
+
 +(NSDictionary *)attributeMappingDictionary
 {
     NSArray *keys = @[
