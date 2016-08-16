@@ -42,7 +42,7 @@ static CKComponent *userLabel(DetailMyInboxReputation *inbox) {
                 [CKLabelComponent
                  newWithLabelAttributes:{
                      .string = role,
-                     .font = [UIFont fontWithName:@"Gotham Medium" size:11.0],
+                     .font = [UIFont microTheme],
                      .color = [UIColor whiteColor],
                      .alignment = NSTextAlignmentCenter
                      
@@ -76,7 +76,7 @@ static CKComponent *revieweeReputation(DetailMyInboxReputation *inbox, MyReviewD
                 }
                 backgroundImages:{}
                 titleFont:{
-                    [UIFont fontWithName:@"Gotham Book" size:11.0]
+                    [UIFont microTheme]
                 }
                 selected:NO
                 enabled:YES
@@ -116,7 +116,7 @@ static CKComponent *remainingTimeLeft(DetailMyInboxReputation *inbox, MyReviewDe
                         [CKLabelComponent
                          newWithLabelAttributes:{
                              .string = timeLeft,
-                             .font = [UIFont fontWithName:@"Gotham Book" size:14.0]
+                             .font = [UIFont largeTheme]
                          }
                          viewAttributes:{
                              {@selector(setBackgroundColor:), [UIColor clearColor]}
@@ -219,7 +219,7 @@ static CKComponent *remainingTimeLeft(DetailMyInboxReputation *inbox, MyReviewDe
                                                                                            [CKLabelComponent
                                                                                             newWithLabelAttributes:{
                                                                                                 .string = inbox.reviewee_name,
-                                                                                                .font = [UIFont fontWithName:@"Gotham Medium" size:14.0],
+                                                                                                .font = [UIFont smallThemeMedium],
                                                                                                 .maximumNumberOfLines = 1,
                                                                                                 .color = [UIColor colorWithRed:69/255.0 green:124/255.0 blue:16/255.0 alpha:1.0]
                                                                                             }
