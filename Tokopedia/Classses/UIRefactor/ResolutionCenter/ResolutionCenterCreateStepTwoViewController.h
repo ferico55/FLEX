@@ -15,5 +15,6 @@
 
 @property (strong, nonatomic) ResolutionCenterCreateData* formData;
 @property (strong, nonatomic) ResolutionCenterCreateResult* result;
+@property BOOL shouldFlushOptions;
 
 @end

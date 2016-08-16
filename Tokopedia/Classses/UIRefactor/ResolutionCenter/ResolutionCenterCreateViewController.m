@@ -79,7 +79,7 @@
     _pageController.delegate = self;
     
     _pageController.view.frame = _contentView.frame;
-    [_pageController setViewControllers:@[[self viewControllerAtIndex:0]]
+    [_pageController setViewControllers:@[[self viewControllerAtIndex:0 isGoingForward:NO]]
                               direction:UIPageViewControllerNavigationDirectionForward
                                animated:YES
                              completion:^(BOOL finished) {
@@ -116,7 +116,7 @@
         return nil;
     }else{
         _currentIndex--;
-        return [self viewControllerAtIndex:_currentIndex];
+        return [self viewControllerAtIndex:_currentIndex isGoingForward:NO];
     }
 }
 
@@ -125,7 +125,7 @@
         return nil;
     }else{
         _currentIndex++;
-        return [self viewControllerAtIndex:_currentIndex];
+        return [self viewControllerAtIndex:_currentIndex isGoingForward:YES];
     }
 }
 
@@ -140,7 +140,7 @@
     }
 }
 
--(UIViewController*)viewControllerAtIndex:(NSInteger)index{
+-(UIViewController*)viewControllerAtIndex:(NSInteger)index isGoingForward:(BOOL)isGoingForward{
     if(index == 0){
         [_firstButton setBackgroundColor:greenColor];
         [_progressBar setProgress:0 animated:YES];
@@ -148,6 +148,7 @@
     }else if(index == 1){
         [_secondButton setBackgroundColor:greenColor];
         [_progressBar setProgress:0.5 animated:YES];
+        _stepTwoViewController.shouldFlushOptions = isGoingForward;
         return _stepTwoViewController;
     }else if(index == 2){
         [_thirdButton setBackgroundColor:greenColor];
@@ -162,17 +163,21 @@
         [self.navigationController popViewControllerAnimated:YES];
     }else{
         _currentIndex--;
-        [_pageController setViewControllers:@[[self viewControllerAtIndex:_currentIndex]]
+        [_pageController setViewControllers:@[[self viewControllerAtIndex:_currentIndex isGoingForward:NO]]
                                   direction:UIPageViewControllerNavigationDirectionReverse
                                    animated:YES
                                  completion:nil];
     }
 }
 - (IBAction)didTapNextButton{
-    _currentIndex++;
-    [_pageController setViewControllers:@[[self viewControllerAtIndex:_currentIndex]]
-                              direction:UIPageViewControllerNavigationDirectionForward
-                               animated:YES
-                             completion:nil];
+    if(_currentIndex == 2){
+        
+    }else{
+        _currentIndex++;
+        [_pageController setViewControllers:@[[self viewControllerAtIndex:_currentIndex isGoingForward:YES]]
+                                  direction:UIPageViewControllerNavigationDirectionForward
+                                   animated:YES
+                                 completion:nil];
+    }
 }
 @end

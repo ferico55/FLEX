@@ -9,6 +9,14 @@
 #import "ResolutionCenterCreatePOSTRequest.h"
 
 @implementation ResolutionCenterCreatePOSTRequest
+-(instancetype)init{
+    self = [super init];
+    if(self){
+        _product_list = [NSMutableArray new];
+    }
+    return self;
+}
+
 +(RKObjectMapping *)mapping{
     RKObjectMapping *requestMapping = [RKObjectMapping mappingForClass:[ResolutionCenterCreatePOSTRequest class]];
     [requestMapping addAttributeMappingsFromArray:@[@"category_trouble_id", @"order_id"]];

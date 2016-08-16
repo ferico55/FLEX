@@ -14,6 +14,7 @@
     self = [super init];
     if(self){
         _selectedProduct = [NSMutableArray new];
+        _postObject = [[ResolutionCenterCreatePOSTRequest alloc]init];
     }
     return self;    
 }
@@ -31,4 +32,18 @@
     }];
     return result;
 }
+-(NSMutableArray*)generatePossibleTroubleListWithCategoryTroubleId:(NSString*)categoryTroubleId{
+    NSMutableArray *result = [NSMutableArray new];
+    [_formData.list_ts bk_each:^(id obj) {
+        ResolutionCenterCreateList* currentList = (ResolutionCenterCreateList*)obj;
+        if([currentList.category_trouble_id isEqualToString:categoryTroubleId]){
+            [currentList.trouble_list bk_each:^(id obj) {
+                ResolutionCenterCreateTroubleList* currentList = (ResolutionCenterCreateTroubleList*)obj;
+                [result addObject:currentList];
+            }];
+        }
+    }];
+    return result;
+}
+
 @end

@@ -142,6 +142,7 @@ ResolutionCenterChooseProblemDelegate
 
 #pragma mark - Choose Problem Delegate
 -(void)didSelectProblem:(ResolutionCenterCreateList *)selectedProblem{
+    _result.postObject.category_trouble_id = selectedProblem.category_trouble_id;
     if([selectedProblem.category_trouble_id isEqualToString:@"1"]){
         _shouldShowProblematicProduct = YES;
         [_problemButton setTitle:selectedProblem.category_trouble_text forState:UIControlStateNormal];
