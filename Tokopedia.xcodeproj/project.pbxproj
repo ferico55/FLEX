@@ -2452,6 +2452,7 @@
 		7A5898D41D534DC1006042E6 /* Tokopedia.xcworkspace in Resources */ = {isa = PBXBuildFile; fileRef = 7A588F4B1D534DB7006042E6 /* Tokopedia.xcworkspace */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
+		7AB5D54F1D63233D00F82421 /* icon_DM.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AB5D54E1D63233D00F82421 /* icon_DM.png */; };
 		7ACE9C541BB00956006C4BB7 /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */; };
 		7ACE9C551BB00956006C4BB7 /* FBAudienceNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C4F1BB00956006C4BB7 /* FBAudienceNetwork.framework */; };
 		7ACE9C581BB00956006C4BB7 /* FBSDKMessengerShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */; };
@@ -6107,7 +6108,7 @@
 		7A588F4B1D534DB7006042E6 /* Tokopedia.xcworkspace */ = {isa = PBXFileReference; lastKnownFileType = wrapper.workspace; path = Tokopedia.xcworkspace; sourceTree = "<group>"; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
-		7AB5D54C1D6172D800F82421 /* icon_arrow_down_black.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_arrow_down_black.png; sourceTree = "<group>"; };
+		7AB5D54E1D63233D00F82421 /* icon_DM.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_DM.png; sourceTree = "<group>"; };
 		7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FacebookSDKStrings.bundle; sourceTree = "<group>"; };
 		7ACE9C4F1BB00956006C4BB7 /* FBAudienceNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBAudienceNetwork.framework; sourceTree = "<group>"; };
 		7ACE9C521BB00956006C4BB7 /* FBSDKMessengerShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKMessengerShareKit.framework; sourceTree = "<group>"; };
@@ -11224,7 +11225,7 @@
 		7A588BC81D534DB2006042E6 /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				7AB5D54C1D6172D800F82421 /* icon_arrow_down_black.png */,
+				7AB5D54E1D63233D00F82421 /* icon_DM.png */,
 				7A588BC91D534DB2006042E6 /* activate_push_1.png */,
 				7A588BCA1D534DB2006042E6 /* activate_push_1@2x.png */,
 				7A588BCB1D534DB2006042E6 /* activate_push_1@3x.png */,
@@ -12746,6 +12747,7 @@
 				7A5896711D534DBE006042E6 /* icon_countdown@3x.png in Resources */,
 				7A5894271D534DBB006042E6 /* SubmitShipmentConfirmationViewController.xib in Resources */,
 				7A5897631D534DBF006042E6 /* icon_sad_grey.png in Resources */,
+				7AB5D54F1D63233D00F82421 /* icon_DM.png in Resources */,
 				7A58981B1D534DC0006042E6 /* loyalMerchant@3x.png in Resources */,
 				7A5896EF1D534DBE006042E6 /* icon_netral.png in Resources */,
 				7A5894571D534DBB006042E6 /* SettingBankNameCell.xib in Resources */,

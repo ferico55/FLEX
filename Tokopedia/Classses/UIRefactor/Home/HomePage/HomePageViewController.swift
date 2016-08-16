@@ -51,9 +51,8 @@ class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDele
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
-        self.view .addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard)))
+
+        self.collectionView.keyboardDismissMode = .Interactive
         self.categoryDataSource = CategoryDataSource()
         self.categoryDataSource.delegate = self
         
@@ -250,7 +249,7 @@ class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDele
         let bannersStore = HomePageViewController.self.TKP_rootController().storeManager().homeBannerStore
         bannersStore.fetchMiniSlideWithCompletion({[weak self] (slide, error) in
             if slide != nil {
-                self!.digitalGoodsSwipeView = SwipeView(frame: CGRectMake(0, 0, self!.screenWidth, 120.0))
+                self!.digitalGoodsSwipeView = SwipeView(frame: CGRectMake(0, 0, self!.screenWidth, 92.0))
                 self!.digitalGoodsDataSource = DigitalGoodsDataSource(goods: slide, swipeView: self!.digitalGoodsSwipeView)
                 self!.digitalGoodsSwipeView.backgroundColor = UIColor(red: (242/255.0), green: (242/255.0), blue: (242/255.0), alpha: 1)
                 self!.digitalGoodsSwipeView.dataSource = self!.digitalGoodsDataSource
@@ -263,7 +262,7 @@ class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDele
                 
                 
                 self?.digitalGoodsSwipeView.mas_makeConstraints { make in
-                    make.height.equalTo()(120)
+                    make.height.equalTo()(92)
                     make.top.equalTo()(self?.miniSliderPlaceholder.mas_top)
                     make.left.equalTo()(self?.miniSliderPlaceholder.mas_left)
                     make.right.equalTo()(self?.miniSliderPlaceholder.mas_right)
