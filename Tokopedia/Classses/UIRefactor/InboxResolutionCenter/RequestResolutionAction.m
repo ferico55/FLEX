@@ -309,13 +309,14 @@ static failedCompletionBlock failedRequest;
 }
 
 +(void)fetchPossibleSolutionWithPossibleTroubleObject:(ResolutionCenterCreatePOSTRequest*)possibleTrouble{
+    NSString *path = @"get_form_solution.pl";
     RKRequestDescriptor *requestDescriptor = [RKRequestDescriptor requestDescriptorWithMapping:[[ResolutionCenterCreatePOSTRequest mapping] inverseMapping]
                                                                                    objectClass:[ResolutionCenterCreatePOSTRequest class]
-                                                                                   rootKeyPath:@"get_form_solution_query"
+                                                                                   rootKeyPath:path
                                                                                         method:RKRequestMethodPOST];
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[ResolutionAction mapping]
                                                                                             method:RKRequestMethodPOST
-                                                                                       pathPattern:@"get_form_solution_query"
+                                                                                       pathPattern:path
                                                                                            keyPath:nil
                                                                                        statusCodes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(200, 100)]];
     
@@ -323,7 +324,7 @@ static failedCompletionBlock failedRequest;
     [objectManager addRequestDescriptor:requestDescriptor];
     [objectManager addResponseDescriptor:responseDescriptor];
     [objectManager postObject:possibleTrouble
-                         path:@"get_form_solution_query"
+                         path:path
                    parameters:@{}
                       success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
                           
@@ -333,6 +334,43 @@ static failedCompletionBlock failedRequest;
                       }];
     
 }
+
++(void)createResolutionValidationWithOrderId:(NSString*)orderId
+                                      photos:(NSArray<ImageResult*>*)photos
+                                refundAmount:(NSString*)refundAmount
+                                    serverId:(NSString*)serverId
+                                    solution:(NSString*)solution
+                                flagReceived:(NSString*)flagReceived
+                           categoryTroubleId:(NSString*)categoryTroubleId
+                           possibleTroubleId:(NSString*)possibleTroubleId{
+    NSMutableArray *filePathPhotos = [NSMutableArray new];
+    for (ImageResult *imageResult in photos) {
+        [filePathPhotos addObject:imageResult.file_path?:@""];
+    }
+    NSString *photo = [[[filePathPhotos copy] valueForKey:@"description"]componentsJoinedByString:@"~"];
+    
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    [networkManager requestWithBaseUrl:[NSString v4Url]
+                                  path:@"get_resolution_validation_new"
+                                method:RKRequestMethodPOST
+                             parameter:@{@"order_id":orderId,
+                                         @"photos":photo,
+                                         @"refund_amount":refundAmount,
+                                         @"server_id":serverId,
+                                         @"solution":solution,
+                                         @"flag_received":flagReceived,
+                                         @"category_trouble_id":categoryTroubleId,
+                                         @"trouble_id":possibleTroubleId
+                                         }
+                               mapping:nil
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                 
+                             }
+                             onFailure:^(NSError *errorResult) {
+                                 
+                             }];
+}
+
 
 #pragma mark - Request Resolution Reply
 
