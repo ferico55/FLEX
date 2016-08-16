@@ -24,4 +24,6 @@
 
 -(NSString *)priceFromStringIDR;
 
++ (NSString *)joinStringsWithBullets:(NSArray *)strings;
+
 @end

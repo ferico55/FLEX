@@ -28,6 +28,9 @@
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data"
                                                                             toKeyPath:@"data"
                                                                           withMapping:[TransactionActionResult mapping]]];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"errors"
+                                                                            toKeyPath:@"errors"
+                                                                          withMapping:[Errors mapping]]];
     return mapping;
     
 }

@@ -838,6 +838,7 @@ typedef enum
     [self pushLocalyticsData];
     
     [TPAnalytics trackAddToCart:_selectedProduct];
+    [TPLocalytics trackAddToCart:_selectedProduct];
     
     if (self.isSnapSearchProduct) {
         [TPAnalytics trackSnapSearchAddToCart:_selectedProduct];

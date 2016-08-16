@@ -20,6 +20,7 @@
 #import "SecurityAnswer.h"
 #import "StickyAlertView.h"
 #import "UIView+HVDLayout.h"
+#import "CustomNotificationView.h"
 
 #import <QuartzCore/QuartzCore.h>
 #import <EAIntroView/EAIntroView.h>
@@ -68,3 +69,4 @@
 #import "TKPObjectMapping.h"
 #import "WholesalePrice.h"
 #import "Breadcrumb.h"
+#import "UIView+BlocksKit.h"
