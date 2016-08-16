@@ -267,6 +267,7 @@ static CGFloat messageTextSize = 17.0;
     UIFont *font = [UIFont largeTheme];
     
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    style.lineSpacing = 5;
     style.alignment = NSTextAlignmentLeft;
     
     NSDictionary *attributes = @{NSForegroundColorAttributeName: isLoggedInUser ? [UIColor whiteColor] : [UIColor blackColor],
