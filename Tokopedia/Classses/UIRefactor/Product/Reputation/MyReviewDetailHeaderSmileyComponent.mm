@@ -19,7 +19,7 @@ static CKComponent* revieweeEditedLabel(DetailMyInboxReputation *inbox) {
     return [CKLabelComponent
             newWithLabelAttributes:{
                 .string = @"(diubah)",
-                .font = [UIFont fontWithName:@"Gotham Book" size:12.0],
+                .font = [UIFont microTheme],
                 .color = [UIColor colorWithWhite:177.0/255 alpha:1.0]
             }
             viewAttributes:{}
@@ -34,7 +34,7 @@ static CKComponent* reviewerEditedLabel(DetailMyInboxReputation *inbox) {
     return [CKLabelComponent
             newWithLabelAttributes:{
                 .string = @"(diubah)",
-                .font = [UIFont fontWithName:@"Gotham Book" size:12.0],
+                .font = [UIFont microTheme],
                 .color = [UIColor colorWithWhite:177.0/255 alpha:1.0]
             }
             viewAttributes:{}
@@ -62,7 +62,7 @@ static CKComponent* giveReviewLabel(DetailMyInboxReputation *inbox) {
     return [CKLabelComponent
             newWithLabelAttributes:{
                 .string = label,
-                .font = [UIFont fontWithName:@"Gotham Medium" size:14.0]
+                .font = [UIFont largeThemeMedium]
             }
             viewAttributes:{
                 {@selector(setBackgroundColor:), [UIColor clearColor]}
@@ -104,7 +104,7 @@ static CKComponent* score(DetailMyInboxReputation *inbox, MyReviewDetailContext 
                                                     [CKLabelComponent
                                                      newWithLabelAttributes:{
                                                          .string = @"Terkunci",
-                                                         .font = [UIFont fontWithName:@"Gotham Medium" size:12.0]
+                                                         .font = [UIFont microThemeMedium]
                                                      }
                                                      viewAttributes:{}
                                                      size:{}]
@@ -134,7 +134,7 @@ static CKComponent* score(DetailMyInboxReputation *inbox, MyReviewDetailContext 
                                                      [CKLabelComponent
                                                       newWithLabelAttributes:{
                                                           .string = @"Tidak Puas",
-                                                          .font = [UIFont fontWithName:@"Gotham Book" size:12.0]
+                                                          .font = [UIFont microTheme]
                                                       }
                                                       viewAttributes:{
                                                       {@selector(setBackgroundColor:), [UIColor clearColor]}
@@ -161,7 +161,7 @@ static CKComponent* score(DetailMyInboxReputation *inbox, MyReviewDetailContext 
                                                  [CKLabelComponent
                                                   newWithLabelAttributes:{
                                                       .string = @"Tidak Puas",
-                                                      .font = [UIFont fontWithName:@"Gotham Medium" size:12.0]
+                                                      .font = [UIFont microThemeMedium]
                                                   }
                                                   viewAttributes:{}
                                                   size:{}]
@@ -191,7 +191,7 @@ static CKComponent* score(DetailMyInboxReputation *inbox, MyReviewDetailContext 
                                                          [CKLabelComponent
                                                           newWithLabelAttributes:{
                                                               .string = @"Netral",
-                                                              .font = [UIFont fontWithName:@"Gotham Book" size:12.0]
+                                                              .font = [UIFont microTheme]
                                                           }
                                                           viewAttributes:{
                                                           {@selector(setBackgroundColor:), [UIColor clearColor]}
@@ -218,7 +218,7 @@ static CKComponent* score(DetailMyInboxReputation *inbox, MyReviewDetailContext 
                                                      [CKLabelComponent
                                                       newWithLabelAttributes:{
                                                           .string = @"Netral",
-                                                          .font = [UIFont fontWithName:@"Gotham Medium" size:12.0]
+                                                          .font = [UIFont microThemeMedium]
                                                       }
                                                       viewAttributes:{}
                                                       size:{}]
@@ -248,7 +248,7 @@ static CKComponent* score(DetailMyInboxReputation *inbox, MyReviewDetailContext 
                                                        [CKLabelComponent
                                                         newWithLabelAttributes:{
                                                             .string = @"Puas",
-                                                            .font = [UIFont fontWithName:@"Gotham Book" size:12.0]
+                                                            .font = [UIFont microTheme]
                                                         }
                                                         viewAttributes:{
                                                             {@selector(setBackgroundColor:), [UIColor clearColor]}
@@ -275,7 +275,7 @@ static CKComponent* score(DetailMyInboxReputation *inbox, MyReviewDetailContext 
                                                    [CKLabelComponent
                                                     newWithLabelAttributes:{
                                                         .string = @"Puas",
-                                                        .font = [UIFont fontWithName:@"Gotham Medium" size:12.0]
+                                                        .font = [UIFont microThemeMedium]
                                                     }
                                                     viewAttributes:{}
                                                     size:{}]
@@ -387,7 +387,7 @@ static CKComponent *myScore(DetailMyInboxReputation *inbox, MyReviewDetailContex
                              [CKLabelComponent
                               newWithLabelAttributes:{
                                   .string = @"Nilai Untuk Anda:",
-                                  .font = [UIFont fontWithName:@"Gotham Book" size:14.0]
+                                  .font = [UIFont largeTheme]
                               }
                               viewAttributes:{}
                               size:{}]
