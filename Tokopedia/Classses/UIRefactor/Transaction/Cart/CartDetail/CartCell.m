@@ -133,20 +133,6 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
-//    NSString *error1 = ([cart.cart_error_message_1 isEqualToString:@"0"] || !(cart.cart_error_message_1))?@"":cart.cart_error_message_1;
-//    NSString *error2 = ([cart.cart_error_message_2 isEqualToString:@"0"] || !(cart.cart_error_message_2))?@"":cart.cart_error_message_2;
-//    cell.textLabel.font = FONT_DEFAULT_CELL_TKPD;
-//    
-//    NSString *string = [NSString stringWithFormat:@"%@\n%@",error1, error2];
-//    [cell.textLabel setCustomAttributedText:string];
-//    cell.textLabel.numberOfLines = 0;
-//    cell.textLabel.textColor = [UIColor redColor];
-//    
-//    cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
-//    
-//    cell.clipsToBounds = YES;
-//    cell.contentView.clipsToBounds = YES;
-    
     return cell;
 }
 @end
