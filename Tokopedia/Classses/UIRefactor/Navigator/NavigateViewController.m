@@ -279,9 +279,7 @@
 
 -(void)navigateToInboxReviewFromViewController:(UIViewController *)viewController
 {
-    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
-    NSDictionary *auth = [secureStorage keychainDictionary];
-    auth = [auth mutableCopy];
+    UserAuthentificationManager *auth = [UserAuthentificationManager new];
     
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
 //        InboxReviewSplitViewController *controller = [InboxReviewSplitViewController new];
@@ -298,7 +296,7 @@
         SegmentedReviewReputationViewController *segmentedReputationViewController = [SegmentedReviewReputationViewController new];
         segmentedReputationViewController.hidesBottomBarWhenPushed = YES;
         segmentedReputationViewController.selectedIndex = CTagSemuaReview;
-        segmentedReputationViewController.userHasShop = ([auth objectForKey:@"shop_id"] && [[auth objectForKey:@"shop_id"] integerValue] > 0);
+        segmentedReputationViewController.userHasShop = [auth userHasShop];
         [viewController.navigationController pushViewController:segmentedReputationViewController animated:YES];
         
         
