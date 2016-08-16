@@ -13,6 +13,7 @@
 #import "RequestUploadImage.h"
 #import "StickyAlertView+NetworkErrorHandler.h"
 #import "UploadImageHelper.h"
+#import "ResolutionCenterCreatePOSTRequest.h"
 
 typedef void (^failedCompletionBlock)(NSError *error);
 
@@ -305,6 +306,32 @@ static failedCompletionBlock failedRequest;
             }];
         }];
     }
+}
+
++(void)fetchPossibleSolutionWithPossibleTroubleObject:(ResolutionCenterCreatePOSTRequest*)possibleTrouble{
+    RKRequestDescriptor *requestDescriptor = [RKRequestDescriptor requestDescriptorWithMapping:[[ResolutionCenterCreatePOSTRequest mapping] inverseMapping]
+                                                                                   objectClass:[ResolutionCenterCreatePOSTRequest class]
+                                                                                   rootKeyPath:@"get_form_solution_query"
+                                                                                        method:RKRequestMethodPOST];
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[ResolutionAction mapping]
+                                                                                            method:RKRequestMethodPOST
+                                                                                       pathPattern:@"get_form_solution_query"
+                                                                                           keyPath:nil
+                                                                                       statusCodes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(200, 100)]];
+    
+    RKObjectManager *objectManager = [RKObjectManager sharedManager];
+    [objectManager addRequestDescriptor:requestDescriptor];
+    [objectManager addResponseDescriptor:responseDescriptor];
+    [objectManager postObject:possibleTrouble
+                         path:@"get_form_solution_query"
+                   parameters:@{}
+                      success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+                          
+                      }
+                      failure:^(RKObjectRequestOperation *operation, NSError *error) {
+                          
+                      }];
+    
 }
 
 #pragma mark - Request Resolution Reply

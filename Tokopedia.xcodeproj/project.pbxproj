@@ -2416,6 +2416,8 @@
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
 		85C494BF1AD790DD008A314A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BE1AD790DD008A314A /* libz.dylib */; };
 		85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494C01AD790E4008A314A /* CoreData.framework */; };
+		BB0D30CF1D61AE6B0053EC98 /* ResolutionCenterCreatePOSTRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = BB0D30CE1D61AE6B0053EC98 /* ResolutionCenterCreatePOSTRequest.m */; };
+		BB0D30D21D61AF280053EC98 /* ResolutionCenterCreatePOSTProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = BB0D30D11D61AF280053EC98 /* ResolutionCenterCreatePOSTProduct.m */; };
 		BB20194F1D534321001673D9 /* ResolutionCenterCreateStepTwoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BB20194D1D534321001673D9 /* ResolutionCenterCreateStepTwoCell.m */; };
 		BB2019501D534321001673D9 /* ResolutionCenterCreateStepTwoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB20194E1D534321001673D9 /* ResolutionCenterCreateStepTwoCell.xib */; };
 		BB593B221D51C61A0027C73E /* ResolutionCenterCreateStepOneCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BB593B201D51C61A0027C73E /* ResolutionCenterCreateStepOneCell.m */; };
@@ -6038,6 +6040,10 @@
 		85C494BE1AD790DD008A314A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		85C494C01AD790E4008A314A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		AAA12C6A69BF6CB5F8EE3287 /* Pods-Tokopedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug.xcconfig"; sourceTree = "<group>"; };
+		BB0D30CD1D61AE6B0053EC98 /* ResolutionCenterCreatePOSTRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionCenterCreatePOSTRequest.h; sourceTree = "<group>"; };
+		BB0D30CE1D61AE6B0053EC98 /* ResolutionCenterCreatePOSTRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionCenterCreatePOSTRequest.m; sourceTree = "<group>"; };
+		BB0D30D01D61AF270053EC98 /* ResolutionCenterCreatePOSTProduct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionCenterCreatePOSTProduct.h; sourceTree = "<group>"; };
+		BB0D30D11D61AF280053EC98 /* ResolutionCenterCreatePOSTProduct.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionCenterCreatePOSTProduct.m; sourceTree = "<group>"; };
 		BB20194C1D534321001673D9 /* ResolutionCenterCreateStepTwoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionCenterCreateStepTwoCell.h; sourceTree = "<group>"; };
 		BB20194D1D534321001673D9 /* ResolutionCenterCreateStepTwoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionCenterCreateStepTwoCell.m; sourceTree = "<group>"; };
 		BB20194E1D534321001673D9 /* ResolutionCenterCreateStepTwoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ResolutionCenterCreateStepTwoCell.xib; sourceTree = "<group>"; };
@@ -12200,6 +12206,10 @@
 				BB20194E1D534321001673D9 /* ResolutionCenterCreateStepTwoCell.xib */,
 				BBEA11251D547C5000626AD3 /* ResolutionCenterCreateResult.h */,
 				BBEA11261D547C5000626AD3 /* ResolutionCenterCreateResult.m */,
+				BB0D30CD1D61AE6B0053EC98 /* ResolutionCenterCreatePOSTRequest.h */,
+				BB0D30CE1D61AE6B0053EC98 /* ResolutionCenterCreatePOSTRequest.m */,
+				BB0D30D01D61AF270053EC98 /* ResolutionCenterCreatePOSTProduct.h */,
+				BB0D30D11D61AF280053EC98 /* ResolutionCenterCreatePOSTProduct.m */,
 			);
 			path = ResolutionCenter;
 			sourceTree = "<group>";
@@ -14034,6 +14044,7 @@
 				454856001D4B0A3F001B10CD /* NSStringCategory.m in Sources */,
 				4548573D1D4B0A3F001B10CD /* PromoCategory.m in Sources */,
 				454857371D4B0A3F001B10CD /* NotificationForm.m in Sources */,
+				BB0D30CF1D61AE6B0053EC98 /* ResolutionCenterCreatePOSTRequest.m in Sources */,
 				45485B3C1D4B0A3F001B10CD /* TKPMapView.swift in Sources */,
 				4548576A1D4B0A3F001B10CD /* ImageSearchResponseData.m in Sources */,
 				45485AE11D4B0A3F001B10CD /* OpenShopSuccessViewController.swift in Sources */,
@@ -14662,6 +14673,7 @@
 				4548580D1D4B0A3F001B10CD /* OrderDetailForm.m in Sources */,
 				454857FD1D4B0A3F001B10CD /* TransactionVoucherResult.m in Sources */,
 				454855FA1D4B0A3F001B10CD /* NSData+Encryption.m in Sources */,
+				BB0D30D21D61AF280053EC98 /* ResolutionCenterCreatePOSTProduct.m in Sources */,
 				454858D21D4B0A3F001B10CD /* ContactUsFormDataManager.m in Sources */,
 				454856491D4B0A3F001B10CD /* CategoryDetail.swift in Sources */,
 				454857911D4B0A3F001B10CD /* NoteDetailResult.swift in Sources */,

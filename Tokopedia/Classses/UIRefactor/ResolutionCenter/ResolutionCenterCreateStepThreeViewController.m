@@ -144,7 +144,7 @@
     if (_selectedImages.count<_uploadButtons.count) {
         UIButton *uploadedButton = (UIButton*)_uploadButtons[_selectedImages.count];
         uploadedButton.hidden = NO;
-        _scrollViewUploadPhoto.contentSize = CGSizeMake(uploadedButton.frame.origin.x+uploadedButton.frame.size.width+30, 0);
+        _scrollViewUploadPhoto.contentSize = CGSizeMake(uploadedButton.frame.origin.x+uploadedButton.frame.size.width*_selectedImages.count, 0);
     }
 }
 - (IBAction)cancelButtonTapped:(id)sender {
