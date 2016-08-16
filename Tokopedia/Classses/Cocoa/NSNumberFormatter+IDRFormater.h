@@ -10,7 +10,7 @@
 
 @interface NSNumberFormatter (IDRFormater)
 
-+(NSNumberFormatter*)IDRFormarter;
++(NSNumberFormatter*)IDRFormatter;
 +(NSNumberFormatter*)USDFormatter;
 
 @end

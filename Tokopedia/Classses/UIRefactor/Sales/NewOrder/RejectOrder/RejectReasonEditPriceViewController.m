@@ -196,7 +196,7 @@
                                                            
                                                            NSString *formattedPrice;
                                                            if(currencyIndex == IDR){
-                                                               formattedPrice = [[NSNumberFormatter IDRFormarter] stringFromNumber:[self numberWithString:_priceTextField.text]];
+                                                               formattedPrice = [[NSNumberFormatter IDRFormatter] stringFromNumber:[self numberWithString:_priceTextField.text]];
                                                            }else{
                                                                formattedPrice = [[NSNumberFormatter USDFormatter] stringFromNumber:[self numberWithString:_priceTextField.text]];
                                                            }

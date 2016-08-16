@@ -9,21 +9,34 @@
 import UIKit
 
 @objc class CategoryDetail: NSObject, NSCopying {
-
+    //MARK : Use categoryId rather than d_id or department_id
+    var categoryId : String = String()
     var d_id :String = String() {
         didSet {
             categoryId = d_id
         }
     }
-    //MARK : Use categoryId rather than d_id
-    var categoryId : String = String()
+    var department_id :String = String(){
+        didSet {
+            categoryId = department_id
+        }
+    }
+    //
+    
+    //MARK : Use name rather than title or department_name
+    var name: String = String()
     var title :String = String(){
         didSet {
             name = title
         }
     }
-    //MARK : Use name rather than title
-    var name: String = String() 
+    var department_name :String = String(){
+        didSet {
+            name = department_name
+        }
+    }
+    //
+    
     var weight : String = String()
     var parent: String = String()
     var tree :String = String()
@@ -76,16 +89,18 @@ import UIKit
     }
     
     private class func attributeMappingDictionary() -> [NSObject : AnyObject]! {
-        return ["name":"name",
-                "weight":"weight",
-                "parent":"parent",
-                "tree":"tree",
-                "has_catalog":"has_catalog",
-                "identifer":"identifer",
-                "url":"url",
-                "id":"categoryId",
-                "d_id" : "d_id",
-                "title":"title"
+        return ["name"          :"name",
+                "weight"        :"weight",
+                "parent"        :"parent",
+                "tree"          :"tree",
+                "has_catalog"   :"has_catalog",
+                "identifer"     :"identifer",
+                "url"           :"url",
+                "id"            :"categoryId",
+                "d_id"          :"d_id",
+                "title"         :"title",
+                "department_name":"department_name",
+                "department_id":"department_id"
         ]
     }
     

@@ -15,6 +15,10 @@ class ProductEditImages: NSObject {
     var image_status: String = ""
     var image_primary: String = ""
     var image_src_300: String = ""
+    var image : UIImage = UIImage()
+    var fileUploaded : String = ""
+    var asset : DKAsset?
+    var isFromAsset : Bool = false
     
     static func mapping() -> RKObjectMapping! {
         let mapping = RKObjectMapping(forClass: self)

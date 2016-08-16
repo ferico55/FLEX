@@ -121,7 +121,7 @@
     
     NSString * partialString = [[tempPartialStringList valueForKey:@"description"] componentsJoinedByString:@"*~*"];
     NSString *saldoWithIDR = [NSString stringWithFormat:@"Rp %@",saldo];
-    NSNumber *deposit = [[NSNumberFormatter IDRFormarter] numberFromString:saldoWithIDR];
+    NSNumber *deposit = [[NSNumberFormatter IDRFormatter] numberFromString:saldoWithIDR];
     
     NSString *usedSaldo = @"0";
     if (isUsingSaldo) {

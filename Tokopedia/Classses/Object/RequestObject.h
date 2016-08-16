@@ -46,6 +46,7 @@
 @property (nonatomic, strong) NSString *payment_id;
 @property (nonatomic, strong) NSString *action;
 @property (nonatomic, strong) NSString *server_id;
+@property (nonatomic, strong) NSString *product_id;
 @property (nonatomic, strong) NSString *web_service;
 
 @property (nonatomic, strong) NSString *logo;

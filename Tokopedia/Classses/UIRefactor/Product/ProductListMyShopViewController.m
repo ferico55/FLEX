@@ -299,11 +299,7 @@ NoResultDelegate
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         if ([sender tag] == 11) {
             ProductAddEditViewController *vc = [ProductAddEditViewController new];
-            vc.data = @{
-                        kTKPD_AUTHKEY                   : [_data objectForKey:kTKPD_AUTHKEY]?:@{},
-                        DATA_TYPE_ADD_EDIT_PRODUCT_KEY  : @(TYPE_ADD_EDIT_PRODUCT_ADD),
-                        };
-            
+            vc.type = TYPE_ADD_EDIT_PRODUCT_ADD;
             UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
             nav.navigationBar.translucent = NO;
             
@@ -430,7 +426,7 @@ NoResultDelegate
 - (NSDictionary *)parameters {
     NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
     NSInteger shopID = [[auth objectForKey:kTKPD_SHOPIDKEY]integerValue];
-    NSString *orderByID = [_dataFilter objectForKey:kTKPDFILTER_APIORDERBYKEY]?:@"";
+    NSString *orderByID = [_dataFilter objectForKey:kTKPDFILTER_APIORDERBYKEY]?:[self defaultOrderByValue];
     NSString *etalase = [_dataFilter objectForKey:API_PRODUCT_ETALASE_ID_KEY]?:@"";
     NSString *keyword = [_dataFilter objectForKey:API_KEYWORD_KEY]?:@"";
     
@@ -454,6 +450,10 @@ NoResultDelegate
                                  @"keyword": keyword,
                                  };
     return parameters;
+}
+
+-(NSString*)defaultOrderByValue{
+    return @"1";
 }
 
 -(void)pressRetryButton {
@@ -680,13 +680,8 @@ NoResultDelegate
                                                   callback:^BOOL(MGSwipeTableCell *sender) {
                                                       ManageProductList *list = _products[indexPath.row];
                                                       ProductAddEditViewController *controller = [ProductAddEditViewController new];
-                                                      controller.data = @{
-                                                                          kTKPDDETAIL_APIPRODUCTIDKEY: @(list.product_id),
-                                                                          kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY]?:@{},
-                                                                          DATA_PRODUCT_DETAIL_KEY: list,
-                                                                          DATA_TYPE_ADD_EDIT_PRODUCT_KEY: @(TYPE_ADD_EDIT_PRODUCT_COPY),
-                                                                          DATA_IS_GOLD_MERCHANT: @(0) //TODO:: Change Value
-                                                                          };
+                                                      controller.type = TYPE_ADD_EDIT_PRODUCT_COPY;
+                                                      controller.productID = [NSString stringWithFormat:@"%zd", list.product_id];
                                                       UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:controller];
                                                       navigation.navigationBar.translucent = NO;
                                                       [self.navigationController presentViewController:navigation animated:YES completion:nil];
@@ -764,11 +759,7 @@ NoResultDelegate
 #pragma mark - NoResult Delegate
 - (void)buttonDidTapped:(id)sender{
     ProductAddEditViewController *vc = [ProductAddEditViewController new];
-    vc.data = @{
-                kTKPD_AUTHKEY                   : [_data objectForKey:kTKPD_AUTHKEY]?:@{},
-                DATA_TYPE_ADD_EDIT_PRODUCT_KEY  : @(TYPE_ADD_EDIT_PRODUCT_ADD),
-                };
-    
+    vc.type = TYPE_ADD_EDIT_PRODUCT_ADD;
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
     nav.navigationBar.translucent = NO;
     
