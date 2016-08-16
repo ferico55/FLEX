@@ -103,7 +103,7 @@ NoResultDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 124;
+    return 80;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -143,14 +143,6 @@ NoResultDelegate
     if ([ticket.ticket_read_status isEqualToString:@"1"]) {
         cell.titleLabel.font = [UIFont fontWithName:@"GothamMedium" size:14];
     }
-    
-    NSInteger totalMessages = [ticket.ticket_total_message integerValue];
-    NSString *totalMessageString = [NSString stringWithFormat:@"%d", totalMessages];
-    [cell.ticketTotalMessageButton setTitle:totalMessageString forState:UIControlStateNormal];
-    
-    NSMutableArray *users = [NSMutableArray arrayWithArray:@[ticket.ticket_first_message_name]];
-    [users addObjectsFromArray:ticket.ticket_user_involve];
-    cell.userInvolvedNameLabel.text = [[users valueForKey:@"description"] componentsJoinedByString:@", "];
     
     cell.selectionStyle = UITableViewCellSelectionStyleGray;
     return cell;

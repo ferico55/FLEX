@@ -25,6 +25,10 @@
 #import "OrderBookingData.h"
 #import "OrderBookingResponse.h"
 #import "AlertShipmentCodeView.h"
+#import "RejectReasonViewController.h"
+
+#import <BlocksKit/BlocksKit.h>
+#import "UIAlertView+BlocksKit.h"
 
 #define CTagRecipientName 1
 #define CTagAddress 2
@@ -46,7 +50,6 @@ typedef enum TagRequest {
     UITableViewDelegate,
     ProductQuantityDelegate,
     ChooseProductDelegate,
-    RejectExplanationDelegate,
     SubmitShipmentConfirmationDelegate,
     CancelShipmentConfirmationDelegate,
     TokopediaNetworkManagerDelegate,
@@ -149,6 +152,8 @@ typedef enum TagRequest {
 
     _tableView.contentInset = UIEdgeInsetsMake(top, right, bottom, left);
     _tableView.contentOffset = CGPointMake(0, -66);
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applyRejectOperation) name:@"applyRejectOperation" object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -159,6 +164,10 @@ typedef enum TagRequest {
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+}
+
+-(void)applyRejectOperation{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - Methods
@@ -669,62 +678,114 @@ typedef enum TagRequest {
 - (void)newOrderActionButton:(UIButton *)button
 {
     if (button.tag == 1) {
-        if (_transaction.order_detail.detail_partial_order == 1) {
-            
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Tolak Pesanan"
-                                                                message:@"Pembeli menyetujui apabila stok barang yang tersedia hanya sebagian"
-                                                               delegate:self
-                                                      cancelButtonTitle:@"Batal"
-                                                      otherButtonTitles:@"Tolak Pesanan", @"Terima Sebagian", nil];
-            alertView.tag = 1;
-            [alertView show];
-            
+        //reject button
+        if ([self isBuyerAcceptPartial]) {
+            [self showAlertViewRejectPartialConfirmation];
         } else {
-            
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Pilih Alasan Penolakan"
-                                                                message:nil
-                                                               delegate:self
-                                                      cancelButtonTitle:@"Batal"
-                                                      otherButtonTitles:@"Pesanan barang habis", @"Barang tidak dapat dikirim", @"Lainnya", nil];
-            alertView.tag = 3;
-            [alertView show];
+            [self showRejectReason];
             
         }
     } else if (button.tag == 2) {
-        if (_transaction.order_payment.payment_process_day_left >= 0) {
-            if (_transaction.order_detail.detail_partial_order == 1) {
-                
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Terima Pesanan"
-                                                                    message:@"Pembeli menyetujui apabila stok barang yang tersedia hanya sebagian"
-                                                                   delegate:self
-                                                          cancelButtonTitle:@"Batal"
-                                                          otherButtonTitles:@"Terima Pesanan", @"Terima Sebagian", nil];
-                alertView.tag = 2;
-                [alertView show];
-                
+        //accept button
+        if ([self isOrderNotExpired]) {
+            if ([self isBuyerAcceptPartial]) {
+                [self showAlertViewAcceptPartialConfirmation];
             } else {
-                
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Terima Pesanan"
-                                                                    message:@"Apakah Anda yakin ingin menerima pesanan ini?"
-                                                                   delegate:self
-                                                          cancelButtonTitle:@"Batal"
-                                                          otherButtonTitles:@"Ya", nil];
-                alertView.tag = 4;
-                [alertView show];
-                
+                [self showAlertViewAcceptConfirmation];
             }
         } else {
-            
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Pesanan Expired"
-                                                                message:@"Pesanan ini telah melewati batas waktu respon (3 hari)"
-                                                               delegate:self
-                                                      cancelButtonTitle:@"Batal"
-                                                      otherButtonTitles:@"Tolak Pesanan", nil];
-            alertView.tag = 5;
-            [alertView show];
-            
+            [self showAlertViewAcceptExpiredConfirmation];
         }
     }
+}
+
+-(void)showAlertViewAcceptExpiredConfirmation{
+    UIAlertView *alert = [[UIAlertView alloc] bk_initWithTitle:@"Pesanan Expired" message:@"Pesanan ini telah melewati batas waktu respon (3 hari)"];
+    [alert bk_setCancelButtonWithTitle:@"Batal" handler:^{
+        //nope
+    }];
+    [alert bk_addButtonWithTitle:@"Tolak Pesanan" handler:^{
+        if ([self.delegate respondsToSelector:@selector(didReceiveActionType:reason:products:productQuantity:)]) {
+            [self.delegate didReceiveActionType:@"reject"
+                                         reason:@"Order expired"
+                                       products:nil
+                                productQuantity:nil];
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+    }];
+    [alert show];
+}
+
+-(void)showAlertViewAcceptPartialConfirmation{
+    UIAlertView *alert = [[UIAlertView alloc] bk_initWithTitle:@"Terima Pesanan" message:@"Pembeli menyetujui apabila stok barang yang tersedia hanya sebagian"];
+    [alert bk_setCancelButtonWithTitle:@"Batal" handler:^{
+        //nope
+    }];
+    [alert bk_addButtonWithTitle:@"Terima Pesanan" handler:^{
+        [self.delegate didReceiveActionType:@"accept"
+                                     reason:nil
+                                   products:nil
+                            productQuantity:nil];
+        
+        [self.navigationController popViewControllerAnimated:YES];
+    }];
+    [alert bk_addButtonWithTitle:@"Terima Sebagian" handler:^{
+        [self showAcceptPartialProductChooser];
+    }];
+    [alert show];
+}
+
+-(void)showAlertViewRejectPartialConfirmation{    
+    UIAlertView *alert = [[UIAlertView alloc] bk_initWithTitle:@"Tolak Pesanan" message:@"Pembeli menyetujui apabila stok barang yang tersedia hanya sebagian"];
+    [alert bk_setCancelButtonWithTitle:@"Batal" handler:^{
+        //nope
+    }];
+    [alert bk_addButtonWithTitle:@"Tolak Pesanan" handler:^{
+        [self showRejectReason];
+    }];
+    [alert bk_addButtonWithTitle:@"Terima Sebagian" handler:^{
+        [self showAcceptPartialProductChooser];
+    }];
+    [alert show];
+}
+
+-(void)showAlertViewAcceptConfirmation{
+    UIAlertView *alert = [[UIAlertView alloc] bk_initWithTitle:@"Terima Pesanan" message:@"Apakah Anda yakin ingin menerima pesanan ini?"];
+    [alert bk_setCancelButtonWithTitle:@"Batal" handler:^{
+        //nope
+    }];
+    [alert bk_addButtonWithTitle:@"Ya" handler:^{
+        if ([self.delegate respondsToSelector:@selector(didReceiveActionType:reason:products:productQuantity:)]) {
+            [self.delegate didReceiveActionType:@"accept"
+                                         reason:nil
+                                       products:nil
+                                productQuantity:nil];
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+    }];
+    [alert show];
+}
+
+-(void)showRejectReason{
+    RejectReasonViewController *vc = [RejectReasonViewController new];
+    vc.order = _transaction;
+    
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
+    [navigationController.navigationBar setTranslucent:NO];
+    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+}
+
+-(void)showAcceptPartialProductChooser{
+    UINavigationController *navigationController = [[UINavigationController alloc] init];
+    navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+    navigationController.navigationBar.translucent = NO;
+    navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    ProductQuantityViewController *controller = [[ProductQuantityViewController alloc] init];
+    controller.products = _transaction.order_products;
+    controller.delegate = self;
+    navigationController.viewControllers = @[controller];
+    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
 }
 
 - (IBAction)tapInfoAddFee:(id)sender {
@@ -742,122 +803,6 @@ typedef enum TagRequest {
         [_getCodeButton setHidden:YES];
         _getCodeButton.enabled = NO;
         [_networkManager doRequest];
-    }
-}
-
-#pragma mark - Alert delegate
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (alertView.tag == 1) {
-        
-        if (buttonIndex == 1) {
-            
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Pilih Alasan Penolakan"
-                                                                message:nil
-                                                               delegate:self
-                                                      cancelButtonTitle:@"Batal"
-                                                      otherButtonTitles:@"Pesanan barang habis", @"Barang tidak dapat dikirim", @"Lainnya", nil];
-            alertView.tag = 3;
-            [alertView show];
-            
-        } else if (buttonIndex == 2) {
-            
-            UINavigationController *navigationController = [[UINavigationController alloc] init];
-            navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
-            navigationController.navigationBar.translucent = NO;
-            navigationController.navigationBar.tintColor = [UIColor whiteColor];
-            ProductQuantityViewController *controller = [[ProductQuantityViewController alloc] init];
-            controller.products = _transaction.order_products;
-            controller.delegate = self;
-            navigationController.viewControllers = @[controller];
-            
-            [self.navigationController presentViewController:navigationController animated:YES completion:nil];
-            
-        }
-        
-    } else if (alertView.tag == 2) {
-        
-        if (buttonIndex == 1) {
-            
-            [self.delegate didReceiveActionType:@"accept"
-                                         reason:nil
-                                       products:nil
-                                productQuantity:nil];
-            
-            [self.navigationController popViewControllerAnimated:YES];
-            
-        } else if (buttonIndex == 2) {
-            
-            UINavigationController *navigationController = [[UINavigationController alloc] init];
-            navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
-            navigationController.navigationBar.translucent = NO;
-            navigationController.navigationBar.tintColor = [UIColor whiteColor];
-            ProductQuantityViewController *controller = [[ProductQuantityViewController alloc] init];
-            controller.products = _transaction.order_products;
-            controller.delegate = self;
-            navigationController.viewControllers = @[controller];
-            
-            [self.navigationController presentViewController:navigationController animated:YES completion:nil];
-            
-        }
-        
-    } else if (alertView.tag == 3) {
-        
-        if (buttonIndex == 1) {
-            
-            UINavigationController *navigationController = [[UINavigationController alloc] init];
-            navigationController.navigationBar.translucent = NO;
-            ChooseProductViewController *controller = [[ChooseProductViewController alloc] init];
-            controller.delegate = self;
-            controller.products = _transaction.order_products;
-            navigationController.viewControllers = @[controller];
-            
-            [self.navigationController presentViewController:navigationController
-                                                    animated:YES
-                                                  completion:nil];
-            
-        } else if (buttonIndex == 2) {
-            
-            [self.delegate didReceiveActionType:@"reject"
-                                         reason:@"Barang tidak dapat dikirim"
-                                       products:_transaction.order_products
-                                productQuantity:nil];
-            
-            [self.navigationController popViewControllerAnimated:YES];
-            
-        } else if (buttonIndex == 3) {
-            
-            UINavigationController *navigationController = [[UINavigationController alloc] init];
-            navigationController.navigationBar.translucent = NO;
-            OrderRejectExplanationViewController *controller = [[OrderRejectExplanationViewController alloc] init];
-            controller.delegate = self;
-            navigationController.viewControllers = @[controller];
-            [self.navigationController presentViewController:navigationController
-                                                    animated:YES
-                                                  completion:nil];
-            
-        }
-    } else if (alertView.tag == 4) {
-        if (buttonIndex == 1) {
-            if ([self.delegate respondsToSelector:@selector(didReceiveActionType:reason:products:productQuantity:)]) {
-                [self.delegate didReceiveActionType:@"accept"
-                                             reason:nil
-                                           products:nil
-                                    productQuantity:nil];
-                [self.navigationController popViewControllerAnimated:YES];
-            }
-        }
-    } else if (alertView.tag == 5) {
-        if (buttonIndex == 1) {
-            if ([self.delegate respondsToSelector:@selector(didReceiveActionType:reason:products:productQuantity:)]) {
-                [self.delegate didReceiveActionType:@"reject"
-                                             reason:@"Order expired"
-                                           products:nil
-                                    productQuantity:nil];
-                [self.navigationController popViewControllerAnimated:YES];
-            }
-        }
     }
 }
 
@@ -1128,6 +1073,14 @@ typedef enum TagRequest {
 
 - (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
     
+}
+
+- (BOOL)isOrderNotExpired{
+    return _transaction.order_payment.payment_process_day_left >= 0;
+}
+
+- (BOOL)isBuyerAcceptPartial{
+    return _transaction.order_detail.detail_partial_order == 1;
 }
 
 @end

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WebViewSignInViewController">
+            <connections>
+                <outlet property="progressView" destination="U67-ww-fZ0" id="Uph-PX-PwN"/>
+                <outlet property="view" destination="iN0-l3-epB" id="jcv-nT-31V"/>
+                <outlet property="webView" destination="93Y-0m-T23" id="VdE-FB-93q"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="93Y-0m-T23">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                    <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="deviceRGB"/>
+                </webView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="U67-ww-fZ0" customClass="NJKWebViewProgressView">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="2"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="2" id="zMJ-bW-Bue"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="U67-ww-fZ0" secondAttribute="trailing" id="Cyq-MV-IqB"/>
+                <constraint firstItem="93Y-0m-T23" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Kg8-2B-o0C"/>
+                <constraint firstItem="U67-ww-fZ0" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="MfY-Qw-f84"/>
+                <constraint firstAttribute="trailing" secondItem="93Y-0m-T23" secondAttribute="trailing" id="RyU-wb-CSW"/>
+                <constraint firstItem="93Y-0m-T23" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="UgV-Oh-57F"/>
+                <constraint firstItem="U67-ww-fZ0" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="lew-Jo-jUu"/>
+                <constraint firstAttribute="bottom" secondItem="93Y-0m-T23" secondAttribute="bottom" id="v4E-Hm-AdK"/>
+            </constraints>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+        </view>
+    </objects>
+</document>

@@ -13,6 +13,7 @@
 @interface UploadImageResult : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *pic_id;
+@property (nonatomic, strong) NSString *src;
 @property (nonatomic, strong) NSString *file_path;
 @property (nonatomic, strong) NSString *file_th;
 @property (nonatomic, strong) NSString *pic_obj;

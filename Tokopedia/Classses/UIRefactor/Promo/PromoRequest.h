@@ -35,7 +35,8 @@ typedef NS_ENUM(NSInteger, PromoRequestSourceType) {
 - (void)requestForProductHotlist:(NSString *)hotlistId
                       department:(NSString *)department
                             page:(NSInteger)page
-                       onSuccess:(void (^)(NSArray<PromoResult*> *))successCallback
+                 filterParameter:(NSDictionary *)filterParameter
+                       onSuccess:(void (^)(NSArray<PromoResult *> *))successCallback
                        onFailure:(void (^)(NSError *))errorCallback;
 
 - (void)requestForFavoriteShop:(void (^)(NSArray<PromoResult*> *))successCallback

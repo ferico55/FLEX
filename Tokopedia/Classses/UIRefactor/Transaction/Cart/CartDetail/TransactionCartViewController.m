@@ -26,7 +26,6 @@
 
 #import "CartCell.h"
 #import "CartValidation.h"
-#import "CartGAHandler.h"
 
 #import "TransactionCCViewController.h"
 
@@ -629,7 +628,6 @@
                     break;
                 default:
                     if([self isValidInput]) {
-                        [self sendingProductDataToGA];
                         if([self isHandlePaymentWithNative]) {
                             [self doCheckout];
                         } else if ([self isCanUseToppay]) {
@@ -688,7 +686,6 @@
                 default:
                     break;
             }
-            [self sendingProductDataToGA];
         }
     }
 }
@@ -2510,11 +2507,6 @@
 #pragma mark - Delegate LoadingView
 - (void)pressRetryButton {
     [self refreshRequestCart];
-}
-
-#pragma mark - Sending data to GA
-- (void)sendingProductDataToGA {
-    [CartGAHandler sendingProductCart:_cart.list page:_indexPage gateway:[_dataInput objectForKey:@"gateway"]];
 }
 
 #pragma mark - NoResult Delegate

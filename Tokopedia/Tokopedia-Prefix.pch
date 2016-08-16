@@ -65,10 +65,12 @@
     #import "TKPObjectMapping.h"
 
     #import "TPAnalytics.h"
+    #import "TPLocalytics.h"
     #import "UIViewController+TKPAdditions.h"
     #import "TKPStoreManager.h"
     #import "TKPMappingManager.h"
     #import "TKPObjectMapping.h"
+    #import <AppsFlyer/AppsFlyer.h>
 
     #import "TPSpotlight.h"
     #import "StickyAlertView+NetworkErrorHandler.h"
