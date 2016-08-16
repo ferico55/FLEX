@@ -190,5 +190,13 @@
     return trimmedString;
 }
 
++ (NSString*)encodeString:(NSString *)string {
+    NSCharacterSet* customAllowedSet = [NSCharacterSet characterSetWithCharactersInString:@"=\"#%/<>?@\\^`{|}&"].invertedSet;
+    
+    NSString* encodedString = [string stringByAddingPercentEncodingWithAllowedCharacters:customAllowedSet];
+    
+    return encodedString;
+}
+
 
 @end
