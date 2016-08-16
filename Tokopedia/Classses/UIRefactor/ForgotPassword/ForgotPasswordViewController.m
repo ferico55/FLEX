@@ -64,9 +64,13 @@
 - (void)actionAfterRequest:(GeneralAction *)action {
     if([action.status isEqualToString:kTKPDREQUEST_OKSTATUS]) {
         if(action.message_error) {
-            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:action.message_error
-                                                                           delegate:self];
-            [alert show];
+            if ([[action.message_error objectAtIndex:0]isEqual:@"Email Anda belum terdaftar."]){
+                [self showAlertToRegisterView];
+            } else {
+                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:action.message_error
+                                                                               delegate:self];
+                [alert show];
+            }
         } else {
             if([action.data.is_success isEqualToString:@"1"]) {
                 NSString *errorMessage = [NSString stringWithFormat:@"Sebuah email telah dikirim ke alamat email yang terasosiasi dengan akun Anda, \n \n%@. \n \nEmail ini berisikan cara untuk mendapatkan kata sandi baru. \nDiharapkan menunggu beberapa saat, selama pengiriman email dalam proses.\nMohon diperhatikan bahwa alamat email di atas adalah benar,\ndan periksalah folder junk dan spam atau filter jika anda tidak menerima email tersebut.", _emailText.text];
