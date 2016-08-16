@@ -146,10 +146,10 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kXi-jR-YCI">
-                            <rect key="frame" x="0.0" y="475" width="320" height="60"/>
+                            <rect key="frame" x="0.0" y="475" width="320" height="70"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tutup toko yang terjadwal akan berlaku mulai pukul 00:00 dan berakhir pukul 23:59 sesuai tanggal yang telah ditentukan." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2TZ-3u-dFD">
-                                    <rect key="frame" x="8" y="7" width="304" height="47"/>
+                                    <rect key="frame" x="8" y="12" width="304" height="47"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
@@ -157,7 +157,7 @@
                             </subviews>
                             <color key="backgroundColor" red="0.90196078431372551" green="0.90196078431372551" blue="0.90196078431372551" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="60" id="FR9-K4-Xz7"/>
+                                <constraint firstAttribute="height" constant="70" id="FR9-K4-Xz7"/>
                                 <constraint firstItem="2TZ-3u-dFD" firstAttribute="centerY" secondItem="kXi-jR-YCI" secondAttribute="centerY" id="HK5-d9-BpQ"/>
                                 <constraint firstAttribute="trailing" secondItem="2TZ-3u-dFD" secondAttribute="trailing" constant="8" id="b40-ne-mLd"/>
                                 <constraint firstItem="2TZ-3u-dFD" firstAttribute="leading" secondItem="kXi-jR-YCI" secondAttribute="leading" constant="8" id="waT-mL-qHo"/>
@@ -166,7 +166,7 @@
                     </subviews>
                     <color key="backgroundColor" red="0.90196078431372551" green="0.90196078431372551" blue="0.90196078431372551" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
-                        <constraint firstAttribute="bottom" secondItem="kXi-jR-YCI" secondAttribute="bottom" constant="78" id="2zl-AG-RMe"/>
+                        <constraint firstAttribute="bottom" secondItem="kXi-jR-YCI" secondAttribute="bottom" constant="70" id="2zl-AG-RMe"/>
                         <constraint firstItem="BFf-wm-KAs" firstAttribute="leading" secondItem="ueC-zE-qsc" secondAttribute="leading" id="3bU-5N-ChP"/>
                         <constraint firstAttribute="trailing" secondItem="hId-2L-GU3" secondAttribute="trailing" constant="8" id="3vM-hL-Lrd"/>
                         <constraint firstAttribute="trailing" secondItem="hId-2L-GU3" secondAttribute="trailing" id="5LF-mk-Lyr"/>
@@ -221,7 +221,7 @@
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="Xg7-UE-KYL"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
                     <state key="normal" title="Atur Jadwal Tutup">
                         <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
@@ -310,7 +310,7 @@
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Catatan" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cgE-2o-1A6">
                             <rect key="frame" x="8" y="8" width="52" height="11"/>
-                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="13"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
