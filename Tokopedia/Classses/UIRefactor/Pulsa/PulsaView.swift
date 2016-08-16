@@ -119,7 +119,7 @@ class PulsaView: UIView {
         saldoButtonPlaceholder = UIView(frame: CGRectZero)
         self.addSubview(saldoButtonPlaceholder)
         saldoButtonPlaceholder.mas_makeConstraints { make in
-            make.top.equalTo()(self.buttonErrorLabel.mas_bottom).offset()(10)
+            make.top.equalTo()(self.buttonErrorLabel.mas_bottom)
             make.left.equalTo()(self.mas_left)
             make.right.equalTo()(self.mas_right)
             make.height.equalTo()(0)
@@ -135,7 +135,7 @@ class PulsaView: UIView {
         
         self.saldoSwitch.mas_makeConstraints { make in
             make.height.equalTo()(self.saldoButtonPlaceholder.mas_height)
-            make.top.equalTo()(self.saldoButtonPlaceholder.mas_top).offset()(5)
+            make.top.equalTo()(self.saldoButtonPlaceholder.mas_top).offset()(10)
             make.width.equalTo()(51)
             make.left.equalTo()(self.saldoButtonPlaceholder.mas_left)
         }
@@ -143,7 +143,7 @@ class PulsaView: UIView {
         
         //saldo label
         let saldoLabel = UILabel(frame: CGRectZero)
-        saldoLabel.text = "Bayar dengan Saldo Tokopedia"
+        saldoLabel.text = "Bayar instan"
         saldoLabel.numberOfLines = 2
         saldoLabel.textColor = UIColor.grayColor()
         saldoLabel.font = UIFont.systemFontOfSize(12)
@@ -167,7 +167,7 @@ class PulsaView: UIView {
         
         buyButton.mas_makeConstraints { make in
             make.height.equalTo()(0)
-            make.top.equalTo()(self.saldoButtonPlaceholder.mas_top)
+            make.top.equalTo()(self.saldoButtonPlaceholder.mas_top).offset()(10)
             make.left.equalTo()(saldoLabel.mas_right).offset()(10)
             make.right.equalTo()(self.saldoButtonPlaceholder.mas_right)
         }
@@ -383,7 +383,7 @@ class PulsaView: UIView {
         }
         
         saldoButtonPlaceholder.mas_updateConstraints { make in
-            make.height.equalTo()(self.selectedCategory.attributes.instant_checkout_available ? 44 : 0)
+            make.height.equalTo()(self.selectedCategory.attributes.instant_checkout_available ? 54 : 0)
         }
         self.saldoSwitch.hidden = self.selectedCategory.attributes.instant_checkout_available ? false : true
         
@@ -499,7 +499,7 @@ class PulsaView: UIView {
             make.left.equalTo()(container.mas_left).offset()(10)
             make.top.equalTo()(container.mas_top).offset()(10)
             make.right.equalTo()(container.mas_right).offset()(-10)
-            make.bottom.equalTo()(container.mas_bottom).offset()(-10)
+            make.bottom.equalTo()(container.mas_bottom)
         }
         
     }
