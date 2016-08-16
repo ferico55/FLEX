@@ -12,9 +12,11 @@ import Foundation
 @IBDesignable
 @objc
 
-class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDelegate {
+class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDelegate, SwipeViewDelegate {
     
     var slider: iCarousel!
+    var digitalGoodsSwipeView: SwipeView!
+    var digitalGoodsDataSource: DigitalGoodsDataSource!
     var carouselDataSource: CarouselDataSource!
     var categoryDataSource: CategoryDataSource!
     
@@ -30,6 +32,7 @@ class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDele
     var sliderPlaceholder: UIView!
     var pulsaPlaceholder: UIView!
     var tickerPlaceholder: UIView!
+    var miniSliderPlaceholder: UIView!
     var keyboardManager: PulsaKeyboardManager!
     
     @IBOutlet var collectionView: UICollectionView!
@@ -68,14 +71,17 @@ class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDele
         self.pulsaPlaceholder = UIView(frame: CGRectZero)
         self.pulsaPlaceholder.backgroundColor = UIColor(red: (242/255.0), green: (242/255.0), blue: (242/255.0), alpha: 1)
         self.tickerPlaceholder = UIView(frame: CGRectZero)
+        self.miniSliderPlaceholder = UIView(frame: CGRectZero)
         
         self.collectionView.addSubview(self.tickerPlaceholder)
         self.collectionView.addSubview(self.sliderPlaceholder)
         self.collectionView.addSubview(self.pulsaPlaceholder)
+        self.collectionView.addSubview(self.miniSliderPlaceholder)
 
         self.requestBanner()
         self.requestTicker()
         self.requestPulsaWidget()
+        self.requestMiniSlider()
         
         navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .Bordered, target: self, action: nil)
        
@@ -123,6 +129,7 @@ class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDele
             
             self?.sliderPlaceholder .addSubview(self!.slider)
             self?.collectionView.bringSubviewToFront((self?.sliderPlaceholder)!)
+            self?.collectionView.bringSubviewToFront((self?.miniSliderPlaceholder)!)
             
             self?.sliderPlaceholder.mas_makeConstraints { make in
                 make.top.equalTo()(self!.tickerPlaceholder.mas_bottom)
@@ -144,6 +151,12 @@ class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDele
                 make.top.equalTo()(self!.sliderPlaceholder?.mas_bottom)
             }
             
+            self?.miniSliderPlaceholder.mas_makeConstraints { make in
+                make.left.equalTo()(self?.sliderPlaceholder.mas_left)
+                make.right.equalTo()(self?.sliderPlaceholder.mas_right)
+                make.top.equalTo()(self!.pulsaPlaceholder?.mas_bottom)
+            }
+            
             let timer = NSTimer(timeInterval: 5.0, target: self!, selector: #selector(self!.moveToNextSlider), userInfo: nil, repeats: true)
             NSRunLoop.mainRunLoop().addTimer(timer, forMode: NSRunLoopCommonModes)
 
@@ -152,51 +165,7 @@ class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDele
 
     }
     
-    func requestPulsaWidget() {
-        self.requestManager = PulsaRequest()
-        self.requestManager.requestCategory()
-        self.requestManager.didReceiveCategory = { [unowned self] categories in
-            var activeCategories: [PulsaCategory] = []
-            categories.enumerate().forEach { id, category in
-                if(category.attributes.status == 1) {
-                    activeCategories.append(category)
-                }
-            }
-            
-            var sortedCategories = activeCategories
-            sortedCategories.sortInPlace({
-                $0.attributes.weight < $1.attributes.weight
-            })
-            
-            self.pulsaView = PulsaView(categories: sortedCategories)
-            self.pulsaView.attachToView(self.pulsaPlaceholder)
-            
-            self.navigator = PulsaNavigator()
-            self.navigator.pulsaView = self.pulsaView
-            self.navigator.controller = self
-            
-            self.pulsaView.didAskedForLogin = {
-                self.navigator.loginDelegate = self
-                self.navigator.navigateToLoginIfRequired()
-            }
-            
-            self.pulsaView.didSuccessPressBuy = { url in
-                self.navigator.navigateToSuccess(url)
-            }
-            
-            self.requestManager.requestOperator()
-            self.requestManager.didReceiveOperator = { operators in
-                var sortedOperators = operators
-                
-                sortedOperators.sortInPlace({
-                    $0.attributes.weight < $1.attributes.weight
-                })
-                
-                self.didReceiveOperator(sortedOperators)
-            }
-            
-        }
-    }
+    
     
     func mappingPrefixFromOperators(operators: [PulsaOperator]) {
         //mapping operator by prefix
@@ -277,6 +246,90 @@ class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDele
         
     }
     
+    func requestMiniSlider() {
+        let bannersStore = HomePageViewController.self.TKP_rootController().storeManager().homeBannerStore
+        bannersStore.fetchMiniSlideWithCompletion({[weak self] (slide, error) in
+            if slide != nil {
+                self!.digitalGoodsSwipeView = SwipeView(frame: CGRectMake(0, 0, self!.screenWidth, 120.0))
+                self!.digitalGoodsDataSource = DigitalGoodsDataSource(goods: slide, swipeView: self!.digitalGoodsSwipeView)
+                self!.digitalGoodsSwipeView.backgroundColor = UIColor(red: (242/255.0), green: (242/255.0), blue: (242/255.0), alpha: 1)
+                self!.digitalGoodsSwipeView.dataSource = self!.digitalGoodsDataSource
+                self!.digitalGoodsSwipeView.delegate = self
+                self!.digitalGoodsSwipeView.clipsToBounds = true
+                self!.digitalGoodsSwipeView.truncateFinalPage = true
+                self!.digitalGoodsSwipeView.decelerationRate = 0.5
+                
+                self?.miniSliderPlaceholder .addSubview(self!.digitalGoodsSwipeView)
+                
+                
+                self?.digitalGoodsSwipeView.mas_makeConstraints { make in
+                    make.height.equalTo()(120)
+                    make.top.equalTo()(self?.miniSliderPlaceholder.mas_top)
+                    make.left.equalTo()(self?.miniSliderPlaceholder.mas_left)
+                    make.right.equalTo()(self?.miniSliderPlaceholder.mas_right)
+                    make.bottom.equalTo()(self?.miniSliderPlaceholder.mas_bottom)
+                }
+                
+                
+                
+                if (UI_USER_INTERFACE_IDIOM() == .Pad) {
+                    self!.digitalGoodsSwipeView.alignment = .Center
+                    self!.digitalGoodsSwipeView.isCenteredChild = true
+                }
+                
+                self?.refreshCollectionViewSize()
+                
+            }
+            
+        })
+    }
+    
+    func requestPulsaWidget() {
+        self.requestManager = PulsaRequest()
+        self.requestManager.requestCategory()
+        self.requestManager.didReceiveCategory = { [unowned self] categories in
+            var activeCategories: [PulsaCategory] = []
+            categories.enumerate().forEach { id, category in
+                if(category.attributes.status == 1) {
+                    activeCategories.append(category)
+                }
+            }
+            
+            var sortedCategories = activeCategories
+            sortedCategories.sortInPlace({
+                $0.attributes.weight < $1.attributes.weight
+            })
+            
+            self.pulsaView = PulsaView(categories: sortedCategories)
+            self.pulsaView.attachToView(self.pulsaPlaceholder)
+            
+            self.navigator = PulsaNavigator()
+            self.navigator.pulsaView = self.pulsaView
+            self.navigator.controller = self
+            
+            self.pulsaView.didAskedForLogin = {
+                self.navigator.loginDelegate = self
+                self.navigator.navigateToLoginIfRequired()
+            }
+            
+            self.pulsaView.didSuccessPressBuy = { url in
+                self.navigator.navigateToSuccess(url)
+            }
+            
+            self.requestManager.requestOperator()
+            self.requestManager.didReceiveOperator = { operators in
+                var sortedOperators = operators
+                
+                sortedOperators.sortInPlace({
+                    $0.attributes.weight < $1.attributes.weight
+                })
+                
+                self.didReceiveOperator(sortedOperators)
+            }
+            
+        }
+    }
+    
     func requestTicker() {
         tickerRequest = AnnouncementTickerRequest()
         tickerRequest.fetchTicker({[weak self] (ticker) in
@@ -320,7 +373,7 @@ class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDele
     
     func refreshCollectionViewSize() {
         let debounced = Debouncer(delay: 0.1) {
-            self.flow.headerReferenceSize = CGSizeMake(self.view.frame.width, self.pulsaPlaceholder.frame.origin.y + self.pulsaPlaceholder.frame.size.height)
+            self.flow.headerReferenceSize = CGSizeMake(self.view.frame.width, self.miniSliderPlaceholder.frame.origin.y + self.miniSliderPlaceholder.frame.size.height)
         }
         
         debounced.call()
