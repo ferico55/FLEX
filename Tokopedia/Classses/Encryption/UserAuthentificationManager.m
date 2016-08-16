@@ -242,4 +242,8 @@
     }
 }
 
+- (BOOL)userHasShop {
+    return ([_auth objectForKey:@"shop_id"] && [[_auth objectForKey:@"shop_id"] integerValue] > 0);
+}
+
 @end

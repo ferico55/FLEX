@@ -21,5 +21,6 @@
 + (void)trackRegistrationWithProvider:(NSString *)provider success:(BOOL)success;
 + (void)trackLoginStatus:(BOOL)status;
 + (void)trackScreenName:(NSString *)screenName;
++ (void)trackAddProductPriceAlert:(ProductDetail *)product price:(NSString *)price success:(BOOL)isSuccess;
 
 @end

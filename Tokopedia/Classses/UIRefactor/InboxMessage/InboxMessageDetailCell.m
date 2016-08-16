@@ -251,7 +251,12 @@ static CGFloat messageTextSize = 17.0;
 
 
 - (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url  {
-    NSString* theRealUrl = [NSString stringWithFormat:@"https://tkp.me/r?url=%@", [url.absoluteString stringByReplacingOccurrencesOfString:@"*" withString:@"."]];
+    NSString* theRealUrl;
+    if([url.host isEqualToString:@"www.tokopedia.com"]) {
+        theRealUrl = url.absoluteString;
+    } else {
+        theRealUrl = [NSString stringWithFormat:@"https://tkp.me/r?url=%@", [url.absoluteString stringByReplacingOccurrencesOfString:@"*" withString:@"."]];
+    }
     
     self.onTapMessageWithUrl([NSURL URLWithString:[theRealUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]);
 }
