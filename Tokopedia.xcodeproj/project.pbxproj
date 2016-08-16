@@ -33,6 +33,7 @@
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
 		85C494BF1AD790DD008A314A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BE1AD790DD008A314A /* libz.dylib */; };
 		85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494C01AD790E4008A314A /* CoreData.framework */; };
+		922619921D62C08500F3D4AA /* UIFont+Theme.m in Sources */ = {isa = PBXBuildFile; fileRef = 922619911D62C08500F3D4AA /* UIFont+Theme.m */; };
 		92CEE51F1D62A9D800560490 /* TPAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 92CED9891D62A9D500560490 /* TPAnalytics.m */; };
 		92CEE5201D62A9D800560490 /* TPLocalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 92CED98B1D62A9D500560490 /* TPLocalytics.m */; };
 		92CEE5211D62A9D800560490 /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 92CED98E1D62A9D500560490 /* URLCacheAlert.m */; };
@@ -2507,6 +2508,8 @@
 		85C494BC1AD790C2008A314A /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
 		85C494BE1AD790DD008A314A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		85C494C01AD790E4008A314A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		922619901D62C08500F3D4AA /* UIFont+Theme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+Theme.h"; sourceTree = "<group>"; };
+		922619911D62C08500F3D4AA /* UIFont+Theme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIFont+Theme.m"; sourceTree = "<group>"; };
 		92CED9881D62A9D500560490 /* TPAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPAnalytics.h; sourceTree = "<group>"; };
 		92CED9891D62A9D500560490 /* TPAnalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPAnalytics.m; sourceTree = "<group>"; };
 		92CED98A1D62A9D500560490 /* TPLocalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPLocalytics.h; sourceTree = "<group>"; };
@@ -6211,6 +6214,8 @@
 		92CED9931D62A9D500560490 /* Category */ = {
 			isa = PBXGroup;
 			children = (
+				922619901D62C08500F3D4AA /* UIFont+Theme.h */,
+				922619911D62C08500F3D4AA /* UIFont+Theme.m */,
 				92CED9941D62A9D500560490 /* ALAsset+Date.h */,
 				92CED9951D62A9D500560490 /* ALAsset+Date.m */,
 				92CED9961D62A9D500560490 /* NSArray+PerformSelector.h */,
@@ -14189,6 +14194,7 @@
 				92CEEA3F1D62A9D900560490 /* CloseShopViewController.m in Sources */,
 				92CEE7391D62A9D800560490 /* TxOrderConfirmed.m in Sources */,
 				92CEE5381D62A9D800560490 /* UIViewCategory.swift in Sources */,
+				922619921D62C08500F3D4AA /* UIFont+Theme.m in Sources */,
 				92CEE5461D62A9D800560490 /* RKObjectManagerCategory.m in Sources */,
 				92CEE5FC1D62A9D800560490 /* ResolutionCustomer.m in Sources */,
 				92CEE65E1D62A9D800560490 /* ProfileInfo.m in Sources */,
