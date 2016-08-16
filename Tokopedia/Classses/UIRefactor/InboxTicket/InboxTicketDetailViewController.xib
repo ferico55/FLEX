@@ -4,11 +4,6 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <mutableArray key="GothamBook.ttf">
-            <string>GothamBook</string>
-        </mutableArray>
-    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="InboxTicketDetailViewController">
             <connections>
@@ -82,7 +77,7 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QoU-0g-DVf">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
                             <subviews>
-                                <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q1R-Ob-TpQ">
+                                <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q1R-Ob-TpQ">
                                     <rect key="frame" x="10" y="5" width="300" height="40"/>
                                     <color key="backgroundColor" red="0.070588235289999995" green="0.78039215689999997" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -99,8 +94,8 @@
                             <constraints>
                                 <constraint firstItem="Q1R-Ob-TpQ" firstAttribute="leading" secondItem="QoU-0g-DVf" secondAttribute="leading" constant="10" id="DAv-xF-RWS"/>
                                 <constraint firstAttribute="height" constant="50" id="UGM-RF-0SZ"/>
-                                <constraint firstItem="Q1R-Ob-TpQ" firstAttribute="top" secondItem="QoU-0g-DVf" secondAttribute="top" constant="9" id="Wto-vT-9KZ"/>
-                                <constraint firstAttribute="bottom" secondItem="Q1R-Ob-TpQ" secondAttribute="bottom" constant="9" id="XGJ-lr-9zd"/>
+                                <constraint firstItem="Q1R-Ob-TpQ" firstAttribute="top" secondItem="QoU-0g-DVf" secondAttribute="top" constant="5" id="Wto-vT-9KZ"/>
+                                <constraint firstAttribute="bottom" secondItem="Q1R-Ob-TpQ" secondAttribute="bottom" constant="5" id="XGJ-lr-9zd"/>
                                 <constraint firstAttribute="trailing" secondItem="Q1R-Ob-TpQ" secondAttribute="trailing" constant="10" id="nui-sC-Z1o"/>
                             </constraints>
                         </view>
@@ -332,7 +327,7 @@
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vbs-1x-3at">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
                                     <subviews>
-                                        <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rcn-Np-YwH">
+                                        <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rcn-Np-YwH">
                                             <rect key="frame" x="10" y="5" width="300" height="40"/>
                                             <color key="backgroundColor" red="0.070588235289999995" green="0.78039215689999997" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -347,11 +342,11 @@
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <constraints>
-                                        <constraint firstAttribute="bottom" secondItem="rcn-Np-YwH" secondAttribute="bottom" constant="9" id="2OA-QA-aNE"/>
+                                        <constraint firstAttribute="bottom" secondItem="rcn-Np-YwH" secondAttribute="bottom" constant="5" id="2OA-QA-aNE"/>
                                         <constraint firstAttribute="trailing" secondItem="rcn-Np-YwH" secondAttribute="trailing" constant="10" id="DJN-XP-Iah"/>
                                         <constraint firstItem="rcn-Np-YwH" firstAttribute="leading" secondItem="Vbs-1x-3at" secondAttribute="leading" constant="10" id="VLM-FX-Eo8"/>
                                         <constraint firstAttribute="height" constant="50" id="kdG-MM-NuV"/>
-                                        <constraint firstItem="rcn-Np-YwH" firstAttribute="top" secondItem="Vbs-1x-3at" secondAttribute="top" constant="9" id="sOt-4h-WWA"/>
+                                        <constraint firstItem="rcn-Np-YwH" firstAttribute="top" secondItem="Vbs-1x-3at" secondAttribute="top" constant="5" id="sOt-4h-WWA"/>
                                     </constraints>
                                 </view>
                                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6VM-i7-zPu">
@@ -421,7 +416,7 @@
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WAA-hz-DNz">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
                                     <subviews>
-                                        <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hJC-nq-1GT">
+                                        <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hJC-nq-1GT">
                                             <rect key="frame" x="10" y="5" width="300" height="40"/>
                                             <color key="backgroundColor" red="0.070588235289999995" green="0.78039215689999997" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -438,8 +433,8 @@
                                     <constraints>
                                         <constraint firstAttribute="trailing" secondItem="hJC-nq-1GT" secondAttribute="trailing" constant="10" id="KLY-Xk-xke"/>
                                         <constraint firstAttribute="height" constant="50" id="WU5-S8-ahp"/>
-                                        <constraint firstItem="hJC-nq-1GT" firstAttribute="top" secondItem="WAA-hz-DNz" secondAttribute="top" constant="9" id="hKN-eA-Kcy"/>
-                                        <constraint firstAttribute="bottom" secondItem="hJC-nq-1GT" secondAttribute="bottom" constant="9" id="hhx-5I-23y"/>
+                                        <constraint firstItem="hJC-nq-1GT" firstAttribute="top" secondItem="WAA-hz-DNz" secondAttribute="top" constant="5" id="hKN-eA-Kcy"/>
+                                        <constraint firstAttribute="bottom" secondItem="hJC-nq-1GT" secondAttribute="bottom" constant="5" id="hhx-5I-23y"/>
                                         <constraint firstItem="hJC-nq-1GT" firstAttribute="leading" secondItem="WAA-hz-DNz" secondAttribute="leading" constant="10" id="l2D-hj-aA2"/>
                                     </constraints>
                                 </view>
@@ -759,7 +754,7 @@
                     <constraints>
                         <constraint firstAttribute="height" constant="21" id="FiO-dL-BwD"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
