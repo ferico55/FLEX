@@ -39,11 +39,11 @@
     
     lblUser.layer.cornerRadius = 2.0f;
     lblUser.layer.masksToBounds = YES;
-    lblUser.font = [UIFont fontWithName:@"Gotham Medium" size:11.0f];
+    lblUser.font = [UIFont microTheme];
     lblUser.layer.masksToBounds = YES;
     lblUser.textAlignment = NSTextAlignmentCenter;
     
-    lblText.font = [UIFont fontWithName:@"Gotham Book" size:13.0f];
+    lblText.font = [UIFont smallThemeMedium];
     lblText.textColor = [UIColor blackColor];
     
     [self addSubview:lblUser];
