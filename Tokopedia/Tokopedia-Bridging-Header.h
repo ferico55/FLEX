@@ -12,7 +12,7 @@
 #import "SwipeView.h"
 #import "MiniSlide.h"
 #import "TPLiveCameraView.h"
-#import <RestKit.h>
+#import <RestKit/RestKit.h>
 #import "TokopediaNetworkManager.h"
 #import "NSString+TPBaseUrl.h"
 #import "SecurityQuestion.h"
@@ -58,6 +58,16 @@
 #import "AddressObj.h"
 #import "FilterCategoryViewCell.h"
 #import "TKPObjectMapping.h"
+
+#import <GoogleSignIn/GoogleSignIn.h>
+#import <BlocksKit/BlocksKit.h>
+#import <BlocksKit/BlocksKit+UIKit.h>
+#import <BlocksKit/NSObject+A2DynamicDelegate.h>
+#import "NSURL+Dictionary.h"
+#import <NJKWebViewProgress/NJKWebViewProgress.h>
+#import <NJKWebViewProgress/NJKWebViewProgressView.h>
+#import "UIImage+Resize.h"
+#import <Masonry/Masonry.h>
 #import "CardIO.h"
 #import "WebViewController.h"
 #import "Downpicker.h"
@@ -66,7 +76,6 @@
 #import "UIAlertView+BlocksKit.h"
 
 #import "ShopSettings.h"
-#import "TKPObjectMapping.h"
 #import "WholesalePrice.h"
 #import "Breadcrumb.h"
 #import "UIView+BlocksKit.h"

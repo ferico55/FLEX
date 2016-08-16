@@ -10,11 +10,12 @@
 #import "TAGDataLayer.h"
 #import "TAGManager.h"
 #import "ProductDetail.h"
+#import "LoginResult.h"
 
 @interface TPAnalytics : NSObject
 
-+ (void)trackScreenName:(NSString *)screeName;
-+ (void)trackScreenName:(NSString *)screeName gridType:(NSInteger)gridType;
++ (void)trackScreenName:(NSString *)screenName;
++ (void)trackScreenName:(NSString *)screenName gridType:(NSInteger)gridType;
 
 + (void)trackUserId;
 
@@ -46,7 +47,7 @@
 + (void)trackSnapSearchCategory:(NSString *)categoryName;
 + (void)trackSnapSearchAddToCart:(ProductDetail *)product;
 
-+ (void)trackAuthenticated:(NSDictionary *)data;
++ (void)trackAuthenticatedWithLoginResult:(LoginResult *)result;
 + (void)trackSuccessSubmitReview:(NSInteger)status;
 + (void)trackSearchInboxReview;
 

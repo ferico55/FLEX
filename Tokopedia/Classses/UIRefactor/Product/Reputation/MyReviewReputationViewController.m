@@ -153,6 +153,8 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+    [TPAnalytics trackScreenName:@"Inbox Review Page"];
+    
     [tableContent reloadData];
     
     if(arrList.count > 0){

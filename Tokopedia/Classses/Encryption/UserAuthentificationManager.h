@@ -39,5 +39,6 @@
 - (BOOL)isUserPhoneVerified;
 
 + (void)ensureDeviceIdExistence;
+- (BOOL)userHasShop;
 
 @end

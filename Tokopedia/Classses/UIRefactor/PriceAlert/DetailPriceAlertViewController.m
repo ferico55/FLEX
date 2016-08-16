@@ -158,6 +158,12 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    [TPAnalytics trackScreenName:@"Price Alert Detail Page"];
+}
+
 /*
 #pragma mark - Navigation
 

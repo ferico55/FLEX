@@ -288,12 +288,62 @@
                    mapping:(RKObjectMapping *)mapping
                  onSuccess:(void (^)(RKMappingResult *, RKObjectRequestOperation *))successCallback
                  onFailure:(void (^)(NSError *))errorCallback {
+    [self requestWithBaseUrl:baseUrl
+                        path:path
+                      method:method
+                      header:@{}
+                   parameter:parameter
+                     mapping:mapping
+                   onSuccess:successCallback
+                   onFailure:errorCallback];
+}
+
+- (void)handleErrorWithCallback:(void (^)(NSError *))errorCallback error:(NSError *)error {
+    if (errorCallback) {
+        errorCallback(error);
+        if(_isUsingDefaultError) {
+            [self showErrorAlert:error];
+        }
+    } else {
+        [self showErrorAlert:error];
+    }
+}
+
+- (void)showErrorAlert:(NSError*)error {
+    StickyAlertView *alert;
+    NSArray *errors;
+    if(error.code == -1011) {
+        errors = @[@"Mohon maaf, terjadi kendala pada server"];
+    } else if (error.code == -1009) {
+        errors = @[@"Tidak ada koneksi internet"];
+    } else if (error.code == -999) {
+        errors = @[@"Terjadi kendala pada koneksi internet"];
+    } else {
+        errors = @[error.localizedDescription];
+        return;
+    }
+    
+    
+    alert = [[StickyAlertView alloc] initWithErrorMessages:errors delegate:[((UINavigationController*)((UITabBarController*)[[[[[UIApplication sharedApplication] delegate] window] rootViewController] presentedViewController]).selectedViewController). viewControllers lastObject]];
+    [alert show];
+}
+
+- (void)requestWithBaseUrl:(NSString*)baseUrl
+                      path:(NSString*)path
+                    method:(RKRequestMethod)method
+                    header:(NSDictionary<NSString *, NSString *> *)header
+                 parameter:(NSDictionary<NSString*, NSString*>*)parameter
+                   mapping:(RKObjectMapping*)mapping
+                 onSuccess:(void(^)(RKMappingResult* successResult, RKObjectRequestOperation* operation))successCallback
+                 onFailure:(void(^)(NSError* errorResult)) errorCallback {
     if(_objectRequest.isExecuting) return;
+
+    [RKMIMETypeSerialization registerClass:[RKNSJSONSerialization class] forMIMEType:@"application/vnd.api+json"];
     
     NSDictionary* bindedParameters = [parameter autoParameters];
     
     _requestCount ++;
-
+    
     _objectManager  = [RKObjectManager sharedClient:baseUrl];
     RKResponseDescriptor* responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:mapping
                                                                                                   method:method
@@ -334,6 +384,10 @@
         [_objectManager.HTTPClient setDefaultHeader:@"Authorization" value:[NSString stringWithFormat:@"TKPD %@:%@", @"Tokopedia", signature]];
         [_objectManager.HTTPClient setDefaultHeader:@"X-Tkpd-Authorization" value:[NSString stringWithFormat:@"TKPD %@:%@", @"Tokopedia", signature]];
         
+        [header bk_each:^(NSString *key, NSString *value) {
+            [_objectManager.HTTPClient setDefaultHeader:key value:value];
+        }];
+        
         _objectRequest = [_objectManager appropriateObjectRequestOperationWithObject:nil
                                                                               method:method
                                                                                 path:path
@@ -345,11 +399,17 @@
         } else {
             parameters = [parameter encrypt];
         }
+        
+        [header bk_each:^(NSString *key, NSString *value) {
+            [_objectManager.HTTPClient setDefaultHeader:key value:value];
+        }];
+        
         _objectRequest = [_objectManager appropriateObjectRequestOperationWithObject:nil
                                                                               method:method
                                                                                 path:path
                                                                           parameters:parameters];
     }
+    
     
     
     [_requestTimer invalidate];
@@ -364,8 +424,8 @@
         NSObject* mappedResult = [resultDict objectForKey:@""];
         
         if ([mappedResult respondsToSelector:@selector(status)]) {
-        NSString* status = [mappedResult performSelector:@selector(status)];
-        
+            NSString* status = [mappedResult performSelector:@selector(status)];
+            
             if([status isEqualToString:@"OK"]) {
                 successCallback(mappingResult, operation);
             } else if ([status isEqualToString:@"INVALID_REQUEST"]) {
@@ -390,12 +450,13 @@
             //cancelled request
             if(error.code == -999) {
                 [self requestWithBaseUrl:baseUrl
-                                        path:path
-                                      method:method
-                                   parameter:parameter
-                                     mapping:mapping
-                                   onSuccess:successCallback
-                                   onFailure:errorCallback];
+                                    path:path
+                                  method:method
+                                  header:header
+                               parameter:parameter
+                                 mapping:mapping
+                               onSuccess:successCallback
+                               onFailure:errorCallback];
             } else {
                 [self handleErrorWithCallback:errorCallback error:error];
             }
@@ -407,43 +468,13 @@
     
     [_operationQueue addOperation:_objectRequest];
     NSTimeInterval timeInterval = _timeInterval ? _timeInterval : kTKPDREQUEST_TIMEOUTINTERVAL;
-
+    
     __weak typeof(self) weakSelf = self;
     _requestTimer = [NSTimer bk_scheduledTimerWithTimeInterval:timeInterval block:^(NSTimer* timer) {
         [weakSelf requestCancel];
     } repeats:NO];
     [[NSRunLoop currentRunLoop] addTimer:_requestTimer forMode:NSRunLoopCommonModes];
 
-}
-
-- (void)handleErrorWithCallback:(void (^)(NSError *))errorCallback error:(NSError *)error {
-    if (errorCallback) {
-        errorCallback(error);
-        if(_isUsingDefaultError) {
-            [self showErrorAlert:error];
-        }
-    } else {
-        [self showErrorAlert:error];
-    }
-}
-
-- (void)showErrorAlert:(NSError*)error {
-    StickyAlertView *alert;
-    NSArray *errors;
-    if(error.code == -1011) {
-        errors = @[@"Mohon maaf, terjadi kendala pada server"];
-    } else if (error.code == -1009) {
-        errors = @[@"Tidak ada koneksi internet"];
-    } else if (error.code == -999) {
-        errors = @[@"Terjadi kendala pada koneksi internet"];
-    } else {
-        errors = @[error.localizedDescription];
-        return;
-    }
-    
-    
-    alert = [[StickyAlertView alloc] initWithErrorMessages:errors delegate:[((UINavigationController*)((UITabBarController*)[[[[[UIApplication sharedApplication] delegate] window] rootViewController] presentedViewController]).selectedViewController). viewControllers lastObject]];
-    [alert show];
 }
 
 @end
