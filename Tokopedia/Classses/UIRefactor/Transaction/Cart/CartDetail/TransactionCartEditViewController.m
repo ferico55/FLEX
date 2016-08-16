@@ -29,6 +29,7 @@
     CGSize _scrollviewContentSize;
 }
 
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIImageView *productThumbImageView;
 @property (weak, nonatomic) IBOutlet UILabel *productNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *productPriceLabel;
@@ -60,11 +61,11 @@
     _barButtonSave.tag = TAG_BAR_BUTTON_TRANSACTION_DONE;
     self.navigationItem.rightBarButtonItem = _barButtonSave;
     
+    _scrollView.delegate = self;
+    
     _remarkTextView.delegate = self;
     [self setDefaultData:_data];
     [self setTextViewPlaceholder:@"Contoh: Warna Putih/Ukuran XL/Edisi ke-2"];
-    
-    [_remarkTextView becomeFirstResponder];
     
     UIEdgeInsets inset = _remarkTextView.textContainerInset;
     inset.left = 15;
@@ -190,10 +191,10 @@
     }
 }
 
--(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-//    [_quantityTextField resignFirstResponder];
-//    [_activeTextView resignFirstResponder];
+    [_quantityTextField resignFirstResponder];
+    [_activeTextView resignFirstResponder];
 }
 
 -(void)textFieldDidEndEditing:(UITextField *)textField
