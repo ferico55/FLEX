@@ -134,12 +134,6 @@ NSString * const ProductStatusWarehouse = @"3";
 
 -(void)trackerFailAddProduct{
     [TPAnalytics trackScreenName:@"Add Product - Fail"];
-    
-    // GA
-    id tracker = [[GAI sharedInstance] defaultTracker];
-    [tracker setAllowIDFACollection:YES];
-    [tracker set:kGAIScreenName value:@"Add Product - Fail"];
-    [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
 }
 
 -(void)fetchEditProduct{
@@ -167,12 +161,6 @@ NSString * const ProductStatusWarehouse = @"3";
     
     // UA
     [TPAnalytics trackScreenName:@"Add Product - Success"];
-    
-    // GA
-    id tracker = [[GAI sharedInstance] defaultTracker];
-    [tracker setAllowIDFACollection:YES];
-    [tracker set:kGAIScreenName value:@"Add Product - Success"];
-    [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
     
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
     [[NSNotificationCenter defaultCenter] postNotificationName:ADD_PRODUCT_POST_NOTIFICATION_NAME object:nil userInfo:nil];
@@ -429,12 +417,6 @@ NSString * const ProductStatusWarehouse = @"3";
 {
     // UA
     [TPAnalytics trackScreenName:@"Add Product - Fail"];
-    
-    // GA
-    id tracker = [[GAI sharedInstance] defaultTracker];
-    [tracker setAllowIDFACollection:YES];
-    [tracker set:kGAIScreenName value:@"Add Product - Fail"];
-    [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
 }
 
 #pragma mark - TextView Delegate
