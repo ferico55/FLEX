@@ -111,6 +111,8 @@
     [_table reloadData];
     tempPriceAlert = nil;
     tempUnreadIndexPath = nil;
+    
+    [TPAnalytics trackScreenName:@"Price Alert Page"];
 }
 
 - (void)dealloc {

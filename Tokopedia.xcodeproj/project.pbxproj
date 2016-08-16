@@ -15107,7 +15107,6 @@
 					"$(inherited)",
 					"-ObjC",
 					"-l\"AFNetworking\"",
-					"-l\"AppsFlyerLib\"",
 					"-l\"BlocksKit\"",
 					"-l\"GGLAnalytics\"",
 					"-l\"GGLCore\"",
