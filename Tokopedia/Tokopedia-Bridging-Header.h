@@ -68,3 +68,4 @@
 #import "TKPObjectMapping.h"
 #import "WholesalePrice.h"
 #import "Breadcrumb.h"
+#import "NSString+HTML.h"
