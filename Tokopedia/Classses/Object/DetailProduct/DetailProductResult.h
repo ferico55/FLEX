@@ -34,7 +34,6 @@
 //code tambal sulam
 @property (nonatomic, strong) ProductDetail *product;
 
-- (NSDictionary *)productFieldObjects;
 + (RKObjectMapping*)mapping;
 
 @end

@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface ProductImages : NSObject
+@interface ProductImages : NSObject <TKPObjectMapping>
 
 @property (nonatomic) NSInteger image_id;
 @property (nonatomic) NSInteger image_status;

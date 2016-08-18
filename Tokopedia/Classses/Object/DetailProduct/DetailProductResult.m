@@ -8,6 +8,7 @@
 
 #import "DetailProductResult.h"
 #import "NSString+URLEncoding.h"
+#import "Tokopedia-Swift.h"
 
 @implementation DetailProductResult
 
@@ -59,6 +60,5 @@
     };
     return productFieldObjects;
 }
-
 
 @end

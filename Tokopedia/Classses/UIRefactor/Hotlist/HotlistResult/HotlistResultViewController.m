@@ -633,6 +633,7 @@ static NSString const *rows = @"12";
 -(void)refreshView:(UIRefreshControl*)refresh {
     [_requestHotlistManager requestCancel];
     _start = 0;
+    _page = 0;
     [_promo removeAllObjects];
     [_refreshControl beginRefreshing];
     
