@@ -30,7 +30,7 @@
 
 + (void)trackAddToCart:(ProductDetail*)product {
     NSString *productId = product.product_id;
-    NSNumber *price = [[NSNumberFormatter IDRFormarter] numberFromString:product.product_price];
+    NSNumber *price = [[NSNumberFormatter IDRFormatter] numberFromString:product.product_price];
     NSInteger totalPrice = [product.product_total_price integerValue];
     NSString *total = [NSString stringWithFormat:@"%zd", totalPrice];
     NSString *productQuantity = product.product_quantity;
@@ -57,7 +57,7 @@
         return;
     }
     
-    NSNumber *price = [[NSNumberFormatter IDRFormarter] numberFromString:response.data.info.product_price];
+    NSNumber *price = [[NSNumberFormatter IDRFormatter] numberFromString:response.data.info.product_price];
     
     Breadcrumb *category = response.data.breadcrumb[response.data.breadcrumb.count - 1];
 

@@ -8,6 +8,19 @@
 
 #import "string_product.h"
 #import "ProductEditWholesaleCell.h"
+#import "Tokopedia-Swift.h"
+#import "NSNumberFormatter+IDRFormater.h"
+
+@interface ProductEditWholesaleCell()
+
+@property (weak, nonatomic) IBOutlet UITextField *minimumProductTextField;
+@property (weak, nonatomic) IBOutlet UITextField *maximumProductTextField;
+@property (weak, nonatomic) IBOutlet UILabel *productCurrencyLabel;
+@property (weak, nonatomic) IBOutlet UITextField *productPriceTextField;
+
+@property (copy, nonatomic) void (^removeWholesale)(WholesalePrice *wholesale);
+
+@end
 
 @implementation ProductEditWholesaleCell
 
@@ -23,72 +36,81 @@
     return nil;
 }
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
-{
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if (self) {
-        // Initialization code
-    }
-    return self;
-}
 
-- (void)awakeFromNib
-{
-    // Initialization code
+-(void)setProductPriceCurency:(NSString *)productPriceCurency{
+    _productPriceCurency = productPriceCurency;
+    
+    CGFloat priceInteger = [_wholesale.wholesale_price floatValue];
+    
+    NSString *wholesalePrice = @"";
+    
+    if ([_productPriceCurency integerValue] == PRICE_CURRENCY_ID_RUPIAH) {
+        wholesalePrice = [[NSNumberFormatter IDRFormatterWithoutCurency] stringFromNumber:@(priceInteger)];
+        self.productCurrencyLabel.text = @"Rp";
+    } else {
+        wholesalePrice = [[NSNumberFormatter USDFormatter] stringFromNumber:@(priceInteger)];
+        self.productCurrencyLabel.text = @"US$";
+    }
+    
+    self.productPriceTextField.text = ([wholesalePrice isEqualToString:@"0"])?@"":wholesalePrice;
+    self.minimumProductTextField.text = _wholesale.wholesale_min;
+    self.maximumProductTextField.text = _wholesale.wholesale_max;
 }
 
 #pragma mark - View Action
-- (IBAction)tap:(id)sender {
-    [_delegate removeCell:self atIndexPath:_indexPath];
+- (IBAction)onTapRemoveWholesale:(id)sender {
+    if (self.removeWholesale) {
+        self.removeWholesale(_wholesale);
+    }
+}
+- (IBAction)didEndEditingMax:(UITextField *)textField {
+    _wholesale.wholesale_max = textField.text;
+}
+
+- (IBAction)didEndEditingPrice:(UITextField *)textField {
+    NSNumber *price;
+    if ([_productPriceCurency integerValue] == PRICE_CURRENCY_ID_RUPIAH)
+        price = [[NSNumberFormatter IDRFormatterWithoutCurency] numberFromString:textField.text];
+    else
+        price = [[NSNumberFormatter USDFormatter] numberFromString:textField.text];
+
+    _wholesale.wholesale_price = [price stringValue];
+}
+
+- (IBAction)didEndEditingMin:(UITextField *)textField {
+    _wholesale.wholesale_min = textField.text;
 }
 
 #pragma mark - Textfield Delegate
--(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
-{
-    [textField resignFirstResponder];
-    [_delegate ProductEditWholesaleCell:self textFieldShouldBeginEditing:textField withIndexPath:_indexPath];
-    return YES;
-}
 
--(BOOL)textFieldShouldReturn:(UITextField *)textField
-{
-    [_delegate ProductEditWholesaleCell:self textFieldShouldReturn:textField withIndexPath:_indexPath];
-    return YES;
-}
-
--(BOOL)textFieldShouldEndEditing:(UITextField *)textField
-{
-    [_delegate ProductEditWholesaleCell:self textFieldShouldEndEditing:textField withIndexPath:_indexPath];
-    return YES;
-}
 
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-    NSInteger priceCurencyID = [_product.product_currency_id integerValue]?:1;
+    NSInteger priceCurencyID = [_productPriceCurency integerValue]?:1;
     BOOL isIDRCurrency = (priceCurencyID == PRICE_CURRENCY_ID_RUPIAH);
     if (textField == _productPriceTextField) {
         if (isIDRCurrency) {
             NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
             if([string length]==0)
             {
-                [formatter setGroupingSeparator:@","];
+                [formatter setGroupingSeparator:@"."];
                 [formatter setGroupingSize:4];
                 [formatter setUsesGroupingSeparator:YES];
                 [formatter setSecondaryGroupingSize:3];
                 NSString *num = textField.text ;
-                num = [num stringByReplacingOccurrencesOfString:@"," withString:@""];
+                num = [num stringByReplacingOccurrencesOfString:@"." withString:@""];
                 NSString *str = [formatter stringFromNumber:[NSNumber numberWithDouble:[num doubleValue]]];
                 textField.text = str;
             }
             else {
-                [formatter setGroupingSeparator:@","];
+                [formatter setGroupingSeparator:@"."];
                 [formatter setGroupingSize:2];
                 [formatter setUsesGroupingSeparator:YES];
                 [formatter setSecondaryGroupingSize:3];
                 NSString *num = textField.text ;
                 if(![num isEqualToString:@""])
                 {
-                    num = [num stringByReplacingOccurrencesOfString:@"," withString:@""];
+                    num = [num stringByReplacingOccurrencesOfString:@"." withString:@""];
                     NSString *str = [formatter stringFromNumber:[NSNumber numberWithDouble:[num doubleValue]]];
                     textField.text = str;
                 }
@@ -104,13 +126,10 @@
             // Parse final integer value
             NSInteger centAmount = cleanCentString.integerValue;
             // Check the user input
-            if (string.length > 0)
-            {
+            if (string.length > 0) {
                 // Digit added
                 centAmount = centAmount * 10 + string.integerValue;
-            }
-            else
-            {
+            } else {
                 // Digit deleted
                 centAmount = centAmount / 10;
             }

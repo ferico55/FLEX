@@ -10,7 +10,7 @@
 
 @implementation NSNumberFormatter (IDRFormater)
 
-+(NSNumberFormatter*)IDRFormarter{
++(NSNumberFormatter*)IDRFormatter{
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     formatter.numberStyle = NSNumberFormatterCurrencyStyle;
     formatter.currencyCode = @"Rp ";

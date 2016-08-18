@@ -7,21 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-@class ProductEditWholesaleViewController;
-
-#pragma mark - Product Edit Wholesale Delegate
-@protocol ProductEditWholesaleViewControllerDelegate <NSObject>
-@optional
--(void)ProductEditWholesaleViewController:(ProductEditWholesaleViewController*)viewController withWholesaleList:(NSArray*)list;
-
-@end
+@class ProductEditResult;
 
 @interface ProductEditWholesaleViewController : UIViewController
 
-
-@property (nonatomic, weak) IBOutlet id<ProductEditWholesaleViewControllerDelegate> delegate;
-
-
-@property (nonatomic,strong) NSDictionary *data;
+@property (nonatomic,strong) ProductEditResult *form;
 
 @end

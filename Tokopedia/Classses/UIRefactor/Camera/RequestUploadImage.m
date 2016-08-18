@@ -242,23 +242,18 @@
     RKObjectRequestOperation *operation = [objectManager objectRequestOperationWithRequest:request success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         
         NSLog(@"Request body %@", [[NSString alloc] initWithData:[operation.HTTPRequestOperation.request HTTPBody]  encoding:NSUTF8StringEncoding]);
-        if ([[mappingResult.dictionary objectForKey:@""] class] == [UploadImage class]) {
-            UploadImage *response = [mappingResult.dictionary objectForKey:@""];
-            if (response.data) {
-                success(response.data);
-            } else {
-                [StickyAlertView showErrorMessage:response.message_error?:@[@"Upload gambar gagal, mohon dicoba kembali atau gunakan gambar lain."]];
-                failure(nil);
-            }
-            
+        UploadImage *response = [mappingResult.dictionary objectForKey:@""];
+        
+        if (response.message_error.count > 0){
+            [StickyAlertView showErrorMessage:response.message_error?:@[@"Upload gambar gagal, mohon dicoba kembali atau gunakan gambar lain."]];
+            failure(nil);
+        }
+        
+        if (response.data) {
+            success(response.data);
         } else {
-            ImageResult *obj = [mappingResult.dictionary objectForKey:@""];
-            if ([obj.success isEqualToString:@"1"]) {
-                success(obj);
-            } else {
-                [StickyAlertView showErrorMessage:obj.message_error?:@[@"Upload gambar gagal, mohon dicoba kembali atau gunakan gambar lain."]];
-                failure(nil);
-            }
+            [StickyAlertView showErrorMessage:response.message_error?:@[@"Upload gambar gagal, mohon dicoba kembali atau gunakan gambar lain."]];
+            failure(nil);
         }
         
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
