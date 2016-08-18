@@ -10,6 +10,8 @@
 #import "detail.h"
 #import "SendMessage.h"
 #import "StickyAlert.h"
+#import "InboxMessageAction.h"
+
 @implementation MessageTextView
 @synthesize del;
 - (void)dealloc
@@ -172,8 +174,7 @@
     _messagefield.placeholder = kTKPDMESSAGE_PLACEHOLDER;
     _messagefield.placeholderColor = [UIColor lightGrayColor];
     
-    _operationQueue = [NSOperationQueue new];
-    
+    _shoplabel.text = [_data objectForKey:@"shop_name"];
     
 }
 
@@ -182,43 +183,23 @@
     // Dispose of any resources that can be recreated.
 }
 
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    _shoplabel.text = [_data objectForKey:@"shop_name"];
-    
-}
-
-
 -(void)doSendMessage {
     NSDictionary* param = @{
-                            kTKPDDETAIL_APIACTIONKEY:@"send_message",
-                            kTKPDMESSAGE_KEYCONTENT:_messagefield.text,
-                            kTKPDMESSAGE_KEYSUBJECT:_messagesubjectfield.text,
-                            kTKPDMESSAGE_KEYTOSHOPID:[_data objectForKey:@"shop_id"]?:@"",
-                            kTKPDMESSAGE_KEYTOUSERID:[_data objectForKey:@"user_id"]?:@""
+                            @"message" : _messagefield.text,
+                            @"message_subject" : _messagesubjectfield.text,
+                            @"to_shop_id" : [_data objectForKey:@"shop_id"]?:@"",
+                            @"to_user_id" : [_data objectForKey:@"user_id"]?:@""
                             };
     
-    _requestcount ++;
-    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:@"action/message.pl" parameters:[param encrypt]];
-    
-    
-    [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestsuccess:mappingResult withOperation:operation];
-        [_refreshControl endRefreshing];
-        [_timer invalidate];
-        _timer = nil;
-        
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        /** failure **/
-
-    }];
-    
-    [_operationQueue addOperation:_request];
-    
-    _timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+    TokopediaNetworkManager* requestManager = [TokopediaNetworkManager new];
+    [requestManager requestWithBaseUrl:[NSString kunyitUrl]
+                                  path:@"/v1/message"
+                                method:RKRequestMethodPOST
+                             parameter:param
+                               mapping:[InboxMessageAction mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                 [self requestsuccess:successResult withOperation:operation];
+                             } onFailure:nil];
 
 }
 
@@ -238,32 +219,6 @@
         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
         [alert show];
     }
-    
-}
-
--(void) configureRestkit {
-    // initialize RestKit
-    _objectmanager =  [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[SendMessage class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[SendMessageResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{@"is_success":@"is_success"}];
-    
-    //relation
-    RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
-    [statusMapping addPropertyMapping:resulRel];
-    
-    //register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:@"action/message.pl" keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectmanager addResponseDescriptor:responseDescriptorStatus];
-}
-
--(void) requesttimeout {
     
 }
 
@@ -297,9 +252,7 @@
                     StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:array delegate:self];
                     [alert show];
                 } else {
-                    [self configureRestkit];
                     [self doSendMessage];
-//                    [self.navigationController popViewControllerAnimated:TRUE];
                 }
                 
                 break;
@@ -322,7 +275,6 @@
             }
                 
             case 11 : {
-                if (_request.isExecuting) return;
                 [self doSendMessage];
                 break;
             }
@@ -332,43 +284,13 @@
     }
 }
 
-/*
-#pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
-
-#pragma mark - CustomTextView Delegate
-//- (void)textViewDidBeginEditing:(UITextView *)textView
-//{
-//    if ([textView.text isEqualToString:kTKPDMESSAGE_PLACEHOLDER]) {
-//        textView.text = @"";
-//        textView.textColor = [UIColor blackColor]; //optional
-//    }
-//    [textView becomeFirstResponder];
-//}
-//
-//- (void)textViewDidEndEditing:(UITextView *)textView
-//{
-//    if ([textView.text isEqualToString:@""]) {
-//        textView.text = kTKPDMESSAGE_PLACEHOLDER;
-//        textView.textColor = [UIColor lightGrayColor]; //optional
-//    }
-//    [textView resignFirstResponder];
-//}
-
-- (BOOL)textViewShouldBeginEditing:(UITextView *)textView
-{
+- (BOOL)textViewShouldBeginEditing:(UITextView *)textView {
     return YES;
 }
 
-- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
-{
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
     return YES;
 }
+
 @end
