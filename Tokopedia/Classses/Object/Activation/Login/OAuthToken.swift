@@ -9,7 +9,7 @@ import Foundation
 class OAuthToken: NSObject {
     var accessToken: String!
     var expiry: String!
-    var refreshToken: String!
+    var refreshToken: String = ""
     var tokenType: String!
     var error: String?
     var errorDescription: String?
