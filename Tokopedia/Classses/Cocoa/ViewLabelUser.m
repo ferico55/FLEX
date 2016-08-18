@@ -43,7 +43,7 @@
     lblUser.layer.masksToBounds = YES;
     lblUser.textAlignment = NSTextAlignmentCenter;
     
-    lblText.font = [UIFont smallThemeMedium];
+    lblText.font = [UIFont smallTheme];
     lblText.textColor = [UIColor blackColor];
     
     [self addSubview:lblUser];
