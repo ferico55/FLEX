@@ -414,7 +414,12 @@
     
     tempDictUserInfo = (NSDictionary*)object;
     _barbuttonsave.enabled = NO;
-    [[self getNetworkManager] doRequest];
+    
+    [[self getNetworkManager] requestWithBaseUrl:[NSString v4Url] path:[self getPath] method:[self getRequestMethod] parameter:[self getParameter]  mapping: [ProfileSettings mapping ] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+        [self requestSuccessActionAddAddress:successResult withOperation:operation];
+    } onFailure:^(NSError *errorResult) {
+        [self requestFailureActionAddAddress:errorResult];
+    }];
 }
 
 -(void)requestSuccessActionAddAddress:(id)object withOperation:(RKObjectRequestOperation *)operation
@@ -523,7 +528,6 @@
     if(tokopediaNetworkManager == nil)
     {
         tokopediaNetworkManager = [TokopediaNetworkManager new];
-        tokopediaNetworkManager.delegate = self;
         tokopediaNetworkManager.isUsingHmac = YES;
     }
     
@@ -925,7 +929,7 @@
 
 
 #pragma mark - TokopediaNetworkManager Delegate
-- (NSDictionary*)getParameter:(int)tag
+- (NSDictionary*)getParameter
 {
     NSDictionary *userinfo = [tempDictUserInfo mutableCopy];
     tempDictUserInfo = nil;
@@ -966,53 +970,12 @@
     return param;
 }
 
-//-(id)getRequestObject:(int)tag
-//{
-//    NSDictionary *userinfo = [tempDictUserInfo mutableCopy];
-//    tempDictUserInfo = nil;
-//    AddressFormList *list = [_data objectForKey:kTKPDPROFILE_DATAADDRESSKEY];
-//    
-//    NSString *action = (_type==TYPE_ADD_EDIT_PROFILE_EDIT)?kTKPDPROFILE_APIEDITADDRESSKEY:kTKPDPROFILE_APIADDADDRESSKEY;
-//    NSString *addressid = [NSString stringWithFormat:@"%zd",list.address_id?:0];
-//    NSString *city = [NSString stringWithFormat:@"%zd",[_selectedCity[@"ID"] integerValue]?:[list.city_id integerValue]?:0];
-//    NSString *province = [NSString stringWithFormat:@"%zd",[_selectedProvince[@"ID"] integerValue]?:[list.province_id integerValue]?:0];
-//    NSString *district = [NSString stringWithFormat:@"%zd",[_selectedDistrict[@"ID"] integerValue]?:[list.district_id integerValue]?:0];
-//    
-//    NSString *recievername = _textfieldreceivername.text?:@"";
-//    NSString *addressname = _textfieldaddressname.text?:@"";
-//    NSString *phone = _textfieldphonenumber.text?:@"";
-//    NSString *postalcode = _textfieldpostcode.text?:@"";
-//    
-//    NSString *addressstreet = _textviewaddress.text?:@"";
-//    NSString *password = _textfieldpass.text?:@"";
-//    NSString *longitude = (!_longitude || [_longitude isEqualToString:@"0"])?@"":_longitude;
-//    NSString *latitude = (!_latitude || [_latitude isEqualToString:@"0"])?@"":_latitude;
-//    
-//    RequestObjectEditAddress *editAddress = [RequestObjectEditAddress new];
-//    editAddress.action = action;
-//    editAddress.address_id = addressid;
-//    editAddress.city = city;
-//    editAddress.receiver_name = recievername;
-//    editAddress.address_name = addressname;
-//    editAddress.receiver_phone = phone;
-//    editAddress.province = province;
-//    editAddress.postal_code = postalcode;
-//    editAddress.address_street = addressstreet;
-//    editAddress.user_password = password;
-//    editAddress.district = district;
-//    editAddress.password = _textfieldpass.text?:@"";
-//    editAddress.longitude = longitude;
-//    editAddress.latitude = latitude;
-//    
-//    return editAddress;
-//}
-
--(int)getRequestMethod:(int)tag
+-(int)getRequestMethod
 {
-    return RKRequestMethodGET;
+    return RKRequestMethodPOST;
 }
 
-- (NSString *)getPath:(int)tag {
+- (NSString *)getPath {
     return (_type==TYPE_ADD_EDIT_PROFILE_EDIT)?@"/v4/action/people/edit_address.pl":@"/v4/action/people/add_address.pl";
 }
 
@@ -1044,18 +1007,6 @@
     [_act stopAnimating];
     _barbuttonsave.enabled = YES;
     self.navigationItem.rightBarButtonItem = _barbuttonsave;
-}
-
-- (void)actionBeforeRequest:(int)tag
-{
-}
-
-- (void)actionRequestAsync:(int)tag
-{
-}
-
-- (void)actionAfterFailRequestMaxTries:(int)tag
-{
 }
 
 @end

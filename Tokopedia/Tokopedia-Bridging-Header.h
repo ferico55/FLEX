@@ -77,6 +77,7 @@
 
 #import "ShopSettings.h"
 #import "WholesalePrice.h"
+
 #import "Product.h"
 #import "Breadcrumb.h"
 #import "CatalogAddProduct.h"
@@ -85,3 +86,7 @@
 #import "UIView+BlocksKit.h"
 
 #import "StickyAlertView+NetworkErrorHandler.h"
+
+#import "Breadcrumb.h"
+#import "NSString+HTML.h"
+
