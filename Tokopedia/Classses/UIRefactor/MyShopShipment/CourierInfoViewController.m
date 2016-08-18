@@ -57,12 +57,12 @@
     style.lineSpacing = 4.0;
 
     NSDictionary *nameAttributes = @{
-        NSFontAttributeName            : [UIFont fontWithName:@"GothamMedium" size:14],
+        NSFontAttributeName            : [UIFont title2ThemeMedium],
         NSParagraphStyleAttributeName  : style,
     };
 
     NSDictionary *descriptionAttributes = @{
-        NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:14],
+        NSFontAttributeName            : [UIFont title2Theme],
         NSParagraphStyleAttributeName  : style,
     };
     
@@ -83,10 +83,10 @@
     ShipmentServiceData *service = [self.courier.services objectAtIndex:indexPath.row];
     
     NSString *name = [NSString stringWithFormat:@"\n%@\n", service.name];
-    CGRect serviceNameRect = [name boundingRectWithSize:CGSizeMake(300.0f, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading attributes:@{NSFontAttributeName:[UIFont fontWithName:@"GothamMedium" size:14]} context:nil];
+    CGRect serviceNameRect = [name boundingRectWithSize:CGSizeMake(300.0f, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading attributes:@{NSFontAttributeName:[UIFont title2ThemeMedium]} context:nil];
 
     NSString *description = [NSString stringWithFormat:@"%@\n", service.productDescription];
-    CGRect serviceDescriptionRect = [description boundingRectWithSize:CGSizeMake(300.0f, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading attributes:@{NSFontAttributeName:[UIFont fontWithName:@"GothamBook" size:14]} context:nil];
+    CGRect serviceDescriptionRect = [description boundingRectWithSize:CGSizeMake(300.0f, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading attributes:@{NSFontAttributeName:[UIFont title2Theme]} context:nil];
 
     CGFloat totalHeight = serviceNameRect.size.height + serviceDescriptionRect.size.height + 40; // Padding
 
