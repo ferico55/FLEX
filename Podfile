@@ -24,7 +24,6 @@ target "Tokopedia" do
     pod 'FBSDKLoginKit'
     pod 'CardIO'
     pod 'DownPicker'
-    pod 'GTMNSStringHTMLAdditions'
 end
 
 target "TokopediaTests" do

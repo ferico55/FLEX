@@ -67,7 +67,6 @@ PODS:
     - GoogleAnalytics (~> 3.13.0)
   - GoogleUtilities (1.1.0):
     - GoogleSymbolUtilities (~> 1.0.0)
-  - GTMNSStringHTMLAdditions (0.2.1)
   - JLPermissions/Core (2.2.8):
     - DBPrivacyHelper (= 0.6.3)
   - JLPermissions/Notification (2.2.8):
@@ -116,7 +115,6 @@ DEPENDENCIES:
   - GoogleAppIndexing
   - GoogleMaps
   - GoogleTagManager
-  - GTMNSStringHTMLAdditions
   - JLPermissions/Notification
   - Localytics (~> 3.5.0)
   - NJKWebViewProgress
@@ -153,7 +151,6 @@ SPEC CHECKSUMS:
   GoogleSymbolUtilities: 82ad9f93d3615244b3f4ce440f5ab2515e8b4f56
   GoogleTagManager: d93ce3ea323b5989f07c7cf24a59e69ed36841b6
   GoogleUtilities: 8ed9134debe11719097881711464752900668f10
-  GTMNSStringHTMLAdditions: 4bfc402b1b17165360728083156cae0a74ecb308
   JLPermissions: 27606b544932eb9fb1897f2e08ebcc4a10b8bc3b
   Localytics: da06c00606839b53978ca093adbca1d8afdeeb3e
   NJKWebViewProgress: f481fd424cb5ecc27eacae11b5397db92fba9a4d
