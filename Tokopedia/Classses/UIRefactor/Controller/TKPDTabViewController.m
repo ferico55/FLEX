@@ -151,7 +151,7 @@
     tempButtonRect.origin.y += 3;
     button.frame = tempButtonRect;
     [button addTarget:self action:@selector(navigationBarTap) forControlEvents:UIControlEventTouchUpInside];
-    button.titleLabel.font = [UIFont largeTheme];
+    button.titleLabel.font = [UIFont title2ThemeMedium];
     
     
     CGRect rect = CGRectMake(0,0,16,10);
