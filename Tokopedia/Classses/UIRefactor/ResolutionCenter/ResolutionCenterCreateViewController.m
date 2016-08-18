@@ -39,6 +39,7 @@
 @implementation ResolutionCenterCreateViewController{
     NSInteger _currentIndex;
     UIColor* greenColor;
+    UIColor* grayColor;
 }
 
 - (void)viewDidLoad {
@@ -64,6 +65,7 @@
 
 -(void)initPageIndicator{
     greenColor = [UIColor colorWithRed:0.295 green:0.745 blue:0.295 alpha:1];
+    grayColor = [UIColor colorWithRed:0.85 green:0.85 blue:0.85 alpha:1];
     _firstButton.layer.cornerRadius = _firstButton.frame.size.width/2;
     _firstButton.clipsToBounds = YES;
     _secondButton.layer.cornerRadius = _secondButton.frame.size.width/2;
@@ -143,14 +145,20 @@
 -(UIViewController*)viewControllerAtIndex:(NSInteger)index isGoingForward:(BOOL)isGoingForward{
     if(index == 0){
         [_firstButton setBackgroundColor:greenColor];
+        [_secondButton setBackgroundColor:grayColor];
+        [_thirdButton setBackgroundColor:grayColor];
         [_progressBar setProgress:0 animated:YES];
         return _stepOneViewController;
     }else if(index == 1){
+        [_firstButton setBackgroundColor:greenColor];
         [_secondButton setBackgroundColor:greenColor];
+        [_thirdButton setBackgroundColor:grayColor];
         [_progressBar setProgress:0.5 animated:YES];
         _stepTwoViewController.shouldFlushOptions = isGoingForward;
         return _stepTwoViewController;
     }else if(index == 2){
+        [_firstButton setBackgroundColor:greenColor];
+        [_secondButton setBackgroundColor:greenColor];
         [_thirdButton setBackgroundColor:greenColor];
         [_progressBar setProgress:1 animated:YES];
         return _stepThreeViewController;

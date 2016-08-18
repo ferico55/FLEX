@@ -120,7 +120,9 @@ ResolutionCenterChooseProblemDelegate
     if(section == 0){
         lbl.text = @"Masalah pada barang yang Anda terima";
     }else{
-        lbl.text = @"Pilih dan isi data produk yang bermasalah";
+        if(_shouldShowProblematicProduct){
+            lbl.text = @"Pilih dan isi data produk yang bermasalah";
+        }
     }
     lbl.textAlignment = NSTextAlignmentLeft;
     lbl.font = [UIFont fontWithName:@"Gotham Book" size:12.0];
@@ -145,6 +147,10 @@ ResolutionCenterChooseProblemDelegate
     _result.postObject.category_trouble_id = selectedProblem.category_trouble_id;
     if([selectedProblem.category_trouble_id isEqualToString:@"1"]){
         _shouldShowProblematicProduct = YES;
+        [_problemButton setTitle:selectedProblem.category_trouble_text forState:UIControlStateNormal];
+        [_tableView reloadData];
+    }else if([selectedProblem.category_trouble_id isEqualToString:@"2"]){
+        _shouldShowProblematicProduct = NO;        
         [_problemButton setTitle:selectedProblem.category_trouble_text forState:UIControlStateNormal];
         [_tableView reloadData];
     }

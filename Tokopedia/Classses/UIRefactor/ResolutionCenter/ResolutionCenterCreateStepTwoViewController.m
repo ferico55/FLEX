@@ -19,6 +19,9 @@ UIScrollViewDelegate,
 ResolutionCenterCreateStepTwoCellDelegate
 >
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
+@property (strong, nonatomic) IBOutlet UITableViewCell *priceProblemCell;
+@property (strong, nonatomic) IBOutlet DownPicker *priceProblemTextField;
+@property (strong, nonatomic) IBOutlet UITextView *priceProblemTextView;
 
 @end
 
@@ -58,32 +61,39 @@ ResolutionCenterCreateStepTwoCellDelegate
 
 #pragma mark - UITableView Delegate
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    //cell untuk product
-    ResolutionProductList* currentProduct = [_result.selectedProduct objectAtIndex:indexPath.row];
-    ResolutionCenterCreatePOSTProduct *postProduct = [_result.postObject.product_list objectAtIndex:indexPath.row];
-    
-    ResolutionCenterCreateStepTwoCell *cell = nil;
-    NSString *cellid = @"ResolutionCenterCreateStepTwoCell";
-    cell = (ResolutionCenterCreateStepTwoCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
-    if(cell == nil){
-        cell = [ResolutionCenterCreateStepTwoCell newcell];
+    if([_result.postObject.category_trouble_id isEqualToString:@"1"]){
+        //cell untuk product
+        ResolutionProductList* currentProduct = [_result.selectedProduct objectAtIndex:indexPath.row];
+        ResolutionCenterCreatePOSTProduct *postProduct = [_result.postObject.product_list objectAtIndex:indexPath.row];
+        
+        ResolutionCenterCreateStepTwoCell *cell = nil;
+        NSString *cellid = @"ResolutionCenterCreateStepTwoCell";
+        cell = (ResolutionCenterCreateStepTwoCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
+        if(cell == nil){
+            cell = [ResolutionCenterCreateStepTwoCell newcell];
+        }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        [cell.productName setTitle:currentProduct.product_name forState:UIControlStateNormal];
+        [cell.productImage setImageWithURL:[NSURL URLWithString:currentProduct.primary_photo]];
+        cell.quantityLabel.text = postProduct.quantity;
+        cell.quantityStepper.value = [postProduct.quantity integerValue];
+        cell.quantityStepper.stepValue = 1.0f;
+        cell.quantityStepper.minimumValue = 0;
+        cell.quantityStepper.maximumValue = [postProduct.quantity integerValue];
+        cell.quantityStepper.tag = indexPath.row;
+        cell.delegate = self;
+        
+        cell.troublePicker  = [[DownPicker alloc] initWithTextField:cell.troublePicker withData:[self generateDownPickerChoices]];
+        cell.troublePicker.tag = indexPath.row;
+        [cell.troublePicker addTarget:self action:@selector(troublePickerValueChanged:) forControlEvents:UIControlEventValueChanged];
+        return cell;
+    }else{
+        _priceProblemTextField = [[DownPicker alloc] initWithTextField:_priceProblemTextField withData:[self generateDownPickerChoices]];
+        [_priceProblemTextField addTarget:self action:@selector(priceProblemPickerValueChanged:) forControlEvents:UIControlEventValueChanged];
+        return _priceProblemCell;
     }
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    [cell.productName setTitle:currentProduct.product_name forState:UIControlStateNormal];
-    [cell.productImage setImageWithURL:[NSURL URLWithString:currentProduct.primary_photo]];
-    cell.quantityLabel.text = postProduct.quantity;
-    cell.quantityStepper.value = [postProduct.quantity integerValue];
-    cell.quantityStepper.stepValue = 1.0f;
-    cell.quantityStepper.minimumValue = 0;
-    cell.quantityStepper.maximumValue = [postProduct.quantity integerValue];
-    cell.quantityStepper.tag = indexPath.row;
-    cell.delegate = self;
-    
-    cell.troublePicker  = [[DownPicker alloc] initWithTextField:cell.troublePicker withData:[self generateDownPickerChoices]];
-    cell.troublePicker.tag = indexPath.row;
-    [cell.troublePicker addTarget:self action:@selector(troublePickerValueChanged:) forControlEvents:UIControlEventValueChanged];
-    return cell;
 }
 
 -(NSMutableArray*)generateDownPickerChoices{
@@ -95,11 +105,19 @@ ResolutionCenterCreateStepTwoCellDelegate
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return _result.selectedProduct.count;
+    if([_result.postObject.category_trouble_id isEqualToString:@"1"]){
+        return _result.selectedProduct.count;
+    }else{
+        return 1;
+    }
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 280;
+    if([_result.postObject.category_trouble_id isEqualToString:@"1"]){
+        return 280;
+    }else{
+        return _priceProblemCell.frame.size.height;
+    }
 }
 
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView{
@@ -114,6 +132,13 @@ ResolutionCenterCreateStepTwoCellDelegate
     ResolutionCenterCreateTroubleList *selectedTrouble = [possibleTroubles objectAtIndex:[downPicker selectedIndex]];
     
     postProduct.trouble_id = selectedTrouble.trouble_id;
+}
+
+-(void)priceProblemPickerValueChanged:(id)picker{
+    DownPicker* downPicker = (DownPicker*)picker;
+    NSMutableArray* possibleTroubles = [_result generatePossibleTroubleListWithCategoryTroubleId:_result.postObject.category_trouble_id];
+    ResolutionCenterCreateTroubleList* selectedTrouble = [possibleTroubles objectAtIndex:[downPicker selectedIndex]];
+    
 }
 
 #pragma mark - Cell delegate
