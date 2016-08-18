@@ -1,84 +1,69 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <mutableArray key="GothamBook.ttf">
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-        </mutableArray>
-    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="SettingProductCellIdentifier" rowHeight="90" id="2t7-Vt-LH6" customClass="ProductListMyShopCell">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="90"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="SettingProductCellIdentifier" rowHeight="86" id="2t7-Vt-LH6" customClass="ProductListMyShopCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="86"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2t7-Vt-LH6" id="lsI-PT-Gsw">
-                <rect key="frame" x="0.0" y="0.0" width="287" height="89"/>
+                <rect key="frame" x="0.0" y="0.0" width="287" height="85.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_toped_loading_grey-02.png" translatesAutoresizingMaskIntoConstraints="NO" id="gAI-ai-ITa">
-                        <rect key="frame" x="15" y="9" width="71" height="71"/>
+                        <rect key="frame" x="15" y="8" width="69.5" height="69.5"/>
                         <color key="backgroundColor" red="0.90196078430000004" green="0.90196078430000004" blue="0.90196078430000004" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="71" id="Pxu-Ow-eEH"/>
-                            <constraint firstAttribute="width" constant="71" id="adT-wD-0E8"/>
+                            <constraint firstAttribute="width" secondItem="gAI-ai-ITa" secondAttribute="height" multiplier="1:1" id="9to-Ev-AfV"/>
                         </constraints>
                     </imageView>
-                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Ssc-RQ-M2v">
+                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Ssc-RQ-M2v">
                         <rect key="frame" x="40" y="35" width="20" height="20"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="20" id="lPH-l8-4oE"/>
-                            <constraint firstAttribute="width" constant="20" id="qa5-lU-f3H"/>
-                        </constraints>
                     </activityIndicatorView>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TYs-Lk-UUG">
-                        <rect key="frame" x="95" y="12" width="192" height="21"/>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Yoyo Frozen Blaze S Blazing Teens Auldey Lv 7" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TYs-Lk-UUG">
+                        <rect key="frame" x="92" y="8" width="194.5" height="20"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="21" id="Djr-N5-fbZ"/>
+                            <constraint firstAttribute="height" constant="20" id="MiC-2d-QPa"/>
                         </constraints>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qJv-S8-409">
-                        <rect key="frame" x="95" y="34" width="192" height="21"/>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rp 320.000" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qJv-S8-409">
+                        <rect key="frame" x="92" y="28" width="194.5" height="20"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="21" id="JBq-S5-A70"/>
+                            <constraint firstAttribute="height" constant="20" id="XyY-wN-pcg"/>
                         </constraints>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <color key="textColor" red="1" green="0.3411764705882353" blue="0.13333333333333333" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Y6-Oa-7TA">
-                        <rect key="frame" x="95" y="55" width="192" height="21"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="21" id="54F-fz-aGy"/>
-                        </constraints>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Stok Kosong" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Y6-Oa-7TA">
+                        <rect key="frame" x="92.5" y="56" width="194.5" height="21"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" red="0.28627450980392155" green="0.28627450980392155" blue="0.28627450980392155" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="gAI-ai-ITa" firstAttribute="leading" secondItem="lsI-PT-Gsw" secondAttribute="leading" constant="15" id="0L1-zs-pPw"/>
-                    <constraint firstItem="TYs-Lk-UUG" firstAttribute="top" secondItem="lsI-PT-Gsw" secondAttribute="top" constant="12" id="BPz-EH-I41"/>
-                    <constraint firstItem="1Y6-Oa-7TA" firstAttribute="top" secondItem="qJv-S8-409" secondAttribute="bottom" id="Ewx-5b-4lj"/>
-                    <constraint firstItem="Ssc-RQ-M2v" firstAttribute="top" secondItem="lsI-PT-Gsw" secondAttribute="top" constant="35" id="J67-gG-zXa"/>
-                    <constraint firstItem="1Y6-Oa-7TA" firstAttribute="leading" secondItem="gAI-ai-ITa" secondAttribute="trailing" constant="9" id="T72-Hp-UW3"/>
-                    <constraint firstAttribute="trailing" secondItem="TYs-Lk-UUG" secondAttribute="trailing" id="US0-q3-CEM"/>
-                    <constraint firstAttribute="trailing" secondItem="qJv-S8-409" secondAttribute="trailing" id="aup-tV-ni4"/>
-                    <constraint firstAttribute="bottom" secondItem="Ssc-RQ-M2v" secondAttribute="bottom" constant="34" id="dc4-No-2OS"/>
-                    <constraint firstItem="Ssc-RQ-M2v" firstAttribute="leading" secondItem="lsI-PT-Gsw" secondAttribute="leading" constant="40" id="eOi-ce-hlH"/>
-                    <constraint firstAttribute="trailing" secondItem="1Y6-Oa-7TA" secondAttribute="trailing" id="eWg-md-zoI"/>
-                    <constraint firstItem="gAI-ai-ITa" firstAttribute="top" secondItem="lsI-PT-Gsw" secondAttribute="top" constant="9" id="fx4-jl-arW"/>
-                    <constraint firstItem="qJv-S8-409" firstAttribute="top" secondItem="TYs-Lk-UUG" secondAttribute="bottom" constant="1" id="g7T-Z2-cLu"/>
-                    <constraint firstAttribute="bottom" secondItem="gAI-ai-ITa" secondAttribute="bottom" constant="9" id="heo-Ny-sj8"/>
-                    <constraint firstItem="qJv-S8-409" firstAttribute="leading" secondItem="gAI-ai-ITa" secondAttribute="trailing" constant="9" id="kFU-tU-OCA"/>
-                    <constraint firstItem="TYs-Lk-UUG" firstAttribute="leading" secondItem="gAI-ai-ITa" secondAttribute="trailing" constant="9" id="mSh-lm-xNC"/>
+                    <constraint firstItem="qJv-S8-409" firstAttribute="leading" secondItem="gAI-ai-ITa" secondAttribute="trailing" constant="8" id="33j-6K-8yn"/>
+                    <constraint firstItem="gAI-ai-ITa" firstAttribute="leading" secondItem="lsI-PT-Gsw" secondAttribute="leading" constant="15" id="5I8-CH-qoN"/>
+                    <constraint firstAttribute="bottom" secondItem="gAI-ai-ITa" secondAttribute="bottom" constant="8" id="FmO-n4-RJA"/>
+                    <constraint firstItem="1Y6-Oa-7TA" firstAttribute="top" secondItem="qJv-S8-409" secondAttribute="bottom" constant="8" id="GcK-Jb-7Hj"/>
+                    <constraint firstAttribute="trailing" secondItem="1Y6-Oa-7TA" secondAttribute="trailing" id="Ipu-Cl-gQg"/>
+                    <constraint firstItem="qJv-S8-409" firstAttribute="top" secondItem="TYs-Lk-UUG" secondAttribute="bottom" id="KHN-Pd-1hH"/>
+                    <constraint firstAttribute="trailing" secondItem="TYs-Lk-UUG" secondAttribute="trailing" id="Ki0-0R-juT"/>
+                    <constraint firstItem="TYs-Lk-UUG" firstAttribute="top" secondItem="lsI-PT-Gsw" secondAttribute="top" constant="8" id="KnD-Yw-3oI"/>
+                    <constraint firstItem="1Y6-Oa-7TA" firstAttribute="leading" secondItem="gAI-ai-ITa" secondAttribute="trailing" constant="8" id="LOt-Lc-3Re"/>
+                    <constraint firstItem="gAI-ai-ITa" firstAttribute="top" secondItem="lsI-PT-Gsw" secondAttribute="top" constant="8" id="Wrg-AD-xok"/>
+                    <constraint firstAttribute="bottom" secondItem="1Y6-Oa-7TA" secondAttribute="bottom" constant="8" id="qhw-ps-bxw"/>
+                    <constraint firstItem="TYs-Lk-UUG" firstAttribute="leading" secondItem="gAI-ai-ITa" secondAttribute="trailing" constant="8" id="s8G-Ej-6fZ"/>
+                    <constraint firstAttribute="trailing" secondItem="qJv-S8-409" secondAttribute="trailing" id="tUj-68-eit"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
@@ -93,9 +78,4 @@
     <resources>
         <image name="icon_toped_loading_grey-02.png" width="30" height="30"/>
     </resources>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
-    </simulatedMetricsContainer>
 </document>
