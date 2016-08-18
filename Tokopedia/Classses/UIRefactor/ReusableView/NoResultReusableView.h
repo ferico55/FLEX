@@ -20,12 +20,14 @@
 @interface NoResultReusableView : UIView
 @property (nonatomic, retain) IBOutlet UIView *view;
 @property (nonatomic, weak) id<NoResultDelegate> delegate;
+@property (weak, nonatomic) IBOutlet UIButton *button;
 -(void)setNoResultImage:(NSString *)fileName;
 -(void)setNoResultTitle:(NSString *)title;
 -(void)setNoResultDesc:(NSString *)desc;
 -(void)setNoResultButtonTitle:(NSString *)btnTitle;
 -(void)generateAllElements:(NSString *)fileName title:(NSString *)title desc:(NSString *)desc btnTitle:(NSString *)btnTitle;
 -(void)hideButton:(bool)hide;
+- (void)generateRequestErrorViewWithError:(NSError *)error;
 @end
 
 

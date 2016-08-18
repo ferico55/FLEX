@@ -12,6 +12,7 @@
 #import "TransactionCart.h"
 #import "GeneralSwitchCell.h"
 #import "TransactionCartCell.h"
+#import "GeneralTextFieldCell.h"
 
 @interface CartCell : NSObject
 

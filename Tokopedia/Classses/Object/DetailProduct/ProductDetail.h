@@ -9,6 +9,7 @@
 @class ProductReturnInfo;
 #import <Foundation/Foundation.h>
 #import "ProductModelView.h"
+#import "Errors.h"
 
 
 #define CProductID @"product_id"
@@ -64,6 +65,8 @@
 @property (nonatomic, strong) NSString *product_price_last;
 @property (nonatomic, strong) NSString *product_cat_name;
 @property (nonatomic, strong) ProductReturnInfo *return_info;
+
+@property (nonatomic, strong) NSArray *errors;
 
 @property (nonatomic, strong) ProductModelView *viewModel;
 
