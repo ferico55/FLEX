@@ -608,7 +608,7 @@ NoResultDelegate
                                                       [self deleteListAtIndexPath:indexPath];
                                                       return YES;
                                                   }];
-    [button.titleLabel setFont:FONT_GOTHAM_BOOK_13];
+    [button.titleLabel setFont:[UIFont largeTheme]];
     return button;
 }
 
@@ -639,7 +639,7 @@ NoResultDelegate
                                                       welf.lastActionIndexPath = indexPath;
                                                       return YES;
                                                   }];
-    [button.titleLabel setFont:FONT_GOTHAM_BOOK_13];
+    [button.titleLabel setFont:[UIFont largeTheme]];
     return button;
 }
 
@@ -667,7 +667,7 @@ NoResultDelegate
                                                       
                                                       return YES;
                                                   }];
-    [button.titleLabel setFont:FONT_GOTHAM_BOOK_13];
+    [button.titleLabel setFont:[UIFont largeTheme]];
     return button;
 }
 
@@ -692,7 +692,7 @@ NoResultDelegate
                                                       [self.navigationController presentViewController:navigation animated:YES completion:nil];
                                                       return YES;
                                                   }];
-    [button.titleLabel setFont:FONT_GOTHAM_BOOK_13];
+    [button.titleLabel setFont:[UIFont largeTheme]];
     return button;
 }
 
