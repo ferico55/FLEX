@@ -487,8 +487,6 @@
 
 -(void)request
 {
-    if ([self getNetworkRequest].getObjectRequest.isExecuting) return;
-    
     _table.tableFooterView = _footer;
     [_act startAnimating];
     
