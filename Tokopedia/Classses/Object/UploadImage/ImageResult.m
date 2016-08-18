@@ -19,7 +19,11 @@
                                                         @"pic_src",
                                                         @"pic_obj",
                                                         @"message_error",
-                                                        @"src"]];
+                                                        @"src",
+                                                        @"is_success",
+                                                        @"pic_id",
+                                                        @"file_path",
+                                                        @"file_uploaded"]];
     
     [imageResultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"image" toKeyPath:@"image" withMapping:[UploadDataImage mapping]]];
 

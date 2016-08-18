@@ -1271,7 +1271,7 @@
     
     _cart.grand_total = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:grandTotalInteger]];
     
-    _cart.grand_total_idr = [[NSNumberFormatter IDRFormarter] stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]];
+    _cart.grand_total_idr = [[NSNumberFormatter IDRFormatter] stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]];
     _cart.grand_total_without_lp = _cart.grand_total;
     _cart.grand_total_without_lp_idr = _cart.grand_total_idr;
     _grandTotalLabel.text = _cart.grand_total_without_lp_idr;
@@ -1380,7 +1380,7 @@
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
     _activeTextField = textField;
     if (textField == _saldoTokopediaAmountTextField) {
-        NSInteger grandTotal = [[[NSNumberFormatter IDRFormarter] numberFromString:_grandTotalLabel.text] integerValue];
+        NSInteger grandTotal = [[[NSNumberFormatter IDRFormatter] numberFromString:_grandTotalLabel.text] integerValue];
         [_dataInput setObject:@(grandTotal) forKey:DATA_UPDATED_GRAND_TOTAL];
     }
 
@@ -1614,7 +1614,7 @@
 
 -(NSInteger)depositAmountUser
 {
-    NSInteger depositAmountUser = [[[NSNumberFormatter IDRFormarter] numberFromString:_cart.deposit_idr] integerValue];
+    NSInteger depositAmountUser = [[[NSNumberFormatter IDRFormatter] numberFromString:_cart.deposit_idr] integerValue];
     return depositAmountUser;
 }
 
@@ -1690,7 +1690,7 @@
     [_dataInput setObject:_cart.grand_total?:@"" forKey:DATA_UPDATED_GRAND_TOTAL];
     
     NSNumber *grandTotal = [_dataInput objectForKey:DATA_UPDATED_GRAND_TOTAL];
-    NSInteger deposit = [[[NSNumberFormatter IDRFormarter] numberFromString:_saldoTokopediaAmountTextField.text] integerValue];
+    NSInteger deposit = [[[NSNumberFormatter IDRFormatter] numberFromString:_saldoTokopediaAmountTextField.text] integerValue];
     NSString *voucher = [_dataInput objectForKey:DATA_VOUCHER_AMOUNT];
     
     NSInteger totalInteger = [grandTotal integerValue];
@@ -1722,7 +1722,7 @@
     
     _cart.grand_total = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:grandTotalInteger]];
     
-    _cart.grand_total_idr = [[NSNumberFormatter IDRFormarter] stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]];
+    _cart.grand_total_idr = [[NSNumberFormatter IDRFormatter] stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]];
     
     _cart.grand_total_without_lp = _cart.grand_total;
     _cart.grand_total_without_lp_idr = _cart.grand_total_idr;
@@ -2347,7 +2347,7 @@
         _voucherAmountLabel.hidden = NO;
         
         NSInteger voucher = [_voucherData.voucher_amount integerValue];
-        NSString *voucherString = [[NSNumberFormatter IDRFormarter] stringFromNumber:[NSNumber numberWithInteger:voucher]];
+        NSString *voucherString = [[NSNumberFormatter IDRFormatter] stringFromNumber:[NSNumber numberWithInteger:voucher]];
         voucherString = [NSString stringWithFormat:@"Anda mendapatkan voucher %@", voucherString];
         _voucherAmountLabel.text = voucherString;
         _voucherAmountLabel.font = [UIFont fontWithName:@"GothamBook" size:12];

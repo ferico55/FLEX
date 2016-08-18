@@ -9,6 +9,19 @@
 #import "WholesalePrice.h"
 
 @implementation WholesalePrice
+
+-(NSString *)wholesale_price{
+    return _wholesale_price?:@"";
+}
+
+-(NSString *)wholesale_max{
+    return _wholesale_max;
+}
+
+-(NSString *)wholesale_min{
+    return _wholesale_min?:@"";
+}
+
 +(RKObjectMapping *)mappingForPromo{
     RKObjectMapping* wholesalePromoMapping = [RKObjectMapping mappingForClass:[WholesalePrice class]];
     [wholesalePromoMapping addAttributeMappingsFromDictionary:@{@"quantity_min_format":@"wholesale_min",
@@ -18,14 +31,18 @@
     return wholesalePromoMapping;
 }
 
++(NSDictionary *)attributeMappingDictionary
+{
+    NSArray *keys = @[@"wholesale_min",
+                      @"wholesale_max",
+                      @"wholesale_price",];
+    return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
+}
 
-+(RKObjectMapping *)mapping{
-    RKObjectMapping* mapping = [RKObjectMapping mappingForClass:[WholesalePrice class]];
-    [mapping addAttributeMappingsFromDictionary:@{
-                                                    @"wholesale_min":@"wholesale_min",
-                                                    @"wholesale_max":@"wholesale_max",
-                                                    @"wholesale_price":@"wholesale_price"
-                                                }];
++(RKObjectMapping*)mapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
     return mapping;
 }
 

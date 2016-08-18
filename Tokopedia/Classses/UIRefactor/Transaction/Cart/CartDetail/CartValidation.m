@@ -48,7 +48,7 @@
 }
 
 +(NSString *)errorMessageMinimumPaymenCC{
-    NSString *minimum = [[NSNumberFormatter IDRFormarter] stringFromNumber:[NSNumber numberWithInteger:[CartValidation minimumPaymentCC]]];
+    NSString *minimum = [[NSNumberFormatter IDRFormatter] stringFromNumber:[NSNumber numberWithInteger:[CartValidation minimumPaymentCC]]];
     return [NSString stringWithFormat:@"Minimum pembayaran untuk kartu kredit adalah %@ .",minimum];
 }
 
@@ -72,7 +72,7 @@
 }
 
 +(NSString *)errorMessageMinimumPaymenKlikBCA{
-    NSString *minimum = [[NSNumberFormatter IDRFormarter] stringFromNumber:[NSNumber numberWithInteger:[CartValidation minimumPaymentKlikBCA]]];
+    NSString *minimum = [[NSNumberFormatter IDRFormatter] stringFromNumber:[NSNumber numberWithInteger:[CartValidation minimumPaymentKlikBCA]]];
     return [NSString stringWithFormat:@"Minimum pembayaran untuk KlikBCA adalah %@ .",minimum];
 }
 
@@ -98,7 +98,7 @@
 }
 
 +(NSString *)errorMessageMinimumPaymenIndomaret{
-    NSString *minimum = [[NSNumberFormatter IDRFormarter] stringFromNumber:[NSNumber numberWithInteger:[CartValidation minimumPaymentIndomaret]]];
+    NSString *minimum = [[NSNumberFormatter IDRFormatter] stringFromNumber:[NSNumber numberWithInteger:[CartValidation minimumPaymentIndomaret]]];
     return [NSString stringWithFormat:@"Minimum pembayaran untuk Indomaret adalah %@ .",minimum];
 }
 
