@@ -22,7 +22,7 @@
 @property (strong, nonatomic) NSString *count_talk_format;
 @property (strong, nonatomic) NSString *count_review_format;
 @property (strong, nonatomic) PromoCategory *category;
-@property (strong, nonatomic) NSArray<WholesalePrice*> *wholesale_price;
+@property (strong, nonatomic) NSMutableArray<WholesalePrice*> *wholesale_price;
 @property (strong, nonatomic) PromoProductImage *image;
 
 

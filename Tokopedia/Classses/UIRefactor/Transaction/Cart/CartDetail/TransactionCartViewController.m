@@ -1376,7 +1376,7 @@
     
     _cart.grand_total = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:grandTotalInteger]];
     
-    _cart.grand_total_idr = [[NSNumberFormatter IDRFormarter] stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]];
+    _cart.grand_total_idr = [[NSNumberFormatter IDRFormatter] stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]];
     _cart.grand_total_without_lp = _cart.grand_total;
     _cart.grand_total_without_lp_idr = _cart.grand_total_idr;
     _grandTotalLabel.text = _cart.grand_total_without_lp_idr;
@@ -1483,7 +1483,7 @@
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
     _activeTextField = textField;
     if (textField == _saldoTokopediaAmountTextField) {
-        NSInteger grandTotal = [[[NSNumberFormatter IDRFormarter] numberFromString:_grandTotalLabel.text] integerValue];
+        NSInteger grandTotal = [[[NSNumberFormatter IDRFormatter] numberFromString:_grandTotalLabel.text] integerValue];
         [_dataInput setObject:@(grandTotal) forKey:DATA_UPDATED_GRAND_TOTAL];
         _saldoErrorIcon.hidden = YES;
     }
@@ -1713,7 +1713,7 @@
 
 -(NSInteger)depositAmountUser
 {
-    NSInteger depositAmountUser = [[[NSNumberFormatter IDRFormarter] numberFromString:_cart.deposit_idr] integerValue];
+    NSInteger depositAmountUser = [[[NSNumberFormatter IDRFormatter] numberFromString:_cart.deposit_idr] integerValue];
     return depositAmountUser;
 }
 
@@ -1789,7 +1789,7 @@
     [_dataInput setObject:_cart.grand_total?:@"" forKey:DATA_UPDATED_GRAND_TOTAL];
     
     NSNumber *grandTotal = [_dataInput objectForKey:DATA_UPDATED_GRAND_TOTAL];
-    NSInteger deposit = [[[NSNumberFormatter IDRFormarter] numberFromString:_saldoTokopediaAmountTextField.text] integerValue];
+    NSInteger deposit = [[[NSNumberFormatter IDRFormatter] numberFromString:_saldoTokopediaAmountTextField.text] integerValue];
     NSString *voucher = [_dataInput objectForKey:DATA_VOUCHER_AMOUNT];
     
     NSInteger totalInteger = [grandTotal integerValue];
@@ -1821,7 +1821,7 @@
     
     _cart.grand_total = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:grandTotalInteger]];
     
-    _cart.grand_total_idr = [[NSNumberFormatter IDRFormarter] stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]];
+    _cart.grand_total_idr = [[NSNumberFormatter IDRFormatter] stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]];
     
     _cart.grand_total_without_lp = _cart.grand_total;
     _cart.grand_total_without_lp_idr = _cart.grand_total_idr;
@@ -2483,30 +2483,29 @@
 -(void)doRequestVoucher{
     [self isLoading:YES];
     NSString *voucherCode = [_dataInput objectForKey:API_VOUCHER_CODE_KEY]?:@"";
-    [RequestCart fetchVoucherCode:voucherCode
-                          success:^(TransactionVoucher *data) {
-                              _voucherData = data.result.data_voucher;
-                              
-                              _voucherCodeButton.hidden = YES;
-                              _voucherAmountLabel.hidden = NO;
-                              
-                              NSInteger voucher = [_voucherData.voucher_amount integerValue];
-                              NSString *voucherString = [[NSNumberFormatter IDRFormarter] stringFromNumber:[NSNumber numberWithInteger:voucher]];
-                              voucherString = data.message_status?[data.message_status firstObject]:[NSString stringWithFormat:@"Anda mendapatkan voucher %@", voucherString];
-                              _voucherAmountLabel.text = voucherString;
-                              _voucherAmountLabel.font = [UIFont fontWithName:@"GothamBook" size:12];
-                              
-                              _buttonVoucherInfo.hidden = YES;
-                              _buttonCancelVoucher.hidden = NO;
-                              
-                              [self adjustGrandTotalWithDeposit:_saldoTokopediaAmountTextField.text];
-                              
-                              [self isLoading:NO];
-                              [_tableView reloadData];
-                          } error:^(NSError *error) {
-                              [_dataInput removeObjectForKey:API_VOUCHER_CODE_KEY];
-                              [self isLoading:NO];
-                          }];
+    [RequestCart fetchVoucherCode:voucherCode success:^(TransactionVoucherData *data) {
+        
+        _voucherData = data;
+        
+        _voucherCodeButton.hidden = YES;
+        _voucherAmountLabel.hidden = NO;
+        
+        NSInteger voucher = [_voucherData.voucher_amount integerValue];
+        NSString *voucherString = [[NSNumberFormatter IDRFormatter] stringFromNumber:[NSNumber numberWithInteger:voucher]];
+        voucherString = [NSString stringWithFormat:@"Anda mendapatkan voucher %@", voucherString];
+        _voucherAmountLabel.text = voucherString;
+        _voucherAmountLabel.font = [UIFont fontWithName:@"GothamBook" size:12];
+        
+        _buttonVoucherInfo.hidden = YES;
+        _buttonCancelVoucher.hidden = NO;
+        
+        [self adjustGrandTotalWithDeposit:_saldoTokopediaAmountTextField.text];
+        [self isLoading:NO];
+        [_tableView reloadData];
+    } error:^(NSError *error) {
+        [_dataInput removeObjectForKey:API_VOUCHER_CODE_KEY];
+        [self isLoading:NO];
+    }];
 }
 
 -(void)doCheckout{

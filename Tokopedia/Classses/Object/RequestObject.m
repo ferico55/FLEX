@@ -16,7 +16,8 @@
                         @"page",
                         @"per_page",
                         @"user_id",
-                        @"query"];
+                        @"query",
+                        @"product_id"];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }
 
@@ -63,15 +64,16 @@
 @implementation RequestObjectUploadImage
 
 + (NSDictionary*)attributeMappingDictionary {
-    NSDictionary *dictionary = @{@"id"       : @"image_id",
-                                 @"token"    : @"token",
-                                 @"user_id"  : @"user_id",
-                                 @"payment_id": @"payment_id",
-                                 @"action" : @"action",
+    NSDictionary *dictionary = @{@"id"          : @"image_id",
+                                 @"token"       : @"token",
+                                 @"user_id"     : @"user_id",
+                                 @"payment_id"  : @"payment_id",
+                                 @"action"      : @"action",
                                  @"web_service" : @"web_service",
-                                 @"new_add": @"add_new",
-                                 @"resolution": @"resolution",
-                                 @"server_id": @"server_id"
+                                 @"new_add"     : @"add_new",
+                                 @"product_id"  : @"product_id",
+ 								 @"resolution"  : @"resolution",
+                                 @"server_id"   : @"server_id"
                                  };
     
     return dictionary;

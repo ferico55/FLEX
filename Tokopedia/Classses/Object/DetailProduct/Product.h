@@ -10,9 +10,9 @@
 
 #import "DetailProductResult.h"
 
-@interface Product : NSObject
+@interface Product : NSObject <TKPObjectMapping>
 
-@property (nonatomic, strong) NSArray *message_error;
+@property (nonatomic, strong) NSArray <NSString*> *message_error;
 @property (nonatomic, strong) NSString *status;
 @property (nonatomic, strong) NSString *server_process_time;
 
@@ -20,6 +20,5 @@
 
 @property (nonatomic, strong) DetailProductResult *data;
 
-+ (RKObjectMapping*)mapping;
 
 @end
