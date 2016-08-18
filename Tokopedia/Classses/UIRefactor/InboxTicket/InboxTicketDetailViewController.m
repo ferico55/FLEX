@@ -148,8 +148,8 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     style.lineSpacing = 4.0;
     style.alignment = NSTextAlignmentCenter;
     
-    UIFont *gothamBook = [UIFont fontWithName:@"GothamBook" size:13];
-    UIFont *gothamMedium = [UIFont fontWithName:@"GothamMedium" size:13];
+    UIFont *gothamBook = [UIFont smallTheme];
+    UIFont *gothamMedium = [UIFont smallThemeMedium];
     
     NSDictionary *ratingAttributes = @{
         NSFontAttributeName             : gothamBook,
@@ -252,12 +252,12 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     
     NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:title];
     [attributedText addAttribute:NSFontAttributeName
-                           value:[UIFont boldSystemFontOfSize: 16.0f]
+                           value:[UIFont title1ThemeMedium]
                            range:NSMakeRange(0, ticketID.length)];
     
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
     label.numberOfLines = 2;
-    label.font = [UIFont systemFontOfSize: 11.0f];
+    label.font = [UIFont microTheme];
     label.textAlignment = NSTextAlignmentCenter;
     label.textColor = [UIColor whiteColor];
     label.attributedText = attributedText;
@@ -272,7 +272,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     style.lineSpacing = 4.0;
     
     NSDictionary *attributes = @{
-                                 NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:13],
+                                 NSFontAttributeName            : [UIFont smallTheme],
                                  NSParagraphStyleAttributeName  : style,
                                  };
     
@@ -361,7 +361,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
         message = [NSString stringWithFormat:@"%@\n\nMemberikan Penilaian : Tidak Membantu", ticket.ticket_detail_message];
     }
     
-    CGRect paragraphRect = [message boundingRectWithSize:CGSizeMake(300.0f, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading attributes:@{NSFontAttributeName:[UIFont fontWithName:@"GothamBook" size:14]} context:nil];
+    CGRect paragraphRect = [message boundingRectWithSize:CGSizeMake(300.0f, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading attributes:@{NSFontAttributeName:[UIFont largeTheme]} context:nil];
 
     height = cellRowHeight + paragraphRect.size.height;
     
@@ -608,7 +608,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
         style.alignment = NSTextAlignmentCenter;
 
         NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:text];
-        UIFont *font = [UIFont fontWithName:@"GothamMedium" size:12];
+        UIFont *font = [UIFont microThemeMedium];
         [attributedString addAttribute:NSFontAttributeName value:font range:NSMakeRange(17, rating.length)];
         [attributedString addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, text.length)];
         
@@ -835,7 +835,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     style.alignment = NSTextAlignmentCenter;
     
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:text];
-    UIFont *font = [UIFont fontWithName:@"GothamMedium" size:12];
+    UIFont *font = [UIFont microThemeMedium];
     [attributedString addAttribute:NSFontAttributeName value:font range:NSMakeRange(17, rating.length)];
     [attributedString addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, text.length)];
     
