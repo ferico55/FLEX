@@ -306,6 +306,12 @@
     return (UIViewController*)childViewController;
 }
 
+- (void) popToCartRootViewController {
+    if ([self.navigationController.topViewController isKindOfClass:[RegisterViewController class]]) {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
+}
+
 #pragma mark - UIPageViewController Delegate
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController {
 
@@ -480,6 +486,12 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(doRefreshingCart)
                                                  name:@"doRefreshingCart" object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(popToCartRootViewController)
+                                                 name:TKPDUserDidLoginNotification
+                                               object:nil];
+
     
 //    [[NSNotificationCenter defaultCenter] addObserver:self
 //                                             selector:@selector(didReceiveDeeplinkUrl:)

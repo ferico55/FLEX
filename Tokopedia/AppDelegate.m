@@ -302,4 +302,8 @@
     //hide title back button globally
     [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
 }
+
+- (void) applicationWillTerminate:(UIApplication *)application{
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"indexOfProductDetailPage"];
+}
 @end

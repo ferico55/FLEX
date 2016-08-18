@@ -350,6 +350,7 @@ typedef enum TagRequest {
         search.extendedLayoutIncludesOpaqueBars = YES;
         cart.extendedLayoutIncludesOpaqueBars = YES;
         moreNavBar.extendedLayoutIncludesOpaqueBars = YES;
+        [moreNavBar.navigationBar setTranslucent:NO];
     }
     
     NSArray* controllers = [NSArray arrayWithObjects:swipevcNav, categoryNavBar, searchNavBar, cartNavBar, moreNavBar, nil];

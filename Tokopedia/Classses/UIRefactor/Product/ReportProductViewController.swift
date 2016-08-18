@@ -46,6 +46,7 @@ class ReportProductViewController: UIViewController, UITextViewDelegate{
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationItem.title = "Laporkan Produk"
+        NSUserDefaults.standardUserDefaults().removeObjectForKey("indexOfProductDetailPage")
     }
 
     override func didReceiveMemoryWarning() {
@@ -55,6 +56,7 @@ class ReportProductViewController: UIViewController, UITextViewDelegate{
     @IBAction func didTapReportButton(sender: UIButton) {
         if let reportLinkUrl = reportLinkUrl {
             if reportLinkUrl.rangeOfString("gsd-tokopedia") != nil {
+                NSUserDefaults.standardUserDefaults().setObject((self.navigationController?.viewControllers.count)! - 2, forKey: "indexOfProductDetailPage")
                 UIApplication.sharedApplication().openURL(NSURL(string: reportLinkUrl)!)
             } else {
                 let appVersion = UIApplication.getAppVersionStringWithoutDot()

@@ -209,10 +209,15 @@
 
 - (void)validateShop {
     self.navigationItem.rightBarButtonItem = self.loadingBarButton;
+    // WS asked if longitude and latitude is 0.000000 then change it to empty string
+    if ([[_parameters objectForKey:@"longitude"]  isEqual: @"0.000000"] && [[_parameters objectForKey:@"latitude"]  isEqual: @"0.000000"]) {
+        [_parameters setValue:@"" forKey:@"longitude"];
+        [_parameters setValue:@"" forKey:@"latitude"];
+    }
     NSString *path = @"/v4/action/myshop/open_shop_validation.pl";
     [self.networkManager requestWithBaseUrl:[NSString v4Url]
                                        path:path
-                                     method:RKRequestMethodGET
+                                     method:RKRequestMethodPOST
                                   parameter:_parameters
                                     mapping:[AddShop mapping]
                                   onSuccess:^(RKMappingResult *mappingResult, RKObjectRequestOperation *operation) {
@@ -257,7 +262,7 @@
     NSDictionary *parameters = @{@"post_key": _postKey?:@"", @"file_uploaded": _fileUploaded?:@""};
     [self.networkManager requestWithBaseUrl:[NSString v4Url]
                                        path:path
-                                     method:RKRequestMethodGET
+                                     method:RKRequestMethodPOST
                                   parameter:parameters
                                     mapping:[AddShop mapping]
                                   onSuccess:^(RKMappingResult *mappingResult,

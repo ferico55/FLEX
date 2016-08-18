@@ -423,7 +423,13 @@
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
     [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR object:self];
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"indexOfProductDetailPage"] != nil) {
+        NSNumber *indexOfProductDetailPage = (NSNumber *)[[NSUserDefaults standardUserDefaults] objectForKey:@"indexOfProductDetailPage"];
+        [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:indexOfProductDetailPage.integerValue] animated:YES];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"indexOfProductDetailPage"];
+    } else {
     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_REDIRECT_TO_HOME object:self];
+    }
 }
 
 @end
