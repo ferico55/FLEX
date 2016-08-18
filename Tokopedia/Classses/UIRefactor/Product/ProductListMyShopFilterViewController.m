@@ -82,8 +82,8 @@ EtalaseViewControllerDelegate,
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
                                                    reuseIdentifier:nil];
-    cell.textLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
-    cell.detailTextLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
+    cell.textLabel.font = [UIFont title2Theme];
+    cell.detailTextLabel.font = [UIFont title2Theme];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
     if (indexPath.row == 0) {
