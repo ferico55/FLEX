@@ -88,6 +88,10 @@
                                                                             failureCallback:failureCallback];
                                      }];
                                  } else {
+                                     TKPDSecureStorage *storage = [TKPDSecureStorage standardKeyChains];
+                                     [storage setKeychainWithValue:oAuthToken.accessToken withKey:@"oAuthToken.accessToken"];
+                                     [storage setKeychainWithValue:oAuthToken.refreshToken withKey:@"oAuthToken.refreshToken"];
+                                     
                                      successCallback(login);
                                  }
                              }
