@@ -2483,15 +2483,15 @@
 -(void)doRequestVoucher{
     [self isLoading:YES];
     NSString *voucherCode = [_dataInput objectForKey:API_VOUCHER_CODE_KEY]?:@"";
-    [RequestCart fetchVoucherCode:voucherCode success:^(TransactionVoucherData *data) {
+    [RequestCart fetchVoucherCode:voucherCode success:^(TransactionVoucher *voucher) {
         
-        _voucherData = data;
+        _voucherData = voucher.result.data_voucher;
         
         _voucherCodeButton.hidden = YES;
         _voucherAmountLabel.hidden = NO;
         
-        NSInteger voucher = [_voucherData.voucher_amount integerValue];
-        NSString *voucherString = [[NSNumberFormatter IDRFormatter] stringFromNumber:[NSNumber numberWithInteger:voucher]];
+        NSInteger voucherAmount = [_voucherData.voucher_amount integerValue];
+        NSString *voucherString = [[NSNumberFormatter IDRFormatter] stringFromNumber:[NSNumber numberWithInteger:voucherAmount]];
         voucherString = [NSString stringWithFormat:@"Anda mendapatkan voucher %@", voucherString];
         _voucherAmountLabel.text = voucherString;
         _voucherAmountLabel.font = [UIFont fontWithName:@"GothamBook" size:12];

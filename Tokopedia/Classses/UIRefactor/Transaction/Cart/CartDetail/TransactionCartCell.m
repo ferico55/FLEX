@@ -123,11 +123,11 @@
     
     [attributedString addAttribute:NSFontAttributeName
      
-                             value:FONT_GOTHAM_BOOK_10
+                             value:[UIFont fontWithName:@"GothamMedium" size:10.0f]
      
                              range:[priceIsChangedString rangeOfString:productSebelumnya]];
     
-    [attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:158.0/255.0 green:158.0/255.0 blue:158.0/255.0 alpha:1] range:[priceIsChangedString rangeOfString:productSebelumnya]];
+    [attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:255/255.0 green:59/255.0 blue:48/255.0 alpha:1] range:[priceIsChangedString rangeOfString:productSebelumnya]];
     
     if ( [[viewModel.productPriceBeforeChange priceFromStringIDR] integerValue] != 0)
         
