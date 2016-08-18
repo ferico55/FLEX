@@ -9,6 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "DownPicker.h"
 
+@protocol ResolutionCenterCreateStepTwoCellDelegate <NSObject>
+- (void) didChangeStepperValue:(UIStepper*)stepper;
+@end
+
 @interface ResolutionCenterCreateStepTwoCell : UITableViewCell
 @property (strong, nonatomic) IBOutlet DownPicker *troublePicker;
 @property (strong, nonatomic) IBOutlet UIView *headerView;
@@ -22,7 +26,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *quantityLabel;
 @property (strong, nonatomic) IBOutlet UITextView *problemTextView;
 
-
+@property (weak, nonatomic) id<ResolutionCenterCreateStepTwoCellDelegate> delegate;
 
 + (id)newcell;
 @end

@@ -15,7 +15,8 @@
 <
 UITableViewDelegate,
 UITableViewDataSource,
-UIScrollViewDelegate
+UIScrollViewDelegate,
+ResolutionCenterCreateStepTwoCellDelegate
 >
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 
@@ -76,6 +77,8 @@ UIScrollViewDelegate
     cell.quantityStepper.stepValue = 1.0f;
     cell.quantityStepper.minimumValue = 0;
     cell.quantityStepper.maximumValue = [postProduct.quantity integerValue];
+    cell.quantityStepper.tag = indexPath.row;
+    cell.delegate = self;
     
     cell.troublePicker  = [[DownPicker alloc] initWithTextField:cell.troublePicker withData:[self generateDownPickerChoices]];
     cell.troublePicker.tag = indexPath.row;
@@ -111,5 +114,11 @@ UIScrollViewDelegate
     ResolutionCenterCreateTroubleList *selectedTrouble = [possibleTroubles objectAtIndex:[downPicker selectedIndex]];
     
     postProduct.trouble_id = selectedTrouble.trouble_id;
+}
+
+#pragma mark - Cell delegate
+-(void)didChangeStepperValue:(UIStepper *)stepper{
+    ResolutionCenterCreatePOSTProduct *postProduct = [_result.postObject.product_list objectAtIndex:stepper.tag];
+    postProduct.quantity = [NSString stringWithFormat:@"%.f", stepper.value];
 }
 @end

@@ -31,7 +31,7 @@
 
 - (IBAction)stepperValueChanged:(id)sender {
     _quantityLabel.text = [NSString stringWithFormat:@"%.f", _quantityStepper.value];
+    [_delegate didChangeStepperValue:sender];
 }
-
 
 @end
