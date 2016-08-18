@@ -350,8 +350,8 @@
     NSDictionary *attributes = @{NSParagraphStyleAttributeName: style};
     NSString *string = [NSString stringWithFormat:@"Catatan:\n%@", courier.weightPolicy];
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:string attributes:attributes];
-    [attributedString addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"GothamMedium" size:14] range:NSMakeRange(0, 9)];
-    [attributedString addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"GothamBook" size:14] range:NSMakeRange(9, courier.weightPolicy.length)];
+    [attributedString addAttribute:NSFontAttributeName value:[UIFont title2ThemeMedium] range:NSMakeRange(0, 9)];
+    [attributedString addAttribute:NSFontAttributeName value:[UIFont title2Theme] range:NSMakeRange(9, courier.weightPolicy.length)];
     cell.noteLabel.attributedText = attributedString;
     cell.noteLabel.numberOfLines = 0;
     [cell.noteLabel sizeToFit];
