@@ -164,6 +164,17 @@
     else if ([[url absoluteString] rangeOfString:@"login.pl"].location != NSNotFound) {
         [self redirectToLogin];
     }
+    else if ([[url absoluteString] rangeOfString:@"contact-shop"].location != NSNotFound){
+        NSRange range = [url.absoluteString rangeOfString:@"shop-id"];
+        NSString *parameterString = [url.absoluteString substringFromIndex:range.length + range.location+ 1];
+        NSRange andRange = [parameterString rangeOfString:@"&"];
+        NSString *shopId = [parameterString substringToIndex:andRange.location];
+        self.activeController.hidesBottomBarWhenPushed = YES;
+        [self.navigator navigateToShopFromViewController:self.activeController withShopID:shopId];
+        self.activeController.hidesBottomBarWhenPushed = NO;
+    } else if ([[url absoluteString] rangeOfString:@"contact-us"].location != NSNotFound) {
+        [self redirectToContactUs];
+    }
     else if(explodedPathUrl.count == 2) {
         //shop
         if([self isUrlContainPerlPostfix:explodedPathUrl[1]]) {
