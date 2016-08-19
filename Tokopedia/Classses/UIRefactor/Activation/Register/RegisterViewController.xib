@@ -7,9 +7,6 @@
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
             <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
         </mutableArray>
         <mutableArray key="GothamMedium.ttf">
             <string>GothamMedium</string>
@@ -81,7 +78,6 @@
             <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="-306" y="-436"/>
         </view>
-        <tapGestureRecognizer id="5bz-xB-0WU"/>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -187,17 +183,11 @@
                         <action selector="tap:" destination="-1" eventType="touchUpInside" id="L8G-Rq-hLX"/>
                     </connections>
                 </button>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Saya sudah membaca dan menerima " lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="233" translatesAutoresizingMaskIntoConstraints="NO" id="95o-gu-FPH">
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Saya sudah membaca dan menerima syarat dan ketentuan serta kebijakan privasi" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="95o-gu-FPH" customClass="TTTAttributedLabel">
                     <rect key="frame" x="42" y="348" width="223" height="13"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="13" id="IFD-rr-Pej"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
-                    <connections>
-                        <outletCollection property="gestureRecognizers" destination="5bz-xB-0WU" appends="YES" id="snJ-q9-vl0"/>
-                    </connections>
                 </label>
                 <button opaque="NO" tag="13" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y3x-eA-9Vz">
                     <rect key="frame" x="15" y="398" width="290" height="44"/>
@@ -205,7 +195,7 @@
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="H2T-ar-mT8"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
                     <state key="normal" title="Daftar">
                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -238,7 +228,7 @@
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="atau" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Re-iu-9qj">
                     <rect key="frame" x="144" y="457" width="31" height="13"/>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -320,6 +310,7 @@
                 <constraint firstItem="dh2-Tl-g6u" firstAttribute="trailing" secondItem="4q8-DK-AgL" secondAttribute="trailing" id="Ycf-yF-0kI"/>
                 <constraint firstItem="Om5-rq-kus" firstAttribute="top" secondItem="1GC-F6-b5V" secondAttribute="bottom" constant="16" id="ZY6-SM-bTM"/>
                 <constraint firstItem="4q8-DK-AgL" firstAttribute="trailing" secondItem="Kz1-ge-iSa" secondAttribute="trailing" id="a3M-p5-Eiv"/>
+                <constraint firstItem="95o-gu-FPH" firstAttribute="trailing" secondItem="W9c-XX-w7W" secondAttribute="trailing" id="aVq-Tu-4E0"/>
                 <constraint firstItem="y3x-eA-9Vz" firstAttribute="top" secondItem="Fzr-EG-EzD" secondAttribute="bottom" constant="22" id="beQ-c2-F2C">
                     <variation key="heightClass=regular-widthClass=regular" constant="26"/>
                 </constraint>
