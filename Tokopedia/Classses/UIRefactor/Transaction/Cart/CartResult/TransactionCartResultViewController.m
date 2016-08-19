@@ -50,7 +50,7 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *totalPaymentLabel;
 @property (strong, nonatomic) IBOutlet UIView *headerPaymentListView;
-@property (weak, nonatomic) IBOutlet UILabel *footerLabel1;
+@property (weak, nonatomic) IBOutlet TTTAttributedLabel *footerLabel1;
 @property (weak, nonatomic) IBOutlet UILabel *footerLabel;
 @property (strong, nonatomic) IBOutlet UIView *paymentStatusView;
 @property (weak, nonatomic) IBOutlet UIButton *paymentStatusButton;
@@ -68,9 +68,10 @@
 @end
 
 #define kTKPDMORE_PRIVACY_URL @"https://m.tokopedia.com/privacy.pl"
-#define kTKPDMORE_HELP_URL @"https://www.tokopedia.com/bantuan"
+#define kTKPDMORE_HELP_URL @"https://m.tokopedia.com/bantuan"
 #define kTKPDMORE_HELP_TITLE @"Bantuan"
 #define kTKPDMORE_PRIVACY_TITLE @"Kebijakan Privasi"
+#define kTKPDMORE_PAYMENT_CONFIRMATION @"Konfirmasi Pembayaran"
 
 @implementation TransactionCartResultViewController
 
@@ -294,9 +295,7 @@
 - (IBAction)tap:(id)sender {
     UIButton *button = (UIButton*)sender;
     if (button == _confirmPaymentButton || button.tag == 10) {
-        TxOrderTabViewController *vc = [TxOrderTabViewController new];
-        
-        [self.navigationController pushViewController:vc animated:YES];
+        [self goToTxOrderTabViewController];
     }
     else if (button == _paymentStatusButton)
     {
@@ -724,20 +723,14 @@
 
 -(void)adjustFooterPaymentConfirmation
 {
-    NSString *string1 = _footerLabel1.text;
+    _footerLabel1.enabledTextCheckingTypes = NSTextCheckingTypeLink;
+    _footerLabel1.delegate = self;
     
-    NSMutableAttributedString *title1 = [[NSMutableAttributedString alloc]initWithString:string1];
-    [title1 addAttribute:NSFontAttributeName value:FONT_GOTHAM_BOOK_11 range:NSMakeRange(0, title1.length)];
     
-    //add color
-    [title1 addAttribute:NSForegroundColorAttributeName
-                   value:[UIColor colorWithRed:0.0/255.0 green:122.0/255.0 blue:255.0/255.0 alpha:1]
-                   range:[string1 rangeOfString:@"Konfirmasi Pembayaran"]];
+    NSRange range = [_footerLabel1.text rangeOfString:@"Konfirmasi Pembayaran"];
+    _footerLabel1.linkAttributes = @{(id)kCTForegroundColorAttributeName : [UIColor colorWithRed:0.0/255.0 green:122.0/255.0 blue:255.0/255.0 alpha:1], NSUnderlineStyleAttributeName: @(NSUnderlineStyleNone)};
     
-    //add alignment
-    [title1 addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, title1.length)];
-    
-    _footerLabel1.attributedText = title1;
+    [_footerLabel1 addLinkToURL:[NSURL URLWithString: kTKPDMORE_PAYMENT_CONFIRMATION] withRange:range];
 }
 
 -(void)adjustFooterIndomaret
@@ -868,10 +861,20 @@
 - (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url {
     if ([url.absoluteString  isEqual: kTKPDMORE_HELP_URL]) {
         WebViewController *webViewController = [WebViewController new];
-        webViewController.strURL = kTKPDMORE_HELP_URL;
+        webViewController.strURL = [kTKPDMORE_HELP_URL stringByAppendingString:@"?flag_app=3&device=ios"];
         webViewController.strTitle = kTKPDMORE_HELP_TITLE;
         [self.navigationController pushViewController:webViewController animated:YES];
+    } else {
+        [self goToTxOrderTabViewController];
     }
+}
+
+# pragma mark - Navigation 
+
+- (void) goToTxOrderTabViewController {
+    TxOrderTabViewController *vc = [TxOrderTabViewController new];
+    
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end
