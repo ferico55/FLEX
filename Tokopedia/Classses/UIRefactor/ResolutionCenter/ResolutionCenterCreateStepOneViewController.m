@@ -158,7 +158,7 @@ ResolutionCenterChooseProblemDelegate
 
 #pragma mark - Methods
 -(void)fetchForm{
-    [RequestResolutionData fetchCreateResolutionDataWithOrderId:@"123123"
+    [RequestResolutionData fetchCreateResolutionDataWithOrderId:@"15632"
                                                         success:^(ResolutionCenterCreateResponse *data) {
                                                             _result.formData = data.data;
                                                             [_problemButton setHidden:NO];
@@ -168,7 +168,7 @@ ResolutionCenterChooseProblemDelegate
                                                         }];
 }
 -(void)fetchProduct{
-    [RequestResolutionData fetchAllProductsInTransactionWithOrderId:@"123123"
+    [RequestResolutionData fetchAllProductsInTransactionWithOrderId:@"15632"
                                                             success:^(ResolutionProductResponse *data) {
                                                                 _productData = data.data;
                                                                 [_tableView reloadData];

@@ -33,6 +33,7 @@ ResolutionCenterCreateStepTwoCellDelegate
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.allowsSelection = NO;
+    [_tableView setContentInset:UIEdgeInsetsMake(0, 0, 30, 0)];
 }
 
 -(void)viewWillAppear:(BOOL)animated{

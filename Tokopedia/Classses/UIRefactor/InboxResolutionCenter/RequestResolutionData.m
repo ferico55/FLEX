@@ -155,8 +155,23 @@
     networkManager.isUsingHmac = YES;
     
     UserAuthentificationManager *userAuth = [UserAuthentificationManager new];
+    /*
     [networkManager requestWithBaseUrl:@"http://private-c1055-joef1.apiary-mock.com"
                                   path:@"/create"
+                                method:RKRequestMethodGET
+                             parameter:@{@"order_id":orderId,
+                                         @"user_id":[userAuth getUserId]
+                                         }
+                               mapping:[ResolutionCenterCreateResponse mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                 ResolutionCenterCreateResponse *result = [successResult.dictionary objectForKey:@""];
+                                 success(result);
+                             } onFailure:^(NSError *errorResult) {
+                                 failure(errorResult);
+                             }];
+     */
+    [networkManager requestWithBaseUrl:[NSString v4Url]
+                                  path:@"/get_create_resolution_form_new.pl"
                                 method:RKRequestMethodGET
                              parameter:@{@"order_id":orderId,
                                          @"user_id":[userAuth getUserId]
@@ -175,8 +190,25 @@
     networkManager.isUsingHmac = YES;
     
     UserAuthentificationManager *userAuth = [UserAuthentificationManager new];
+    
+    /*
     [networkManager requestWithBaseUrl:@"http://private-c1055-joef1.apiary-mock.com"
                                   path:@"/get_product_list"
+                                method:RKRequestMethodGET
+                             parameter:@{@"order_id":orderId,
+                                         @"user_id":[userAuth getUserId]
+                                         }
+                               mapping:[ResolutionProductResponse mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                 ResolutionProductResponse *result = [successResult.dictionary objectForKey:@""];
+                                 success(result);
+                             } onFailure:^(NSError *errorResult) {
+                                 failure(errorResult);
+                             }];
+     */
+    
+    [networkManager requestWithBaseUrl:[NSString v4Url]
+                                  path:@"/get_product_list.pl"
                                 method:RKRequestMethodGET
                              parameter:@{@"order_id":orderId,
                                          @"user_id":[userAuth getUserId]
