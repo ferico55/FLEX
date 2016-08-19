@@ -288,7 +288,7 @@
         
         if (_popFromToppay) {
             _popFromToppay = NO;
-            [self requestCartData];
+            [self refreshRequestCart];
         }
         if (_list.count>0) {
             _tableView.tableFooterView =_checkoutView;
