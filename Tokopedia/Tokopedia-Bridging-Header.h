@@ -20,6 +20,7 @@
 #import "SecurityAnswer.h"
 #import "StickyAlertView.h"
 #import "UIView+HVDLayout.h"
+#import "CustomNotificationView.h"
 
 #import <QuartzCore/QuartzCore.h>
 #import <EAIntroView/EAIntroView.h>
@@ -76,10 +77,16 @@
 
 #import "ShopSettings.h"
 #import "WholesalePrice.h"
+
 #import "Product.h"
 #import "Breadcrumb.h"
 #import "CatalogAddProduct.h"
 #import "GeneralAction.h"
 #import "AddProductValidation.h"
+#import "UIView+BlocksKit.h"
 
 #import "StickyAlertView+NetworkErrorHandler.h"
+
+#import "Breadcrumb.h"
+#import "NSString+HTML.h"
+

@@ -28,6 +28,11 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *deleteButton;
 @property (weak, nonatomic) IBOutlet UILabel *shopNameLabel;
+
+@property (strong, nonatomic) IBOutlet UIView *errorView;
+@property (strong, nonatomic) IBOutlet UILabel *errorLabel;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *errorViewHeightConstraint;
+
 @property (nonatomic) NSInteger section;
 
 +(id)newview;

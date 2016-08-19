@@ -53,22 +53,29 @@ class ReportProductViewController: UIViewController, UITextViewDelegate{
     }
     
     @IBAction func didTapReportButton(sender: UIButton) {
-        if let reportLinkUrl = reportLinkUrl {
-            if reportLinkUrl.rangeOfString("gsd-tokopedia") != nil {
-                UIApplication.sharedApplication().openURL(NSURL(string: reportLinkUrl)!)
-            } else {
-                let appVersion = UIApplication.getAppVersionStringWithoutDot()
-                let webViewVC = WebViewController()
-                webViewVC.strURL = reportLinkUrl + "?flag_app=3&device=ios&app_version=\(appVersion)"
-                webViewVC.strTitle = "Laporkan Produk"
-                webViewVC.onTapLinkWithUrl = { (url) in
-                    if (url.absoluteString == "https://www.tokopedia.com/") {
-                        self.navigationController?.popViewControllerAnimated(true)
-                    }
-                }
-                self.navigationController?.pushViewController(webViewVC, animated: true)
+
+        let currentDeviceId = userManager.getMyDeviceIdToken()
+        let userID = userManager.getUserId()
+        
+        
+        let appVersion = UIApplication.getAppVersionStringWithoutDot()
+        let webViewVC = WebViewController()
+        if self.reportLinkUrl!.rangeOfString("gsd-tokopedia") != nil{
+            self.reportLinkUrl = "https://www.tokopedia.com/contact-us.pl"
+        }
+        
+        let webViewURL = (self.reportLinkUrl! + "?flag_app=3&device=ios&app_version=\(appVersion)" as NSString).kv_encodeHTMLCharacterEntities()
+        
+        let jsTokopediaWebViewUrl = "https://js.tokopedia.com/wvlogin?uid=\(userID)&token=\(currentDeviceId)&url=" + webViewURL
+        
+        webViewVC.strURL = jsTokopediaWebViewUrl
+        webViewVC.strTitle = "Laporkan Produk"
+        webViewVC.onTapLinkWithUrl = { (url) in
+            if (url.absoluteString == "https://www.tokopedia.com/") {
+                self.navigationController?.popViewControllerAnimated(true)
             }
         }
+        self.navigationController?.pushViewController(webViewVC, animated: true)
     }
     
     // MARK: KeyboardNotification

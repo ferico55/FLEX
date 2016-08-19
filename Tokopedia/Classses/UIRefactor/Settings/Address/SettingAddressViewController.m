@@ -24,8 +24,6 @@
 
 #import "RequestObject.h"
 
-#define CTagRequest 2
-
 @interface SettingAddressViewController ()
 <
     UITableViewDataSource,
@@ -36,7 +34,6 @@
     SettingAddressDetailViewControllerDelegate,
     MGSwipeTableCellDelegate,
     SettingAddressEditViewControllerDelegate,
-    TokopediaNetworkManagerDelegate,
     LoadingViewDelegate
 >
 {
@@ -490,13 +487,15 @@
 
 -(void)request
 {
-    if ([self getNetworkRequest:CTagRequest].getObjectRequest.isExecuting) return;
-    
     _table.tableFooterView = _footer;
     [_act startAnimating];
     
     if (_page==1)_doneBarButtonItem.enabled = NO;
-    [[self getNetworkRequest:CTagRequest] doRequest];
+    [[self getNetworkRequest] requestWithBaseUrl:[NSString v4Url] path:@"/v4/people/get_address.pl" method:RKRequestMethodGET parameter:[self getAddressParameter] mapping:[AddressForm mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+            [self requestSuccess:successResult withOperation:operation];
+    } onFailure:^(NSError *errorResult) {
+        NSLog(@"%@", errorResult);
+    }];
 }
 
 -(void)requestSuccess:(id)object withOperation:(RKObjectRequestOperation *)operation
@@ -985,15 +984,13 @@
 }
 
 #pragma mark - Methods
-- (TokopediaNetworkManager *)getNetworkRequest:(int)tag
+- (TokopediaNetworkManager *)getNetworkRequest
 {
     if(tokopediaNetworkManagerRequest == nil)
     {
         tokopediaNetworkManagerRequest = [TokopediaNetworkManager new];
-        tokopediaNetworkManagerRequest.delegate = self;
         tokopediaNetworkManagerRequest.isUsingHmac = YES;
     }
-    tokopediaNetworkManagerRequest.tagRequest = tag;
     
     return tokopediaNetworkManagerRequest;
 }
@@ -1181,130 +1178,26 @@
     return loadingView;
 }
 
-
-#pragma mark - TokopediaNetworkManager Delegate
-- (NSDictionary*)getParameter:(int)tag
-{
-    if(tag == CTagRequest)
-    {
-        NSString *query = [_datainput objectForKey:API_QUERY_KEY]?:@"";
-        NSInteger userID = [[_auth objectForKey:kTKPD_USERIDKEY]integerValue];
-        
-        return @{kTKPDPROFILE_APIACTIONKEY:kTKPDPROFILE_APIGETUSERADDRESSKEY,
-                                kTKPDPROFILE_APIPAGEKEY : @(_page),
-                                kTKPDPROFILE_APILIMITKEY : @(kTKPDPROFILESETTINGADDRESS_LIMITPAGE),
-                                kTKPD_USERIDKEY : @(userID),
-                 API_QUERY_KEY : _searchKeyword?:@""
-                                };
-    }
-    
-    return @{};
-}
-
--(id)getRequestObject:(int)tag
-{
+- (NSDictionary*)getAddressParameter {
     NSString *query = [_datainput objectForKey:API_QUERY_KEY]?:@"";
-    NSString *userID = [_auth objectForKey:kTKPD_USERIDKEY];
-
-    RequestObjectGetAddress *requestObject = [RequestObjectGetAddress new];
-    requestObject.action = kTKPDPROFILE_APIGETUSERADDRESSKEY;
-    requestObject.page = [NSString stringWithFormat:@"%zd", _page];
-    requestObject.per_page = [NSString stringWithFormat:@"%zd",kTKPDPROFILESETTINGADDRESS_LIMITPAGE];
-    requestObject.user_id = userID;
-    requestObject.query = query?:@"";
+    NSInteger userID = [[_auth objectForKey:kTKPD_USERIDKEY]integerValue];
     
-    return requestObject;
-}
+    return @{kTKPDPROFILE_APIACTIONKEY:kTKPDPROFILE_APIGETUSERADDRESSKEY,
+             kTKPDPROFILE_APIPAGEKEY : @(_page),
+             kTKPDPROFILE_APILIMITKEY : @(kTKPDPROFILESETTINGADDRESS_LIMITPAGE),
+             kTKPD_USERIDKEY : @(userID),
+             API_QUERY_KEY : _searchKeyword?:@""
+             };
 
-- (NSString *)getPath:(int)tag {
-    if(tag == CTagRequest)
-    {
-        return @"/v4/people/get_address.pl";
-    }
-    
-    return @"";
-}
-
-- (int)getRequestMethod:(int)tag {
-    return RKRequestMethodGET;
-}
-
-- (id)getObjectManager:(int)tag
-{
-    if(tag == CTagRequest)
-    {
-        _objectmanager = [TKPMappingManager objectManagerGetAddress];
-        return _objectmanager;
-    }
-    
-    return nil;
-}
-
-- (NSString*)getRequestStatus:(id)result withTag:(int)tag
-{
-    NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
-    id stat = [resultDict objectForKey:@""];
-    if(tag == CTagRequest)
-        return ((AddressForm *) stat).status;
-    
-    return nil;
-}
-
-- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag
-{
-    if(tag == CTagRequest)
-    {
-        [self requestSuccess:successResult withOperation:operation];
-        [_act stopAnimating];
-        _table.tableFooterView = nil;
-        _isrefreshview = NO;
-        [_refreshControl endRefreshing];
-        _doneBarButtonItem.enabled = YES;
-        
-    }
-}
-
-
-- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
-{
-    if(tag == CTagRequest)
-    {
-        
-    }
-}
-
-- (void)actionBeforeRequest:(int)tag
-{
-
-}
-
-- (void)actionRequestAsync:(int)tag
-{
-
-}
-
-- (void)actionAfterFailRequestMaxTries:(int)tag
-{
-    if(tag == CTagRequest)
-    {
-        [_refreshControl endRefreshing];
-        _table.tableFooterView = [self getLoadView:CTagRequest].view;
-        _isrefreshview = NO;
-        [_refreshControl endRefreshing];
-        _doneBarButtonItem.enabled = YES;
-    }
 }
 
 
 #pragma mark - LoadingView Delegate
 - (void)pressRetryButton
 {
-    if(loadingView.tag == CTagRequest)
-    {
         _table.tableFooterView = _footer;
         [_act startAnimating];
         [self request];
-    }
 }
 
 #pragma mark - Address add delegate
