@@ -38,7 +38,6 @@
 @property (weak, nonatomic) IBOutlet UITextView *remarkTextView;
 @property (weak, nonatomic) IBOutlet UILabel *labelCounter;
 @property (strong, nonatomic) IBOutlet UIView *headerView;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomConstraintTextView;
 @property (strong, nonatomic) IBOutletCollection(UIView) NSArray *borders;
 
 @property (weak, nonatomic) IBOutlet UITextField *quantityTextField;
@@ -273,19 +272,23 @@ replacementString:(NSString*)string
 
 #pragma mark - Keyboard Notification
 - (void)keyboardWillShow:(NSNotification *)aNotification {
-    _keyboardSize= [[[aNotification userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        _keyboardSize= [[[aNotification userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
+        
+        UIEdgeInsets inset = _remarkTextView.textContainerInset;
+        inset.bottom = _keyboardSize.height;
     
-    UIEdgeInsets inset = _remarkTextView.textContainerInset;
-    inset.bottom = _keyboardSize.height;
-    _remarkTextView.textContainerInset = inset;
+        _remarkTextView.textContainerInset = inset;
+    }
 }
 
 - (void)keyboardWillHide:(NSNotification *)aNotification {
-    UIEdgeInsets inset = _remarkTextView.contentInset;
-    inset.bottom = 0;
-    inset.top = 0;
-    [_remarkTextView setContentInset:inset];
-    _bottomConstraintTextView.constant = 0;    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        UIEdgeInsets inset = _remarkTextView.textContainerInset;
+        inset.bottom = 0;
+        inset.top = 0;
+        _remarkTextView.textContainerInset = inset;
+    }
 }
 
 
