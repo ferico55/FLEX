@@ -4,15 +4,6 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <mutableArray key="GothamBook.ttf">
-            <string>GothamBook</string>
-        </mutableArray>
-        <mutableArray key="GothamMedium.ttf">
-            <string>GothamMedium</string>
-            <string>GothamMedium</string>
-        </mutableArray>
-    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RegisterViewController">
             <connections>
@@ -183,14 +174,8 @@
                         <action selector="tap:" destination="-1" eventType="touchUpInside" id="L8G-Rq-hLX"/>
                     </connections>
                 </button>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Saya sudah membaca dan menerima syarat dan ketentuan serta kebijakan privasi" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="95o-gu-FPH" customClass="TTTAttributedLabel">
-                    <rect key="frame" x="42" y="348" width="223" height="13"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
                 <button opaque="NO" tag="13" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y3x-eA-9Vz">
-                    <rect key="frame" x="15" y="398" width="290" height="44"/>
+                    <rect key="frame" x="15" y="390" width="290" height="44"/>
                     <color key="backgroundColor" red="0.070588235289999995" green="0.78039215689999997" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="H2T-ar-mT8"/>
@@ -205,75 +190,41 @@
                     </connections>
                 </button>
                 <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="ZWH-II-caf">
-                    <rect key="frame" x="-58" y="410" width="20" height="20"/>
+                    <rect key="frame" x="58" y="26" width="20" height="20"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="20" id="0vU-lD-Zd6"/>
                         <constraint firstAttribute="height" constant="20" id="bLc-pQ-7bO"/>
                     </constraints>
                 </activityIndicatorView>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oqv-1f-U1p">
-                    <rect key="frame" x="42" y="364" width="128" height="12"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="12" id="d4x-jr-Wqc"/>
-                        <constraint firstAttribute="width" constant="128" id="jG9-l8-nXO"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="12"/>
-                    <state key="normal" title="syarat dan ketentuan">
-                        <color key="titleColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <connections>
-                        <action selector="tapTerms:" destination="-1" eventType="touchUpInside" id="EXe-uc-bCg"/>
-                    </connections>
-                </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="atau" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Re-iu-9qj">
-                    <rect key="frame" x="144" y="457" width="31" height="13"/>
+                    <rect key="frame" x="146" y="449" width="27" height="16"/>
                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fzr-EG-EzD">
-                    <rect key="frame" x="208" y="364" width="103" height="12"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="12" id="O5x-oB-TXd"/>
-                        <constraint firstAttribute="width" constant="103" id="mJy-PR-ZlH"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="12"/>
-                    <state key="normal" title="kebijakan privasi">
-                        <color key="titleColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <connections>
-                        <action selector="tapPrivacy:" destination="-1" eventType="touchUpInside" id="FGb-QA-m5d"/>
-                    </connections>
-                </button>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="serta" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Jh-lC-alZ">
-                    <rect key="frame" x="173" y="364" width="32" height="12"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="32" id="a5p-Xv-MVv"/>
-                        <constraint firstAttribute="height" constant="12" id="bWd-uo-LYI"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
-                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ANR-Ao-ZK5">
-                    <rect key="frame" x="15" y="480" width="290" height="73"/>
+                    <rect key="frame" x="15" y="475" width="290" height="78"/>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ULY-RF-PU7" userLabel="left separator">
-                    <rect key="frame" x="15" y="463" width="119" height="1"/>
+                    <rect key="frame" x="15" y="457" width="121" height="1"/>
                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="1" id="hZF-8b-IvU"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ub8-EN-ESE" userLabel="right separator">
-                    <rect key="frame" x="185" y="463" width="120" height="1"/>
+                    <rect key="frame" x="183" y="457" width="122" height="1"/>
                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="1" id="y0s-yr-d95"/>
                     </constraints>
                 </view>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Saya sudah membaca dan menerima syarat dan ketentuan serta kebijakan privasi" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="95o-gu-FPH" customClass="TTTAttributedLabel">
+                    <rect key="frame" x="42" y="348" width="263" height="32"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
@@ -282,9 +233,6 @@
                 <constraint firstItem="y3x-eA-9Vz" firstAttribute="trailing" secondItem="1GC-F6-b5V" secondAttribute="trailing" id="1SG-se-mVr"/>
                 <constraint firstItem="ANR-Ao-ZK5" firstAttribute="top" secondItem="1Re-iu-9qj" secondAttribute="bottom" constant="10" id="2oe-rY-8Jk"/>
                 <constraint firstItem="Ub8-EN-ESE" firstAttribute="trailing" secondItem="y3x-eA-9Vz" secondAttribute="trailing" id="6Ml-ow-Va2"/>
-                <constraint firstItem="ZWH-II-caf" firstAttribute="top" secondItem="Fzr-EG-EzD" secondAttribute="bottom" constant="34" id="7Cd-vy-rEY">
-                    <variation key="heightClass=regular-widthClass=regular" constant="38"/>
-                </constraint>
                 <constraint firstItem="Ub8-EN-ESE" firstAttribute="leading" secondItem="1Re-iu-9qj" secondAttribute="trailing" constant="10" id="8Cc-Fa-xD0"/>
                 <constraint firstItem="Om5-rq-kus" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="10" id="Cq6-yM-oeJ"/>
                 <constraint firstItem="ry4-mz-X5c" firstAttribute="top" secondItem="W9c-XX-w7W" secondAttribute="bottom" constant="42" id="F8d-yI-dYI"/>
@@ -299,47 +247,27 @@
                 <constraint firstItem="4q8-DK-AgL" firstAttribute="leading" secondItem="Kz1-ge-iSa" secondAttribute="leading" id="RDb-vm-Wxr"/>
                 <constraint firstAttribute="bottom" secondItem="ANR-Ao-ZK5" secondAttribute="bottom" constant="15" id="RtS-vS-6M5"/>
                 <constraint firstItem="dh2-Tl-g6u" firstAttribute="leading" secondItem="4q8-DK-AgL" secondAttribute="leading" id="S3G-oY-yV4"/>
-                <constraint firstItem="Fzr-EG-EzD" firstAttribute="top" secondItem="95o-gu-FPH" secondAttribute="bottom" constant="3" id="TDJ-DS-hlr">
-                    <variation key="heightClass=regular-widthClass=regular" constant="-1"/>
-                </constraint>
                 <constraint firstItem="ANR-Ao-ZK5" firstAttribute="leading" secondItem="y3x-eA-9Vz" secondAttribute="leading" id="U0C-IB-GlR"/>
                 <constraint firstItem="ULY-RF-PU7" firstAttribute="trailing" secondItem="1Re-iu-9qj" secondAttribute="leading" constant="-10" id="WLl-hq-jy7"/>
-                <constraint firstItem="oqv-1f-U1p" firstAttribute="leading" secondItem="Om5-rq-kus" secondAttribute="trailing" constant="2" id="Wlf-pA-4Zq">
-                    <variation key="heightClass=regular-widthClass=regular" constant="226"/>
-                </constraint>
                 <constraint firstItem="dh2-Tl-g6u" firstAttribute="trailing" secondItem="4q8-DK-AgL" secondAttribute="trailing" id="Ycf-yF-0kI"/>
                 <constraint firstItem="Om5-rq-kus" firstAttribute="top" secondItem="1GC-F6-b5V" secondAttribute="bottom" constant="16" id="ZY6-SM-bTM"/>
                 <constraint firstItem="4q8-DK-AgL" firstAttribute="trailing" secondItem="Kz1-ge-iSa" secondAttribute="trailing" id="a3M-p5-Eiv"/>
                 <constraint firstItem="95o-gu-FPH" firstAttribute="trailing" secondItem="W9c-XX-w7W" secondAttribute="trailing" id="aVq-Tu-4E0"/>
-                <constraint firstItem="y3x-eA-9Vz" firstAttribute="top" secondItem="Fzr-EG-EzD" secondAttribute="bottom" constant="22" id="beQ-c2-F2C">
-                    <variation key="heightClass=regular-widthClass=regular" constant="26"/>
-                </constraint>
                 <constraint firstItem="ry4-mz-X5c" firstAttribute="trailing" secondItem="Kz1-ge-iSa" secondAttribute="trailing" id="cH7-A1-tmH"/>
                 <constraint firstItem="95o-gu-FPH" firstAttribute="leading" secondItem="Om5-rq-kus" secondAttribute="trailing" constant="2" id="ddq-oa-e8z"/>
-                <constraint firstItem="7Jh-lC-alZ" firstAttribute="top" secondItem="95o-gu-FPH" secondAttribute="bottom" constant="3" id="eA9-GO-TD5">
-                    <variation key="heightClass=regular-widthClass=regular" constant="-1"/>
-                </constraint>
                 <constraint firstItem="ekn-6v-JpQ" firstAttribute="leading" secondItem="dh2-Tl-g6u" secondAttribute="leading" id="fGZ-SD-Pnd"/>
                 <constraint firstAttribute="trailing" secondItem="W9c-XX-w7W" secondAttribute="trailing" constant="15" id="fQB-cQ-UF3"/>
                 <constraint firstItem="y3x-eA-9Vz" firstAttribute="leading" secondItem="1GC-F6-b5V" secondAttribute="leading" id="gfv-zY-lxh"/>
-                <constraint firstItem="oqv-1f-U1p" firstAttribute="top" secondItem="95o-gu-FPH" secondAttribute="bottom" constant="3" id="iBV-px-QBr">
-                    <variation key="heightClass=regular-widthClass=regular" constant="-13"/>
-                </constraint>
                 <constraint firstItem="W9c-XX-w7W" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="15" id="iRY-Dv-erG"/>
                 <constraint firstItem="Kz1-ge-iSa" firstAttribute="leading" secondItem="W9c-XX-w7W" secondAttribute="leading" id="kYL-jm-hxF"/>
                 <constraint firstItem="ekn-6v-JpQ" firstAttribute="trailing" secondItem="dh2-Tl-g6u" secondAttribute="trailing" id="obW-GO-aXe"/>
                 <constraint firstItem="ULY-RF-PU7" firstAttribute="centerY" secondItem="1Re-iu-9qj" secondAttribute="centerY" id="pKB-2m-VbO"/>
                 <constraint firstItem="95o-gu-FPH" firstAttribute="top" secondItem="1GC-F6-b5V" secondAttribute="bottom" constant="22" id="pzG-uR-FJE"/>
+                <constraint firstItem="y3x-eA-9Vz" firstAttribute="top" secondItem="95o-gu-FPH" secondAttribute="bottom" constant="10" id="qUV-ze-TFr"/>
                 <constraint firstItem="W9c-XX-w7W" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="15" id="qYZ-dU-Bq1"/>
-                <constraint firstItem="Fzr-EG-EzD" firstAttribute="leading" secondItem="7Jh-lC-alZ" secondAttribute="trailing" constant="3" id="tnV-0K-ica">
-                    <variation key="heightClass=regular-widthClass=regular" constant="3"/>
-                </constraint>
                 <constraint firstItem="ANR-Ao-ZK5" firstAttribute="trailing" secondItem="y3x-eA-9Vz" secondAttribute="trailing" id="vyT-hF-bJz"/>
                 <constraint firstItem="1Re-iu-9qj" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="w7t-Su-fi1"/>
                 <constraint firstItem="Kz1-ge-iSa" firstAttribute="top" secondItem="W9c-XX-w7W" secondAttribute="bottom" constant="-1" id="wc1-dc-dFq"/>
-                <constraint firstItem="7Jh-lC-alZ" firstAttribute="leading" secondItem="oqv-1f-U1p" secondAttribute="trailing" constant="3" id="xys-Md-Hbz">
-                    <variation key="heightClass=regular-widthClass=regular" constant="-352"/>
-                </constraint>
                 <constraint firstItem="y3x-eA-9Vz" firstAttribute="bottom" secondItem="1Re-iu-9qj" secondAttribute="top" constant="-15" id="ynR-gD-9lR"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
