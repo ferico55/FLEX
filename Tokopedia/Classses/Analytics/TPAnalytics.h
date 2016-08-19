@@ -58,4 +58,6 @@
 
 + (void)trackClickEvent:(NSString *)event category:(NSString *)category label:(NSString *)label;
 
++ (void)trackSearchWithAction:(NSString *)action keyword:(NSString *)keyword;
+
 @end
