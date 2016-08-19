@@ -60,9 +60,6 @@ class ReportProductViewController: UIViewController, UITextViewDelegate{
         
         let appVersion = UIApplication.getAppVersionStringWithoutDot()
         let webViewVC = WebViewController()
-        if self.reportLinkUrl!.rangeOfString("gsd-tokopedia") != nil{
-            self.reportLinkUrl = "https://www.tokopedia.com/contact-us.pl"
-        }
         
         let webViewURL = (self.reportLinkUrl! + "?flag_app=3&device=ios&app_version=\(appVersion)" as NSString).kv_encodeHTMLCharacterEntities()
         
