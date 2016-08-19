@@ -127,14 +127,18 @@ TTTAttributedLabelDelegate
          [self setSignInProviders:providers];
      }];
     
+    [self setupTermsAndConditionLabel];
+}
+
+- (void)setupTermsAndConditionLabel {
     _agreementLabel.enabledTextCheckingTypes = NSTextCheckingTypeLink;
     _agreementLabel.delegate = self;
     
     _agreementLabel.linkAttributes = @{
                                        (id)kCTForegroundColorAttributeName: [UIColor colorWithRed:10.0/255
-                                                                                       green:126.0/255
-                                                                                        blue:7.0/255
-                                                                                       alpha:1],
+                                                                                            green:126.0/255
+                                                                                             blue:7.0/255
+                                                                                            alpha:1],
                                        NSFontAttributeName: [UIFont smallThemeMedium],
                                        NSUnderlineStyleAttributeName: @(NSUnderlineStyleNone)
                                        };
@@ -158,7 +162,6 @@ TTTAttributedLabelDelegate
         webViewController.strURL = @"https://m.tokopedia.com/privacy.pl";
         [self.navigationController pushViewController:webViewController animated:YES];
     };
-    
 }
 
 - (void)setSignInProviders:(NSArray <SignInProvider *> *) providers {
@@ -742,19 +745,6 @@ didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result
     }
 }
 
-- (IBAction)tapTerms:(id)sender {
-    WebViewController *webViewController = [WebViewController new];
-    webViewController.strTitle = @"Syarat & Ketentuan";
-    webViewController.strURL = @"https://m.tokopedia.com/terms.pl";
-    [self.navigationController pushViewController:webViewController animated:YES];
-}
-
-- (IBAction)tapPrivacy:(id)sender {
-    WebViewController *webViewController = [WebViewController new];
-    webViewController.strTitle = @"Kebijakan Privasi";
-    webViewController.strURL = @"https://m.tokopedia.com/privacy.pl";
-    [self.navigationController pushViewController:webViewController animated:YES];
-}
 
 - (void)updateFormViewAppearance {
     CGFloat width = [[UIScreen mainScreen] bounds].size.width;
