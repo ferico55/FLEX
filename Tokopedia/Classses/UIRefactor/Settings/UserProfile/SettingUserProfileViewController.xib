@@ -377,7 +377,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Messenger" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BBR-TE-g6J">
-                                    <rect key="frame" x="137" y="1" width="218" height="44"/>
+                                    <rect key="frame" x="140" y="1" width="215" height="44"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="44" id="Ifb-5m-qB6"/>
                                     </constraints>
@@ -403,7 +403,7 @@
                                 <constraint firstAttribute="trailing" secondItem="NZk-Zs-Y7p" secondAttribute="trailing" id="KVs-lx-zo8"/>
                                 <constraint firstAttribute="bottom" secondItem="kcm-L8-Ake" secondAttribute="bottom" constant="1" id="MKX-d3-dLd"/>
                                 <constraint firstItem="NZk-Zs-Y7p" firstAttribute="leading" secondItem="lvk-mB-c97" secondAttribute="leading" id="Mf2-kW-6Hd"/>
-                                <constraint firstItem="BBR-TE-g6J" firstAttribute="leading" secondItem="kcm-L8-Ake" secondAttribute="trailing" constant="50" id="NJg-Xh-vEQ"/>
+                                <constraint firstItem="BBR-TE-g6J" firstAttribute="leading" secondItem="kcm-L8-Ake" secondAttribute="trailing" constant="53" id="NJg-Xh-vEQ"/>
                                 <constraint firstAttribute="height" constant="45" id="Uu7-Xe-s5Z"/>
                                 <constraint firstAttribute="trailing" secondItem="BBR-TE-g6J" secondAttribute="trailing" constant="20" id="YCP-Be-rx2"/>
                                 <constraint firstAttribute="bottom" secondItem="NZk-Zs-Y7p" secondAttribute="bottom" id="teQ-7p-OdY"/>
