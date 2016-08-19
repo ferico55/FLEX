@@ -51,36 +51,31 @@
 +(UITableViewCell*)cellTextFieldPlaceholder:(NSString*)placeholder List:(NSArray<TransactionCartList *>*)list tableView:(UITableView*)tableView atIndexPath:(NSIndexPath*)indexPath withText:(NSString*)text
 {
     
-    static NSString *CellIdentifier = @"textfieldCellIdentifier";
+    static NSString *cellIdentifier = @"GeneralTextFieldCellIdentifier";
     BOOL isSaldoTokopediaTextField = (indexPath.section==list.count);
     NSInteger indexList = (isSaldoTokopediaTextField)?0:(indexPath.section);
     TransactionCartList *cart = list[indexList];
     NSArray *products = cart.cart_products;
-    UITableViewCell *cell;
     
-    //if (cell == nil) {
-    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    GeneralTextFieldCell *cell = (GeneralTextFieldCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    if (cell == nil) {
+        cell = [GeneralTextFieldCell newCell];
+        cell.textField.delegate = tableView.delegate;
+    }
     
-    UITextField *textField = [[UITextField alloc]initWithFrame:CGRectMake(15, 0, tableView.frame.size.width-15, 44)];
+    [cell.textField setPlaceholder:placeholder];
+    [cell.textField setText:text];
     
-    textField.placeholder = placeholder;
-    textField.text = text;
-    textField.delegate = tableView.delegate;
+    
     if ([placeholder isEqualToString:@"Nama Pengirim"]) {
-        textField.tag = indexPath.section+1;
-        textField.keyboardType = UIKeyboardTypeDefault;
+        cell.textField.tag = indexPath.section + 1;
+        cell.textField.keyboardType = UIKeyboardTypeDefault;
+        cell.errorIcon.hidden = !cart.isDropshipperNameError;
+    } else {
+        cell.textField.tag = -indexPath.section - 1;
+        cell.textField.keyboardType = UIKeyboardTypeNumberPad;
+        cell.errorIcon.hidden = !cart.isDropshipperPhoneError;
     }
-    else
-    {
-        textField.tag = -indexPath.section -1;
-        textField.keyboardType = UIKeyboardTypeNumberPad;
-    }
-    textField.font = FONT_DEFAULT_CELL_TKPD;
-    [textField setReturnKeyType:UIReturnKeyDone];
-    textField.text = text;
-    [cell addSubview:textField];
-    //}
     
     return cell;
 }
@@ -137,20 +132,6 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
-    
-    NSString *error1 = ([cart.cart_error_message_1 isEqualToString:@"0"] || !(cart.cart_error_message_1))?@"":cart.cart_error_message_1;
-    NSString *error2 = ([cart.cart_error_message_2 isEqualToString:@"0"] || !(cart.cart_error_message_2))?@"":cart.cart_error_message_2;
-    cell.textLabel.font = FONT_DEFAULT_CELL_TKPD;
-    
-    NSString *string = [NSString stringWithFormat:@"%@\n%@",error1, error2];
-    [cell.textLabel setCustomAttributedText:string];
-    cell.textLabel.numberOfLines = 0;
-    cell.textLabel.textColor = [UIColor redColor];
-    
-    cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
-    
-    cell.clipsToBounds = YES;
-    cell.contentView.clipsToBounds = YES;
     
     return cell;
 }

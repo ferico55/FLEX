@@ -11,6 +11,7 @@
 #import "ShippingInfoShipments.h"
 #import "AddressFormList.h"
 #import "ShopInfo.h"
+#import "Errors.h"
 
 #import "CartModelView.h"
 
@@ -56,6 +57,10 @@
 @property (nonatomic, strong) NSString *cart_partial_param;
 
 @property (nonatomic, strong) NSString *cart_is_partial;
+@property (nonatomic, strong) NSArray<Errors *> *errors;
+
+@property BOOL isDropshipperNameError;
+@property BOOL isDropshipperPhoneError;
 
 @property (nonatomic, strong) ShopInfo *cart_shop;
 

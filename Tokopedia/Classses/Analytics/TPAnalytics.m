@@ -448,4 +448,17 @@
     [analytics.dataLayer push:data];
 }
 
++ (void)trackSearchWithAction:(NSString *)action keyword:(NSString *)keyword {
+    TPAnalytics *analytics = [[self alloc] init];
+    
+    NSDictionary *data = @{
+                           @"event" : @"clickSearch",
+                           @"eventCategory" : @"Search",
+                           @"eventAction" : action,
+                           @"eventLabel" : keyword
+                           };
+    
+    [analytics.dataLayer push:data];
+}
+
 @end

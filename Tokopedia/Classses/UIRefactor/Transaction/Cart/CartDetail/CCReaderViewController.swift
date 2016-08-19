@@ -36,7 +36,7 @@ class CCReaderViewController: UIViewController, CardIOViewDelegate{
     }
     
     @IBAction func didSelectCancel(sender: UIButton) {
-        TPAnalytics.trackClickEvent("clickCardIOCancel", category: "Card IO Scan", label: "CardIO")
+        TPAnalytics.trackClickEvent("clickCardIOCancel", category: "Card IO Scan", label: "Cancel Scan Credit Card")
         
         self.dismissViewControllerAnimated(true, completion: nil)
     }
@@ -46,7 +46,7 @@ class CCReaderViewController: UIViewController, CardIOViewDelegate{
     func cardIOView(cardIOView: CardIOView!, didScanCard cardInfo: CardIOCreditCardInfo!) {
         if ((cardInfo) != nil) {
             if let delegate = delegate {
-                TPAnalytics.trackClickEvent("clickCardIOSuccessScan", category: "Card IO Scan", label: "CardIO")
+                TPAnalytics.trackClickEvent("clickCardIOSuccessScan", category: "Card IO Scan", label: "Success Scan Credit Card")
                 delegate.didScanCard(cardInfo)
             }
             self.dismissViewControllerAnimated(true, completion: nil)

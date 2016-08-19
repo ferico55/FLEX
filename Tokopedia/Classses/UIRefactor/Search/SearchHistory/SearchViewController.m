@@ -364,10 +364,13 @@ NSString *const SearchDomainHotlist = @"Hotlist";
                          NSString *domainName = [domain objectForKey:@"title"];
                          if([domainName isEqualToString:SearchDomainHistory]) {
                              if (_searchBar.text.length > 0) {
-                                 [self goToResultPage:[_typedHistoryResult objectAtIndex:indexPath.row] withAutoComplete:YES];
+                                 NSString *searchText = [_typedHistoryResult objectAtIndex:indexPath.row];
+                                 [self goToResultPage:searchText withAutoComplete:YES];
+                                 [TPAnalytics trackSearchWithAction:@"Search History" keyword:searchText];
                              } else {
                                  NSString *searchText = [_historyResult objectAtIndex:indexPath.row];
                                  [self goToResultPage:searchText withAutoComplete:YES];
+                                 [TPAnalytics trackSearchWithAction:@"Search History" keyword:searchText];
                              }
                          }
                          
@@ -375,6 +378,7 @@ NSString *const SearchDomainHotlist = @"Hotlist";
                              NSArray *generals = [domain objectForKey:@"data"];
                              SearchAutoCompleteGeneral *general = [generals objectAtIndex:indexPath.row];
                              [self saveHistory:general.title];
+                             [TPAnalytics trackSearchWithAction:@"Search Autocomplete" keyword:general.title];
                              [self goToResultPage:general.title withAutoComplete:YES];
                          }
                          else if ([domainName isEqualToString:SearchDomainHotlist]) {
@@ -386,6 +390,7 @@ NSString *const SearchDomainHotlist = @"Hotlist";
                              controller.data = @{@"title" : hotlist.title, @"key" : [keys lastObject]};
                              controller.isFromAutoComplete = YES;
                              controller.hidesBottomBarWhenPushed = YES;
+                             [TPAnalytics trackSearchWithAction:@"Search Hotlist" keyword:hotlist.title];
                              
                              [self.navigationController pushViewController:controller animated:YES];
                          }
@@ -471,6 +476,8 @@ NSString *const SearchDomainHotlist = @"Hotlist";
                 [self saveHistory:searchBar.text];
             }
         }
+        
+        [TPAnalytics trackSearchWithAction:@"Search" keyword:searchString];
         [self goToResultPage:_searchBar.text withAutoComplete:NO];
     }
     else {

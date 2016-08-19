@@ -222,8 +222,8 @@
         [_act startAnimating];
     }
 
-    [_networkManager requestWithBaseUrl:[NSString v4Url]
-                                   path:@"/v4/product/get_product_talk.pl"
+    [_networkManager requestWithBaseUrl:[NSString kunyitUrl]
+                                   path:@"/v2/talk"
                                  method:RKRequestMethodGET
                               parameter:param
                                 mapping:[Talk mapping]
