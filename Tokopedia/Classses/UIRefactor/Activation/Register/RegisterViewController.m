@@ -31,6 +31,7 @@
 #import "ActivationRequest.h"
 #import "AuthenticationService.h"
 #import "Tokopedia-Swift.h"
+#import "TTTAttributedLabel.h"
 
 static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jdpts.apps.googleusercontent.com";
 
@@ -42,7 +43,8 @@ UIScrollViewDelegate,
 UIAlertViewDelegate,
 TKPDAlertViewDelegate,
 FBSDKLoginButtonDelegate,
-GIDSignInUIDelegate
+GIDSignInUIDelegate,
+TTTAttributedLabelDelegate
 >
 {
     UITextField *_activetextfield;
@@ -67,7 +69,7 @@ GIDSignInUIDelegate
 @property (weak, nonatomic) IBOutlet UIScrollView *container;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 @property (weak, nonatomic) IBOutlet UIButton *buttonagreement;
-@property (weak, nonatomic) IBOutlet UILabel *agreementLabel;
+@property (weak, nonatomic) IBOutlet TTTAttributedLabel *agreementLabel;
 @property (strong, nonatomic) IBOutlet UIView *contentView;
 @property (weak, nonatomic) IBOutlet UIButton *signUpButton;
 
@@ -112,7 +114,7 @@ GIDSignInUIDelegate
     //set default data
     [_datainput setObject:@(3) forKey:kTKPDREGISTER_APIGENDERKEY];
     
-    _agreementLabel.userInteractionEnabled = YES;
+//    _agreementLabel.userInteractionEnabled = YES;
     
     [_container addSubview:_contentView];
     
@@ -124,6 +126,39 @@ GIDSignInUIDelegate
      getThirdPartySignInOptionsOnSuccess:^(NSArray<SignInProvider *> *providers) {
          [self setSignInProviders:providers];
      }];
+    
+    _agreementLabel.enabledTextCheckingTypes = NSTextCheckingTypeLink;
+    _agreementLabel.delegate = self;
+    
+    _agreementLabel.linkAttributes = @{
+                                       (id)kCTForegroundColorAttributeName: [UIColor colorWithRed:10.0/255
+                                                                                       green:126.0/255
+                                                                                        blue:7.0/255
+                                                                                       alpha:1],
+                                       NSFontAttributeName: [UIFont smallThemeMedium],
+                                       NSUnderlineStyleAttributeName: @(NSUnderlineStyleNone)
+                                       };
+    
+    TTTAttributedLabelLink *agreementLink = [_agreementLabel addLinkToURL:[NSURL URLWithString:@""]
+                                                                withRange:NSMakeRange(32, 20)];
+    
+    agreementLink.linkTapBlock = ^(TTTAttributedLabel *label, TTTAttributedLabelLink *link) {
+        WebViewController *webViewController = [WebViewController new];
+        webViewController.strTitle = @"Syarat & Ketentuan";
+        webViewController.strURL = @"https://m.tokopedia.com/terms.pl";
+        [self.navigationController pushViewController:webViewController animated:YES];
+    };
+    
+    TTTAttributedLabelLink *privacyLink = [_agreementLabel addLinkToURL:[NSURL URLWithString:@""]
+                                                              withRange:NSMakeRange(59, 17)];
+    
+    privacyLink.linkTapBlock = ^(TTTAttributedLabel *label, TTTAttributedLabelLink *link) {
+        WebViewController *webViewController = [WebViewController new];
+        webViewController.strTitle = @"Kebijakan Privasi";
+        webViewController.strURL = @"https://m.tokopedia.com/privacy.pl";
+        [self.navigationController pushViewController:webViewController animated:YES];
+    };
+    
 }
 
 - (void)setSignInProviders:(NSArray <SignInProvider *> *) providers {
