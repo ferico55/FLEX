@@ -156,8 +156,8 @@
                             kTKPDMESSAGE_PRODUCTIDKEY:[_data objectForKey:kTKPDMESSAGE_PRODUCTIDKEY]
                             };
 
-    [_networkManager requestWithBaseUrl:[NSString v4Url]
-                                   path:@"/v4/action/talk/add_product_talk.pl"
+    [_networkManager requestWithBaseUrl:[NSString kunyitUrl]
+                                   path:@"/v2/talk/create"
                                  method:RKRequestMethodPOST
                               parameter:param
                                 mapping:[ProductTalkForm mapping]

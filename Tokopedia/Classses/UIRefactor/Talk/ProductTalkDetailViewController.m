@@ -169,11 +169,11 @@
     _auth = [auth mutableCopy];
 
     if(_marksOpenedTalksAsRead) {
-        _urlPath = @"/v4/inbox-talk/get_inbox_detail_talk.pl";
+        _urlPath = @"/v2/talk/inbox/detail";
         _urlAction = kTKPDDETAIL_APIGETINBOXDETAIL;
         
     } else {
-        _urlPath = @"/v4/talk/get_comment_by_talk_id.pl";
+        _urlPath = @"/v2/talk/comment";
         _urlAction = kTKPDDETAIL_APIGETCOMMENTBYTALKID;
     }
     
@@ -480,8 +480,8 @@
                             kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : [_data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTIDKEY]
                             };
 
-    [_sendCommentNetworkManager requestWithBaseUrl:[NSString v4Url]
-                                              path:@"/v4/action/talk/add_comment_talk.pl"
+    [_sendCommentNetworkManager requestWithBaseUrl:[NSString kunyitUrl]
+                                              path:@"/v2/talk/comment/create"
                                             method:RKRequestMethodPOST
                                          parameter:param
                                            mapping:[ProductTalkCommentAction mapping]
@@ -830,8 +830,8 @@
             @"talk_id" : [_data objectForKey:@"talk_id"]
     };
 
-    [_deleteCommentNetworkManager requestWithBaseUrl:[NSString v4Url]
-                                                path:@"/v4/action/talk/delete_comment_talk.pl"
+    [_deleteCommentNetworkManager requestWithBaseUrl:[NSString kunyitUrl]
+                                                path:@"/v2/talk/comment/delete"
                                               method:RKRequestMethodPOST
                                            parameter:param
                                              mapping:[GeneralAction mapping]
@@ -911,8 +911,8 @@
             @"text_message": textMessage
     };
 
-    [_reportNetworkManager requestWithBaseUrl:[NSString v4Url]
-                                         path:@"/v4/action/talk/report_comment_talk.pl"
+    [_reportNetworkManager requestWithBaseUrl:[NSString kunyitUrl]
+                                         path:@"/v2/talk/comment/report"
                                        method:RKRequestMethodPOST
                                     parameter:parameter
                                       mapping:[GeneralAction mapping]
@@ -1000,7 +1000,7 @@
             kTKPDDETAIL_APIPAGEKEY : @(_page)
     };
 
-    [_talkCommentNetworkManager requestWithBaseUrl:[NSString v4Url]
+    [_talkCommentNetworkManager requestWithBaseUrl:[NSString kunyitUrl]
                                               path:_urlPath
                                             method:RKRequestMethodGET
                                          parameter:param
