@@ -11,6 +11,7 @@
 #import "SendMessage.h"
 #import "StickyAlert.h"
 #import "InboxMessageAction.h"
+#import "GeneralAction.h"
 
 @implementation MessageTextView
 @synthesize del;
@@ -192,11 +193,13 @@
                             };
     
     TokopediaNetworkManager* requestManager = [TokopediaNetworkManager new];
+    requestManager.isUsingHmac = YES;
+    
     [requestManager requestWithBaseUrl:[NSString kunyitUrl]
                                   path:@"/v1/message"
                                 method:RKRequestMethodPOST
                              parameter:param
-                               mapping:[InboxMessageAction mapping]
+                               mapping:[GeneralAction mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                  [self requestsuccess:successResult withOperation:operation];
                              } onFailure:nil];
@@ -205,9 +208,9 @@
 
 -(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation*)operation{
     NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id info = [result objectForKey:@""];
+    GeneralAction* info = [result objectForKey:@""];
     
-    NSString *is_success = [[info result] is_success];
+    NSString *is_success = [[info data] is_success];
     
     if([is_success isEqualToString:kTKPD_STATUSSUCCESS]) {
         StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[KTKPDMESSAGE_DELIVERED] delegate:self];
