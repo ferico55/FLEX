@@ -8,6 +8,7 @@
 
 #import "ResolutionCenterCreateStepThreeViewController.h"
 #import "Tokopedia-Swift.h"
+#import "ResolutionCenterChooseSolutionViewController.h"
 
 @interface ResolutionCenterCreateStepThreeViewController ()<UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate>
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
@@ -98,6 +99,13 @@
     return header;
 }
 
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    if(indexPath.section == 0 && indexPath.row == 0){
+        ResolutionCenterChooseSolutionViewController *vc = [ResolutionCenterChooseSolutionViewController new];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+}
+
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     if(section == 0){
         return 50;
@@ -151,5 +159,9 @@
     UIButton* button = (UIButton*)sender;
     [_selectedImages removeObjectAtIndex:button.tag];
     [self setSelectedImages];
+}
+
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    [self.view endEditing:YES];
 }
 @end

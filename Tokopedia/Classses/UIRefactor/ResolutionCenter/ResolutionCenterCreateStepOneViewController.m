@@ -125,7 +125,7 @@ ResolutionCenterChooseProblemDelegate
         }
     }
     lbl.textAlignment = NSTextAlignmentLeft;
-    lbl.font = [UIFont fontWithName:@"Gotham Book" size:12.0];
+    //lbl.font = [UIFont fontWithName:@"Gotham Book" size:12.0];
     [lbl setNumberOfLines:0];
     [lbl sizeToFit];
     [header addSubview:lbl];

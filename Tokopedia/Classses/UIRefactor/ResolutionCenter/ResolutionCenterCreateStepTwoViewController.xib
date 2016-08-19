@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ResolutionCenterCreateStepTwoViewController">
@@ -41,20 +42,37 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="113"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="DaZ-Cp-T3l" customClass="UIDownPicker">
-                        <rect key="frame" x="8" y="8" width="304" height="30"/>
+                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Pilih masalah produk" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="DaZ-Cp-T3l" customClass="UIDownPicker">
+                        <rect key="frame" x="8" y="8" width="304" height="36"/>
                         <color key="tintColor" red="0.074509803920000006" green="0.56470588239999997" blue="0.054901960780000002" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="36" id="zCF-Wo-Q22"/>
+                        </constraints>
+                        <color key="textColor" red="0.074509803920000006" green="0.56470588239999997" blue="0.054901960780000002" alpha="1" colorSpace="calibratedRGB"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <textInputTraits key="textInputTraits"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                <color key="value" red="0.074509803920000006" green="0.56470588239999997" blue="0.054901960780000002" alpha="1" colorSpace="calibratedRGB"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
                     </textField>
-                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="za8-PZ-Mu5">
-                        <rect key="frame" x="8" y="46" width="304" height="59"/>
+                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Tulis alasan Anda disini..." textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="za8-PZ-Mu5">
+                        <rect key="frame" x="8" y="44" width="304" height="61"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                     </textView>
                 </subviews>
+                <constraints>
+                    <constraint firstItem="DaZ-Cp-T3l" firstAttribute="leading" secondItem="9H0-mz-PiS" secondAttribute="leadingMargin" id="JcM-uC-dzW"/>
+                    <constraint firstAttribute="bottom" secondItem="za8-PZ-Mu5" secondAttribute="bottom" constant="8" id="NjF-oU-P4B"/>
+                    <constraint firstAttribute="trailing" secondItem="za8-PZ-Mu5" secondAttribute="trailing" constant="8" id="Z4c-SW-KKk"/>
+                    <constraint firstItem="za8-PZ-Mu5" firstAttribute="leading" secondItem="9H0-mz-PiS" secondAttribute="leading" constant="8" id="qb0-oF-goh"/>
+                    <constraint firstItem="za8-PZ-Mu5" firstAttribute="top" secondItem="DaZ-Cp-T3l" secondAttribute="bottom" id="rGi-Q7-HCF"/>
+                    <constraint firstItem="DaZ-Cp-T3l" firstAttribute="top" secondItem="9H0-mz-PiS" secondAttribute="topMargin" id="wmZ-2s-xgu"/>
+                    <constraint firstItem="DaZ-Cp-T3l" firstAttribute="trailing" secondItem="9H0-mz-PiS" secondAttribute="trailingMargin" id="yX9-7c-qwG"/>
+                </constraints>
             </tableViewCellContentView>
             <point key="canvasLocation" x="646" y="200"/>
         </tableViewCell>
