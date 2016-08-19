@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PhoneVerifViewController">
@@ -35,11 +36,14 @@
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="toped_verifikasi_phone.png" translatesAutoresizingMaskIntoConstraints="NO" id="Umz-uO-Ytq">
                                     <rect key="frame" x="115" y="16" width="90" height="90"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" secondItem="Umz-uO-Ytq" secondAttribute="height" multiplier="1:1" id="Ipj-Ri-wPz"/>
+                                    </constraints>
                                 </imageView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Demi keamanan, harap verifikasi nomor handphone Anda" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VaQ-cl-ufT" customClass="TTTAttributedLabel">
                                     <rect key="frame" x="16" y="118" width="288" height="34"/>
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="34" id="hT9-fN-u7I"/>
+                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="34" id="hT9-fN-u7I"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
