@@ -130,7 +130,16 @@ TTTAttributedLabelDelegate
     _agreementLabel.enabledTextCheckingTypes = NSTextCheckingTypeLink;
     _agreementLabel.delegate = self;
     
-    TTTAttributedLabelLink *agreementLink = [_agreementLabel addLinkToURL:[NSURL URLWithString:@"http://www.google.com"]
+    _agreementLabel.linkAttributes = @{
+                                       (id)kCTForegroundColorAttributeName: [UIColor colorWithRed:10.0/255
+                                                                                       green:126.0/255
+                                                                                        blue:7.0/255
+                                                                                       alpha:1],
+                                       NSFontAttributeName: [UIFont smallThemeMedium],
+                                       NSUnderlineStyleAttributeName: @(NSUnderlineStyleNone)
+                                       };
+    
+    TTTAttributedLabelLink *agreementLink = [_agreementLabel addLinkToURL:[NSURL URLWithString:@""]
                                                                 withRange:NSMakeRange(32, 20)];
     
     agreementLink.linkTapBlock = ^(TTTAttributedLabel *label, TTTAttributedLabelLink *link) {
