@@ -64,12 +64,32 @@
                           ));
 }
 
++ (NSString*)accountsUrl {
+    return  FBTweakValue(@"Network", @"Environment", @"Tokopedia Accounts Url", @"https://accounts.tokopedia.com",
+                         (@{
+                            @"https://accounts-staging.tokopedia.com" : @"Staging",
+                            @"https://accounts-alpha.tokopedia.com" : @"Alpha",
+                            @"https://accounts.tokopedia.com" : @"Production",
+                            }
+                          ));
+}
+
 + (NSString*)hadesUrl {
     return  FBTweakValue(@"Network", @"Environment", @"Tokopedia Hades Url", @"https://hades.tokopedia.com",
                          (@{
                             @"https://hades-staging.tokopedia.com" : @"Staging",
                             @"https://hades-alpha.tokopedia.com" : @"Alpha",
                             @"https://hades.tokopedia.com" : @"Production",
+                            }
+                          ));
+}
+
++ (NSString*)kunyitUrl {
+    return  FBTweakValue(@"Network", @"Environment", @"Tokopedia Kunyit Url", @"https://inbox.tokopedia.com",
+                         (@{
+                            @"https://inbox-staging.tokopedia.com" : @"Staging",
+                            @"https://inbox-alpha.tokopedia.com" : @"Alpha",
+                            @"https://inbox.tokopedia.com" : @"Production",
                             }
                           ));
 }

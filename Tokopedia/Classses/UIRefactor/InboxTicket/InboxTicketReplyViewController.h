@@ -10,7 +10,7 @@
 #import "InboxTicketList.h"
 #import "InboxTicketDetail.h"
 
-static NSString *TKPDInboxTicketLoadData = @"TKPDInboxTicketLoadData";
+static NSString *TKPDInboxAddNewTicket = @"TKPDInboxAddNewTicket";
 static NSString *TKPDInboxTicketReceiveData = @"TKPDInboxTicketReceiveData";
 
 @interface InboxTicketReplyViewController : UIViewController

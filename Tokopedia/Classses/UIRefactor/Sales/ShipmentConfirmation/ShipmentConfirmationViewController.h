@@ -14,7 +14,7 @@
 
 @end
 
-@interface ShipmentConfirmationViewController : GAITrackedViewController
+@interface ShipmentConfirmationViewController : UIViewController
 
 @property (weak, nonatomic) id<ShipmentConfirmationDelegate> delegate;
 

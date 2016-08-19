@@ -87,7 +87,7 @@ TokopediaNetworkManagerDelegate
 }
 
 -(void)failedGenerateHost:(NSArray *)errorMessages{
-    [_delegate failToReceiveImageSearchResult:@"error_generate_host"];
+    [_delegate failToReceiveImageSearchResult:@"Gagal tersambung ke server. Mohon periksa koneksi internet Anda atau coba kembali"];
 }
 
 #pragma mark - RequestUploadImage delegate
@@ -96,7 +96,7 @@ TokopediaNetworkManagerDelegate
     [_delegate didReceiveUploadedImageURL:uploadedImageURL];
 }
 -(void)failedUploadObject:(id)object{
-    [_delegate failToReceiveImageSearchResult:@"error_upload_image"];
+    [_delegate failToReceiveImageSearchResult:@"Gagal mengupload foto."];
 }
 
 #pragma mark Tokopedia Network Manager Delegate

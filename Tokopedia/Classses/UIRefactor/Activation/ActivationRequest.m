@@ -10,6 +10,7 @@
 #import "TokopediaNetworkManager.h"
 #import "Login.h"
 #import "GeneralAction.h"
+#import "Tokopedia-Swift.h"
 #import "TPLocalytics.h"
 
 @implementation ActivationRequest {
@@ -65,7 +66,6 @@
                                             successCallback(obj);
                                         }
                                         onFailure:^(NSError *errorResult) {
-                                            [TPLocalytics trackRegistrationWith:RegistrationPlatformGoogle success:NO];
                                             errorCallback(errorResult);
                                         }];
     
@@ -80,23 +80,32 @@
                             birthdayMonth:(NSString *)birthdayMonth
                              birthdayYear:(NSString *)birthdayYear
                               registerTOS:(NSString *)registerTOS
+                               oAuthToken:(OAuthToken*)oAuthToken
+                              accountInfo:(AccountInfo*)accountInfo
                                 onSuccess:(void (^)(CreatePassword *))successCallback
                                 onFailure:(void (^)(NSError *))errorCallback {
-    createPasswordNetworkManager.isParameterNotEncrypted = NO;
-    createPasswordNetworkManager.isUsingHmac = YES;
-    
-    [createPasswordNetworkManager requestWithBaseUrl:[NSString v4Url]
-                                                path:@"/v4/session/create_password.pl"
-                                              method:RKRequestMethodGET
+    createPasswordNetworkManager.isParameterNotEncrypted = YES;
+
+    NSDictionary *header = @{
+            @"Authorization": [NSString stringWithFormat:@"%@ %@", oAuthToken.tokenType, oAuthToken.accessToken]
+    };
+
+    [createPasswordNetworkManager requestWithBaseUrl:[NSString accountsUrl]
+                                                path:@"/api/create-password"
+                                              method:RKRequestMethodPOST
+                                              header:header
                                            parameter:@{@"full_name" : fullName,
-                                                       @"gender" : gender,
-                                                       @"new_pass" : newPassword,
-                                                       @"confirm_pass" : confirmPassword,
-                                                       @"msisdn" : msisdn,
-                                                       @"bday_dd" : birthdayDate,
-                                                       @"bday_mm" : birthdayMonth,
-                                                       @"bday_yy" : birthdayYear,
-                                                       @"register_tos" : registerTOS}
+                                                   @"gender" : gender,
+                                                   @"new_pass" : newPassword,
+                                                   @"confirm_pass" : confirmPassword,
+                                                   @"msisdn" : msisdn,
+                                                   @"bday_dd" : birthdayDate,
+                                                   @"bday_mm" : birthdayMonth,
+                                                   @"bday_yy" : birthdayYear,
+                                                   @"register_tos" : registerTOS,
+                                                   @"user_id": accountInfo.userId,
+                                                   @"os_type": @"2"
+                                           }
                                              mapping:[CreatePassword mapping]
                                            onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                                NSDictionary *result = ((RKMappingResult*)successResult).dictionary;

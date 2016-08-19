@@ -8,12 +8,16 @@
 
 #import "RequestCart.h"
 #import "NSNumberFormatter+IDRFormater.h"
+#import "Tokopedia-Swift.h"
+
+#define CICILAN_KARTU_KREDIT_GATEWAY_ID @"12"
 
 @implementation RequestCart
 
 +(void)fetchCartData:(void(^)(TransactionCartResult *data))success error:(void (^)(NSError *error))error{
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
     networkManager.isUsingHmac = YES;
+    networkManager.isUsingDefaultError = NO;
     [networkManager requestWithBaseUrl:[NSString v4Url]
                                   path:@"/v4/tx.pl"
                                 method:RKRequestMethodGET
@@ -21,17 +25,17 @@
                                mapping:[TransactionCart mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                  
-     NSDictionary *result = successResult.dictionary;
-     TransactionCart *cart = [result objectForKey:@""];
-     if (cart.message_error.count>0) {
-         [StickyAlertView showErrorMessage:cart.message_error];
-         error(nil);
-     } else
-         success(cart.data);
+                                 NSDictionary *result = successResult.dictionary;
+                                 TransactionCart *cart = [result objectForKey:@""];
+                                 if (cart.message_error.count>0) {
+                                     [StickyAlertView showErrorMessage:cart.message_error];
+                                     error(nil);
+                                 } else
+                                     success(cart.data);
                                  
-    } onFailure:^(NSError *errorResult) {
-        error(errorResult);
-    }];
+                             } onFailure:^(NSError *errorResult) {
+                                 error(errorResult);
+                             }];
 }
 
 +(void)fetchCheckoutToken:(NSString *)token gatewayID:(NSString*)gatewayID listDropship:(NSArray *)listDropship dropshipDetail:(NSDictionary*)dropshipDetail listPartial:(NSArray *)listPartial partialDetail:(NSDictionary *)partialDetail isUsingSaldo:(BOOL)isUsingSaldo saldo:(NSString *)saldo voucherCode:(NSString*)voucherCode success:(void(^)(TransactionSummaryResult *data))success error:(void (^)(NSError *error))error{
@@ -52,12 +56,12 @@
     NSString * dropshipString = [[tempDropshipStringList valueForKey:@"description"] componentsJoinedByString:@"*~*"];
     
     NSString * partialString = [[tempPartialStringList valueForKey:@"description"] componentsJoinedByString:@"*~*"];
-
+    
     NSString *deposit = [saldo stringByReplacingOccurrencesOfString:@"." withString:@""];
     deposit = [deposit stringByReplacingOccurrencesOfString:@"Rp" withString:@""];
     deposit = [deposit stringByReplacingOccurrencesOfString:@"," withString:@""];
     deposit = [deposit stringByReplacingOccurrencesOfString:@"-" withString:@""];
-
+    
     NSString *usedSaldo = isUsingSaldo?deposit?:@"0":@"0";
     
     NSMutableDictionary *param = [NSMutableDictionary new];
@@ -89,16 +93,23 @@
                              parameter:param
                                mapping:[transactionSummary mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-        NSDictionary *result = successResult.dictionary;
-        TransactionSummary *cart = [result objectForKey:@""];
-         if (cart.message_error.count>0) {
-             [StickyAlertView showErrorMessage:cart.message_error];
-             error(nil);
-         } else
-            success(cart.result);
-    } onFailure:^(NSError *errorResult) {
-        error(errorResult);
-    }];
+                                 NSDictionary *result = successResult.dictionary;
+                                 TransactionSummary *cart = [result objectForKey:@""];
+                                 if (cart.message_error.count>0) {
+                                     [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:cart.message_error]
+                                                                              type:NotificationTypeError
+                                                                          duration:4.0
+                                                                       buttonTitle:[[param objectForKey:@"gateway"] isEqualToString:CICILAN_KARTU_KREDIT_GATEWAY_ID]?@"Belanja Lagi":nil
+                                                                       dismissable:YES
+                                                                            action:[[param objectForKey:@"gateway"] isEqualToString:CICILAN_KARTU_KREDIT_GATEWAY_ID]?^{
+                                                                                [[NSNotificationCenter defaultCenter] postNotificationName:@"navigateToPageInTabBar" object:@"1"];
+                                                                            }:nil];
+                                     error(nil);
+                                 } else
+                                     success(cart.result);
+                             } onFailure:^(NSError *errorResult) {
+                                 error(errorResult);
+                             }];
 }
 
 +(void)fetchToppayWithToken:(NSString *)token gatewayID:(NSString *)gatewayID listDropship:(NSArray *)listDropship dropshipDetail:(NSDictionary *)dropshipDetail listPartial:(NSArray *)listPartial partialDetail:(NSDictionary *)partialDetail isUsingSaldo:(BOOL)isUsingSaldo saldo:(NSString *)saldo voucherCode:(NSString *)voucherCode success:(void (^)(TransactionActionResult *data))success error:(void (^)(NSError *))error{
@@ -121,13 +132,13 @@
     
     NSString * partialString = [[tempPartialStringList valueForKey:@"description"] componentsJoinedByString:@"*~*"];
     NSString *saldoWithIDR = [NSString stringWithFormat:@"Rp %@",saldo];
-    NSNumber *deposit = [[NSNumberFormatter IDRFormarter] numberFromString:saldoWithIDR];
+    NSNumber *deposit = [[NSNumberFormatter IDRFormatter] numberFromString:saldoWithIDR];
     
     NSString *usedSaldo = @"0";
     if (isUsingSaldo) {
         usedSaldo = [deposit stringValue];
     }
-        
+    
     NSMutableDictionary *param = [NSMutableDictionary new];
     NSDictionary* paramDictionary = @{@"step"           :@(STEP_CHECKOUT),
                                       @"token"          :token,
@@ -149,7 +160,7 @@
     
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
     networkManager.isUsingHmac = YES;
-    
+    networkManager.isUsingDefaultError = NO;
     [networkManager requestWithBaseUrl:[NSString v4Url]
                                   path:@"/v4/action/tx/toppay_get_parameter.pl"
                                 method:RKRequestMethodGET
@@ -160,12 +171,25 @@
          TransactionAction *cart = [result objectForKey:@""];
          
          if (cart.message_error.count > 0 || cart.data.parameter == nil) {
-             [StickyAlertView showErrorMessage:cart.message_error?:@[@"Error"]];
+             [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:cart.message_error?:@[@"Error"]]
+                                                      type:NotificationTypeError
+                                                  duration:4.0
+                                               buttonTitle:[cart.errors[0].name isEqualToString:@"minimum-payment"]?@"Belanja Lagi":nil
+                                               dismissable:YES
+                                                    action:[cart.errors[0].name isEqualToString:@"minimum-payment"]?^{
+                                                        [[NSNotificationCenter defaultCenter] postNotificationName:@"navigateToPageInTabBar" object:@"1"];
+                                                    }:nil];
              error(nil);
          } else {
              NSArray *successMessages = cart.message_status;
              if (successMessages.count > 0) {
                  [StickyAlertView showSuccessMessage:successMessages];
+                 [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:cart.message_status]
+                                                          type:NotificationTypeSuccess
+                                                      duration:4.0
+                                                   buttonTitle:nil
+                                                   dismissable:YES
+                                                        action:nil];
              }
              success(cart.data);
          }
@@ -176,7 +200,7 @@
 }
 
 
-+(void)fetchVoucherCode:(NSString*)voucherCode success:(void (^)(TransactionVoucherData *data))success error:(void (^)(NSError *error))error{
++(void)fetchVoucherCode:(NSString*)voucherCode success:(void (^)(TransactionVoucher *data))success error:(void (^)(NSError *error))error{
     
     NSDictionary* param = @{@"action" : @"check_voucher_code",
                             @"voucher_code" : voucherCode
@@ -186,19 +210,36 @@
                                   path:@"tx-voucher.pl"
                                 method:RKRequestMethodPOST
                              parameter:param
-                               mapping:[TransactionVoucher mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                   
-       NSDictionary *result = successResult.dictionary;
-       TransactionVoucher *cart = [result objectForKey:@""];
-       if (cart.message_error.count>0) {
-           [StickyAlertView showErrorMessage:cart.message_error];
-           error (nil);
-       } else
-           success(cart.result.data_voucher);
-                                   
-    } onFailure:^(NSError *errorResult) {
-        error(errorResult);
-    }];
+                               mapping:[TransactionVoucher mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                 
+                                 NSDictionary *result = successResult.dictionary;
+                                 TransactionVoucher *cart = [result objectForKey:@""];
+                                 if (cart.message_error.count > 0) {
+                                     [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:cart.message_error]
+                                                                              type:NotificationTypeError
+                                                                          duration:4.0
+                                                                       buttonTitle:nil
+                                                                       dismissable:YES
+                                                                            action:nil];
+                                     error(nil);
+                                 } else {
+                                     if (cart.message_status.count > 0) {
+                                         [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:cart.message_status]
+                                                                                  type:NotificationTypeSuccess
+                                                                              duration:4.0
+                                                                           buttonTitle:nil
+                                                                           dismissable:YES
+                                                                                action:nil];
+                                         
+                                     }
+                                     success(cart);
+                                     
+                                 }
+                                 
+                             } onFailure:^(NSError *errorResult) {
+                                 error(errorResult);
+                             }];
 }
 
 +(void)fetchDeleteProduct:(ProductDetail*)product cart:(TransactionCartList*)cart withType:(NSInteger)type success:(void (^)(TransactionAction *data, ProductDetail* product, TransactionCartList* cart, NSInteger type))success error:(void (^)(NSError *error))error{
@@ -218,29 +259,40 @@
                             };
     
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    networkManager.isUsingDefaultError = NO;
     [networkManager requestWithBaseUrl:[NSString basicUrl]
                                   path:@"action/tx-cart.pl"
                                 method:RKRequestMethodPOST
                              parameter:param mapping:[TransactionAction mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-        
-        NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
-        id stat = [result objectForKey:@""];
-        
-        TransactionAction *action = stat;
-            if (action.result.is_success == 1) {
-                [StickyAlertView showSuccessMessage:action.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY]];
-                success(action, product, cart, type);
-            }
-            else
-            {
-                [StickyAlertView showErrorMessage:action.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY]];
-                error(nil);
-            }
-            
-    } onFailure:^(NSError *errorResult) {
-        error(errorResult);
-    }];
+                                 
+                                 NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+                                 id stat = [result objectForKey:@""];
+                                 
+                                 TransactionAction *action = stat;
+                                 if (action.result.is_success == 1) {
+                                     [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:action.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY]]
+                                                                              type:NotificationTypeSuccess
+                                                                          duration:4.0
+                                                                       buttonTitle:nil
+                                                                       dismissable:YES
+                                                                            action:nil];
+                                     success(action, product, cart, type);
+                                 }
+                                 else
+                                 {
+                                     [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:action.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY]]
+                                                                              type:NotificationTypeError
+                                                                          duration:4.0
+                                                                       buttonTitle:nil
+                                                                       dismissable:YES
+                                                                            action:nil];
+                                     error(nil);
+                                 }
+                                 
+                             } onFailure:^(NSError *errorResult) {
+                                 error(errorResult);
+                             }];
 }
 
 +(void)fetchBuy:(TransactionSummaryDetail*)transaction dataCC:(NSDictionary*)dataCC mandiriToken:(NSString*)mandiriToken cardNumber:(NSString*)cardNumber password:(NSString*)password klikBCAUserID:(NSString*)klikBCAUserID success:(void (^)(TransactionBuyResult *data))success error:(void (^)(NSError *error))error{
@@ -290,40 +342,49 @@
                              parameter:param
                                mapping:[transactionBuy mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-        
-        NSDictionary *result = successResult.dictionary;
-        id stat = [result objectForKey:@""];
-        TransactionBuy *cart = stat;
-        
-        if (cart.result.is_success == 1) {
-            if (cart.message_status && cart.message_status.count > 0)
-                [StickyAlertView showSuccessMessage:cart.message_status];
-            success(cart.result);
-            [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil userInfo:nil];
-            if ([transaction.gateway integerValue] == TYPE_GATEWAY_TRANSFER_BANK) {
-                URLCacheConnection *cacheConnection = [URLCacheConnection new];
-                URLCacheController *cacheController = [URLCacheController new];
-                
-                NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:@"bank-account"];
-                ListRekeningBank *listBank = [ListRekeningBank new];
-                NSString *cachepath = [listBank cachepath];
-                cacheController.filePath = cachepath;
-                [cacheController initCacheWithDocumentPath:path];
-                
-                [cacheConnection connection:operation.HTTPRequestOperation.request
-                              didReceiveResponse:operation.HTTPRequestOperation.response];
-                [cacheController connectionDidFinish:cacheConnection];
-                [operation.HTTPRequestOperation.responseData writeToFile:cachepath atomically:YES];
-            }
-        }
-        else
-        {
-            [StickyAlertView showErrorMessage:cart.message_error?:@[@"Error"]];
-            error(nil);
-        }
-    } onFailure:^(NSError *errorResult) {
-        error(errorResult);
-    }];
+                                 
+                                 NSDictionary *result = successResult.dictionary;
+                                 id stat = [result objectForKey:@""];
+                                 TransactionBuy *cart = stat;
+                                 
+                                 if (cart.result.is_success == 1) {
+                                     if (cart.message_status && cart.message_status.count > 0) {
+                                         [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:cart.message_status]
+                                                                                  type:NotificationTypeSuccess
+                                                                              duration:4.0
+                                                                           buttonTitle:nil
+                                                                           dismissable:YES
+                                                                                action:nil];
+                                     }
+                                     success(cart.result);
+                                     [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil userInfo:nil];
+                                     if ([transaction.gateway integerValue] == TYPE_GATEWAY_TRANSFER_BANK) {
+                                         URLCacheConnection *cacheConnection = [URLCacheConnection new];
+                                         URLCacheController *cacheController = [URLCacheController new];
+                                         
+                                         NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:@"bank-account"];
+                                         ListRekeningBank *listBank = [ListRekeningBank new];
+                                         NSString *cachepath = [listBank cachepath];
+                                         cacheController.filePath = cachepath;
+                                         [cacheController initCacheWithDocumentPath:path];
+                                         
+                                         [cacheConnection connection:operation.HTTPRequestOperation.request
+                                                  didReceiveResponse:operation.HTTPRequestOperation.response];
+                                         [cacheController connectionDidFinish:cacheConnection];
+                                         [operation.HTTPRequestOperation.responseData writeToFile:cachepath atomically:YES];
+                                     }
+                                 } else {
+                                     [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:cart.message_error?:@[@"Error"]]
+                                                                              type:NotificationTypeError
+                                                                          duration:4.0
+                                                                       buttonTitle:nil
+                                                                       dismissable:YES
+                                                                            action:nil];
+                                     error(nil);
+                                 }
+                             } onFailure:^(NSError *errorResult) {
+                                 error(errorResult);
+                             }];
 }
 
 +(void)fetchEditProduct:(ProductDetail*)product success:(void (^)(TransactionAction *data))success error:(void (^)(NSError *error))error{
@@ -339,30 +400,41 @@
                             };
     
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    networkManager.isUsingDefaultError = NO;
     [networkManager requestWithBaseUrl:[NSString basicUrl]
                                   path:@"action/tx-cart.pl"
                                 method:RKRequestMethodPOST
                              parameter:param
                                mapping:[TransactionAction mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-        NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
-        id stat = [result objectForKey:@""];
-        TransactionAction *action = stat;
-            
-        if (action.result.is_success == 1) {
-            NSArray *successMessages = action.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY];
-            [StickyAlertView showSuccessMessage:successMessages];
-            success(action);
-        }
-        else
-        {
-            [StickyAlertView showErrorMessage:action.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY]];
-            error(nil);
-        }
-        
-    } onFailure:^(NSError *errorResult) {
-        error(errorResult);
-    }];
+                                 NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+                                 id stat = [result objectForKey:@""];
+                                 TransactionAction *action = stat;
+                                 
+                                 if (action.result.is_success == 1) {
+                                     NSArray *successMessages = action.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY];
+                                     [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:successMessages]
+                                                                              type:NotificationTypeSuccess
+                                                                          duration:4.0
+                                                                       buttonTitle:nil
+                                                                       dismissable:YES
+                                                                            action:nil];
+                                     success(action);
+                                 }
+                                 else
+                                 {
+                                     [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:action.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY]]
+                                                                              type:NotificationTypeError
+                                                                          duration:4.0
+                                                                       buttonTitle:nil
+                                                                       dismissable:YES
+                                                                            action:nil];
+                                     error(nil);
+                                 }
+                                 
+                             } onFailure:^(NSError *errorResult) {
+                                 error(errorResult);
+                             }];
 }
 
 +(void)fetchEMoneyCode:(NSString *)code success:(void (^)(TxEMoneyData *data))success error:(void (^)(NSError *error))error{
@@ -376,24 +448,35 @@
                                 method:RKRequestMethodPOST
                              parameter:param mapping:[TransactionAction mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-        
-        NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
-        id stat = [result objectForKey:@""];
-        TransactionAction *emoney = stat;
-        if (emoney.result.is_success == 1) {
-            if (emoney.message_status && emoney.message_status.count > 0)
-                [StickyAlertView showSuccessMessage:emoney.message_status];
-            success(emoney.result.emoney_data);
-        }
-        else
-        {
-            [StickyAlertView showErrorMessage:emoney.message_error?:@[@"Pembayaran Anda gagal"]];
-            error(nil);
-        }
-        
-    } onFailure:^(NSError *errorResult) {
-        error(errorResult);
-    }];
+                                 
+                                 NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+                                 id stat = [result objectForKey:@""];
+                                 TransactionAction *emoney = stat;
+                                 if (emoney.result.is_success == 1) {
+                                     if (emoney.message_status && emoney.message_status.count > 0) {
+                                         [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:emoney.message_status]
+                                                                                  type:NotificationTypeSuccess
+                                                                              duration:4.0
+                                                                           buttonTitle:nil
+                                                                           dismissable:YES
+                                                                                action:nil];
+                                     }
+                                     success(emoney.result.emoney_data);
+                                 }
+                                 else
+                                 {
+                                     [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:emoney.message_error?:@[@"Pembayaran Anda gagal"]]
+                                                                              type:NotificationTypeError
+                                                                          duration:4.0
+                                                                       buttonTitle:nil
+                                                                       dismissable:YES
+                                                                            action:nil];
+                                     error(nil);
+                                 }
+                                 
+                             } onFailure:^(NSError *errorResult) {
+                                 error(errorResult);
+                             }];
 }
 
 +(void)fetchBCAClickPaySuccess:(void (^)(TransactionBuyResult *data))success error:(void (^)(NSError *error))error{
@@ -406,23 +489,34 @@
                              parameter:@{}
                                mapping:transactionBuy.mapping
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-        NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
-        id stat = [result objectForKey:@""];
-        TransactionBuy *BCAClickPay = stat;
-            
-        if (BCAClickPay.result.is_success == 1) {
-            if (BCAClickPay.message_status && BCAClickPay.message_status.count > 0)
-                [StickyAlertView showSuccessMessage:BCAClickPay.message_status];
-            success(BCAClickPay.result);
-        }
-        else
-        {
-            [StickyAlertView showErrorMessage:BCAClickPay.message_error?:@[@"Pembayaran Anda gagal"]];
-            error(nil);
-        }
-    } onFailure:^(NSError *errorResult) {
-        error(nil);
-    }];
+                                 NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+                                 id stat = [result objectForKey:@""];
+                                 TransactionBuy *BCAClickPay = stat;
+                                 
+                                 if (BCAClickPay.result.is_success == 1) {
+                                     if (BCAClickPay.message_status && BCAClickPay.message_status.count > 0) {
+                                         [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:BCAClickPay.message_status]
+                                                                                  type:NotificationTypeSuccess
+                                                                              duration:4.0
+                                                                           buttonTitle:nil
+                                                                           dismissable:YES
+                                                                                action:nil];
+                                     }
+                                     success(BCAClickPay.result);
+                                 }
+                                 else
+                                 {
+                                     [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:BCAClickPay.message_error?:@[@"Pembayaran Anda gagal"]]
+                                                                              type:NotificationTypeError
+                                                                          duration:4.0
+                                                                       buttonTitle:nil
+                                                                       dismissable:YES
+                                                                            action:nil];
+                                     error(nil);
+                                 }
+                             } onFailure:^(NSError *errorResult) {
+                                 error(nil);
+                             }];
 }
 
 +(void)fetchCCValidationFirstName:(NSString*)firstName lastName:(NSString*)lastName city:(NSString*)city postalCode:(NSString*)postalCode addressStreet:(NSString*)addressStreet phone:(NSString *)phone state:(NSString*)state cardNumber:(NSString*)cardNumber installmentBank:(NSString*)installmentBank InstallmentTerm:(NSString*)installmentTerm success:(void (^)(DataCredit *data))success error:(void (^)(NSError *error))error{
@@ -439,7 +533,7 @@
                             @"installment_bank"     :installmentBank,
                             @"installment_term"     :installmentTerm
                             };
-
+    
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
     [networkManager requestWithBaseUrl:[NSString basicUrl]
                                   path:@"action/tx.pl"
@@ -447,22 +541,27 @@
                              parameter:param
                                mapping:[TransactionCC mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-        NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
-        id stat = [result objectForKey:@""];
-        TransactionCC *actionCC = stat;
-        
-        if (actionCC.result.data_credit.cc_agent != nil && ![actionCC.result.data_credit.cc_agent isEqualToString:@"0"] && ![actionCC.result.data_credit.cc_agent isEqualToString:@""]) {
-            success(actionCC.result.data_credit);
-        }
-        else
-        {
-            [StickyAlertView showErrorMessage:actionCC.message_error?:@[@"Pembayaran Anda gagal"]];
-            error(nil);
-        }
-            
-    } onFailure:^(NSError *errorResult) {
-        error(errorResult);
-    }];
+                                 NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+                                 id stat = [result objectForKey:@""];
+                                 TransactionCC *actionCC = stat;
+                                 
+                                 if (actionCC.result.data_credit.cc_agent != nil && ![actionCC.result.data_credit.cc_agent isEqualToString:@"0"] && ![actionCC.result.data_credit.cc_agent isEqualToString:@""]) {
+                                     success(actionCC.result.data_credit);
+                                 }
+                                 else
+                                 {
+                                     [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:actionCC.message_error?:@[@"Pembayaran Anda gagal"]]
+                                                                              type:NotificationTypeError
+                                                                          duration:4.0
+                                                                       buttonTitle:nil
+                                                                       dismissable:YES
+                                                                            action:nil];
+                                     error(nil);
+                                 }
+                                 
+                             } onFailure:^(NSError *errorResult) {
+                                 error(errorResult);
+                             }];
 }
 
 +(void)fetchBRIEPayCode:(NSString*)code success:(void (^)(TransactionActionResult *data))success error:(void (^)(NSError *error))error{
@@ -478,24 +577,35 @@
                              parameter:param
                                mapping:[TransactionAction mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-        NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
-        id stat = [result objectForKey:@""];
-        TransactionAction *action = stat;
-            
-        if (action.result.is_success == 1) {
-            NSArray *successMessages = action.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY];
-            [StickyAlertView showSuccessMessage:successMessages];
-            success(action.result);
-        }
-        else
-        {
-            [StickyAlertView showErrorMessage:action.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY]];
-            error(nil);
-        }
-        
-    } onFailure:^(NSError *errorResult) {
-        error(errorResult);
-    }];
+                                 NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+                                 id stat = [result objectForKey:@""];
+                                 TransactionAction *action = stat;
+                                 
+                                 if (action.result.is_success == 1) {
+                                     NSArray *successMessages = action.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY];
+                                     [StickyAlertView showSuccessMessage:successMessages];
+                                     [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:successMessages]
+                                                                              type:NotificationTypeSuccess
+                                                                          duration:4.0
+                                                                       buttonTitle:nil
+                                                                       dismissable:YES
+                                                                            action:nil];
+                                     success(action.result);
+                                 }
+                                 else
+                                 {
+                                     [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:action.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY]]
+                                                                              type:NotificationTypeError
+                                                                          duration:4.0
+                                                                       buttonTitle:nil
+                                                                       dismissable:YES
+                                                                            action:nil];
+                                     error(nil);
+                                 }
+                                 
+                             } onFailure:^(NSError *errorResult) {
+                                 error(errorResult);
+                             }];
 }
 
 +(void)fetchToppayThanksCode:(NSString*)code success:(void (^)(TransactionActionResult *data))success error:(void (^)(NSError *error))error{
@@ -512,18 +622,23 @@
                              parameter:param
                                mapping:[TransactionAction mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-        NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
-        id stat = [result objectForKey:@""];
-        TransactionAction *action = stat;
-        if (action.data.is_success == 1){
-            success(action.data);
-        } else {
-            [StickyAlertView showErrorMessage:action.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY]];
-            error(nil);
-        }
-    } onFailure:^(NSError *errorResult) {
-        error(errorResult);
-    }];
+                                 NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+                                 id stat = [result objectForKey:@""];
+                                 TransactionAction *action = stat;
+                                 if (action.data.is_success == 1){
+                                     success(action.data);
+                                 } else {
+                                     [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:action.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY]]
+                                                                              type:NotificationTypeError
+                                                                          duration:4.0
+                                                                       buttonTitle:nil
+                                                                       dismissable:YES
+                                                                            action:nil];
+                                     error(nil);
+                                 }
+                             } onFailure:^(NSError *errorResult) {
+                                 error(errorResult);
+                             }];
 }
 
 @end

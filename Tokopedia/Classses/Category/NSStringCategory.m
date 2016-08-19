@@ -176,6 +176,13 @@
     return replacedString;
 }
 
++ (NSString *)joinStringsWithBullets:(NSArray *)strings {
+    if (strings.count == 1) {
+        return strings[0];
+    }
+    
+    return [NSString stringWithFormat:@"\u25CF %@", [[strings valueForKey:@"description"] componentsJoinedByString:@"\n\u25CF "]];
+}
 
 + (NSString *)stringReplaceAhrefWithUrl:(NSString *)string{
     NSString *leadingTrailingWhiteSpacesPattern = @"<a[^>]+href=\"(.*?)\"[^>]*>.*?</a>";
@@ -188,6 +195,14 @@
     
     
     return trimmedString;
+}
+
++ (NSString*)encodeString:(NSString *)string {
+    NSCharacterSet* customAllowedSet = [NSCharacterSet characterSetWithCharactersInString:@"=\"#%/<>?@\\^`{|}&"].invertedSet;
+    
+    NSString* encodedString = [string stringByAddingPercentEncodingWithAllowedCharacters:customAllowedSet];
+    
+    return encodedString;
 }
 
 

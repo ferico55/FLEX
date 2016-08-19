@@ -9,6 +9,7 @@
 #import "CartValidation.h"
 #import "NSNumberFormatter+IDRFormater.h"
 #import "string_transaction.h"
+#import "Tokopedia-Swift.h"
 
 @implementation CartValidation
 
@@ -16,40 +17,45 @@
 {
     BOOL isValid = YES;
     
-    NSMutableArray *errorMessages = [NSMutableArray new];
-    
-//    NSString *voucherCode = [_dataInput objectForKey:API_VOUCHER_CODE_KEY];
     if (!(voucherCode) || [voucherCode isEqualToString:@""]) {
         isValid = NO;
-        [errorMessages addObject:@"Masukkan kode voucher terlebih dahulu."];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"AddErrorMessage"
+                                                            object:nil
+                                                          userInfo:@{@"errorMessage" : @"Masukkan kode voucher terlebih dahulu.",
+                                                                     @"buttonTitle" : @""}];
+        
+        [UIViewController showNotificationWithMessage:@"Masukkan kode voucher terlebih dahulu"
+                                                 type:NotificationTypeError
+                                             duration:4.0
+                                          buttonTitle:nil
+                                          dismissable:YES
+                                               action:nil];
     }
     
-    if (!isValid) {
-        [StickyAlertView showErrorMessage:errorMessages];
-    }
     
-    return  isValid;
+    
+    return isValid;
 }
 
 
 +(BOOL)isValidInputCCCart:(TransactionCartResult*)cart {
     BOOL isvalid = YES;
-    NSMutableArray *errorMessage = [NSMutableArray new];
     if ([cart.grand_total integerValue] < [CartValidation minimumPaymentCC]) {
-        [errorMessage addObject:[CartValidation errorMessageMinimumPaymenCC]];
         isvalid = NO;
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"AddErrorMessage"
+                                                            object:nil
+                                                          userInfo:@{@"errorMessage" : [CartValidation errorMessageMinimumPaymenCC],
+                                                                     @"buttonTitle" : @"Belanja Lagi"}];
     }
     
-    if (!isvalid) {
-        [StickyAlertView showErrorMessage:errorMessage];
-    }
+    
     
     return isvalid;
 }
 
 +(NSString *)errorMessageMinimumPaymenCC{
-    NSString *minimum = [[NSNumberFormatter IDRFormarter] stringFromNumber:[NSNumber numberWithInteger:[CartValidation minimumPaymentCC]]];
-    return [NSString stringWithFormat:@"Minimum pembayaran untuk kartu kredit adalah %@ .",minimum];
+    NSString *minimum = [[NSNumberFormatter IDRFormatter] stringFromNumber:[NSNumber numberWithInteger:[CartValidation minimumPaymentCC]]];
+    return [NSString stringWithFormat:@"Minimum pembayaran untuk kartu kredit adalah %@.",minimum];
 }
 
 +(NSInteger)minimumPaymentCC{
@@ -58,22 +64,22 @@
 
 +(BOOL)isValidInputKlikBCACart:(TransactionCartResult*)cart {
     BOOL isvalid = YES;
-    NSMutableArray *errorMessage = [NSMutableArray new];
     if ([cart.grand_total integerValue] < [CartValidation minimumPaymentKlikBCA]) {
-        [errorMessage addObject:[CartValidation errorMessageMinimumPaymenKlikBCA]];
         isvalid = NO;
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"AddErrorMessage"
+                                                            object:nil
+                                                          userInfo:@{@"errorMessage" : [CartValidation errorMessageMinimumPaymenKlikBCA],
+                                                                     @"buttonTitle" : @"Belanja Lagi"}];
     }
     
-    if (!isvalid) {
-        [StickyAlertView showErrorMessage:errorMessage];
-    }
+    
     
     return isvalid;
 }
 
 +(NSString *)errorMessageMinimumPaymenKlikBCA{
-    NSString *minimum = [[NSNumberFormatter IDRFormarter] stringFromNumber:[NSNumber numberWithInteger:[CartValidation minimumPaymentKlikBCA]]];
-    return [NSString stringWithFormat:@"Minimum pembayaran untuk KlikBCA adalah %@ .",minimum];
+    NSString *minimum = [[NSNumberFormatter IDRFormatter] stringFromNumber:[NSNumber numberWithInteger:[CartValidation minimumPaymentKlikBCA]]];
+    return [NSString stringWithFormat:@"Minimum pembayaran untuk KlikBCA adalah %@.",minimum];
 }
 
 
@@ -84,22 +90,20 @@
 +(BOOL)isValidInputIndomaretCart:(TransactionCartResult*)cart
 {
     BOOL isvalid = YES;
-    NSMutableArray *errorMessage = [NSMutableArray new];
     if ([cart.grand_total integerValue] <[CartValidation minimumPaymentIndomaret]) {
-        [errorMessage addObject:[CartValidation errorMessageMinimumPaymenIndomaret]];
         isvalid = NO;
-    }
-    
-    if (!isvalid) {
-        [StickyAlertView showErrorMessage:errorMessage];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"AddErrorMessage"
+                                                            object:nil
+                                                          userInfo:@{@"errorMessage" : [CartValidation errorMessageMinimumPaymenIndomaret],
+                                                                     @"buttonTitle" : @"Belanja Lagi"}];
     }
     
     return isvalid;
 }
 
 +(NSString *)errorMessageMinimumPaymenIndomaret{
-    NSString *minimum = [[NSNumberFormatter IDRFormarter] stringFromNumber:[NSNumber numberWithInteger:[CartValidation minimumPaymentIndomaret]]];
-    return [NSString stringWithFormat:@"Minimum pembayaran untuk Indomaret adalah %@ .",minimum];
+    NSString *minimum = [[NSNumberFormatter IDRFormatter] stringFromNumber:[NSNumber numberWithInteger:[CartValidation minimumPaymentIndomaret]]];
+    return [NSString stringWithFormat:@"Minimum pembayaran untuk Indomaret adalah %@.",minimum];
 }
 
 +(NSInteger)minimumPaymentIndomaret{

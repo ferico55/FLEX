@@ -7,6 +7,7 @@
 //
 
 #import "TransactionCartHeaderView.h"
+#import "Errors.h"
 
 @implementation TransactionCartHeaderView
 
@@ -30,7 +31,7 @@
     [_delegate didTapShopAtSection:_section];
 }
 
--(void)setViewModel:(CartModelView*)viewModel page:(NSInteger)page section:(NSInteger)section delegate:(UIViewController*)delegate{
+-(void)setViewModel:(CartModelView*)viewModel page:(NSInteger)page section:(NSInteger)section delegate:(UIViewController*)delegate {
     
     BOOL isLuckyMerchant = ([viewModel.isLuckyMerchant integerValue] == 1);
     
@@ -46,9 +47,29 @@
     }
     self.section = section;
     self.delegate = delegate;
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, self.frame.size.height, self.frame.size.width,1)];
-    lineView.backgroundColor = [UIColor colorWithRed:(230.0/255.0f) green:(233/255.0f) blue:(237.0/255.0f) alpha:1.0f];
-    [self addSubview:lineView];
+    
+    if (viewModel.errors.count > 0) {
+        Errors *error = viewModel.errors[0];
+        if (![error.name isEqualToString:@"product-not-available"]) {
+            NSString *string = [NSString stringWithFormat:@"%@\n\n%@", error.title, error.desc];
+            CGSize maximumLabelSize = CGSizeMake(250,9999);
+            NSStringDrawingContext *context = [NSStringDrawingContext new];
+            CGSize expectedLabelSize = [string boundingRectWithSize:maximumLabelSize
+                                                            options:NSStringDrawingUsesLineFragmentOrigin
+                                                         attributes:@{NSFontAttributeName:[UIFont fontWithName:@"Gotham Book" size:18.0f]}
+                                                            context:context].size;
+            _errorViewHeightConstraint.constant = expectedLabelSize.height;
+            _errorLabel.text = string;
+        } else {
+            _errorViewHeightConstraint.constant = 0;
+        }
+    } else {
+        _errorViewHeightConstraint.constant = 0;
+    }
+    
+//    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 44 + _errorViewHeightConstraint.constant, self.frame.size.width,1)];
+//    lineView.backgroundColor = [UIColor colorWithRed:(230.0/255.0f) green:(233/255.0f) blue:(237.0/255.0f) alpha:1.0f];
+//    [self addSubview:lineView];
 }
 
 @end

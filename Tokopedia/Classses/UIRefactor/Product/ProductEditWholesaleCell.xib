@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14C2055" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -23,7 +23,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="140"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="LfV-aX-9Is" id="hcd-4V-MIp">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="149"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="139.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view tag="7" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dew-h1-9YY">
@@ -43,7 +43,7 @@
                                     <constraint firstAttribute="width" constant="1" id="0Lq-7L-kWL"/>
                                 </constraints>
                             </view>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Minimum" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rZo-iM-eNs">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Minimum" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rZo-iM-eNs">
                                 <rect key="frame" x="15" y="11" width="59" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="JMG-pU-KPD"/>
@@ -58,12 +58,13 @@
                                     <constraint firstAttribute="height" constant="1" id="hzC-bR-qQ8"/>
                                 </constraints>
                             </view>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="0" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="rCB-Kv-eHq">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="0" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="rCB-Kv-eHq">
                                 <rect key="frame" x="84" y="1" width="66" height="43"/>
                                 <color key="textColor" red="0.3803921569" green="0.3803921569" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                 <connections>
+                                    <action selector="didEndEditingMin:" destination="LfV-aX-9Is" eventType="editingDidEnd" id="qWt-rm-fdR"/>
                                     <outlet property="delegate" destination="LfV-aX-9Is" id="SHt-4D-bBt"/>
                                 </connections>
                             </textField>
@@ -82,6 +83,7 @@
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                 <connections>
+                                    <action selector="didEndEditingMax:" destination="LfV-aX-9Is" eventType="editingDidEnd" id="VQR-u6-aQW"/>
                                     <outlet property="delegate" destination="LfV-aX-9Is" id="u3v-ts-tXO"/>
                                 </connections>
                             </textField>
@@ -148,6 +150,7 @@
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                 <connections>
+                                    <action selector="didEndEditingPrice:" destination="LfV-aX-9Is" eventType="editingDidEnd" id="0dX-d0-y7G"/>
                                     <outlet property="delegate" destination="LfV-aX-9Is" id="U75-Cp-EGi"/>
                                 </connections>
                             </textField>
@@ -190,7 +193,7 @@
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
                         <connections>
-                            <action selector="tap:" destination="LfV-aX-9Is" eventType="touchUpInside" id="72p-N3-Rb2"/>
+                            <action selector="onTapRemoveWholesale:" destination="LfV-aX-9Is" eventType="touchUpInside" id="ZV4-m3-xHe"/>
                         </connections>
                     </button>
                 </subviews>
@@ -220,9 +223,4 @@
             <point key="canvasLocation" x="397" y="264"/>
         </tableViewCell>
     </objects>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
-    </simulatedMetricsContainer>
 </document>

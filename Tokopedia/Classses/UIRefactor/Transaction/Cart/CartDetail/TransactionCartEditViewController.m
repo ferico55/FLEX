@@ -29,6 +29,7 @@
     CGSize _scrollviewContentSize;
 }
 
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIImageView *productThumbImageView;
 @property (weak, nonatomic) IBOutlet UILabel *productNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *productPriceLabel;
@@ -37,7 +38,6 @@
 @property (weak, nonatomic) IBOutlet UITextView *remarkTextView;
 @property (weak, nonatomic) IBOutlet UILabel *labelCounter;
 @property (strong, nonatomic) IBOutlet UIView *headerView;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomConstraintTextView;
 @property (strong, nonatomic) IBOutletCollection(UIView) NSArray *borders;
 
 @property (weak, nonatomic) IBOutlet UITextField *quantityTextField;
@@ -60,11 +60,11 @@
     _barButtonSave.tag = TAG_BAR_BUTTON_TRANSACTION_DONE;
     self.navigationItem.rightBarButtonItem = _barButtonSave;
     
+    _scrollView.delegate = self;
+    
     _remarkTextView.delegate = self;
     [self setDefaultData:_data];
     [self setTextViewPlaceholder:@"Contoh: Warna Putih/Ukuran XL/Edisi ke-2"];
-    
-    [_remarkTextView becomeFirstResponder];
     
     UIEdgeInsets inset = _remarkTextView.textContainerInset;
     inset.left = 15;
@@ -190,10 +190,10 @@
     }
 }
 
--(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-//    [_quantityTextField resignFirstResponder];
-//    [_activeTextView resignFirstResponder];
+    [_quantityTextField resignFirstResponder];
+    [_activeTextView resignFirstResponder];
 }
 
 -(void)textFieldDidEndEditing:(UITextField *)textField
@@ -272,19 +272,23 @@ replacementString:(NSString*)string
 
 #pragma mark - Keyboard Notification
 - (void)keyboardWillShow:(NSNotification *)aNotification {
-    _keyboardSize= [[[aNotification userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        _keyboardSize= [[[aNotification userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
+        
+        UIEdgeInsets inset = _remarkTextView.textContainerInset;
+        inset.bottom = _keyboardSize.height;
     
-    UIEdgeInsets inset = _remarkTextView.textContainerInset;
-    inset.bottom = _keyboardSize.height;
-    _remarkTextView.textContainerInset = inset;
+        _remarkTextView.textContainerInset = inset;
+    }
 }
 
 - (void)keyboardWillHide:(NSNotification *)aNotification {
-    UIEdgeInsets inset = _remarkTextView.contentInset;
-    inset.bottom = 0;
-    inset.top = 0;
-    [_remarkTextView setContentInset:inset];
-    _bottomConstraintTextView.constant = 0;    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        UIEdgeInsets inset = _remarkTextView.textContainerInset;
+        inset.bottom = 0;
+        inset.top = 0;
+        _remarkTextView.textContainerInset = inset;
+    }
 }
 
 

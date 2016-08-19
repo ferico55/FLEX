@@ -20,8 +20,12 @@
 + (NSString *)stringReplaceAhrefWithUrl:(NSString *)string;
 + (NSString *)extracTKPMEUrl:(NSString *)string;
 
++ (NSString*) encodeString:(NSString*)string;
+
 - (BOOL) isNotAllBaseCharacter;
 
 -(NSString *)priceFromStringIDR;
+
++ (NSString *)joinStringsWithBullets:(NSArray *)strings;
 
 @end

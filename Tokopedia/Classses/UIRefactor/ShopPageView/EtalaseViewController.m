@@ -88,6 +88,8 @@
         self.tambahEtalaseTextField.leftViewMode = UITextFieldViewModeAlways;
         self.tableView.tableHeaderView = _tambahEtalaseView;
     }
+    
+    [TPAnalytics trackScreenName:@"Etalase Page"];
 }
 
 - (void)didReceiveMemoryWarning {
