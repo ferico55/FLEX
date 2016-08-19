@@ -545,6 +545,7 @@
             [_listTemp addObjectsFromArray:address.data.list];
             
             if (_list.count >0) {
+                _doneBarButtonItem.enabled = YES;
                 _isnodata = NO;
                 _urinext =  address.data.paging.uri_next;
                 NSURL *url = [NSURL URLWithString:_urinext];
