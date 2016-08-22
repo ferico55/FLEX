@@ -74,7 +74,7 @@
     style.alignment = NSTextAlignmentCenter;
     
     NSDictionary *attributes = @{
-                                 NSFontAttributeName            : [UIFont fontWithName:@"GothamMedium" size:titleSize],
+                                 NSFontAttributeName            : [UIFont mediumSystemFontOfSize:titleSize],
                                  NSParagraphStyleAttributeName  : style,
                                  };
     
@@ -89,7 +89,7 @@
     style.alignment = NSTextAlignmentCenter;
     
     NSDictionary *attributes = @{
-                                 NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:descSize],
+                                 NSFontAttributeName            : [UIFont systemFontOfSize:descSize],
                                  NSParagraphStyleAttributeName  : style,
                                  };
     
@@ -99,7 +99,7 @@
 
 -(void)setNoResultButtonTitle:(NSString *)btnTitle{
     CGFloat btnSize = NO_RESULT_BUTTON_TITLE_SIZE;
-    _button.titleLabel.font = [UIFont fontWithName:@"GothamMedium" size:btnSize];
+    _button.titleLabel.font = [UIFont mediumSystemFontOfSize:btnSize];
     [_button setTitle:btnTitle forState:UIControlStateNormal];
 }
 
