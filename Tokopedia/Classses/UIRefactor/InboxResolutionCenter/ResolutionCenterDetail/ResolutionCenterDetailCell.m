@@ -100,19 +100,22 @@
         self.imageConstraintHeight.constant = 74;
         for (InboxTicketDetailAttachment *attachment in viewModel.conversationPhotos) {
             NSInteger index = [viewModel.conversationPhotos indexOfObject:attachment];
-            UIImageView *imageView = [self.attachmentImages objectAtIndex:index];
-            if (attachment.img) {
-                imageView.image = attachment.img;
-            } else {
-                NSURL *url = [NSURL URLWithString:attachment.img_src];
-                NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url];
-                [imageView setImageWithURLRequest:request
-                                 placeholderImage:nil
-                                          success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+            if (index < 5)
+            {
+                UIImageView *imageView = [self.attachmentImages objectAtIndex:index];
+                if (attachment.img) {
+                    imageView.image = attachment.img;
+                } else {
+                    NSURL *url = [NSURL URLWithString:attachment.img_src];
+                    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url];
+                    [imageView setImageWithURLRequest:request
+                                     placeholderImage:nil
+                                              success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                                              imageView.image = image;
-                                          } failure:nil];
+                                                  imageView.image = image;
+                                              } failure:nil];
+                }
             }
         }
     } else {
@@ -139,8 +142,8 @@
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 4.0;
 
-    UIFont *gothamBookFont = [UIFont fontWithName:@"GothamBook" size:12];
-    UIFont *gothamMediumFont = [UIFont fontWithName:@"GothamMedium" size:12];
+    UIFont *gothamBookFont = [UIFont largeTheme];
+    UIFont *gothamMediumFont = [UIFont largeThemeMedium];
 
     if (![viewModel.conversationMessage isEqualToString:@"0"] && !viewModel.conversationNote) {
 

@@ -392,7 +392,7 @@
     
     [_userButton setLabelBackground:[data objectForKey:TKPD_TALK_USER_LABEL]];
     [_userButton setText:[data objectForKey:TKPD_TALK_USER_NAME]];
-    [_userButton setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"GothamMedium" size:14.0f]];
+    [_userButton setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont smallThemeMedium]];
 
     [_userButton setUserInteractionEnabled:_enableDeepNavigation];
 

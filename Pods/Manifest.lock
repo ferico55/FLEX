@@ -126,6 +126,7 @@ DEPENDENCIES:
   - LayoutKit
   - Localytics (~> 3.5.0)
   - Masonry
+  - Masonry (~> 1.0.1)
   - NJKWebViewProgress
   - RestKit (~> 0.20.0)
   - Reveal-iOS-SDK

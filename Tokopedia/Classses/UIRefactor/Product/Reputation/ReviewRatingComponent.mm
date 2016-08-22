@@ -48,7 +48,7 @@
                                [CKLabelComponent
                                 newWithLabelAttributes:{
                                     .string = @"Kualitas Produk",
-                                    .font = [UIFont fontWithName:@"Gotham Book" size:12]
+                                    .font = [UIFont microTheme]
                                 }
                                 viewAttributes:{}
                                 size:{}]
@@ -75,7 +75,7 @@
                                [CKLabelComponent
                                 newWithLabelAttributes:{
                                     .string = @"Akurasi Produk",
-                                    .font = [UIFont fontWithName:@"Gotham Book" size:12]
+                                    .font = [UIFont microTheme]
                                 }
                                 viewAttributes:{}
                                 size:{}]

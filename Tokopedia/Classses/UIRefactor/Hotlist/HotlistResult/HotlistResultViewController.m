@@ -53,6 +53,7 @@
 #import "UIActivityViewController+Extensions.h"
 #import "Tokopedia-Swift.h"
 #import "TokopediaNetworkManager.h"
+#import "UIFont+Theme.h"
 
 #define CTagGeneralProductCollectionView @"ProductCell"
 #define CTagGeneralProductIdentifier @"ProductCellIdentifier"
@@ -278,7 +279,9 @@ static NSString const *rows = @"12";
                                                 [self didReceiveBannerHotlist:data];
                                                 
                                             } onFailure:^(NSError *error) {
-                                                
+                                                NSArray *errorMessage = @[@"Maaf, permintaan anda gagal"];
+                                                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessage delegate:self];
+                                                [alert show];
                                             }];
 }
 
@@ -546,18 +549,10 @@ static NSString const *rows = @"12";
     }
     
     if (_bannerResult.info.hotlist_description) {
-        NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-        style.lineSpacing = 5.0;
-        style.alignment = NSTextAlignmentJustified;
-        
-        NSDictionary *attributes = @{
-                                     NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:12],
-                                     NSParagraphStyleAttributeName  : style,
-                                     NSForegroundColorAttributeName : IS_IPAD ? [UIColor blackColor] : [UIColor whiteColor],
-                                     };
-        
-        _descriptionlabel.attributedText = [[NSAttributedString alloc] initWithString:[NSString convertHTML: _bannerResult.info.hotlist_description?:@""] attributes:attributes];
-        _hotlistDescription.attributedText = [[NSAttributedString alloc] initWithString:[NSString convertHTML: _bannerResult.info.hotlist_description?:@""] attributes:attributes];
+        _descriptionlabel.font = [UIFont smallTheme];
+        _descriptionlabel.text = _bannerResult.info.hotlist_description?:@"";
+        _hotlistDescription.font = [UIFont smallTheme];
+        _hotlistDescription.text = _bannerResult.info.hotlist_description?:@"";
     }
 }
 
@@ -572,7 +567,7 @@ static NSString const *rows = @"12";
         UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [button setTitle:[NSString stringWithFormat:@"#%@", hashtag.name] forState:UIControlStateNormal];
         [button setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
-        button.titleLabel.font = [UIFont fontWithName:@"GothamBook" size:10];
+        button.titleLabel.font = [UIFont microTheme];
         button.layer.borderColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.5].CGColor;
         button.layer.borderWidth = 1;
         button.layer.cornerRadius = 3;
@@ -638,6 +633,8 @@ static NSString const *rows = @"12";
 -(void)refreshView:(UIRefreshControl*)refresh {
     [_requestHotlistManager requestCancel];
     _start = 0;
+    _page = 0;
+    [_promo removeAllObjects];
     [_refreshControl beginRefreshing];
     
     [self requestHotlist];
@@ -822,6 +819,7 @@ static NSString const *rows = @"12";
         [_promoRequest requestForProductHotlist:[_data objectForKey:@"hotlist_id"]
                                      department:departmentId
                                            page:_page / 2
+                                filterParameter:_selectedFilterParam
                                       onSuccess:^(NSArray<PromoResult *> *promoResult) {
                                           if (promoResult) {
                                               if(IS_IPAD) {

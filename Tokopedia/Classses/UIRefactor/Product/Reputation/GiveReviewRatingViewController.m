@@ -57,35 +57,6 @@
     
     [self initData];
     
-//    if (_isEdit) {
-//        _reviewMessage = _review.review_message;
-//    } else {
-//        _reviewMessage = @"";
-//    }
-//    
-//    if (_review.review_image_attachment.count > 0) {
-//        _hasImages = YES;
-//        
-//        for (int ii = 0; ii < _review.review_image_attachment.count; ii++) {
-//            ReviewImageAttachment *imageAttachment = _review.review_image_attachment[ii];
-//            
-//            UIImage *image = [[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:imageAttachment.uri_thumbnail]]];
-//            
-//            AttachedPicture *pict = [AttachedPicture new];
-//            pict.image = image;
-//            pict.largeUrl = imageAttachment.uri_large;
-//            pict.thumbnailUrl = imageAttachment.uri_thumbnail;
-//            pict.imageDescription = imageAttachment.desc;
-//            pict.attachmentID = imageAttachment.attachment_id;
-//            pict.isDeleted = @"0";
-//            pict.isPreviouslyUploaded = @"1";
-//            
-//            [_uploadedPictures addObject:pict];
-//            [_attachedPictures addObject:pict];
-//            [_tempUploadedPictures addObject:pict];
-//        }
-//    }
-    
     _giveReviewDetailVC = [GiveReviewDetailViewController new];
 }
 
@@ -97,6 +68,8 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.title = _isEdit?@"Ubah Ulasan":@"Tulis Ulasan";
+    
+    [TPAnalytics trackScreenName:@"Give Review Rating Page"];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -114,10 +87,6 @@
         vc.accuracyRate = _accuracyRate;
         vc.review = _review;
         vc.token = _token;
-//        vc.uploadedPictures = _uploadedPictures;
-//        vc.attachedPictures = _attachedPictures;
-//        vc.tempUploadedPictures = _tempUploadedPictures;
-//        vc.reviewMessage = _reviewMessage;
         
         [self.navigationController pushViewController:vc animated:YES];
     }
@@ -175,9 +144,9 @@
     
     if (!_isEdit) {
         _qualityLabel.attributedText = [[NSAttributedString alloc] initWithString:@"Kualitas:"
-                                                                       attributes:@{NSFontAttributeName:[UIFont fontWithName:@"Gotham Book" size:17.0]}];
+                                                                       attributes:@{NSFontAttributeName:[UIFont title1Theme]}];
         _accuracyLabel.attributedText = [[NSAttributedString alloc] initWithString:@"Akurasi:"
-                                                                        attributes:@{NSFontAttributeName:[UIFont fontWithName:@"Gotham Book" size:17.0]}];
+                                                                        attributes:@{NSFontAttributeName:[UIFont title1Theme]}];
     } else {
         _qualityRate = (_review.product_rating_point==nil || _review.product_rating_point.length==0)? 0:[_review.product_rating_point intValue];
         [self setQualityLabel];
@@ -199,7 +168,7 @@
 - (void)setQualityLabel {
     NSString *quality = @"";
     NSMutableAttributedString *mutableString = [[NSMutableAttributedString alloc] initWithString:@"Kualitas:"
-                                                                               attributes:@{NSFontAttributeName:[UIFont fontWithName:@"Gotham Book" size:17.0]}];
+                                                                               attributes:@{NSFontAttributeName:[UIFont title1Theme]}];
     
     switch (_qualityRate) {
         case 0:
@@ -226,7 +195,7 @@
     
     [mutableString appendAttributedString:[[NSAttributedString alloc] initWithString:@" "]];
     [mutableString appendAttributedString:[[NSAttributedString alloc] initWithString:quality
-                                                                          attributes:@{NSFontAttributeName:[UIFont fontWithName:@"Gotham Medium" size:17.0]}]];
+                                                                          attributes:@{NSFontAttributeName:[UIFont title1ThemeMedium]}]];
     
     _qualityLabel.attributedText = mutableString;
 }
@@ -234,7 +203,7 @@
 - (void)setAccuracyLabel {
     NSString *accuracy = @"";
     NSMutableAttributedString *mutableString = [[NSMutableAttributedString alloc] initWithString:@"Akurasi:"
-                                                                                      attributes:@{NSFontAttributeName:[UIFont fontWithName:@"Gotham Book" size:17.0]}];
+                                                                                      attributes:@{NSFontAttributeName:[UIFont title1Theme]}];
     
     switch (_accuracyRate) {
         case 0:
@@ -261,7 +230,7 @@
     
     [mutableString appendAttributedString:[[NSAttributedString alloc] initWithString:@" "]];
     [mutableString appendAttributedString:[[NSAttributedString alloc] initWithString:accuracy
-                                                                          attributes:@{NSFontAttributeName:[UIFont fontWithName:@"Gotham Medium" size:17.0]}]];
+                                                                          attributes:@{NSFontAttributeName:[UIFont title1ThemeMedium]}]];
     
     _accuracyLabel.attributedText = mutableString;
 }

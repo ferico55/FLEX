@@ -104,7 +104,7 @@ static CKComponent *deleteButton (NSString *role, SEL action, ImageStorage *imag
                                                  [CKLabelComponent
                                                   newWithLabelAttributes:{
                                                       .string = @"Penjual",
-                                                      .font = [UIFont fontWithName:@"Gotham Medium" size:11.0],
+                                                      .font = [UIFont microThemeMedium],
                                                       .color = [UIColor whiteColor],
                                                       .alignment = NSTextAlignmentCenter
                                                       
@@ -122,7 +122,7 @@ static CKComponent *deleteButton (NSString *role, SEL action, ImageStorage *imag
                                                  [CKLabelComponent
                                                   newWithLabelAttributes:{
                                                       .string = review.product_owner.shop_name,
-                                                      .font = [UIFont fontWithName:@"Gotham Medium" size:14.0],
+                                                      .font = [UIFont largeThemeMedium],
                                                       .maximumNumberOfLines = 1,
                                                       .color = [UIColor colorWithRed:69/255.0 green:124/255.0 blue:16/255.0 alpha:1.0]
                                                   }
@@ -143,7 +143,7 @@ static CKComponent *deleteButton (NSString *role, SEL action, ImageStorage *imag
                                    [CKLabelComponent
                                     newWithLabelAttributes:{
                                         .string = review.review_response.response_message,
-                                        .font = [UIFont fontWithName:@"Gotham Book" size:14.0],
+                                        .font = [UIFont largeTheme],
                                         .maximumNumberOfLines = 0,
                                         .lineSpacing = 5.0
                                     }
@@ -155,7 +155,7 @@ static CKComponent *deleteButton (NSString *role, SEL action, ImageStorage *imag
                                    [CKLabelComponent
                                     newWithLabelAttributes:{
                                         .string = review.review_response.response_create_time,
-                                        .font = [UIFont fontWithName:@"Gotham Book" size:12.0],
+                                        .font = [UIFont microTheme],
                                         .color = [UIColor colorWithWhite:158.0/255 alpha:1]
                                     }
                                     viewAttributes:{}

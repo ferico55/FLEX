@@ -133,7 +133,7 @@ import UIKit
 
     @IBAction func didTapAddProductButton(sender: UIButton) {
         let controller = ProductAddEditViewController()
-        controller.data = ["type": 1]
+        controller.type = 1
         let navigation = UINavigationController.init(rootViewController: controller)
         navigation.navigationBar.translucent = false
         navigationController?.presentViewController(navigation, animated: true, completion:nil)

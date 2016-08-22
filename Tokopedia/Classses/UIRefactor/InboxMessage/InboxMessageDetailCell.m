@@ -12,6 +12,7 @@
 #import "NavigationHelper.h"
 #import "UIGestureRecognizer+BlocksKit.h"
 #import "TTTAttributedLabel.h"
+#import "UIFont+Theme.h"
 
 #define CXTimeLabel 60.0f
 
@@ -55,7 +56,7 @@ static CGFloat messageTextSize = 17.0;
 }
 
 +(CGSize)messageSize:(NSString*)message {
-    return [message sizeWithFont:[UIFont fontWithName:@"GothamBook" size:20.0] constrainedToSize:CGSizeMake([InboxMessageDetailCell maxTextWidth], CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
+    return [message sizeWithFont:[UIFont largeTheme] constrainedToSize:CGSizeMake([InboxMessageDetailCell maxTextWidth], CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
 }
 
 +(UIImage*)balloonImage:(BOOL)sent isSelected:(BOOL)selected {
@@ -80,7 +81,7 @@ static CGFloat messageTextSize = 17.0;
         
         /*Now the basic view-lements are initialized...*/
         _viewLabelUser = [[ViewLabelUser alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width-CXTimeLabel, CHeightUserLabel)];
-        [_viewLabelUser setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"GothamBook" size:12.0f]];
+        [_viewLabelUser setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont smallTheme]];
         messageView = [[UIView alloc] initWithFrame:CGRectZero];
         messageView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
         
@@ -93,14 +94,14 @@ static CGFloat messageTextSize = 17.0;
         
         /*Message-Label*/
         self.messageLabel.backgroundColor = [UIColor clearColor];
-        self.messageLabel.font = [UIFont fontWithName:@"GothamBook" size:messageTextSize];
+        self.messageLabel.font = [UIFont smallTheme];
 
         self.timeLabel.textColor = [UIColor whiteColor];
         self.messageLabel.lineBreakMode = NSLineBreakByWordWrapping;
         self.messageLabel.numberOfLines = 0;
         
         /*Time-Label*/
-        self.timeLabel.font = [UIFont fontWithName:@"GothamBook" size:10.0f];;
+        self.timeLabel.font = [UIFont microTheme];
         self.timeLabel.textColor = [UIColor lightGrayColor];
         self.timeLabel.backgroundColor = [UIColor clearColor];
         
@@ -161,7 +162,7 @@ static CGFloat messageTextSize = 17.0;
         ballonViewFrame = CGRectMake(self.frame.size.width - (textSize.width + 2*textMarginHorizontal), timeLabelFrame.size.height, textSize.width + 2*textMarginHorizontal, textSize.height + 2*textMarginVertical + 5.0f);
         
         
-        timeLabelFrame = CGRectMake(self.frame.size.width - dateSize.width - textMarginHorizontal, ballonViewFrame.size.height +5, dateSize.width, dateSize.height);
+        timeLabelFrame = CGRectMake(self.frame.size.width - dateSize.width - textMarginHorizontal, ballonViewFrame.size.height, dateSize.width, dateSize.height);
         
         messageLabelFrame = CGRectMake(self.frame.size.width - (textSize.width + textMarginHorizontal),  ballonViewFrame.origin.y + textMarginVertical, textSize.width, textSize.height);
         
@@ -187,7 +188,7 @@ static CGFloat messageTextSize = 17.0;
             ballonViewFrame.size.width = (_viewLabelUser.getLblText.frame.origin.x+widthUserLabel+(2*textMarginHorizontal));
         }
         
-        timeLabelFrame = CGRectMake(CXTimeLabel, ballonViewFrame.size.height +5 , dateSize.width, dateSize.height);
+        timeLabelFrame = CGRectMake(CXTimeLabel, ballonViewFrame.size.height , dateSize.width, dateSize.height);
         
         messageLabelFrame = CGRectMake(textMarginHorizontal + 55.0f, CHeightUserLabel + ballonViewFrame.origin.y + textMarginVertical, textSize.width, textSize.height);
         
@@ -250,7 +251,12 @@ static CGFloat messageTextSize = 17.0;
 
 
 - (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url  {
-    NSString* theRealUrl = [NSString stringWithFormat:@"https://tkp.me/r?url=%@", [url.absoluteString stringByReplacingOccurrencesOfString:@"*" withString:@"."]];
+    NSString* theRealUrl;
+    if([url.host isEqualToString:@"www.tokopedia.com"]) {
+        theRealUrl = url.absoluteString;
+    } else {
+        theRealUrl = [NSString stringWithFormat:@"https://tkp.me/r?url=%@", [url.absoluteString stringByReplacingOccurrencesOfString:@"*" withString:@"."]];
+    }
     
     self.onTapMessageWithUrl([NSURL URLWithString:[theRealUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]);
 }
@@ -258,10 +264,10 @@ static CGFloat messageTextSize = 17.0;
 - (NSAttributedString*)attributedMessage:(InboxMessageDetailList*)message {
     BOOL isLoggedInUser = [message.message_action isEqualToString:@"1"];
     
-    UIFont *font = [UIFont fontWithName:@"GothamBook" size:14];
+    UIFont *font = [UIFont largeTheme];
     
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 4.0;
+    style.lineSpacing = 5;
     style.alignment = NSTextAlignmentLeft;
     
     NSDictionary *attributes = @{NSForegroundColorAttributeName: isLoggedInUser ? [UIColor whiteColor] : [UIColor blackColor],

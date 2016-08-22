@@ -19,5 +19,6 @@
 @property (strong, nonatomic) LuckyDeal *ld;
 
 + (RKObjectMapping*)mapping;
++(RKObjectMapping*)generalMapping;
 
 @end

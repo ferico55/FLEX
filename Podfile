@@ -23,6 +23,7 @@ target "Tokopedia" do
     pod 'Google/SignIn'
     pod 'SPTPersistentCache', '~> 1.0'
     pod 'FBSDKLoginKit'
+    pod 'Masonry', '~> 1.0.1'
     pod 'CardIO'
     pod 'DownPicker'
     pod 'LayoutKit'

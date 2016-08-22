@@ -279,6 +279,8 @@
 
 -(void)navigateToInboxReviewFromViewController:(UIViewController *)viewController
 {
+    UserAuthentificationManager *auth = [UserAuthentificationManager new];
+    
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
 //        InboxReviewSplitViewController *controller = [InboxReviewSplitViewController new];
 //        [viewController.navigationController pushViewController:controller animated:YES];
@@ -294,6 +296,7 @@
         SegmentedReviewReputationViewController *segmentedReputationViewController = [SegmentedReviewReputationViewController new];
         segmentedReputationViewController.hidesBottomBarWhenPushed = YES;
         segmentedReputationViewController.selectedIndex = CTagSemuaReview;
+        segmentedReputationViewController.userHasShop = [auth userHasShop];
         [viewController.navigationController pushViewController:segmentedReputationViewController animated:YES];
         
         

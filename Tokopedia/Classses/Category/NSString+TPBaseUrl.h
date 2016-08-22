@@ -15,6 +15,7 @@
 + (NSString*)v4Url;
 + (NSString*)topAdsUrl;
 + (NSString*)keroUrl;
++ (NSString*)accountsUrl;
 + (NSString*)hadesUrl;
 + (NSString*)mojitoUrl;
 + (NSString*)pulsaUrl;

@@ -8,9 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-@interface AddProductValidationResult : NSObject
+@interface AddProductValidationResult : NSObject <TKPObjectMapping>
 
-@property (nonatomic) NSInteger is_success;
+@property (nonatomic) NSString *is_success;
 @property (nonatomic) NSString *post_key;
 
 @end

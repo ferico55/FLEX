@@ -20,6 +20,7 @@
 @property (strong, nonatomic) NSString *productReview;
 @property (strong, nonatomic) NSString *productTalk;
 @property (strong, nonatomic) NSString *luckyMerchantImageURL;
+@property (strong, nonatomic) NSString *productDescription;
 
 @property (strong, nonatomic) NSString *productPriceBeforeChange;
 @property (strong, nonatomic) NSString *productQuantity;
