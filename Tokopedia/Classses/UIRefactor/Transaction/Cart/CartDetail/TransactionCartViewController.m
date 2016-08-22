@@ -1271,9 +1271,9 @@
     } else {
         if (product.errors.count == 0 ||
             list.errors.count == 0 ||
-            [product.errors[0].name isEqualToString:@"product-less-than-min"] ||
-            [product.errors[0].name isEqualToString:@"product-more-than-max"] ||
-            [list.errors[0].name isEqualToString:@"shopping-limit-exceeded"]) {
+            [[product.errors firstObject].name isEqualToString:@"product-less-than-min"] ||
+            [[product.errors firstObject].name isEqualToString:@"product-more-than-max"] ||
+            [[list.errors firstObject].name isEqualToString:@"shopping-limit-exceeded"]) {
             TransactionCartEditViewController *editViewController = [TransactionCartEditViewController new];
             [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
             editViewController.data = _dataInput;
