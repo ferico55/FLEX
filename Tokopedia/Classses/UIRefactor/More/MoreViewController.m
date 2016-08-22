@@ -62,7 +62,6 @@
 
 #import "UIActivityViewController+Extensions.h"
 #import "MoreWrapperViewController.h"
-#import "MoreNavigationController.h"
 
 #import "DepositRequest.h"
 

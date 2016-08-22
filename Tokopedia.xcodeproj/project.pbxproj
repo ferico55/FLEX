@@ -1112,7 +1112,6 @@
 		45908BF71D66F1A200B75597 /* ActivatePushInstructionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459080031D66F19E00B75597 /* ActivatePushInstructionViewController.swift */; };
 		45908BF81D66F1A200B75597 /* ActivatePushInstructionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 459080041D66F19E00B75597 /* ActivatePushInstructionViewController.xib */; };
 		45908BF91D66F1A200B75597 /* ActivatePushInstructionViewController7.xib in Resources */ = {isa = PBXBuildFile; fileRef = 459080051D66F19E00B75597 /* ActivatePushInstructionViewController7.xib */; };
-		45908BFA1D66F1A200B75597 /* MoreNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 459080081D66F19E00B75597 /* MoreNavigationController.m */; };
 		45908BFB1D66F1A200B75597 /* MoreNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4590800A1D66F19E00B75597 /* MoreNavigationViewController.m */; };
 		45908BFC1D66F1A200B75597 /* MoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4590800C1D66F19E00B75597 /* MoreViewController.m */; };
 		45908BFD1D66F1A200B75597 /* PurchaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4590800E1D66F19E00B75597 /* PurchaseViewController.m */; };
@@ -4536,8 +4535,6 @@
 		459080041D66F19E00B75597 /* ActivatePushInstructionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActivatePushInstructionViewController.xib; sourceTree = "<group>"; };
 		459080051D66F19E00B75597 /* ActivatePushInstructionViewController7.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActivatePushInstructionViewController7.xib; sourceTree = "<group>"; };
 		459080061D66F19E00B75597 /* more.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = more.h; sourceTree = "<group>"; };
-		459080071D66F19E00B75597 /* MoreNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoreNavigationController.h; sourceTree = "<group>"; };
-		459080081D66F19E00B75597 /* MoreNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoreNavigationController.m; sourceTree = "<group>"; };
 		459080091D66F19E00B75597 /* MoreNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoreNavigationViewController.h; sourceTree = "<group>"; };
 		4590800A1D66F19E00B75597 /* MoreNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoreNavigationViewController.m; sourceTree = "<group>"; };
 		4590800B1D66F19E00B75597 /* MoreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoreViewController.h; sourceTree = "<group>"; };
@@ -10013,8 +10010,6 @@
 				459080041D66F19E00B75597 /* ActivatePushInstructionViewController.xib */,
 				459080051D66F19E00B75597 /* ActivatePushInstructionViewController7.xib */,
 				459080061D66F19E00B75597 /* more.h */,
-				459080071D66F19E00B75597 /* MoreNavigationController.h */,
-				459080081D66F19E00B75597 /* MoreNavigationController.m */,
 				459080091D66F19E00B75597 /* MoreNavigationViewController.h */,
 				4590800A1D66F19E00B75597 /* MoreNavigationViewController.m */,
 				4590800B1D66F19E00B75597 /* MoreViewController.h */,
@@ -14495,7 +14490,6 @@
 				45908A7A1D66F1A200B75597 /* Platform.Linux.swift in Sources */,
 				459087BE1D66F1A200B75597 /* UIImageEffects.m in Sources */,
 				45908CCE1D66F1A200B75597 /* DueDateViewController.m in Sources */,
-				45908BFA1D66F1A200B75597 /* MoreNavigationController.m in Sources */,
 				459087F01D66F1A200B75597 /* Logout.m in Sources */,
 				459088081D66F1A200B75597 /* CatalogShopAWSProductResult.m in Sources */,
 				45908BC11D66F1A200B75597 /* InboxRootViewController.m in Sources */,

@@ -8,7 +8,6 @@
 
 #import "MoreWrapperViewController.h"
 #import "MoreViewController.h"
-#import "MoreNavigationController.h"
 #import "UIView+HVDLayout.h"
 
 @implementation MoreWrapperViewController {
@@ -25,7 +24,7 @@
     [self.view setBackgroundColor:[UIColor colorWithRed:(231/255.0) green:(231/255.0) blue:(231/255.0) alpha:1]];
 
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
-    MoreNavigationController *moreNavController = [storyboard instantiateViewControllerWithIdentifier:@"MoreNavigationViewController"];
+    UINavigationController *moreNavController = [storyboard instantiateViewControllerWithIdentifier:@"MoreNavigationViewController"];
     moreNavController.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
 
     _moreViewController = moreNavController.viewControllers[0];
