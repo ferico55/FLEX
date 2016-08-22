@@ -16,6 +16,13 @@
 @property (strong, nonatomic) NSString* quantity;
 @property (strong, nonatomic) NSString* primary_dtl_photo;
 @property (strong, nonatomic) NSString* product_name;
+@property (strong, nonatomic) NSString* snapshop_uri;
+@property (strong, nonatomic) NSString* trouble_id;
+@property (strong, nonatomic) NSString* trouble_name;
+@property (strong, nonatomic) NSString* solution_remark;
+@property (strong, nonatomic) NSString* is_free_return;
+
+
 
 +(RKObjectMapping*)mapping;
 @end
