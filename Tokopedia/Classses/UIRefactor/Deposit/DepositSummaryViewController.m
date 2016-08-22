@@ -213,7 +213,7 @@
             [((DepositSummaryCell*)cell).withdrawalTime setText:depositList.deposit_date_full];
             
             
-            UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
+            UIFont *font = [UIFont smallTheme];
             
             NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
             style.lineSpacing = 6.0;
@@ -236,8 +236,8 @@
     return cell;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 150;
+- (CGFloat)tableView:(UITableView *)table0View heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 175;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
