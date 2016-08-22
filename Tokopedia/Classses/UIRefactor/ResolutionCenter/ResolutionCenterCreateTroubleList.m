@@ -14,9 +14,6 @@
     [troubleListMapping addAttributeMappingsFromArray:@[@"trouble_text",
                                                         @"trouble_id"
                                                         ]];
-    [troubleListMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"solution_list"
-                                                                                      toKeyPath:@"solution_list"
-                                                                                     withMapping:[ResolutionCenterCreateSolutionList mapping]]];
     return troubleListMapping;
 }
 @end

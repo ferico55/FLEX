@@ -12,7 +12,6 @@
 @interface ResolutionCenterCreateTroubleList : NSObject
 @property (strong, nonatomic) NSString* trouble_text;
 @property (strong, nonatomic) NSString* trouble_id;
-@property (strong, nonatomic) NSArray<ResolutionCenterCreateSolutionList*>* solution_list;
 
 +(RKObjectMapping*)mapping;
 @end
