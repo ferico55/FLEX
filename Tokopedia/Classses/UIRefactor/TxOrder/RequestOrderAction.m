@@ -321,7 +321,7 @@ static failedCompletionBlock failedUploadProof;
                                  if(response.data.is_success == 1){
                                      success(response);
                                  } else {
-                                     failedCompletionSubmitConfirmation(nil);
+                                     failed(nil);
                                      NSArray *array = response.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
                                      [StickyAlertView showErrorMessage:array];
                                  }
