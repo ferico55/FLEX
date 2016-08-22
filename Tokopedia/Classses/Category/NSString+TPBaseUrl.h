@@ -17,5 +17,6 @@
 + (NSString*)keroUrl;
 + (NSString*)accountsUrl;
 + (NSString*)hadesUrl;
++ (NSString*)kunyitUrl;
 
 @end

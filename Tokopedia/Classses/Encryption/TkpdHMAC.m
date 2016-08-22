@@ -119,7 +119,7 @@
 }
 
 - (NSString*)getContentType {
-    return @"application/x-www-form-urlencoded; charset=utf-8";
+    return [self.getRequestMethod isEqualToString:@"GET"] ? @"" : @"application/x-www-form-urlencoded; charset=utf-8";
 }
 
 - (void)setContentType:(NSString*)contentType {
@@ -131,11 +131,15 @@
 }
 
 - (void)setParameterMD5:(NSDictionary*)parameter {
-    NSError *error;
-    NSData *parameterData = [NSJSONSerialization dataWithJSONObject:parameter options:NSJSONWritingPrettyPrinted error:&error];
-    NSString *serializedParameter = [[NSString alloc] initWithData:parameterData encoding:NSUTF8StringEncoding];
-    
-    _parameterMD5 = [serializedParameter encryptWithMD5];
+    NSMutableArray<NSString*>* strings = [[NSMutableArray alloc] init];
+
+    NSArray* sortedKeys = [[parameter allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+    for (NSString* key in sortedKeys) {
+        [strings addObject:[NSString stringWithFormat:@"%@=%@", key, [parameter objectForKey:key]]];
+    }
+
+    NSString* joinedParameters = [strings componentsJoinedByString:@"&"];
+    _parameterMD5 = [joinedParameters encryptWithMD5];
 }
 
 - (NSString*)getRequestMethod {

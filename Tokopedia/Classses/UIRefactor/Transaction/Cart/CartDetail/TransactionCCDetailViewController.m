@@ -607,7 +607,7 @@
 -(void) goToCCReaderViewController {
     CCReaderViewController *ccReaderVC = [CCReaderViewController new];
     ccReaderVC.delegate = self;
-    [TPAnalytics trackClickEvent:@"clickCardIOScan" category:@"Card IO Scan" label:@"CardIO"];
+    [TPAnalytics trackClickEvent:@"clickCardIOScan" category:@"Card IO Scan" label:@"Click Camera Icon"];
     [self.navigationController presentViewController:ccReaderVC animated:YES completion:nil];
 }
 

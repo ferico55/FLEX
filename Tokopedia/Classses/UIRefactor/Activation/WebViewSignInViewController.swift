@@ -84,7 +84,8 @@ class WebViewSignInViewController: UIViewController, UIWebViewDelegate, NJKWebVi
         if let path = path where path.containsString("/error") {
             NSURLSession.sharedSession().resetWithCompletionHandler() {}
             
-            let message = url.parameters()["message"] as! String
+            let message = (url.parameters()["message"] as! String).stringByRemovingPercentEncoding!
+            
             
             let alertView = UIAlertView.bk_alertViewWithTitle("Perhatian", message: message)
             alertView.bk_addButtonWithTitle("OK", handler: {[unowned self] in

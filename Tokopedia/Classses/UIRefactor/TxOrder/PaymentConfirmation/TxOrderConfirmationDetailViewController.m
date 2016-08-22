@@ -186,7 +186,7 @@
         NSString *string = [orderProduct.viewModel.productNotes isEqualToString:@"0"]?@"":orderProduct.viewModel.productNotes;
         
         //Calculate the expected size based on the font and linebreak mode of your label
-        CGSize expectedLabelSize = [string sizeWithFont:FONT_GOTHAM_BOOK_16
+        CGSize expectedLabelSize = [string sizeWithFont:[UIFont title2Theme]
                                       constrainedToSize:maximumLabelSize
                                           lineBreakMode:NSLineBreakByTruncatingTail];
         

@@ -185,8 +185,8 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
             @"shop_id":_talk.talk_shop_id
     };
 
-    [_unfollowNetworkManager requestWithBaseUrl:[NSString v4Url]
-                                           path:@"/v4/action/talk/follow_product_talk.pl"
+    [_unfollowNetworkManager requestWithBaseUrl:[NSString kunyitUrl]
+                                           path:@"/v2/talk/follow"
                                          method:RKRequestMethodPOST
                                       parameter:parameter
                                         mapping:[GeneralAction mapping]
@@ -369,8 +369,8 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
                 kTKPDDETAILSHOP_APISHOPID : _talk.talk_shop_id
         };
 
-        [_deleteNetworkManager requestWithBaseUrl:[NSString v4Url]
-                                             path:@"/v4/action/talk/delete_product_talk.pl"
+        [_deleteNetworkManager requestWithBaseUrl:[NSString kunyitUrl]
+                                             path:@"/v2/talk/delete"
                                            method:RKRequestMethodPOST
                                         parameter:parameter
                                           mapping:[GeneralAction mapping]
@@ -395,8 +395,8 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
             @"text_message": textMessage
     };
 
-    [_reportNetworkManager requestWithBaseUrl:[NSString v4Url]
-                                         path:@"/v4/action/talk/report_product_talk.pl"
+    [_reportNetworkManager requestWithBaseUrl:[NSString kunyitUrl]
+                                         path:@"/v2/talk/report"
                                        method:RKRequestMethodPOST
                                     parameter:parameter
                                       mapping:[GeneralAction mapping]
