@@ -1259,31 +1259,27 @@
     
     [TPAnalytics trackRemoveProductFromCart:product];
     
-    switch (buttonIndex) {
-        case 0:
-        {
-            NSString *message = [NSString stringWithFormat:FORMAT_CANCEL_CART_PRODUCT,list.cart_shop.shop_name, product.product_name, product.product_total_price_idr];
-            UIAlertView *cancelCartAlert = [[UIAlertView alloc]initWithTitle:TITLE_ALERT_CANCEL_CART message:message delegate:self cancelButtonTitle:TITLE_BUTTON_CANCEL_DEFAULT otherButtonTitles:TITLE_BUTTON_OK_DEFAULT, nil];
-            cancelCartAlert.tag = 10;
-            [cancelCartAlert show];
-            break;
+    if (buttonIndex == actionSheet.cancelButtonIndex) {
+        return;
+    }
+    
+    if (buttonIndex == actionSheet.destructiveButtonIndex) {
+        NSString *message = [NSString stringWithFormat:FORMAT_CANCEL_CART_PRODUCT,list.cart_shop.shop_name, product.product_name, product.product_total_price_idr];
+        UIAlertView *cancelCartAlert = [[UIAlertView alloc]initWithTitle:TITLE_ALERT_CANCEL_CART message:message delegate:self cancelButtonTitle:TITLE_BUTTON_CANCEL_DEFAULT otherButtonTitles:TITLE_BUTTON_OK_DEFAULT, nil];
+        cancelCartAlert.tag = 10;
+        [cancelCartAlert show];
+    } else {
+        if (product.errors.count == 0 ||
+            list.errors.count == 0 ||
+            [product.errors[0].name isEqualToString:@"product-less-than-min"] ||
+            [product.errors[0].name isEqualToString:@"product-more-than-max"] ||
+            [list.errors[0].name isEqualToString:@"shopping-limit-exceeded"]) {
+            TransactionCartEditViewController *editViewController = [TransactionCartEditViewController new];
+            [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
+            editViewController.data = _dataInput;
+            editViewController.delegate = self;
+            [self.navigationController pushViewController:editViewController animated:YES];
         }
-        case 1:
-        {
-            if ([product.product_error_msg isEqualToString:@""] ||
-                [product.product_error_msg isEqualToString:@"0"] ||
-                product.product_error_msg == nil ||
-                [product.product_error_msg isEqualToString:@"Maksimal pembelian produk ini adalah 999 item"]) {
-                TransactionCartEditViewController *editViewController = [TransactionCartEditViewController new];
-                [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
-                editViewController.data = _dataInput;
-                editViewController.delegate = self;
-                [self.navigationController pushViewController:editViewController animated:YES];
-            }
-            break;
-        }
-        default:
-            break;
     }
 }
 
