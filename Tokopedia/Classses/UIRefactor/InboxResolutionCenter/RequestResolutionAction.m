@@ -308,7 +308,7 @@ static failedCompletionBlock failedRequest;
     }
 }
 
-+(void)fetchPossibleSolutionWithPossibleTroubleObject:(ResolutionCenterCreatePOSTRequest*)possibleTrouble{
++(void)fetchPossibleSolutionWithPossibleTroubleObject:(ResolutionCenterCreatePOSTRequest *)possibleTrouble success:(void (^)(id))success failure:(void (^)(NSError *))failure{
     NSString *path = @"get_form_solution.pl";
     RKRequestDescriptor *requestDescriptor = [RKRequestDescriptor requestDescriptorWithMapping:[[ResolutionCenterCreatePOSTRequest mapping] inverseMapping]
                                                                                    objectClass:[ResolutionCenterCreatePOSTRequest class]
@@ -327,12 +327,11 @@ static failedCompletionBlock failedRequest;
                          path:path
                    parameters:@{}
                       success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-                          
+                          success(operation);
                       }
                       failure:^(RKObjectRequestOperation *operation, NSError *error) {
-                          
+                          failure(error);
                       }];
-    
 }
 
 +(void)createResolutionValidationWithOrderId:(NSString*)orderId

@@ -101,6 +101,9 @@
     _stepThreeViewController = [ResolutionCenterCreateStepThreeViewController new];
     
     _stepOneViewController.result = self.result;
+    _stepOneViewController.order = self.order;
+    _stepOneViewController.product_is_received = _product_is_received;
+    
     _stepTwoViewController.result = self.result;
     /*
     _stepThreeViewController.formData = self.formData;
@@ -180,6 +183,14 @@
 - (IBAction)didTapNextButton{
     if(_currentIndex == 2){
         
+    }else if(_currentIndex == 1){
+        if([_stepTwoViewController verifyForm]){
+            _currentIndex++;
+            [_pageController setViewControllers:@[[self viewControllerAtIndex:_currentIndex isGoingForward:YES]]
+                                      direction:UIPageViewControllerNavigationDirectionForward
+                                       animated:YES
+                                     completion:nil];
+        }
     }else{
         _currentIndex++;
         [_pageController setViewControllers:@[[self viewControllerAtIndex:_currentIndex isGoingForward:YES]]

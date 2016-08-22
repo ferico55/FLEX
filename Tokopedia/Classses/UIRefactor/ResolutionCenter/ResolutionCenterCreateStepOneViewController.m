@@ -145,11 +145,11 @@ ResolutionCenterChooseProblemDelegate
 #pragma mark - Choose Problem Delegate
 -(void)didSelectProblem:(ResolutionCenterCreateList *)selectedProblem{
     _result.postObject.category_trouble_id = selectedProblem.category_trouble_id;
-    if([selectedProblem.category_trouble_id isEqualToString:@"1"]){
+    if([selectedProblem.product_related isEqualToString:@"1"]){
         _shouldShowProblematicProduct = YES;
         [_problemButton setTitle:selectedProblem.category_trouble_text forState:UIControlStateNormal];
         [_tableView reloadData];
-    }else if([selectedProblem.category_trouble_id isEqualToString:@"2"]){
+    }else{
         _shouldShowProblematicProduct = NO;        
         [_problemButton setTitle:selectedProblem.category_trouble_text forState:UIControlStateNormal];
         [_tableView reloadData];
@@ -158,9 +158,18 @@ ResolutionCenterChooseProblemDelegate
 
 #pragma mark - Methods
 -(void)fetchForm{
-    [RequestResolutionData fetchCreateResolutionDataWithOrderId:@"15632"
+    [RequestResolutionData fetchCreateResolutionDataWithOrderId:_order.order_detail.detail_order_id
                                                         success:^(ResolutionCenterCreateResponse *data) {
                                                             _result.formData = data.data;
+                                                            
+                                                            NSArray* appropriateCategoryTrouble = [NSMutableArray new];
+                                                            NSString* boolStr = _product_is_received?@"1":@"0";
+                                                            appropriateCategoryTrouble = [_result.formData.list_ts bk_select:^(ResolutionCenterCreateList* obj) {
+                                                                return [obj.product_is_received isEqualToString:boolStr];
+                                                            }];
+                                                            
+                                                            _result.formData.list_ts = appropriateCategoryTrouble;
+                                                            
                                                             [_problemButton setHidden:NO];
                                                             [_activityIndicator setHidden:YES];
                                                         } failure:^(NSError *error) {
@@ -168,7 +177,7 @@ ResolutionCenterChooseProblemDelegate
                                                         }];
 }
 -(void)fetchProduct{
-    [RequestResolutionData fetchAllProductsInTransactionWithOrderId:@"15632"
+    [RequestResolutionData fetchAllProductsInTransactionWithOrderId:_order.order_detail.detail_order_id
                                                             success:^(ResolutionProductResponse *data) {
                                                                 _productData = data.data;
                                                                 [_tableView reloadData];

@@ -10,6 +10,7 @@
 #import "ResolutionAction.h"
 #import "Tokopedia-Swift.h"
 #import "UploadImageValidation.h"
+#import "ResolutionCenterCreatePOSTRequest.h"
 
 @interface RequestResolutionAction : NSObject
 
@@ -75,4 +76,7 @@
                                     success:(void(^) (ResolutionActionResult* data))success
                                     failure:(void(^) (NSError* error))failure;
 
++(void)fetchPossibleSolutionWithPossibleTroubleObject:(ResolutionCenterCreatePOSTRequest*)possibleTrouble
+                                            success:(void(^) (id data))success
+                                            failure:(void(^) (NSError* error))failure;
 @end

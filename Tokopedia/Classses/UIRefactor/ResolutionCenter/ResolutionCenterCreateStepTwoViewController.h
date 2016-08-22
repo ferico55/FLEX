@@ -17,4 +17,6 @@
 @property (strong, nonatomic) ResolutionCenterCreateResult* result;
 @property BOOL shouldFlushOptions;
 
+-(BOOL)verifyForm;
+
 @end

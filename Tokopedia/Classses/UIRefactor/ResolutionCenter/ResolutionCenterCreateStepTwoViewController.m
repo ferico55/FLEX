@@ -9,6 +9,8 @@
 #import "ResolutionCenterCreateStepTwoViewController.h"
 #import "ResolutionCenterCreateStepTwoCell.h"
 #import "DownPicker.h"
+#import "RequestResolutionAction.h"
+
 #import <BlocksKit/BlocksKit.h>
 
 @interface ResolutionCenterCreateStepTwoViewController ()
@@ -85,12 +87,18 @@ ResolutionCenterCreateStepTwoCellDelegate
         cell.quantityStepper.tag = indexPath.row;
         cell.delegate = self;
         
-        cell.troublePicker  = [[DownPicker alloc] initWithTextField:cell.troublePicker withData:[self generateDownPickerChoices]];
+        if(!cell.troublePicker || ![cell.troublePicker isKindOfClass:[DownPicker class]]){
+            _priceProblemTextField = [[DownPicker alloc] initWithTextField:cell.troublePicker];
+        }
+        [_priceProblemTextField setData:[self generateDownPickerChoices]];
         cell.troublePicker.tag = indexPath.row;
         [cell.troublePicker addTarget:self action:@selector(troublePickerValueChanged:) forControlEvents:UIControlEventValueChanged];
         return cell;
     }else{
-        _priceProblemTextField = [[DownPicker alloc] initWithTextField:_priceProblemTextField withData:[self generateDownPickerChoices]];
+        if(!_priceProblemTextField || ![_priceProblemTextField isKindOfClass:[DownPicker class]]){
+            _priceProblemTextField = [[DownPicker alloc] initWithTextField:_priceProblemTextField];
+        }
+        [_priceProblemTextField setData:[self generateDownPickerChoices]];
         [_priceProblemTextField addTarget:self action:@selector(priceProblemPickerValueChanged:) forControlEvents:UIControlEventValueChanged];
         return _priceProblemCell;
     }
@@ -146,5 +154,10 @@ ResolutionCenterCreateStepTwoCellDelegate
 -(void)didChangeStepperValue:(UIStepper *)stepper{
     ResolutionCenterCreatePOSTProduct *postProduct = [_result.postObject.product_list objectAtIndex:stepper.tag];
     postProduct.quantity = [NSString stringWithFormat:@"%.f", stepper.value];
+}
+
+#pragma mark - Request
+-(BOOL)verifyForm{
+    return YES;
 }
 @end

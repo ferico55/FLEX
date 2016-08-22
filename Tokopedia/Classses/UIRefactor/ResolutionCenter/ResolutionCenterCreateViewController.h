@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TxOrderStatusList.h"
 
 @interface ResolutionCenterCreateViewController : UIViewController
-
+@property (strong, nonatomic) TxOrderStatusList* order;
+@property BOOL product_is_received;
 @end

@@ -171,7 +171,7 @@
                              }];
      */
     [networkManager requestWithBaseUrl:[NSString v4Url]
-                                  path:@"/get_create_resolution_form_new.pl"
+                                  path:@"/v4/inbox-resolution-center/get_create_resolution_form_new.pl"
                                 method:RKRequestMethodGET
                              parameter:@{@"order_id":orderId,
                                          @"user_id":[userAuth getUserId]
@@ -208,7 +208,7 @@
      */
     
     [networkManager requestWithBaseUrl:[NSString v4Url]
-                                  path:@"/get_product_list.pl"
+                                  path:@"/v4/inbox-resolution-center/get_product_list.pl"
                                 method:RKRequestMethodGET
                              parameter:@{@"order_id":orderId,
                                          @"user_id":[userAuth getUserId]
