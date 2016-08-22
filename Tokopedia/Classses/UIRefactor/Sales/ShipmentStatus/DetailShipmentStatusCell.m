@@ -25,9 +25,9 @@ static CGFloat messageTextSize = 14.0;
     _circle.layer.cornerRadius = _circle.frame.size.width / 2;
 
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 4.0;
+    style.lineSpacing = 5.0;
     
-    _textAttributes = [NSMutableDictionary dictionaryWithDictionary:@{NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:12],
+    _textAttributes = [NSMutableDictionary dictionaryWithDictionary:@{NSFontAttributeName            : [UIFont smallTheme],
                                                                       NSParagraphStyleAttributeName  : style,
                                                                       NSForegroundColorAttributeName : [UIColor blackColor]}];
 }
@@ -52,7 +52,7 @@ static CGFloat messageTextSize = 14.0;
     if (text) {
         text = [text stringByReplacingOccurrencesOfString:@"<br>" withString:@"\n"];
         text = [text stringByReplacingOccurrencesOfString:@"<br/>" withString:@"\n"];
-        [_textAttributes setObject:[UIFont fontWithName:@"GothamMedium" size:12] forKey:NSFontAttributeName];
+        [_textAttributes setObject:[UIFont smallThemeMedium] forKey:NSFontAttributeName];
         _statusLabel.attributedText = [[NSAttributedString alloc] initWithString:text attributes:_textAttributes];    
     }
 }
@@ -65,7 +65,7 @@ static CGFloat messageTextSize = 14.0;
         text = @"Pembeli";
     }
     
-    [_textAttributes setObject:[UIFont fontWithName:@"GothamBook" size:10] forKey:NSFontAttributeName];
+    [_textAttributes setObject:[UIFont microTheme] forKey:NSFontAttributeName];
     _subjectLabel.attributedText = [[NSAttributedString alloc] initWithString:text attributes:_textAttributes];
     [_subjectLabel sizeToFit];
 }

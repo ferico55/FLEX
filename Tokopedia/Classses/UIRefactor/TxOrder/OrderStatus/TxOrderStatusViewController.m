@@ -366,7 +366,7 @@
     style.alignment = NSTextAlignmentLeft;
     
     NSDictionary *attributes = @{NSForegroundColorAttributeName:[UIColor blackColor],
-                                 NSFontAttributeName: [UIFont fontWithName:@"Gotham Medium" size:11.0f],
+                                 NSFontAttributeName: [UIFont smallThemeMedium],
                                  NSParagraphStyleAttributeName: style,
                                  };
     
