@@ -351,7 +351,7 @@
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 41)];
     
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(15, 8, self.view.frame.size.width-15, 41)];
-    label.font = [UIFont fontWithName:@"GothamBook" size:14];
+    label.font = [UIFont largeTheme];
     label.textColor = [UIColor colorWithRed:66.0/255.0 green:66.0/255.0 blue:66.0/255.0 alpha:1];
 
     if (_trackingOrder.detail.shipper_name && [_trackingOrder.track_history count] > 0) {

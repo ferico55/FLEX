@@ -415,11 +415,9 @@
                                 mapping:[ProfileInfo mapping]
                               onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                   _profile = [successResult.dictionary objectForKey:@""];
-                                  
+                                  _profile.result.user_info.user_name = [_profile.result.user_info.user_name kv_decodeHTMLCharacterEntities];
                                   if (_profile.status) {
-                                      [[NSNotificationCenter defaultCenter] postNotificationName:@"setHeaderProfilePage"
-                                                                                          object:nil
-                                                                                        userInfo:@{@"profile" : _profile}];
+                                      [self postNotificationSetProfileHeader];
                                   }
                               }
                               onFailure:^(NSError *errorResult) {

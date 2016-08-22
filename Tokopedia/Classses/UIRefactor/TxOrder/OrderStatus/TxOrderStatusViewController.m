@@ -366,7 +366,7 @@
     style.alignment = NSTextAlignmentLeft;
     
     NSDictionary *attributes = @{NSForegroundColorAttributeName:[UIColor blackColor],
-                                 NSFontAttributeName: [UIFont fontWithName:@"Gotham Medium" size:11.0f],
+                                 NSFontAttributeName: [UIFont smallThemeMedium],
                                  NSParagraphStyleAttributeName: style,
                                  };
     
@@ -558,7 +558,15 @@
         [_noResultView removeFromSuperview];
     } else {
         if ([self isUsingAnyFilter]) {
-            [_noResultView setNoResultTitle:[NSString stringWithFormat:@"Belum ada transaksi untuk tanggal %@ - %@", [_dataInput objectForKey:API_TRANSACTION_START_DATE_KEY], [_dataInput objectForKey:API_TRANSACTION_END_DATE_KEY]]];
+            NSString *noTransactionInfoString = @"";
+            
+            if ([_dataInput objectForKey:API_TRANSACTION_START_DATE_KEY] == nil || [_dataInput objectForKey:API_TRANSACTION_END_DATE_KEY] == nil) {
+                noTransactionInfoString = @"Belum ada transaksi";
+            } else {
+                noTransactionInfoString = [NSString stringWithFormat:@"Belum ada transaksi untuk tanggal %@ - %@", [_dataInput objectForKey:API_TRANSACTION_START_DATE_KEY], [_dataInput objectForKey:API_TRANSACTION_END_DATE_KEY]];
+            }
+            
+            [_noResultView setNoResultTitle:noTransactionInfoString];
             [_noResultView hideButton:YES];
         } else {
             [_noResultView setNoResultTitle:@"Belum ada transaksi"];

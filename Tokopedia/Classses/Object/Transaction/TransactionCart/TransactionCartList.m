@@ -21,6 +21,7 @@
         tempViewModel.insuranceFee = [_cart_insurance_price stringValue];
         tempViewModel.shippingRateIDR = _cart_shipping_rate_idr;
         tempViewModel.totalAmountIDR = _cart_total_amount_idr;
+        tempViewModel.errors = _errors;
         
         _viewModel = tempViewModel;
     }
@@ -70,6 +71,8 @@
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"cart_destination" toKeyPath:@"cart_destination" withMapping:[AddressFormList mapping]]];
     
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"cart_shop" toKeyPath:@"cart_shop" withMapping:[ShopInfo mapping]]];
+    
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"errors" toKeyPath:@"errors" withMapping:[Errors mapping]]];
     
     RKRelationshipMapping *relMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"cart_products" toKeyPath:@"cart_products" withMapping:[ProductDetail mapping]];
     [mapping addPropertyMapping:relMapping];

@@ -84,4 +84,14 @@
                           ));
 }
 
++ (NSString*)kunyitUrl {
+    return  FBTweakValue(@"Network", @"Environment", @"Tokopedia Kunyit Url", @"https://inbox.tokopedia.com",
+                         (@{
+                            @"https://inbox-staging.tokopedia.com" : @"Staging",
+                            @"https://inbox-alpha.tokopedia.com" : @"Alpha",
+                            @"https://inbox.tokopedia.com" : @"Production",
+                            }
+                          ));
+}
+
 @end
