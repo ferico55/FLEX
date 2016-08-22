@@ -159,7 +159,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zec-CP-ipk">
-                                <rect key="frame" x="62" y="52" width="163" height="20"/>
+                                <rect key="frame" x="62" y="52" width="63" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="cB9-M2-q5K"/>
                                 </constraints>
@@ -172,14 +172,14 @@
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-free-return" translatesAutoresizingMaskIntoConstraints="NO" id="SY6-Wc-ifC">
-                                <rect key="frame" x="114" y="54" width="15" height="15"/>
+                                <rect key="frame" x="129" y="54" width="15" height="15"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="15" id="G2k-uM-AgD"/>
                                     <constraint firstAttribute="width" constant="15" id="Qfe-Z0-Hiy"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="free returns" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KUo-kP-8Ow">
-                                <rect key="frame" x="131" y="57" width="58" height="9"/>
+                                <rect key="frame" x="146" y="57" width="62" height="9"/>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="10"/>
                                 <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -190,14 +190,15 @@
                         <constraints>
                             <constraint firstItem="PaP-wX-LL2" firstAttribute="top" secondItem="5QU-W0-oEF" secondAttribute="top" constant="14" id="13S-hy-InZ"/>
                             <constraint firstItem="KUo-kP-8Ow" firstAttribute="centerY" secondItem="SY6-Wc-ifC" secondAttribute="centerY" id="2oN-bV-tja"/>
+                            <constraint firstItem="zec-CP-ipk" firstAttribute="top" secondItem="SY6-Wc-ifC" secondAttribute="bottom" constant="-17" id="61D-xc-onk"/>
                             <constraint firstAttribute="height" constant="82" id="6BW-QR-gYc"/>
                             <constraint firstAttribute="trailing" secondItem="dhi-OU-DAJ" secondAttribute="trailing" id="73H-wk-aso"/>
+                            <constraint firstItem="SY6-Wc-ifC" firstAttribute="leading" secondItem="zec-CP-ipk" secondAttribute="trailing" constant="4" id="Dm5-AG-8EZ"/>
                             <constraint firstItem="kzr-BZ-Moe" firstAttribute="leading" secondItem="5QU-W0-oEF" secondAttribute="leading" constant="10" id="FCT-c9-R7k"/>
                             <constraint firstAttribute="bottom" secondItem="dhi-OU-DAJ" secondAttribute="bottom" id="H2A-t5-0Aa"/>
                             <constraint firstItem="dhi-OU-DAJ" firstAttribute="leading" secondItem="5QU-W0-oEF" secondAttribute="leading" id="QNb-hg-M3i"/>
                             <constraint firstItem="8KS-26-HFG" firstAttribute="top" secondItem="5QU-W0-oEF" secondAttribute="top" constant="11" id="QZf-PN-eSh"/>
                             <constraint firstItem="PaP-wX-LL2" firstAttribute="leading" secondItem="kzr-BZ-Moe" secondAttribute="trailing" constant="8" id="R3D-E7-N6Q"/>
-                            <constraint firstItem="SY6-Wc-ifC" firstAttribute="leading" secondItem="kzr-BZ-Moe" secondAttribute="trailing" constant="60" id="Sbf-33-TR0"/>
                             <constraint firstItem="h26-la-C3I" firstAttribute="top" secondItem="PaP-wX-LL2" secondAttribute="bottom" constant="-2" id="TpS-aS-gXD"/>
                             <constraint firstItem="kzr-BZ-Moe" firstAttribute="top" secondItem="5QU-W0-oEF" secondAttribute="top" constant="9" id="VXG-WQ-esy"/>
                             <constraint firstAttribute="trailing" secondItem="8KS-26-HFG" secondAttribute="trailing" constant="12" id="byv-Ox-GI3"/>
@@ -208,7 +209,6 @@
                             <constraint firstItem="zec-CP-ipk" firstAttribute="top" secondItem="h26-la-C3I" secondAttribute="bottom" constant="2" id="p3q-Q8-7zc"/>
                             <constraint firstItem="zec-CP-ipk" firstAttribute="leading" secondItem="kzr-BZ-Moe" secondAttribute="trailing" constant="8" id="rYE-mG-48w"/>
                             <constraint firstItem="8KS-26-HFG" firstAttribute="leading" secondItem="PaP-wX-LL2" secondAttribute="trailing" constant="26" id="s2e-gR-7XC"/>
-                            <constraint firstItem="8KS-26-HFG" firstAttribute="leading" secondItem="zec-CP-ipk" secondAttribute="trailing" constant="8" id="uJV-1T-e2z"/>
                         </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="ZBv-X1-SOK" appends="YES" id="1Ps-4X-F0U"/>
