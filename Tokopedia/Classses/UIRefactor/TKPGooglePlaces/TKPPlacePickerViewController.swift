@@ -211,7 +211,7 @@ enum TypePlacePicker : Int{
     func createWarningLabel() -> Void {
         let style = NSMutableParagraphStyle()
         style.lineSpacing = 2
-        let font = UIFont(name: "GothamLight", size: 10.0)!
+        let font = UIFont.microTheme()
         let attributes = [NSFontAttributeName:font, NSParagraphStyleAttributeName:style]
         let string = "Pastikan lokasi yang Anda tandai di peta sesuai dengan alamat Anda di atas"
         let attributedString = NSMutableAttributedString(string:string, attributes:attributes)
@@ -491,7 +491,7 @@ enum TypePlacePicker : Int{
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell:UITableViewCell = UITableViewCell.init(style: UITableViewCellStyle.Default, reuseIdentifier: "reuseIdentifier")
         
-        cell.textLabel!.font = UIFont (name: "GothamBook", size: 13);
+        cell.textLabel!.font = UIFont.smallTheme();
         cell.textLabel!.numberOfLines = 0;
         cell.textLabel?.setCustomAttributedText(dataTableView[indexPath.section][indexPath.row])
         cell.textLabel?.sizeToFit()
