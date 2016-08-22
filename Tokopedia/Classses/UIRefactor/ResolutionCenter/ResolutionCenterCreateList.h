@@ -12,6 +12,9 @@
 @interface ResolutionCenterCreateList : NSObject
 @property (strong, nonatomic) NSString* category_trouble_id;
 @property (strong, nonatomic) NSString* category_trouble_text;
+@property (strong, nonatomic) NSString* attachment;
+@property (strong, nonatomic) NSString* product_is_received;
+@property (strong, nonatomic) NSString* product_related;
 @property (strong, nonatomic) NSArray<ResolutionCenterCreateTroubleList*>* trouble_list;
 
 +(RKObjectMapping*)mapping;

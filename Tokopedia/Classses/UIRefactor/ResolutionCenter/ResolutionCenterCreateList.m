@@ -12,7 +12,10 @@
 +(RKObjectMapping *)mapping{
     RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[ResolutionCenterCreateList class]];
     [listMapping addAttributeMappingsFromArray:@[@"category_trouble_id",
-                                                 @"category_trouble_text"
+                                                 @"category_trouble_text",
+                                                 @"attachment",
+                                                 @"product_is_received",
+                                                 @"product_related"
                                                  ]];
     [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"trouble_list"
                                                                                toKeyPath:@"trouble_list"
