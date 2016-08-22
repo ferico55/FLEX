@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -20,29 +20,6 @@
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-        </mutableArray>
-        <mutableArray key="GothamMedium.ttf">
-            <string>GothamMedium</string>
-            <string>GothamMedium</string>
-            <string>GothamMedium</string>
-            <string>GothamMedium</string>
-            <string>GothamMedium</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -123,7 +100,6 @@
                                     <subviews>
                                         <segmentedControl opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="phH-3w-tab">
                                             <rect key="frame" x="28" y="8" width="244" height="29"/>
-                                            <animations/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="28" id="3fC-dQ-iTU"/>
                                             </constraints>
@@ -137,19 +113,17 @@
                                         </segmentedControl>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tUp-de-Lwf">
                                             <rect key="frame" x="0.0" y="44" width="301" height="1"/>
-                                            <animations/>
                                             <color key="backgroundColor" red="0.8784313725490196" green="0.8784313725490196" blue="0.8784313725490196" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="1" id="aqW-jd-4IB"/>
                                             </constraints>
                                         </view>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kHU-Hm-Cis">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="0.0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kHU-Hm-Cis">
                                             <rect key="frame" x="130" y="53" width="40" height="34"/>
-                                            <animations/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="34" id="KNh-wc-qwY"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="23"/>
+                                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="23"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
@@ -158,7 +132,6 @@
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="g5v-gp-lL6">
                                                     <rect key="frame" x="0.0" y="0.0" width="18" height="18"/>
-                                                    <animations/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="18" id="iAN-5n-3Gc"/>
                                                         <constraint firstAttribute="height" constant="18" id="orG-vZ-twB"/>
@@ -166,22 +139,17 @@
                                                 </imageView>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="gCE-Fm-aa0">
                                                     <rect key="frame" x="18" y="0.0" width="18" height="18"/>
-                                                    <animations/>
                                                 </imageView>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="kqp-SO-HPY">
                                                     <rect key="frame" x="36" y="0.0" width="18" height="18"/>
-                                                    <animations/>
                                                 </imageView>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="g7o-X8-c60">
                                                     <rect key="frame" x="54" y="0.0" width="18" height="18"/>
-                                                    <animations/>
                                                 </imageView>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="tVd-w2-ulE">
                                                     <rect key="frame" x="72" y="0.0" width="18" height="18"/>
-                                                    <animations/>
                                                 </imageView>
                                             </subviews>
-                                            <animations/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstItem="gCE-Fm-aa0" firstAttribute="leading" secondItem="g5v-gp-lL6" secondAttribute="trailing" id="5Jw-sf-Tvt"/>
@@ -206,9 +174,8 @@
                                                 <constraint firstItem="gCE-Fm-aa0" firstAttribute="width" secondItem="g7o-X8-c60" secondAttribute="width" id="rjb-dh-Yaw"/>
                                             </constraints>
                                         </view>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0 Review" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bq7-WS-wci">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="0 Review" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bq7-WS-wci">
                                             <rect key="frame" x="120" y="109" width="61" height="21"/>
-                                            <animations/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="21" id="Fro-ej-aIf"/>
                                             </constraints>
@@ -218,7 +185,6 @@
                                         </label>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="naj-A2-7Wy">
                                             <rect key="frame" x="0.0" y="138" width="301" height="1"/>
-                                            <animations/>
                                             <color key="backgroundColor" red="0.8784313725490196" green="0.8784313725490196" blue="0.8784313725490196" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="1" id="2jZ-EN-3ga"/>
@@ -229,7 +195,6 @@
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star_active.png" translatesAutoresizingMaskIntoConstraints="NO" id="5Fo-cN-O7X">
                                                     <rect key="frame" x="0.0" y="0.0" width="14" height="14"/>
-                                                    <animations/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="14" id="UHB-Ip-mzu"/>
                                                         <constraint firstAttribute="width" constant="14" id="WeM-JN-0Xc"/>
@@ -237,22 +202,17 @@
                                                 </imageView>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star_active.png" translatesAutoresizingMaskIntoConstraints="NO" id="hDf-Wb-Cvu">
                                                     <rect key="frame" x="14" y="0.0" width="14" height="14"/>
-                                                    <animations/>
                                                 </imageView>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star_active.png" translatesAutoresizingMaskIntoConstraints="NO" id="qzd-Ja-uE5">
                                                     <rect key="frame" x="28" y="0.0" width="14" height="14"/>
-                                                    <animations/>
                                                 </imageView>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star_active.png" translatesAutoresizingMaskIntoConstraints="NO" id="T5z-MO-a8m">
                                                     <rect key="frame" x="42" y="0.0" width="14" height="14"/>
-                                                    <animations/>
                                                 </imageView>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star_active.png" translatesAutoresizingMaskIntoConstraints="NO" id="orS-eV-aG0">
                                                     <rect key="frame" x="56" y="0.0" width="14" height="14"/>
-                                                    <animations/>
                                                 </imageView>
                                             </subviews>
-                                            <animations/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstItem="orS-eV-aG0" firstAttribute="top" secondItem="EsQ-ti-63Z" secondAttribute="top" id="34M-ZC-V4L"/>
@@ -283,7 +243,6 @@
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="xxm-kM-7SG">
                                                     <rect key="frame" x="0.0" y="0.0" width="14" height="14"/>
-                                                    <animations/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="14" id="E5a-9E-PKP"/>
                                                         <constraint firstAttribute="height" constant="14" id="ndR-Fk-ce7"/>
@@ -291,22 +250,17 @@
                                                 </imageView>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star_active.png" translatesAutoresizingMaskIntoConstraints="NO" id="E2N-Jx-1cm">
                                                     <rect key="frame" x="14" y="0.0" width="14" height="14"/>
-                                                    <animations/>
                                                 </imageView>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star_active.png" translatesAutoresizingMaskIntoConstraints="NO" id="wRK-JC-61c">
                                                     <rect key="frame" x="28" y="0.0" width="14" height="14"/>
-                                                    <animations/>
                                                 </imageView>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star_active.png" translatesAutoresizingMaskIntoConstraints="NO" id="lXh-5Q-d7H">
                                                     <rect key="frame" x="42" y="0.0" width="14" height="14"/>
-                                                    <animations/>
                                                 </imageView>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star_active.png" translatesAutoresizingMaskIntoConstraints="NO" id="d7g-Ap-m4U">
                                                     <rect key="frame" x="56" y="0.0" width="14" height="14"/>
-                                                    <animations/>
                                                 </imageView>
                                             </subviews>
-                                            <animations/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstItem="wRK-JC-61c" firstAttribute="top" secondItem="EcE-ms-Qud" secondAttribute="top" id="3EY-YC-lmz"/>
@@ -337,7 +291,6 @@
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="dnI-pT-1xC">
                                                     <rect key="frame" x="0.0" y="0.0" width="14" height="14"/>
-                                                    <animations/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="14" id="VCs-nn-6a9"/>
                                                         <constraint firstAttribute="width" constant="14" id="aUE-6D-myq"/>
@@ -345,22 +298,17 @@
                                                 </imageView>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="4W1-vP-UPh">
                                                     <rect key="frame" x="14" y="0.0" width="14" height="14"/>
-                                                    <animations/>
                                                 </imageView>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star_active.png" translatesAutoresizingMaskIntoConstraints="NO" id="jIH-9h-TdC">
                                                     <rect key="frame" x="28" y="0.0" width="14" height="14"/>
-                                                    <animations/>
                                                 </imageView>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star_active.png" translatesAutoresizingMaskIntoConstraints="NO" id="Wqm-7b-9XC">
                                                     <rect key="frame" x="42" y="0.0" width="14" height="14"/>
-                                                    <animations/>
                                                 </imageView>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star_active.png" translatesAutoresizingMaskIntoConstraints="NO" id="vMj-ES-DX9">
                                                     <rect key="frame" x="56" y="0.0" width="14" height="14"/>
-                                                    <animations/>
                                                 </imageView>
                                             </subviews>
-                                            <animations/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="70" id="4vA-rh-EDN"/>
@@ -391,7 +339,6 @@
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="bxb-h3-MEQ">
                                                     <rect key="frame" x="0.0" y="0.0" width="14" height="14"/>
-                                                    <animations/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="14" id="6vK-Yn-iEb"/>
                                                         <constraint firstAttribute="height" constant="14" id="l4l-YL-VvM"/>
@@ -399,22 +346,17 @@
                                                 </imageView>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="NAL-a4-gKl">
                                                     <rect key="frame" x="14" y="0.0" width="14" height="14"/>
-                                                    <animations/>
                                                 </imageView>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="Dnb-d8-7Tq">
                                                     <rect key="frame" x="28" y="0.0" width="14" height="14"/>
-                                                    <animations/>
                                                 </imageView>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star_active.png" translatesAutoresizingMaskIntoConstraints="NO" id="Ffe-1s-k7c">
                                                     <rect key="frame" x="42" y="0.0" width="14" height="14"/>
-                                                    <animations/>
                                                 </imageView>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star_active.png" translatesAutoresizingMaskIntoConstraints="NO" id="TrA-Wt-rNZ">
                                                     <rect key="frame" x="56" y="0.0" width="14" height="14"/>
-                                                    <animations/>
                                                 </imageView>
                                             </subviews>
-                                            <animations/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstItem="TrA-Wt-rNZ" firstAttribute="height" secondItem="Ffe-1s-k7c" secondAttribute="height" id="0UK-b1-iba"/>
@@ -445,7 +387,6 @@
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="ew9-IT-3Dx">
                                                     <rect key="frame" x="0.0" y="0.0" width="14" height="14"/>
-                                                    <animations/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="14" id="Vbd-I6-mT9"/>
                                                         <constraint firstAttribute="width" constant="14" id="fXK-Sb-0fl"/>
@@ -453,22 +394,17 @@
                                                 </imageView>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="cLO-OO-GwP">
                                                     <rect key="frame" x="14" y="0.0" width="14" height="14"/>
-                                                    <animations/>
                                                 </imageView>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="Yye-rf-JET">
                                                     <rect key="frame" x="28" y="0.0" width="14" height="14"/>
-                                                    <animations/>
                                                 </imageView>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star.png" translatesAutoresizingMaskIntoConstraints="NO" id="rKz-0O-cSM">
                                                     <rect key="frame" x="42" y="0.0" width="14" height="14"/>
-                                                    <animations/>
                                                 </imageView>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_star_active.png" translatesAutoresizingMaskIntoConstraints="NO" id="i98-y4-8GV">
                                                     <rect key="frame" x="56" y="0.0" width="14" height="14"/>
-                                                    <animations/>
                                                 </imageView>
                                             </subviews>
-                                            <animations/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstItem="cLO-OO-GwP" firstAttribute="top" secondItem="a0t-R7-yvC" secondAttribute="top" id="3YJ-8K-WT8"/>
@@ -496,7 +432,6 @@
                                         </view>
                                         <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="TGt-7G-mvk">
                                             <rect key="frame" x="86" y="161" width="166" height="2"/>
-                                            <animations/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="2" id="NAU-a3-7nR"/>
                                             </constraints>
@@ -504,7 +439,6 @@
                                         </progressView>
                                         <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="MQP-Hx-Vow">
                                             <rect key="frame" x="86" y="180" width="166" height="2"/>
-                                            <animations/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="2" id="HGE-RM-t1e"/>
                                             </constraints>
@@ -512,7 +446,6 @@
                                         </progressView>
                                         <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="4dO-T0-Sr6">
                                             <rect key="frame" x="86" y="199" width="166" height="2"/>
-                                            <animations/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="2" id="tjM-Z4-neW"/>
                                             </constraints>
@@ -520,7 +453,6 @@
                                         </progressView>
                                         <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="zfA-QI-kx5">
                                             <rect key="frame" x="86" y="218" width="166" height="2"/>
-                                            <animations/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="2" id="4by-FL-QMM"/>
                                             </constraints>
@@ -528,7 +460,6 @@
                                         </progressView>
                                         <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="GNQ-6K-F30">
                                             <rect key="frame" x="86" y="237" width="166" height="2"/>
-                                            <animations/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="2" id="UTf-EB-e48"/>
                                             </constraints>
@@ -536,7 +467,6 @@
                                         </progressView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(2)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3We-ek-UA6">
                                             <rect key="frame" x="260" y="151" width="33" height="21"/>
-                                            <animations/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="21" id="ON7-kP-J0m"/>
                                                 <constraint firstAttribute="width" constant="33" id="uNg-35-nRi"/>
@@ -547,7 +477,6 @@
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(2)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hp7-rG-6GO">
                                             <rect key="frame" x="260" y="170" width="33" height="21"/>
-                                            <animations/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="33" id="08H-oo-8QI"/>
                                                 <constraint firstAttribute="height" constant="21" id="rJl-Yp-dc9"/>
@@ -558,7 +487,6 @@
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(2)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FoK-IB-xdj">
                                             <rect key="frame" x="260" y="189" width="33" height="21"/>
-                                            <animations/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="21" id="gqe-82-onT"/>
                                                 <constraint firstAttribute="width" constant="33" id="k3p-SK-WWp"/>
@@ -569,7 +497,6 @@
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(2)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qht-HX-AJI">
                                             <rect key="frame" x="260" y="208" width="33" height="21"/>
-                                            <animations/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="21" id="f0u-AK-jQ8"/>
                                                 <constraint firstAttribute="width" constant="33" id="x7s-tg-dpR"/>
@@ -580,7 +507,6 @@
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(2)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FMG-ik-wBK">
                                             <rect key="frame" x="260" y="227" width="33" height="21"/>
-                                            <animations/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="21" id="PnR-6X-1Rv"/>
                                                 <constraint firstAttribute="width" constant="33" id="dnC-qI-F9z"/>
@@ -590,7 +516,6 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
-                                    <animations/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
                                         <constraint firstItem="FoK-IB-xdj" firstAttribute="leading" secondItem="4dO-T0-Sr6" secondAttribute="trailing" constant="8" id="0y3-Rt-rkA"/>
@@ -651,48 +576,42 @@
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Data Kepuasan Toko" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pei-j7-KnL">
                                             <rect key="frame" x="8" y="8" width="285" height="21"/>
-                                            <animations/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="21" id="y9u-fA-Ydj"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="17"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" red="0.43529411764705883" green="0.44313725490196076" blue="0.47450980392156861" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tingkat" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="krw-2t-ptt">
                                             <rect key="frame" x="0.0" y="35" width="75" height="21"/>
-                                            <animations/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="21" id="Bm4-o8-J6i"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="1 Bulan" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ghd-7a-Otb">
                                             <rect key="frame" x="75" y="35" width="76" height="21"/>
-                                            <animations/>
-                                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="6 Bulan" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q65-Kf-Ne4">
                                             <rect key="frame" x="151" y="35" width="75" height="21"/>
-                                            <animations/>
-                                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12 Bulan" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gYZ-bg-4W7">
                                             <rect key="frame" x="226" y="35" width="75" height="21"/>
-                                            <animations/>
-                                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ck9-28-tdH">
                                             <rect key="frame" x="0.0" y="58" width="301" height="1"/>
-                                            <animations/>
                                             <color key="backgroundColor" red="0.8784313725490196" green="0.8784313725490196" blue="0.8784313725490196" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="1" id="rFs-vS-uUD"/>
@@ -700,21 +619,19 @@
                                         </view>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lJI-O5-aJc">
                                             <rect key="frame" x="0.0" y="63" width="75" height="50"/>
-                                            <animations/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="50" id="y5T-sA-edk"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="10"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <inset key="titleEdgeInsets" minX="-25" minY="0.0" maxX="0.0" maxY="-28"/>
                                             <inset key="imageEdgeInsets" minX="12" minY="-12" maxX="0.0" maxY="0.0"/>
                                             <state key="normal" title="Positif" image="icon_smile.png">
-                                                <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                <color key="titleColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
                                         </button>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="43B-Eh-SPj">
                                             <rect key="frame" x="75" y="113" width="218" height="1"/>
-                                            <animations/>
                                             <color key="backgroundColor" red="0.8784313725490196" green="0.8784313725490196" blue="0.8784313725490196" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="1" id="7zf-Od-fD2"/>
@@ -722,42 +639,37 @@
                                         </view>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hL3-wz-1sx">
                                             <rect key="frame" x="75" y="74" width="76" height="21"/>
-                                            <animations/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="21" id="oVq-D5-FQB"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="17"/>
+                                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
                                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p2e-0S-037">
                                             <rect key="frame" x="151" y="74" width="75" height="21"/>
-                                            <animations/>
-                                            <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="17"/>
+                                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
                                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MT9-zf-YnG">
                                             <rect key="frame" x="226" y="74" width="75" height="21"/>
-                                            <animations/>
-                                            <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="17"/>
+                                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
                                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OKZ-7e-E5B">
                                             <rect key="frame" x="0.0" y="118" width="75" height="50"/>
-                                            <animations/>
-                                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="10"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <inset key="titleEdgeInsets" minX="-25" minY="0.0" maxX="0.0" maxY="-28"/>
                                             <inset key="imageEdgeInsets" minX="12" minY="-12" maxX="0.0" maxY="0.0"/>
                                             <state key="normal" title="Netral" image="icon_netral.png">
-                                                <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                <color key="titleColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
                                         </button>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VL4-XT-GWg">
                                             <rect key="frame" x="75" y="171" width="218" height="1"/>
-                                            <animations/>
                                             <color key="backgroundColor" red="0.8784313725490196" green="0.8784313725490196" blue="0.8784313725490196" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="1" id="aYX-0T-QGg"/>
@@ -765,59 +677,51 @@
                                         </view>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="asU-wt-S6X">
                                             <rect key="frame" x="75" y="132" width="76" height="21"/>
-                                            <animations/>
-                                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wz0-Fx-DWl">
                                             <rect key="frame" x="151" y="132" width="75" height="21"/>
-                                            <animations/>
-                                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C7T-Z8-LSb">
                                             <rect key="frame" x="226" y="132" width="75" height="21"/>
-                                            <animations/>
-                                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Jg-Qb-qaX">
                                             <rect key="frame" x="0.0" y="176" width="75" height="50"/>
-                                            <animations/>
-                                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="10"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <inset key="titleEdgeInsets" minX="-25" minY="0.0" maxX="0.0" maxY="-28"/>
                                             <inset key="imageEdgeInsets" minX="12" minY="-12" maxX="0.0" maxY="0.0"/>
                                             <state key="normal" title="Negatif" image="icon_sad.png">
-                                                <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                <color key="titleColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
                                         </button>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="54i-99-lVN">
                                             <rect key="frame" x="75" y="190" width="76" height="21"/>
-                                            <animations/>
-                                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jMr-gf-cVt">
                                             <rect key="frame" x="226" y="190" width="75" height="21"/>
-                                            <animations/>
-                                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gLh-MQ-ZeQ">
                                             <rect key="frame" x="151" y="190" width="75" height="21"/>
-                                            <animations/>
-                                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
-                                    <animations/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
                                         <constraint firstItem="C7T-Z8-LSb" firstAttribute="leading" secondItem="Wz0-Fx-DWl" secondAttribute="trailing" id="1IL-et-lOH"/>
@@ -903,11 +807,10 @@
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Data Transaksi" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ey0-hE-0dT">
                                             <rect key="frame" x="8" y="5" width="285" height="21"/>
-                                            <animations/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="21" id="KlR-EY-eDb"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="17"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
@@ -927,7 +830,6 @@
                                         </segmentedControl>
                                         <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wwl-Op-p94">
                                             <rect key="frame" x="0.0" y="44" width="301" height="1"/>
-                                            <animations/>
                                             <color key="backgroundColor" red="0.8784313725490196" green="0.8784313725490196" blue="0.8784313725490196" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="1" id="Ppq-Jq-YZR"/>
@@ -938,7 +840,6 @@
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_speed_fast.png" translatesAutoresizingMaskIntoConstraints="NO" id="OuE-1h-gyV">
                                                     <rect key="frame" x="20" y="37" width="50" height="50"/>
-                                                    <animations/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="50" id="03g-uM-LeI"/>
                                                         <constraint firstAttribute="width" constant="50" id="WJ5-K2-cqV"/>
@@ -946,7 +847,6 @@
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="30%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yfw-PN-wmB">
                                                     <rect key="frame" x="0.0" y="103" width="90" height="21"/>
-                                                    <animations/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="21" id="zao-7q-Uiq"/>
                                                     </constraints>
@@ -956,7 +856,6 @@
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Transaksi Cepat" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QAD-Uk-Wvd">
                                                     <rect key="frame" x="0.0" y="124" width="90" height="21"/>
-                                                    <animations/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="21" id="Qe0-V5-RhA"/>
                                                     </constraints>
@@ -965,7 +864,6 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
-                                            <animations/>
                                             <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
                                                 <constraint firstItem="QAD-Uk-Wvd" firstAttribute="top" secondItem="yfw-PN-wmB" secondAttribute="bottom" id="76M-SQ-Iaq"/>
@@ -984,7 +882,6 @@
                                         </view>
                                         <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XqF-PR-FvC">
                                             <rect key="frame" x="106" y="64" width="35" height="30"/>
-                                            <animations/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="30" id="7Tf-Tv-WeQ"/>
                                                 <constraint firstAttribute="width" constant="35" id="cQi-au-MSJ"/>
@@ -999,12 +896,10 @@
                                         </button>
                                         <progressView hidden="YES" opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="2P2-2l-PuI">
                                             <rect key="frame" x="144" y="78" width="119" height="2"/>
-                                            <animations/>
                                             <color key="progressTintColor" red="0.0" green="0.50196078431372548" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </progressView>
                                         <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(1K)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j9h-Ky-l8N">
                                             <rect key="frame" x="271" y="68" width="24" height="21"/>
-                                            <animations/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="24" id="g2x-qH-1Ok"/>
                                                 <constraint firstAttribute="height" constant="21" id="j79-Jz-cCI"/>
@@ -1015,7 +910,6 @@
                                         </label>
                                         <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cJA-dS-Jvp">
                                             <rect key="frame" x="106" y="115" width="35" height="30"/>
-                                            <animations/>
                                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="10"/>
                                             <inset key="titleEdgeInsets" minX="-40" minY="0.0" maxX="0.0" maxY="-20"/>
                                             <inset key="imageEdgeInsets" minX="0.0" minY="-3" maxX="0.0" maxY="0.0"/>
@@ -1026,12 +920,10 @@
                                         </button>
                                         <progressView hidden="YES" opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="eUh-nS-lEY">
                                             <rect key="frame" x="146" y="129" width="117" height="2"/>
-                                            <animations/>
                                             <color key="progressTintColor" red="1" green="0.75686274509803919" blue="0.027450980392156862" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </progressView>
                                         <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(1K)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oGH-Ky-O86">
                                             <rect key="frame" x="271" y="119" width="24" height="21"/>
-                                            <animations/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="24" id="J5j-sZ-Gew"/>
                                             </constraints>
@@ -1041,7 +933,6 @@
                                         </label>
                                         <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VHR-YL-JrF">
                                             <rect key="frame" x="106" y="166" width="35" height="30"/>
-                                            <animations/>
                                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="10"/>
                                             <inset key="titleEdgeInsets" minX="-40" minY="0.0" maxX="0.0" maxY="-20"/>
                                             <inset key="imageEdgeInsets" minX="0.0" minY="-3" maxX="0.0" maxY="0.0"/>
@@ -1052,12 +943,10 @@
                                         </button>
                                         <progressView hidden="YES" opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="oOq-7j-4rT">
                                             <rect key="frame" x="146" y="180" width="117" height="2"/>
-                                            <animations/>
                                             <color key="progressTintColor" red="0.95686274509803915" green="0.2627450980392157" blue="0.21176470588235294" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </progressView>
                                         <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(1K)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ewR-5y-L3I">
                                             <rect key="frame" x="271" y="170" width="24" height="21"/>
-                                            <animations/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="24" id="TYP-Il-bb0"/>
                                             </constraints>
@@ -1070,7 +959,6 @@
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hJW-Ny-Xf2" customClass="XYPieChart">
                                                     <rect key="frame" x="10" y="8" width="120" height="128"/>
-                                                    <animations/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="128" id="KG1-lY-b0h"/>
@@ -1079,28 +967,25 @@
                                                 </view>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Transaksi Sukses" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ydX-h4-NZT">
                                                     <rect key="frame" x="138" y="62" width="135" height="21"/>
-                                                    <animations/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="21" id="CUE-X8-y7p"/>
                                                         <constraint firstAttribute="width" constant="135" id="qgy-RR-fg5"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="15"/>
+                                                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Transaksi Sukses" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZPD-Kc-YGN">
                                                     <rect key="frame" x="138" y="79" width="135" height="21"/>
-                                                    <animations/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="21" id="3wR-qg-xbw"/>
                                                         <constraint firstAttribute="width" constant="135" id="njb-9u-0Na"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
-                                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                    <color key="textColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
-                                            <animations/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstItem="hJW-Ny-Xf2" firstAttribute="top" secondItem="i9T-PC-lwx" secondAttribute="top" constant="8" id="Ez8-ob-3kt"/>
@@ -1112,7 +997,6 @@
                                             </constraints>
                                         </view>
                                     </subviews>
-                                    <animations/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
                                         <constraint firstItem="ewR-5y-L3I" firstAttribute="top" secondItem="oGH-Ky-O86" secondAttribute="bottom" constant="30" id="08L-uB-68t"/>
@@ -1161,7 +1045,6 @@
                                     </constraints>
                                 </view>
                             </subviews>
-                            <animations/>
                             <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstItem="EPs-tX-no8" firstAttribute="leading" secondItem="UvD-NM-Mdf" secondAttribute="leading" constant="10" id="0rP-Ic-GwW"/>
@@ -1177,7 +1060,6 @@
                             </constraints>
                         </view>
                     </subviews>
-                    <animations/>
                     <constraints>
                         <constraint firstAttribute="bottom" secondItem="UvD-NM-Mdf" secondAttribute="bottom" id="63Z-dM-Uey"/>
                         <constraint firstAttribute="height" constant="568" id="BQz-Lt-yQ4"/>
@@ -1188,7 +1070,6 @@
                     </constraints>
                 </scrollView>
             </subviews>
-            <animations/>
             <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstItem="37t-Te-Zzb" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="BMW-aR-chf"/>
