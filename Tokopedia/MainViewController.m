@@ -390,6 +390,8 @@ typedef enum TagRequest {
 
 -(void)adjusttabbar
 {
+    UIFont *tabBarFont = [UIFont systemFontOfSize:9.0];
+    
     UITabBar *tabbar = _tabBarController.tabBar;
     
     UITabBarItem *tabBarItem1 = [tabbar.items objectAtIndex:0];
@@ -419,7 +421,7 @@ typedef enum TagRequest {
     
     NSDictionary *textAttributes = @{
                                     UITextAttributeTextColor:[UIColor blackColor],
-                                    UITextAttributeFont:[UIFont fontWithName:@"GothamBook" size:9.0]
+                                    UITextAttributeFont:tabBarFont
                                     };
     [tabBarItem1 setTitleTextAttributes:textAttributes forState:UIControlStateNormal];
     
@@ -441,7 +443,7 @@ typedef enum TagRequest {
     [tabBarItem2 setTitleTextAttributes:
      [NSDictionary dictionaryWithObjectsAndKeys:
       [UIColor blackColor], UITextAttributeTextColor,
-      [UIFont fontWithName:@"GothamBook" size:9.0], UITextAttributeFont,
+      tabBarFont, UITextAttributeFont,
       nil]
                                forState:UIControlStateNormal];
     
@@ -463,7 +465,7 @@ typedef enum TagRequest {
     [tabBarItem3 setTitleTextAttributes:
      [NSDictionary dictionaryWithObjectsAndKeys:
       [UIColor blackColor], UITextAttributeTextColor,
-      [UIFont fontWithName:@"GothamBook" size:9.0], UITextAttributeFont,
+      tabBarFont, UITextAttributeFont,
       nil]
                                forState:UIControlStateNormal];
     
@@ -485,7 +487,7 @@ typedef enum TagRequest {
     [tabBarItem4 setTitleTextAttributes:
      [NSDictionary dictionaryWithObjectsAndKeys:
       [UIColor blackColor], UITextAttributeTextColor,
-      [UIFont fontWithName:@"GothamBook" size:9.0], UITextAttributeFont,
+      tabBarFont, UITextAttributeFont,
       nil]
                                forState:UIControlStateNormal];
     
@@ -518,7 +520,7 @@ typedef enum TagRequest {
     [tabBarItem5 setTitleTextAttributes:
      [NSDictionary dictionaryWithObjectsAndKeys:
       [UIColor blackColor], UITextAttributeTextColor,
-      [UIFont fontWithName:@"GothamBook" size:9.0], UITextAttributeFont,
+      tabBarFont, UITextAttributeFont,
       nil]
                                forState:UIControlStateNormal];
     

@@ -49,17 +49,17 @@
     [super show];
     
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 6.0;
+    style.lineSpacing = 4.0;
     style.alignment = NSTextAlignmentCenter;
     
-    UIFont *font = [UIFont fontWithName:@"GothamBook" size:14];
+    UIFont *font = [UIFont largeTheme];
 
     NSDictionary *attributes = @{
                                  NSFontAttributeName: font,
                                  NSParagraphStyleAttributeName: style,
                                  };
     
-    NSString *firstParagraph = @"Toko dan produk anda akan lebih mudah ditemukan oleh pengunjung Tokopedia";
+    NSString *firstParagraph = @"Toko dan produk Anda akan lebih mudah ditemukan oleh pengunjung Tokopedia";
     NSString *secondParagraph = @"TopAds membantu Anda menjangkau calon pembeli yang sesuai, melalui pencarian produk dan penelusuran";
     NSString *thirdParagraph = @"Dengan TopAds, hasil yang Anda harapkan sesuai dengan biaya yang Anda keluarkan";
     
