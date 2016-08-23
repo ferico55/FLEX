@@ -10,7 +10,7 @@ import UIKit
 
 class ProductEditInfo: NSObject {
     var shop_has_terms: String = ""
-    var product_returnable: String = ""
+    var product_returnable: String = "0"
     
     static func mapping() -> RKObjectMapping {
         let mapping : RKObjectMapping = RKObjectMapping(forClass: self)

@@ -66,7 +66,7 @@
 @property (nonatomic, strong) NSString *product_cat_name;
 @property (nonatomic, strong) ProductReturnInfo *return_info;
 
-@property (nonatomic, strong) NSArray *errors;
+@property (nonatomic, strong) NSArray<Errors *> *errors;
 
 @property (nonatomic, strong) ProductModelView *viewModel;
 
