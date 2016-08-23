@@ -957,7 +957,8 @@ static NSString const *rows = @"12";
                             @"pmin" : q.pmin?:@"",
                             @"pmax" : q.pmax?:@"",
                             @"type" : q.type?:@"",
-                            @"default_sc": q.sc?:@""
+                            @"default_sc": q.sc?:@"",
+                            @"shop_id" : q.shop_id?:@""
                             };
     return query;
 }
@@ -1011,7 +1012,7 @@ static NSString const *rows = @"12";
     _start = [[_requestHotlistManager explodeURL:_urinext withKey:@"start"] integerValue];
     _page++;
     
-    if (![self isInitialRequest]) [self requestPromo];
+    if (![self isInitialRequest] && [_bannerResult.query.shop_id isEqualToString:@""]) [self requestPromo];
     
     [_collectionView reloadData];
     
@@ -1041,7 +1042,8 @@ static NSString const *rows = @"12";
                             @"terms" : _bannerResult.query.terms?:@"",
                             @"q" : _bannerResult.query.q?:@"",
                             @"type" : _bannerResult.query.type?:@"",
-                            @"default_sc": _bannerResult.query.sc?:@""
+                            @"default_sc": _bannerResult.query.sc?:@"",
+                            @"shop_id" : _bannerResult.query.shop_id?:@""
                             };
     
     [params addEntriesFromDictionary:param];
