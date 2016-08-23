@@ -28,11 +28,11 @@ import Foundation
     }
     
     func swipeView(swipeView: SwipeView!, viewForItemAtIndex index: Int, reusingView view: UIView!) -> UIView! {
-        let imageView = UIImageView(frame: CGRect(x: 5,y: 5,width: _imageWidth,height: _imageHeight))
+        let imageView = UIImageView(frame: CGRect(x: 5,y: 10,width: _imageWidth,height: _imageHeight))
         let good = _goods[0]
         
 //        imageView.setImageWithUrl(NSURL(string: good.image_url)!, placeHolderImage: nil)
-        imageView.setImage(UIImage(named: "icon_DM.png"), animated: true)
+        imageView.setImage(UIImage(named: "icon_DM_apps-" + String(index) + ".png"), animated: true)
         
         imageView.layer.cornerRadius = 5.0;
         imageView.layer.masksToBounds = true;

@@ -25,6 +25,7 @@ class PulsaView: UIView {
     
     let addressBook = APAddressBook()
     var saldoSwitch = UISwitch()
+    var saldoLabel: UILabel!
     var selectedOperator = PulsaOperator()
     var selectedCategory = PulsaCategory()
     var selectedProduct = PulsaProduct()
@@ -142,7 +143,7 @@ class PulsaView: UIView {
         
         
         //saldo label
-        let saldoLabel = UILabel(frame: CGRectZero)
+        saldoLabel = UILabel(frame: CGRectZero)
         saldoLabel.text = "Bayar instan"
         saldoLabel.numberOfLines = 2
         saldoLabel.textColor = UIColor.grayColor()
@@ -150,7 +151,8 @@ class PulsaView: UIView {
         saldoButtonPlaceholder.addSubview(saldoLabel)
         
         saldoLabel.mas_makeConstraints { make in
-            make.height.top().equalTo()(self.saldoButtonPlaceholder)
+            make.height.equalTo()(44)
+            make.top.equalTo()(self.saldoButtonPlaceholder)
             make.width.equalTo()(120)
             make.left.equalTo()(self.saldoSwitch.mas_right).offset()(5)
         }
@@ -168,7 +170,7 @@ class PulsaView: UIView {
         buyButton.mas_makeConstraints { make in
             make.height.equalTo()(0)
             make.top.equalTo()(self.saldoButtonPlaceholder.mas_top).offset()(10)
-            make.left.equalTo()(saldoLabel.mas_right).offset()(10)
+            make.left.equalTo()(self.saldoLabel.mas_right).offset()(10)
             make.right.equalTo()(self.saldoButtonPlaceholder.mas_right)
         }
 
@@ -383,9 +385,10 @@ class PulsaView: UIView {
         }
         
         saldoButtonPlaceholder.mas_updateConstraints { make in
-            make.height.equalTo()(self.selectedCategory.attributes.instant_checkout_available ? 54 : 0)
+            make.height.equalTo()(64)
         }
         self.saldoSwitch.hidden = self.selectedCategory.attributes.instant_checkout_available ? false : true
+        self.saldoLabel.hidden = self.selectedCategory.attributes.instant_checkout_available ? false : true
         
         UIView.animateWithDuration(1.0, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.5, options: .CurveEaseInOut, animations: {
             self.productButton.hidden = false

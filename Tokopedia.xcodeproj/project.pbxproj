@@ -2622,6 +2622,10 @@
 		7A1752281D6AD5F9002D035C /* vt-iOSlib-1.0.1.tar.gz in Resources */ = {isa = PBXBuildFile; fileRef = 7A1747F01D6AD5F8002D035C /* vt-iOSlib-1.0.1.tar.gz */; };
 		7A1752291D6AD5F9002D035C /* vt-iOSlib-1.0.1.zip in Resources */ = {isa = PBXBuildFile; fileRef = 7A1747F11D6AD5F8002D035C /* vt-iOSlib-1.0.1.zip */; };
 		7A17522A1D6AD5F9002D035C /* XYPieChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A1747F41D6AD5F8002D035C /* XYPieChart.m */; };
+		7A822F4C1D6C27760071C07F /* icon_DM_apps-0.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A822F481D6C27760071C07F /* icon_DM_apps-0.png */; };
+		7A822F4D1D6C27760071C07F /* icon_DM_apps-1.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A822F491D6C27760071C07F /* icon_DM_apps-1.png */; };
+		7A822F4E1D6C27760071C07F /* icon_DM_apps-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A822F4A1D6C27760071C07F /* icon_DM_apps-2.png */; };
+		7A822F4F1D6C27760071C07F /* icon_DM_apps-3.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A822F4B1D6C27760071C07F /* icon_DM_apps-3.png */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
 		7ACE9C541BB00956006C4BB7 /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */; };
@@ -6466,6 +6470,10 @@
 		7A1747F11D6AD5F8002D035C /* vt-iOSlib-1.0.1.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "vt-iOSlib-1.0.1.zip"; sourceTree = "<group>"; };
 		7A1747F31D6AD5F8002D035C /* XYPieChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XYPieChart.h; sourceTree = "<group>"; };
 		7A1747F41D6AD5F8002D035C /* XYPieChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYPieChart.m; sourceTree = "<group>"; };
+		7A822F481D6C27760071C07F /* icon_DM_apps-0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_DM_apps-0.png"; sourceTree = "<group>"; };
+		7A822F491D6C27760071C07F /* icon_DM_apps-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_DM_apps-1.png"; sourceTree = "<group>"; };
+		7A822F4A1D6C27760071C07F /* icon_DM_apps-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_DM_apps-2.png"; sourceTree = "<group>"; };
+		7A822F4B1D6C27760071C07F /* icon_DM_apps-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_DM_apps-3.png"; sourceTree = "<group>"; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FacebookSDKStrings.bundle; sourceTree = "<group>"; };
@@ -11874,6 +11882,10 @@
 		7A17447B1D6AD5F5002D035C /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				7A822F481D6C27760071C07F /* icon_DM_apps-0.png */,
+				7A822F491D6C27760071C07F /* icon_DM_apps-1.png */,
+				7A822F4A1D6C27760071C07F /* icon_DM_apps-2.png */,
+				7A822F4B1D6C27760071C07F /* icon_DM_apps-3.png */,
 				7A17447C1D6AD5F5002D035C /* activate_push_1.png */,
 				7A17447D1D6AD5F5002D035C /* activate_push_1@2x.png */,
 				7A17447E1D6AD5F5002D035C /* activate_push_1@3x.png */,
@@ -13304,6 +13316,7 @@
 				7A174EFA1D6AD5F9002D035C /* icon_12.png in Resources */,
 				7A174DE81D6AD5F8002D035C /* EditShopDescriptionViewCell.xib in Resources */,
 				7A1752141D6AD5F9002D035C /* icon_upload_image@2x.png in Resources */,
+				7A822F4C1D6C27760071C07F /* icon_DM_apps-0.png in Resources */,
 				7A1750CC1D6AD5F9002D035C /* icon_share_white@2x.png in Resources */,
 				7A174F261D6AD5F9002D035C /* default-girl.png in Resources */,
 				7A1752041D6AD5F9002D035C /* icon_close_white@2x.png in Resources */,
@@ -13340,6 +13353,7 @@
 				7A174BE21D6AD5F8002D035C /* GeneralProductReviewCell.xib in Resources */,
 				7A174F7C1D6AD5F9002D035C /* icon_0@3x.png in Resources */,
 				7A1751691D6AD5F9002D035C /* launch_image@3x.png in Resources */,
+				7A822F4D1D6C27760071C07F /* icon_DM_apps-1.png in Resources */,
 				7A174F491D6AD5F9002D035C /* icon_arrow_up_white.png in Resources */,
 				7A17513E1D6AD5F9002D035C /* icon_unread.png in Resources */,
 				7A1750201D6AD5F9002D035C /* icon_medal_bronze14.png in Resources */,
@@ -13386,6 +13400,7 @@
 				7A174F191D6AD5F9002D035C /* icon_7.png in Resources */,
 				7A174FFC1D6AD5F9002D035C /* icon_idrop_indomaret@3x.png in Resources */,
 				7A1750861D6AD5F9002D035C /* icon_phonebook@2x.png in Resources */,
+				7A822F4E1D6C27760071C07F /* icon_DM_apps-2.png in Resources */,
 				7A1751D51D6AD5F9002D035C /* ic_search.png in Resources */,
 				7A174F751D6AD5F9002D035C /* icon_cart.png in Resources */,
 				7A1751D11D6AD5F9002D035C /* ic_home.png in Resources */,
@@ -13817,6 +13832,7 @@
 				7A1752251D6AD5F9002D035C /* MGSwipeTableCell.podspec in Resources */,
 				7A174BEC1D6AD5F8002D035C /* ReportViewController.xib in Resources */,
 				7A1750BF1D6AD5F9002D035C /* icon_search (deleted 1f85ced2a89be38343ca7c6249b002c7).png in Resources */,
+				7A822F4F1D6C27760071C07F /* icon_DM_apps-3.png in Resources */,
 				7A1751C11D6AD5F9002D035C /* icon_category_active@3x.png in Resources */,
 				7A174C2C1D6AD5F8002D035C /* InboxResolutionCenterComplainViewController.xib in Resources */,
 				7A1751841D6AD5F9002D035C /* image-1@2x.png in Resources */,

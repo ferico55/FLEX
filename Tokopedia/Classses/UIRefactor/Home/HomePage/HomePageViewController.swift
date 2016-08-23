@@ -67,8 +67,9 @@ class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDele
         self.collectionView.registerNib(cellNib, forCellWithReuseIdentifier: "CategoryViewCellIdentifier")
 
         self.sliderPlaceholder = UIView(frame: CGRectZero)
+        self.sliderPlaceholder.backgroundColor = UIColor(red: 242/255.0, green: 242/255.0, blue: 242/255.0, alpha: 1.0)
         self.pulsaPlaceholder = UIView(frame: CGRectZero)
-        self.pulsaPlaceholder.backgroundColor = UIColor(red: (242/255.0), green: (242/255.0), blue: (242/255.0), alpha: 1)
+        self.pulsaPlaceholder.backgroundColor = UIColor.whiteColor()
         self.tickerPlaceholder = UIView(frame: CGRectZero)
         self.miniSliderPlaceholder = UIView(frame: CGRectZero)
         
@@ -141,7 +142,7 @@ class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDele
                 make.top.equalTo()(self?.sliderPlaceholder.mas_top)
                 make.left.equalTo()(self?.sliderPlaceholder.mas_left)
                 make.right.equalTo()(self?.sliderPlaceholder.mas_right)
-                make.bottom.equalTo()(self?.sliderPlaceholder.mas_bottom)
+                make.bottom.equalTo()(self?.sliderPlaceholder.mas_bottom).offset()(-10)
             }
             
             self?.pulsaPlaceholder.mas_makeConstraints { make in
