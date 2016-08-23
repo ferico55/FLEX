@@ -309,10 +309,13 @@ static failedCompletionBlock failedRequest;
 }
 
 +(void)fetchPossibleSolutionWithPossibleTroubleObject:(ResolutionCenterCreatePOSTRequest *)possibleTrouble success:(void (^)(id))success failure:(void (^)(NSError *))failure{
-    NSString *path = @"get_form_solution.pl";
+    UserAuthentificationManager *userAuth = [UserAuthentificationManager new];
+    
+    
+    NSString *path = @"/v4/inbox-resolution-center/get_form_solution.pl";
     RKRequestDescriptor *requestDescriptor = [RKRequestDescriptor requestDescriptorWithMapping:[[ResolutionCenterCreatePOSTRequest mapping] inverseMapping]
                                                                                    objectClass:[ResolutionCenterCreatePOSTRequest class]
-                                                                                   rootKeyPath:path
+                                                                                   rootKeyPath:@"solution_forms"
                                                                                         method:RKRequestMethodPOST];
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[ResolutionAction mapping]
                                                                                             method:RKRequestMethodPOST
@@ -320,18 +323,67 @@ static failedCompletionBlock failedRequest;
                                                                                            keyPath:nil
                                                                                        statusCodes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(200, 100)]];
     
-    RKObjectManager *objectManager = [RKObjectManager sharedManager];
+    RKObjectManager *objectManager = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:[NSString v4Url]]];
     [objectManager addRequestDescriptor:requestDescriptor];
     [objectManager addResponseDescriptor:responseDescriptor];
     [objectManager postObject:possibleTrouble
                          path:path
-                   parameters:@{}
+                   parameters:@{@"user_id":[userAuth getUserId]}
                       success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
                           success(operation);
                       }
                       failure:^(RKObjectRequestOperation *operation, NSError *error) {
                           failure(error);
                       }];
+    
+    
+    
+    //change to get
+    //change to: get_form_solution.pl?solution_forms=<insert_json_here>
+    
+    /*
+    RKRequestDescriptor *requestDescriptor = [RKRequestDescriptor requestDescriptorWithMapping:[[ResolutionCenterCreatePOSTRequest mapping] inverseMapping]
+                                                                                   objectClass:[ResolutionCenterCreatePOSTRequest class]
+                                                                                   rootKeyPath:nil
+                                                                                        method:RKRequestMethodGET];
+    
+    NSDictionary *paramForObject = [RKObjectParameterization parametersWithObject:possibleTrouble
+                                                                requestDescriptor:requestDescriptor
+                                                                            error:nil];
+    NSError* error;
+    NSData* jsonData = [NSJSONSerialization dataWithJSONObject:paramForObject
+                                                       options:0
+                                                         error:&error];
+    
+    if(jsonData){
+        NSString *jsonStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        
+        NSURL* gaga = [NSURL URLWithString:jsonStr];
+        
+        jsonStr = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(
+                                                                                        NULL,
+                                                                                        (CFStringRef)jsonStr,
+                                                                                        NULL,
+                                                                                        (CFStringRef)@"!*'();:@&=+$,/?%#[]",
+                                                                                        kCFStringEncodingUTF8 ));
+        
+        
+        UserAuthentificationManager *userAuth = [UserAuthentificationManager new];
+        TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+        networkManager.isUsingHmac = YES;
+        [networkManager requestWithBaseUrl:[NSString v4Url]
+                                      path:@"/v4/inbox-resolution-center/get_form_solution.pl"
+                                    method:RKRequestMethodGET
+                                 parameter:@{@"user_id":[userAuth getUserId],
+                                             @"solution_forms":jsonStr}
+                                   mapping:[ResolutionAction mapping]
+                                 onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                     
+                                 } onFailure:^(NSError *errorResult) {
+                                     
+                                 }];
+    }
+     */
 }
 
 +(void)createResolutionValidationWithOrderId:(NSString*)orderId

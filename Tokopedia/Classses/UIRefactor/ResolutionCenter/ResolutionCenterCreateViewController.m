@@ -105,10 +105,9 @@
     _stepOneViewController.product_is_received = _product_is_received;
     
     _stepTwoViewController.result = self.result;
-    /*
-    _stepThreeViewController.formData = self.formData;
-    _stepThreeViewController.selectedProduct = self.selectedProduct;
-     */
+    _stepTwoViewController.order = self.order;
+    
+    _stepThreeViewController.result = self.result;
 }
 
 - (void)didReceiveMemoryWarning {

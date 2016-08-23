@@ -9,6 +9,7 @@
 #import "ResolutionCenterCreateStepThreeViewController.h"
 #import "Tokopedia-Swift.h"
 #import "ResolutionCenterChooseSolutionViewController.h"
+#import "RequestResolutionAction.h"
 
 @interface ResolutionCenterCreateStepThreeViewController ()<UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate>
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
@@ -37,6 +38,16 @@
     for(UIButton *btn in _cancelButtons) {
         btn.hidden = YES;
     }
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [RequestResolutionAction fetchPossibleSolutionWithPossibleTroubleObject:_result.postObject
+                                                                    success:^(id data) {
+                                                                        
+                                                                    } failure:^(NSError *error) {
+                                                                        
+                                                                    }];
 }
 
 - (void)didReceiveMemoryWarning {

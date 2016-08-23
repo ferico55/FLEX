@@ -46,13 +46,14 @@ ResolutionCenterCreateStepTwoCellDelegate
 }
 
 -(void)copyProductToJSONObject{
+    _result.postObject.order_id = _order.order_detail.detail_order_id;
     [_result.postObject.product_list removeAllObjects];
     [_result.selectedProduct enumerateObjectsUsingBlock:^(ResolutionProductList * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         ResolutionCenterCreatePOSTProduct* postProduct = [ResolutionCenterCreatePOSTProduct new];
         postProduct.order_dtl_id = obj.order_dtl_id;
         postProduct.product_id = obj.product_id;
         postProduct.quantity = obj.quantity;
-        postProduct.trouble_id = nil;
+        postProduct.trouble_id = @"1";
         [_result.postObject.product_list addObject:postProduct];
     }];
     [_tableView reloadData];
@@ -87,17 +88,17 @@ ResolutionCenterCreateStepTwoCellDelegate
         cell.quantityStepper.tag = indexPath.row;
         cell.delegate = self;
         
-        if(!cell.troublePicker || ![cell.troublePicker isKindOfClass:[DownPicker class]]){
+        //if(!cell.troublePicker || ![cell.troublePicker isKindOfClass:[DownPicker class]]){
             _priceProblemTextField = [[DownPicker alloc] initWithTextField:cell.troublePicker];
-        }
+        //}
         [_priceProblemTextField setData:[self generateDownPickerChoices]];
         cell.troublePicker.tag = indexPath.row;
         [cell.troublePicker addTarget:self action:@selector(troublePickerValueChanged:) forControlEvents:UIControlEventValueChanged];
         return cell;
     }else{
-        if(!_priceProblemTextField || ![_priceProblemTextField isKindOfClass:[DownPicker class]]){
+        //if(!_priceProblemTextField || ![_priceProblemTextField isKindOfClass:[DownPicker class]]){
             _priceProblemTextField = [[DownPicker alloc] initWithTextField:_priceProblemTextField];
-        }
+        //}
         [_priceProblemTextField setData:[self generateDownPickerChoices]];
         [_priceProblemTextField addTarget:self action:@selector(priceProblemPickerValueChanged:) forControlEvents:UIControlEventValueChanged];
         return _priceProblemCell;
