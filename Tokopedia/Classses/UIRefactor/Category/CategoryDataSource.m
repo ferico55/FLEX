@@ -45,15 +45,9 @@
     CategoryViewCell *cell = (CategoryViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
     NSInteger index = indexPath.row;
     
-    NSString *title =_categoryNames[index];
-    
-    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:title];
-    NSMutableParagraphStyle *paragrahStyle = [[NSMutableParagraphStyle alloc] init];
-    [paragrahStyle setLineSpacing:6];
-    [paragrahStyle setAlignment:NSTextAlignmentCenter];
-    [attributedString addAttribute:NSParagraphStyleAttributeName value:paragrahStyle range:NSMakeRange(0, [title length])];
-    
-    cell.categoryLabel.attributedText = attributedString;
+    cell.categoryLabel.text = _categoryNames[index];
+    cell.categoryLabel.textAlignment = NSTextAlignmentCenter;
+    cell.categoryLabel.numberOfLines = 0;
     
     NSString *imageName = [NSString stringWithFormat:@"icon_%zd",index];
     cell.icon.image = [UIImage imageNamed:imageName];
