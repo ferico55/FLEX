@@ -102,7 +102,7 @@
         
         lblTitle = [[TopAlignedLabel alloc] initWithFrame:CGRectMake(10, 10, btnCancel.frame.origin.x-10, 4*btnCancel.bounds.size.height)];
         lblTitle.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleTopMargin;
-        lblTitle.font = [UIFont fontWithName:CFont_Gotham_book size:13.0f];
+        lblTitle.font = [UIFont largeTheme];
         lblTitle.backgroundColor = [UIColor clearColor];
         lblTitle.textColor = [UIColor whiteColor];
         lblTitle.numberOfLines = 0;
@@ -120,7 +120,7 @@
         UIView *contentDownload;
         if(self.canDownload) {
             btnDownload = [UIButton buttonWithType:UIButtonTypeCustom];
-            btnDownload.titleLabel.font = [UIFont fontWithName:CFont_Gotham_book size:13.0f];
+            btnDownload.titleLabel.font = [UIFont largeTheme];
             [btnDownload addTarget:self action:@selector(actionDownload:) forControlEvents:UIControlEventTouchUpInside];
             btnDownload.backgroundColor = [UIColor whiteColor];
             btnDownload.layer.cornerRadius = 5.0f;
