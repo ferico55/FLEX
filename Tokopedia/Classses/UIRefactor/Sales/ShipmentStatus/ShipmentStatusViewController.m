@@ -209,7 +209,7 @@
          order.order_deadline.deadline_finish_day_left) {
         cell.dateFinishLabel.hidden = NO;
         cell.dateFinishLabel.text = @"Selesai Otomatis";
-        cell.dateFinishLabel.font = [UIFont fontWithName:@"GothamBook" size:9];
+        cell.dateFinishLabel.font = [UIFont microTheme];
         cell.finishLabel.hidden = NO;
         cell.finishLabel.text = order.order_deadline.deadline_finish_date;        
     }

@@ -150,7 +150,7 @@
         cell.imageView.image = imgView.image;
     }
     
-    cell.textLabel.font = [UIFont smallTheme];
+    cell.textLabel.font = [UIFont title2Theme];
     cell.textLabel.text = _listMenu[indexPath.section][indexPath.row];
     
     return cell;

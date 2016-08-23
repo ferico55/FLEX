@@ -213,7 +213,7 @@
     style.lineSpacing = 4.0;
     NSDictionary *attributes = @{
         NSForegroundColorAttributeName: [UIColor blackColor],
-        NSFontAttributeName: [UIFont fontWithName:@"GothamBook" size:11],
+        NSFontAttributeName: [UIFont microTheme],
         NSParagraphStyleAttributeName: style,
     };
     NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:_alertLabel.text
@@ -311,10 +311,10 @@
     cell.dueDateLabel.text = [NSString stringWithFormat:@"Batas Respon : %@", order.order_payment.payment_process_due_date];
     
     // Reset button style
-    [cell.acceptButton.titleLabel setFont:[UIFont fontWithName:@"GothamBook" size:12]];
+    [cell.acceptButton.titleLabel setFont:[UIFont microTheme]];
     [cell.acceptButton setTitleColor:[UIColor blackColor] forState:UIControlStateSelected];
     
-    [cell.rejectButton.titleLabel setFont:[UIFont fontWithName:@"GothamBook" size:12]];
+    [cell.rejectButton.titleLabel setFont:[UIFont microTheme]];
     [cell.rejectButton setTitleColor:[UIColor blackColor] forState:UIControlStateSelected];
 
     return cell;
