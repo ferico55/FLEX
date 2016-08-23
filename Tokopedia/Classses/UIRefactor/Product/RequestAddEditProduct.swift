@@ -390,6 +390,7 @@ enum RequestError : ErrorType {
                 "product_etalase_id"    : product.product_etalase_id,
                 "product_etalase_name"  : product.product_etalase,
                 "product_condition"     : product.product_condition,
+                "product_returnable"    : product.product_returnable,
                 //"po_process_type -> value type 1 = day , 2 = week , 3 = month
                 //"po_process_value -> for processing value
             ]
@@ -492,6 +493,7 @@ enum RequestError : ErrorType {
             "product_etalase_id"    : product.product_etalase_id,
             "product_etalase_name"  : product.product_etalase,
             "product_condition"     : product.product_condition,
+            "product_returnable"    : product.product_returnable
             //"po_process_type -> value type 1 = day , 2 = week , 3 = month
             //"po_process_value -> for processing value
         ]
