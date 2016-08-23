@@ -64,6 +64,7 @@
     
     _successRateLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 90, 90)];
     [_successRateLabel setText:[NSString stringWithFormat:@"%@%%", _detailShopResult.shop_tx_stats.shop_tx_success_rate_1_month]];
+    [_successRateLabel setFont:[UIFont systemFontOfSize:25]];
     [_successRateLabel setTextAlignment:NSTextAlignmentCenter];
     [_successRateLabel setCenter:CGPointMake(_reputationChart.frame.size.width/2, _reputationChart.frame.size.height/2)];
     [_totalSuccessLabel setText:[NSString stringWithFormat:@"Dari %@ transaksi", _detailShopResult.shop_tx_stats.shop_tx_success_1_month_fmt]];
