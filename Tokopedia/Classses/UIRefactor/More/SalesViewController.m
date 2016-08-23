@@ -104,28 +104,6 @@
     _orderCountValueLabel.text = _notification.result.sales.sales_new_order?:@"0";
     _shipmentStatusValueLabel.text = _notification.result.sales.sales_shipping_status?:@"0";
     _shipmentConfirmationValueLabel.text = _notification.result.sales.sales_shipping_confirm?:@"0";
-    
-//    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-//    style.lineSpacing = 4.0;
-//    style.alignment = NSTextAlignmentCenter;
-//    
-//    NSDictionary *attributes = @{
-//                                 NSFontAttributeName            : [UIFont largeTheme],
-//                                 NSParagraphStyleAttributeName  : style,
-//                                 NSForegroundColorAttributeName : [UIColor colorWithRed:10.0/255.0 green:126.0/255.0 blue:7.0/255.0 alpha:1],
-//                                 };
-//    
-//    _orderLabel.attributedText = [[NSAttributedString alloc] initWithString:_orderLabel.text
-//                                                                 attributes:attributes];
-//    
-//    _shipmentConfirmationLabel.attributedText = [[NSAttributedString alloc] initWithString:_shipmentConfirmationLabel.text
-//                                                                                attributes:attributes];
-//    
-//    _shipmentStatusLabel.attributedText = [[NSAttributedString alloc] initWithString:_shipmentStatusLabel.text
-//                                                                          attributes:attributes];
-//    
-//    _transactionListLabel.attributedText = [[NSAttributedString alloc] initWithString:_transactionListLabel.text
-//                                                                           attributes:attributes];
 }
 
 #pragma mark - Notification Manager Delegate
