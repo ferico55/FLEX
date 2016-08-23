@@ -120,10 +120,6 @@
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
         </mutableArray>
         <mutableArray key="GothamLight.ttf">
             <string>GothamLight</string>
@@ -131,9 +127,6 @@
             <string>GothamLight</string>
         </mutableArray>
         <mutableArray key="GothamMedium.ttf">
-            <string>GothamMedium</string>
-            <string>GothamMedium</string>
-            <string>GothamMedium</string>
             <string>GothamMedium</string>
             <string>GothamMedium</string>
             <string>GothamMedium</string>
@@ -6676,22 +6669,24 @@
                                             <constraint firstAttribute="height" constant="26" id="5Pl-ij-1s1"/>
                                             <constraint firstAttribute="width" constant="145" id="ahO-cl-5pH"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="28"/>
+                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="28"/>
                                         <color key="textColor" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pesanan Baru" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JnU-SW-TiF">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JnU-SW-TiF">
                                         <rect key="frame" x="25" y="74" width="94" height="32"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="94" id="HGg-An-s5u"/>
-                                            <constraint firstAttribute="height" constant="32" id="WaB-M1-x61"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                                        <string key="text">Pesanan
+Baru</string>
+                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                         <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N6L-aQ-p51">
                                         <rect key="frame" x="0.0" y="0.0" width="145" height="145"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                         <state key="normal">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -6719,37 +6714,23 @@
                                             <constraint firstAttribute="width" constant="145" id="JSE-g1-qa5"/>
                                             <constraint firstAttribute="height" constant="26" id="omg-bE-u9s"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="28"/>
+                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="28"/>
                                         <color key="textColor" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Konfirmasi Pengiriman" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EJm-9e-eci">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EJm-9e-eci">
                                         <rect key="frame" x="6" y="74" width="132" height="32"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="32" id="OX9-xN-CKA"/>
                                             <constraint firstAttribute="width" constant="132" id="enT-ox-2zw"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                                        <string key="text">Konfirmasi
+Pengiriman</string>
+                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                         <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hpi-Vd-AKj">
-                                        <rect key="frame" x="0.0" y="0.0" width="145" height="145"/>
-                                        <state key="normal">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="shipmentConfirmationDidTap:" destination="S6g-13-WGh" eventType="touchUpInside" id="Hjt-nK-fMM"/>
-                                        </connections>
-                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="hpi-Vd-AKj" secondAttribute="bottom" id="6jo-u9-UdW"/>
-                                    <constraint firstItem="hpi-Vd-AKj" firstAttribute="leading" secondItem="mwS-qg-Bv6" secondAttribute="leading" id="XfF-Og-HQG"/>
-                                    <constraint firstAttribute="trailing" secondItem="hpi-Vd-AKj" secondAttribute="trailing" id="g3X-9V-ok1"/>
-                                    <constraint firstItem="hpi-Vd-AKj" firstAttribute="top" secondItem="mwS-qg-Bv6" secondAttribute="top" id="gvq-4b-8aA"/>
-                                </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fOz-ZA-kSg">
                                 <rect key="frame" x="10" y="165" width="145" height="145"/>
@@ -6760,17 +6741,18 @@
                                             <constraint firstAttribute="height" constant="26" id="UZF-DD-vdt"/>
                                             <constraint firstAttribute="width" constant="145" id="jw9-P3-2jW"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="28"/>
+                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="28"/>
                                         <color key="textColor" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Status Pengiriman" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ScJ-1H-D5A">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ScJ-1H-D5A">
                                         <rect key="frame" x="16" y="74" width="113" height="32"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="113" id="HBQ-EC-FR3"/>
-                                            <constraint firstAttribute="height" constant="32" id="rnf-Ih-Rht"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                                        <string key="text">Status
+Pengiriman</string>
+                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                         <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -6795,13 +6777,14 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mat-4F-cw9">
                                 <rect key="frame" x="165" y="165" width="145" height="145"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Daftar Transaksi" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4fy-SD-3Jj">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4fy-SD-3Jj">
                                         <rect key="frame" x="25" y="57" width="95" height="32"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="32" id="HnM-ix-rxW"/>
                                             <constraint firstAttribute="width" constant="95" id="OR4-6l-dFw"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                                        <string key="text">Daftar
+Transaksi</string>
+                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                         <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -6823,6 +6806,15 @@
                                     <constraint firstAttribute="bottom" secondItem="HbF-1r-sxh" secondAttribute="bottom" id="zIM-yQ-vRa"/>
                                 </constraints>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hpi-Vd-AKj">
+                                <rect key="frame" x="165" y="10" width="145" height="145"/>
+                                <state key="normal">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="shipmentConfirmationDidTap:" destination="S6g-13-WGh" eventType="touchUpInside" id="Hjt-nK-fMM"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
