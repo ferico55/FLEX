@@ -47,7 +47,7 @@
             button = [[UIButton alloc] initWithFrame:CGRectMake(([[UIScreen mainScreen]bounds].size.width/2)*multiplier - ([[UIScreen mainScreen]bounds].size.width/4) , 0, ([[UIScreen mainScreen]bounds].size.width/2), 44)];
         }
 
-        button.titleLabel.font = [UIFont fontWithName:@"GothamMedium" size:14];
+        button.titleLabel.font = [UIFont title2ThemeMedium];
         button.tag = buttonTag;
         [button setTitle:buttonTitle forState:UIControlStateNormal];
         [button addTarget:self action:@selector(tapButton:) forControlEvents:UIControlEventTouchUpInside];
