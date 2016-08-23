@@ -739,8 +739,12 @@
             case 1://Selesai
             {
                 TxOrderStatusList *order = [_dataInput objectForKey:DATA_ORDER_DELIVERY_CONFIRMATION];
-                NSIndexPath *indexPath = [_dataInput objectForKey:DATA_INDEXPATH_DELIVERY_CONFIRM];
-                [self confirmDelivery:order atIndexPath:(NSIndexPath*)indexPath];
+                if ([self isOrderFreeReturn:order]) {
+                    // do nothing if free return
+                } else {
+                    NSIndexPath *indexPath = [_dataInput objectForKey:DATA_INDEXPATH_DELIVERY_CONFIRM];
+                    [self confirmDelivery:order atIndexPath:(NSIndexPath*)indexPath];
+                }
             }
                 break;
             case 2://Complain
@@ -967,8 +971,15 @@
 -(void)showAlertDeliver:(TxOrderStatusList*)order
 {
     [_dataInput setObject:order forKey:DATA_ORDER_COMPLAIN_KEY];
+    NSString *alertMessage;
+    if ([self isOrderFreeReturn:order]) {
+        alertMessage = ALERT_DELIVERY_CONFIRM_DESCRIPTION_FREE_RETURN;
+    } else {
+        alertMessage = ALERT_DELIVERY_CONFIRM_DESCRIPTION;
+    }
+    
     UIAlertView *alertConfirmation = [[UIAlertView alloc]initWithTitle:[NSString stringWithFormat:ALERT_DELIVERY_CONFIRM_FORMAT,order.order_shop.shop_name]
-                                                               message:ALERT_DELIVERY_CONFIRM_DESCRIPTION
+                                                               message:alertMessage
                                                               delegate:self
                                                      cancelButtonTitle:@"Batal"
                                                      otherButtonTitles:@"Selesai",@"Komplain", nil];
@@ -1011,6 +1022,16 @@
     BOOL isUsingDateFilter = (filterStartDate != nil && ![filterStartDate isEqualToString:@""]) || (filterEndDate != nil && ![filterEndDate isEqualToString:@""]);
     
     return (isUsingInvoiceFilter || isUsingTransactionStatusFilter || isUsingDateFilter);
+}
+
+- (BOOL) isOrderFreeReturn: (TxOrderStatusList*) order {
+    if (order.order_detail.detail_free_return == 0) {
+        return NO;
+    } else if (order.order_detail.detail_free_return == 1) {
+        return YES;
+    }
+    
+    return YES;
 }
 
 @end

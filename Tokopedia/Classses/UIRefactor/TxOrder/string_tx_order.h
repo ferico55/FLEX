@@ -369,6 +369,8 @@ typedef enum
 #define ALERT_DELIVERY_CONFIRM_FORMAT @"Sudah Diterima\nApakah Anda yakin pesanan dari toko %@ sudah diterima?"
 #define ALERT_DELIVERY_CONFIRM_DESCRIPTION @"Klik Selesai untuk menyelesaikan transaksi dan meneruskan dana ke penjual.\nKlik Komplain jika pesanan yang diterima berkendala (kurang/rusak/ lain-lain)."
 
+#define ALERT_DELIVERY_CONFIRM_DESCRIPTION_FREE_RETURN @"Transaksi ini difasilitasi fitur Free Returns dan akan otomatis selesai dalam waktu 3 hari. Dalam jangka waktu tersebut, Anda bisa menyampaikan komplain lewat Pusat Resolusi untuk mengajukan retur produk."
+
 #define ALERT_REORDER_TITLE @"Pemesanan Ulang"
 #define ALERT_REORDER_DESCRIPTION @"Apakah Anda ingin melakukan pemesanan ulang terhadap produk ini ?"
 
