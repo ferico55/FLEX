@@ -972,17 +972,24 @@
 {
     [_dataInput setObject:order forKey:DATA_ORDER_COMPLAIN_KEY];
     NSString *alertMessage;
+    NSString *alertTitle = [NSString stringWithFormat:ALERT_DELIVERY_CONFIRM_FORMAT,order.order_shop.shop_name];
+    NSString *batalString = @"Batal";
+    NSString *selesaiString = @"Selesai";
+    
     if ([self isOrderFreeReturn:order]) {
         alertMessage = ALERT_DELIVERY_CONFIRM_DESCRIPTION_FREE_RETURN;
+        alertTitle = ALERT_DELIVERY_CONFIRM_FORMAT_FREE_RETURN;
+        batalString = nil;
+        selesaiString = @"OK";
     } else {
         alertMessage = ALERT_DELIVERY_CONFIRM_DESCRIPTION;
     }
     
-    UIAlertView *alertConfirmation = [[UIAlertView alloc]initWithTitle:[NSString stringWithFormat:ALERT_DELIVERY_CONFIRM_FORMAT,order.order_shop.shop_name]
+    UIAlertView *alertConfirmation = [[UIAlertView alloc]initWithTitle:alertTitle
                                                                message:alertMessage
                                                               delegate:self
-                                                     cancelButtonTitle:@"Batal"
-                                                     otherButtonTitles:@"Selesai",@"Komplain", nil];
+                                                     cancelButtonTitle:batalString
+                                                     otherButtonTitles:selesaiString,@"Komplain", nil];
     alertConfirmation.tag = TAG_ALERT_DELIVERY_CONFIRMATION;
     [alertConfirmation show];
 }

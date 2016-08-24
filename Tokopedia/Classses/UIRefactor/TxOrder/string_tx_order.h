@@ -367,6 +367,8 @@ typedef enum
 #define COLOR_STATUS_EXPIRED [UIColor colorWithRed:158.f/255.f green:158.f/255.f blue:158.f/255.f alpha:1]
 
 #define ALERT_DELIVERY_CONFIRM_FORMAT @"Sudah Diterima\nApakah Anda yakin pesanan dari toko %@ sudah diterima?"
+#define ALERT_DELIVERY_CONFIRM_FORMAT_FREE_RETURN @"Sudah Diterima"
+
 #define ALERT_DELIVERY_CONFIRM_DESCRIPTION @"Klik Selesai untuk menyelesaikan transaksi dan meneruskan dana ke penjual.\nKlik Komplain jika pesanan yang diterima berkendala (kurang/rusak/ lain-lain)."
 
 #define ALERT_DELIVERY_CONFIRM_DESCRIPTION_FREE_RETURN @"Transaksi ini difasilitasi fitur Free Returns dan akan otomatis selesai dalam waktu 3 hari. Dalam jangka waktu tersebut, Anda bisa menyampaikan komplain lewat Pusat Resolusi untuk mengajukan retur produk."
