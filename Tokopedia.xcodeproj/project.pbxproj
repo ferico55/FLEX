@@ -1610,8 +1610,6 @@
 		45908DEF1D66F1A300B75597 /* TransactionCartRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4590836F1D66F19F00B75597 /* TransactionCartRootViewController.m */; };
 		45908DF01D66F1A300B75597 /* TransactionCartRootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 459083701D66F19F00B75597 /* TransactionCartRootViewController.xib */; };
 		45908DF11D66F1A300B75597 /* RequestRates.m in Sources */ = {isa = PBXBuildFile; fileRef = 459083721D66F19F00B75597 /* RequestRates.m */; };
-		45908DF21D66F1A300B75597 /* TransactionShipmentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 459083751D66F19F00B75597 /* TransactionShipmentViewController.m */; };
-		45908DF31D66F1A300B75597 /* TransactionShipmentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 459083761D66F19F00B75597 /* TransactionShipmentViewController.xib */; };
 		45908DF41D66F1A300B75597 /* TransactionObjectManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 459083791D66F19F00B75597 /* TransactionObjectManager.m */; };
 		45908DF51D66F1A300B75597 /* TransactionObjectMapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 4590837B1D66F19F00B75597 /* TransactionObjectMapping.m */; };
 		45908DF61D66F1A300B75597 /* MappingLDExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 4590837E1D66F19F00B75597 /* MappingLDExtension.m */; };
@@ -5322,9 +5320,6 @@
 		459083701D66F19F00B75597 /* TransactionCartRootViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransactionCartRootViewController.xib; sourceTree = "<group>"; };
 		459083711D66F19F00B75597 /* RequestRates.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestRates.h; sourceTree = "<group>"; };
 		459083721D66F19F00B75597 /* RequestRates.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestRates.m; sourceTree = "<group>"; };
-		459083741D66F19F00B75597 /* TransactionShipmentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionShipmentViewController.h; sourceTree = "<group>"; };
-		459083751D66F19F00B75597 /* TransactionShipmentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionShipmentViewController.m; sourceTree = "<group>"; };
-		459083761D66F19F00B75597 /* TransactionShipmentViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransactionShipmentViewController.xib; sourceTree = "<group>"; };
 		459083771D66F19F00B75597 /* string_transaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_transaction.h; sourceTree = "<group>"; };
 		459083781D66F19F00B75597 /* TransactionObjectManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionObjectManager.h; sourceTree = "<group>"; };
 		459083791D66F19F00B75597 /* TransactionObjectManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionObjectManager.m; sourceTree = "<group>"; };
@@ -11363,9 +11358,6 @@
 		459083731D66F19F00B75597 /* Shipment */ = {
 			isa = PBXGroup;
 			children = (
-				459083741D66F19F00B75597 /* TransactionShipmentViewController.h */,
-				459083751D66F19F00B75597 /* TransactionShipmentViewController.m */,
-				459083761D66F19F00B75597 /* TransactionShipmentViewController.xib */,
 			);
 			path = Shipment;
 			sourceTree = "<group>";
@@ -13675,7 +13667,6 @@
 				45908F781D66F1A300B75597 /* icon_grid_satu.png in Resources */,
 				45908F721D66F1A300B75597 /* icon_google_new@2x.png in Resources */,
 				45908EB41D66F1A300B75597 /* icon-back.png in Resources */,
-				45908DF31D66F1A300B75597 /* TransactionShipmentViewController.xib in Resources */,
 				459091271D66F1A300B75597 /* slide2_phone.png in Resources */,
 				45908EAB1D66F1A300B75597 /* expand_arrow@2x.png in Resources */,
 				45908F2C1D66F1A300B75597 /* icon_checklist_grey@2x.png in Resources */,
@@ -15132,7 +15123,6 @@
 				45908A551D66F1A200B75597 /* Sink.swift in Sources */,
 				45908CE51D66F1A200B75597 /* RejectReasonProductDescriptionViewController.m in Sources */,
 				459089111D66F1A200B75597 /* ResponseSpeed.m in Sources */,
-				45908DF21D66F1A300B75597 /* TransactionShipmentViewController.m in Sources */,
 				459088DC1D66F1A200B75597 /* ProductFeedList.m in Sources */,
 				45908A1C1D66F1A200B75597 /* NAryDisposable.swift in Sources */,
 				459088B81D66F1A200B75597 /* ManageProductResult.m in Sources */,
