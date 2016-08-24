@@ -48,7 +48,6 @@ typedef enum TagRequest {
     UITableViewDataSource,
     UITableViewDelegate,
     ProductQuantityDelegate,
-    ChooseProductDelegate,
     SubmitShipmentConfirmationDelegate,
     CancelShipmentConfirmationDelegate,
     TokopediaNetworkManagerDelegate,
