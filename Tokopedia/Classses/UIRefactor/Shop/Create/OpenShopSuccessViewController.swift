@@ -53,17 +53,17 @@ import UIKit
         
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .Center
-        paragraphStyle.lineSpacing = 7
+        paragraphStyle.lineSpacing = 5
         let firstSentence = "Selamat!\nAnda telah berhasil membuka toko\n\(shopName)\n"
-        let secondSentence = "Sekarang anda sudah siap untuk mulai\nberjualan di Tokopedia"
+        let secondSentence = "Sekarang Anda sudah siap untuk mulai\nberjualan di Tokopedia"
         let attributedString = NSMutableAttributedString.init(string: firstSentence + secondSentence)
-        attributedString.addAttributes([NSFontAttributeName: UIFont.init(name: "GothamMedium", size: 16)!], range: NSMakeRange(0, firstSentence.characters.count))
+        attributedString.addAttributes([NSFontAttributeName: UIFont.title1ThemeMedium()!], range: NSMakeRange(0, firstSentence.characters.count))
         attributedString.addAttributes([NSParagraphStyleAttributeName: paragraphStyle], range: NSMakeRange(0, firstSentence.characters.count + secondSentence.characters.count))
-        attributedString.addAttributes([NSFontAttributeName: UIFont.init(name: "GothamBook", size: 14)!], range: NSMakeRange(firstSentence.characters.count, secondSentence.characters.count))
+        attributedString.addAttributes([NSFontAttributeName: UIFont.largeTheme()!], range: NSMakeRange(firstSentence.characters.count, secondSentence.characters.count))
         headerLabel.attributedText = attributedString
         headerLabel.numberOfLines = 7
         
-        addProductButton.layer.cornerRadius = 3
+        addProductButton.layer.cornerRadius = 5
         
         tableView.tableHeaderView = headerView
         tableView.tableFooterView = footerView
@@ -93,14 +93,14 @@ import UIKit
         
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = 5
-        let attributes = [NSFontAttributeName: UIFont.init(name: "GothamBook", size: 14)!, NSParagraphStyleAttributeName: paragraphStyle]
+        let attributes = [NSFontAttributeName: UIFont.largeTheme()!, NSParagraphStyleAttributeName: paragraphStyle]
         
         if (indexPath.section == 0) {
             let text = shopUrl as String
             cell.textLabel?.attributedText = NSAttributedString.init(string: text, attributes: attributes)
             cell.textLabel?.textColor = UIColor.init(red: 0.0, green: 122.0/255.0, blue: 1, alpha: 1)
         } else if (indexPath.section == 1) {
-            let text = "Secara otomatis toko anda saat ini sudah dapat diakses oleh pengunjung Tokopedia.\n\nUntuk pengaturan gunakan halaman pengaturan toko, dan jangan lewatkan kesempatan untuk melakukan transaksi pertama anda."
+            let text = "Secara otomatis toko Anda saat ini sudah dapat diakses oleh pengunjung Tokopedia.\n\nUntuk pengaturan, gunakan halaman pengaturan toko, dan jangan lewatkan kesempatan untuk melakukan transaksi pertama Anda."
             cell.textLabel?.attributedText = NSAttributedString.init(string: text, attributes: attributes)
         }
 
