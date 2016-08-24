@@ -20,7 +20,7 @@
     }
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.textLabel.text = @"Detail Pengiriman";
-    cell.textLabel.font = FONT_DEFAULT_CELL_TKPD;
+    cell.textLabel.font = [UIFont title2Theme];
     UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width,1)];
     lineView.backgroundColor = [UIColor colorWithRed:(230.0/255.0f) green:(233/255.0f) blue:(237.0/255.0f) alpha:1.0f];
     [cell.contentView addSubview:lineView];
@@ -39,9 +39,9 @@
 
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.textLabel.text = @"Stock Tersedia Sebagian";
-    cell.textLabel.font = FONT_DEFAULT_CELL_TKPD;
+    cell.textLabel.font = [UIFont title2Theme];
     cell.detailTextLabel.text = [ARRAY_IF_STOCK_AVAILABLE_PARTIALLY[[isPartial integerValue]]objectForKey:DATA_NAME_KEY];
-    cell.detailTextLabel.font = FONT_DETAIL_DEFAULT_CELL_TKPD;
+    cell.detailTextLabel.font = [UIFont title2Theme];
     cell.detailTextLabel.textColor = [UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0];
     cell.clipsToBounds = YES;
     return cell;
