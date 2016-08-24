@@ -18,8 +18,8 @@
                       @"order_shipping_price",
                       @"order_open_amount",
                       @"order_invoice_ref_num",
-                      @"order_is_free_return",
-                      @"order_is_free_return_text"];
+                      @"order_free_return",
+                      @"order_free_return_msg"];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }
 

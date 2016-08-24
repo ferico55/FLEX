@@ -253,9 +253,9 @@
     //Set reputation score
     cell.btnReputation.tag = indexPath.row;
     
-    if ([resolution.resolution_order.order_is_free_return  isEqual: @"0"]) {
+    if ([resolution.resolution_order.order_free_return  isEqual: @"0"]) {
         [self setFreeReturnImageViewAndLabelToHide:YES withCell:cell];
-    } else if ([resolution.resolution_order.order_is_free_return  isEqual: @"1"]){
+    } else if ([resolution.resolution_order.order_free_return  isEqual: @"1"]){
         [self setFreeReturnImageViewAndLabelToHide:NO withCell:cell];
     }
     
