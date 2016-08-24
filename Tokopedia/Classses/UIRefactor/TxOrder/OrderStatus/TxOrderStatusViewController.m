@@ -733,30 +733,31 @@
 #pragma mark - Alert View Delegate
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if(alertView.tag == TAG_ALERT_DELIVERY_CONFIRMATION)
-    {
-        switch (buttonIndex) {
-            case 1://Selesai
-            {
-                TxOrderStatusList *order = [_dataInput objectForKey:DATA_ORDER_DELIVERY_CONFIRMATION];
-                if ([self isOrderFreeReturn:order]) {
-                    // do nothing if free return
-                } else {
-                    NSIndexPath *indexPath = [_dataInput objectForKey:DATA_INDEXPATH_DELIVERY_CONFIRM];
-                    [self confirmDelivery:order atIndexPath:(NSIndexPath*)indexPath];
-                }
-            }
-                break;
-            case 2://Complain
-            {
-                [self showAlertViewOpenComplain];
-            }
-                break;
-            default:
-                break;
-        }
-    }
-    else if (alertView.tag == TAG_ALERT_SUCCESS_DELIVERY_CONFIRM)
+//    if(alertView.tag == TAG_ALERT_DELIVERY_CONFIRMATION)
+//    {
+//        switch (buttonIndex) {
+//            case 1://Selesai
+//            {
+//                TxOrderStatusList *order = [_dataInput objectForKey:DATA_ORDER_DELIVERY_CONFIRMATION];
+//                if ([self isOrderFreeReturn:order]) {
+//                    // do nothing if free return
+//                } else {
+//                    NSIndexPath *indexPath = [_dataInput objectForKey:DATA_INDEXPATH_DELIVERY_CONFIRM];
+//                    [self confirmDelivery:order atIndexPath:(NSIndexPath*)indexPath];
+//                }
+//            }
+//                break;
+//            case 2://Complain
+//            {
+//                [self showAlertViewOpenComplain];
+//            }
+//                break;
+//            default:
+//                break;
+//        }
+//    }
+//    else
+    if (alertView.tag == TAG_ALERT_SUCCESS_DELIVERY_CONFIRM)
     {
         [_navigate navigateToInboxReviewFromViewController:self withGetDataFromMasterDB:YES];
         if(_isNeedPopUpLD)[_navigate popUpLuckyDeal:_worlds];
@@ -971,27 +972,38 @@
 -(void)showAlertDeliver:(TxOrderStatusList*)order
 {
     [_dataInput setObject:order forKey:DATA_ORDER_COMPLAIN_KEY];
-    NSString *alertMessage;
+    NSString *alertMessage = ALERT_DELIVERY_CONFIRM_DESCRIPTION;
     NSString *alertTitle = [NSString stringWithFormat:ALERT_DELIVERY_CONFIRM_FORMAT,order.order_shop.shop_name];
-    NSString *batalString = @"Batal";
     NSString *selesaiString = @"Selesai";
-    
+    void (^OKActionHandler)(UIAlertAction * _Nonnull action) = ^void(UIAlertAction * _Nonnull action) {
+        NSIndexPath *indexPath = [_dataInput objectForKey:DATA_INDEXPATH_DELIVERY_CONFIRM];
+        [self confirmDelivery:order atIndexPath:(NSIndexPath*)indexPath];
+    };
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:alertTitle message:alertMessage preferredStyle:UIAlertControllerStyleAlert];
+
     if ([self isOrderFreeReturn:order]) {
         alertMessage = ALERT_DELIVERY_CONFIRM_DESCRIPTION_FREE_RETURN;
         alertTitle = ALERT_DELIVERY_CONFIRM_FORMAT_FREE_RETURN;
-        batalString = nil;
+        [alertController setTitle: alertTitle];
+        [alertController setMessage:alertMessage];
         selesaiString = @"OK";
+        OKActionHandler = ^void(UIAlertAction * _Nonnull action) {
+            // do nothing
+        };
     } else {
-        alertMessage = ALERT_DELIVERY_CONFIRM_DESCRIPTION;
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Batal" style:UIAlertActionStyleCancel handler:nil];
+        [alertController addAction:cancelAction];
     }
     
-    UIAlertView *alertConfirmation = [[UIAlertView alloc]initWithTitle:alertTitle
-                                                               message:alertMessage
-                                                              delegate:self
-                                                     cancelButtonTitle:batalString
-                                                     otherButtonTitles:selesaiString,@"Komplain", nil];
-    alertConfirmation.tag = TAG_ALERT_DELIVERY_CONFIRMATION;
-    [alertConfirmation show];
+    UIAlertAction *OKAction = [UIAlertAction actionWithTitle:selesaiString style:UIAlertActionStyleDefault handler:OKActionHandler];
+    UIAlertAction *complainAction = [UIAlertAction actionWithTitle:@"Komplain" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self showAlertViewOpenComplain];
+    }];
+    
+    [alertController addAction:OKAction];
+    [alertController addAction:complainAction];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 -(void)showAlertReorder
