@@ -109,7 +109,7 @@
 {
     btnTitle = [UIButton buttonWithType:UIButtonTypeCustom];
     [btnTitle setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    btnTitle.titleLabel.font = [UIFont largeTheme];
+    btnTitle.titleLabel.font = [UIFont title1ThemeMedium];
     btnTitle.backgroundColor = [UIColor clearColor];
     [btnTitle addTarget:self action:@selector(actionChangeFilter:) forControlEvents:UIControlEventTouchUpInside];
 

@@ -140,7 +140,7 @@
     } failure:nil];
     
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 4.0;
+    style.lineSpacing = 5.0;
 
     UIFont *gothamBookFont = [UIFont largeTheme];
     UIFont *gothamMediumFont = [UIFont largeThemeMedium];
