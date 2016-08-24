@@ -41,7 +41,7 @@
     NSString *joinedstring = [NSString stringWithFormat:@"\n  \u25CF  %@", [[errorArray valueForKey:@"description"] componentsJoinedByString:@"\n  \u25CF  "]];
     //[NSString convertHTML:[errorArray componentsJoinedByString:@"\n"]];
     
-    UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
+    UIFont *font = [UIFont microTheme];
     
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 6.0;
