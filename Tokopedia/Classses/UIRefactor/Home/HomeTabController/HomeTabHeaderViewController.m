@@ -217,25 +217,6 @@
     }
 }
 
-// MARK: Cleanup
-
-- (void)orientationChanged:(NSNotification *)note {
-    for (UIButton *button in _scrollView.subviews) {
-        [button removeFromSuperview];
-    }
-    
-    if(_loggedIn) {
-        [self initButton];
-    } else {
-        UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(([[UIScreen mainScreen]bounds].size.width/2)*1 - ([[UIScreen mainScreen]bounds].size.width/4) , 0, ([[UIScreen mainScreen]bounds].size.width/2), 44)];
-        [button setTitle:@"HOME" forState:UIControlStateNormal];
-        [button.titleLabel setFont:[UIFont fontWithName:@"GothamMedium" size:14]];
-        button.tag = 1;
-        [button addTarget:self action:@selector(tapButton:) forControlEvents:UIControlEventTouchUpInside];
-        [_scrollView addSubview:button];
-    }
-
-}
 
 
 - (void)dealloc {
