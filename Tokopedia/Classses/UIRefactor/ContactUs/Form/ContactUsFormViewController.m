@@ -226,7 +226,7 @@
             }
         }
         CGSize maximumLabelSize = CGSizeMake(220, CGFLOAT_MAX);
-        CGSize expectedLabelSize = [text sizeWithFont:FONT_GOTHAM_BOOK_14
+        CGSize expectedLabelSize = [text sizeWithFont:[UIFont largeTheme]
                                     constrainedToSize:maximumLabelSize
                                         lineBreakMode:NSLineBreakByWordWrapping];
         height = height + expectedLabelSize.height; // add margin

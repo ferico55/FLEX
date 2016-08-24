@@ -1319,10 +1319,6 @@
 		45908CC71D66F1A200B75597 /* NoResultReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 459081711D66F19F00B75597 /* NoResultReusableView.xib */; };
 		45908CC81D66F1A200B75597 /* RetryCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 459081731D66F19F00B75597 /* RetryCollectionReusableView.m */; };
 		45908CC91D66F1A200B75597 /* RetryCollectionReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 459081741D66F19F00B75597 /* RetryCollectionReusableView.xib */; };
-		45908CCA1D66F1A200B75597 /* ChooseProductCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 459081781D66F19F00B75597 /* ChooseProductCell.m */; };
-		45908CCB1D66F1A200B75597 /* ChooseProductCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 459081791D66F19F00B75597 /* ChooseProductCell.xib */; };
-		45908CCC1D66F1A200B75597 /* ChooseProductViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4590817B1D66F19F00B75597 /* ChooseProductViewController.m */; };
-		45908CCD1D66F1A200B75597 /* ChooseProductViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4590817C1D66F19F00B75597 /* ChooseProductViewController.xib */; };
 		45908CCE1D66F1A200B75597 /* DueDateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4590817E1D66F19F00B75597 /* DueDateViewController.m */; };
 		45908CCF1D66F1A200B75597 /* FilterNewOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 459081801D66F19F00B75597 /* FilterNewOrderViewController.m */; };
 		45908CD01D66F1A200B75597 /* OrderRejectExplanationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 459081821D66F19F00B75597 /* OrderRejectExplanationViewController.m */; };
@@ -4870,12 +4866,6 @@
 		459081721D66F19F00B75597 /* RetryCollectionReusableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RetryCollectionReusableView.h; sourceTree = "<group>"; };
 		459081731D66F19F00B75597 /* RetryCollectionReusableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RetryCollectionReusableView.m; sourceTree = "<group>"; };
 		459081741D66F19F00B75597 /* RetryCollectionReusableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RetryCollectionReusableView.xib; sourceTree = "<group>"; };
-		459081771D66F19F00B75597 /* ChooseProductCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChooseProductCell.h; sourceTree = "<group>"; };
-		459081781D66F19F00B75597 /* ChooseProductCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChooseProductCell.m; sourceTree = "<group>"; };
-		459081791D66F19F00B75597 /* ChooseProductCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChooseProductCell.xib; sourceTree = "<group>"; };
-		4590817A1D66F19F00B75597 /* ChooseProductViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChooseProductViewController.h; sourceTree = "<group>"; };
-		4590817B1D66F19F00B75597 /* ChooseProductViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChooseProductViewController.m; sourceTree = "<group>"; };
-		4590817C1D66F19F00B75597 /* ChooseProductViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChooseProductViewController.xib; sourceTree = "<group>"; };
 		4590817D1D66F19F00B75597 /* DueDateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DueDateViewController.h; sourceTree = "<group>"; };
 		4590817E1D66F19F00B75597 /* DueDateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DueDateViewController.m; sourceTree = "<group>"; };
 		4590817F1D66F19F00B75597 /* FilterNewOrderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilterNewOrderViewController.h; sourceTree = "<group>"; };
@@ -10572,12 +10562,6 @@
 		459081761D66F19F00B75597 /* NewOrder */ = {
 			isa = PBXGroup;
 			children = (
-				459081771D66F19F00B75597 /* ChooseProductCell.h */,
-				459081781D66F19F00B75597 /* ChooseProductCell.m */,
-				459081791D66F19F00B75597 /* ChooseProductCell.xib */,
-				4590817A1D66F19F00B75597 /* ChooseProductViewController.h */,
-				4590817B1D66F19F00B75597 /* ChooseProductViewController.m */,
-				4590817C1D66F19F00B75597 /* ChooseProductViewController.xib */,
 				4590817D1D66F19F00B75597 /* DueDateViewController.h */,
 				4590817E1D66F19F00B75597 /* DueDateViewController.m */,
 				4590817F1D66F19F00B75597 /* FilterNewOrderViewController.h */,
@@ -13780,7 +13764,6 @@
 				45908F8D1D66F1A300B75597 /* icon_like_active.png in Resources */,
 				45908FAE1D66F1A300B75597 /* icon_medal_diamond@2x.png in Resources */,
 				45908FD41D66F1A300B75597 /* icon_netral25.png in Resources */,
-				45908CCD1D66F1A200B75597 /* ChooseProductViewController.xib in Resources */,
 				4590905A1D66F1A300B75597 /* icon_shop_grey@2x.png in Resources */,
 				45908CDC1D66F1A200B75597 /* RejectReasonEditPriceViewController.xib in Resources */,
 				4590902A1D66F1A300B75597 /* icon_questionmark_grey@3x.png in Resources */,
@@ -14023,7 +14006,6 @@
 				4590914B1D66F1A300B75597 /* icon_search@3x.png in Resources */,
 				45908CE21D66F1A200B75597 /* RejectReasonEmptyVariantCell.xib in Resources */,
 				45908D401D66F1A300B75597 /* SettingNotificationCell.xib in Resources */,
-				45908CCB1D66F1A200B75597 /* ChooseProductCell.xib in Resources */,
 				45908E0E1D66F1A300B75597 /* TxOrderConfirmationViewController.xib in Resources */,
 				4590904A1D66F1A300B75597 /* icon_search_active@2x (deleted d2fce92e740a733bef785d9e61e4f9d8).png in Resources */,
 				45908D971D66F1A300B75597 /* ShopProductPageViewController.xib in Resources */,
@@ -14626,7 +14608,6 @@
 				459089CA1D66F1A200B75597 /* TxOrderConfirmedDetail.m in Sources */,
 				4590894E1D66F1A200B75597 /* EtalaseList.m in Sources */,
 				459088141D66F1A200B75597 /* ContactUsQuery.m in Sources */,
-				45908CCA1D66F1A200B75597 /* ChooseProductCell.m in Sources */,
 				45908A751D66F1A200B75597 /* AnonymousObserver.swift in Sources */,
 				45908D321D66F1A300B75597 /* SettingAddressViewController.m in Sources */,
 				45908BEE1D66F1A200B75597 /* InboxTicketReplyViewController.m in Sources */,
@@ -15047,7 +15028,6 @@
 				45908DBC1D66F1A300B75597 /* TokopediaNetworkManager.m in Sources */,
 				45908C791D66F1A200B75597 /* DetailReputationReviewHeaderComponent.mm in Sources */,
 				459089931D66F1A200B75597 /* LuckyDealData.m in Sources */,
-				45908CCC1D66F1A200B75597 /* ChooseProductViewController.m in Sources */,
 				4590899D1D66F1A200B75597 /* TransactionATCFormDetail.m in Sources */,
 				45908B8E1D66F1A200B75597 /* RequestNotifyLBLM.m in Sources */,
 				459087C61D66F1A200B75597 /* AFNetworkingImageDownloader.mm in Sources */,
