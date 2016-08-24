@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface CatalogLocation : NSObject
+@interface CatalogLocation : NSObject<TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *location_name;
 @property (nonatomic, strong) NSString *location_id;

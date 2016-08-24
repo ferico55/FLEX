@@ -12,7 +12,7 @@
 #import "CatalogImages.h"
 #define CCatalogID @"catalog_id"
 #define CCatalogPriceAlertPrice @"catalog_pricealert_price"
-@interface CatalogInfo : NSObject
+@interface CatalogInfo : NSObject<TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *catalog_description;
 @property (nonatomic, strong) NSString *catalog_key;
