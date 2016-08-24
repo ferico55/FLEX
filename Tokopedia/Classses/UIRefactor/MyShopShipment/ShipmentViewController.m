@@ -304,7 +304,7 @@
 - (CourierAvailabilityViewCell *)courierServiceAvailabilityCellForRowAtIndexPath:(NSIndexPath *)indexPath  {
     CourierAvailabilityViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"availability"];
     ShipmentCourierData *courier = [self courierAtIndexPath:indexPath];
-    cell.textLabel.text = [NSString stringWithFormat:@"Kota ini tidak terjangkau oleh  %@", courier.name];
+    cell.textLabel.text = [NSString stringWithFormat:@"Kota ini tidak terjangkau oleh %@", courier.name];
     [cell.textLabel sizeToFit];
     return cell;
 }
@@ -769,7 +769,7 @@
     [[GMSGeocoder geocoder] reverseGeocodeCoordinate:coordinate
                                    completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error) {
                                        if (error || response == nil){
-                                           welf.shop.locationAddress = @"Tandai lokasi anda";
+                                           welf.shop.locationAddress = @"Tandai lokasi Anda";
                                        } else {
                                            GMSAddress *placemark = [response results][0];
                                            welf.shop.locationAddress = [self streetNameFromAddress:placemark];
