@@ -2619,7 +2619,7 @@ OtherProductDelegate
         } completion:nil];
         
         CGRect frame = _shopinformationview.frame;
-        frame.size.height = 457;
+        frame.size.height = 467;
         _shopinformationview.frame = frame;
         
         _table.tableFooterView = _shopinformationview;
