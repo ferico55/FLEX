@@ -1,53 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <mutableArray key="GothamBook.ttf">
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-        </mutableArray>
-        <mutableArray key="GothamMedium.ttf">
-            <string>GothamMedium</string>
-            <string>GothamMedium</string>
-            <string>GothamMedium</string>
-            <string>GothamMedium</string>
-            <string>GothamMedium</string>
-            <string>GothamMedium</string>
-            <string>GothamMedium</string>
-            <string>GothamMedium</string>
-            <string>GothamMedium</string>
-            <string>GothamMedium</string>
-        </mutableArray>
-    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TransactionCartResultViewController">
             <connections>
@@ -96,8 +52,8 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="grouped" separatorStyle="none" rowHeight="44" sectionHeaderHeight="5" sectionFooterHeight="5" translatesAutoresizingMaskIntoConstraints="NO" id="45P-yq-ogx">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="grouped" separatorStyle="none" rowHeight="44" sectionHeaderHeight="5" sectionFooterHeight="5" translatesAutoresizingMaskIntoConstraints="NO" id="45P-yq-ogx">
+                    <rect key="frame" x="8" y="0.0" width="320" height="568"/>
                     <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                     <color key="separatorColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <connections>
@@ -127,7 +83,7 @@
                         <constraints>
                             <constraint firstAttribute="height" constant="21" id="XIR-ea-ccI"/>
                         </constraints>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
                         <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="deviceRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -136,7 +92,7 @@
                         <constraints>
                             <constraint firstAttribute="height" constant="21" id="4tP-sp-qGU"/>
                         </constraints>
-                        <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="19"/>
+                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
                         <color key="textColor" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -158,8 +114,8 @@
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Silahkan mengirimkan jumlah pembayaran ke salah satu akun Tokopedia dibawah ini :" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cGk-2H-wBC">
                     <rect key="frame" x="15" y="0.0" width="290" height="58"/>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
-                    <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <color key="textColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                     <size key="shadowOffset" width="0.0" height="0.0"/>
                 </label>
@@ -175,7 +131,7 @@
             <point key="canvasLocation" x="437" y="-3"/>
         </view>
         <view contentMode="scaleToFill" id="QEA-BO-1aG">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="185"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="220"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e70-yU-41l">
@@ -185,7 +141,7 @@
                         <constraint firstAttribute="height" constant="40" id="2aK-Ez-CNW"/>
                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="IbU-r8-RZh"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
                     <state key="normal" title="KONFIRMASI PEMBAYARAN">
                         <color key="titleColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -195,22 +151,22 @@
                     </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V33-g9-JWw">
-                    <rect key="frame" x="15" y="70" width="290" height="52"/>
+                    <rect key="frame" x="15" y="70" width="290" height="57.5"/>
                     <constraints>
-                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="46" id="JQy-EO-S4t"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="56" id="JQy-EO-S4t"/>
                     </constraints>
                     <string key="text">Pesanan Anda akan diproses setelah pembayaran dikonfirmasi dan diverifikasi oleh Tokopedia, Untuk melakukan konfirmasi pembayaran, silahkan lanjut ke halaman Konfirmasi Pembayaran</string>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
-                    <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <color key="textColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Silahkan menghubungi kami apabila Anda mengalami kesulitan." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wYq-D9-MRs" customClass="TTTAttributedLabel">
-                    <rect key="frame" x="15" y="129" width="290" height="46"/>
+                    <rect key="frame" x="15" y="140.5" width="290" height="46"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="46" id="7lu-zR-j49"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
-                    <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <color key="textColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="number" keyPath="highlightedShadowRadius">
@@ -219,8 +175,8 @@
                     </userDefinedRuntimeAttributes>
                 </label>
                 <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1ZL-Z5-ZNu" userLabel="ConfirmPayment Button">
-                    <rect key="frame" x="15" y="111" width="207" height="22"/>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
+                    <rect key="frame" x="82" y="105" width="143" height="27"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
                     <state key="normal">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
@@ -259,7 +215,7 @@
                             <constraints>
                                 <constraint firstAttribute="height" constant="42" id="8Jg-45-w33"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="12"/>
+                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="12"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -269,7 +225,7 @@
                                 <constraint firstAttribute="width" constant="15" id="ezO-x1-K0G"/>
                                 <constraint firstAttribute="height" constant="21" id="qeW-eg-j72"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -278,110 +234,110 @@
                             <constraints>
                                 <constraint firstAttribute="height" constant="30" id="kMl-Rk-rUe"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="2." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Eda-wD-8Lo">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Eda-wD-8Lo">
                             <rect key="frame" x="20" y="124" width="15" height="21"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="15" id="iRM-Kw-haN"/>
                                 <constraint firstAttribute="height" constant="21" id="zZA-Ik-Zaz"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Catat dan simpan kode pembayaran Indomaret Anda, yaitu 0001" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xCe-Ni-PqY" customClass="TopAlignedLabel">
+                        <label opaque="NO" userInteractionEnabled="NO" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Catat dan simpan kode pembayaran Indomaret Anda, yaitu 0001" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xCe-Ni-PqY" customClass="TopAlignedLabel">
                             <rect key="frame" x="39" y="127" width="546" height="34"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="56" id="aha-c8-cTD"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="3." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="084-iG-GvZ">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="084-iG-GvZ">
                             <rect key="frame" x="20" y="176" width="15" height="21"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="15" id="FG8-cI-t6b"/>
                                 <constraint firstAttribute="height" constant="21" id="OWz-kQ-mVX"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" tag="3" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Setelah mendapatkan bukti pembayaran, pembayaran secara otomatis akan diverivikasi oleh Tokopedia." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qqw-6E-ni8" customClass="TopAlignedLabel">
+                        <label opaque="NO" userInteractionEnabled="NO" tag="3" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Setelah mendapatkan bukti pembayaran, pembayaran secara otomatis akan diverivikasi oleh Tokopedia." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qqw-6E-ni8" customClass="TopAlignedLabel">
                             <rect key="frame" x="39" y="178" width="546" height="56"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="56" id="9lZ-h6-jCa"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="4." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gOT-fa-ZnM">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="4." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gOT-fa-ZnM">
                             <rect key="frame" x="20" y="237" width="15" height="21"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="21" id="3a0-Kv-x3Z"/>
                                 <constraint firstAttribute="width" constant="15" id="IdY-ik-MpX"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Simpan bukti pembayaran yang sewaktu-waktu diperlukan jika terjadi kendala transaksi." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iqK-Yo-f4k" customClass="TopAlignedLabel">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Simpan bukti pembayaran yang sewaktu-waktu diperlukan jika terjadi kendala transaksi." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iqK-Yo-f4k" customClass="TopAlignedLabel">
                             <rect key="frame" x="39" y="240" width="546" height="56"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="56" id="mQR-6D-wez"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Catatan" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7B8-Y2-P3x">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Catatan" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7B8-Y2-P3x">
                             <rect key="frame" x="15" y="302" width="570" height="42"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="42" id="RgL-Zg-gOt"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="12"/>
+                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="12"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="-" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5sL-Ex-cxo">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5sL-Ex-cxo">
                             <rect key="frame" x="19" y="337" width="15" height="21"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="21" id="3H0-lN-Yym"/>
                                 <constraint firstAttribute="width" constant="15" id="Kjo-p8-gNb"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" tag="5" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Simpan bukti pembayaran yang sewaktu-waktu diperlukan jika terjadi kendala transaksi." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t15-Tk-s3D" customClass="TopAlignedLabel">
+                        <label opaque="NO" userInteractionEnabled="NO" tag="5" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Simpan bukti pembayaran yang sewaktu-waktu diperlukan jika terjadi kendala transaksi." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t15-Tk-s3D" customClass="TopAlignedLabel">
                             <rect key="frame" x="39" y="338" width="554" height="56"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="56" id="8df-xx-8tj"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="-" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UDz-es-n9m">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UDz-es-n9m">
                             <rect key="frame" x="19" y="398" width="15" height="21"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="21" id="CEB-Yf-3h8"/>
                                 <constraint firstAttribute="width" constant="15" id="QC2-7R-rS6"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Pesanan akan otomatis dibatalkan apabila tidak melakukan pembayaran lebih dari 2 hari setelah kode pembayaran diberikan." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="68v-od-qR9" customClass="TopAlignedLabel">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pesanan akan otomatis dibatalkan apabila tidak melakukan pembayaran lebih dari 2 hari setelah kode pembayaran diberikan." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="68v-od-qR9" customClass="TopAlignedLabel">
                             <rect key="frame" x="39" y="394" width="554" height="56"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="56" id="bW7-Zf-I7c"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -440,25 +396,25 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="183"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8zj-kU-VAf">
-                    <rect key="frame" x="15" y="15" width="290" height="65"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8zj-kU-VAf">
+                    <rect key="frame" x="15" y="15" width="290" height="72"/>
                     <constraints>
                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="58" id="3Bp-Xi-Dob"/>
                     </constraints>
                     <string key="text">Pembayaran Anda telah kami proses dan pesanan diteruskan langsung ke penjual.
 
 Klik tombol dibawah untuk memantau status pesanan Anda.</string>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
-                    <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <color key="textColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Rt-3a-lHR">
-                    <rect key="frame" x="15" y="101" width="290" height="40"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Rt-3a-lHR">
+                    <rect key="frame" x="15" y="108" width="290" height="40"/>
                     <color key="backgroundColor" red="0.070588235289999995" green="0.78039215689999997" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="40" id="Hlb-SG-tbA"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
                     <state key="normal" title="Status Pembayaran">
                         <color key="titleColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -486,7 +442,7 @@ Klik tombol dibawah untuk memantau status pesanan Anda.</string>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6ZH-Og-jzx">
                     <rect key="frame" x="15" y="0.0" width="290" height="46"/>
-                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="12"/>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="12"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -507,13 +463,13 @@ Klik tombol dibawah untuk memantau status pesanan Anda.</string>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0013" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FUd-5a-lvQ">
                     <rect key="frame" x="0.0" y="72" width="320" height="31"/>
-                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="17"/>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kode Indomaret Anda" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WZb-7m-n7U">
                     <rect key="frame" x="15" y="52" width="290" height="32"/>
-                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="12"/>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="12"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -565,7 +521,7 @@ Klik tombol dibawah untuk memantau status pesanan Anda.</string>
             <rect key="frame" x="0.0" y="0.0" width="320" height="1398"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oqE-H0-aSe" userLabel="Footer Klik BCA Steps View">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oqE-H0-aSe" userLabel="Footer Klik BCA Steps View">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="1169"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Panduan menyelesaikan pembayaran KlikBCA :" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sTO-PS-wuS">
@@ -573,8 +529,8 @@ Klik tombol dibawah untuk memantau status pesanan Anda.</string>
                             <constraints>
                                 <constraint firstAttribute="height" constant="26" id="22X-mh-ulh"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
-                            <color key="textColor" red="0.3803921569" green="0.3803921569" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                            <color key="textColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xpo-eW-94a">
@@ -586,7 +542,7 @@ Klik tombol dibawah untuk memantau status pesanan Anda.</string>
                                         <constraint firstAttribute="height" constant="19" id="RdS-Yw-spT"/>
                                         <constraint firstAttribute="width" constant="243" id="lTh-sP-Wmm"/>
                                     </constraints>
-                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="    Masukkan User ID dan password Anda" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s64-bg-syh">
@@ -594,7 +550,7 @@ Klik tombol dibawah untuk memantau status pesanan Anda.</string>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="19" id="ZAL-ze-FLd"/>
                                     </constraints>
-                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <imageView tag="1" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="klikbca_guide_1.png" translatesAutoresizingMaskIntoConstraints="NO" id="asv-pn-1NM">
@@ -627,7 +583,7 @@ Klik tombol dibawah untuk memantau status pesanan Anda.</string>
                                     <string key="text">Pilih pembayaran e-Commerce
 Pilih Kategori Marketplace
 Pilih Tokopedia</string>
-                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <imageView tag="1" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="klikbca_guide_2.png" translatesAutoresizingMaskIntoConstraints="NO" id="3dZ-EY-oGE">
@@ -643,7 +599,7 @@ Pilih Tokopedia</string>
                                         <constraint firstAttribute="width" constant="17" id="j85-hJ-bGl"/>
                                         <constraint firstAttribute="height" constant="22" id="vlh-OC-bCU"/>
                                     </constraints>
-                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
@@ -664,24 +620,24 @@ Pilih Tokopedia</string>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wj1-g9-Lwt">
                             <rect key="frame" x="0.0" y="572" width="320" height="236"/>
                             <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Masukkan KeyBCA Token untuk memproses transaksi" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UrR-rQ-DGG">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Masukkan KeyBCA Token untuk memproses transaksi" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UrR-rQ-DGG">
                                     <rect key="frame" x="35" y="1" width="270" height="51"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="30" id="ltJ-u2-d4e"/>
                                     </constraints>
-                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="3." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hnH-2D-CLp">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hnH-2D-CLp">
                                     <rect key="frame" x="15" y="8" width="17" height="22"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="17" id="YNZ-VT-6Im"/>
                                         <constraint firstAttribute="height" constant="22" id="lqk-36-uhd"/>
                                     </constraints>
-                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <imageView tag="2" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="klikbca_guide_3.png" translatesAutoresizingMaskIntoConstraints="NO" id="Jvl-XT-lPy">
+                                <imageView tag="2" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="klikbca_guide_3.png" translatesAutoresizingMaskIntoConstraints="NO" id="Jvl-XT-lPy">
                                     <rect key="frame" x="15" y="52" width="290" height="174"/>
                                     <gestureRecognizers/>
                                     <connections>
@@ -712,7 +668,7 @@ Pilih Tokopedia</string>
                                         <constraint firstAttribute="width" constant="17" id="eiI-nW-AnA"/>
                                         <constraint firstAttribute="height" constant="22" id="uiN-PY-twj"/>
                                     </constraints>
-                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <imageView tag="3" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="klikbca_guide_4.png" translatesAutoresizingMaskIntoConstraints="NO" id="NfF-h1-grq">
@@ -722,12 +678,12 @@ Pilih Tokopedia</string>
                                         <outletCollection property="gestureRecognizers" destination="Lz4-pV-8Kl" appends="YES" id="oHZ-Zd-E8l"/>
                                     </connections>
                                 </imageView>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Anda tidak perlu melakukan konfirmasi pembayaran Tokopedia otomatis memverifikasi pembayaran Anda" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J7G-3A-Mkb" customClass="TopAlignedLabel">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Anda tidak perlu melakukan konfirmasi pembayaran Tokopedia otomatis memverifikasi pembayaran Anda" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J7G-3A-Mkb" customClass="TopAlignedLabel">
                                     <rect key="frame" x="35" y="1" width="270" height="60"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="53" id="cuN-JY-xVN"/>
                                     </constraints>
-                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
@@ -751,7 +707,7 @@ Pilih Tokopedia</string>
                             <constraints>
                                 <constraint firstAttribute="height" constant="35" id="YtU-w5-pgq"/>
                             </constraints>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <color key="textColor" red="0.3803921569" green="0.3803921569" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                             <connections>
@@ -811,18 +767,18 @@ Pilih Tokopedia</string>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Potensi Cashback" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="PBD-aa-HyN">
-                        <rect key="frame" x="15" y="16" width="116" height="12"/>
+                        <rect key="frame" x="15" y="13" width="126" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
+                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
                         <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Rp 0,-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Ibf-8z-Mqu">
-                        <rect key="frame" x="264.5" y="16" width="40.5" height="12"/>
+                        <rect key="frame" x="261.5" y="13" width="43.5" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
+                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
                         <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>

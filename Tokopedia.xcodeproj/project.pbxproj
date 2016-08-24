@@ -1604,7 +1604,6 @@
 		45908DE41D66F1A300B75597 /* TransactionCCDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4590835C1D66F19F00B75597 /* TransactionCCDetailViewController.xib */; };
 		45908DE51D66F1A300B75597 /* TransactionCCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4590835E1D66F19F00B75597 /* TransactionCCViewController.m */; };
 		45908DE61D66F1A300B75597 /* TransactionCCViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4590835F1D66F19F00B75597 /* TransactionCCViewController.xib */; };
-		45908DE71D66F1A300B75597 /* TransactionPaymenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 459083611D66F19F00B75597 /* TransactionPaymenViewController.m */; };
 		45908DE81D66F1A300B75597 /* TransactionCartResultCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 459083641D66F19F00B75597 /* TransactionCartResultCell.m */; };
 		45908DE91D66F1A300B75597 /* TransactionCartResultCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 459083651D66F19F00B75597 /* TransactionCartResultCell.xib */; };
 		45908DEA1D66F1A300B75597 /* TransactionCartResultPaymentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 459083671D66F19F00B75597 /* TransactionCartResultPaymentCell.m */; };
@@ -5317,8 +5316,6 @@
 		4590835D1D66F19F00B75597 /* TransactionCCViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionCCViewController.h; sourceTree = "<group>"; };
 		4590835E1D66F19F00B75597 /* TransactionCCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionCCViewController.m; sourceTree = "<group>"; };
 		4590835F1D66F19F00B75597 /* TransactionCCViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransactionCCViewController.xib; sourceTree = "<group>"; };
-		459083601D66F19F00B75597 /* TransactionPaymenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionPaymenViewController.h; sourceTree = "<group>"; };
-		459083611D66F19F00B75597 /* TransactionPaymenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionPaymenViewController.m; sourceTree = "<group>"; };
 		459083631D66F19F00B75597 /* TransactionCartResultCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionCartResultCell.h; sourceTree = "<group>"; };
 		459083641D66F19F00B75597 /* TransactionCartResultCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionCartResultCell.m; sourceTree = "<group>"; };
 		459083651D66F19F00B75597 /* TransactionCartResultCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransactionCartResultCell.xib; sourceTree = "<group>"; };
@@ -11359,8 +11356,6 @@
 				4590835D1D66F19F00B75597 /* TransactionCCViewController.h */,
 				4590835E1D66F19F00B75597 /* TransactionCCViewController.m */,
 				4590835F1D66F19F00B75597 /* TransactionCCViewController.xib */,
-				459083601D66F19F00B75597 /* TransactionPaymenViewController.h */,
-				459083611D66F19F00B75597 /* TransactionPaymenViewController.m */,
 			);
 			path = CartDetail;
 			sourceTree = "<group>";
@@ -14533,7 +14528,6 @@
 				45908C8D1D66F1A200B75597 /* MyReviewDetailRequest.m in Sources */,
 				45908BA91D66F1A200B75597 /* HotlistCell.m in Sources */,
 				459089CB1D66F1A200B75597 /* TxOrderConfirmedDetailInvoice.m in Sources */,
-				45908DE71D66F1A300B75597 /* TransactionPaymenViewController.m in Sources */,
 				45908A1B1D66F1A200B75597 /* DisposeBase.swift in Sources */,
 				45908B161D66F1A200B75597 /* CategoryMenuViewController.m in Sources */,
 				459087E91D66F1A200B75597 /* CreatePasswordUserProfile.swift in Sources */,
