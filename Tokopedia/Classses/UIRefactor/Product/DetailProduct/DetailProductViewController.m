@@ -2428,7 +2428,7 @@ OtherProductDelegate
     
     productLabel.backgroundColor = [UIColor clearColor];
     productLabel.numberOfLines = 2;
-    UIFont *productLabelFont = [UIFont title2ThemeMedium];
+    UIFont *productLabelFont = [UIFont title1ThemeMedium];
     
     NSMutableParagraphStyle *productLabelStyle = [[NSMutableParagraphStyle alloc] init];
     productLabelStyle.lineSpacing = 4.0;
