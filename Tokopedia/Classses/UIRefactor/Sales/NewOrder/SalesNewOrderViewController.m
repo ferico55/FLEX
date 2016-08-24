@@ -9,7 +9,6 @@
 #import "SalesNewOrderViewController.h"
 #import "SalesOrderCell.h"
 #import "FilterNewOrderViewController.h"
-#import "ChooseProductViewController.h"
 #import "OrderRejectExplanationViewController.h"
 #import "URLCacheController.h"
 #import "TKPDSecureStorage.h"
@@ -45,7 +44,6 @@
     UITableViewDelegate,
     UIAlertViewDelegate,
     SalesOrderCellDelegate,
-    ChooseProductDelegate,
     FilterDelegate,
     ProductQuantityDelegate,
     OrderDetailDelegate
@@ -398,21 +396,6 @@
     [self.navigationController presentViewController:navigationController animated:YES completion:nil];
 }
 
-#pragma mark - Choose product delegate
-
-- (void)didSelectProducts:(NSArray *)products {
-    _selectedProducts = products;
-    
-    [self requestActionType:@"reject"
-                     reason:@"Persediaan barang habis"
-                   products:products
-            productQuantity:nil];
-    
-    for (OrderProduct *product in products) {
-        [ProductRequest moveProductToWarehouse:product.product_id setCompletionBlockWithSuccess:nil failure:nil];
-    }
-}
-
 #pragma mark - Reject explanation delegate
 
 - (void)didFinishWritingExplanation:(NSString *)explanation
@@ -516,17 +499,6 @@
     controller.products = order.order_products;
     controller.delegate = self;
     
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
-    navigationController.navigationBar.translucent = NO;
-
-    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
-}
-
-- (void)showChooseAcceptedProductPage {
-    ChooseProductViewController *controller = [[ChooseProductViewController alloc] init];
-    controller.delegate = self;
-    controller.products = _selectedOrder.order_products;
-
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
     navigationController.navigationBar.translucent = NO;
 
