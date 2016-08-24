@@ -67,6 +67,11 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *thumbowner;
 @property (weak, nonatomic) IBOutlet UILabel *nameowner;
+@property (weak, nonatomic) IBOutlet UIButton *expandShopDescriptionButton;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *labelShopDescriptionHeightConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topViewHeightConstraint;
+@property (nonatomic) float diffOldAndExpandedHeightDescription;
+@property (nonatomic) Boolean isShopDescriptionExpanded;
 
 - (IBAction)gesture:(id)sender;
 
@@ -130,6 +135,8 @@
     
     //Generate Medal Reputasi
     [SmileyAndMedal generateMedalWithLevel:_shop.result.stats.shop_badge_level.level withSet:_shop.result.stats.shop_badge_level.set withImage:imageReputasi isLarge:YES];
+    
+    _isShopDescriptionExpanded = NO;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -469,24 +476,29 @@
 -(void)setShopInfoData
 {
     _labelshopname.text = _shop.result.info.shop_name;
-//    _labelshoptagline.text = _shop.result.info.shop_tagline;
-    
-    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 4.0;
-    
-    NSDictionary *attributes = @{
-                                 NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:13],
-                                 NSParagraphStyleAttributeName  : style
-                                 };
-    
-    NSString *tagline = _shop.result.info.shop_tagline;
-    _labelshoptagline.attributedText = [[NSAttributedString alloc] initWithString:tagline
-                                                                       attributes:attributes];
+    _labelshoptagline.text = _shop.result.info.shop_tagline;
+
     _labelshoptagline.numberOfLines = 0;
     [_labelshoptagline sizeToFit];
     
     _labelshopdescription.text = _shop.result.info.shop_description;
     [_labelshopdescription sizeToFit];
+    
+    // check if need expandShopDescriptionButton for expand shop description
+    if (_labelshopdescription != nil) {
+        float unboundedHeightLabelShopDescription =
+        [self.labelshopdescription.text
+         boundingRectWithSize:CGSizeMake(self.labelshopdescription.frame.size.width, CGFLOAT_MAX)
+         options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading)
+         attributes:@{ NSFontAttributeName:self.labelshopdescription.font }
+         context:nil]
+        .size.height;
+        
+        if (unboundedHeightLabelShopDescription > _labelShopDescriptionHeightConstraint.constant) {
+            _expandShopDescriptionButton.hidden = NO;
+            _diffOldAndExpandedHeightDescription = unboundedHeightLabelShopDescription - _labelShopDescriptionHeightConstraint.constant;
+        }
+    }
     [_buttonfav setTitle:_shop.result.info.shop_total_favorit forState:UIControlStateNormal];
     [_buttonitemsold setTitle:_shop.result.stats.shop_item_sold forState:UIControlStateNormal];
 //    _speedrate.starscount = _shop.result.stats.shop_service_rate;
@@ -564,6 +576,31 @@
     
 }
 
+-(void) expandShopDescription {
+    [UIView animateWithDuration:0.2 animations:^{
+        _labelShopDescriptionHeightConstraint.constant = _labelShopDescriptionHeightConstraint.constant + _diffOldAndExpandedHeightDescription;
+        _topViewHeightConstraint.constant = _topViewHeightConstraint.constant + _diffOldAndExpandedHeightDescription;
+        CGRect topCellFrame = _topCell.frame;
+        topCellFrame.size.height = topCellFrame.size.height + _diffOldAndExpandedHeightDescription;
+        _topCell.frame = topCellFrame;
+        
+        self.expandShopDescriptionButton.transform = CGAffineTransformMakeRotation((180.0 * (CGFloat)M_PI) / 180.0);
+    }];
+    _isShopDescriptionExpanded = YES;
+}
+
+-(void) shrinkShopDescription {
+    [UIView animateWithDuration:0.2 animations:^{
+        _labelShopDescriptionHeightConstraint.constant = _labelShopDescriptionHeightConstraint.constant - _diffOldAndExpandedHeightDescription;
+        _topViewHeightConstraint.constant = _topViewHeightConstraint.constant - _diffOldAndExpandedHeightDescription;
+        CGRect topCellFrame = _topCell.frame;
+        topCellFrame.size.height = topCellFrame.size.height - _diffOldAndExpandedHeightDescription;
+        _topCell.frame = topCellFrame;
+        self.expandShopDescriptionButton.transform = CGAffineTransformIdentity;
+    }];
+    _isShopDescriptionExpanded = NO;
+}
+
 #pragma mark - Properties
 -(void)setData:(NSDictionary *)data
 {
@@ -593,4 +630,17 @@
     detailStatisticViewController.detailShopResult = _shop.result;
     [self.navigationController pushViewController:detailStatisticViewController animated:YES];
 }
+
+- (IBAction)actionExpandOrShrinkShopDescription:(UIButton *)sender {
+    if (_isShopDescriptionExpanded == NO){
+        [self expandShopDescription];
+    } else {
+        [self shrinkShopDescription];
+    }
+    [_tableView beginUpdates];
+    [_tableView endUpdates];
+}
+
+
+
 @end

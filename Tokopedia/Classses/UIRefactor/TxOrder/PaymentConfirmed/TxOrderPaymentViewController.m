@@ -415,7 +415,7 @@
                 style.lineSpacing = 6.0;
                 
                 NSDictionary *attributes = @{
-                                             NSFontAttributeName: FONT_GOTHAM_BOOK_16,
+                                             NSFontAttributeName: [UIFont title1Theme],
                                              NSParagraphStyleAttributeName: style,
                                              };
                 

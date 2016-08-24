@@ -44,7 +44,7 @@ class WebViewSignInViewController: UIViewController, UIWebViewDelegate, NJKWebVi
 
         let request = NSMutableURLRequest()
         request.setValue("Mozilla/5.0 (iPod; U; CPU iPhone OS 4_3_3 like Mac OS X; ja-jp) AppleWebKit/533.17.9 (KHTML, like Gecko) Version/5.0.2 Mobile/8J2 Safari/6533.18.5", forHTTPHeaderField: "User-Agent")
-        request.URL = NSURL(string: provider.signInUrl)
+        request.URL = NSURL(string: provider.signInUrl + "?os_type=2")
 
         webView.loadRequest(request)
     }
@@ -84,7 +84,8 @@ class WebViewSignInViewController: UIViewController, UIWebViewDelegate, NJKWebVi
         if let path = path where path.containsString("/error") {
             NSURLSession.sharedSession().resetWithCompletionHandler() {}
             
-            let message = url.parameters()["message"] as! String
+            let message = (url.parameters()["message"] as! String).stringByRemovingPercentEncoding!
+            
             
             let alertView = UIAlertView.bk_alertViewWithTitle("Perhatian", message: message)
             alertView.bk_addButtonWithTitle("OK", handler: {[unowned self] in

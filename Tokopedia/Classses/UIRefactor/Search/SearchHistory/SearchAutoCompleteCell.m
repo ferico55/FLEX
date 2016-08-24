@@ -37,7 +37,7 @@
     NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:[_searchTitle text]];
     
     NSRange range = [[_searchTitle text] rangeOfString:searchText options:NSCaseInsensitiveSearch];
-    [attributedText setAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:14.0f]} range:range];
+    [attributedText setAttributes:@{NSFontAttributeName:[UIFont title2ThemeMedium]} range:range];
     [_searchTitle setAttributedText:attributedText];
 }
 

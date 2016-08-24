@@ -115,17 +115,13 @@
 }
 
 - (void)showHeaderView {
-    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 4.0;
-    
     UIColor *textColor = [UIColor colorWithRed:126.0/255.0
                                          green:126.0/255.0
                                           blue:126.0/255.0
                                          alpha:1];
     
     NSDictionary *attributes = @{
-                                 NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:12],
-                                 NSParagraphStyleAttributeName  : style,
+                                 NSFontAttributeName            : [UIFont smallTheme],
                                  NSForegroundColorAttributeName : textColor,
                                  };
     
@@ -136,9 +132,6 @@
 
     NSMutableAttributedString *titleAttributedString = [[NSMutableAttributedString alloc] initWithString:title
                                                                                               attributes:attributes];
-    
-    self.descriptionLabel.attributedText = titleAttributedString;
-    [self.descriptionLabel sizeToFit];
     
     NSMutableAttributedString *subtitleAttributedString = [[NSMutableAttributedString alloc] initWithString:subTitle
                                                                                                  attributes:attributes];
@@ -192,19 +185,10 @@
                 cell = [[ContactUsFormCategoryCell alloc] init];
             }
             
-            NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-            style.lineSpacing = 4.0;
-            
-            NSDictionary *attributes = @{
-                NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:14],
-                NSParagraphStyleAttributeName  : style,
-            };
-            
             if (_subCategories.count > 0) {
                 NSString *text = [_subCategories[indexPath.row - 1] ticket_category_name];
-                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:text
-                                                                                       attributes:attributes];
-                ((ContactUsFormCategoryCell *)cell).categoryNameLabel.attributedText = attributedString;
+                
+                ((ContactUsFormCategoryCell *)cell).categoryNameLabel.text = text;
             } else {
                 ((ContactUsFormCategoryCell *)cell).textLabel.text = @"";
             }
@@ -423,7 +407,11 @@
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
     [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR object:self];
-    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_REDIRECT_TO_HOME object:self];
+//    [self.navigationController popToRootViewControllerAnimated:YES];
+//    
+    //[[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_REDIRECT_TO_HOME object:self];
+    
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 @end

@@ -295,7 +295,7 @@ OtherProductDelegate
     
     [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
     self.title = @"Detail Produk";
-    fontDesc = [UIFont fontWithName:@"GothamBook" size:13.0f];
+    fontDesc = [UIFont smallTheme];
     
     _datatalk = [NSMutableDictionary new];
     _headerimages = [NSMutableArray new];
@@ -879,9 +879,9 @@ OtherProductDelegate
     [bt setFrame:CGRectMake(15, 0, 170, 40)];
     [bt setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [bt setTag:section];
-    [bt.titleLabel setFont:[UIFont systemFontOfSize:12]];
+    [bt.titleLabel setFont:[UIFont microTheme]];
     [bt setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
-    [bt.titleLabel setFont: [UIFont fontWithName:@"GothamMedium" size:15.0f]];
+    [bt.titleLabel setFont:[UIFont title2ThemeMedium]];
     [bt addTarget:self action:@selector(expandCollapseButton:) forControlEvents:UIControlEventTouchUpInside];
     switch (section) {
         case 0:
@@ -1974,7 +1974,7 @@ OtherProductDelegate
                 activityIndicator.color = [UIColor lightGrayColor];
                 btnWishList.hidden = btnPriceAlert.hidden = NO;
                 [btnWishList setTitle:@"Wishlist" forState:UIControlStateNormal];
-                btnWishList.titleLabel.font = [UIFont fontWithName:@"Gotham Book" size:12.0f];
+                btnWishList.titleLabel.font = [UIFont microTheme];
                 btnWishList.layer.cornerRadius = btnPriceAlert.layer.cornerRadius = 5;
                 btnWishList.layer.masksToBounds = btnPriceAlert.layer.masksToBounds = YES;
                 btnWishList.layer.borderColor = btnPriceAlert.layer.borderColor = [[UIColor colorWithRed:219/255.0f green:219/255.0f blue:219/255.0f alpha:1.0f] CGColor];
@@ -2177,9 +2177,8 @@ OtherProductDelegate
 - (void)initPopUp:(NSString *)strText withSender:(id)sender withRangeDesc:(NSRange)range
 {
     UILabel *lblShow = [[UILabel alloc] init];
-    CGFloat fontSize = 13;
-    UIFont *boldFont = [UIFont boldSystemFontOfSize:fontSize];
-    UIFont *regularFont = [UIFont systemFontOfSize:fontSize];
+    UIFont *boldFont = [UIFont smallThemeMedium];
+    UIFont *regularFont = [UIFont smallTheme];
     UIColor *foregroundColor = [UIColor whiteColor];
     
     NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys: boldFont, NSFontAttributeName, foregroundColor, NSForegroundColorAttributeName, nil];
@@ -2429,7 +2428,7 @@ OtherProductDelegate
     
     productLabel.backgroundColor = [UIColor clearColor];
     productLabel.numberOfLines = 2;
-    UIFont *productLabelFont = [UIFont fontWithName:@"GothamMedium" size:15];
+    UIFont *productLabelFont = [UIFont title1ThemeMedium];
     
     NSMutableParagraphStyle *productLabelStyle = [[NSMutableParagraphStyle alloc] init];
     productLabelStyle.lineSpacing = 4.0;
@@ -2620,7 +2619,7 @@ OtherProductDelegate
         } completion:nil];
         
         CGRect frame = _shopinformationview.frame;
-        frame.size.height = 457;
+        frame.size.height = 467;
         _shopinformationview.frame = frame;
         
         _table.tableFooterView = _shopinformationview;

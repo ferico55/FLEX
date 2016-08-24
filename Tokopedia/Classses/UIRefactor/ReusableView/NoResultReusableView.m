@@ -12,7 +12,6 @@
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *descLabel;
-@property (weak, nonatomic) IBOutlet UIButton *button;
 
 @end
 
@@ -62,6 +61,27 @@
     }
 }
 
+- (void)generateRequestErrorViewWithError:(NSError *)error {
+    if (error.code == -1011) {
+        [self setNoResultTitle:@"Whoops!\nTerjadi kendala pada server"];
+        [self setNoResultDesc:@"Harap coba lagi"];
+    } else if (error.code == -1009) {
+        [self setNoResultTitle:@"Whoops!\nTidak ada koneksi Internet"];
+        [self setNoResultDesc:@"Cek koneksi Internet Anda"];
+    } else if (error.code == -999) {
+        [self setNoResultTitle:@"Whoops!\nTerjadi kendala pada koneksi Internet"];
+        [self setNoResultDesc:@"Harap coba lagi"];
+    } else {
+        [self setNoResultTitle:@"Whoops!\nTerjadi kendala pada server"];
+        [self setNoResultDesc:@"Harap coba lagi"];
+    }
+    
+    [self setNoResultImage:NO_RESULT_ICON];
+    [_button.layer setCornerRadius:3.0];
+    [self hideButton:NO];
+    [self setNoResultButtonTitle:@"Coba Lagi"];
+}
+
 #pragma mark - Setter
 -(void)setNoResultImage:(NSString *)fileName{
     [_imageView setImage:[UIImage imageNamed:fileName]];
@@ -74,7 +94,7 @@
     style.alignment = NSTextAlignmentCenter;
     
     NSDictionary *attributes = @{
-                                 NSFontAttributeName            : [UIFont fontWithName:@"GothamMedium" size:titleSize],
+                                 NSFontAttributeName            : [UIFont mediumSystemFontOfSize:titleSize],
                                  NSParagraphStyleAttributeName  : style,
                                  };
     
@@ -89,7 +109,7 @@
     style.alignment = NSTextAlignmentCenter;
     
     NSDictionary *attributes = @{
-                                 NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:descSize],
+                                 NSFontAttributeName            : [UIFont systemFontOfSize:descSize],
                                  NSParagraphStyleAttributeName  : style,
                                  };
     
@@ -99,7 +119,7 @@
 
 -(void)setNoResultButtonTitle:(NSString *)btnTitle{
     CGFloat btnSize = NO_RESULT_BUTTON_TITLE_SIZE;
-    _button.titleLabel.font = [UIFont fontWithName:@"GothamMedium" size:btnSize];
+    _button.titleLabel.font = [UIFont mediumSystemFontOfSize:btnSize];
     [_button setTitle:btnTitle forState:UIControlStateNormal];
 }
 

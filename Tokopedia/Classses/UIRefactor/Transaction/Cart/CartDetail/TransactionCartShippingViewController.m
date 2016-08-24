@@ -33,6 +33,8 @@
 #import "RequestEditAddress.h"
 #import "RequestAddAddress.h"
 
+#import "Errors.h"
+
 #define TAG_PICKER_ALERT_INSURANCE 10
 
 @import GoogleMaps;
@@ -149,6 +151,11 @@
     }
         
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(editInsurance:) name:EDIT_CART_INSURANCE_POST_NOTIFICATION_NAME object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(showError:)
+                                                 name:@"ShowErrorMessageOnShippingPage"
+                                               object:nil];
     
     _isFirstLoad = YES;
 
@@ -1459,6 +1466,18 @@
     [_pinLocationNameButton setCustomAttributedText:name];
     _isFinishCalculate = YES;
     [_tableView reloadData];
+}
+
+- (void)showError:(NSNotification *)notification {
+    NSDictionary *userInfo = [notification userInfo];
+    Errors *error = [userInfo objectForKey:@"errors"];
+    
+    [UIViewController showNotificationWithMessage:[NSString stringWithFormat:@"%@\n\n%@", error.title, error.desc]
+                                             type:0
+                                         duration:4.0
+                                      buttonTitle:nil
+                                      dismissable:YES
+                                           action:nil];
 }
 
 @end

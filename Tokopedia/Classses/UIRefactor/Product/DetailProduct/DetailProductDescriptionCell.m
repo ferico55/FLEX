@@ -48,7 +48,7 @@
 - (void)updateLabel
 {
 
-    UIFont *font = [UIFont fontWithName:@"GothamBook" size:13];
+    UIFont *font = [UIFont smallTheme];
     
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 6.0;

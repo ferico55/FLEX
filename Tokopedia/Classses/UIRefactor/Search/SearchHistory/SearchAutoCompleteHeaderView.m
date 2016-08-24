@@ -17,12 +17,12 @@
         [self setBackgroundColor:[UIColor colorWithWhite:0.85 alpha:1.0f]];
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
         [self addSubview:label];
-        label.font = [UIFont smallThemeMedium];
+        [label setFont:[UIFont title2ThemeMedium]];
         
         UIButton *deleteButton = [[UIButton alloc] initWithFrame:CGRectZero];
         [self addSubview:deleteButton];
         [deleteButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
-        deleteButton.titleLabel.font = [UIFont microThemeMedium];
+        [deleteButton.titleLabel setFont:[UIFont microThemeMedium]];
         [deleteButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentRight];
         
         _deleteButton = deleteButton;

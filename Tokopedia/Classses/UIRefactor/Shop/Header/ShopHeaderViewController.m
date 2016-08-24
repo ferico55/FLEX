@@ -472,7 +472,7 @@
 //        _descriptionView.badgeImageView.hidden = NO;
     }
     
-    UIFont *font = [UIFont fontWithName:@"GothamBook" size:13];
+    UIFont *font = [UIFont largeTheme];
     
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 6.0;

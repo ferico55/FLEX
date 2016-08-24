@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -21,6 +21,7 @@
                 <outlet property="fourButtonsToolbar" destination="a9N-KR-7yR" id="ZME-fD-IjR"/>
                 <outlet property="threeButtonsToolbar" destination="f2G-rW-SNO" id="zn1-Lt-i1I"/>
                 <outlet property="toolbarView" destination="1AR-6H-D7f" id="7cg-Qn-miI"/>
+                <outlet property="tryAgainButton" destination="1lw-in-mCe" id="UA6-oT-3oN"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outletCollection property="imageSearchToolbarButtons" destination="QwR-go-OC6" id="BNk-KN-RfI"/>
                 <outletCollection property="imageSearchToolbarButtons" destination="gge-oQ-vhl" id="nTq-iq-58j"/>
@@ -469,6 +470,29 @@
                         <outlet property="delegate" destination="-1" id="NJU-Eu-0ja"/>
                     </connections>
                 </collectionView>
+                <button hidden="YES" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1lw-in-mCe">
+                    <rect key="frame" x="86" y="45" width="150" height="28"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="150" id="eHQ-qG-qXE"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                    <color key="tintColor" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
+                    <state key="normal" title="Coba Kembali"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="5"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                            <real key="value" value="1"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                            <color key="value" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="didTapTryAgainButton:" destination="-1" eventType="touchUpInside" id="JU1-zs-GW3"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
@@ -478,6 +502,7 @@
                 <constraint firstAttribute="bottom" secondItem="a9N-KR-7yR" secondAttribute="bottom" id="Hyv-H1-ox6"/>
                 <constraint firstItem="wUv-gY-Tcb" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="Mju-0l-lR8"/>
                 <constraint firstAttribute="bottom" secondItem="1AR-6H-D7f" secondAttribute="bottom" id="N2Y-G5-76i"/>
+                <constraint firstItem="1lw-in-mCe" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="Nqe-Mk-jWS"/>
                 <constraint firstItem="a9N-KR-7yR" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Oae-b8-1eK"/>
                 <constraint firstItem="1AR-6H-D7f" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="SGm-FI-5UZ"/>
                 <constraint firstAttribute="trailing" secondItem="f2G-rW-SNO" secondAttribute="trailing" id="Wc6-Vs-cuJ"/>
@@ -487,6 +512,7 @@
                 <constraint firstAttribute="trailing" secondItem="wUv-gY-Tcb" secondAttribute="trailing" id="dKZ-Wg-4mu"/>
                 <constraint firstItem="f2G-rW-SNO" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="jyB-2k-W12"/>
                 <constraint firstItem="f2G-rW-SNO" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="qr2-iH-mQP"/>
+                <constraint firstItem="1lw-in-mCe" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="45" id="z4Q-Cb-OJ3"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
         </view>

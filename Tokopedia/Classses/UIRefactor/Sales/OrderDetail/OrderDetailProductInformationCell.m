@@ -10,7 +10,6 @@
 
 @implementation OrderDetailProductInformationCell
 
-static CGFloat messageTextSize = 14.0;
 static CGFloat textMarginVertical = 40.0f;
 
 - (void)awakeFromNib {
@@ -30,7 +29,7 @@ static CGFloat textMarginVertical = 40.0f;
 
 + (CGSize)messageSize:(NSString*)message {
     message = [message stringByAppendingString:@"\n"];
-    return [message sizeWithFont:[UIFont systemFontOfSize:messageTextSize]
+    return [message sizeWithFont:[UIFont largeTheme]
                constrainedToSize:CGSizeMake([self maxTextWidth], CGFLOAT_MAX)
                    lineBreakMode:NSLineBreakByWordWrapping];
 }

@@ -9,8 +9,7 @@
 #import "MainViewController.h"
 #import "LoginViewController.h"
 #import "SearchViewController.h"
-#import "TransactionCartRootViewController.h"
-#import "MoreNavigationController.h"
+#import "TransactionCartRootViewController.h"   
 #import "MoreViewController.h"
 #import "CategoryViewController.h"
 
@@ -332,10 +331,6 @@ typedef enum TagRequest {
         }
     }
     else{
-//        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
-//        MoreNavigationController *moreNavController = [storyboard instantiateViewControllerWithIdentifier:@"MoreNavigationViewController"];
-//        moreNavBar = moreNavController;
-        
         MoreWrapperViewController *controller = [[MoreWrapperViewController alloc] init];
         moreNavBar = [[UINavigationController alloc] initWithRootViewController:controller];
     }
@@ -350,6 +345,7 @@ typedef enum TagRequest {
         search.extendedLayoutIncludesOpaqueBars = YES;
         cart.extendedLayoutIncludesOpaqueBars = YES;
         moreNavBar.extendedLayoutIncludesOpaqueBars = YES;
+        [moreNavBar.navigationBar setTranslucent:NO];
     }
     
     NSArray* controllers = [NSArray arrayWithObjects:swipevcNav, categoryNavBar, searchNavBar, cartNavBar, moreNavBar, nil];
@@ -484,9 +480,6 @@ typedef enum TagRequest {
         [[_tabBarController.viewControllers objectAtIndex:3] tabBarItem].badgeValue = nil;
     }
     else{
-//        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
-//        MoreNavigationController *moreNavController = [storyboard instantiateViewControllerWithIdentifier:@"MoreNavigationViewController"];
-//        moreNavBar = moreNavController;
         MoreWrapperViewController *controller = [[MoreWrapperViewController alloc] init];
         moreNavBar = [[UINavigationController alloc] initWithRootViewController:controller];
         
@@ -510,9 +503,6 @@ typedef enum TagRequest {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"doRefreshingCart" object:nil userInfo:nil];
     
     NSMutableArray *newControllers = [NSMutableArray arrayWithArray:_tabBarController.viewControllers];
-
-//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
-//    MoreNavigationController *moreNavController = [storyboard instantiateViewControllerWithIdentifier:@"MoreNavigationViewController"];
     
     MoreWrapperViewController *controller = [[MoreWrapperViewController alloc] init];
     UINavigationController *moreNavController = [[UINavigationController alloc] initWithRootViewController:controller];
@@ -756,7 +746,8 @@ typedef enum TagRequest {
 
 #pragma mark - Notification Observer Method
 - (void)forceLogout {
-    _persistToken = [_userManager getMyDeviceToken]; //token device from ios
+    // Need to use new UserAuthentificationManager becase the old one has wrong device token
+    _persistToken = [[UserAuthentificationManager new] getMyDeviceToken]; //token device from ios
     [self doApplicationLogout];
 }
 

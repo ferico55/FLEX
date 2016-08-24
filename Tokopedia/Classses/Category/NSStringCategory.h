@@ -30,4 +30,6 @@
 + (NSArray *)getStringsBetweenAhrefTagWithString:(NSString *)string;
 + (NSArray <NSString *> *)getLinksBetweenAhrefTagWithString:(NSString *)string;
 
++ (NSString *)joinStringsWithBullets:(NSArray *)strings;
+
 @end

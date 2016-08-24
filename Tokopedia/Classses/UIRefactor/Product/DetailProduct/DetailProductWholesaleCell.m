@@ -86,7 +86,7 @@
     if (indexPath.row == 0) {
         ((DetailProductWholesaleTableCell*)cell).quantity.text = @"Rentang Jumlah";
         ((DetailProductWholesaleTableCell*)cell).quantity.textColor = [UIColor lightGrayColor];
-        ((DetailProductWholesaleTableCell*)cell).price.text = @"Harga per barang";
+        ((DetailProductWholesaleTableCell*)cell).price.text = @"Harga per Barang";
         ((DetailProductWholesaleTableCell*)cell).price.textColor = [UIColor lightGrayColor];
     } else {
         WholesalePrice *wholesale = _wholesales[indexPath.row-1];

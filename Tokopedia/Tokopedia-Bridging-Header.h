@@ -81,6 +81,8 @@
 #import "CatalogAddProduct.h"
 #import "GeneralAction.h"
 #import "AddProductValidation.h"
+#import "CustomNotificationView.h"
+#import "NSString+HTML.h"
 
 #import "StickyAlertView+NetworkErrorHandler.h"
 #import <APAddressBook/APAddressBook-Bridging.h>
@@ -96,3 +98,5 @@
 #import "TKPHomeBannerStore.h"
 #import "TKPStoreManager.h"
 
+#import "StickyAlertView+NetworkErrorHandler.h"
+#import "UIFont+Theme.h"

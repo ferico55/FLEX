@@ -20,6 +20,7 @@
 #import <AppsFlyer/AppsFlyer.h>
 #import "ActivationRequest.h"
 #import "Tokopedia-Swift.h"
+#import "TTTAttributedLabel.h"
 
 @interface CreatePasswordViewController ()
 <
@@ -49,6 +50,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *signupButton;
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicatorView;
+@property (strong, nonatomic) IBOutlet TTTAttributedLabel *agreementLabel;
 
 @end
 
@@ -70,22 +72,6 @@
                                                                   target:nil
                                                                   action:nil];
     self.navigationItem.backBarButtonItem = backButton;
-    
-    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 4.0;
-
-    NSMutableParagraphStyle *descriptionStyle = [[NSMutableParagraphStyle alloc] init];
-    descriptionStyle.lineSpacing = 4.0;
-    descriptionStyle.alignment = NSTextAlignmentCenter;
-    
-    NSDictionary *descriptionAttributes = @{
-        NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:11],
-        NSParagraphStyleAttributeName  : descriptionStyle,
-        NSForegroundColorAttributeName : [UIColor colorWithRed:117.0/255.0 green:117.0/255.0 blue:117.0/255.0 alpha:1],
-    };
-
-    _descriptionLabel.attributedText = [[NSAttributedString alloc] initWithString:_descriptionLabel.text
-                                                                       attributes:descriptionAttributes];
     
     _fullNameTextField.isTopRoundCorner = YES;
     _phoneNumberTextField.isBottomRoundCorner = YES;
@@ -121,7 +107,43 @@
              object:nil];
     
     _activationRequest = [ActivationRequest new];
+    
+    [self setupTermsAndConditionLabel];
 }
+
+- (void)setupTermsAndConditionLabel {
+    _agreementLabel.enabledTextCheckingTypes = NSTextCheckingTypeLink;
+    
+    _agreementLabel.linkAttributes = @{
+                                       (id)kCTForegroundColorAttributeName: [UIColor colorWithRed:10.0/255
+                                                                                            green:126.0/255
+                                                                                             blue:7.0/255
+                                                                                            alpha:1],
+                                       NSFontAttributeName: [UIFont smallThemeMedium],
+                                       NSUnderlineStyleAttributeName: @(NSUnderlineStyleNone)
+                                       };
+    
+    TTTAttributedLabelLink *agreementLink = [_agreementLabel addLinkToURL:[NSURL URLWithString:@""]
+                                                                withRange:NSMakeRange(32, 20)];
+    
+    agreementLink.linkTapBlock = ^(TTTAttributedLabel *label, TTTAttributedLabelLink *link) {
+        WebViewController *webViewController = [WebViewController new];
+        webViewController.strTitle = @"Syarat & Ketentuan";
+        webViewController.strURL = @"https://m.tokopedia.com/terms.pl";
+        [self.navigationController pushViewController:webViewController animated:YES];
+    };
+    
+    TTTAttributedLabelLink *privacyLink = [_agreementLabel addLinkToURL:[NSURL URLWithString:@""]
+                                                              withRange:NSMakeRange(59, 17)];
+    
+    privacyLink.linkTapBlock = ^(TTTAttributedLabel *label, TTTAttributedLabelLink *link) {
+        WebViewController *webViewController = [WebViewController new];
+        webViewController.strTitle = @"Kebijakan Privasi";
+        webViewController.strURL = @"https://m.tokopedia.com/privacy.pl";
+        [self.navigationController pushViewController:webViewController animated:YES];
+    };
+}
+
 
 - (void)setFacebookUserData:(NSDictionary *)facebookUserData {
     _userProfile = [CreatePasswordUserProfile fromFacebook:facebookUserData];
@@ -292,20 +314,6 @@
             _agreementButton.selected = YES;
         }
     }
-}
-
-- (IBAction)tapTerms:(id)sender {
-    WebViewController *webViewController = [WebViewController new];
-    webViewController.strTitle = @"Syarat & Ketentuan";
-    webViewController.strURL = @"https://m.tokopedia.com/terms.pl";
-    [self.navigationController pushViewController:webViewController animated:YES];
-}
-
-- (IBAction)tapPrivacy:(id)sender {
-    WebViewController *webViewController = [WebViewController new];
-    webViewController.strTitle = @"Kebijakan Privasi";
-    webViewController.strURL = @"https://m.tokopedia.com/privacy.pl";
-    [self.navigationController pushViewController:webViewController animated:YES];
 }
 
 #pragma mark - Restkit

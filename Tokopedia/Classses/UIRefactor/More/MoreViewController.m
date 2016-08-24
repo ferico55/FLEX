@@ -62,7 +62,6 @@
 
 #import "UIActivityViewController+Extensions.h"
 #import "MoreWrapperViewController.h"
-#import "MoreNavigationController.h"
 
 #import "DepositRequest.h"
 
@@ -868,8 +867,11 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
         
         //prevent changing table frame from setStatusBarHidden
         _defaultTableFrame = self.tableView.frame;
-        [self presentViewController:emailController animated:YES completion:^() {
-            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+        [self.wrapperViewController.navigationController presentViewController:emailController animated:YES completion:^{
+            //pakai dispatch async, sebab di iOS7 dengan device model lama, terkadang status bar nya tidak segera hide
+            dispatch_async(dispatch_get_main_queue(), ^{
+                 [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+            });
         }];
     } else {
         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Kamu harus memiliki email apabila ingin mengirimkan kritik dan saran aplikasi."]
@@ -980,7 +982,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
 
 #pragma mark - Email delegate
 - (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
-    [self dismissViewControllerAnimated:YES completion:^() {
+    [self.wrapperViewController.navigationController dismissViewControllerAnimated:YES completion:^() {
         [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
         
         //undesired changes from tableview frame when setStatusBarHidden

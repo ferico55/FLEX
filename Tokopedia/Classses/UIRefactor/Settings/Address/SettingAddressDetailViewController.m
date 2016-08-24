@@ -298,7 +298,7 @@
                 
                 //Calculate the expected size based on the font and linebreak mode of your label
                 CGSize maximumLabelSize = CGSizeMake(190,9999);
-                CGSize expectedLabelSize = [string sizeWithFont:FONT_GOTHAM_BOOK_16
+                CGSize expectedLabelSize = [string sizeWithFont:[UIFont title1Theme]
                                               constrainedToSize:maximumLabelSize
                                                   lineBreakMode:NSLineBreakByTruncatingTail];
                 return 40+expectedLabelSize.height;

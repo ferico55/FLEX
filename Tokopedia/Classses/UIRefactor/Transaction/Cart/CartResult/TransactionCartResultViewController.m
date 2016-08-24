@@ -22,8 +22,9 @@
 #import "GalleryViewController.h"
 
 #import "Localytics.h"
+#import "TTTAttributedLabel.h"
 
-@interface TransactionCartResultViewController ()<UITableViewDataSource, UITableViewDelegate,GalleryViewControllerDelegate,GalleryPhotoDelegate, PaymentCellDelegate>
+@interface TransactionCartResultViewController ()<UITableViewDataSource, UITableViewDelegate,GalleryViewControllerDelegate,GalleryPhotoDelegate, PaymentCellDelegate, TTTAttributedLabelDelegate>
 {
     NSMutableArray *_listSystemBank;
     NSMutableArray *_listTotalPayment;
@@ -53,7 +54,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *footerLabel;
 @property (strong, nonatomic) IBOutlet UIView *paymentStatusView;
 @property (weak, nonatomic) IBOutlet UIButton *paymentStatusButton;
-@property (weak, nonatomic) IBOutlet UILabel *contactUsLabel;
+@property (weak, nonatomic) IBOutlet TTTAttributedLabel *contactUsLabel;
 @property (strong, nonatomic) IBOutlet UIView *indomaretStepsView;
 @property (weak, nonatomic) IBOutlet UITextView *footerNotes;
 @property (strong, nonatomic) IBOutlet UIView *headerViewIndomaret;
@@ -303,13 +304,6 @@
         vc.action = @"get_tx_order_status";
         vc.viewControllerTitle = @"Status Pemesanan";
         [self.navigationController pushViewController:vc animated:YES];
-    }
-    else
-    {
-        WebViewController *webViewController = [WebViewController new];
-        webViewController.strURL = kTKPDMORE_HELP_URL;
-        webViewController.strTitle = kTKPDMORE_HELP_TITLE;
-        [self.navigationController pushViewController:webViewController animated:YES];
     }
 }
 
@@ -719,21 +713,13 @@
 #pragma mark - Footer View Methods
 -(void)adjustFooterPurchaseStatus
 {
-    NSString *string = @"Silahkan menghubungi kami apabila Anda mengalami kesulitan.";
-    NSMutableAttributedString *title = [[NSMutableAttributedString alloc]initWithString:string];
-    UIFont *font = FONT_GOTHAM_BOOK_11;
-    [title addAttribute:NSFontAttributeName value:font range:NSMakeRange(0, title.length)];
+    _contactUsLabel.enabledTextCheckingTypes = NSTextCheckingTypeLink;
+    _contactUsLabel.delegate = self;
     
-    //add color
-    [title addAttribute:NSForegroundColorAttributeName
-                  value:[UIColor colorWithRed:0.0/255.0 green:122.0/255.0 blue:255.0/255.0 alpha:1]
-                  range:[string rangeOfString:@"menghubungi kami"]];
-    
-    //add alignment
-    [title addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, title.length)];
-    
-    _contactUsLabel.attributedText = title;
-    
+    _contactUsLabel.text = @"Silakan menghubungi kami apabila Anda mengalami kesulitan.";
+    NSRange range = [_contactUsLabel.text rangeOfString:@"menghubungi kami"];
+    _contactUsLabel.linkAttributes = @{(id)kCTForegroundColorAttributeName : [UIColor colorWithRed:0.0/255.0 green:122.0/255.0 blue:255.0/255.0 alpha:1], NSUnderlineStyleAttributeName: @(NSUnderlineStyleNone)};
+    [_contactUsLabel addLinkToURL:[NSURL URLWithString:kTKPDMORE_HELP_URL] withRange:range];
 }
 
 -(void)adjustFooterPaymentConfirmation
@@ -875,6 +861,17 @@
     _isExpanding = !_isExpanding;
     
     [_tableView reloadData];
+}
+
+# pragma mark - TTTAttributedLabel Delegate 
+
+- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url {
+    if ([url.absoluteString  isEqual: kTKPDMORE_HELP_URL]) {
+        WebViewController *webViewController = [WebViewController new];
+        webViewController.strURL = kTKPDMORE_HELP_URL;
+        webViewController.strTitle = kTKPDMORE_HELP_TITLE;
+        [self.navigationController pushViewController:webViewController animated:YES];
+    }
 }
 
 @end
