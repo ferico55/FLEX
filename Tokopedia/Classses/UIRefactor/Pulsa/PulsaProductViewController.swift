@@ -25,7 +25,10 @@ class PulsaProductViewController: UIViewController, UITableViewDelegate, UITable
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Pilih Nominal"
-
+        
+        self.tableView.rowHeight = UITableViewAutomaticDimension
+        self.tableView.estimatedRowHeight = 68
+        
         self.tableView.registerNib(UINib(nibName: "PulsaProductCell", bundle: nil), forCellReuseIdentifier: "PulsaProductCellId")
     }
     
@@ -38,6 +41,12 @@ class PulsaProductViewController: UIViewController, UITableViewDelegate, UITable
         
         let product = self.products[indexPath.row]
         cell.productName.text = product.attributes.desc
+        if(product.attributes.detail == "") {
+            cell.descriptionHeightConstraint.constant = 10
+        } else {
+            cell.descriptionHeightConstraint.constant = 50
+        }
+        
         cell.productDesc.text = product.attributes.detail
         cell.productStatus.layer.masksToBounds = true
         
@@ -64,9 +73,9 @@ class PulsaProductViewController: UIViewController, UITableViewDelegate, UITable
         return cell
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 98
-    }
+//    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+//        return 98
+//    }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         self.didSelectProduct!(products[indexPath.row])
