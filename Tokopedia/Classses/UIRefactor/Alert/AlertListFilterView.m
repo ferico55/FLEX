@@ -29,7 +29,7 @@
 
 
     UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, tableView.frame.size.width-20, cell.frame.size.height)];
-    label.font = FONT_GOTHAM_BOOK_13;
+    label.font = [UIFont title1Theme];
     label.textAlignment = NSTextAlignmentCenter;
     [label setCustomAttributedText: _list[indexPath.row]];
     [cell.contentView addSubview:label];
