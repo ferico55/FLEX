@@ -334,20 +334,8 @@
                                      [NSString convertHTML:list.address_street], list.district_name, list.city_name,
                                      list.province_name, list.country_name, list.postal_code];
                 
-                UIFont *font = [UIFont fontWithName:@"GothamBook" size:14];
-                
-                NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-                style.lineSpacing = 6.0;
-                
-                NSDictionary *attributes = @{NSForegroundColorAttributeName: [UIColor blackColor],
-                                             NSFontAttributeName: font,
-                                             NSParagraphStyleAttributeName: style,
-                                             };
-                
-                NSAttributedString *addressAttributedText = [[NSAttributedString alloc] initWithString:address
-                                                                                                attributes:attributes];
-                
-                ((SettingAddressExpandedCell*)cell).addressLabel.attributedText = addressAttributedText;
+                ((SettingAddressExpandedCell*)cell).addressLabel.text = address;
+                ((SettingAddressExpandedCell*)cell).addressLabel.font = [UIFont largeTheme];
                 ((SettingAddressExpandedCell*)cell).phoneLabel.text = list.receiver_phone;
             }
         }
