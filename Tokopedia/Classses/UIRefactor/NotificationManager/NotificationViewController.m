@@ -192,7 +192,7 @@
     NSInteger numberOfRows = 0;
     switch (section) {
         case 0:
-            numberOfRows = 6;
+            numberOfRows = 5;
             break;
             
         case 1:
@@ -408,13 +408,6 @@
             }
             case 3:
             {
-                AlertPriceNotificationViewController *alertPriceNotificationViewController = [AlertPriceNotificationViewController new];
-                alertPriceNotificationViewController.hidesBottomBarWhenPushed = YES;
-                [self.delegate pushViewController:alertPriceNotificationViewController];
-                break;
-            }
-            case 4:
-            {
                 if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
                     InboxTicketSplitViewController *controller = [InboxTicketSplitViewController new];
                     
@@ -444,7 +437,7 @@
                 break;
             }
                 
-            case 5 : {
+            case 4 : {
                 if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
                     InboxResolSplitViewController *controller = [InboxResolSplitViewController new];
                     controller.hidesBottomBarWhenPushed = YES;
