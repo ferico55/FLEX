@@ -33,6 +33,7 @@
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
         [self.productImage setContentMode:UIViewContentModeScaleAspectFill];
         [self.productImage setImage:image];
+#pragma clang diagnostic pop
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
         [self.productImage setImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"]];
     }];
