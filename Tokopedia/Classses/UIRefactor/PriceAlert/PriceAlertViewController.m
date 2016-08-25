@@ -8,7 +8,6 @@
 #import "CatalogViewController.h"
 #import "CatalogInfo.h"
 #import "DetailProductViewController.h"
-#import "DetailPriceAlertViewController.h"
 #import "DetailPriceAlert.h"
 #import "GeneralAction.h"
 #import "PriceAlertViewController.h"
