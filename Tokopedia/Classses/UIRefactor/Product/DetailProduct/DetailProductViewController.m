@@ -18,7 +18,6 @@
 #import "ProductReputationViewController.h"
 #import "CMPopTipView.h"
 #import "LabelMenu.h"
-#import "AlertPriceNotificationViewController.h"
 #import "PriceAlertViewController.h"
 #import "GalleryViewController.h"
 #import "detail.h"
