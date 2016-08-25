@@ -118,6 +118,9 @@ NoResultDelegate
 {
     [super viewDidLoad];
     
+    _tableView.estimatedRowHeight = 86;
+    _tableView.rowHeight = UITableViewAutomaticDimension;
+    
     _isNeedToSearch = YES;
     
     _products = [NSMutableArray new];
