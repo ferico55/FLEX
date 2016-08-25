@@ -908,6 +908,17 @@ ImageSearchRequestDelegate
                                                                            presentedVC:self onCompletion:^(NSArray<CategoryDetail *> * selectedCategories , NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
                                                                                
            _selectedCategories = selectedCategories;
+                                                                               
+          // if search result is category result, then if filter is being added, change the navigation title
+          for (ListFilter *filter in _filterResponse.filter){
+              if ([filter.title  isEqual: @"Kategori"]){
+                  if (filter.isMultipleSelect == NO) {
+                      NSLog(@"%@", [selectedCategories objectAtIndex: 0].name );
+                      [self.tkpdTabNavigationController setNavigationTitle: [selectedCategories objectAtIndex: 0].name];
+                  }
+              }
+          }
+                                                                               
            _selectedFilters = selectedFilters;
            _selectedFilterParam = paramFilters;
            [self showFilterIsActive:[self hasSelectedFilterOrCategory]];
