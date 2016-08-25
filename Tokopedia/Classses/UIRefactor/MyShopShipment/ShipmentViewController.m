@@ -409,7 +409,7 @@
         } else {
             coordinate = CLLocationCoordinate2DMake(0, 0);
         }
-        [NavigateViewController navigateToMap:coordinate type:TypeEditPlace fromViewController:self];
+        [NavigateViewController navigateToMap:coordinate type:TypePlacePickerTypeEditPlace fromViewController:self];
     } else if ([self showsCourierAdditionalOptionAtIndexPath:indexPath]) {
         ShipmentCourierData *courier = [self courierAtIndexPath:indexPath];
         ShipmentWebViewController *controller = [ShipmentWebViewController new];

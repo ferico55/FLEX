@@ -1603,8 +1603,6 @@
 		7A3083E51D6DA92B00EB8536 /* ProductTalkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A3078E31D6DA92500EB8536 /* ProductTalkViewController.m */; };
 		7A3083E61D6DA92B00EB8536 /* InfoAddressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3078E51D6DA92500EB8536 /* InfoAddressView.swift */; };
 		7A3083E71D6DA92B00EB8536 /* InfoAddressView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A3078E61D6DA92500EB8536 /* InfoAddressView.xib */; };
-		7A3083E81D6DA92B00EB8536 /* PlacePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A3078E81D6DA92500EB8536 /* PlacePickerViewController.m */; };
-		7A3083E91D6DA92B00EB8536 /* PlacePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A3078E91D6DA92500EB8536 /* PlacePickerViewController.xib */; };
 		7A3083EA1D6DA92B00EB8536 /* TKPInfoWindowMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3078EA1D6DA92500EB8536 /* TKPInfoWindowMapView.swift */; };
 		7A3083EB1D6DA92B00EB8536 /* TKPInfoWindowMapView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A3078EB1D6DA92500EB8536 /* TKPInfoWindowMapView.xib */; };
 		7A3083EC1D6DA92B00EB8536 /* TKPMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3078EC1D6DA92500EB8536 /* TKPMapView.swift */; };
@@ -5347,9 +5345,6 @@
 		7A3078E31D6DA92500EB8536 /* ProductTalkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductTalkViewController.m; sourceTree = "<group>"; };
 		7A3078E51D6DA92500EB8536 /* InfoAddressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoAddressView.swift; sourceTree = "<group>"; };
 		7A3078E61D6DA92500EB8536 /* InfoAddressView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InfoAddressView.xib; sourceTree = "<group>"; };
-		7A3078E71D6DA92500EB8536 /* PlacePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlacePickerViewController.h; sourceTree = "<group>"; };
-		7A3078E81D6DA92500EB8536 /* PlacePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlacePickerViewController.m; sourceTree = "<group>"; };
-		7A3078E91D6DA92500EB8536 /* PlacePickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlacePickerViewController.xib; sourceTree = "<group>"; };
 		7A3078EA1D6DA92500EB8536 /* TKPInfoWindowMapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TKPInfoWindowMapView.swift; sourceTree = "<group>"; };
 		7A3078EB1D6DA92500EB8536 /* TKPInfoWindowMapView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TKPInfoWindowMapView.xib; sourceTree = "<group>"; };
 		7A3078EC1D6DA92500EB8536 /* TKPMapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TKPMapView.swift; sourceTree = "<group>"; };
@@ -11447,9 +11442,6 @@
 			children = (
 				7A3078E51D6DA92500EB8536 /* InfoAddressView.swift */,
 				7A3078E61D6DA92500EB8536 /* InfoAddressView.xib */,
-				7A3078E71D6DA92500EB8536 /* PlacePickerViewController.h */,
-				7A3078E81D6DA92500EB8536 /* PlacePickerViewController.m */,
-				7A3078E91D6DA92500EB8536 /* PlacePickerViewController.xib */,
 				7A3078EA1D6DA92500EB8536 /* TKPInfoWindowMapView.swift */,
 				7A3078EB1D6DA92500EB8536 /* TKPInfoWindowMapView.xib */,
 				7A3078EC1D6DA92500EB8536 /* TKPMapView.swift */,
@@ -13822,7 +13814,6 @@
 				7A3086161D6DA92C00EB8536 /* icon_netral20.png in Resources */,
 				7A3085BE1D6DA92C00EB8536 /* icon_grid_satu@2x.png in Resources */,
 				7A30823E1D6DA92B00EB8536 /* CourierViewCell.xib in Resources */,
-				7A3083E91D6DA92B00EB8536 /* PlacePickerViewController.xib in Resources */,
 				7ACE9C541BB00956006C4BB7 /* FacebookSDKStrings.bundle in Resources */,
 				7A3085F31D6DA92C00EB8536 /* icon_medal_diamond@2x.png in Resources */,
 				7A3084CA1D6DA92C00EB8536 /* icon_1@2x.png in Resources */,
@@ -15690,7 +15681,6 @@
 				7A30839E1D6DA92B00EB8536 /* EditShopDescriptionViewCell.m in Sources */,
 				7A307EA11D6DA92B00EB8536 /* InboxTicketDetailAttachment.m in Sources */,
 				7A307F831D6DA92B00EB8536 /* ShippingInfoResult.m in Sources */,
-				7A3083E81D6DA92B00EB8536 /* PlacePickerViewController.m in Sources */,
 				7A30842B1D6DA92B00EB8536 /* TransactionObjectMapping.m in Sources */,
 				7A307FC21D6DA92B00EB8536 /* TransactionVoucherData.m in Sources */,
 				7A307E011D6DA92B00EB8536 /* AddressProvince.m in Sources */,

@@ -15,7 +15,6 @@
 #import "AddressViewController.h"
 #import "TKPDTextView.h"
 #import "TokopediaNetworkManager.h"
-#import "PlacePickerViewController.h"
 #import "NavigateViewController.h"
 #import "RequestObject.h"
 #import "Tokopedia-Swift.h"
@@ -30,7 +29,6 @@
     UITextFieldDelegate,
     UITextViewDelegate,
     TokopediaNetworkManagerDelegate,
-    PlacePickerDelegate,
     TKPPlacePickerDelegate
 >
 {
@@ -359,7 +357,7 @@
 //    address.address_street = @"Wisma 77 Tower 2 Gang Keluarga 37B-1C blbablablablalbab hahahahah hihihihi \nKemanggisan, Palmerah Kebon Jeruk \nJakarta Barat, Indonesia 12345";
 //    address.receiver_name = @"Orang Keren";
 //    address.receiver_phone = @"0812345678";
-    [NavigateViewController navigateToMap:CLLocationCoordinate2DMake([_latitude doubleValue], [_longitude doubleValue]) type:TypeEditPlace infoAddress:address.viewModel fromViewController:self ];
+    [NavigateViewController navigateToMap:CLLocationCoordinate2DMake([_latitude doubleValue], [_longitude doubleValue]) type:TypePlacePickerTypeEditPlace infoAddress:address.viewModel fromViewController:self ];
 }
 //
 

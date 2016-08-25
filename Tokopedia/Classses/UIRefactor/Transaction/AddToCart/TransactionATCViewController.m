@@ -16,7 +16,6 @@
 #import "SettingAddressEditViewController.h"
 #import "GeneralTableViewController.h"
 #import "TransactionShipmentATCTableViewController.h"
-#import "PlacePickerViewController.h"
 #import "NavigateViewController.h"
 #import "RequestATC.h"
 #import "TPLocalytics.h"
@@ -218,7 +217,7 @@ typedef enum
 
 - (IBAction)tapPinLocationButton:(id)sender {
     AddressFormList *address = _selectedAddress;
-    [NavigateViewController navigateToMap:CLLocationCoordinate2DMake([_selectedAddress.latitude doubleValue]?:0, [_selectedAddress.longitude doubleValue]?:0) type:TypeEditPlace infoAddress:address.viewModel fromViewController:self];
+    [NavigateViewController navigateToMap:CLLocationCoordinate2DMake([_selectedAddress.latitude doubleValue]?:0, [_selectedAddress.longitude doubleValue]?:0) type:TypePlacePickerTypeEditPlace infoAddress:address.viewModel fromViewController:self];
 }
 
 #pragma mark - Picker Place Delegate
@@ -735,7 +734,7 @@ typedef enum
             }
             case TAG_BUTTON_TRANSACTION_PIN_LOCATION:
             {
-                [NavigateViewController navigateToMap:CLLocationCoordinate2DMake([_selectedAddress.latitude doubleValue]?:0, [_selectedAddress.longitude doubleValue]?:0) type:TypeEditPlace infoAddress:address.viewModel fromViewController:self];
+                [NavigateViewController navigateToMap:CLLocationCoordinate2DMake([_selectedAddress.latitude doubleValue]?:0, [_selectedAddress.longitude doubleValue]?:0) type:TypePlacePickerTypeEditPlace infoAddress:address.viewModel fromViewController:self];
                 break;
             }
             case TAG_BUTTON_TRANSACTION_SHIPPING_AGENT:
