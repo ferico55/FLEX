@@ -116,6 +116,9 @@
 {
     [super viewDidLoad];
     
+    _table.rowHeight = UITableViewAutomaticDimension;
+    _table.estimatedRowHeight = 44;
+    
     _section1Cells = [NSArray sortViewsWithTagInArray:_section1Cells];
 
     _datainput =[NSMutableDictionary new];
@@ -892,28 +895,6 @@
     sectionCount = (_type == TYPE_ADD_EDIT_PROFILE_ADD_NEW||_type == TYPE_ADD_EDIT_PROFILE_ATC||_type == TYPE_ADD_EDIT_PROFILE_EDIT_RESO || _type == TYPE_ADD_EDIT_PROFILE_ADD_RESO)?3:4;
     return sectionCount;
 }
-
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    switch (indexPath.section) {
-        case 0:
-            return [_section0Cells[indexPath.row] frame].size.height;
-            break;
-        case 1:
-            return [_section1Cells[indexPath.row] frame].size.height;
-            break;
-        case 2:
-            return [_section2Cells[indexPath.row] frame].size.height;
-            break;
-        case 3:
-            return [_section3Cells[indexPath.row] frame].size.height;
-            break;
-        default:
-            break;
-    }
-    return 0;
-}
-
 
 #pragma mark - TokopediaNetworkManager Delegate
 - (NSDictionary*)getParameter
