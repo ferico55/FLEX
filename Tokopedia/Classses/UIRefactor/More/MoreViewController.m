@@ -559,7 +559,7 @@
             break;
             
         case 4:
-            return 6;
+            return 5;
             break;
             
         case 5:
@@ -729,10 +729,6 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
             [self.navigationController pushViewController:nc animated:YES];
             */
         } else if (indexPath.row == 3) {
-            AlertPriceNotificationViewController *alertPriceNotificationViewController = [AlertPriceNotificationViewController new];
-            alertPriceNotificationViewController.hidesBottomBarWhenPushed = YES;
-            [wrapperController.navigationController pushViewController:alertPriceNotificationViewController animated:YES];
-        } else if (indexPath.row == 4) {
             if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
                 InboxTicketSplitViewController *controller = [InboxTicketSplitViewController new];
                 
@@ -759,7 +755,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
                 
                 [wrapperController.navigationController pushViewController:controller animated:YES];
             }
-        } else if (indexPath.row == 5) {
+        } else if (indexPath.row == 4) {
             if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
                 InboxResolSplitViewController *controller = [InboxResolSplitViewController new];
                 controller.hidesBottomBarWhenPushed = YES;
