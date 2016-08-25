@@ -69,6 +69,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_resource "GoogleAppIndexing/Resources/GoogleAppIndexingResources.bundle"
   install_resource "GoogleMaps/Frameworks/GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle"
   install_resource "GoogleSignIn/Resources/GoogleSignIn.bundle"
+  install_resource "LayoutKit/Assets"
   install_resource "${BUILT_PRODUCTS_DIR}/DownPicker.bundle"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
@@ -83,6 +84,7 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_resource "GoogleAppIndexing/Resources/GoogleAppIndexingResources.bundle"
   install_resource "GoogleMaps/Frameworks/GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle"
   install_resource "GoogleSignIn/Resources/GoogleSignIn.bundle"
+  install_resource "LayoutKit/Assets"
   install_resource "${BUILT_PRODUCTS_DIR}/DownPicker.bundle"
 fi
 

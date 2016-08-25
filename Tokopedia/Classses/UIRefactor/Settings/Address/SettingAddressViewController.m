@@ -338,6 +338,7 @@
                                      [NSString convertHTML:list.address_street], list.district_name, list.city_name,
                                      list.province_name, list.country_name, list.postal_code];
                 ((SettingAddressExpandedCell*)cell).addressLabel.text = address;
+                ((SettingAddressExpandedCell*)cell).addressLabel.font = [UIFont largeTheme];
                 ((SettingAddressExpandedCell*)cell).phoneLabel.text = list.receiver_phone;
             }
         }

@@ -11,7 +11,7 @@ import Foundation
 import GoogleMaps
 
 
-enum TypePlacePicker : Int{
+@objc public enum TypePlacePicker : Int{
     case TypeEditPlace
     case TypeShowPlace
 }
