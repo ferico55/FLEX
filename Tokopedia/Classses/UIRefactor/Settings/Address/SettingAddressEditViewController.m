@@ -114,6 +114,9 @@
 {
     [super viewDidLoad];
     
+    _table.rowHeight = UITableViewAutomaticDimension;
+    _table.estimatedRowHeight = 44;
+    
     _section1Cells = [NSArray sortViewsWithTagInArray:_section1Cells];
 
     _datainput =[NSMutableDictionary new];
@@ -554,20 +557,7 @@
         AddressFormList *list = [_data objectForKey:kTKPDPROFILE_DATAADDRESSKEY];
         _textfieldreceivername.text = list.receiver_name?:@"";
         _textfieldaddressname.text = list.address_name?:@"";
-
-        NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-        style.lineSpacing = 4.0;
-        
-        NSDictionary *attributes = @{
-                                     NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:14],
-                                     NSParagraphStyleAttributeName  : style,
-                                     NSForegroundColorAttributeName : [UIColor colorWithRed:117.0/255.0
-                                                                                      green:117.0/255.0
-                                                                                       blue:117.0/255.0
-                                                                                      alpha:1],
-                                     };
-        
-        _textviewaddress.attributedText = [[NSAttributedString alloc] initWithString:[NSString convertHTML:list.address_street] attributes:attributes];
+        _textviewaddress.text = [list.address_street kv_decodeHTMLCharacterEntities]?:@"";
 
         NSString *postalcode = list.postal_code?:@"";
         _textfieldpostcode.text = postalcode;
@@ -903,28 +893,6 @@
     sectionCount = (_type == TYPE_ADD_EDIT_PROFILE_ADD_NEW||_type == TYPE_ADD_EDIT_PROFILE_ATC||_type == TYPE_ADD_EDIT_PROFILE_EDIT_RESO || _type == TYPE_ADD_EDIT_PROFILE_ADD_RESO)?3:4;
     return sectionCount;
 }
-
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    switch (indexPath.section) {
-        case 0:
-            return [_section0Cells[indexPath.row] frame].size.height;
-            break;
-        case 1:
-            return [_section1Cells[indexPath.row] frame].size.height;
-            break;
-        case 2:
-            return [_section2Cells[indexPath.row] frame].size.height;
-            break;
-        case 3:
-            return [_section3Cells[indexPath.row] frame].size.height;
-            break;
-        default:
-            break;
-    }
-    return 0;
-}
-
 
 #pragma mark - TokopediaNetworkManager Delegate
 - (NSDictionary*)getParameter

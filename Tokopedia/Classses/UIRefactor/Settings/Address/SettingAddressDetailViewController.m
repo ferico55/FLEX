@@ -40,6 +40,7 @@
 @property (weak, nonatomic) IBOutlet UIView *viewdefault;
 @property (weak, nonatomic) IBOutlet UIView *viewsetasdefault;
 @property (weak, nonatomic) IBOutlet TKPMapView *mapview;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *mapViewHeight;
 
 
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section0Cells;
@@ -67,13 +68,16 @@
 {
     [super viewDidLoad];
     
+    _tableView.rowHeight = UITableViewAutomaticDimension;
+    _tableView.estimatedRowHeight = 44;
+    
     _section2Cells = [NSArray sortViewsWithTagInArray:_section2Cells];
     [self setDefaultData:_data];
     
     UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
                                                                       style:UIBarButtonItemStyleBordered
                                                                      target:self
-                                                                     action:@selector(tap:)];
+                                                                     action:nil];
     self.navigationItem.backBarButtonItem = backBarButton;
 
     UIBarButtonItem *editBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Edit"
@@ -207,12 +211,11 @@
         _viewdefault.hidden = !isdefault;
         _viewsetasdefault.hidden = isdefault;
         
-        //TODO:: Uncomment for showing map address
-
         if (![list.longitude isEqualToString:@""] && ![list.latitude isEqualToString:@""]) {
             [self mapPosition];
+        } else {
+            _mapViewHeight.constant = 0;
         }
-        //
     }
 }
 
@@ -269,52 +272,6 @@
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 5;
-}
-
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    AddressFormList *address = _address;
-
-    switch (indexPath.section) {
-        case 0:
-            return [_section0Cells[indexPath.row] frame].size.height;
-            break;
-        case 1:
-            return [_section1Cells[indexPath.row] frame].size.height;
-            break;
-        case 2:
-            if (indexPath.row == 1) {
-                //TODO:: Uncomment for showing map address
-                if (([address.longitude isEqualToString:@""] || !address.longitude) && ([address.latitude isEqualToString:@""] || !address.latitude)) {
-                    return 0;
-                }
-                else{
-                    return 194;
-                }
-                //
-            }
-            if (indexPath.row == 2) {
-                NSString *string = address.address_street;
-                
-                //Calculate the expected size based on the font and linebreak mode of your label
-                CGSize maximumLabelSize = CGSizeMake(190,9999);
-                CGSize expectedLabelSize = [string sizeWithFont:[UIFont title1Theme]
-                                              constrainedToSize:maximumLabelSize
-                                                  lineBreakMode:NSLineBreakByTruncatingTail];
-                return 40+expectedLabelSize.height;
-            }
-            return [_section2Cells[indexPath.row] frame].size.height;
-            break;
-        case 3:
-            return [_section3Cells[indexPath.row] frame].size.height;
-            break;
-        case 4:
-            return [_section4Cells[indexPath.row] frame].size.height;
-            break;
-        default:
-            break;
-    }
-    return 0;
 }
 
 //TODO:: Uncomment for showing map address

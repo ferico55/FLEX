@@ -127,6 +127,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    _table.rowHeight = UITableViewAutomaticDimension;
+    _table.estimatedRowHeight = 40;
+    
     _listTemp = [NSMutableArray new];
     
     CGRect screenRect = [[UIScreen mainScreen] bounds];
@@ -333,7 +337,6 @@
                 NSString *address = [NSString stringWithFormat:@"%@\n%@\n%@\n%@, %@ %@",
                                      [NSString convertHTML:list.address_street], list.district_name, list.city_name,
                                      list.province_name, list.country_name, list.postal_code];
-                
                 ((SettingAddressExpandedCell*)cell).addressLabel.text = address;
                 ((SettingAddressExpandedCell*)cell).addressLabel.font = [UIFont largeTheme];
                 ((SettingAddressExpandedCell*)cell).phoneLabel.text = list.receiver_phone;
@@ -356,27 +359,6 @@
 }
 
 #pragma mark - Table View Delegate
-
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (indexPath.row == 0) {
-        return 44;
-    } else {
-        AddressFormList *list = _list[indexPath.section];
-        
-        NSString *string = [NSString stringWithFormat:@"%@\n%@\n%@\n%@\n%@ %@",
-                            [NSString convertHTML:list.address_street], list.district_name, list.city_name,
-                            list.province_name, list.country_name, list.postal_code];
-        
-        //Calculate the expected size based on the font and linebreak mode of your label
-        CGSize maximumLabelSize = CGSizeMake(190,9999);
-        CGSize expectedLabelSize = [string sizeWithFont:FONT_GOTHAM_BOOK_16
-                                      constrainedToSize:maximumLabelSize
-                                          lineBreakMode:NSLineBreakByTruncatingTail];
-        return 243-35+expectedLabelSize.height;
-
-    }
-}
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
