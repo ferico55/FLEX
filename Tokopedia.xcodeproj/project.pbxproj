@@ -910,10 +910,6 @@
 		458D8C611D6ECFEC00417C75 /* FilterCategoryViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 458D7F861D6ECFE700417C75 /* FilterCategoryViewCell.xib */; };
 		458D8C621D6ECFEC00417C75 /* FilterCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 458D7F881D6ECFE700417C75 /* FilterCategoryViewController.m */; };
 		458D8C631D6ECFEC00417C75 /* CategoryDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 458D7F8B1D6ECFE700417C75 /* CategoryDataSource.m */; };
-		458D8C641D6ECFEC00417C75 /* CategoryMenuViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 458D7F8E1D6ECFE700417C75 /* CategoryMenuViewCell.m */; };
-		458D8C651D6ECFEC00417C75 /* CategoryMenuViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 458D7F8F1D6ECFE700417C75 /* CategoryMenuViewCell.xib */; };
-		458D8C661D6ECFEC00417C75 /* CategoryMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 458D7F911D6ECFE700417C75 /* CategoryMenuViewController.m */; };
-		458D8C671D6ECFEC00417C75 /* CategoryMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 458D7F921D6ECFE700417C75 /* CategoryMenuViewController.xib */; };
 		458D8C681D6ECFEC00417C75 /* CategoryResultViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 458D7F941D6ECFE700417C75 /* CategoryResultViewController.xib */; };
 		458D8C691D6ECFEC00417C75 /* RequestCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 458D7F961D6ECFE700417C75 /* RequestCategory.m */; };
 		458D8C6A1D6ECFEC00417C75 /* ContactUsCategoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 458D7F9A1D6ECFE700417C75 /* ContactUsCategoryCell.m */; };
@@ -4241,12 +4237,6 @@
 		458D7F891D6ECFE700417C75 /* category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = category.h; sourceTree = "<group>"; };
 		458D7F8A1D6ECFE700417C75 /* CategoryDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryDataSource.h; sourceTree = "<group>"; };
 		458D7F8B1D6ECFE700417C75 /* CategoryDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryDataSource.m; sourceTree = "<group>"; };
-		458D7F8D1D6ECFE700417C75 /* CategoryMenuViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryMenuViewCell.h; sourceTree = "<group>"; };
-		458D7F8E1D6ECFE700417C75 /* CategoryMenuViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryMenuViewCell.m; sourceTree = "<group>"; };
-		458D7F8F1D6ECFE700417C75 /* CategoryMenuViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CategoryMenuViewCell.xib; sourceTree = "<group>"; };
-		458D7F901D6ECFE700417C75 /* CategoryMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryMenuViewController.h; sourceTree = "<group>"; };
-		458D7F911D6ECFE700417C75 /* CategoryMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryMenuViewController.m; sourceTree = "<group>"; };
-		458D7F921D6ECFE700417C75 /* CategoryMenuViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CategoryMenuViewController.xib; sourceTree = "<group>"; };
 		458D7F941D6ECFE700417C75 /* CategoryResultViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CategoryResultViewController.xib; sourceTree = "<group>"; };
 		458D7F951D6ECFE700417C75 /* RequestCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestCategory.h; sourceTree = "<group>"; };
 		458D7F961D6ECFE700417C75 /* RequestCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestCategory.m; sourceTree = "<group>"; };
@@ -9550,12 +9540,6 @@
 		458D7F8C1D6ECFE700417C75 /* CategoryMenu */ = {
 			isa = PBXGroup;
 			children = (
-				458D7F8D1D6ECFE700417C75 /* CategoryMenuViewCell.h */,
-				458D7F8E1D6ECFE700417C75 /* CategoryMenuViewCell.m */,
-				458D7F8F1D6ECFE700417C75 /* CategoryMenuViewCell.xib */,
-				458D7F901D6ECFE700417C75 /* CategoryMenuViewController.h */,
-				458D7F911D6ECFE700417C75 /* CategoryMenuViewController.m */,
-				458D7F921D6ECFE700417C75 /* CategoryMenuViewController.xib */,
 			);
 			path = CategoryMenu;
 			sourceTree = "<group>";
@@ -13458,7 +13442,6 @@
 				458D92151D6ECFED00417C75 /* icon_toped_loading_grey-02.png in Resources */,
 				458D926A1D6ECFED00417C75 /* icon_location_14px.png in Resources */,
 				458D92681D6ECFED00417C75 /* icon_category_white.png in Resources */,
-				458D8C671D6ECFEC00417C75 /* CategoryMenuViewController.xib in Resources */,
 				458D90C91D6ECFEC00417C75 /* icon_DM_apps-1.png in Resources */,
 				458D91411D6ECFED00417C75 /* icon_neutral.png in Resources */,
 				458D91901D6ECFED00417C75 /* icon_questionmark_grey.png in Resources */,
@@ -14392,7 +14375,6 @@
 				458D92E61D6ECFED00417C75 /* icon_arrow_down_grey.png in Resources */,
 				458D928B1D6ECFED00417C75 /* onboarding_toped_1c.png in Resources */,
 				458D8D171D6ECFEC00417C75 /* InboxResolutionCenterComplainCell.xib in Resources */,
-				458D8C651D6ECFEC00417C75 /* CategoryMenuViewCell.xib in Resources */,
 				458D91981D6ECFED00417C75 /* icon_retur@2x.png in Resources */,
 				458D91361D6ECFED00417C75 /* icon_netral20.png in Resources */,
 				458D8EBB1D6ECFEC00417C75 /* OpenShopImageViewCell.xib in Resources */,
@@ -15463,7 +15445,6 @@
 				458D8B131D6ECFEC00417C75 /* TxOrderPaymentEditSystemBank.m in Sources */,
 				458D8DBF1D6ECFEC00417C75 /* ReportProductSubmitResponse.swift in Sources */,
 				458D89E31D6ECFEC00417C75 /* LikeDislike.m in Sources */,
-				458D8C641D6ECFEC00417C75 /* CategoryMenuViewCell.m in Sources */,
 				458D8C631D6ECFEC00417C75 /* CategoryDataSource.m in Sources */,
 				458D8A011D6ECFEC00417C75 /* Note.m in Sources */,
 				458D8DCA1D6ECFEC00417C75 /* GiveReviewDetailViewController.m in Sources */,
@@ -15961,7 +15942,6 @@
 				458D8CBB1D6ECFEC00417C75 /* RequestFilter.swift in Sources */,
 				458D8F1F1D6ECFEC00417C75 /* TokopediaNetworkManager.m in Sources */,
 				458D89071D6ECFEC00417C75 /* RKObjectManagerCategory.m in Sources */,
-				458D8C661D6ECFEC00417C75 /* CategoryMenuViewController.m in Sources */,
 				458D8F2D1D6ECFEC00417C75 /* TransactionShipmentATCTableViewController.m in Sources */,
 				458D8A581D6ECFEC00417C75 /* OrderProduct.m in Sources */,
 				458D89F81D6ECFEC00417C75 /* MyReviewReputationViewModel.m in Sources */,

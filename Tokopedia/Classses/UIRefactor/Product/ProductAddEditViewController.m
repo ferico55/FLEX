@@ -15,7 +15,6 @@
 #import "ProductAddEditViewController.h"
 #import "ProductAddEditDetailViewController.h"
 #import "ProductEditImageViewController.h"
-#import "CategoryMenuViewController.h"
 #import "FilterCategoryViewController.h"
 #import "NSNumberFormatter+IDRFormater.h"
 #import "Tokopedia-Swift.h"
@@ -30,7 +29,6 @@ UIScrollViewDelegate,
 UITableViewDataSource,
 UITableViewDelegate,
 TKPDAlertViewDelegate,
-CategoryMenuViewDelegate,
 GeneralTableViewControllerDelegate,
 FilterCategoryViewDelegate
 >

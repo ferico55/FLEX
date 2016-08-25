@@ -12,7 +12,6 @@
 #import "ProductListMyShopFilterViewController.h"
 #import "GeneralTableViewController.h"
 #import "EtalaseViewController.h"
-#import "CategoryMenuViewController.h"
 #import "FilterCategoryViewController.h"
 
 @interface ProductListMyShopFilterViewController ()
