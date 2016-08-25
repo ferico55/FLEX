@@ -916,8 +916,6 @@
 		45908B331D66F1A200B75597 /* ContactUsFormWireframe.m in Sources */ = {isa = PBXBuildFile; fileRef = 45907EAA1D66F19E00B75597 /* ContactUsFormWireframe.m */; };
 		45908B341D66F1A200B75597 /* TKPDTabBarController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45907EAE1D66F19E00B75597 /* TKPDTabBarController.xib */; };
 		45908B351D66F1A200B75597 /* TKPDTabBarNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45907EB01D66F19E00B75597 /* TKPDTabBarNavigationController.m */; };
-		45908B361D66F1A200B75597 /* TKPDTabInboxCustomerServiceNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45907EB21D66F19E00B75597 /* TKPDTabInboxCustomerServiceNavigationController.m */; };
-		45908B371D66F1A200B75597 /* TKPDTabInboxCustomerServiceNavigationController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45907EB31D66F19E00B75597 /* TKPDTabInboxCustomerServiceNavigationController.xib */; };
 		45908B381D66F1A200B75597 /* TKPDTabInboxMessageNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45907EB51D66F19E00B75597 /* TKPDTabInboxMessageNavigationController.m */; };
 		45908B391D66F1A200B75597 /* TKPDTabInboxMessageNavigationController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45907EB61D66F19E00B75597 /* TKPDTabInboxMessageNavigationController.xib */; };
 		45908B3A1D66F1A200B75597 /* TKPDTabInboxReviewNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45907EB81D66F19E00B75597 /* TKPDTabInboxReviewNavigationController.m */; };
@@ -4220,9 +4218,6 @@
 		45907EAE1D66F19E00B75597 /* TKPDTabBarController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TKPDTabBarController.xib; sourceTree = "<group>"; };
 		45907EAF1D66F19E00B75597 /* TKPDTabBarNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPDTabBarNavigationController.h; sourceTree = "<group>"; };
 		45907EB01D66F19E00B75597 /* TKPDTabBarNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPDTabBarNavigationController.m; sourceTree = "<group>"; };
-		45907EB11D66F19E00B75597 /* TKPDTabInboxCustomerServiceNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPDTabInboxCustomerServiceNavigationController.h; sourceTree = "<group>"; };
-		45907EB21D66F19E00B75597 /* TKPDTabInboxCustomerServiceNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPDTabInboxCustomerServiceNavigationController.m; sourceTree = "<group>"; };
-		45907EB31D66F19E00B75597 /* TKPDTabInboxCustomerServiceNavigationController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TKPDTabInboxCustomerServiceNavigationController.xib; sourceTree = "<group>"; };
 		45907EB41D66F19E00B75597 /* TKPDTabInboxMessageNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPDTabInboxMessageNavigationController.h; sourceTree = "<group>"; };
 		45907EB51D66F19E00B75597 /* TKPDTabInboxMessageNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPDTabInboxMessageNavigationController.m; sourceTree = "<group>"; };
 		45907EB61D66F19E00B75597 /* TKPDTabInboxMessageNavigationController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TKPDTabInboxMessageNavigationController.xib; sourceTree = "<group>"; };
@@ -9461,9 +9456,6 @@
 				45907EAE1D66F19E00B75597 /* TKPDTabBarController.xib */,
 				45907EAF1D66F19E00B75597 /* TKPDTabBarNavigationController.h */,
 				45907EB01D66F19E00B75597 /* TKPDTabBarNavigationController.m */,
-				45907EB11D66F19E00B75597 /* TKPDTabInboxCustomerServiceNavigationController.h */,
-				45907EB21D66F19E00B75597 /* TKPDTabInboxCustomerServiceNavigationController.m */,
-				45907EB31D66F19E00B75597 /* TKPDTabInboxCustomerServiceNavigationController.xib */,
 				45907EB41D66F19E00B75597 /* TKPDTabInboxMessageNavigationController.h */,
 				45907EB51D66F19E00B75597 /* TKPDTabInboxMessageNavigationController.m */,
 				45907EB61D66F19E00B75597 /* TKPDTabInboxMessageNavigationController.xib */,
@@ -13473,7 +13465,6 @@
 				45908FEE1D66F1A300B75597 /* icon_neutral_sad50@3x.png in Resources */,
 				45908C871D66F1A200B75597 /* InboxReviewCell.xib in Resources */,
 				45908EF81D66F1A300B75597 /* icon_camera_album@2x.png in Resources */,
-				45908B371D66F1A200B75597 /* TKPDTabInboxCustomerServiceNavigationController.xib in Resources */,
 				459091651D66F1A300B75597 /* icon_hotlist@3x.png in Resources */,
 				45908D0A1D66F1A200B75597 /* DetailShipmentStatusCell.xib in Resources */,
 				459091081D66F1A300B75597 /* image-1.png in Resources */,
@@ -14359,7 +14350,6 @@
 				4590884C1D66F1A200B75597 /* Favorited.m in Sources */,
 				45908DD51D66F1A300B75597 /* TransactionCartCostView.m in Sources */,
 				45908A171D66F1A200B75597 /* BinaryDisposable.swift in Sources */,
-				45908B361D66F1A200B75597 /* TKPDTabInboxCustomerServiceNavigationController.m in Sources */,
 				459088B21D66F1A200B75597 /* LoyaltyPointBuyer.m in Sources */,
 				4590886C1D66F1A200B75597 /* DepartmentChild2.m in Sources */,
 				45908D201D66F1A300B75597 /* SearchResultCell.m in Sources */,
