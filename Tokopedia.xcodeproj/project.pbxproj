@@ -1190,7 +1190,6 @@
 		458D8D831D6ECFEC00417C75 /* DetailPriceAlertTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 458D81931D6ECFE700417C75 /* DetailPriceAlertTableViewCell.xib */; };
 		458D8D841D6ECFEC00417C75 /* DetailPriceAlertViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 458D81951D6ECFE700417C75 /* DetailPriceAlertViewController.m */; };
 		458D8D851D6ECFEC00417C75 /* DetailPriceAlertViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 458D81961D6ECFE700417C75 /* DetailPriceAlertViewController.xib */; };
-		458D8D861D6ECFEC00417C75 /* InboxPriceAlertSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 458D81981D6ECFE700417C75 /* InboxPriceAlertSplitViewController.m */; };
 		458D8D871D6ECFEC00417C75 /* PriceAlertCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 458D819A1D6ECFE700417C75 /* PriceAlertCell.m */; };
 		458D8D881D6ECFEC00417C75 /* PriceAlertCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 458D819B1D6ECFE700417C75 /* PriceAlertCell.xib */; };
 		458D8D891D6ECFEC00417C75 /* PriceAlertRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 458D819D1D6ECFE700417C75 /* PriceAlertRequest.m */; };
@@ -4688,8 +4687,6 @@
 		458D81941D6ECFE700417C75 /* DetailPriceAlertViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailPriceAlertViewController.h; sourceTree = "<group>"; };
 		458D81951D6ECFE700417C75 /* DetailPriceAlertViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailPriceAlertViewController.m; sourceTree = "<group>"; };
 		458D81961D6ECFE700417C75 /* DetailPriceAlertViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailPriceAlertViewController.xib; sourceTree = "<group>"; };
-		458D81971D6ECFE700417C75 /* InboxPriceAlertSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxPriceAlertSplitViewController.h; sourceTree = "<group>"; };
-		458D81981D6ECFE700417C75 /* InboxPriceAlertSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxPriceAlertSplitViewController.m; sourceTree = "<group>"; };
 		458D81991D6ECFE700417C75 /* PriceAlertCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PriceAlertCell.h; sourceTree = "<group>"; };
 		458D819A1D6ECFE700417C75 /* PriceAlertCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PriceAlertCell.m; sourceTree = "<group>"; };
 		458D819B1D6ECFE700417C75 /* PriceAlertCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PriceAlertCell.xib; sourceTree = "<group>"; };
@@ -10318,8 +10315,6 @@
 				458D81941D6ECFE700417C75 /* DetailPriceAlertViewController.h */,
 				458D81951D6ECFE700417C75 /* DetailPriceAlertViewController.m */,
 				458D81961D6ECFE700417C75 /* DetailPriceAlertViewController.xib */,
-				458D81971D6ECFE700417C75 /* InboxPriceAlertSplitViewController.h */,
-				458D81981D6ECFE700417C75 /* InboxPriceAlertSplitViewController.m */,
 				458D81991D6ECFE700417C75 /* PriceAlertCell.h */,
 				458D819A1D6ECFE700417C75 /* PriceAlertCell.m */,
 				458D819B1D6ECFE700417C75 /* PriceAlertCell.xib */,
@@ -14587,7 +14582,6 @@
 				458D89A61D6ECFEC00417C75 /* Hashtags.m in Sources */,
 				458D8D2A1D6ECFEC00417C75 /* ResolutionCenterSystemCell.m in Sources */,
 				458D8ABF1D6ECFEC00417C75 /* TrackOrder.m in Sources */,
-				458D8D861D6ECFEC00417C75 /* InboxPriceAlertSplitViewController.m in Sources */,
 				458D8C401D6ECFEC00417C75 /* GenerateHostRequest.m in Sources */,
 				458D88DE1D6ECFEC00417C75 /* TPAnalytics.m in Sources */,
 				458D8E3A1D6ECFEC00417C75 /* ProductQuantityCell.m in Sources */,
