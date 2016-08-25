@@ -1078,8 +1078,6 @@
 		7A3081D31D6DA92B00EB8536 /* HotlistResultAWSViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A3075531D6DA92300EB8536 /* HotlistResultAWSViewController.xib */; };
 		7A3081D41D6DA92B00EB8536 /* HotlistResultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A3075551D6DA92300EB8536 /* HotlistResultViewController.m */; };
 		7A3081D51D6DA92B00EB8536 /* HotlistResultViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A3075561D6DA92300EB8536 /* HotlistResultViewController.xib */; };
-		7A3081D61D6DA92B00EB8536 /* TKPDTabHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A3075591D6DA92300EB8536 /* TKPDTabHomeViewController.m */; };
-		7A3081D71D6DA92B00EB8536 /* TKPDTabHomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A30755A1D6DA92300EB8536 /* TKPDTabHomeViewController.xib */; };
 		7A3081D81D6DA92B00EB8536 /* UIView+HVDLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A30755E1D6DA92300EB8536 /* UIView+HVDLayout.m */; };
 		7A3081D91D6DA92B00EB8536 /* InboxMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A3075621D6DA92300EB8536 /* InboxMessageCell.m */; };
 		7A3081DA1D6DA92B00EB8536 /* InboxMessageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A3075631D6DA92300EB8536 /* InboxMessageCell.xib */; };
@@ -4522,9 +4520,6 @@
 		7A3075541D6DA92300EB8536 /* HotlistResultViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HotlistResultViewController.h; sourceTree = "<group>"; };
 		7A3075551D6DA92300EB8536 /* HotlistResultViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HotlistResultViewController.m; sourceTree = "<group>"; };
 		7A3075561D6DA92300EB8536 /* HotlistResultViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HotlistResultViewController.xib; sourceTree = "<group>"; };
-		7A3075581D6DA92300EB8536 /* TKPDTabHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPDTabHomeViewController.h; sourceTree = "<group>"; };
-		7A3075591D6DA92300EB8536 /* TKPDTabHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPDTabHomeViewController.m; sourceTree = "<group>"; };
-		7A30755A1D6DA92300EB8536 /* TKPDTabHomeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TKPDTabHomeViewController.xib; sourceTree = "<group>"; };
 		7A30755B1D6DA92300EB8536 /* string_hotlist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_hotlist.h; sourceTree = "<group>"; };
 		7A30755D1D6DA92300EB8536 /* UIView+HVDLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+HVDLayout.h"; sourceTree = "<group>"; };
 		7A30755E1D6DA92300EB8536 /* UIView+HVDLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+HVDLayout.m"; sourceTree = "<group>"; };
@@ -10023,7 +10018,6 @@
 			children = (
 				7A30753E1D6DA92300EB8536 /* Hotlist */,
 				7A30754E1D6DA92300EB8536 /* HotlistResult */,
-				7A3075571D6DA92300EB8536 /* HotlistTabController */,
 				7A30755B1D6DA92300EB8536 /* string_hotlist.h */,
 			);
 			path = Hotlist;
@@ -10064,16 +10058,6 @@
 				7A3075561D6DA92300EB8536 /* HotlistResultViewController.xib */,
 			);
 			path = HotlistResult;
-			sourceTree = "<group>";
-		};
-		7A3075571D6DA92300EB8536 /* HotlistTabController */ = {
-			isa = PBXGroup;
-			children = (
-				7A3075581D6DA92300EB8536 /* TKPDTabHomeViewController.h */,
-				7A3075591D6DA92300EB8536 /* TKPDTabHomeViewController.m */,
-				7A30755A1D6DA92300EB8536 /* TKPDTabHomeViewController.xib */,
-			);
-			path = HotlistTabController;
 			sourceTree = "<group>";
 		};
 		7A30755C1D6DA92300EB8536 /* HVDLayout */ = {
@@ -14219,7 +14203,6 @@
 				7A3084C01D6DA92C00EB8536 /* icon_15.png in Resources */,
 				7A3081C11D6DA92B00EB8536 /* MyWishlistViewController.xib in Resources */,
 				7A3082D11D6DA92B00EB8536 /* PromoInfoAlertView.xib in Resources */,
-				7A3081D71D6DA92B00EB8536 /* TKPDTabHomeViewController.xib in Resources */,
 				7A3086771D6DA92C00EB8536 /* icon_retur.png in Resources */,
 				7A3082271D6DA92B00EB8536 /* MyShopEtalaseDetailViewController.xib in Resources */,
 				7A30853D1D6DA92C00EB8536 /* icon_cart_active.png in Resources */,
@@ -15104,7 +15087,6 @@
 				7A3084141D6DA92B00EB8536 /* TransactionCartShippingViewController.m in Sources */,
 				7A30824E1D6DA92B00EB8536 /* AlertPriceNotificationViewController.m in Sources */,
 				7A3084161D6DA92B00EB8536 /* TransactionCartViewController.m in Sources */,
-				7A3081D61D6DA92B00EB8536 /* TKPDTabHomeViewController.m in Sources */,
 				7A3080A81D6DA92B00EB8536 /* SerialDispatchQueueScheduler.swift in Sources */,
 				7A30833A1D6DA92B00EB8536 /* ShipmentConfirmationViewController.m in Sources */,
 				7A30842F1D6DA92B00EB8536 /* TxOrderStatusDetailViewController.m in Sources */,

@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "TKPDTabHomeViewController.h"
 #import "HotListCell.h"
 #import "GAITrackedViewController.h"
 
@@ -15,6 +14,5 @@
 
 @property (assign, nonatomic) NSInteger index;
 @property (strong, nonatomic) NSDictionary *data;
-@property (weak, nonatomic) id<TKPDTabHomeDelegate> delegate;
 
 @end

@@ -13,7 +13,6 @@
 #import "MoreViewController.h"
 #import "CategoryViewController.h"
 
-#import "TKPDTabHomeViewController.h"
 
 #import "HotlistViewController.h"
 #import "ProductFeedViewController.h"

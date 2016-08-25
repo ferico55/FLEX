@@ -42,8 +42,7 @@
 <
     UIScrollViewDelegate,
     NotificationManagerDelegate,
-    RedirectHandlerDelegate,
-    TKPDTabHomeDelegate
+    RedirectHandlerDelegate
 >
 {
     NotificationManager *_notifManager;
@@ -119,21 +118,14 @@
     _homePageController = [HomePageViewController new];
     
     _productFeedController = [ProductFeedViewController new];
-    _productFeedController.delegate = weakSelf;
-    
     _historyController = [HistoryProductViewController new];
-    _historyController.delegate = weakSelf;
-    
     _shopViewController = [FavoritedShopViewController new];
-    _shopViewController.delegate = weakSelf;
     
     _homeHeaderController = [HomeTabHeaderViewController new];
     
     _wishListViewController = [MyWishlistViewController new];
-    _wishListViewController.delegate = self;
 
     _redirectHandler = [RedirectHandler new];
-    _redirectHandler.delegate = self;
     
     _navigate = [NavigateViewController new];
 
