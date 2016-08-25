@@ -14,6 +14,7 @@ class PulsaProductCell: UITableViewCell {
     @IBOutlet weak var currentPrice: UILabel!
     @IBOutlet weak var promoPrice: UILabel!
     @IBOutlet weak var productStatus: UILabel!
+    @IBOutlet weak var productTag: UILabel!
     @IBOutlet weak var descriptionHeightConstraint: NSLayoutConstraint!
     
 
