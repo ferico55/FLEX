@@ -48,7 +48,7 @@
     _messageLabel.delegate = self;
     _messageLabel.linkAttributes = @{NSForegroundColorAttributeName : [UIColor colorWithRed:49/255.0 green:140/255.0 blue:47/255.0 alpha:1.0],
                                      NSUnderlineStyleAttributeName : @(NSUnderlineStyleNone),
-                                     NSFontAttributeName : [UIFont fontWithName:@"Gotham Medium" size:13.0]};
+                                     NSFontAttributeName : [UIFont largeTheme]};
     
     for (NSTextCheckingResult* match in matches) {
         NSRange matchRange = [match rangeAtIndex:1];
@@ -65,7 +65,7 @@
 }
 
 - (NSAttributedString *)attributedMessage:(NSString *)text {
-    UIFont *font = [UIFont fontWithName:@"Gotham Book" size:14.0f];
+    UIFont *font = [UIFont title2Theme];
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 4.0;
     style.alignment = NSTextAlignmentLeft;
