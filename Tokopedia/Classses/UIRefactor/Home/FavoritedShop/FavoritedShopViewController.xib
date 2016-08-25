@@ -65,7 +65,7 @@
                         <constraint firstAttribute="width" constant="120" id="46F-iB-sae"/>
                         <constraint firstAttribute="height" constant="39" id="pOv-6l-HtW"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -123,7 +123,7 @@
                         <constraint firstAttribute="width" constant="120" id="28d-xS-1ej"/>
                         <constraint firstAttribute="height" constant="39" id="NFz-Ub-0UR"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -138,7 +138,7 @@
                 <constraint firstAttribute="trailing" secondItem="cWK-Ll-x2g" secondAttribute="trailing" id="ray-yY-srz"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="389" y="80"/>
+            <point key="canvasLocation" x="256" y="209"/>
         </view>
     </objects>
     <resources>

@@ -45,7 +45,7 @@ class ProductWishlistCell : UICollectionViewCell {
         wholesaleLabel.hidden = viewModel.isWholesale ? false : true
         locationLabel.text = viewModel.shopLocation
         
-        productImage.setImageWithUrl(url, placeHolderImage: nil)
+        productImage.setImageWithUrl(url, placeHolderImage: UIImage(named: "grey-bg.png"))
         productShopLuckyBadge.setImageWithUrl(luckyBadgeUrl, placeHolderImage: nil)
         productShopLuckyBadge.contentMode = .ScaleAspectFill
         

@@ -36,13 +36,13 @@
 
 #import "Localytics.h"
 #import "UIView+HVDLayout.h"
+#import "Tokopedia-Swift.h"
 
 @interface HomeTabViewController ()
 <
     UIScrollViewDelegate,
     NotificationManagerDelegate,
-    RedirectHandlerDelegate,
-    TKPDTabHomeDelegate
+    RedirectHandlerDelegate
 >
 {
     NotificationManager *_notifManager;
@@ -54,7 +54,7 @@
     NSURL *_deeplinkUrl;
 }
 
-@property (strong, nonatomic) CategoryViewController *categoryController;
+@property (strong, nonatomic) HomePageViewController *homePageController;
 @property (strong, nonatomic) HotlistViewController *hotlistController;
 @property (strong, nonatomic) ProductFeedViewController *productFeedController;
 @property (strong, nonatomic) HistoryProductViewController *historyController;
@@ -115,24 +115,17 @@
     [super viewDidLoad];
     
 	__weak typeof(self) weakSelf = self;
-    _categoryController = [CategoryViewController new];
+    _homePageController = [HomePageViewController new];
     
     _productFeedController = [ProductFeedViewController new];
-    _productFeedController.delegate = weakSelf;
-    
     _historyController = [HistoryProductViewController new];
-    _historyController.delegate = weakSelf;
-    
     _shopViewController = [FavoritedShopViewController new];
-    _shopViewController.delegate = weakSelf;
     
     _homeHeaderController = [HomeTabHeaderViewController new];
     
     _wishListViewController = [MyWishlistViewController new];
-    _wishListViewController.delegate = self;
 
     _redirectHandler = [RedirectHandler new];
-    _redirectHandler.delegate = self;
     
     _navigate = [NavigateViewController new];
 
@@ -160,11 +153,11 @@
     
     _scrollView.delegate = self;
 
-    [self addChildViewController:_categoryController];
-    [self.scrollView addSubview:_categoryController.view];
+    [self addChildViewController:_homePageController];
+    [self.scrollView addSubview:_homePageController.view];
     
     NSLayoutConstraint *width =[NSLayoutConstraint
-                                constraintWithItem:_categoryController.view
+                                constraintWithItem:_homePageController.view
                                 attribute:NSLayoutAttributeWidth
                                 relatedBy:0
                                 toItem:self.scrollView
@@ -172,7 +165,7 @@
                                 multiplier:1.0
                                 constant:0];
     NSLayoutConstraint *height =[NSLayoutConstraint
-                                 constraintWithItem:_categoryController.view
+                                 constraintWithItem:_homePageController.view
                                  attribute:NSLayoutAttributeHeight
                                  relatedBy:0
                                  toItem:self.scrollView
@@ -180,7 +173,7 @@
                                  multiplier:1.0
                                  constant:0];
     NSLayoutConstraint *top = [NSLayoutConstraint
-                               constraintWithItem:_categoryController.view
+                               constraintWithItem:_homePageController.view
                                attribute:NSLayoutAttributeTop
                                relatedBy:NSLayoutRelationEqual
                                toItem:self.scrollView
@@ -188,7 +181,7 @@
                                multiplier:1.0f
                                constant:0.f];
     NSLayoutConstraint *leading = [NSLayoutConstraint
-                                   constraintWithItem:_categoryController.view
+                                   constraintWithItem:_homePageController.view
                                    attribute:NSLayoutAttributeLeading
                                    relatedBy:NSLayoutRelationEqual
                                    toItem:self.scrollView
@@ -197,9 +190,9 @@
                                    constant:0.f];
 
     [self.scrollView addConstraints:@[width, height, top, leading]];
-    [_categoryController.view setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [_homePageController.view setTranslatesAutoresizingMaskIntoConstraints:NO];
     
-    [_categoryController didMoveToParentViewController:self];
+    [_homePageController didMoveToParentViewController:self];
     [self setArrow];
     [self setHeaderBar];
 }
@@ -288,13 +281,13 @@
 
 - (void)goToPage:(NSInteger)page {
     if(page == 0) {
-        CGRect frame = _categoryController.view.frame;
+        CGRect frame = _homePageController.view.frame;
         frame.origin.x = 0;
-        _categoryController.view.frame = frame;
+        _homePageController.view.frame = frame;
         
-        [self addChildViewController:_categoryController];
-        [self.scrollView addSubview:_categoryController.view];
-        [_categoryController didMoveToParentViewController:self];
+        [self addChildViewController:_homePageController];
+        [self.scrollView addSubview:_homePageController.view];
+        [_homePageController didMoveToParentViewController:self];
     }
     if(page == 1) {
         CGRect frame = _productFeedController.view.frame;

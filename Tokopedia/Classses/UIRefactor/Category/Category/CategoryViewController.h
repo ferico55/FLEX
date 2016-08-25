@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "TKPDTabHomeViewController.h"
 
 @interface CategoryViewController : GAITrackedViewController
 

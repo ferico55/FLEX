@@ -13,7 +13,6 @@
 #import "MoreViewController.h"
 #import "CategoryViewController.h"
 
-#import "TKPDTabHomeViewController.h"
 
 #import "HotlistViewController.h"
 #import "ProductFeedViewController.h"
@@ -357,7 +356,7 @@ typedef enum TagRequest {
     
     _tabBarController.selectedIndex = pageIndex;
     
-    [self adjusttabbar];
+    [self initTabBar];
 }
 
 - (void)adjustnavigationbar
@@ -388,165 +387,43 @@ typedef enum TagRequest {
     [proxy setTitleTextAttributes:titleTextAttributes];
 }
 
--(void)adjusttabbar
-{
-    UIFont *tabBarFont = [UIFont systemFontOfSize:9.0];
+-(void)initTabBar {
+    NSArray* items = @[@{@"name" : @"Home", @"image" : @"icon_home.png", @"selectedImage" : @"icon_home_active.png"},
+                       @{@"name" : @"Hot List", @"image" : @"icon_hotlist.png", @"selectedImage" : @"icon_hotlist_active.png"},
+                       @{@"name" : @"Cari", @"image" : @"icon_search.png", @"selectedImage" : @"icon_search_active.png"},
+                       @{@"name" : @"Keranjang", @"image" : @"icon_cart.png", @"selectedImage" : @"icon_cart_active.png"},
+                       @{@"name" : @"More", @"image" : @"icon_more.png", @"selectedImage" : @"icon_more_active.png"}];
+    UITabBar *tabBar = _tabBarController.tabBar;
+    tabBar.tintColor = [UIColor colorWithRed:(66/255.0) green:(189/255.0) blue:(65/255.0) alpha:1];
+    tabBar.backgroundImage = [UIImage imageNamed:@"tabnav_bg"];
     
-    UITabBar *tabbar = _tabBarController.tabBar;
-    
-    UITabBarItem *tabBarItem1 = [tabbar.items objectAtIndex:0];
-    UITabBarItem *tabBarItem2 = [tabbar.items objectAtIndex:1];
-    UITabBarItem *tabBarItem3 = [tabbar.items objectAtIndex:2];
-    UITabBarItem *tabBarItem4 = [tabbar.items objectAtIndex:3];
-    UITabBarItem *tabBarItem5 = [tabbar.items objectAtIndex:4];
-    
-    UIImage *image;
-    UIImage *image_active;
-    /** set tab bar item 1**/
-    image =[UIImage imageNamed:kTKPDIMAGE_ICONTABBAR_HOME];
-    image_active =[UIImage imageNamed:kTKPDIMAGE_ICONTABBARACTIVE_HOME];
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
-        image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        image_active = [image_active imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    NSUInteger index = 0;
+    NSDictionary *textAttributes = @{NSForegroundColorAttributeName:[UIColor blackColor], NSFontAttributeName:[UIFont microTheme]};
+    for(NSDictionary* item in items) {
         
-        [tabBarItem1 setImage:image];
-        [tabBarItem1 setSelectedImage:image_active];
-
-    }
-    else{
-        [tabBarItem1 setFinishedSelectedImage:image_active withFinishedUnselectedImage:image];
-    }
-    //tabBarItem1.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
-    tabBarItem1.title = kTKPDNAVIGATION_TABBARTITLEARRAY[0];
-    
-    NSDictionary *textAttributes = @{
-                                    UITextAttributeTextColor:[UIColor blackColor],
-                                    UITextAttributeFont:tabBarFont
-                                    };
-    [tabBarItem1 setTitleTextAttributes:textAttributes forState:UIControlStateNormal];
-    
-    /** set tab bar item 2**/
-    image =[UIImage imageNamed:kTKPDIMAGE_ICONTABBAR_CATEGORY];
-    image_active =[UIImage imageNamed:kTKPDIMAGE_ICONTABBARACTIVE_CATEGORY];
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
-        image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        image_active = [image_active imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        UITabBarItem *tabBarItem = [tabBar.items objectAtIndex:index];
+        if(index == items.count - 1) {
+            UserAuthentificationManager* userManager = [UserAuthentificationManager new];
+            if(!userManager.isLogin) {
+                [tabBarItem initWithTitle:@"Login"
+                                    image:[[UIImage imageNamed:@"icon_login.png"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
+                            selectedImage:[[UIImage imageNamed:@"icon_login_active.png"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+            } else {
+                [tabBarItem initWithTitle:[item objectForKey:@"name"]
+                                    image:[[UIImage imageNamed:[item objectForKey:@"image"]]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
+                            selectedImage:[[UIImage imageNamed:[item objectForKey:@"selectedImage"]]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+            }
+        } else {
+            [tabBarItem initWithTitle:[item objectForKey:@"name"]
+                                image:[[UIImage imageNamed:[item objectForKey:@"image"]]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
+                        selectedImage:[[UIImage imageNamed:[item objectForKey:@"selectedImage"]]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+            
+        }
         
-        [tabBarItem2 setImage:image];
-        [tabBarItem2 setSelectedImage:image_active];
-    }
-    else
-        [tabBarItem2 setFinishedSelectedImage:image_active withFinishedUnselectedImage:image];
-    //tabBarItem2.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
-    tabBarItem2.title = kTKPDNAVIGATION_TABBARTITLEARRAY[1];
-    
-    [tabBarItem2 setTitleTextAttributes:
-     [NSDictionary dictionaryWithObjectsAndKeys:
-      [UIColor blackColor], UITextAttributeTextColor,
-      tabBarFont, UITextAttributeFont,
-      nil]
-                               forState:UIControlStateNormal];
-    
-    /** set tab bar item 3*/
-    image =[UIImage imageNamed:kTKPDIMAGE_ICONTABBAR_SEARCH];
-    image_active =[UIImage imageNamed:kTKPDIMAGE_ICONTABBARACTIVE_SEARCH];
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
-        image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        image_active = [image_active imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        [tabBarItem setTitleTextAttributes:textAttributes forState:UIControlStateNormal];
         
-        [tabBarItem3 setImage:image];
-        [tabBarItem3 setSelectedImage:image_active];
+        index++;
     }
-    else
-        [tabBarItem3 setFinishedSelectedImage:image_active withFinishedUnselectedImage:image];
-    //tabBarItem3.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
-    tabBarItem3.title = kTKPDNAVIGATION_TABBARTITLEARRAY[2];
-    
-    [tabBarItem3 setTitleTextAttributes:
-     [NSDictionary dictionaryWithObjectsAndKeys:
-      [UIColor blackColor], UITextAttributeTextColor,
-      tabBarFont, UITextAttributeFont,
-      nil]
-                               forState:UIControlStateNormal];
-    
-    /** set tab bar item 4*/
-    image =[UIImage imageNamed:kTKPDIMAGE_ICONTABBAR_CART];
-    image_active =[UIImage imageNamed:kTKPDIMAGE_ICONTABBARACTIVE_CART];
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
-        image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        image_active = [image_active imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        
-        [tabBarItem4 setImage:image];
-        [tabBarItem4 setSelectedImage:image_active];
-    }
-    else
-        [tabBarItem4 setFinishedSelectedImage:image_active withFinishedUnselectedImage:image];
-    //tabBarItem4.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
-    tabBarItem4.title = kTKPDNAVIGATION_TABBARTITLEARRAY[3];
-    
-    [tabBarItem4 setTitleTextAttributes:
-     [NSDictionary dictionaryWithObjectsAndKeys:
-      [UIColor blackColor], UITextAttributeTextColor,
-      tabBarFont, UITextAttributeFont,
-      nil]
-                               forState:UIControlStateNormal];
-    
-    /** set tab bar item 5*/
-    BOOL isauth = [[_auth objectForKey:kTKPD_ISLOGINKEY]boolValue];
-    if(isauth) {
-        image =[UIImage imageNamed:kTKPDIMAGE_ICONTABBAR_MORE];
-        image_active =[UIImage imageNamed:kTKPDIMAGE_ICONTABBARACTIVE_MORE];
-    } else {
-        image =[UIImage imageNamed:kTKPDIMAGE_ICONTABBAR_LOGIN];
-        image_active =[UIImage imageNamed:kTKPDIMAGE_ICONTABBARACTIVE_LOGIN];
-    }
-    
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
-        image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        image_active = [image_active imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        
-        [tabBarItem5 setImage:image];
-        [tabBarItem5 setSelectedImage:image_active];
-    }
-    else
-        [tabBarItem5 setFinishedSelectedImage:image_active withFinishedUnselectedImage:image];
-    //tabBarItem5.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
-    if(isauth) {
-        tabBarItem5.title = kTKPDNAVIGATION_TABBARTITLEARRAY[4];
-    } else {
-        tabBarItem5.title = kTKPDNAVIGATION_TABBARTITLEARRAY[5];
-    }
-
-    [tabBarItem5 setTitleTextAttributes:
-     [NSDictionary dictionaryWithObjectsAndKeys:
-      [UIColor blackColor], UITextAttributeTextColor,
-      tabBarFont, UITextAttributeFont,
-      nil]
-                               forState:UIControlStateNormal];
-    
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
-    
-    NSBundle* bundle = [NSBundle mainBundle];
-	//UIImage* image;
-	id proxy = [UITabBar appearance];
-    
-	image = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_TABBARBG ofType:@"png"]]; //navigation-bg
-    
-    [proxy setBackgroundImage:image];
-    [proxy setSelectedImageTintColor:[UIColor blackColor]];
-    
-    //[proxy setShadowImage:[UIImage imageNamed:kTKPDIMAGE_NAVBARBG]];
-    
-    // Omit the conditional if minimum OS is iOS 6 or above
-    if ([UITabBar instancesRespondToSelector:@selector(setShadowBlurRadius:)]) {
-        [proxy setShadowBlurRadius:0];
-    }
-    
-    [proxy setShadowImage:[[UIImage alloc] init]];
-    
-#endif
-    // redirect to home after login or register
-//    _tabBarController.selectedViewController=[_tabBarController.viewControllers objectAtIndex:0];
 }
 
 - (NSInteger)pageIndex {
@@ -613,7 +490,7 @@ typedef enum TagRequest {
 
     [_tabBarController setViewControllers:newControllers animated:YES];
 
-    [self adjusttabbar];
+    [self initTabBar];
 }
 
 - (void)updateTabBarMore:(NSNotification*)notification
@@ -633,7 +510,7 @@ typedef enum TagRequest {
     [newControllers replaceObjectAtIndex:4 withObject:moreNavController];
     [_tabBarController setViewControllers:newControllers animated:YES];
     
-    [self adjusttabbar];
+    [self initTabBar];
 }
 
 - (void)applicationlogout:(NSNotification*)notification
