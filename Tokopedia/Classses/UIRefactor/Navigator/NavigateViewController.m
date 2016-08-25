@@ -28,8 +28,6 @@
 #import "InboxMessageViewController.h"
 #import "TKPDTabInboxMessageNavigationController.h"
 
-#import "AlertPriceNotificationViewController.h"
-
 #import "InboxTalkSplitViewController.h"
 #import "InboxTalkViewController.h"
 #import "TKPDTabInboxTalkNavigationController.h"

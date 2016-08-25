@@ -8,7 +8,6 @@
 #import "SplitReputationViewController.h"
 #import "MyReviewReputationViewController.h"
 #import "SegmentedReviewReputationViewController.h"
-#import "AlertPriceNotificationViewController.h"
 #import "detail.h"
 #import "MoreViewController.h"
 #import "more.h"
