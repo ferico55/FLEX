@@ -1538,7 +1538,6 @@
 		7A3083A11D6DA92B00EB8536 /* EditShopImageViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A3078671D6DA92400EB8536 /* EditShopImageViewCell.xib */; };
 		7A3083A21D6DA92B00EB8536 /* EditShopNoteViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A3078691D6DA92400EB8536 /* EditShopNoteViewCell.m */; };
 		7A3083A31D6DA92B00EB8536 /* EditShopNoteViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A30786A1D6DA92400EB8536 /* EditShopNoteViewCell.xib */; };
-		7A3083A41D6DA92B00EB8536 /* EditShopStatusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A30786C1D6DA92400EB8536 /* EditShopStatusViewController.m */; };
 		7A3083A51D6DA92B00EB8536 /* EditShopTypeViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A30786E1D6DA92400EB8536 /* EditShopTypeViewCell.m */; };
 		7A3083A61D6DA92B00EB8536 /* EditShopTypeViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A30786F1D6DA92400EB8536 /* EditShopTypeViewCell.xib */; };
 		7A3083A71D6DA92B00EB8536 /* EditShopViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A3078711D6DA92400EB8536 /* EditShopViewController.m */; };
@@ -5246,8 +5245,6 @@
 		7A3078681D6DA92400EB8536 /* EditShopNoteViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditShopNoteViewCell.h; sourceTree = "<group>"; };
 		7A3078691D6DA92400EB8536 /* EditShopNoteViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditShopNoteViewCell.m; sourceTree = "<group>"; };
 		7A30786A1D6DA92400EB8536 /* EditShopNoteViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditShopNoteViewCell.xib; sourceTree = "<group>"; };
-		7A30786B1D6DA92400EB8536 /* EditShopStatusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EditShopStatusViewController\b.h"; sourceTree = "<group>"; };
-		7A30786C1D6DA92400EB8536 /* EditShopStatusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EditShopStatusViewController\b.m"; sourceTree = "<group>"; };
 		7A30786D1D6DA92400EB8536 /* EditShopTypeViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditShopTypeViewCell.h; sourceTree = "<group>"; };
 		7A30786E1D6DA92400EB8536 /* EditShopTypeViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditShopTypeViewCell.m; sourceTree = "<group>"; };
 		7A30786F1D6DA92400EB8536 /* EditShopTypeViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditShopTypeViewCell.xib; sourceTree = "<group>"; };
@@ -11251,8 +11248,6 @@
 				7A3078681D6DA92400EB8536 /* EditShopNoteViewCell.h */,
 				7A3078691D6DA92400EB8536 /* EditShopNoteViewCell.m */,
 				7A30786A1D6DA92400EB8536 /* EditShopNoteViewCell.xib */,
-				7A30786B1D6DA92400EB8536 /* EditShopStatusViewController.h */,
-				7A30786C1D6DA92400EB8536 /* EditShopStatusViewController.m */,
 				7A30786D1D6DA92400EB8536 /* EditShopTypeViewCell.h */,
 				7A30786E1D6DA92400EB8536 /* EditShopTypeViewCell.m */,
 				7A30786F1D6DA92400EB8536 /* EditShopTypeViewCell.xib */,
@@ -15214,7 +15209,6 @@
 				7A3080331D6DA92B00EB8536 /* BooleanDisposable.swift in Sources */,
 				7A3083CA1D6DA92B00EB8536 /* ShopPageHeader.m in Sources */,
 				7A307E4C1D6DA92B00EB8536 /* TheOtherProductResult.m in Sources */,
-				7A3083A41D6DA92B00EB8536 /* EditShopStatusViewController.m in Sources */,
 				7A307DC91D6DA92B00EB8536 /* ImageDownloader.m in Sources */,
 				7A3082161D6DA92B00EB8536 /* MiniSlideObject.m in Sources */,
 				7A3080151D6DA92B00EB8536 /* LayoutAdapterTableView.swift in Sources */,
