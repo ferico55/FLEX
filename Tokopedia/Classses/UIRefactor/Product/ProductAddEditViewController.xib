@@ -147,8 +147,11 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Nama Produk" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1mA-N2-pnu">
-                                <rect key="frame" x="144" y="0.0" width="118" height="44"/>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Nama Produk" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1mA-N2-pnu">
+                                <rect key="frame" x="144" y="0.0" width="168" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="HYz-Ju-CMC"/>
+                                </constraints>
                                 <color key="textColor" red="0.3803921569" green="0.3803921569" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -160,11 +163,15 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="rlF-jb-gcm" secondAttribute="trailing" id="BZj-eL-B7n"/>
+                            <constraint firstItem="1mA-N2-pnu" firstAttribute="leading" secondItem="ja9-vy-77n" secondAttribute="trailing" constant="8" id="Jtu-F6-ZFU"/>
+                            <constraint firstAttribute="trailing" secondItem="1mA-N2-pnu" secondAttribute="trailing" constant="8" id="K0o-44-0Cj"/>
                             <constraint firstAttribute="bottom" secondItem="rlF-jb-gcm" secondAttribute="bottom" id="NPl-RC-wXy"/>
                             <constraint firstItem="ja9-vy-77n" firstAttribute="top" secondItem="RYM-7j-tEe" secondAttribute="top" constant="11" id="VEi-Ao-D4F"/>
+                            <constraint firstAttribute="bottom" secondItem="1mA-N2-pnu" secondAttribute="bottom" id="YXv-yQ-dIl"/>
                             <constraint firstItem="rlF-jb-gcm" firstAttribute="top" secondItem="RYM-7j-tEe" secondAttribute="top" id="caH-dh-uik"/>
                             <constraint firstItem="ja9-vy-77n" firstAttribute="leading" secondItem="RYM-7j-tEe" secondAttribute="leading" constant="15" id="e3E-cs-lZb"/>
                             <constraint firstItem="rlF-jb-gcm" firstAttribute="leading" secondItem="RYM-7j-tEe" secondAttribute="leading" id="lLI-t4-8HD"/>
+                            <constraint firstItem="1mA-N2-pnu" firstAttribute="top" secondItem="RYM-7j-tEe" secondAttribute="top" id="rUL-W7-W5E"/>
                         </constraints>
                     </view>
                 </subviews>
