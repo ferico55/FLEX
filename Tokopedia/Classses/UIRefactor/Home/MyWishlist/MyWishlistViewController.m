@@ -226,7 +226,7 @@ typedef enum TagRequest {
 - (void)requestRemoveWishlist:(WishListObjectList*)list withIndexPath:(NSIndexPath*)indexPath {
     TokopediaNetworkManager *removeWishlistRequest = [[TokopediaNetworkManager alloc] init];
     removeWishlistRequest.isUsingHmac = YES;
-    [removeWishlistRequest requestWithBaseUrl:@"https://ws.tokopedia.com"
+    [removeWishlistRequest requestWithBaseUrl:[NSString v4Url]
                                          path:@"/v4/action/wishlist/remove_wishlist_product.pl"
                                        method:RKRequestMethodGET
                                     parameter:@{@"product_id" : list.product_id, @"user_id" : [_userManager getUserId]}

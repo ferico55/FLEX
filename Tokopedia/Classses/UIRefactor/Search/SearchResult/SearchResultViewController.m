@@ -1507,7 +1507,7 @@ ImageSearchRequestDelegate
 -(void)didReceiveUploadedImageURL:(NSString *)imageURL{
     _image_url = imageURL;
 
-    [_networkManager requestWithBaseUrl:@"https://ws.tokopedia.com"
+    [_networkManager requestWithBaseUrl:[NSString v4Url]
                                    path:@"/v4/search/snapsearch.pl"
                                  method:RKRequestMethodGET
                               parameter:[self getParameter]
