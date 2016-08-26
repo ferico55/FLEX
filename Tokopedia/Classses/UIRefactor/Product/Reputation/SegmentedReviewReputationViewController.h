@@ -36,7 +36,6 @@
 - (IBAction)actionBelumDibaca:(id)sender;
 - (IBAction)actionBelumDireview:(id)sender;
 - (IBAction)actionValueChange:(id)sender;
-- (IBAction)actionOldReview:(id)sender;
 - (int)getSelectedSegmented;
 - (void)setNavigationTitle:(NSString *)strTitle;
 - (MyReviewReputationViewController *)getSegmentedViewController;

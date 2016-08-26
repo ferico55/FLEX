@@ -19,11 +19,8 @@
 
 #import "InboxMessageViewController.h"
 #import "TKPDTabInboxMessageNavigationController.h"
-#import "TKPDTabInboxReviewNavigationController.h"
-#import "TKPDTabInboxReviewNavigationController.h"
 #import "TKPDTabInboxTalkNavigationController.h"
 #import "InboxTalkViewController.h"
-#import "InboxReviewViewController.h"
 
 #import "NavigateViewController.h"
 

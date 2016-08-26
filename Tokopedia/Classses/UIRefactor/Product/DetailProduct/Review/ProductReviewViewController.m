@@ -17,7 +17,6 @@
 #import "ProductReviewViewController.h"
 #import "ProductReviewDetailViewController.h"
 #import "GeneralProductReviewCell.h"
-#import "DetailReviewViewController.h"
 
 #import "TKPDAlertView.h"
 #import "AlertListView.h"
@@ -717,19 +716,6 @@
 
 #pragma mark - Delegate
 - (void)GeneralProductReviewCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath {
-    NSInteger row = indexpath.row;
-    DetailReviewViewController *vc = [DetailReviewViewController new];
-    DetailReputationReview *reviewlist = _list[row];
-    reviewlist.review_product_name = [_data objectForKey:API_PRODUCT_NAME_KEY];
-    reviewlist.review_product_id = [_data objectForKey:API_PRODUCT_ID_KEY];
-    reviewlist.review_product_image = [_data objectForKey:kTKPDDETAILPRODUCT_APIIMAGESRCKEY];
-
-    vc.data = reviewlist;
-    vc.index = [NSString stringWithFormat:@"%ld",(long)row];
-    vc.is_owner = _reviewIsOwner;
-    vc.indexPath = indexpath;
-    
-    [self.navigationController pushViewController:vc animated:YES];
     
 }
 

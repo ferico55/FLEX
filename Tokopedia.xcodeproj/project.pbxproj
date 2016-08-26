@@ -920,8 +920,6 @@
 		45908B371D66F1A200B75597 /* TKPDTabInboxCustomerServiceNavigationController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45907EB31D66F19E00B75597 /* TKPDTabInboxCustomerServiceNavigationController.xib */; };
 		45908B381D66F1A200B75597 /* TKPDTabInboxMessageNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45907EB51D66F19E00B75597 /* TKPDTabInboxMessageNavigationController.m */; };
 		45908B391D66F1A200B75597 /* TKPDTabInboxMessageNavigationController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45907EB61D66F19E00B75597 /* TKPDTabInboxMessageNavigationController.xib */; };
-		45908B3A1D66F1A200B75597 /* TKPDTabInboxReviewNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45907EB81D66F19E00B75597 /* TKPDTabInboxReviewNavigationController.m */; };
-		45908B3B1D66F1A200B75597 /* TKPDTabInboxReviewNavigationController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45907EB91D66F19E00B75597 /* TKPDTabInboxReviewNavigationController.xib */; };
 		45908B3C1D66F1A200B75597 /* TKPDTabInboxTalkNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45907EBB1D66F19E00B75597 /* TKPDTabInboxTalkNavigationController.m */; };
 		45908B3D1D66F1A200B75597 /* TKPDTabInboxTalkNavigationController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45907EBC1D66F19E00B75597 /* TKPDTabInboxTalkNavigationController.xib */; };
 		45908B3E1D66F1A200B75597 /* TKPDTabNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45907EBE1D66F19E00B75597 /* TKPDTabNavigationController.m */; };
@@ -990,10 +988,6 @@
 		45908B7D1D66F1A200B75597 /* GeneralProductCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45907F201D66F19E00B75597 /* GeneralProductCell.xib */; };
 		45908B7E1D66F1A200B75597 /* GeneralProductCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 45907F221D66F19E00B75597 /* GeneralProductCollectionViewCell.m */; };
 		45908B7F1D66F1A200B75597 /* GeneralProductCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45907F231D66F19E00B75597 /* GeneralProductCollectionViewCell.xib */; };
-		45908B801D66F1A200B75597 /* GeneralProductReviewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 45907F251D66F19E00B75597 /* GeneralProductReviewCell.m */; };
-		45908B811D66F1A200B75597 /* GeneralProductReviewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45907F261D66F19E00B75597 /* GeneralProductReviewCell.xib */; };
-		45908B821D66F1A200B75597 /* GeneralReviewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 45907F281D66F19E00B75597 /* GeneralReviewCell.m */; };
-		45908B831D66F1A200B75597 /* GeneralReviewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45907F291D66F19E00B75597 /* GeneralReviewCell.xib */; };
 		45908B841D66F1A200B75597 /* GeneralSingleProductCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 45907F2B1D66F19E00B75597 /* GeneralSingleProductCell.m */; };
 		45908B851D66F1A200B75597 /* GeneralSingleProductCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45907F2C1D66F19E00B75597 /* GeneralSingleProductCell.xib */; };
 		45908B861D66F1A200B75597 /* GeneralSwitchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 45907F2E1D66F19E00B75597 /* GeneralSwitchCell.m */; };
@@ -1083,14 +1077,6 @@
 		45908BDA1D66F1A200B75597 /* ResolutionCenterSystemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45907FCE1D66F19E00B75597 /* ResolutionCenterSystemCell.xib */; };
 		45908BDB1D66F1A200B75597 /* ResolutionInputReceiptViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45907FD01D66F19E00B75597 /* ResolutionInputReceiptViewController.m */; };
 		45908BDC1D66F1A200B75597 /* ResolutionInputReceiptViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45907FD11D66F19E00B75597 /* ResolutionInputReceiptViewController.xib */; };
-		45908BDD1D66F1A200B75597 /* DetailReviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45907FD51D66F19E00B75597 /* DetailReviewViewController.m */; };
-		45908BDE1D66F1A200B75597 /* DetailReviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45907FD61D66F19E00B75597 /* DetailReviewViewController.xib */; };
-		45908BDF1D66F1A200B75597 /* InboxReviewSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45907FD81D66F19E00B75597 /* InboxReviewSplitViewController.m */; };
-		45908BE01D66F1A200B75597 /* InboxReviewSplitViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45907FD91D66F19E00B75597 /* InboxReviewSplitViewController.xib */; };
-		45908BE11D66F1A200B75597 /* InboxReviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45907FDB1D66F19E00B75597 /* InboxReviewViewController.m */; };
-		45908BE21D66F1A200B75597 /* InboxReviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45907FDC1D66F19E00B75597 /* InboxReviewViewController.xib */; };
-		45908BE31D66F1A200B75597 /* ReviewFormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45907FDE1D66F19E00B75597 /* ReviewFormViewController.m */; };
-		45908BE41D66F1A200B75597 /* ReviewFormViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45907FDF1D66F19E00B75597 /* ReviewFormViewController.xib */; };
 		45908BE51D66F1A200B75597 /* InboxTalkCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45907FE21D66F19E00B75597 /* InboxTalkCell.xib */; };
 		45908BE61D66F1A200B75597 /* InboxTalkSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45907FE41D66F19E00B75597 /* InboxTalkSplitViewController.m */; };
 		45908BE71D66F1A200B75597 /* InboxTalkSplitViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45907FE51D66F19E00B75597 /* InboxTalkSplitViewController.xib */; };
@@ -1235,8 +1221,6 @@
 		45908C731D66F1A200B75597 /* AttachedPicture.m in Sources */ = {isa = PBXBuildFile; fileRef = 459080D91D66F19F00B75597 /* AttachedPicture.m */; };
 		45908C741D66F1A200B75597 /* DetailMyReviewReputationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 459080DB1D66F19F00B75597 /* DetailMyReviewReputationCell.m */; };
 		45908C751D66F1A200B75597 /* DetailMyReviewReputationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 459080DC1D66F19F00B75597 /* DetailMyReviewReputationCell.xib */; };
-		45908C761D66F1A200B75597 /* DetailMyReviewReputationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 459080DE1D66F19F00B75597 /* DetailMyReviewReputationViewController.m */; };
-		45908C771D66F1A200B75597 /* DetailMyReviewReputationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 459080DF1D66F19F00B75597 /* DetailMyReviewReputationViewController.xib */; };
 		45908C781D66F1A200B75597 /* DetailReputationReviewComponent.mm in Sources */ = {isa = PBXBuildFile; fileRef = 459080E11D66F19F00B75597 /* DetailReputationReviewComponent.mm */; };
 		45908C791D66F1A200B75597 /* DetailReputationReviewHeaderComponent.mm in Sources */ = {isa = PBXBuildFile; fileRef = 459080E41D66F19F00B75597 /* DetailReputationReviewHeaderComponent.mm */; };
 		45908C7A1D66F1A200B75597 /* GiveReviewDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 459080E61D66F19F00B75597 /* GiveReviewDetailViewController.m */; };
@@ -1245,8 +1229,6 @@
 		45908C7D1D66F1A200B75597 /* GiveReviewRatingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 459080EA1D66F19F00B75597 /* GiveReviewRatingViewController.xib */; };
 		45908C7E1D66F1A200B75597 /* GiveReviewResponseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 459080EC1D66F19F00B75597 /* GiveReviewResponseViewController.m */; };
 		45908C7F1D66F1A200B75597 /* GiveReviewResponseViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 459080ED1D66F19F00B75597 /* GiveReviewResponseViewController.xib */; };
-		45908C801D66F1A200B75597 /* GiveReviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 459080EF1D66F19F00B75597 /* GiveReviewViewController.m */; };
-		45908C811D66F1A200B75597 /* GiveReviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 459080F01D66F19F00B75597 /* GiveReviewViewController.xib */; };
 		45908C821D66F1A200B75597 /* HelpfulReviewRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 459080F31D66F19F00B75597 /* HelpfulReviewRequest.m */; };
 		45908C831D66F1A200B75597 /* HelpfulReviewResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 459080F51D66F19F00B75597 /* HelpfulReviewResponse.m */; };
 		45908C841D66F1A200B75597 /* HelpfulReviewResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 459080F71D66F19F00B75597 /* HelpfulReviewResult.m */; };
@@ -1258,13 +1240,8 @@
 		45908C8A1D66F1A200B75597 /* MyReviewDetailHeader.mm in Sources */ = {isa = PBXBuildFile; fileRef = 459081021D66F19F00B75597 /* MyReviewDetailHeader.mm */; };
 		45908C8B1D66F1A200B75597 /* MyReviewDetailHeaderComponent.mm in Sources */ = {isa = PBXBuildFile; fileRef = 459081041D66F19F00B75597 /* MyReviewDetailHeaderComponent.mm */; };
 		45908C8C1D66F1A200B75597 /* MyReviewDetailHeaderSmileyComponent.mm in Sources */ = {isa = PBXBuildFile; fileRef = 459081071D66F19F00B75597 /* MyReviewDetailHeaderSmileyComponent.mm */; };
-		45908C8D1D66F1A200B75597 /* MyReviewDetailRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4590810A1D66F19F00B75597 /* MyReviewDetailRequest.m */; };
-		45908C8E1D66F1A200B75597 /* MyReviewDetailTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4590810C1D66F19F00B75597 /* MyReviewDetailTableViewCell.m */; };
-		45908C8F1D66F1A200B75597 /* MyReviewDetailTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4590810D1D66F19F00B75597 /* MyReviewDetailTableViewCell.xib */; };
 		45908C901D66F1A200B75597 /* MyReviewDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4590810F1D66F19F00B75597 /* MyReviewDetailViewController.m */; };
 		45908C911D66F1A200B75597 /* MyReviewDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 459081101D66F19F00B75597 /* MyReviewDetailViewController.xib */; };
-		45908C921D66F1A200B75597 /* MyReviewReputationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 459081121D66F19F00B75597 /* MyReviewReputationCell.m */; };
-		45908C931D66F1A200B75597 /* MyReviewReputationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 459081131D66F19F00B75597 /* MyReviewReputationCell.xib */; };
 		45908C941D66F1A200B75597 /* MyReviewReputationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 459081151D66F19F00B75597 /* MyReviewReputationViewController.m */; };
 		45908C951D66F1A200B75597 /* MyReviewReputationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 459081161D66F19F00B75597 /* MyReviewReputationViewController.xib */; };
 		45908C961D66F1A200B75597 /* ProductDetailReputationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 459081181D66F19F00B75597 /* ProductDetailReputationCell.m */; };
@@ -1297,20 +1274,6 @@
 		45908CB11D66F1A200B75597 /* PromoInfoAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 459081491D66F19F00B75597 /* PromoInfoAlertView.m */; };
 		45908CB21D66F1A200B75597 /* PromoInfoAlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4590814A1D66F19F00B75597 /* PromoInfoAlertView.xib */; };
 		45908CB31D66F1A200B75597 /* PromoRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4590814C1D66F19F00B75597 /* PromoRequest.m */; };
-		45908CB41D66F1A200B75597 /* ReputationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 459081521D66F19F00B75597 /* ReputationCell.m */; };
-		45908CB51D66F1A200B75597 /* ReputationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 459081531D66F19F00B75597 /* ReputationCell.xib */; };
-		45908CB61D66F1A200B75597 /* ReputationDetailFormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 459081561D66F19F00B75597 /* ReputationDetailFormViewController.m */; };
-		45908CB71D66F1A200B75597 /* ReputationDetailFormViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 459081571D66F19F00B75597 /* ReputationDetailFormViewController.xib */; };
-		45908CB81D66F1A200B75597 /* ReputationDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 459081591D66F19F00B75597 /* ReputationDetailViewController.m */; };
-		45908CB91D66F1A200B75597 /* ReputationDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4590815A1D66F19F00B75597 /* ReputationDetailViewController.xib */; };
-		45908CBA1D66F1A200B75597 /* ReputationShopHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 4590815D1D66F19F00B75597 /* ReputationShopHeader.m */; };
-		45908CBB1D66F1A200B75597 /* ReputationShopHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4590815E1D66F19F00B75597 /* ReputationShopHeader.xib */; };
-		45908CBC1D66F1A200B75597 /* ReputationMyProductViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 459081601D66F19F00B75597 /* ReputationMyProductViewController.m */; };
-		45908CBD1D66F1A200B75597 /* ReputationMyProductViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 459081611D66F19F00B75597 /* ReputationMyProductViewController.xib */; };
-		45908CBE1D66F1A200B75597 /* ReputationMyReviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 459081631D66F19F00B75597 /* ReputationMyReviewViewController.m */; };
-		45908CBF1D66F1A200B75597 /* ReputationMyReviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 459081641D66F19F00B75597 /* ReputationMyReviewViewController.xib */; };
-		45908CC01D66F1A200B75597 /* ReputationPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 459081661D66F19F00B75597 /* ReputationPageViewController.m */; };
-		45908CC11D66F1A200B75597 /* ReputationPageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 459081671D66F19F00B75597 /* ReputationPageViewController.xib */; };
 		45908CC21D66F1A200B75597 /* FooterCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4590816A1D66F19F00B75597 /* FooterCollectionReusableView.m */; };
 		45908CC31D66F1A200B75597 /* FooterCollectionReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4590816B1D66F19F00B75597 /* FooterCollectionReusableView.xib */; };
 		45908CC41D66F1A200B75597 /* HeaderCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4590816D1D66F19F00B75597 /* HeaderCollectionReusableView.m */; };
@@ -2567,6 +2530,8 @@
 		459091AC1D66F1A300B75597 /* vt-iOSlib-1.0.1.tar.gz in Resources */ = {isa = PBXBuildFile; fileRef = 459087A51D66F1A200B75597 /* vt-iOSlib-1.0.1.tar.gz */; };
 		459091AD1D66F1A300B75597 /* vt-iOSlib-1.0.1.zip in Resources */ = {isa = PBXBuildFile; fileRef = 459087A61D66F1A200B75597 /* vt-iOSlib-1.0.1.zip */; };
 		459091AE1D66F1A300B75597 /* XYPieChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 459087A91D66F1A200B75597 /* XYPieChart.m */; };
+		626A943B1D6FE8BC00E2FE5F /* GeneralProductReviewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 626A94391D6FE8BC00E2FE5F /* GeneralProductReviewCell.m */; };
+		626A943C1D6FE8BC00E2FE5F /* GeneralProductReviewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 626A943A1D6FE8BC00E2FE5F /* GeneralProductReviewCell.xib */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
 		7ACE9C541BB00956006C4BB7 /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */; };
@@ -4226,9 +4191,6 @@
 		45907EB41D66F19E00B75597 /* TKPDTabInboxMessageNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPDTabInboxMessageNavigationController.h; sourceTree = "<group>"; };
 		45907EB51D66F19E00B75597 /* TKPDTabInboxMessageNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPDTabInboxMessageNavigationController.m; sourceTree = "<group>"; };
 		45907EB61D66F19E00B75597 /* TKPDTabInboxMessageNavigationController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TKPDTabInboxMessageNavigationController.xib; sourceTree = "<group>"; };
-		45907EB71D66F19E00B75597 /* TKPDTabInboxReviewNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPDTabInboxReviewNavigationController.h; sourceTree = "<group>"; };
-		45907EB81D66F19E00B75597 /* TKPDTabInboxReviewNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPDTabInboxReviewNavigationController.m; sourceTree = "<group>"; };
-		45907EB91D66F19E00B75597 /* TKPDTabInboxReviewNavigationController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TKPDTabInboxReviewNavigationController.xib; sourceTree = "<group>"; };
 		45907EBA1D66F19E00B75597 /* TKPDTabInboxTalkNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPDTabInboxTalkNavigationController.h; sourceTree = "<group>"; };
 		45907EBB1D66F19E00B75597 /* TKPDTabInboxTalkNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPDTabInboxTalkNavigationController.m; sourceTree = "<group>"; };
 		45907EBC1D66F19E00B75597 /* TKPDTabInboxTalkNavigationController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TKPDTabInboxTalkNavigationController.xib; sourceTree = "<group>"; };
@@ -4329,12 +4291,6 @@
 		45907F211D66F19E00B75597 /* GeneralProductCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralProductCollectionViewCell.h; sourceTree = "<group>"; };
 		45907F221D66F19E00B75597 /* GeneralProductCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralProductCollectionViewCell.m; sourceTree = "<group>"; };
 		45907F231D66F19E00B75597 /* GeneralProductCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GeneralProductCollectionViewCell.xib; sourceTree = "<group>"; };
-		45907F241D66F19E00B75597 /* GeneralProductReviewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralProductReviewCell.h; sourceTree = "<group>"; };
-		45907F251D66F19E00B75597 /* GeneralProductReviewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralProductReviewCell.m; sourceTree = "<group>"; };
-		45907F261D66F19E00B75597 /* GeneralProductReviewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GeneralProductReviewCell.xib; sourceTree = "<group>"; };
-		45907F271D66F19E00B75597 /* GeneralReviewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralReviewCell.h; sourceTree = "<group>"; };
-		45907F281D66F19E00B75597 /* GeneralReviewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralReviewCell.m; sourceTree = "<group>"; };
-		45907F291D66F19E00B75597 /* GeneralReviewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GeneralReviewCell.xib; sourceTree = "<group>"; };
 		45907F2A1D66F19E00B75597 /* GeneralSingleProductCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralSingleProductCell.h; sourceTree = "<group>"; };
 		45907F2B1D66F19E00B75597 /* GeneralSingleProductCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralSingleProductCell.m; sourceTree = "<group>"; };
 		45907F2C1D66F19E00B75597 /* GeneralSingleProductCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GeneralSingleProductCell.xib; sourceTree = "<group>"; };
@@ -4482,18 +4438,6 @@
 		45907FD01D66F19E00B75597 /* ResolutionInputReceiptViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionInputReceiptViewController.m; sourceTree = "<group>"; };
 		45907FD11D66F19E00B75597 /* ResolutionInputReceiptViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ResolutionInputReceiptViewController.xib; sourceTree = "<group>"; };
 		45907FD21D66F19E00B75597 /* string_inbox_resolution_center.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_inbox_resolution_center.h; sourceTree = "<group>"; };
-		45907FD41D66F19E00B75597 /* DetailReviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailReviewViewController.h; sourceTree = "<group>"; };
-		45907FD51D66F19E00B75597 /* DetailReviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailReviewViewController.m; sourceTree = "<group>"; };
-		45907FD61D66F19E00B75597 /* DetailReviewViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailReviewViewController.xib; sourceTree = "<group>"; };
-		45907FD71D66F19E00B75597 /* InboxReviewSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxReviewSplitViewController.h; sourceTree = "<group>"; };
-		45907FD81D66F19E00B75597 /* InboxReviewSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxReviewSplitViewController.m; sourceTree = "<group>"; };
-		45907FD91D66F19E00B75597 /* InboxReviewSplitViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InboxReviewSplitViewController.xib; sourceTree = "<group>"; };
-		45907FDA1D66F19E00B75597 /* InboxReviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxReviewViewController.h; sourceTree = "<group>"; };
-		45907FDB1D66F19E00B75597 /* InboxReviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxReviewViewController.m; sourceTree = "<group>"; };
-		45907FDC1D66F19E00B75597 /* InboxReviewViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InboxReviewViewController.xib; sourceTree = "<group>"; };
-		45907FDD1D66F19E00B75597 /* ReviewFormViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReviewFormViewController.h; sourceTree = "<group>"; };
-		45907FDE1D66F19E00B75597 /* ReviewFormViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReviewFormViewController.m; sourceTree = "<group>"; };
-		45907FDF1D66F19E00B75597 /* ReviewFormViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReviewFormViewController.xib; sourceTree = "<group>"; };
 		45907FE01D66F19E00B75597 /* string_inbox_review.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_inbox_review.h; sourceTree = "<group>"; };
 		45907FE21D66F19E00B75597 /* InboxTalkCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InboxTalkCell.xib; sourceTree = "<group>"; };
 		45907FE31D66F19E00B75597 /* InboxTalkSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxTalkSplitViewController.h; sourceTree = "<group>"; };
@@ -4724,9 +4668,6 @@
 		459080DA1D66F19F00B75597 /* DetailMyReviewReputationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailMyReviewReputationCell.h; sourceTree = "<group>"; };
 		459080DB1D66F19F00B75597 /* DetailMyReviewReputationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailMyReviewReputationCell.m; sourceTree = "<group>"; };
 		459080DC1D66F19F00B75597 /* DetailMyReviewReputationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailMyReviewReputationCell.xib; sourceTree = "<group>"; };
-		459080DD1D66F19F00B75597 /* DetailMyReviewReputationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailMyReviewReputationViewController.h; sourceTree = "<group>"; };
-		459080DE1D66F19F00B75597 /* DetailMyReviewReputationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailMyReviewReputationViewController.m; sourceTree = "<group>"; };
-		459080DF1D66F19F00B75597 /* DetailMyReviewReputationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailMyReviewReputationViewController.xib; sourceTree = "<group>"; };
 		459080E01D66F19F00B75597 /* DetailReputationReviewComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailReputationReviewComponent.h; sourceTree = "<group>"; };
 		459080E11D66F19F00B75597 /* DetailReputationReviewComponent.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DetailReputationReviewComponent.mm; sourceTree = "<group>"; };
 		459080E21D66F19F00B75597 /* DetailReputationReviewComponentDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailReputationReviewComponentDelegate.h; sourceTree = "<group>"; };
@@ -4741,9 +4682,6 @@
 		459080EB1D66F19F00B75597 /* GiveReviewResponseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GiveReviewResponseViewController.h; sourceTree = "<group>"; };
 		459080EC1D66F19F00B75597 /* GiveReviewResponseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GiveReviewResponseViewController.m; sourceTree = "<group>"; };
 		459080ED1D66F19F00B75597 /* GiveReviewResponseViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GiveReviewResponseViewController.xib; sourceTree = "<group>"; };
-		459080EE1D66F19F00B75597 /* GiveReviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GiveReviewViewController.h; sourceTree = "<group>"; };
-		459080EF1D66F19F00B75597 /* GiveReviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GiveReviewViewController.m; sourceTree = "<group>"; };
-		459080F01D66F19F00B75597 /* GiveReviewViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GiveReviewViewController.xib; sourceTree = "<group>"; };
 		459080F21D66F19F00B75597 /* HelpfulReviewRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpfulReviewRequest.h; sourceTree = "<group>"; };
 		459080F31D66F19F00B75597 /* HelpfulReviewRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpfulReviewRequest.m; sourceTree = "<group>"; };
 		459080F41D66F19F00B75597 /* HelpfulReviewResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpfulReviewResponse.h; sourceTree = "<group>"; };
@@ -4767,17 +4705,9 @@
 		459081061D66F19F00B75597 /* MyReviewDetailHeaderSmileyComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyReviewDetailHeaderSmileyComponent.h; sourceTree = "<group>"; };
 		459081071D66F19F00B75597 /* MyReviewDetailHeaderSmileyComponent.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MyReviewDetailHeaderSmileyComponent.mm; sourceTree = "<group>"; };
 		459081081D66F19F00B75597 /* MyReviewDetailHeaderSmileyDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyReviewDetailHeaderSmileyDelegate.h; sourceTree = "<group>"; };
-		459081091D66F19F00B75597 /* MyReviewDetailRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyReviewDetailRequest.h; sourceTree = "<group>"; };
-		4590810A1D66F19F00B75597 /* MyReviewDetailRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyReviewDetailRequest.m; sourceTree = "<group>"; };
-		4590810B1D66F19F00B75597 /* MyReviewDetailTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyReviewDetailTableViewCell.h; sourceTree = "<group>"; };
-		4590810C1D66F19F00B75597 /* MyReviewDetailTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyReviewDetailTableViewCell.m; sourceTree = "<group>"; };
-		4590810D1D66F19F00B75597 /* MyReviewDetailTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyReviewDetailTableViewCell.xib; sourceTree = "<group>"; };
 		4590810E1D66F19F00B75597 /* MyReviewDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyReviewDetailViewController.h; sourceTree = "<group>"; };
 		4590810F1D66F19F00B75597 /* MyReviewDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyReviewDetailViewController.m; sourceTree = "<group>"; };
 		459081101D66F19F00B75597 /* MyReviewDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyReviewDetailViewController.xib; sourceTree = "<group>"; };
-		459081111D66F19F00B75597 /* MyReviewReputationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyReviewReputationCell.h; sourceTree = "<group>"; };
-		459081121D66F19F00B75597 /* MyReviewReputationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyReviewReputationCell.m; sourceTree = "<group>"; };
-		459081131D66F19F00B75597 /* MyReviewReputationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyReviewReputationCell.xib; sourceTree = "<group>"; };
 		459081141D66F19F00B75597 /* MyReviewReputationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyReviewReputationViewController.h; sourceTree = "<group>"; };
 		459081151D66F19F00B75597 /* MyReviewReputationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyReviewReputationViewController.m; sourceTree = "<group>"; };
 		459081161D66F19F00B75597 /* MyReviewReputationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyReviewReputationViewController.xib; sourceTree = "<group>"; };
@@ -4832,28 +4762,6 @@
 		4590814B1D66F19F00B75597 /* PromoRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PromoRequest.h; sourceTree = "<group>"; };
 		4590814C1D66F19F00B75597 /* PromoRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PromoRequest.m; sourceTree = "<group>"; };
 		4590814D1D66F19F00B75597 /* string_promo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_promo.h; sourceTree = "<group>"; };
-		4590814F1D66F19F00B75597 /* reputation_string.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = reputation_string.h; sourceTree = "<group>"; };
-		459081511D66F19F00B75597 /* ReputationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReputationCell.h; sourceTree = "<group>"; };
-		459081521D66F19F00B75597 /* ReputationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReputationCell.m; sourceTree = "<group>"; };
-		459081531D66F19F00B75597 /* ReputationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReputationCell.xib; sourceTree = "<group>"; };
-		459081551D66F19F00B75597 /* ReputationDetailFormViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReputationDetailFormViewController.h; sourceTree = "<group>"; };
-		459081561D66F19F00B75597 /* ReputationDetailFormViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReputationDetailFormViewController.m; sourceTree = "<group>"; };
-		459081571D66F19F00B75597 /* ReputationDetailFormViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReputationDetailFormViewController.xib; sourceTree = "<group>"; };
-		459081581D66F19F00B75597 /* ReputationDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReputationDetailViewController.h; sourceTree = "<group>"; };
-		459081591D66F19F00B75597 /* ReputationDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReputationDetailViewController.m; sourceTree = "<group>"; };
-		4590815A1D66F19F00B75597 /* ReputationDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReputationDetailViewController.xib; sourceTree = "<group>"; };
-		4590815C1D66F19F00B75597 /* ReputationShopHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReputationShopHeader.h; sourceTree = "<group>"; };
-		4590815D1D66F19F00B75597 /* ReputationShopHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReputationShopHeader.m; sourceTree = "<group>"; };
-		4590815E1D66F19F00B75597 /* ReputationShopHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReputationShopHeader.xib; sourceTree = "<group>"; };
-		4590815F1D66F19F00B75597 /* ReputationMyProductViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReputationMyProductViewController.h; sourceTree = "<group>"; };
-		459081601D66F19F00B75597 /* ReputationMyProductViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReputationMyProductViewController.m; sourceTree = "<group>"; };
-		459081611D66F19F00B75597 /* ReputationMyProductViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReputationMyProductViewController.xib; sourceTree = "<group>"; };
-		459081621D66F19F00B75597 /* ReputationMyReviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReputationMyReviewViewController.h; sourceTree = "<group>"; };
-		459081631D66F19F00B75597 /* ReputationMyReviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReputationMyReviewViewController.m; sourceTree = "<group>"; };
-		459081641D66F19F00B75597 /* ReputationMyReviewViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReputationMyReviewViewController.xib; sourceTree = "<group>"; };
-		459081651D66F19F00B75597 /* ReputationPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReputationPageViewController.h; sourceTree = "<group>"; };
-		459081661D66F19F00B75597 /* ReputationPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReputationPageViewController.m; sourceTree = "<group>"; };
-		459081671D66F19F00B75597 /* ReputationPageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReputationPageViewController.xib; sourceTree = "<group>"; };
 		459081691D66F19F00B75597 /* FooterCollectionReusableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FooterCollectionReusableView.h; sourceTree = "<group>"; };
 		4590816A1D66F19F00B75597 /* FooterCollectionReusableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FooterCollectionReusableView.m; sourceTree = "<group>"; };
 		4590816B1D66F19F00B75597 /* FooterCollectionReusableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FooterCollectionReusableView.xib; sourceTree = "<group>"; };
@@ -6354,6 +6262,9 @@
 		459087A81D66F1A200B75597 /* XYPieChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XYPieChart.h; sourceTree = "<group>"; };
 		459087A91D66F1A200B75597 /* XYPieChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYPieChart.m; sourceTree = "<group>"; };
 		4868E459AB2A65D133732296 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tokopedia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		626A94381D6FE8BC00E2FE5F /* GeneralProductReviewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralProductReviewCell.h; sourceTree = "<group>"; };
+		626A94391D6FE8BC00E2FE5F /* GeneralProductReviewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralProductReviewCell.m; sourceTree = "<group>"; };
+		626A943A1D6FE8BC00E2FE5F /* GeneralProductReviewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GeneralProductReviewCell.xib; sourceTree = "<group>"; };
 		7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
@@ -9022,13 +8933,11 @@
 				459080581D66F19F00B75597 /* Navigator */,
 				4590805B1D66F19F00B75597 /* NotificationManager */,
 				459080651D66F19F00B75597 /* Onboarding */,
-				459080681D66F19F00B75597 /* Order VIPER */,
 				4590806A1D66F19F00B75597 /* PriceAlert */,
 				459080811D66F19F00B75597 /* Product */,
 				4590813E1D66F19F00B75597 /* ProductDataSource.swift */,
 				4590813F1D66F19F00B75597 /* Profile */,
 				459081441D66F19F00B75597 /* Promo */,
-				4590814E1D66F19F00B75597 /* Reputation */,
 				459081681D66F19F00B75597 /* ReusableView */,
 				459081751D66F19F00B75597 /* Sales */,
 				459081EF1D66F19F00B75597 /* Search */,
@@ -9467,9 +9376,6 @@
 				45907EB41D66F19E00B75597 /* TKPDTabInboxMessageNavigationController.h */,
 				45907EB51D66F19E00B75597 /* TKPDTabInboxMessageNavigationController.m */,
 				45907EB61D66F19E00B75597 /* TKPDTabInboxMessageNavigationController.xib */,
-				45907EB71D66F19E00B75597 /* TKPDTabInboxReviewNavigationController.h */,
-				45907EB81D66F19E00B75597 /* TKPDTabInboxReviewNavigationController.m */,
-				45907EB91D66F19E00B75597 /* TKPDTabInboxReviewNavigationController.xib */,
 				45907EBA1D66F19E00B75597 /* TKPDTabInboxTalkNavigationController.h */,
 				45907EBB1D66F19E00B75597 /* TKPDTabInboxTalkNavigationController.m */,
 				45907EBC1D66F19E00B75597 /* TKPDTabInboxTalkNavigationController.xib */,
@@ -9591,6 +9497,9 @@
 		45907F0F1D66F19E00B75597 /* GeneralCell */ = {
 			isa = PBXGroup;
 			children = (
+				626A94381D6FE8BC00E2FE5F /* GeneralProductReviewCell.h */,
+				626A94391D6FE8BC00E2FE5F /* GeneralProductReviewCell.m */,
+				626A943A1D6FE8BC00E2FE5F /* GeneralProductReviewCell.xib */,
 				45907F101D66F19E00B75597 /* GeneralAlertCell.h */,
 				45907F111D66F19E00B75597 /* GeneralAlertCell.m */,
 				45907F121D66F19E00B75597 /* GeneralAlertCell.xib */,
@@ -9611,12 +9520,6 @@
 				45907F211D66F19E00B75597 /* GeneralProductCollectionViewCell.h */,
 				45907F221D66F19E00B75597 /* GeneralProductCollectionViewCell.m */,
 				45907F231D66F19E00B75597 /* GeneralProductCollectionViewCell.xib */,
-				45907F241D66F19E00B75597 /* GeneralProductReviewCell.h */,
-				45907F251D66F19E00B75597 /* GeneralProductReviewCell.m */,
-				45907F261D66F19E00B75597 /* GeneralProductReviewCell.xib */,
-				45907F271D66F19E00B75597 /* GeneralReviewCell.h */,
-				45907F281D66F19E00B75597 /* GeneralReviewCell.m */,
-				45907F291D66F19E00B75597 /* GeneralReviewCell.xib */,
 				45907F2A1D66F19E00B75597 /* GeneralSingleProductCell.h */,
 				45907F2B1D66F19E00B75597 /* GeneralSingleProductCell.m */,
 				45907F2C1D66F19E00B75597 /* GeneralSingleProductCell.xib */,
@@ -9936,18 +9839,6 @@
 		45907FD31D66F19E00B75597 /* InboxReview */ = {
 			isa = PBXGroup;
 			children = (
-				45907FD41D66F19E00B75597 /* DetailReviewViewController.h */,
-				45907FD51D66F19E00B75597 /* DetailReviewViewController.m */,
-				45907FD61D66F19E00B75597 /* DetailReviewViewController.xib */,
-				45907FD71D66F19E00B75597 /* InboxReviewSplitViewController.h */,
-				45907FD81D66F19E00B75597 /* InboxReviewSplitViewController.m */,
-				45907FD91D66F19E00B75597 /* InboxReviewSplitViewController.xib */,
-				45907FDA1D66F19E00B75597 /* InboxReviewViewController.h */,
-				45907FDB1D66F19E00B75597 /* InboxReviewViewController.m */,
-				45907FDC1D66F19E00B75597 /* InboxReviewViewController.xib */,
-				45907FDD1D66F19E00B75597 /* ReviewFormViewController.h */,
-				45907FDE1D66F19E00B75597 /* ReviewFormViewController.m */,
-				45907FDF1D66F19E00B75597 /* ReviewFormViewController.xib */,
 				45907FE01D66F19E00B75597 /* string_inbox_review.h */,
 			);
 			path = InboxReview;
@@ -10144,21 +10035,6 @@
 			path = Onboarding;
 			sourceTree = "<group>";
 		};
-		459080681D66F19F00B75597 /* Order VIPER */ = {
-			isa = PBXGroup;
-			children = (
-				459080691D66F19F00B75597 /* List */,
-			);
-			path = "Order VIPER";
-			sourceTree = "<group>";
-		};
-		459080691D66F19F00B75597 /* List */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = List;
-			sourceTree = "<group>";
-		};
 		4590806A1D66F19F00B75597 /* PriceAlert */ = {
 			isa = PBXGroup;
 			children = (
@@ -10324,19 +10200,12 @@
 		459080D71D66F19F00B75597 /* Reputation */ = {
 			isa = PBXGroup;
 			children = (
+				62F4F4461D6DB0AD000830BA /* ReviewComponents */,
 				459080D81D66F19F00B75597 /* AttachedPicture.h */,
 				459080D91D66F19F00B75597 /* AttachedPicture.m */,
 				459080DA1D66F19F00B75597 /* DetailMyReviewReputationCell.h */,
 				459080DB1D66F19F00B75597 /* DetailMyReviewReputationCell.m */,
 				459080DC1D66F19F00B75597 /* DetailMyReviewReputationCell.xib */,
-				459080DD1D66F19F00B75597 /* DetailMyReviewReputationViewController.h */,
-				459080DE1D66F19F00B75597 /* DetailMyReviewReputationViewController.m */,
-				459080DF1D66F19F00B75597 /* DetailMyReviewReputationViewController.xib */,
-				459080E01D66F19F00B75597 /* DetailReputationReviewComponent.h */,
-				459080E11D66F19F00B75597 /* DetailReputationReviewComponent.mm */,
-				459080E21D66F19F00B75597 /* DetailReputationReviewComponentDelegate.h */,
-				459080E31D66F19F00B75597 /* DetailReputationReviewHeaderComponent.h */,
-				459080E41D66F19F00B75597 /* DetailReputationReviewHeaderComponent.mm */,
 				459080E51D66F19F00B75597 /* GiveReviewDetailViewController.h */,
 				459080E61D66F19F00B75597 /* GiveReviewDetailViewController.m */,
 				459080E71D66F19F00B75597 /* GiveReviewDetailViewController.xib */,
@@ -10346,38 +10215,15 @@
 				459080EB1D66F19F00B75597 /* GiveReviewResponseViewController.h */,
 				459080EC1D66F19F00B75597 /* GiveReviewResponseViewController.m */,
 				459080ED1D66F19F00B75597 /* GiveReviewResponseViewController.xib */,
-				459080EE1D66F19F00B75597 /* GiveReviewViewController.h */,
-				459080EF1D66F19F00B75597 /* GiveReviewViewController.m */,
-				459080F01D66F19F00B75597 /* GiveReviewViewController.xib */,
 				459080F11D66F19F00B75597 /* HelpfulReview */,
 				459080F81D66F19F00B75597 /* ImageStorage.h */,
 				459080F91D66F19F00B75597 /* ImageStorage.m */,
 				459080FA1D66F19F00B75597 /* InboxReviewCell.h */,
 				459080FB1D66F19F00B75597 /* InboxReviewCell.m */,
 				459080FC1D66F19F00B75597 /* InboxReviewCell.xib */,
-				459080FD1D66F19F00B75597 /* MedalComponent.h */,
-				459080FE1D66F19F00B75597 /* MedalComponent.mm */,
-				459080FF1D66F19F00B75597 /* MyReviewDetailDataManager.h */,
-				459081001D66F19F00B75597 /* MyReviewDetailDataManager.mm */,
-				459081011D66F19F00B75597 /* MyReviewDetailHeader.h */,
-				459081021D66F19F00B75597 /* MyReviewDetailHeader.mm */,
-				459081031D66F19F00B75597 /* MyReviewDetailHeaderComponent.h */,
-				459081041D66F19F00B75597 /* MyReviewDetailHeaderComponent.mm */,
-				459081051D66F19F00B75597 /* MyReviewDetailHeaderDelegate.h */,
-				459081061D66F19F00B75597 /* MyReviewDetailHeaderSmileyComponent.h */,
-				459081071D66F19F00B75597 /* MyReviewDetailHeaderSmileyComponent.mm */,
-				459081081D66F19F00B75597 /* MyReviewDetailHeaderSmileyDelegate.h */,
-				459081091D66F19F00B75597 /* MyReviewDetailRequest.h */,
-				4590810A1D66F19F00B75597 /* MyReviewDetailRequest.m */,
-				4590810B1D66F19F00B75597 /* MyReviewDetailTableViewCell.h */,
-				4590810C1D66F19F00B75597 /* MyReviewDetailTableViewCell.m */,
-				4590810D1D66F19F00B75597 /* MyReviewDetailTableViewCell.xib */,
 				4590810E1D66F19F00B75597 /* MyReviewDetailViewController.h */,
 				4590810F1D66F19F00B75597 /* MyReviewDetailViewController.m */,
 				459081101D66F19F00B75597 /* MyReviewDetailViewController.xib */,
-				459081111D66F19F00B75597 /* MyReviewReputationCell.h */,
-				459081121D66F19F00B75597 /* MyReviewReputationCell.m */,
-				459081131D66F19F00B75597 /* MyReviewReputationCell.xib */,
 				459081141D66F19F00B75597 /* MyReviewReputationViewController.h */,
 				459081151D66F19F00B75597 /* MyReviewReputationViewController.m */,
 				459081161D66F19F00B75597 /* MyReviewReputationViewController.xib */,
@@ -10393,14 +10239,8 @@
 				459081201D66F19F00B75597 /* ProductReputationViewController.h */,
 				459081211D66F19F00B75597 /* ProductReputationViewController.m */,
 				459081221D66F19F00B75597 /* ProductReputationViewController.xib */,
-				459081231D66F19F00B75597 /* RatingComponent.h */,
-				459081241D66F19F00B75597 /* RatingComponent.mm */,
-				459081251D66F19F00B75597 /* ReviewRatingComponent.h */,
-				459081261D66F19F00B75597 /* ReviewRatingComponent.mm */,
 				459081271D66F19F00B75597 /* ReviewRequest.h */,
 				459081281D66F19F00B75597 /* ReviewRequest.m */,
-				459081291D66F19F00B75597 /* ReviewResponseComponent.h */,
-				4590812A1D66F19F00B75597 /* ReviewResponseComponent.mm */,
 				4590812B1D66F19F00B75597 /* ReviewSummaryViewController.h */,
 				4590812C1D66F19F00B75597 /* ReviewSummaryViewController.m */,
 				4590812D1D66F19F00B75597 /* ReviewSummaryViewController.xib */,
@@ -10471,59 +10311,6 @@
 				4590814D1D66F19F00B75597 /* string_promo.h */,
 			);
 			path = Promo;
-			sourceTree = "<group>";
-		};
-		4590814E1D66F19F00B75597 /* Reputation */ = {
-			isa = PBXGroup;
-			children = (
-				4590814F1D66F19F00B75597 /* reputation_string.h */,
-				459081501D66F19F00B75597 /* ReputationCell */,
-				459081541D66F19F00B75597 /* ReputationDetail */,
-				4590815B1D66F19F00B75597 /* ReputationHeader */,
-				4590815F1D66F19F00B75597 /* ReputationMyProductViewController.h */,
-				459081601D66F19F00B75597 /* ReputationMyProductViewController.m */,
-				459081611D66F19F00B75597 /* ReputationMyProductViewController.xib */,
-				459081621D66F19F00B75597 /* ReputationMyReviewViewController.h */,
-				459081631D66F19F00B75597 /* ReputationMyReviewViewController.m */,
-				459081641D66F19F00B75597 /* ReputationMyReviewViewController.xib */,
-				459081651D66F19F00B75597 /* ReputationPageViewController.h */,
-				459081661D66F19F00B75597 /* ReputationPageViewController.m */,
-				459081671D66F19F00B75597 /* ReputationPageViewController.xib */,
-			);
-			path = Reputation;
-			sourceTree = "<group>";
-		};
-		459081501D66F19F00B75597 /* ReputationCell */ = {
-			isa = PBXGroup;
-			children = (
-				459081511D66F19F00B75597 /* ReputationCell.h */,
-				459081521D66F19F00B75597 /* ReputationCell.m */,
-				459081531D66F19F00B75597 /* ReputationCell.xib */,
-			);
-			path = ReputationCell;
-			sourceTree = "<group>";
-		};
-		459081541D66F19F00B75597 /* ReputationDetail */ = {
-			isa = PBXGroup;
-			children = (
-				459081551D66F19F00B75597 /* ReputationDetailFormViewController.h */,
-				459081561D66F19F00B75597 /* ReputationDetailFormViewController.m */,
-				459081571D66F19F00B75597 /* ReputationDetailFormViewController.xib */,
-				459081581D66F19F00B75597 /* ReputationDetailViewController.h */,
-				459081591D66F19F00B75597 /* ReputationDetailViewController.m */,
-				4590815A1D66F19F00B75597 /* ReputationDetailViewController.xib */,
-			);
-			path = ReputationDetail;
-			sourceTree = "<group>";
-		};
-		4590815B1D66F19F00B75597 /* ReputationHeader */ = {
-			isa = PBXGroup;
-			children = (
-				4590815C1D66F19F00B75597 /* ReputationShopHeader.h */,
-				4590815D1D66F19F00B75597 /* ReputationShopHeader.m */,
-				4590815E1D66F19F00B75597 /* ReputationShopHeader.xib */,
-			);
-			path = ReputationHeader;
 			sourceTree = "<group>";
 		};
 		459081681D66F19F00B75597 /* ReusableView */ = {
@@ -12764,6 +12551,36 @@
 			path = XYPieChart;
 			sourceTree = "<group>";
 		};
+		62F4F4461D6DB0AD000830BA /* ReviewComponents */ = {
+			isa = PBXGroup;
+			children = (
+				459081291D66F19F00B75597 /* ReviewResponseComponent.h */,
+				4590812A1D66F19F00B75597 /* ReviewResponseComponent.mm */,
+				459081231D66F19F00B75597 /* RatingComponent.h */,
+				459081241D66F19F00B75597 /* RatingComponent.mm */,
+				459081251D66F19F00B75597 /* ReviewRatingComponent.h */,
+				459081261D66F19F00B75597 /* ReviewRatingComponent.mm */,
+				459080FD1D66F19F00B75597 /* MedalComponent.h */,
+				459080FE1D66F19F00B75597 /* MedalComponent.mm */,
+				459080FF1D66F19F00B75597 /* MyReviewDetailDataManager.h */,
+				459081001D66F19F00B75597 /* MyReviewDetailDataManager.mm */,
+				459081011D66F19F00B75597 /* MyReviewDetailHeader.h */,
+				459081021D66F19F00B75597 /* MyReviewDetailHeader.mm */,
+				459081031D66F19F00B75597 /* MyReviewDetailHeaderComponent.h */,
+				459081041D66F19F00B75597 /* MyReviewDetailHeaderComponent.mm */,
+				459081051D66F19F00B75597 /* MyReviewDetailHeaderDelegate.h */,
+				459081061D66F19F00B75597 /* MyReviewDetailHeaderSmileyComponent.h */,
+				459081071D66F19F00B75597 /* MyReviewDetailHeaderSmileyComponent.mm */,
+				459081081D66F19F00B75597 /* MyReviewDetailHeaderSmileyDelegate.h */,
+				459080E01D66F19F00B75597 /* DetailReputationReviewComponent.h */,
+				459080E11D66F19F00B75597 /* DetailReputationReviewComponent.mm */,
+				459080E21D66F19F00B75597 /* DetailReputationReviewComponentDelegate.h */,
+				459080E31D66F19F00B75597 /* DetailReputationReviewHeaderComponent.h */,
+				459080E41D66F19F00B75597 /* DetailReputationReviewHeaderComponent.mm */,
+			);
+			name = ReviewComponents;
+			sourceTree = "<group>";
+		};
 		BB20E7D51D532EE9001673D9 /* Tokopedia */ = {
 			isa = PBXGroup;
 			children = (
@@ -13038,7 +12855,6 @@
 				45908C0F1D66F1A200B75597 /* MyShopNoteViewController.xib in Resources */,
 				459090F81D66F1A300B75597 /* loyalMerchant@2x.png in Resources */,
 				45908E681D66F1A300B75597 /* banner_1.jpg in Resources */,
-				45908C771D66F1A200B75597 /* DetailMyReviewReputationViewController.xib in Resources */,
 				45908E6E1D66F1A300B75597 /* camera-grey@2x.png in Resources */,
 				45908C471D66F1A200B75597 /* DetailProductWholesaleTableCell.xib in Resources */,
 				45908ED31D66F1A300B75597 /* icon_arrow_white_down@3x.png in Resources */,
@@ -13048,7 +12864,6 @@
 				45908C721D66F1A200B75597 /* ReportProductViewController.xib in Resources */,
 				45908F831D66F1A300B75597 /* icon_idrop_indomaret@2x.png in Resources */,
 				459091291D66F1A300B75597 /* slide2c.png in Resources */,
-				45908BE41D66F1A200B75597 /* ReviewFormViewController.xib in Resources */,
 				45908C041D66F1A200B75597 /* MyShopAddressEditViewController.xib in Resources */,
 				45908C2E1D66F1A200B75597 /* IntroViewController.xib in Resources */,
 				459090111D66F1A300B75597 /* icon_plus_blue@2x.png in Resources */,
@@ -13148,7 +12963,6 @@
 				459090EE1D66F1A300B75597 /* launch_image@3x.png in Resources */,
 				45908EC71D66F1A300B75597 /* icon_arrow_down_white@2x.png in Resources */,
 				459090C31D66F1A300B75597 /* icon_unread.png in Resources */,
-				45908CC11D66F1A200B75597 /* ReputationPageViewController.xib in Resources */,
 				4590906F1D66F1A300B75597 /* icon_smile50.png in Resources */,
 				45908CF11D66F1A200B75597 /* OrderDetailProductCell.xib in Resources */,
 				4590917A1D66F1A300B75597 /* toped_verifikasi_phone.png in Resources */,
@@ -13296,7 +13110,6 @@
 				45908AC71D66F1A200B75597 /* AlertListFilterView.xib in Resources */,
 				459090D51D66F1A300B75597 /* icon_home_active@2x.png in Resources */,
 				459090E61D66F1A300B75597 /* info.png in Resources */,
-				45908B3B1D66F1A200B75597 /* TKPDTabInboxReviewNavigationController.xib in Resources */,
 				45908F081D66F1A300B75597 /* icon_15@3x.png in Resources */,
 				45908E621D66F1A300B75597 /* attached_image_placeholder.png in Resources */,
 				45908ED71D66F1A300B75597 /* icon_audio.png in Resources */,
@@ -13305,7 +13118,6 @@
 				459091861D66F1A300B75597 /* Icon_check_grey_bg@2x.png in Resources */,
 				459090F61D66F1A300B75597 /* logo_indomaret.png in Resources */,
 				459090761D66F1A300B75597 /* icon_smile_grey@3x.png in Resources */,
-				45908C811D66F1A200B75597 /* GiveReviewViewController.xib in Resources */,
 				45908E021D66F1A300B75597 /* TxOrderConfirmationCostCell.xib in Resources */,
 				45908DC01D66F1A300B75597 /* TrackOrderViewController.xib in Resources */,
 				45908F551D66F1A300B75597 /* icon_diskusi_comment_grey.png in Resources */,
@@ -13318,7 +13130,6 @@
 				45908D161D66F1A300B75597 /* SearchAutoCompleteCell.xib in Resources */,
 				459090041D66F1A300B75597 /* icon_order_cancel-01@2x.png in Resources */,
 				459090141D66F1A300B75597 /* icon_problem_about_account@3x.png in Resources */,
-				45908C8F1D66F1A200B75597 /* MyReviewDetailTableViewCell.xib in Resources */,
 				45908B341D66F1A200B75597 /* TKPDTabBarController.xib in Resources */,
 				459090001D66F1A300B75597 /* icon_open@1x.png in Resources */,
 				459090F91D66F1A300B75597 /* loyalMerchant@3x.png in Resources */,
@@ -13382,7 +13193,6 @@
 				45908D421D66F1A300B75597 /* SettingNotificationViewController.xib in Resources */,
 				45908FED1D66F1A300B75597 /* icon_neutral_sad50@2x.png in Resources */,
 				459090991D66F1A300B75597 /* icon_star_active_med.png in Resources */,
-				45908CBB1D66F1A200B75597 /* ReputationShopHeader.xib in Resources */,
 				BB20FD011D532EF4001673D9 /* InfoPlist.strings in Resources */,
 				459090EB1D66F1A300B75597 /* Keranjang@2x.png in Resources */,
 				459090631D66F1A300B75597 /* icon_shop_unfavorite@2x.png in Resources */,
@@ -13466,7 +13276,6 @@
 				45908F2D1D66F1A300B75597 /* icon_checklist_grey@3x.png in Resources */,
 				45908EBC1D66F1A300B75597 /* icon-minus-math.png in Resources */,
 				45908E581D66F1A300B75597 /* Lato-Regular.ttf in Resources */,
-				45908BE21D66F1A200B75597 /* InboxReviewViewController.xib in Resources */,
 				45908FB21D66F1A300B75597 /* icon_medal_diamond_one14@2x.png in Resources */,
 				459087E21D66F1A200B75597 /* public_key.der in Resources */,
 				45908FAA1D66F1A300B75597 /* icon_medal_bronze14@3x.png in Resources */,
@@ -13539,13 +13348,13 @@
 				45908DB61D66F1A300B75597 /* TKPMapView.xib in Resources */,
 				459090AA1D66F1A300B75597 /* icon_toped_alert@2x.png in Resources */,
 				45908ECA1D66F1A300B75597 /* icon_arrow_right_gray@3x.png in Resources */,
-				45908CBD1D66F1A200B75597 /* ReputationMyProductViewController.xib in Resources */,
 				45908EFE1D66F1A300B75597 /* icon_cart_active@2x.png in Resources */,
 				45908F8F1D66F1A300B75597 /* icon_like_active@3x.png in Resources */,
 				45908F4B1D66F1A300B75597 /* icon_contact_us_arrow@3x.png in Resources */,
 				45908EDE1D66F1A300B75597 /* icon_button_favorite_active@2x.png in Resources */,
 				45908D7B1D66F1A300B75597 /* DetailStatisticViewController.xib in Resources */,
 				45908E5A1D66F1A300B75597 /* activate_push_1@2x.png in Resources */,
+				626A943C1D6FE8BC00E2FE5F /* GeneralProductReviewCell.xib in Resources */,
 				459090641D66F1A300B75597 /* icon_signin.png in Resources */,
 				45908BC01D66F1A200B75597 /* InboxMessageViewController.xib in Resources */,
 				45908D511D66F1A300B75597 /* CreateShopViewController.xib in Resources */,
@@ -13557,14 +13366,12 @@
 				45908BB31D66F1A200B75597 /* HotlistResultAWSViewController.xib in Resources */,
 				45908B561D66F1A200B75597 /* DepositFormAccountBankViewController.xib in Resources */,
 				45908F711D66F1A300B75597 /* icon_google_new.png in Resources */,
-				45908B831D66F1A200B75597 /* GeneralReviewCell.xib in Resources */,
 				459091441D66F1A300B75597 /* icon_category_active@2x.png in Resources */,
 				45908E8E1D66F1A300B75597 /* icon_21.png in Resources */,
 				459090301D66F1A300B75597 /* icon_retur@2x.png in Resources */,
 				45908F6F1D66F1A300B75597 /* icon_google.png in Resources */,
 				45908F461D66F1A300B75597 /* icon_contact_us.png in Resources */,
 				45908FEF1D66F1A300B75597 /* icon_neutral_sad@2x.png in Resources */,
-				45908CB71D66F1A200B75597 /* ReputationDetailFormViewController.xib in Resources */,
 				45908E671D66F1A300B75597 /* balloon_read_right.png in Resources */,
 				45908ECB1D66F1A300B75597 /* icon_arrow_right_grey.png in Resources */,
 				45908B3D1D66F1A200B75597 /* TKPDTabInboxTalkNavigationController.xib in Resources */,
@@ -13600,7 +13407,6 @@
 				45908ECC1D66F1A300B75597 /* icon_arrow_right_grey@2x.png in Resources */,
 				459090B41D66F1A300B75597 /* icon_trash@2x.png in Resources */,
 				45908F7A1D66F1A300B75597 /* icon_grid_satu@3x.png in Resources */,
-				45908BE01D66F1A200B75597 /* InboxReviewSplitViewController.xib in Resources */,
 				4590908D1D66F1A300B75597 /* icon_speed_grey_large@2x.png in Resources */,
 				45908B0A1D66F1A200B75597 /* CatalogSellerViewController.xib in Resources */,
 				459090B51D66F1A300B75597 /* icon_trash@3x.png in Resources */,
@@ -13931,13 +13737,11 @@
 				459090FF1D66F1A300B75597 /* icon_arrow_white@2x.png in Resources */,
 				459091401D66F1A300B75597 /* icon_category.png in Resources */,
 				45908EE01D66F1A300B75597 /* icon_button_favorite_nonactive.png in Resources */,
-				45908BDE1D66F1A200B75597 /* DetailReviewViewController.xib in Resources */,
 				45908F9F1D66F1A300B75597 /* icon_maintenance_grey@2x.png in Resources */,
 				45908E6A1D66F1A300B75597 /* banner_3.jpg in Resources */,
 				4590905C1D66F1A300B75597 /* icon_shop_info@2x.png in Resources */,
 				45908E521D66F1A300B75597 /* TokopediaDB.db in Resources */,
 				45908B2F1D66F1A200B75597 /* ContactUsFormMainCategoryCell.xib in Resources */,
-				45908B811D66F1A200B75597 /* GeneralProductReviewCell.xib in Resources */,
 				4590915E1D66F1A300B75597 /* icon_cart_active@2x.png in Resources */,
 				45908FC21D66F1A300B75597 /* icon_message.png in Resources */,
 				45908D021D66F1A200B75597 /* FilterShipmentConfirmationViewController.xib in Resources */,
@@ -14078,7 +13882,6 @@
 				45908F281D66F1A300B75597 /* icon_checklist.png in Resources */,
 				459091801D66F1A300B75597 /* icon_camera_grey_active@2x.png in Resources */,
 				459090661D66F1A300B75597 /* icon_signin_active.png in Resources */,
-				45908CB51D66F1A200B75597 /* ReputationCell.xib in Resources */,
 				459090801D66F1A300B75597 /* icon_speed_bad_large.png in Resources */,
 				45908FB31D66F1A300B75597 /* icon_medal_diamond_one14@3x.png in Resources */,
 				45908E321D66F1A300B75597 /* UserContainerViewController.xib in Resources */,
@@ -14119,7 +13922,6 @@
 				4590901A1D66F1A300B75597 /* icon_problem_new_user@3x.png in Resources */,
 				459091831D66F1A300B75597 /* Icon_check_green_bg.png in Resources */,
 				45908F681D66F1A300B75597 /* icon_edit_grey@2x.png in Resources */,
-				45908CBF1D66F1A200B75597 /* ReputationMyReviewViewController.xib in Resources */,
 				45908E731D66F1A300B75597 /* icon_0.png in Resources */,
 				45908F3A1D66F1A300B75597 /* icon_clock@2x.png in Resources */,
 				45908C4D1D66F1A200B75597 /* ProductGalleryViewController.xib in Resources */,
@@ -14157,7 +13959,6 @@
 				459090591D66F1A300B75597 /* icon_shop_grey.png in Resources */,
 				45908F931D66F1A300B75597 /* icon_lock_grey@2x.png in Resources */,
 				45908DC51D66F1A300B75597 /* ShippingOptionsViewController.xib in Resources */,
-				45908CB91D66F1A200B75597 /* ReputationDetailViewController.xib in Resources */,
 				45908FBB1D66F1A300B75597 /* icon_medal_gold@3x.png in Resources */,
 				45908D5F1D66F1A300B75597 /* ShopTagDescriptionViewCell.xib in Resources */,
 				45908CC51D66F1A200B75597 /* HeaderCollectionReusableView.xib in Resources */,
@@ -14224,7 +14025,6 @@
 				45908BCA1D66F1A200B75597 /* InboxResolSplitViewController.xib in Resources */,
 				45908E551D66F1A300B75597 /* GothamLight.ttf in Resources */,
 				45908F091D66F1A300B75597 /* icon_16@3x.png in Resources */,
-				45908C931D66F1A200B75597 /* MyReviewReputationCell.xib in Resources */,
 				459090D41D66F1A300B75597 /* icon_home_active.png in Resources */,
 				459090091D66F1A300B75597 /* icon_order_check.png in Resources */,
 				45908E991D66F1A300B75597 /* icon_7.png in Resources */,
@@ -14369,7 +14169,6 @@
 				45908E3D1D66F1A300B75597 /* ProductSingleViewCell.m in Sources */,
 				45908A831D66F1A200B75597 /* ImmediateScheduler.swift in Sources */,
 				459087B71D66F1A200B75597 /* NSString+URLEncoding.m in Sources */,
-				45908CBA1D66F1A200B75597 /* ReputationShopHeader.m in Sources */,
 				459089901D66F1A200B75597 /* ResponseError.m in Sources */,
 				45908A981D66F1A200B75597 /* SwipeView.m in Sources */,
 				45908A8E1D66F1A200B75597 /* VirtualTimeConverterType.swift in Sources */,
@@ -14507,7 +14306,6 @@
 				459089531D66F1A200B75597 /* NoteDetail.swift in Sources */,
 				45908ACA1D66F1A200B75597 /* AlertListViewCell.m in Sources */,
 				45908BCC1D66F1A200B75597 /* InboxResolutionCenterTabViewController.m in Sources */,
-				45908C8D1D66F1A200B75597 /* MyReviewDetailRequest.m in Sources */,
 				45908BA91D66F1A200B75597 /* HotlistCell.m in Sources */,
 				459089CB1D66F1A200B75597 /* TxOrderConfirmedDetailInvoice.m in Sources */,
 				45908A1B1D66F1A200B75597 /* DisposeBase.swift in Sources */,
@@ -14525,7 +14323,6 @@
 				45908CF61D66F1A200B75597 /* SalesOrderCell.m in Sources */,
 				459088721D66F1A200B75597 /* HotlistList.m in Sources */,
 				45908E111D66F1A300B75597 /* TxOrderConfirmedBankCell.m in Sources */,
-				45908CB81D66F1A200B75597 /* ReputationDetailViewController.m in Sources */,
 				45908A0A1D66F1A200B75597 /* Lock.swift in Sources */,
 				459087C01D66F1A200B75597 /* UITableView+IndexPath.m in Sources */,
 				45908A571D66F1A200B75597 /* SkipUntil.swift in Sources */,
@@ -14552,7 +14349,6 @@
 				45908BB01D66F1A200B75597 /* HotlistViewModel.m in Sources */,
 				45908A1A1D66F1A200B75597 /* DisposeBag.swift in Sources */,
 				459089591D66F1A200B75597 /* Address.m in Sources */,
-				45908B3A1D66F1A200B75597 /* TKPDTabInboxReviewNavigationController.m in Sources */,
 				459091A81D66F1A300B75597 /* MGSwipeTableCell.m in Sources */,
 				459087FA1D66F1A200B75597 /* SecurityQuestion.m in Sources */,
 				45908E471D66F1A300B75597 /* VTAddress.m in Sources */,
@@ -14680,7 +14476,6 @@
 				45908A991D66F1A200B75597 /* UIImageView%2BAFNetworking.swift in Sources */,
 				459089201D66F1A200B75597 /* OrderProduct.m in Sources */,
 				459089F11D66F1A200B75597 /* WishListObjectList.m in Sources */,
-				45908C761D66F1A200B75597 /* DetailMyReviewReputationViewController.m in Sources */,
 				45908A6D1D66F1A200B75597 /* Observable+Concurrency.swift in Sources */,
 				45908D291D66F1A300B75597 /* SpellCheckResult.m in Sources */,
 				45908AED1D66F1A200B75597 /* TPLiveCameraView.m in Sources */,
@@ -14742,7 +14537,6 @@
 				459089D21D66F1A200B75597 /* TxOrderConfirmPaymentForm.m in Sources */,
 				45908A5A1D66F1A200B75597 /* SubscribeOn.swift in Sources */,
 				459087B81D66F1A200B75597 /* NSStringCategory.m in Sources */,
-				45908BDF1D66F1A200B75597 /* InboxReviewSplitViewController.m in Sources */,
 				459088501D66F1A200B75597 /* FavoritedShopList.m in Sources */,
 				459088491D66F1A200B75597 /* TheOtherProductResult.m in Sources */,
 				459088421D66F1A200B75597 /* TalkComment.m in Sources */,
@@ -14819,7 +14613,6 @@
 				4590883B1D66F1A200B75597 /* ReviewProductOwner.m in Sources */,
 				459089A01D66F1A200B75597 /* TransactionBuyResult.m in Sources */,
 				45908A191D66F1A200B75597 /* CompositeDisposable.swift in Sources */,
-				45908C921D66F1A200B75597 /* MyReviewReputationCell.m in Sources */,
 				459089761D66F1A200B75597 /* City.m in Sources */,
 				45908CE71D66F1A200B75597 /* RejectReasonViewController.m in Sources */,
 				45908A051D66F1A200B75597 /* RSKGrowingTextView.swift in Sources */,
@@ -14845,7 +14638,6 @@
 				45908DAF1D66F1A300B75597 /* InfoAddressView.swift in Sources */,
 				4590894D1D66F1A200B75597 /* Etalase.m in Sources */,
 				459088291D66F1A200B75597 /* CatalogSpecs.m in Sources */,
-				45908CBE1D66F1A200B75597 /* ReputationMyReviewViewController.m in Sources */,
 				45908C281D66F1A200B75597 /* NavigateViewController.m in Sources */,
 				45908BDB1D66F1A200B75597 /* ResolutionInputReceiptViewController.m in Sources */,
 				45908C2B1D66F1A200B75597 /* NotificationRequest.m in Sources */,
@@ -14874,7 +14666,6 @@
 				45908C711D66F1A200B75597 /* ReportProductViewController.swift in Sources */,
 				459088C51D66F1A200B75597 /* SkipReview.m in Sources */,
 				45908B731D66F1A200B75597 /* GeneralAlertCell.m in Sources */,
-				45908C8E1D66F1A200B75597 /* MyReviewDetailTableViewCell.m in Sources */,
 				45908B6E1D66F1A200B75597 /* RequestFilterCategory.swift in Sources */,
 				45908A891D66F1A200B75597 /* MainScheduler.swift in Sources */,
 				45908DE51D66F1A300B75597 /* TransactionCCViewController.m in Sources */,
@@ -14926,7 +14717,6 @@
 				45908C1E1D66F1A200B75597 /* CourierViewCell.m in Sources */,
 				459089D01D66F1A200B75597 /* OrderDetailForm.m in Sources */,
 				45908B5E1D66F1A200B75597 /* DepositSummaryCell.m in Sources */,
-				45908CB61D66F1A200B75597 /* ReputationDetailFormViewController.m in Sources */,
 				459088551D66F1A200B75597 /* FavoriteShopActionResult.m in Sources */,
 				45908AC61D66F1A200B75597 /* AlertListFilterView.m in Sources */,
 				459089461D66F1A200B75597 /* ShipmentResult.m in Sources */,
@@ -15108,7 +14898,6 @@
 				45908B911D66F1A200B75597 /* ResizeableImageCell.m in Sources */,
 				459088381D66F1A200B75597 /* RatingList.m in Sources */,
 				45908DDF1D66F1A300B75597 /* TransactionCartViewController.m in Sources */,
-				45908BE31D66F1A200B75597 /* ReviewFormViewController.m in Sources */,
 				459088131D66F1A200B75597 /* ContactUsActionResultStatus.m in Sources */,
 				4590890D1D66F1A200B75597 /* ShopBadgeLevel.m in Sources */,
 				45908E331D66F1A300B75597 /* UserPageHeader.m in Sources */,
@@ -15206,7 +14995,6 @@
 				459087D61D66F1A200B75597 /* TKPDStackView.m in Sources */,
 				45908D881D66F1A300B75597 /* ShopSettingViewController.m in Sources */,
 				45908B621D66F1A200B75597 /* DigitalGoodsDataSource.swift in Sources */,
-				45908CBC1D66F1A200B75597 /* ReputationMyProductViewController.m in Sources */,
 				459089B31D66F1A200B75597 /* CCData.m in Sources */,
 				45908A431D66F1A200B75597 /* Map.swift in Sources */,
 				459089401D66F1A200B75597 /* ShipmentCourierPackage.m in Sources */,
@@ -15214,7 +15002,6 @@
 				45908AB11D66F1A200B75597 /* WebViewSignInViewController.swift in Sources */,
 				4590888B1D66F1A200B75597 /* ResolutionDetail.m in Sources */,
 				45908B491D66F1A200B75597 /* NoResultView.m in Sources */,
-				45908BDD1D66F1A200B75597 /* DetailReviewViewController.m in Sources */,
 				45908A461D66F1A200B75597 /* Never.swift in Sources */,
 				459088D71D66F1A200B75597 /* ProductEditDetail.swift in Sources */,
 				459088F11D66F1A200B75597 /* AddressForm.m in Sources */,
@@ -15225,7 +15012,6 @@
 				45908BA41D66F1A200B75597 /* ProductInfoTableViewController.m in Sources */,
 				45908C3C1D66F1A200B75597 /* DetailProductDescriptionCell.m in Sources */,
 				45908A4B1D66F1A200B75597 /* Reduce.swift in Sources */,
-				45908B821D66F1A200B75597 /* GeneralReviewCell.m in Sources */,
 				45908AEA1D66F1A200B75597 /* CameraCollectionViewController.m in Sources */,
 				45908A321D66F1A200B75597 /* CombineLatest+arity.swift in Sources */,
 				45908A2C1D66F1A200B75597 /* ObservableConvertibleType.swift in Sources */,
@@ -15282,7 +15068,6 @@
 				459089941D66F1A200B75597 /* LuckyDealWord.m in Sources */,
 				45908D091D66F1A200B75597 /* DetailShipmentStatusCell.m in Sources */,
 				45908D451D66F1A300B75597 /* SettingPrivacyCell.m in Sources */,
-				45908B801D66F1A200B75597 /* GeneralProductReviewCell.m in Sources */,
 				459089A21D66F1A200B75597 /* TransactionCalculatePrice.m in Sources */,
 				459087CD1D66F1A200B75597 /* NSMutableURLRequest+TKPDURLRequestUploadImage.m in Sources */,
 				45908A5C1D66F1A200B75597 /* Take.swift in Sources */,
@@ -15301,7 +15086,6 @@
 				45908AF41D66F1A200B75597 /* RequestUploadImageSubmit.m in Sources */,
 				459089961D66F1A200B75597 /* TransactionActionResult.m in Sources */,
 				45908BB21D66F1A200B75597 /* HotlistResultAWSViewController.m in Sources */,
-				45908CC01D66F1A200B75597 /* ReputationPageViewController.m in Sources */,
 				45908AD71D66F1A200B75597 /* CustomNotificationView.m in Sources */,
 				45908B291D66F1A200B75597 /* ContactUsFormCategoryCell.m in Sources */,
 				459088561D66F1A200B75597 /* GeneralAction.m in Sources */,
@@ -15337,6 +15121,7 @@
 				45908AD91D66F1A200B75597 /* StickyAlert.m in Sources */,
 				459088201D66F1A200B75597 /* DepositSummaryResult.m in Sources */,
 				45908CA71D66F1A200B75597 /* RequestAddEditProduct.swift in Sources */,
+				626A943B1D6FE8BC00E2FE5F /* GeneralProductReviewCell.m in Sources */,
 				459089511D66F1A200B75597 /* NoteAction.swift in Sources */,
 				459089F61D66F1A200B75597 /* DKAssetGroupDetailVC.swift in Sources */,
 				45908CF41D66F1A200B75597 /* OrderDetailViewController.m in Sources */,
@@ -15493,11 +15278,9 @@
 				45908E031D66F1A300B75597 /* TxOrderConfirmationDetailHeaderView.m in Sources */,
 				459089101D66F1A200B75597 /* Quality.m in Sources */,
 				459088C41D66F1A200B75597 /* ReviewImageAttachment.m in Sources */,
-				45908C801D66F1A200B75597 /* GiveReviewViewController.m in Sources */,
 				459088001D66F1A200B75597 /* AddressDistrict.m in Sources */,
 				4590881A1D66F1A200B75597 /* DepositForm.m in Sources */,
 				459088E11D66F1A200B75597 /* ProductTalkFormResult.m in Sources */,
-				45908BE11D66F1A200B75597 /* InboxReviewViewController.m in Sources */,
 				459089081D66F1A200B75597 /* PromoteResult.m in Sources */,
 				45908C101D66F1A200B75597 /* MyShopPaymentCell.m in Sources */,
 				45908C311D66F1A200B75597 /* DepartmentTableViewController.m in Sources */,
@@ -15555,7 +15338,6 @@
 				459089721D66F1A200B75597 /* SettingPayment.m in Sources */,
 				45908C881D66F1A200B75597 /* MedalComponent.mm in Sources */,
 				459089481D66F1A200B75597 /* ShipmentShopData.m in Sources */,
-				45908CB41D66F1A200B75597 /* ReputationCell.m in Sources */,
 				4590885D1D66F1A200B75597 /* GoogleDistanceMatrixRow.m in Sources */,
 				45908B6A1D66F1A200B75597 /* FiltersTableViewController.swift in Sources */,
 				459088051D66F1A200B75597 /* CatalogList.m in Sources */,

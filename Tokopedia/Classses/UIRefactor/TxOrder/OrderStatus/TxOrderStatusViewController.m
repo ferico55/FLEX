@@ -11,8 +11,6 @@
 
 #import "TxOrderStatusViewController.h"
 #import "TxOrderStatusDetailViewController.h"
-#import "InboxReviewViewController.h"
-#import "TKPDTabInboxReviewNavigationController.h"
 #import "TrackOrderViewController.h"
 #import "FilterSalesTransactionListViewController.h"
 #import "TransactionCartRootViewController.h"

@@ -10,7 +10,6 @@
 #import "CameraCollectionViewController.h"
 #import "CameraCollectionCell.h"
 #import "ProductAddCaptionViewController.h"
-#import "GiveReviewViewController.h"
 #import "TKPDLiveCameraTableViewCell.h"
 #import "TKPDPhotoPicker.h"
 

@@ -20,7 +20,6 @@
 #import "ProductReputationCell.h"
 #import "TKPDTabInboxTalkNavigationController.h"
 #import "ShopReviewPageViewController.h"
-#import "DetailReviewViewController.h"
 #import "TTTAttributedLabel.h"
 //#import "GeneralReviewCell.h"
 
@@ -638,15 +637,7 @@
 }
 
 -(void)GeneralReviewCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath {
-    DetailReviewViewController *vc = [DetailReviewViewController new];
-    NSInteger row = indexpath.row;
-    vc.data = _list[row];
-    vc.index = [NSString stringWithFormat:@"%ld",(long)row];
-    vc.shop = _shop;
-    vc.is_owner = _reviewIsOwner;
-    vc.indexPath = indexpath;
     
-    [self.navigationController pushViewController:vc animated:YES];
 }
 
 
