@@ -9,7 +9,6 @@
 #import "MyReviewDetailViewController.h"
 #import "NavigateViewController.h"
 #import "MyReviewReputationViewModel.h"
-#import "MyReviewDetailTableViewCell.h"
 #import "ShopBadgeLevel.h"
 #import "SmileyAndMedal.h"
 #import "UIImageView+AFNetworking.h"

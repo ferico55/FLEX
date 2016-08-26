@@ -7,7 +7,6 @@
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 #import "CMPopTipView.h"
 #import "detail.h"
-#import "DetailMyReviewReputationViewController.h"
 #import "DetailReputationReview.h"
 #import "GeneralAction.h"
 #import "HPGrowingTextView.h"
@@ -303,34 +302,29 @@
     [productReputationCell setPercentage:(_detailReputationReview.review_user_reputation.positive_percentage)];
     [productReputationCell setLabelDate:_detailReputationReview.review_create_time];
     
-    if(_detailReputationReview!=nil && [[self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2] isMemberOfClass:[DetailMyReviewReputationViewController class]]) {
-        productReputationCell.getViewContentAction.hidden = YES;
-    }
-    else {
-        NSString *strResponseMessage = _detailReputationReview.review_response.response_message;
-        NSString *strUserID = _detailReputationReview.product_owner.user_id;
+    NSString *strResponseMessage = _detailReputationReview.review_response.response_message;
+    NSString *strUserID = _detailReputationReview.product_owner.user_id;
+    
+    UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
+    NSDictionary *auth = [_userManager getUserLoginData];
+    if(auth!=nil && [[NSString stringWithFormat:@"%@", [auth objectForKey:@"user_id"]] isEqualToString:strUserID]) {
+        [productReputationCell.getBtnChat setHidden:NO];
         
-        UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
-        NSDictionary *auth = [_userManager getUserLoginData];
-        if(auth!=nil && [[NSString stringWithFormat:@"%@", [auth objectForKey:@"user_id"]] isEqualToString:strUserID]) {
-            [productReputationCell.getBtnChat setHidden:NO];
-            
-            //Set chat total
-            if([strResponseMessage isEqualToString:@"0"]) {
-                [productReputationCell.getBtnChat setTitle:[NSString stringWithFormat:@"%@ Komentar", strResponseMessage] forState:UIControlStateNormal];
-            }
-            else {
-                [productReputationCell.getBtnChat setTitle:@"1 Komentar" forState:UIControlStateNormal];
-            }
+        //Set chat total
+        if([strResponseMessage isEqualToString:@"0"]) {
+            [productReputationCell.getBtnChat setTitle:[NSString stringWithFormat:@"%@ Komentar", strResponseMessage] forState:UIControlStateNormal];
         }
         else {
-            [productReputationCell.getBtnChat setHidden:YES];
+            [productReputationCell.getBtnChat setTitle:@"1 Komentar" forState:UIControlStateNormal];
         }
-        
-        //Set loading like dislike
-        if([loadingLikeDislike objectForKey:_detailReputationReview.review_id]) {
-            [productReputationCell setHiddenViewLoad:NO];
-        }
+    }
+    else {
+        [productReputationCell.getBtnChat setHidden:YES];
+    }
+    
+    //Set loading like dislike
+    if([loadingLikeDislike objectForKey:_detailReputationReview.review_id]) {
+        [productReputationCell setHiddenViewLoad:NO];
     }
     
     [productReputationCell setImageKualitas:[_detailReputationReview.product_rating_point intValue]];
@@ -910,10 +904,7 @@
                                                                        
                                                                        //Reload data in DetailMyReviewReputationViewController
                                                                        UIViewController *viewController = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
-                                                                       if([viewController isMemberOfClass:[DetailMyReviewReputationViewController class]]) {
-                                                                           [((DetailMyReviewReputationViewController *) viewController) successGiveComment];
-                                                                       }
-                                                                       else if([viewController isMemberOfClass:[ShopContainerViewController class]]) {
+                                                                       if([viewController isMemberOfClass:[ShopContainerViewController class]]) {
                                                                            viewController = [((ShopContainerViewController *) viewController) getActiveViewController];
                                                                            if([viewController isMemberOfClass:[ShopReviewPageViewController class]]) {
                                                                                [((ShopReviewPageViewController *) viewController) reloadTable];
@@ -977,10 +968,7 @@
                                                                        
                                                                        //Reload data in DetailMyReviewReputationViewController
                                                                        UIViewController *viewController = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
-                                                                       if([viewController isMemberOfClass:[DetailMyReviewReputationViewController class]]) {
-                                                                           [((DetailMyReviewReputationViewController *) viewController) successHapusComment];
-                                                                       }
-                                                                       else if([viewController isMemberOfClass:[ShopContainerViewController class]]) {
+                                                                       if([viewController isMemberOfClass:[ShopContainerViewController class]]) {
                                                                            viewController = [((ShopContainerViewController *) viewController) getActiveViewController];
                                                                            if([viewController isMemberOfClass:[ShopReviewPageViewController class]]) {
                                                                                [((ShopReviewPageViewController *) viewController) reloadTable];
