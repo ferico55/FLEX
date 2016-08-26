@@ -304,6 +304,13 @@ class PulsaView: UIView {
             self.numberField.rightView = prefixView
             self.numberField.rightViewMode = .Always
         }
+        
+        self.numberField.bk_shouldChangeCharactersInRangeWithReplacementStringBlock = { textField, range, string in
+            guard let text = textField.text else { return true }
+            
+            let newLength = text.characters.count + string.characters.count - range.length
+            return newLength <= self.selectedOperator.attributes.maximum_length
+        }
     }
     
     
