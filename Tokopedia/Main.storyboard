@@ -106,14 +106,6 @@
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-        </mutableArray>
-        <mutableArray key="GothamLight.ttf">
-            <string>GothamLight</string>
-            <string>GothamLight</string>
-            <string>GothamLight</string>
         </mutableArray>
         <mutableArray key="GothamMedium.ttf">
             <string>GothamMedium</string>
@@ -476,9 +468,6 @@
                                     </subviews>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <segue destination="gOX-FI-IgF" kind="push" identifier="Description" id="SZr-Rl-KN7"/>
-                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -507,109 +496,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2f2-5K-ssC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1650" y="-1064"/>
-        </scene>
-        <!--My Shop Shipment Info View Controller-->
-        <scene sceneID="qgQ-xp-34Z">
-            <objects>
-                <viewController storyboardIdentifier="MyShopShipmentInfoViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="gOX-FI-IgF" customClass="MyShopShipmentInfoViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Nbn-V1-3H1"/>
-                        <viewControllerLayoutGuide type="bottom" id="xa6-sF-afx"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="fv5-RM-b0r">
-                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TPW-hc-oJT">
-                                <rect key="frame" x="15" y="40" width="289" height="21"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="IMa-ht-efp"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
-                                <color key="textColor" red="0.25882352941176467" green="0.25882352941176467" blue="0.25882352941176467" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7X6-Jo-PwN">
-                                <rect key="frame" x="15" y="69" width="288" height="21"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="xnn-9F-coF"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="14"/>
-                                <color key="textColor" red="0.45882352941176469" green="0.45882352941176469" blue="0.45882352941176469" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NWD-xQ-sA2">
-                                <rect key="frame" x="15" y="110" width="289" height="21"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="FV1-v8-ZLD"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
-                                <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oX7-7a-n0h">
-                                <rect key="frame" x="15" y="139" width="288" height="21"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="YxN-p2-bbY"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="14"/>
-                                <color key="textColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g6D-rM-qmU">
-                                <rect key="frame" x="15" y="180" width="289" height="21"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="jlF-0H-3pp"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
-                                <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AdX-aD-99d">
-                                <rect key="frame" x="15" y="209" width="288" height="21"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="wca-eT-g9u"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="14"/>
-                                <color key="textColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <constraints>
-                            <constraint firstAttribute="trailing" secondItem="AdX-aD-99d" secondAttribute="trailing" constant="17" id="5S0-Wa-Q9j"/>
-                            <constraint firstAttribute="trailing" secondItem="7X6-Jo-PwN" secondAttribute="trailing" constant="17" id="7xW-uc-hfR"/>
-                            <constraint firstItem="oX7-7a-n0h" firstAttribute="leading" secondItem="fv5-RM-b0r" secondAttribute="leading" constant="15" id="AnS-7o-dyj"/>
-                            <constraint firstAttribute="trailing" secondItem="NWD-xQ-sA2" secondAttribute="trailing" constant="16" id="ElK-BW-hv5"/>
-                            <constraint firstItem="g6D-rM-qmU" firstAttribute="leading" secondItem="fv5-RM-b0r" secondAttribute="leading" constant="15" id="GBs-4l-rsy"/>
-                            <constraint firstItem="oX7-7a-n0h" firstAttribute="top" secondItem="NWD-xQ-sA2" secondAttribute="bottom" constant="8" id="K9E-Ev-WZk"/>
-                            <constraint firstItem="TPW-hc-oJT" firstAttribute="top" secondItem="Nbn-V1-3H1" secondAttribute="bottom" constant="20" id="OtS-Fg-a1H"/>
-                            <constraint firstAttribute="trailing" secondItem="TPW-hc-oJT" secondAttribute="trailing" constant="16" id="VZR-dz-M0j"/>
-                            <constraint firstItem="NWD-xQ-sA2" firstAttribute="top" secondItem="7X6-Jo-PwN" secondAttribute="bottom" constant="20" id="VsX-Y0-Kb6"/>
-                            <constraint firstItem="TPW-hc-oJT" firstAttribute="leading" secondItem="fv5-RM-b0r" secondAttribute="leading" constant="15" id="Xfn-SB-U1L"/>
-                            <constraint firstAttribute="trailing" secondItem="oX7-7a-n0h" secondAttribute="trailing" constant="17" id="amQ-jp-i4U"/>
-                            <constraint firstItem="NWD-xQ-sA2" firstAttribute="leading" secondItem="fv5-RM-b0r" secondAttribute="leading" constant="15" id="cTg-I7-trg"/>
-                            <constraint firstItem="7X6-Jo-PwN" firstAttribute="leading" secondItem="fv5-RM-b0r" secondAttribute="leading" constant="15" id="kl2-2m-N1F"/>
-                            <constraint firstAttribute="trailing" secondItem="g6D-rM-qmU" secondAttribute="trailing" constant="16" id="nAV-JF-tUs"/>
-                            <constraint firstItem="AdX-aD-99d" firstAttribute="leading" secondItem="fv5-RM-b0r" secondAttribute="leading" constant="15" id="oIW-Eb-E09"/>
-                            <constraint firstItem="AdX-aD-99d" firstAttribute="top" secondItem="g6D-rM-qmU" secondAttribute="bottom" constant="8" id="szU-6e-eXK"/>
-                            <constraint firstItem="g6D-rM-qmU" firstAttribute="top" secondItem="oX7-7a-n0h" secondAttribute="bottom" constant="20" id="tTe-Vc-WCc"/>
-                            <constraint firstItem="7X6-Jo-PwN" firstAttribute="top" secondItem="TPW-hc-oJT" secondAttribute="bottom" constant="8" id="u9N-jA-gnC"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" id="qII-fb-E9N"/>
-                    <connections>
-                        <outletCollection property="titleLabel" destination="TPW-hc-oJT" id="lVx-hO-uFJ"/>
-                        <outletCollection property="titleLabel" destination="NWD-xQ-sA2" id="HZJ-nv-CzJ"/>
-                        <outletCollection property="titleLabel" destination="g6D-rM-qmU" id="zI7-5a-Q47"/>
-                        <outletCollection property="descriptionLabel" destination="7X6-Jo-PwN" id="cFh-uv-NdC"/>
-                        <outletCollection property="descriptionLabel" destination="oX7-7a-n0h" id="uvT-qQ-Kql"/>
-                        <outletCollection property="descriptionLabel" destination="AdX-aD-99d" id="5Gc-aQ-ljp"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="fC7-YS-LNn" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2216" y="-1369"/>
         </scene>
         <!--More View Controller-->
         <scene sceneID="mse-Re-x0R">
@@ -2292,9 +2178,6 @@
                                                 <constraint firstItem="4kC-Ys-0Ub" firstAttribute="top" secondItem="rKh-sO-Ap0" secondAttribute="top" id="tbx-Wr-OQR"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="gOX-FI-IgF" kind="push" id="81D-39-p6A"/>
-                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="Dt3-yo-UvD" userLabel="11">
                                         <rect key="frame" x="0.0" y="1081" width="320" height="44"/>
@@ -2638,9 +2521,6 @@
                                                 <constraint firstAttribute="trailing" secondItem="Nfd-Fw-94x" secondAttribute="trailing" id="yTC-aE-A1w"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="gOX-FI-IgF" kind="push" id="P9R-rf-Ugz"/>
-                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="70" id="3cz-yO-V9F" userLabel="6">
                                         <rect key="frame" x="0.0" y="1415" width="320" height="70"/>
@@ -2969,9 +2849,6 @@
                                                 <constraint firstAttribute="bottom" secondItem="i47-hC-mlx" secondAttribute="bottom" id="smt-bm-W9Q"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="gOX-FI-IgF" kind="push" id="Bdn-cb-dYR"/>
-                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="70" id="Yta-2p-LP6" userLabel="5">
                                         <rect key="frame" x="0.0" y="1775" width="320" height="70"/>
@@ -3198,9 +3075,6 @@
                                                 <constraint firstItem="7Xf-kd-MdW" firstAttribute="top" secondItem="pff-ck-JNh" secondAttribute="top" id="gV8-ds-0Pa"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="gOX-FI-IgF" kind="push" id="utA-wh-QO4"/>
-                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="70" id="2Pr-fW-8Bg" userLabel="3">
                                         <rect key="frame" x="0.0" y="2047" width="320" height="70"/>
@@ -3743,9 +3617,6 @@
                                                 <constraint firstAttribute="trailing" secondItem="vJB-09-qhZ" secondAttribute="trailing" id="nDD-MY-Hht"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="gOX-FI-IgF" kind="push" id="Qii-jl-hjf"/>
-                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="100" id="E6V-1J-ZQK" userLabel="9">
                                         <rect key="frame" x="0.0" y="2595" width="320" height="100"/>
@@ -3972,9 +3843,6 @@
                                                 <constraint firstItem="5li-86-fhl" firstAttribute="leading" secondItem="egS-3c-QCh" secondAttribute="leading" id="gC9-3s-4Zv"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="gOX-FI-IgF" kind="push" id="WBB-NF-3cE"/>
-                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="70" id="J8f-X1-eky" userLabel="3">
                                         <rect key="frame" x="0.0" y="2923" width="320" height="70"/>
@@ -4200,9 +4068,6 @@
                                                 <constraint firstItem="biw-f3-g2h" firstAttribute="leading" secondItem="6Bl-0U-xdz" secondAttribute="leading" id="tVF-nq-lQj"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="gOX-FI-IgF" kind="push" id="0G6-LH-uxS"/>
-                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="70" id="rQb-Th-Qec" userLabel="3">
                                         <rect key="frame" x="0.0" y="3221" width="320" height="70"/>
@@ -4428,9 +4293,6 @@
                                                 <constraint firstItem="Usf-68-0qW" firstAttribute="top" secondItem="fqo-ag-fsx" secondAttribute="top" id="Wtp-KC-esw"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="gOX-FI-IgF" kind="push" id="0Xc-LY-cAF"/>
-                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="70" id="3fY-4A-8gi" userLabel="3">
                                         <rect key="frame" x="0.0" y="3519" width="320" height="70"/>
@@ -4655,9 +4517,6 @@
                                                 <constraint firstAttribute="bottom" secondItem="1C9-58-rUY" secondAttribute="bottom" id="hWw-we-QTW"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="gOX-FI-IgF" kind="push" id="QT1-gY-x25"/>
-                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="JRw-kX-zpV" userLabel="4">
                                         <rect key="frame" x="0.0" y="3817" width="320" height="44"/>
@@ -4845,9 +4704,6 @@
                                                 <constraint firstItem="un4-M3-faf" firstAttribute="leading" secondItem="Dlo-da-hls" secondAttribute="leading" id="yWj-By-6HA"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="gOX-FI-IgF" kind="push" id="9Bp-LR-wHl"/>
-                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="qzn-1v-GtZ" userLabel="4">
                                         <rect key="frame" x="0.0" y="4019" width="320" height="44"/>
@@ -7365,6 +7221,5 @@ Transaksi</string>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="x2J-wE-MUY"/>
-        <segue reference="SZr-Rl-KN7"/>
     </inferredMetricsTieBreakers>
 </document>
