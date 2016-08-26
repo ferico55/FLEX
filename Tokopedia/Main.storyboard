@@ -109,9 +109,6 @@
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
         </mutableArray>
         <mutableArray key="GothamLight.ttf">
             <string>GothamLight</string>
@@ -5639,103 +5636,6 @@
             </objects>
             <point key="canvasLocation" x="2046" y="140"/>
         </scene>
-        <!--Root View Controller-->
-        <scene sceneID="NoA-pg-dSL">
-            <objects>
-                <tableViewController id="Iox-TK-w2v" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="u4B-gw-eKF">
-                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <sections>
-                            <tableViewSection id="BsT-wk-4kD">
-                                <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="lip-Hf-hcQ" detailTextLabel="L0y-hm-4c3" style="IBUITableViewCellStyleValue1" id="YlW-VM-f8r">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="YlW-VM-f8r" id="ecz-6R-Qqh">
-                                            <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Jatuh Tempo Respons" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="lip-Hf-hcQ">
-                                                    <rect key="frame" x="15" y="15" width="167" height="14"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Pilih" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="L0y-hm-4c3">
-                                                    <rect key="frame" x="253" y="15" width="32" height="14"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
-                                                    <color key="textColor" red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                </cells>
-                            </tableViewSection>
-                            <tableViewSection id="Yfk-fY-i9r">
-                                <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="A9v-ha-XOM">
-                                        <rect key="frame" x="0.0" y="44" width="320" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="A9v-ha-XOM" id="N6o-BV-htm">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Invoice / Nama Pembeli" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="RLd-hT-85C">
-                                                    <rect key="frame" x="15" y="0.0" width="305" height="44"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="44" id="XHT-Rz-5Qp"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
-                                                </textField>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="RLd-hT-85C" firstAttribute="top" secondItem="N6o-BV-htm" secondAttribute="topMargin" constant="-8" id="Ieo-8g-KUr"/>
-                                                <constraint firstItem="RLd-hT-85C" firstAttribute="leading" secondItem="N6o-BV-htm" secondAttribute="leadingMargin" constant="7" id="QMg-iG-LzI"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="RLd-hT-85C" secondAttribute="trailing" constant="-8" id="dkF-7s-Edy"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                </cells>
-                            </tableViewSection>
-                        </sections>
-                        <connections>
-                            <outlet property="dataSource" destination="Iox-TK-w2v" id="ihK-I0-VWQ"/>
-                            <outlet property="delegate" destination="Iox-TK-w2v" id="esK-vI-EDC"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="Xpc-OF-w6x"/>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="mkN-Ri-jap" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2046" y="702"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="6iQ-nD-xkv">
-            <objects>
-                <navigationController storyboardIdentifier="ShipmentConfirmationNavigationController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="8r7-Ci-wom" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="pro-Xs-WB0">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <color key="barTintColor" red="0.070588235289999995" green="0.78039215689999997" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <textAttributes key="titleTextAttributes">
-                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        </textAttributes>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="Iox-TK-w2v" kind="relationship" relationship="rootViewController" id="r6j-UF-OXd"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="cUT-Ge-Z33" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1650" y="702"/>
-        </scene>
         <!--Pilih Tempo Respons-->
         <scene sceneID="QHW-cL-S0z">
             <objects>
@@ -7464,7 +7364,7 @@ Transaksi</string>
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="x2J-wE-MUY"/>
         <segue reference="SZr-Rl-KN7"/>
-        <segue reference="f55-Wx-7oa"/>
     </inferredMetricsTieBreakers>
 </document>
