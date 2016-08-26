@@ -4,11 +4,6 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <mutableArray key="GothamBook.ttf">
-            <string>GothamBook</string>
-        </mutableArray>
-    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="OrderDetailViewController">
             <connections>
@@ -162,7 +157,7 @@
                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="290" id="ONy-fJ-rqi"/>
                         <constraint firstAttribute="height" constant="21" id="uXI-zF-pmH"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="10"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
                     <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>

@@ -102,7 +102,7 @@
                                     <constraints>
                                         <constraint firstAttribute="height" constant="51" id="U2y-8P-Lhi"/>
                                     </constraints>
-                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
@@ -112,7 +112,7 @@
                                     <constraints>
                                         <constraint firstAttribute="height" constant="21" id="Mwv-P7-bBq"/>
                                     </constraints>
-                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
@@ -159,7 +159,7 @@
                                     <constraints>
                                         <constraint firstAttribute="height" constant="51" id="iOb-G3-AuE"/>
                                     </constraints>
-                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
@@ -168,7 +168,7 @@
                                     <constraints>
                                         <constraint firstAttribute="height" constant="30" id="Y3O-Ao-qdV"/>
                                     </constraints>
-                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                     <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                     <connections>
                                         <outlet property="delegate" destination="-1" id="PnL-UK-x2C"/>
@@ -223,7 +223,7 @@
                                     <constraints>
                                         <constraint firstAttribute="height" constant="30" id="juc-vT-1nh"/>
                                     </constraints>
-                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                     <state key="normal" title="Pilih Bank">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
@@ -286,22 +286,15 @@
                         <constraint firstItem="3Tl-OO-Qho" firstAttribute="width" secondItem="M9W-hT-Gkz" secondAttribute="width" id="xxX-rX-KMs"/>
                     </constraints>
                 </view>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bkV-e6-P2y">
-                    <rect key="frame" x="19" y="217" width="554" height="32"/>
-                    <attributedString key="attributedText">
-                        <fragment>
-                            <string key="content">Demi kelancaran proses pencairan dana, mohon pastikan kembali nama dan nomor rekening yang di cantumkan sudah sesuai dengan yang tertera pada bukti tabungan Anda.</string>
-                            <attributes>
-                                <color key="NSColor" red="0.45882352941176469" green="0.45882352941176469" blue="0.45882352941176469" alpha="1" colorSpace="calibratedRGB"/>
-                                <font key="NSFont" size="12" name="HelveticaNeue"/>
-                                <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="4"/>
-                            </attributes>
-                        </fragment>
-                    </attributedString>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bkV-e6-P2y">
+                    <rect key="frame" x="19" y="217" width="554" height="29"/>
+                    <string key="text">Demi kelancaran proses pencairan dana, mohon pastikan kembali nama dan nomor rekening yang di cantumkan sudah sesuai dengan yang tertera pada bukti tabungan Anda.</string>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <color key="textColor" red="0.45882352941176469" green="0.45882352941176469" blue="0.45882352941176469" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JAZ-yG-jrH" userLabel="otpView">
-                    <rect key="frame" x="0.0" y="252" width="600" height="121"/>
+                    <rect key="frame" x="0.0" y="249" width="600" height="121"/>
                     <subviews>
                         <button opaque="NO" tag="12" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" reversesTitleShadowWhenHighlighted="YES" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LHE-Nm-tbs">
                             <rect key="frame" x="8" y="12" width="583" height="44"/>
@@ -309,7 +302,7 @@
                             <constraints>
                                 <constraint firstAttribute="height" constant="44" id="K0a-Vv-Rb8"/>
                             </constraints>
-                            <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
+                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
                             <state key="normal">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -340,7 +333,7 @@
                                     <constraints>
                                         <constraint firstAttribute="height" constant="30" id="9YM-OH-ScA"/>
                                     </constraints>
-                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                     <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                     <connections>
                                         <outlet property="delegate" destination="-1" id="5kL-b1-rag"/>
@@ -382,7 +375,7 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ips-EG-b77">
-                    <rect key="frame" x="0.0" y="381" width="600" height="140"/>
+                    <rect key="frame" x="0.0" y="378" width="600" height="140"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oJJ-lL-4ts">
                             <rect key="frame" x="0.0" y="2" width="600" height="51"/>
@@ -399,7 +392,7 @@
                                     <constraints>
                                         <constraint firstAttribute="height" constant="30" id="CrH-VN-bZq"/>
                                     </constraints>
-                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                     <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                     <connections>
                                         <outlet property="delegate" destination="-1" id="YcC-Uy-ha5"/>
@@ -427,36 +420,22 @@
                                 <constraint firstItem="Klx-Dz-lZu" firstAttribute="leading" secondItem="oJJ-lL-4ts" secondAttribute="leading" id="qaU-ao-Iqy"/>
                             </constraints>
                         </view>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UHC-o6-BHe">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Masukkan password login Tokopedia Anda" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UHC-o6-BHe">
                             <rect key="frame" x="23" y="57" width="554" height="27"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="27" id="mS9-K8-t5E"/>
                             </constraints>
-                            <attributedString key="attributedText">
-                                <fragment content="Masukkan password login Tokopedia Anda">
-                                    <attributes>
-                                        <color key="NSColor" red="0.45882352941176469" green="0.45882352941176469" blue="0.45882352941176469" alpha="1" colorSpace="calibratedRGB"/>
-                                        <font key="NSFont" size="12" name="HelveticaNeue"/>
-                                        <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="4"/>
-                                    </attributes>
-                                </fragment>
-                            </attributedString>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                            <color key="textColor" red="0.45882352941176469" green="0.45882352941176469" blue="0.45882352941176469" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ywu-Xs-7C1">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="*) Penarikan dana ke rekening BRI akan dikenakan biaya transfer Rp.1.500,- oleh Bank BRI" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ywu-Xs-7C1">
                             <rect key="frame" x="23" y="64" width="554" height="76"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="76" id="OcO-iB-Tlp"/>
                             </constraints>
-                            <attributedString key="attributedText">
-                                <fragment content="*) Penarikan dana ke rekening BRI akan dikenakan biaya transfer Rp.1.500,- oleh Bank BRI">
-                                    <attributes>
-                                        <color key="NSColor" red="0.45882352941176469" green="0.45882352941176469" blue="0.45882352941176469" alpha="1" colorSpace="calibratedRGB"/>
-                                        <font key="NSFont" size="12" name="HelveticaNeue"/>
-                                        <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="4"/>
-                                    </attributes>
-                                </fragment>
-                            </attributedString>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                            <color key="textColor" red="0.45882352941176469" green="0.45882352941176469" blue="0.45882352941176469" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>

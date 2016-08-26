@@ -8,12 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "FavoritedShopCell.h"
-#import "TKPDTabHomeViewController.h"
 
 @interface FavoritedShopViewController : GAITrackedViewController
 
 @property (assign, nonatomic) NSInteger index;
 @property (strong, nonatomic)NSDictionary *data;
-@property (weak, nonatomic) id<TKPDTabHomeDelegate> delegate;
 
 @end

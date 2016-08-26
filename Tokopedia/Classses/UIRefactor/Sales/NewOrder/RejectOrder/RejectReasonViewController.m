@@ -66,7 +66,7 @@
     RejectReason *reason = [_rejectReasons objectAtIndex:indexPath.row];
     
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-    cell.textLabel.font = [UIFont fontWithName:@"GothamBook" size:13];
+    cell.textLabel.font = [UIFont title2Theme];
     cell.textLabel.text = reason.reason_text;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     return cell;
@@ -89,7 +89,7 @@
     UILabel *label = [[UILabel alloc] init];
     label.frame = CGRectMake(8, 0, 280, 40);
     label.textColor = [UIColor blackColor];
-    label.font = [UIFont fontWithName:@"GothamMedium" size:14];
+    label.font = [UIFont largeThemeMedium];
     label.text = sectionTitle;
     label.backgroundColor = [UIColor clearColor];
     

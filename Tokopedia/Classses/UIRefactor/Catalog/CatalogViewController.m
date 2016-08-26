@@ -116,8 +116,8 @@ static CGFloat rowHeight = 40;
     UIBarButtonItem *priceAlertItem = [[UIBarButtonItem alloc] initWithCustomView:imgPriceAlertView];
     [priceAlertItem setAction:@selector(actionAddNotificationPriceCatalog:)];
     [priceAlertItem setTarget:self];
-    self.navigationItem.rightBarButtonItems = @[actionButton, priceAlertItem];
-    [self setBackgroundPriceAlert:NO];
+    self.navigationItem.rightBarButtonItem = actionButton;
+//    [self setBackgroundPriceAlert:NO];
     
     _specificationTitles = [NSMutableArray new];
 
@@ -150,17 +150,9 @@ static CGFloat rowHeight = 40;
         catalogName = _list.catalog_name;
     }
     
-    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 6.0;
-    
-    UIColor *titleColor = [UIColor colorWithRed:66.0/255.0 green:66.0/255.0 blue:66.0/255.0 alpha:1];
-    NSDictionary *attributes = @{
-        NSFontAttributeName            : [UIFont fontWithName:@"GothamMedium" size:15],
-        NSParagraphStyleAttributeName  : style,
-        NSForegroundColorAttributeName : titleColor,
-    };
-
-    self.productNameLabel.attributedText = [[NSAttributedString alloc] initWithString:catalogName attributes:attributes];
+    self.productNameLabel.font = [UIFont title1ThemeMedium];
+    self.productNameLabel.text = catalogName;
+    self.productNameLabel.textColor = [UIColor colorWithRed:66.0/255.0 green:66.0/255.0 blue:66.0/255.0 alpha:1];
     self.productNameLabel.numberOfLines = 0;
     [self.productNameLabel sizeToFit];
     
@@ -239,38 +231,21 @@ static CGFloat rowHeight = 40;
 - (void)configureCell:(CatalogSpecificationCell *)cell atIndexPath:(NSIndexPath *)indexPath {
     NSString *title = [[_specificationKeys objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 
-    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    if (SYSTEM_VERSION_GREATER_THAN(iOS8_0)) {
-        style.lineSpacing = 9.0;
-    } else {
-        style.lineSpacing = 4.0;
-    }
-
-    UIColor *gray = [UIColor colorWithRed:66.0/255.0 green:66.0/255.0 blue:66.0/255.0 alpha:1];
-    
-    NSDictionary *titleAttributes = @{
-                                 NSFontAttributeName            : [UIFont fontWithName:@"GothamMedium" size:14],
-                                 NSParagraphStyleAttributeName  : style,
-                                 NSForegroundColorAttributeName : gray,
-                                 };
-    
     if ([title isEqualToString:@""]) {
         [cell hideTopBorder:YES];
         cell.titleLabel.text = @"";
     } else {
         cell.titleLabel.text = title;
-        cell.titleLabel.attributedText = [[NSAttributedString alloc] initWithString:title attributes:titleAttributes];
+        cell.titleLabel.font = [UIFont largeTheme];
+        cell.titleLabel.textColor = [UIColor colorWithRed:66.0/255.0 green:66.0/255.0 blue:66.0/255.0 alpha:1];
     }
     
     NSString *values = [[_specificationValues objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     
-    NSDictionary *attributes = @{
-                                 NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:14],
-                                 NSParagraphStyleAttributeName  : style,
-                                 NSForegroundColorAttributeName : gray,
-                                 };
     
-    cell.valueLabel.attributedText = [[NSAttributedString alloc] initWithString:values attributes:attributes];
+    cell.valueLabel.text = values;
+    cell.valueLabel.font = [UIFont largeTheme];
+    
     cell.valueLabel.numberOfLines = 0;
     [cell.valueLabel sizeToFit];
     
@@ -289,13 +264,13 @@ static CGFloat rowHeight = 40;
     if (text.length < 20) {
         text = [[_specificationKeys objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
         CGSize maximumLabelSize = CGSizeMake(115, CGFLOAT_MAX);
-        CGSize expectedLabelSize = [text sizeWithFont:[UIFont fontWithName:@"GothamMedium" size:14]
+        CGSize expectedLabelSize = [text sizeWithFont:[UIFont largeTheme]
                                     constrainedToSize:maximumLabelSize
                                         lineBreakMode:NSLineBreakByWordWrapping];
         return rowHeight + expectedLabelSize.height;
     } else {
         CGSize maximumLabelSize = CGSizeMake(220, CGFLOAT_MAX);
-        CGSize expectedLabelSize = [text sizeWithFont:FONT_GOTHAM_BOOK_14
+        CGSize expectedLabelSize = [text sizeWithFont:[UIFont largeTheme]
                                     constrainedToSize:maximumLabelSize
                                         lineBreakMode:NSLineBreakByWordWrapping];
         CGFloat height = rowHeight + (3 * expectedLabelSize.height); // add margin
@@ -605,21 +580,10 @@ static CGFloat rowHeight = 40;
             _productPhotoPageControl.hidden = YES;
         }
         
-        NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-        style.lineSpacing = 6.0;
-        
-        NSDictionary *attributes = @{
-                                     NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:13],
-                                     NSParagraphStyleAttributeName  : style,
-                                     NSForegroundColorAttributeName : [UIColor colorWithRed:66.0/255.0
-                                                                                      green:66.0/255.0
-                                                                                       blue:66.0/255.0
-                                                                                      alpha:1],
-                                     };
         
         NSString *description = [NSString convertHTML:_catalog.result.catalog_info.catalog_description];
-        _descriptionLabel.attributedText = [[NSAttributedString alloc] initWithString:description
-                                                                           attributes:attributes];
+        _descriptionLabel.text = description;
+        _descriptionLabel.font = [UIFont largeTheme];
         
         [_descriptionLabel sizeToFit];
         
@@ -655,7 +619,7 @@ static CGFloat rowHeight = 40;
 
 - (void)updatePriceAlert:(NSString *)strPrice
 {
-    [self setBackgroundPriceAlert:_catalog.result.catalog_info.catalog_pricealert_price!=nil && ![_catalog.result.catalog_info.catalog_pricealert_price isEqualToString:@"0"] && ![_catalog.result.catalog_info.catalog_pricealert_price isEqualToString:@""]];
+//    [self setBackgroundPriceAlert:_catalog.result.catalog_info.catalog_pricealert_price!=nil && ![_catalog.result.catalog_info.catalog_pricealert_price isEqualToString:@"0"] && ![_catalog.result.catalog_info.catalog_pricealert_price isEqualToString:@""]];
 }
 
 - (void)setBackgroundPriceAlert:(BOOL)isActive
@@ -894,7 +858,7 @@ static CGFloat rowHeight = 40;
         PriceAlert *priceAlert = [((RKMappingResult *) successResult).dictionary objectForKey:@""];
         if([_catalogID isEqualToString:priceAlert.result.catalog_id]) {
             [((UIBarButtonItem *) [self.navigationItem.rightBarButtonItems lastObject]) setEnabled:YES];
-            [self setBackgroundPriceAlert:priceAlert.result.price_alert_detail.pricealert_price!=nil && ![priceAlert.result.price_alert_detail.pricealert_price isEqualToString:@"0"] && ![priceAlert.result.price_alert_detail.pricealert_price isEqualToString:@""]];
+//            [self setBackgroundPriceAlert:priceAlert.result.price_alert_detail.pricealert_price!=nil && ![priceAlert.result.price_alert_detail.pricealert_price isEqualToString:@"0"] && ![priceAlert.result.price_alert_detail.pricealert_price isEqualToString:@""]];
             
             _catalog.result.catalog_info.catalog_pricealert_price = priceAlert.result.price_alert_detail.pricealert_price;
         }

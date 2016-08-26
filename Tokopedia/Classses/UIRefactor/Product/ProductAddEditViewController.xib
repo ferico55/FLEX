@@ -147,8 +147,11 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Nama Produk" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1mA-N2-pnu">
-                                <rect key="frame" x="144" y="0.0" width="118" height="44"/>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Nama Produk" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1mA-N2-pnu">
+                                <rect key="frame" x="144" y="0.0" width="168" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="HYz-Ju-CMC"/>
+                                </constraints>
                                 <color key="textColor" red="0.3803921569" green="0.3803921569" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -160,11 +163,15 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="rlF-jb-gcm" secondAttribute="trailing" id="BZj-eL-B7n"/>
+                            <constraint firstItem="1mA-N2-pnu" firstAttribute="leading" secondItem="ja9-vy-77n" secondAttribute="trailing" constant="8" id="Jtu-F6-ZFU"/>
+                            <constraint firstAttribute="trailing" secondItem="1mA-N2-pnu" secondAttribute="trailing" constant="8" id="K0o-44-0Cj"/>
                             <constraint firstAttribute="bottom" secondItem="rlF-jb-gcm" secondAttribute="bottom" id="NPl-RC-wXy"/>
                             <constraint firstItem="ja9-vy-77n" firstAttribute="top" secondItem="RYM-7j-tEe" secondAttribute="top" constant="11" id="VEi-Ao-D4F"/>
+                            <constraint firstAttribute="bottom" secondItem="1mA-N2-pnu" secondAttribute="bottom" id="YXv-yQ-dIl"/>
                             <constraint firstItem="rlF-jb-gcm" firstAttribute="top" secondItem="RYM-7j-tEe" secondAttribute="top" id="caH-dh-uik"/>
                             <constraint firstItem="ja9-vy-77n" firstAttribute="leading" secondItem="RYM-7j-tEe" secondAttribute="leading" constant="15" id="e3E-cs-lZb"/>
                             <constraint firstItem="rlF-jb-gcm" firstAttribute="leading" secondItem="RYM-7j-tEe" secondAttribute="leading" id="lLI-t4-8HD"/>
+                            <constraint firstItem="1mA-N2-pnu" firstAttribute="top" secondItem="RYM-7j-tEe" secondAttribute="top" id="rUL-W7-W5E"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -342,34 +349,25 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="90"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Contoh : 12.5" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y02-ji-Nyl">
-                    <rect key="frame" x="15" y="54" width="344" height="21"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                    <color key="textColor" red="0.3803921569" green="0.3803921569" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Contoh : 125000" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Rx-CL-QA7">
-                    <rect key="frame" x="15" y="21" width="344" height="21"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                    <color key="textColor" red="0.3803921569" green="0.3803921569" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Harga dalam US$ boleh menggunakan desimal." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eY4-ey-ANT">
-                    <rect key="frame" x="15" y="37" width="297" height="21"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                    <color key="textColor" red="0.3803921569" green="0.3803921569" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Harga dalam Rp tanpa menggunakan koma dan titik ." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WjB-cA-oSi">
-                    <rect key="frame" x="14" y="5" width="297" height="21"/>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Harga dalam Rp tanpa menggunakan koma dan titik . Contoh : 125000 Harga dalam US$ boleh menggunakan desimal. Contoh : 12.5" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WjB-cA-oSi">
+                    <rect key="frame" x="14" y="0.0" width="306" height="67"/>
+                    <constraints>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="57" id="ll9-Y2-wKy"/>
+                    </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                     <color key="textColor" red="0.3803921569" green="0.3803921569" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="WjB-cA-oSi" firstAttribute="top" secondItem="bOu-bs-k1x" secondAttribute="top" id="9ZQ-dj-yWh"/>
+                <constraint firstAttribute="trailing" secondItem="WjB-cA-oSi" secondAttribute="trailing" id="BwQ-lN-UuC"/>
+                <constraint firstAttribute="bottom" secondItem="WjB-cA-oSi" secondAttribute="bottom" constant="23" id="Exb-oG-5Xz"/>
+                <constraint firstItem="WjB-cA-oSi" firstAttribute="leading" secondItem="bOu-bs-k1x" secondAttribute="leading" constant="14" id="qhB-EX-bb4"/>
+            </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="-34" y="832.5"/>
+            <point key="canvasLocation" x="-34" y="832"/>
         </view>
         <view contentMode="scaleToFill" id="Hbe-YU-xfc">
             <rect key="frame" x="0.0" y="0.0" width="525" height="130"/>

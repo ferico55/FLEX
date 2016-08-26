@@ -23,7 +23,6 @@
 #import "FilterViewController.h"
 #import "SortViewController.h"
 
-#import "GeneralProductCell.h"
 #import "HotlistResultViewController.h"
 #import "SearchResultViewController.h"
 #import "SearchResultShopViewController.h"
@@ -37,8 +36,6 @@
 #import "ProductCell.h"
 #import "ProductThumbCell.h"
 
-#import "GeneralSingleProductCell.h"
-#import "GeneralPhotoProductCell.h"
 #import "NavigateViewController.h"
 
 #import "PromoCollectionReusableView.h"

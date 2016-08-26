@@ -3,7 +3,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -19,23 +18,21 @@
                         <rect key="frame" x="15" y="8" width="69.5" height="69.5"/>
                         <color key="backgroundColor" red="0.90196078430000004" green="0.90196078430000004" blue="0.90196078430000004" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstAttribute="width" secondItem="gAI-ai-ITa" secondAttribute="height" multiplier="1:1" id="9to-Ev-AfV"/>
+                            <constraint firstAttribute="height" constant="70" id="Tzv-uR-aqx"/>
+                            <constraint firstAttribute="width" constant="70" id="mig-gn-R5x"/>
                         </constraints>
                     </imageView>
-                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Ssc-RQ-M2v">
-                        <rect key="frame" x="40" y="35" width="20" height="20"/>
-                    </activityIndicatorView>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Yoyo Frozen Blaze S Blazing Teens Auldey Lv 7" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TYs-Lk-UUG">
-                        <rect key="frame" x="92" y="8" width="194.5" height="20"/>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Yoyo Frozen Blaze S Blazing Teens Auldey Lv 7" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TYs-Lk-UUG">
+                        <rect key="frame" x="92" y="8" width="194.5" height="22"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="20" id="MiC-2d-QPa"/>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="MiC-2d-QPa"/>
                         </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rp 320.000" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qJv-S8-409">
-                        <rect key="frame" x="92" y="28" width="194.5" height="20"/>
+                        <rect key="frame" x="92" y="30" width="194.5" height="20"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="20" id="XyY-wN-pcg"/>
                         </constraints>
@@ -43,31 +40,32 @@
                         <color key="textColor" red="1" green="0.3411764705882353" blue="0.13333333333333333" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Stok Kosong" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Y6-Oa-7TA">
-                        <rect key="frame" x="92.5" y="56" width="194.5" height="21"/>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Stok Kosong" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Y6-Oa-7TA">
+                        <rect key="frame" x="92.5" y="58" width="194.5" height="19"/>
+                        <constraints>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="19" id="vtf-Qa-fu8"/>
+                        </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <color key="textColor" red="0.28627450980392155" green="0.28627450980392155" blue="0.28627450980392155" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="qJv-S8-409" firstAttribute="leading" secondItem="gAI-ai-ITa" secondAttribute="trailing" constant="8" id="33j-6K-8yn"/>
-                    <constraint firstItem="gAI-ai-ITa" firstAttribute="leading" secondItem="lsI-PT-Gsw" secondAttribute="leading" constant="15" id="5I8-CH-qoN"/>
-                    <constraint firstAttribute="bottom" secondItem="gAI-ai-ITa" secondAttribute="bottom" constant="8" id="FmO-n4-RJA"/>
-                    <constraint firstItem="1Y6-Oa-7TA" firstAttribute="top" secondItem="qJv-S8-409" secondAttribute="bottom" constant="8" id="GcK-Jb-7Hj"/>
-                    <constraint firstAttribute="trailing" secondItem="1Y6-Oa-7TA" secondAttribute="trailing" id="Ipu-Cl-gQg"/>
+                    <constraint firstItem="gAI-ai-ITa" firstAttribute="top" secondItem="lsI-PT-Gsw" secondAttribute="top" constant="8" id="42b-N5-uOt"/>
+                    <constraint firstItem="1Y6-Oa-7TA" firstAttribute="leading" secondItem="gAI-ai-ITa" secondAttribute="trailing" constant="8" id="89r-2b-ZOB"/>
+                    <constraint firstItem="1Y6-Oa-7TA" firstAttribute="top" secondItem="qJv-S8-409" secondAttribute="bottom" constant="8" id="9sR-bY-N4c"/>
+                    <constraint firstItem="qJv-S8-409" firstAttribute="leading" secondItem="gAI-ai-ITa" secondAttribute="trailing" constant="8" id="EGf-JY-4HU"/>
+                    <constraint firstAttribute="trailing" secondItem="1Y6-Oa-7TA" secondAttribute="trailing" id="EpJ-f0-sn2"/>
                     <constraint firstItem="qJv-S8-409" firstAttribute="top" secondItem="TYs-Lk-UUG" secondAttribute="bottom" id="KHN-Pd-1hH"/>
                     <constraint firstAttribute="trailing" secondItem="TYs-Lk-UUG" secondAttribute="trailing" id="Ki0-0R-juT"/>
                     <constraint firstItem="TYs-Lk-UUG" firstAttribute="top" secondItem="lsI-PT-Gsw" secondAttribute="top" constant="8" id="KnD-Yw-3oI"/>
-                    <constraint firstItem="1Y6-Oa-7TA" firstAttribute="leading" secondItem="gAI-ai-ITa" secondAttribute="trailing" constant="8" id="LOt-Lc-3Re"/>
-                    <constraint firstItem="gAI-ai-ITa" firstAttribute="top" secondItem="lsI-PT-Gsw" secondAttribute="top" constant="8" id="Wrg-AD-xok"/>
-                    <constraint firstAttribute="bottom" secondItem="1Y6-Oa-7TA" secondAttribute="bottom" constant="8" id="qhw-ps-bxw"/>
-                    <constraint firstItem="TYs-Lk-UUG" firstAttribute="leading" secondItem="gAI-ai-ITa" secondAttribute="trailing" constant="8" id="s8G-Ej-6fZ"/>
+                    <constraint firstAttribute="bottom" secondItem="1Y6-Oa-7TA" secondAttribute="bottom" constant="8.5" id="Y83-IG-Sil"/>
+                    <constraint firstItem="gAI-ai-ITa" firstAttribute="leading" secondItem="lsI-PT-Gsw" secondAttribute="leading" constant="15" id="Yta-v5-tP3"/>
+                    <constraint firstItem="TYs-Lk-UUG" firstAttribute="leading" secondItem="gAI-ai-ITa" secondAttribute="trailing" constant="8" id="dSY-k3-eBQ"/>
                     <constraint firstAttribute="trailing" secondItem="qJv-S8-409" secondAttribute="trailing" id="tUj-68-eit"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
-                <outlet property="act" destination="Ssc-RQ-M2v" id="6p8-KK-Naz"/>
                 <outlet property="labeletalase" destination="1Y6-Oa-7TA" id="ah4-6h-0Eh"/>
                 <outlet property="labelname" destination="TYs-Lk-UUG" id="w6Q-h3-da2"/>
                 <outlet property="labelprice" destination="qJv-S8-409" id="K3D-bb-3fS"/>

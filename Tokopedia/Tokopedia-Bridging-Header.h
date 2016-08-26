@@ -85,4 +85,18 @@
 #import "NSString+HTML.h"
 
 #import "StickyAlertView+NetworkErrorHandler.h"
+#import <APAddressBook/APAddressBook-Bridging.h>
+#import "SPTPersistentCache.h"
+#import "iCarousel.h"
+#import "CarouselDataSource.h"
+#import "CategoryDataSource.h"
+
+#import "TKPObjectMapping.h"
+#import "AnnouncementTickerView.h"
+#import "Slide.h"
+#import "UIViewController+TKPAdditions.h"
+#import "TKPHomeBannerStore.h"
+#import "TKPStoreManager.h"
+
+#import "StickyAlertView+NetworkErrorHandler.h"
 #import "UIFont+Theme.h"

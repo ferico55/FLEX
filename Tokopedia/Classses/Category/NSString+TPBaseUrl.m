@@ -84,6 +84,26 @@
                           ));
 }
 
++ (NSString*)mojitoUrl {
+    return  FBTweakValue(@"Network", @"Environment", @"Tokopedia Mojito Url", @"https://mojito.tokopedia.com",
+                         (@{
+                            @"https://mojito-staging.tokopedia.com" : @"Staging",
+                            @"https://mojito.tokopedia.com" : @"Production",
+                            }
+                          ));
+}
+
+
++ (NSString*)pulsaUrl {
+    return  FBTweakValue(@"Network", @"Environment", @"Tokopedia Pulsa Url", @"https://pulsa-api.tokopedia.com",
+                         (@{
+                            @"https://pulsa-api-staging.tokopedia.com" : @"Staging",
+                            @"https://pulsa-api-alpha.tokopedia.com" : @"Alpha",
+                            @"https://pulsa-api.tokopedia.com" : @"Production",
+                            }
+                          ));
+}
+
 + (NSString*)kunyitUrl {
     return  FBTweakValue(@"Network", @"Environment", @"Tokopedia Kunyit Url", @"https://inbox.tokopedia.com",
                          (@{

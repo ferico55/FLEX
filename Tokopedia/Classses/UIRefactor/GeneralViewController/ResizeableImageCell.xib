@@ -24,7 +24,7 @@
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bZM-qX-y7N">
                         <rect key="frame" x="93" y="0.0" width="187" height="44"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="44" id="UI9-t3-BYG"/>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="UI9-t3-BYG"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
