@@ -248,9 +248,11 @@ class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDele
     
     func requestMiniSlider() {
         let bannersStore = HomePageViewController.self.TKP_rootController().storeManager().homeBannerStore
+        let sliderHeightWithMargin = (UI_USER_INTERFACE_IDIOM() == .Pad) ? 140.0 : 92.0 as CGFloat
+        
         bannersStore.fetchMiniSlideWithCompletion({[weak self] (slide, error) in
             if slide != nil {
-                self!.digitalGoodsSwipeView = SwipeView(frame: CGRectMake(0, 0, self!.screenWidth, 92.0))
+                self!.digitalGoodsSwipeView = SwipeView(frame: CGRectMake(0, 0, self!.screenWidth, sliderHeightWithMargin))
                 self!.digitalGoodsDataSource = DigitalGoodsDataSource(goods: slide, swipeView: self!.digitalGoodsSwipeView)
                 self!.digitalGoodsSwipeView.backgroundColor = UIColor(red: (242/255.0), green: (242/255.0), blue: (242/255.0), alpha: 1)
                 self!.digitalGoodsSwipeView.dataSource = self!.digitalGoodsDataSource
@@ -263,14 +265,12 @@ class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDele
                 
                 
                 self?.digitalGoodsSwipeView.mas_makeConstraints { make in
-                    make.height.equalTo()(92)
+                    make.height.equalTo()(sliderHeightWithMargin)
                     make.top.equalTo()(self?.miniSliderPlaceholder.mas_top)
                     make.left.equalTo()(self?.miniSliderPlaceholder.mas_left)
                     make.right.equalTo()(self?.miniSliderPlaceholder.mas_right)
                     make.bottom.equalTo()(self?.miniSliderPlaceholder.mas_bottom)
                 }
-                
-                
                 
                 if (UI_USER_INTERFACE_IDIOM() == .Pad) {
                     self!.digitalGoodsSwipeView.alignment = .Center

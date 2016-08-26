@@ -10,10 +10,10 @@ import Foundation
 
 
 @objc class DigitalGoodsDataSource: NSObject, SwipeViewDataSource {
-    var _goods: Array<MiniSlide>!
-    var _swipeView: SwipeView!
-    let _imageWidth:CGFloat = (UI_USER_INTERFACE_IDIOM() == .Pad) ? 320 : 72
-    let _imageHeight:CGFloat = 72
+    var _goods : Array<MiniSlide>!
+    var _swipeView : SwipeView!
+    let imageWidth : CGFloat = (UI_USER_INTERFACE_IDIOM() == .Pad) ? 120 : 72
+    let imageHeight : CGFloat = (UI_USER_INTERFACE_IDIOM() == .Pad) ? 120 : 72
     
     init(goods: Array<MiniSlide>, swipeView: SwipeView) {
         super.init()
@@ -28,7 +28,7 @@ import Foundation
     }
     
     func swipeView(swipeView: SwipeView!, viewForItemAtIndex index: Int, reusingView view: UIView!) -> UIView! {
-        let imageView = UIImageView(frame: CGRect(x: 5,y: 10,width: _imageWidth,height: _imageHeight))
+        let imageView = UIImageView(frame: CGRect(x: 5,y: 10,width: imageWidth,height: imageHeight))
         let good = _goods[0]
         
 //        imageView.setImageWithUrl(NSURL(string: good.image_url)!, placeHolderImage: nil)
