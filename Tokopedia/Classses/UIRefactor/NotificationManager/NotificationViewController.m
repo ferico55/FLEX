@@ -8,10 +8,8 @@
 #import "NotificationViewController.h"
 #import "InboxMessageViewController.h"
 #import "InboxTalkViewController.h"
-#import "InboxReviewViewController.h"
 #import "TKPDTabInboxMessageNavigationController.h"
 #import "TKPDTabInboxTalkNavigationController.h"
-#import "TKPDTabInboxReviewNavigationController.h"
 #import "InboxResolutionCenterTabViewController.h"
 #import "ShipmentConfirmationViewController.h"
 #import "SegmentedReviewReputationViewController.h"
@@ -27,7 +25,6 @@
 #import "InboxTicketViewController.h"
 #import "InboxRootViewController.h"
 #import "InboxTalkSplitViewController.h"
-#import "InboxReviewSplitViewController.h"
 #import "InboxResolSplitViewController.h"
 #import "InboxTicketSplitViewController.h"
 

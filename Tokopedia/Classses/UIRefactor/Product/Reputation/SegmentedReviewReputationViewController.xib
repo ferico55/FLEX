@@ -10,7 +10,6 @@
                 <outlet property="btnAllReview" destination="mqn-HI-7Ph" id="sUU-7Q-Uva"/>
                 <outlet property="btnBelumDibaca" destination="5vm-Kr-RE3" id="AI5-xP-RzN"/>
                 <outlet property="constTopCheckList" destination="wOW-BK-Pni" id="lSK-QX-Eem"/>
-                <outlet property="lblDescChangeReviewStyle" destination="2JF-P5-PQS" id="o5J-8P-czD"/>
                 <outlet property="segmentedControl" destination="vGY-1r-Uj8" id="byE-7x-328"/>
                 <outlet property="segmentedControlView" destination="6tI-XD-QAo" id="oye-qQ-6JM"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -54,30 +53,6 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HuT-IP-FUl">
                     <rect key="frame" x="0.0" y="45" width="320" height="523"/>
                     <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="calibratedRGB"/>
-                </view>
-                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5KM-w5-Omj">
-                    <rect key="frame" x="0.0" y="568" width="320" height="0.0"/>
-                    <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Klik disini untuk melihat ulasan lama Anda" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2JF-P5-PQS">
-                            <rect key="frame" x="46" y="14" width="230" height="13"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="13" id="0y5-xM-fYO"/>
-                            </constraints>
-                            <fontDescription key="fontDescription" type="system" pointSize="11"/>
-                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                    </subviews>
-                    <color key="backgroundColor" red="1" green="1" blue="0.85882352941176465" alpha="1" colorSpace="calibratedRGB"/>
-                    <gestureRecognizers/>
-                    <constraints>
-                        <constraint firstAttribute="height" id="9Ew-D8-LeD"/>
-                        <constraint firstAttribute="centerX" secondItem="2JF-P5-PQS" secondAttribute="centerX" id="Ce7-JZ-N1r"/>
-                        <constraint firstAttribute="centerY" secondItem="2JF-P5-PQS" secondAttribute="centerY" constant="-20.5" id="Db2-IL-1B4"/>
-                    </constraints>
-                    <connections>
-                        <outletCollection property="gestureRecognizers" destination="KUA-Ze-Rje" appends="YES" id="6fq-b5-EXo"/>
-                    </connections>
                 </view>
                 <view hidden="YES" alpha="0.5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tWR-vj-04D">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
@@ -154,16 +129,13 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="5KM-w5-Omj" secondAttribute="bottom" id="3ch-gf-2VP"/>
                 <constraint firstItem="6tI-XD-QAo" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="5Ed-cX-lBy"/>
-                <constraint firstItem="5KM-w5-Omj" firstAttribute="top" secondItem="HuT-IP-FUl" secondAttribute="bottom" id="5Ll-Fu-E9G"/>
-                <constraint firstAttribute="trailing" secondItem="5KM-w5-Omj" secondAttribute="trailing" id="9kT-D0-xA1"/>
                 <constraint firstAttribute="trailing" secondItem="6tI-XD-QAo" secondAttribute="trailing" id="Afl-MJ-wHE"/>
                 <constraint firstItem="tWR-vj-04D" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="FgT-zd-3Nd"/>
                 <constraint firstItem="HuT-IP-FUl" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="GSY-g8-QFC"/>
                 <constraint firstItem="HuT-IP-FUl" firstAttribute="top" secondItem="6tI-XD-QAo" secondAttribute="bottom" id="LgJ-uI-kVW"/>
-                <constraint firstItem="5KM-w5-Omj" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Pw2-nn-zsc"/>
                 <constraint firstItem="6tI-XD-QAo" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="Rdh-Vt-DXw"/>
+                <constraint firstAttribute="bottom" secondItem="HuT-IP-FUl" secondAttribute="bottom" id="S0g-F2-IdX"/>
                 <constraint firstAttribute="trailing" secondItem="tWR-vj-04D" secondAttribute="trailing" id="cQo-ut-M7w"/>
                 <constraint firstAttribute="bottom" secondItem="tWR-vj-04D" secondAttribute="bottom" id="pBf-Do-XhB"/>
                 <constraint firstItem="rqw-2G-26z" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="pQi-fn-edQ"/>
@@ -174,11 +146,6 @@
             </constraints>
             <point key="canvasLocation" x="104" y="398"/>
         </view>
-        <tapGestureRecognizer id="KUA-Ze-Rje">
-            <connections>
-                <action selector="actionOldReview:" destination="-1" id="uZ2-9u-Gp4"/>
-            </connections>
-        </tapGestureRecognizer>
     </objects>
     <resources>
         <image name="icon_check_orange.png" width="14" height="14"/>

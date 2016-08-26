@@ -33,19 +33,16 @@
 #import "InboxTicketSplitViewController.h"
 #import "InboxMessageViewController.h"
 #import "TKPDTabInboxMessageNavigationController.h"
-#import "TKPDTabInboxReviewNavigationController.h"
 #import "TKPDTabViewController.h"
 #import "InboxTicketViewController.h"
 
 #import "InboxTalkViewController.h"
-#import "InboxReviewViewController.h"
 #import "NotificationManager.h"
 
 #import "TKPDTabInboxTalkNavigationController.h"
 #import "DepositSummaryViewController.h"
 #import "ShopContainerViewController.h"
 #import "UserContainerViewController.h"
-#import "ReputationPageViewController.h"
 #import "ProductListMyShopViewController.h"
 #import "InboxResolutionCenterTabViewController.h"
 #import "InboxResolSplitViewController.h"
@@ -708,25 +705,6 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
                 segmentedReputationViewController.userHasShop = ([_auth objectForKey:@"shop_id"] && [[_auth objectForKey:@"shop_id"] integerValue] > 0);
                 [wrapperController.navigationController pushViewController:segmentedReputationViewController animated:YES];
             }
-            
-            /*
-            InboxReviewViewController *vc = [InboxReviewViewController new];
-            vc.data=@{@"nav":@"inbox-review"};
-            
-            InboxReviewViewController *vc1 = [InboxReviewViewController new];
-            vc1.data=@{@"nav":@"inbox-review-my-product"};
-            
-            InboxReviewViewController *vc2 = [InboxReviewViewController new];
-            vc2.data=@{@"nav":@"inbox-review-my-review"};
-            
-            NSArray *vcs = @[vc,vc1, vc2];
-            
-            TKPDTabInboxReviewNavigationController *nc = [TKPDTabInboxReviewNavigationController new];
-            [nc setSelectedIndex:2];
-            [nc setViewControllers:vcs];
-            nc.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:nc animated:YES];
-            */
         } else if (indexPath.row == 3) {
             if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
                 InboxTicketSplitViewController *controller = [InboxTicketSplitViewController new];

@@ -5,12 +5,10 @@
 //  Created by Tokopedia on 7/7/15.
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
-#import "InboxReviewSplitViewController.h"
-#import "InboxReviewViewController.h"
+
 #import "MyReviewReputationViewController.h"
 #import "SegmentedReviewReputationViewController.h"
 #import "SplitReputationViewController.h"
-#import "TKPDTabInboxReviewNavigationController.h"
 
 #import "AlertLuckyView.h"
 #import "LuckyDealWord.h"
@@ -243,51 +241,6 @@
     [allReviewViewController actionBelumDireview:sender];
     [myProductViewController actionBelumDireview:sender];
     [myReviewViewController actionBelumDireview:sender];
-}
-
-- (IBAction)actionOldReview:(id)sender {
-    //Change ViewController
-    NSMutableArray *newViewController = [NSMutableArray new];
-    
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-        id tempSplitReputationViewController = self.parentViewController.parentViewController.nextResponder.nextResponder;
-        UINavigationController *tmepViewController = (UINavigationController *)((SplitReputationViewController *) tempSplitReputationViewController).parentViewController;
-        
-        for(UIViewController *tempViewController in tmepViewController.viewControllers) {
-            [newViewController addObject:tempViewController];
-        }
-        [newViewController removeLastObject];
-        
-        InboxReviewSplitViewController *controller = [InboxReviewSplitViewController new];
-        controller.hidesBottomBarWhenPushed = YES;
-        [newViewController addObject:controller];
-        [tmepViewController setViewControllers:newViewController];
-        controller.hidesBottomBarWhenPushed = NO;
-    } else {
-        for(UIViewController *tempViewController in self.navigationController.viewControllers) {
-            [newViewController addObject:tempViewController];
-        }
-        [newViewController removeLastObject];
-
-        
-        InboxReviewViewController *vc = [InboxReviewViewController new];
-        vc.data=@{@"nav":@"inbox-review"};
-        
-        InboxReviewViewController *vc1 = [InboxReviewViewController new];
-        vc1.data=@{@"nav":@"inbox-review-my-product"};
-        
-        InboxReviewViewController *vc2 = [InboxReviewViewController new];
-        vc2.data=@{@"nav":@"inbox-review-my-review"};
-        
-        NSArray *vcs = @[vc,vc1, vc2];
-        TKPDTabInboxReviewNavigationController *nc = [TKPDTabInboxReviewNavigationController new];
-        [nc setSelectedIndex:2];
-        [nc setViewControllers:vcs];
-        nc.hidesBottomBarWhenPushed = YES;
-        
-        [newViewController addObject:nc];
-        [self.navigationController setViewControllers:newViewController];
-    }
 }
 
 - (IBAction)actionValueChange:(id)sender {

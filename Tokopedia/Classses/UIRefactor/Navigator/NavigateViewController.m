@@ -33,10 +33,6 @@
 #import "TKPDTabInboxTalkNavigationController.h"
 #import "SplitReputationViewController.h"
 
-#import "InboxReviewSplitViewController.h"
-#import "InboxReviewViewController.h"
-#import "TKPDTabInboxReviewNavigationController.h"
-
 #import "InboxResolutionCenterTabViewController.h"
 #import "InboxResolSplitViewController.h"
 #import "TKPDTabViewController.h"
@@ -278,10 +274,7 @@
 {
     UserAuthentificationManager *auth = [UserAuthentificationManager new];
     
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-//        InboxReviewSplitViewController *controller = [InboxReviewSplitViewController new];
-//        [viewController.navigationController pushViewController:controller animated:YES];
-        
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {        
         splitViewController = [UISplitViewController new];
         
         SplitReputationViewController *splitReputationViewController = [SplitReputationViewController new];
@@ -295,25 +288,6 @@
         segmentedReputationViewController.selectedIndex = CTagSemuaReview;
         segmentedReputationViewController.userHasShop = [auth userHasShop];
         [viewController.navigationController pushViewController:segmentedReputationViewController animated:YES];
-        
-        
-//        InboxReviewViewController *vc = [InboxReviewViewController new];
-//        vc.data=@{@"nav":@"inbox-review"};
-//        
-//        InboxReviewViewController *vc1 = [InboxReviewViewController new];
-//        vc1.data=@{@"nav":@"inbox-review-my-product"};
-//        
-//        InboxReviewViewController *vc2 = [InboxReviewViewController new];
-//        vc2.data=@{@"nav":@"inbox-review-following"};
-//        
-//        NSArray *vcs = @[vc,vc1, vc2];
-//        
-//        TKPDTabInboxReviewNavigationController *controller = [TKPDTabInboxReviewNavigationController new];
-//        [controller setSelectedIndex:2];
-//        [controller setViewControllers:vcs];
-//        controller.hidesBottomBarWhenPushed = YES;
-//        
-//        [viewController.navigationController pushViewController:controller animated:YES];
     }
 }
 

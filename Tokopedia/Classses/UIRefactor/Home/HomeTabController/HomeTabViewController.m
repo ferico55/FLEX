@@ -17,12 +17,9 @@
 #import "NotificationManager.h"
 #import "InboxMessageViewController.h"
 #import "TKPDTabInboxMessageNavigationController.h"
-#import "TKPDTabInboxReviewNavigationController.h"
-#import "TKPDTabInboxReviewNavigationController.h"
 #import "TKPDTabInboxTalkNavigationController.h"
 #import "InboxTalkViewController.h"
 #import "InboxMessageViewController.h"
-#import "InboxReviewViewController.h"
 #import "NotificationState.h"
 #import "UserAuthentificationManager.h"
 
