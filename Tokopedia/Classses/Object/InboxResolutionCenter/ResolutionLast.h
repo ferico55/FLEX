@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Tokopedia-Swift.h"
 
 @interface ResolutionLast : NSObject <TKPObjectMapping>
 
@@ -31,6 +32,7 @@
 @property (nonatomic, strong) NSNumber *last_flag_received;
 @property (nonatomic, strong) NSString *last_trouble_string;
 @property (nonatomic, strong) NSString *last_solution_string;
+@property (nonatomic, strong) NSArray<ProductTrouble*> *last_product_trouble;
 
 
 @end

@@ -37,6 +37,9 @@
 + (RKObjectMapping *)mapping {
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
     [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+    RKRelationshipMapping *conversationMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"last_product_trouble" toKeyPath:@"last_product_trouble" withMapping:[ProductTrouble mapping]];
+    [mapping addPropertyMapping:conversationMapping];
+    
     return mapping;
 }
 

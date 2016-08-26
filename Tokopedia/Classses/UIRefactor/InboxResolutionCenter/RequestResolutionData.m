@@ -150,4 +150,32 @@
                              }];
 }
 
++(void)fetchEditResolutionFormOnSuccess:(void(^) (NSArray<ShipmentCourier*>* shipments))onSuccess
+                       onFailure:(void(^)(NSError* error))onFailure {
+    
+    NSDictionary* param = @{ };
+    
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    networkManager.isUsingHmac = YES;
+    [networkManager requestWithBaseUrl:[NSString v4Url]
+                                  path:@"/v4/inbox-resolution-center/get_edit_resolution_form.pl"
+                                method:RKRequestMethodGET
+                             parameter:param
+                               mapping:[ShipmentOrder mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                 
+                                 ShipmentOrder *response = [successResult.dictionary objectForKey:@""];
+                                 
+                                 if (response.data && !response.message_error) {
+                                     onSuccess(response.data.shipment);
+                                 } else {
+                                     [StickyAlertView showErrorMessage:response.message_error?:@[@"error get detail"]];
+                                     onFailure(nil);
+                                 }
+                                 
+                             } onFailure:^(NSError *errorResult) {
+                                 onFailure(errorResult);
+                             }];
+}
+
 @end
