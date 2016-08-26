@@ -51,7 +51,6 @@
 #import "TKPDTabNavigationController.h"
 #import "SearchResultViewController.h"
 #import "SearchResultShopViewController.h"
-#import "ProductReviewViewController.h"
 #import "ProductTalkViewController.h"
 #import "ProductAddEditViewController.h"
 
@@ -569,26 +568,8 @@ OtherProductDelegate
                     productReputationViewController.strShopDomain = _product.data.shop_info.shop_domain;
                     productReputationViewController.strProductID = _product.data.info.product_id;
                     [self.navigationController pushViewController:productReputationViewController animated:YES];
+                    [TPAnalytics trackClickEvent:@"clickPDP" category:@"Product Detail Page" label:@"Review"];
                 }
-                return;
-                
-                
-                
-                // go to review page
-                ProductReviewViewController *vc = [ProductReviewViewController new];
-                NSArray *images = _product.data.product_images;
-                ProductImages *image = images[0];
-                
-                vc.data = @{
-                            kTKPDDETAIL_APIPRODUCTIDKEY : [_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@(0),
-                            API_PRODUCT_NAME_KEY : _formattedProductTitle,
-                            kTKPDDETAILPRODUCT_APIIMAGESRCKEY : image.image_src,
-                            kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]
-                            };
-                [self.navigationController pushViewController:vc animated:YES];
-                
-                [TPAnalytics trackClickEvent:@"clickPDP" category:@"Product Detail Page" label:@"Review"];
-                
                 break;
             }
             case 13:
