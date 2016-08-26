@@ -107,7 +107,6 @@
     // you can also set the maximum height in points with maxHeight
     // textView.maxHeight = 200.0f;
     growTextView.returnKeyType = UIReturnKeyGo; //just as an example
-    //    _growingtextview.font = [UIFont fontWithName:@"GothamBook" size:13.0f];
     growTextView.delegate = self;
     growTextView.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
     growTextView.backgroundColor = [UIColor whiteColor];
