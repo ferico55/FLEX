@@ -54,7 +54,6 @@
 #import "ProductTalkViewController.h"
 #import "ProductAddEditViewController.h"
 
-#import "DetailProductOtherView.h"
 #import "TransactionATCViewController.h"
 #import "ShopContainerViewController.h"
 #import "UserAuthentificationManager.h"
@@ -112,7 +111,6 @@ GalleryViewControllerDelegate,
 UITableViewDelegate,
 UITableViewDataSource,
 DetailProductInfoCellDelegate,
-DetailProductOtherViewDelegate,
 LoginViewDelegate,
 TokopediaNetworkManagerDelegate,
 EtalaseViewControllerDelegate,
@@ -232,7 +230,6 @@ OtherProductDelegate
 @property (weak, nonatomic) IBOutlet UILabel *shoplocation;
 @property (strong, nonatomic) IBOutlet UIView *shopinformationview;
 @property (strong, nonatomic) IBOutlet UIView *shopClickView;
-@property (strong, nonatomic) IBOutlet DetailProductOtherView *otherproductview;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintHeightButton;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintHeightBuyButton;
@@ -2142,15 +2139,6 @@ OtherProductDelegate
             break;
     }
     
-}
-
-#pragma mark - View Delegate
-- (void)DetailProductOtherView:(UIView *)view withindex:(NSInteger)index
-{
-    SearchAWSProduct *product = _otherProductObj[index];
-    if ([[_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY] integerValue] != [product.product_id integerValue]) {
-        [_TKPDNavigator navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_image withShopName:_product.data.shop_info.shop_name];
-    }
 }
 
 #pragma mark - Methods
