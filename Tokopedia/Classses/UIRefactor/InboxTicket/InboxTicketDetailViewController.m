@@ -297,7 +297,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
         self.invoiceNumberLabel.hidden = NO;
         [self.invoiceNumberLabel sizeToFit];
         
-        CGSize invoiceLabelSize = [invoice sizeWithFont:FONT_GOTHAM_BOOK_14
+        CGSize invoiceLabelSize = [invoice sizeWithFont:[UIFont largeTheme]
                                       constrainedToSize:maximumLabelSize
                                           lineBreakMode:NSLineBreakByWordWrapping];
         
