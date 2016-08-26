@@ -12,7 +12,7 @@ import Foundation
 @IBDesignable
 @objc
 
-class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDelegate, SwipeViewDelegate {
+class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDelegate {
     
     var slider: iCarousel!
     var digitalGoodsSwipeView: SwipeView!
@@ -254,9 +254,12 @@ class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDele
             if slide != nil {
                 self!.digitalGoodsSwipeView = SwipeView(frame: CGRectMake(0, 0, self!.screenWidth, sliderHeightWithMargin))
                 self!.digitalGoodsDataSource = DigitalGoodsDataSource(goods: slide, swipeView: self!.digitalGoodsSwipeView)
+                self?.digitalGoodsDataSource.delegate = self
+                
+                
                 self!.digitalGoodsSwipeView.backgroundColor = UIColor(red: (242/255.0), green: (242/255.0), blue: (242/255.0), alpha: 1)
                 self!.digitalGoodsSwipeView.dataSource = self!.digitalGoodsDataSource
-                self!.digitalGoodsSwipeView.delegate = self
+                self!.digitalGoodsSwipeView.delegate = self!.digitalGoodsDataSource
                 self!.digitalGoodsSwipeView.clipsToBounds = true
                 self!.digitalGoodsSwipeView.truncateFinalPage = true
                 self!.digitalGoodsSwipeView.decelerationRate = 0.5
