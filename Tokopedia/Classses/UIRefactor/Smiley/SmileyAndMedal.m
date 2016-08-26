@@ -135,7 +135,7 @@ enum emoticonTag {
     [tempBtn setImage:image forState:UIControlStateNormal];
     [tempBtn setTitle:strTitle forState:UIControlStateNormal];
     [tempBtn setTitleColor:textColor forState:UIControlStateNormal];
-    tempBtn.titleLabel.font = [UIFont fontWithName:@"GothamBook" size:13.0f];
+    tempBtn.titleLabel.font = [UIFont smallTheme];
     
     //    CGSize imageSize = tempBtn.imageView.bounds.size;
     //    CGSize titleSize = tempBtn.titleLabel.bounds.size;
