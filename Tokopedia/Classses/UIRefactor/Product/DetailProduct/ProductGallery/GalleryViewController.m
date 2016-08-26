@@ -7,7 +7,6 @@
 //
 
 #import "GalleryViewController.h"
-#import "string_gallery.h"
 #define kThumbnailSize 75
 #define kThumbnailSpacing 4
 
