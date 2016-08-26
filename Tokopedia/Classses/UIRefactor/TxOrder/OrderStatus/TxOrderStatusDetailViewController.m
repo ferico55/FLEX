@@ -26,6 +26,8 @@
 #import "RequestResolutionData.h"
 #import "RequestOrderData.h"
 
+#import "ResolutionCenterCreateViewController.h"
+
 #define TAG_ALERT_REORDER 10
 #define TAG_ALERT_COMPLAIN 11
 #define TAG_ALERT_CONFIRMATION 12
@@ -264,6 +266,7 @@
             return;
         }
         
+        /*
         InboxResolutionCenterOpenViewController *vc = [InboxResolutionCenterOpenViewController new];
         vc.controllerTitle = @"Buka Komplain";
         if (buttonIndex == 0) {
@@ -278,7 +281,18 @@
         }
         vc.order = _order;
         vc.isCanEditProblem = YES;
-        vc.delegate = self.navigationController.viewControllers[self.navigationController.viewControllers.count-2];
+        */
+        
+        ResolutionCenterCreateViewController *vc = [ResolutionCenterCreateViewController new];
+        vc.order = _order;
+        
+        if(buttonIndex == 0){
+            vc.product_is_received = NO;
+        }else if(buttonIndex == 1){
+            vc.product_is_received = YES;
+        }
+        
+        //vc.delegate = self.navigationController.viewControllers[self.navigationController.viewControllers.count-2];
         [self.navigationController pushViewController:vc animated:YES];
     }
     else if (alertView.tag == TAG_ALERT_CONFIRMATION)
@@ -286,7 +300,7 @@
         switch (buttonIndex) {
             case 1://Selesai
             {
-                [_delegate confirmDelivery:_order atIndexPath:_indexPath];
+                //[_delegate confirmDelivery:_order atIndexPath:_indexPath];
                 [_delegate delegateViewController:self];
             }
                 break;

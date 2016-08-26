@@ -12,6 +12,9 @@
 #import "InboxResolutionCenter.h"
 #import "ResolutionCenterDetail.h"
 #import "ShipmentOrder.h"
+#import "ResolutionCenterCreateResponse.h"
+#import "ResolutionProductResponse.h"
+#import "ResolutionCenterCreatePOSTResponse.h"
 
 typedef enum{
     TypeResolutionAll,
@@ -43,4 +46,13 @@ typedef enum{
 +(void)fetchListCourierSuccess:(void(^) (NSArray<ShipmentCourier*>* shipments))success
                         failure:(void(^)(NSError* error))failure;
 
++(void)fetchCreateResolutionDataWithOrderId:(NSString*)orderId
+                                    success:(void(^) (ResolutionCenterCreateResponse* data))success
+                                    failure:(void(^)(NSError* error))failure;
++(void)fetchAllProductsInTransactionWithOrderId:(NSString*)orderId
+                                      success:(void(^) (ResolutionProductResponse* data))success
+                                      failure:(void(^)(NSError* error))failure;
++(void)fetchPossibleSolutionWithPossibleTroubleObject:(ResolutionCenterCreatePOSTRequest*)possibleTrouble
+                                              success:(void(^) (ResolutionCenterCreatePOSTResponse* result))success
+                                              failure:(void(^) (NSError* error))failure;
 @end

@@ -10,6 +10,7 @@
 #import "ResolutionAction.h"
 #import "Tokopedia-Swift.h"
 #import "UploadImageValidation.h"
+#import "ResolutionCenterCreatePOSTRequest.h"
 
 @interface RequestResolutionAction : NSObject
 
@@ -26,6 +27,18 @@
                        imageObjects:(NSArray<DKAsset*>*)imageObjects
                             success:(void(^) (ResolutionActionResult* data))success
                             failure:(void(^)(NSError* error))failure;
+
++(void)fetchCreateNewResolutionOrderID:(NSString*)orderID
+                          flagReceived:(NSString*)flagReceived
+                             troubleId:(NSString*)troubleId
+                              solution:(NSString*)solution
+                          refundAmount:(NSString*)refundAmount
+                                remark:(NSString*)remark
+                     categoryTroubleId:(NSString*)categoryTroubleId
+                 possibleTroubleObject:(ResolutionCenterCreatePOSTRequest*)possibleTrouble
+                          imageObjects:(NSArray<DKAsset*>*)imageObjects
+                               success:(void(^) (ResolutionActionResult* data))success
+                               failure:(void(^)(NSError* error))failure;
 
 +(void)fetchReplyResolutionID:(NSString *)resolutionID
                  flagReceived:(NSString *)flagReceived
@@ -74,5 +87,4 @@
 +(void)fetchAcceptAdminSolutionResolutionID:(NSString*)resolutionID
                                     success:(void(^) (ResolutionActionResult* data))success
                                     failure:(void(^) (NSError* error))failure;
-
 @end
