@@ -61,13 +61,7 @@
     [TPAnalytics trackScreenName:@"Forgot Password Page"];
 }
 
-#pragma mark - requestWithBaseUrl Methods
-
-- (void)actionAfterSuccessfulRequestWithResult:(RKMappingResult*)successResult {
-    NSDictionary *resultDict = (successResult).dictionary;
-    id stat = [resultDict objectForKey:@""];
-    GeneralAction *action = stat;
-    
+- (void)actionAfterRequest:(GeneralAction *)action {
     if([action.status isEqualToString:kTKPDREQUEST_OKSTATUS]) {
         if(action.message_error) {
             if ([[action.message_error objectAtIndex:0]isEqual:@"Email Anda belum terdaftar."]){
@@ -78,7 +72,7 @@
                 [alert show];
             }
         } else {
-            if([action.result.is_success isEqualToString:TKPD_SUCCESS_VALUE]) {
+            if([action.data.is_success isEqualToString:@"1"]) {
                 NSString *errorMessage = [NSString stringWithFormat:@"Sebuah email telah dikirim ke alamat email yang terasosiasi dengan akun Anda, \n \n%@. \n \nEmail ini berisikan cara untuk mendapatkan kata sandi baru. \nDiharapkan menunggu beberapa saat, selama pengiriman email dalam proses.\nMohon diperhatikan bahwa alamat email di atas adalah benar,\ndan periksalah folder junk dan spam atau filter jika anda tidak menerima email tersebut.", _emailText.text];
                 StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[errorMessage] delegate:self];
                 [alert show];
@@ -93,17 +87,20 @@
 #pragma mark - Tap on Button
 
 - (IBAction)tap:(id)sender {
-    [_networkManager requestWithBaseUrl: [NSString basicUrl]
-                                   path:TKPD_FORGETPASS_PATH
-                                 method: RKRequestMethodPOST
-                              parameter:@{@"action" : TKPD_FORGETPASS_ACTION,
-                                          @"email" : [_emailText text]}
-                                mapping:[GeneralAction mapping]
-                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                  [self actionAfterSuccessfulRequestWithResult:successResult];
-                              }
-                              onFailure:^(NSError *errorResult) {
-                              }];
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    networkManager.isUsingHmac = YES;
+
+    [networkManager requestWithBaseUrl:[NSString accountsUrl]
+                                  path:@"/api/reset"
+                                method:RKRequestMethodPOST
+                             parameter:@{@"email": _emailText.text}
+                               mapping:[GeneralAction mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                 [self actionAfterRequest:successResult.dictionary[@""]];
+                             }
+                             onFailure:^(NSError *errorResult) {
+
+                             }];
 }
 
 #pragma mark - Keyboard

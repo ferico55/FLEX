@@ -589,11 +589,11 @@ typedef enum
                     {
                         [self cell:cell setAccesoryType:UITableViewCellAccessoryNone isLoading:!_isFinishRequesting];
                         
-                        NSInteger productPrice = [[[NSNumberFormatter IDRFormarter] numberFromString:product.product_price] integerValue];
+                        NSInteger productPrice = [[[NSNumberFormatter IDRFormatter] numberFromString:product.product_price] integerValue];
                         NSInteger qty = [_productQuantityTextField.text integerValue];
                         
                         NSNumber *price = [NSNumber numberWithInteger:(productPrice / qty)];
-                        NSString *priceString = [[NSNumberFormatter IDRFormarter] stringFromNumber:price];
+                        NSString *priceString = [[NSNumberFormatter IDRFormatter] stringFromNumber:price];
                         label.text = priceString;
                         
                         break;
@@ -617,12 +617,12 @@ typedef enum
                     {
                         [self cell:cell setAccesoryType:UITableViewCellAccessoryNone isLoading:!_isFinishRequesting];
 
-                        NSInteger productPrice = [[[NSNumberFormatter IDRFormarter] numberFromString:product.product_price] integerValue];
+                        NSInteger productPrice = [[[NSNumberFormatter IDRFormatter] numberFromString:product.product_price] integerValue];
 
                         NSInteger shipmentPackagePrice = [_selectedShipmentPackage.price integerValue];
                         
                         NSNumber *total = [NSNumber numberWithInteger:(productPrice+shipmentPackagePrice)];
-                        NSString *totalPrice = [[NSNumberFormatter IDRFormarter] stringFromNumber:total];
+                        NSString *totalPrice = [[NSNumberFormatter IDRFormatter] stringFromNumber:total];
                         label.text = totalPrice;
                     }
                 }
@@ -838,10 +838,20 @@ typedef enum
     [self pushLocalyticsData];
     
     [TPAnalytics trackAddToCart:_selectedProduct];
+    [TPLocalytics trackAddToCart:_selectedProduct];
     
     if (self.isSnapSearchProduct) {
         [TPAnalytics trackSnapSearchAddToCart:_selectedProduct];
     }
+    
+    NSNumber *price = [[NSNumberFormatter IDRFormatter] numberFromString:_selectedProduct.product_price];
+    
+    [[AppsFlyerTracker sharedTracker] trackEvent:AFEventAddToCart withValues:@{
+                                                                               AFEventParamContentId : _selectedProduct.product_id,
+                                                                               AFEventParamContentType : @"Product",
+                                                                               AFEventParamPrice : price,
+                                                                               AFEventParamCurrency : _selectedProduct.product_currency?:@"IDR",
+                                                                               AFEventParamQuantity : _productQuantityTextField.text}];
 }
 
 -(void)failedActionATC:(NSError*)error{
@@ -1135,12 +1145,12 @@ replacementString:(NSString*)string
 
 -(NSInteger)insuranceStatus
 {
-    NSInteger productPrice = [[[NSNumberFormatter IDRFormarter] numberFromString:_selectedProduct.product_price] integerValue];
+    NSInteger productPrice = [[[NSNumberFormatter IDRFormatter] numberFromString:_selectedProduct.product_price] integerValue];
     
     /* Untuk auto insurance*/
     NSInteger insurance = 2;
     NSInteger shipmentID = [_selectedShipment.shipper_id integerValue];
-    NSInteger ongkir = [[[NSNumberFormatter IDRFormarter] numberFromString:_selectedShipmentPackage.price] integerValue];
+    NSInteger ongkir = [[[NSNumberFormatter IDRFormatter] numberFromString:_selectedShipmentPackage.price] integerValue];
     
     if (shipmentID == 1) {
         if ((ongkir * 10) >= productPrice) {

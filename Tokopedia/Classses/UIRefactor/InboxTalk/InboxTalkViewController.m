@@ -214,8 +214,8 @@
 - (void)fetchInboxTalkList {
     [self showLoadingIndicator];
 
-    [_networkManager requestWithBaseUrl:[NSString v4Url]
-                                   path:@"/v4/inbox-talk/get_inbox_talk.pl"
+    [_networkManager requestWithBaseUrl:[NSString kunyitUrl]
+                                   path:@"/v2/talk/inbox"
                                  method:RKRequestMethodGET
                               parameter:[self requestParameter]
                                 mapping:[Talk mapping]

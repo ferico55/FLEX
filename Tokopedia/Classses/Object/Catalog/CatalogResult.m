@@ -10,4 +10,24 @@
 
 @implementation CatalogResult
 
+-(NSArray<CatalogList *> *)list{
+    if (_list == nil) {
+        return @[];
+    }
+    return _list;
+}
+
++(NSDictionary *)attributeMappingDictionary
+{
+    return nil;
+}
+
++(RKObjectMapping*)mapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    RKRelationshipMapping *relMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"list" toKeyPath:@"list" withMapping:[CatalogList mapping]];
+    [mapping addPropertyMapping:relMapping];
+    return mapping;
+}
+
 @end

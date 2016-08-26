@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface Info : NSObject
+@interface Info : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *product_returnable;
 @property (nonatomic, strong) NSString *shop_has_terms;

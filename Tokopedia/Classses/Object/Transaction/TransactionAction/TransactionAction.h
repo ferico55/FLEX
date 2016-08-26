@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "TransactionActionResult.h"
+#import "Errors.h"
 
 @interface TransactionAction : NSObject <TKPObjectMapping>
 
@@ -15,6 +16,7 @@
 @property (nonatomic, strong) NSArray *message_status;
 @property (nonatomic, strong) NSString *status;
 @property (nonatomic, strong) NSString *server_process_time;
+@property (nonatomic, strong) NSArray<Errors *> *errors;
 @property (nonatomic, strong) TransactionActionResult *result;
 @property (nonatomic, strong) TransactionActionResult *data;
 

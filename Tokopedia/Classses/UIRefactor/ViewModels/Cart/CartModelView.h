@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Errors.h"
 
 @interface CartModelView : NSObject
 
@@ -18,5 +19,6 @@
 @property (strong, nonatomic) NSString *insuranceFee;
 @property (strong, nonatomic) NSString *shippingRateIDR;
 @property (strong, nonatomic) NSString *totalAmountIDR;
+@property (strong, nonatomic) NSArray<Errors *> *errors;
 
 @end

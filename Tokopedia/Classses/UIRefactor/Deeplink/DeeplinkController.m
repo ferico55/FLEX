@@ -164,6 +164,17 @@
     else if ([[url absoluteString] rangeOfString:@"login.pl"].location != NSNotFound) {
         [self redirectToLogin];
     }
+    else if ([[url absoluteString] rangeOfString:@"contact-shop"].location != NSNotFound){
+        NSRange range = [url.absoluteString rangeOfString:@"shop-id"];
+        NSString *parameterString = [url.absoluteString substringFromIndex:range.length + range.location+ 1];
+        NSRange andRange = [parameterString rangeOfString:@"&"];
+        NSString *shopId = [parameterString substringToIndex:andRange.location];
+        self.activeController.hidesBottomBarWhenPushed = YES;
+        [self.navigator navigateToShopFromViewController:self.activeController withShopID:shopId];
+        self.activeController.hidesBottomBarWhenPushed = NO;
+    } else if ([[url absoluteString] rangeOfString:@"contact-us"].location != NSNotFound) {
+        [self redirectToContactUs];
+    }
     else if(explodedPathUrl.count == 2) {
         //shop
         if([self isUrlContainPerlPostfix:explodedPathUrl[1]]) {
@@ -312,15 +323,8 @@
     UserAuthentificationManager *auth = [UserAuthentificationManager new];
     if (auth.getUserId && auth.getShopId) {
         //add product
-        TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-        NSDictionary *dataAuth = [secureStorage keychainDictionary];
-        
         ProductAddEditViewController *controller = [ProductAddEditViewController new];
-        controller.data = @{
-            kTKPD_AUTHKEY                   : dataAuth?:@{},
-            DATA_TYPE_ADD_EDIT_PRODUCT_KEY  : @(TYPE_ADD_EDIT_PRODUCT_ADD),
-        };
-        
+        controller.type = TYPE_ADD_EDIT_PRODUCT_ADD;
         self.activeController.hidesBottomBarWhenPushed = YES;
         [self.activeController.navigationController pushViewController:controller animated:YES];
         self.activeController.hidesBottomBarWhenPushed = NO;

@@ -432,8 +432,7 @@
             break;
         case 1:
         {
-            BankAccountFormList *selectedBank = [_dataInput objectForKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
-            if (([self isPaymentTypeTransfer] || [self isPaymentTypeSaldoTokopedia] || _isNewRekening || [selectedBank.bank_account_id integerValue] == 0 || [self isPaymentTypeDefault]) && indexPath.row == 2) {
+            if (([self isPaymentTypeTransfer] || [self isPaymentTypeSaldoTokopedia] || _isNewRekening || [self isPaymentTypeDefault]) && indexPath.row == 2) {
                 return 0;
             }
             if(indexPath.row == 3)
@@ -824,7 +823,7 @@
             } else {
                 fixed_order_saldo_left_amount = [formIsConfirmed.payment.order_left_amount doubleValue]  - [formIsConfirmed.payment.order_confirmation_code doubleValue];
             }
-            NSString *fixed_order_saldo_left_amount_idr = [[NSNumberFormatter IDRFormarter] stringFromNumber:[NSNumber numberWithInteger:fixed_order_saldo_left_amount]];
+            NSString *fixed_order_saldo_left_amount_idr = [[NSNumberFormatter IDRFormatter] stringFromNumber:[NSNumber numberWithInteger:fixed_order_saldo_left_amount]];
             textString = fixed_order_saldo_left_amount_idr;
         } else {
             textString = (_isConfirmed)?formIsConfirmed.payment.order_left_amount_idr:form.order.order_left_amount_idr;
@@ -947,6 +946,10 @@
     return @"Nama Bank harus diisi";
 }
 
+-(NSString *)errorNilBankBranchName{
+    return @"Nama Cabang Bank harus diisi";
+}
+
 -(NSString*)errorNillSystemBank{
     return @"Bank Tujuan belum dipilih";
 }
@@ -981,16 +984,20 @@
     }
     
     if ([self isPaymentTypeBank] && _isNewRekening) {
-        if (![self getSelectedAccountBank].bank_account_name) {
+        if (![self getSelectedAccountBank].bank_account_name || [[self getSelectedAccountBank].bank_account_name isEqualToString:@""]) {
             [errorMessage addObject:[self errorNillBankAccountName]];
             isValid = NO;
         }
-        if (![self getSelectedAccountBank].bank_account_number) {
+        if (![self getSelectedAccountBank].bank_account_number || [[self getSelectedAccountBank].bank_account_number isEqualToString:@""]) {
             [errorMessage addObject:[self errorNillBankAcountNumber]];
             isValid = NO;
         }
         if (![self getSelectedAccountBank].bank_name) {
             [errorMessage addObject:[self errorNillBankName]];
+            isValid = NO;
+        }
+        if (![self getSelectedAccountBank].bank_branch || [[self getSelectedAccountBank].bank_branch isEqualToString:@""]) {
+            [errorMessage addObject:[self errorNilBankBranchName]];
             isValid = NO;
         }
         if (![self getSelectedSystemBank].sysbank_id) {
@@ -1254,10 +1261,12 @@
         bankAcount.bank_account_name = textField.text;
         [_dataInput setObject:bankAcount forKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
     }
+    
     if (textField == _rekeningNumberTextField) {
         bankAcount.bank_account_number = textField.text;
         [_dataInput setObject:bankAcount forKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
     }
+    
     if (textField == _branchTextField) {
         bankAcount.bank_branch = textField.text;
         [_dataInput setObject:bankAcount forKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
@@ -1310,6 +1319,13 @@
             }
             return YES;
         }
+    }
+    else if (textField == _depositorTextField)
+    {
+        if (range.location == 0 && range.length == 0 && [string isEqualToString:@" "])
+            return NO;
+        else
+            return YES;
     }
     return YES;
 }

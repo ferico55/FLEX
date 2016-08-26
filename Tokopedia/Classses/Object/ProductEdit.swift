@@ -9,14 +9,18 @@
 import UIKit
 
 class ProductEdit: NSObject {
+    var message_error: [String] = []
     var status: String = ""
-    var result: ProductEditResult!
+    var data: ProductEditResult!
     
     static func mapping() -> RKObjectMapping! {
         let mapping : RKObjectMapping = RKObjectMapping(forClass: self)
-        mapping.addAttributeMappingsFromDictionary(["status" : "status"])
+        mapping.addAttributeMappingsFromDictionary([
+            "status" : "status",
+            "message_error" : "message_error"
+            ])
 
-        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "result", toKeyPath: "result", withMapping: ProductEditResult.mapping()))
+        mapping.addPropertyMapping(RKRelationshipMapping(fromKeyPath: "data", toKeyPath: "data", withMapping: ProductEditResult.mapping()))
         
         return mapping
     }

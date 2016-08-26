@@ -13,4 +13,5 @@
 @property (nonatomic, strong) NSString *is_active;
 @property (nonatomic, strong) NSString *u_id;
 
++ (RKObjectMapping *)mapping;
 @end

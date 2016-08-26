@@ -9,8 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "CatalogList.h"
 
-@interface CatalogResult : NSObject
+@interface CatalogResult : NSObject <TKPObjectMapping>
 
-@property (nonatomic, strong) NSArray *list;
+@property (nonatomic, strong) NSArray<CatalogList*> *list;
 
 @end
