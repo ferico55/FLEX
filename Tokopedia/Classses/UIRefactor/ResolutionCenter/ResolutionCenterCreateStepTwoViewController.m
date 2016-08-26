@@ -53,7 +53,8 @@ ResolutionCenterCreateStepTwoCellDelegate
         postProduct.order_dtl_id = obj.order_dtl_id;
         postProduct.product_id = obj.product_id;
         postProduct.quantity = obj.quantity;
-        postProduct.trouble_id = @"1";
+        postProduct.trouble_id = nil;
+        postProduct.remark = @"lorem ipsum";
         [_result.postObject.product_list addObject:postProduct];
     }];
     [_tableView reloadData];
@@ -88,17 +89,17 @@ ResolutionCenterCreateStepTwoCellDelegate
         cell.quantityStepper.tag = indexPath.row;
         cell.delegate = self;
         
-        //if(!cell.troublePicker || ![cell.troublePicker isKindOfClass:[DownPicker class]]){
-            _priceProblemTextField = [[DownPicker alloc] initWithTextField:cell.troublePicker];
-        //}
-        [_priceProblemTextField setData:[self generateDownPickerChoices]];
+        if(!cell.troublePicker || ![cell.troublePicker isKindOfClass:[DownPicker class]]){
+            cell.troublePicker = [[DownPicker alloc] initWithTextField:cell.troublePicker];
+        }
+        [cell.troublePicker setData:[self generateDownPickerChoices]];
         cell.troublePicker.tag = indexPath.row;
         [cell.troublePicker addTarget:self action:@selector(troublePickerValueChanged:) forControlEvents:UIControlEventValueChanged];
         return cell;
     }else{
-        //if(!_priceProblemTextField || ![_priceProblemTextField isKindOfClass:[DownPicker class]]){
+        if(!_priceProblemTextField || ![_priceProblemTextField isKindOfClass:[DownPicker class]]){
             _priceProblemTextField = [[DownPicker alloc] initWithTextField:_priceProblemTextField];
-        //}
+        }
         [_priceProblemTextField setData:[self generateDownPickerChoices]];
         [_priceProblemTextField addTarget:self action:@selector(priceProblemPickerValueChanged:) forControlEvents:UIControlEventValueChanged];
         return _priceProblemCell;
@@ -159,6 +160,13 @@ ResolutionCenterCreateStepTwoCellDelegate
 
 #pragma mark - Request
 -(BOOL)verifyForm{
+    for(ResolutionCenterCreatePOSTProduct *prod in _result.postObject.product_list){
+        if(!prod.trouble_id){
+            StickyAlertView *alert = [[StickyAlertView alloc]initWithWarningMessages:@[@"Masih ada barang yang belum Anda pilih masalahnya."] delegate:self];
+            [alert show];
+            return NO;
+        }
+    }
     return YES;
 }
 @end

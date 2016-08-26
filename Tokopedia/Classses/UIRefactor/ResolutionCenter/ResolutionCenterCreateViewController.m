@@ -108,6 +108,7 @@
     _stepTwoViewController.order = self.order;
     
     _stepThreeViewController.result = self.result;
+    _stepThreeViewController.product_is_received = _product_is_received;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -181,7 +182,7 @@
 }
 - (IBAction)didTapNextButton{
     if(_currentIndex == 2){
-        
+        [_stepThreeViewController submitCreateResolution];
     }else if(_currentIndex == 1){
         if([_stepTwoViewController verifyForm]){
             _currentIndex++;

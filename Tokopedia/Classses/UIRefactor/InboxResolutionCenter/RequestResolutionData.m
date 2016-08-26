@@ -222,4 +222,38 @@
                              }];
 }
 
++(void)fetchPossibleSolutionWithPossibleTroubleObject:(ResolutionCenterCreatePOSTRequest *)possibleTrouble success:(void (^)(ResolutionCenterCreatePOSTResponse*))success failure:(void (^)(NSError *))failure{
+    RKRequestDescriptor *requestDescriptor = [RKRequestDescriptor requestDescriptorWithMapping:[[ResolutionCenterCreatePOSTRequest mapping] inverseMapping]
+                                                                                   objectClass:[ResolutionCenterCreatePOSTRequest class]
+                                                                                   rootKeyPath:nil
+                                                                                        method:RKRequestMethodPOST];
+    
+    NSDictionary *paramForObject = [RKObjectParameterization parametersWithObject:possibleTrouble
+                                                                requestDescriptor:requestDescriptor
+                                                                            error:nil];
+    NSError* error;
+    NSData* jsonData = [NSJSONSerialization dataWithJSONObject:paramForObject
+                                                       options:0
+                                                         error:&error];
+    
+    if(jsonData){
+        NSString *jsonStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        UserAuthentificationManager *userAuth = [UserAuthentificationManager new];
+        TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+        networkManager.isUsingHmac = YES;
+        [networkManager requestWithBaseUrl:[NSString v4Url]
+                                      path:@"/v4/inbox-resolution-center/get_form_solution.pl"
+                                    method:RKRequestMethodPOST
+                                 parameter:@{@"user_id":[userAuth getUserId],
+                                             @"solution_forms":jsonStr}
+                                   mapping:[ResolutionCenterCreatePOSTResponse mapping]
+                                 onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                     ResolutionCenterCreatePOSTResponse* result = [successResult.dictionary objectForKey:@""];
+                                     success(result);
+                                 } onFailure:^(NSError *errorResult) {
+                                     failure(errorResult);
+                                 }];
+    }
+}
+
 @end

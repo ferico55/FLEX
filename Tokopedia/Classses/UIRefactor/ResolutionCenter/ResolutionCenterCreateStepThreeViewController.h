@@ -12,4 +12,6 @@
 
 @interface ResolutionCenterCreateStepThreeViewController : UIViewController
 @property (strong, nonatomic) ResolutionCenterCreateResult* result;
+@property BOOL product_is_received;
+-(void)submitCreateResolution;
 @end

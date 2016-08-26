@@ -14,7 +14,8 @@
     [productMapping addAttributeMappingsFromArray:@[@"product_id",
                                                     @"trouble_id",
                                                     @"quantity",
-                                                    @"order_dtl_id"
+                                                    @"order_dtl_id",
+                                                    @"remark"
                                                     ]];
     return productMapping;
 }

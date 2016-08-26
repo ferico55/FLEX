@@ -151,11 +151,64 @@ static failedCompletionBlock failedRequest;
                             @"solution"          :solution?:@"",
                             @"refund_amount"     :refundAmount?:@"",
                             @"flag_received"     :flagReceived?:@"",
-                            @"trouble_type"      :troubleType?:@"",
+                            @"trouble_type"      :troubleType?:@"",  //trouble id
                             @"app_new"           :@"1"              //harus kasi image buat create reso
                             };
     return param;
 }
+
++(NSDictionary*)setParamCreateNewValidationWithID:(NSString *)orderID
+                                  flagReceived:(NSString *)flagReceived
+                                     troubleId:(NSString *)troubleId
+                                      solution:(NSString *)solution
+                                  refundAmount:(NSString *)refundAmount
+                                        remark:(NSString *)remark
+                                        photos:(NSArray <ImageResult*>*)photos
+                                      serverID:(NSString *)serverID
+                             categoryTroubleId:(NSString *)categoryTroubleId
+                         possibleTroubleObject:(ResolutionCenterCreatePOSTRequest*)possibleTrouble
+{
+    NSMutableArray *filePathPhotos = [NSMutableArray new];
+    for (ImageResult *imageResult in photos) {
+        [filePathPhotos addObject:imageResult.file_path?:@""];
+    }
+    NSString *photo = [[[filePathPhotos copy] valueForKey:@"description"]componentsJoinedByString:@"~"];
+    
+    
+    RKRequestDescriptor *requestDescriptor = [RKRequestDescriptor requestDescriptorWithMapping:[[ResolutionCenterCreatePOSTRequest mapping] inverseMapping]
+                                                                                   objectClass:[ResolutionCenterCreatePOSTRequest class]
+                                                                                   rootKeyPath:nil
+                                                                                        method:RKRequestMethodPOST];
+    
+    NSDictionary *paramForObject = [RKObjectParameterization parametersWithObject:possibleTrouble
+                                                                requestDescriptor:requestDescriptor
+                                                                            error:nil];
+    NSError* error;
+    NSData* jsonData = [NSJSONSerialization dataWithJSONObject:paramForObject
+                                                       options:0
+                                                         error:&error];
+    
+    if(jsonData){
+        NSString *jsonStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        NSDictionary *param = @{
+                                @"order_id"          :orderID?:@"",
+                                @"remark"            :remark?:@"",
+                                @"photos"            :photo?:@"",
+                                @"server_id"         :serverID?:@"",
+                                @"solution"          :solution?:@"",
+                                @"refund_amount"     :refundAmount?:@"",
+                                @"flag_received"     :flagReceived?:@"",
+                                @"trouble_id"        :troubleId?:@"",  //trouble id
+                                @"app_new"           :@"1",              //harus kasi image buat create reso
+                                @"category_trouble_id":categoryTroubleId,
+                                @"product_list"        : jsonStr
+                                };
+        return param;
+    }
+    return nil;
+}
+
+
 
 +(NSDictionary*)setParamCreateImageWithID:(NSString*)orderID
                               attachments:(NSArray <ImageResult*>*)attachments
@@ -219,6 +272,34 @@ static failedCompletionBlock failedRequest;
     
 }
 
++(void)fetchCreateNewResolutionValidationWithParam:(NSDictionary*)param
+                                        success:(void(^) (ResolutionActionResult* dataValidation))success {
+    
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    networkManager.isUsingHmac = YES;
+    
+    [networkManager requestWithBaseUrl:[NSString v4Url]
+                                  path:@"/v4/action/resolution-center/create_resolution_validation_new.pl"
+                                method:RKRequestMethodPOST
+                             parameter:param
+                               mapping:[ResolutionAction mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                 
+                                 ResolutionAction *response = [successResult.dictionary objectForKey:@""];
+                                 
+                                 if (response.data.is_success == 1) {
+                                     success(response.data);
+                                 } else {
+                                     [StickyAlertView showErrorMessage:response.message_error?:@[@"Gagal membuat komplain"]];
+                                     failedRequest(nil);
+                                 }
+                                 
+                             } onFailure:^(NSError *errorResult) {
+                                 failedRequest(errorResult);
+                             }];
+    
+}
+
 +(void)fetchCreateResolutionSubmitWithParam:(NSDictionary*)param
                                     success:(void(^) (ResolutionActionResult* data))success {
     
@@ -269,7 +350,7 @@ static failedCompletionBlock failedRequest;
                                                                                          photos:@[]
                                                                                        serverID:@""];
         
-        [RequestResolutionAction fetchCreateResolutionValidationWithParam:paramValidation success:^(ResolutionActionResult *dataValidation) {
+        [RequestResolutionAction fetchCreateNewResolutionValidationWithParam:paramValidation success:^(ResolutionActionResult *dataValidation) {
             success(dataValidation);
         }];
 
@@ -285,7 +366,7 @@ static failedCompletionBlock failedRequest;
                                                                                              photos:datas
                                                                                            serverID:host.server_id?:@""];
             
-            [RequestResolutionAction fetchCreateResolutionValidationWithParam:paramValidation success:^(ResolutionActionResult *dataValidation) {
+            [RequestResolutionAction fetchCreateNewResolutionValidationWithParam:paramValidation success:^(ResolutionActionResult *dataValidation) {
                 
                 NSDictionary *paramImageHelper = [RequestResolutionAction setParamCreateImageWithID:orderID
                                                                                         attachments:datas
@@ -308,83 +389,76 @@ static failedCompletionBlock failedRequest;
     }
 }
 
-+(void)fetchPossibleSolutionWithPossibleTroubleObject:(ResolutionCenterCreatePOSTRequest *)possibleTrouble success:(void (^)(id))success failure:(void (^)(NSError *))failure{
-    UserAuthentificationManager *userAuth = [UserAuthentificationManager new];
+//YANG INI YANG BARU
+
+//trouble id digunakan hanya jika category trouble bukan termasuk category trouble yang product-related
+//jika category trouble adalah product related, letakkan trouble id di possible trouble object, per produk
++(void)fetchCreateNewResolutionOrderID:(NSString*)orderID
+                          flagReceived:(NSString*)flagReceived
+                             troubleId:(NSString*)troubleId
+                              solution:(NSString*)solution
+                          refundAmount:(NSString*)refundAmount
+                                remark:(NSString*)remark
+                     categoryTroubleId:(NSString*)categoryTroubleId
+                 possibleTroubleObject:(ResolutionCenterCreatePOSTRequest*)possibleTrouble
+                          imageObjects:(NSArray<DKAsset*>*)imageObjects
+                               success:(void(^) (ResolutionActionResult* data))success
+                               failure:(void(^)(NSError* error))failure {
     
+    failedRequest = failure;
     
-    NSString *path = @"/v4/inbox-resolution-center/get_form_solution.pl";
-    RKRequestDescriptor *requestDescriptor = [RKRequestDescriptor requestDescriptorWithMapping:[[ResolutionCenterCreatePOSTRequest mapping] inverseMapping]
-                                                                                   objectClass:[ResolutionCenterCreatePOSTRequest class]
-                                                                                   rootKeyPath:@"solution_forms"
-                                                                                        method:RKRequestMethodPOST];
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[ResolutionAction mapping]
-                                                                                            method:RKRequestMethodPOST
-                                                                                       pathPattern:path
-                                                                                           keyPath:nil
-                                                                                       statusCodes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(200, 100)]];
-    
-    RKObjectManager *objectManager = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:[NSString v4Url]]];
-    [objectManager addRequestDescriptor:requestDescriptor];
-    [objectManager addResponseDescriptor:responseDescriptor];
-    [objectManager postObject:possibleTrouble
-                         path:path
-                   parameters:@{@"user_id":[userAuth getUserId]}
-                      success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-                          success(operation);
-                      }
-                      failure:^(RKObjectRequestOperation *operation, NSError *error) {
-                          failure(error);
-                      }];
-    
-    
-    
-    //change to get
-    //change to: get_form_solution.pl?solution_forms=<insert_json_here>
-    
-    /*
-    RKRequestDescriptor *requestDescriptor = [RKRequestDescriptor requestDescriptorWithMapping:[[ResolutionCenterCreatePOSTRequest mapping] inverseMapping]
-                                                                                   objectClass:[ResolutionCenterCreatePOSTRequest class]
-                                                                                   rootKeyPath:nil
-                                                                                        method:RKRequestMethodGET];
-    
-    NSDictionary *paramForObject = [RKObjectParameterization parametersWithObject:possibleTrouble
-                                                                requestDescriptor:requestDescriptor
-                                                                            error:nil];
-    NSError* error;
-    NSData* jsonData = [NSJSONSerialization dataWithJSONObject:paramForObject
-                                                       options:0
-                                                         error:&error];
-    
-    if(jsonData){
-        NSString *jsonStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    if (imageObjects.count == 0) {
+        NSDictionary *paramValidation = [RequestResolutionAction setParamCreateNewValidationWithID:orderID
+                                                                                         flagReceived:flagReceived
+                                                                                            troubleId:troubleId
+                                                                                             solution:solution
+                                                                                         refundAmount:refundAmount
+                                                                                               remark:remark
+                                                                                               photos:@[]
+                                                                                             serverID:@""
+                                                                                    categoryTroubleId:categoryTroubleId
+                                                                                possibleTroubleObject:possibleTrouble];
         
-        NSURL* gaga = [NSURL URLWithString:jsonStr];
+        [RequestResolutionAction fetchCreateNewResolutionValidationWithParam:paramValidation success:^(ResolutionActionResult *dataValidation) {
+            success(dataValidation);
+        }];
         
-        jsonStr = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(
-                                                                                        NULL,
-                                                                                        (CFStringRef)jsonStr,
-                                                                                        NULL,
-                                                                                        (CFStringRef)@"!*'();:@&=+$,/?%#[]",
-                                                                                        kCFStringEncodingUTF8 ));
-        
-        
-        UserAuthentificationManager *userAuth = [UserAuthentificationManager new];
-        TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
-        networkManager.isUsingHmac = YES;
-        [networkManager requestWithBaseUrl:[NSString v4Url]
-                                      path:@"/v4/inbox-resolution-center/get_form_solution.pl"
-                                    method:RKRequestMethodGET
-                                 parameter:@{@"user_id":[userAuth getUserId],
-                                             @"solution_forms":jsonStr}
-                                   mapping:[ResolutionAction mapping]
-                                 onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                     
-                                 } onFailure:^(NSError *errorResult) {
-                                     
-                                 }];
+    } else {
+        [RequestResolutionAction fetchResolutionUploadImages:imageObjects success:^(NSArray<ImageResult *> *datas, GeneratedHost *host) {
+            NSDictionary *paramValidation = [RequestResolutionAction setParamCreateNewValidationWithID:orderID
+                                                                                          flagReceived:flagReceived
+                                                                                             troubleId:troubleId
+                                                                                              solution:solution
+                                                                                          refundAmount:refundAmount
+                                                                                                remark:remark
+                                                                                                photos:datas
+                                                                                              serverID:host.server_id?:@""
+                                                                                     categoryTroubleId:categoryTroubleId
+                                                                                 possibleTroubleObject:possibleTrouble];
+            
+            [RequestResolutionAction fetchCreateNewResolutionValidationWithParam:paramValidation success:^(ResolutionActionResult *dataValidation) {
+                
+                NSDictionary *paramImageHelper = [RequestResolutionAction setParamCreateImageWithID:orderID
+                                                                                        attachments:datas
+                                                                                           serverID:host.server_id?:@""];
+                
+                [RequestResolutionAction fetchResolutionFileUploadedWithParam:paramImageHelper uploadHost:host.upload_host?:@"" success:^(ResolutionActionResult *dataImageHelper) {
+                    
+                    NSDictionary *paramSubmit = [RequestResolutionAction setParamCreateSubmitWithID:orderID
+                                                                                       fileUploaded:dataImageHelper.file_uploaded
+                                                                                            postKey:dataValidation.post_key];
+                    
+                    [RequestResolutionAction fetchCreateResolutionSubmitWithParam:paramSubmit success:^(ResolutionActionResult *data) {
+                        
+                        success(data);
+                        
+                    }];
+                }];
+            }];
+        }];
     }
-     */
 }
+
 
 +(void)createResolutionValidationWithOrderId:(NSString*)orderId
                                       photos:(NSArray<ImageResult*>*)photos

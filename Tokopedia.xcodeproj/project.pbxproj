@@ -2645,6 +2645,9 @@
 		BB0D4B2B1D66FD920053EC98 /* Tokopedia-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB0D40F61D66FD910053EC98 /* Tokopedia-Info.plist */; };
 		BB0D4B2C1D66FD920053EC98 /* Tokopedia.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = BB0D40F81D66FD910053EC98 /* Tokopedia.entitlements */; };
 		BB0D4B2D1D66FD920053EC98 /* Tokopedia.xcworkspace in Resources */ = {isa = PBXBuildFile; fileRef = BB0D40F91D66FD910053EC98 /* Tokopedia.xcworkspace */; };
+		BBE891801D6D50CE006CBA5E /* ResolutionCenterCreatePOSTResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = BBE8917F1D6D50CE006CBA5E /* ResolutionCenterCreatePOSTResponse.m */; };
+		BBE891831D6D5157006CBA5E /* ResolutionCenterCreatePOSTData.m in Sources */ = {isa = PBXBuildFile; fileRef = BBE891821D6D5157006CBA5E /* ResolutionCenterCreatePOSTData.m */; };
+		BBE891861D6D51AE006CBA5E /* ResolutionCenterCreatePOSTFormSolution.m in Sources */ = {isa = PBXBuildFile; fileRef = BBE891851D6D51AE006CBA5E /* ResolutionCenterCreatePOSTFormSolution.m */; };
 		F25F6F270D531ED13A92CDB9 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4868E459AB2A65D133732296 /* libPods-Tokopedia.a */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
 		FC23B85A1ACD659900879D75 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8581ACD659900879D75 /* Fabric.framework */; };
@@ -6511,6 +6514,12 @@
 		BB0D40F71D66FD910053EC98 /* Tokopedia-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Tokopedia-Prefix.pch"; sourceTree = "<group>"; };
 		BB0D40F81D66FD910053EC98 /* Tokopedia.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Tokopedia.entitlements; sourceTree = "<group>"; };
 		BB0D40F91D66FD910053EC98 /* Tokopedia.xcworkspace */ = {isa = PBXFileReference; lastKnownFileType = wrapper.workspace; path = Tokopedia.xcworkspace; sourceTree = "<group>"; };
+		BBE8917E1D6D50CE006CBA5E /* ResolutionCenterCreatePOSTResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionCenterCreatePOSTResponse.h; sourceTree = "<group>"; };
+		BBE8917F1D6D50CE006CBA5E /* ResolutionCenterCreatePOSTResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionCenterCreatePOSTResponse.m; sourceTree = "<group>"; };
+		BBE891811D6D5157006CBA5E /* ResolutionCenterCreatePOSTData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionCenterCreatePOSTData.h; sourceTree = "<group>"; };
+		BBE891821D6D5157006CBA5E /* ResolutionCenterCreatePOSTData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionCenterCreatePOSTData.m; sourceTree = "<group>"; };
+		BBE891841D6D51AE006CBA5E /* ResolutionCenterCreatePOSTFormSolution.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionCenterCreatePOSTFormSolution.h; sourceTree = "<group>"; };
+		BBE891851D6D51AE006CBA5E /* ResolutionCenterCreatePOSTFormSolution.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionCenterCreatePOSTFormSolution.m; sourceTree = "<group>"; };
 		C8A1445074FECD393EA18C17 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		FC23B8571ACD659900879D75 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		FC23B8581ACD659900879D75 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
@@ -10699,6 +10708,12 @@
 				BB0D3A991D66FD880053EC98 /* ResolutionProductList.m */,
 				BB0D3A9A1D66FD880053EC98 /* ResolutionProductResponse.h */,
 				BB0D3A9B1D66FD880053EC98 /* ResolutionProductResponse.m */,
+				BBE8917E1D6D50CE006CBA5E /* ResolutionCenterCreatePOSTResponse.h */,
+				BBE8917F1D6D50CE006CBA5E /* ResolutionCenterCreatePOSTResponse.m */,
+				BBE891811D6D5157006CBA5E /* ResolutionCenterCreatePOSTData.h */,
+				BBE891821D6D5157006CBA5E /* ResolutionCenterCreatePOSTData.m */,
+				BBE891841D6D51AE006CBA5E /* ResolutionCenterCreatePOSTFormSolution.h */,
+				BBE891851D6D51AE006CBA5E /* ResolutionCenterCreatePOSTFormSolution.m */,
 			);
 			path = ResolutionCenter;
 			sourceTree = "<group>";
@@ -14613,6 +14628,7 @@
 				BB0D45E41D66FD920053EC98 /* MyReviewReputationViewController.m in Sources */,
 				BB0D414E1D66FD910053EC98 /* SignInProvider.swift in Sources */,
 				BB0D47401D66FD920053EC98 /* CartGAHandler.m in Sources */,
+				BBE891861D6D51AE006CBA5E /* ResolutionCenterCreatePOSTFormSolution.m in Sources */,
 				BB0D46D61D66FD920053EC98 /* EditShopDataSource.m in Sources */,
 				BB0D410B1D66FD910053EC98 /* UIActivityViewController+Extensions.m in Sources */,
 				BB0D41EE1D66FD910053EC98 /* InboxTicketDetailAttachment.m in Sources */,
@@ -14831,6 +14847,7 @@
 				BB0D44921D66FD910053EC98 /* BackgroundLayer.m in Sources */,
 				BB0D42F21D66FD910053EC98 /* TransactionCalculatePrice.m in Sources */,
 				BB0D424C1D66FD910053EC98 /* NotificationFormResult.m in Sources */,
+				BBE891831D6D5157006CBA5E /* ResolutionCenterCreatePOSTData.m in Sources */,
 				BB0D43471D66FD910053EC98 /* DKAssetGroupVC.swift in Sources */,
 				BB0D42CF1D66FD910053EC98 /* ShippingInfo.m in Sources */,
 				BB0D44721D66FD910053EC98 /* ContactUsViewController.m in Sources */,
@@ -15023,6 +15040,7 @@
 				BB0D440C1D66FD910053EC98 /* AlertDatePickerView.m in Sources */,
 				BB0D46C21D66FD920053EC98 /* OpenShopDomainViewCell.m in Sources */,
 				BB0D42041D66FD910053EC98 /* LoyaltyPointMerchant.m in Sources */,
+				BBE891801D6D50CE006CBA5E /* ResolutionCenterCreatePOSTResponse.m in Sources */,
 				BB0D43A91D66FD910053EC98 /* StartWith.swift in Sources */,
 				BB0D46731D66FD920053EC98 /* ShipmentConfirmationViewController.m in Sources */,
 				BB0D41EB1D66FD910053EC98 /* DetailInboxTicket.m in Sources */,

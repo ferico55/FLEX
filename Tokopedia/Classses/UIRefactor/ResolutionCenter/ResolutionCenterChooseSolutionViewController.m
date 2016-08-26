@@ -10,7 +10,7 @@
 
 @interface ResolutionCenterChooseSolutionViewController ()<UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate>
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
-
+@property (strong, nonatomic) ResolutionCenterCreatePOSTFormSolution *selectedList;
 @end
 
 @implementation ResolutionCenterChooseSolutionViewController
@@ -31,34 +31,26 @@
 }
 
 - (IBAction)didTapFinishButton{
-    [self.navigationController popViewControllerAnimated:YES];
-    /*
     if(_selectedList){
-        [_delegate didSelectProblem:_selectedList];
+        [self.delegate didSelectSolution:_selectedList];
         [self.navigationController popViewControllerAnimated:YES];
     }else{
         StickyAlertView* alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Anda belum memilih masalah pada barang yang Anda terima."] delegate:self];
         [alert show];
     }
-     */
 }
 
 #pragma mark - UITableView Delegate
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    /*
-    ResolutionCenterCreateList* currentList = [_list_ts objectAtIndex:indexPath.row];
+    ResolutionCenterCreatePOSTFormSolution* currentList = [_formSolutions objectAtIndex:indexPath.row];
     
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-    cell.textLabel.font = [UIFont fontWithName:@"GothamBook" size:13];
-    cell.textLabel.text = currentList.category_trouble_text;
-    if(_selectedList && [currentList.category_trouble_id isEqualToString:_selectedList.category_trouble_id]){
+    cell.textLabel.text = currentList.solution_text;
+    if(_selectedList && [currentList.solution_id isEqualToString:_selectedList.solution_id]){
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     }else{
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
-     */
-    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-    cell.textLabel.text = @"asd asd asd";
     return cell;
 }
 
@@ -66,13 +58,13 @@
     return 1;
 }
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 5;
+    return _formSolutions.count;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 44;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    //_selectedList = [_list_ts objectAtIndex:indexPath.row];
+    _selectedList = [_formSolutions objectAtIndex:indexPath.row];
     [_tableView reloadData];
     
 }

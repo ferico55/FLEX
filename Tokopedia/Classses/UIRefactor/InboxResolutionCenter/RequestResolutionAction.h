@@ -28,6 +28,18 @@
                             success:(void(^) (ResolutionActionResult* data))success
                             failure:(void(^)(NSError* error))failure;
 
++(void)fetchCreateNewResolutionOrderID:(NSString*)orderID
+                          flagReceived:(NSString*)flagReceived
+                             troubleId:(NSString*)troubleId
+                              solution:(NSString*)solution
+                          refundAmount:(NSString*)refundAmount
+                                remark:(NSString*)remark
+                     categoryTroubleId:(NSString*)categoryTroubleId
+                 possibleTroubleObject:(ResolutionCenterCreatePOSTRequest*)possibleTrouble
+                          imageObjects:(NSArray<DKAsset*>*)imageObjects
+                               success:(void(^) (ResolutionActionResult* data))success
+                               failure:(void(^)(NSError* error))failure;
+
 +(void)fetchReplyResolutionID:(NSString *)resolutionID
                  flagReceived:(NSString *)flagReceived
                   troubleType:(NSString *)troubleType
@@ -75,8 +87,4 @@
 +(void)fetchAcceptAdminSolutionResolutionID:(NSString*)resolutionID
                                     success:(void(^) (ResolutionActionResult* data))success
                                     failure:(void(^) (NSError* error))failure;
-
-+(void)fetchPossibleSolutionWithPossibleTroubleObject:(ResolutionCenterCreatePOSTRequest*)possibleTrouble
-                                            success:(void(^) (id data))success
-                                            failure:(void(^) (NSError* error))failure;
 @end

@@ -13,6 +13,6 @@
 @property (strong, nonatomic) NSString* trouble_id;
 @property (strong, nonatomic) NSString* quantity;
 @property (strong, nonatomic) NSString* order_dtl_id;
-
+@property (strong, nonatomic) NSString* remark;
 +(RKObjectMapping*)mapping;
 @end

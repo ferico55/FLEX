@@ -197,7 +197,7 @@
                             @"upload_version"   : @"2"
                             };
     
-    [networkManager requestWithBaseUrl:@"https://ws.tokopedia.com"
+    [networkManager requestWithBaseUrl:[NSString v4Url]
                                   path:@"/v4/action/generate-host/generate_host.pl"
                                 method:RKRequestMethodGET
                              parameter:param

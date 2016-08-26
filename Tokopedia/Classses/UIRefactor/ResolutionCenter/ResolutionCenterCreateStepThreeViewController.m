@@ -9,9 +9,11 @@
 #import "ResolutionCenterCreateStepThreeViewController.h"
 #import "Tokopedia-Swift.h"
 #import "ResolutionCenterChooseSolutionViewController.h"
+#import "RequestResolutionData.h"
+#import "ResolutionCenterCreatePOSTResponse.h"
 #import "RequestResolutionAction.h"
 
-@interface ResolutionCenterCreateStepThreeViewController ()<UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate>
+@interface ResolutionCenterCreateStepThreeViewController ()<UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate, ResolutionCenterChooseSolutionDelegate>
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UITableViewCell *solutionCell;
 @property (strong, nonatomic) IBOutlet UITableViewCell *refundCell;
@@ -19,7 +21,10 @@
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *uploadButtons;
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *cancelButtons;
 @property (strong, nonatomic) IBOutlet UIScrollView *scrollViewUploadPhoto;
-
+@property (strong, nonatomic) NSArray<ResolutionCenterCreatePOSTFormSolution*>* formSolutions;
+@property (strong, nonatomic) ResolutionCenterCreatePOSTFormSolution *selectedSolution;
+@property (strong, nonatomic) IBOutlet UITextField *refundTextField;
+@property (strong, nonatomic) IBOutlet UILabel *maxRefundLabel;
 @end
 
 @implementation ResolutionCenterCreateStepThreeViewController{
@@ -42,9 +47,9 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    [RequestResolutionAction fetchPossibleSolutionWithPossibleTroubleObject:_result.postObject
-                                                                    success:^(id data) {
-                                                                        
+    [RequestResolutionData fetchPossibleSolutionWithPossibleTroubleObject:_result.postObject
+                                                                    success:^(ResolutionCenterCreatePOSTResponse* data) {
+                                                                        _formSolutions = data.data.form_solution;
                                                                     } failure:^(NSError *error) {
                                                                         
                                                                     }];
@@ -85,7 +90,11 @@
         if(indexPath.row == 0){
             return _solutionCell.frame.size.height;
         }else{
-            return _refundCell.frame.size.height;
+            if(_selectedSolution && [_selectedSolution.show_refund_box isEqualToString:@"1"]){
+                return 120;
+            }else{
+                return 0;
+            }
         }
     }else{
         return _photoCell.frame.size.height;
@@ -113,6 +122,8 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if(indexPath.section == 0 && indexPath.row == 0){
         ResolutionCenterChooseSolutionViewController *vc = [ResolutionCenterChooseSolutionViewController new];
+        vc.formSolutions = _formSolutions;
+        vc.delegate = self;
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
@@ -174,5 +185,31 @@
 
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView{
     [self.view endEditing:YES];
+}
+
+#pragma mark - Choose Solution Delegate
+-(void)didSelectSolution:(ResolutionCenterCreatePOSTFormSolution *)selectedSolution{
+    _selectedSolution = selectedSolution;
+    _maxRefundLabel.text = _selectedSolution.max_refund_idr;
+    [_tableView reloadData];
+}
+
+#pragma mark - Submit Create Resolution
+-(void)submitCreateResolution{
+    
+    [RequestResolutionAction fetchCreateNewResolutionOrderID:_result.postObject.order_id
+                                                flagReceived:(_product_is_received)?@"1":@"0"
+                                                   troubleId:@"1"
+                                                    solution:_selectedSolution.solution_id
+                                                refundAmount:_refundTextField.text
+                                                      remark:@"asdasd"
+                                           categoryTroubleId:_result.postObject.category_trouble_id
+                                       possibleTroubleObject:_result.postObject
+                                                imageObjects:_selectedImages
+                                                     success:^(ResolutionActionResult *data) {
+                                                         
+                                                     } failure:^(NSError *error) {
+                                                         
+                                                     }];
 }
 @end
