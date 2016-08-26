@@ -100,3 +100,5 @@
 
 #import "StickyAlertView+NetworkErrorHandler.h"
 #import "UIFont+Theme.h"
+#import "QueueImageDownloader.h"
+#import "ProductBadge.h"

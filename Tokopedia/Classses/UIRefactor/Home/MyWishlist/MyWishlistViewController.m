@@ -39,7 +39,6 @@ UICollectionViewDataSource,
 UICollectionViewDelegate,
 UICollectionViewDelegateFlowLayout,
 UIScrollViewDelegate,
-TokopediaNetworkManagerDelegate,
 NoResultDelegate,
 RetryViewDelegate
 >
@@ -150,14 +149,24 @@ typedef enum TagRequest {
     UINib *retryNib = [UINib nibWithNibName:@"RetryCollectionReusableView" bundle:nil];
     [_collectionView registerNib:retryNib forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"RetryView"];
     
-    //todo with network
-    _networkManager = [TokopediaNetworkManager new];
-    _networkManager.delegate = self;
-    _networkManager.tagRequest = ProductTag;
-    _networkManager.isUsingHmac = YES;
-    [_networkManager doRequest];
+    [self loadProduct];
     
     [Localytics triggerInAppMessage:@"Wishlist Screen"];
+}
+
+- (void)loadProduct {
+    TokopediaNetworkManager* network = [TokopediaNetworkManager new];
+    network.isUsingHmac = YES;
+    [network requestWithBaseUrl:[NSString v4Url]
+                           path:@"/v4/home/get_wishlist.pl"
+                         method:RKRequestMethodGET
+                      parameter:@{@"page" : @(_page), @"limit" : @"10"}
+                        mapping:[self mapping]
+                      onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                          [self didReceiveProduct:[successResult.dictionary objectForKey:@""]];
+                      } onFailure:^(NSError *errorResult) {
+                          _isFailRequest = NO;
+                      }];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -217,7 +226,7 @@ typedef enum TagRequest {
     if (row == indexPath.row) {
         if (_nextPageUri != NULL && ![_nextPageUri isEqualToString:@"0"] && _nextPageUri != 0) {
             _isFailRequest = NO;
-            [_networkManager doRequest];
+            [self loadProduct];
         }
     }
     return cell;
@@ -271,19 +280,10 @@ typedef enum TagRequest {
     [navigateController navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_image withShopName:product.shop_name];
 }
 
-
-//- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
-//    
-//    return UIEdgeInsetsMake(10, 10, 10, 10);
-//}
-
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [_networkManager requestCancel];
-    _networkManager.delegate = nil;
-    _networkManager = nil;
 }
 
 
@@ -292,7 +292,7 @@ typedef enum TagRequest {
 -(void)refreshView:(UIRefreshControl*)refresh {
     _page = 1;
     _isShowRefreshControl = YES;
-    [_networkManager doRequest];
+    [self loadProduct];
 }
 
 #pragma mark - NoResult Delegate
@@ -305,34 +305,7 @@ typedef enum TagRequest {
     self.lastContentOffset = scrollView.contentOffset.x;
 }
 
-#pragma mark - Tokopedia Network Delegate
-- (NSDictionary *)getParameter:(int)tag {
-    return @{
-             kTKPDHOME_APIPAGEKEY        :       @(_page),
-             kTKPDHOME_APILIMITPAGEKEY   :   @(kTKPDHOMEHOTLIST_LIMITPAGE)};
-}
-
-- (NSString *)getPath:(int)tag {
-    return @"/v4/home/get_wishlist.pl";
-}
-
-- (int)getRequestMethod:(int)tag {
-    return RKRequestMethodGET;
-}
-
-- (NSString *)getRequestStatus:(id)result withTag:(int)tag {
-    NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
-    id stat = [resultDict objectForKey:@""];
-    WishListObject *list = stat;
-    
-    return list.status;
-}
-
-- (id)getObjectManager:(int)tag {
-    // initialize RestKit
-    _objectmanager =  [RKObjectManager sharedClientHttps];
-    
-    // setup object mappings
+- (RKObjectMapping*)mapping {
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[WishListObject class]];
     [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
                                                         kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
@@ -355,6 +328,8 @@ typedef enum TagRequest {
                                                  @"product_available", @"product_wholesale", @"product_preorder"
                                                  ]];
     
+    [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"badges" toKeyPath:@"badges" withMapping:[ProductBadge mapping]]];
+    
     //relation
     RKObjectMapping *dataMapping = [RKObjectMapping mappingForClass:[WishListObjectResult class]];
     RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APIPAGINGKEY toKeyPath:kTKPDHOME_APIPAGINGKEY withMapping:pagingMapping];
@@ -367,38 +342,21 @@ typedef enum TagRequest {
     RKRelationshipMapping *dataRel = [RKRelationshipMapping relationshipMappingFromKeyPath:@"data" toKeyPath:@"data" withMapping:dataMapping];
     [statusMapping addPropertyMapping:dataRel];
     
-    
-    
-    
-    //register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                                  method:[self getRequestMethod:nil]
-                                                                                             pathPattern:[self getPath:nil] keyPath:@""
-                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
-    [_objectmanager addResponseDescriptor:responseDescriptorStatus];
-    return _objectmanager;
-    
+    return statusMapping;
 }
 
-- (void)actionBeforeRequest:(int)tag {
-    
-}
-
-- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
-    NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
-    WishListObject *feed = [result objectForKey:@""];
-    
+- (void)didReceiveProduct:(WishListObject*)productStore {
     if(_page == 1) {
-        _product = [feed.data.list mutableCopy];
+        _product = [productStore.data.list mutableCopy];
     } else {
-        [_product addObjectsFromArray: feed.data.list];
+        [_product addObjectsFromArray: productStore.data.list];
     }
     
     [_noResultView removeFromSuperview];
     if (_product.count >0) {
         _isNoData = NO;
-        _nextPageUri =  feed.data.paging.uri_next;
-        _page = [[_networkManager splitUriToPage:_nextPageUri] integerValue];
+        _nextPageUri =  productStore.data.paging.uri_next;
+        _page = [[TokopediaNetworkManager getPageFromUri:_nextPageUri] integerValue];
         
         if(!_nextPageUri || [_nextPageUri isEqualToString:@"0"]) {
             //remove loadingview if there is no more item
@@ -421,19 +379,6 @@ typedef enum TagRequest {
     }
     
 }
-
-- (void)actionAfterFailRequestMaxTries:(int)tag {
-    _isShowRefreshControl = NO;
-    [_refreshControl endRefreshing];
-    
-    _isFailRequest = YES;
-    [_collectionView reloadData];
-}
-
-- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag {
-    
-}
-
 
 #pragma mark - Notification Action
 - (void)userDidTappedTabBar:(NSNotification*)notification {
@@ -477,10 +422,9 @@ typedef enum TagRequest {
 
 #pragma mark - Other Method
 - (void)pressRetryButton {
-    [_networkManager doRequest];
+    [self loadProduct];
     _isFailRequest = NO;
     [_collectionView reloadData];
-    
 }
 
 - (void)orientationChanged:(NSNotification *)note {
