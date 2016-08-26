@@ -25,7 +25,12 @@
                       @"order_subtotal_price_idr",
                       @"product_reject_quantity",
                       @"product_name",
-                      @"product_url"
+                      @"product_url",
+                      @"product_description",
+                      @"product_normal_price",
+                      @"product_current_weight",
+                      @"product_price_currency",
+                      @"product_weight_unit"
                       ];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }
@@ -39,18 +44,17 @@
 }
 
 - (ProductModelView *)viewModel {
-    if(_viewModel == nil) {
-        ProductModelView *tempViewModel = [ProductModelView new];
-        tempViewModel.productName = [_product_name kv_decodeHTMLCharacterEntities];
-        tempViewModel.productPriceIDR = _product_price;
-        tempViewModel.productThumbUrl = _product_picture;
-        tempViewModel.productQuantity = [NSString stringWithFormat:@"%zd",_product_quantity];
-        tempViewModel.productTotalWeight = _product_weight;
-        tempViewModel.productNotes = [_product_notes kv_decodeHTMLCharacterEntities];
-        
-        _viewModel = tempViewModel;
-    }
+    ProductModelView *tempViewModel = [ProductModelView new];
+    tempViewModel.productName = [_product_name kv_decodeHTMLCharacterEntities];
+    tempViewModel.productPriceIDR = _product_price;
+    tempViewModel.productThumbUrl = _product_picture;
+    tempViewModel.productQuantity = [NSString stringWithFormat:@"%zd",_product_quantity];
+    tempViewModel.productTotalWeight = _product_weight;
+    tempViewModel.productNotes = [_product_notes kv_decodeHTMLCharacterEntities];
+    tempViewModel.isProductBuyAble = !_emptyStock;
+    tempViewModel.productDescription = _product_description;
     
+    _viewModel = tempViewModel;
     return _viewModel;
 }
 

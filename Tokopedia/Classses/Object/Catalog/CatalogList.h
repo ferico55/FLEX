@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "CatalogList.h"
 
-@interface CatalogList : NSObject
+@interface CatalogList : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) NSString *catalog_description;
 @property (nonatomic, strong) NSString *catalog_id;

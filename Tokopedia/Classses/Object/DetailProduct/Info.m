@@ -9,5 +9,18 @@
 #import "Info.h"
 
 @implementation Info
++(NSDictionary *)attributeMappingDictionary
+{
+    NSArray *keys = @[@"product_returnable",
+                      @"shop_has_terms",];
+    return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
+}
+
++(RKObjectMapping*)mapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+    return mapping;
+}
 
 @end

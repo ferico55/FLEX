@@ -414,8 +414,8 @@
             KTKPDMESSAGE_NAVKEY : [_data objectForKey:KTKPDMESSAGE_NAVKEY]?:@"",
     };
 
-    [_fetchConversationNetworkManager requestWithBaseUrl:[NSString v4Url]
-                                                    path:@"/v4/inbox-message/get_inbox_detail_message.pl"
+    [_fetchConversationNetworkManager requestWithBaseUrl:[NSString kunyitUrl]
+                                                    path:@"/v1/message/detail"
                                                   method:RKRequestMethodGET
                                                parameter:param
                                                  mapping:[InboxMessageDetail mapping]
@@ -510,8 +510,8 @@
     };
 
     [_sendMessageNetworkManager
-            requestWithBaseUrl:[NSString v4Url]
-                          path:@"/v4/action/message/reply_message.pl"
+            requestWithBaseUrl:[NSString kunyitUrl]
+                          path:@"/v1/message/reply"
                         method:RKRequestMethodPOST
                      parameter:param
                        mapping:[InboxMessageAction mapping]

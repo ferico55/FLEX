@@ -114,6 +114,7 @@ ImageSearchRequestDelegate
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *activeFilterImageViews;
 
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *imageSearchToolbarButtons;
+@property (weak, nonatomic) IBOutlet UIButton *tryAgainButton;
 
 @end
 
@@ -731,6 +732,13 @@ ImageSearchRequestDelegate
             break;
     }
 }
+
+- (IBAction)didTapTryAgainButton:(UIButton *)sender {
+    [_tryAgainButton setHidden:YES];
+    [_act setHidden:NO];
+    [_imageSearchRequest requestSearchbyImage:_imageQueryInfo];
+}
+
 
 #pragma mark - Filter Delegate
 -(void)FilterViewController:(FilterViewController *)viewController withUserInfo:(NSDictionary *)userInfo {
@@ -1515,6 +1523,14 @@ ImageSearchRequestDelegate
 
 - (void)orientationChanged:(NSNotification*)note {
     [_collectionView reloadData];
+}
+
+-(void)failToReceiveImageSearchResult:(NSString*)errorMessage {
+    NSArray *errorMessageArray = [[NSArray alloc] initWithObjects:errorMessage, nil];
+    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessageArray delegate:self];
+    [alert show];
+    [_act setHidden:YES];
+    [_tryAgainButton setHidden:NO];
 }
 
 

@@ -11,6 +11,9 @@
 #import "LoginResult.h"
 #import "Login.h"
 
+@class OAuthToken;
+@class AccountInfo;
+
 @interface ActivationRequest : NSObject
 
 - (void)requestCreatePasswordWithFullName:(NSString*)fullName
@@ -22,6 +25,8 @@
                             birthdayMonth:(NSString*)birthdayMonth
                              birthdayYear:(NSString*)birthdayYear
                               registerTOS:(NSString*)registerTOS
+                               oAuthToken:(OAuthToken*)oAuthToken
+                              accountInfo:(AccountInfo*)accountInfo
                                 onSuccess:(void(^)(CreatePassword *result))successCallback
                                 onFailure:(void(^)(NSError *errorResult))errorCallback;
 

@@ -260,12 +260,6 @@
     
     [self updateSaldoTokopedia:nil];
     
-    //manual GA Track
-    id tracker = [[GAI sharedInstance] defaultTracker];
-    [tracker setAllowIDFACollection:YES];
-    [tracker set:kGAIScreenName value:@"More Navigation Page"];
-    [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
-    
     // Universal Analytics
     [TPAnalytics trackScreenName:@"More Navigation Page"];
 }
@@ -794,12 +788,6 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
         } else if(indexPath.row == 2) {
             // UA
             [TPAnalytics trackScreenName:@"Privacy Policy"];
-            
-            // GA
-            id tracker = [[GAI sharedInstance] defaultTracker];
-            [tracker setAllowIDFACollection:YES];
-            [tracker set:kGAIScreenName value:@"Privacy Policy"];
-            [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
 
             WebViewController *webViewController = [WebViewController new];
             webViewController.strURL = kTKPDMORE_PRIVACY_URL;
@@ -808,12 +796,6 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
         } else if(indexPath.row == 3) {
             // UA
             [TPAnalytics trackScreenName:@"Share App"];
-            
-            // GA
-            id tracker = [[GAI sharedInstance] defaultTracker];
-            [tracker setAllowIDFACollection:YES];
-            [tracker set:kGAIScreenName value:@"Share App"];
-            [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
             
             NSString *title = @"Download Aplikasi Tokopedia Sekarang Juga! \nNikmati kemudahan jual beli online di tanganmu.";
             NSURL *url = [NSURL URLWithString:@"https://itunes.apple.com/id/app/tokopedia/id1001394201"];
@@ -864,12 +846,9 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
     }
 }
 
--(void)pushIOSFeedback
-{
-    id tracker = [[GAI sharedInstance] defaultTracker];
-    [tracker setAllowIDFACollection:YES];
-    [tracker set:kGAIScreenName value:@"iOS Feedback"];
-    [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+-(void)pushIOSFeedback {
+    
+    [TPAnalytics trackScreenName:@"iOS Feedback"];
     
     //            [Helpshift setName:[_auth objectForKey:@"full_name"] andEmail:nil];
     //            [[Helpshift sharedInstance]showFAQs:self withOptions:nil];
@@ -889,8 +868,11 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
         
         //prevent changing table frame from setStatusBarHidden
         _defaultTableFrame = self.tableView.frame;
-        [self presentViewController:emailController animated:YES completion:^() {
-            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+        [self.wrapperViewController.navigationController presentViewController:emailController animated:YES completion:^{
+            //pakai dispatch async, sebab di iOS7 dengan device model lama, terkadang status bar nya tidak segera hide
+            dispatch_async(dispatch_get_main_queue(), ^{
+                 [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+            });
         }];
     } else {
         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Kamu harus memiliki email apabila ingin mengirimkan kritik dan saran aplikasi."]
@@ -918,11 +900,6 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
 //}
 
 - (void)navigateToContactUs:(NSNotification*)notification{
-    id tracker = [[GAI sharedInstance] defaultTracker];
-    [tracker setAllowIDFACollection:YES];
-    [tracker set:kGAIScreenName value:@"New Contact Us"];
-    [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
-    
     ContactUsWebViewController *controller = [ContactUsWebViewController new];
     controller.hidesBottomBarWhenPushed = YES;
     [_wrapperViewController.navigationController pushViewController:controller animated:YES];
@@ -1006,7 +983,7 @@ problem : morevc is a tableviewcontroller, that is why it has no self.view, and 
 
 #pragma mark - Email delegate
 - (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
-    [self dismissViewControllerAnimated:YES completion:^() {
+    [self.wrapperViewController.navigationController dismissViewControllerAnimated:YES completion:^() {
         [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
         
         //undesired changes from tableview frame when setStatusBarHidden

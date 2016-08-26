@@ -10,24 +10,18 @@
 #import "Login.h"
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
-#import <GooglePlus/GooglePlus.h>
-#import <GoogleOpenSource/GoogleOpenSource.h>
 #import <GoogleSignIn/GoogleSignIn.h>
 
-@protocol CreatePasswordDelegate <NSObject>
-
-- (void)createPasswordSuccess;
-
-@end
+@class CreatePasswordUserProfile;
+@class OAuthToken;
+@class AccountInfo;
 
 @interface CreatePasswordViewController : UIViewController
 
-@property (strong, nonatomic) Login *login;
-@property (weak, nonatomic) id<CreatePasswordDelegate> delegate;
-@property (strong, nonatomic) NSDictionary *facebookUserData;
-@property GTLPlusPerson *googleUser;
-@property GIDGoogleUser *gidGoogleUser;
-@property (strong, nonatomic) NSString *email;
-@property (strong, nonatomic) NSString *fullName;
+@property (strong, nonatomic) CreatePasswordUserProfile *userProfile;
 
+@property (copy) void(^onPasswordCreated)();
+
+@property(nonatomic, strong) OAuthToken *oAuthToken;
+@property(nonatomic, strong) AccountInfo *accountInfo;
 @end

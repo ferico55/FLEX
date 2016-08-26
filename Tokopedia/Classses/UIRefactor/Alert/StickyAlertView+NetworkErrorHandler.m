@@ -31,7 +31,7 @@
     }
     
     
-    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errors delegate:[((UINavigationController*)((UITabBarController*)[[[[[UIApplication sharedApplication] delegate] window] rootViewController] presentedViewController]).selectedViewController). viewControllers lastObject]];
+    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errors delegate:[self topMostController]];
     [alert show];
     
     return alert;
@@ -39,7 +39,7 @@
 
 + (StickyAlertView*)showSuccessMessage:(NSArray *)successMessage{
     
-    StickyAlertView *alert = [[self alloc] initWithSuccessMessages:successMessage delegate:[((UINavigationController*)((UITabBarController*)[[[[[UIApplication sharedApplication] delegate] window] rootViewController] presentedViewController]).selectedViewController). viewControllers lastObject]];
+    StickyAlertView *alert = [[self alloc] initWithSuccessMessages:successMessage delegate:[self topMostController]];
     [alert show];
     
     return alert;
@@ -47,9 +47,29 @@
 
 + (StickyAlertView*)showErrorMessage:(NSArray *)errorMessage{
     
-    StickyAlertView *alert = [[self alloc] initWithErrorMessages:errorMessage delegate:[((UINavigationController*)((UITabBarController*)[[[[[UIApplication sharedApplication] delegate] window] rootViewController] presentedViewController]).selectedViewController). viewControllers lastObject]];
+    StickyAlertView *alert = [[self alloc] initWithErrorMessages:errorMessage delegate:[self topMostController]];
     [alert show];
     
     return alert;
+}
+
++ (UIViewController *)topMostController {
+    UIWindow *topWindow = [UIApplication sharedApplication].keyWindow;
+    if (topWindow.windowLevel != UIWindowLevelNormal) {
+        NSArray *windows = [UIApplication sharedApplication].windows;
+        for(topWindow in windows)
+        {
+            if (topWindow.windowLevel == UIWindowLevelNormal)
+                break;
+        }
+    }
+    
+    UIViewController *topViewController = topWindow.rootViewController;
+    
+    while (topViewController.presentedViewController) {
+        topViewController = topViewController.presentedViewController;
+    }
+    
+    return topViewController;
 }
 @end

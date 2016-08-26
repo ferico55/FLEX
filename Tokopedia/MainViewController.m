@@ -350,6 +350,7 @@ typedef enum TagRequest {
         search.extendedLayoutIncludesOpaqueBars = YES;
         cart.extendedLayoutIncludesOpaqueBars = YES;
         moreNavBar.extendedLayoutIncludesOpaqueBars = YES;
+        [moreNavBar.navigationBar setTranslucent:NO];
     }
     
     NSArray* controllers = [NSArray arrayWithObjects:swipevcNav, categoryNavBar, searchNavBar, cartNavBar, moreNavBar, nil];
@@ -876,7 +877,8 @@ typedef enum TagRequest {
 
 #pragma mark - Notification Observer Method
 - (void)forceLogout {
-    _persistToken = [_userManager getMyDeviceToken]; //token device from ios
+    // Need to use new UserAuthentificationManager becase the old one has wrong device token
+    _persistToken = [[UserAuthentificationManager new] getMyDeviceToken]; //token device from ios
     [self doApplicationLogout];
 }
 

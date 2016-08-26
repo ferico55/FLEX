@@ -171,8 +171,8 @@
             KTKPDMESSAGE_NAVKEY:[_data objectForKey:@"nav"]?:@""
     };
 
-    [_getInboxListNetworkManager requestWithBaseUrl:[NSString v4Url]
-                                               path:@"/v4/inbox-message/get_inbox_message.pl"
+    [_getInboxListNetworkManager requestWithBaseUrl:[NSString kunyitUrl]
+                                               path:@"/v1/message"
                                              method:RKRequestMethodGET
                                           parameter:param
                                             mapping:[InboxMessage mapping]
@@ -284,13 +284,13 @@
     };
 
     NSDictionary<NSString*, NSString*>* pathByAction = @{
-            KTKPDMESSAGE_ACTIONARCHIVEMESSAGE: @"/v4/action/message/archive_messages.pl",
-            KTKPDMESSAGE_ACTIONDELETEMESSAGE: @"/v4/action/message/delete_messages.pl",
-            KTKPDMESSAGE_ACTIONMOVETOINBOXMESSAGE: @"/v4/action/message/move_to_inbox.pl",
-            KTKPDMESSAGE_ACTIONDELETEFOREVERMESSAGE: @"/v4/action/message/delete_forever_messages.pl"
+            KTKPDMESSAGE_ACTIONARCHIVEMESSAGE: @"/v1/message/archive",
+            KTKPDMESSAGE_ACTIONDELETEMESSAGE: @"/v1/message/delete",
+            KTKPDMESSAGE_ACTIONMOVETOINBOXMESSAGE: @"/v1/message/move_inbox",
+            KTKPDMESSAGE_ACTIONDELETEFOREVERMESSAGE: @"/v1/message/delete/forever"
     };
 
-    [_messageActionNetworkManager requestWithBaseUrl:[NSString v4Url]
+    [_messageActionNetworkManager requestWithBaseUrl:[NSString kunyitUrl]
                                                 path:pathByAction[action]
                                               method:RKRequestMethodPOST
                                            parameter:param

@@ -423,7 +423,11 @@
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
     [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR object:self];
-    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_REDIRECT_TO_HOME object:self];
+//    [self.navigationController popToRootViewControllerAnimated:YES];
+//    
+    //[[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_REDIRECT_TO_HOME object:self];
+    
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 @end

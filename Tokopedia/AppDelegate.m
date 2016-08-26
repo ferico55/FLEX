@@ -15,7 +15,6 @@
 #import "TKPDSecureStorage.h"
 #import <AppsFlyer/AppsFlyer.h>
 #import "Localytics.h"
-#import <GooglePlus/GooglePlus.h>
 #import <GoogleAppIndexing/GoogleAppIndexing.h>
 #import <Google/Analytics.h>
 #import "NavigateViewController.h"
@@ -153,6 +152,9 @@
     [AppsFlyerTracker sharedTracker].appsFlyerDevKey = @"SdSopxGtYr9yK8QEjFVHXL";
     [AppsFlyerTracker sharedTracker].appleAppID = @"1001394201";
     [AppsFlyerTracker sharedTracker].currencyCode = @"IDR";
+    #ifdef DEBUG
+    [AppsFlyerTracker sharedTracker].isDebug = YES;
+    #endif
 }
 
 - (void)configureGTMInApplication:(UIApplication *)application withOptions:(NSDictionary *)launchOptions {
@@ -246,8 +248,6 @@
     if (shouldOpenURL) {
         return YES;
     } else if ([[GIDSignIn sharedInstance] handleURL:url sourceApplication:sourceApplication annotation:annotation]) {
-        return YES;
-    } else if ([GPPURLHandler handleURL:url sourceApplication:sourceApplication annotation:annotation]) {
         return YES;
     } else if ([self.tagManager previewWithUrl:url]) {
         return YES;
