@@ -24,8 +24,6 @@
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
         </mutableArray>
         <mutableArray key="GothamMedium.ttf">
             <string>GothamMedium</string>
@@ -1890,9 +1888,6 @@
                                                 <constraint firstAttribute="height" constant="486" id="9Nq-h7-kmz"/>
                                                 <constraint firstAttribute="width" constant="320" id="Glg-n8-jdV"/>
                                             </constraints>
-                                            <connections>
-                                                <segue destination="ul4-c8-mEc" kind="embed" identifier="EmbedHeader" id="lki-z5-Kre"/>
-                                            </connections>
                                         </containerView>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K6I-L4-SNu" userLabel="Tab Button">
                                             <rect key="frame" x="0.0" y="486" width="320" height="45"/>
@@ -2376,115 +2371,6 @@ Transaksi</string>
             </objects>
             <point key="canvasLocation" x="2046" y="-436"/>
         </scene>
-        <!--Shop Header View Controller-->
-        <scene sceneID="0zh-qB-G8F">
-            <objects>
-                <viewController storyboardIdentifier="ShopHeaderViewController" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="ul4-c8-mEc" customClass="ShopHeaderViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="yFJ-m8-ECW"/>
-                        <viewControllerLayoutGuide type="bottom" id="Svm-2I-aef"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="fN7-kd-4Dq" userLabel="Header View">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="486"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="N7L-UG-fhN">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="200"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="200" id="1K4-xD-n6T"/>
-                                    <constraint firstAttribute="width" constant="320" id="rr3-QU-kEV"/>
-                                </constraints>
-                            </imageView>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="M8V-KZ-DF5">
-                                <rect key="frame" x="110" y="147" width="100" height="100"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="100" id="9Gl-bd-A1a"/>
-                                    <constraint firstAttribute="height" constant="100" id="vQQ-98-FNp"/>
-                                </constraints>
-                            </imageView>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" tag="2" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Bk-j3-W3j">
-                                <rect key="frame" x="0.0" y="247" width="320" height="131"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="131" id="3Qp-qj-rM5"/>
-                                    <constraint firstAttribute="width" constant="320" id="XdO-IH-KRX"/>
-                                </constraints>
-                                <connections>
-                                    <outlet property="delegate" destination="ul4-c8-mEc" id="e2F-Fa-75J"/>
-                                </connections>
-                            </scrollView>
-                            <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="2" translatesAutoresizingMaskIntoConstraints="NO" id="xyr-FO-HPr">
-                                <rect key="frame" x="141" y="373" width="39" height="37"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="39" id="pj4-0i-94K"/>
-                                </constraints>
-                                <color key="pageIndicatorTintColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
-                                <color key="currentPageIndicatorTintColor" red="0.070588235289999995" green="0.78039215689999997" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </pageControl>
-                            <button opaque="NO" tag="1" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0av-4i-u35">
-                                <rect key="frame" x="20" y="425" width="130" height="34"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="130" id="9H5-hf-WAs"/>
-                                    <constraint firstAttribute="height" constant="34" id="STV-qB-R2z"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
-                                <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                <state key="normal" title="Button">
-                                    <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="tap:" destination="ul4-c8-mEc" eventType="touchUpInside" id="tH1-Wk-qct"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" tag="2" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Roq-Od-kMV">
-                                <rect key="frame" x="170" y="425" width="130" height="34"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="130" id="Abb-zZ-UG0"/>
-                                    <constraint firstAttribute="height" constant="34" id="kcF-UV-T5R"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
-                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <state key="normal" title="Button">
-                                    <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="tap:" destination="ul4-c8-mEc" eventType="touchUpInside" id="eYV-Vb-Zsd"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="3Bk-j3-W3j" firstAttribute="leading" secondItem="fN7-kd-4Dq" secondAttribute="leading" id="33I-Wu-n4V"/>
-                            <constraint firstItem="Roq-Od-kMV" firstAttribute="top" secondItem="xyr-FO-HPr" secondAttribute="bottom" constant="15" id="3kT-vN-zxk"/>
-                            <constraint firstAttribute="centerX" secondItem="xyr-FO-HPr" secondAttribute="centerX" id="7ts-cu-89I"/>
-                            <constraint firstItem="0av-4i-u35" firstAttribute="leading" secondItem="fN7-kd-4Dq" secondAttribute="leading" constant="20" id="CXH-79-iKt"/>
-                            <constraint firstItem="M8V-KZ-DF5" firstAttribute="top" secondItem="fN7-kd-4Dq" secondAttribute="top" constant="147" id="GEg-z0-iz4"/>
-                            <constraint firstItem="N7L-UG-fhN" firstAttribute="top" secondItem="fN7-kd-4Dq" secondAttribute="top" id="SeQ-Q9-kUC"/>
-                            <constraint firstAttribute="trailing" secondItem="Roq-Od-kMV" secondAttribute="trailing" constant="20" id="UGc-wY-j9N"/>
-                            <constraint firstItem="xyr-FO-HPr" firstAttribute="top" secondItem="M8V-KZ-DF5" secondAttribute="bottom" constant="126" id="dbf-rX-4f8"/>
-                            <constraint firstItem="3Bk-j3-W3j" firstAttribute="top" secondItem="M8V-KZ-DF5" secondAttribute="bottom" id="fQG-QV-F00"/>
-                            <constraint firstItem="0av-4i-u35" firstAttribute="top" secondItem="xyr-FO-HPr" secondAttribute="bottom" constant="15" id="gHk-dM-0V1"/>
-                            <constraint firstAttribute="trailing" secondItem="N7L-UG-fhN" secondAttribute="trailing" id="hcg-xN-KEc"/>
-                            <constraint firstItem="M8V-KZ-DF5" firstAttribute="leading" secondItem="fN7-kd-4Dq" secondAttribute="leading" constant="110" id="xm3-3V-kOM"/>
-                        </constraints>
-                    </view>
-                    <toolbarItems/>
-                    <connections>
-                        <outlet property="avatarImageView" destination="M8V-KZ-DF5" id="ufa-gH-L17"/>
-                        <outlet property="coverImageView" destination="N7L-UG-fhN" id="FPT-e5-ZWX"/>
-                        <outlet property="leftButton" destination="0av-4i-u35" id="YG4-CK-0bC"/>
-                        <outlet property="pageControl" destination="xyr-FO-HPr" id="S31-gZ-yZx"/>
-                        <outlet property="rightButton" destination="Roq-Od-kMV" id="dXe-SW-i5f"/>
-                        <outlet property="scrollView" destination="3Bk-j3-W3j" id="puV-cl-ca5"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="tSh-wB-h1Z" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1659" y="1484"/>
-        </scene>
         <!--Shop Review View Controller-->
         <scene sceneID="rPx-eA-hTQ">
             <objects>
@@ -2506,9 +2392,6 @@ Transaksi</string>
                                     <subviews>
                                         <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kZa-EH-Wku">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="486"/>
-                                            <connections>
-                                                <segue destination="ul4-c8-mEc" kind="embed" identifier="EmbedHeader" id="jz3-JB-2yM"/>
-                                            </connections>
                                         </containerView>
                                         <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tUj-lh-LrJ" userLabel="Tab Button">
                                             <rect key="frame" x="0.0" y="486" width="320" height="45"/>
@@ -2750,9 +2633,6 @@ Transaksi</string>
                                                 <constraint firstAttribute="height" constant="486" id="Qdc-Bj-8Xa"/>
                                                 <constraint firstAttribute="width" constant="320" id="yph-5K-SV4"/>
                                             </constraints>
-                                            <connections>
-                                                <segue destination="ul4-c8-mEc" kind="embed" identifier="EmbedHeader" id="f55-Wx-7oa"/>
-                                            </connections>
                                         </containerView>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OVJ-Dz-nui" userLabel="Tab Button">
                                             <rect key="frame" x="0.0" y="486" width="320" height="45"/>
@@ -3028,7 +2908,4 @@ Transaksi</string>
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
-    <inferredMetricsTieBreakers>
-        <segue reference="lki-z5-Kre"/>
-    </inferredMetricsTieBreakers>
 </document>

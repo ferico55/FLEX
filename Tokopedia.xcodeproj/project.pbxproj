@@ -1525,7 +1525,6 @@
 		458D8ED91D6ECFEC00417C75 /* ShopFavoritedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 458D83CC1D6ECFE800417C75 /* ShopFavoritedViewController.xib */; };
 		458D8EDA1D6ECFEC00417C75 /* ShopDescriptionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 458D83D01D6ECFE800417C75 /* ShopDescriptionView.m */; };
 		458D8EDB1D6ECFEC00417C75 /* ShopDescriptionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 458D83D11D6ECFE800417C75 /* ShopDescriptionView.xib */; };
-		458D8EDC1D6ECFEC00417C75 /* ShopHeaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 458D83D31D6ECFE800417C75 /* ShopHeaderViewController.m */; };
 		458D8EDD1D6ECFEC00417C75 /* ShopStatView.m in Sources */ = {isa = PBXBuildFile; fileRef = 458D83D51D6ECFE800417C75 /* ShopStatView.m */; };
 		458D8EDE1D6ECFEC00417C75 /* ShopStatView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 458D83D61D6ECFE800417C75 /* ShopStatView.xib */; };
 		458D8EDF1D6ECFEC00417C75 /* DetailStatisticViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 458D83D91D6ECFE800417C75 /* DetailStatisticViewController.m */; };
@@ -5197,8 +5196,6 @@
 		458D83CF1D6ECFE800417C75 /* ShopDescriptionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopDescriptionView.h; sourceTree = "<group>"; };
 		458D83D01D6ECFE800417C75 /* ShopDescriptionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopDescriptionView.m; sourceTree = "<group>"; };
 		458D83D11D6ECFE800417C75 /* ShopDescriptionView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShopDescriptionView.xib; sourceTree = "<group>"; };
-		458D83D21D6ECFE800417C75 /* ShopHeaderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopHeaderViewController.h; sourceTree = "<group>"; };
-		458D83D31D6ECFE800417C75 /* ShopHeaderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopHeaderViewController.m; sourceTree = "<group>"; };
 		458D83D41D6ECFE800417C75 /* ShopStatView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopStatView.h; sourceTree = "<group>"; };
 		458D83D51D6ECFE800417C75 /* ShopStatView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopStatView.m; sourceTree = "<group>"; };
 		458D83D61D6ECFE800417C75 /* ShopStatView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShopStatView.xib; sourceTree = "<group>"; };
@@ -11159,8 +11156,6 @@
 				458D83CF1D6ECFE800417C75 /* ShopDescriptionView.h */,
 				458D83D01D6ECFE800417C75 /* ShopDescriptionView.m */,
 				458D83D11D6ECFE800417C75 /* ShopDescriptionView.xib */,
-				458D83D21D6ECFE800417C75 /* ShopHeaderViewController.h */,
-				458D83D31D6ECFE800417C75 /* ShopHeaderViewController.m */,
 				458D83D41D6ECFE800417C75 /* ShopStatView.h */,
 				458D83D51D6ECFE800417C75 /* ShopStatView.m */,
 				458D83D61D6ECFE800417C75 /* ShopStatView.xib */,
@@ -14929,7 +14924,6 @@
 				458D8FA11D6ECFEC00417C75 /* ProductThumbCell.m in Sources */,
 				458D8B861D6ECFEC00417C75 /* Concat.swift in Sources */,
 				458D89B61D6ECFEC00417C75 /* ResolutionActionResult.m in Sources */,
-				458D8EDC1D6ECFEC00417C75 /* ShopHeaderViewController.m in Sources */,
 				458D8F361D6ECFEC00417C75 /* TransactionCartCell.m in Sources */,
 				458D8C481D6ECFEC00417C75 /* TKPDPhotoPicker.m in Sources */,
 				458D8C161D6ECFEC00417C75 /* AlertListFilterView.m in Sources */,
