@@ -2065,12 +2065,6 @@
 		626AA4FA1D6FF40300E2FE5F /* GalleryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 626A9CF41D6FF40200E2FE5F /* GalleryViewController.m */; };
 		626AA4FB1D6FF40300E2FE5F /* ProductGalleryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 626A9CF71D6FF40200E2FE5F /* ProductGalleryViewController.m */; };
 		626AA4FC1D6FF40300E2FE5F /* ProductGalleryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 626A9CF81D6FF40200E2FE5F /* ProductGalleryViewController.xib */; };
-		626AA4FD1D6FF40300E2FE5F /* ProductReviewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 626A9CFB1D6FF40200E2FE5F /* ProductReviewCell.m */; };
-		626AA4FE1D6FF40300E2FE5F /* ProductReviewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 626A9CFC1D6FF40200E2FE5F /* ProductReviewCell.xib */; };
-		626AA4FF1D6FF40300E2FE5F /* ProductReviewDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 626A9CFE1D6FF40200E2FE5F /* ProductReviewDetailViewController.m */; };
-		626AA5001D6FF40300E2FE5F /* ProductReviewDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 626A9CFF1D6FF40200E2FE5F /* ProductReviewDetailViewController.xib */; };
-		626AA5011D6FF40300E2FE5F /* ProductReviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 626A9D011D6FF40200E2FE5F /* ProductReviewViewController.m */; };
-		626AA5021D6FF40300E2FE5F /* ProductReviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 626A9D021D6FF40200E2FE5F /* ProductReviewViewController.xib */; };
 		626AA5031D6FF40300E2FE5F /* ProductTalkDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 626A9D041D6FF40200E2FE5F /* ProductTalkDetailViewController.xib */; };
 		626AA5041D6FF40300E2FE5F /* ProductTalkViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 626A9D051D6FF40200E2FE5F /* ProductTalkViewController.xib */; };
 		626AA5051D6FF40300E2FE5F /* FormProductValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 626A9D061D6FF40200E2FE5F /* FormProductValidation.swift */; };
@@ -2103,8 +2097,6 @@
 		626AA5201D6FF40400E2FE5F /* ReportProductViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 626A9D2B1D6FF40200E2FE5F /* ReportProductViewController.swift */; };
 		626AA5211D6FF40400E2FE5F /* ReportProductViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 626A9D2C1D6FF40200E2FE5F /* ReportProductViewController.xib */; };
 		626AA5221D6FF40400E2FE5F /* AttachedPicture.m in Sources */ = {isa = PBXBuildFile; fileRef = 626A9D2F1D6FF40200E2FE5F /* AttachedPicture.m */; };
-		626AA5231D6FF40400E2FE5F /* DetailMyReviewReputationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 626A9D311D6FF40200E2FE5F /* DetailMyReviewReputationCell.m */; };
-		626AA5241D6FF40400E2FE5F /* DetailMyReviewReputationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 626A9D321D6FF40200E2FE5F /* DetailMyReviewReputationCell.xib */; };
 		626AA5251D6FF40400E2FE5F /* DetailReputationReviewComponent.mm in Sources */ = {isa = PBXBuildFile; fileRef = 626A9D341D6FF40200E2FE5F /* DetailReputationReviewComponent.mm */; };
 		626AA5261D6FF40400E2FE5F /* DetailReputationReviewHeaderComponent.mm in Sources */ = {isa = PBXBuildFile; fileRef = 626A9D371D6FF40200E2FE5F /* DetailReputationReviewHeaderComponent.mm */; };
 		626AA5271D6FF40400E2FE5F /* GiveReviewDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 626A9D391D6FF40200E2FE5F /* GiveReviewDetailViewController.m */; };
@@ -5540,15 +5532,6 @@
 		626A9CF61D6FF40200E2FE5F /* ProductGalleryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductGalleryViewController.h; sourceTree = "<group>"; };
 		626A9CF71D6FF40200E2FE5F /* ProductGalleryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductGalleryViewController.m; sourceTree = "<group>"; };
 		626A9CF81D6FF40200E2FE5F /* ProductGalleryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductGalleryViewController.xib; sourceTree = "<group>"; };
-		626A9CFA1D6FF40200E2FE5F /* ProductReviewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductReviewCell.h; sourceTree = "<group>"; };
-		626A9CFB1D6FF40200E2FE5F /* ProductReviewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductReviewCell.m; sourceTree = "<group>"; };
-		626A9CFC1D6FF40200E2FE5F /* ProductReviewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductReviewCell.xib; sourceTree = "<group>"; };
-		626A9CFD1D6FF40200E2FE5F /* ProductReviewDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductReviewDetailViewController.h; sourceTree = "<group>"; };
-		626A9CFE1D6FF40200E2FE5F /* ProductReviewDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductReviewDetailViewController.m; sourceTree = "<group>"; };
-		626A9CFF1D6FF40200E2FE5F /* ProductReviewDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductReviewDetailViewController.xib; sourceTree = "<group>"; };
-		626A9D001D6FF40200E2FE5F /* ProductReviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductReviewViewController.h; sourceTree = "<group>"; };
-		626A9D011D6FF40200E2FE5F /* ProductReviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductReviewViewController.m; sourceTree = "<group>"; };
-		626A9D021D6FF40200E2FE5F /* ProductReviewViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductReviewViewController.xib; sourceTree = "<group>"; };
 		626A9D041D6FF40200E2FE5F /* ProductTalkDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductTalkDetailViewController.xib; sourceTree = "<group>"; };
 		626A9D051D6FF40200E2FE5F /* ProductTalkViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductTalkViewController.xib; sourceTree = "<group>"; };
 		626A9D061D6FF40200E2FE5F /* FormProductValidation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormProductValidation.swift; sourceTree = "<group>"; };
@@ -5592,9 +5575,6 @@
 		626A9D2C1D6FF40200E2FE5F /* ReportProductViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReportProductViewController.xib; sourceTree = "<group>"; };
 		626A9D2E1D6FF40200E2FE5F /* AttachedPicture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttachedPicture.h; sourceTree = "<group>"; };
 		626A9D2F1D6FF40200E2FE5F /* AttachedPicture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AttachedPicture.m; sourceTree = "<group>"; };
-		626A9D301D6FF40200E2FE5F /* DetailMyReviewReputationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailMyReviewReputationCell.h; sourceTree = "<group>"; };
-		626A9D311D6FF40200E2FE5F /* DetailMyReviewReputationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailMyReviewReputationCell.m; sourceTree = "<group>"; };
-		626A9D321D6FF40200E2FE5F /* DetailMyReviewReputationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailMyReviewReputationCell.xib; sourceTree = "<group>"; };
 		626A9D331D6FF40200E2FE5F /* DetailReputationReviewComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailReputationReviewComponent.h; sourceTree = "<group>"; };
 		626A9D341D6FF40200E2FE5F /* DetailReputationReviewComponent.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DetailReputationReviewComponent.mm; sourceTree = "<group>"; };
 		626A9D351D6FF40200E2FE5F /* DetailReputationReviewComponentDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailReputationReviewComponentDelegate.h; sourceTree = "<group>"; };
@@ -11371,7 +11351,6 @@
 				626A9CF61D6FF40200E2FE5F /* ProductGalleryViewController.h */,
 				626A9CF71D6FF40200E2FE5F /* ProductGalleryViewController.m */,
 				626A9CF81D6FF40200E2FE5F /* ProductGalleryViewController.xib */,
-				626A9CF91D6FF40200E2FE5F /* Review */,
 				626A9D031D6FF40200E2FE5F /* Talk */,
 			);
 			path = DetailProduct;
@@ -11400,22 +11379,6 @@
 			path = ProductGallery;
 			sourceTree = "<group>";
 		};
-		626A9CF91D6FF40200E2FE5F /* Review */ = {
-			isa = PBXGroup;
-			children = (
-				626A9CFA1D6FF40200E2FE5F /* ProductReviewCell.h */,
-				626A9CFB1D6FF40200E2FE5F /* ProductReviewCell.m */,
-				626A9CFC1D6FF40200E2FE5F /* ProductReviewCell.xib */,
-				626A9CFD1D6FF40200E2FE5F /* ProductReviewDetailViewController.h */,
-				626A9CFE1D6FF40200E2FE5F /* ProductReviewDetailViewController.m */,
-				626A9CFF1D6FF40200E2FE5F /* ProductReviewDetailViewController.xib */,
-				626A9D001D6FF40200E2FE5F /* ProductReviewViewController.h */,
-				626A9D011D6FF40200E2FE5F /* ProductReviewViewController.m */,
-				626A9D021D6FF40200E2FE5F /* ProductReviewViewController.xib */,
-			);
-			path = Review;
-			sourceTree = "<group>";
-		};
 		626A9D031D6FF40200E2FE5F /* Talk */ = {
 			isa = PBXGroup;
 			children = (
@@ -11431,9 +11394,6 @@
 				626AA6F71D6FF5AD00E2FE5F /* ReviewComponents */,
 				626A9D2E1D6FF40200E2FE5F /* AttachedPicture.h */,
 				626A9D2F1D6FF40200E2FE5F /* AttachedPicture.m */,
-				626A9D301D6FF40200E2FE5F /* DetailMyReviewReputationCell.h */,
-				626A9D311D6FF40200E2FE5F /* DetailMyReviewReputationCell.m */,
-				626A9D321D6FF40200E2FE5F /* DetailMyReviewReputationCell.xib */,
 				626A9D381D6FF40200E2FE5F /* GiveReviewDetailViewController.h */,
 				626A9D391D6FF40200E2FE5F /* GiveReviewDetailViewController.m */,
 				626A9D3A1D6FF40200E2FE5F /* GiveReviewDetailViewController.xib */,
@@ -13748,7 +13708,6 @@
 				458D910E1D6ECFEC00417C75 /* icon_medal_bronze14@2x.png in Resources */,
 				458D902B1D6ECFEC00417C75 /* icon_arrow_right_grey.png in Resources */,
 				458D90D51D6ECFEC00417C75 /* icon_google@2x.png in Resources */,
-				626AA5001D6FF40300E2FE5F /* ProductReviewDetailViewController.xib in Resources */,
 				458D90741D6ECFEC00417C75 /* icon_6@3x.png in Resources */,
 				458D90AE1D6ECFEC00417C75 /* icon_countdown@2x.png in Resources */,
 				626AA5181D6FF40400E2FE5F /* ProductListMyShopViewController.xib in Resources */,
@@ -13837,7 +13796,6 @@
 				626AA66A1D6FF40400E2FE5F /* TrackOrderViewController.xib in Resources */,
 				458D91A11D6ECFED00417C75 /* icon_sad25.png in Resources */,
 				458D90501D6ECFEC00417C75 /* icon_button_wishlist_nonactive@2x.png in Resources */,
-				626AA4FE1D6FF40300E2FE5F /* ProductReviewCell.xib in Resources */,
 				458D92361D6ECFED00417C75 /* icon_cart.png in Resources */,
 				458D91321D6ECFED00417C75 /* icon_nav_arrow_down@2x.png in Resources */,
 				458D90301D6ECFEC00417C75 /* icon_arrow_up_white@2x.png in Resources */,
@@ -14027,7 +13985,6 @@
 				458D8FE31D6ECFEC00417C75 /* icon_16@2x.png in Resources */,
 				458D91641D6ECFED00417C75 /* Icon_no_photo_transparan@2x.png in Resources */,
 				458D92A21D6ECFED00417C75 /* icon_etalase@3x.png in Resources */,
-				626AA5241D6FF40400E2FE5F /* DetailMyReviewReputationCell.xib in Resources */,
 				626AA5491D6FF40400E2FE5F /* ReviewSummaryViewController.xib in Resources */,
 				458D8FFB1D6ECFEC00417C75 /* icon_8.png in Resources */,
 				626AA5F41D6FF40400E2FE5F /* SettingPasswordViewController.xib in Resources */,
@@ -14194,7 +14151,6 @@
 				458D92DA1D6ECFED00417C75 /* icon_signin.png in Resources */,
 				626AA51B1D6FF40400E2FE5F /* ProductWishlistCell.xib in Resources */,
 				458D90E71D6ECFEC00417C75 /* icon_idrop_indomaret.png in Resources */,
-				626AA5021D6FF40300E2FE5F /* ProductReviewViewController.xib in Resources */,
 				458D8FB31D6ECFEC00417C75 /* GothamBlack.ttf in Resources */,
 				458D907C1D6ECFEC00417C75 /* icon_category_list_white@2x.png in Resources */,
 				458D92C61D6ECFED00417C75 /* icon_cart_active.png in Resources */,
@@ -14343,7 +14299,6 @@
 				626AA5CB1D6FF40400E2FE5F /* SearchViewController.m in Sources */,
 				626AA4F91D6FF40300E2FE5F /* GalleryPhotoView.m in Sources */,
 				626AA07B1D6FF40300E2FE5F /* NSMutableAttributedString+TKPCategory.m in Sources */,
-				626AA5231D6FF40400E2FE5F /* DetailMyReviewReputationCell.m in Sources */,
 				626AA4821D6FF40300E2FE5F /* FilterComplainViewController.m in Sources */,
 				626AA3291D6FF40300E2FE5F /* TakeUntil.swift in Sources */,
 				626AA40E1D6FF40300E2FE5F /* ProgressBarView.m in Sources */,
@@ -14528,7 +14483,6 @@
 				626AA1911D6FF40300E2FE5F /* ProductTalkCommentAction.m in Sources */,
 				626AA4161D6FF40300E2FE5F /* TKPDTextView.m in Sources */,
 				626AA0DC1D6FF40300E2FE5F /* CatalogSpecs.m in Sources */,
-				626AA5011D6FF40300E2FE5F /* ProductReviewViewController.m in Sources */,
 				626AA6C61D6FF40400E2FE5F /* WebViewInvoiceViewController.m in Sources */,
 				626AA60A1D6FF40400E2FE5F /* OpenShopViewController.swift in Sources */,
 				626AA4F31D6FF40300E2FE5F /* DetailProductWholesaleCell.m in Sources */,
@@ -15135,7 +15089,6 @@
 				626AA31C1D6FF40300E2FE5F /* Sequence.swift in Sources */,
 				626AA28E1D6FF40300E2FE5F /* TxOrderPaymentEditSystemBank.m in Sources */,
 				626AA4BF1D6FF40300E2FE5F /* MyShopEtalaseEditViewController.m in Sources */,
-				626AA4FD1D6FF40300E2FE5F /* ProductReviewCell.m in Sources */,
 				626AA24E1D6FF40300E2FE5F /* ShipmentAvailable.m in Sources */,
 				626AA1951D6FF40300E2FE5F /* ChangePhoneNumber.m in Sources */,
 				626AA26B1D6FF40300E2FE5F /* InstallmentTerm.m in Sources */,
@@ -15574,7 +15527,6 @@
 				626AA21A1D6FF40300E2FE5F /* ShopProductPageList.m in Sources */,
 				626AA5951D6FF40400E2FE5F /* RejectReasonProductDescriptionViewController.m in Sources */,
 				626AA6281D6FF40400E2FE5F /* ShopInfoAddressCell.m in Sources */,
-				626AA4FF1D6FF40300E2FE5F /* ProductReviewDetailViewController.m in Sources */,
 				626AA5AF1D6FF40400E2FE5F /* ChangeCourierViewController.m in Sources */,
 				626AA1161D6FF40300E2FE5F /* GooglePlacesDetail.m in Sources */,
 				626AA23E1D6FF40300E2FE5F /* ListRekeningBank.m in Sources */,
