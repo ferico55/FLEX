@@ -16,7 +16,7 @@
     if (self != nil) {
         // Badge label. contains notification number
         _badgeLabel = [[UILabel alloc]initWithFrame:CGRectMake(-5, -5, 17, 17)];
-        [_badgeLabel setFont:[UIFont fontWithName:@"GothamMedium" size:10]];
+        [_badgeLabel setFont:[UIFont mediumSystemFontOfSize:10]];
         [_badgeLabel setBackgroundColor:[UIColor redColor]];
         [_badgeLabel setTextColor:[UIColor whiteColor]];
         [_badgeLabel.layer setCornerRadius:10];

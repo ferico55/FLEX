@@ -915,7 +915,6 @@
 		628514461D7004FD00FF0A96 /* NSMutableAttributedString+TKPCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 628508631D7004F700FF0A96 /* NSMutableAttributedString+TKPCategory.m */; };
 		628514471D7004FD00FF0A96 /* NSMutableURLRequest+TKPDURLRequestUploadImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 628508651D7004F700FF0A96 /* NSMutableURLRequest+TKPDURLRequestUploadImage.m */; };
 		628514481D7004FD00FF0A96 /* NSNumberFormatter+IDRFormater.m in Sources */ = {isa = PBXBuildFile; fileRef = 628508671D7004F700FF0A96 /* NSNumberFormatter+IDRFormater.m */; };
-		628514491D7004FD00FF0A96 /* NSStringAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = 628508691D7004F700FF0A96 /* NSStringAttribute.m */; };
 		6285144A1D7004FD00FF0A96 /* NSUserDefaultCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 6285086B1D7004F700FF0A96 /* NSUserDefaultCategory.m */; };
 		6285144B1D7004FD00FF0A96 /* QueueImageDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 6285086D1D7004F700FF0A96 /* QueueImageDownloader.m */; };
 		6285144C1D7004FD00FF0A96 /* RequestUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 6285086F1D7004F700FF0A96 /* RequestUtils.m */; };
@@ -1876,8 +1875,6 @@
 		628518071D7004FE00FF0A96 /* GeneralNoResult.xib in Resources */ = {isa = PBXBuildFile; fileRef = 62850F711D7004FB00FF0A96 /* GeneralNoResult.xib */; };
 		628518081D7004FE00FF0A96 /* GeneralProductCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 62850F731D7004FB00FF0A96 /* GeneralProductCollectionViewCell.m */; };
 		628518091D7004FE00FF0A96 /* GeneralProductCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 62850F741D7004FB00FF0A96 /* GeneralProductCollectionViewCell.xib */; };
-		6285180A1D7004FE00FF0A96 /* GeneralProductReviewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 62850F761D7004FB00FF0A96 /* GeneralProductReviewCell.m */; };
-		6285180B1D7004FE00FF0A96 /* GeneralProductReviewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 62850F771D7004FB00FF0A96 /* GeneralProductReviewCell.xib */; };
 		6285180C1D7004FE00FF0A96 /* GeneralSwitchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 62850F791D7004FB00FF0A96 /* GeneralSwitchCell.m */; };
 		6285180D1D7004FE00FF0A96 /* GeneralSwitchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 62850F7A1D7004FB00FF0A96 /* GeneralSwitchCell.xib */; };
 		6285180E1D7004FE00FF0A96 /* GeneralTalkCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 62850F7C1D7004FB00FF0A96 /* GeneralTalkCommentCell.m */; };
@@ -3586,8 +3583,6 @@
 		628508651D7004F700FF0A96 /* NSMutableURLRequest+TKPDURLRequestUploadImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableURLRequest+TKPDURLRequestUploadImage.m"; sourceTree = "<group>"; };
 		628508661D7004F700FF0A96 /* NSNumberFormatter+IDRFormater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumberFormatter+IDRFormater.h"; sourceTree = "<group>"; };
 		628508671D7004F700FF0A96 /* NSNumberFormatter+IDRFormater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumberFormatter+IDRFormater.m"; sourceTree = "<group>"; };
-		628508681D7004F700FF0A96 /* NSStringAttribute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSStringAttribute.h; sourceTree = "<group>"; };
-		628508691D7004F700FF0A96 /* NSStringAttribute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSStringAttribute.m; sourceTree = "<group>"; };
 		6285086A1D7004F700FF0A96 /* NSUserDefaultCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSUserDefaultCategory.h; sourceTree = "<group>"; };
 		6285086B1D7004F700FF0A96 /* NSUserDefaultCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSUserDefaultCategory.m; sourceTree = "<group>"; };
 		6285086C1D7004F700FF0A96 /* QueueImageDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QueueImageDownloader.h; sourceTree = "<group>"; };
@@ -5218,9 +5213,6 @@
 		62850F721D7004FB00FF0A96 /* GeneralProductCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralProductCollectionViewCell.h; sourceTree = "<group>"; };
 		62850F731D7004FB00FF0A96 /* GeneralProductCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralProductCollectionViewCell.m; sourceTree = "<group>"; };
 		62850F741D7004FB00FF0A96 /* GeneralProductCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GeneralProductCollectionViewCell.xib; sourceTree = "<group>"; };
-		62850F751D7004FB00FF0A96 /* GeneralProductReviewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralProductReviewCell.h; sourceTree = "<group>"; };
-		62850F761D7004FB00FF0A96 /* GeneralProductReviewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralProductReviewCell.m; sourceTree = "<group>"; };
-		62850F771D7004FB00FF0A96 /* GeneralProductReviewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GeneralProductReviewCell.xib; sourceTree = "<group>"; };
 		62850F781D7004FB00FF0A96 /* GeneralSwitchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralSwitchCell.h; sourceTree = "<group>"; };
 		62850F791D7004FB00FF0A96 /* GeneralSwitchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralSwitchCell.m; sourceTree = "<group>"; };
 		62850F7A1D7004FB00FF0A96 /* GeneralSwitchCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GeneralSwitchCell.xib; sourceTree = "<group>"; };
@@ -7675,8 +7667,6 @@
 				628508651D7004F700FF0A96 /* NSMutableURLRequest+TKPDURLRequestUploadImage.m */,
 				628508661D7004F700FF0A96 /* NSNumberFormatter+IDRFormater.h */,
 				628508671D7004F700FF0A96 /* NSNumberFormatter+IDRFormater.m */,
-				628508681D7004F700FF0A96 /* NSStringAttribute.h */,
-				628508691D7004F700FF0A96 /* NSStringAttribute.m */,
 				6285086A1D7004F700FF0A96 /* NSUserDefaultCategory.h */,
 				6285086B1D7004F700FF0A96 /* NSUserDefaultCategory.m */,
 				6285086C1D7004F700FF0A96 /* QueueImageDownloader.h */,
@@ -10734,9 +10724,6 @@
 				62850F721D7004FB00FF0A96 /* GeneralProductCollectionViewCell.h */,
 				62850F731D7004FB00FF0A96 /* GeneralProductCollectionViewCell.m */,
 				62850F741D7004FB00FF0A96 /* GeneralProductCollectionViewCell.xib */,
-				62850F751D7004FB00FF0A96 /* GeneralProductReviewCell.h */,
-				62850F761D7004FB00FF0A96 /* GeneralProductReviewCell.m */,
-				62850F771D7004FB00FF0A96 /* GeneralProductReviewCell.xib */,
 				62850F781D7004FB00FF0A96 /* GeneralSwitchCell.h */,
 				62850F791D7004FB00FF0A96 /* GeneralSwitchCell.m */,
 				62850F7A1D7004FB00FF0A96 /* GeneralSwitchCell.xib */,
@@ -13659,7 +13646,6 @@
 				628518791D7004FE00FF0A96 /* ActivatePushInstructionViewController.xib in Resources */,
 				458D924A1D6ECFED00417C75 /* image_not_loading.png in Resources */,
 				458D918A1D6ECFED00417C75 /* icon_question_mark_green30.png in Resources */,
-				6285180B1D7004FE00FF0A96 /* GeneralProductReviewCell.xib in Resources */,
 				628518C81D7004FE00FF0A96 /* ProductTalkViewController.xib in Resources */,
 				628518A11D7004FE00FF0A96 /* ShipmentLocationPickupViewCell.xib in Resources */,
 				628518FB1D7004FE00FF0A96 /* MyReviewDetailViewController.xib in Resources */,
@@ -14618,7 +14604,6 @@
 				628519461D7004FE00FF0A96 /* ProductQuantityViewController.m in Sources */,
 				628517521D7004FE00FF0A96 /* AlertDatePickerView.m in Sources */,
 				628516881D7004FE00FF0A96 /* LabelLayout.swift in Sources */,
-				628514491D7004FD00FF0A96 /* NSStringAttribute.m in Sources */,
 				628514FC1D7004FD00FF0A96 /* ResolutionActionResult.m in Sources */,
 				6285168C1D7004FE00FF0A96 /* AxisFlexibility.swift in Sources */,
 				62851A881D7004FE00FF0A96 /* WebViewInvoiceViewController.m in Sources */,
@@ -15329,7 +15314,6 @@
 				6285150C1D7004FD00FF0A96 /* ResolutionOrder.m in Sources */,
 				628514451D7004FD00FF0A96 /* LabelMenu.m in Sources */,
 				628514DC1D7004FD00FF0A96 /* GoogleDistanceMatrixRows.m in Sources */,
-				6285180A1D7004FE00FF0A96 /* GeneralProductReviewCell.m in Sources */,
 				6285155E1D7004FD00FF0A96 /* ProductTalkForm.m in Sources */,
 				6285162E1D7004FE00FF0A96 /* TxOrderConfirmationList.m in Sources */,
 				628516051D7004FE00FF0A96 /* TrackOrder.m in Sources */,
