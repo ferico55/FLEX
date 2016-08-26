@@ -142,13 +142,13 @@
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 5.0;
 
-    UIFont *gothamBookFont = [UIFont largeTheme];
-    UIFont *gothamMediumFont = [UIFont largeThemeMedium];
+    UIFont *normalTextFont = [UIFont largeTheme];
+    UIFont *mediumTextFont = [UIFont largeThemeMedium];
 
     if (![viewModel.conversationMessage isEqualToString:@"0"] && !viewModel.conversationNote) {
 
         NSDictionary *textAttributes = @{
-                                         NSFontAttributeName            : gothamBookFont,
+                                         NSFontAttributeName            : normalTextFont,
                                          NSParagraphStyleAttributeName  : style,
                                          NSForegroundColorAttributeName : [UIColor blackColor],
                                          };
@@ -161,8 +161,8 @@
         NSString *message = [NSString stringWithFormat:@"%@\n\n%@", viewModel.conversationMessage, viewModel.conversationNote];
         
         NSMutableAttributedString *attributedMessage = [[NSMutableAttributedString alloc] initWithString:message];
-        [attributedMessage addAttribute:NSFontAttributeName value:gothamBookFont range:NSMakeRange(0, viewModel.conversationMessage.length)];
-        [attributedMessage addAttribute:NSFontAttributeName value:gothamMediumFont range:NSMakeRange(viewModel.conversationMessage.length+2,
+        [attributedMessage addAttribute:NSFontAttributeName value:normalTextFont range:NSMakeRange(0, viewModel.conversationMessage.length)];
+        [attributedMessage addAttribute:NSFontAttributeName value:mediumTextFont range:NSMakeRange(viewModel.conversationMessage.length+2,
                                                                                                      viewModel.conversationNote.length)];
         [attributedMessage addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, message.length)];
         [attributedMessage addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor] range:NSMakeRange(0, message.length)];
@@ -172,7 +172,7 @@
     } else if ([viewModel.conversationMessage isEqualToString:@"0"] && viewModel.conversationNote) {
 
         NSDictionary *textAttributes = @{
-                                         NSFontAttributeName            : gothamMediumFont,
+                                         NSFontAttributeName            : mediumTextFont,
                                          NSParagraphStyleAttributeName  : style,
                                          NSForegroundColorAttributeName : [UIColor blackColor],
                                          };

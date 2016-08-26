@@ -148,11 +148,11 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
     style.lineSpacing = 4.0;
     style.alignment = NSTextAlignmentCenter;
     
-    UIFont *gothamBook = [UIFont smallTheme];
-    UIFont *gothamMedium = [UIFont smallThemeMedium];
+    UIFont *normalTextFont = [UIFont smallTheme];
+    UIFont *mediumTextFont = [UIFont smallThemeMedium];
     
     NSDictionary *ratingAttributes = @{
-        NSFontAttributeName             : gothamBook,
+        NSFontAttributeName             : normalTextFont,
         NSParagraphStyleAttributeName   : style
     };
     
@@ -160,7 +160,7 @@ NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";
                                                                       attributes:ratingAttributes];
     
     NSDictionary *ratingTitleAttributes = @{
-        NSFontAttributeName            : gothamMedium,
+        NSFontAttributeName            : mediumTextFont,
         NSParagraphStyleAttributeName  : style,
     };
 

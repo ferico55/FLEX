@@ -170,7 +170,7 @@
     style.alignment = self.textAlignment;
     
     NSDictionary *attributes = @{NSForegroundColorAttributeName: self.textColor?:[UIColor blackColor],
-                                 NSFontAttributeName: self.font?:FONT_GOTHAM_BOOK_11,
+                                 NSFontAttributeName: self.font?:[UIFont smallTheme],
                                  NSParagraphStyleAttributeName: style,
                                  };
     

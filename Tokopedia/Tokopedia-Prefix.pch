@@ -50,7 +50,6 @@
     #import "TKPDSecureStorage.h"
     #import "UITextView+UITextView_Placeholder.h"
     #import "NSString+HTML.h"
-    #import "NSStringAttribute.h"
     #import "UserAuthentificationManager.h"
     #import "NSMutableAttributedString+TKPCategory.h"
 
