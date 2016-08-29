@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "Tokopedia-Swift.h"
+#import "TKPDTabNavigationController.h"
 
 @protocol SearchResultDelegate <NSObject>
 
@@ -30,5 +31,6 @@
 @property (weak, nonatomic) id<SearchResultDelegate> delegate;
 @property (strong, nonatomic) IBOutlet UIView *fourButtonsToolbar;
 @property (strong, nonatomic) IBOutlet UIView *threeButtonsToolbar;
+@property (weak, nonatomic) TKPDTabNavigationController *tkpdTabNavigationController;
 
 @end
