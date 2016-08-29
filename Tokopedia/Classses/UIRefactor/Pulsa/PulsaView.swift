@@ -10,7 +10,7 @@ import UIKit
 import Foundation
 
 @objc
-class PulsaView: UIView {
+class PulsaView: UIView, MMNumberKeyboardDelegate {
     
     var pulsaCategoryControl: UISegmentedControl!
     var numberField: UITextField!
@@ -193,6 +193,13 @@ class PulsaView: UIView {
         numberField.rightViewMode = .Always
         numberField.keyboardType = .NumberPad
         
+        let keyboard =  MMNumberKeyboard(frame: CGRectZero)
+        keyboard.allowsDecimalPoint = false
+        keyboard.delegate = self
+        keyboard.returnKeyTitle = "Beli"
+        
+        numberField.inputView = keyboard
+        
         
         fieldPlaceholder.addSubview(numberField)
         numberField.mas_makeConstraints { make in
@@ -243,12 +250,22 @@ class PulsaView: UIView {
        
     }
     
+    func numberKeyboardShouldReturn(numberKeyboard: MMNumberKeyboard!) -> Bool {
+        self.didPressBuyButton()
+        return true
+    }
+    
     func addActionNumberField() {
         numberField.bk_addEventHandler ({[unowned self] number in
             self.hideErrors()
             //operator must exists first
             //fix this to prevent crash using serial dispatch
-            let inputtedText = self.numberField.text!
+            var inputtedText = self.numberField.text!
+            
+            if(self.selectedCategory.id == CategoryConstant.PaketData || self.selectedCategory.id == CategoryConstant.Pulsa ) {
+                inputtedText = inputtedText.stringByReplacingOccurrencesOfString("62", withString: "0", options: NSStringCompareOptions.LiteralSearch, range: nil)
+            }
+            
             if(inputtedText.characters.count == 4) {
                 let prefix = inputtedText.substringWithRange(Range<String.Index>(start: inputtedText.startIndex.advancedBy(0), end: inputtedText.startIndex.advancedBy(4)))
                 
@@ -412,57 +429,61 @@ class PulsaView: UIView {
         
         buyButton.bk_removeEventHandlersForControlEvents(.TouchUpInside)
         buyButton.bk_addEventHandler({ button -> Void in
-            self.refreshContainerSize!()
-            
-            if(!self.isValidNumber(self.numberField.text!)) {
-                self.numberErrorLabel.mas_updateConstraints { make in
-                    make.height.equalTo()(22)
-                }
-            } else {
-                self.numberErrorLabel.mas_updateConstraints { make in
-                    make.height.equalTo()(0)
-                }
-            }
-        
-            
-            if(!self.isValidNominal()) {
-                self.buttonErrorLabel.mas_updateConstraints { make in
-                    make.height.equalTo()(22)
-                }
-            } else {
-                self.buttonErrorLabel.mas_updateConstraints { make in
-                    make.height.equalTo()(0)
-                }
-            }
-            
-            if(self.isValidNominal() && self.isValidNumber(self.numberField.text!)) {
-                self.hideErrors()
-                
-                self.userManager = UserAuthentificationManager()
-                if(!self.userManager.isLogin) {
-                    self.didAskedForLogin!()
-                } else {
-                    //open scrooge
-                    var pulsaUrl = "https://pulsa.tokopedia.com?action=init_data&client_number=" + self.numberField.text!
-                        pulsaUrl += "&product_id=" + self.selectedProduct.id!
-                        pulsaUrl += "&operator_id=" +  self.selectedOperator.id!
-                        pulsaUrl += "&instant_checkout=" + (self.saldoSwitch.on ? "1" : "0")
-                        pulsaUrl += "&utm_source=ios"
-                    
-                    let customAllowedSet =  NSCharacterSet(charactersInString:"=\"#%/<>?@\\^`{|}&").invertedSet
-                    var url = "https://js.tokopedia.com/wvlogin?uid=" + self.userManager.getUserId()
-                        url += "&token=" + self.userManager.getMyDeviceToken()
-                        url += "&url=" + pulsaUrl.stringByAddingPercentEncodingWithAllowedCharacters(customAllowedSet)!
-                    
-                    self.didSuccessPressBuy!(NSURL(string: url)!)
-                }
-            }
+            self.didPressBuyButton()
         }, forControlEvents: .TouchUpInside)
         
         productButton.setImage(UIImage(named: "icon_arrow_down.png"), forState: .Normal)
         productButton.imageEdgeInsets = UIEdgeInsetsMake(0, self.productButton.frame.size.width - 30, 0, 0)
         
         self.refreshContainerSize!()
+    }
+    
+    func didPressBuyButton() {
+        self.refreshContainerSize!()
+        
+        if(!self.isValidNumber(self.numberField.text!)) {
+            self.numberErrorLabel.mas_updateConstraints { make in
+                make.height.equalTo()(22)
+            }
+        } else {
+            self.numberErrorLabel.mas_updateConstraints { make in
+                make.height.equalTo()(0)
+            }
+        }
+        
+        
+        if(!self.isValidNominal()) {
+            self.buttonErrorLabel.mas_updateConstraints { make in
+                make.height.equalTo()(22)
+            }
+        } else {
+            self.buttonErrorLabel.mas_updateConstraints { make in
+                make.height.equalTo()(0)
+            }
+        }
+        
+        if(self.isValidNominal() && self.isValidNumber(self.numberField.text!)) {
+            self.hideErrors()
+            
+            self.userManager = UserAuthentificationManager()
+            if(!self.userManager.isLogin) {
+                self.didAskedForLogin!()
+            } else {
+                //open scrooge
+                var pulsaUrl = "https://pulsa.tokopedia.com?action=init_data&client_number=" + self.numberField.text!
+                pulsaUrl += "&product_id=" + self.selectedProduct.id!
+                pulsaUrl += "&operator_id=" +  self.selectedOperator.id!
+                pulsaUrl += "&instant_checkout=" + (self.saldoSwitch.on ? "1" : "0")
+                pulsaUrl += "&utm_source=ios"
+                
+                let customAllowedSet =  NSCharacterSet(charactersInString:"=\"#%/<>?@\\^`{|}&").invertedSet
+                var url = "https://js.tokopedia.com/wvlogin?uid=" + self.userManager.getUserId()
+                url += "&token=" + self.userManager.getMyDeviceToken()
+                url += "&url=" + pulsaUrl.stringByAddingPercentEncodingWithAllowedCharacters(customAllowedSet)!
+                
+                self.didSuccessPressBuy!(NSURL(string: url)!)
+            }
+        }
     }
     
     func hideBuyButtons() {
@@ -511,7 +532,6 @@ class PulsaView: UIView {
             make.right.equalTo()(container.mas_right).offset()(-10)
             make.bottom.equalTo()(container.mas_bottom)
         }
-        
     }
     
 }
