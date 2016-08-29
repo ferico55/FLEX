@@ -571,7 +571,7 @@ static NSString const *rows = @"12";
         
         [button addTarget:self action:@selector(didTapOnHashtag:) forControlEvents:UIControlEventTouchUpInside];
         
-        CGSize stringSize = [button.titleLabel.text sizeWithFont:kTKPDHOME_FONTSLIDETITLESACTIVE];
+        CGSize stringSize = [button.titleLabel.text sizeWithFont:[UIFont smallTheme]];
         stringSize.width += 30;
         button.frame = CGRectMake(totalWidth, 5, stringSize.width, 30);
         
