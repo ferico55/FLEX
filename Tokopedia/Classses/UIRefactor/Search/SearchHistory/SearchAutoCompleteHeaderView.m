@@ -14,7 +14,7 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if(self != nil) {
-        [self setBackgroundColor:[UIColor colorWithWhite:0.85 alpha:1.0f]];
+        [self setBackgroundColor:[UIColor whiteColor]];
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
         [self addSubview:label];
         [label setFont:[UIFont fontWithName:@"Gotham Medium" size:12.0f]];
@@ -28,7 +28,7 @@
         _deleteButton = deleteButton;
         _titleLabel = label;
         
-        [_titleLabel HVD_fillInSuperViewWithInsets:UIEdgeInsetsMake(5, 10, 5, 50)];
+        [_titleLabel HVD_fillInSuperViewWithInsets:UIEdgeInsetsMake(5, 20, 5, 50)];
         [_deleteButton HVD_fillInSuperViewWithInsets:UIEdgeInsetsMake(5, 50, 5, 10)];
     }
     

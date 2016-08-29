@@ -14,6 +14,7 @@
 
 @property (strong, nonatomic) IBOutlet UILabel *searchTitle;
 @property (weak, nonatomic) IBOutlet UIImageView *searchImage;
+@property (strong, nonatomic) IBOutlet UIButton *closeButton;
 
 - (void)setViewModel:(SearchAutoCompleteViewModel *)viewModel;
 - (void)setBoldSearchText:(NSString*)searchText;

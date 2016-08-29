@@ -28,6 +28,8 @@
 
 #import "ImagePickerCategoryController.h"
 
+#import "Tokopedia-Swift.h"
+
 NSString *const searchPath = @"/search/%@";
 
 @interface SearchViewController ()
@@ -57,6 +59,8 @@ NotificationManagerDelegate
     NSMutableArray *_typedHistoryResult;
     NSURL *_deeplinkUrl;
     
+    NSMutableArray *_searchSuggestionDataArray;
+    
     UITapGestureRecognizer *imageSearchGestureRecognizer;
     
     TokopediaNetworkManager* _requestManager;
@@ -70,6 +74,8 @@ NotificationManagerDelegate
 @property (strong, nonatomic) IBOutlet UIView *iconCamera;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *searchBarTrailingConstraint;
 @property (strong, nonatomic) IBOutlet UIImageView *cameraImageView;
+@property (strong, nonatomic) UserAuthentificationManager *authManager;
+
 
 @end
 
@@ -115,8 +121,7 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     
     _filter = @"search_product";
     
-    [self loadHistory];
-    
+   // [self loadHistory];
     
     NSNotificationCenter *notification = [NSNotificationCenter defaultCenter];
     [notification addObserver:self selector:@selector(clearHistory) name:kTKPD_REMOVE_SEARCH_HISTORY object:nil];
@@ -128,18 +133,16 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     [_collectionView registerNib:cellNib forCellWithReuseIdentifier:@"SearchAutoCompleteCellIdentifier"];
     
     [self.collectionView registerClass:[SearchAutoCompleteHeaderView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"SearchAutoCompleteCellHeaderViewIdentifier"];
-    [self.collectionView setBackgroundColor:[UIColor colorWithWhite:0.85 alpha:1.0]];
     
     [_domains removeAllObjects];
     [_domains addObject:@{@"title" : SearchDomainHistory, @"data" : _historyResult}];
-    [_collectionView reloadData];
-    
+
+    _authManager = [UserAuthentificationManager new];
     _requestManager = [TokopediaNetworkManager new];
 }
 
 -(BOOL)isEnableImageSearch{
-    UserAuthentificationManager *auth = [UserAuthentificationManager new];
-    if (!auth.isLogin) {
+    if (!_authManager.isLogin) {
         return NO;
     }
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -168,9 +171,10 @@ NSString *const SearchDomainHotlist = @"Hotlist";
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+    [self getUserSearchSuggestionDataWithQuery:@""];
     [self initNotificationManager];
     
-    [self.searchBar resignFirstResponder];
+    [self.searchBar becomeFirstResponder];
     [self.searchBar setText:nil];
     [self searchBar:_searchBar textDidChange:@""];
     [self.searchBar setShowsBookmarkButton:NO];
@@ -227,13 +231,13 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     
 }
 
--(void)loadHistory {
-    NSString *destPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
-    destPath = [destPath stringByAppendingPathComponent:kTKPDSEARCH_SEARCHHISTORYPATHKEY];
-    
-    [_historyResult addObjectsFromArray:[[NSArray alloc] initWithContentsOfFile:destPath]];
-    [_typedHistoryResult addObjectsFromArray:_historyResult];
-}
+//-(void)loadHistory {
+//    NSString *destPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+//    destPath = [destPath stringByAppendingPathComponent:kTKPDSEARCH_SEARCHHISTORYPATHKEY];
+//    
+//    [_historyResult addObjectsFromArray:[[NSArray alloc] initWithContentsOfFile:destPath]];
+//    [_typedHistoryResult addObjectsFromArray:_historyResult];
+//}
 
 -(void)clearHistory {
     [_historyResult removeAllObjects];
@@ -253,16 +257,59 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     [_collectionView reloadData];
 }
 
+-(NSString*) getUniqueId {
+    NSString *userId = [_authManager getUserId];
+    
+    if (userId == nil) {
+        userId = [_authManager getMyDeviceIdToken];
+    }
+    
+    return userId;
+}
+
+#pragma mark - API
+
+-(void) getUserSearchSuggestionDataWithQuery: (NSString*) query {
+    NSString *uniqueId = [self getUniqueId];
+    
+    //__weak typeof(self) weakSelf = self;
+    _requestManager.isUsingHmac = YES;
+    [_requestManager requestWithBaseUrl:[NSString aceUrl] path:@"/universe/v1" method:RKRequestMethodGET parameter:@{@"unique_id": uniqueId, @"q" : query} mapping:[GetSearchSuggestionGeneralResponse mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            NSDictionary *result = [successResult dictionary];
+            _searchSuggestionDataArray = [[NSMutableArray alloc] init];
+            GetSearchSuggestionGeneralResponse *searchResponse = (GetSearchSuggestionGeneralResponse*)[result objectForKey:@""];
+            
+            NSMutableArray *searchSuggestionDatas = [NSMutableArray arrayWithArray: searchResponse.data];
+            for (SearchSuggestionData* data in searchSuggestionDatas) {
+                if (data.items.count > 0) {
+                    [_searchSuggestionDataArray addObject:data];
+                }
+            }
+            
+            [_collectionView reloadData];
+        });
+
+    } onFailure:^(NSError *errorResult) {
+        StickyAlertView *alertView = [[StickyAlertView alloc] initWithErrorMessages:@[errorResult.localizedDescription] delegate:self];
+        [alertView show];
+    }];
+}
 
 #pragma mark - Collection Delegate
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-    return [_domains count];
+   // return [_domains count];
+    return [_searchSuggestionDataArray count];
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    NSDictionary *domain = [_domains objectAtIndex:section];
-    NSArray *domainData = [domain objectForKey:@"data"];
-    return [domainData count];
+//    NSDictionary *domain = [_domains objectAtIndex:section];
+//    NSArray *domainData = [domain objectForKey:@"data"];
+//    return [domainData count];
+    SearchSuggestionData *searchSuggestionData = [_searchSuggestionDataArray objectAtIndex:section];
+    return searchSuggestionData.items.count;
 }
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
@@ -270,21 +317,28 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     
     if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
         SearchAutoCompleteHeaderView *header = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"SearchAutoCompleteCellHeaderViewIdentifier" forIndexPath:indexPath];
-        NSDictionary *domain = [_domains objectAtIndex:[indexPath section]];
         
-        [header.titleLabel setText:[[domain objectForKey:@"title"] uppercaseString]];
-        if([[domain objectForKey:@"title"] isEqualToString:SearchDomainHistory]) {
-            if(_historyResult.count > 0 || _typedHistoryResult.count > 0) {
-                [header.deleteButton setTitle:@"Hapus" forState:UIControlStateNormal];
-                [header.deleteButton addTarget:self action:@selector(clearHistory) forControlEvents:UIControlEventTouchUpInside];
-            } else {
-                [header.titleLabel setText:@""];
-                [header.deleteButton setTitle:@"" forState:UIControlStateNormal];
-            }
-        } else {
-            [header.deleteButton setTitle:@"" forState:UIControlStateNormal];
-        }
+        SearchSuggestionData *searchSuggestionData = [_searchSuggestionDataArray objectAtIndex:indexPath.section];
+        header.titleLabel.text = searchSuggestionData.name;
+        
         view = header;
+        
+//        SearchAutoCompleteHeaderView *header = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"SearchAutoCompleteCellHeaderViewIdentifier" forIndexPath:indexPath];
+//        NSDictionary *domain = [_domains objectAtIndex:[indexPath section]];
+//        
+//        [header.titleLabel setText:[[domain objectForKey:@"title"] uppercaseString]];
+//        if([[domain objectForKey:@"title"] isEqualToString:SearchDomainHistory]) {
+//            if(_historyResult.count > 0 || _typedHistoryResult.count > 0) {
+//                [header.deleteButton setTitle:@"Hapus" forState:UIControlStateNormal];
+//                [header.deleteButton addTarget:self action:@selector(clearHistory) forControlEvents:UIControlEventTouchUpInside];
+//            } else {
+//                [header.titleLabel setText:@""];
+//                [header.deleteButton setTitle:@"" forState:UIControlStateNormal];
+//            }
+//        } else {
+//            [header.deleteButton setTitle:@"" forState:UIControlStateNormal];
+//        }
+//        view = header;
     }
     
     return view;
@@ -295,31 +349,45 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     
     SearchAutoCompleteCell *searchCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"SearchAutoCompleteCellIdentifier" forIndexPath:indexPath];
     
-    NSDictionary *domain = [_domains objectAtIndex:indexPath.section];
-    NSString *domainName = [domain objectForKey:@"title"];
-    if([domainName isEqualToString:SearchDomainHistory]) {
-        NSString *searchResult;
-        if(_typedHistoryResult.count > 0) {
-            searchResult = [_typedHistoryResult objectAtIndex:indexPath.row];
-        } else {
-            searchResult = [_historyResult objectAtIndex:indexPath.row];
-        }
-        NSRange range = [searchResult rangeOfString:_searchBar.text options:NSCaseInsensitiveSearch];
-        
-        NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:searchResult];
-        [attributedText setAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:13.0f]} range:range];
-        searchCell.searchTitle.attributedText = attributedText;
-        [searchCell.searchImage setHidden:YES];
-        [searchCell setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1.0]];
-    } else if([domainName isEqualToString:SearchDomainGeneral]) {
-        SearchAutoCompleteGeneral *general = _general[indexPath.row];
-        [searchCell setViewModel:general.viewModel];
-        [searchCell setBoldSearchText:_searchBar.text];
-    } else if([domainName isEqualToString:SearchDomainHotlist]) {
-        SearchAutoCompleteHotlist *hotlist = _hotlist[indexPath.row];
-        [searchCell setViewModel:hotlist.viewModel];
-        [searchCell setBoldSearchText:_searchBar.text];
+    SearchSuggestionData *searchSuggestionData = [_searchSuggestionDataArray objectAtIndex:indexPath.section];
+    
+    SearchSuggestionItem *searchSuggestionItem = [searchSuggestionData.items objectAtIndex:indexPath.item];
+    searchCell.searchTitle.text = searchSuggestionItem.keyword;
+    
+    if([searchSuggestionData.name isEqual: @"recent_search"]) {
+        searchCell.closeButton.hidden = NO;
+    } else {
+        searchCell.closeButton.hidden = YES;
     }
+    
+    [searchCell setBoldSearchText:_searchBar.text];
+//    NSDictionary *domain = [_domains objectAtIndex:indexPath.section];
+//    NSString *domainName = [domain objectForKey:@"title"];
+//    if([domainName isEqualToString:SearchDomainHistory]) {
+//        NSString *searchResult;
+//        if(_typedHistoryResult.count > 0) {
+//            searchResult = [_typedHistoryResult objectAtIndex:indexPath.row];
+//        } else {
+//            searchResult = [_historyResult objectAtIndex:indexPath.row];
+//        }
+//        NSRange range = [searchResult rangeOfString:_searchBar.text options:NSCaseInsensitiveSearch];
+//        
+//        NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:searchResult];
+//        [attributedText setAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:13.0f]} range:range];
+//        searchCell.searchTitle.attributedText = attributedText;
+//        [searchCell.searchImage setHidden:YES];
+//        [searchCell setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1.0]];
+//    } else if([domainName isEqualToString:SearchDomainGeneral]) {
+//        SearchAutoCompleteGeneral *general = _general[indexPath.row];
+//        [searchCell setViewModel:general.viewModel];
+//        [searchCell setBoldSearchText:_searchBar.text];
+//    } else if([domainName isEqualToString:SearchDomainHotlist]) {
+//        SearchAutoCompleteHotlist *hotlist = _hotlist[indexPath.row];
+//        [searchCell setViewModel:hotlist.viewModel];
+//        [searchCell setBoldSearchText:_searchBar.text];
+//    }
+    
+
     
     cell = searchCell;
     cell.hidden = NO;
@@ -339,11 +407,11 @@ NSString *const SearchDomainHotlist = @"Hotlist";
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
     CGSize size = CGSizeZero;
     
-    NSDictionary *domain = [_domains objectAtIndex:section];
-    if(![[domain objectForKey:@"title"] isEqualToString:SearchDomainGeneral]) {
-        size = CGSizeMake(collectionView.bounds.size.width, 25);
-    }
-    
+//    NSDictionary *domain = [_domains objectAtIndex:section];
+//    if(![[domain objectForKey:@"title"] isEqualToString:SearchDomainGeneral]) {
+//        size = CGSizeMake(collectionView.bounds.size.width, 25);
+//    }
+    size = CGSizeMake(collectionView.bounds.size.width, 25);
     return size;
 }
 
@@ -358,42 +426,51 @@ NSString *const SearchDomainHotlist = @"Hotlist";
                          [cell setBackgroundColor: collectionView.backgroundColor];
                      }
                      completion:^(BOOL finished){
-                         [cell setBackgroundColor:[UIColor colorWithRed:(231.0/255) green:(231.0/255) blue:(231.0/255) alpha:1.0]];
+                         SearchSuggestionData *searchSuggestionData = [_searchSuggestionDataArray objectAtIndex:indexPath.section];
                          
-                         NSDictionary *domain = [_domains objectAtIndex:indexPath.section];
-                         NSString *domainName = [domain objectForKey:@"title"];
-                         if([domainName isEqualToString:SearchDomainHistory]) {
-                             if (_searchBar.text.length > 0) {
-                                 NSString *searchText = [_typedHistoryResult objectAtIndex:indexPath.row];
-                                 [self goToResultPage:searchText withAutoComplete:YES];
-                                 [TPAnalytics trackSearchWithAction:@"Search History" keyword:searchText];
-                             } else {
-                                 NSString *searchText = [_historyResult objectAtIndex:indexPath.row];
-                                 [self goToResultPage:searchText withAutoComplete:YES];
-                                 [TPAnalytics trackSearchWithAction:@"Search History" keyword:searchText];
-                             }
+                         SearchSuggestionItem *searchSuggestionItem = [searchSuggestionData.items objectAtIndex:indexPath.item];
+                         
+                         if (searchSuggestionData.name){
+                             
+                             [self goToResultPage:searchSuggestionItem.keyword withAutoComplete:YES];
                          }
                          
-                         else if ([domainName isEqualToString:SearchDomainGeneral]) {
-                             NSArray *generals = [domain objectForKey:@"data"];
-                             SearchAutoCompleteGeneral *general = [generals objectAtIndex:indexPath.row];
-                             [self saveHistory:general.title];
-                             [TPAnalytics trackSearchWithAction:@"Search Autocomplete" keyword:general.title];
-                             [self goToResultPage:general.title withAutoComplete:YES];
-                         }
-                         else if ([domainName isEqualToString:SearchDomainHotlist]) {
-                             NSArray *hotlists = [domain objectForKey:@"data"];
-                             SearchAutoCompleteHotlist *hotlist = [hotlists objectAtIndex:indexPath.row];
-                             NSArray *keys = [hotlist.url componentsSeparatedByString:@"/"];
-                             
-                             HotlistResultViewController *controller = [HotlistResultViewController new];
-                             controller.data = @{@"title" : hotlist.title, @"key" : [keys lastObject]};
-                             controller.isFromAutoComplete = YES;
-                             controller.hidesBottomBarWhenPushed = YES;
-                             [TPAnalytics trackSearchWithAction:@"Search Hotlist" keyword:hotlist.title];
-                             
-                             [self.navigationController pushViewController:controller animated:YES];
-                         }
+//                         [cell setBackgroundColor:[UIColor colorWithRed:(231.0/255) green:(231.0/255) blue:(231.0/255) alpha:1.0]];
+                         
+//                         NSDictionary *domain = [_domains objectAtIndex:indexPath.section];
+//                         NSString *domainName = [domain objectForKey:@"title"];
+//                         if([domainName isEqualToString:SearchDomainHistory]) {
+//                             if (_searchBar.text.length > 0) {
+//                                 NSString *searchText = [_typedHistoryResult objectAtIndex:indexPath.row];
+//                                 [self goToResultPage:searchText withAutoComplete:YES];
+//                                 [TPAnalytics trackSearchWithAction:@"Search History" keyword:searchText];
+//                             } else {
+//                                 NSString *searchText = [_historyResult objectAtIndex:indexPath.row];
+//                                 [self goToResultPage:searchText withAutoComplete:YES];
+//                                 [TPAnalytics trackSearchWithAction:@"Search History" keyword:searchText];
+//                             }
+//                         }
+//                         
+//                         else if ([domainName isEqualToString:SearchDomainGeneral]) {
+//                             NSArray *generals = [domain objectForKey:@"data"];
+//                             SearchAutoCompleteGeneral *general = [generals objectAtIndex:indexPath.row];
+//                             [self saveHistory:general.title];
+//                             [TPAnalytics trackSearchWithAction:@"Search Autocomplete" keyword:general.title];
+//                             [self goToResultPage:general.title withAutoComplete:YES];
+//                         }
+//                         else if ([domainName isEqualToString:SearchDomainHotlist]) {
+//                             NSArray *hotlists = [domain objectForKey:@"data"];
+//                             SearchAutoCompleteHotlist *hotlist = [hotlists objectAtIndex:indexPath.row];
+//                             NSArray *keys = [hotlist.url componentsSeparatedByString:@"/"];
+//                             
+//                             HotlistResultViewController *controller = [HotlistResultViewController new];
+//                             controller.data = @{@"title" : hotlist.title, @"key" : [keys lastObject]};
+//                             controller.isFromAutoComplete = YES;
+//                             controller.hidesBottomBarWhenPushed = YES;
+//                             [TPAnalytics trackSearchWithAction:@"Search Hotlist" keyword:hotlist.title];
+//                             
+//                             [self.navigationController pushViewController:controller animated:YES];
+//                         }
                          
                      }
      ];
@@ -405,57 +482,61 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     [_typedHistoryResult removeAllObjects];
     
     if([searchText isEqualToString:@""]) {
-        [_domains removeAllObjects];
-        [_domains addObject:@{@"title" : SearchDomainHistory, @"data" : _historyResult}];
-        [_collectionView reloadData];
+//        [_domains removeAllObjects];
+//        [_domains addObject:@{@"title" : SearchDomainHistory, @"data" : _historyResult}];
+//        [_collectionView reloadData];
+        
+        // hapus saja yang keyword suggestion
     } else {
-        NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@", searchText];
-        NSArray *historiesresult;
-        historiesresult = [_historyResult filteredArrayUsingPredicate:resultPredicate];
-        NSInteger limit = 5;
         
-        if(historiesresult.count > limit) {
-            NSRange endRange = NSMakeRange((historiesresult.count-limit), limit);
-            NSArray *lastThree= [historiesresult subarrayWithRange:endRange];
-            [_typedHistoryResult addObjectsFromArray:lastThree];
-        } else {
-            [_typedHistoryResult addObjectsFromArray:historiesresult];
-        }
-        
-        [_requestManager requestWithBaseUrl:@"http://jahe.tokopedia.com"
-                                       path:[NSString stringWithFormat:searchPath, _searchBar.text]
-                                     method:RKRequestMethodGET
-                                  parameter:nil
-                                    mapping:[self mapping]
-                                  onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                      NSDictionary *result = successResult.dictionary;
-                                      SearchAutoCompleteObject *search = [result objectForKey:@""];
-                                      
-                                      [_domains removeAllObjects];
-                                      [_general removeAllObjects];
-                                      [_hotlist removeAllObjects];
-                                      
-                                      [_general addObjectsFromArray:search.domains.general];
-                                      [_hotlist addObjectsFromArray:search.domains.hotlist];
-                                      
-                                      if(_general.count > 0) {
-                                          [_domains addObject:@{@"title" : SearchDomainGeneral, @"data" : _general}];
-                                      }
-                                      
-                                      if(_hotlist.count > 0) {
-                                          [_domains addObject:@{@"title" : SearchDomainHotlist, @"data" : _hotlist}];
-                                      }
-                                      
-                                      if(_typedHistoryResult.count > 0) {
-                                          [_domains addObject:@{@"title" : SearchDomainHistory, @"data" : _typedHistoryResult}];
-                                      }
-                                      
-                                      [_collectionView reloadData];
-                                      [_collectionView setHidden:NO];
-                                  } onFailure:^(NSError *errorResult) {
-                                      
-                                  }];
-        
+        [self getUserSearchSuggestionDataWithQuery:searchText];
+//        NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@", searchText];
+//        NSArray *historiesresult;
+//        historiesresult = [_historyResult filteredArrayUsingPredicate:resultPredicate];
+//        NSInteger limit = 5;
+//        
+//        if(historiesresult.count > limit) {
+//            NSRange endRange = NSMakeRange((historiesresult.count-limit), limit);
+//            NSArray *lastThree= [historiesresult subarrayWithRange:endRange];
+//            [_typedHistoryResult addObjectsFromArray:lastThree];
+//        } else {
+//            [_typedHistoryResult addObjectsFromArray:historiesresult];
+//        }
+//        
+//        [_requestManager requestWithBaseUrl:@"http://jahe.tokopedia.com"
+//                                       path:[NSString stringWithFormat:searchPath, _searchBar.text]
+//                                     method:RKRequestMethodGET
+//                                  parameter:nil
+//                                    mapping:[self mapping]
+//                                  onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+//                                      NSDictionary *result = successResult.dictionary;
+//                                      SearchAutoCompleteObject *search = [result objectForKey:@""];
+//                                      
+//                                      [_domains removeAllObjects];
+//                                      [_general removeAllObjects];
+//                                      [_hotlist removeAllObjects];
+//                                      
+//                                      [_general addObjectsFromArray:search.domains.general];
+//                                      [_hotlist addObjectsFromArray:search.domains.hotlist];
+//                                      
+//                                      if(_general.count > 0) {
+//                                          [_domains addObject:@{@"title" : SearchDomainGeneral, @"data" : _general}];
+//                                      }
+//                                      
+//                                      if(_hotlist.count > 0) {
+//                                          [_domains addObject:@{@"title" : SearchDomainHotlist, @"data" : _hotlist}];
+//                                      }
+//                                      
+//                                      if(_typedHistoryResult.count > 0) {
+//                                          [_domains addObject:@{@"title" : SearchDomainHistory, @"data" : _typedHistoryResult}];
+//                                      }
+//                                      
+//                                      [_collectionView reloadData];
+//                                      [_collectionView setHidden:NO];
+//                                  } onFailure:^(NSError *errorResult) {
+//                                      
+//                                  }];
+//        
         
     }
     

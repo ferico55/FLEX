@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		2D50139230438B54812D14B9 /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */; };
+		3489237E1D6FE9D300C4A3FB /* GetSearchSuggestionGeneralResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3489237D1D6FE9D300C4A3FB /* GetSearchSuggestionGeneralResponse.swift */; };
+		348923801D6FEB4300C4A3FB /* SearchSuggestionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3489237F1D6FEB4300C4A3FB /* SearchSuggestionData.swift */; };
+		348923831D6FED6E00C4A3FB /* SearchSuggestionItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 348923821D6FED6E00C4A3FB /* SearchSuggestionItem.swift */; };
 		45A3B6111D630C050048871E /* TPAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 45A3A65C1D630BFF0048871E /* TPAnalytics.m */; };
 		45A3B6121D630C050048871E /* TPLocalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 45A3A65E1D630BFF0048871E /* TPLocalytics.m */; };
 		45A3B6131D630C050048871E /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 45A3A6611D630BFF0048871E /* URLCacheAlert.m */; };
@@ -2640,6 +2643,9 @@
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
 		2D733D9158C7BF957D514506 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
+		3489237D1D6FE9D300C4A3FB /* GetSearchSuggestionGeneralResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GetSearchSuggestionGeneralResponse.swift; path = ../UIRefactor/Search/SearchHistory/GetSearchSuggestionGeneralResponse.swift; sourceTree = "<group>"; };
+		3489237F1D6FEB4300C4A3FB /* SearchSuggestionData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchSuggestionData.swift; path = ../UIRefactor/Search/SearchHistory/SearchSuggestionData.swift; sourceTree = "<group>"; };
+		348923821D6FED6E00C4A3FB /* SearchSuggestionItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchSuggestionItem.swift; path = ../UIRefactor/Search/SearchHistory/SearchSuggestionItem.swift; sourceTree = "<group>"; };
 		45A3A65B1D630BFF0048871E /* TPAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPAnalytics.h; sourceTree = "<group>"; };
 		45A3A65C1D630BFF0048871E /* TPAnalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPAnalytics.m; sourceTree = "<group>"; };
 		45A3A65D1D630BFF0048871E /* TPLocalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPLocalytics.h; sourceTree = "<group>"; };
@@ -6491,6 +6497,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		348923841D73D50000C4A3FB /* SearchSuggestion */ = {
+			isa = PBXGroup;
+			children = (
+				3489237D1D6FE9D300C4A3FB /* GetSearchSuggestionGeneralResponse.swift */,
+				3489237F1D6FEB4300C4A3FB /* SearchSuggestionData.swift */,
+				348923821D6FED6E00C4A3FB /* SearchSuggestionItem.swift */,
+			);
+			name = SearchSuggestion;
+			sourceTree = "<group>";
+		};
 		45A3A6591D630BFF0048871E /* Classses */ = {
 			isa = PBXGroup;
 			children = (
@@ -6664,6 +6680,7 @@
 		45A3A6CE1D630BFF0048871E /* Object */ = {
 			isa = PBXGroup;
 			children = (
+				348923841D73D50000C4A3FB /* SearchSuggestion */,
 				62832ED41D65748F007677F2 /* Error */,
 				45A3A6CF1D630BFF0048871E /* Activation */,
 				45A3A7001D630BFF0048871E /* Address */,
@@ -15175,6 +15192,7 @@
 				45A3B6881D630C050048871E /* CatalogInfo.m in Sources */,
 				45A3BAA41D630C050048871E /* DetailProductWholesaleTableCell.m in Sources */,
 				45A3B8041D630C050048871E /* TransactionBuyResult.m in Sources */,
+				348923801D6FEB4300C4A3FB /* SearchSuggestionData.swift in Sources */,
 				45A3BB361D630C050048871E /* RejectReasonCloseShopViewController.m in Sources */,
 				45A3B8541D630C050048871E /* WishListObject.m in Sources */,
 				45A3B9281D630C050048871E /* AlertListFilterView.m in Sources */,
@@ -15568,6 +15586,7 @@
 				45A3BA751D630C050048871E /* CourierInfoViewController.m in Sources */,
 				45A3BC4C1D630C050048871E /* RequestCart.m in Sources */,
 				45A3B90F1D630C050048871E /* VerifiedStatusResult.m in Sources */,
+				3489237E1D6FE9D300C4A3FB /* GetSearchSuggestionGeneralResponse.swift in Sources */,
 				45A3B6781D630C050048871E /* ContactUsActionResultStatus.m in Sources */,
 				45A3B8A91D630C050048871E /* Multicast.swift in Sources */,
 				45A3BCA71D630C050048871E /* VTBaseTransactionMethod.m in Sources */,
@@ -15606,6 +15625,7 @@
 				45A3B7021D630C050048871E /* InboxTicketDetailAttachment.m in Sources */,
 				45A3B7A11D630C050048871E /* ShipmentCityData.m in Sources */,
 				45A3B7981D630C050048871E /* SearchAutoCompleteHotlist.m in Sources */,
+				348923831D6FED6E00C4A3FB /* SearchSuggestionItem.swift in Sources */,
 				45A3B8631D630C050048871E /* iCarousel.m in Sources */,
 				45A3B6BC1D630C050048871E /* GoogleDistanceMatrix.m in Sources */,
 				45A3B66D1D630C050048871E /* CatalogShopAWSProductResult.m in Sources */,

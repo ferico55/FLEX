@@ -55,6 +55,8 @@
 #import "ImageSearchResponse.h"
 #import "ImageSearchRequest.h"
 
+#import "Tokopedia-Swift.h"
+
 #pragma mark - Search Result View Controller
 
 typedef NS_ENUM(NSInteger, UITableViewCellType) {
@@ -1016,11 +1018,22 @@ ImageSearchRequestDelegate
         }else{
             [parameter setObject:@"search" forKey:@"source"];
         }
+        [parameter setObject:[self getUniqueId] forKey:@"unique_id"];
     }
     
     [parameter addEntriesFromDictionary:_selectedSortParam];
     [parameter addEntriesFromDictionary:_selectedFilterParam];
     return parameter;
+}
+
+-(NSString*) getUniqueId {
+    NSString *userId = [_userManager getUserId];
+    
+    if (userId == nil) {
+        userId = [_userManager getMyDeviceIdToken];
+    }
+    
+    return userId;
 }
 
 -(NSString*)selectedCategoryIDsString{
