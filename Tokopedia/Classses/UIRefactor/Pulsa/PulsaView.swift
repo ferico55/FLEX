@@ -192,6 +192,7 @@ class PulsaView: UIView {
         numberField.borderStyle = .RoundedRect
         numberField.rightViewMode = .Always
         numberField.keyboardType = .NumberPad
+        self.addDoneButton()
         
         
         fieldPlaceholder.addSubview(numberField)
@@ -243,12 +244,27 @@ class PulsaView: UIView {
        
     }
     
+    func addDoneButton() {
+        let keyboardToolbar = UIToolbar()
+        keyboardToolbar.sizeToFit()
+        let flexBarButton = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
+        let doneBarButton = UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: #selector(UIView.endEditing(_:)))
+        keyboardToolbar.items = [flexBarButton, doneBarButton]
+        
+        self.numberField.inputAccessoryView = keyboardToolbar
+    }
+    
     func addActionNumberField() {
         numberField.bk_addEventHandler ({[unowned self] number in
             self.hideErrors()
             //operator must exists first
             //fix this to prevent crash using serial dispatch
-            let inputtedText = self.numberField.text!
+            var inputtedText = self.numberField.text!
+            
+            if(self.selectedCategory.id == CategoryConstant.PaketData || self.selectedCategory.id == CategoryConstant.Pulsa ) {
+                inputtedText = inputtedText.stringByReplacingOccurrencesOfString("62", withString: "0", options: NSStringCompareOptions.LiteralSearch, range: nil)
+            }
+            
             if(inputtedText.characters.count == 4) {
                 let prefix = inputtedText.substringWithRange(Range<String.Index>(start: inputtedText.startIndex.advancedBy(0), end: inputtedText.startIndex.advancedBy(4)))
                 
