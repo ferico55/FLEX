@@ -12,7 +12,7 @@ import Foundation
 @IBDesignable
 @objc
 
-class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDelegate, SwipeViewDelegate {
+class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDelegate {
     
     var slider: iCarousel!
     var digitalGoodsSwipeView: SwipeView!
@@ -77,6 +77,18 @@ class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDele
         self.collectionView.addSubview(self.sliderPlaceholder)
         self.collectionView.addSubview(self.pulsaPlaceholder)
         self.collectionView.addSubview(self.miniSliderPlaceholder)
+        
+        self.pulsaPlaceholder.mas_makeConstraints { make in
+            make.left.equalTo()(self.view.mas_left)
+            make.right.equalTo()(self.view.mas_right)
+            make.top.equalTo()(self.sliderPlaceholder.mas_bottom)
+        }
+        
+        self.miniSliderPlaceholder.mas_makeConstraints { make in
+            make.left.equalTo()(self.view.mas_left)
+            make.right.equalTo()(self.view.mas_right)
+            make.top.equalTo()(self.pulsaPlaceholder?.mas_bottom)
+        }
 
         self.requestBanner()
         self.requestTicker()
@@ -143,18 +155,6 @@ class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDele
                 make.left.equalTo()(self?.sliderPlaceholder.mas_left)
                 make.right.equalTo()(self?.sliderPlaceholder.mas_right)
                 make.bottom.equalTo()(self?.sliderPlaceholder.mas_bottom).offset()(-10)
-            }
-            
-            self?.pulsaPlaceholder.mas_makeConstraints { make in
-                make.left.equalTo()(self?.sliderPlaceholder.mas_left)
-                make.right.equalTo()(self?.sliderPlaceholder.mas_right)
-                make.top.equalTo()(self!.sliderPlaceholder?.mas_bottom)
-            }
-            
-            self?.miniSliderPlaceholder.mas_makeConstraints { make in
-                make.left.equalTo()(self?.sliderPlaceholder.mas_left)
-                make.right.equalTo()(self?.sliderPlaceholder.mas_right)
-                make.top.equalTo()(self!.pulsaPlaceholder?.mas_bottom)
             }
             
             let timer = NSTimer(timeInterval: 5.0, target: self!, selector: #selector(self!.moveToNextSlider), userInfo: nil, repeats: true)
@@ -254,9 +254,12 @@ class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDele
             if slide != nil {
                 self!.digitalGoodsSwipeView = SwipeView(frame: CGRectMake(0, 0, self!.screenWidth, sliderHeightWithMargin))
                 self!.digitalGoodsDataSource = DigitalGoodsDataSource(goods: slide, swipeView: self!.digitalGoodsSwipeView)
+                self?.digitalGoodsDataSource.delegate = self
+                
+                
                 self!.digitalGoodsSwipeView.backgroundColor = UIColor(red: (242/255.0), green: (242/255.0), blue: (242/255.0), alpha: 1)
                 self!.digitalGoodsSwipeView.dataSource = self!.digitalGoodsDataSource
-                self!.digitalGoodsSwipeView.delegate = self
+                self!.digitalGoodsSwipeView.delegate = self!.digitalGoodsDataSource
                 self!.digitalGoodsSwipeView.clipsToBounds = true
                 self!.digitalGoodsSwipeView.truncateFinalPage = true
                 self!.digitalGoodsSwipeView.decelerationRate = 0.5
