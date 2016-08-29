@@ -263,7 +263,12 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
             var inputtedText = self.numberField.text!
             
             if(self.selectedCategory.id == CategoryConstant.PaketData || self.selectedCategory.id == CategoryConstant.Pulsa ) {
-                inputtedText = inputtedText.stringByReplacingOccurrencesOfString("62", withString: "0", options: NSStringCompareOptions.LiteralSearch, range: nil)
+                if(inputtedText.characters.count >= 2) {
+                    let firstTwoCharacters = inputtedText.substringWithRange(Range<String.Index>(start: inputtedText.startIndex.advancedBy(0), end: inputtedText.startIndex.advancedBy(2)))
+                    if(firstTwoCharacters == "62") {
+                        inputtedText = inputtedText.stringByReplacingCharactersInRange(inputtedText.startIndex..<inputtedText.startIndex.advancedBy(2), withString: "0")
+                    }
+                }
             }
             
             if(inputtedText.characters.count == 4) {
