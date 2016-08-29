@@ -35,7 +35,7 @@ class PulsaView: UIView {
     var didTapAddressbook: ([APContact] -> Void)?
     var didTapProduct:([PulsaProduct] -> Void)?
     var didAskedForLogin: (Void -> Void)?
-    var invalidateViewHeight: (Void -> Void)?
+    var refreshContainerSize: (Void -> Void)?
     var didSuccessPressBuy: (NSURL -> Void)?
     
     var prefixes: Dictionary<String, Dictionary<String, String>>?
@@ -92,7 +92,7 @@ class PulsaView: UIView {
             self.selectedCategory = categories[control.selectedSegmentIndex]
             self.buildAllView(self.selectedCategory)
             self.addActionNumberField()
-            self.invalidateViewHeight!()
+            self.refreshContainerSize!()
         }, forControlEvents: .ValueChanged)
         
         self.buildAllView(categories[0])
@@ -412,7 +412,7 @@ class PulsaView: UIView {
         
         buyButton.bk_removeEventHandlersForControlEvents(.TouchUpInside)
         buyButton.bk_addEventHandler({ button -> Void in
-            self.invalidateViewHeight!()
+            self.refreshContainerSize!()
             
             if(!self.isValidNumber(self.numberField.text!)) {
                 self.numberErrorLabel.mas_updateConstraints { make in
@@ -462,7 +462,7 @@ class PulsaView: UIView {
         productButton.setImage(UIImage(named: "icon_arrow_down.png"), forState: .Normal)
         productButton.imageEdgeInsets = UIEdgeInsetsMake(0, self.productButton.frame.size.width - 30, 0, 0)
         
-        self.invalidateViewHeight!()
+        self.refreshContainerSize!()
     }
     
     func hideBuyButtons() {
@@ -482,7 +482,7 @@ class PulsaView: UIView {
         productButton.hidden = true
         buyButton.hidden = true
         
-        self.invalidateViewHeight!()
+        self.refreshContainerSize!()
     }
     
     func recalibrateView() {

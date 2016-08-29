@@ -14,13 +14,10 @@ import Foundation
 
 class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDelegate {
     
-    var slider: iCarousel!
-    var digitalGoodsSwipeView: SwipeView!
     var digitalGoodsDataSource: DigitalGoodsDataSource!
     var carouselDataSource: CarouselDataSource!
     var categoryDataSource: CategoryDataSource!
     
-    var banner: [Slide!]!
     var tickerRequest: AnnouncementTickerRequest!
     var tickerView: AnnouncementTickerView!
     
@@ -40,6 +37,7 @@ class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDele
    
     private let sliderHeight: CGFloat = (UI_USER_INTERFACE_IDIOM() == .Pad) ? 225.0 : 175.0
     private let screenWidth = UIScreen.mainScreen().bounds.size.width
+    private let backgroundColor = UIColor(red: 242/255.0, green: 242/255.0, blue: 242/255.0, alpha: 1.0)
     
     init() {
         super.init(nibName: "HomePageViewController", bundle: nil)
@@ -52,12 +50,12 @@ class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDele
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.collectionView.keyboardDismissMode = .Interactive
         self.categoryDataSource = CategoryDataSource()
         self.categoryDataSource.delegate = self
         
         flow.headerReferenceSize = CGSizeZero
         
+        self.collectionView.keyboardDismissMode = .Interactive
         self.collectionView.dataSource = self.categoryDataSource
         self.collectionView.delegate = self.categoryDataSource
         self.collectionView.backgroundColor = UIColor.whiteColor()
@@ -66,37 +64,13 @@ class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDele
         let cellNib = UINib(nibName: "CategoryViewCell", bundle: nil)
         self.collectionView.registerNib(cellNib, forCellWithReuseIdentifier: "CategoryViewCellIdentifier")
 
-        self.sliderPlaceholder = UIView(frame: CGRectZero)
-        self.sliderPlaceholder.backgroundColor = UIColor(red: 242/255.0, green: 242/255.0, blue: 242/255.0, alpha: 1.0)
-        self.pulsaPlaceholder = UIView(frame: CGRectZero)
-        self.pulsaPlaceholder.backgroundColor = UIColor.whiteColor()
-        self.tickerPlaceholder = UIView(frame: CGRectZero)
-        self.miniSliderPlaceholder = UIView(frame: CGRectZero)
-        
-        self.collectionView.addSubview(self.tickerPlaceholder)
-        self.collectionView.addSubview(self.sliderPlaceholder)
-        self.collectionView.addSubview(self.pulsaPlaceholder)
-        self.collectionView.addSubview(self.miniSliderPlaceholder)
-        
-        self.pulsaPlaceholder.mas_makeConstraints { make in
-            make.left.equalTo()(self.view.mas_left)
-            make.right.equalTo()(self.view.mas_right)
-            make.top.equalTo()(self.sliderPlaceholder.mas_bottom)
-        }
-        
-        self.miniSliderPlaceholder.mas_makeConstraints { make in
-            make.left.equalTo()(self.view.mas_left)
-            make.right.equalTo()(self.view.mas_right)
-            make.top.equalTo()(self.pulsaPlaceholder?.mas_bottom)
-        }
+        self.initViewLayout()
 
         self.requestBanner()
         self.requestTicker()
         self.requestPulsaWidget()
         self.requestMiniSlider()
         
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .Bordered, target: self, action: nil)
-       
         self.keyboardManager = PulsaKeyboardManager()
         self.keyboardManager.collectionView = self.collectionView
     }
@@ -125,47 +99,66 @@ class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDele
     func requestBanner() {
         let bannersStore = HomePageViewController.self.TKP_rootController().storeManager().homeBannerStore
         
-        let backgroundColor = UIColor(red: 242/255.0, green: 242/255.0, blue: 242/255.0, alpha: 1.0)
-        bannersStore.fetchBannerWithCompletion({[weak self] (banner, error) in
-            self!.banner = banner
-            self!.slider = iCarousel(frame: CGRectMake(0, 0, self!.screenWidth, self!.sliderHeight))
-            self!.slider.backgroundColor = backgroundColor
+        let backgroundColor = self.backgroundColor
+        bannersStore.fetchBannerWithCompletion({[unowned self] (banner, error) in
+            let slider = iCarousel(frame: CGRectMake(0, 0, self.screenWidth, self.sliderHeight))
+            slider.backgroundColor = backgroundColor
             
-            self!.carouselDataSource = CarouselDataSource(banner: banner)
-            self!.carouselDataSource.delegate = self
+            self.carouselDataSource = CarouselDataSource(banner: banner)
+            self.carouselDataSource.delegate = self
             
-            self!.slider.type = .Linear
-            self!.slider.dataSource = self!.carouselDataSource
-            self!.slider.delegate = self!.carouselDataSource
-            self!.slider.decelerationRate = 0.5
+            slider.type = .Linear
+            slider.dataSource = self.carouselDataSource
+            slider.delegate = self.carouselDataSource
+            slider.decelerationRate = 0.5
             
-            self?.sliderPlaceholder .addSubview(self!.slider)
-            self?.collectionView.bringSubviewToFront((self?.sliderPlaceholder)!)
-            self?.collectionView.bringSubviewToFront((self?.miniSliderPlaceholder)!)
+            self.sliderPlaceholder .addSubview(slider)
+            self.collectionView.bringSubviewToFront((self.sliderPlaceholder)!)
             
-            self?.sliderPlaceholder.mas_makeConstraints { make in
-                make.top.equalTo()(self!.tickerPlaceholder.mas_bottom)
-                make.left.equalTo()(self!.view.mas_left)
-                make.right.equalTo()(self!.view.mas_right)
+            slider.mas_makeConstraints { make in
+                make.height.equalTo()(self.sliderHeight)
+                make.top.left().right().equalTo()(self.sliderPlaceholder)
+                make.bottom.equalTo()(self.sliderPlaceholder.mas_bottom).offset()(-10)
             }
             
-            self?.slider.mas_makeConstraints { make in
-                make.height.equalTo()(self!.sliderHeight)
-                make.top.equalTo()(self?.sliderPlaceholder.mas_top)
-                make.left.equalTo()(self?.sliderPlaceholder.mas_left)
-                make.right.equalTo()(self?.sliderPlaceholder.mas_right)
-                make.bottom.equalTo()(self?.sliderPlaceholder.mas_bottom).offset()(-10)
-            }
-            
-            let timer = NSTimer(timeInterval: 5.0, target: self!, selector: #selector(self!.moveToNextSlider), userInfo: nil, repeats: true)
+            let timer = NSTimer.bk_timerWithTimeInterval(5.0, block: { (timer) in
+                slider.scrollToItemAtIndex(slider.currentItemIndex + 1, duration: 1.0)
+            }, repeats: true)
             NSRunLoop.mainRunLoop().addTimer(timer, forMode: NSRunLoopCommonModes)
 
-            self?.refreshCollectionViewSize()
+            self.refreshCollectionViewHeaderSize()
         })
 
     }
     
-    
+    func initViewLayout() {
+        self.sliderPlaceholder = UIView(frame: CGRectZero)
+        self.sliderPlaceholder.backgroundColor = self.backgroundColor
+        self.pulsaPlaceholder = UIView(frame: CGRectZero)
+        self.pulsaPlaceholder.backgroundColor = UIColor.whiteColor()
+        self.tickerPlaceholder = UIView(frame: CGRectZero)
+        self.miniSliderPlaceholder = UIView(frame: CGRectZero)
+        
+        self.collectionView.addSubview(self.tickerPlaceholder)
+        self.collectionView.addSubview(self.sliderPlaceholder)
+        self.collectionView.addSubview(self.pulsaPlaceholder)
+        self.collectionView.addSubview(self.miniSliderPlaceholder)
+        
+        self.sliderPlaceholder.mas_makeConstraints { make in
+            make.left.right().equalTo()(self.view)
+            make.top.equalTo()(self.tickerPlaceholder.mas_bottom)
+        }
+        
+        self.pulsaPlaceholder.mas_makeConstraints { make in
+            make.left.right().equalTo()(self.view)
+            make.top.equalTo()(self.sliderPlaceholder.mas_bottom)
+        }
+        
+        self.miniSliderPlaceholder.mas_makeConstraints { make in
+            make.left.right().equalTo()(self.view)
+            make.top.equalTo()(self.pulsaPlaceholder?.mas_bottom)
+        }
+    }
     
     func mappingPrefixFromOperators(operators: [PulsaOperator]) {
         //mapping operator by prefix
@@ -198,9 +191,9 @@ class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDele
         self.mappingPrefixFromOperators(operators)
         
         self.pulsaView.addActionNumberField();
-        self.pulsaView.invalidateViewHeight = {
+        self.pulsaView.refreshContainerSize = {
             let debounced = Debouncer(delay: 0.1) {
-                self.refreshCollectionViewSize()
+                self.refreshCollectionViewHeaderSize()
             }
             
             debounced.call()
@@ -250,37 +243,33 @@ class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDele
         let bannersStore = HomePageViewController.self.TKP_rootController().storeManager().homeBannerStore
         let sliderHeightWithMargin = (UI_USER_INTERFACE_IDIOM() == .Pad) ? 140.0 : 92.0 as CGFloat
         
-        bannersStore.fetchMiniSlideWithCompletion({[weak self] (slide, error) in
+        bannersStore.fetchMiniSlideWithCompletion({[unowned self] (slide, error) in
             if slide != nil {
-                self!.digitalGoodsSwipeView = SwipeView(frame: CGRectMake(0, 0, self!.screenWidth, sliderHeightWithMargin))
-                self!.digitalGoodsDataSource = DigitalGoodsDataSource(goods: slide, swipeView: self!.digitalGoodsSwipeView)
-                self?.digitalGoodsDataSource.delegate = self
+                let digitalGoodsSwipeView = SwipeView(frame: CGRectMake(0, 0, self.screenWidth, sliderHeightWithMargin))
+                self.digitalGoodsDataSource = DigitalGoodsDataSource(goods: slide, swipeView: digitalGoodsSwipeView)
+                self.digitalGoodsDataSource.delegate = self
                 
                 
-                self!.digitalGoodsSwipeView.backgroundColor = UIColor(red: (242/255.0), green: (242/255.0), blue: (242/255.0), alpha: 1)
-                self!.digitalGoodsSwipeView.dataSource = self!.digitalGoodsDataSource
-                self!.digitalGoodsSwipeView.delegate = self!.digitalGoodsDataSource
-                self!.digitalGoodsSwipeView.clipsToBounds = true
-                self!.digitalGoodsSwipeView.truncateFinalPage = true
-                self!.digitalGoodsSwipeView.decelerationRate = 0.5
+                digitalGoodsSwipeView.backgroundColor = self.backgroundColor
+                digitalGoodsSwipeView.dataSource = self.digitalGoodsDataSource
+                digitalGoodsSwipeView.delegate = self.digitalGoodsDataSource
+                digitalGoodsSwipeView.clipsToBounds = true
+                digitalGoodsSwipeView.truncateFinalPage = true
+                digitalGoodsSwipeView.decelerationRate = 0.5
                 
-                self?.miniSliderPlaceholder .addSubview(self!.digitalGoodsSwipeView)
+                self.miniSliderPlaceholder .addSubview(digitalGoodsSwipeView)
                 
-                
-                self?.digitalGoodsSwipeView.mas_makeConstraints { make in
+                digitalGoodsSwipeView.mas_makeConstraints { make in
                     make.height.equalTo()(sliderHeightWithMargin)
-                    make.top.equalTo()(self?.miniSliderPlaceholder.mas_top)
-                    make.left.equalTo()(self?.miniSliderPlaceholder.mas_left)
-                    make.right.equalTo()(self?.miniSliderPlaceholder.mas_right)
-                    make.bottom.equalTo()(self?.miniSliderPlaceholder.mas_bottom)
+                    make.top.left().right().bottom().equalTo()(self.miniSliderPlaceholder)
                 }
                 
                 if (UI_USER_INTERFACE_IDIOM() == .Pad) {
-                    self!.digitalGoodsSwipeView.alignment = .Center
-                    self!.digitalGoodsSwipeView.isCenteredChild = true
+                    digitalGoodsSwipeView.alignment = .Center
+                    digitalGoodsSwipeView.isCenteredChild = true
                 }
                 
-                self?.refreshCollectionViewSize()
+                self.refreshCollectionViewHeaderSize()
                 
             }
             
@@ -335,34 +324,32 @@ class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDele
     
     func requestTicker() {
         tickerRequest = AnnouncementTickerRequest()
-        tickerRequest.fetchTicker({[weak self] (ticker) in
+        tickerRequest.fetchTicker({[unowned self] (ticker) in
             
             if (ticker.tickers.count > 0) {
                 let randomIndex = Int(arc4random_uniform(UInt32(ticker.tickers.count)))
                 let tick = ticker.tickers[randomIndex]
-                self!.tickerView = AnnouncementTickerView.newView()
-                self?.tickerPlaceholder.addSubview((self?.tickerView)!)
+                self.tickerView = AnnouncementTickerView.newView()
+                self.tickerPlaceholder.addSubview((self.tickerView)!)
                 
-                self!.tickerView.setTitle(tick.title)
-                self!.tickerView.setMessage(tick.message)
-                self!.tickerView.onTapMessageWithUrl = {[weak self] (url) in
+                self.tickerView.setTitle(tick.title)
+                self.tickerView.setMessage(tick.message)
+                self.tickerView.onTapMessageWithUrl = {[weak self] (url) in
                     self!.navigator.navigateToWebTicker(url)
                 }
                 
-                self?.tickerPlaceholder.mas_makeConstraints { make in
-                    make.top.equalTo()(self!.collectionView.mas_top)
-                    make.left.equalTo()(self!.view.mas_left)
-                    make.right.equalTo()(self!.view.mas_right)
+                self.tickerPlaceholder.mas_makeConstraints { make in
+                    make.top.equalTo()(self.collectionView.mas_top)
+                    make.left.right().equalTo()(self.view)
                 }
                 
                 
-                self?.tickerView.mas_makeConstraints { make in
-                    make.left.equalTo()(self?.view.mas_left)
-                    make.right.equalTo()(self?.view.mas_right)
-                    make.top.bottom().equalTo()(self?.tickerPlaceholder)
+                self.tickerView.mas_makeConstraints { make in
+                    make.left.right().equalTo()(self.view)
+                    make.top.bottom().equalTo()(self.tickerPlaceholder)
                 }
                 
-                self?.refreshCollectionViewSize()
+                self.refreshCollectionViewHeaderSize()
             }
             
         }) { (error) in
@@ -370,20 +357,11 @@ class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDele
         }
     }
     
-    func moveToNextSlider() {
-        slider.scrollToItemAtIndex(slider.currentItemIndex + 1, duration: 1.0)
-    }
-    
-    func refreshCollectionViewSize() {
+    func refreshCollectionViewHeaderSize() {
         let debounced = Debouncer(delay: 0.1) {
             self.flow.headerReferenceSize = CGSizeMake(self.view.frame.width, self.miniSliderPlaceholder.frame.origin.y + self.miniSliderPlaceholder.frame.size.height)
         }
         
         debounced.call()
     }
-    
-    func dismissKeyboard() {
-        self.view.endEditing(true)
-    }
-    
 }
