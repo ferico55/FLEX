@@ -22,4 +22,17 @@
     return spec_val;
 }
 
++(NSDictionary *)attributeMappingDictionary
+{
+    NSArray *keys = @[@"spec_key", @"spec_val"];
+    return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
+}
+
++(RKObjectMapping*)mapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+    return mapping;
+}
+
 @end

@@ -16,7 +16,7 @@
 #import "CatalogLocation.h"
 #import "Paging.h"
 
-@interface DetailCatalogResult : NSObject
+@interface DetailCatalogResult : NSObject <TKPObjectMapping>
 
 @property (nonatomic, strong) CatalogInfo *catalog_info;
 @property (nonatomic, strong) NSArray *catalog_specs;
@@ -24,6 +24,7 @@
 @property (nonatomic, strong) CatalogMarketPlace *catalog_market_price;
 @property (nonatomic, strong) NSArray *catalog_shops;
 @property (nonatomic, strong) NSString *catalog_image;
+@property (nonatomic, strong) NSString *catalog_description;
 @property (nonatomic, strong) NSArray *catalog_location;
 @property (nonatomic, strong) Paging *paging;
 

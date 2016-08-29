@@ -40,5 +40,6 @@
 
 @property (strong, nonatomic) NSString *detail_dropship_name;
 @property (strong, nonatomic) NSString *detail_dropship_telp;
+@property NSInteger detail_free_return;
 
 @end

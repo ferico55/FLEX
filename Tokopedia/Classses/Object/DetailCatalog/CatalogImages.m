@@ -10,4 +10,20 @@
 
 @implementation CatalogImages
 
++(NSDictionary *)attributeMappingDictionary
+{
+    NSArray *keys = @[@"image_primary",
+                      @"image_src",
+                      @"image_src_full"
+                      ];
+    return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
+}
+
++(RKObjectMapping*)mapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+    return mapping;
+}
+
 @end
