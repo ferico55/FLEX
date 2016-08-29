@@ -77,6 +77,18 @@ class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDele
         self.collectionView.addSubview(self.sliderPlaceholder)
         self.collectionView.addSubview(self.pulsaPlaceholder)
         self.collectionView.addSubview(self.miniSliderPlaceholder)
+        
+        self.pulsaPlaceholder.mas_makeConstraints { make in
+            make.left.equalTo()(self.view.mas_left)
+            make.right.equalTo()(self.view.mas_right)
+            make.top.equalTo()(self.sliderPlaceholder.mas_bottom)
+        }
+        
+        self.miniSliderPlaceholder.mas_makeConstraints { make in
+            make.left.equalTo()(self.view.mas_left)
+            make.right.equalTo()(self.view.mas_right)
+            make.top.equalTo()(self.pulsaPlaceholder?.mas_bottom)
+        }
 
         self.requestBanner()
         self.requestTicker()
@@ -143,18 +155,6 @@ class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDele
                 make.left.equalTo()(self?.sliderPlaceholder.mas_left)
                 make.right.equalTo()(self?.sliderPlaceholder.mas_right)
                 make.bottom.equalTo()(self?.sliderPlaceholder.mas_bottom).offset()(-10)
-            }
-            
-            self?.pulsaPlaceholder.mas_makeConstraints { make in
-                make.left.equalTo()(self?.sliderPlaceholder.mas_left)
-                make.right.equalTo()(self?.sliderPlaceholder.mas_right)
-                make.top.equalTo()(self!.sliderPlaceholder?.mas_bottom)
-            }
-            
-            self?.miniSliderPlaceholder.mas_makeConstraints { make in
-                make.left.equalTo()(self?.sliderPlaceholder.mas_left)
-                make.right.equalTo()(self?.sliderPlaceholder.mas_right)
-                make.top.equalTo()(self!.pulsaPlaceholder?.mas_bottom)
             }
             
             let timer = NSTimer(timeInterval: 5.0, target: self!, selector: #selector(self!.moveToNextSlider), userInfo: nil, repeats: true)
