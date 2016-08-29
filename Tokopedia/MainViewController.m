@@ -380,11 +380,14 @@ typedef enum TagRequest {
     
     [[UINavigationBar appearance] setShadowImage:[[UIImage alloc] init]];
     
-    NSDictionary *titleTextAttributes = [[NSDictionary alloc] initWithObjectsAndKeys:
-                                         kTKPDNAVIGATION_TITLEFONT, UITextAttributeFont,
-                                         kTKPDNAVIGATION_TITLECOLOR, UITextAttributeTextColor,
-                                         kTKPDNAVIGATION_TITLESHADOWCOLOR, UITextAttributeTextShadowColor, nil];
-    [proxy setTitleTextAttributes:titleTextAttributes];
+//    NSDictionary *titleTextAttributes = [[NSDictionary alloc] initWithObjectsAndKeys:
+//                                         kTKPDNAVIGATION_TITLEFONT, UITextAttributeFont,
+//                                         kTKPDNAVIGATION_TITLECOLOR, UITextAttributeTextColor,
+//                                         kTKPDNAVIGATION_TITLESHADOWCOLOR, UITextAttributeTextShadowColor, nil];
+    [proxy setTitleTextAttributes:@{
+                                    NSForegroundColorAttributeName : UIColor.whiteColor,
+                                    NSFontAttributeName : [UIFont title1ThemeMedium]
+                                    }];
 }
 
 -(void)initTabBar {

@@ -12,7 +12,7 @@ import Foundation
 @IBDesignable
 @objc
 
-class HomePageViewController: UIViewController, iCarouselDelegate, LoginViewDelegate {
+class HomePageViewController: UIViewController, LoginViewDelegate {
     
     var digitalGoodsDataSource: DigitalGoodsDataSource!
     var carouselDataSource: CarouselDataSource!
