@@ -642,7 +642,7 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     NSArray *viewcontrollers = @[vc,vc1,vc2];
     
     TKPDTabNavigationController *viewController = [TKPDTabNavigationController new];
-    
+    vc.tkpdTabNavigationController = viewController;
     [viewController setSelectedIndex:0];
     [viewController setViewControllers:viewcontrollers];
     [viewController setNavigationTitle:searchText];

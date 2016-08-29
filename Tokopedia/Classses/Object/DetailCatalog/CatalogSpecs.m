@@ -10,4 +10,18 @@
 
 @implementation CatalogSpecs
 
++(NSDictionary *)attributeMappingDictionary
+{
+    NSArray *keys = @[@"spec_header"];
+    return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
+}
+
++(RKObjectMapping*)mapping
+{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"spec_childs" toKeyPath:@"spec_childs" withMapping:[SpecChilds mapping]]];
+    return mapping;
+}
+
 @end
