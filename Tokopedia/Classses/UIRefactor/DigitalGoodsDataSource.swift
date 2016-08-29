@@ -9,9 +9,10 @@
 import Foundation
 
 
-@objc class DigitalGoodsDataSource: NSObject, SwipeViewDataSource {
+@objc class DigitalGoodsDataSource: NSObject, SwipeViewDataSource, SwipeViewDelegate {
     var _goods : Array<MiniSlide>!
     var _swipeView : SwipeView!
+    var delegate: UIViewController!
     let imageWidth : CGFloat = (UI_USER_INTERFACE_IDIOM() == .Pad) ? 120 : 72
     let imageHeight : CGFloat = (UI_USER_INTERFACE_IDIOM() == .Pad) ? 120 : 72
     
@@ -24,15 +25,14 @@ import Foundation
     }
     
     func numberOfItemsInSwipeView(swipeView: SwipeView!) -> Int {
-        return 4
+        return _goods.count
     }
     
     func swipeView(swipeView: SwipeView!, viewForItemAtIndex index: Int, reusingView view: UIView!) -> UIView! {
         let imageView = UIImageView(frame: CGRect(x: 5,y: 10,width: imageWidth,height: imageHeight))
-        let good = _goods[0]
+        let good = _goods[index]
         
-//        imageView.setImageWithUrl(NSURL(string: good.image_url)!, placeHolderImage: nil)
-        imageView.setImage(UIImage(named: "icon_DM_apps-" + String(index) + ".png"), animated: true)
+        imageView.setImageWithUrl(NSURL(string: good.image_url)!, placeHolderImage: nil)
         
         imageView.layer.cornerRadius = 5.0;
         imageView.layer.masksToBounds = true;
@@ -45,7 +45,14 @@ import Foundation
     
     
     func goodsAtIndex(index: Int) -> MiniSlide {
-        return _goods[0]
+        return _goods[index]
+    }
+    
+    func swipeView(swipeView: SwipeView!, didSelectItemAtIndex index: Int) {
+        let controller = WebViewController()
+        controller.strURL = _goods[index].redirect_url
+        
+        self.delegate.navigationController?.pushViewController(controller, animated: true)
     }
 
 }
