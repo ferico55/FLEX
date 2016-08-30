@@ -65,6 +65,8 @@
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
     
     [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"badges" toKeyPath:@"badges" withMapping:[ProductBadge mapping]]];
+    
     
     return mapping;
 }
