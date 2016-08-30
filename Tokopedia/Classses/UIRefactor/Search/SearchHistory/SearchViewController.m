@@ -84,6 +84,8 @@ NotificationManagerDelegate
 NSString *const SearchDomainHistory = @"History";
 NSString *const SearchDomainGeneral = @"Keyword";
 NSString *const SearchDomainHotlist = @"Hotlist";
+NSString *const SEARCH_AUTOCOMPLETE = @"autocomplete";
+NSString *const RECENT_SEARCH = @"recent_search";
 
 #pragma mark - Lifecycle
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -124,7 +126,7 @@ NSString *const SearchDomainHotlist = @"Hotlist";
    // [self loadHistory];
     
     NSNotificationCenter *notification = [NSNotificationCenter defaultCenter];
-    [notification addObserver:self selector:@selector(clearHistory) name:kTKPD_REMOVE_SEARCH_HISTORY object:nil];
+    [notification addObserver:self selector:@selector(clearAllHistory) name:kTKPD_REMOVE_SEARCH_HISTORY object:nil];
     [notification addObserver:self selector:@selector(goToHotlist:) name:@"redirectSearch" object:nil];
     [notification addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [notification addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
@@ -239,12 +241,53 @@ NSString *const SearchDomainHotlist = @"Hotlist";
 //    [_typedHistoryResult addObjectsFromArray:_historyResult];
 //}
 
--(void)clearHistory {
-    [_historyResult removeAllObjects];
-    [_typedHistoryResult removeAllObjects];
+-(void) clearHistory:(UIButton *) button {
+    CGPoint buttonPoint = [button convertPoint:CGPointZero toView:_collectionView];
     
-    NSString *destPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
-    destPath = [destPath stringByAppendingPathComponent:kTKPDSEARCH_SEARCHHISTORYPATHKEY];
+    NSIndexPath *buttonIndexPath = [_collectionView indexPathForItemAtPoint:buttonPoint];
+    
+    
+    SearchAutoCompleteCell *searchAutoCompleteCell = (SearchAutoCompleteCell *)[_collectionView cellForItemAtIndexPath:buttonIndexPath];
+    
+    [_requestManager requestWithBaseUrl:[NSString aceUrl] path:@"/recent_search/v1?" method:RKRequestMethodDELETE parameter:@{@"unique_id": [self getUniqueId], @"q": searchAutoCompleteCell.searchTitle.text} mapping:[SearchSuggestionItem mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+        
+            for (SearchSuggestionData *searchSuggestionData in _searchSuggestionDataArray) {
+                if ([searchSuggestionData.name isEqual: RECENT_SEARCH]){
+                    NSMutableArray *searchSuggestionItems = [NSMutableArray  arrayWithArray:searchSuggestionData.items];
+                    [searchSuggestionItems removeObjectAtIndex:buttonIndexPath.item];
+                    searchSuggestionData.items = searchSuggestionItems ;
+                    break; 
+                }
+            }
+            [_collectionView reloadData];
+        
+    } onFailure:^(NSError *errorResult) {
+        StickyAlertView *stickyAlert = [[StickyAlertView alloc] initWithErrorMessages:@[errorResult.localizedDescription] delegate:self];
+        [stickyAlert show];
+    }];
+}
+
+-(void)clearAllHistory {
+    
+    [_requestManager requestWithBaseUrl:[NSString aceUrl] path:@"/recent_search/v1?" method:RKRequestMethodDELETE parameter:@{@"clear_all":@"true", @"unique_id": [self getUniqueId]} mapping:[SearchSuggestionItem mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            for (SearchSuggestionData *searchSuggestionData in _searchSuggestionDataArray) {
+                if ([searchSuggestionData.name isEqual: RECENT_SEARCH]){
+                    [_searchSuggestionDataArray removeObject:searchSuggestionData];
+                    [_collectionView reloadData];
+                    break;
+                }
+            }
+        });
+    } onFailure:^(NSError *errorResult) {
+        StickyAlertView *stickyAlert = [[StickyAlertView alloc] initWithErrorMessages:@[errorResult.localizedDescription] delegate:self];
+        [stickyAlert show];
+    }];
+//    [_historyResult removeAllObjects];
+//    [_typedHistoryResult removeAllObjects];
+//    
+//    NSString *destPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+//    destPath = [destPath stringByAppendingPathComponent:kTKPDSEARCH_SEARCHHISTORYPATHKEY];
     
 //    NSFileManager *fileManager = [NSFileManager defaultManager];
 //    if (![fileManager fileExistsAtPath:destPath]) {
@@ -252,7 +295,7 @@ NSString *const SearchDomainHotlist = @"Hotlist";
 //        [fileManager copyItemAtPath:sourcePath toPath:destPath error:nil];
 //    }
     
-    [_historyResult writeToFile:destPath atomically:YES];
+//    [_historyResult writeToFile:destPath atomically:YES];
     
     [_collectionView reloadData];
 }
@@ -321,6 +364,13 @@ NSString *const SearchDomainHotlist = @"Hotlist";
         SearchSuggestionData *searchSuggestionData = [_searchSuggestionDataArray objectAtIndex:indexPath.section];
         header.titleLabel.text = searchSuggestionData.name;
         
+        if ([header.titleLabel.text  isEqual: RECENT_SEARCH]) {
+            [header.deleteButton setTitle:@"Clear All" forState:UIControlStateNormal];
+            [header.deleteButton addTarget:self action:@selector(clearAllHistory) forControlEvents:UIControlEventTouchUpInside];
+        } else {
+            [header.deleteButton setTitle:@"" forState:UIControlStateNormal];
+        }
+        
         view = header;
         
 //        SearchAutoCompleteHeaderView *header = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"SearchAutoCompleteCellHeaderViewIdentifier" forIndexPath:indexPath];
@@ -330,7 +380,7 @@ NSString *const SearchDomainHotlist = @"Hotlist";
 //        if([[domain objectForKey:@"title"] isEqualToString:SearchDomainHistory]) {
 //            if(_historyResult.count > 0 || _typedHistoryResult.count > 0) {
 //                [header.deleteButton setTitle:@"Hapus" forState:UIControlStateNormal];
-//                [header.deleteButton addTarget:self action:@selector(clearHistory) forControlEvents:UIControlEventTouchUpInside];
+//                [header.deleteButton addTarget:self action:@selector(clearAllHistory) forControlEvents:UIControlEventTouchUpInside];
 //            } else {
 //                [header.titleLabel setText:@""];
 //                [header.deleteButton setTitle:@"" forState:UIControlStateNormal];
@@ -354,10 +404,15 @@ NSString *const SearchDomainHotlist = @"Hotlist";
     SearchSuggestionItem *searchSuggestionItem = [searchSuggestionData.items objectAtIndex:indexPath.item];
     searchCell.searchTitle.text = searchSuggestionItem.keyword;
     
-    if([searchSuggestionData.name isEqual: @"recent_search"]) {
+    searchCell.closeButton.hidden = YES;
+    searchCell.searchLoopImageView.hidden = YES;
+    [searchCell addConstraint: searchCell.searchTitleLeadingToSuperViewConstraint];
+    if([searchSuggestionData.name isEqual: RECENT_SEARCH]) {
         searchCell.closeButton.hidden = NO;
-    } else {
-        searchCell.closeButton.hidden = YES;
+        [searchCell.closeButton addTarget:self action:@selector(clearHistory:) forControlEvents:UIControlEventTouchUpInside];
+    } else if ([searchSuggestionData.name isEqual: SEARCH_AUTOCOMPLETE]){
+        searchCell.searchLoopImageView.hidden = NO;
+        [searchCell removeConstraint: searchCell.searchTitleLeadingToSuperViewConstraint];
     }
     
     [searchCell setBoldSearchText:_searchBar.text];
@@ -479,14 +534,21 @@ NSString *const SearchDomainHotlist = @"Hotlist";
 
 #pragma mark - UISearchBar Delegate
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
-    [_typedHistoryResult removeAllObjects];
     
     if([searchText isEqualToString:@""]) {
-//        [_domains removeAllObjects];
-//        [_domains addObject:@{@"title" : SearchDomainHistory, @"data" : _historyResult}];
-//        [_collectionView reloadData];
+        NSMutableArray *willBeDeletedIndexes = [[NSMutableArray alloc] init];
         
-        // hapus saja yang keyword suggestion
+        for (SearchSuggestionData* searchSuggestionData in _searchSuggestionDataArray) {
+            if ([searchSuggestionData.name  isEqual: SEARCH_AUTOCOMPLETE] || [searchSuggestionData.name  isEqual: @"hotlist"]) {
+                [willBeDeletedIndexes addObject:searchSuggestionData];
+            }
+        }
+        
+        for (SearchSuggestionData* searchSuggestionData in willBeDeletedIndexes) {
+            [_searchSuggestionDataArray removeObject:searchSuggestionData];
+        }
+        
+        [_collectionView reloadData];
     } else {
         
         [self getUserSearchSuggestionDataWithQuery:searchText];

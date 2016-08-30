@@ -24,6 +24,7 @@
         [deleteButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
         [deleteButton.titleLabel setFont:[UIFont fontWithName:@"Gotham Medium" size:11.0f]];
         [deleteButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentRight];
+        [deleteButton setTitleColor:[UIColor colorWithRed:255.0/255 green:87.0/255 blue:34.0/255 alpha:1.0] forState:UIControlStateNormal];
         
         _deleteButton = deleteButton;
         _titleLabel = label;
