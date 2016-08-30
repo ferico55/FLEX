@@ -203,7 +203,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="108"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" keyboardDismissMode="interactive" text="Isi alasan di sini" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="eAE-IJ-D7y" customClass="TKPDTextView">
+                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" keyboardDismissMode="interactive" text="Isi alasan di sini" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="eAE-IJ-D7y" customClass="TKPDTextView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="108"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>

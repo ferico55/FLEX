@@ -12,8 +12,7 @@
 
 // MARK: TKPRootObjectMapping methods
 + (NSDictionary *)attributeMappingDictionary {
-    //NSArray *keys = @[@"is_success",@"post_key", @"file_uploaded", @"hide_conversation_box"];
-    NSArray *keys = @[@"is_success",@"post_key", @"hide_conversation_box"];
+    NSArray *keys = @[@"is_success",@"post_key", @"file_uploaded", @"hide_conversation_box"];
     
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }
@@ -28,6 +27,12 @@
     RKRelationshipMapping *conversationMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"conversation_last" toKeyPath:@"conversation_last" withMapping:[ResolutionConversation mapping]];
     [mapping addPropertyMapping:conversationMapping];
     
+    return mapping;
+}
+
++(RKObjectMapping*)mappingNewWS{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addAttributeMappingsFromArray:@[@"post_key", @"is_success"]];
     return mapping;
 }
 
