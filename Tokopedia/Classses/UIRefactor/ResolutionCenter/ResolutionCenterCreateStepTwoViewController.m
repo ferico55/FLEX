@@ -45,6 +45,11 @@ ResolutionCenterCreateStepTwoCellDelegate
     }
 }
 
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    _result.remark = _priceProblemTextView.text;
+}
+
 -(void)copyProductToJSONObject{
     _result.postObject.order_id = _order.order_detail.detail_order_id;
     [_result.postObject.product_list removeAllObjects];

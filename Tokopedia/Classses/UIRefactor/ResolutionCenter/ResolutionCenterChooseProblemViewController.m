@@ -45,8 +45,7 @@
     ResolutionCenterCreateList* currentList = [_list_ts objectAtIndex:indexPath.row];
     
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-    //cell.textLabel.font = [UIFont fontWithName:@"GothamBook" size:13];
-    cell.textLabel.text = currentList.category_trouble_text;
+    cell.textLabel.font = [UIFont systemFontOfSize:12];
     if(_selectedList && [currentList.category_trouble_id isEqualToString:_selectedList.category_trouble_id]){
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     }else{

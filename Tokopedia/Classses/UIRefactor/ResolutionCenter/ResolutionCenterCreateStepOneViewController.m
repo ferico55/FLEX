@@ -125,7 +125,7 @@ ResolutionCenterChooseProblemDelegate
         }
     }
     lbl.textAlignment = NSTextAlignmentLeft;
-    //lbl.font = [UIFont fontWithName:@"Gotham Book" size:12.0];
+    lbl.font = [UIFont systemFontOfSize:12.0];
     [lbl setNumberOfLines:0];
     [lbl sizeToFit];
     [header addSubview:lbl];
@@ -182,7 +182,7 @@ ResolutionCenterChooseProblemDelegate
                                                                 _productData = data.data;
                                                                 [_tableView reloadData];
                                                             } failure:^(NSError *error) {
-                                                                
+                                                                StickyAlertView *alert = [StickyAlertView showErrorMessage:@[@"Kendala koneksi internet"]];
                                                             }];
 }
 @end

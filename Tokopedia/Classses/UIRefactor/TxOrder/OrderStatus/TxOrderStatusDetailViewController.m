@@ -292,7 +292,7 @@
             vc.product_is_received = YES;
         }
         
-        //vc.delegate = self.navigationController.viewControllers[self.navigationController.viewControllers.count-2];
+        vc.delegate = self.navigationController.viewControllers[self.navigationController.viewControllers.count-2];
         [self.navigationController pushViewController:vc animated:YES];
     }
     else if (alertView.tag == TAG_ALERT_CONFIRMATION)

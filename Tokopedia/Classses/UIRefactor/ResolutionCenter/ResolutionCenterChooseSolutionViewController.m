@@ -46,6 +46,7 @@
     
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     cell.textLabel.text = currentList.solution_text;
+    cell.textLabel.font = [UIFont systemFontOfSize:12];
     if(_selectedList && [currentList.solution_id isEqualToString:_selectedList.solution_id]){
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     }else{
