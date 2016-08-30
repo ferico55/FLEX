@@ -452,7 +452,7 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
         }
         
         
-        if(!self.isValidNominal()) {
+        if(self.productButton.hidden == false && !self.isValidNominal()) {
             self.buttonErrorLabel.mas_updateConstraints { make in
                 make.height.equalTo()(22)
             }
