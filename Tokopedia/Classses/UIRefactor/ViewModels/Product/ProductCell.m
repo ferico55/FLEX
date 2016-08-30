@@ -20,18 +20,9 @@
     if(imageDownloader == nil){
         imageDownloader = [QueueImageDownloader new];
     }
-    
-    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 4.0;
-    style.lineBreakMode = NSLineBreakByTruncatingTail;
-    
-    NSDictionary *attributes = @{
-                                 NSFontAttributeName            : [UIFont fontWithName:@"GothamMedium" size:12],
-                                 NSParagraphStyleAttributeName  : style,
-                                 NSForegroundColorAttributeName : [UIColor colorWithRed:10.0/255.0 green:126.0/255.0 blue:7.0/255.0 alpha:1],
-                                 };
-    
-    self.productName.attributedText = [[NSAttributedString alloc] initWithString:viewModel.productName attributes:attributes];
+
+    self.productName.font = [UIFont smallThemeMedium];
+    self.productName.text = viewModel.productName?:@"";
     
     [self.productPrice setText:viewModel.productPrice];
     [self.productShop setText:viewModel.productShop];
@@ -77,7 +68,7 @@
     [self.productName setText:viewModel.catalogName];
 
     self.productPrice.text = @"Mulai dari";
-    self.productPrice.font = [UIFont fontWithName:@"GothamBook" size:11.0];
+    self.productPrice.font = [UIFont microTheme];
     
     self.catalogPriceLabel.hidden = NO;
     self.catalogPriceLabel.text = viewModel.catalogPrice;

@@ -11,7 +11,6 @@
 #define MORE_SHOP_ID @"shop_id"
 #define MORE_SHOP_NAME @"shop_name"
 #define MORE_AUTH @"auth"
-#define CFont_Gotham_Book @"Gotham Book"
 
 #define CStringSelesai @"Selesai"
 #define CStringBack @"Back"

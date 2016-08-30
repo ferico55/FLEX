@@ -244,7 +244,7 @@
     if (cell == nil) {
         cell = [InboxResolutionCenterComplainCell newCell];
         cell.delegate = self;
-        [cell.viewLabelUser setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont fontWithName:@"GothamMedium" size:13.0f]];
+        [cell.viewLabelUser setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont smallThemeMedium]];
     }
     
     ResolutionDetail *resolution = ((InboxResolutionCenterList*)_list[indexPath.row]).resolution_detail;
@@ -680,12 +680,12 @@
     NSString *filterDaysString = [NSString stringWithFormat:@"Ada %@ komplain yang belum selesai lebih dari %@ hari", reso.counter_days, reso.pending_days];
     
     NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:filterDaysString];
-    [string setColorForText:[NSString stringWithFormat:@"%@ komplain", reso.counter_days] withColor:COLOR_BLUE_DEFAULT withFont:FONT_GOTHAM_MEDIUM_11];
+    [string setColorForText:[NSString stringWithFormat:@"%@ komplain", reso.counter_days] withColor:COLOR_BLUE_DEFAULT withFont:[UIFont microThemeMedium]];
     _labelFilterDaysCount.attributedText = string;
     
     _labelPendingAmount.text = [NSString stringWithFormat:@"Total dana berkendala Anda %@", reso.pending_amt.total_amt_idr];
     string = [[NSMutableAttributedString alloc] initWithString:_labelPendingAmount.text];
-    [string setColorForText:reso.pending_amt.total_amt_idr withColor:COLOR_PENDING_AMOUNT withFont:FONT_GOTHAM_MEDIUM_11];
+    [string setColorForText:reso.pending_amt.total_amt_idr withColor:COLOR_PENDING_AMOUNT withFont:[UIFont microThemeMedium]];
     
     _labelPendingAmount.attributedText = string;
     

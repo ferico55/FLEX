@@ -304,7 +304,7 @@
 - (CourierAvailabilityViewCell *)courierServiceAvailabilityCellForRowAtIndexPath:(NSIndexPath *)indexPath  {
     CourierAvailabilityViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"availability"];
     ShipmentCourierData *courier = [self courierAtIndexPath:indexPath];
-    cell.textLabel.text = [NSString stringWithFormat:@"Kota ini tidak terjangkau oleh  %@", courier.name];
+    cell.textLabel.text = [NSString stringWithFormat:@"Kota ini tidak terjangkau oleh %@", courier.name];
     [cell.textLabel sizeToFit];
     return cell;
 }
@@ -350,8 +350,8 @@
     NSDictionary *attributes = @{NSParagraphStyleAttributeName: style};
     NSString *string = [NSString stringWithFormat:@"Catatan:\n%@", courier.weightPolicy];
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:string attributes:attributes];
-    [attributedString addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"GothamMedium" size:14] range:NSMakeRange(0, 9)];
-    [attributedString addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"GothamBook" size:14] range:NSMakeRange(9, courier.weightPolicy.length)];
+    [attributedString addAttribute:NSFontAttributeName value:[UIFont title2ThemeMedium] range:NSMakeRange(0, 9)];
+    [attributedString addAttribute:NSFontAttributeName value:[UIFont title2Theme] range:NSMakeRange(9, courier.weightPolicy.length)];
     cell.noteLabel.attributedText = attributedString;
     cell.noteLabel.numberOfLines = 0;
     [cell.noteLabel sizeToFit];
@@ -409,7 +409,7 @@
         } else {
             coordinate = CLLocationCoordinate2DMake(0, 0);
         }
-        [NavigateViewController navigateToMap:coordinate type:TypeEditPlace fromViewController:self];
+        [NavigateViewController navigateToMap:coordinate type:TypePlacePickerTypeEditPlace fromViewController:self];
     } else if ([self showsCourierAdditionalOptionAtIndexPath:indexPath]) {
         ShipmentCourierData *courier = [self courierAtIndexPath:indexPath];
         ShipmentWebViewController *controller = [ShipmentWebViewController new];
@@ -769,7 +769,7 @@
     [[GMSGeocoder geocoder] reverseGeocodeCoordinate:coordinate
                                    completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error) {
                                        if (error || response == nil){
-                                           welf.shop.locationAddress = @"Tandai lokasi anda";
+                                           welf.shop.locationAddress = @"Tandai lokasi Anda";
                                        } else {
                                            GMSAddress *placemark = [response results][0];
                                            welf.shop.locationAddress = [self streetNameFromAddress:placemark];

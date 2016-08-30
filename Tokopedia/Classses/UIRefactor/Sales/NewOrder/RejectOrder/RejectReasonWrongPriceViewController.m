@@ -99,7 +99,7 @@
     UILabel *label = [[UILabel alloc] init];
     label.frame = CGRectMake(8, 0, 280, 40);
     label.textColor = [UIColor blackColor];
-    label.font = [UIFont fontWithName:@"GothamMedium" size:14];
+    label.font = [UIFont largeThemeMedium];
     label.text = sectionTitle;
     label.backgroundColor = [UIColor clearColor];
     

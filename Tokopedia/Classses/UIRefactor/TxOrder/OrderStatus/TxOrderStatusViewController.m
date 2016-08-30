@@ -11,8 +11,6 @@
 
 #import "TxOrderStatusViewController.h"
 #import "TxOrderStatusDetailViewController.h"
-#import "InboxReviewViewController.h"
-#import "TKPDTabInboxReviewNavigationController.h"
 #import "TrackOrderViewController.h"
 #import "FilterSalesTransactionListViewController.h"
 #import "TransactionCartRootViewController.h"
@@ -366,7 +364,7 @@
     style.alignment = NSTextAlignmentLeft;
     
     NSDictionary *attributes = @{NSForegroundColorAttributeName:[UIColor blackColor],
-                                 NSFontAttributeName: [UIFont fontWithName:@"Gotham Medium" size:11.0f],
+                                 NSFontAttributeName: [UIFont smallThemeMedium],
                                  NSParagraphStyleAttributeName: style,
                                  };
     

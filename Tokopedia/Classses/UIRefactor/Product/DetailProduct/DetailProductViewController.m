@@ -18,7 +18,6 @@
 #import "ProductReputationViewController.h"
 #import "CMPopTipView.h"
 #import "LabelMenu.h"
-#import "AlertPriceNotificationViewController.h"
 #import "PriceAlertViewController.h"
 #import "GalleryViewController.h"
 #import "detail.h"
@@ -52,11 +51,9 @@
 #import "TKPDTabNavigationController.h"
 #import "SearchResultViewController.h"
 #import "SearchResultShopViewController.h"
-#import "ProductReviewViewController.h"
 #import "ProductTalkViewController.h"
 #import "ProductAddEditViewController.h"
 
-#import "DetailProductOtherView.h"
 #import "TransactionATCViewController.h"
 #import "ShopContainerViewController.h"
 #import "UserAuthentificationManager.h"
@@ -114,7 +111,6 @@ GalleryViewControllerDelegate,
 UITableViewDelegate,
 UITableViewDataSource,
 DetailProductInfoCellDelegate,
-DetailProductOtherViewDelegate,
 LoginViewDelegate,
 TokopediaNetworkManagerDelegate,
 EtalaseViewControllerDelegate,
@@ -234,7 +230,6 @@ OtherProductDelegate
 @property (weak, nonatomic) IBOutlet UILabel *shoplocation;
 @property (strong, nonatomic) IBOutlet UIView *shopinformationview;
 @property (strong, nonatomic) IBOutlet UIView *shopClickView;
-@property (strong, nonatomic) IBOutlet DetailProductOtherView *otherproductview;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintHeightButton;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintHeightBuyButton;
@@ -295,7 +290,7 @@ OtherProductDelegate
     
     [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
     self.title = @"Detail Produk";
-    fontDesc = [UIFont fontWithName:@"GothamBook" size:13.0f];
+    fontDesc = [UIFont smallTheme];
     
     _datatalk = [NSMutableDictionary new];
     _headerimages = [NSMutableArray new];
@@ -570,26 +565,8 @@ OtherProductDelegate
                     productReputationViewController.strShopDomain = _product.data.shop_info.shop_domain;
                     productReputationViewController.strProductID = _product.data.info.product_id;
                     [self.navigationController pushViewController:productReputationViewController animated:YES];
+                    [TPAnalytics trackClickEvent:@"clickPDP" category:@"Product Detail Page" label:@"Review"];
                 }
-                return;
-                
-                
-                
-                // go to review page
-                ProductReviewViewController *vc = [ProductReviewViewController new];
-                NSArray *images = _product.data.product_images;
-                ProductImages *image = images[0];
-                
-                vc.data = @{
-                            kTKPDDETAIL_APIPRODUCTIDKEY : [_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@(0),
-                            API_PRODUCT_NAME_KEY : _formattedProductTitle,
-                            kTKPDDETAILPRODUCT_APIIMAGESRCKEY : image.image_src,
-                            kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]
-                            };
-                [self.navigationController pushViewController:vc animated:YES];
-                
-                [TPAnalytics trackClickEvent:@"clickPDP" category:@"Product Detail Page" label:@"Review"];
-                
                 break;
             }
             case 13:
@@ -879,9 +856,9 @@ OtherProductDelegate
     [bt setFrame:CGRectMake(15, 0, 170, 40)];
     [bt setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [bt setTag:section];
-    [bt.titleLabel setFont:[UIFont systemFontOfSize:12]];
+    [bt.titleLabel setFont:[UIFont microTheme]];
     [bt setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
-    [bt.titleLabel setFont: [UIFont fontWithName:@"GothamMedium" size:15.0f]];
+    [bt.titleLabel setFont:[UIFont title2ThemeMedium]];
     [bt addTarget:self action:@selector(expandCollapseButton:) forControlEvents:UIControlEventTouchUpInside];
     switch (section) {
         case 0:
@@ -1974,7 +1951,7 @@ OtherProductDelegate
                 activityIndicator.color = [UIColor lightGrayColor];
                 btnWishList.hidden = btnPriceAlert.hidden = NO;
                 [btnWishList setTitle:@"Wishlist" forState:UIControlStateNormal];
-                btnWishList.titleLabel.font = [UIFont fontWithName:@"Gotham Book" size:12.0f];
+                btnWishList.titleLabel.font = [UIFont microTheme];
                 btnWishList.layer.cornerRadius = btnPriceAlert.layer.cornerRadius = 5;
                 btnWishList.layer.masksToBounds = btnPriceAlert.layer.masksToBounds = YES;
                 btnWishList.layer.borderColor = btnPriceAlert.layer.borderColor = [[UIColor colorWithRed:219/255.0f green:219/255.0f blue:219/255.0f alpha:1.0f] CGColor];
@@ -2164,22 +2141,12 @@ OtherProductDelegate
     
 }
 
-#pragma mark - View Delegate
-- (void)DetailProductOtherView:(UIView *)view withindex:(NSInteger)index
-{
-    SearchAWSProduct *product = _otherProductObj[index];
-    if ([[_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY] integerValue] != [product.product_id integerValue]) {
-        [_TKPDNavigator navigateToProductFromViewController:self withName:product.product_name withPrice:product.product_price withId:product.product_id withImageurl:product.product_image withShopName:_product.data.shop_info.shop_name];
-    }
-}
-
 #pragma mark - Methods
 - (void)initPopUp:(NSString *)strText withSender:(id)sender withRangeDesc:(NSRange)range
 {
     UILabel *lblShow = [[UILabel alloc] init];
-    CGFloat fontSize = 13;
-    UIFont *boldFont = [UIFont boldSystemFontOfSize:fontSize];
-    UIFont *regularFont = [UIFont systemFontOfSize:fontSize];
+    UIFont *boldFont = [UIFont smallThemeMedium];
+    UIFont *regularFont = [UIFont smallTheme];
     UIColor *foregroundColor = [UIColor whiteColor];
     
     NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys: boldFont, NSFontAttributeName, foregroundColor, NSForegroundColorAttributeName, nil];
@@ -2429,7 +2396,7 @@ OtherProductDelegate
     
     productLabel.backgroundColor = [UIColor clearColor];
     productLabel.numberOfLines = 2;
-    UIFont *productLabelFont = [UIFont fontWithName:@"GothamMedium" size:15];
+    UIFont *productLabelFont = [UIFont title1ThemeMedium];
     
     NSMutableParagraphStyle *productLabelStyle = [[NSMutableParagraphStyle alloc] init];
     productLabelStyle.lineSpacing = 4.0;
@@ -2620,7 +2587,7 @@ OtherProductDelegate
         } completion:nil];
         
         CGRect frame = _shopinformationview.frame;
-        frame.size.height = 457;
+        frame.size.height = 467;
         _shopinformationview.frame = frame;
         
         _table.tableFooterView = _shopinformationview;

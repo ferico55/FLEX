@@ -132,10 +132,6 @@
 
 #define kTKPDHOME_APIQUERYKEY @"key"
 
-#define kTKPDHOME_FONTSLIDETITLES [UIFont fontWithName:@"GothamBook" size:10.0]
-#define kTKPDHOME_FONTSLIDETITLESACTIVE [UIFont fontWithName:@"GothamBook" size:10.0]
-#define kTKPDHOME_FONTHOTLIST [UIFont fontWithName:@"GothamMedium" size:12.0]
-
 #define kTKPDHOME_FONTSLIDETITLESCOLOR [UIColor colorWithRed:189.0f/255.0f green:189.0f/255.0f blue:189.0f/255.0f alpha:1]
 #define kTKPDHOME_FONTSLIDETITLESACTIVECOLOR [UIColor colorWithRed:252.0f/255.0f green:63.0f/255.0f blue:27.0f/255.0f alpha:1]
 

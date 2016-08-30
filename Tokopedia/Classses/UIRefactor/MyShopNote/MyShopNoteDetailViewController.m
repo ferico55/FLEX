@@ -334,11 +334,11 @@
     _barbuttonedit.enabled = YES;
     
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 6.0;
+    style.lineSpacing = 5.0;
     
     NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
     
-    UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
+    UIFont *font = [UIFont smallTheme];
     [attributes setObject:font forKey:NSFontAttributeName];
     
     NSString *contentNote = [_note.result.detail.notes_content isEqualToString:@"0"]?@"":_note.result.detail.notes_content;
@@ -567,9 +567,9 @@
                 _timeNoteLabel.text = _note.result.detail.notes_update_time;
                 
                 NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-                style.lineSpacing = 6.0;
+                style.lineSpacing = 5.0;
 
-                UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
+                UIFont *font = [UIFont smallTheme];
                 NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
                 [attributes setObject:font forKey:NSFontAttributeName];
                 [attributes setObject:style forKey:NSParagraphStyleAttributeName];
@@ -612,9 +612,9 @@
                 _timeNoteLabel.text = _note.result.detail.notes_update_time;
 
                 NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-                style.lineSpacing = 6.0;
+                style.lineSpacing = 5.0;
                 
-                UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
+                UIFont *font = [UIFont smallTheme];
                 NSString *note = _note.result.detail.notes_content;
                 note = [note stringByReplacingOccurrencesOfString:@"\n" withString:@"<br/>"];
                 NSData *data = [note dataUsingEncoding:NSUnicodeStringEncoding];
@@ -671,10 +671,10 @@
     NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
     
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 6.0;
+    style.lineSpacing = 5.0;
     [attributes setObject:style forKey:NSParagraphStyleAttributeName];
     
-    UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
+    UIFont *font = [UIFont smallTheme];
     [attributes setObject:font forKey:NSFontAttributeName];
     
     return attributes;

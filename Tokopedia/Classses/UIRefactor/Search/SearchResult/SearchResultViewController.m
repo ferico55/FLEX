@@ -24,7 +24,6 @@
 #import "DetailProductViewController.h"
 #import "CatalogViewController.h"
 
-#import "GeneralProductCell.h"
 #import "SearchResultViewController.h"
 #import "SortViewController.h"
 #import "FilterViewController.h"
@@ -34,8 +33,6 @@
 #import "LoadingView.h"
 
 #import "URLCacheController.h"
-#import "GeneralPhotoProductCell.h"
-#import "GeneralSingleProductCell.h"
 
 #import "ProductCell.h"
 #import "ProductSingleViewCell.h"

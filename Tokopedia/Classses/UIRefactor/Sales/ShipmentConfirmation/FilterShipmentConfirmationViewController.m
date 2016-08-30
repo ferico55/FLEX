@@ -73,14 +73,14 @@
             
             UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(15, 0, self.view.frame.size.width-30, 45)];
             textField.placeholder = @"Nama Penerima / Invoice";
-            textField.font = [UIFont fontWithName:@"GothamBook" size:14];
+            textField.font = [UIFont title2Theme];
             [textField addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventEditingChanged];
             [cell addSubview:textField];
             
         } else if (indexPath.section == 1) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
-            cell.textLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
-            cell.detailTextLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
+            cell.textLabel.font = [UIFont title2Theme];
+            cell.detailTextLabel.font = [UIFont title2Theme];
             cell.detailTextLabel.textColor = [UIColor grayColor];
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }

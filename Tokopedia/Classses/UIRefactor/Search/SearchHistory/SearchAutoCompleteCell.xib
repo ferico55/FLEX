@@ -4,13 +4,8 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <mutableArray key="GothamBook.ttf">
-            <string>GothamBook</string>
-        </mutableArray>
-    </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SearchAutoCompleteCell"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="SearchAutoCompleteCellIdentifier" id="CIZ-I1-FCl" customClass="SearchAutoCompleteCell">
             <rect key="frame" x="0.0" y="0.0" width="320" height="34"/>
@@ -21,63 +16,65 @@
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AOR-v7-oCj">
                         <rect key="frame" x="21" y="6" width="276" height="21"/>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
-                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2KD-Bd-Ag1" userLabel="SeparatorView">
-                        <rect key="frame" x="21" y="32" width="299" height="1"/>
-                        <color key="backgroundColor" red="0.78431372549019607" green="0.7803921568627451" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nxA-1c-vxF">
+                        <rect key="frame" x="291" y="10" width="14" height="14"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="1" id="u9y-e5-gYl"/>
+                            <constraint firstAttribute="width" constant="14" id="UUQ-9f-XJD"/>
+                            <constraint firstAttribute="height" constant="14" id="pg0-RR-c3P"/>
                         </constraints>
-                    </view>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="R0L-pu-s9S">
-                        <rect key="frame" x="291" y="9.5" width="14" height="14"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="14" id="guB-ow-68l"/>
-                            <constraint firstAttribute="height" constant="14" id="mdR-HZ-m52"/>
-                        </constraints>
-                        <state key="normal" image="icon_delete_search_history"/>
+                        <state key="normal" title="Button" image="icon_delete_search_history"/>
                     </button>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_search_keyword" translatesAutoresizingMaskIntoConstraints="NO" id="w6j-KM-fj4">
-                        <rect key="frame" x="21" y="10.5" width="12" height="12"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_search_keyword" translatesAutoresizingMaskIntoConstraints="NO" id="Zx4-2G-i0W">
+                        <rect key="frame" x="21" y="10" width="12" height="12"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="12" id="LZD-bj-Mbp"/>
-                            <constraint firstAttribute="width" constant="12" id="myE-hO-4zo"/>
+                            <constraint firstAttribute="width" constant="12" id="NNi-Oc-ZEN"/>
+                            <constraint firstAttribute="height" constant="12" id="za8-LB-f9j"/>
                         </constraints>
                     </imageView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hao-wh-Meq" userLabel="Separator View">
+                        <rect key="frame" x="21" y="33" width="299" height="1"/>
+                        <color key="backgroundColor" red="0.78431372549019607" green="0.7803921568627451" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="2PM-Du-7dQ"/>
+                        </constraints>
+                    </view>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
             <constraints>
-                <constraint firstItem="w6j-KM-fj4" firstAttribute="leading" secondItem="2KD-Bd-Ag1" secondAttribute="leading" id="27P-YF-dPJ"/>
-                <constraint firstAttribute="trailing" secondItem="2KD-Bd-Ag1" secondAttribute="trailing" id="65m-go-eXI"/>
-                <constraint firstItem="R0L-pu-s9S" firstAttribute="centerY" secondItem="AOR-v7-oCj" secondAttribute="centerY" id="6qA-aX-20b"/>
                 <constraint firstAttribute="trailing" secondItem="AOR-v7-oCj" secondAttribute="trailing" constant="23" id="8ck-AZ-xea"/>
-                <constraint firstItem="w6j-KM-fj4" firstAttribute="centerY" secondItem="AOR-v7-oCj" secondAttribute="centerY" id="CWe-fY-plO"/>
-                <constraint firstAttribute="bottom" secondItem="2KD-Bd-Ag1" secondAttribute="bottom" constant="1" id="DeC-Qg-Ggu"/>
+                <constraint firstItem="Hao-wh-Meq" firstAttribute="leading" secondItem="AOR-v7-oCj" secondAttribute="leading" id="CQz-Kl-Gaa"/>
                 <constraint firstItem="AOR-v7-oCj" firstAttribute="top" secondItem="CIZ-I1-FCl" secondAttribute="top" constant="6" id="F69-NL-GfH"/>
-                <constraint firstItem="2KD-Bd-Ag1" firstAttribute="leading" secondItem="CIZ-I1-FCl" secondAttribute="leading" constant="21" id="I1V-oV-Mx9"/>
-                <constraint firstItem="2KD-Bd-Ag1" firstAttribute="leading" secondItem="AOR-v7-oCj" secondAttribute="leading" id="KKd-BD-Do5"/>
+                <constraint firstItem="Hao-wh-Meq" firstAttribute="leading" secondItem="CIZ-I1-FCl" secondAttribute="leading" constant="21" id="Lq2-he-aFB"/>
                 <constraint firstAttribute="bottom" secondItem="AOR-v7-oCj" secondAttribute="bottom" constant="7" id="NC7-tT-iBu"/>
-                <constraint firstItem="2KD-Bd-Ag1" firstAttribute="leading" secondItem="CIZ-I1-FCl" secondAttribute="leading" constant="8" id="dUQ-fN-0qX"/>
-                <constraint firstAttribute="trailing" secondItem="R0L-pu-s9S" secondAttribute="trailing" constant="15" id="jEf-44-9wu"/>
+                <constraint firstAttribute="trailing" secondItem="nxA-1c-vxF" secondAttribute="trailing" constant="15" id="Pzs-AD-fQI"/>
+                <constraint firstItem="nxA-1c-vxF" firstAttribute="centerY" secondItem="AOR-v7-oCj" secondAttribute="centerY" id="QbN-ve-JNE"/>
+                <constraint firstItem="Zx4-2G-i0W" firstAttribute="leading" secondItem="CIZ-I1-FCl" secondAttribute="leading" constant="21" id="TQ0-WE-lZA"/>
+                <constraint firstItem="Zx4-2G-i0W" firstAttribute="centerY" secondItem="AOR-v7-oCj" secondAttribute="centerY" id="ZxC-tR-T5U"/>
+                <constraint firstItem="Hao-wh-Meq" firstAttribute="leading" secondItem="Zx4-2G-i0W" secondAttribute="leading" id="drZ-P7-GL7"/>
+                <constraint firstItem="Hao-wh-Meq" firstAttribute="top" secondItem="AOR-v7-oCj" secondAttribute="bottom" constant="6" id="iRd-jg-xKv"/>
                 <constraint firstItem="AOR-v7-oCj" firstAttribute="leading" secondItem="CIZ-I1-FCl" secondAttribute="leading" constant="21" id="ohd-s3-SRX"/>
-                <constraint firstItem="AOR-v7-oCj" firstAttribute="leading" secondItem="w6j-KM-fj4" secondAttribute="trailing" priority="750" constant="10" id="uw1-Mp-fUY"/>
+                <constraint firstAttribute="trailing" secondItem="Hao-wh-Meq" secondAttribute="trailing" id="pzW-jI-f6Y"/>
+                <constraint firstItem="AOR-v7-oCj" firstAttribute="leading" secondItem="Zx4-2G-i0W" secondAttribute="trailing" priority="750" constant="10" id="tNv-7g-HyF"/>
+                <constraint firstAttribute="bottom" secondItem="Hao-wh-Meq" secondAttribute="bottom" id="yNh-vo-ccl"/>
             </constraints>
             <size key="customSize" width="320" height="50"/>
             <variation key="default">
                 <mask key="constraints">
-                    <exclude reference="KKd-BD-Do5"/>
-                    <exclude reference="dUQ-fN-0qX"/>
+                    <exclude reference="CQz-Kl-Gaa"/>
+                    <exclude reference="Lq2-he-aFB"/>
+                    <exclude reference="iRd-jg-xKv"/>
                 </mask>
             </variation>
             <connections>
-                <outlet property="closeButton" destination="R0L-pu-s9S" id="DLw-ao-dAg"/>
-                <outlet property="searchLoopImageView" destination="w6j-KM-fj4" id="I2x-2P-ZqE"/>
+                <outlet property="closeButton" destination="nxA-1c-vxF" id="TNM-eO-CqO"/>
+                <outlet property="searchLoopImageView" destination="Zx4-2G-i0W" id="kd6-80-sOr"/>
                 <outlet property="searchTitle" destination="AOR-v7-oCj" id="rmc-U6-4dv"/>
-                <outlet property="searchTitleLeadingToSuperViewConstraint" destination="ohd-s3-SRX" id="N9t-W0-hHO"/>
+                <outlet property="searchTitleLeadingToSuperViewConstraint" destination="ohd-s3-SRX" id="QmA-ug-z9c"/>
             </connections>
             <point key="canvasLocation" x="150" y="318"/>
         </collectionViewCell>

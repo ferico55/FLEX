@@ -81,7 +81,7 @@
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     cell.textLabel.text = self.categories[indexPath.row][@"title"];
-    cell.textLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
+    cell.textLabel.font = [UIFont title2Theme];
     return cell;
 }
 

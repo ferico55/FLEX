@@ -362,7 +362,7 @@ NSString *const RECENT_SEARCH = @"recent_search";
         SearchAutoCompleteHeaderView *header = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"SearchAutoCompleteCellHeaderViewIdentifier" forIndexPath:indexPath];
         
         SearchSuggestionData *searchSuggestionData = [_searchSuggestionDataArray objectAtIndex:indexPath.section];
-        header.titleLabel.text = searchSuggestionData.name;
+        header.titleLabel.text = [searchSuggestionData.name uppercaseString];
         
         if ([header.titleLabel.text  isEqual: RECENT_SEARCH]) {
             [header.deleteButton setTitle:@"Clear All" forState:UIControlStateNormal];
@@ -454,7 +454,7 @@ NSString *const RECENT_SEARCH = @"recent_search";
     CGSize size = CGSizeZero;
     CGFloat maxWidth = collectionView.bounds.size.width;
     
-    size = CGSizeMake(maxWidth, 40.0);
+    size = CGSizeMake(maxWidth, 44.0);
     
     return size;
 }

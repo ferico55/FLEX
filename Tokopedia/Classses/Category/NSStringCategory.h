@@ -20,11 +20,15 @@
 + (NSString *)stringReplaceAhrefWithUrl:(NSString *)string;
 + (NSString *)extracTKPMEUrl:(NSString *)string;
 
+
 + (NSString*) encodeString:(NSString*)string;
 
 - (BOOL) isNotAllBaseCharacter;
 
 -(NSString *)priceFromStringIDR;
+
++ (NSArray *)getStringsBetweenAhrefTagWithString:(NSString *)string;
++ (NSArray <NSString *> *)getLinksBetweenAhrefTagWithString:(NSString *)string;
 
 + (NSString *)joinStringsWithBullets:(NSArray *)strings;
 

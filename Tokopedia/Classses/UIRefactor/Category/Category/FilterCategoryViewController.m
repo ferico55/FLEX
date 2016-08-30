@@ -191,12 +191,12 @@
     if ([self.selectedCategory isEqual:category]) {
         UIColor *greenColor = [UIColor colorWithRed:72.0/255.0 green:187.0/255.0 blue:72.0/255.0 alpha:1];
         cell.categoryNameLabel.textColor = greenColor;
-        cell.categoryNameLabel.font = [UIFont fontWithName:@"GothamMedium" size:13];
+        cell.categoryNameLabel.font = [UIFont largeThemeMedium];
         cell.arrowImageView.tintColor = greenColor;
         cell.checkmarkImageView.tintColor = greenColor;
     } else {
         cell.categoryNameLabel.textColor = [UIColor blackColor];
-        cell.categoryNameLabel.font = [UIFont fontWithName:@"GothamBook" size:13];
+        cell.categoryNameLabel.font = [UIFont largeTheme];
         cell.arrowImageView.tintColor = [UIColor grayColor];
     }
     

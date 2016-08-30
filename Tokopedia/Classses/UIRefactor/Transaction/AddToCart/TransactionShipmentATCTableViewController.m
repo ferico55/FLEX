@@ -27,7 +27,7 @@
     style.lineSpacing = 5.0;
     
     _textAttributes = @{
-                        NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:14],
+                        NSFontAttributeName            : [UIFont title2Theme],
                         NSParagraphStyleAttributeName  : style,
                         };
     
