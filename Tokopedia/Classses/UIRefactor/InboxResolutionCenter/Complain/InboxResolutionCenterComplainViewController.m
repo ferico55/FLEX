@@ -253,6 +253,12 @@
     //Set reputation score
     cell.btnReputation.tag = indexPath.row;
     
+    if ([resolution.resolution_order.order_free_return  isEqual: @"0"]) {
+        [self setFreeReturnImageViewAndLabelToHide:YES withCell:cell];
+    } else if ([resolution.resolution_order.order_free_return  isEqual: @"1"]){
+        [self setFreeReturnImageViewAndLabelToHide:NO withCell:cell];
+    }
+    
     if(resolution.resolution_by.by_customer == 1){
         [SmileyAndMedal generateMedalWithLevel:resolution.resolution_shop.shop_reputation.reputation_badge.level withSet:resolution.resolution_shop.shop_reputation.reputation_badge.set withImage:cell.btnReputation isLarge:NO];
         [cell.btnReputation setTitle:@"" forState:UIControlStateNormal];
@@ -458,6 +464,11 @@
     
     UIButton *button = (UIButton *)sender;
     [cmPopTitpView presentPointingAtView:button inView:self.view animated:YES];
+}
+
+- (void) setFreeReturnImageViewAndLabelToHide: (BOOL) hideBool withCell: (InboxResolutionCenterComplainCell*) cell {
+    cell.freeReturnLabel.hidden = hideBool;
+    cell.freeReturnImageView.hidden = hideBool;
 }
 
 #pragma mark - Cell Delegate

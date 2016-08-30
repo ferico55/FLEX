@@ -625,6 +625,7 @@ TTTAttributedLabelDelegate
         }
         case 13:
         {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"navigateToPageInTabBar" object:@"4"];
             [self.navigationController popToRootViewControllerAnimated:YES];
             break;
         }
