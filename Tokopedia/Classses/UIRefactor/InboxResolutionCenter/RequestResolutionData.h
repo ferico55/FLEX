@@ -15,6 +15,7 @@
 #import "ResolutionCenterCreateResponse.h"
 #import "ResolutionProductResponse.h"
 #import "ResolutionCenterCreatePOSTResponse.h"
+@class EditResolutionFormData;
 
 typedef enum{
     TypeResolutionAll,
@@ -55,4 +56,13 @@ typedef enum{
 +(void)fetchPossibleSolutionWithPossibleTroubleObject:(ResolutionCenterCreatePOSTRequest*)possibleTrouble
                                               success:(void(^) (ResolutionCenterCreatePOSTResponse* result))success
                                               failure:(void(^) (NSError* error))failure;
+
++(void)fetchformEditResolutionID:(NSString *)resolutionID
+                    isGetProduct:(BOOL)isGetProduct
+                       onSuccess:(void(^) (EditResolutionFormData* data))onSuccess
+                       onFailure:(void(^)(NSError* error))onFailure;
+
++(void)fetchformAppealResolutionID:(NSString *)resolutionID
+                         onSuccess:(void(^) (EditResolutionFormData* data))onSuccess
+                         onFailure:(void(^)(NSError* error))onFailure;
 @end

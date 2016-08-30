@@ -12,6 +12,7 @@
 #import "ResolutionCenterCreateData.h"
 #import "ResolutionCenterChooseProblemViewController.h"
 #import "ResolutionProductData.h"
+#import "Tokopedia-Swift.h"
 
 @interface ResolutionCenterCreateStepOneViewController ()
 <

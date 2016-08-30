@@ -310,49 +310,54 @@
 
 -(void)resolutionOpenIsGotTheOrder:(BOOL)isGotTheOrder
 {
-    InboxResolutionCenterOpenViewController *vc = [InboxResolutionCenterOpenViewController new];
-    vc.isGotTheOrder = isGotTheOrder;
-    vc.isChangeSolution = YES;
-    vc.detailOpenAmount = _resolution.resolution_order.order_open_amount;
-    vc.detailOpenAmountIDR = _resolution.resolution_order.order_open_amount_idr;
-    vc.shippingPriceIDR = _resolution.resolution_order.order_shipping_price_idr;
-    vc.selectedProblem = _resolution.resolution_last.last_trouble_string;
-    vc.selectedSolution = _resolution.resolution_last.last_solution_string;
-    vc.invoice = _resolution.resolution_order.order_invoice_ref_num;
-    vc.note = _messageTextView.text;
-    vc.images = _selectedImages;
-    vc.resolutionID = _resolutionID;
-    NSArray *viewControllers = self.navigationController.viewControllers;
-    UIViewController *destinationVC = viewControllers[viewControllers.count-2];
-    if ([destinationVC conformsToProtocol:@protocol(InboxResolutionCenterOpenViewControllerDelegate)]) {
-        vc.delegate = (id <InboxResolutionCenterOpenViewControllerDelegate>)destinationVC;
-    }
-    vc.syncroDelegate = self;
-    vc.controllerTitle = @"Ubah Solusi";
-    NSString *totalRefund = [_resolution.resolution_last.last_refund_amt stringValue];
-    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-    [formatter setGroupingSeparator:@"."];
-    [formatter setGroupingSize:3];
-    NSString *num = totalRefund;
-    NSString *str = [formatter stringFromNumber:[NSNumber numberWithDouble:[num doubleValue]]];
-    totalRefund = str;
-    vc.totalRefund = totalRefund;
+    EditSolutionSellerViewController *sellerVC = [EditSolutionSellerViewController new];
+    sellerVC.resolutionID = _resolutionID;
+    sellerVC.isGetProduct = isGotTheOrder;
+    [self.navigationController pushViewController:sellerVC animated:YES];
     
-    if (_resolution.resolution_by.by_customer == 1) {
-        vc.shopName = _resolution.resolution_shop.shop_name;
-        vc.shopPic = _resolution.resolution_shop.shop_image;
-        vc.buyerSellerLabel.text = @"Pembelian dari";
-        vc.isCanEditProblem = YES;
-    }
-    if (_resolution.resolution_by.by_seller == 1) {
-        vc.shopName = _resolution.resolution_customer.customer_name;
-        vc.shopPic = _resolution.resolution_customer.customer_image;
-        vc.buyerSellerLabel.text = @"Pembelian oleh";
-        vc.isActionBySeller = YES;
-        vc.isCanEditProblem = NO;
-    }
-    
-    [self.navigationController pushViewController:vc animated:YES];
+//    InboxResolutionCenterOpenViewController *vc = [InboxResolutionCenterOpenViewController new];
+//    vc.isGotTheOrder = isGotTheOrder;
+//    vc.isChangeSolution = YES;
+//    vc.detailOpenAmount = _resolution.resolution_order.order_open_amount;
+//    vc.detailOpenAmountIDR = _resolution.resolution_order.order_open_amount_idr;
+//    vc.shippingPriceIDR = _resolution.resolution_order.order_shipping_price_idr;
+//    vc.selectedProblem = _resolution.resolution_last.last_trouble_string;
+//    vc.selectedSolution = _resolution.resolution_last.last_solution_string;
+//    vc.invoice = _resolution.resolution_order.order_invoice_ref_num;
+//    vc.note = _messageTextView.text;
+//    vc.images = _selectedImages;
+//    vc.resolutionID = _resolutionID;
+//    NSArray *viewControllers = self.navigationController.viewControllers;
+//    UIViewController *destinationVC = viewControllers[viewControllers.count-2];
+//    if ([destinationVC conformsToProtocol:@protocol(InboxResolutionCenterOpenViewControllerDelegate)]) {
+//        vc.delegate = (id <InboxResolutionCenterOpenViewControllerDelegate>)destinationVC;
+//    }
+//    vc.syncroDelegate = self;
+//    vc.controllerTitle = @"Ubah Solusi";
+//    NSString *totalRefund = [_resolution.resolution_last.last_refund_amt stringValue];
+//    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+//    [formatter setGroupingSeparator:@"."];
+//    [formatter setGroupingSize:3];
+//    NSString *num = totalRefund;
+//    NSString *str = [formatter stringFromNumber:[NSNumber numberWithDouble:[num doubleValue]]];
+//    totalRefund = str;
+//    vc.totalRefund = totalRefund;
+//    
+//    if (_resolution.resolution_by.by_customer == 1) {
+//        vc.shopName = _resolution.resolution_shop.shop_name;
+//        vc.shopPic = _resolution.resolution_shop.shop_image;
+//        vc.buyerSellerLabel.text = @"Pembelian dari";
+//        vc.isCanEditProblem = YES;
+//    }
+//    if (_resolution.resolution_by.by_seller == 1) {
+//        vc.shopName = _resolution.resolution_customer.customer_name;
+//        vc.shopPic = _resolution.resolution_customer.customer_image;
+//        vc.buyerSellerLabel.text = @"Pembelian oleh";
+//        vc.isActionBySeller = YES;
+//        vc.isCanEditProblem = NO;
+//    }
+//    
+//    [self.navigationController pushViewController:vc animated:YES];
 }
 
 -(void)syncroImages:(NSArray *)images message:(NSString *)message refundAmount:(NSString *)refundAmount

@@ -8,9 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "ResolutionAction.h"
-#import "Tokopedia-Swift.h"
 #import "UploadImageValidation.h"
 #import "ResolutionCenterCreatePOSTRequest.h"
+@class DKAsset;
 
 @interface RequestResolutionAction : NSObject
 

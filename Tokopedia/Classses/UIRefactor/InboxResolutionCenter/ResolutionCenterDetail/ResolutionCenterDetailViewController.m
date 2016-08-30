@@ -32,6 +32,8 @@
 #import "RequestResoInputAddress.h"
 #import "RequestResolutionData.h"
 
+#import "Tokopedia-Swift.h"
+
 typedef enum {
     ACTION_BY_BUYER         = 1,
     ACTION_BY_SELLER        = 2,
@@ -447,7 +449,16 @@ typedef enum {
     }
     if ([sender.titleLabel.text isEqualToString:BUTTON_TITLE_APPEAL]) {
         BOOL isGotTheOrder = [_resolutionDetail.resolution_last.last_flag_received boolValue];
-        [self resolutionOpenIsGotTheOrder:isGotTheOrder];
+        
+        EditSolutionSellerViewController *controller = [EditSolutionSellerViewController new];
+        controller.isGetProduct = isGotTheOrder;
+        controller.type = 1;
+        controller.resolutionID = _resolutionID;
+        [controller didSuccessAppeal:^(ResolutionLast *solutionLast, ResolutionConversation * conversationLast, BOOL replyEnable) {
+            [self addResolutionLast:solutionLast conversationLast:conversationLast replyEnable:replyEnable];
+
+        }];
+        [self.navigationController pushViewController:controller animated:YES];
     }
 }
 

@@ -26,7 +26,7 @@ class ProductTrouble: NSObject {
             let viewModel : ProductResolutionViewModel = ProductResolutionViewModel()
             viewModel.productImageURLString = self.pt_snapshot_uri
             viewModel.productName = self.pt_product_name
-            viewModel.productTrouble = "\(self.pt_quantity)\(self.pt_trouble_name)"
+            viewModel.productTrouble = "\(self.pt_quantity) \(self.pt_trouble_name)"
             viewModel.productTroubleDescription = pt_solution_remark
             return viewModel
         }
@@ -34,7 +34,7 @@ class ProductTrouble: NSObject {
     
     class func mapping() -> RKObjectMapping {
         let mapping : RKObjectMapping = RKObjectMapping.init(forClass: self)
-        mapping.addPropertyMappingsFromArray([
+        mapping.addAttributeMappingsFromArray([
             "pt_snapshot_uri",
             "pt_product_name",
             "pt_trouble_name",

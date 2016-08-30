@@ -7,7 +7,21 @@
 //
 
 #import "ResolutionLast.h"
+#import "Tokopedia-Swift.h"
+
 @implementation ResolutionLast
+
+-(NSArray<ProductTrouble *> *)last_product_trouble{
+    return _last_product_trouble?:@[];
+}
+
+-(NSString *)last_refund_amt_idr{
+    return _last_refund_amt_idr?:@"";
+}
+
+-(NSString *)last_solution_string{
+    return _last_solution_string?:@"Pilih";
+}
 
 + (NSDictionary *)attributeMappingDictionary {
     NSArray *keys = @[@"last_resolution_id",
@@ -37,6 +51,7 @@
 + (RKObjectMapping *)mapping {
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
     [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+    
     RKRelationshipMapping *conversationMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"last_product_trouble" toKeyPath:@"last_product_trouble" withMapping:[ProductTrouble mapping]];
     [mapping addPropertyMapping:conversationMapping];
     

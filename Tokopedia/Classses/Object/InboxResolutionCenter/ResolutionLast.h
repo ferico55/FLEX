@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Tokopedia-Swift.h"
+@class ProductTrouble;
 
 @interface ResolutionLast : NSObject <TKPObjectMapping>
 

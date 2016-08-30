@@ -8,12 +8,14 @@
 
 import UIKit
 
+
 class EditSolutionSellerCell: UITableViewCell {
-    @IBOutlet var productImageView: UIImageView!
-    @IBOutlet var freeReturnLogoImageView: UIImageView!
-    @IBOutlet var troubleLabel: UILabel!
-    @IBOutlet var troubleDescriptionLabel: UILabel!
-    @IBOutlet var freeReturnViewHeight: NSLayoutConstraint!
+    @IBOutlet weak var productImageView: UIImageView!
+    @IBOutlet weak var freeReturnLogoImageView: UIImageView!
+    @IBOutlet weak var troubleLabel: UILabel!
+    @IBOutlet weak var troubleDescriptionLabel: UILabel!
+    @IBOutlet weak var freeReturnViewHeight: NSLayoutConstraint!
+    @IBOutlet weak var productNameLabel: UILabel!
 
     
     override func awakeFromNib() {
@@ -26,6 +28,7 @@ class EditSolutionSellerCell: UITableViewCell {
         
         troubleLabel.text = viewModel.productTrouble
         troubleDescriptionLabel.text = viewModel.productTroubleDescription
+        productNameLabel.text = viewModel.productName
         
         if viewModel.isFreeReturn {
             freeReturnViewHeight.constant = 0

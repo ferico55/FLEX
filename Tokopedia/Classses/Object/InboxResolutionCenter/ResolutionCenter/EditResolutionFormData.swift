@@ -11,7 +11,7 @@ import UIKit
 class EditResolutionFormData: NSObject {
     
     var list_ts : [ResolutionTroubleSolution] = []
-    var form    : EditResolutionFormData    = EditResolutionFormData()
+    var form    : EditResolutionForm = EditResolutionForm()
     
     class func mapping() -> RKObjectMapping {
         let mapping : RKObjectMapping = RKObjectMapping.init(forClass: self)
@@ -21,7 +21,7 @@ class EditResolutionFormData: NSObject {
         
         mapping.addPropertyMapping(RKRelationshipMapping.init(fromKeyPath: "form",
             toKeyPath: "form",
-            withMapping: ResolutionTroubleSolution.mapping()))
+            withMapping: EditResolutionForm.mapping()))
         
         return mapping
     }

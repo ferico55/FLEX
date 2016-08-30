@@ -14,6 +14,7 @@
 #import "StickyAlertView+NetworkErrorHandler.h"
 #import "UploadImageHelper.h"
 #import "ResolutionCenterCreatePOSTRequest.h"
+#import "Tokopedia-Swift.h"
 
 typedef void (^failedCompletionBlock)(NSError *error);
 

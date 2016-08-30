@@ -7,7 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="140" id="KGk-i7-Jjw" customClass="EditSolutionSellerCell" customModule="Tokopedia" customModuleProvider="target">
+        <tableViewCell contentMode="scaleToFill" restorationIdentifier="EditSolutionSellerCellIdentifier" selectionStyle="default" indentationWidth="10" rowHeight="140" id="KGk-i7-Jjw" customClass="EditSolutionSellerCell" customModule="Tokopedia" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="320" height="116"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
@@ -30,7 +30,7 @@
                         <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jIf-fo-9M0" userLabel="Free Return View">
+                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jIf-fo-9M0" userLabel="Free Return View">
                         <rect key="frame" x="73" y="33" width="232" height="20"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Free return" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8LM-6v-f3r">
@@ -60,21 +60,21 @@
                             <constraint firstItem="vCp-se-e7p" firstAttribute="leading" secondItem="jIf-fo-9M0" secondAttribute="leading" id="zR7-yR-Bvw"/>
                         </constraints>
                     </view>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1 Produk tidak sesuai deskripsi" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uq7-bJ-iG7">
-                        <rect key="frame" x="73" y="61" width="232" height="20"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="20" id="pu8-1b-lgK"/>
-                        </constraints>
-                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="13"/>
-                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                        <nil key="highlightedColor"/>
-                    </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. In aliquet pulvinar magna ac posuere. Morbi faucibus suscipit orci." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QRX-g2-7SE">
                         <rect key="frame" x="73" y="81" width="232" height="20"/>
                         <constraints>
                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="iLu-h0-iqt"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1 Produk tidak sesuai deskripsi" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uq7-bJ-iG7">
+                        <rect key="frame" x="73" y="61" width="232" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="20" id="pu8-1b-lgK"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="13"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -101,6 +101,7 @@
                 <outlet property="freeReturnLogoImageView" destination="vCp-se-e7p" id="m9v-rS-tjF"/>
                 <outlet property="freeReturnViewHeight" destination="XyR-Ei-INM" id="qzc-hN-pMe"/>
                 <outlet property="productImageView" destination="tIN-B1-cqu" id="zxr-Ny-Qnf"/>
+                <outlet property="productNameLabel" destination="jjH-iL-TOt" id="JVv-fJ-1ka"/>
                 <outlet property="troubleDescriptionLabel" destination="QRX-g2-7SE" id="sec-us-Szt"/>
                 <outlet property="troubleLabel" destination="Uq7-bJ-iG7" id="Gem-YS-Ppz"/>
             </connections>

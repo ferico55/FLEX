@@ -8,6 +8,7 @@
 
 #import "RequestResolutionData.h"
 #import "StickyAlertView+NetworkErrorHandler.h"
+#import "Tokopedia-Swift.h"
 
 @implementation RequestResolutionData
 
@@ -65,7 +66,7 @@
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
     networkManager.isUsingHmac = YES;
     [networkManager requestWithBaseUrl:[NSString v4Url]
-                                  path:@"/v4/inbox-resolution-center/get_resolution_center_detail.pl"
+                                  path:@"/v4/inbox-resolution-center/get_resolution_center_detail_new.pl"
                                 method:RKRequestMethodGET
                              parameter:param
                                mapping:[ResolutionCenterDetail mapping]
@@ -256,10 +257,17 @@
     }
 }
 
-+(void)fetchEditResolutionFormOnSuccess:(void(^) (NSArray<ShipmentCourier*>* shipments))onSuccess
++(void)fetchformEditResolutionID:(NSString *)resolutionID
+                    isGetProduct:(BOOL)isGetProduct
+                       onSuccess:(void(^) (EditResolutionFormData* data))onSuccess
                        onFailure:(void(^)(NSError* error))onFailure {
     
-    NSDictionary* param = @{ };
+    UserAuthentificationManager *auth = [UserAuthentificationManager new];
+    
+    NSDictionary* param = @{ @"user_id"       : [auth getUserId]?:@"",
+                             @"resolution_id" : resolutionID?:@"",
+                             @"n"             : isGetProduct?@"0":@"1"
+                            };
     
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
     networkManager.isUsingHmac = YES;
@@ -267,16 +275,49 @@
                                   path:@"/v4/inbox-resolution-center/get_edit_resolution_form.pl"
                                 method:RKRequestMethodGET
                              parameter:param
-                               mapping:[ShipmentOrder mapping]
+                               mapping:[EditResolution mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                  
-                                 ShipmentOrder *response = [successResult.dictionary objectForKey:@""];
+                                 EditResolution *response = [successResult.dictionary objectForKey:@""];
                                  
-                                 if (response.data && !response.message_error) {
-                                     onSuccess(response.data.shipment);
-                                 } else {
+                                 if (response.message_error.count > 0) {
                                      [StickyAlertView showErrorMessage:response.message_error?:@[@"error get detail"]];
                                      onFailure(nil);
+                                 } else {
+                                     onSuccess(response.data);
+                                 }
+                                 
+                             } onFailure:^(NSError *errorResult) {
+                                 onFailure(errorResult);
+                             }];
+}
+
++(void)fetchformAppealResolutionID:(NSString *)resolutionID
+                       onSuccess:(void(^) (EditResolutionFormData* data))onSuccess
+                       onFailure:(void(^)(NSError* error))onFailure {
+    
+    UserAuthentificationManager *auth = [UserAuthentificationManager new];
+    
+    NSDictionary* param = @{ @"user_id"       : [auth getUserId]?:@"",
+                             @"resolution_id" : resolutionID?:@"",
+                             };
+    
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    networkManager.isUsingHmac = YES;
+    [networkManager requestWithBaseUrl:[NSString v4Url]
+                                  path:@"/v4/inbox-resolution-center/get_appeal_resolution_form.pl"
+                                method:RKRequestMethodGET
+                             parameter:param
+                               mapping:[EditResolution mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                 
+                                 EditResolution *response = [successResult.dictionary objectForKey:@""];
+                                 
+                                 if (response.message_error.count > 0) {
+                                     [StickyAlertView showErrorMessage:response.message_error?:@[@"error get detail"]];
+                                     onFailure(nil);
+                                 } else {
+                                     onSuccess(response.data);
                                  }
                                  
                              } onFailure:^(NSError *errorResult) {

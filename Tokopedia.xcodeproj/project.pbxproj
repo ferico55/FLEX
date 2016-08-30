@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2D50139230438B54812D14B9 /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */; };
+		45078D5B1D7593C8008A4557 /* ProgressHUDView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45078D5A1D7593C8008A4557 /* ProgressHUDView.swift */; };
 		4574EB1A1D704B4200CFC71B /* TPAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 4574DB031D704B3B00CFC71B /* TPAnalytics.m */; };
 		4574EB1B1D704B4200CFC71B /* TPLocalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 4574DB051D704B3B00CFC71B /* TPLocalytics.m */; };
 		4574EB1C1D704B4200CFC71B /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 4574DB081D704B3B00CFC71B /* URLCacheAlert.m */; };
@@ -2619,6 +2620,7 @@
 		4574F54A1D704B4400CFC71B /* vt-iOSlib-1.0.1.zip in Resources */ = {isa = PBXBuildFile; fileRef = 4574EB161D704B4200CFC71B /* vt-iOSlib-1.0.1.zip */; };
 		4574F54B1D704B4400CFC71B /* XYPieChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 4574EB191D704B4200CFC71B /* XYPieChart.m */; };
 		4574F54D1D704EC900CFC71B /* EditResolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4574F54C1D704EC900CFC71B /* EditResolution.swift */; };
+		45DA5B881D742FE100641B44 /* EditSolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45DA5B871D742FE100641B44 /* EditSolution.swift */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
 		7ACE9C541BB00956006C4BB7 /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7ACE9C4E1BB00956006C4BB7 /* FacebookSDKStrings.bundle */; };
@@ -2688,6 +2690,7 @@
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
 		2D733D9158C7BF957D514506 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
+		45078D5A1D7593C8008A4557 /* ProgressHUDView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressHUDView.swift; sourceTree = "<group>"; };
 		4574DB021D704B3B00CFC71B /* TPAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPAnalytics.h; sourceTree = "<group>"; };
 		4574DB031D704B3B00CFC71B /* TPAnalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPAnalytics.m; sourceTree = "<group>"; };
 		4574DB041D704B3B00CFC71B /* TPLocalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPLocalytics.h; sourceTree = "<group>"; };
@@ -6486,6 +6489,7 @@
 		4574EB181D704B4200CFC71B /* XYPieChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XYPieChart.h; sourceTree = "<group>"; };
 		4574EB191D704B4200CFC71B /* XYPieChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYPieChart.m; sourceTree = "<group>"; };
 		4574F54C1D704EC900CFC71B /* EditResolution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditResolution.swift; sourceTree = "<group>"; };
+		45DA5B871D742FE100641B44 /* EditSolution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditSolution.swift; sourceTree = "<group>"; };
 		4868E459AB2A65D133732296 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tokopedia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7263D2A0ACD97DA0D7CAA8F7 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
@@ -7463,6 +7467,7 @@
 				4574DCD21D704B3B00CFC71B /* EditResolutionFormData.swift */,
 				4574DCD31D704B3B00CFC71B /* ProductTrouble.swift */,
 				4574DCD41D704B3B00CFC71B /* ResolutionTroubleSolution.swift */,
+				45DA5B871D742FE100641B44 /* EditSolution.swift */,
 			);
 			path = ResolutionCenter;
 			sourceTree = "<group>";
@@ -10053,6 +10058,7 @@
 				4574E2DD1D704B3E00CFC71B /* EditSolutionSellerViewController.swift */,
 				4574E2DE1D704B3E00CFC71B /* EditSolutionSellerViewController.xib */,
 				4574E2DF1D704B3E00CFC71B /* ProductResolutionViewModel.swift */,
+				45078D5A1D7593C8008A4557 /* ProgressHUDView.swift */,
 			);
 			path = EditSolutionSeller;
 			sourceTree = "<group>";
@@ -15362,6 +15368,7 @@
 				4574F0ED1D704B4300CFC71B /* OpenShopDomainViewCell.m in Sources */,
 				4574EBE81D704B4200CFC71B /* InboxMessageDetailList.m in Sources */,
 				4574EBB01D704B4200CFC71B /* Talk.m in Sources */,
+				45078D5B1D7593C8008A4557 /* ProgressHUDView.swift in Sources */,
 				4574EE931D704B4300CFC71B /* ContactUsTypeCell.m in Sources */,
 				4574EDDC1D704B4300CFC71B /* Zip+CollectionType.swift in Sources */,
 				4574EB8B1D704B4200CFC71B /* DepositFormResult.m in Sources */,
@@ -15914,6 +15921,7 @@
 				4574EB851D704B4200CFC71B /* ContactUsResult.m in Sources */,
 				4574EE281D704B4300CFC71B /* AddressViewController.m in Sources */,
 				4574ECC51D704B4200CFC71B /* NoteActionResult.swift in Sources */,
+				45DA5B881D742FE100641B44 /* EditSolution.swift in Sources */,
 				4574EB451D704B4200CFC71B /* TKPDStackView.m in Sources */,
 				4574EE611D704B4300CFC71B /* DetailedImageCell.swift in Sources */,
 				4574EB3E1D704B4200CFC71B /* NSStringAttribute.m in Sources */,
@@ -16122,7 +16130,7 @@
 				GCC_PREFIX_HEADER = "Tokopedia/Tokopedia-Prefix.pch";
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Tokopedia/Tokopedia-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -16170,7 +16178,7 @@
 				GCC_PREFIX_HEADER = "Tokopedia/Tokopedia-Prefix.pch";
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Tokopedia/Tokopedia-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
