@@ -286,7 +286,7 @@
 
 - (IBAction)didTapAddButton:(id)sender {
     if (self.list.count == 3) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Anda hanya bisa menambah sampai 3 alamat." message:nil delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Anda hanya bisa menambah sampai 3 alamat." message:nil delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         return;
     }

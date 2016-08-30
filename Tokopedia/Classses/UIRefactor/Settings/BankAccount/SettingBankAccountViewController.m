@@ -262,6 +262,11 @@
         if (button.tag == 10) {
             [self.navigationController popViewControllerAnimated:YES];
         } else if (button.tag == 11) {
+            if (_list.count >= 10) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mohon maaf, maksimal 10 rekening bank yang dapat Anda masukkan.\nSilakan hapus terlebih dahulu rekening bank yang sudah tidak digunakan." message:nil delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [alert show];
+                return;
+            }
             SettingBankEditViewController *vc = [SettingBankEditViewController new];
             vc.data = [NSMutableDictionary dictionaryWithDictionary:@{kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY]?:@{},
                                                                       kTKPDPROFILE_DATAEDITTYPEKEY : @(TYPE_ADD_EDIT_PROFILE_ADD_NEW),
