@@ -376,6 +376,22 @@
                 
                 NSDictionary *paramURL = [self dictionaryFromURLString:request.URL.absoluteString];
                 
+                NSArray *products = _toppayParam[@"items"];
+                NSMutableArray *productIDs = [NSMutableArray new];
+                NSInteger quantity = 0;
+                
+                for (NSDictionary *product in products) {
+                    [productIDs addObject:product[@"id"]];
+                    quantity = quantity + [product[@"quantity"] integerValue];
+                }
+                
+                [[AppsFlyerTracker sharedTracker] trackEvent:AFEventPurchase withValues:@{AFEventParamRevenue : _toppayParam[@"price"],
+                                                                                          AFEventParamContentType : @"Product",
+                                                                                          AFEventParamContentId : [NSString jsonStringArrayFromArray:productIDs],
+                                                                                          AFEventParamQuantity : [@(quantity) stringValue],
+                                                                                          AFEventParamCurrency : _toppayParam[@"currency"],
+                                                                                          AFEventOrderId : [paramURL objectForKey:@"id"]?:_toppayParam[@"transaction_id"]?:@""}];
+                
                 [_delegate shouldDoRequestTopPayThxCode:[paramURL objectForKey:@"id"]?:_toppayParam[@"transaction_id"]?:@""];
                 if ([self isModal]) {
                     [self.navigationController dismissViewControllerAnimated:YES completion:nil];

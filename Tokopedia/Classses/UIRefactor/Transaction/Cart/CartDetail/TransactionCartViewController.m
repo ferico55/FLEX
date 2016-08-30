@@ -2625,6 +2625,25 @@
             klikBCAUserID:userIDKlikBCA
                   success:^(TransactionBuyResult *data) {
                       
+                      NSArray <TransactionCartList *> *carts = data.transaction.carts;
+                      NSMutableArray *productIDs = [NSMutableArray new];
+                      NSInteger quantity = 0;
+                      
+                      for (TransactionCartList *cart in carts) {
+                          NSArray <ProductDetail *> *products = cart.cart_products;
+                          for (ProductDetail *product in products) {
+                              [productIDs addObject:product.product_id];
+                          }
+                          quantity = quantity + [cart.cart_total_product integerValue];
+                      }
+                      
+                      [[AppsFlyerTracker sharedTracker] trackEvent:AFEventPurchase withValues:@{AFEventParamRevenue : data.transaction.grand_total,
+                                                                                                AFEventParamContentType : @"Product",
+                                                                                                AFEventParamContentId : [NSString jsonStringArrayFromArray:productIDs],
+                                                                                                AFEventParamQuantity : [@(quantity) stringValue],
+                                                                                                AFEventParamCurrency : @"IDR",
+                                                                                                AFEventOrderId : data.transaction.payment_id}];
+                      
                       TransactionSummaryDetail *summary = data.transaction;
                       [TPAnalytics trackCheckout:summary.carts step:2 option:summary.gateway_name];
                       

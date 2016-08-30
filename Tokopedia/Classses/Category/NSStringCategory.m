@@ -239,5 +239,10 @@
     return encodedString;
 }
 
++ (NSString *)jsonStringArrayFromArray:(NSArray *)array {
+    NSString *elements = (array.count == 1)?array[0]:[array componentsJoinedByString:@"\', \'"];
+    
+    return [NSString stringWithFormat:@"[\'%@\']", elements];
+}
 
 @end

@@ -405,16 +405,6 @@ static NSString * const kClientId = @"781027717105-80ej97sd460pi0ea3hie21o9vn9jd
     [Localytics setCustomerId:login.result.user_id];
     [Localytics setCustomerFullName:login.result.full_name];
 
-    //add user login to GA
-    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
-    [tracker setAllowIDFACollection:YES];
-    [tracker set:@"&uid" value:login.result.user_id];
-    // This hit will be sent with the User ID value and be visible in User-ID-enabled views (profiles).
-    [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"UX"            // Event category (required)
-                                                          action:@"User Sign In"  // Event action (required)
-                                                           label:nil              // Event label
-                                                           value:nil] build]];    // Event value
-
     [[AppsFlyerTracker sharedTracker] trackEvent:AFEventLogin withValue:nil];
 }
 
