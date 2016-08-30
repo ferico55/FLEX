@@ -11,7 +11,6 @@
 @interface ProductBadge : NSObject
 @property (strong, nonatomic) NSString *title;
 @property (strong, nonatomic) NSString *image_url;
-@property (strong, nonatomic) NSString *img_url;
 
 
 +(RKObjectMapping*)mapping;

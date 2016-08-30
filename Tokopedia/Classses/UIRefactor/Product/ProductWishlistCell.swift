@@ -76,7 +76,7 @@ class ProductWishlistCell : UICollectionViewCell {
         
         var urls = NSMutableArray()
         viewModel.badges.enumerate().map { index, badge in
-            urls.addObject(badge.img_url)
+            urls.addObject(badge.image_url)
         }
         
         imageDownloader.downloadImagesWithUrls(urls.copy() as! [String], onComplete: { images in

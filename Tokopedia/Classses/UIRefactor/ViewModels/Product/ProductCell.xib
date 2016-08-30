@@ -164,6 +164,7 @@
             </constraints>
             <size key="customSize" width="145" height="228"/>
             <connections>
+                <outlet property="badgesConstraint" destination="3B5-i1-fdK" id="hzp-gN-PLy"/>
                 <outlet property="badgesView" destination="ktU-84-qF9" id="OnG-IX-she"/>
                 <outlet property="catalogPriceLabel" destination="bHE-Jb-fd8" id="wpN-Z1-ngs"/>
                 <outlet property="grosirLabel" destination="zSL-Us-50U" id="47l-q1-0SI"/>

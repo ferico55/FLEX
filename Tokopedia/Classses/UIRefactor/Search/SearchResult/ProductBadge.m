@@ -11,7 +11,7 @@
 @implementation ProductBadge
 +(RKObjectMapping *)mapping{
     RKObjectMapping *badgeMapping = [RKObjectMapping mappingForClass:[ProductBadge class]];
-    [badgeMapping addAttributeMappingsFromArray:@[@"title", @"image_url", @"img_url"]];
+    [badgeMapping addAttributeMappingsFromArray:@[@"title", @"image_url"]];
     return badgeMapping;
 }
 @end

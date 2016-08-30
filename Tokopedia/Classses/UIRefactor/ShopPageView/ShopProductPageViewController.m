@@ -406,6 +406,7 @@ EtalaseViewControllerDelegate
         
         [(ProductCell*)cell setViewModel:list.viewModel];
         ((ProductCell*)cell).locationImage.hidden = YES;
+        ((ProductCell*)cell).badgesConstraint.constant = 15;
     } else {
         cellid = @"ProductThumbCellIdentifier";
         cell = (ProductThumbCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
