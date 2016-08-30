@@ -57,6 +57,8 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
     init(categories: [PulsaCategory]) {
         super.init(frame: CGRectZero)
         
+        NSNotificationCenter .defaultCenter().addObserver(self, selector: #selector(self.didSwipeHomePage), name: "didSwipeHomePage", object: nil)
+        
         pulsaCategoryControl = UISegmentedControl(frame: CGRectZero)
         categories.enumerate().forEach { index, category in
             pulsaCategoryControl.insertSegmentWithTitle(category.attributes.name, atIndex: index, animated: true)
@@ -551,6 +553,10 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
             make.right.equalTo()(container.mas_right).offset()(-10)
             make.bottom.equalTo()(container.mas_bottom)
         }
+    }
+    
+    func didSwipeHomePage() {
+        self.numberField.resignFirstResponder()
     }
     
 }
