@@ -255,6 +255,20 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
         return true
     }
     
+    // set custom keyboard to textField inputview will remove shouldChangeCharactersInRange:replacementString delegate
+    // as an alternative, i tried to check maximum length through MMNumberKeyboard's delegate to estimate maximum length
+    func numberKeyboard(numberKeyboard: MMNumberKeyboard!, shouldInsertText text: String!) -> Bool {
+        if(self.selectedOperator.attributes.name != "") {
+            if(self.numberField.text?.characters.count <= self.selectedOperator.attributes.maximum_length - 1) {
+                return true
+            }
+            
+            return false
+        }
+        
+        return true
+    }
+    
     func addActionNumberField() {
         numberField.bk_addEventHandler ({[unowned self] number in
             self.hideErrors()
@@ -328,9 +342,9 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
             let newLength = text.characters.count + string.characters.count - range.length
             return newLength <= self.selectedOperator.attributes.maximum_length
         }
+       
     }
-    
-    
+
     func buildButtons() {
         buttonsPlaceholder = UIView(frame: CGRectZero)
         self.addSubview(buttonsPlaceholder)
