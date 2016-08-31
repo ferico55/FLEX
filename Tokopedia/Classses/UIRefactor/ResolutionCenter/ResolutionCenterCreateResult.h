@@ -18,6 +18,9 @@
 
 @property (strong, nonatomic) NSMutableArray<ResolutionProductList*>* selectedProduct;
 @property (strong, nonatomic) ResolutionCenterCreateData* formData;
+@property (strong, nonatomic) NSString* remark;
+@property (strong, nonatomic) NSString* troubleId;
+
 -(NSMutableArray*)generatePossibleTroubleTextListWithCategoryTroubleId:(NSString*)categoryTroubleId;
 -(NSMutableArray*)generatePossibleTroubleListWithCategoryTroubleId:(NSString*)categoryTroubleId;
 @end

@@ -174,37 +174,42 @@ static failedCompletionBlock failedRequest;
     }
     NSString *photo = [[[filePathPhotos copy] valueForKey:@"description"]componentsJoinedByString:@"~"];
     
-    
-    RKRequestDescriptor *requestDescriptor = [RKRequestDescriptor requestDescriptorWithMapping:[[ResolutionCenterCreatePOSTRequest mapping] inverseMapping]
-                                                                                   objectClass:[ResolutionCenterCreatePOSTRequest class]
-                                                                                   rootKeyPath:nil
-                                                                                        method:RKRequestMethodPOST];
-    
-    NSDictionary *paramForObject = [RKObjectParameterization parametersWithObject:possibleTrouble
-                                                                requestDescriptor:requestDescriptor
-                                                                            error:nil];
-    NSError* error;
-    NSData* jsonData = [NSJSONSerialization dataWithJSONObject:paramForObject
-                                                       options:0
-                                                         error:&error];
-    
-    if(jsonData){
-        NSString *jsonStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-        NSDictionary *param = @{
-                                @"order_id"          :orderID?:@"",
-                                @"remark"            :remark?:@"",
-                                @"photos"            :photo?:@"",
-                                @"server_id"         :serverID?:@"",
-                                @"solution"          :solution?:@"",
-                                @"refund_amount"     :refundAmount?:@"",
-                                @"flag_received"     :flagReceived?:@"",
-                                @"trouble_id"        :troubleId?:@"",  //trouble id
-                                @"app_new"           :@"1",              //harus kasi image buat create reso
-                                @"category_trouble_id":categoryTroubleId,
-                                @"product_list"        : jsonStr
-                                };
-        return param;
+    NSString* jsonString = @"{\"data\" : [";
+    for(ResolutionCenterCreatePOSTProduct* product in possibleTrouble.product_list){
+        RKRequestDescriptor *requestDescriptor = [RKRequestDescriptor requestDescriptorWithMapping:[[ResolutionCenterCreatePOSTProduct mapping] inverseMapping]
+                                                                                       objectClass:[ResolutionCenterCreatePOSTProduct class]
+                                                                                       rootKeyPath:nil
+                                                                                            method:RKRequestMethodPOST];
+        
+        NSDictionary *paramForObject = [RKObjectParameterization parametersWithObject:product
+                                                                    requestDescriptor:requestDescriptor
+                                                                                error:nil];
+        NSError* error;
+        NSData* jsonData = [NSJSONSerialization dataWithJSONObject:paramForObject
+                                                           options:0
+                                                             error:&error];
+        if(jsonData){
+            NSString *jsonStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+            jsonString = [[jsonString stringByAppendingString:jsonStr] stringByAppendingString:@","];
+        }
     }
+    jsonString = [jsonString substringToIndex:[jsonString length]-1];
+    jsonString = [jsonString stringByAppendingString:@"]}"];
+    
+    NSDictionary *param = @{
+                            @"order_id"          :orderID?:@"",
+                            @"remark"            :remark?:@"",
+                            @"photos"            :photo?:@"",
+                            @"server_id"         :serverID?:@"",
+                            @"solution"          :solution?:@"",
+                            @"refund_amount"     :refundAmount?:@"",
+                            @"flag_received"     :flagReceived?:@"",
+                            @"trouble_id"        :troubleId?:@"",  //trouble id
+                            @"app_new"           :@"1",              //harus kasi image buat create reso
+                            @"category_trouble_id":categoryTroubleId,
+                            @"product_list"        : jsonString
+                            };
+    return param;
     return nil;
 }
 
@@ -282,7 +287,7 @@ static failedCompletionBlock failedRequest;
                                   path:@"/v4/action/resolution-center/create_resolution_validation_new.pl"
                                 method:RKRequestMethodPOST
                              parameter:param
-                               mapping:[ResolutionAction mapping]
+                               mapping:[ResolutionAction mappingNewWS]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                  
                                  ResolutionAction *response = [successResult.dictionary objectForKey:@""];

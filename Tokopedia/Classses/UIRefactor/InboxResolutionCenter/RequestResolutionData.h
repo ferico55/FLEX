@@ -53,6 +53,7 @@ typedef enum{
                                       success:(void(^) (ResolutionProductResponse* data))success
                                       failure:(void(^)(NSError* error))failure;
 +(void)fetchPossibleSolutionWithPossibleTroubleObject:(ResolutionCenterCreatePOSTRequest*)possibleTrouble
+                                            troubleId:(NSString*)troubleId
                                               success:(void(^) (ResolutionCenterCreatePOSTResponse* result))success
                                               failure:(void(^) (NSError* error))failure;
 @end

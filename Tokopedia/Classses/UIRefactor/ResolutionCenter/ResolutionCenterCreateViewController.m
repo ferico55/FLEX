@@ -18,7 +18,8 @@
 <
     UIPageViewControllerDelegate,
     UIPageViewControllerDataSource,
-    UIScrollViewDelegate
+    UIScrollViewDelegate,
+ResolutionCenterCreateStepThreeDelegate
 >
 @property (strong, nonatomic) IBOutlet UIView *pageIndicatorView;
 @property (strong, nonatomic) IBOutlet UIView *headerView;
@@ -109,6 +110,7 @@
     
     _stepThreeViewController.result = self.result;
     _stepThreeViewController.product_is_received = _product_is_received;
+    _stepThreeViewController.delegate = self;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -199,4 +201,10 @@
                                  completion:nil];
     }
 }
+
+-(void)didFinishCreateComplainInStepThree{
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    [_delegate didFinishCreateComplain];
+}
+
 @end
