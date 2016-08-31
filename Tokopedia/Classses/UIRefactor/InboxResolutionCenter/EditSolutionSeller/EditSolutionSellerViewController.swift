@@ -42,7 +42,7 @@ class EditSolutionSellerViewController: UIViewController {
     private var selectedAssets : [DKAsset] = []
     var successAppeal : ((solutionLast: ResolutionLast, conversationLast: ResolutionConversation, replyEnable: Bool) -> Void)?
 
-    private var firstResponderIndexPath : NSIndexPath = NSIndexPath.init(forRow: 0, inSection: 0)
+    private var firstResponderIndexPath : NSIndexPath?
     
     var resolutionID : String = ""
     var isGetProduct : Bool   = false
@@ -312,7 +312,7 @@ extension EditSolutionSellerViewController : UITextViewDelegate {
     //MARK: UITextViewDelegate
     
     func textViewShouldBeginEditing(textView: UITextView) -> Bool {
-        self.firstResponderIndexPath = NSIndexPath.init(forRow: 0, inSection: 3)
+        self.firstResponderIndexPath = NSIndexPath.init(forRow: 0, inSection: 2)
         return true
     }
 }
@@ -360,10 +360,10 @@ extension EditSolutionSellerViewController : UITableViewDataSource {
             solutionCell.contentView.backgroundColor = UIColor.clearColor()
             return self.solutionCell
         case 2:
-            return self.uploadImageCell
-        case 3:
             reasonCell.contentView.backgroundColor = UIColor.clearColor()
             return self.reasonCell
+        case 3:
+            return self.uploadImageCell
         default:
             let cell:EditSolutionSellerCell = tableView.dequeueReusableCellWithIdentifier("EditSolutionSellerCellIdentifier")! as! EditSolutionSellerCell
             cell.setViewModel(resolutionData.form.resolution_last.last_product_trouble[indexPath.row].sellerEditViewModel)
@@ -379,9 +379,9 @@ extension EditSolutionSellerViewController : UITableViewDataSource {
         case 1:
             return "Solusi yang diinginkan"
         case 2:
-            return "Lampirkan Foto Bukti"
-        case 3:
             return "Alasan ubah solusi"
+        case 3:
+            return "Lampirkan Foto Bukti"
         default:
             return ""
         }
