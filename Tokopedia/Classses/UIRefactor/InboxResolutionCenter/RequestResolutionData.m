@@ -35,23 +35,19 @@
                              parameter:param
                                mapping:[InboxResolutionCenter mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                 
                                  InboxResolutionCenter *response = [successResult.dictionary objectForKey:@""];
-                                 
-                                     if(response.message_error)
-                                     {
-                                         [StickyAlertView showErrorMessage:response.message_error];
-                                         failure(nil);
-                                     }
-                                     else{
-                                         NSString *nextPage = [networkManager splitUriToPage:response.data.paging.uri_next];
-                                         success (response.data, nextPage,response.data.paging.uri_next);
-                                     }
-
-                                 
-    } onFailure:^(NSError *errorResult) {
-        failure(errorResult);
-    }];
+                                 if(response.message_error)
+                                 {
+                                     [StickyAlertView showErrorMessage:response.message_error];
+                                     failure(nil);
+                                 }
+                                 else{
+                                     NSString *nextPage = [networkManager splitUriToPage:response.data.paging.uri_next];
+                                     success (response.data, nextPage,response.data.paging.uri_next);
+                                 }
+                             } onFailure:^(NSError *errorResult) {
+                                 failure(errorResult);
+                             }];
 }
 
 +(void)fetchDataDetailResolutionID:(NSString*)resolutionID
@@ -155,21 +151,6 @@
     networkManager.isUsingHmac = YES;
     
     UserAuthentificationManager *userAuth = [UserAuthentificationManager new];
-    /*
-    [networkManager requestWithBaseUrl:@"http://private-c1055-joef1.apiary-mock.com"
-                                  path:@"/create"
-                                method:RKRequestMethodGET
-                             parameter:@{@"order_id":orderId,
-                                         @"user_id":[userAuth getUserId]
-                                         }
-                               mapping:[ResolutionCenterCreateResponse mapping]
-                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                 ResolutionCenterCreateResponse *result = [successResult.dictionary objectForKey:@""];
-                                 success(result);
-                             } onFailure:^(NSError *errorResult) {
-                                 failure(errorResult);
-                             }];
-     */
     [networkManager requestWithBaseUrl:[NSString v4Url]
                                   path:@"/v4/inbox-resolution-center/get_create_resolution_form_new.pl"
                                 method:RKRequestMethodGET
@@ -191,22 +172,6 @@
     
     UserAuthentificationManager *userAuth = [UserAuthentificationManager new];
     
-    /*
-    [networkManager requestWithBaseUrl:@"http://private-c1055-joef1.apiary-mock.com"
-                                  path:@"/get_product_list"
-                                method:RKRequestMethodGET
-                             parameter:@{@"order_id":orderId,
-                                         @"user_id":[userAuth getUserId]
-                                         }
-                               mapping:[ResolutionProductResponse mapping]
-                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-                                 ResolutionProductResponse *result = [successResult.dictionary objectForKey:@""];
-                                 success(result);
-                             } onFailure:^(NSError *errorResult) {
-                                 failure(errorResult);
-                             }];
-     */
-    
     [networkManager requestWithBaseUrl:[NSString v4Url]
                                   path:@"/v4/inbox-resolution-center/get_product_list.pl"
                                 method:RKRequestMethodGET
@@ -222,7 +187,8 @@
                              }];
 }
 
-+(void)fetchPossibleSolutionWithPossibleTroubleObject:(ResolutionCenterCreatePOSTRequest *)possibleTrouble success:(void (^)(ResolutionCenterCreatePOSTResponse*))success failure:(void (^)(NSError *))failure{
+//again, we only need trouble id for non product related problem
++(void)fetchPossibleSolutionWithPossibleTroubleObject:(ResolutionCenterCreatePOSTRequest *)possibleTrouble troubleId:(NSString*)troubleId success:(void (^)(ResolutionCenterCreatePOSTResponse*))success failure:(void (^)(NSError *))failure{
     RKRequestDescriptor *requestDescriptor = [RKRequestDescriptor requestDescriptorWithMapping:[[ResolutionCenterCreatePOSTRequest mapping] inverseMapping]
                                                                                    objectClass:[ResolutionCenterCreatePOSTRequest class]
                                                                                    rootKeyPath:nil
@@ -241,11 +207,13 @@
         UserAuthentificationManager *userAuth = [UserAuthentificationManager new];
         TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
         networkManager.isUsingHmac = YES;
+        
         [networkManager requestWithBaseUrl:[NSString v4Url]
                                       path:@"/v4/inbox-resolution-center/get_form_solution.pl"
                                     method:RKRequestMethodPOST
                                  parameter:@{@"user_id":[userAuth getUserId],
-                                             @"solution_forms":jsonStr}
+                                             @"solution_forms":jsonStr,
+                                             @"trouble_id":troubleId?:@""}
                                    mapping:[ResolutionCenterCreatePOSTResponse mapping]
                                  onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                      ResolutionCenterCreatePOSTResponse* result = [successResult.dictionary objectForKey:@""];

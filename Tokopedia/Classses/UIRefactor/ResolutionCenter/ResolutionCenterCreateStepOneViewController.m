@@ -147,10 +147,12 @@ ResolutionCenterChooseProblemDelegate
     _result.postObject.category_trouble_id = selectedProblem.category_trouble_id;
     if([selectedProblem.product_related isEqualToString:@"1"]){
         _shouldShowProblematicProduct = YES;
+        _result.troubleId = nil;
         [_problemButton setTitle:selectedProblem.category_trouble_text forState:UIControlStateNormal];
         [_tableView reloadData];
     }else{
-        _shouldShowProblematicProduct = NO;        
+        _shouldShowProblematicProduct = NO;
+        [_result.selectedProduct removeAllObjects];
         [_problemButton setTitle:selectedProblem.category_trouble_text forState:UIControlStateNormal];
         [_tableView reloadData];
     }

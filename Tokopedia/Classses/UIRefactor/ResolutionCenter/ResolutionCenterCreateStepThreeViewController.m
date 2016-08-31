@@ -49,6 +49,7 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     [RequestResolutionData fetchPossibleSolutionWithPossibleTroubleObject:_result.postObject
+                                                                troubleId:_result.troubleId
                                                                     success:^(ResolutionCenterCreatePOSTResponse* data) {
                                                                         _formSolutions = data.data.form_solution;
                                                                     } failure:^(NSError *error) {
@@ -200,7 +201,7 @@
     
     [RequestResolutionAction fetchCreateNewResolutionOrderID:_result.postObject.order_id
                                                 flagReceived:(_product_is_received)?@"1":@"0"
-                                                   troubleId:@"1"
+                                                   troubleId:_result.troubleId?:@""
                                                     solution:_selectedSolution.solution_id
                                                 refundAmount:_refundTextField.text
                                                       remark:_result.remark?:@""

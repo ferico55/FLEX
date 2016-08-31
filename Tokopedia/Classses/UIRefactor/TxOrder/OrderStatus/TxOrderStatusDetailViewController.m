@@ -266,23 +266,6 @@
             return;
         }
         
-        /*
-        InboxResolutionCenterOpenViewController *vc = [InboxResolutionCenterOpenViewController new];
-        vc.controllerTitle = @"Buka Komplain";
-        if (buttonIndex == 0) {
-            //Tidak Terima Barang
-            vc.isGotTheOrder = NO;
-        }
-        else if (buttonIndex ==1)
-        {
-            //Terima barang
-            vc.isGotTheOrder = YES;
-            
-        }
-        vc.order = _order;
-        vc.isCanEditProblem = YES;
-        */
-        
         ResolutionCenterCreateViewController *vc = [ResolutionCenterCreateViewController new];
         vc.order = _order;
         

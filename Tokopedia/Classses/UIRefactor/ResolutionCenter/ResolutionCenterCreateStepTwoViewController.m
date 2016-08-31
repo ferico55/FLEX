@@ -154,7 +154,7 @@ ResolutionCenterCreateStepTwoCellDelegate
     DownPicker* downPicker = (DownPicker*)picker;
     NSMutableArray* possibleTroubles = [_result generatePossibleTroubleListWithCategoryTroubleId:_result.postObject.category_trouble_id];
     ResolutionCenterCreateTroubleList* selectedTrouble = [possibleTroubles objectAtIndex:[downPicker selectedIndex]];
-    
+    _result.troubleId = selectedTrouble.trouble_id;
 }
 
 #pragma mark - Cell delegate

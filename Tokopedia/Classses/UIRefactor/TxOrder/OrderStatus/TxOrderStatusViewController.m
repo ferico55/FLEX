@@ -787,6 +787,10 @@
     }
 }
 
+-(void)didFinishCreateComplain{
+    [self refreshRequest];
+}
+
 #pragma mark - Cell Show Button Validation
 -(BOOL)isShowButtonConfirmOrder:(TxOrderStatusList*)order
 {
