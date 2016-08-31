@@ -126,7 +126,7 @@ ResolutionCenterChooseProblemDelegate
         }
     }
     lbl.textAlignment = NSTextAlignmentLeft;
-    //lbl.font = [UIFont fontWithName:@"Gotham Book" size:12.0];
+    lbl.font = [UIFont systemFontOfSize:12.0];
     [lbl setNumberOfLines:0];
     [lbl sizeToFit];
     [header addSubview:lbl];
@@ -148,10 +148,12 @@ ResolutionCenterChooseProblemDelegate
     _result.postObject.category_trouble_id = selectedProblem.category_trouble_id;
     if([selectedProblem.product_related isEqualToString:@"1"]){
         _shouldShowProblematicProduct = YES;
+        _result.troubleId = nil;
         [_problemButton setTitle:selectedProblem.category_trouble_text forState:UIControlStateNormal];
         [_tableView reloadData];
     }else{
-        _shouldShowProblematicProduct = NO;        
+        _shouldShowProblematicProduct = NO;
+        [_result.selectedProduct removeAllObjects];
         [_problemButton setTitle:selectedProblem.category_trouble_text forState:UIControlStateNormal];
         [_tableView reloadData];
     }
@@ -183,7 +185,7 @@ ResolutionCenterChooseProblemDelegate
                                                                 _productData = data.data;
                                                                 [_tableView reloadData];
                                                             } failure:^(NSError *error) {
-                                                                
+                                                                StickyAlertView *alert = [StickyAlertView showErrorMessage:@[@"Kendala koneksi internet"]];
                                                             }];
 }
 @end

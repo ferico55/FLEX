@@ -9,7 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "TxOrderStatusList.h"
 
+@protocol ResolutionCenterCreateDelegate <NSObject>
+- (void) didFinishCreateComplain;
+@end
+
 @interface ResolutionCenterCreateViewController : UIViewController
 @property (strong, nonatomic) TxOrderStatusList* order;
 @property BOOL product_is_received;
+
+@property (weak, nonatomic) id<ResolutionCenterCreateDelegate> delegate;
 @end

@@ -37,6 +37,7 @@
 #import "RequestResolutionData.h"
 #import "RequestOrderData.h"
 #import "RequestResolutionData.h"
+#import "ResolutionCenterCreateViewController.h"
 
 #define TAG_ALERT_DELIVERY_CONFIRMATION 10
 #define TAG_ALERT_SUCCESS_DELIVERY_CONFIRM 11
@@ -46,7 +47,7 @@
 #define DATA_ORDER_REORDER_KEY @"data_reorder"
 #define DATA_ORDER_COMPLAIN_KEY @"data_complain"
 
-@interface TxOrderStatusViewController () <UITableViewDataSource, UITableViewDelegate, TxOrderStatusCellDelegate, UIAlertViewDelegate, FilterSalesTransactionListDelegate, TxOrderStatusDetailViewControllerDelegate, TrackOrderViewControllerDelegate, ResolutionCenterDetailViewControllerDelegate, InboxResolutionCenterOpenViewControllerDelegate, LoadingViewDelegate, NoResultDelegate, requestLDExttensionDelegate>
+@interface TxOrderStatusViewController () <UITableViewDataSource, UITableViewDelegate, TxOrderStatusCellDelegate, UIAlertViewDelegate, FilterSalesTransactionListDelegate, TxOrderStatusDetailViewControllerDelegate, TrackOrderViewControllerDelegate, ResolutionCenterDetailViewControllerDelegate, InboxResolutionCenterOpenViewControllerDelegate, ResolutionCenterCreateDelegate, LoadingViewDelegate, NoResultDelegate, requestLDExttensionDelegate>
 {
     NSMutableArray *_list;
     NSString *_URINext;
@@ -771,24 +772,23 @@
         }
         
         TxOrderStatusList *order = [_dataInput objectForKey:DATA_ORDER_COMPLAIN_KEY];
-        InboxResolutionCenterOpenViewController *vc = [InboxResolutionCenterOpenViewController new];
-        vc.controllerTitle = @"Buka Komplain";
-        if (buttonIndex == 0) {
-            //Tidak Terima Barang
-            vc.isGotTheOrder = NO;
-        }
-        else if (buttonIndex ==1)
-        {
-            //Terima barang
-            vc.isGotTheOrder = YES;
-            
-        }
-        vc.isChangeSolution = NO;
-        vc.isCanEditProblem = YES;
+        
+        ResolutionCenterCreateViewController *vc = [ResolutionCenterCreateViewController new];
         vc.order = order;
         vc.delegate = self;
+        
+        if(buttonIndex == 0){
+            vc.product_is_received = NO;
+        }else if(buttonIndex == 1){
+            vc.product_is_received = YES;
+        }
+        
         [self.navigationController pushViewController:vc animated:YES];
     }
+}
+
+-(void)didFinishCreateComplain{
+    [self refreshRequest];
 }
 
 #pragma mark - Cell Show Button Validation

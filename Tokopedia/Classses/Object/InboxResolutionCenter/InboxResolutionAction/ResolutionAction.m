@@ -27,4 +27,11 @@
     return mapping;
 }
 
++ (RKObjectMapping *)mappingNewWS{
+    RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
+    [mapping addAttributeMappingsFromArray:@[@"status", @"server_process_time"]];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data" toKeyPath:@"data" withMapping:[ResolutionActionResult mapping]]];
+    return mapping;
+}
+
 @end

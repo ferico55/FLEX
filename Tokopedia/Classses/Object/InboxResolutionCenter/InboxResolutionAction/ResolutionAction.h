@@ -18,4 +18,5 @@
 @property (nonatomic, strong) ResolutionActionResult *result;
 @property (nonatomic, strong) ResolutionActionResult *data;
 
++(RKObjectMapping*)mappingNewWS;
 @end

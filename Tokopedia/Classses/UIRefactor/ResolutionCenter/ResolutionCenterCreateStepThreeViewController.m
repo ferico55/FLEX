@@ -24,6 +24,7 @@
 @property (strong, nonatomic) NSArray<ResolutionCenterCreatePOSTFormSolution*>* formSolutions;
 @property (strong, nonatomic) ResolutionCenterCreatePOSTFormSolution *selectedSolution;
 @property (strong, nonatomic) IBOutlet UITextField *refundTextField;
+@property (strong, nonatomic) IBOutlet UIButton *solutionButton;
 @property (strong, nonatomic) IBOutlet UILabel *maxRefundLabel;
 @end
 
@@ -48,6 +49,7 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     [RequestResolutionData fetchPossibleSolutionWithPossibleTroubleObject:_result.postObject
+                                                                troubleId:_result.troubleId
                                                                     success:^(ResolutionCenterCreatePOSTResponse* data) {
                                                                         _formSolutions = data.data.form_solution;
                                                                     } failure:^(NSError *error) {
@@ -111,7 +113,7 @@
         lbl.backgroundColor = [UIColor clearColor];
         lbl.text = @"Masalah pada barang yang Anda terima";
         lbl.textAlignment = NSTextAlignmentLeft;
-        lbl.font = [UIFont fontWithName:@"Gotham Book" size:12.0];
+        lbl.font = [UIFont systemFontOfSize:12];
         [lbl setNumberOfLines:0];
         [lbl sizeToFit];
         [header addSubview:lbl];
@@ -139,7 +141,6 @@
 - (IBAction)uploadButtonTapped:(id)sender {
     [self navigateToPhotoPicker];
 }
-
 -(void)navigateToPhotoPicker{
     __weak typeof(self) wself = self;
     [ImagePickerController showImagePicker:self
@@ -191,6 +192,7 @@
 -(void)didSelectSolution:(ResolutionCenterCreatePOSTFormSolution *)selectedSolution{
     _selectedSolution = selectedSolution;
     _maxRefundLabel.text = _selectedSolution.max_refund_idr;
+    [_solutionButton setTitle:_selectedSolution.solution_text forState:UIControlStateNormal];
     [_tableView reloadData];
 }
 
@@ -199,17 +201,17 @@
     
     [RequestResolutionAction fetchCreateNewResolutionOrderID:_result.postObject.order_id
                                                 flagReceived:(_product_is_received)?@"1":@"0"
-                                                   troubleId:@"1"
+                                                   troubleId:_result.troubleId?:@""
                                                     solution:_selectedSolution.solution_id
                                                 refundAmount:_refundTextField.text
-                                                      remark:@"asdasd"
+                                                      remark:_result.remark?:@""
                                            categoryTroubleId:_result.postObject.category_trouble_id
                                        possibleTroubleObject:_result.postObject
                                                 imageObjects:_selectedImages
                                                      success:^(ResolutionActionResult *data) {
-                                                         
+                                                         [_delegate didFinishCreateComplainInStepThree];
                                                      } failure:^(NSError *error) {
-                                                         
+                                                         [StickyAlertView showErrorMessage:@[@"Kendala koneksi internet"]];
                                                      }];
 }
 @end

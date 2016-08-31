@@ -45,6 +45,11 @@ ResolutionCenterCreateStepTwoCellDelegate
     }
 }
 
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    _result.remark = _priceProblemTextView.text;
+}
+
 -(void)copyProductToJSONObject{
     _result.postObject.order_id = _order.order_detail.detail_order_id;
     [_result.postObject.product_list removeAllObjects];
@@ -149,7 +154,7 @@ ResolutionCenterCreateStepTwoCellDelegate
     DownPicker* downPicker = (DownPicker*)picker;
     NSMutableArray* possibleTroubles = [_result generatePossibleTroubleListWithCategoryTroubleId:_result.postObject.category_trouble_id];
     ResolutionCenterCreateTroubleList* selectedTrouble = [possibleTroubles objectAtIndex:[downPicker selectedIndex]];
-    
+    _result.troubleId = selectedTrouble.trouble_id;
 }
 
 #pragma mark - Cell delegate
