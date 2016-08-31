@@ -1,24 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DetailProductViewController">
             <connections>
                 <outlet property="accuracynumberlabel" destination="yZc-at-0fE" id="tuK-ui-7l4"/>
                 <outlet property="accuracyrateview" destination="XEH-6q-AWR" id="PPM-wp-f2B"/>
-                <outlet property="btnPriceAlert" destination="m0j-oE-jzy" id="BKg-0K-5vP"/>
                 <outlet property="btnReport" destination="HFZ-gV-WHe" id="hvM-YJ-Izl"/>
-                <outlet property="btnReportLeadingConstraint" destination="38k-8Q-r5t" id="GoO-Qo-4UK"/>
                 <outlet property="btnReputasi" destination="fGg-D4-sKa" id="cfS-1X-dlG"/>
                 <outlet property="btnShare" destination="Qan-1S-e2b" id="d6q-QY-yhy"/>
-                <outlet property="btnShareHeight" destination="ear-fi-MQf" id="tRJ-9r-ZSL"/>
-                <outlet property="btnShareLeadingConstraint" destination="WnV-St-6IU" id="5QK-UY-UAE"/>
-                <outlet property="btnShareTrailingConstraint" destination="fNV-ds-hVq" id="YvE-ds-Ld4"/>
-                <outlet property="btnWishList" destination="NZQ-y3-gDO" id="lIG-m7-2oD"/>
+                <outlet property="btnWishList" destination="Gh6-rZ-cOw" id="uha-8V-9p1"/>
                 <outlet property="buyButton" destination="WIw-3J-tyi" id="TUX-zM-sxE"/>
                 <outlet property="constraintBadgeGoldWidth" destination="zq6-ok-slU" id="oFS-yx-EcC"/>
                 <outlet property="constraintBadgeLuckySpace" destination="UM8-Kj-mzD" id="8pF-te-Mll"/>
@@ -467,15 +461,14 @@
                                     </constraints>
                                 </view>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qan-1S-e2b">
-                                    <rect key="frame" x="58" y="5" width="40" height="40"/>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <rect key="frame" x="222" y="5" width="90" height="40"/>
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="40" id="ear-fi-MQf"/>
+                                        <constraint firstAttribute="height" constant="40" id="OdF-xK-mTi"/>
                                     </constraints>
-                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                    <state key="normal" image="icon_button_share.png">
-                                        <color key="titleColor" red="0.45882352941176469" green="0.45882352941176469" blue="0.45882352941176469" alpha="1" colorSpace="calibratedRGB"/>
-                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <state key="normal" title=" Bagikan" image="icon_button_share.png">
+                                        <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="titleShadowColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                     <userDefinedRuntimeAttributes>
                                         <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -492,43 +485,39 @@
                                         <action selector="actionShare:" destination="-1" eventType="touchUpInside" id="Bue-JI-fea"/>
                                     </connections>
                                 </button>
-                                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NZQ-y3-gDO">
-                                    <rect key="frame" x="215" y="5" width="97" height="40"/>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="40" id="wkJ-ud-bQG"/>
-                                    </constraints>
-                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                    <state key="normal" title="Wishlist" image="icon_button_wishlist_nonactive.png">
-                                        <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <color key="titleShadowColor" red="0.45882352941176469" green="0.45882352941176469" blue="0.45882352941176469" alpha="1" colorSpace="calibratedRGB"/>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gh6-rZ-cOw">
+                                    <rect key="frame" x="124" y="5" width="90" height="40"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <state key="normal" title=" Wishlist" image="icon_button_wishlist_nonactive.png">
+                                        <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="titleShadowColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                            <real key="value" value="5"/>
+                                        </userDefinedRuntimeAttribute>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                            <real key="value" value="1"/>
+                                        </userDefinedRuntimeAttribute>
+                                        <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                            <color key="value" red="0.85882352939999995" green="0.85882352939999995" blue="0.85882352939999995" alpha="1" colorSpace="calibratedRGB"/>
+                                        </userDefinedRuntimeAttribute>
+                                    </userDefinedRuntimeAttributes>
                                     <connections>
-                                        <action selector="actionWishList:" destination="-1" eventType="touchUpInside" id="QIU-Cf-YVJ"/>
-                                    </connections>
-                                </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="m0j-oE-jzy">
-                                    <rect key="frame" x="108" y="5" width="97" height="40"/>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="40" id="5F4-1c-9TD"/>
-                                    </constraints>
-                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                    <state key="normal" title="Price Alert" image="icon_button_pricealert_nonactive.png">
-                                        <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <color key="titleShadowColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="calibratedRGB"/>
-                                    </state>
-                                    <connections>
-                                        <action selector="actionPriceAlert:" destination="-1" eventType="touchUpInside" id="J8W-5N-6wq"/>
+                                        <action selector="actionWishList:" destination="-1" eventType="touchUpInside" id="Mez-Dw-k7r"/>
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HFZ-gV-WHe">
-                                    <rect key="frame" x="8" y="5" width="40" height="40"/>
+                                    <rect key="frame" x="8" y="5" width="108" height="40"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" secondItem="HFZ-gV-WHe" secondAttribute="height" multiplier="1:1" id="iD5-DH-6HW"/>
+                                        <constraint firstAttribute="height" constant="40" id="27c-mn-rUe"/>
+                                        <constraint firstAttribute="width" constant="108" id="tgI-5H-nSn"/>
                                     </constraints>
-                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                    <state key="normal" image="icon_laporkan"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <state key="normal" title=" Laporkan" image="icon_laporkan">
+                                        <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="titleShadowColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
                                     <userDefinedRuntimeAttributes>
                                         <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                             <real key="value" value="5"/>
@@ -547,25 +536,20 @@
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
-                                <constraint firstItem="HFZ-gV-WHe" firstAttribute="centerY" secondItem="Qan-1S-e2b" secondAttribute="centerY" id="1MS-5k-a63"/>
-                                <constraint firstItem="HFZ-gV-WHe" firstAttribute="leading" secondItem="hsX-QI-9sF" secondAttribute="leading" constant="8" id="38k-8Q-r5t"/>
-                                <constraint firstItem="NZQ-y3-gDO" firstAttribute="top" relation="greaterThanOrEqual" secondItem="hsX-QI-9sF" secondAttribute="top" constant="5" id="4i5-rO-VJf"/>
                                 <constraint firstAttribute="bottom" secondItem="RVt-c1-8bl" secondAttribute="bottom" id="53d-1B-GTY"/>
                                 <constraint firstAttribute="height" constant="50" id="6ja-ou-q2E"/>
-                                <constraint firstAttribute="trailing" secondItem="Qan-1S-e2b" secondAttribute="trailing" priority="750" constant="15" id="BlM-IR-NqO"/>
-                                <constraint firstItem="HFZ-gV-WHe" firstAttribute="width" secondItem="Qan-1S-e2b" secondAttribute="width" id="C9a-Rs-qw3"/>
-                                <constraint firstItem="HFZ-gV-WHe" firstAttribute="height" secondItem="Qan-1S-e2b" secondAttribute="height" id="R4r-xL-gLR"/>
+                                <constraint firstItem="HFZ-gV-WHe" firstAttribute="leading" secondItem="hsX-QI-9sF" secondAttribute="leading" constant="8" id="DrC-md-ZSs"/>
+                                <constraint firstItem="Gh6-rZ-cOw" firstAttribute="top" secondItem="hsX-QI-9sF" secondAttribute="top" constant="5" id="HMf-sh-8MZ"/>
+                                <constraint firstAttribute="trailing" secondItem="Qan-1S-e2b" secondAttribute="trailing" constant="8" id="OET-DP-VJg"/>
                                 <constraint firstItem="RVt-c1-8bl" firstAttribute="leading" secondItem="hsX-QI-9sF" secondAttribute="leading" id="T0b-wJ-mv5"/>
-                                <constraint firstItem="Qan-1S-e2b" firstAttribute="leading" secondItem="HFZ-gV-WHe" secondAttribute="trailing" constant="10" id="WnV-St-6IU"/>
-                                <constraint firstItem="m0j-oE-jzy" firstAttribute="top" secondItem="hsX-QI-9sF" secondAttribute="top" constant="5" id="cYX-1D-WfC"/>
-                                <constraint firstItem="m0j-oE-jzy" firstAttribute="leading" secondItem="Qan-1S-e2b" secondAttribute="trailing" constant="10" id="fNV-ds-hVq"/>
-                                <constraint firstItem="Qan-1S-e2b" firstAttribute="top" relation="greaterThanOrEqual" secondItem="hsX-QI-9sF" secondAttribute="top" constant="5" id="hvj-mk-BSf"/>
-                                <constraint firstItem="NZQ-y3-gDO" firstAttribute="leading" secondItem="m0j-oE-jzy" secondAttribute="trailing" constant="10" id="kng-AX-mWL"/>
-                                <constraint firstItem="Qan-1S-e2b" firstAttribute="leading" secondItem="hsX-QI-9sF" secondAttribute="leading" priority="750" constant="15" id="mgi-aD-3Nf"/>
-                                <constraint firstItem="m0j-oE-jzy" firstAttribute="width" secondItem="NZQ-y3-gDO" secondAttribute="width" id="qAe-Gf-fbQ"/>
-                                <constraint firstItem="Qan-1S-e2b" firstAttribute="top" secondItem="hsX-QI-9sF" secondAttribute="top" constant="5" id="t5G-7I-Akc"/>
-                                <constraint firstItem="NZQ-y3-gDO" firstAttribute="top" secondItem="hsX-QI-9sF" secondAttribute="top" constant="5" id="wJw-FM-xMh"/>
-                                <constraint firstAttribute="trailing" secondItem="NZQ-y3-gDO" secondAttribute="trailing" constant="8" id="xU6-wH-r2J"/>
+                                <constraint firstItem="Qan-1S-e2b" firstAttribute="leading" secondItem="Gh6-rZ-cOw" secondAttribute="trailing" constant="8" id="TU7-FD-bFU"/>
+                                <constraint firstAttribute="bottom" secondItem="Gh6-rZ-cOw" secondAttribute="bottom" constant="5" id="UWZ-XL-ZOU"/>
+                                <constraint firstItem="Gh6-rZ-cOw" firstAttribute="width" secondItem="Qan-1S-e2b" secondAttribute="width" id="bqq-ea-fKD"/>
+                                <constraint firstAttribute="bottom" secondItem="Qan-1S-e2b" secondAttribute="bottom" constant="5" id="c4r-aw-Ff1"/>
+                                <constraint firstItem="Gh6-rZ-cOw" firstAttribute="leading" secondItem="HFZ-gV-WHe" secondAttribute="trailing" constant="8" id="cM1-if-TSg"/>
+                                <constraint firstItem="Qan-1S-e2b" firstAttribute="top" secondItem="hsX-QI-9sF" secondAttribute="top" constant="5" id="iUS-HG-HI6"/>
+                                <constraint firstAttribute="bottom" secondItem="HFZ-gV-WHe" secondAttribute="bottom" constant="5" id="uTy-b5-s2C"/>
+                                <constraint firstItem="HFZ-gV-WHe" firstAttribute="top" secondItem="hsX-QI-9sF" secondAttribute="top" constant="5" id="vV0-zm-7lh"/>
                                 <constraint firstAttribute="trailing" secondItem="RVt-c1-8bl" secondAttribute="trailing" id="xud-3c-ALc"/>
                                 <constraint firstAttribute="width" constant="320" id="zdP-Tg-4ZA"/>
                             </constraints>
@@ -837,7 +821,6 @@
     </objects>
     <resources>
         <image name="Badges_gold_merchant" width="40" height="40"/>
-        <image name="icon_button_pricealert_nonactive.png" width="20" height="20"/>
         <image name="icon_button_share.png" width="20" height="20"/>
         <image name="icon_button_wishlist_nonactive.png" width="20" height="20"/>
         <image name="icon_default_shop.jpg" width="80" height="80"/>

@@ -1950,14 +1950,6 @@ OtherProductDelegate
                 activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectZero];
                 activityIndicator.color = [UIColor lightGrayColor];
                 btnWishList.hidden = btnPriceAlert.hidden = NO;
-                [btnWishList setTitle:@"Wishlist" forState:UIControlStateNormal];
-                btnWishList.titleLabel.font = [UIFont microTheme];
-                btnWishList.layer.cornerRadius = btnPriceAlert.layer.cornerRadius = 5;
-                btnWishList.layer.masksToBounds = btnPriceAlert.layer.masksToBounds = YES;
-                btnWishList.layer.borderColor = btnPriceAlert.layer.borderColor = [[UIColor colorWithRed:219/255.0f green:219/255.0f blue:219/255.0f alpha:1.0f] CGColor];
-                btnWishList.layer.borderWidth = btnPriceAlert.layer.borderWidth = 1.0f;
-                btnWishList.imageEdgeInsets = btnPriceAlert.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 10);
-                btnWishList.titleEdgeInsets = btnPriceAlert.titleEdgeInsets = UIEdgeInsetsMake(3, 0, 0, 0);
                 
                 //Set background wishlist
                 if([_product.data.info.product_already_wishlist isEqualToString:@"1"])
