@@ -34,6 +34,8 @@
 
 #import "Tokopedia-Swift.h"
 
+#import "ResolutionCenterCreateViewController.h"
+
 typedef enum {
     ACTION_BY_BUYER         = 1,
     ACTION_BY_SELLER        = 2,
@@ -336,18 +338,30 @@ typedef enum {
             break;
         case TAG_CHANGE_SOLUTION:
         {
-            if (buttonIndex == 1) {
-                [self resolutionOpenIsGotTheOrder:YES];
-            }
-            else
-            {
-                [self resolutionOpenIsGotTheOrder:NO];
-            }
+            [self doChangeSolutionWithIsGetProduct:(buttonIndex == 1)];
             break;
         }
             
         default:
             break;
+    }
+}
+
+-(void)doChangeSolutionWithIsGetProduct:(BOOL)isGetProduct {
+    if (_resolutionDetail.resolution_by.by_seller == 1) {
+        EditSolutionSellerViewController *controller = [EditSolutionSellerViewController new];
+        controller.isGetProduct = isGetProduct;
+        controller.type = 1;
+        controller.resolutionID = _resolutionID;
+        [controller didSuccessAppeal:^(ResolutionLast *solutionLast, ResolutionConversation * conversationLast, BOOL replyEnable) {
+            [self addResolutionLast:solutionLast conversationLast:conversationLast replyEnable:replyEnable];
+            
+        }];
+        [self.navigationController pushViewController:controller animated:YES];
+    }else if (_resolutionDetail.resolution_by.by_customer == 1) {
+        ResolutionCenterCreateViewController *vc = [ResolutionCenterCreateViewController new];
+        vc.product_is_received = isGetProduct;
+        [self.navigationController pushViewController:vc animated:YES];
     }
 }
 
@@ -460,43 +474,6 @@ typedef enum {
         }];
         [self.navigationController pushViewController:controller animated:YES];
     }
-}
-
--(void)resolutionOpenIsGotTheOrder:(BOOL)isGotTheOrder
-{
-    InboxResolutionCenterOpenViewController *vc = [InboxResolutionCenterOpenViewController new];
-    vc.resolutionID = _resolutionID;
-    vc.isGotTheOrder = isGotTheOrder;
-    vc.isChangeSolution = YES;
-    vc.detailOpenAmount = _resolutionDetail.resolution_order.order_open_amount;
-    vc.detailOpenAmountIDR = _resolutionDetail.resolution_order.order_open_amount_idr;
-    vc.shippingPriceIDR = _resolutionDetail.resolution_order.order_shipping_price_idr;
-    vc.selectedProblem = [self trouble];
-    vc.invoice = _resolutionDetail.resolution_order.order_invoice_ref_num;
-    vc.delegate = self;
-    vc.isCanEditProblem = NO;
-    vc.controllerTitle = BUTTON_TITLE_APPEAL;
-    NSString *totalRefund = [_resolutionDetail.resolution_last.last_refund_amt stringValue];
-    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-    [formatter setGroupingSeparator:@"."];
-    [formatter setGroupingSize:3];
-    NSString *num = totalRefund;
-    NSString *str = [formatter stringFromNumber:[NSNumber numberWithDouble:[num doubleValue]]];
-    totalRefund = str;
-    vc.totalRefund = totalRefund;
-    
-    if (_resolutionDetail.resolution_by.by_customer == 1) {
-        vc.shopName = _resolutionDetail.resolution_shop.shop_name;
-        vc.shopPic = _resolutionDetail.resolution_shop.shop_image;
-        vc.buyerSellerLabel.text = @"Pembelian dari";
-    }
-    if (_resolutionDetail.resolution_by.by_seller == 1) {
-        vc.shopName = _resolutionDetail.resolution_customer.customer_name;
-        vc.shopPic = _resolutionDetail.resolution_customer.customer_image;
-        vc.buyerSellerLabel.text = @"Pembelian oleh";
-        vc.isActionBySeller = YES;
-    }
-    [self.navigationController pushViewController:vc animated:YES];
 }
 
 -(void)goToShopOrProfileIndexPath:(NSIndexPath *)indexPath
