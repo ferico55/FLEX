@@ -150,6 +150,7 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
         saldoLabel.numberOfLines = 2
         saldoLabel.textColor = UIColor.grayColor()
         saldoLabel.font = UIFont.systemFontOfSize(12)
+        saldoLabel.hidden = true
         saldoButtonPlaceholder.addSubview(saldoLabel)
         
         saldoLabel.mas_makeConstraints { make in
@@ -521,6 +522,7 @@ class PulsaView: UIView, MMNumberKeyboardDelegate {
         }
         
         self.saldoSwitch.hidden = true
+        self.saldoLabel.hidden = true
         productButton.hidden = true
         buyButton.hidden = true
         
