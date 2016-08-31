@@ -42,6 +42,7 @@ class EditSolutionSellerViewController: UIViewController {
     private var selectedAssets : [DKAsset] = []
     var successAppeal : ((solutionLast: ResolutionLast, conversationLast: ResolutionConversation, replyEnable: Bool) -> Void)?
 
+    private var firstResponderIndexPath : NSIndexPath = NSIndexPath.init(forRow: 0, inSection: 0)
     
     var resolutionID : String = ""
     var isGetProduct : Bool   = false
@@ -74,14 +75,14 @@ class EditSolutionSellerViewController: UIViewController {
         
         returnMoneyViewHeight.constant = 0
         
-//        NSNotificationCenter.defaultCenter().addObserver(self,
-//                                                         selector: Selector("keyboardWillShow:"),
-//                                                         name: UIKeyboardWillShowNotification,
-//                                                         object: nil)
-//        NSNotificationCenter.defaultCenter().addObserver(self,
-//                                                         selector: Selector("keyboardWillHide:"),
-//                                                         name: UIKeyboardWillHideNotification,
-//                                                         object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self,
+                                                         selector: #selector(EditSolutionSellerViewController.keyboardWillShow(_:)),
+                                                         name: UIKeyboardWillShowNotification,
+                                                         object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self,
+                                                         selector: #selector(EditSolutionSellerViewController.keyboardWillHide),
+                                                         name: UIKeyboardWillHideNotification,
+                                                         object: nil)
         
         refreshControl = UIRefreshControl()
         refreshControl.attributedTitle = NSAttributedString(string: "")
@@ -274,6 +275,25 @@ class EditSolutionSellerViewController: UIViewController {
         self.adjustUISelectedImage()
     }
     
+    @objc private func keyboardWillShow(notification: NSNotification){
+        
+        if let keyboardSize = (notification.userInfo![UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue() {
+            let contentInset = UIEdgeInsets.init(top: 0.0, left: 0.0, bottom: keyboardSize.height, right: 0.0)
+            tableView.contentInset = contentInset
+        }
+        
+        if firstResponderIndexPath != nil {
+            tableView.scrollToRowAtIndexPath(firstResponderIndexPath!, atScrollPosition: .Bottom, animated: true)
+        }
+    }
+    
+    @objc private func keyboardWillHide(notification: NSNotification){
+        UIView.animateWithDuration(0.3) {
+            if self.firstResponderIndexPath != nil {
+                self.tableView.contentInset = UIEdgeInsetsZero
+            }
+        }
+    }
 }
 
 extension EditSolutionSellerViewController : GeneralTableViewControllerDelegate {
@@ -285,6 +305,24 @@ extension EditSolutionSellerViewController : GeneralTableViewControllerDelegate 
             tableView.reloadData()
         }
 
+    }
+}
+
+extension EditSolutionSellerViewController : UITextViewDelegate {
+    //MARK: UITextViewDelegate
+    
+    func textViewShouldBeginEditing(textView: UITextView) -> Bool {
+        self.firstResponderIndexPath = NSIndexPath.init(forRow: 0, inSection: 3)
+        return true
+    }
+}
+
+extension EditSolutionSellerViewController : UITextFieldDelegate{
+    //MARK: UITextFieldDelegate
+    
+    func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
+        self.firstResponderIndexPath = NSIndexPath.init(forRow: 0, inSection: 1)
+        return true
     }
 }
 
