@@ -203,7 +203,12 @@
                                                          error:&error];
     
     if(jsonData){
-        NSString *jsonStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        NSString *jsonStr = @"";
+        if(troubleId){
+            jsonStr = [NSString stringWithFormat:@"{\"category_trouble_id\":%@, \"order_id\":%@, \"trouble_id\":%@ }", possibleTrouble.category_trouble_id, possibleTrouble.order_id, troubleId];
+        }else{
+            jsonStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        }
         UserAuthentificationManager *userAuth = [UserAuthentificationManager new];
         TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
         networkManager.isUsingHmac = YES;
@@ -212,8 +217,7 @@
                                       path:@"/v4/inbox-resolution-center/get_form_solution.pl"
                                     method:RKRequestMethodPOST
                                  parameter:@{@"user_id":[userAuth getUserId],
-                                             @"solution_forms":jsonStr,
-                                             @"trouble_id":troubleId?:@""}
+                                             @"solution_forms":jsonStr}
                                    mapping:[ResolutionCenterCreatePOSTResponse mapping]
                                  onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                      ResolutionCenterCreatePOSTResponse* result = [successResult.dictionary objectForKey:@""];
