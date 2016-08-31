@@ -116,14 +116,14 @@ NSString *const RECENT_SEARCH = @"recent_search";
     _searchBar.delegate = self;
     _searchBar.showsCancelButton = NO;
     
+    [self generateSearchBarAccessoryView];
+    
     [_searchBar setImage:[UIImage imageNamed:@"camera-grey.png"] forSearchBarIcon:UISearchBarIconBookmark state:UIControlStateNormal];
     
     imageSearchGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(takePhoto:)];
     [_iconCamera addGestureRecognizer:imageSearchGestureRecognizer];
     
     _filter = @"search_product";
-    
-   // [self loadHistory];
     
     NSNotificationCenter *notification = [NSNotificationCenter defaultCenter];
     [notification addObserver:self selector:@selector(clearAllHistory) name:kTKPD_REMOVE_SEARCH_HISTORY object:nil];
@@ -362,14 +362,16 @@ NSString *const RECENT_SEARCH = @"recent_search";
         SearchAutoCompleteHeaderView *header = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"SearchAutoCompleteCellHeaderViewIdentifier" forIndexPath:indexPath];
         
         SearchSuggestionData *searchSuggestionData = [_searchSuggestionDataArray objectAtIndex:indexPath.section];
-        header.titleLabel.text = [searchSuggestionData.name uppercaseString];
         
-        if ([header.titleLabel.text  isEqual: RECENT_SEARCH]) {
+        header.titleLabel.text = [[searchSuggestionData.name uppercaseString] stringByReplacingOccurrencesOfString:@"_" withString:@" "];
+        
+        if ([header.titleLabel.text isEqual: [[RECENT_SEARCH uppercaseString] stringByReplacingOccurrencesOfString:@"_" withString:@" "]] ) {
             [header.deleteButton setTitle:@"Clear All" forState:UIControlStateNormal];
             [header.deleteButton addTarget:self action:@selector(clearAllHistory) forControlEvents:UIControlEventTouchUpInside];
         } else {
             [header.deleteButton setTitle:@"" forState:UIControlStateNormal];
         }
+        
         
         view = header;
         
@@ -415,7 +417,7 @@ NSString *const RECENT_SEARCH = @"recent_search";
         [searchCell removeConstraint: searchCell.searchTitleLeadingToSuperViewConstraint];
     }
     
-    [searchCell setBoldSearchText:_searchBar.text];
+    [searchCell setGreenSearchText:_searchBar.text];
 //    NSDictionary *domain = [_domains objectAtIndex:indexPath.section];
 //    NSString *domainName = [domain objectForKey:@"title"];
 //    if([domainName isEqualToString:SearchDomainHistory]) {
@@ -466,7 +468,10 @@ NSString *const RECENT_SEARCH = @"recent_search";
 //    if(![[domain objectForKey:@"title"] isEqualToString:SearchDomainGeneral]) {
 //        size = CGSizeMake(collectionView.bounds.size.width, 25);
 //    }
-    size = CGSizeMake(collectionView.bounds.size.width, 25);
+    SearchSuggestionData *searchSuggestionData = [_searchSuggestionDataArray objectAtIndex:section];
+    if (![searchSuggestionData.name  isEqual: @"autocomplete"]) {
+        size = CGSizeMake(collectionView.bounds.size.width, 45);
+    }
     return size;
 }
 
@@ -485,8 +490,17 @@ NSString *const RECENT_SEARCH = @"recent_search";
                          
                          SearchSuggestionItem *searchSuggestionItem = [searchSuggestionData.items objectAtIndex:indexPath.item];
                          
-                         if (searchSuggestionData.name){
+                         if ([searchSuggestionData.name  isEqual: @"hotlist"]){
+                             NSArray *keys = [searchSuggestionItem.url componentsSeparatedByString:@"/"];
                              
+                             HotlistResultViewController *controller = [HotlistResultViewController new];
+                             controller.data = @{@"title" : searchSuggestionItem.keyword, @"key" : [keys objectAtIndex:[keys count] - 2]};
+                             controller.isFromAutoComplete = YES;
+                             controller.hidesBottomBarWhenPushed = YES;
+                             [TPAnalytics trackSearchWithAction:@"Search Hotlist" keyword:searchSuggestionItem.keyword];
+                             
+                             [self.navigationController pushViewController:controller animated:YES];
+                         } else {
                              [self goToResultPage:searchSuggestionItem.keyword withAutoComplete:YES];
                          }
                          
@@ -526,7 +540,7 @@ NSString *const RECENT_SEARCH = @"recent_search";
 //                             
 //                             [self.navigationController pushViewController:controller animated:YES];
 //                         }
-                         
+//                         
                      }
      ];
 }
@@ -605,26 +619,12 @@ NSString *const RECENT_SEARCH = @"recent_search";
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
-    NSArray *histories = _historyResult;
     NSString *searchString = [searchBar.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     if ([searchString length]) {
-        [_typedHistoryResult removeAllObjects];
-        [_searchBar resignFirstResponder];
-        
-        if (histories.count == 0 || [histories isEqualToArray: @[]]) {
-            [self saveHistory:searchBar.text];
-        }
-        else {
-            if (![histories containsObject:searchBar.text]) {
-                [self saveHistory:searchBar.text];
-            }
-        }
-        
         [TPAnalytics trackSearchWithAction:@"Search" keyword:searchString];
         [self goToResultPage:_searchBar.text withAutoComplete:NO];
     }
     else {
-        [_typedHistoryResult removeAllObjects];
         [_collectionView reloadData];
     }
 }
@@ -763,6 +763,23 @@ NSString *const RECENT_SEARCH = @"recent_search";
     } completion:^(BOOL finished) {
         
     }];
+}
+
+-(void) generateSearchBarAccessoryView {
+    UIToolbar* keyboardToolbar = [[UIToolbar alloc] init];
+    [keyboardToolbar sizeToFit];
+    UIBarButtonItem *flexBarButton = [[UIBarButtonItem alloc]
+                                      initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                                      target:nil action:nil];
+    UIBarButtonItem *doneBarButton = [[UIBarButtonItem alloc]
+                                      initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                      target:self action:@selector(hideKeyboard:)];
+    keyboardToolbar.items = @[flexBarButton, doneBarButton];
+    self.searchBar.inputAccessoryView = keyboardToolbar;
+}
+
+-(void) hideKeyboard: (UIBarButtonItem*) barButtonItem {
+    [self.searchBar resignFirstResponder];
 }
 
 #pragma mark - Method

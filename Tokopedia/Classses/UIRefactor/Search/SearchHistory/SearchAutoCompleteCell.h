@@ -20,6 +20,7 @@
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *searchTitleLeadingToSuperViewConstraint;
 - (void)setViewModel:(SearchAutoCompleteViewModel *)viewModel;
 - (void)setBoldSearchText:(NSString*)searchText;
+- (void)setGreenSearchText:(NSString*)searchText;
 
 
 @end

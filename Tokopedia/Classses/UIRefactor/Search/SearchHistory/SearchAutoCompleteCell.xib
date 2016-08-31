@@ -59,7 +59,7 @@
                 <constraint firstItem="Hao-wh-Meq" firstAttribute="top" secondItem="AOR-v7-oCj" secondAttribute="bottom" constant="6" id="iRd-jg-xKv"/>
                 <constraint firstItem="AOR-v7-oCj" firstAttribute="leading" secondItem="CIZ-I1-FCl" secondAttribute="leading" constant="21" id="ohd-s3-SRX"/>
                 <constraint firstAttribute="trailing" secondItem="Hao-wh-Meq" secondAttribute="trailing" id="pzW-jI-f6Y"/>
-                <constraint firstItem="AOR-v7-oCj" firstAttribute="leading" secondItem="Zx4-2G-i0W" secondAttribute="trailing" priority="750" constant="10" id="tNv-7g-HyF"/>
+                <constraint firstItem="AOR-v7-oCj" firstAttribute="leading" secondItem="Zx4-2G-i0W" secondAttribute="trailing" priority="750" constant="15" id="tNv-7g-HyF"/>
                 <constraint firstAttribute="bottom" secondItem="Hao-wh-Meq" secondAttribute="bottom" id="yNh-vo-ccl"/>
             </constraints>
             <size key="customSize" width="320" height="50"/>
