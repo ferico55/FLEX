@@ -241,6 +241,10 @@
                 NSString *notetitle = [_datainput objectForKey:kTKPDNOTE_APINOTESTITLEKEY]?:_note.result.detail.notes_title?:@"";
                 NSString *content = [_datainput objectForKey:kTKPDNOTE_APINOTESCONTENTKEY]?:_note.result.detail.notes_content;
                 
+                notetitle = [notetitle stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceCharacterSet]];
+                content = [content stringByTrimmingCharactersInSet:
+                [NSCharacterSet whitespaceCharacterSet]];
+                
                 if (_type == NOTES_RETURNABLE_PRODUCT &&
                     content && ![content isEqualToString:@""]) {
                     [self UpdateNote];
