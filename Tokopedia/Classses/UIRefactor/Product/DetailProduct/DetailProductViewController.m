@@ -106,7 +106,6 @@
 #pragma mark - Detail Product View Controller
 @interface DetailProductViewController ()
 <
-LabelMenuDelegate,
 GalleryViewControllerDelegate,
 UITableViewDelegate,
 UITableViewDataSource,
@@ -119,7 +118,8 @@ CMPopTipViewDelegate,
 UIAlertViewDelegate,
 NoResultDelegate,
 UICollectionViewDelegate,
-OtherProductDelegate
+OtherProductDelegate,
+TTTAttributedLabelDelegate
 >
 {
     CMPopTipView *cmPopTitpView;
@@ -182,7 +182,7 @@ OtherProductDelegate
     NSTimer *_timer;
     
     __weak RKObjectManager  *_objectPromoteManager;
-    LabelMenu *lblDescription;
+    TTTAttributedLabel* _descriptionLabel;
     
     BOOL isExpandDesc, isNeedLogin;
     TokopediaNetworkManager *_promoteNetworkManager;
@@ -875,13 +875,13 @@ OtherProductDelegate
                 CustomButtonExpandDesc *btnExpand = [CustomButtonExpandDesc buttonWithType:UIButtonTypeCustom];
                 if(_formattedProductDescription.length>kTKPDLIMIT_TEXT_DESC && !isExpandDesc)
                 {
-                    rectLblDesc = [self initLableDescription:mView originY:bt.frame.origin.y+bt.bounds.size.height+CgapTitleAndContentDesc width:self.view.bounds.size.width-35 withText:[NSString stringWithFormat:@"%@%@", [_formattedProductDescription substringToIndex:kTKPDLIMIT_TEXT_DESC], kTKPDMORE_TEXT]];
+                    rectLblDesc = [self initLableDescription:mView originY:bt.frame.origin.y+bt.bounds.size.height width:self.view.bounds.size.width-35 withText:[NSString stringWithFormat:@"%@%@", [_formattedProductDescription substringToIndex:kTKPDLIMIT_TEXT_DESC], kTKPDMORE_TEXT]];
                     
                     [btnExpand setImage:[UIImage imageNamed:@"icon_arrow_down.png"] forState:UIControlStateNormal];
                 }
                 else
                 {
-                    rectLblDesc = [self initLableDescription:mView originY:bt.frame.origin.y+bt.bounds.size.height+CgapTitleAndContentDesc width:self.view.bounds.size.width-35 withText:_formattedProductDescription];
+                    rectLblDesc = [self initLableDescription:mView originY:bt.frame.origin.y+bt.bounds.size.height width:self.view.bounds.size.width-35 withText:_formattedProductDescription];
                     [btnExpand setImage:[UIImage imageNamed:@"icon_arrow_up.png"] forState:UIControlStateNormal];
                 }
                 [expandCollapseButton removeFromSuperview];
@@ -908,12 +908,12 @@ OtherProductDelegate
             
             if(_formattedProductDescription.length>kTKPDLIMIT_TEXT_DESC && !isExpandDesc)
             {
-                rectLblDesc = [self initLableDescription:mView originY:bt.frame.origin.y+bt.bounds.size.height+CgapTitleAndContentDesc width:self.view.bounds.size.width-35 withText:[NSString stringWithFormat:@"%@%@", [_formattedProductDescription substringToIndex:kTKPDLIMIT_TEXT_DESC], kTKPDMORE_TEXT]];
+                rectLblDesc = [self initLableDescription:mView originY:bt.frame.origin.y+bt.bounds.size.height width:self.view.bounds.size.width-35 withText:[NSString stringWithFormat:@"%@%@", [_formattedProductDescription substringToIndex:kTKPDLIMIT_TEXT_DESC], kTKPDMORE_TEXT]];
                 [btnExpand setImage:[UIImage imageNamed:@"icon_arrow_down.png"] forState:UIControlStateNormal];
             }
             else
             {
-                rectLblDesc = [self initLableDescription:mView originY:bt.frame.origin.y+bt.bounds.size.height+CgapTitleAndContentDesc width:self.view.bounds.size.width-35 withText:_formattedProductDescription];
+                rectLblDesc = [self initLableDescription:mView originY:bt.frame.origin.y+bt.bounds.size.height width:self.view.bounds.size.width-35 withText:_formattedProductDescription];
                 [btnExpand setImage:[UIImage imageNamed:@"icon_arrow_up.png"] forState:UIControlStateNormal];
             }
             
@@ -1940,6 +1940,13 @@ OtherProductDelegate
                 
                 [btnShare removeConstraint:_btnShareTrailingConstraint];
                 [btnShare removeConstraint:_btnShareLeadingConstraint];
+                
+                [btnShare mas_makeConstraints:^(MASConstraintMaker *make) {
+                    make.left.equalTo(viewContentWishList).offset(10);
+                    make.right.equalTo(viewContentWishList).offset(10);
+                }];
+                
+                
                 [self hideReportButton:YES];
             } else {
                 if(!_product.isDummyProduct) {
@@ -2224,15 +2231,12 @@ OtherProductDelegate
     //                                                                         views:NSDictionaryOfVariableBindings(_buyButton)]];
 }
 
-- (void)initAttributeText:(UILabel *)lblDesc withStrText:(NSString *)strText withColor:(UIColor *)color withFont:(UIFont *)font withAlignment:(NSTextAlignment)alignment
-{
+- (void)initAttributeText:(UILabel *)lblDesc withStrText:(NSString *)strText withColor:(UIColor *)color withFont:(UIFont *)font withAlignment:(NSTextAlignment)alignment {
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 4.0;
     style.alignment = alignment;
     NSDictionary *attributes = @{
                                  NSForegroundColorAttributeName: (color == nil) ? [UIColor whiteColor] : color,
                                  NSFontAttributeName:(font == nil)? fontDesc : font,
-                                 NSParagraphStyleAttributeName: style,
                                  };
     NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:strText attributes:attributes];
     lblDesc.attributedText = attributedText;
@@ -2254,19 +2258,52 @@ OtherProductDelegate
 {
     if(strText == nil)  return CGRectZero;
     CGRect rectLblDesc = CGRectMake(20, originY, width, 9999);
-    rectLblDesc.size.height = [self calculateHeightLabelDesc:rectLblDesc.size withText:strText withColor:[UIColor whiteColor] withFont:nil withAlignment:NSTextAlignmentLeft];
+    rectLblDesc.size.height = [self calculateHeightLabelDesc:rectLblDesc.size withText:strText withColor:[UIColor whiteColor] withFont:[UIFont smallTheme] withAlignment:NSTextAlignmentLeft];
     
-    lblDescription = [[LabelMenu alloc] initWithFrame:rectLblDesc];
-    lblDescription.backgroundColor = [UIColor clearColor];
-    [lblDescription setNumberOfLines:0];
-    lblDescription.delegate = self;
-    [self initAttributeText:lblDescription withStrText:strText withColor:[UIColor whiteColor] withFont:nil withAlignment:NSTextAlignmentLeft];
-    lblDescription.textColor = [UIColor blackColor];
-    lblDescription.userInteractionEnabled = YES;
-    [lblDescription addGestureRecognizer:[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)]];
-    [mView addSubview:lblDescription];
+    _descriptionLabel = [[TTTAttributedLabel alloc] initWithFrame:rectLblDesc];
+    _descriptionLabel.backgroundColor = [UIColor clearColor];
+    [_descriptionLabel setNumberOfLines:0];
+    _descriptionLabel.delegate = self;
+    _descriptionLabel.attributedText = [[NSAttributedString alloc] initWithString: [NSString extracTKPMEUrl:strText] attributes: @{NSForegroundColorAttributeName: [UIColor blackColor],
+                                                                                                                                  NSFontAttributeName: [UIFont smallTheme]}];
+    _descriptionLabel.textColor = [UIColor lightGrayColor];
+    _descriptionLabel.userInteractionEnabled = YES;
+    [_descriptionLabel addGestureRecognizer:[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)]];
+    
+    
+    _descriptionLabel.enabledTextCheckingTypes = NSTextCheckingTypeLink;
+    NSDataDetector *linkDetector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:nil];
+    NSArray *matches = [linkDetector matchesInString:_descriptionLabel.text options:0 range:NSMakeRange(0, [_descriptionLabel.text length])];
+    
+    for(NSTextCheckingResult* match in matches) {
+        [_descriptionLabel addLinkToURL:match.URL withRange:match.range];
+    }
+    
+    [mView addSubview:_descriptionLabel];
     
     return rectLblDesc;
+}
+
+- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url {
+    __weak __typeof(self) weakSelf = self;
+    
+    NSString* theRealUrl;
+    if([url.host isEqualToString:@"www.tokopedia.com"]) {
+        theRealUrl = url.absoluteString;
+    } else {
+        theRealUrl = [NSString stringWithFormat:@"https://tkp.me/r?url=%@", [url.absoluteString stringByReplacingOccurrencesOfString:@"*" withString:@"."]];
+    }
+    
+    WebViewController *controller = [[WebViewController alloc] init];
+    controller.strURL = theRealUrl;
+    controller.strTitle = @"Mengarahkan...";
+    controller.onTapLinkWithUrl = ^(NSURL* url) {
+        if([url.absoluteString isEqualToString:@"https://www.tokopedia.com/"]) {
+            [weakSelf.navigationController popViewControllerAnimated:YES];
+        }
+    };
+    
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)expand:(CustomButtonExpandDesc *)sender
@@ -2970,7 +3007,7 @@ OtherProductDelegate
 #pragma mark - LabelMenu Delegate
 - (void)duplicate:(int)tag
 {
-    [UIPasteboard generalPasteboard].string = lblDescription.text;
+    [UIPasteboard generalPasteboard].string = _descriptionLabel.text;
 }
 
 #pragma mark - Other Method
