@@ -173,7 +173,7 @@ ResolutionCenterCreateStepThreeDelegate
 
 - (IBAction)didTapBackButton{
     if(_currentIndex == 0){
-        [self.navigationController popViewControllerAnimated:YES];
+        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
     }else{
         _currentIndex--;
         [_pageController setViewControllers:@[[self viewControllerAtIndex:_currentIndex isGoingForward:NO]]
